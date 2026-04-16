@@ -52,31 +52,13 @@ describe('harness engine', () => {
             })
         })
 
-        it('uses userId as key for user traffic type', () => {
+        it('always uses context key for user traffic type', () => {
             const { engine } = createMockEngine()
             engine.initialize({
                 key: 'acc-456',
                 trafficType: 'user',
                 attributes: {
                     userId: 'usr-123',
-                    domain: 'test.com',
-                    cluster: 'test',
-                    userImpersonated: false,
-                },
-            })
-
-            expect(engine.getContext()).toMatchObject({
-                key: 'usr-123',
-                trafficType: 'user',
-            })
-        })
-
-        it('falls back to context key when userId is missing for user traffic type', () => {
-            const { engine } = createMockEngine()
-            engine.initialize({
-                key: 'acc-456',
-                trafficType: 'user',
-                attributes: {
                     domain: 'test.com',
                     cluster: 'test',
                     userImpersonated: false,
@@ -234,6 +216,26 @@ describe('harness engine', () => {
             })
 
             expect(engine.evaluate('my-flag', {})).toEqual({ key: 'value' })
+        })
+
+        it('returns numeric config even when default is boolean', () => {
+            const { engine } = createMockEngine({
+                'my-flag': {
+                    treatment: 'show-every-1hr',
+                    config: '3600000',
+                },
+            })
+            engine.initialize({
+                key: '456',
+                attributes: {
+                    userId: '123',
+                    domain: 'test.com',
+                    cluster: 'test',
+                    userImpersonated: false,
+                },
+            })
+
+            expect(engine.evaluate('my-flag', false)).toBe(3600000)
         })
 
         it('returns raw string for non-JSON string default', () => {

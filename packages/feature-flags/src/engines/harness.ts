@@ -20,7 +20,7 @@ export function normalizeFlagId(flag: string): string {
 }
 
 export function createEngine(): HarnessEngine {
-    let client: SplitIO.IClient
+    let client: SplitIO.IBrowserClient
     let harnessAttributes: SplitIO.Attributes = {}
     let harnessContext: HarnessContext = {
         key: '',
@@ -60,6 +60,7 @@ export function createEngine(): HarnessEngine {
                 key,
             },
             storage: InLocalStorage(),
+            debug: 'DEBUG',
         })
 
         client = factory.client()
@@ -179,13 +180,7 @@ export const {
 const CONTROL_TREATMENT = 'control'
 
 function buildSplitKey(flagContext: FlagContext): string {
-    switch (flagContext.trafficType) {
-        case 'user':
-            return String(flagContext.attributes.userId || flagContext.key)
-        case 'account':
-        default:
-            return flagContext.key
-    }
+    return flagContext.key
 }
 
 function coerceValue<T>(raw: string, defaultValue: T): T {
@@ -212,6 +207,13 @@ function parseTreatment<T>(
 ): T {
     if (treatment === CONTROL_TREATMENT) return defaultValue
 
-    const raw = config ?? treatment
-    return coerceValue(raw, defaultValue)
+    if (config != null) {
+        try {
+            return JSON.parse(config) as T
+        } catch {
+            return coerceValue(config, defaultValue)
+        }
+    }
+
+    return coerceValue(treatment, defaultValue)
 }

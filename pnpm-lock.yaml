@@ -63,8 +63,8 @@ catalogs:
       version: 0.14.2
   feature-flags:
     '@splitsoftware/splitio-browserjs':
-      specifier: ^0.15.0
-      version: 0.15.0
+      specifier: ^1.7.0
+      version: 1.7.0
     launchdarkly-js-client-sdk:
       specifier: ^3.3.0
       version: 3.3.0
@@ -2430,7 +2430,7 @@ importers:
         version: link:../utils
       '@splitsoftware/splitio-browserjs':
         specifier: catalog:feature-flags
-        version: 0.15.0
+        version: 1.7.0
       '@testing-library/dom':
         specifier: catalog:test
         version: 10.4.0
@@ -7945,11 +7945,11 @@ packages:
   '@socket.io/component-emitter@3.1.0':
     resolution: {integrity: sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==}
 
-  '@splitsoftware/splitio-browserjs@0.15.0':
-    resolution: {integrity: sha512-Xm8JPuEenEg7oSueb0F/hQib6Tprf0+mqLRAc4Lvp90OvT+yw5P8vp7J56YEqe2foSc0jNQjb/1qFdxwNku0WQ==}
+  '@splitsoftware/splitio-browserjs@1.7.0':
+    resolution: {integrity: sha512-axbpwmVx9P/3/bzWFXBg2hQ6ThJgqi8G89tS4tytWZdbDBXzo6ukNsCYBBWEaOxQEQ+UD+0sd+onngndLHesnA==}
 
-  '@splitsoftware/splitio-commons@1.17.0':
-    resolution: {integrity: sha512-rvP+0LGUN92bcTytiqyVxq9UzBG5kTkIYjU7b7AU2awBUYgM0bqT3xhQ9/MJ/2fsBbqC6QIsxoKDOz9pMgbAQw==}
+  '@splitsoftware/splitio-commons@2.11.0':
+    resolution: {integrity: sha512-/cY9V2CHG2EnOAJp3vVWcs+ZqJ3zqEKHdKX115cK6zHKRMNDXODuPQSX7CIkuCLr6C0kQMQuBnXwcaf5C+cO1A==}
     peerDependencies:
       ioredis: ^4.28.0
     peerDependenciesMeta:
@@ -8517,9 +8517,6 @@ packages:
   '@types/facebook-js-sdk@3.3.10':
     resolution: {integrity: sha512-85YWoOkYD1N8yCKRjxcjaroK73UnE3pIEG6zPRIPrb8D4HFceqNp60EQ7SZlu7vHpWGD+yCRumBH606vRUuMLw==}
 
-  '@types/google.analytics@0.0.40':
-    resolution: {integrity: sha512-R3HpnLkqmKxhUAf8kIVvDVGJqPtaaZlW4yowNwjOZUTmYUQEgHh8Nh5wkSXKMroNAuQM8gbXJHmNbbgA8tdb7Q==}
-
   '@types/graceful-fs@4.1.6':
     resolution: {integrity: sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==}
 
@@ -8549,6 +8546,9 @@ packages:
 
   '@types/indefinite@2.3.4':
     resolution: {integrity: sha512-X9sp9nbqkZT7hFNUKxicGr6gZLahs95lryW2Vvx5+krDxhWWle4K1OfJ4b8Sjd+FLul3tGhfYehtfeoFF1Ot4g==}
+
+  '@types/ioredis@4.28.10':
+    resolution: {integrity: sha512-69LyhUgrXdgcNDv7ogs1qXZomnfOEnSmrmMFqKgt1XMJxmoOSG/u3wYy13yACIfKuMJ8IhKgHafDO3sx19zVQQ==}
 
   '@types/istanbul-lib-coverage@2.0.3':
     resolution: {integrity: sha512-sz7iLqvVUg1gIedBOvlkxPlc8/uVzyS5OwGz1cKjXzkl3FpL3al0crU8YGU1WoHkxn0Wxbw5tyi6hvzJKNzFsw==}
@@ -21342,17 +21342,17 @@ snapshots:
 
   '@socket.io/component-emitter@3.1.0': {}
 
-  '@splitsoftware/splitio-browserjs@0.15.0':
+  '@splitsoftware/splitio-browserjs@1.7.0':
     dependencies:
-      '@splitsoftware/splitio-commons': 1.17.0
-      '@types/google.analytics': 0.0.40
+      '@splitsoftware/splitio-commons': 2.11.0
       tslib: 2.8.1
       unfetch: 4.2.0
     transitivePeerDependencies:
       - ioredis
 
-  '@splitsoftware/splitio-commons@1.17.0':
+  '@splitsoftware/splitio-commons@2.11.0':
     dependencies:
+      '@types/ioredis': 4.28.10
       tslib: 2.8.1
 
   '@standard-schema/spec@1.1.0': {}
@@ -22045,8 +22045,6 @@ snapshots:
 
   '@types/facebook-js-sdk@3.3.10': {}
 
-  '@types/google.analytics@0.0.40': {}
-
   '@types/graceful-fs@4.1.6':
     dependencies:
       '@types/node': 22.13.13
@@ -22079,6 +22077,10 @@ snapshots:
       '@types/node': 22.13.13
 
   '@types/indefinite@2.3.4': {}
+
+  '@types/ioredis@4.28.10':
+    dependencies:
+      '@types/node': 22.13.13
 
   '@types/istanbul-lib-coverage@2.0.3': {}
 

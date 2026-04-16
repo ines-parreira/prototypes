@@ -6,9 +6,9 @@ export function createFakeSplitClient(
     const listeners = new Map<string, Set<() => void>>()
 
     const Event = {
-        SDK_READY: 'SDK_READY',
-        SDK_READY_TIMED_OUT: 'SDK_READY_TIMED_OUT',
-        SDK_UPDATE: 'SDK_UPDATE',
+        SDK_READY: 'init::ready',
+        SDK_READY_TIMED_OUT: 'init::timeout',
+        SDK_UPDATE: 'state::update',
     }
 
     function on(event: string, cb: () => void) {
