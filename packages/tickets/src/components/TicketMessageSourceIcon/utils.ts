@@ -33,7 +33,7 @@ export const ticketMessageSourceToIconName = (
         case TicketMessageSourceType.Sms:
             return IconName.CommChatDots
         case LegacyChannelSlug.HelpCenter:
-            return IconName.Article
+            return IconName.FileDocument
         case TicketMessageSourceType.SystemMessage:
             return IconName.Settings
         case LegacyChannelSlug.FacebookMention:

@@ -1,9 +1,99 @@
+import { IconName } from '@gorgias/axiom'
 import {
     LegacyChannelSlug,
     TicketMessageSourceType,
 } from '@gorgias/helpdesk-types'
 
-import { ticketMessageSourceToLabel } from './utils'
+import {
+    ticketMessageSourceToIconName,
+    ticketMessageSourceToLabel,
+} from './utils'
+
+describe('ticketMessageSourceToIconName', () => {
+    it.each([
+        [TicketMessageSourceType.InternalNote, IconName.Note],
+        [TicketMessageSourceType.Email, IconName.CommMail],
+        [TicketMessageSourceType.HelpCenterContactForm, IconName.CommMail],
+        [TicketMessageSourceType.ContactForm, IconName.CommMail],
+        [LegacyChannelSlug.ContactForm, IconName.CommMail],
+        [TicketMessageSourceType.Chat, IconName.CommChatCircleDots],
+        [TicketMessageSourceType.ChatContactForm, IconName.CommChatCircleDots],
+        [
+            TicketMessageSourceType.ChatOfflineCapture,
+            IconName.CommChatCircleDots,
+        ],
+        [TicketMessageSourceType.Api, IconName.SystemCode],
+        [TicketMessageSourceType.Aircall, IconName.CommPhone],
+        [TicketMessageSourceType.OttspottCall, IconName.CommPhone],
+        [TicketMessageSourceType.Phone, IconName.CommPhone],
+        [TicketMessageSourceType.Twilio, IconName.CommPhone],
+        [TicketMessageSourceType.Sms, IconName.CommChatDots],
+        [LegacyChannelSlug.HelpCenter, IconName.FileDocument],
+        [TicketMessageSourceType.SystemMessage, IconName.Settings],
+        [LegacyChannelSlug.FacebookMention, IconName.ChannelFacebook],
+        [LegacyChannelSlug.FacebookRecommendations, IconName.ChannelFacebook],
+        [TicketMessageSourceType.FacebookComment, IconName.ChannelFacebook],
+        [
+            TicketMessageSourceType.FacebookReviewComment,
+            IconName.ChannelFacebook,
+        ],
+        [TicketMessageSourceType.Facebook, IconName.ChannelFacebook],
+        [TicketMessageSourceType.FacebookReview, IconName.ChannelFacebook],
+        [TicketMessageSourceType.FacebookPost, IconName.ChannelFacebook],
+        [TicketMessageSourceType.FacebookMentionPost, IconName.ChannelFacebook],
+        [
+            TicketMessageSourceType.FacebookMentionComment,
+            IconName.ChannelFacebook,
+        ],
+        [TicketMessageSourceType.FacebookMessage, IconName.ChannelFbMessenger],
+        [
+            TicketMessageSourceType.FacebookMessenger,
+            IconName.ChannelFbMessenger,
+        ],
+        [LegacyChannelSlug.Twitter, IconName.ChannelX],
+        [TicketMessageSourceType.TwitterTweet, IconName.ChannelX],
+        [TicketMessageSourceType.TwitterQuotedTweet, IconName.ChannelX],
+        [TicketMessageSourceType.TwitterMentionTweet, IconName.ChannelX],
+        [TicketMessageSourceType.TwitterDirectMessage, IconName.ChannelX],
+        [TicketMessageSourceType.Instagram, IconName.ChannelInstagram],
+        [TicketMessageSourceType.InstagramAdComment, IconName.ChannelInstagram],
+        [TicketMessageSourceType.InstagramAdMedia, IconName.ChannelInstagram],
+        [TicketMessageSourceType.InstagramComment, IconName.ChannelInstagram],
+        [TicketMessageSourceType.InstagramMedia, IconName.ChannelInstagram],
+        [LegacyChannelSlug.InstagramMention, IconName.ChannelInstagram],
+        [
+            TicketMessageSourceType.InstagramMentionMedia,
+            IconName.ChannelInstagram,
+        ],
+        [
+            TicketMessageSourceType.InstagramMentionComment,
+            IconName.ChannelInstagram,
+        ],
+        [
+            TicketMessageSourceType.InstagramDirectMessage,
+            IconName.ChannelInstagramDm,
+        ],
+        [TicketMessageSourceType.YotpoReview, IconName.ChannelYotpo],
+        [
+            TicketMessageSourceType.YotpoReviewPublicComment,
+            IconName.ChannelYotpo,
+        ],
+        [
+            TicketMessageSourceType.YotpoReviewPrivateComment,
+            IconName.ChannelYotpo,
+        ],
+        [LegacyChannelSlug.Whatsapp, IconName.ChannelWhatsapp],
+        [TicketMessageSourceType.WhatsappMessage, IconName.ChannelWhatsapp],
+        [TicketMessageSourceType.TiktokShop, IconName.ChannelTiktok],
+        [
+            TicketMessageSourceType.GoogleBusinessMessages,
+            IconName.ChannelGoogleBusiness,
+        ],
+        ['unknown-channel' as any, IconName.CircleHelp],
+    ])('maps %s to %s', (source, expectedIconName) => {
+        expect(ticketMessageSourceToIconName(source)).toBe(expectedIconName)
+    })
+})
 
 describe('ticketMessageSourceToLabel', () => {
     it.each([
