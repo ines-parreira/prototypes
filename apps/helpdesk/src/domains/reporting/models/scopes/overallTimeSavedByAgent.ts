@@ -75,6 +75,19 @@ export const overallTimeSavedByAgentPerFlows = overallTimeSavedByAgentScope
 export const overallTimeSavedByAgentPerFlowsQueryFactoryV2 = (ctx: Context) =>
     overallTimeSavedByAgentPerFlows.build(ctx)
 
+export const overallTimeSavedByAgentPerFeature = overallTimeSavedByAgentScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_OVERVIEW_OVERALL_TIME_SAVED_BY_AGENT_PER_FEATURE,
+    )
+    .defineQuery(() => ({
+        measures: ['averageTimeSavedByAgent'] as const,
+        dimensions: ['automationFeatureType'],
+    }))
+
+export const overallTimeSavedByAgentPerFeatureQueryFactoryV2 = (
+    ctx: OverallTimeSavedByAgentContext,
+) => overallTimeSavedByAgentPerFeature.build(ctx)
+
 export const dynamicAverageTimeSavedByAgent = overallTimeSavedByAgentScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT)
     .defineQuery(({ ctx }) => ({

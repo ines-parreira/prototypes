@@ -82,6 +82,18 @@ export const dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2 = (
     ctx: Context,
 ) => dynamicOverallAutomatedInteractionsTimeseries.build(ctx)
 
+export const automatedInteractionsPerFeature = overallAutomatedInteractionsScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_OVERVIEW_AUTOMATED_INTERACTIONS_PER_FEATURE,
+    )
+    .defineQuery(() => ({
+        measures: ['automatedInteractionsCount'] as const,
+        dimensions: ['automationFeatureType'],
+    }))
+
+export const automatedInteractionsPerFeatureQueryFactoryV2 = (ctx: Context) =>
+    automatedInteractionsPerFeature.build(ctx)
+
 export const automatedInteractionsPerFlows = overallAutomatedInteractionsScope
     .defineMetricName(METRIC_NAMES.AUTOMATED_INTERACTIONS_PER_FLOWS)
     .defineQuery(({ ctx, config }) => ({

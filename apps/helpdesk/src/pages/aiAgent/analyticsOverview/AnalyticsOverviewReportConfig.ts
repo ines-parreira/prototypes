@@ -32,13 +32,13 @@ import { FlowsTable } from 'pages/aiAgent/analyticsOverview/components/FlowsTabl
 import { ORDER_MANAGEMENT_TABLE } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/columns'
 import { OrderManagementTable } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/OrderManagementTable'
 import { PERFORMANCE_BREAKDOWN_TABLE } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
-import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
-import { fetchPerformanceMetricsPerFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
+import { PerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTableWrapper'
 import { fetchArticleRecommendationAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
 import { fetchFlowsAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
 import { fetchOrderManagementAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 import { fetchOverallAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallAutomatedInteractionsTrend'
 import { fetchOverallTimeSavedByAgentsTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallTimeSavedByAgentsTrend'
+import { fetchPerformanceMetricsPerFeatureV2AsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeatureV2'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
@@ -212,12 +212,12 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.PerformanceTable]: {
-                chartComponent: PerformanceBreakdownTable,
+                chartComponent: PerformanceBreakdownTableWrapper,
                 label: PERFORMANCE_BREAKDOWN_TABLE.title,
                 csvProducer: [
                     {
                         type: DataExportFormat.ConfigurableTable,
-                        fetch: fetchPerformanceMetricsPerFeatureAsConfigurableTable,
+                        fetch: fetchPerformanceMetricsPerFeatureV2AsConfigurableTable,
                     },
                 ],
                 description: PERFORMANCE_BREAKDOWN_TABLE.description,

@@ -22,7 +22,7 @@ export const ORDER_MANAGEMENT_COLUMNS: MetricColumnConfig[] = [
         tooltipTitle: 'Overall automation rate',
         tooltipCaption:
             'The number of interactions automated by all automation features as a % of total customer interactions.',
-        metricFormat: 'percent-precision-1',
+        metricFormat: 'decimal-to-percent',
         loadingStateKeys: ['automationRate'],
     },
     {

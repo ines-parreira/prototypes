@@ -5,6 +5,8 @@ import {
     dynamicAverageTimeSavedByAgentTimeseriesQueryFactoryV2,
     overallTimeSavedByAgentForOrderManagement,
     overallTimeSavedByAgentForOrderManagementQueryFactoryV2,
+    overallTimeSavedByAgentPerFeature,
+    overallTimeSavedByAgentPerFeatureQueryFactoryV2,
     overallTimeSavedByAgentPerFlows,
     overallTimeSavedByAgentPerFlowsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
@@ -92,6 +94,32 @@ describe('overallTimeSavedByAgentScope', () => {
             const factoryResult =
                 overallTimeSavedByAgentPerFlowsQueryFactoryV2(context)
             const buildResult = overallTimeSavedByAgentPerFlows.build(context)
+
+            expect(factoryResult).toEqual(buildResult)
+        })
+    })
+
+    describe('overallTimeSavedByAgentPerFeature', () => {
+        it('creates query with automationFeatureType dimension', () => {
+            const actual = overallTimeSavedByAgentPerFeature.build(context)
+
+            expect(actual).toEqual({
+                metricName:
+                    'ai-agent-overview-overall-time-saved-by-agent-per-feature',
+                scope: 'overall-time-saved-by-agent',
+                measures: ['averageTimeSavedByAgent'],
+                dimensions: ['automationFeatureType'],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+    })
+
+    describe('overallTimeSavedByAgentPerFeatureQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            const factoryResult =
+                overallTimeSavedByAgentPerFeatureQueryFactoryV2(context)
+            const buildResult = overallTimeSavedByAgentPerFeature.build(context)
 
             expect(factoryResult).toEqual(buildResult)
         })

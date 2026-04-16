@@ -1,7 +1,14 @@
+import type { ReactNode } from 'react'
+
 import { useFlagWithLoading } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 
 import { SupportAgentChannelPerformanceBreakdownTableWrapper } from '../SupportAgentChannelPerformanceBreakdownTableWrapper'
+
+jest.mock('@gorgias/axiom', () => ({
+    Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Skeleton: () => <div aria-label="Loading" />,
+}))
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
@@ -68,7 +75,7 @@ describe('SupportAgentChannelPerformanceBreakdownTableWrapper', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('renders SupportAgentChannelPerformanceBreakdownTable while the flag is still loading', () => {
+    it('renders a loader while the flag is still loading', () => {
         mockedUseFlagWithLoading.mockReturnValue({
             value: true,
             isLoading: true,
@@ -76,9 +83,10 @@ describe('SupportAgentChannelPerformanceBreakdownTableWrapper', () => {
 
         render(<SupportAgentChannelPerformanceBreakdownTableWrapper />)
 
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         expect(
-            screen.getByText('SupportAgentChannelPerformanceBreakdownTable'),
-        ).toBeInTheDocument()
+            screen.queryByText('SupportAgentChannelPerformanceBreakdownTable'),
+        ).not.toBeInTheDocument()
         expect(
             screen.queryByText('SupportAgentsPerformanceByChannelTable'),
         ).not.toBeInTheDocument()

@@ -2,10 +2,10 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { Box, Skeleton } from '@gorgias/axiom'
 
-import { SupportAgentChannelPerformanceBreakdownTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTable'
-import { SupportAgentsPerformanceByChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByChannelTable/SupportAgentsPerformanceByChannelTable'
+import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
+import { PerformanceBreakdownTableV2 } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTableV2'
 
-export const SupportAgentChannelPerformanceBreakdownTableWrapper = () => {
+export const PerformanceBreakdownTableWrapper = () => {
     const { value: isNewTableEnabled, isLoading } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
@@ -25,8 +25,8 @@ export const SupportAgentChannelPerformanceBreakdownTableWrapper = () => {
     }
 
     if (isNewTableEnabled) {
-        return <SupportAgentsPerformanceByChannelTable />
+        return <PerformanceBreakdownTableV2 />
     }
 
-    return <SupportAgentChannelPerformanceBreakdownTable />
+    return <PerformanceBreakdownTable />
 }

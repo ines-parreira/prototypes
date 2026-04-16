@@ -1,5 +1,6 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import {
     ENTITY_DISPLAY_NAMES,
     ORDER_MANAGEMENT_COLUMNS,
@@ -14,8 +15,9 @@ export const OrderManagementTable = () => {
     const { data = [], loadingStates } = useOrderManagementMetrics()
 
     const renderDrilldown = (value: string) => {
-        if (value === 'loop_returns_started') return <ReturnOrdersDrillDown />
-        if (value === 'automated_response_started')
+        if (value === AutomateEventType.LOOP_RETURNS_STARTED)
+            return <ReturnOrdersDrillDown />
+        if (value === AutomateEventType.AUTOMATED_RESPONSE_STARTED)
             return <TopReportedIssuesDrillDown />
         return null
     }
