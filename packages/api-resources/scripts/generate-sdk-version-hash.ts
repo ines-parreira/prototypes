@@ -1,36 +1,18 @@
-import { execSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 
 const outFile = path.resolve(__dirname, '../src/sdkVersionHash.ts')
+const lockfilePath = path.resolve(__dirname, '../../../pnpm-lock.yaml')
+const lockfile = readFileSync(lockfilePath, 'utf-8')
 
-const output = execSync('pnpm list --recursive --json --depth=0', {
-    cwd: path.resolve(__dirname, '../../..'),
-    encoding: 'utf-8',
-})
-
-type PnpmListEntry = {
-    dependencies?: Record<string, { version: string }>
-    devDependencies?: Record<string, { version: string }>
-}
-
-const packages: PnpmListEntry[] = JSON.parse(output)
-const queriesVersions: string[] = []
-
-for (const pkg of packages) {
-    const deps = { ...pkg.dependencies, ...pkg.devDependencies }
-    for (const [name, info] of Object.entries(deps)) {
-        if (
-            name.startsWith('@gorgias/') &&
-            (name.endsWith('-queries') || name.endsWith('-types'))
-        ) {
-            queriesVersions.push(`${name}@${info.version}`)
-        }
-    }
-}
-
-const sorted = [...new Set(queriesVersions)].sort()
+const sdkVersions = [
+    ...lockfile.matchAll(
+        /@gorgias\/[a-z-]+(?:-queries|-types)@(\d+\.\d+\.\d+)/g,
+    ),
+]
+const sorted = [...new Set(sdkVersions.map((m) => m[0]))].sort()
+console.log('SDK versions used for hash:', sorted)
 const hash = createHash('sha256')
     .update(sorted.join(','))
     .digest('hex')
