@@ -21,7 +21,7 @@ export const useOverallTimeSavedByAgentsTrend = (
     )
     const isV2 = stage === 'live' || stage === 'complete'
 
-    const v1Trend = useTimeSavedByAgentsTrend(statsFilters, userTimezone)
+    const v1Trend = useTimeSavedByAgentsTrend(statsFilters, userTimezone, !isV2)
     const v2Trend = useStatsMetricTrend(
         dynamicAverageTimeSavedByAgentQueryFactoryV2({
             filters: statsFilters,

@@ -26,14 +26,17 @@ export const calculateTimeSavedByAgents = (
 export const useTimeSavedByAgentsTrend = (
     statsFilters: StatsFilters,
     userTimezone: string,
+    enabled: boolean = true,
 ) => {
     const automatedInteractionTrend = useFilteredAutomatedInteractions(
         statsFilters,
         userTimezone,
+        enabled,
     )
     const ticketHandleTimeTrend = useTicketHandleTimeTrend(
         statsFilters,
         userTimezone,
+        enabled,
     )
 
     return {
