@@ -128,7 +128,9 @@ export function TicketThreadGroupedMessages({
     }
 
     const variant = firstMessage.data.from_agent ? 'from-agent' : 'regular'
-    const { from, to } = getMessageChannelParticipants(firstMessage.data.source)
+    const { from, to, cc, bcc } = getMessageChannelParticipants(
+        firstMessage.data.source,
+    )
 
     return (
         <MessageBubble variant={variant} isGroupedMessage>
@@ -147,6 +149,8 @@ export function TicketThreadGroupedMessages({
                                 }
                                 from={from}
                                 to={to}
+                                cc={cc}
+                                bcc={bcc}
                             />
                             <MessageDeliveryIcon item={lastMessage} />
                             <MessageTimestamp

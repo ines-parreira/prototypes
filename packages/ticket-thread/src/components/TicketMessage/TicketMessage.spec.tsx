@@ -119,6 +119,26 @@ function createItem(): TicketThreadRegularMessageItem {
                         address: 'billing@example.com',
                     },
                 ],
+                cc: [
+                    {
+                        ...mockTicketMessageSourceAddress({
+                            name: 'Manager',
+                            address: 'manager@example.com',
+                        }),
+                        name: 'Manager',
+                        address: 'manager@example.com',
+                    },
+                ],
+                bcc: [
+                    {
+                        ...mockTicketMessageSourceAddress({
+                            name: 'Audit',
+                            address: 'audit@example.com',
+                        }),
+                        name: 'Audit',
+                        address: 'audit@example.com',
+                    },
+                ],
             },
             sender: {
                 id: 1,
@@ -137,13 +157,15 @@ describe('TicketMessage', () => {
         messageChannelSpy.mockClear()
     })
 
-    it('passes formatted from and to labels to the channel tooltip', () => {
+    it('passes formatted from, to, cc, and bcc labels to the channel tooltip', () => {
         render(<TicketMessage item={createItem()} />)
 
         expect(messageChannelSpy.mock.calls[0]?.[0]).toEqual(
             expect.objectContaining({
                 from: 'Support Team (support@example.com)',
                 to: 'Alice (alice@example.com), Billing (billing@example.com)',
+                cc: 'Manager (manager@example.com)',
+                bcc: 'Audit (audit@example.com)',
             }),
         )
     })

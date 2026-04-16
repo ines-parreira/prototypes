@@ -9,6 +9,8 @@ type MessageSourceLike = {
     type?: string | null
     from?: MessageSourceAddressLike | null
     to?: MessageSourceAddressLike[] | null
+    cc?: MessageSourceAddressLike[] | null
+    bcc?: MessageSourceAddressLike[] | null
 }
 
 const ADDRESS_IN_TOOLTIP_SOURCE_TYPES = new Set([
@@ -85,5 +87,7 @@ export function getMessageChannelParticipants(
     return {
         from: formatParticipant(source?.from, sourceType),
         to: formatParticipants(source?.to, sourceType),
+        cc: formatParticipants(source?.cc, sourceType),
+        bcc: formatParticipants(source?.bcc, sourceType),
     }
 }

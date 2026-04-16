@@ -31,7 +31,7 @@ export function RespondedByDMBubble({
     })
     const message = data?.data
     const sender = message?.sender
-    const { from, to } = getMessageChannelParticipants(message?.source)
+    const { from, to, cc, bcc } = getMessageChannelParticipants(message?.source)
 
     return (
         <MessageBubble variant="from-agent">
@@ -48,6 +48,8 @@ export function RespondedByDMBubble({
                             createdDatetime={message?.created_datetime}
                             from={from}
                             to={to}
+                            cc={cc}
+                            bcc={bcc}
                         />
                         {message?.failed_datetime && (
                             <Icon

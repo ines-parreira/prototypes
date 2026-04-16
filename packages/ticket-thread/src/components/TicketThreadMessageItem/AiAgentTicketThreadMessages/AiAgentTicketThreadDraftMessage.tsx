@@ -21,7 +21,9 @@ export function AiAgentTicketThreadDraftMessage({
 }: AiAgentTicketThreadDraftMessageProps) {
     const { renderAiAgentDraftMessage } = useTicketThreadLegacyBridge()
     const aiAgentName = getAiAgentDisplayName(item.data.sender.name)
-    const { from, to } = getMessageChannelParticipants(item.data.source)
+    const { from, to, cc, bcc } = getMessageChannelParticipants(
+        item.data.source,
+    )
 
     return (
         <MessageBubble variant="internal-note">
@@ -36,6 +38,8 @@ export function AiAgentTicketThreadDraftMessage({
                         createdDatetime={item.data.created_datetime}
                         from={from}
                         to={to}
+                        cc={cc}
+                        bcc={bcc}
                     />
                     <MessageDeliveryIcon item={item} />
                     <MessageTimestamp

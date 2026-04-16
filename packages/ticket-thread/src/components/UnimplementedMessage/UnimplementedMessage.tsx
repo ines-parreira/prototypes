@@ -16,7 +16,9 @@ type UnimplementedMessageProps = {
 
 export function UnimplementedMessage({ item }: UnimplementedMessageProps) {
     const variant = item.data.from_agent ? 'from-agent' : 'regular'
-    const { from, to } = getMessageChannelParticipants(item.data.source)
+    const { from, to, cc, bcc } = getMessageChannelParticipants(
+        item.data.source,
+    )
 
     return (
         <MessageBubble variant={variant}>
@@ -31,6 +33,8 @@ export function UnimplementedMessage({ item }: UnimplementedMessageProps) {
                         createdDatetime={item.data.created_datetime}
                         from={from}
                         to={to}
+                        cc={cc}
+                        bcc={bcc}
                     />
                     <MessageTimestamp
                         createdDatetime={item.data.created_datetime}

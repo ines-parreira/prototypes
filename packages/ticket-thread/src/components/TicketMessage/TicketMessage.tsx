@@ -22,7 +22,9 @@ type TicketMessageProps = {
 export function TicketMessage({ item }: TicketMessageProps) {
     const displayedItem = useDisplayedTicketMessage({ item })
     const variant = item.data.from_agent ? 'from-agent' : 'regular'
-    const { from, to } = getMessageChannelParticipants(item.data.source)
+    const { from, to, cc, bcc } = getMessageChannelParticipants(
+        item.data.source,
+    )
 
     return (
         <MessageBubble variant={variant}>
@@ -37,6 +39,8 @@ export function TicketMessage({ item }: TicketMessageProps) {
                         createdDatetime={item.data.created_datetime}
                         from={from}
                         to={to}
+                        cc={cc}
+                        bcc={bcc}
                     />
                     <MessageDeliveryIcon item={item} />
                     <MessageTimestamp

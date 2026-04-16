@@ -15,6 +15,8 @@ export type MessageChannelProps = {
     variant?: 'regular' | 'internal-note'
     from?: string | null
     to?: string | null
+    cc?: string | null
+    bcc?: string | null
 }
 
 export function MessageChannel({
@@ -25,6 +27,8 @@ export function MessageChannel({
     variant = 'regular',
     from,
     to,
+    cc,
+    bcc,
 }: MessageChannelProps) {
     const { format, timezone } = useTicketThreadDateTimeFormat()
     const resolvedChannelIcon =
@@ -72,6 +76,22 @@ export function MessageChannel({
                             To:{' '}
                             <Text size="xs" variant="bold">
                                 {to}
+                            </Text>
+                        </Text>
+                    )}
+                    {cc && (
+                        <Text size="xs">
+                            Cc:{' '}
+                            <Text size="xs" variant="bold">
+                                {cc}
+                            </Text>
+                        </Text>
+                    )}
+                    {bcc && (
+                        <Text size="xs">
+                            Bcc:{' '}
+                            <Text size="xs" variant="bold">
+                                {bcc}
                             </Text>
                         </Text>
                     )}

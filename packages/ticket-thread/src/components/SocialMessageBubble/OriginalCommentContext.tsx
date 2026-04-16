@@ -40,7 +40,7 @@ export function OriginalCommentContext({
     const channelDisplayName = message.channel
         ? getChannelDisplayName(message.channel)
         : null
-    const { from, to } = getMessageChannelParticipants(message.source)
+    const { from, to, cc, bcc } = getMessageChannelParticipants(message.source)
 
     return (
         <MessageBubble variant="regular">
@@ -56,6 +56,8 @@ export function OriginalCommentContext({
                             createdDatetime={message.created_datetime}
                             from={from}
                             to={to}
+                            cc={cc}
+                            bcc={bcc}
                         />
                         {message.created_datetime && (
                             <MessageTimestamp

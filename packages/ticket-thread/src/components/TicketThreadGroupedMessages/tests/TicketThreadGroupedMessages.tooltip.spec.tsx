@@ -109,6 +109,26 @@ function createGroupedItem(): TicketThreadGroupedMessagesItem {
                 address: 'alice@example.com',
             },
         ],
+        cc: [
+            {
+                ...mockTicketMessageSourceAddress({
+                    name: 'Manager',
+                    address: 'manager@example.com',
+                }),
+                name: 'Manager',
+                address: 'manager@example.com',
+            },
+        ],
+        bcc: [
+            {
+                ...mockTicketMessageSourceAddress({
+                    name: 'Audit',
+                    address: 'audit@example.com',
+                }),
+                name: 'Audit',
+                address: 'audit@example.com',
+            },
+        ],
     }
 
     return {
@@ -179,6 +199,8 @@ describe('TicketThreadGroupedMessages tooltip', () => {
             expect.objectContaining({
                 from: 'Support Team (support@example.com)',
                 to: 'Alice (alice@example.com)',
+                cc: 'Manager (manager@example.com)',
+                bcc: 'Audit (audit@example.com)',
             }),
         )
     })
