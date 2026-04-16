@@ -3,6 +3,7 @@ import { AIThinking, Box } from '@gorgias/axiom'
 import type { TicketThreadAiAgentDraftMessageItem } from '../../../hooks/messages/types'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { MessageErrors } from '../../MessageBubble/components/MessageErrors'
+import { getMessageChannelParticipants } from '../../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { MessageHeaderContainer } from '../../MessageBubble/components/MessageHeader/Layout'
 import { MessageChannel } from '../../MessageBubble/components/MessageHeader/MessageChannel'
 import { MessageDeliveryIcon } from '../../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
@@ -20,6 +21,7 @@ export function AiAgentTicketThreadDraftMessage({
 }: AiAgentTicketThreadDraftMessageProps) {
     const { renderAiAgentDraftMessage } = useTicketThreadLegacyBridge()
     const aiAgentName = getAiAgentDisplayName(item.data.sender.name)
+    const { from, to } = getMessageChannelParticipants(item.data.source)
 
     return (
         <MessageBubble variant="internal-note">
@@ -32,6 +34,8 @@ export function AiAgentTicketThreadDraftMessage({
                     <MessageChannel
                         channel={item.data.channel}
                         createdDatetime={item.data.created_datetime}
+                        from={from}
+                        to={to}
                     />
                     <MessageDeliveryIcon item={item} />
                     <MessageTimestamp

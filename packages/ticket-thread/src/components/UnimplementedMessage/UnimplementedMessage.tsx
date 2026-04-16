@@ -2,6 +2,7 @@ import { Box } from '@gorgias/axiom'
 
 import type { TicketThreadSingleMessageItem } from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
@@ -15,6 +16,7 @@ type UnimplementedMessageProps = {
 
 export function UnimplementedMessage({ item }: UnimplementedMessageProps) {
     const variant = item.data.from_agent ? 'from-agent' : 'regular'
+    const { from, to } = getMessageChannelParticipants(item.data.source)
 
     return (
         <MessageBubble variant={variant}>
@@ -27,6 +29,8 @@ export function UnimplementedMessage({ item }: UnimplementedMessageProps) {
                     <MessageChannel
                         channel={item.data.channel}
                         createdDatetime={item.data.created_datetime}
+                        from={from}
+                        to={to}
                     />
                     <MessageTimestamp
                         createdDatetime={item.data.created_datetime}

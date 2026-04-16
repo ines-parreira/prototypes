@@ -5,6 +5,7 @@ import { useTicketThreadLegacyBridge } from '../../../../utils/LegacyBridge'
 import { MessageAttachments } from '../../../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../../../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../../../MessageBubble/components/MessageErrors'
+import { getMessageChannelParticipants } from '../../../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { MessageHeaderContainer } from '../../../MessageBubble/components/MessageHeader/Layout'
 import { MessageChannel } from '../../../MessageBubble/components/MessageHeader/MessageChannel'
 import { MessageDeliveryIcon } from '../../../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
@@ -26,6 +27,7 @@ export function AiAgentTicketThreadMessage({
 }: AiAgentTicketThreadMessageProps) {
     const { renderAiAgentReasoning } = useTicketThreadLegacyBridge()
     const aiAgentName = getAiAgentDisplayName(item.data.sender.name)
+    const { from, to } = getMessageChannelParticipants(item.data.source)
     const {
         selectedSmartFollowUpIndex,
         showAllSmartFollowUps,
@@ -53,6 +55,8 @@ export function AiAgentTicketThreadMessage({
                         <MessageChannel
                             channel={item.data.channel}
                             createdDatetime={item.data.created_datetime}
+                            from={from}
+                            to={to}
                         />
                         <MessageDeliveryIcon item={item} />
                         <MessageTimestamp

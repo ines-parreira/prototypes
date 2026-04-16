@@ -4,6 +4,7 @@ import type { TicketThreadRegularMessageItem } from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
+import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
@@ -21,6 +22,7 @@ type TicketMessageProps = {
 export function TicketMessage({ item }: TicketMessageProps) {
     const displayedItem = useDisplayedTicketMessage({ item })
     const variant = item.data.from_agent ? 'from-agent' : 'regular'
+    const { from, to } = getMessageChannelParticipants(item.data.source)
 
     return (
         <MessageBubble variant={variant}>
@@ -33,6 +35,8 @@ export function TicketMessage({ item }: TicketMessageProps) {
                     <MessageChannel
                         channel={item.data.channel}
                         createdDatetime={item.data.created_datetime}
+                        from={from}
+                        to={to}
                     />
                     <MessageDeliveryIcon item={item} />
                     <MessageTimestamp

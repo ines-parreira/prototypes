@@ -1,6 +1,7 @@
 import { Box, Icon } from '@gorgias/axiom'
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
+import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
@@ -30,6 +31,7 @@ export function RespondedByDMBubble({
     })
     const message = data?.data
     const sender = message?.sender
+    const { from, to } = getMessageChannelParticipants(message?.source)
 
     return (
         <MessageBubble variant="from-agent">
@@ -44,6 +46,8 @@ export function RespondedByDMBubble({
                             channelIcon={channelIcon}
                             channelName={channel}
                             createdDatetime={message?.created_datetime}
+                            from={from}
+                            to={to}
                         />
                         {message?.failed_datetime && (
                             <Icon

@@ -2,6 +2,7 @@ import { Box, Text } from '@gorgias/axiom'
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import type { TicketMessageChannel } from '../../hooks/messages/schemas'
+import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
@@ -39,6 +40,7 @@ export function OriginalCommentContext({
     const channelDisplayName = message.channel
         ? getChannelDisplayName(message.channel)
         : null
+    const { from, to } = getMessageChannelParticipants(message.source)
 
     return (
         <MessageBubble variant="regular">
@@ -52,6 +54,8 @@ export function OriginalCommentContext({
                         <MessageChannel
                             channel={message.channel as TicketMessageChannel}
                             createdDatetime={message.created_datetime}
+                            from={from}
+                            to={to}
                         />
                         {message.created_datetime && (
                             <MessageTimestamp
