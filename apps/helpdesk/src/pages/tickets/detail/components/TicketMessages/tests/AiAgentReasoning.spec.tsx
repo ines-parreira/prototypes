@@ -2286,6 +2286,63 @@ describe('AiAgentReasoning', () => {
                 ),
             ).not.toBeInTheDocument()
         })
+
+        it('should not show evoliMessage for Evoli tickets before cutoff', () => {
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return createMockEvoliTicket()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser'))
+                    return fromJS(user)
+                return undefined
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText(
+                    "Message powered by AI Agent's new brain (beta)",
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show evoliMessage for Evoli tickets after cutoff when expanded', () => {
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return createMockEvoliTicket()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser'))
+                    return fromJS(user)
+                return undefined
+            })
+
+            renderComponent({ created_datetime: '2099-01-01T00:00:00Z' })
+            expandComponent()
+
+            expect(
+                screen.getByText(
+                    "Message powered by AI Agent's new brain (beta)",
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('Evoli ticket with impersonation', () => {
@@ -2352,6 +2409,18 @@ describe('AiAgentReasoning', () => {
             expect(
                 screen.getByText(
                     'Reasoning is visible because you are impersonating this account.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should show evoliMessage for Evoli tickets when impersonating even before cutoff', () => {
+            setupEvoliImpersonation()
+            renderComponent()
+            expandComponent()
+
+            expect(
+                screen.getByText(
+                    "Message powered by AI Agent's new brain (beta)",
                 ),
             ).toBeInTheDocument()
         })

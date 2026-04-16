@@ -212,6 +212,25 @@
         }
     }
 
+    .evoliMessage {
+        .caption-regular();
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+        color: var(--content-accent-default);
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition:
+            max-height 0.5s ease-in-out,
+            opacity 0.5s ease-in-out;
+
+        &.expanded {
+            max-height: 20px;
+            opacity: 1;
+        }
+    }
+
     .body {
         .caption-regular();
         max-height: 0;

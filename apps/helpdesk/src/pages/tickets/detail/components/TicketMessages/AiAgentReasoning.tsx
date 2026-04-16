@@ -35,6 +35,8 @@ type AiAgentReasoningProps = {
 const EVOLI_STATIC_MESSAGE =
     "Message powered by AI Agent's new brain (beta). Reasoning will be available soon."
 
+const EVOLI_BRAIN_MESSAGE = "Message powered by AI Agent's new brain (beta)"
+
 const IMPERSONATION_REASONING_NOTICE =
     'Reasoning is visible because you are impersonating this account.'
 
@@ -348,14 +350,24 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                 )}
                 {isImpersonated && isEvoliTicket && (
                     <span className={css.impersonationNotice}>
-                        <Icon
-                            name="info"
-                            size="sm"
-                            color="content-accent-default"
-                        />
                         {IMPERSONATION_REASONING_NOTICE}
                     </span>
                 )}
+                {isEvoliTicket &&
+                    (isMessageAfterEvoliCutoff || isImpersonated) && (
+                        <div
+                            className={classNames(css.evoliMessage, {
+                                [css.expanded]: isExpanded,
+                            })}
+                        >
+                            <Icon
+                                name="info"
+                                size="sm"
+                                color="content-neutral-default"
+                            />
+                            <span>{EVOLI_BRAIN_MESSAGE}</span>
+                        </div>
+                    )}
                 {renderBody()}
                 {renderFooter()}
             </div>
