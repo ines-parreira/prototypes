@@ -1,8 +1,9 @@
 import { formatDatetime } from '@repo/utils'
 
-import { Text } from '@gorgias/axiom'
+import { Text, Tooltip } from '@gorgias/axiom'
 
 import { useTicketThreadDateTimeFormat } from '../../../../hooks/shared/useTicketThreadDateTimeFormat'
+import { DateTooltipContent } from './DateTooltipContent'
 
 export type MessageTimestampProps = {
     createdDatetime: string
@@ -10,10 +11,27 @@ export type MessageTimestampProps = {
 
 export function MessageTimestamp({ createdDatetime }: MessageTimestampProps) {
     const { format, timezone } = useTicketThreadDateTimeFormat()
+    const relativeDatetime = formatDatetime(
+        createdDatetime,
+        format.relative,
+        timezone,
+    )
+    const compactDatetime = formatDatetime(
+        createdDatetime,
+        format.compact,
+        timezone,
+    )
 
     return (
-        <Text size="sm" color="content-neutral-secondary">
-            {formatDatetime(createdDatetime, format.relative, timezone)}
-        </Text>
+        <Tooltip
+            delay={0}
+            trigger={
+                <Text size="sm" color="content-neutral-secondary">
+                    {relativeDatetime}
+                </Text>
+            }
+        >
+            <DateTooltipContent datetime={compactDatetime} />
+        </Tooltip>
     )
 }

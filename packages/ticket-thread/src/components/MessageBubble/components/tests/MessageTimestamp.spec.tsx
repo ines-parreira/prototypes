@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { useTicketThreadDateTimeFormat } from '../../../../hooks/shared/useTicketThreadDateTimeFormat'
-import { TicketThreadEventDateTime } from '../TicketThreadEventDateTime'
+import { MessageTimestamp } from '../MessageHeader/MessageTimestamp'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => {
     const actual = (await importOriginal()) as Record<string, unknown>
@@ -36,22 +36,8 @@ vi.mock('../../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 
-describe('TicketThreadEventDateTime', () => {
-    it('formats the event datetime using the agent timezone', () => {
-        vi.mocked(useTicketThreadDateTimeFormat).mockReturnValue({
-            format: {
-                relative: 'YYYY-MM-DD HH:mm',
-                compact: 'YYYY-MM-DD HH:mm:ss',
-            },
-            timezone: 'America/Los_Angeles',
-        })
-
-        render(<TicketThreadEventDateTime datetime="2024-03-21T00:00:00Z" />)
-
-        expect(screen.getByText('2024-03-20 17:00')).toBeInTheDocument()
-    })
-
-    it('renders the compact datetime in the tooltip content', () => {
+describe('MessageTimestamp', () => {
+    beforeEach(() => {
         vi.mocked(useTicketThreadDateTimeFormat).mockReturnValue({
             format: {
                 relative: 'YYYY-MM-DD',
@@ -59,8 +45,10 @@ describe('TicketThreadEventDateTime', () => {
             },
             timezone: 'America/Los_Angeles',
         })
+    })
 
-        render(<TicketThreadEventDateTime datetime="2024-03-21T00:00:00Z" />)
+    it('renders the compact datetime in the tooltip content', () => {
+        render(<MessageTimestamp createdDatetime="2024-03-21T00:00:00Z" />)
 
         expect(screen.getByText('2024-03-20')).toBeInTheDocument()
         expect(screen.getByText('Date:')).toBeInTheDocument()
