@@ -37,6 +37,16 @@ describe('tickets reducers', () => {
         ).toEqualImmutable(initialState.set('items', fromJS(resp.data)))
     })
 
+    it('should store an empty list when fetched data is missing', () => {
+        expect(
+            reducer(initialState, {
+                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                viewType: ViewType.TicketList,
+                fetched: undefined,
+            }),
+        ).toEqualImmutable(initialState.set('items', fromJS([])))
+    })
+
     it('should ignore payloads with non ticket viewType on fetch list with highlights', () => {
         expect(
             reducer(initialState, {
@@ -129,6 +139,17 @@ describe('tickets reducers', () => {
             reducer(state, {
                 type: ticketTypes.FETCH_TICKET_SUCCESS,
                 ticketId: 14,
+            }),
+        ).toEqualImmutable(state)
+    })
+
+    it('should ignore fetch ticket success when items is not a list', () => {
+        const state = initialState.set('items', undefined)
+
+        expect(
+            reducer(state, {
+                type: ticketTypes.FETCH_TICKET_SUCCESS,
+                ticketId: 2,
             }),
         ).toEqualImmutable(state)
     })

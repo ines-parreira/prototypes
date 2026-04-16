@@ -1,5 +1,5 @@
-import type { List, Map } from 'immutable'
-import { fromJS } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 
 import { ViewType } from 'models/view/types'
 import * as ticketTypes from 'state/ticket/constants'
@@ -30,7 +30,7 @@ export default function reducer(
                 return state
             }
 
-            return state.set('items', fromJS(action.fetched?.data))
+            return state.set('items', fromJS(action.fetched?.data ?? []))
         }
 
         case viewsTypes.BULK_DELETE_SUCCESS: {
@@ -50,14 +50,18 @@ export default function reducer(
         case ticketTypes.FETCH_TICKET_SUCCESS: {
             // if a ticket is fetched, mark it as "read" in the list of tickets, so that it does not appear as having
             // "something new"
-            const ticketIndex = (
-                state.get('items', fromJS([])) as List<any>
-            )?.findIndex(
+            const items = state.get('items')
+
+            if (!List.isList(items)) {
+                return state
+            }
+
+            const ticketIndex = items.findIndex(
                 (item: Map<any, any>) => item.get('id') === action.ticketId,
             )
 
             // if ticket is not found in view, don't do anything
-            if (!~ticketIndex) {
+            if (ticketIndex < 0) {
                 return state
             }
 
