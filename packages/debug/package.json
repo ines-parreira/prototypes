@@ -1,17 +1,16 @@
 {
-    "name": "@repo/feature-flags",
+    "name": "@repo/debug",
     "version": "1.0.0",
-    "description": "Feature flags package",
+    "description": "Debug menu and developer tools",
     "private": true,
     "exports": {
-        ".": "./src/index.ts",
-        "./testing": "./src/testing.ts"
+        ".": "./src/index.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
-        "lint:unused": "knip --directory ../.. --workspace @repo/feature-flags --no-progress",
+        "lint:unused": "knip --directory ../.. --workspace @repo/debug --no-progress",
         "test": "vitest run --configLoader=runner",
         "test:ci:cover": "vitest run --configLoader=runner --coverage --silent=true",
         "test:watch": "vitest watch --configLoader=runner",
@@ -19,22 +18,14 @@
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
-        "@repo/browser-storage": "workspace:*",
-        "@repo/hooks": "workspace:*",
-        "@repo/utils": "workspace:*",
-        "@splitsoftware/splitio-browserjs": "catalog:feature-flags",
-        "launchdarkly-js-client-sdk": "catalog:feature-flags",
-        "launchdarkly-react-client-sdk": "catalog:feature-flags",
+        "@repo/feature-flags": "workspace:*",
         "react": "catalog:react",
         "react-dom": "catalog:react"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
-        "@repo/browser-storage": "workspace:*",
         "@repo/config": "workspace:*",
-        "@repo/hooks": "workspace:*",
-        "@repo/utils": "workspace:*",
-        "@splitsoftware/splitio-browserjs": "catalog:feature-flags",
+        "@repo/feature-flags": "workspace:*",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
@@ -43,19 +34,11 @@
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
-        "jest-mock": "catalog:test",
-        "launchdarkly-js-client-sdk": "catalog:feature-flags",
-        "launchdarkly-react-client-sdk": "catalog:feature-flags",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
-    },
-    "dependencies": {
-        "@types/lodash": "^4.17.24",
-        "lodash": "4.18.1",
-        "zustand": "^5.0.12"
     }
 }

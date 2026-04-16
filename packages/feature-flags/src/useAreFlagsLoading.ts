@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 
-import { ensureInitialization } from './launchDarklyInitialization'
+import { ensureInitialization } from './engines/launchdarkly'
 
 /**
- * Hook that returns whether LaunchDarkly flags are ready to be used.
+ * Hook that returns whether feature flags are ready to be used.
  * This is useful for components that need to wait for all flags to be loaded
  * before rendering to avoid UI flickering.
  *
- * @returns boolean indicating if flags are ready
+ * @returns boolean indicating if flags are loading
  */
 export function useAreFlagsLoading(): boolean {
     const [areFlagsLoading, setAreFlagsLoading] = useState(true)
@@ -19,8 +19,6 @@ export function useAreFlagsLoading(): boolean {
             } catch (error) {
                 console.error('Error waiting for flags to be ready', error)
             } finally {
-                // Even if initialization fails, we should set flags as "ready"
-                // so the UI doesn't get stuck in a loading state
                 setAreFlagsLoading(false)
             }
         })()

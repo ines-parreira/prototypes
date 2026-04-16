@@ -109,6 +109,7 @@
         "@repo/billing": "workspace:*",
         "@repo/browser-storage": "workspace:*",
         "@repo/customer": "workspace:*",
+        "@repo/debug": "workspace:*",
         "@repo/ecommerce": "workspace:*",
         "@repo/feature-flags": "workspace:*",
         "@repo/forms": "workspace:*",

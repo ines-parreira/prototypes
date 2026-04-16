@@ -1,3 +1,5 @@
+import { DebugMenu, DebugMenuItem } from '@repo/debug'
+import { EvaluationsDebugPanel } from '@repo/feature-flags'
 import {
     SidebarContent,
     SidebarFooter,
@@ -125,6 +127,15 @@ export function NavigationSidebar() {
                     alignItems="center"
                     flexDirection={isCollapsed ? 'column' : 'row'}
                 >
+                    <DebugMenu>
+                        <DebugMenuItem
+                            id="evaluations"
+                            icon="nav-flag"
+                            label="Flag evaluations"
+                        >
+                            <EvaluationsDebugPanel />
+                        </DebugMenuItem>
+                    </DebugMenu>
                     <Tooltip
                         placement="right"
                         trigger={

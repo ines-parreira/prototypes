@@ -38,7 +38,7 @@ minimumReleaseAgeExclude:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '0.238.0'
+    '@gorgias/axiom': '0.240.0'
     '@gorgias/design-tokens': '0.11.4'
     '@internationalized/date': '3.10.0'
   analytics-ui-kit:
@@ -143,6 +143,7 @@ catalogs:
     'qs': '6.14.1'
     '@types/qs': '^6.14.0'
   feature-flags:
+    '@splitsoftware/splitio-browserjs': '^0.15.0'
     'launchdarkly-js-client-sdk': '^3.3.0'
     'launchdarkly-react-client-sdk': '^3.3.2'
   styles:

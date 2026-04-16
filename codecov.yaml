@@ -37,6 +37,7 @@ ignore:
   - tests/render.utils.tsx
   - /**/index.ts
   - packages/testing/src/vitest/**/*
+  - /**/debug/**/*
 
 coverage:
   status:

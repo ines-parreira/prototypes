@@ -1,89 +1,79 @@
-import { act, renderHook } from '@testing-library/react'
-import type { LDClient } from 'launchdarkly-js-client-sdk'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { evaluateFlag, subscribeToFlag } from '../dualEvaluation'
+import { ensureInitialization } from '../engines/launchdarkly'
 import type { FeatureFlagKey } from '../featureFlagKey'
-import { getLDClient } from '../launchdarkly'
 import { useFlag } from '../useFlag'
 
-const createLDClientMock = () => {
-    const mock = {
-        track: vi.fn(),
-        identify: vi.fn(),
-        allFlags: vi.fn(),
-        close: vi.fn(),
-        flush: vi.fn(),
-        getContext: vi.fn(),
-        off: vi.fn(),
-        on: vi.fn(),
-        setStreaming: vi.fn(),
-        variation: vi.fn(),
-        variationDetail: vi.fn(),
-        waitForInitialization: vi.fn(),
-        waitUntilGoalsReady: vi.fn(),
-        waitUntilReady: vi.fn(),
-    }
-    return mock
-}
-
-vi.mock('../launchdarkly', () => ({
-    getLDClient: vi.fn(),
+vi.mock('../dualEvaluation', () => ({
+    evaluateFlag: vi.fn(),
+    subscribeToFlag: vi.fn(),
 }))
 
-const getLDClientMock = vi.mocked(getLDClient)
+vi.mock('../engines/launchdarkly', () => ({
+    ensureInitialization: vi.fn(),
+}))
+
+const evaluateFlagMock = vi.mocked(evaluateFlag)
+const subscribeToFlagMock = vi.mocked(subscribeToFlag)
+const ensureInitializationMock = vi.mocked(ensureInitialization)
 
 const testFlag = 'test-flag' as FeatureFlagKey
 
 describe('useFlag', () => {
-    let ldClientMock: ReturnType<typeof createLDClientMock>
-    let initialisePromise: Promise<unknown>
-    let initialiseResolve: (value?: unknown) => void
+    let initResolve: () => void
+    let initPromise: Promise<void>
+    let unsubscribe: () => void
 
     beforeEach(() => {
-        ldClientMock = createLDClientMock()
-        initialisePromise = new Promise((resolve) => {
-            initialiseResolve = resolve
+        vi.clearAllMocks()
+        initPromise = new Promise<void>((resolve) => {
+            initResolve = resolve
         })
-        ldClientMock.variation.mockReturnValue(false)
-        ldClientMock.waitForInitialization.mockReturnValue(
-            initialisePromise as Promise<void>,
-        )
-        getLDClientMock.mockReturnValue(ldClientMock as unknown as LDClient)
+        evaluateFlagMock.mockReturnValue(false)
+        ensureInitializationMock.mockReturnValue(initPromise)
+        unsubscribe = vi.fn<() => void>()
+        subscribeToFlagMock.mockReturnValue(unsubscribe)
     })
 
-    it('should return the value from the client', () => {
+    it('should return the value from evaluateFlag', () => {
         const { result } = renderHook(() => useFlag(testFlag))
 
         expect(result.current).toBe(false)
+        expect(evaluateFlagMock).toHaveBeenCalledWith(testFlag, false)
     })
 
-    it('should set the value once client initialization completes', async () => {
-        ldClientMock.variation.mockReturnValue(false)
+    it('should set the value once initialization completes', async () => {
+        evaluateFlagMock.mockReturnValue(false)
 
         const { result } = renderHook(() => useFlag(testFlag))
         expect(result.current).toBe(false)
 
-        ldClientMock.variation.mockReturnValue(true)
+        evaluateFlagMock.mockReturnValue(true)
 
         await act(async () => {
-            initialiseResolve()
-            await initialisePromise
+            initResolve()
+            await initPromise
         })
 
         expect(result.current).toBe(true)
     })
 
-    it('should listen for updates to the given flag', () => {
-        const { result } = renderHook(() => useFlag(testFlag))
+    it('should subscribe to flag changes', () => {
+        renderHook(() => useFlag(testFlag))
 
-        expect(ldClientMock.on).toHaveBeenCalledWith(
-            `change:${testFlag}`,
+        expect(subscribeToFlagMock).toHaveBeenCalledWith(
+            testFlag,
+            false,
             expect.any(Function),
         )
+    })
 
-        const [[, onChange]] = ldClientMock.on.mock.calls as [
-            [string, (newValue: boolean) => void],
-        ]
+    it('should update value when flag changes via subscription', () => {
+        const { result } = renderHook(() => useFlag(testFlag))
+
+        const [[, , onChange]] = subscribeToFlagMock.mock.calls
 
         act(() => {
             onChange(true)
@@ -92,21 +82,37 @@ describe('useFlag', () => {
         expect(result.current).toBe(true)
     })
 
-    it('should stop listening for updates when the hook is unmounted', () => {
+    it('should unsubscribe when the hook is unmounted', () => {
         const { unmount } = renderHook(() => useFlag(testFlag))
 
-        const [[, onChange]] = ldClientMock.on.mock.calls
         unmount()
 
-        expect(ldClientMock.off).toHaveBeenCalledWith(
-            `change:${testFlag}`,
-            onChange,
-        )
+        expect(unsubscribe).toHaveBeenCalled()
+    })
+
+    it('should handle initialization error gracefully', async () => {
+        const consoleSpy = vi
+            .spyOn(console, 'error')
+            .mockImplementation(() => {})
+        const initError = new Error('init failed')
+        ensureInitializationMock.mockRejectedValue(initError)
+
+        const { result } = renderHook(() => useFlag(testFlag))
+
+        await waitFor(() => {
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'Error fetching feature flag',
+                initError,
+            )
+        })
+
+        expect(result.current).toBe(false)
+        consoleSpy.mockRestore()
     })
 
     it('should return default value when flag cannot be fetched', () => {
         const defaultValue = true
-        ldClientMock.variation.mockReturnValue(defaultValue)
+        evaluateFlagMock.mockReturnValue(defaultValue)
         const { result } = renderHook(() => useFlag(testFlag, defaultValue))
 
         expect(result.current).toBe(defaultValue)

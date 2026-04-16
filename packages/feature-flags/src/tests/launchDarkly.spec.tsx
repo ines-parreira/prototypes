@@ -13,6 +13,10 @@ vi.mock('@repo/utils', () => ({
 }))
 const mockIsDevelopment = vi.mocked(isDevelopment)
 
+vi.mock('../engines/split', () => ({
+    initialize: vi.fn(),
+}))
+
 type User = {
     id: string
     name: string

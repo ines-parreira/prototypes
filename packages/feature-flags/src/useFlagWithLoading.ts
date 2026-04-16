@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
+import { evaluateFlag, subscribeToFlag } from './dualEvaluation'
+import { ensureInitialization } from './engines/launchdarkly'
 import type { FeatureFlagKey } from './featureFlagKey'
-import { getLDClient } from './launchdarkly'
-import { ensureInitialization } from './launchDarklyInitialization'
 
 /**
  * Like `useFlag` but also returns `isLoading: true` until the LaunchDarkly client
@@ -15,9 +15,8 @@ export function useFlagWithLoading<T = boolean>(
     flag: FeatureFlagKey,
     defaultValue: T = false as T,
 ): { value: T; isLoading: boolean } {
-    const client = getLDClient()
     const [state, setState] = useState<{ value: T; isLoading: boolean }>({
-        value: client.variation(flag, defaultValue) as T,
+        value: evaluateFlag(flag, defaultValue),
         isLoading: true,
     })
 
@@ -26,7 +25,7 @@ export function useFlagWithLoading<T = boolean>(
             try {
                 await ensureInitialization()
                 setState({
-                    value: client.variation(flag, defaultValue) as T,
+                    value: evaluateFlag(flag, defaultValue),
                     isLoading: false,
                 })
             } catch (error) {
@@ -34,16 +33,13 @@ export function useFlagWithLoading<T = boolean>(
                 setState((prev) => ({ ...prev, isLoading: false }))
             }
         })()
-    }, [client, defaultValue, flag])
+    }, [defaultValue, flag])
 
     useEffect(() => {
-        const event = `change:${flag}`
-        const handler = (value: T) => setState((prev) => ({ ...prev, value }))
-        client.on(event, handler)
-        return () => {
-            client.off(event, handler)
-        }
-    }, [client, flag])
+        return subscribeToFlag(flag, defaultValue, (newValue) =>
+            setState((prev) => ({ ...prev, value: newValue as T })),
+        )
+    }, [defaultValue, flag])
 
     return state
 }

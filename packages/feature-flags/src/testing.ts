@@ -79,3 +79,41 @@ export function resetLDMocks() {
 }
 
 resetLDMocks()
+
+// Mock engine utilities for dual evaluation testing
+export type MockEngine = {
+    initialize: MockFunction<(...args: unknown[]) => void>
+    evaluate: MockFunction<(flag: string, defaultValue?: unknown) => unknown>
+    evaluateAsync: MockFunction<
+        (flag: string, defaultValue?: unknown) => Promise<unknown>
+    >
+    subscribe: MockFunction<
+        (flag: string, callback: (value: unknown) => void) => () => void
+    >
+    isReady: MockFunction<() => boolean>
+    ensureInitialization: MockFunction<() => Promise<void>>
+}
+
+export function createMockEngine(): MockEngine {
+    const unsubscribe = fn<() => void>()
+    return {
+        initialize: fn<(...args: unknown[]) => void>(),
+        evaluate: fn<
+            (flag: string, defaultValue?: unknown) => unknown
+        >().mockImplementation(
+            (_flag: string, defaultValue?: unknown) => defaultValue,
+        ),
+        evaluateAsync: fn<
+            (flag: string, defaultValue?: unknown) => Promise<unknown>
+        >().mockImplementation(
+            async (_flag: string, defaultValue?: unknown) => defaultValue,
+        ),
+        subscribe:
+            fn<
+                (flag: string, callback: (value: unknown) => void) => () => void
+            >().mockReturnValue(unsubscribe),
+        isReady: fn<() => boolean>().mockReturnValue(true),
+        ensureInitialization:
+            fn<() => Promise<void>>().mockResolvedValue(undefined),
+    }
+}

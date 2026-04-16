@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 
+import { evaluateFlag, subscribeToFlag } from './dualEvaluation'
+import { ensureInitialization } from './engines/launchdarkly'
 import type { FeatureFlagKey } from './featureFlagKey'
-import { getLDClient } from './launchdarkly'
 
 /**
  * @deprecated Use `useFlagWithLoading` instead, which also exposes `isLoading: true`
@@ -16,30 +17,26 @@ export function useFlag<T = boolean>(
     flag: FeatureFlagKey,
     defaultValue: T = false as T,
 ): T {
-    const client = getLDClient()
-    const [value, setValue] = useState<T>(
-        () => client.variation(flag, defaultValue) as T,
+    const [value, setValue] = useState<T>(() =>
+        evaluateFlag(flag, defaultValue),
     )
 
     useEffect(() => {
         void (async () => {
             try {
-                await client.waitForInitialization(3)
-                setValue(client.variation(flag, defaultValue))
+                await ensureInitialization()
+                setValue(evaluateFlag(flag, defaultValue))
             } catch (error) {
                 console.error('Error fetching feature flag', error)
             }
         })()
-    }, [client, defaultValue, flag])
+    }, [defaultValue, flag])
 
     useEffect(() => {
-        const event = `change:${flag}`
-        client.on(event, setValue)
-
-        return () => {
-            client.off(event, setValue)
-        }
-    }, [client, flag])
+        return subscribeToFlag(flag, defaultValue, (newValue) =>
+            setValue(newValue as T),
+        )
+    }, [defaultValue, flag])
 
     return value
 }

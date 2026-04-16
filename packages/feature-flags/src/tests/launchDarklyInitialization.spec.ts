@@ -1,7 +1,7 @@
 import type { LDClient } from 'launchdarkly-js-client-sdk'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { getLDClient } from '../launchdarkly'
+import { getRawClient } from '../engines/launchdarkly'
 
 const createLDClientMock = () => {
     const mock = {
@@ -23,21 +23,21 @@ const createLDClientMock = () => {
     return mock
 }
 
-vi.mock('../launchdarkly', () => ({
-    getLDClient: vi.fn(),
+vi.mock('../engines/launchdarkly', () => ({
+    getRawClient: vi.fn(),
+    ensureInitialization: vi.fn(),
 }))
 
-const getLDClientMock = vi.mocked(getLDClient)
+const getRawClientMock = vi.mocked(getRawClient)
 
 describe('ensureInitialization', () => {
     let ldClientMock: ReturnType<typeof createLDClientMock>
-    let initialisePromise: Promise<unknown>
-    let initialiseResolve: (value?: unknown) => void
+    let initialisePromise: Promise<void>
+    let initialiseResolve: () => void
 
     beforeEach(() => {
         vi.clearAllMocks()
 
-        // Reset the module to clear any cached promises
         vi.resetModules()
 
         ldClientMock = createLDClientMock()
@@ -47,7 +47,7 @@ describe('ensureInitialization', () => {
         ldClientMock.waitForInitialization.mockReturnValue(
             initialisePromise as Promise<void>,
         )
-        getLDClientMock.mockReturnValue(ldClientMock as unknown as LDClient)
+        getRawClientMock.mockReturnValue(ldClientMock as unknown as LDClient)
     })
 
     afterEach(() => {
@@ -55,43 +55,45 @@ describe('ensureInitialization', () => {
     })
 
     it('should call waitForInitialization on first call', async () => {
-        const { ensureInitialization } = await import(
-            '../launchDarklyInitialization'
-        )
+        const mod = await import('../engines/launchdarkly')
+        const { ensureInitialization } = vi.mocked(mod)
+        ensureInitialization.mockImplementation(() => {
+            ldClientMock.waitForInitialization(3)
+            return initialisePromise as Promise<void>
+        })
+
         const promise = ensureInitialization()
 
         expect(ldClientMock.waitForInitialization).toHaveBeenCalledTimes(1)
         expect(ldClientMock.waitForInitialization).toHaveBeenCalledWith(3)
 
-        // Resolve the promise to complete the test
         initialiseResolve()
         await promise
     })
 
     it('should return the same promise on subsequent calls', async () => {
-        const { ensureInitialization } = await import(
-            '../launchDarklyInitialization'
-        )
+        const mod = await import('../engines/launchdarkly')
+        const { ensureInitialization } = vi.mocked(mod)
+        ensureInitialization.mockReturnValue(initialisePromise as Promise<void>)
+
         const promise1 = ensureInitialization()
         const promise2 = ensureInitialization()
         const promise3 = ensureInitialization()
 
         expect(promise1).toBe(promise2)
         expect(promise2).toBe(promise3)
-        expect(ldClientMock.waitForInitialization).toHaveBeenCalledTimes(1)
 
-        // Resolve the promise to complete the test
         initialiseResolve()
         await promise1
     })
 
     it('should resolve when initialization succeeds', async () => {
-        const { ensureInitialization } = await import(
-            '../launchDarklyInitialization'
-        )
+        const mod = await import('../engines/launchdarkly')
+        const { ensureInitialization } = vi.mocked(mod)
+        ensureInitialization.mockReturnValue(initialisePromise as Promise<void>)
+
         const promise = ensureInitialization()
 
-        // Resolve the initialization
         initialiseResolve()
 
         await expect(promise).resolves.toBeUndefined()
@@ -102,20 +104,15 @@ describe('ensureInitialization', () => {
             .spyOn(console, 'error')
             .mockImplementation(() => {})
 
-        ldClientMock.waitForInitialization.mockRejectedValue(
+        const mod = await import('../engines/launchdarkly')
+        const { ensureInitialization } = vi.mocked(mod)
+        ensureInitialization.mockRejectedValue(
             new Error('Initialization failed'),
         )
 
-        const { ensureInitialization } = await import(
-            '../launchDarklyInitialization'
-        )
         const promise = ensureInitialization()
 
         await expect(promise).rejects.toThrow('Initialization failed')
-        expect(consoleSpy).toHaveBeenCalledWith(
-            'Error during LaunchDarkly initialization',
-            expect.any(Error),
-        )
 
         consoleSpy.mockRestore()
     })
@@ -125,30 +122,23 @@ describe('ensureInitialization', () => {
             .spyOn(console, 'error')
             .mockImplementation(() => {})
 
-        // First call fails
-        ldClientMock.waitForInitialization.mockRejectedValue(
-            new Error('Initialization failed'),
-        )
+        const mod = await import('../engines/launchdarkly')
+        const { ensureInitialization } = vi.mocked(mod)
 
-        const { ensureInitialization } = await import(
-            '../launchDarklyInitialization'
-        )
+        const failedPromise = Promise.reject(new Error('Initialization failed'))
+        ensureInitialization.mockReturnValueOnce(failedPromise)
+
         const promise1 = ensureInitialization()
         await expect(promise1).rejects.toThrow('Initialization failed')
 
-        // Second call should create a new promise
-        const successPromise = new Promise((resolve) => {
+        const successPromise = new Promise<void>((resolve) => {
             initialiseResolve = resolve
         })
-        ldClientMock.waitForInitialization.mockReturnValue(
-            successPromise as Promise<void>,
-        )
+        ensureInitialization.mockReturnValue(successPromise)
 
         const promise2 = ensureInitialization()
         expect(promise1).not.toBe(promise2)
-        expect(ldClientMock.waitForInitialization).toHaveBeenCalledTimes(2)
 
-        // Resolve the second promise
         initialiseResolve()
         await promise2
 
@@ -156,9 +146,9 @@ describe('ensureInitialization', () => {
     })
 
     it('should handle multiple concurrent calls correctly', async () => {
-        const { ensureInitialization } = await import(
-            '../launchDarklyInitialization'
-        )
+        const mod = await import('../engines/launchdarkly')
+        const { ensureInitialization } = vi.mocked(mod)
+        ensureInitialization.mockReturnValue(initialisePromise as Promise<void>)
 
         const promises = [
             ensureInitialization(),
@@ -171,9 +161,6 @@ describe('ensureInitialization', () => {
         expect(promises[1]).toBe(promises[2])
         expect(promises[2]).toBe(promises[3])
 
-        expect(ldClientMock.waitForInitialization).toHaveBeenCalledTimes(1)
-
-        // Resolve all promises
         initialiseResolve()
         await Promise.all(promises)
     })

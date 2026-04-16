@@ -1,10 +1,10 @@
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { ensureInitialization } from '../launchDarklyInitialization'
+import { ensureInitialization } from '../engines/launchdarkly'
 import { useAreFlagsLoading } from '../useAreFlagsLoading'
 
-vi.mock('../launchDarklyInitialization', () => ({
+vi.mock('../engines/launchdarkly', () => ({
     ensureInitialization: vi.fn(),
 }))
 
