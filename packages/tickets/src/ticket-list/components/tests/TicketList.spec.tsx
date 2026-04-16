@@ -54,6 +54,16 @@ vi.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {},
 }))
 
+vi.mock('../TicketListHeader/TicketListHeader', () => ({
+    TicketListHeader: ({
+        viewId,
+    }: {
+        viewId: number
+        onCollapse: () => void
+        onEditView?: () => void
+    }) => <div>Header for view {viewId}</div>,
+}))
+
 const viewId = 123
 const mockTicket1 = mockTicketCompact({ id: 1, subject: 'First Ticket' })
 const mockTicket2 = mockTicketCompact({ id: 2, subject: 'Second Ticket' })

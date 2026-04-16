@@ -7,6 +7,7 @@ export function useAllViews(): View[] {
     const { items } = useListAllViews(
         { limit: 100 },
         {
+            exhaustPages: true,
             query: {
                 staleTime: VIEWS_STALE_TIME,
                 refetchOnWindowFocus: false,

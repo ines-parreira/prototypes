@@ -1,16 +1,7 @@
-import { SYSTEM_VIEW_DEFINITIONS } from '@repo/tickets'
-
-import {
-    Box,
-    Button,
-    OverflowTooltip,
-    Text,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
-import { useGetView } from '@gorgias/helpdesk-queries'
+import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { SortOrderDropdown } from './SortOrderDropdown'
+import { ViewSearchMenu } from './ViewSearchMenu'
 
 import css from './TicketListHeader.module.less'
 
@@ -21,14 +12,6 @@ type Props = {
 }
 
 export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
-    const { data: viewResponse } = useGetView(viewId)
-    const viewName = viewResponse?.data?.name
-    const displayName =
-        /* v8 ignore next -- codecov incorrectly reporting partial coverage */
-        viewName && viewName in SYSTEM_VIEW_DEFINITIONS
-            ? SYSTEM_VIEW_DEFINITIONS[viewName].label
-            : viewName
-
     return (
         <Box
             className={css.header}
@@ -60,15 +43,7 @@ export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
                     </Tooltip>
                 </Box>
                 <Box flex={1} minWidth={0}>
-                    <OverflowTooltip>
-                        <Text
-                            overflow="ellipsis"
-                            className={css.viewName}
-                            color="content-neutral-default"
-                        >
-                            {displayName}
-                        </Text>
-                    </OverflowTooltip>
+                    <ViewSearchMenu viewId={viewId} />
                 </Box>
             </Box>
             <Box
