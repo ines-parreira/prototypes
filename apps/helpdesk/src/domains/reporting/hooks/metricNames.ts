@@ -173,6 +173,7 @@ export const METRIC_NAMES = {
         'ai-agent-all-agents-resolution-time-drill-down',
     AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILL_DOWN:
         'ai-agent-support-agent-resolution-time-drill-down',
+    AI_AGENT_OVERVIEW_DECREASE_IN_FRT: 'ai-agent-overview-decrease-in-frt',
     AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME:
         'ai-agent-overview-decrease-in-resolution-time',
     AI_AGENT_SUPPORT_AGENT_DECREASE_IN_RESOLUTION_TIME:
@@ -832,6 +833,7 @@ export enum MetricScope {
     AiAgentDecreaseInFirstResponseTime = 'ai-agent-decrease-in-first-response-time',
     AiAgentDecreaseInResolutionTime = 'ai-agent-decrease-in-resolution-time',
     OverallDecreaseInResolutionTime = 'overall-decrease-in-resolution-time',
+    OverallDecreaseInFirstResponseTime = 'overall-decrease-in-first-response-time',
     AiAgentSuccessRate = 'ai-agent-success-rate',
     AiAgentTicketsClosed = 'ai-agent-tickets-closed',
     AiAgentCsat = 'ai-agent-csat',
@@ -1196,6 +1198,9 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.OverallDecreaseInResolutionTime]: [
         METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME,
+    ],
+    [MetricScope.OverallDecreaseInFirstResponseTime]: [
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT,
     ],
     [MetricScope.AiAgentTimeSaved]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,

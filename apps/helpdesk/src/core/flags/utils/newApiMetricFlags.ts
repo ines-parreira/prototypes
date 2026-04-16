@@ -63,6 +63,7 @@ export const P5_AI_AGENT_REVAMP_SCOPES: MetricScope[] = [
     MetricScope.AiAgentDecreaseInFirstResponseTime,
     MetricScope.AiAgentDecreaseInResolutionTime,
     MetricScope.OverallDecreaseInResolutionTime,
+    MetricScope.OverallDecreaseInFirstResponseTime,
     MetricScope.AiAgentTicketsClosed,
     MetricScope.AiAgentCsat,
 ]
