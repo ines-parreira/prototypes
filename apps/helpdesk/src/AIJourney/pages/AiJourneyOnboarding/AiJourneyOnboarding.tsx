@@ -158,6 +158,7 @@ export const AiJourneyOnboarding = ({
                 includedAudienceListIds: data.included_audience_list_ids,
                 excludedAudienceListIds: data.excluded_audience_list_ids,
                 campaignTitle: data.campaignTitle,
+                rcsEnabled: data.rcs_enabled,
             }).then(() =>
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${journeyData.id}`,
@@ -185,6 +186,7 @@ export const AiJourneyOnboarding = ({
                 includedAudienceListIds: data.included_audience_list_ids,
                 excludedAudienceListIds: data.excluded_audience_list_ids,
                 campaignTitle: data.campaignTitle,
+                rcsEnabled: data.rcs_enabled,
             }).then((res) =>
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${res.id}`,

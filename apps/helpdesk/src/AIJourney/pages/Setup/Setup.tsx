@@ -15,6 +15,7 @@ import {
     AudienceCard,
     DiscountCodeCard,
     GeneralCard,
+    RcsEnabledCard,
     TimingCard,
 } from 'AIJourney/components'
 import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone/ImageDropzone'
@@ -41,6 +42,7 @@ export type SetupFormValues = {
     included_audience_list_ids?: string[]
     excluded_audience_list_ids?: string[]
     campaignTitle?: string
+    rcs_enabled?: boolean
 }
 
 export const Setup = () => {
@@ -57,6 +59,8 @@ export const Setup = () => {
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
+
+    const isAiJourneyRcsEnabled = useFlag(FeatureFlagKey.AiJourneyRcsEnable)
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
 
@@ -118,6 +122,8 @@ export const Setup = () => {
                     excluded_audience_list_ids:
                         journeyData?.excluded_audience_list_ids ?? undefined,
                     campaignTitle: journeyData?.campaign?.title ?? undefined,
+                    rcs_enabled:
+                        journeyData?.configuration?.rcs_enabled ?? undefined,
                 })
             }
             setIsFormReady(true)
@@ -134,6 +140,10 @@ export const Setup = () => {
             )}
             {shouldRenderAudienceCard && (
                 <AudienceCard isFormReady={isFormReady} />
+            )}
+
+            {isAiJourneyRcsEnabled && window.USER_IMPERSONATED && (
+                <RcsEnabledCard isFormReady={isFormReady} />
             )}
             <DiscountCodeCard isFormReady={isFormReady} />
             <GeneralCard isFormReady={isFormReady} />

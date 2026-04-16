@@ -34,6 +34,7 @@ type HandleCreateParams = {
     targetOrderStatus?: 'order_placed' | 'order_fulfilled'
     postPurchaseWaitMinutes?: number
     uploadedImageAttachment?: UploadedImageAttachment[]
+    rcsEnabled?: boolean
 }
 
 export const useJourneyCreateHandler = ({
@@ -63,6 +64,7 @@ export const useJourneyCreateHandler = ({
             targetOrderStatus,
             postPurchaseWaitMinutes,
             uploadedImageAttachment,
+            rcsEnabled,
         }: HandleCreateParams) => {
             try {
                 if (!integrationId || !integrationName) {
@@ -100,6 +102,9 @@ export const useJourneyCreateHandler = ({
                     }),
                     ...(targetOrderStatus && {
                         target_order_status: targetOrderStatus,
+                    }),
+                    ...(rcsEnabled !== undefined && {
+                        rcs_enabled: rcsEnabled,
                     }),
                     media_urls: uploadedImageAttachment,
                 }

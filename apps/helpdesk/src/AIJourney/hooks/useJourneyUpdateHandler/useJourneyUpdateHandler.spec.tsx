@@ -539,6 +539,58 @@ describe('useJourneyUpdateHandler', () => {
                 'target_order_status',
             )
         })
+
+        it('should include rcs_enabled: true when rcsEnabled is true', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ rcsEnabled: true })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        rcs_enabled: true,
+                    }),
+                }),
+            )
+        })
+
+        it('should include rcs_enabled: false when rcsEnabled is false', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ rcsEnabled: false })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        rcs_enabled: false,
+                    }),
+                }),
+            )
+        })
+
+        it('should not include rcs_enabled when rcsEnabled is undefined', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.journeyConfigs).not.toHaveProperty('rcs_enabled')
+        })
     })
 
     describe('return values', () => {

@@ -572,6 +572,61 @@ describe('useJourneyCreateHandler', () => {
             )
         })
 
+        it('includes rcs_enabled: true when rcsEnabled is true', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({ rcsEnabled: true })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        rcs_enabled: true,
+                    }),
+                }),
+            )
+        })
+
+        it('includes rcs_enabled: false when rcsEnabled is false', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({ rcsEnabled: false })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        rcs_enabled: false,
+                    }),
+                }),
+            )
+        })
+
+        it('omits rcs_enabled when rcsEnabled is undefined', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({})
+            })
+
+            const call = mockMutateAsync.mock.calls[0][0]
+            expect(call.journeyConfigs).not.toHaveProperty('rcs_enabled')
+        })
+
         it('passes uploadedImageAttachment as media_urls', async () => {
             mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
             const { result } = renderHook(

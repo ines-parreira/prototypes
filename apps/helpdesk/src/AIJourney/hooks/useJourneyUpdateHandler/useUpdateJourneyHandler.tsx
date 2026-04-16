@@ -46,6 +46,7 @@ type HandleUpdateParams = {
     targetOrderStatus?: 'order_placed' | 'order_fulfilled'
     postPurchaseWaitMinutes?: number
     uploadedImageAttachment?: UploadedImageAttachment[]
+    rcsEnabled?: boolean
 }
 
 export const useJourneyUpdateHandler = ({
@@ -99,6 +100,9 @@ export const useJourneyUpdateHandler = ({
                     }),
                     ...(updateParams.targetOrderStatus && {
                         target_order_status: updateParams.targetOrderStatus,
+                    }),
+                    ...(updateParams.rcsEnabled !== undefined && {
+                        rcs_enabled: updateParams.rcsEnabled,
                     }),
                     media_urls: updateParams.uploadedImageAttachment,
                 }
