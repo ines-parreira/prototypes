@@ -500,8 +500,8 @@ export const getResourceMetadata = (
             )
             return product
                 ? {
-                      title: title ?? product.title ?? '',
-                      content: title ?? product.title ?? '',
+                      title: title || product.title || '',
+                      content: title || product.title || '',
                       url: aiAgentRoutes?.productsDetail(idAsNumber),
                   }
                 : getEmptyMetadata()
