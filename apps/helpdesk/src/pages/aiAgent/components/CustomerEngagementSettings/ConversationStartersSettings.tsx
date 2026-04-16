@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 
-import { Button, CheckBoxField, Label, ToggleField } from '@gorgias/axiom'
+import { Button, CheckBoxField, Icon, Label, ToggleField } from '@gorgias/axiom'
 
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
@@ -233,7 +233,7 @@ export const ConversationStartersSettings = ({
                             </EngagementSettingsCardTitle>
                             {!storeConfiguration?.isConversationStartersEnabled && (
                                 <EngagementSettingsCardImpact
-                                    icon="lock"
+                                    icon={<Icon name="trending-up" size="xs" />}
                                     impact={potentialImpact}
                                     isLoading={isGmvLoading}
                                     isChecked

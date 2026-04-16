@@ -1,5 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 
+import { Icon } from '@gorgias/axiom'
+
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     EngagementSettingsCard,
@@ -66,7 +68,7 @@ export const ConversationStartersSettings = ({
                         </EngagementSettingsCardTitle>
 
                         <EngagementSettingsCardImpact
-                            icon="lock"
+                            icon={<Icon name="trending-up" size="xs" />}
                             impact={potentialImpact}
                             isLoading={isGmvLoading}
                             isChecked={isConversationStartersEnabled}

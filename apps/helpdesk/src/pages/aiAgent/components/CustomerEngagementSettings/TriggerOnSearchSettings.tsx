@@ -1,6 +1,8 @@
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 
+import { Icon } from '@gorgias/axiom'
+
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { STATS_ROUTES } from 'routes/constants'
@@ -68,7 +70,7 @@ export const TriggerOnSearchSettings = ({
                         </EngagementSettingsCardTitle>
                         {!storeConfiguration?.isSalesHelpOnSearchEnabled && (
                             <EngagementSettingsCardImpact
-                                icon="lock"
+                                icon={<Icon name="trending-up" size="xs" />}
                                 impact={potentialImpact}
                                 isLoading={isGmvLoading}
                                 isChecked

@@ -6,7 +6,12 @@ import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button, CheckBoxField, Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    CheckBoxField,
+    Icon,
+    Label,
+} from '@gorgias/axiom'
 
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
@@ -329,7 +334,7 @@ export const ConversationLauncherSettings = ({
                             {!storeConfiguration?.floatingChatInputConfiguration
                                 ?.isEnabled && (
                                 <EngagementSettingsCardImpact
-                                    icon="lock"
+                                    icon={<Icon name="trending-up" size="xs" />}
                                     impact={potentialImpact}
                                     isLoading={isGmvLoading}
                                     isChecked

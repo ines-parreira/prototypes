@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
-import { Box } from '@gorgias/axiom'
+import { Box, Icon } from '@gorgias/axiom'
 
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
@@ -63,7 +63,7 @@ export const ConversationLauncherSettings = ({
                             </EngagementSettingsCardTitle>
 
                             <EngagementSettingsCardImpact
-                                icon="lock"
+                                icon={<Icon name="trending-up" size="xs" />}
                                 impact={potentialImpact}
                                 isLoading={isGmvLoading}
                                 isChecked={isAskAnythingInputEnabled}

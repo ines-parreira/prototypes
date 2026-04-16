@@ -1,11 +1,11 @@
-import cn from 'classnames'
+import type { ReactNode } from 'react'
 
 import { LegacyBadge as Badge, Skeleton } from '@gorgias/axiom'
 
 import css from './EngagementSettingsCard.less'
 
 type EngagementSettingsCardImpactProps = {
-    icon: string
+    icon: ReactNode
     impact: string | null
     isLoading?: boolean
     isChecked?: boolean
@@ -36,7 +36,7 @@ export const EngagementSettingsCardImpact = ({
             corner="square"
             type={isChecked ? 'magenta' : 'light'}
         >
-            <i className={cn('material-icons', css.cardImpactIcon)}>{icon}</i>
+            <span className={css.cardImpactIcon}>{icon}</span>
             <span className={css.cardImpactText}>{impact}</span>
         </Badge>
     )
