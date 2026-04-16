@@ -2,9 +2,9 @@ import { Redirect, useParams } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
-import { ReportOrderIssueFlowView } from './scenarioList/ReportOrderIssueFlowView'
+import { CreateReportOrderIssueScenarioView } from './CreateReportOrderIssueFlowScenarioView'
 
-export const ReportOrderIssueFlowViewContainerRevamp = () => {
+export const CreateReportOrderIssueFlowScenarioViewContainerRevamp = () => {
     const { shopName } = useParams<{ shopName: string }>()
     const { hasAccess } = useAiAgentAccess(shopName)
 
@@ -12,5 +12,5 @@ export const ReportOrderIssueFlowViewContainerRevamp = () => {
         return <Redirect to="/app/automation/order-management" />
     }
 
-    return <ReportOrderIssueFlowView />
+    return <CreateReportOrderIssueScenarioView />
 }

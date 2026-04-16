@@ -35,12 +35,14 @@ type Props = {
     title: string
     onSave?: () => void
     isSaveDisabled?: boolean
+    isSaveLoading?: boolean
 }
 
 export const OrderManagementFlowHeader = ({
     title,
     onSave,
     isSaveDisabled = true,
+    isSaveLoading = false,
 }: Props) => {
     const history = useHistory()
     const { shopType, shopName } = useParams<{
@@ -131,6 +133,7 @@ export const OrderManagementFlowHeader = ({
                             size={ButtonSize.Md}
                             onClick={onSave}
                             isDisabled={isSaveDisabled}
+                            isLoading={isSaveLoading}
                         >
                             Save
                         </Button>
