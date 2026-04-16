@@ -29,6 +29,45 @@ function sortMessagesByDate<TMessage extends TicketThreadMessageData>(
     )
 }
 
+function stableSerialize(value: unknown): string {
+    if (Array.isArray(value)) {
+        return `[${value.map(stableSerialize).join(',')}]`
+    }
+
+    if (value && typeof value === 'object') {
+        const entries = Object.entries(value as Record<string, unknown>).sort(
+            ([keyA], [keyB]) => keyA.localeCompare(keyB),
+        )
+
+        return `{${entries
+            .map(
+                ([key, nestedValue]) =>
+                    `${key}:${stableSerialize(nestedValue)}`,
+            )
+            .join(',')}}`
+    }
+
+    return JSON.stringify(value)
+}
+
+function matchesPersistedMessage(
+    pendingMessage: TicketThreadMessageData,
+    persistedMessage: TicketThreadMessageData,
+): boolean {
+    return (
+        pendingMessage.body_html === persistedMessage.body_html &&
+        pendingMessage.body_text === persistedMessage.body_text &&
+        pendingMessage.channel === persistedMessage.channel &&
+        pendingMessage.from_agent === persistedMessage.from_agent &&
+        stableSerialize(pendingMessage.source?.from) ===
+            stableSerialize(persistedMessage.source?.from) &&
+        stableSerialize(pendingMessage.source?.to) ===
+            stableSerialize(persistedMessage.source?.to) &&
+        stableSerialize(pendingMessage.source?.extra) ===
+            stableSerialize(persistedMessage.source?.extra)
+    )
+}
+
 export function useTicketThreadMessages({
     ticketId,
     pendingMessages,
@@ -45,10 +84,16 @@ export function useTicketThreadMessages({
         const normalizedPendingMessages = (pendingMessages ?? []).filter(
             isTicketMessage,
         )
-        const failedPendingMessages = normalizedPendingMessages.filter(
+        const deduplicatedPendingMessages = normalizedPendingMessages.filter(
+            (pendingMessage) =>
+                !persistedMessages.some((persistedMessage) =>
+                    matchesPersistedMessage(pendingMessage, persistedMessage),
+                ),
+        )
+        const failedPendingMessages = deduplicatedPendingMessages.filter(
             isFailedPendingMessage,
         )
-        const activePendingMessages = normalizedPendingMessages.filter(
+        const activePendingMessages = deduplicatedPendingMessages.filter(
             isActivePendingMessage,
         )
         const groupedMessages = groupConsecutiveMessages(

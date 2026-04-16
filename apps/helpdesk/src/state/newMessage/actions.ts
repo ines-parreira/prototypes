@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
-import client from '@repo/api-resources'
+import client, { appQueryClient } from '@repo/api-resources'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
@@ -15,6 +15,7 @@ import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 import _split from 'lodash/split'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { Macro } from '@gorgias/helpdesk-queries'
 
 import {
@@ -42,6 +43,7 @@ import { search } from 'models/search/resources'
 import type { UserSearchResult } from 'models/search/types'
 import { SearchType } from 'models/search/types'
 import { mapNormalizedToArray } from 'models/ticket/mappers'
+import { upsertTicketMessageInListMessagesCache } from 'models/ticket/queryCache'
 import type {
     Attachment,
     TicketAssignee,
@@ -1306,6 +1308,24 @@ export function sendTicketMessage(
                     (resp) => {
                         const state = getState()
                         const { ticket: _ticket } = state
+                        const sentTicketId = Number(
+                            resp.ticket_id ?? ticketIdToUse,
+                        )
+
+                        if (sentTicketId) {
+                            upsertTicketMessageInListMessagesCache(resp)
+                            void appQueryClient.invalidateQueries({
+                                queryKey: queryKeys.ticketMessages.listMessages(
+                                    {
+                                        ticket_id: sentTicketId,
+                                    },
+                                ),
+                            })
+                            void appQueryClient.invalidateQueries({
+                                queryKey:
+                                    queryKeys.tickets.getTicket(sentTicketId),
+                            })
+                        }
 
                         // if we changed the displayed ticket (e.g. submit and close), we don't want to change the state.
                         if (

@@ -12,6 +12,8 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -1719,6 +1721,123 @@ describe('actions', () => {
                             expect(store.getActions()).toMatchSnapshot()
                         })
                 )
+            })
+
+            it('should invalidate ticket thread queries after submitting a new message', async () => {
+                const invalidateQueriesSpy = jest
+                    .spyOn(appQueryClient, 'invalidateQueries')
+                    .mockResolvedValue()
+
+                mockServer
+                    .onPost('/api/tickets/12/messages/')
+                    .reply(201, { id: 101, ticket_id: 12, messages: [] })
+                store = mockStore({
+                    ticket: ticketInitialState.set('id', 12),
+                    newMessage: initialState,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'foo',
+                    }),
+                    integrations: fromJS(integrationsState),
+                })
+
+                const { messageId, messageToSend } = await store.dispatch(
+                    // @ts-ignore
+                    actions.prepareTicketMessage(),
+                )
+
+                await store.dispatch(
+                    // @ts-ignore
+                    actions.sendTicketMessage(messageId, messageToSend),
+                )
+
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: queryKeys.ticketMessages.listMessages({
+                        ticket_id: 12,
+                    }),
+                })
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: queryKeys.tickets.getTicket(12),
+                })
+            })
+
+            it('should seed the ticket thread cache with the sent message before invalidating', async () => {
+                const ticketMessagesQueryKey =
+                    queryKeys.ticketMessages.listMessages({
+                        ticket_id: 12,
+                    })
+                const cachedMessage = {
+                    id: 77,
+                    ticket_id: 12,
+                    channel: TicketMessageSourceType.Email,
+                    from_agent: false,
+                    via: 'email',
+                    body_text: 'Previous message',
+                    created_datetime: '2024-03-21T10:59:00Z',
+                    source: {
+                        type: TicketMessageSourceType.Email,
+                        from: { address: 'shop@example.com', name: 'Shop' },
+                        to: [
+                            {
+                                address: 'customer@example.com',
+                                name: 'Customer',
+                            },
+                        ],
+                    },
+                }
+
+                appQueryClient.setQueryData(ticketMessagesQueryKey, {
+                    data: {
+                        data: [cachedMessage],
+                    },
+                })
+
+                store = mockStore({
+                    ticket: ticketInitialState.set('id', 12),
+                    newMessage: initialState,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'foo',
+                    }),
+                    integrations: fromJS(integrationsState),
+                })
+
+                const { messageId, messageToSend } = await store.dispatch(
+                    // @ts-ignore
+                    actions.prepareTicketMessage(),
+                )
+
+                const sentMessage = {
+                    ...messageToSend,
+                    id: 101,
+                    ticket_id: 12,
+                    channel: TicketMessageSourceType.Email,
+                    from_agent: true,
+                    via: 'email',
+                    created_datetime: '2024-03-21T11:00:00Z',
+                }
+
+                mockServer
+                    .onPost('/api/tickets/12/messages/')
+                    .reply(201, sentMessage)
+
+                await store.dispatch(
+                    // @ts-ignore
+                    actions.sendTicketMessage(messageId, messageToSend),
+                )
+
+                expect(
+                    appQueryClient.getQueryData<{
+                        data: { data: Array<{ id: number }> }
+                    }>(ticketMessagesQueryKey),
+                ).toEqual({
+                    data: {
+                        data: [
+                            cachedMessage,
+                            expect.objectContaining({ id: 101 }),
+                        ],
+                    },
+                })
             })
         })
 

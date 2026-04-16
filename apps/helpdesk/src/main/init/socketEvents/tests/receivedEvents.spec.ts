@@ -1002,6 +1002,55 @@ describe('receivedEvents', () => {
             expect(ticketActions.mergeTicket).toHaveBeenCalledWith(event.ticket)
         })
 
+        it('should invalidate the ticket messages query cache', () => {
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
+            const event = createTicketMessageCreatedEvent()
+
+            handler.onReceive(event)
+
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.ticketMessages.listMessages({
+                    ticket_id: ticket.id,
+                }),
+            })
+        })
+
+        it('should seed the ticket messages query cache with the created message', () => {
+            const event = createTicketMessageCreatedEvent()
+            const ticketMessagesQueryKey =
+                queryKeys.ticketMessages.listMessages({
+                    ticket_id: ticket.id,
+                })
+            const cachedMessage = {
+                ...event.message,
+                id: 999,
+                created_datetime: '2026-01-15T21:43:02.260847+00:00',
+            }
+
+            appQueryClient.setQueryData(ticketMessagesQueryKey, {
+                data: {
+                    data: [cachedMessage],
+                },
+            })
+
+            handler.onReceive(event)
+
+            expect(
+                appQueryClient.getQueryData<{
+                    data: { data: Array<{ id?: number }> }
+                }>(ticketMessagesQueryKey),
+            ).toEqual({
+                data: {
+                    data: [
+                        expect.objectContaining({ id: event.message.id }),
+                        cachedMessage,
+                    ],
+                },
+            })
+        })
+
         it('should send TicketViewed event when user is on the ticket page', () => {
             ;(
                 isCurrentlyOnTicket as jest.MockedFunction<

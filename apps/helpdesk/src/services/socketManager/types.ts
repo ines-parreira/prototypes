@@ -10,7 +10,7 @@ import type {
 import type { CustomerExternalData } from 'models/customerExternalData/types'
 import type { MacrosProperties } from 'models/macro/types'
 import type { Section } from 'models/section/types'
-import type { Ticket } from 'models/ticket/types'
+import type { Ticket, TicketMessage } from 'models/ticket/types'
 import type { View } from 'models/view/types'
 import type { VoiceCall } from 'models/voiceCall/types'
 import type { Account } from 'state/currentAccount/types'
@@ -128,8 +128,10 @@ export type TicketUpdatedEvent = {
 export type TicketMessageCreatedEvent = {
     event: {
         type: 'ticket-message-created'
+        object_id?: number
     }
     ticket: Ticket
+    message?: TicketMessage
 }
 
 export type TicketMessageActionFailedEvent = {

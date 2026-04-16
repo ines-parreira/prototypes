@@ -118,4 +118,73 @@ describe('useTicketThreadMessages', () => {
         })
         expect(result.current.activePendingMessages).toEqual([])
     })
+
+    it('does not render pending messages that already exist in the persisted list', async () => {
+        server.use(
+            getTicketMessagesHandler([
+                createMessage({
+                    id: 10,
+                    body_html: '<p>Hello there</p>',
+                    body_text: 'Hello there',
+                    created_datetime: '2024-03-21T10:00:00Z',
+                    from_agent: true,
+                    source: {
+                        type: 'email',
+                        from: {
+                            address: 'agent@gorgias.com',
+                            name: 'Agent',
+                        },
+                        to: [
+                            {
+                                address: 'customer@example.com',
+                                name: 'Customer',
+                            },
+                        ],
+                        extra: {
+                            include_thread: false,
+                        },
+                    },
+                }),
+            ]).handler,
+        )
+
+        const pendingMessages: unknown[] = [
+            createMessage({
+                id: 50,
+                body_html: '<p>Hello there</p>',
+                body_text: 'Hello there',
+                created_datetime: '2024-03-21T10:30:00Z',
+                failed_datetime: null,
+                from_agent: true,
+                source: {
+                    type: 'email',
+                    from: {
+                        address: 'agent@gorgias.com',
+                        name: 'Agent',
+                    },
+                    to: [
+                        {
+                            address: 'customer@example.com',
+                            name: 'Customer',
+                        },
+                    ],
+                    extra: {
+                        include_thread: false,
+                    },
+                },
+            }),
+        ]
+
+        const { result } = renderHook(() =>
+            useTicketThreadMessages({
+                ticketId: 123,
+                pendingMessages,
+            }),
+        )
+
+        await waitFor(() => {
+            expect(getMessageIds(result.current.messages)).toEqual([10])
+        })
+        expect(result.current.activePendingMessages).toEqual([])
+    })
 })

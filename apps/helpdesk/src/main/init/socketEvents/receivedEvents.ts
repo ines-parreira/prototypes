@@ -17,6 +17,8 @@ import { MAX_RECENT_CHATS } from 'config/recentChats'
 import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import { throttledUpdateCustomFieldsCache } from 'main/init/socketEvents/helpers'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
+import { isTicketMessage } from 'models/ticket/predicates'
+import { upsertTicketMessageInListMessagesCache } from 'models/ticket/queryCache'
 import type { UseListVoiceCalls } from 'models/voiceCall/queries'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import { isVoiceCall } from 'models/voiceCall/types'
@@ -154,7 +156,24 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-message-created',
         onReceive: function (json) {
-            const ticket = (json as TicketMessageCreatedEvent).ticket
+            const { ticket, message, event } = json as TicketMessageCreatedEvent
+            const createdMessage =
+                message ??
+                ticket.messages.find(
+                    (ticketMessage) =>
+                        isTicketMessage(ticketMessage) &&
+                        ticketMessage.id === event.object_id,
+                )
+
+            if (createdMessage) {
+                upsertTicketMessageInListMessagesCache(createdMessage)
+            }
+
+            void appQueryClient.invalidateQueries({
+                queryKey: queryKeys.ticketMessages.listMessages({
+                    ticket_id: ticket.id,
+                }),
+            })
 
             if (isCurrentlyOnTicket(ticket.id)) {
                 ;(this as unknown as SocketManager).send(
