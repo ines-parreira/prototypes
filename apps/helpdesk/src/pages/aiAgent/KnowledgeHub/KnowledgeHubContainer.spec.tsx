@@ -761,7 +761,7 @@ describe('KnowledgeHubContainer', () => {
                     guidance_help_center_id: 1,
                     snippet_help_center_id: 2,
                     faq_help_center_id: 3,
-                    exclude_articles_with_intent: false,
+                    exclude_articles_with_intent: true,
                 },
                 {
                     enabled: true,
