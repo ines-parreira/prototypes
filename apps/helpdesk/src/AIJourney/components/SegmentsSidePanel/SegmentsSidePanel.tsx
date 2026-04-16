@@ -14,6 +14,7 @@ import {
 
 import { AudienceConditionField } from 'AIJourney/components/AudienceConditionField/AudienceConditionField'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
+import { useUpdateSegment } from 'AIJourney/queries/useUpdateSegment/useUpdateSegment'
 import type {
     ConditionsSchema,
     ConditionState,
@@ -46,6 +47,8 @@ export const SegmentsSidePanel = ({
             conditions: [DEFAULT_CONDITION],
         },
     })
+
+    const { mutateAsync: updateSegment, isLoading } = useUpdateSegment()
 
     useEffect(() => {
         if (isOpen) {
@@ -87,7 +90,7 @@ export const SegmentsSidePanel = ({
     })
 
     const shouldDisableSaveButton =
-        !name.trim() || hasNoConditions || hasConditionWithoutValue
+        !name.trim() || hasNoConditions || hasConditionWithoutValue || isLoading
 
     useEffect(() => {
         if (!isOpen) return
@@ -148,13 +151,21 @@ export const SegmentsSidePanel = ({
                             </Button>
                             <Button
                                 isDisabled={shouldDisableSaveButton}
-                                onClick={() => {
-                                    const query = buildFullQuery(
-                                        conditions,
-                                        schema,
-                                    )
-                                    window.alert(JSON.stringify(query, null, 2))
-                                }}
+                                onClick={form.handleSubmit(async ({ name }) => {
+                                    if (isEditing && schema) {
+                                        await updateSegment({
+                                            segmentId: segment.id,
+                                            updateSegmentRequest: {
+                                                name,
+                                                conditions: buildFullQuery(
+                                                    conditions,
+                                                    schema,
+                                                ),
+                                            },
+                                        })
+                                        onClose()
+                                    }
+                                })}
                             >
                                 Save segment
                             </Button>

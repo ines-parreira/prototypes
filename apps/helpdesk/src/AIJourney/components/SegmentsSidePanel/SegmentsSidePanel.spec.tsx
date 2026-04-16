@@ -7,6 +7,7 @@ import { act } from 'react-dom/test-utils'
 
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
+import { useUpdateSegment } from 'AIJourney/queries/useUpdateSegment/useUpdateSegment'
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 
 import { SegmentsSidePanel } from './SegmentsSidePanel'
@@ -17,6 +18,10 @@ jest.mock(
         useConditionsMetadata: jest.fn().mockReturnValue({ data: undefined }),
     }),
 )
+
+jest.mock('AIJourney/queries/useUpdateSegment/useUpdateSegment', () => ({
+    useUpdateSegment: jest.fn(),
+}))
 
 jest.mock(
     'AIJourney/components/AudienceConditionField/AudienceConditionField',
@@ -82,6 +87,8 @@ const mockSegment: Segment = {
     updated_datetime: '2026-09-12T00:00:00',
 }
 
+const mockMutateAsync = jest.fn()
+const mockUseUpdateSegment = assumeMock(useUpdateSegment)
 const onClose = jest.fn()
 
 const renderComponent = (
@@ -102,6 +109,11 @@ describe('<SegmentsSidePanel />', () => {
         assumeMock(useConditionsMetadata).mockReturnValue({
             data: undefined,
         } as unknown as ReturnType<typeof useConditionsMetadata>)
+        mockMutateAsync.mockResolvedValue(undefined)
+        mockUseUpdateSegment.mockReturnValue({
+            mutateAsync: mockMutateAsync,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useUpdateSegment>)
     })
 
     describe('create mode (no segment)', () => {
@@ -201,9 +213,48 @@ describe('<SegmentsSidePanel />', () => {
     })
 
     describe('Save segment button', () => {
-        it.skip('should call onClose when Save segment is clicked', async () => {
+        it('should call onClose when segment is successfully created', async () => {
             const user = userEvent.setup()
             renderComponent()
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /save segment/i }),
+                )
+            })
+
+            expect(mockMutateAsync).not.toHaveBeenCalled()
+            expect(onClose).not.toHaveBeenCalled()
+        })
+
+        it('should call updateSegment with correct args in edit mode when schema is available', async () => {
+            assumeMock(useConditionsMetadata).mockReturnValue({
+                data: mockSchema,
+            } as unknown as ReturnType<typeof useConditionsMetadata>)
+            const user = userEvent.setup()
+            renderComponent({ segment: mockSegment })
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /save segment/i }),
+                )
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                segmentId: mockSegment.id,
+                updateSegmentRequest: {
+                    name: mockSegment.name,
+                    conditions: 'gt(shopper.lifetime_value, 1000)',
+                },
+            })
+        })
+
+        it('should call onClose after successful update in edit mode', async () => {
+            assumeMock(useConditionsMetadata).mockReturnValue({
+                data: mockSchema,
+            } as unknown as ReturnType<typeof useConditionsMetadata>)
+            const user = userEvent.setup()
+            renderComponent({ segment: mockSegment })
 
             await act(async () => {
                 await user.click(
@@ -292,31 +343,45 @@ describe('<SegmentsSidePanel />', () => {
                 ).not.toBeDisabled()
             })
         })
-    })
 
-    describe('panel close (onOpenChange)', () => {
-        it('should call onClose when the panel is closed externally', async () => {
-            const user = userEvent.setup()
-            renderComponent()
+        it('should disable Save button while update is pending', () => {
+            mockUseUpdateSegment.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                isLoading: true,
+            } as unknown as ReturnType<typeof useUpdateSegment>)
+            renderComponent({ segment: mockSegment })
 
-            await act(async () => {
-                await user.click(
-                    screen.getByRole('button', { name: /close panel/i }),
-                )
-            })
-
-            expect(onClose).toHaveBeenCalledTimes(1)
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).toBeDisabled()
         })
-    })
 
-    describe('conditions section', () => {
-        it('should render AudienceConditionField', () => {
-            assumeMock(useConditionsMetadata).mockReturnValue({
-                data: mockSchema,
-            } as unknown as ReturnType<typeof useConditionsMetadata>)
-            renderComponent()
+        describe('panel close (onOpenChange)', () => {
+            it('should call onClose when the panel is closed externally', async () => {
+                const user = userEvent.setup()
+                renderComponent()
 
-            expect(screen.getByText('conditions-section')).toBeInTheDocument()
+                await act(async () => {
+                    await user.click(
+                        screen.getByRole('button', { name: /close panel/i }),
+                    )
+                })
+
+                expect(onClose).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        describe('conditions section', () => {
+            it('should render AudienceConditionField', () => {
+                assumeMock(useConditionsMetadata).mockReturnValue({
+                    data: mockSchema,
+                } as unknown as ReturnType<typeof useConditionsMetadata>)
+                renderComponent()
+
+                expect(
+                    screen.getByText('conditions-section'),
+                ).toBeInTheDocument()
+            })
         })
     })
 })

@@ -67,6 +67,12 @@ jest.mock(
     }),
 )
 
+jest.mock('AIJourney/queries/useUpdateSegment/useUpdateSegment', () => ({
+    useUpdateSegment: jest
+        .fn()
+        .mockReturnValue({ mutateAsync: jest.fn(), isLoading: false }),
+}))
+
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
 }))
