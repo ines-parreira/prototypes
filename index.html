@@ -49,7 +49,7 @@
     .nav-item.active .nav-label { font-size: 14px; font-weight: 600; color: #683fcf; }
     .nav-item.secondary { color: #1e242e; }
     .nav-item.secondary .nav-label { font-size: 14px; font-weight: 500; color: #1e242e; }
-    .nav-item.recent .nav-label { font-size: 14px; font-weight: 400; color: #1e242e; }
+    .nav-item.recent .nav-label { font-size: 14px; font-weight: 400; color: #1e242e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Recents */
     .recents-group { display: flex; flex-direction: column; gap: 4px; }
@@ -203,6 +203,7 @@
       width: 600px; border: 1px solid rgba(0,0,0,0.08);
       border-radius: 12px; overflow: hidden; background: white;
       box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
     .chat-input-inner {
       display: flex; align-items: center; justify-content: space-between;
@@ -616,7 +617,7 @@
 
     /* ── Chat conversation view ──────────────────────────────────────── */
     .chat-view-header {
-      padding: 14px 24px; border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 14px 24px;
       flex-shrink: 0; display: flex; align-items: center; gap: 10px;
     }
     .chat-view-back {
@@ -662,6 +663,10 @@
       flex-shrink: 0; display: flex; justify-content: center;
     }
     .chat-view-footer .chat-input-box { width: 100%; max-width: 600px; }
+    .chat-input-box:focus-within {
+      border-color: #683fcf;
+      box-shadow: 0 0 0 3px rgba(104,63,207,0.12), 0 4px 24px 0 rgba(0,0,0,0.08);
+    }
 
     /* Active state for recent items */
     .nav-item.recent.active { background: rgba(103,63,207,0.08); border-radius: 8px; }
@@ -895,7 +900,7 @@
             <div class="metric-label">Customer satisfaction</div>
             <div>
               <div class="metric-value-row">
-                <img src="https://www.figma.com/api/mcp/asset/200ebbe2-caba-4f70-9214-b5d58b0e2045" width="36" height="36" alt="">
+                <svg width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="m0a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="0" width="33" height="33"><circle cx="19.4844" cy="16.9036" r="16" fill="#D9D9D9"/></mask><g mask="url(#m0a)"><g filter="url(#f0a)"><ellipse cx="15.7636" cy="18.0136" rx="11.7636" ry="10.6496" fill="#EF4C00"/><ellipse cx="24.3686" cy="10.6232" rx="10.7441" ry="6.62315" fill="#32C898"/><ellipse cx="18.7558" cy="24.4901" rx="10.7441" ry="6.62315" fill="#FFCB31"/><ellipse cx="24.843" cy="17.4464" rx="9.07986" ry="5.59723" fill="#32C898"/></g></g><circle cx="19.0633" cy="17.3243" r="11.3685" fill="url(#g0a)" fill-opacity="0.72"/><circle cx="19.0633" cy="17.3243" r="11.6614" stroke="white" stroke-opacity="0.8" stroke-width="0.585859"/><g filter="url(#f1a)"><circle cx="25.3788" cy="16.0612" r="3.07547" stroke="white" stroke-width="1.42803" shape-rendering="crispEdges"/></g><defs><filter id="f0a" x="0" y="0" width="39.1128" height="35.1133" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur"/></filter><filter id="f1a" x="20.1613" y="12.2717" width="10.4352" height="10.4349" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="1.42803"/><feGaussianBlur stdDeviation="0.714015"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><radialGradient id="g0a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(19.0633 17.3243) rotate(90) scale(12)"><stop offset="0.8" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/></radialGradient></defs></svg>
                 <span class="metric-value">4.3/5</span>
               </div>
               <div class="delta delta-up">
@@ -1004,7 +1009,7 @@
           <div class="perf-metric-card">
             <div class="perf-metric-label">Customer satisfaction</div>
             <div class="perf-metric-stats">
-              <img src="https://www.figma.com/api/mcp/asset/200ebbe2-caba-4f70-9214-b5d58b0e2045" width="32" height="32" alt="">
+              <svg width="32" height="29" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="m0b" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="0" width="33" height="33"><circle cx="19.4844" cy="16.9036" r="16" fill="#D9D9D9"/></mask><g mask="url(#m0b)"><g filter="url(#f0b)"><ellipse cx="15.7636" cy="18.0136" rx="11.7636" ry="10.6496" fill="#EF4C00"/><ellipse cx="24.3686" cy="10.6232" rx="10.7441" ry="6.62315" fill="#32C898"/><ellipse cx="18.7558" cy="24.4901" rx="10.7441" ry="6.62315" fill="#FFCB31"/><ellipse cx="24.843" cy="17.4464" rx="9.07986" ry="5.59723" fill="#32C898"/></g></g><circle cx="19.0633" cy="17.3243" r="11.3685" fill="url(#g0b)" fill-opacity="0.72"/><circle cx="19.0633" cy="17.3243" r="11.6614" stroke="white" stroke-opacity="0.8" stroke-width="0.585859"/><g filter="url(#f1b)"><circle cx="25.3788" cy="16.0612" r="3.07547" stroke="white" stroke-width="1.42803" shape-rendering="crispEdges"/></g><defs><filter id="f0b" x="0" y="0" width="39.1128" height="35.1133" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur"/></filter><filter id="f1b" x="20.1613" y="12.2717" width="10.4352" height="10.4349" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="1.42803"/><feGaussianBlur stdDeviation="0.714015"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><radialGradient id="g0b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(19.0633 17.3243) rotate(90) scale(12)"><stop offset="0.8" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/></radialGradient></defs></svg>
               <span class="perf-metric-value">4.3/5</span>
             </div>
             <div class="perf-metric-delta perf-delta-up">

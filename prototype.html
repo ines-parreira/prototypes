@@ -27,7 +27,7 @@
     .product-header { display: flex; align-items: center; justify-content: space-between; padding-left: 2px; }
     .product-logo { display: flex; align-items: center; gap: 2px; }
     .product-icon {
-      width: 32px; height: 32px; background: #7e55f6;
+      width: 32px; height: 32px; background: none;
       border: none; border-radius: 8px;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
@@ -49,7 +49,7 @@
     .nav-item.active .nav-label { font-size: 14px; font-weight: 600; color: #683fcf; }
     .nav-item.secondary { color: #1e242e; }
     .nav-item.secondary .nav-label { font-size: 14px; font-weight: 500; color: #1e242e; }
-    .nav-item.recent .nav-label { font-size: 14px; font-weight: 400; color: #1e242e; }
+    .nav-item.recent .nav-label { font-size: 14px; font-weight: 400; color: #1e242e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Recents */
     .recents-group { display: flex; flex-direction: column; gap: 4px; }
@@ -203,6 +203,7 @@
       width: 600px; border: 1px solid rgba(0,0,0,0.08);
       border-radius: 12px; overflow: hidden; background: white;
       box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
     .chat-input-inner {
       display: flex; align-items: center; justify-content: space-between;
@@ -616,7 +617,7 @@
 
     /* ── Chat conversation view ──────────────────────────────────────── */
     .chat-view-header {
-      padding: 14px 24px; border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 14px 24px;
       flex-shrink: 0; display: flex; align-items: center; gap: 10px;
     }
     .chat-view-back {
@@ -628,6 +629,11 @@
     .chat-view-title { font-size: 14px; font-weight: 600; color: #1e242e; }
     .chat-messages {
       flex: 1; overflow-y: auto; padding: 28px 24px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    /* Inner wrapper — constrains thread to 600px, matching the input box width */
+    .chat-messages-inner {
+      width: 100%; max-width: 600px;
       display: flex; flex-direction: column; gap: 20px;
     }
     /* User bubble — light grey */
@@ -662,9 +668,34 @@
       flex-shrink: 0; display: flex; justify-content: center;
     }
     .chat-view-footer .chat-input-box { width: 100%; max-width: 600px; }
+    .chat-input-box:focus-within {
+      border-color: #683fcf;
+      box-shadow: 0 0 0 3px rgba(104,63,207,0.12), 0 4px 24px 0 rgba(0,0,0,0.08);
+    }
 
     /* Active state for recent items */
     .nav-item.recent.active { background: rgba(103,63,207,0.08); border-radius: 8px; }
+
+    /* Nav badge (count pill) */
+    .nav-badge {
+      margin-left: auto; font-size: 11px; font-weight: 500;
+      color: #5c6370; background: rgba(0,0,0,0.06);
+      border-radius: 10px; padding: 1px 6px; flex-shrink: 0;
+    }
+    .nav-item.active .nav-badge { background: rgba(104,63,207,0.12); color: #683fcf; }
+
+    /* Opportunities empty state */
+    .opps-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      padding: 40px 24px; text-align: center;
+    }
+    .opps-empty-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: #f5f3ff; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
+    }
+    .opps-empty-title { font-size: 14px; font-weight: 600; color: #1e242e; }
+    .opps-empty-desc  { font-size: 13px; color: #9ea6b3; max-width: 260px; line-height: 1.5; }
     .nav-item.recent.active .nav-label { color: #683fcf; font-weight: 500; }
 
     /* Experiments empty state */
@@ -692,9 +723,9 @@
       <div class="product-header">
         <div class="product-logo">
           <div class="product-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.8426 14.4231V9.67768C16.8426 9.22065 16.8422 8.992 16.7867 8.77933C16.7374 8.59086 16.6566 8.41251 16.5472 8.25134C16.4237 8.06947 16.2521 7.91865 15.9081 7.61769L11.8025 4.02527C11.1639 3.46649 10.8446 3.18724 10.4852 3.08097C10.1686 2.98733 9.8311 2.98733 9.51446 3.08097C9.15538 3.18716 8.83654 3.46614 8.1989 4.02408L4.09192 7.61769C3.74796 7.91865 3.57638 8.06947 3.45292 8.25134C3.34351 8.41251 3.26205 8.59086 3.2128 8.77933C3.15723 8.992 3.15723 9.22064 3.15723 9.67768V14.4231C3.15723 15.2201 3.15723 15.6185 3.28744 15.9329C3.46107 16.352 3.79387 16.6855 4.21303 16.8591C4.52741 16.9893 4.92595 16.9893 5.72302 16.9893C6.5201 16.9893 6.91907 16.9893 7.23345 16.8591C7.65261 16.6855 7.98533 16.3521 8.15895 15.933C8.28917 15.6186 8.28926 15.22 8.28926 14.423V13.5676C8.28926 12.6229 9.05515 11.857 9.99993 11.857C10.9447 11.857 11.7106 12.6229 11.7106 13.5676V14.423C11.7106 15.22 11.7106 15.6186 11.8408 15.933C12.0144 16.3521 12.3473 16.6855 12.7664 16.8591C13.0808 16.9893 13.4793 16.9893 14.2764 16.9893C15.0735 16.9893 15.4725 16.9893 15.7868 16.8591C16.206 16.6855 16.5387 16.352 16.7123 15.9329C16.8425 15.6185 16.8426 15.2201 16.8426 14.4231Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#213B56"/><path d="M8.00034 7.93848C13.9466 7.93848 15.433 11.9027 15.433 13.8848V26.2461C14.0978 26.2461 12.9885 26.0047 12.0697 25.6055V22.9209L11.0521 22.6084V25.0527C8.66497 23.4581 7.98239 20.6395 8.00034 18.9697V7.93848ZM24.0003 18.9697C24.0267 21.3951 22.5612 26.2461 16.4896 26.2461V13.8848C16.4895 11.9028 17.9918 7.93854 24.0003 7.93848V18.9697ZM13.0863 21.4346L14.1029 21.7871V19.8311L13.0863 19.5186V21.4346ZM11.0521 20.7305L12.0697 21.083V19.166L11.0521 18.8535V20.7305ZM9.0189 20.0664L10.0355 20.418V18.501L9.0189 18.1885V20.0664ZM13.0863 17.6787L14.1029 18.0312V16.0752L13.0863 15.7617V17.6787ZM11.0521 16.9746L12.0697 17.3271V15.4102L11.0521 15.0967V16.9746ZM9.0189 16.3096L10.0355 16.6621V14.7451L9.0189 14.4326V16.3096ZM13.0863 13.9238L14.1029 14.2764V12.3203L13.0863 12.0068V13.9238ZM11.0521 13.2197L12.0697 13.5723V11.6553L11.0521 11.3418V13.2197ZM9.0189 12.5547L10.0355 12.9072V10.9902L9.0189 10.6777V12.5547ZM17.9369 8.95605C17.2849 9.52979 15.9808 10.8807 15.9808 11.6943C15.9808 10.8807 14.6768 9.52987 14.0248 8.95605L15.9808 7L17.9369 8.95605Z" fill="white"/></svg>
           </div>
-          <span class="product-name">Home</span>
+          <span class="product-name">UrbanStems</span>
         </div>
         <div class="header-actions">
           <button class="icon-btn" title="Search">
@@ -716,6 +747,9 @@
         </div>
         <div class="nav-item secondary" id="nav-skills">
           <span class="nav-label">Skills</span>
+        </div>
+        <div class="nav-item secondary" id="nav-outbound">
+          <span class="nav-label">Outbound</span>
         </div>
         <div class="nav-item secondary" id="nav-knowledge">
           <span class="nav-label">Knowledge</span>
@@ -770,7 +804,7 @@
         </div>
       </div>
       <button class="avatar-btn">
-        <div class="avatar">U</div>
+        <div class="avatar">M</div>
         <div class="online-dot"></div>
       </button>
     </div>
@@ -782,14 +816,14 @@
 
       <!-- Page header -->
       <div class="page-header">
-        <h1 class="greeting">Good morning, UrbanStems!</h1>
+        <h1 class="greeting">Good morning, Maya!</h1>
         <div class="date-tag" style="background: white; border: 1px solid #e8e8ec;">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <rect x="1.5" y="2.5" width="11" height="10" rx="1.5" stroke="#6e7686" stroke-width="1.2"/>
             <path d="M4.5 1.5V3.5M9.5 1.5V3.5" stroke="#6e7686" stroke-width="1.2" stroke-linecap="round"/>
             <path d="M1.5 6H12.5" stroke="#6e7686" stroke-width="1.2"/>
           </svg>
-          April 9, 2026 · 8:47 AM
+          April 16, 2026 · 8:47 AM
         </div>
       </div>
 
@@ -895,7 +929,7 @@
             <div class="metric-label">Customer satisfaction</div>
             <div>
               <div class="metric-value-row">
-                <img src="https://www.figma.com/api/mcp/asset/200ebbe2-caba-4f70-9214-b5d58b0e2045" width="36" height="36" alt="">
+                <svg width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="mask0_234_34848" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="0" width="33" height="33"><circle cx="19.4844" cy="16.9036" r="16" fill="#D9D9D9"/></mask><g mask="url(#mask0_234_34848)"><g filter="url(#filter0_f_234_34848)"><ellipse cx="15.7636" cy="18.0136" rx="11.7636" ry="10.6496" fill="#EF4C00"/><ellipse cx="24.3686" cy="10.6232" rx="10.7441" ry="6.62315" fill="#32C898"/><ellipse cx="18.7558" cy="24.4901" rx="10.7441" ry="6.62315" fill="#FFCB31"/><ellipse cx="24.843" cy="17.4464" rx="9.07986" ry="5.59723" fill="#32C898"/></g></g><circle cx="19.0633" cy="17.3243" r="11.3685" fill="url(#paint0_radial_234_34848)" fill-opacity="0.72"/><circle cx="19.0633" cy="17.3243" r="11.6614" stroke="white" stroke-opacity="0.8" stroke-width="0.585859"/><g filter="url(#filter1_d_234_34848)"><circle cx="25.3788" cy="16.0612" r="3.07547" stroke="white" stroke-width="1.42803" shape-rendering="crispEdges"/></g><defs><filter id="filter0_f_234_34848" x="0" y="0" width="39.1128" height="35.1133" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_234_34848"/></filter><filter id="filter1_d_234_34848" x="20.1613" y="12.2717" width="10.4352" height="10.4349" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="1.42803"/><feGaussianBlur stdDeviation="0.714015"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_234_34848"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_234_34848" result="shape"/></filter><radialGradient id="paint0_radial_234_34848" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(19.0633 17.3243) rotate(90) scale(12)"><stop offset="0.8" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/></radialGradient></defs></svg>
                 <span class="metric-value">4.3/5</span>
               </div>
               <div class="delta delta-up">
@@ -940,6 +974,17 @@
           </div>
 
         </div>
+
+        <!-- Opportunities section -->
+        <div class="attention-section">
+          <div class="attention-header">
+            Opportunities <span class="attention-count">0</span>
+          </div>
+          <div class="opps-empty" style="padding:24px 0 8px;">
+            <div class="opps-empty-desc">Opportunities will be surfaced here</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </main>
@@ -976,7 +1021,7 @@
             <div class="perf-metric-stats"><span class="perf-metric-value">91%</span></div>
             <div class="perf-delta-neutral">
               <div class="perf-dot-green"></div>
-              Holding steady
+              Stable
             </div>
           </div>
 
@@ -1004,7 +1049,7 @@
           <div class="perf-metric-card">
             <div class="perf-metric-label">Customer satisfaction</div>
             <div class="perf-metric-stats">
-              <img src="https://www.figma.com/api/mcp/asset/200ebbe2-caba-4f70-9214-b5d58b0e2045" width="32" height="32" alt="">
+              <svg width="32" height="29" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="m0c" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="0" width="33" height="33"><circle cx="19.4844" cy="16.9036" r="16" fill="#D9D9D9"/></mask><g mask="url(#m0c)"><g filter="url(#f0c)"><ellipse cx="15.7636" cy="18.0136" rx="11.7636" ry="10.6496" fill="#EF4C00"/><ellipse cx="24.3686" cy="10.6232" rx="10.7441" ry="6.62315" fill="#32C898"/><ellipse cx="18.7558" cy="24.4901" rx="10.7441" ry="6.62315" fill="#FFCB31"/><ellipse cx="24.843" cy="17.4464" rx="9.07986" ry="5.59723" fill="#32C898"/></g></g><circle cx="19.0633" cy="17.3243" r="11.3685" fill="url(#g0c)" fill-opacity="0.72"/><circle cx="19.0633" cy="17.3243" r="11.6614" stroke="white" stroke-opacity="0.8" stroke-width="0.585859"/><g filter="url(#f1c)"><circle cx="25.3788" cy="16.0612" r="3.07547" stroke="white" stroke-width="1.42803" shape-rendering="crispEdges"/></g><defs><filter id="f0c" x="0" y="0" width="39.1128" height="35.1133" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur"/></filter><filter id="f1c" x="20.1613" y="12.2717" width="10.4352" height="10.4349" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="1.42803"/><feGaussianBlur stdDeviation="0.714015"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><radialGradient id="g0c" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(19.0633 17.3243) rotate(90) scale(12)"><stop offset="0.8" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/></radialGradient></defs></svg>
               <span class="perf-metric-value">4.3/5</span>
             </div>
             <div class="perf-metric-delta perf-delta-up">
@@ -1118,56 +1163,57 @@
             <!-- Daily ticket volume chart -->
             <div class="vol-chart-section">
               <div class="vol-card-label">Daily ticket volume</div>
-              <svg viewBox="0 0 520 130" style="width:100%; display:block;">
-                <!-- Horizontal grid lines -->
-                <line x1="38" y1="8"   x2="518" y2="8"   stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="32"  x2="518" y2="32"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="57"  x2="518" y2="57"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="81"  x2="518" y2="81"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="105" x2="518" y2="105" stroke="#e5e7eb" stroke-width="0.8"/>
+              <!-- viewBox 520×248 matches Figma's ~2.5:1 aspect ratio (4 grid rows × ~53px each) -->
+              <svg viewBox="0 0 520 248" style="width:100%; height:150px; display:block;">
+                <!-- Horizontal grid lines — dashed except baseline -->
+                <line x1="38" y1="16"  x2="518" y2="16"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="69"  x2="518" y2="69"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="122" x2="518" y2="122" stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="175" x2="518" y2="175" stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="228" x2="518" y2="228" stroke="#c8cbd0" stroke-width="0.8"/>
                 <!-- Y-axis labels -->
-                <text x="33" y="11"  text-anchor="end" font-size="9" fill="#9ea6b3">2K</text>
-                <text x="33" y="35"  text-anchor="end" font-size="9" fill="#9ea6b3">1.5K</text>
-                <text x="33" y="60"  text-anchor="end" font-size="9" fill="#9ea6b3">1K</text>
-                <text x="33" y="84"  text-anchor="end" font-size="9" fill="#9ea6b3">500</text>
-                <text x="33" y="108" text-anchor="end" font-size="9" fill="#9ea6b3">0</text>
-                <!-- Jun 1: total=960, esc=280, auto=680 -->
-                <rect x="50"  y="58"  width="44" height="33" rx="2" fill="#F4956A"/>
-                <rect x="50"  y="91"  width="44" height="14" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 2: total=880, esc=150, auto=730 -->
-                <rect x="119" y="62"  width="44" height="36" rx="2" fill="#F4956A"/>
-                <rect x="119" y="98"  width="44" height="7"  rx="2" fill="#7B6CF6"/>
-                <!-- Jun 3: total=1350, esc=200, auto=1150 -->
-                <rect x="188" y="39"  width="44" height="56" rx="2" fill="#F4956A"/>
-                <rect x="188" y="95"  width="44" height="10" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 4: total=1310, esc=210, auto=1100 -->
-                <rect x="257" y="42"  width="44" height="53" rx="2" fill="#F4956A"/>
-                <rect x="257" y="95"  width="44" height="10" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 5: total=1100, esc=200, auto=900 -->
-                <rect x="326" y="52"  width="44" height="43" rx="2" fill="#F4956A"/>
-                <rect x="326" y="95"  width="44" height="10" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 6: total=1080, esc=290, auto=790 -->
-                <rect x="395" y="53"  width="44" height="38" rx="2" fill="#F4956A"/>
-                <rect x="395" y="91"  width="44" height="14" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 7: total=1500, esc=400, auto=1100 -->
-                <rect x="464" y="33"  width="44" height="53" rx="2" fill="#F4956A"/>
-                <rect x="464" y="86"  width="44" height="19" rx="2" fill="#7B6CF6"/>
+                <text x="33" y="20"  text-anchor="end" font-size="9" fill="#9ea6b3">2K</text>
+                <text x="33" y="73"  text-anchor="end" font-size="9" fill="#9ea6b3">1.5K</text>
+                <text x="33" y="126" text-anchor="end" font-size="9" fill="#9ea6b3">1K</text>
+                <text x="33" y="179" text-anchor="end" font-size="9" fill="#9ea6b3">500</text>
+                <text x="33" y="232" text-anchor="end" font-size="9" fill="#9ea6b3">0</text>
+                <!-- Jun 1: escalated=813 (86px), automated=671 (71px), total≈1484 -->
+                <rect x="50"  y="71"  width="44" height="71" rx="2" fill="#ff9780"/>
+                <rect x="50"  y="142" width="44" height="86" rx="2" fill="#7e55f6"/>
+                <!-- Jun 2: escalated=305 (32px), automated=671 (71px), total≈976 -->
+                <rect x="119" y="125" width="44" height="71" rx="2" fill="#ff9780"/>
+                <rect x="119" y="196" width="44" height="32" rx="2" fill="#7e55f6"/>
+                <!-- Jun 3: escalated=305 (32px), automated=1016 (108px), total≈1321 -->
+                <rect x="188" y="88"  width="44" height="108" rx="2" fill="#ff9780"/>
+                <rect x="188" y="196" width="44" height="32"  rx="2" fill="#7e55f6"/>
+                <!-- Jun 4: same as Jun 3 -->
+                <rect x="257" y="88"  width="44" height="108" rx="2" fill="#ff9780"/>
+                <rect x="257" y="196" width="44" height="32"  rx="2" fill="#7e55f6"/>
+                <!-- Jun 5: escalated=772 (82px), automated=356 (38px), total≈1128 -->
+                <rect x="326" y="108" width="44" height="38" rx="2" fill="#ff9780"/>
+                <rect x="326" y="146" width="44" height="82" rx="2" fill="#7e55f6"/>
+                <!-- Jun 6: same as Jun 5 -->
+                <rect x="395" y="108" width="44" height="38" rx="2" fill="#ff9780"/>
+                <rect x="395" y="146" width="44" height="82" rx="2" fill="#7e55f6"/>
+                <!-- Jun 7: same as Jun 1 -->
+                <rect x="464" y="71"  width="44" height="71" rx="2" fill="#ff9780"/>
+                <rect x="464" y="142" width="44" height="86" rx="2" fill="#7e55f6"/>
                 <!-- X-axis labels -->
-                <text x="72"  y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 1</text>
-                <text x="141" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 2</text>
-                <text x="210" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 3</text>
-                <text x="279" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 4</text>
-                <text x="348" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 5</text>
-                <text x="417" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 6</text>
-                <text x="486" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 7</text>
+                <text x="72"  y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 1</text>
+                <text x="141" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 2</text>
+                <text x="210" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 3</text>
+                <text x="279" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 4</text>
+                <text x="348" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 5</text>
+                <text x="417" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 6</text>
+                <text x="486" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 7</text>
               </svg>
               <div class="vol-legend">
                 <div class="vol-legend-item">
-                  <div class="vol-legend-dot" style="background:#7B6CF6;"></div>
+                  <div class="vol-legend-dot" style="background:#7e55f6;"></div>
                   Escalated
                 </div>
                 <div class="vol-legend-item">
-                  <div class="vol-legend-dot" style="background:#F4956A;"></div>
+                  <div class="vol-legend-dot" style="background:#ff9780;"></div>
                   Automated
                 </div>
               </div>
@@ -1207,7 +1253,9 @@
       </div>
 
       <!-- Messages -->
-      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-messages-inner" id="chat-messages-inner"></div>
+      </div>
 
       <!-- Footer input -->
       <div class="chat-view-footer">
@@ -1312,8 +1360,8 @@
 
   // All top-level nav item IDs and their corresponding page main IDs
   const NAV_PAGES = {
-    'nav-digest':      'main-digest',
-    'nav-performance': 'main-performance',
+    'nav-digest':        'main-digest',
+    'nav-performance':   'main-performance',
   };
 
   function setActiveNav(activeId) {
@@ -1351,6 +1399,7 @@
     showMain('main-performance');
     setActiveNav('nav-performance');
   }
+
 
   function showSpike() {
     document.getElementById('app-shell').style.display = 'none';
@@ -1410,7 +1459,7 @@
     const row = document.createElement('div');
     row.className = 'chat-msg-row-user';
     row.innerHTML = `<div class="chat-bubble-user">${text.replace(/</g,'&lt;')}</div>`;
-    document.getElementById('chat-messages').appendChild(row);
+    document.getElementById('chat-messages-inner').appendChild(row);
   }
 
   // Append the animated thinking indicator, returns the element so it can be removed
@@ -1418,7 +1467,7 @@
     const row = document.createElement('div');
     row.className = 'chat-msg-row-agent';
     row.innerHTML = `<span class="chat-thinking-text">Thinking...</span>`;
-    document.getElementById('chat-messages').appendChild(row);
+    document.getElementById('chat-messages-inner').appendChild(row);
     return row;
   }
 
@@ -1438,7 +1487,7 @@
     if (!text) return;
     const title = generateTitle(text);
     // Clear messages
-    document.getElementById('chat-messages').innerHTML = '';
+    document.getElementById('chat-messages-inner').innerHTML = '';
     // Add to recents; clicking it reopens this chat
     addRecentItem(title, () => openChatView(title));
     // Open view
@@ -1455,7 +1504,7 @@
   function submitReply(text) {
     if (!text) return;
     // Remove any existing thinking indicator before adding new message
-    const existing = document.querySelector('#chat-messages .chat-msg-row-agent:last-child');
+    const existing = document.querySelector('#chat-messages-inner .chat-msg-row-agent:last-child');
     if (existing) existing.remove();
     appendUserMessage(text);
     appendThinking();
@@ -1485,7 +1534,7 @@
 
   // ── ElevenLabs narration — persistent playback ──────────────────────
   const ELEVEN_API_KEY  = 'sk_bdb72b91df9a9340374c092f7ce565c7d91c36dee0d7cc08';
-  const ELEVEN_VOICE_ID = 'IKne3meq5aSn9XLyUdCD';
+  const ELEVEN_VOICE_ID = 'XrExE9yKIg1WjnnlVkGX';
 
   const NARRATION_TEXT = `Good morning. Here's your daily digest for April 9th.
 
@@ -1613,7 +1662,10 @@ Second, an alert from overnight: 4 customers asked whether their bouquet is safe
             })
           }
         );
-        if (!res.ok) throw new Error('ElevenLabs API error');
+        if (!res.ok) {
+          const errBody = await res.text();
+          throw new Error(`ElevenLabs ${res.status}: ${errBody}`);
+        }
         cachedAudioUrl = URL.createObjectURL(await res.blob());
       }
 
@@ -1628,7 +1680,7 @@ Second, an alert from overnight: 4 customers asked whether their bouquet is safe
       audioState = 'idle';
       setTimeDisplays(totalDuration || 0);
       refreshPlaybackUI();
-      alert('Could not load narration. Check the console for details.');
+      alert('Could not load narration: ' + err.message);
     }
   }
 
