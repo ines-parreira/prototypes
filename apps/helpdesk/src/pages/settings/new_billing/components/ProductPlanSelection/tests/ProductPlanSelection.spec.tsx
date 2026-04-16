@@ -5,7 +5,14 @@ import {
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -203,6 +210,52 @@ describe('ProductPlanSelection', () => {
             getByRole('button', { name: 'Cancel auto-renewal' }),
         ).toBeInTheDocument()
         expect(getByTestId('cancel-product-modal')).toBeInTheDocument()
+    })
+
+    it('displays "Changing on" badge when product has scheduled change', () => {
+        render(
+            <Provider store={store}>
+                <ProductPlanSelection
+                    {...props}
+                    scheduledToCancelAt="2025-12-31T23:59:59Z"
+                    hasScheduledChange
+                />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByText(/Changing on December 31, 2025/i),
+        ).toBeInTheDocument()
+        expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
+    })
+
+    it('disables cancel auto-renewal when product has scheduled change', async () => {
+        const user = userEvent.setup()
+
+        useIsCancellationAvailableMock.mockImplementation(() => true)
+
+        render(
+            <Provider store={store}>
+                <ProductPlanSelection
+                    {...props}
+                    scheduledToCancelAt="2025-12-31T23:59:59Z"
+                    hasScheduledChange
+                />
+            </Provider>,
+        )
+
+        const cancelButton = screen.getByRole('button', {
+            name: 'Cancel auto-renewal',
+        })
+        expect(cancelButton).toBeAriaDisabled()
+
+        await user.hover(cancelButton)
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/Your product has a scheduled change/i),
+            ).toBeInTheDocument()
+        })
     })
 
     it('opens the cancel product modal flow', async () => {

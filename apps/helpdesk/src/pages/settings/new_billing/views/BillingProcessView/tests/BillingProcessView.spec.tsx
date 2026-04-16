@@ -1,6 +1,7 @@
 import client from '@repo/api-resources'
 import { useBillingState } from '@repo/billing'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -44,6 +45,8 @@ const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 jest.mock('@repo/logging')
+jest.mock('@repo/feature-flags')
+const useFlagMock = assumeMock(useFlag)
 const logEventMock = assumeMock(logEvent)
 jest.mock(
     '../../../components/ScheduledCancellationSummary/ScheduledCancellationSummary',
@@ -126,6 +129,7 @@ describe('BillingProcessView', () => {
         mockUseProductCancellations.mockReturnValue({
             data: new Map(),
         } as any)
+        useFlagMock.mockReturnValue(false)
         mockUseIsPaymentEnabled.mockReturnValue(true)
         logEventMock.mockClear()
         SummaryTotalMock.mockClear()
@@ -134,6 +138,7 @@ describe('BillingProcessView', () => {
 
     afterEach(() => {
         mockUseProductCancellations.mockReset()
+        useFlagMock.mockReset()
         mockUseIsPaymentEnabled.mockReset()
         logEventMock.mockReset()
         SummaryTotalMock.mockReset()
@@ -1447,6 +1452,213 @@ describe('BillingProcessView', () => {
             })
 
             expect(mockHistoryPush).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Scheduled change blocking (mid-cycle upgrade flag)', () => {
+        it('should block product with scheduled change when flag is enabled', async () => {
+            useFlagMock.mockImplementation(
+                (key: string) =>
+                    key === FeatureFlagKey.MidCycleUpgradeBillingLogic,
+            )
+
+            const automationPlan = basicMonthlyAutomationPlan
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                data: {
+                    subscription: {
+                        current_billing_cycle_end_datetime:
+                            '2026-12-31T23:59:59Z',
+                        scheduled_changes: [
+                            {
+                                current_plan_id: automationPlan.plan_id,
+                                scheduled_change_types: ['DOWNGRADE'],
+                                scheduled_plan: {
+                                    ...automationPlan,
+                                    plan_id: 'downgraded_plan',
+                                    amount: 5000,
+                                },
+                            },
+                        ],
+                    },
+                    current_plans: {
+                        helpdesk: basicMonthlyHelpdeskPlan,
+                        automate: automationPlan,
+                        voice: null,
+                        sms: null,
+                        convert: null,
+                    },
+                },
+            } as any)
+
+            const storeWithAutomation = {
+                ...storeInitialState,
+                billing: fromJS({
+                    invoices: [],
+                    products,
+                    currentProductsUsage: {
+                        helpdesk: {
+                            data: {
+                                extra_tickets_cost_in_cents: 0,
+                                num_extra_tickets: 0,
+                                num_tickets: 0,
+                            },
+                            meta: {
+                                subscription_start_datetime:
+                                    '2021-01-01T00:00:00Z',
+                                subscription_end_datetime:
+                                    '2021-02-01T00:00:00Z',
+                            },
+                        },
+                        automation: currentProductsUsage.automation,
+                        voice: null,
+                        sms: null,
+                    },
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [AUTOMATION_PRODUCT_ID]: automationPlan.plan_id,
+                        },
+                        scheduled_to_cancel_at: null,
+                    },
+                }),
+            }
+
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeWithAutomation,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.getByText(/Changing on December 31, 2026/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should preserve existing behavior when flag is disabled even with scheduled change data', async () => {
+            useFlagMock.mockReturnValue(false)
+
+            const automationPlan = basicMonthlyAutomationPlan
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                data: {
+                    subscription: {
+                        current_billing_cycle_end_datetime:
+                            '2026-12-31T23:59:59Z',
+                        scheduled_changes: [
+                            {
+                                current_plan_id: automationPlan.plan_id,
+                                scheduled_change_types: ['DOWNGRADE'],
+                                scheduled_plan: {
+                                    ...automationPlan,
+                                    plan_id: 'downgraded_plan',
+                                    amount: 5000,
+                                },
+                            },
+                        ],
+                    },
+                    current_plans: {
+                        helpdesk: basicMonthlyHelpdeskPlan,
+                        automate: automationPlan,
+                        voice: null,
+                        sms: null,
+                        convert: null,
+                    },
+                },
+            } as any)
+
+            const storeWithAutomation = {
+                ...storeInitialState,
+                billing: fromJS({
+                    invoices: [],
+                    products,
+                    currentProductsUsage: {
+                        helpdesk: {
+                            data: {
+                                extra_tickets_cost_in_cents: 0,
+                                num_extra_tickets: 0,
+                                num_tickets: 0,
+                            },
+                            meta: {
+                                subscription_start_datetime:
+                                    '2021-01-01T00:00:00Z',
+                                subscription_end_datetime:
+                                    '2021-02-01T00:00:00Z',
+                            },
+                        },
+                        automation: currentProductsUsage.automation,
+                        voice: null,
+                        sms: null,
+                    },
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [AUTOMATION_PRODUCT_ID]: automationPlan.plan_id,
+                        },
+                        scheduled_to_cancel_at: null,
+                    },
+                }),
+            }
+
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeWithAutomation,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByText(/Changing on December 31, 2026/i),
+            ).not.toBeInTheDocument()
+
+            const removeProductButton = screen.getByRole('button', {
+                name: 'Remove product',
+            })
+            expect(removeProductButton).not.toHaveAttribute(
+                'aria-disabled',
+                'true',
+            )
         })
     })
 })

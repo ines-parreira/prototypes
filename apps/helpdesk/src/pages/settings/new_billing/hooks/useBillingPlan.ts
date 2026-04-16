@@ -12,6 +12,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -637,6 +639,10 @@ export const useBillingPlans = ({
                     // Invalidate subscription to refresh "Active until" badges and derived data
                     void queryClient.invalidateQueries({
                         queryKey: getSubscriptionQuery.queryKey,
+                    })
+                    // Invalidate billing state to refresh scheduled changes blocking
+                    void queryClient.invalidateQueries({
+                        queryKey: queryKeys.billing.getBillingState(),
                     })
                 }
             } catch (error) {

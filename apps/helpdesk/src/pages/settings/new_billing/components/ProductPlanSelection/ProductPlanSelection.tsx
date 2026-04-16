@@ -62,6 +62,7 @@ export type ProductPlanSelectionProps = {
     customer?: CustomerSummary | null
     updateSubscription: () => Promise<unknown>
     scheduledToCancelAt?: string | null
+    hasScheduledChange?: boolean
     cancelledProducts?: ProductType[]
     contactBilling: (ticketPurpose: TicketPurpose) => void
 }
@@ -81,6 +82,7 @@ const ProductPlanSelection = ({
     customer,
     updateSubscription,
     scheduledToCancelAt,
+    hasScheduledChange = false,
     cancelledProducts = [],
     contactBilling,
 }: ProductPlanSelectionProps) => {
@@ -261,11 +263,16 @@ const ProductPlanSelection = ({
         if (scheduledToCancelAt) {
             const formattedDate =
                 moment(scheduledToCancelAt).format(DATE_FORMAT)
+            if (hasScheduledChange) {
+                return (
+                    <Tag color={Color.Orange}>Changing on {formattedDate}</Tag>
+                )
+            }
             return <Tag color={Color.Orange}>Active until {formattedDate}</Tag>
         }
 
         return <Tag color={Color.Green}>Active</Tag>
-    }, [isActive, scheduledToCancelAt])
+    }, [isActive, scheduledToCancelAt, hasScheduledChange])
 
     const handleOpen = useCallback(() => {
         const initialPlan =
@@ -324,12 +331,26 @@ const ProductPlanSelection = ({
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
         : undefined
 
-    const disabledDueToScheduledCancellation = !!scheduledToCancelAt
+    const disabledDueToScheduledChange = !!scheduledToCancelAt
 
     const isSelectFieldDisabled =
-        !editingAvailable || disabledDueToScheduledCancellation
+        !editingAvailable || disabledDueToScheduledChange
 
-    const scheduledCancellationTooltip = useMemo(() => {
+    const scheduledChangeTooltip = useMemo(() => {
+        if (hasScheduledChange) {
+            return (
+                <>
+                    Your product has a scheduled change. To modify, please{' '}
+                    <span
+                        className={css.link}
+                        onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
+                    >
+                        get in touch
+                    </span>{' '}
+                    with our team.
+                </>
+            )
+        }
         return (
             <>
                 Your product is scheduled to cancel. To reactivate, please{' '}
@@ -342,19 +363,19 @@ const ProductPlanSelection = ({
                 with our team.
             </>
         )
-    }, [contactBilling])
+    }, [contactBilling, hasScheduledChange])
 
     const renderRemoveProductButton = useCallback(
         (onClick: () => void) => {
             return (
                 <>
-                    {disabledDueToScheduledCancellation && (
+                    {disabledDueToScheduledChange && (
                         <Tooltip
                             placement="top"
                             target={`remove-product-${type}`}
                             autohide={false}
                         >
-                            {scheduledCancellationTooltip}
+                            {scheduledChangeTooltip}
                         </Tooltip>
                     )}
                     <Button
@@ -368,7 +389,7 @@ const ProductPlanSelection = ({
                             )
                             onClick()
                         }}
-                        isDisabled={disabledDueToScheduledCancellation}
+                        isDisabled={disabledDueToScheduledChange}
                         id={`remove-product-${type}`}
                     >
                         Remove product
@@ -376,11 +397,7 @@ const ProductPlanSelection = ({
                 </>
             )
         },
-        [
-            disabledDueToScheduledCancellation,
-            scheduledCancellationTooltip,
-            type,
-        ],
+        [disabledDueToScheduledChange, scheduledChangeTooltip, type],
     )
 
     const renderHeader = () => {
@@ -443,19 +460,32 @@ const ProductPlanSelection = ({
         }
         if (type === ProductType.Helpdesk && isCancellationAvailable) {
             return (
-                <Button
-                    fillStyle="ghost"
-                    intent="destructive"
-                    size="small"
-                    onClick={() => {
-                        logEvent(
-                            SegmentEvent.BillingUsageAndPlansCancelAutoRenewalClicked,
-                        )
-                        handleOnCancelAutoRenewal()
-                    }}
-                >
-                    Cancel auto-renewal
-                </Button>
+                <>
+                    {hasScheduledChange && (
+                        <Tooltip
+                            placement="top"
+                            target={`cancel-auto-renewal-${type}`}
+                            autohide={false}
+                        >
+                            {scheduledChangeTooltip}
+                        </Tooltip>
+                    )}
+                    <Button
+                        fillStyle="ghost"
+                        intent="destructive"
+                        size="small"
+                        onClick={() => {
+                            logEvent(
+                                SegmentEvent.BillingUsageAndPlansCancelAutoRenewalClicked,
+                            )
+                            handleOnCancelAutoRenewal()
+                        }}
+                        isDisabled={hasScheduledChange}
+                        id={`cancel-auto-renewal-${type}`}
+                    >
+                        Cancel auto-renewal
+                    </Button>
+                </>
             )
         }
         if (type === ProductType.Automation) {
@@ -531,7 +561,7 @@ const ProductPlanSelection = ({
                                 target={`priceSelect_${type}_wrapper`}
                                 autohide={false}
                             >
-                                {scheduledCancellationTooltip}
+                                {scheduledChangeTooltip}
                             </Tooltip>
                         )}
                         <div className={css.counter}>

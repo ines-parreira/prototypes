@@ -206,6 +206,7 @@ const subscription: SubscriptionSummary = {
     trial_end_datetime: null,
     has_schedule: false,
     downgrade_scheduled: false,
+    scheduled_changes: [],
     scheduled_to_cancel_at: null,
     current_billing_cycle_start_datetime: '2024-07-22T00:00:00+00:00',
     current_billing_cycle_end_datetime: '2024-08-22T00:00:00+00:00',

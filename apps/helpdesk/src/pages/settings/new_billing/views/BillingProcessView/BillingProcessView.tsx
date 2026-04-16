@@ -8,6 +8,7 @@ import {
     ProductType,
     useBillingState,
 } from '@repo/billing'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -37,6 +38,7 @@ import { useBillingPlans } from '../../hooks/useBillingPlan'
 import { BillingSummaryCard } from './BillingSummaryCard'
 import { EnterprisePlanCard } from './EnterprisePlanCard'
 import { useCancellationSummary } from './hooks/useCancellationSummary'
+import { useScheduledChangesSummary } from './hooks/useScheduledChangesSummary'
 import { buildEnterpriseMessage } from './utils'
 
 import css from './BillingProcessView.less'
@@ -71,6 +73,9 @@ export const BillingProcessView = ({
     const dispatch = useAppDispatch()
     const hasCreditCard = useHasCreditCard()
     const isPaymentEnabled = !!useIsPaymentEnabled()
+    const isMidCycleUpgradeEnabled = useFlag(
+        FeatureFlagKey.MidCycleUpgradeBillingLogic,
+    )
     const [showPendingChangesModal, setShowPendingChangesModal] =
         useState(false)
     const [updateProcessStarted, setUpdateProcessStarted] = useState(false)
@@ -137,6 +142,8 @@ export const BillingProcessView = ({
             currentConvertPlan,
         })
 
+    const scheduledChanges = useScheduledChangesSummary()
+
     const plansByProduct: PlansByProduct = useMemo(
         () => ({
             [ProductType.Helpdesk]: {
@@ -196,6 +203,14 @@ export const BillingProcessView = ({
     const getScheduledToCancelAt = (type: ProductType): string | null => {
         const currentPlan = plansByProduct[type].current
         if (!currentPlan) return null
+
+        if (isMidCycleUpgradeEnabled) {
+            const scheduledChange = scheduledChanges[type]
+            if (scheduledChange) {
+                return scheduledChange.date
+            }
+        }
+
         if (type === ProductType.Helpdesk) {
             return currentSubscriptionScheduledToCancelAt || null
         }
@@ -210,6 +225,8 @@ export const BillingProcessView = ({
         type,
         ...plansByProduct[type],
         scheduledToCancelAt: getScheduledToCancelAt(type),
+        hasScheduledChange:
+            isMidCycleUpgradeEnabled && !!scheduledChanges[type],
         ...productOverrides[type],
     }))
 
@@ -357,6 +374,9 @@ export const BillingProcessView = ({
                                     updateSubscription={updateSubscription}
                                     scheduledToCancelAt={
                                         config.scheduledToCancelAt
+                                    }
+                                    hasScheduledChange={
+                                        config.hasScheduledChange
                                     }
                                     cancelledProducts={cancelledProducts}
                                     contactBilling={contactBilling}

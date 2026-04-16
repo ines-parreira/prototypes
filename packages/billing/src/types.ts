@@ -1,4 +1,4 @@
-import type { InvoiceCadence } from '@gorgias/helpdesk-types'
+import type { InvoiceCadence, ScheduledChange } from '@gorgias/helpdesk-types'
 
 export enum AccountFeature {
     Api1stPartyRateLimit = 'api_1st_party_rate_limit',
@@ -204,6 +204,7 @@ export type SubscriptionSummary = {
     trial_end_datetime: string | null
     has_schedule: boolean
     downgrade_scheduled: boolean
+    scheduled_changes: ScheduledChange[]
     scheduled_to_cancel_at: string | null
     current_billing_cycle_start_datetime: string
     current_billing_cycle_end_datetime: string
@@ -352,6 +353,15 @@ export enum VATCountries {
 }
 
 export type CancellationDates = Partial<Record<ProductType, string | null>>
+
+export type ScheduledChangeInfo = {
+    date: string
+    targetPlan: ScheduledChange['scheduled_plan']
+}
+
+export type ScheduledChangesByProduct = Partial<
+    Record<ProductType, ScheduledChangeInfo | null>
+>
 
 export type PlansByProduct = {
     [K in ProductType]: {
