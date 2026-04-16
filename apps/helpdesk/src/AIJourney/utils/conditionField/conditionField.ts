@@ -73,6 +73,14 @@ const CONDITION_ALLOWLIST = [
             { field: 'address_state_code', label: 'State' },
         ],
     },
+    {
+        sectionId: 'orders',
+        sectionName: 'Shopper activities',
+        items: [
+            { field: 'count', label: 'Number of orders' },
+            { field: 'total_amount', label: 'Total amount spent' },
+        ],
+    },
 ] as const
 
 export function buildSections(schema: ConditionsSchema) {

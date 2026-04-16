@@ -96,6 +96,54 @@ jest.mock('@repo/customer', () => ({
         .mockReturnValue({ data: ['vip', 'wholesale', 'new-customer'] }),
 }))
 
+jest.mock('models/ecommerce/queries', () => ({
+    useGetEcommerceLookupValues: jest.fn().mockReturnValue({
+        data: {
+            data: [
+                { value: 'sale' },
+                { value: 'new-arrival' },
+                { value: 'bundle' },
+            ],
+        },
+    }),
+    useGetEcommerceProductCollections: jest.fn().mockReturnValue({
+        data: {
+            data: [
+                {
+                    external_id: 'gid://shopify/Collection/1',
+                    data: { title: 'Summer Sale' },
+                },
+                {
+                    external_id: 'gid://shopify/Collection/2',
+                    data: { title: 'New Arrivals' },
+                },
+                {
+                    external_id: 'gid://shopify/Collection/3',
+                    data: { title: 'Bundle Deals' },
+                },
+            ],
+        },
+    }),
+}))
+
+jest.mock('models/integration/queries', () => ({
+    useListProducts: jest.fn().mockReturnValue({
+        data: {
+            pages: [
+                {
+                    data: {
+                        data: [
+                            { data: { title: 'Classic T-Shirt' } },
+                            { data: { title: 'Running Shoes' } },
+                            { data: { title: 'Winter Jacket' } },
+                        ],
+                    },
+                },
+            ],
+        },
+    }),
+}))
+
 const mockOnChange = jest.fn()
 
 const stringFieldDef: FieldDef = { type: 'string', operators: ['eq'] }
@@ -219,6 +267,40 @@ describe('<ConditionValueInput />', () => {
 
             fireEvent.change(screen.getByRole('textbox', { name: /value/i }), {
                 target: { value: '' },
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(null)
+        })
+
+        it('should strip non-digit characters and call onChange with the numeric result', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={numberFieldDef}
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            fireEvent.change(screen.getByRole('textbox', { name: /value/i }), {
+                target: { value: '4abc2' },
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(42)
+        })
+
+        it('should call onChange with null when only non-digit characters are entered', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={numberFieldDef}
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            fireEvent.change(screen.getByRole('textbox', { name: /value/i }), {
+                target: { value: 'abc' },
             })
 
             expect(mockOnChange).toHaveBeenCalledWith(null)
@@ -583,6 +665,564 @@ describe('<ConditionValueInput />', () => {
             expect(useShopifyShopTags).toHaveBeenCalledWith({
                 integrationId: 42,
             })
+        })
+    })
+
+    describe('product_tag field', () => {
+        it('should render a text input for non-contains operators', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="eq"
+                />,
+            )
+
+            expect(
+                screen.getByRole('textbox', { name: /value/i }),
+            ).toBeInTheDocument()
+        })
+
+        it.each(['contains', 'containsAny', 'containsAll', 'notContainsAny'])(
+            'should render a MultiSelectField for the "%s" operator',
+            (operator) => {
+                render(
+                    <ConditionValueInput
+                        fieldDef={stringFieldDef}
+                        field="product_tags"
+                        value={null}
+                        onChange={mockOnChange}
+                        isUnary={false}
+                        operator={operator}
+                    />,
+                )
+
+                expect(screen.getByText('Select tags')).toBeInTheDocument()
+            },
+        )
+
+        it('should render fetched product tags as options', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('sale')).toBeInTheDocument()
+            expect(screen.getByText('new-arrival')).toBeInTheDocument()
+            expect(screen.getByText('bundle')).toBeInTheDocument()
+        })
+
+        it('should call onChange with an array when multiple tags are selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([
+                    { id: 'sale', label: 'sale' },
+                    { id: 'bundle', label: 'bundle' },
+                ])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(['sale', 'bundle'])
+        })
+
+        it('should call onChange with null when all tags are deselected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={['sale']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(null)
+        })
+
+        it('should display selected tags when value is an array', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={['sale', 'bundle']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.queryByText('Select tags')).not.toBeInTheDocument()
+            expect(screen.getAllByText('sale').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('bundle').length).toBeGreaterThan(0)
+        })
+
+        it('should show empty placeholder when value is a non-array (graceful fallback)', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value="sale"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('Select tags')).toBeInTheDocument()
+        })
+
+        it('should fetch product tags using the integration id from context', () => {
+            const { useGetEcommerceLookupValues } = jest.requireMock(
+                'models/ecommerce/queries',
+            )
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(useGetEcommerceLookupValues).toHaveBeenCalledWith(
+                'product_tag',
+                42,
+                {},
+                { enabled: true },
+            )
+        })
+
+        it('should pass enabled: false when currentIntegration is undefined', () => {
+            const { useJourneyContext } = jest.requireMock(
+                'AIJourney/providers',
+            )
+            const { useGetEcommerceLookupValues } = jest.requireMock(
+                'models/ecommerce/queries',
+            )
+            useJourneyContext.mockReturnValueOnce({
+                currentIntegration: undefined,
+            })
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(useGetEcommerceLookupValues).toHaveBeenCalledWith(
+                'product_tag',
+                0,
+                {},
+                { enabled: false },
+            )
+        })
+    })
+
+    describe('product_collection_ids field (ProductCollectionsMultiSelect)', () => {
+        it('should render a text input for non-contains operators', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_collection_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="eq"
+                />,
+            )
+
+            expect(
+                screen.getByRole('textbox', { name: /value/i }),
+            ).toBeInTheDocument()
+        })
+
+        it.each(['contains', 'containsAny', 'containsAll', 'notContainsAny'])(
+            'should render a MultiSelectField for the "%s" operator',
+            (operator) => {
+                render(
+                    <ConditionValueInput
+                        fieldDef={stringFieldDef}
+                        field="product_collection_ids"
+                        value={null}
+                        onChange={mockOnChange}
+                        isUnary={false}
+                        operator={operator}
+                    />,
+                )
+
+                expect(
+                    screen.getByText('Select collections'),
+                ).toBeInTheDocument()
+            },
+        )
+
+        it('should render fetched collections as options', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_collection_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('Summer Sale')).toBeInTheDocument()
+            expect(screen.getByText('New Arrivals')).toBeInTheDocument()
+            expect(screen.getByText('Bundle Deals')).toBeInTheDocument()
+        })
+
+        it('should display selected collection labels when value is an array', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_collection_ids"
+                    value={[
+                        'gid://shopify/Collection/1',
+                        'gid://shopify/Collection/2',
+                    ]}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(
+                screen.queryByText('Select collections'),
+            ).not.toBeInTheDocument()
+            expect(screen.getAllByText('Summer Sale').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('New Arrivals').length).toBeGreaterThan(
+                0,
+            )
+        })
+
+        it('should show empty placeholder when value is a non-array (graceful fallback)', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_collection_ids"
+                    value="gid://shopify/Collection/1"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('Select collections')).toBeInTheDocument()
+        })
+
+        it('should call onChange with an array of external_ids when collections are selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_collection_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([
+                    {
+                        id: 'gid://shopify/Collection/1',
+                        label: 'Summer Sale',
+                    },
+                    {
+                        id: 'gid://shopify/Collection/3',
+                        label: 'Bundle Deals',
+                    },
+                ])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith([
+                'gid://shopify/Collection/1',
+                'gid://shopify/Collection/3',
+            ])
+        })
+
+        it('should call onChange with null when all collections are deselected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_collection_ids"
+                    value={['gid://shopify/Collection/1']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(null)
+        })
+
+        it('should fetch collections using the integration id from context', () => {
+            const { useGetEcommerceProductCollections } = jest.requireMock(
+                'models/ecommerce/queries',
+            )
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_collection_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(useGetEcommerceProductCollections).toHaveBeenCalledWith(
+                42,
+                {},
+                { enabled: true },
+            )
+        })
+
+        it('should pass enabled: false when currentIntegration is undefined', () => {
+            const { useJourneyContext } = jest.requireMock(
+                'AIJourney/providers',
+            )
+            const { useGetEcommerceProductCollections } = jest.requireMock(
+                'models/ecommerce/queries',
+            )
+            useJourneyContext.mockReturnValueOnce({
+                currentIntegration: undefined,
+            })
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_collection_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(useGetEcommerceProductCollections).toHaveBeenCalledWith(
+                0,
+                {},
+                { enabled: false },
+            )
+        })
+    })
+
+    describe('product_variant_names field (ProductVariantNamesMultiSelect)', () => {
+        it('should render a text input for non-contains operators', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_names"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="eq"
+                />,
+            )
+
+            expect(
+                screen.getByRole('textbox', { name: /value/i }),
+            ).toBeInTheDocument()
+        })
+
+        it.each(['contains', 'containsAny', 'containsAll', 'notContainsAny'])(
+            'should render a MultiSelectField for the "%s" operator',
+            (operator) => {
+                render(
+                    <ConditionValueInput
+                        fieldDef={stringFieldDef}
+                        field="product_variant_names"
+                        value={null}
+                        onChange={mockOnChange}
+                        isUnary={false}
+                        operator={operator}
+                    />,
+                )
+
+                expect(screen.getByText('Select products')).toBeInTheDocument()
+            },
+        )
+
+        it('should render fetched products as options', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_names"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('Classic T-Shirt')).toBeInTheDocument()
+            expect(screen.getByText('Running Shoes')).toBeInTheDocument()
+            expect(screen.getByText('Winter Jacket')).toBeInTheDocument()
+        })
+
+        it('should display selected product labels when value is an array', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_names"
+                    value={['Classic T-Shirt', 'Running Shoes']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(
+                screen.queryByText('Select products'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getAllByText('Classic T-Shirt').length,
+            ).toBeGreaterThan(0)
+            expect(screen.getAllByText('Running Shoes').length).toBeGreaterThan(
+                0,
+            )
+        })
+
+        it('should show empty placeholder when value is a non-array (graceful fallback)', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_names"
+                    value="Classic T-Shirt"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('Select products')).toBeInTheDocument()
+        })
+
+        it('should call onChange with an array of product titles when products are selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_names"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([
+                    { id: 'Classic T-Shirt', label: 'Classic T-Shirt' },
+                    { id: 'Winter Jacket', label: 'Winter Jacket' },
+                ])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith([
+                'Classic T-Shirt',
+                'Winter Jacket',
+            ])
+        })
+
+        it('should call onChange with null when all products are deselected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_names"
+                    value={['Classic T-Shirt']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(null)
+        })
+
+        it('should fetch products using the integration id from context', () => {
+            const { useListProducts } = jest.requireMock(
+                'models/integration/queries',
+            )
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_names"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(useListProducts).toHaveBeenCalledWith(42, true)
+        })
+
+        it('should pass enabled: false when currentIntegration is undefined', () => {
+            const { useJourneyContext } = jest.requireMock(
+                'AIJourney/providers',
+            )
+            const { useListProducts } = jest.requireMock(
+                'models/integration/queries',
+            )
+            useJourneyContext.mockReturnValueOnce({
+                currentIntegration: undefined,
+            })
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_names"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(useListProducts).toHaveBeenCalledWith(0, false)
         })
     })
 })

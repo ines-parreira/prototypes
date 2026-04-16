@@ -1,11 +1,17 @@
 import type { FieldType } from '@gorgias/customer-segmentation-types'
 
 import type {
+    AggregateDef,
     ConditionsSchema,
     ConditionState,
+    PurchaseDateClause,
+    WhereClause,
 } from 'AIJourney/types/conditionField'
 import { DEFAULT_CONDITION } from 'AIJourney/types/conditionField'
-import { getFieldDef } from 'AIJourney/utils/conditionField/conditionField'
+import {
+    defaultValueForType,
+    getFieldDef,
+} from 'AIJourney/utils/conditionField/conditionField'
 
 function splitContainsValue(value: string): string[] {
     return value
@@ -49,7 +55,9 @@ function buildConditionQuery(
     const isUnary = schema.operators.unary.includes(operator)
 
     if (isUnary) {
-        return `${operator}(${dslRef})`
+        return condition.isAggregate
+            ? `${operator}(${dslRef}())`
+            : `${operator}(${dslRef})`
     }
 
     if (value === null || value === undefined || value === '') return null
@@ -60,6 +68,50 @@ function buildConditionQuery(
         splitContainsValue(value).length === 0
     )
         return null
+
+    if (condition.isAggregate) {
+        const aggDef = fieldDef as AggregateDef
+        let wherePart = ''
+
+        if (aggDef.supports_where && condition.whereClause) {
+            const wc = condition.whereClause
+            const whereFieldDef =
+                wc.field && condition.object
+                    ? schema.objects[condition.object]?.fields[wc.field]
+                    : null
+            const isWhereUnary = schema.operators.unary.includes(wc.operator)
+
+            if (whereFieldDef && wc.operator) {
+                if (isWhereUnary) {
+                    wherePart = `${wc.operator}(${wc.field})`
+                } else if (wc.value !== null && wc.value !== '') {
+                    const whereVal = formatFieldValue(
+                        wc.value,
+                        whereFieldDef.type,
+                        operator,
+                    )
+                    wherePart = `${wc.operator}(${wc.field}, ${whereVal})`
+                }
+            }
+        }
+
+        let purchaseDatePart = ''
+        if (condition.purchaseDateClause) {
+            const pdc = condition.purchaseDateClause
+            const isUnaryPdc = schema.operators.unary.includes(pdc.operator)
+            if (isUnaryPdc && pdc.operator !== 'isNotEmpty') {
+                purchaseDatePart = `${pdc.operator}(purchase_date)`
+            } else if (!isUnaryPdc && pdc.value) {
+                purchaseDatePart = `${pdc.operator}(purchase_date, '${pdc.value}')`
+            }
+        }
+
+        const innerClause = [wherePart, purchaseDatePart]
+            .filter(Boolean)
+            .join(' && ')
+        const formattedValue = formatFieldValue(value, fieldDef.type, operator)
+        return `${operator}(${dslRef}(${innerClause}), ${formattedValue})`
+    }
 
     const formattedValue = formatFieldValue(value, fieldDef.type, operator)
     return `${operator}(${dslRef}, ${formattedValue})`
@@ -110,7 +162,72 @@ function parseValue(raw: string): string | number | string[] | null {
     return null
 }
 
-function parseConditionStr(condStr: string): ConditionState | null {
+function parseAggregateInner(
+    innerContent: string,
+    object: string,
+    field: string,
+    schema: ConditionsSchema,
+): {
+    whereClause: WhereClause | null
+    purchaseDateClause: PurchaseDateClause | null
+} {
+    if (!innerContent.trim()) {
+        const aggDef = schema.objects[object]?.aggregates?.[field] as
+            | AggregateDef
+            | undefined
+        if (!aggDef?.supports_where) {
+            return { whereClause: null, purchaseDateClause: null }
+        }
+        const firstField =
+            Object.keys(schema.objects[object]?.fields ?? {})[0] ?? ''
+        const firstFieldDef = firstField
+            ? schema.objects[object].fields[firstField]
+            : null
+        return {
+            whereClause: {
+                field: firstField,
+                operator: firstFieldDef?.operators[0] ?? '',
+                value: defaultValueForType(firstFieldDef?.type ?? 'string'),
+            },
+            purchaseDateClause: null,
+        }
+    }
+
+    const parts = splitTopLevel(innerContent, ' && ')
+    let whereClause: WhereClause | null = null
+    let purchaseDateClause: PurchaseDateClause | null = null
+
+    for (const part of parts) {
+        const outerMatch = part.trim().match(/^(\w+)\((.+)\)$/)
+        if (!outerMatch) continue
+        const [, partOperator, partInner] = outerMatch
+        const partArgs = splitTopLevel(partInner, ', ')
+        const firstArg = partArgs[0]
+
+        if (firstArg === 'purchase_date') {
+            purchaseDateClause = {
+                operator: partOperator,
+                value:
+                    partArgs.length > 1
+                        ? (parseValue(partArgs[1]) as string | null)
+                        : null,
+            } as PurchaseDateClause
+        } else {
+            whereClause = {
+                field: firstArg,
+                operator: partOperator,
+                value: partArgs.length > 1 ? parseValue(partArgs[1]) : null,
+            }
+        }
+    }
+
+    return { whereClause, purchaseDateClause }
+}
+
+function parseConditionStr(
+    condStr: string,
+    schema: ConditionsSchema,
+): ConditionState | null {
     const outerMatch = condStr.match(/^(\w+)\((.+)\)$/)
     if (!outerMatch) return null
     const [, operator, inner] = outerMatch
@@ -122,13 +239,21 @@ function parseConditionStr(condStr: string): ConditionState | null {
     const fieldMatch = dslRef.match(/^(\w+)\.(\w+)$/)
 
     if (aggMatch) {
-        const [, object, field] = aggMatch
+        const [, object, field, whereContent] = aggMatch
+        const { whereClause, purchaseDateClause } = parseAggregateInner(
+            whereContent,
+            object,
+            field,
+            schema,
+        )
         return {
             object,
             field,
             isAggregate: true,
             operator,
             value: args.length > 1 ? parseValue(args[1]) : null,
+            whereClause,
+            purchaseDateClause,
         }
     }
 
@@ -140,16 +265,52 @@ function parseConditionStr(condStr: string): ConditionState | null {
             isAggregate: false,
             operator,
             value: args.length > 1 ? parseValue(args[1]) : null,
+            whereClause: null,
+            purchaseDateClause: null,
         }
     }
 
     return null
 }
 
-export function parseConditionsQuery(query: string): ConditionState[] {
+function mergePurchaseDateClauses(
+    conditions: ConditionState[],
+): ConditionState[] {
+    const result: ConditionState[] = []
+    let i = 0
+    while (i < conditions.length) {
+        const current = conditions[i]
+        const next = conditions[i + 1]
+        if (
+            current.isAggregate &&
+            next?.field === 'purchase_date' &&
+            next?.object === current.object &&
+            !next.isAggregate
+        ) {
+            result.push({
+                ...current,
+                purchaseDateClause: {
+                    operator: next.operator,
+                    value: next.value as string | null,
+                } as PurchaseDateClause,
+            })
+            i += 2
+        } else {
+            result.push(current)
+            i++
+        }
+    }
+    return result
+}
+
+export function parseConditionsQuery(
+    query: string,
+    schema: ConditionsSchema,
+): ConditionState[] {
     if (!query.trim()) return [DEFAULT_CONDITION]
-    const conditions = splitTopLevel(query, ' && ')
-        .map((s) => parseConditionStr(s.trim()))
+    const parsed = splitTopLevel(query, ' && ')
+        .map((s) => parseConditionStr(s.trim(), schema))
         .filter((c): c is ConditionState => c !== null)
+    const conditions = mergePurchaseDateClauses(parsed)
     return conditions.length > 0 ? conditions : [DEFAULT_CONDITION]
 }

@@ -94,10 +94,10 @@ export const SegmentsSidePanel = ({
         form.reset({
             name: segment?.name ?? '',
             conditions: segment?.conditions
-                ? parseConditionsQuery(segment.conditions)
+                ? parseConditionsQuery(segment.conditions, schema)
                 : [DEFAULT_CONDITION],
         })
-    }, [isOpen, segment, form])
+    }, [isOpen, segment, form, schema])
 
     const isEditing = segment !== undefined
 

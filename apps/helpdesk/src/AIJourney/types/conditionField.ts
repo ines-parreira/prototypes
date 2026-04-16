@@ -38,12 +38,19 @@ export type WhereClause = {
     value: ConditionValue
 }
 
+export type PurchaseDateClause = {
+    operator: string
+    value: string | null
+}
+
 export type ConditionState = {
     object: string | null
     field: string | null
     isAggregate: boolean
     operator: string
     value: ConditionValue
+    whereClause: WhereClause | null
+    purchaseDateClause: PurchaseDateClause | null
 }
 
 export const DEFAULT_CONDITION: ConditionState = {
@@ -52,4 +59,6 @@ export const DEFAULT_CONDITION: ConditionState = {
     isAggregate: false,
     operator: '',
     value: null,
+    whereClause: null,
+    purchaseDateClause: null,
 }

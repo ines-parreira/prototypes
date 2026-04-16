@@ -31,6 +31,18 @@ const schema: ConditionsSchema = {
                 },
                 last_order: { type: 'datetime', operators: ['gt'] },
             },
+            aggregates: {
+                orders: {
+                    type: 'number',
+                    operators: ['gt', 'isEmpty'],
+                    supports_where: true,
+                },
+                orders_count: {
+                    type: 'number',
+                    operators: ['gt'],
+                    supports_where: false,
+                },
+            },
         },
     },
 }
@@ -41,6 +53,18 @@ const baseCondition: ConditionState = {
     isAggregate: false,
     operator: 'eq',
     value: 'subscribed',
+    whereClause: null,
+    purchaseDateClause: null,
+}
+
+const baseAggregateCondition: ConditionState = {
+    object: 'shopper',
+    field: 'orders',
+    isAggregate: true,
+    operator: 'gt',
+    value: 5,
+    whereClause: null,
+    purchaseDateClause: null,
 }
 
 describe('buildFullQuery', () => {
@@ -247,6 +271,197 @@ describe('buildFullQuery', () => {
         })
     })
 
+    describe('aggregate conditions with where clause', () => {
+        it('builds an aggregate condition without a where clause', () => {
+            expect(buildFullQuery([baseAggregateCondition], schema)).toBe(
+                'gt(shopper.orders(), 5)',
+            )
+        })
+
+        it('builds an aggregate condition with a binary where clause', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                whereClause: {
+                    field: 'sms_state',
+                    operator: 'eq',
+                    value: 'subscribed',
+                },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "gt(shopper.orders(eq(sms_state, 'subscribed')), 5)",
+            )
+        })
+
+        it('builds an aggregate condition with a unary where clause', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                whereClause: {
+                    field: 'sms_state',
+                    operator: 'isEmpty',
+                    value: null,
+                },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'gt(shopper.orders(isEmpty(sms_state)), 5)',
+            )
+        })
+
+        it('skips a where clause when its value is null for a binary operator', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                whereClause: {
+                    field: 'sms_state',
+                    operator: 'eq',
+                    value: null,
+                },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'gt(shopper.orders(), 5)',
+            )
+        })
+
+        it('skips where clause when its value is an empty string for a binary operator', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                whereClause: {
+                    field: 'sms_state',
+                    operator: 'eq',
+                    value: '',
+                },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'gt(shopper.orders(), 5)',
+            )
+        })
+
+        it('skips where clause when its field is an empty string', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                whereClause: {
+                    field: '',
+                    operator: 'eq',
+                    value: 'subscribed',
+                },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'gt(shopper.orders(), 5)',
+            )
+        })
+
+        it('skips where clause when the aggregate does not support it', () => {
+            const condition: ConditionState = {
+                object: 'shopper',
+                field: 'orders_count',
+                isAggregate: true,
+                operator: 'gt',
+                value: 3,
+                whereClause: {
+                    field: 'sms_state',
+                    operator: 'eq',
+                    value: 'subscribed',
+                },
+                purchaseDateClause: null,
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'gt(shopper.orders_count(), 3)',
+            )
+        })
+
+        it('builds a unary aggregate condition', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                operator: 'isEmpty',
+                value: null,
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'isEmpty(shopper.orders())',
+            )
+        })
+    })
+
+    describe('aggregate conditions with purchaseDateClause', () => {
+        it('puts the purchase_date term inside the aggregate for 30d period', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                purchaseDateClause: { operator: 'gt', value: '30d' },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "gt(shopper.orders(gt(purchase_date, '30d')), 5)",
+            )
+        })
+
+        it('puts the correct term inside the aggregate for 90d period', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                purchaseDateClause: { operator: 'gt', value: '90d' },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "gt(shopper.orders(gt(purchase_date, '90d')), 5)",
+            )
+        })
+
+        it('puts the correct term inside the aggregate for 365d period', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                purchaseDateClause: { operator: 'gt', value: '365d' },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "gt(shopper.orders(gt(purchase_date, '365d')), 5)",
+            )
+        })
+
+        it('omits the purchase_date term when purchaseDateClause is null', () => {
+            expect(buildFullQuery([baseAggregateCondition], schema)).toBe(
+                'gt(shopper.orders(), 5)',
+            )
+        })
+
+        it('omits the purchase_date term when purchaseDateClause value is null', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                purchaseDateClause: { operator: 'gt', value: null },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'gt(shopper.orders(), 5)',
+            )
+        })
+
+        it('omits the purchase_date term when purchaseDateClause is isNotEmpty (all time)', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                purchaseDateClause: { operator: 'isNotEmpty', value: null },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'gt(shopper.orders(), 5)',
+            )
+        })
+
+        it('combines where clause and purchase_date inside the aggregate', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                whereClause: {
+                    field: 'sms_state',
+                    operator: 'eq',
+                    value: 'subscribed',
+                },
+                purchaseDateClause: { operator: 'gt', value: '30d' },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "gt(shopper.orders(eq(sms_state, 'subscribed') && gt(purchase_date, '30d')), 5)",
+            )
+        })
+
+        it('puts a unary purchase_date operator inside the aggregate', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                purchaseDateClause: { operator: 'isEmpty', value: null },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'gt(shopper.orders(isEmpty(purchase_date)), 5)',
+            )
+        })
+    })
+
     describe('multiple conditions', () => {
         it('joins multiple valid conditions with &&', () => {
             const c1: ConditionState = { ...baseCondition, value: 'subscribed' }
@@ -276,16 +491,16 @@ describe('buildFullQuery', () => {
 
 describe('parseConditionsQuery', () => {
     it('returns DEFAULT_CONDITION for an empty string', () => {
-        expect(parseConditionsQuery('')).toEqual([DEFAULT_CONDITION])
+        expect(parseConditionsQuery('', schema)).toEqual([DEFAULT_CONDITION])
     })
 
     it('returns DEFAULT_CONDITION for a whitespace-only string', () => {
-        expect(parseConditionsQuery('   ')).toEqual([DEFAULT_CONDITION])
+        expect(parseConditionsQuery('   ', schema)).toEqual([DEFAULT_CONDITION])
     })
 
     it('parses a binary condition with a string value', () => {
         expect(
-            parseConditionsQuery("eq(shopper.sms_state, 'subscribed')"),
+            parseConditionsQuery("eq(shopper.sms_state, 'subscribed')", schema),
         ).toEqual([
             {
                 object: 'shopper',
@@ -293,37 +508,47 @@ describe('parseConditionsQuery', () => {
                 isAggregate: false,
                 operator: 'eq',
                 value: 'subscribed',
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
     })
 
     it('parses a binary condition with a number value', () => {
-        expect(parseConditionsQuery('gt(shopper.order_count, 5)')).toEqual([
+        expect(
+            parseConditionsQuery('gt(shopper.order_count, 5)', schema),
+        ).toEqual([
             {
                 object: 'shopper',
                 field: 'order_count',
                 isAggregate: false,
                 operator: 'gt',
                 value: 5,
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
     })
 
     it('parses a binary condition with a negative number value', () => {
-        expect(parseConditionsQuery('gt(shopper.order_count, -3)')).toEqual([
+        expect(
+            parseConditionsQuery('gt(shopper.order_count, -3)', schema),
+        ).toEqual([
             {
                 object: 'shopper',
                 field: 'order_count',
                 isAggregate: false,
                 operator: 'gt',
                 value: -3,
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
     })
 
     it('parses a single-element array value as a plain string', () => {
         expect(
-            parseConditionsQuery("containsAny(shopper.tags, ['vip'])"),
+            parseConditionsQuery("containsAny(shopper.tags, ['vip'])", schema),
         ).toEqual([
             {
                 object: 'shopper',
@@ -331,6 +556,8 @@ describe('parseConditionsQuery', () => {
                 isAggregate: false,
                 operator: 'containsAny',
                 value: 'vip',
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
     })
@@ -339,6 +566,7 @@ describe('parseConditionsQuery', () => {
         expect(
             parseConditionsQuery(
                 "containsAny(shopper.tags, ['vip', 'wholesale', 'new-customer'])",
+                schema,
             ),
         ).toEqual([
             {
@@ -347,18 +575,24 @@ describe('parseConditionsQuery', () => {
                 isAggregate: false,
                 operator: 'containsAny',
                 value: ['vip', 'wholesale', 'new-customer'],
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
     })
 
     it('parses a unary condition with no value', () => {
-        expect(parseConditionsQuery('isEmpty(shopper.sms_state)')).toEqual([
+        expect(
+            parseConditionsQuery('isEmpty(shopper.sms_state)', schema),
+        ).toEqual([
             {
                 object: 'shopper',
                 field: 'sms_state',
                 isAggregate: false,
                 operator: 'isEmpty',
                 value: null,
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
     })
@@ -367,6 +601,7 @@ describe('parseConditionsQuery', () => {
         expect(
             parseConditionsQuery(
                 "eq(shopper.sms_state, 'subscribed') && gt(shopper.order_count, 5)",
+                schema,
             ),
         ).toEqual([
             {
@@ -375,6 +610,8 @@ describe('parseConditionsQuery', () => {
                 isAggregate: false,
                 operator: 'eq',
                 value: 'subscribed',
+                whereClause: null,
+                purchaseDateClause: null,
             },
             {
                 object: 'shopper',
@@ -382,48 +619,140 @@ describe('parseConditionsQuery', () => {
                 isAggregate: false,
                 operator: 'gt',
                 value: 5,
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
     })
 
-    it('parses an aggregate condition without splitting on nested parentheses', () => {
-        expect(parseConditionsQuery('gt(shopper.orders(30d), 5)')).toEqual([
+    it('parses an aggregate condition with no where content and supports_where — defaults to first field', () => {
+        expect(parseConditionsQuery('gt(shopper.orders(), 5)', schema)).toEqual(
+            [
+                {
+                    object: 'shopper',
+                    field: 'orders',
+                    isAggregate: true,
+                    operator: 'gt',
+                    value: 5,
+                    whereClause: {
+                        field: 'sms_state',
+                        operator: 'eq',
+                        value: null,
+                    },
+                    purchaseDateClause: null,
+                },
+            ],
+        )
+    })
+
+    it('parses an aggregate condition with a binary where clause', () => {
+        expect(
+            parseConditionsQuery(
+                "gt(shopper.orders(eq(sms_state, 'subscribed')), 5)",
+                schema,
+            ),
+        ).toEqual([
             {
                 object: 'shopper',
                 field: 'orders',
                 isAggregate: true,
                 operator: 'gt',
                 value: 5,
+                whereClause: {
+                    field: 'sms_state',
+                    operator: 'eq',
+                    value: 'subscribed',
+                },
+                purchaseDateClause: null,
+            },
+        ])
+    })
+
+    it('parses an aggregate condition with a unary where clause', () => {
+        expect(
+            parseConditionsQuery(
+                'gt(shopper.orders(isEmpty(sms_state)), 5)',
+                schema,
+            ),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'orders',
+                isAggregate: true,
+                operator: 'gt',
+                value: 5,
+                whereClause: {
+                    field: 'sms_state',
+                    operator: 'isEmpty',
+                    value: null,
+                },
+                purchaseDateClause: null,
+            },
+        ])
+    })
+
+    it('parses an aggregate condition with non-empty where content that has no outer call syntax — returns null whereClause', () => {
+        expect(
+            parseConditionsQuery('gt(shopper.orders(invalid), 5)', schema),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'orders',
+                isAggregate: true,
+                operator: 'gt',
+                value: 5,
+                whereClause: null,
+                purchaseDateClause: null,
+            },
+        ])
+    })
+
+    it('parses an aggregate with supports_where false and empty where content — returns null whereClause', () => {
+        expect(
+            parseConditionsQuery('gt(shopper.orders_count(), 3)', schema),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'orders_count',
+                isAggregate: true,
+                operator: 'gt',
+                value: 3,
+                whereClause: null,
+                purchaseDateClause: null,
+            },
+        ])
+    })
+
+    it('parses an array value with no quoted strings as null', () => {
+        expect(
+            parseConditionsQuery('containsAny(shopper.tags, [123])', schema),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'tags',
+                isAggregate: false,
+                operator: 'containsAny',
+                value: null,
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
     })
 
     it('returns DEFAULT_CONDITION when the condition string has no operator call syntax', () => {
-        expect(parseConditionsQuery('invalid_condition')).toEqual([
+        expect(parseConditionsQuery('invalid_condition', schema)).toEqual([
             DEFAULT_CONDITION,
         ])
     })
 
     it('returns DEFAULT_CONDITION when dslRef has no dot separator', () => {
-        expect(parseConditionsQuery('gt(nodot, 5)')).toEqual([
+        expect(parseConditionsQuery('gt(nodot, 5)', schema)).toEqual([
             DEFAULT_CONDITION,
         ])
     })
 
     it('parses a condition with an empty value argument as null', () => {
-        expect(parseConditionsQuery('eq(shopper.sms_state, )')).toEqual([
-            {
-                object: 'shopper',
-                field: 'sms_state',
-                isAggregate: false,
-                operator: 'eq',
-                value: null,
-            },
-        ])
-    })
-
-    it('parses a condition with an unrecognized value format as null', () => {
-        expect(parseConditionsQuery('eq(shopper.sms_state, unquoted)')).toEqual(
+        expect(parseConditionsQuery('eq(shopper.sms_state, )', schema)).toEqual(
             [
                 {
                     object: 'shopper',
@@ -431,14 +760,35 @@ describe('parseConditionsQuery', () => {
                     isAggregate: false,
                     operator: 'eq',
                     value: null,
+                    whereClause: null,
+                    purchaseDateClause: null,
                 },
             ],
         )
     })
 
+    it('parses a condition with an unrecognized value format as null', () => {
+        expect(
+            parseConditionsQuery('eq(shopper.sms_state, unquoted)', schema),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'sms_state',
+                isAggregate: false,
+                operator: 'eq',
+                value: null,
+                whereClause: null,
+                purchaseDateClause: null,
+            },
+        ])
+    })
+
     it('skips unparseable conditions and returns only valid ones', () => {
         expect(
-            parseConditionsQuery("invalid && eq(shopper.sms_state, 'active')"),
+            parseConditionsQuery(
+                "invalid && eq(shopper.sms_state, 'active')",
+                schema,
+            ),
         ).toEqual([
             {
                 object: 'shopper',
@@ -446,7 +796,166 @@ describe('parseConditionsQuery', () => {
                 isAggregate: false,
                 operator: 'eq',
                 value: 'active',
+                whereClause: null,
+                purchaseDateClause: null,
             },
         ])
+    })
+
+    describe('purchase_date merging', () => {
+        it('merges a purchase_date term following an aggregate into purchaseDateClause', () => {
+            expect(
+                parseConditionsQuery(
+                    "gt(shopper.orders(), 5) && gt(shopper.purchase_date, '30d')",
+                    schema,
+                ),
+            ).toEqual([
+                {
+                    object: 'shopper',
+                    field: 'orders',
+                    isAggregate: true,
+                    operator: 'gt',
+                    value: 5,
+                    whereClause: {
+                        field: 'sms_state',
+                        operator: 'eq',
+                        value: null,
+                    },
+                    purchaseDateClause: { operator: 'gt', value: '30d' },
+                },
+            ])
+        })
+
+        it('merges a 90d purchase_date term correctly', () => {
+            expect(
+                parseConditionsQuery(
+                    "gt(shopper.orders(), 5) && gt(shopper.purchase_date, '90d')",
+                    schema,
+                ),
+            ).toEqual([
+                {
+                    object: 'shopper',
+                    field: 'orders',
+                    isAggregate: true,
+                    operator: 'gt',
+                    value: 5,
+                    whereClause: {
+                        field: 'sms_state',
+                        operator: 'eq',
+                        value: null,
+                    },
+                    purchaseDateClause: { operator: 'gt', value: '90d' },
+                },
+            ])
+        })
+
+        it('does not merge when the purchase_date object differs from the aggregate object', () => {
+            expect(
+                parseConditionsQuery(
+                    "gt(shopper.orders(), 5) && gt(shopper.sms_state, 'subscribed')",
+                    schema,
+                ),
+            ).toEqual([
+                {
+                    object: 'shopper',
+                    field: 'orders',
+                    isAggregate: true,
+                    operator: 'gt',
+                    value: 5,
+                    whereClause: {
+                        field: 'sms_state',
+                        operator: 'eq',
+                        value: null,
+                    },
+                    purchaseDateClause: null,
+                },
+                {
+                    object: 'shopper',
+                    field: 'sms_state',
+                    isAggregate: false,
+                    operator: 'gt',
+                    value: 'subscribed',
+                    whereClause: null,
+                    purchaseDateClause: null,
+                },
+            ])
+        })
+
+        it('does not merge a purchase_date term that is not immediately after an aggregate', () => {
+            expect(
+                parseConditionsQuery(
+                    "eq(shopper.sms_state, 'subscribed') && gt(shopper.purchase_date, '30d')",
+                    schema,
+                ),
+            ).toEqual([
+                {
+                    object: 'shopper',
+                    field: 'sms_state',
+                    isAggregate: false,
+                    operator: 'eq',
+                    value: 'subscribed',
+                    whereClause: null,
+                    purchaseDateClause: null,
+                },
+                {
+                    object: 'shopper',
+                    field: 'purchase_date',
+                    isAggregate: false,
+                    operator: 'gt',
+                    value: '30d',
+                    whereClause: null,
+                    purchaseDateClause: null,
+                },
+            ])
+        })
+
+        it('parses a purchase_date term inside the aggregate (new format)', () => {
+            expect(
+                parseConditionsQuery(
+                    "gt(shopper.orders(gt(purchase_date, '30d')), 5)",
+                    schema,
+                ),
+            ).toEqual([
+                {
+                    object: 'shopper',
+                    field: 'orders',
+                    isAggregate: true,
+                    operator: 'gt',
+                    value: 5,
+                    whereClause: null,
+                    purchaseDateClause: { operator: 'gt', value: '30d' },
+                },
+            ])
+        })
+
+        it('parses a where clause and purchase_date both inside the aggregate (new format)', () => {
+            expect(
+                parseConditionsQuery(
+                    "gt(shopper.orders(eq(sms_state, 'subscribed') && gt(purchase_date, '30d')), 5)",
+                    schema,
+                ),
+            ).toEqual([
+                {
+                    object: 'shopper',
+                    field: 'orders',
+                    isAggregate: true,
+                    operator: 'gt',
+                    value: 5,
+                    whereClause: {
+                        field: 'sms_state',
+                        operator: 'eq',
+                        value: 'subscribed',
+                    },
+                    purchaseDateClause: { operator: 'gt', value: '30d' },
+                },
+            ])
+        })
+
+        it('round-trips an aggregate with a where clause and a purchase_date period', () => {
+            const original =
+                "gt(shopper.orders(eq(sms_state, 'subscribed') && gt(purchase_date, '365d')), 5)"
+            const parsed = parseConditionsQuery(original, schema)
+            expect(buildFullQuery(parsed, schema)).toBe(original)
+        })
     })
 })

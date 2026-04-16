@@ -16,6 +16,11 @@ import {
 
 import { useJourneyContext } from 'AIJourney/providers'
 import { DATETIME_PRESETS } from 'AIJourney/utils/conditionField/conditionField'
+import {
+    useGetEcommerceLookupValues,
+    useGetEcommerceProductCollections,
+} from 'models/ecommerce/queries'
+import { useListProducts } from 'models/integration/queries'
 
 import { states } from '../../../config/states'
 import type {
@@ -26,6 +31,12 @@ import type {
 import { ConditionInlineSelect } from '../ConditionInlineSelect/ConditionInlineSelect'
 
 const MULTI_SELECT_OPERATORS = ['containsAny', 'notContainsAny']
+const MULTI_OPERATORS = [
+    'contains',
+    'containsAny',
+    'containsAll',
+    'notContainsAny',
+]
 
 type StateItem = { id: string; label: string; sectionId: string }
 
@@ -183,6 +194,164 @@ const TagsMultiSelect = ({
     )
 }
 
+const ProductVariantNamesMultiSelect = ({
+    value,
+    onChange,
+}: {
+    value: ConditionValue
+    onChange: (val: ConditionValue) => void
+}) => {
+    const { currentIntegration } = useJourneyContext()
+    const { data } = useListProducts(
+        currentIntegration?.id ?? 0,
+        !!currentIntegration?.id,
+    )
+
+    const productItems: TagItem[] = useMemo(
+        () =>
+            (data?.pages ?? [])
+                .flatMap((page) => page.data.data)
+                .map((item) => ({
+                    id: item.data.title,
+                    label: item.data.title,
+                })),
+        [data],
+    )
+
+    const selectedItems = useMemo(() => {
+        const selected = Array.isArray(value) ? value : []
+        return productItems.filter((item) => selected.includes(item.id))
+    }, [productItems, value])
+
+    return (
+        <div style={{ width: '250px' }}>
+            <MultiSelectField
+                aria-label="Value"
+                placement="bottom left"
+                placeholder="Select products"
+                items={productItems}
+                value={selectedItems}
+                isSearchable
+                onChange={(items) => {
+                    onChange(
+                        items.length > 0 ? items.map((item) => item.id) : null,
+                    )
+                }}
+                maxHeight={300}
+            >
+                {(item: TagItem) => (
+                    <MultiSelectItem id={item.id} label={item.label} />
+                )}
+            </MultiSelectField>
+        </div>
+    )
+}
+
+const ProductCollectionsMultiSelect = ({
+    value,
+    onChange,
+}: {
+    value: ConditionValue
+    onChange: (val: ConditionValue) => void
+}) => {
+    const { currentIntegration } = useJourneyContext()
+    const { data } = useGetEcommerceProductCollections(
+        currentIntegration?.id ?? 0,
+        {},
+        { enabled: !!currentIntegration?.id },
+    )
+
+    const collectionItems: TagItem[] = useMemo(
+        () =>
+            (data?.data ?? []).map((item) => ({
+                id: item.external_id,
+                label: item.data.title,
+            })),
+        [data],
+    )
+
+    const selectedItems = useMemo(() => {
+        const selected = Array.isArray(value) ? value : []
+        return collectionItems.filter((item) => selected.includes(item.id))
+    }, [collectionItems, value])
+
+    return (
+        <div style={{ width: '250px' }}>
+            <MultiSelectField
+                aria-label="Value"
+                placement="bottom left"
+                placeholder="Select collections"
+                items={collectionItems}
+                value={selectedItems}
+                isSearchable
+                onChange={(items) => {
+                    onChange(
+                        items.length > 0 ? items.map((item) => item.id) : null,
+                    )
+                }}
+                maxHeight={300}
+            >
+                {(item: TagItem) => (
+                    <MultiSelectItem id={item.id} label={item.label} />
+                )}
+            </MultiSelectField>
+        </div>
+    )
+}
+
+const ProductTagsMultiSelect = ({
+    value,
+    onChange,
+}: {
+    value: ConditionValue
+    onChange: (val: ConditionValue) => void
+}) => {
+    const { currentIntegration } = useJourneyContext()
+    const { data } = useGetEcommerceLookupValues(
+        'product_tag',
+        currentIntegration?.id ?? 0,
+        {},
+        { enabled: !!currentIntegration?.id },
+    )
+
+    const tagItems: TagItem[] = useMemo(
+        () =>
+            (data?.data ?? []).map((item) => ({
+                id: item.value,
+                label: item.value,
+            })),
+        [data],
+    )
+
+    const selectedItems = useMemo(() => {
+        const selected = Array.isArray(value) ? value : []
+        return tagItems.filter((item) => selected.includes(item.id))
+    }, [tagItems, value])
+
+    return (
+        <div style={{ width: '250px' }}>
+            <MultiSelectField
+                aria-label="Value"
+                placement="bottom left"
+                placeholder="Select tags"
+                items={tagItems}
+                value={selectedItems}
+                isSearchable
+                onChange={(items) => {
+                    onChange(
+                        items.length > 0 ? items.map((item) => item.id) : null,
+                    )
+                }}
+                maxHeight={300}
+            >
+                {(item: TagItem) => (
+                    <MultiSelectItem id={item.id} label={item.label} />
+                )}
+            </MultiSelectField>
+        </div>
+    )
+}
+
 export const ConditionValueInput = ({
     fieldDef,
     field,
@@ -202,6 +371,28 @@ export const ConditionValueInput = ({
 
     if (field === 'tags') {
         return <TagsMultiSelect value={value} onChange={onChange} />
+    }
+
+    if (field === 'product_tags' && MULTI_OPERATORS.includes(operator)) {
+        return <ProductTagsMultiSelect value={value} onChange={onChange} />
+    }
+
+    if (
+        field === 'product_variant_names' &&
+        MULTI_OPERATORS.includes(operator)
+    ) {
+        return (
+            <ProductVariantNamesMultiSelect value={value} onChange={onChange} />
+        )
+    }
+
+    if (
+        field === 'product_collection_ids' &&
+        MULTI_OPERATORS.includes(operator)
+    ) {
+        return (
+            <ProductCollectionsMultiSelect value={value} onChange={onChange} />
+        )
     }
 
     if (field === 'address_state_code') {
@@ -234,7 +425,10 @@ export const ConditionValueInput = ({
                 aria-label="Value"
                 inputMode="numeric"
                 value={value !== null ? String(value) : ''}
-                onChange={(val) => onChange(val ? Number(val) : null)}
+                onChange={(val) => {
+                    const digits = val.replace(/\D/g, '')
+                    onChange(digits ? Number(digits) : null)
+                }}
                 style={{ width: '120px' }}
             />
         )
