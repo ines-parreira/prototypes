@@ -84,15 +84,14 @@ describe('TicketThreadContainer', () => {
         expect(screen.getByText('0:message')).toBeInTheDocument()
         expect(screen.getByText('1:ticket-event')).toBeInTheDocument()
         expect(screen.getByText('2:composer')).toBeInTheDocument()
-        expect(renderThreadItem).toHaveBeenCalledTimes(3)
-        expect(renderThreadItem).toHaveBeenNthCalledWith(
-            3,
+        expect(renderThreadItem).toHaveBeenCalledWith(
             2,
             expect.objectContaining({ _tag: 'composer' }),
             undefined,
         )
-        expect(recordedVirtuosoProps).toHaveLength(1)
-        expect(recordedVirtuosoProps[0]).toEqual(
+        const virtuosoProps =
+            recordedVirtuosoProps[recordedVirtuosoProps.length - 1]
+        expect(virtuosoProps).toEqual(
             expect.objectContaining({
                 alignToBottom: true,
                 ['aria-label']: 'Ticket thread',
@@ -109,8 +108,6 @@ describe('TicketThreadContainer', () => {
                 skipAnimationFrameInResizeObserver: true,
             }),
         )
-
-        const virtuosoProps = recordedVirtuosoProps[0]
 
         expect(
             virtuosoProps.computeItemKey?.(0, ticketThreadItems[0], undefined),

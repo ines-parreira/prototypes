@@ -1,10 +1,11 @@
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
+import { TicketThreadWidthContext } from '../../contexts/TicketThreadWidth'
 import type { TicketThreadSocialMediaFacebookCommentItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
@@ -114,7 +115,9 @@ describe('FacebookCommentMessageWrapper', () => {
                 screen.getByRole('radio', { name: 'Like' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('radio', { name: 'Private reply' }),
+                screen.getByRole('radio', {
+                    name: 'Reply by Facebook Messenger',
+                }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('radio', { name: 'Hide comment' }),
@@ -133,7 +136,9 @@ describe('FacebookCommentMessageWrapper', () => {
 
             await act(() =>
                 user.click(
-                    screen.getByRole('radio', { name: 'Private reply' }),
+                    screen.getByRole('radio', {
+                        name: 'Reply by Facebook Messenger',
+                    }),
                 ),
             )
 
@@ -257,6 +262,33 @@ describe('FacebookCommentMessageWrapper', () => {
         })
     })
 
+    describe('compact mode', () => {
+        it('opens the intents panel when Intents is selected from the compact menu', async () => {
+            const { user } = render(
+                <TicketThreadWidthContext.Provider
+                    value={{ containerWidth: 1 }}
+                >
+                    <FacebookCommentMessageWrapper
+                        item={makeItem({ from_agent: false })}
+                    />
+                </TicketThreadWidthContext.Provider>,
+            )
+
+            await user.click(
+                screen.getByRole('radio', { name: 'More actions' }),
+            )
+            const menu = (await screen.findAllByRole('menu')).at(-1)!
+            const intentsItem = await within(menu).findByRole('menuitem', {
+                name: /Intents/i,
+            })
+            await user.click(intentsItem)
+
+            await waitFor(() => {
+                expect(screen.getByText('Message intents')).toBeInTheDocument()
+            })
+        })
+    })
+
     describe('outbound comment (from_agent: true)', () => {
         it('shows like and copy buttons only', () => {
             render(
@@ -272,7 +304,9 @@ describe('FacebookCommentMessageWrapper', () => {
                 screen.getByRole('button', { name: 'Copy message' }),
             ).toBeInTheDocument()
             expect(
-                screen.queryByRole('radio', { name: 'Private reply' }),
+                screen.queryByRole('radio', {
+                    name: 'Reply by Facebook Messenger',
+                }),
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByRole('radio', { name: 'Hide comment' }),

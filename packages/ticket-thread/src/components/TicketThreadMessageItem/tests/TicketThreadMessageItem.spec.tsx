@@ -1317,7 +1317,7 @@ describe('TicketThreadMessageItem', () => {
         )
 
         expect(
-            screen.getByRole('radio', { name: 'Private reply' }),
+            screen.getByRole('radio', { name: 'Reply by Instagram DM' }),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('radio', { name: 'Hide comment' }),
@@ -1371,7 +1371,7 @@ describe('TicketThreadMessageItem', () => {
         )
 
         expect(
-            screen.queryByRole('radio', { name: 'Private reply' }),
+            screen.queryByRole('radio', { name: 'Reply by Instagram DM' }),
         ).not.toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: 'Copy message' }),

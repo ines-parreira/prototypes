@@ -1,15 +1,13 @@
-import {
-    ButtonGroup,
-    ButtonGroupItem,
-    Icon,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
-import type { IconName } from '@gorgias/axiom'
+import { useRef } from 'react'
+
+import { useCopyToClipboard } from '@repo/hooks'
+
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { CopyButton } from '../CopyButton/CopyButton'
 import { IntentsFeedback } from '../IntentsFeedback/IntentsFeedback'
+import type { IntentsFeedbackHandle } from '../IntentsFeedback/IntentsFeedback'
+import type { BubbleActionItem } from '../MessageBubble/components/BubbleActions'
 import { BubbleActions } from '../MessageBubble/components/BubbleActions'
 
 const PRIVATE_REPLY_WINDOW_DAYS = 7
@@ -34,6 +32,9 @@ export function InstagramCommentMessageActions({
     onHideComment,
 }: InstagramCommentMessageActionsProps) {
     const copyText = message.stripped_text || message.body_text || ''
+    const [, copyToClipboard] = useCopyToClipboard()
+    const intentsFeedbackRef = useRef<IntentsFeedbackHandle>(null)
+
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - PRIVATE_REPLY_WINDOW_DAYS)
     const isMessageTooOld = new Date(message.created_datetime) < sevenDaysAgo
@@ -47,78 +48,50 @@ export function InstagramCommentMessageActions({
           ? 'Unable to send private reply, comment is over 7 days old'
           : 'Reply by Instagram DM'
 
-    function handleSelectionChange(key: string) {
-        if (key === 'private-reply') {
-            onPrivateReply()
-        } else if (key === 'hide-comment') {
-            onHideComment()
-        }
+    const hideTitle = isHidden ? 'Unhide comment' : 'Hide comment'
+
+    const intentsItem: BubbleActionItem = {
+        id: 'intents',
+        icon: <IntentsFeedback message={message} />,
+        compactLabel: 'Intents',
+        compactLeadingSlot: 'folder-document',
+        onAction: () => intentsFeedbackRef.current?.open(),
+        compactAnchor: (
+            <IntentsFeedback ref={intentsFeedbackRef} message={message} />
+        ),
     }
 
+    const items: BubbleActionItem[] = [
+        ...(!message.from_agent ? [intentsItem] : []),
+        {
+            id: 'private-reply',
+            tooltip: privateReplyTooltip,
+            isDisabled: isPrivateReplyDisabled,
+            compactLabel: 'Reply by Instagram DM',
+            compactLeadingSlot: 'arrow-undo-down-left',
+            onAction: onPrivateReply,
+        },
+        {
+            id: 'hide-comment',
+            tooltip: hideTitle,
+            compactLabel: hideTitle,
+            compactLeadingSlot: isHidden ? 'show' : 'hide',
+            onAction: onHideComment,
+        },
+        {
+            id: 'copy',
+            icon: <CopyButton text={copyText} />,
+            tooltip: 'Copy message',
+            compactLabel: 'Copy message',
+            compactLeadingSlot: 'copy',
+            onAction: () => copyToClipboard(copyText),
+        },
+    ]
+
     return (
-        <BubbleActions placement={message.from_agent ? 'left' : 'right'}>
-            <ButtonGroup
-                selectedKey=""
-                onSelectionChange={handleSelectionChange}
-            >
-                {!message.from_agent && (
-                    <ButtonGroupItem
-                        id="intents"
-                        icon={<IntentsFeedback message={message} />}
-                    />
-                )}
-                <Tooltip
-                    trigger={
-                        <ButtonGroupItem
-                            id="private-reply"
-                            isDisabled={isPrivateReplyDisabled}
-                            icon={
-                                <Icon
-                                    name={'arrow-undo-down-left' as IconName}
-                                    size="sm"
-                                    alt="Private reply"
-                                />
-                            }
-                        />
-                    }
-                >
-                    <TooltipContent title={privateReplyTooltip} />
-                </Tooltip>
-                <Tooltip
-                    trigger={
-                        <ButtonGroupItem
-                            id="hide-comment"
-                            icon={
-                                <Icon
-                                    name={
-                                        (isHidden ? 'show' : 'hide') as IconName
-                                    }
-                                    size="sm"
-                                    alt={
-                                        isHidden
-                                            ? 'Unhide comment'
-                                            : 'Hide comment'
-                                    }
-                                />
-                            }
-                        />
-                    }
-                >
-                    <TooltipContent
-                        title={isHidden ? 'Unhide comment' : 'Hide comment'}
-                    />
-                </Tooltip>
-                <Tooltip
-                    trigger={
-                        <ButtonGroupItem
-                            id="copy"
-                            icon={<CopyButton text={copyText} />}
-                        />
-                    }
-                >
-                    <TooltipContent title="Copy message" />
-                </Tooltip>
-            </ButtonGroup>
-        </BubbleActions>
+        <BubbleActions
+            placement={message.from_agent ? 'left' : 'right'}
+            items={items}
+        />
     )
 }

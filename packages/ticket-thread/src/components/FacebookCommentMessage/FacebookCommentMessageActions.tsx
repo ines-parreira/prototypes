@@ -1,17 +1,13 @@
-import type { ReactNode } from 'react'
+import { useRef } from 'react'
 
-import {
-    ButtonGroup,
-    ButtonGroupItem,
-    Icon,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
-import type { IconName } from '@gorgias/axiom'
+import { useCopyToClipboard } from '@repo/hooks'
+
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { CopyButton } from '../CopyButton/CopyButton'
 import { IntentsFeedback } from '../IntentsFeedback/IntentsFeedback'
+import type { IntentsFeedbackHandle } from '../IntentsFeedback/IntentsFeedback'
+import type { BubbleActionItem } from '../MessageBubble/components/BubbleActions'
 import { BubbleActions } from '../MessageBubble/components/BubbleActions'
 import type { FacebookCommentMeta } from './types'
 
@@ -25,25 +21,6 @@ type FacebookCommentMessageActionsProps = {
     onHideComment: () => void
 }
 
-type ActionItemProps = {
-    id: string
-    tooltip: string
-    icon: ReactNode
-    isDisabled?: boolean
-}
-
-function ActionItem({ id, tooltip, icon, isDisabled }: ActionItemProps) {
-    return (
-        <Tooltip
-            trigger={
-                <ButtonGroupItem id={id} icon={icon} isDisabled={isDisabled} />
-            }
-        >
-            <TooltipContent title={tooltip} />
-        </Tooltip>
-    )
-}
-
 export function FacebookCommentMessageActions({
     message,
     isHidden,
@@ -52,6 +29,9 @@ export function FacebookCommentMessageActions({
     onHideComment,
 }: FacebookCommentMessageActionsProps) {
     const copyText = message.stripped_text || message.body_text || ''
+    const [, copyToClipboard] = useCopyToClipboard()
+    const intentsFeedbackRef = useRef<IntentsFeedbackHandle>(null)
+
     const meta = message.meta as FacebookCommentMeta | null
     const isLiked = Boolean(
         meta?.facebook_reactions?.page_reaction?.reaction_type,
@@ -68,87 +48,74 @@ export function FacebookCommentMessageActions({
           ? 'Unable to send private reply, comment is over 7 days old'
           : 'Reply by Facebook Messenger'
 
-    function handleSelectionChange(key: string) {
-        if (key === 'like') {
-            onLike()
-        } else if (key === 'private-reply') {
-            onPrivateReply()
-        } else if (key === 'hide-comment') {
-            onHideComment()
-        }
-    }
-
     const likeTitle = isLiked ? 'Remove like' : 'Like'
     const hideTitle = isHidden ? 'Unhide comment' : 'Hide comment'
 
-    if (message.from_agent) {
-        return (
-            <BubbleActions placement="left">
-                <ButtonGroup
-                    selectedKey=""
-                    onSelectionChange={handleSelectionChange}
-                >
-                    <ActionItem
-                        id="like"
-                        tooltip={likeTitle}
-                        icon={
-                            <Icon name="thumbs-up" size="sm" alt={likeTitle} />
-                        }
-                    />
-                    <ActionItem
-                        id="copy"
-                        tooltip="Copy message"
-                        icon={<CopyButton text={copyText} />}
-                    />
-                </ButtonGroup>
-            </BubbleActions>
-        )
-    }
+    const agentItems: BubbleActionItem[] = [
+        {
+            id: 'like',
+            tooltip: likeTitle,
+            compactLabel: likeTitle,
+            compactLeadingSlot: 'thumbs-up',
+            onAction: onLike,
+        },
+        {
+            id: 'copy',
+            icon: <CopyButton text={copyText} />,
+            tooltip: 'Copy message',
+            compactLabel: 'Copy message',
+            compactLeadingSlot: 'copy',
+            onAction: () => copyToClipboard(copyText),
+        },
+    ]
+
+    const customerItems: BubbleActionItem[] = [
+        {
+            id: 'intents',
+            icon: <IntentsFeedback message={message} />,
+            compactLabel: 'Intents',
+            compactLeadingSlot: 'folder-document',
+            onAction: () => intentsFeedbackRef.current?.open(),
+            compactAnchor: (
+                <IntentsFeedback ref={intentsFeedbackRef} message={message} />
+            ),
+        },
+        {
+            id: 'like',
+            tooltip: likeTitle,
+            compactLabel: likeTitle,
+            compactLeadingSlot: 'thumbs-up',
+            onAction: onLike,
+        },
+        {
+            id: 'private-reply',
+            tooltip: privateReplyTooltip,
+            isDisabled: isPrivateReplyDisabled,
+            compactLabel: 'Reply by Facebook Messenger',
+            compactLeadingSlot: 'channel-fb-messenger',
+            onAction: onPrivateReply,
+        },
+        {
+            id: 'hide-comment',
+            tooltip: hideTitle,
+            compactLabel: hideTitle,
+            compactLeadingSlot: isHidden ? 'show' : 'hide',
+            onAction: onHideComment,
+        },
+        {
+            id: 'copy',
+            icon: <CopyButton text={copyText} />,
+            tooltip: 'Copy message',
+            compactLabel: 'Copy message',
+            compactLeadingSlot: 'copy',
+            onAction: () => copyToClipboard(copyText),
+        },
+    ]
 
     return (
-        <BubbleActions placement="right">
-            <ButtonGroup
-                selectedKey=""
-                onSelectionChange={handleSelectionChange}
-            >
-                <ButtonGroupItem
-                    id="intents"
-                    icon={<IntentsFeedback message={message} />}
-                />
-                <ActionItem
-                    id="like"
-                    tooltip={likeTitle}
-                    icon={<Icon name="thumbs-up" size="sm" alt={likeTitle} />}
-                />
-                <ActionItem
-                    id="private-reply"
-                    tooltip={privateReplyTooltip}
-                    isDisabled={isPrivateReplyDisabled}
-                    icon={
-                        <Icon
-                            name="channel-fb-messenger"
-                            size="sm"
-                            alt="Private reply"
-                        />
-                    }
-                />
-                <ActionItem
-                    id="hide-comment"
-                    tooltip={hideTitle}
-                    icon={
-                        <Icon
-                            name={(isHidden ? 'show' : 'hide') as IconName}
-                            size="sm"
-                            alt={hideTitle}
-                        />
-                    }
-                />
-                <ActionItem
-                    id="copy"
-                    tooltip="Copy message"
-                    icon={<CopyButton text={copyText} />}
-                />
-            </ButtonGroup>
-        </BubbleActions>
+        <BubbleActions
+            placement={message.from_agent ? 'left' : 'right'}
+            items={message.from_agent ? agentItems : customerItems}
+        />
     )
 }

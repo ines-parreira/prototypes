@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+    forwardRef,
+    useEffect,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
 import { useTimeout } from '@repo/hooks'
 import { humanize } from '@repo/utils'
@@ -20,6 +27,10 @@ type IntentsFeedbackProps = {
     message: TicketMessage
 }
 
+export type IntentsFeedbackHandle = {
+    open: () => void
+}
+
 function getActiveIntentNames(
     intents: TicketMessageIntent[],
     allIntentNames: string[],
@@ -30,7 +41,10 @@ function getActiveIntentNames(
     return allIntentNames.filter((name) => activeNames.includes(name))
 }
 
-export function IntentsFeedback({ message }: IntentsFeedbackProps) {
+export const IntentsFeedback = forwardRef<
+    IntentsFeedbackHandle,
+    IntentsFeedbackProps
+>(function IntentsFeedback({ message }, ref) {
     const allIntents = useMemo<Record<string, string>>(
         () =>
             (
@@ -55,6 +69,8 @@ export function IntentsFeedback({ message }: IntentsFeedbackProps) {
     const [panelPosition, setPanelPosition] = useState({ top: 0, right: 0 })
     const wrapperRef = useRef<HTMLDivElement>(null)
     const [setCloseTimeout, clearCloseTimeout] = useTimeout()
+
+    useImperativeHandle(ref, () => ({ open: () => setIsOpen(true) }))
 
     useEffect(() => {
         setActiveIntentsNames(messageIntentNames)
@@ -214,4 +230,4 @@ export function IntentsFeedback({ message }: IntentsFeedbackProps) {
                 )}
         </div>
     )
-}
+})
