@@ -1,19 +1,32 @@
+import { useState } from 'react'
+
 import { useFlagWithLoading } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { useSaveSelectedTable } from 'domains/reporting/hooks/managed-dashboards/useSaveSelectedTable'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { TablesSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/TablesSection'
 import type {
     AnalyticsChartType,
     LayoutSection,
+    ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: { AiAgentAnalyticsDashboardsTables: 'tables-flag' },
     useFlagWithLoading: jest.fn(),
 }))
+
+jest.mock(
+    'domains/reporting/hooks/managed-dashboards/useSaveSelectedTable',
+    () => ({
+        useSaveSelectedTable: jest.fn(() => ({
+            onSelect: (chartId: string) => saveSelectedTableImpl(chartId),
+        })),
+    }),
+)
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
     DashboardComponent: ({ chart }: { chart: string }) => (
@@ -22,6 +35,11 @@ jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
 }))
 
 const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
+const mockUseSaveSelectedTable = assumeMock(useSaveSelectedTable)
+const mockSaveSelectedTable = jest.fn()
+let saveSelectedTableImpl = (chartId: string) => {
+    mockSaveSelectedTable(chartId)
+}
 
 const { createContext, useContext } =
     jest.requireActual<typeof import('react')>('react')
@@ -64,7 +82,12 @@ jest.mock('@gorgias/axiom', () => ({
             <button
                 role="radio"
                 aria-checked={id === selectedKey}
-                onClick={() => id && onSelectionChange(id)}
+                onClick={() =>
+                    id &&
+                    act(() => {
+                        onSelectionChange(id)
+                    })
+                }
             >
                 {children}
             </button>
@@ -81,25 +104,65 @@ const reportConfigMock = {
 } as any
 
 const makeSection = (
-    items: Array<{ chartId: string; requiresFeatureFlag?: boolean }>,
+    items: Array<{
+        chartId: string
+        requiresFeatureFlag?: boolean
+        visibility?: boolean
+    }>,
     tableTitle?: string,
 ): LayoutSection => ({
     id: 'tables',
     type: ChartType.Table,
     tableTitle,
-    items: items.map(({ chartId, requiresFeatureFlag }) => ({
+    items: items.map(({ chartId, requiresFeatureFlag, visibility }) => ({
         chartId: chartId as AnalyticsChartType,
         gridSize: 12,
-        visibility: true,
+        visibility: visibility ?? true,
         ...(requiresFeatureFlag !== undefined && { requiresFeatureFlag }),
     })),
 })
+
+const ControlledTablesSection = ({
+    initialSection,
+    onTabChange,
+}: {
+    initialSection: LayoutSection
+    onTabChange?: (key: ManagedDashboardsTabId) => void
+}) => {
+    const [section, setSection] = useState(initialSection)
+
+    saveSelectedTableImpl = (chartId: string) => {
+        mockSaveSelectedTable(chartId)
+        setSection((currentSection) => ({
+            ...currentSection,
+            items: currentSection.items.map((item) => ({
+                ...item,
+                visibility: item.chartId === chartId,
+            })),
+        }))
+    }
+
+    return (
+        <TablesSection
+            section={section}
+            reportConfig={reportConfigMock}
+            onTabChange={onTabChange}
+        />
+    )
+}
 
 describe('TablesSection', () => {
     beforeEach(() => {
         mockUseFlagWithLoading.mockReturnValue({
             value: false,
             isLoading: false,
+        })
+        mockSaveSelectedTable.mockClear()
+        saveSelectedTableImpl = (chartId: string) => {
+            mockSaveSelectedTable(chartId)
+        }
+        mockUseSaveSelectedTable.mockReturnValue({
+            onSelect: (chartId: string) => saveSelectedTableImpl(chartId),
         })
     })
     describe('title', () => {
@@ -136,6 +199,9 @@ describe('TablesSection', () => {
             )
 
             expect(screen.queryByRole('group')).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('radio', { name: 'Table One' }),
+            ).not.toBeInTheDocument()
         })
 
         it('should render the single table', () => {
@@ -191,7 +257,94 @@ describe('TablesSection', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should switch to the selected table when a button is clicked', async () => {
+        it('should render the saved visible table when present', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            render(
+                <TablesSection
+                    section={makeSection([
+                        { chartId: 'table1', visibility: false },
+                        { chartId: 'table2', visibility: true },
+                    ])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.queryByText('DashboardComponent: table1'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByText('DashboardComponent: table2'),
+            ).toBeInTheDocument()
+        })
+
+        it('should keep non-selected tables available in the tabs', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            render(
+                <TablesSection
+                    section={makeSection([
+                        { chartId: 'table1', visibility: false },
+                        { chartId: 'table2', visibility: true },
+                        { chartId: 'table3', visibility: false },
+                    ])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.getByRole('radio', { name: 'Table One' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('radio', { name: 'Table Two' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('radio', { name: 'Table Three' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('DashboardComponent: table2'),
+            ).toBeInTheDocument()
+        })
+
+        it('should fall back to the first eligible table when the saved visible table is hidden by feature flag', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+
+            render(
+                <TablesSection
+                    section={makeSection([
+                        {
+                            chartId: 'table1',
+                            visibility: true,
+                            requiresFeatureFlag: true,
+                        },
+                        { chartId: 'table2', visibility: false },
+                        { chartId: 'table3', visibility: false },
+                    ])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.queryByText('DashboardComponent: table1'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByText('DashboardComponent: table2'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('DashboardComponent: table3'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should switch to the selected table locally when the persistence feature flag is off', async () => {
             const user = userEvent.setup()
 
             render(
@@ -206,6 +359,35 @@ describe('TablesSection', () => {
 
             await user.click(screen.getByRole('radio', { name: 'Table Two' }))
 
+            expect(mockSaveSelectedTable).not.toHaveBeenCalled()
+            expect(
+                screen.queryByText('DashboardComponent: table1'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByText('DashboardComponent: table2'),
+            ).toBeInTheDocument()
+        })
+
+        it('should save the selected table when the persistence feature flag is on', async () => {
+            const user = userEvent.setup()
+
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            render(
+                <ControlledTablesSection
+                    initialSection={makeSection([
+                        { chartId: 'table1' },
+                        { chartId: 'table2' },
+                    ])}
+                />,
+            )
+
+            await user.click(screen.getByRole('radio', { name: 'Table Two' }))
+
+            expect(mockSaveSelectedTable).toHaveBeenCalledWith('table2')
             expect(
                 screen.queryByText('DashboardComponent: table1'),
             ).not.toBeInTheDocument()
@@ -219,12 +401,11 @@ describe('TablesSection', () => {
             const onTabChange = jest.fn()
 
             render(
-                <TablesSection
-                    section={makeSection([
+                <ControlledTablesSection
+                    initialSection={makeSection([
                         { chartId: 'table1' },
                         { chartId: 'table2' },
                     ])}
-                    reportConfig={reportConfigMock}
                     onTabChange={onTabChange}
                 />,
             )

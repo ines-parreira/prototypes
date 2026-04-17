@@ -133,10 +133,12 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
                 AnalyticsAiAgentSupportAgentChart.ChannelPerformanceTable,
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
+            expect(breakdownSection.items[0].visibility).toBe(true)
             expect(breakdownSection.items[1].chartId).toBe(
                 AnalyticsAiAgentSupportAgentChart.IntentPerformanceTable,
             )
             expect(breakdownSection.items[1].gridSize).toBe(12)
+            expect(breakdownSection.items[1].visibility).toBe(false)
         })
 
         it('should have total of 12 charts across all sections', () => {

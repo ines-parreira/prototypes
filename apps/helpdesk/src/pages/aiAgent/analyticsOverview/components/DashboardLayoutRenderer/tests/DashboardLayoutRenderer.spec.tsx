@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
 
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
+import { useSaveSelectedTable } from 'domains/reporting/hooks/managed-dashboards/useSaveSelectedTable'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
@@ -25,6 +26,7 @@ const ButtonGroupContext = createContext<{
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
+const mockedUseSaveSelectedTable = jest.mocked(useSaveSelectedTable)
 const mockedUseFlag = jest.mocked(useFlag)
 const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
@@ -37,6 +39,15 @@ jest.mock(
                 isLoading: false,
             }),
         ),
+    }),
+)
+
+jest.mock(
+    'domains/reporting/hooks/managed-dashboards/useSaveSelectedTable',
+    () => ({
+        useSaveSelectedTable: jest.fn(() => ({
+            onSelect: jest.fn(),
+        })),
     }),
 )
 
@@ -63,6 +74,8 @@ jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiAgentAnalyticsDashboardsTrendCards:
             'ai-agent-analytics-dashboards-trend-cards',
+        AiAgentAnalyticsDashboardsTables:
+            'ai-agent-analytics-dashboards-tables',
     },
     useFlag: jest.fn(),
     useFlagWithLoading: jest.fn(),
@@ -296,6 +309,9 @@ const reportConfigMock = {
 describe('DashboardLayoutRenderer', () => {
     beforeEach(() => {
         DashboardComponentMock.mockClear()
+        mockedUseSaveSelectedTable.mockReturnValue({
+            onSelect: jest.fn(),
+        })
         mockedUseFlag.mockReturnValue(false)
         mockedUseFlagWithLoading.mockReturnValue({
             value: false,

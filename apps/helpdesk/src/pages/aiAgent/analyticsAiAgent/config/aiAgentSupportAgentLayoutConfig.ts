@@ -96,7 +96,7 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig<Anal
                         chartId:
                             AnalyticsAiAgentSupportAgentChart.IntentPerformanceTable,
                         gridSize: 12,
-                        visibility: true,
+                        visibility: false,
                     },
                 ],
             },

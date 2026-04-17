@@ -225,6 +225,18 @@ describe('useUpdateManagedDashboard', () => {
     })
 
     describe('error handling', () => {
+        let consoleErrorSpy: jest.SpyInstance
+
+        beforeEach(() => {
+            consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation(() => {})
+        })
+
+        afterEach(() => {
+            consoleErrorSpy.mockRestore()
+        })
+
         it('should dispatch error notification with API error message on failure', async () => {
             server.use(
                 mockUpdateAnalyticsManagedDashboardHandler(async () =>

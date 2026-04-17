@@ -150,7 +150,7 @@ describe('buildCustomDashboard', () => {
     })
 
     describe('table items with requiresFeatureFlag', () => {
-        it('should include requiresFeatureFlag table items when isTablesFFEnabled is true, regardless of isFeatureFlagEnabled', () => {
+        it('should include all eligible table items when isTablesFFEnabled is true, regardless of the trend cards flag', () => {
             const result = buildCustomDashboard(
                 'test',
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
@@ -166,16 +166,15 @@ describe('buildCustomDashboard', () => {
             ) as { children: { config_id: string }[] } | undefined
             const chartIds =
                 tableSection?.children.map((c) => c.config_id) ?? []
-            expect(chartIds).toContain(
+            expect(chartIds).toEqual([
+                AnalyticsOverviewChart.PerformanceTable,
                 AnalyticsOverviewChart.ArticleRecommendationTable,
-            )
-            expect(chartIds).toContain(
+                AnalyticsOverviewChart.FlowsTable,
                 AnalyticsOverviewChart.OrderManagementTable,
-            )
-            expect(chartIds).toContain(AnalyticsOverviewChart.FlowsTable)
+            ])
         })
 
-        it('should include requiresFeatureFlag table items when isTablesFFEnabled is true, even if isFeatureFlagEnabled is true', () => {
+        it('should include all eligible table items when both feature flags are enabled', () => {
             const result = buildCustomDashboard(
                 'test',
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
@@ -191,13 +190,12 @@ describe('buildCustomDashboard', () => {
             ) as { children: { config_id: string }[] } | undefined
             const chartIds =
                 tableSection?.children.map((c) => c.config_id) ?? []
-            expect(chartIds).toContain(
+            expect(chartIds).toEqual([
+                AnalyticsOverviewChart.PerformanceTable,
                 AnalyticsOverviewChart.ArticleRecommendationTable,
-            )
-            expect(chartIds).toContain(
+                AnalyticsOverviewChart.FlowsTable,
                 AnalyticsOverviewChart.OrderManagementTable,
-            )
-            expect(chartIds).toContain(AnalyticsOverviewChart.FlowsTable)
+            ])
         })
 
         it('should not include requiresFeatureFlag table items when isTablesFFEnabled is false even if isFeatureFlagEnabled is true', () => {

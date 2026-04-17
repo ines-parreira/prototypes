@@ -153,13 +153,13 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,
                         gridSize: 12,
-                        visibility: true,
+                        visibility: false,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable,
                         gridSize: 12,
-                        visibility: true,
+                        visibility: false,
                     },
                 ],
             },

@@ -112,18 +112,22 @@ describe('defaultLayoutConfig', () => {
                 AnalyticsOverviewChart.PerformanceTable,
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
+            expect(breakdownSection.items[0].visibility).toBe(true)
             expect(breakdownSection.items[1].chartId).toBe(
                 AnalyticsOverviewChart.ArticleRecommendationTable,
             )
             expect(breakdownSection.items[1].gridSize).toBe(12)
+            expect(breakdownSection.items[1].visibility).toBe(false)
             expect(breakdownSection.items[2].chartId).toBe(
                 AnalyticsOverviewChart.FlowsTable,
             )
             expect(breakdownSection.items[2].gridSize).toBe(12)
+            expect(breakdownSection.items[2].visibility).toBe(false)
             expect(breakdownSection.items[3].chartId).toBe(
                 AnalyticsOverviewChart.OrderManagementTable,
             )
             expect(breakdownSection.items[3].gridSize).toBe(12)
+            expect(breakdownSection.items[3].visibility).toBe(false)
         })
 
         it('should have total of 13 charts across all sections', () => {

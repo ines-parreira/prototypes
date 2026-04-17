@@ -27,12 +27,14 @@ export const buildCustomDashboard = (
             type: DashboardChildType.Section,
             children: section.items
                 .filter((item) => {
-                    if (!item.visibility) return false
                     if (!item.requiresFeatureFlag) return true
                     return section.type === ChartType.Table
                         ? isTablesFFEnabled
                         : isFeatureFlagEnabled
                 })
+                .filter((item) =>
+                    section.type === ChartType.Table ? true : item.visibility,
+                )
                 .map((item) => ({
                     type: DashboardChildType.Chart,
                     config_id: item.chartId,

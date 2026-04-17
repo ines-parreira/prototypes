@@ -192,6 +192,8 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
             expect(breakdownSection.items[1].gridSize).toBe(12)
+            expect(breakdownSection.items[0].visibility).toBe(true)
+            expect(breakdownSection.items[1].visibility).toBe(false)
         })
 
         it('should have total of 17 charts across all sections', () => {

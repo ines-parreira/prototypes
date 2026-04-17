@@ -155,6 +155,65 @@ const mockAnalyticsDashboard: AnalyticsManagedDashboard = {
     updated_datetime: '2026-02-18T00:00:00Z',
 }
 
+const mockDefaultTableLayoutConfig: DashboardLayoutConfig = {
+    sections: [
+        {
+            id: 'breakdown',
+            type: ChartType.Table,
+            items: [
+                {
+                    chartId: AnalyticsOverviewChart.PerformanceTable,
+                    gridSize: 12,
+                    visibility: true,
+                },
+                {
+                    chartId: AnalyticsOverviewChart.ArticleRecommendationTable,
+                    gridSize: 12,
+                    visibility: false,
+                    requiresFeatureFlag: true,
+                },
+                {
+                    chartId: AnalyticsOverviewChart.FlowsTable,
+                    gridSize: 12,
+                    visibility: false,
+                    requiresFeatureFlag: true,
+                },
+            ],
+        },
+    ],
+}
+
+const mockOverviewDashboardWithSavedTableSubset: AnalyticsManagedDashboard = {
+    ...mockOverviewDashboard,
+    config: {
+        id: 'ai-agent-overview',
+        tabs: [
+            {
+                id: ManagedDashboardsTabId.Overview,
+                name: 'Main',
+                sections: [
+                    {
+                        section_id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chart_id:
+                                    AnalyticsOverviewChart.PerformanceTable,
+                                metadata: { visible: false, grid_size: 6 },
+                            },
+                            {
+                                chart_id:
+                                    AnalyticsOverviewChart.ArticleRecommendationTable,
+                                metadata: { visible: true, grid_size: 12 },
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+}
+
 describe('useGetManagedDashboardsLayoutConfig', () => {
     it('should return defaultLayoutConfig when no matching dashboard in response', async () => {
         server.use(
@@ -242,6 +301,64 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
         expect(kpi).toBeDefined()
         expect(kpi?.visibility).toBe(false)
+    })
+
+    it('should merge saved table items with newer local default table items while keeping saved values', async () => {
+        server.use(
+            mockListAnalyticsManagedDashboardsHandler(async () =>
+                HttpResponse.json(
+                    mockListAnalyticsManagedDashboardsResponse({
+                        data: [mockOverviewDashboardWithSavedTableSubset],
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(
+            () =>
+                useGetManagedDashboardsLayoutConfig({
+                    dashboardId: ManagedDashboardId.AiAgentOverview,
+                    defaultLayoutConfig: mockDefaultTableLayoutConfig,
+                    tabId: ManagedDashboardsTabId.Overview,
+                }),
+            { wrapper: makeWrapper() },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(result.current.layoutConfig.sections).toEqual([
+            {
+                id: 'breakdown',
+                type: ChartType.Table,
+                items: [
+                    {
+                        chartId: AnalyticsOverviewChart.PerformanceTable,
+                        gridSize: 6,
+                        visibility: false,
+                        measures: undefined,
+                        dimensions: undefined,
+                        requiresFeatureFlag: undefined,
+                    },
+                    {
+                        chartId:
+                            AnalyticsOverviewChart.ArticleRecommendationTable,
+                        gridSize: 12,
+                        visibility: true,
+                        measures: undefined,
+                        dimensions: undefined,
+                        requiresFeatureFlag: true,
+                    },
+                    {
+                        chartId: AnalyticsOverviewChart.FlowsTable,
+                        gridSize: 12,
+                        visibility: false,
+                        requiresFeatureFlag: true,
+                    },
+                ],
+            },
+        ])
     })
 
     it('should return defaultLayoutConfig while data is loading', () => {

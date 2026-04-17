@@ -45,6 +45,10 @@ const renderSection =
                     key={`${tabId}-${section.id}`}
                     section={section}
                     reportConfig={reportConfig}
+                    dashboardId={dashboardId}
+                    layoutConfig={layoutConfig}
+                    tabId={tabId}
+                    tabName={tabName}
                     onTabChange={onTableTabChange}
                 />
             )

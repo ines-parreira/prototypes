@@ -126,7 +126,7 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         chartId:
                             AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
                         gridSize: 12,
-                        visibility: true,
+                        visibility: false,
                     },
                 ],
             },

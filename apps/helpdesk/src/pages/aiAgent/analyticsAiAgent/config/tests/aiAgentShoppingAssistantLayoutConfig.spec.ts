@@ -99,15 +99,18 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 AnalyticsAiAgentShoppingAssistantChart.EngagementFeaturePerformanceTable,
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
+            expect(breakdownSection.items[0].visibility).toBe(true)
             expect(breakdownSection.items[0].requiresFeatureFlag).toBe(true)
             expect(breakdownSection.items[1].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,
             )
             expect(breakdownSection.items[1].gridSize).toBe(12)
+            expect(breakdownSection.items[1].visibility).toBe(false)
             expect(breakdownSection.items[2].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable,
             )
             expect(breakdownSection.items[2].gridSize).toBe(12)
+            expect(breakdownSection.items[2].visibility).toBe(false)
         })
 
         it('should have all required chart types defined', () => {
