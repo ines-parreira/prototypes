@@ -173,6 +173,32 @@ jobs:
               });
             }
 
+  tests-rollup:
+    name: 'Apps tests'
+    runs-on: gh-actions-small-runner-set
+    needs:
+      - tests
+      - unused-helpdesk-test-statuses
+    if: ${{ always() && !cancelled() }}
+    steps:
+      - name: Validate test shards
+        run: |
+          if [ "${{ needs.tests.result }}" != "success" ] && [ "${{ needs.tests.result }}" != "skipped" ]; then
+            echo "Test shards did not complete successfully"
+            exit 1
+          fi
+
+          if [ "${{ needs.unused-helpdesk-test-statuses.result }}" != "success" ] && [ "${{ needs.unused-helpdesk-test-statuses.result }}" != "skipped" ]; then
+            echo "Unused helpdesk test statuses did not complete successfully"
+            exit 1
+          fi
+
+          if [ "${{ inputs.helpdesk-affected }}" = "false" ]; then
+            echo "Helpdesk is not affected, skipping tests"
+          else
+            echo "All required test shards completed successfully"
+          fi
+
   package-tests:
     name: Packages test (${{ matrix.bucket }})
     runs-on: gh-actions-large-runner-set
