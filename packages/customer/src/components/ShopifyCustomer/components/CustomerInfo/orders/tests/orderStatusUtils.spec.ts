@@ -36,4 +36,12 @@ describe('isRefundedStatus', () => {
     it('returns false for GraphQL uppercase PAID', () => {
         expect(isRefundedStatus('PAID')).toBe(false)
     })
+
+    it('returns false for undefined', () => {
+        expect(isRefundedStatus(undefined)).toBe(false)
+    })
+
+    it('returns false for null', () => {
+        expect(isRefundedStatus(null)).toBe(false)
+    })
 })
