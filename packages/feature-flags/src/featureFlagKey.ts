@@ -62,6 +62,7 @@ export enum FeatureFlagKey {
     AiJourneyAttributionModelComparison = 'linear.AIJOU-1796-show-custom-attribution-model',
     AiJourneyPostPurchaseEnabled = 'ai-journey-post-purchase-enabled',
     AiJourneyWelcomeFlowEnabled = 'ai-journey-welcome-flow-enabled',
+    AiJourneyCustomFlowEnabled = 'ai-journey-custom-flow-enabled',
     AiJourneyCampaignSendingEnabled = 'campaign-sending-enabled',
     AiJourneySegmentsUiEnabled = 'ai-journey-segments-ui-enabled',
     AiJourneyStoreSettingsEnabled = 'ai-journey-store-settings-enabled',

@@ -1,3 +1,5 @@
+import type React from 'react'
+
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
@@ -11,6 +13,7 @@ import {
     Segments,
     Settings,
 } from 'AIJourney/pages'
+import type { StepComponentProps } from 'AIJourney/pages/AiJourneyOnboarding/AiJourneyOnboarding'
 import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
 import { JourneyProvider } from 'AIJourney/providers'
 import App from 'pages/App'
@@ -45,7 +48,13 @@ function AiJourneyBaseRoutes() {
                             {AI_JOURNEY_ONBOARDING_STEPS.map(
                                 ({ journeyType, steps }) =>
                                     steps.map(
-                                        ({ stepName, component }: any) => (
+                                        ({
+                                            stepName,
+                                            component,
+                                        }: {
+                                            stepName: string
+                                            component: React.ComponentType<StepComponentProps>
+                                        }) => (
                                             <Route
                                                 path={`${path}/:shopName/${journeyType}/${stepName}`}
                                                 render={() => (

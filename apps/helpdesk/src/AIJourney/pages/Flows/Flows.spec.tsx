@@ -11,6 +11,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { journeyTableDataMetrics } from 'AIJourney/components/JourneysTable/constants'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useAIJourneyTableKpis } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useJourneyContext } from 'AIJourney/providers'
 import { ThemeProvider } from 'core/theme'
@@ -72,7 +73,7 @@ const mockJourneyContextDefaults = {
     isLoadingJourneys: false,
     isLoadingJourneyData: false,
     isLoadingIntegrations: false,
-    journeyType: 'cart_abandoned' as any,
+    journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
     storeConfiguration: undefined,
     attributionModelComparison: null,
 }
@@ -301,6 +302,36 @@ describe('<Flows />', () => {
         })
     })
 
+    describe('"Add Custom Flow" button', () => {
+        it('should show "Add Custom Flow" button when AiJourneyCustomFlowEnabled flag is on', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
+                    return true
+                return false
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /add custom flow/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide "Add Custom Flow" button when AiJourneyCustomFlowEnabled flag is off', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
+                    return false
+                return true
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: /add custom flow/i }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('Feature flags', () => {
         it('should show Win-back flow when feature flag is enabled', () => {
             mockUseFlag.mockImplementation((flag) => {
@@ -335,7 +366,24 @@ describe('<Flows />', () => {
             expect(screen.getByText('Welcome')).toBeInTheDocument()
         })
 
-        it('should show Post-purchase flow when feature flag is disabled', () => {
+        it('should show Post-purchase flow when feature flag is enabled', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyPostPurchaseEnabled)
+                    return true
+                return false
+            })
+
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Post-purchase')).toBeInTheDocument()
+        })
+
+        it('should hide Post-purchase flow when feature flag is disabled', () => {
             mockUseFlag.mockImplementation((flag) => {
                 if (flag === FeatureFlagKey.AiJourneyPostPurchaseEnabled)
                     return false
@@ -349,7 +397,7 @@ describe('<Flows />', () => {
 
             renderComponent()
 
-            expect(screen.getByText('Post-purchase')).toBeInTheDocument()
+            expect(screen.queryByText('Post-purchase')).not.toBeInTheDocument()
         })
     })
 

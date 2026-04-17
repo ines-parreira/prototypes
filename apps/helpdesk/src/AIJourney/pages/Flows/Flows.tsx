@@ -6,7 +6,7 @@ import type { MetricConfigItem } from '@repo/reporting'
 import { ConfigureMetricsModal } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, PageHeader } from '@gorgias/axiom'
+import { Box, Button, PageHeader } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -58,6 +58,9 @@ export const Flows = () => {
     )
     const isAiJourneyPostPurchaseEnabled = useFlag(
         FeatureFlagKey.AiJourneyPostPurchaseEnabled,
+    )
+    const isAiJourneyCustomFlowEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCustomFlowEnabled,
     )
 
     const { cleanStatsFilters: statsFilters } = useStatsFilters()
@@ -125,7 +128,7 @@ export const Flows = () => {
                 case JourneyTypeEnum.Welcome:
                     return !!isAiJourneyWelcomeFlowEnabled
                 case JourneyTypeEnum.PostPurchase:
-                    return !isAiJourneyPostPurchaseEnabled
+                    return !!isAiJourneyPostPurchaseEnabled
                 default:
                     return true
             }
@@ -171,7 +174,11 @@ export const Flows = () => {
 
     return (
         <Box width="100%" flexDirection="column">
-            <PageHeader title="Flows" />
+            <PageHeader title="Flows">
+                {isAiJourneyCustomFlowEnabled && (
+                    <Button>Add Custom Flow</Button>
+                )}
+            </PageHeader>
             <Box className={css.filtersPanel}>
                 <FiltersPanelWrapper
                     persistentFilters={[FilterKey.Period]}
