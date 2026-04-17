@@ -12,7 +12,6 @@ export const PerformanceBreakdownTable = () => {
             data={data}
             metricColumns={PERFORMANCE_BREAKDOWN_COLUMNS}
             loadingStates={loadingStates}
-            getRowKey={(row) => row.feature}
             DownloadButton={<DownloadPerformanceBreakdownButton />}
             nameColumns={[
                 {

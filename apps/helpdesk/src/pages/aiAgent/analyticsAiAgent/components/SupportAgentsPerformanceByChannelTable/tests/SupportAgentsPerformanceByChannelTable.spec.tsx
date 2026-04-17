@@ -113,13 +113,6 @@ describe('SupportAgentsPerformanceByChannelTable', () => {
         )
     })
 
-    it('passes getRowKey that returns the entity value', () => {
-        renderComponent()
-
-        const { getRowKey } = getLastCallProps()
-        expect(getRowKey(defaultData[0])).toBe('email')
-    })
-
     it('passes nameColumns with entity accessor, Channel label, and formatChannelName', () => {
         renderComponent()
 

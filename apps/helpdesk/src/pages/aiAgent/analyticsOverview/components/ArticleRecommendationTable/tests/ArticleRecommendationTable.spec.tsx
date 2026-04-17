@@ -114,13 +114,6 @@ describe('ArticleRecommendationTable', () => {
         )
     })
 
-    it('passes getRowKey that returns the entity value', () => {
-        renderComponent()
-
-        const { getRowKey } = getLastCallProps()
-        expect(getRowKey(defaultData[0])).toBe('https://example.com/article-1')
-    })
-
     it('passes nameColumns with entity accessor, Article name label, displayNames, and getHref', () => {
         renderComponent()
 

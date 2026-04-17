@@ -1,9 +1,12 @@
-import type { ColumnDef } from '@gorgias/axiom'
+import type { DataTableColumnDef } from '@gorgias/axiom'
 import {
     Avatar,
     Box,
+    createColumnHelper,
+    DataTableBaseCell,
     Icon,
     Link,
+    OverflowTooltip,
     Skeleton,
     Text,
     Tooltip,
@@ -18,59 +21,43 @@ import type {
     NameColumnConfig,
 } from './types'
 
-import css from './ReportingMetricBreakdownTable.less'
+const anyColumnHelper = createColumnHelper<Record<string, number | null>>()
+
+function resolveDisplayName(value: string, config: NameColumnConfig): string {
+    return config.formatName
+        ? config.formatName(value)
+        : (config.displayNames?.[value] ?? value)
+}
 
 export function buildNameColDef<TData>(
     config: NameColumnConfig,
-): ColumnDef<TData> {
-    return {
-        accessorKey: config.accessor,
-        header: (info) => {
-            const sortDirection = info.column.getIsSorted()
-            return (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="xxxs"
-                    className={css.featureName}
-                    minWidth={config.renderDrilldown ? 200 : undefined}
-                >
-                    <Text size="sm" variant="bold">
-                        {config.label}
-                    </Text>
-                    <span
-                        style={{
-                            visibility: sortDirection ? 'visible' : 'hidden',
-                        }}
-                    >
-                        <Icon
-                            name={
-                                sortDirection === 'asc'
-                                    ? 'arrow-down'
-                                    : 'arrow-up'
-                            }
-                            size="xs"
-                        />
-                    </span>
-                </Box>
-            )
+): DataTableColumnDef<TData> {
+    return anyColumnHelper.accessor(config.accessor, {
+        id: config.label,
+        header: config.label,
+        enableHiding: false,
+        minSize: 200,
+        sortingFn: (rowA, rowB, columnId) => {
+            const valueA = rowA.getValue<string>(columnId)
+            const valueB = rowB.getValue<string>(columnId)
+            const displayNameA = resolveDisplayName(valueA, config)
+            const displayNameB = resolveDisplayName(valueB, config)
+            return displayNameA.localeCompare(displayNameB)
         },
-        meta: { displayName: config.label },
         cell: (info) => {
-            const value = info.getValue() as string
-            const displayName = config.formatName
-                ? config.formatName(value)
-                : (config.displayNames?.[value] ?? value)
+            const value = info.getValue()
+            const displayName = resolveDisplayName(value, config)
             const href = config.getHref?.(value)
 
             const avatarProps = config.getAvatarProps?.(value)
 
             return (
-                <Box
+                <DataTableBaseCell
                     display="flex"
                     alignItems="center"
                     gap="xxxs"
-                    className={css.featureName}
+                    maxWidth={250}
+                    minWidth={180}
                 >
                     {avatarProps && (
                         <Avatar
@@ -79,88 +66,86 @@ export function buildNameColDef<TData>(
                             size="sm"
                         />
                     )}
-                    <Text size="md" variant="bold">
-                        {href ? (
-                            <Link
-                                href={href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {displayName}
-                            </Link>
-                        ) : (
-                            displayName
-                        )}
-                    </Text>
+                    <OverflowTooltip>
+                        <Text size="md" variant="bold" overflow="ellipsis">
+                            {displayName}
+                        </Text>
+                    </OverflowTooltip>
+                    {href && (
+                        <Link
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Open ${displayName}`}
+                        >
+                            <Icon name="external-link" size="xs" />
+                        </Link>
+                    )}
+
                     {config.renderDrilldown?.(value)}
-                </Box>
+                </DataTableBaseCell>
             )
         },
-        enableHiding: false,
-    }
+    }) as DataTableColumnDef<TData>
 }
 
-export function buildMetricColumnDefs<TRow>(
+export function buildMetricColumnDefs<TData>(
     metricColumns: MetricColumnConfig[],
     loadingStates: MetricLoadingStates,
-    getRowKey: (row: TRow) => string,
-): ColumnDef<TRow>[] {
-    return metricColumns.map((config) => ({
-        accessorKey: config.accessorKey,
-        enableHiding: true,
-        meta: { displayName: config.label },
-        header: (info) => {
-            const sortDirection = info.column.getIsSorted()
-            return (
-                <Box display="flex" alignItems="center" gap="xxxs">
-                    <span>{config.label}</span>
-                    {config.tooltipTitle && (
-                        <Tooltip
-                            delay={0}
-                            trigger={<Icon name="info" size="xs" />}
-                        >
-                            <TooltipContent
-                                title={config.tooltipTitle}
-                                caption={config.tooltipCaption}
-                            />
-                        </Tooltip>
-                    )}
-                    <span
-                        style={{
-                            visibility: sortDirection ? 'visible' : 'hidden',
-                        }}
-                    >
-                        <Icon
-                            name={
-                                sortDirection === 'asc'
-                                    ? 'arrow-down'
-                                    : 'arrow-up'
-                            }
-                            size="xs"
-                        />
-                    </span>
-                </Box>
-            )
-        },
-        cell: (info) => {
-            const value = info.getValue() as number | null
-            const rowKey = getRowKey(info.row.original as TRow)
-            const isLoading = config.loadingStateKeys.some(
-                (key) => loadingStates[key],
-            )
-            if (isLoading && value === null) {
-                return (
-                    <Skeleton
-                        key={`${rowKey}-${config.accessorKey}`}
-                        width={config.skeletonWidth ?? '60px'}
-                        height="20px"
-                    />
-                )
-            }
-            if (config.showNotAvailable && value !== null && isNaN(value)) {
-                return NOT_AVAILABLE_PLACEHOLDER
-            }
-            return formatMetricValue(value, config.metricFormat, 'USD', true)
-        },
-    }))
+): DataTableColumnDef<TData>[] {
+    return metricColumns.map(
+        (config) =>
+            anyColumnHelper.accessor(config.accessorKey, {
+                id: config.label,
+                enableHiding: true,
+                header: () => (
+                    <Box display="flex" alignItems="center" gap="xxxs">
+                        <Text variant="bold" size="sm">
+                            {config.label}
+                        </Text>
+                        {config.tooltipTitle && (
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
+                                <TooltipContent
+                                    title={config.tooltipTitle}
+                                    caption={config.tooltipCaption}
+                                />
+                            </Tooltip>
+                        )}
+                    </Box>
+                ),
+                cell: (info) => {
+                    const value = info.getValue()
+                    const isLoading = config.loadingStateKeys.some(
+                        (key) => loadingStates[key],
+                    )
+                    if (isLoading && value === null) {
+                        return (
+                            <DataTableBaseCell>
+                                <Skeleton
+                                    width={config.skeletonWidth ?? '60px'}
+                                    height="20px"
+                                />
+                            </DataTableBaseCell>
+                        )
+                    }
+                    return (
+                        <DataTableBaseCell>
+                            {config.showNotAvailable &&
+                            value !== null &&
+                            isNaN(value)
+                                ? NOT_AVAILABLE_PLACEHOLDER
+                                : formatMetricValue(
+                                      value,
+                                      config.metricFormat,
+                                      'USD',
+                                      true,
+                                  )}
+                        </DataTableBaseCell>
+                    )
+                },
+            }) as DataTableColumnDef<TData>,
+    )
 }

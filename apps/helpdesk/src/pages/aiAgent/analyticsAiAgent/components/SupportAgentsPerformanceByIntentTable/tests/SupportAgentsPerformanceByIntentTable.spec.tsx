@@ -112,13 +112,6 @@ describe('SupportAgentsPerformanceByIntentTable', () => {
         )
     })
 
-    it('passes getRowKey that returns the entity value', () => {
-        renderComponent()
-
-        const { getRowKey } = getLastCallProps()
-        expect(getRowKey(defaultData[0])).toBe('Billing :: Refund Request')
-    })
-
     it('passes nameColumns with intentL1 and intentL2 accessors and labels', () => {
         renderComponent()
 

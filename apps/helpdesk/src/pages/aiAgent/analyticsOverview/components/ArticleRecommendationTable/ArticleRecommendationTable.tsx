@@ -16,7 +16,6 @@ export const ArticleRecommendationTable = () => {
             data={data}
             metricColumns={ARTICLE_RECOMMENDATION_COLUMNS}
             loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
             DownloadButton={<DownloadArticleRecommendationButton />}
             nameColumns={[
                 {

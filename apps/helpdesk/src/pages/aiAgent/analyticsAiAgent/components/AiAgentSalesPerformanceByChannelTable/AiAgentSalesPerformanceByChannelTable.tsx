@@ -14,7 +14,6 @@ export const AiAgentSalesPerformanceByChannelTable = () => {
             data={data}
             metricColumns={AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_COLUMNS}
             loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
             DownloadButton={<DownloadAiAgentSalesPerformanceByChannelButton />}
             nameColumns={[
                 {

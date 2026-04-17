@@ -8,7 +8,7 @@ import { OrderContext } from '../Order'
 
 // Mock Badge component
 jest.mock('@gorgias/axiom', () => ({
-    __esModule: true,
+    ...jest.requireActual('@gorgias/axiom'),
     ColorType: {
         Warning: 'warning',
     },

@@ -16,7 +16,6 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = () => {
                 SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS
             }
             loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
             DownloadButton={
                 <DownloadShoppingAssistantPerformanceByEngagementFeatureButton />
             }

@@ -12,7 +12,6 @@ export const FlowsTable = () => {
             data={data}
             metricColumns={FLOWS_COLUMNS}
             loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
             DownloadButton={<DownloadFlowsButton />}
             nameColumns={[
                 {

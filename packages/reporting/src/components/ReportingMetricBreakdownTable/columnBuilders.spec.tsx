@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { formatMetricValue } from '../../utils/helpers'
 import { buildMetricColumnDefs, buildNameColDef } from './columnBuilders'
@@ -13,40 +13,13 @@ vi.mock('../../utils/helpers', () => ({
     formatMetricValue: vi.fn(() => 'formatted-value'),
 }))
 
-vi.mock('@gorgias/axiom', () => ({
-    Avatar: ({ name, url }: { name: string; url?: string; size?: string }) => (
-        <img alt={name} src={url} />
-    ),
-    Box: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-    Icon: () => null,
-    Link: ({
-        children,
-        href,
-        target,
-        rel,
-    }: {
-        children: React.ReactNode
-        href: string
-        target?: string
-        rel?: string
-    }) => (
-        <a href={href} target={target} rel={rel}>
-            {children}
-        </a>
-    ),
-    Skeleton: () => <div data-testid="skeleton" />,
-    Text: ({ children }: { children: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-    Tooltip: ({ children }: { children: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    TooltipContent: () => null,
-}))
-
 vi.mock('./ReportingMetricBreakdownTable.less', () => ({
     default: { featureName: 'featureName' },
 }))
+
+beforeEach(() => {
+    vi.clearAllMocks()
+})
 
 const defaultLoadingStates: MetricLoadingStates = {
     automationRate: false,
@@ -119,7 +92,7 @@ describe('buildNameColDef', () => {
         expect(screen.getByText('Cancel order')).toBeInTheDocument()
     })
 
-    it('cell renders the display name as a link when getHref is provided', () => {
+    it('cell renders an icon link when getHref is provided', () => {
         const col = buildNameColDef({
             accessor: 'entity' as const,
             label: 'Article name',
@@ -137,14 +110,15 @@ describe('buildNameColDef', () => {
                 })}
             </>,
         )
-        const link = screen.getByRole('link', { name: 'How to return' })
+        expect(screen.getByText('How to return')).toBeInTheDocument()
+        const link = screen.getByRole('link', { name: 'Open How to return' })
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute('href', 'https://example.com/article-1')
         expect(link).toHaveAttribute('target', '_blank')
         expect(link).toHaveAttribute('rel', 'noopener noreferrer')
     })
 
-    it('cell renders the raw value as a link when getHref is provided but no displayNames', () => {
+    it('cell renders an icon link using the raw value when getHref is provided but no displayNames', () => {
         const col = buildNameColDef({
             accessor: 'entity' as const,
             label: 'Article name',
@@ -160,7 +134,7 @@ describe('buildNameColDef', () => {
             </>,
         )
         const link = screen.getByRole('link', {
-            name: 'https://example.com/article-1',
+            name: 'Open https://example.com/article-1',
         })
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute('href', 'https://example.com/article-1')
@@ -190,9 +164,7 @@ describe('buildNameColDef', () => {
         })
         const cellFn = col.cell as any
         render(<>{cellFn({ getValue: () => '42', row: { original: {} } })}</>)
-        const avatar = screen.getByRole('img', { name: 'Product 42' })
-        expect(avatar).toBeInTheDocument()
-        expect(avatar).toHaveAttribute('src', 'https://example.com/img/42.jpg')
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
     })
 
     it('cell renders an avatar without image src when url is undefined', () => {
@@ -203,9 +175,7 @@ describe('buildNameColDef', () => {
         })
         const cellFn = col.cell as any
         render(<>{cellFn({ getValue: () => '7', row: { original: {} } })}</>)
-        expect(
-            screen.getByRole('img', { name: 'Product 7' }),
-        ).toBeInTheDocument()
+        expect(screen.getByText('P7')).toBeInTheDocument()
     })
 
     it('cell does not render an avatar when getAvatarProps is not provided', () => {
@@ -219,15 +189,72 @@ describe('buildNameColDef', () => {
         )
         expect(screen.queryByRole('img')).not.toBeInTheDocument()
     })
+
+    describe('sortingFn', () => {
+        const makeRow = (value: string) => ({
+            getValue: () => value,
+        })
+
+        it('sorts by raw value when no displayNames or formatName provided', () => {
+            const col = buildNameColDef({
+                accessor: 'entity' as const,
+                label: 'Feature name',
+            })
+            const sortingFn = (col as any).sortingFn
+            expect(
+                sortingFn(makeRow('banana'), makeRow('apple'), 'Feature name'),
+            ).toBeGreaterThan(0)
+            expect(
+                sortingFn(makeRow('apple'), makeRow('banana'), 'Feature name'),
+            ).toBeLessThan(0)
+            expect(
+                sortingFn(makeRow('apple'), makeRow('apple'), 'Feature name'),
+            ).toBe(0)
+        })
+
+        it('sorts by displayName when displayNames are provided', () => {
+            const col = buildNameColDef({
+                accessor: 'entity' as const,
+                label: 'Entity',
+                displayNames: {
+                    cancel_order: 'Cancel order',
+                    track_package: 'Track package',
+                },
+            })
+            const sortingFn = (col as any).sortingFn
+            expect(
+                sortingFn(
+                    makeRow('cancel_order'),
+                    makeRow('track_package'),
+                    'Entity',
+                ),
+            ).toBeLessThan(0)
+            expect(
+                sortingFn(
+                    makeRow('track_package'),
+                    makeRow('cancel_order'),
+                    'Entity',
+                ),
+            ).toBeGreaterThan(0)
+        })
+
+        it('sorts by formatted name when formatName is provided', () => {
+            const col = buildNameColDef({
+                accessor: 'entity' as const,
+                label: 'Entity',
+                formatName: (value) => value.toUpperCase(),
+            })
+            const sortingFn = (col as any).sortingFn
+            expect(
+                sortingFn(makeRow('apple'), makeRow('banana'), 'Entity'),
+            ).toBeLessThan(0)
+        })
+    })
 })
 
 describe('buildMetricColumnDefs', () => {
     it('returns one column def per entry in metricColumns', () => {
-        const cols = buildMetricColumnDefs(
-            [baseConfig],
-            defaultLoadingStates,
-            (row: any) => row.feature,
-        )
+        const cols = buildMetricColumnDefs([baseConfig], defaultLoadingStates)
         expect(cols).toHaveLength(1)
     })
 
@@ -244,11 +271,7 @@ describe('buildMetricColumnDefs', () => {
                 loadingStateKeys: ['handovers'],
             },
         ]
-        const cols = buildMetricColumnDefs(
-            configs,
-            defaultLoadingStates,
-            (row: any) => row.feature,
-        )
+        const cols = buildMetricColumnDefs(configs, defaultLoadingStates)
         expect(cols.map((c) => (c as any).accessorKey)).toEqual([
             'automationRate',
             'handoverCount',
@@ -256,51 +279,42 @@ describe('buildMetricColumnDefs', () => {
     })
 
     it('returns columns with enableHiding true', () => {
-        const cols = buildMetricColumnDefs(
-            [baseConfig],
-            defaultLoadingStates,
-            (row: any) => row.feature,
-        )
+        const cols = buildMetricColumnDefs([baseConfig], defaultLoadingStates)
         expect(cols[0].enableHiding).toBe(true)
     })
 
     it('cell shows a skeleton when loading state is active and value is null', () => {
-        const [col] = buildMetricColumnDefs(
-            [baseConfig],
-            { ...defaultLoadingStates, costSaved: true },
-            (row: any) => row.feature,
-        )
+        const [col] = buildMetricColumnDefs([baseConfig], {
+            ...defaultLoadingStates,
+            costSaved: true,
+        })
         const cellFn = col.cell as any
         render(<>{cellFn(makeInfo(null))}</>)
-        expect(screen.getByTestId('skeleton')).toBeInTheDocument()
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
     })
 
-    it('cell returns NOT_AVAILABLE_PLACEHOLDER when showNotAvailable is true and value is NaN', () => {
+    it('cell shows not available placeholder when showNotAvailable is true and value is NaN', () => {
         const [col] = buildMetricColumnDefs(
             [{ ...baseConfig, showNotAvailable: true }],
             defaultLoadingStates,
-            (row: any) => row.feature,
         )
         const cellFn = col.cell as any
-        expect(cellFn(makeInfo(NaN))).toBe('-')
+        render(<>{cellFn(makeInfo(NaN))}</>)
+        expect(screen.getByText('-')).toBeInTheDocument()
     })
 
-    it('cell does not return NOT_AVAILABLE_PLACEHOLDER when showNotAvailable is false and value is NaN', () => {
+    it('cell does not show not available placeholder when showNotAvailable is false and value is NaN', () => {
         const [col] = buildMetricColumnDefs(
             [{ ...baseConfig, showNotAvailable: false }],
             defaultLoadingStates,
-            (row: any) => row.feature,
         )
         const cellFn = col.cell as any
-        expect(cellFn(makeInfo(NaN))).not.toBe('-')
+        render(<>{cellFn(makeInfo(NaN))}</>)
+        expect(screen.queryByText('-')).not.toBeInTheDocument()
     })
 
     it('cell calls formatMetricValue for normal values', () => {
-        const [col] = buildMetricColumnDefs(
-            [baseConfig],
-            defaultLoadingStates,
-            (row: any) => row.feature,
-        )
+        const [col] = buildMetricColumnDefs([baseConfig], defaultLoadingStates)
         const cellFn = col.cell as any
         cellFn(makeInfo(42))
         expect(vi.mocked(formatMetricValue)).toHaveBeenCalledWith(

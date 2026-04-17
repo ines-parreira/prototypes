@@ -24,7 +24,6 @@ export const ShoppingAssistantTopProductsTable = () => {
                 [ProductTableKeys.CTR]: isFetching,
                 [ProductTableKeys.BTR]: isFetching,
             }}
-            getRowKey={(row) => row.entity}
             DownloadButton={<DownloadShoppingAssistantTopProductsButton />}
             nameColumns={[
                 {

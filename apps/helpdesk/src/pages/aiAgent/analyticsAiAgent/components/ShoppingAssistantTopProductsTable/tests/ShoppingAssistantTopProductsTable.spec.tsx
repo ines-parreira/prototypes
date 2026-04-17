@@ -120,15 +120,6 @@ describe('ShoppingAssistantTopProductsTable', () => {
         })
     })
 
-    it('passes getRowKey that returns the entity value', () => {
-        renderComponent()
-
-        const { getRowKey } = getLastCallProps()
-        const row = getLastCallProps().data[0]
-
-        expect(getRowKey(row)).toBe('1')
-    })
-
     it('passes nameColumns with product name accessor and label', () => {
         renderComponent()
 

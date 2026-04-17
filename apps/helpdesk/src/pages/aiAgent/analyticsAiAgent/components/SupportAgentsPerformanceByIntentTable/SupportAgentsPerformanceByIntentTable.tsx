@@ -13,7 +13,6 @@ export const SupportAgentsPerformanceByIntentTable = () => {
             data={data}
             metricColumns={SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS}
             loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
             DownloadButton={<DownloadSupportAgentsPerformanceByIntentButton />}
             nameColumns={[
                 { accessor: 'intentL1', label: 'Intent L1' },

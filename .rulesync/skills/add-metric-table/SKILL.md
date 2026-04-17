@@ -267,7 +267,6 @@ export const <TableName>Table = () => {
             data={data}
             metricColumns={<TABLE_NAME>_COLUMNS}
             loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
             DownloadButton={<Download<TableName>Button />}
             nameColumn={{
                 accessor: 'entity',
@@ -439,7 +438,6 @@ const getLastCallProps = () =>
         data: <TableName>EntityMetrics[]
         metricColumns: MetricColumnConfig[]
         loadingStates: MetricLoadingStates
-        getRowKey: (row: <TableName>EntityMetrics) => string
         DownloadButton: React.ReactNode
         nameColumn: {
             accessor: string
@@ -465,12 +463,6 @@ describe('<TableName>Table', () => {
     it('passes <TABLE_NAME>_COLUMNS as metricColumns', () => {
         renderComponent()
         expect(getLastCallProps().metricColumns).toBe(<TABLE_NAME>_COLUMNS)
-    })
-
-    it('passes getRowKey that returns the entity value', () => {
-        renderComponent()
-        const { getRowKey } = getLastCallProps()
-        expect(getRowKey(defaultData[0])).toBe(defaultData[0].entity)
     })
 
     // Option A – displayNames

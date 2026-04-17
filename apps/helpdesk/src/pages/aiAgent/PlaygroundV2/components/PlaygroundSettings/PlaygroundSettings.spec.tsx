@@ -192,6 +192,7 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/MessagesContext', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Button: ({
         children,
         onClick,

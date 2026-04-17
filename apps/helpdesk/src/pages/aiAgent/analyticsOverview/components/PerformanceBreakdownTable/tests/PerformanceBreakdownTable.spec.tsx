@@ -106,13 +106,6 @@ describe('PerformanceBreakdownTable', () => {
         )
     })
 
-    it('passes getRowKey that returns the feature value', () => {
-        renderComponent()
-
-        const { getRowKey } = getLastCallProps()
-        expect(getRowKey(defaultData[0])).toBe('AI Agent')
-    })
-
     it('passes nameColumns with feature accessor and Feature label', () => {
         renderComponent()
 

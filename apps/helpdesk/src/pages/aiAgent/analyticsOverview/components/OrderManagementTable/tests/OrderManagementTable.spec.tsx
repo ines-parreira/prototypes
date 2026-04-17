@@ -125,13 +125,6 @@ describe('OrderManagementTable', () => {
         expect(getLastCallProps().metricColumns).toBe(ORDER_MANAGEMENT_COLUMNS)
     })
 
-    it('passes getRowKey that returns the entity value', () => {
-        renderComponent()
-
-        const { getRowKey } = getLastCallProps()
-        expect(getRowKey(defaultData[0])).toBe('cancel_order')
-    })
-
     it('passes nameColumns with entity accessor, Feature name label, and ENTITY_DISPLAY_NAMES', () => {
         renderComponent()
 

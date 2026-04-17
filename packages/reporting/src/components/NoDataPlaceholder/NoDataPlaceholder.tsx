@@ -3,11 +3,13 @@ import { Box, Heading, Text } from '@gorgias/axiom'
 
 type NoDataPlaceholderProps = {
     height?: SizeValue
+    marginBottom?: SizeValue
 }
 const DEFAULT_HEIGHT = '274px'
 
 export const NoDataPlaceholder = ({
     height = DEFAULT_HEIGHT,
+    marginBottom = 'lg',
 }: NoDataPlaceholderProps) => {
     return (
         <Box
@@ -16,7 +18,7 @@ export const NoDataPlaceholder = ({
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            marginBottom="lg"
+            marginBottom={marginBottom}
             gap="xs"
         >
             <Heading size="sm">No data found</Heading>

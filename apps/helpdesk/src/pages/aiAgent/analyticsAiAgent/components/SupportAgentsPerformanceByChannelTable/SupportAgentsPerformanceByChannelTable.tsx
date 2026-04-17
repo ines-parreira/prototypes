@@ -14,7 +14,6 @@ export const SupportAgentsPerformanceByChannelTable = () => {
             data={data}
             metricColumns={SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS}
             loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
             DownloadButton={<DownloadSupportAgentsPerformanceByChannelButton />}
             nameColumns={[
                 {

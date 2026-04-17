@@ -21,6 +21,7 @@ const dummyData = [
 ]
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Skeleton: () => <div>Skeleton</div>,
 }))
 

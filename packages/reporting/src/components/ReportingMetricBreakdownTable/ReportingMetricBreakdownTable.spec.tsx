@@ -42,7 +42,6 @@ describe('ReportingMetricBreakdownTable', () => {
                 data={[] as Row[]}
                 metricColumns={metricColumns}
                 loadingStates={defaultLoadingStates}
-                getRowKey={(row) => row.name}
                 DownloadButton={<button>Download</button>}
                 nameColumns={nameColumns}
             />,
@@ -59,7 +58,6 @@ describe('ReportingMetricBreakdownTable', () => {
                 data={[] as Row[]}
                 metricColumns={metricColumns}
                 loadingStates={defaultLoadingStates}
-                getRowKey={(row) => row.name}
                 DownloadButton={null}
                 nameColumns={nameColumns}
             />,
@@ -80,7 +78,6 @@ describe('ReportingMetricBreakdownTable', () => {
                     ...defaultLoadingStates,
                     automatedInteractions: true,
                 }}
-                getRowKey={(row) => row.name}
                 DownloadButton={null}
                 nameColumns={nameColumns}
             />,
@@ -95,7 +92,6 @@ describe('ReportingMetricBreakdownTable', () => {
                 data={sampleData}
                 metricColumns={metricColumns}
                 loadingStates={defaultLoadingStates}
-                getRowKey={(row) => row.name}
                 DownloadButton={null}
                 nameColumns={nameColumns}
             />,
@@ -116,7 +112,6 @@ describe('ReportingMetricBreakdownTable', () => {
                 data={sampleData}
                 metricColumns={metricColumns}
                 loadingStates={defaultLoadingStates}
-                getRowKey={(row) => row.name}
                 DownloadButton={null}
                 nameColumns={[{ ...nameColumns[0], displayNames }]}
             />,
@@ -132,7 +127,6 @@ describe('ReportingMetricBreakdownTable', () => {
                 data={sampleData}
                 metricColumns={metricColumns}
                 loadingStates={defaultLoadingStates}
-                getRowKey={(row) => row.name}
                 DownloadButton={null}
                 nameColumns={nameColumns}
             />,

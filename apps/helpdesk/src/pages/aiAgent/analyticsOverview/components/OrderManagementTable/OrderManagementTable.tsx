@@ -27,7 +27,6 @@ export const OrderManagementTable = () => {
             data={data}
             metricColumns={ORDER_MANAGEMENT_COLUMNS}
             loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
             DownloadButton={<DownloadOrderManagementButton />}
             nameColumns={[
                 {

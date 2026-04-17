@@ -120,12 +120,6 @@ describe('ShoppingAssistantPerformanceByEngagementFeatureTable', () => {
         )
     })
 
-    it('passes getRowKey that returns the entity value', () => {
-        renderComponent()
-
-        expect(getLastCallProps().getRowKey(defaultData[0])).toBe('search_bar')
-    })
-
     it('passes nameColumns with engagement feature label and display names', () => {
         renderComponent()
 
