@@ -241,6 +241,7 @@ export type MeasureName =
     | 'medianDecreaseInFirstResponseTime'
     | 'averageDecreaseInResolutionTime'
     | 'medianDecreaseInResolutionTime'
+    | 'timesRecommended'
 
 export type TimeDimensionName =
     | 'createdDatetime'

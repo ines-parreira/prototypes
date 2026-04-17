@@ -98,3 +98,23 @@ export const getStatsTrendHook =
                 timezone,
             } as TContext),
         )
+
+export const getStatsTrendFetch =
+    <
+        TMeta extends ScopeMeta,
+        TMetricName extends MetricName,
+        TContext extends Context = Context<TMeta>,
+    >(
+        query: MetricQueryFactory<TMeta, TMetricName, TContext>,
+    ) =>
+    (filters: StatsFilters, timezone: string) =>
+        fetchStatsMetricTrend(
+            query({ filters, timezone } as TContext),
+            query({
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            } as TContext),
+        )

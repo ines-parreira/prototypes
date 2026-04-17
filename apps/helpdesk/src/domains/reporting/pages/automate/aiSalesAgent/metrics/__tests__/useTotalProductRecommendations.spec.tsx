@@ -1,129 +1,121 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import type { UseQueryResult } from '@tanstack/react-query'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act, waitFor } from '@testing-library/react'
-import moment from 'moment'
 
-import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import {
-    fetchPostReportingV2,
-    usePostReportingV2,
-} from 'domains/reporting/models/queries'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'domains/reporting/hooks/useMetricTrend'
+import { totalNumberProductRecommendationsQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { AISalesAgentTotalProductRecommendationsQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentConversations'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchTotalProductRecommendations,
     useTotalProductRecommendations,
 } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalProductRecommendations'
-import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
-import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-const timezone = 'UTC'
+jest.mock('domains/reporting/hooks/useMetricTrend')
 
-const statsFilters: StatsFilters = {
-    period: {
-        start_datetime: moment()
-            .add(1 * 7, 'day')
-            .format('YYYY-MM-DDT00:00:00.000'),
-        end_datetime: moment()
-            .add(3 * 7, 'day')
-            .format('YYYY-MM-DDT23:50:59.999'),
-    },
-}
-
-const queryClient = mockQueryClient()
-
-jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReportingV2)
-const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
-
-jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
-jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
-const getNewStatsFeatureFlagMigrationMock = assumeMock(
-    getNewStatsFeatureFlagMigration,
-)
-const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
-    useGetNewStatsFeatureFlagMigration,
-)
-
-jest.useFakeTimers()
+const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
+const useMetricTrendMock = assumeMock(useMetricTrend)
 
 describe('totalProductRecommendations', () => {
-    const defaultReporting = {
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: '2021-05-29T00:00:00.000',
+            end_datetime: '2021-06-04T23:59:59.000',
+        },
+    }
+    const timezone = 'UTC'
+
+    const trendData = {
+        data: { value: 101.2, prevValue: 50.4 },
         isFetching: false,
         isError: false,
-    } as UseQueryResult
+    }
 
     beforeEach(() => {
-        getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
-        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+        jest.clearAllMocks()
+        useMetricTrendMock.mockReturnValue(trendData)
+        fetchMetricTrendMock.mockResolvedValue(trendData)
     })
 
     describe('useTotalProductRecommendations', () => {
-        it('should return correct metric data when the query resolves', async () => {
-            usePostReportingMock.mockReturnValueOnce({
-                ...defaultReporting,
-                data: 101.2,
-            } as UseQueryResult)
-            usePostReportingMock.mockReturnValueOnce({
-                ...defaultReporting,
-                data: 50.4,
-            } as UseQueryResult)
-
-            act(() => jest.runAllTimers())
-
-            const { result } = renderHook(
-                () => useTotalProductRecommendations(statsFilters, timezone),
-                {
-                    wrapper: ({ children }) => (
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    ),
-                },
+        it('should return the result of useMetricTrend', () => {
+            const { result } = renderHook(() =>
+                useTotalProductRecommendations(statsFilters, timezone),
             )
 
-            await waitFor(() => {
-                expect(result.current).toEqual({
-                    data: {
-                        value: 101.2,
-                        prevValue: 50.4,
+            expect(result.current).toEqual(trendData)
+        })
+
+        it('should pass current and previous period query factories to useMetricTrend', () => {
+            renderHook(() =>
+                useTotalProductRecommendations(statsFilters, timezone),
+            )
+
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                totalNumberProductRecommendationsQueryFactory(
+                    statsFilters,
+                    timezone,
+                ),
+                totalNumberProductRecommendationsQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
                     },
-                    isError: false,
-                    isFetching: false,
-                })
-            })
+                    timezone,
+                ),
+                AISalesAgentTotalProductRecommendationsQueryFactoryV2({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                AISalesAgentTotalProductRecommendationsQueryFactoryV2({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
+            )
         })
     })
 
     describe('fetchTotalProductRecommendations', () => {
-        it('should return the correct data when the query resolves', async () => {
-            fetchPostReportingV2Mock.mockResolvedValueOnce({
-                data: {
-                    ...defaultReporting,
-                    data: [{ [AiSalesAgentConversationsMeasure.Count]: 101.2 }],
-                },
-            } as unknown as ReturnType<typeof fetchPostReportingV2>)
-            fetchPostReportingV2Mock.mockResolvedValueOnce({
-                data: {
-                    ...defaultReporting,
-                    data: [{ [AiSalesAgentConversationsMeasure.Count]: 50.4 }],
-                },
-            } as unknown as ReturnType<typeof fetchPostReportingV2>)
-
+        it('should return the result of fetchMetricTrend', async () => {
             const result = await fetchTotalProductRecommendations(
                 statsFilters,
                 timezone,
             )
 
-            expect(result).toEqual({
-                data: {
-                    value: 101.2,
-                    prevValue: 50.4,
-                },
-                isError: false,
-                isFetching: false,
-            })
+            expect(result).toEqual(trendData)
+        })
+
+        it('should pass current and previous period query factories to fetchMetricTrend', async () => {
+            await fetchTotalProductRecommendations(statsFilters, timezone)
+
+            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
+                totalNumberProductRecommendationsQueryFactory(
+                    statsFilters,
+                    timezone,
+                ),
+                totalNumberProductRecommendationsQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                ),
+                AISalesAgentTotalProductRecommendationsQueryFactoryV2({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                AISalesAgentTotalProductRecommendationsQueryFactoryV2({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
+            )
         })
     })
 })

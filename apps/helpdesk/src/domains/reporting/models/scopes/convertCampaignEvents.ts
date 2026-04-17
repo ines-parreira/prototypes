@@ -73,7 +73,7 @@ export const aiSalesAgentProductClicksQueryFactoryV2 = (ctx: Context) =>
     aiSalesAgentProductClicks.build(ctx)
 
 const aiSalesAgentUniqueClicks = convertCampaignEvents
-    .defineMetricName(METRIC_NAMES.AI_SALES_AGENT_UNIQUE_CLICKS)
+    .defineMetricName(METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_UNIQUE_CLICKS)
     .defineQuery(({ ctx, config }) => ({
         measures: ['uniqClicks'],
         filters: createScopeFilters(

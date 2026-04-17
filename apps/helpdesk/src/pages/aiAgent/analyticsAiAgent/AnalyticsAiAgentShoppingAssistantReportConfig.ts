@@ -1,7 +1,7 @@
 import { fetchAiAgentBuyThroughRateTrend } from 'domains/reporting/hooks/automate/useAiAgentBuyThroughRateTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentSalesHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentSalesHandoverInteractionsTrend'
-import { fetchProductClickRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductClickRateTrend'
+import { fetchClickThroughRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useClickThroughRateTrend'
 import { fetchSuccessRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useSuccessRateTrend'
 import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -289,14 +289,14 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchProductClickRateTrend,
-                        metricFormat: 'percent',
+                        fetch: fetchClickThroughRateTrend,
+                        metricFormat: 'decimal-to-percent',
                     },
                 ],
                 description:
                     'The percentage of product recommendations clicked by customers.',
                 chartType: ChartType.Card,
-                metricFormat: 'percent',
+                metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.SuccessRateCard]: {

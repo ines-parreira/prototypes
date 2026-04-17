@@ -285,7 +285,8 @@ export const METRIC_NAMES = {
     AI_SALES_AGENT_TOTAL_PRODUCT_BOUGHT: 'ai-sales-agent-total-product-bought',
     AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS:
         'ai-sales-agent-total-product-recommendations',
-    AI_SALES_AGENT_UNIQUE_CLICKS: 'ai-sales-agent-unique-clicks',
+    AI_AGENT_SHOPPING_ASSISTANT_UNIQUE_CLICKS:
+        'ai-agent-shopping-assistant-unique-clicks',
     AI_SALES_AGENT_TOTAL_NUMBER_OF_ORDER_DRILL_DOWN:
         'ai-sales-agent-total-number-of-order-drill-down',
     AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN:
@@ -348,8 +349,10 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-revenue-per-interaction',
     AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS:
         'ai-agent-shopping-assistant-product-recommendations',
-    AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_PER_PRODUCT:
-        'ai-agent-shopping-assistant-product-recommendations-per-product',
+    AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED_PER_PRODUCT:
+        'ai-agent-shopping-assistant-times-recommended-per-product',
+    AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED:
+        'ai-agent-shopping-assistant-times-recommended',
     AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_OFFERED:
         'ai-agent-shopping-assistant-discount-codes-offered',
     AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_DISCOUNT_AMOUNT:
@@ -1057,7 +1060,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.ConvertCampaignEvents]: [
         METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CLICKS_PER_PRODUCT,
-        METRIC_NAMES.AI_SALES_AGENT_UNIQUE_CLICKS,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_UNIQUE_CLICKS,
     ],
     [MetricScope.ConvertOrderConversion]: [
         METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE,
@@ -1155,7 +1158,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.AiSalesAgentActivity]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS,
-        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_PER_PRODUCT,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED_PER_PRODUCT,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION_TIMESERIES,

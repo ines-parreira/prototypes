@@ -8,6 +8,7 @@ import {
 } from 'domains/reporting/hooks/useStatsMetric'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
+    getStatsTrendFetch,
     getStatsTrendHook,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import type { BuiltQuery } from 'domains/reporting/models/scopes/scope'
@@ -285,6 +286,108 @@ describe('useStatsMetricTrend', () => {
             const { result } = renderHook(() => useTrend(filters, timezone))
 
             expect(result.current.isFetching).toBe(true)
+        })
+    })
+
+    describe('getStatsTrendFetch', () => {
+        const filters: StatsFilters = {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        }
+        const timezone = 'utc'
+
+        const mockCurrentQuery: BuiltQuery = {
+            scope: MetricScope.TicketsClosed,
+            measures: ['ticketCount'],
+            filters: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
+        }
+
+        const mockPrevQuery: BuiltQuery = {
+            scope: MetricScope.TicketsClosed,
+            measures: ['ticketCount'],
+            filters: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
+        }
+
+        const mockQuery = jest.fn()
+
+        beforeEach(() => {
+            jest.resetAllMocks()
+            fetchStatsMetricMock.mockResolvedValue({
+                isFetching: false,
+                isError: false,
+                data: undefined,
+            })
+            mockQuery
+                .mockReturnValueOnce(mockCurrentQuery)
+                .mockReturnValueOnce(mockPrevQuery)
+        })
+
+        it('calls query with current period filters and timezone', async () => {
+            const fetchTrend = getStatsTrendFetch(mockQuery)
+            await fetchTrend(filters, timezone)
+
+            expect(mockQuery).toHaveBeenNthCalledWith(1, { filters, timezone })
+        })
+
+        it('calls query with previous period filters and timezone', async () => {
+            const prevPeriod = getPreviousPeriod(filters.period)
+            const fetchTrend = getStatsTrendFetch(mockQuery)
+            await fetchTrend(filters, timezone)
+
+            expect(mockQuery).toHaveBeenNthCalledWith(2, {
+                filters: { ...filters, period: prevPeriod },
+                timezone,
+            })
+        })
+
+        it('passes the built queries to fetchStatsMetricTrend', async () => {
+            const fetchTrend = getStatsTrendFetch(mockQuery)
+            await fetchTrend(filters, timezone)
+
+            expect(fetchStatsMetricMock).toHaveBeenCalledWith(mockCurrentQuery)
+            expect(fetchStatsMetricMock).toHaveBeenCalledWith(mockPrevQuery)
+        })
+
+        it('returns value from current period and prevValue from previous period', async () => {
+            fetchStatsMetricMock
+                .mockResolvedValueOnce({
+                    isFetching: false,
+                    isError: false,
+                    data: { value: 100 },
+                })
+                .mockResolvedValueOnce({
+                    isFetching: false,
+                    isError: false,
+                    data: { value: 75 },
+                })
+
+            const fetchTrend = getStatsTrendFetch(mockQuery)
+            const result = await fetchTrend(filters, timezone)
+
+            expect(result.data).toEqual({ value: 100, prevValue: 75 })
+        })
+
+        it('returns isError true when either metric has an error', async () => {
+            fetchStatsMetricMock
+                .mockResolvedValueOnce({
+                    isFetching: false,
+                    isError: true,
+                    data: undefined,
+                })
+                .mockResolvedValueOnce({
+                    isFetching: false,
+                    isError: false,
+                    data: { value: 50 },
+                })
+
+            const fetchTrend = getStatsTrendFetch(mockQuery)
+            const result = await fetchTrend(filters, timezone)
+
+            expect(result.isError).toBe(true)
         })
     })
 

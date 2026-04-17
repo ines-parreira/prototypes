@@ -53,7 +53,7 @@ export const recommendedProductCountQueryV2Factory = (
 export const aiSalesRecommendedProductCountPerProduct =
     aiSalesAgentActivityScope
         .defineMetricName(
-            METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_PER_PRODUCT,
+            METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED_PER_PRODUCT,
         )
         .defineQuery(() => ({
             measures: ['timesRecommended'],
@@ -63,6 +63,17 @@ export const aiSalesRecommendedProductCountPerProduct =
 export const aiSalesRecommendedProductCountPerProductQueryFactoryV2 = (
     ctx: AiSalesAgentActivityContext,
 ) => aiSalesRecommendedProductCountPerProduct.build(ctx)
+export const timesRecommended = aiSalesAgentActivityScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED,
+    )
+    .defineQuery(() => ({
+        measures: ['timesRecommended'] as const,
+    }))
+
+export const timesRecommendedQueryV2Factory = (
+    ctx: AiSalesAgentActivityContext,
+) => timesRecommended.build(ctx)
 
 export const revenuePerInteraction = aiSalesAgentActivityScope
     .defineMetricName(

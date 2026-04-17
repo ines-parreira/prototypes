@@ -1,7 +1,7 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
-import { useProductClickRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductClickRateTrend'
+import { useClickThroughRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useClickThroughRateTrend'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 export const AnalyticsAiAgentClickThroughRateCard = ({
@@ -13,7 +13,7 @@ export const AnalyticsAiAgentClickThroughRateCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useProductClickRateTrend,
+        useTrend: useClickThroughRateTrend,
         isAiAgentTrendCard: true,
     })
 
