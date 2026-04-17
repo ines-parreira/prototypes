@@ -60,7 +60,6 @@ export function createEngine(): HarnessEngine {
                 key,
             },
             storage: InLocalStorage(),
-            debug: 'DEBUG',
         })
 
         client = factory.client()
