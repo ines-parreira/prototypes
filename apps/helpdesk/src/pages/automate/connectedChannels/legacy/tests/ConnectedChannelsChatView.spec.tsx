@@ -41,6 +41,10 @@ jest.mock('settings/automate/hooks/useIsAutomateSettings')
 jest.mock(
     'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
     () => ({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        ...jest.requireActual(
+            'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
+        ),
         useChatPreviewChannelsContext: jest.fn().mockReturnValue({
             shopName: 'mystore',
             selectedChannelId: undefined,
