@@ -36,7 +36,7 @@ import {
 } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsShoppingAssistantConfigurableLine/AnalyticsShoppingAssistantConfigurableLine'
 import { fetchAiSalesAgentConversionRateTrend } from 'pages/aiAgent/analyticsAiAgent/charts/useAiSalesAgentConversionRateTrend'
 import { ShoppingAssistantChannelTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTableWrapper'
-import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable'
+import { ShoppingAssistantTopProductsTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTableWrapper'
 import { ShoppingAssistantPerformanceByEngagementFeatureTable } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable'
 import { SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_TABLE } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/columns'
 import { fetchAiAgentAverageDiscountAmountTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAverageDiscountAmountTrend'
@@ -51,6 +51,7 @@ import { fetchAiAgentSalesPerformanceByChannelAsConfigurableTable } from 'pages/
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 import { fetchShoppingAssistantPerformanceByEngagementFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
+import { fetchShoppingAssistantTopProductsAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
@@ -409,9 +410,14 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 },
             [AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable]:
                 {
-                    chartComponent: ShoppingAssistantTopProductsTable,
+                    chartComponent: ShoppingAssistantTopProductsTableWrapper,
                     label: 'Top products recommended',
-                    csvProducer: null,
+                    csvProducer: [
+                        {
+                            type: DataExportFormat.ConfigurableTable,
+                            fetch: fetchShoppingAssistantTopProductsAsConfigurableTable,
+                        },
+                    ],
                     description: 'Performance breakdown by top products',
                     chartType: ChartType.Table,
                 },

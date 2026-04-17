@@ -262,8 +262,10 @@ export const METRIC_NAMES = {
     AI_SALES_AGENT_GROUPED_SALES_OPPORTUNITY:
         'ai-sales-agent-grouped-sales-opportunity',
     AI_SALES_AGENT_ORDERS_TIME_SERIES: 'ai-sales-agent-orders-time-series',
-    AI_SALES_AGENT_PRODUCT_BOUGHT: 'ai-sales-agent-product-bought',
-    AI_SALES_AGENT_PRODUCT_CLICKS: 'ai-sales-agent-product-clicks',
+    AI_AGENT_SHOPPING_ASSISTANT_BOUGHT_PER_PRODUCT:
+        'ai-agent-shopping-assistant-bought-per-product',
+    AI_AGENT_SHOPPING_ASSISTANT_CLICKS_PER_PRODUCT:
+        'ai-agent-shopping-assistant-clicks-per-product',
     AI_SALES_AGENT_PRODUCT_RECOMMENDATIONS_COUNT:
         'ai-sales-agent-product-recommendations-count',
     AI_SALES_AGENT_REPEAT_RATE: 'ai-sales-agent-repeat-rate',
@@ -346,6 +348,8 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-revenue-per-interaction',
     AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS:
         'ai-agent-shopping-assistant-product-recommendations',
+    AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_PER_PRODUCT:
+        'ai-agent-shopping-assistant-product-recommendations-per-product',
     AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_OFFERED:
         'ai-agent-shopping-assistant-discount-codes-offered',
     AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_DISCOUNT_AMOUNT:
@@ -356,6 +360,8 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-discount-codes-applied',
     AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE:
         'ai-agent-shopping-assistant-buy-through-rate',
+    AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE_PER_PRODUCT:
+        'ai-agent-shopping-assistant-buy-through-rate-per-product',
     AI_AGENT_SHOPPING_ASSISTANT_TOTAL_SALES:
         'ai-agent-shopping-assistant-total-sales',
     AI_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED:
@@ -1050,7 +1056,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.ConvertCampaignEvents]: [
         METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
-        METRIC_NAMES.AI_SALES_AGENT_PRODUCT_CLICKS,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CLICKS_PER_PRODUCT,
         METRIC_NAMES.AI_SALES_AGENT_UNIQUE_CLICKS,
     ],
     [MetricScope.ConvertOrderConversion]: [
@@ -1071,7 +1077,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_SALES_AGENT_GMV_INFLUENCED,
         METRIC_NAMES.AI_SALES_AGENT_GMV_INFLUENCED_PER_CHANNEL,
         METRIC_NAMES.AI_SALES_AGENT_AVERAGE_ORDER_VALUE,
-        METRIC_NAMES.AI_SALES_AGENT_PRODUCT_BOUGHT,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BOUGHT_PER_PRODUCT,
         METRIC_NAMES.AI_SALES_AGENT_GMV_USD_INFLUENCED,
         METRIC_NAMES.AI_SALES_AGENT_GMV_USD,
         METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_ORDER,
@@ -1145,9 +1151,11 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.AiSalesAgentBuyThroughRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE_PER_PRODUCT,
     ],
     [MetricScope.AiSalesAgentActivity]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_PER_PRODUCT,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION_TIMESERIES,

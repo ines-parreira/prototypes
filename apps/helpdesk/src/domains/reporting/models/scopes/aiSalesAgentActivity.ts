@@ -4,11 +4,16 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 export const aiSalesAgentActivityScope = defineScope({
     scope: MetricScope.AiSalesAgentActivity,
-    measures: ['recommendedProductCount', 'revenuePerInteraction'],
+    measures: [
+        'recommendedProductCount',
+        'revenuePerInteraction',
+        'timesRecommended',
+    ],
     dimensions: [
         'attributedRevenue',
         'channel',
         'engagementType',
+        'productId',
         'productRecommended',
         'storeIntegrationId',
         'ticketId',
@@ -44,6 +49,20 @@ export const recommendedProductCount = aiSalesAgentActivityScope
 export const recommendedProductCountQueryV2Factory = (
     ctx: AiSalesAgentActivityContext,
 ) => recommendedProductCount.build(ctx)
+
+export const aiSalesRecommendedProductCountPerProduct =
+    aiSalesAgentActivityScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_PER_PRODUCT,
+        )
+        .defineQuery(() => ({
+            measures: ['timesRecommended'],
+            dimensions: ['productRecommended', 'storeIntegrationId'] as const,
+        }))
+
+export const aiSalesRecommendedProductCountPerProductQueryFactoryV2 = (
+    ctx: AiSalesAgentActivityContext,
+) => aiSalesRecommendedProductCountPerProduct.build(ctx)
 
 export const revenuePerInteraction = aiSalesAgentActivityScope
     .defineMetricName(

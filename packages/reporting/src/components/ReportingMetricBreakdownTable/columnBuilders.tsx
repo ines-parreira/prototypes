@@ -1,5 +1,6 @@
 import type { ColumnDef } from '@gorgias/axiom'
 import {
+    Avatar,
     Box,
     Icon,
     Link,
@@ -62,6 +63,8 @@ export function buildNameColDef<TData>(
                 : (config.displayNames?.[value] ?? value)
             const href = config.getHref?.(value)
 
+            const avatarProps = config.getAvatarProps?.(value)
+
             return (
                 <Box
                     display="flex"
@@ -69,19 +72,26 @@ export function buildNameColDef<TData>(
                     gap="xxxs"
                     className={css.featureName}
                 >
-                    <Text size="md" variant="bold">
-                        {displayName}
-                    </Text>
-                    {href && (
-                        <Link
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`Open ${displayName}`}
-                        >
-                            <Icon name="external-link" size="xs" />
-                        </Link>
+                    {avatarProps && (
+                        <Avatar
+                            name={avatarProps.name}
+                            url={avatarProps.url}
+                            size="sm"
+                        />
                     )}
+                    <Text size="md" variant="bold">
+                        {href ? (
+                            <Link
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {displayName}
+                            </Link>
+                        ) : (
+                            displayName
+                        )}
+                    </Text>
                     {config.renderDrilldown?.(value)}
                 </Box>
             )

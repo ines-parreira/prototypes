@@ -1,5 +1,7 @@
 import {
+    aiSalesAgentBuyThroughRatePerProductQueryFactoryV2,
     aiSalesAgentBuyThroughRateScope,
+    aiSalesBuyThroughRatePerProduct,
     buyThroughRate,
     buyThroughRateQueryV2Factory,
 } from 'domains/reporting/models/scopes/aiSalesAgentBuyThroughRate'
@@ -137,6 +139,24 @@ describe('aiSalesAgentBuyThroughRateScope', () => {
                 const buildResult = buyThroughRate.build(context)
 
                 expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('aiSalesAgentBuyThroughRatePerProductQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    aiSalesAgentBuyThroughRatePerProductQueryFactoryV2(context)
+                const buildResult =
+                    aiSalesBuyThroughRatePerProduct.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('uses productRecommended as the dimension', () => {
+                const result =
+                    aiSalesAgentBuyThroughRatePerProductQueryFactoryV2(context)
+
+                expect(result.dimensions).toContain('productRecommended')
             })
         })
     })

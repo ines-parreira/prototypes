@@ -4,6 +4,7 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { fetchShoppingAssistantTopProductsAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 import { STATS_ROUTES } from 'routes/constants'
 
 import {
@@ -217,7 +218,14 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Top products recommended')
         expect(config.chartType).toBe(ChartType.Table)
-        expect(config.csvProducer).toBeNull()
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(
+            DataExportFormat.ConfigurableTable,
+        )
+        expect(config.csvProducer?.[0].fetch).toBe(
+            fetchShoppingAssistantTopProductsAsConfigurableTable,
+        )
     })
 
     it('should have correct report filters', () => {
@@ -415,15 +423,5 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
             ]
 
         expect(config.csvProducer).not.toBeNull()
-    })
-
-    it('should have null csvProducer for top products performance table', () => {
-        const config =
-            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart
-                    .TopProductsPerformanceTable
-            ]
-
-        expect(config.csvProducer).toBeNull()
     })
 })

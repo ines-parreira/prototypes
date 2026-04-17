@@ -20,8 +20,8 @@ import {
 
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
-import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
-import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
+import { useDownloadShoppingAssistantTopProductsDataLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy'
+import { useShoppingAssistantTopProductsMetricsLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetricsLegacy'
 import { formatPercentage } from 'pages/common/utils/numbers'
 
 import { DownloadTableButton } from './DownloadTableButton'
@@ -57,8 +57,8 @@ const PLACEHOLDER_DATA: ProductTableContentCell[] = [
 ]
 
 export const ShoppingAssistantTopProductsTable = () => {
-    const { data, isFetching } = useShoppingAssistantTopProductsMetrics()
-    const downloadData = useDownloadShoppingAssistantTopProductsData()
+    const { data, isFetching } = useShoppingAssistantTopProductsMetricsLegacy()
+    const downloadData = useDownloadShoppingAssistantTopProductsDataLegacy()
 
     const tableData = useMemo(() => {
         if (data.length > 0 && hasNonZeroMetrics(data)) {

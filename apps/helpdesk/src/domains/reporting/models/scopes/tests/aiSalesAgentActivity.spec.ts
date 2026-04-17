@@ -5,6 +5,8 @@ import {
     aiAgentSalesRevenuePerInteractionPerEngagementType,
     aiAgentSalesRevenuePerInteractionPerEngagementTypeQueryV2Factory,
     aiSalesAgentActivityScope,
+    aiSalesRecommendedProductCountPerProduct,
+    aiSalesRecommendedProductCountPerProductQueryFactoryV2,
     dynamicRevenuePerInteraction,
     dynamicRevenuePerInteractionQueryFactoryV2,
     dynamicRevenuePerInteractionTimeseries,
@@ -201,6 +203,28 @@ describe('recommendedProductCount queries', () => {
                 expect(recommendedProductCountQueryV2Factory(context)).toEqual(
                     recommendedProductCount.build(context),
                 )
+            })
+        })
+
+        describe('aiSalesRecommendedProductCountPerProductQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    aiSalesRecommendedProductCountPerProductQueryFactoryV2(
+                        context,
+                    ),
+                ).toEqual(
+                    aiSalesRecommendedProductCountPerProduct.build(context),
+                )
+            })
+
+            it('includes productRecommended and storeIntegrationId as dimensions', () => {
+                const result =
+                    aiSalesRecommendedProductCountPerProductQueryFactoryV2(
+                        context,
+                    )
+
+                expect(result.dimensions).toContain('productRecommended')
+                expect(result.dimensions).toContain('storeIntegrationId')
             })
         })
     })

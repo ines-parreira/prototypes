@@ -54,7 +54,9 @@ export const convertCampaignEventsPerformanceQueryFactoryV2 = (
 ) => convertCampaignEventsPerformance.build({ ...ctx, dimensions: [dimension] })
 
 export const aiSalesAgentProductClicks = convertCampaignEvents
-    .defineMetricName(METRIC_NAMES.AI_SALES_AGENT_PRODUCT_CLICKS)
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CLICKS_PER_PRODUCT,
+    )
     .defineQuery(({ ctx, config }) => ({
         measures: ['uniqClicks'],
         dimensions: ['productId'],

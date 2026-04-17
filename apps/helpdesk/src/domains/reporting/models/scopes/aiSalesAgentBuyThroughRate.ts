@@ -4,11 +4,12 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 export const aiSalesAgentBuyThroughRateScope = defineScope({
     scope: MetricScope.AiSalesAgentBuyThroughRate,
-    measures: ['buyThroughRate'],
+    measures: ['buyThroughRate', 'productBuyThroughRate'],
     dimensions: [
         'boughtProducts',
         'channel',
         'engagementType',
+        'productId',
         'productRecommended',
         'storeIntegrationId',
         'ticketId',
@@ -37,3 +38,16 @@ export const buyThroughRate = aiSalesAgentBuyThroughRateScope
 export const buyThroughRateQueryV2Factory = (
     ctx: AiSalesAgentBuyThroughRateContext,
 ) => buyThroughRate.build(ctx)
+
+export const aiSalesBuyThroughRatePerProduct = aiSalesAgentBuyThroughRateScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE_PER_PRODUCT,
+    )
+    .defineQuery(() => ({
+        measures: ['productBuyThroughRate'],
+        dimensions: ['productRecommended'],
+    }))
+
+export const aiSalesAgentBuyThroughRatePerProductQueryFactoryV2 = (
+    ctx: AiSalesAgentBuyThroughRateContext,
+) => aiSalesBuyThroughRatePerProduct.build(ctx)

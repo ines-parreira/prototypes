@@ -1,25 +1,22 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
-import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
+import { useShoppingAssistantTopProductsMetricsLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetricsLegacy'
 
 import { ShoppingAssistantTopProductsTable } from '../ShoppingAssistantTopProductsTable'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics',
+    'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetricsLegacy',
 )
 
-const mockUseStatsFilters = useStatsFilters as jest.MockedFunction<
-    typeof useStatsFilters
->
-
-const mockUseShoppingAssistantTopProductsMetrics =
-    useShoppingAssistantTopProductsMetrics as jest.MockedFunction<
-        typeof useShoppingAssistantTopProductsMetrics
-    >
+const mockUseStatsFilters = assumeMock(useStatsFilters)
+const mockUseShoppingAssistantTopProductsMetrics = assumeMock(
+    useShoppingAssistantTopProductsMetricsLegacy,
+)
 
 const createWrapper = () => {
     const queryClient = new QueryClient({

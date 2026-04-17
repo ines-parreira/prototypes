@@ -23,5 +23,6 @@ export type NameColumnConfig = {
     displayNames?: Record<string, string>
     formatName?: (value: string) => string
     getHref?: (value: string) => string | undefined
+    getAvatarProps?: (value: string) => { url?: string; name: string }
     renderDrilldown?: (value: string) => ReactNode
 }

@@ -201,7 +201,7 @@ describe('AISalesAgentOrders scope', () => {
             const result = AISalesAgentProductBoughtQueryFactoryV2(mockContext)
 
             expect(result.metricName).toBe(
-                METRIC_NAMES.AI_SALES_AGENT_PRODUCT_BOUGHT,
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BOUGHT_PER_PRODUCT,
             )
         })
     })

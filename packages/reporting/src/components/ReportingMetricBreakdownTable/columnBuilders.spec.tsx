@@ -14,6 +14,9 @@ vi.mock('../../utils/helpers', () => ({
 }))
 
 vi.mock('@gorgias/axiom', () => ({
+    Avatar: ({ name, url }: { name: string; url?: string; size?: string }) => (
+        <img alt={name} src={url} />
+    ),
     Box: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
     Icon: () => null,
     Link: ({
@@ -21,15 +24,13 @@ vi.mock('@gorgias/axiom', () => ({
         href,
         target,
         rel,
-        'aria-label': ariaLabel,
     }: {
         children: React.ReactNode
         href: string
         target?: string
         rel?: string
-        'aria-label'?: string
     }) => (
-        <a href={href} target={target} rel={rel} aria-label={ariaLabel}>
+        <a href={href} target={target} rel={rel}>
             {children}
         </a>
     ),
@@ -118,7 +119,7 @@ describe('buildNameColDef', () => {
         expect(screen.getByText('Cancel order')).toBeInTheDocument()
     })
 
-    it('cell renders an icon link next to the display name when getHref is provided', () => {
+    it('cell renders the display name as a link when getHref is provided', () => {
         const col = buildNameColDef({
             accessor: 'entity' as const,
             label: 'Article name',
@@ -136,14 +137,14 @@ describe('buildNameColDef', () => {
                 })}
             </>,
         )
-        const link = screen.getByRole('link', { name: 'Open How to return' })
+        const link = screen.getByRole('link', { name: 'How to return' })
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute('href', 'https://example.com/article-1')
         expect(link).toHaveAttribute('target', '_blank')
         expect(link).toHaveAttribute('rel', 'noopener noreferrer')
     })
 
-    it('cell renders an icon link with the raw value aria-label when getHref is provided but no displayNames', () => {
+    it('cell renders the raw value as a link when getHref is provided but no displayNames', () => {
         const col = buildNameColDef({
             accessor: 'entity' as const,
             label: 'Article name',
@@ -159,10 +160,64 @@ describe('buildNameColDef', () => {
             </>,
         )
         const link = screen.getByRole('link', {
-            name: 'Open https://example.com/article-1',
+            name: 'https://example.com/article-1',
         })
         expect(link).toBeInTheDocument()
         expect(link).toHaveAttribute('href', 'https://example.com/article-1')
+    })
+
+    it('cell renders a plain name without a link when getHref is not provided', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Feature name',
+        })
+        const cellFn = col.cell as any
+        render(
+            <>{cellFn({ getValue: () => 'skill_a', row: { original: {} } })}</>,
+        )
+        expect(screen.getByText('skill_a')).toBeInTheDocument()
+        expect(screen.queryByRole('link')).not.toBeInTheDocument()
+    })
+
+    it('cell renders an avatar when getAvatarProps is provided', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Product name',
+            getAvatarProps: (value) => ({
+                name: `Product ${value}`,
+                url: `https://example.com/img/${value}.jpg`,
+            }),
+        })
+        const cellFn = col.cell as any
+        render(<>{cellFn({ getValue: () => '42', row: { original: {} } })}</>)
+        const avatar = screen.getByRole('img', { name: 'Product 42' })
+        expect(avatar).toBeInTheDocument()
+        expect(avatar).toHaveAttribute('src', 'https://example.com/img/42.jpg')
+    })
+
+    it('cell renders an avatar without image src when url is undefined', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Product name',
+            getAvatarProps: (value) => ({ name: `Product ${value}` }),
+        })
+        const cellFn = col.cell as any
+        render(<>{cellFn({ getValue: () => '7', row: { original: {} } })}</>)
+        expect(
+            screen.getByRole('img', { name: 'Product 7' }),
+        ).toBeInTheDocument()
+    })
+
+    it('cell does not render an avatar when getAvatarProps is not provided', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Feature name',
+        })
+        const cellFn = col.cell as any
+        render(
+            <>{cellFn({ getValue: () => 'skill_a', row: { original: {} } })}</>,
+        )
+        expect(screen.queryByRole('img')).not.toBeInTheDocument()
     })
 })
 

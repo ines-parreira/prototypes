@@ -221,6 +221,8 @@ export type MeasureName =
     | 'averageTimeSavedByAgent'
     | 'medianTimeSavedByAgent'
     | 'recommendedProductCount'
+    | 'timesRecommended'
+    | 'productBuyThroughRate'
     | 'revenuePerInteraction'
     | 'appliedDiscountCodesCount'
     | 'averageDiscountAmount'

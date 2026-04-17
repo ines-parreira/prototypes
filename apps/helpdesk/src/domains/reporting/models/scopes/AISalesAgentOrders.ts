@@ -123,7 +123,7 @@ export const AISalesAgentAverageOrderValueQueryFactoryV2 = (ctx: Context) =>
 
 export const AISalesAgentProductBought =
     AISalesAgentOrdersScope.defineMetricName(
-        METRIC_NAMES.AI_SALES_AGENT_PRODUCT_BOUGHT,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BOUGHT_PER_PRODUCT,
     ).defineQuery(({ ctx, config }) => ({
         measures: ['uniqCount'],
         dimensions: ['influencedProductId'],

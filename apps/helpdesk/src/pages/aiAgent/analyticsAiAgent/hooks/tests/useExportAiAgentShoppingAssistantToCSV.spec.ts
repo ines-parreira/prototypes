@@ -8,6 +8,7 @@ import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/ana
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
+import { useDownloadShoppingAssistantTopProductsDataLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy'
 import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
 import { useExportAiAgentShoppingAssistantToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentShoppingAssistantToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
@@ -28,6 +29,9 @@ jest.mock(
 )
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData',
+)
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy',
 )
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData',
@@ -52,6 +56,9 @@ const mockedUseDownloadGmvInfluenceTimeSeriesData = jest.mocked(
 )
 const mockedUseDownloadShoppingAssistantChannelPerformanceData = jest.mocked(
     useDownloadShoppingAssistantChannelPerformanceData,
+)
+const mockedUseDownloadShoppingAssistantTopProductsDataLegacy = jest.mocked(
+    useDownloadShoppingAssistantTopProductsDataLegacy,
 )
 const mockedUseDownloadShoppingAssistantTopProductsData = jest.mocked(
     useDownloadShoppingAssistantTopProductsData,
@@ -88,6 +95,11 @@ const newSalesChannelFiles = {
 const topProductsFiles = {
     'shopping-assistant-top-products.csv':
         'product_name,times_recommended\nProduct A,100',
+}
+
+const newTopProductsFiles = {
+    '2024-01-01_2024-01-31-shopping-assistant-top-products.csv':
+        '"Product name","Times recommended","Click rate","Buy rate"\r\n"Product A","100","5.00%","2.00%"',
 }
 
 describe('useExportAiAgentShoppingAssistantToCSV', () => {
@@ -143,9 +155,18 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             },
         )
 
+        mockedUseDownloadShoppingAssistantTopProductsDataLegacy.mockReturnValue(
+            {
+                files: topProductsFiles,
+                fileName: 'shopping-assistant-top-products.csv',
+                isLoading: false,
+            },
+        )
+
         mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
-            files: topProductsFiles,
-            fileName: 'shopping-assistant-top-products.csv',
+            files: newTopProductsFiles,
+            fileName:
+                '2024-01-01_2024-01-31-shopping-assistant-top-products.csv',
             isLoading: false,
         })
     })
@@ -290,11 +311,13 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
     })
 
     it('should return isLoading as true when top products data is loading and tables flag is disabled', () => {
-        mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
-            files: {},
-            fileName: '',
-            isLoading: true,
-        })
+        mockedUseDownloadShoppingAssistantTopProductsDataLegacy.mockReturnValue(
+            {
+                files: {},
+                fileName: '',
+                isLoading: true,
+            },
+        )
 
         const { result } = renderHook(() =>
             useExportAiAgentShoppingAssistantToCSV(),
@@ -309,11 +332,13 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
                 return { value: true, isLoading: false }
             return { value: false, isLoading: false }
         })
-        mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
-            files: {},
-            fileName: '',
-            isLoading: true,
-        })
+        mockedUseDownloadShoppingAssistantTopProductsDataLegacy.mockReturnValue(
+            {
+                files: {},
+                fileName: '',
+                isLoading: true,
+            },
+        )
 
         const { result } = renderHook(() =>
             useExportAiAgentShoppingAssistantToCSV(),
@@ -471,11 +496,13 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
                 isLoading: false,
             },
         )
-        mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
-            files: {},
-            fileName: '',
-            isLoading: false,
-        })
+        mockedUseDownloadShoppingAssistantTopProductsDataLegacy.mockReturnValue(
+            {
+                files: {},
+                fileName: '',
+                isLoading: false,
+            },
+        )
 
         const { result } = renderHook(() =>
             useExportAiAgentShoppingAssistantToCSV(),
@@ -564,6 +591,68 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             mockedUseDownloadShoppingAssistantChannelPerformanceData.mockReturnValue(
                 {
                     files: {},
+                    isLoading: true,
+                },
+            )
+
+            const { result } = renderHook(() =>
+                useExportAiAgentShoppingAssistantToCSV(),
+            )
+
+            expect(result.current.isLoading).toBe(true)
+        })
+    })
+
+    describe('top products data based on AiAgentAnalyticsDashboardsTables flag', () => {
+        it('uses new top products data when the tables flag is enabled', async () => {
+            mockUseFlagWithLoading.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
+                    return { value: true, isLoading: false }
+                return { value: false, isLoading: false }
+            })
+
+            const { result } = renderHook(() =>
+                useExportAiAgentShoppingAssistantToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            const fileNames = Object.keys(filesArg)
+
+            expect(
+                fileNames.some((name) =>
+                    name.includes('shopping-assistant-top-products'),
+                ),
+            ).toBe(false)
+        })
+
+        it('uses legacy top products data when the tables flag is disabled', async () => {
+            const { result } = renderHook(() =>
+                useExportAiAgentShoppingAssistantToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            const fileNames = Object.keys(filesArg)
+
+            expect(
+                fileNames.some((name) =>
+                    name.includes('shopping-assistant-top-products'),
+                ),
+            ).toBe(true)
+        })
+
+        it('reflects isLoading from legacy top products data when the tables flag is disabled', () => {
+            mockedUseDownloadShoppingAssistantTopProductsDataLegacy.mockReturnValue(
+                {
+                    files: {},
+                    fileName: '',
                     isLoading: true,
                 },
             )

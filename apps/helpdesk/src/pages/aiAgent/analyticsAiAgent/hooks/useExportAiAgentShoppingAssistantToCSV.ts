@@ -10,7 +10,7 @@ import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/ana
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
-import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
+import { useDownloadShoppingAssistantTopProductsDataLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy'
 import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
 import {
     ManagedDashboardId,
@@ -66,7 +66,8 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const gmvInfluenceTimeSeriesData = useDownloadGmvInfluenceTimeSeriesData()
     const legacySalesChannelTable =
         useDownloadShoppingAssistantChannelPerformanceData()
-    const legacyTopProductsTable = useDownloadShoppingAssistantTopProductsData()
+    const legacyTopProductsTable =
+        useDownloadShoppingAssistantTopProductsDataLegacy()
 
     const isLoading =
         isDashboardDataLoading ||

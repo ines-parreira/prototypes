@@ -1,0 +1,1 @@
+export { ShoppingAssistantTopProductsTable } from './ShoppingAssistantTopProductsTable'

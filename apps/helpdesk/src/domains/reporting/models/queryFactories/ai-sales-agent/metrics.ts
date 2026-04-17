@@ -465,7 +465,7 @@ export const productClicksQueryFactory = (
         ...clicksDefaultFilters(filters),
     ],
     timezone,
-    metricName: METRIC_NAMES.AI_SALES_AGENT_PRODUCT_CLICKS,
+    metricName: METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CLICKS_PER_PRODUCT,
 })
 
 export const totalProductBoughtQueryFactory = (
@@ -517,7 +517,7 @@ export const productBoughtQueryFactory = (
         ),
     ],
     timezone,
-    metricName: METRIC_NAMES.AI_SALES_AGENT_PRODUCT_BOUGHT,
+    metricName: METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BOUGHT_PER_PRODUCT,
 })
 
 export const productRecommendationsQueryFactory = (

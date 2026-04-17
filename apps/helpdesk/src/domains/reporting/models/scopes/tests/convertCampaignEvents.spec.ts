@@ -119,7 +119,8 @@ describe('convertCampaignEvents scope', () => {
                     },
                 ],
                 timezone,
-                metricName: METRIC_NAMES.AI_SALES_AGENT_PRODUCT_CLICKS,
+                metricName:
+                    METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CLICKS_PER_PRODUCT,
                 scope: MetricScope.ConvertCampaignEvents,
             })
         })

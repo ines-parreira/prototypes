@@ -1,63 +1,37 @@
-import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
-import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
-import { formatPercentage } from 'pages/common/utils/numbers'
-import { createCsv } from 'utils/file'
+import { reportError } from '@repo/logging'
 
-import { useShoppingAssistantTopProductsMetrics } from './useShoppingAssistantTopProductsMetrics'
+import { SentryTeam } from 'common/const/sentryTeamNames'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 
-const SHOPPING_ASSISTANT_TOP_PRODUCTS_FILENAME =
-    'shopping-assistant-top-products'
+import { fetchShoppingAssistantTopProductsData } from './useShoppingAssistantTopProductsMetrics'
 
 export const useDownloadShoppingAssistantTopProductsData = () => {
-    const { cleanStatsFilters } = useStatsFilters()
-    const { data, isFetching } = useShoppingAssistantTopProductsMetrics()
+    const { statsFilters, userTimezone } = useAutomateFilters()
 
-    const csvData = useMemo(() => {
-        if (!data || data.length === 0) {
-            return []
-        }
+    const [result, setResult] = useState<{
+        fileName: string
+        files: Record<string, string>
+    }>()
+    const [isLoading, setIsLoading] = useState(true)
 
-        return [
-            [
-                'Product name',
-                'Times recommended',
-                'Click-through rate',
-                'Buy through rate',
-            ],
-            ...data.map((row) => {
-                const recommendations =
-                    row.metrics[ProductTableKeys.NumberOfRecommendations]
-                const ctr = row.metrics[ProductTableKeys.CTR]
-                const btr = row.metrics[ProductTableKeys.BTR]
-                return [
-                    row.product.title || `Product ${row.product.id}`,
-                    typeof recommendations === 'number'
-                        ? recommendations.toLocaleString()
-                        : String(recommendations ?? 0),
-                    formatPercentage(
-                        typeof ctr === 'number' ? ctr : Number(ctr ?? 0),
-                    ),
-                    formatPercentage(
-                        typeof btr === 'number' ? btr : Number(btr ?? 0),
-                    ),
-                ]
-            }),
-        ]
-    }, [data])
-
-    const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
-        SHOPPING_ASSISTANT_TOP_PRODUCTS_FILENAME,
-    )
+    useEffect(() => {
+        setIsLoading(true)
+        fetchShoppingAssistantTopProductsData(statsFilters, userTimezone)
+            .then(({ fileName, files }) => {
+                setResult({ fileName, files })
+                setIsLoading(false)
+            })
+            .catch((error) => {
+                reportError(error, { tags: { team: SentryTeam.CRM_REPORTING } })
+                setIsLoading(false)
+            })
+    }, [statsFilters, userTimezone])
 
     return {
-        files: {
-            [fileName]: createCsv(csvData),
-        },
-        fileName,
-        isLoading: isFetching,
+        files: result?.files ?? {},
+        fileName: result?.fileName ?? '',
+        isLoading,
     }
 }
