@@ -6,7 +6,10 @@ import { render, screen } from '@testing-library/react'
 
 import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import {
+    getLineChartGraphConfig,
+    useStoreIntegrations,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 import { AnalyticsAiAgentAllAgentsConfigurableLine } from '../AnalyticsAiAgentAllAgentsConfigurableLine'
 
@@ -34,8 +37,10 @@ jest.mock(
 jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),
     getLineChartGraphConfig: jest.fn(),
+    useStoreIntegrations: jest.fn(),
 }))
 const getLineChartGraphConfigMock = assumeMock(getLineChartGraphConfig)
+const useStoreIntegrationsMock = assumeMock(useStoreIntegrations)
 const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
 
 describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
@@ -90,6 +95,7 @@ describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
             granularity: ReportingGranularity.Day,
         })
         getLineChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
+        useStoreIntegrationsMock.mockReturnValue([])
         useFlagWithLoadingMocked.mockReturnValue({
             value: true,
             isLoading: false,
@@ -98,6 +104,23 @@ describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
 
     afterEach(() => {
         jest.clearAllMocks()
+    })
+
+    it('should pass stores from useStoreIntegrations to getLineChartGraphConfig', () => {
+        const mockStores = [
+            { store_integration_id: 1, name: 'My Store' },
+        ] as any
+        useStoreIntegrationsMock.mockReturnValue(mockStores)
+
+        render(<AnalyticsAiAgentAllAgentsConfigurableLine />)
+
+        expect(getLineChartGraphConfigMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            { stores: mockStores },
+        )
     })
 
     it('should render the metric title', () => {

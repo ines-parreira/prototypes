@@ -1574,6 +1574,44 @@ describe('useOverallTimeSeries', () => {
             { date: 'Jan 2', value: 400 },
         ])
     })
+
+    it('should format date with time when granularity is hour', () => {
+        useStatsTimeSeriesMock.mockReturnValue({
+            data: [[{ dateTime: '2025-01-01T00:00:00', value: 100 }]],
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useOverallTimeSeries(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                ReportingGranularity.Hour,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { date: 'Jan 1 at 12:00 am', value: 100 },
+        ])
+    })
+
+    it('should format date as month and year when granularity is month', () => {
+        useStatsTimeSeriesMock.mockReturnValue({
+            data: [[{ dateTime: '2025-01-01', value: 100 }]],
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useOverallTimeSeries(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                ReportingGranularity.Month,
+            ),
+        )
+
+        expect(result.current.data).toEqual([{ date: "Jan'25", value: 100 }])
+    })
 })
 
 describe('useAutomationTimeSeriesPerAutomationFeatureType', () => {
@@ -1743,6 +1781,37 @@ describe('useAutomationTimeSeriesPerChannel', () => {
         ])
     })
 
+    it('should exclude series where all values are 0', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                email: [[{ dateTime: '2025-01-01', value: 100 }]],
+                chat: [
+                    [
+                        { dateTime: '2025-01-01', value: 0 },
+                        { dateTime: '2025-01-02', value: 0 },
+                    ],
+                ],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerChannel(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'Email',
+                values: [{ date: 'Jan 1', value: 100 }],
+            },
+        ])
+    })
+
     it('should return empty array when data is undefined', () => {
         useStatsTimeSeriesPerDimensionMock.mockReturnValue({
             data: undefined,
@@ -1802,6 +1871,31 @@ describe('useAutomationTimeSeriesPerChannel', () => {
             dimensions: ['channel'],
             granularity: defaultGranularity,
         })
+    })
+
+    it('should format date with time when granularity is hour', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                email: [[{ dateTime: '2025-01-01T00:00:00', value: 100 }]],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerChannel(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                ReportingGranularity.Hour,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'Email',
+                values: [{ date: 'Jan 1 at 12:00 am', value: 100 }],
+            },
+        ])
     })
 })
 

@@ -18,7 +18,10 @@ import type {
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
-import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import {
+    getLineChartGraphConfig,
+    useStoreIntegrations,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { LineChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 import { DEPRECATED_AIAgentAutomationLineChart } from './DEPRECATED_AIAgentAutomationLineChart'
@@ -73,6 +76,7 @@ export const AnalyticsAiAgentAllAgentsConfigurableLine = ({
     chartConfig,
 }: Props) => {
     const { statsFilters, userTimezone, granularity } = useAutomateFilters()
+    const stores = useStoreIntegrations()
     const metrics = useMemo(
         () =>
             getLineChartGraphConfig(
@@ -80,8 +84,9 @@ export const AnalyticsAiAgentAllAgentsConfigurableLine = ({
                 statsFilters,
                 userTimezone,
                 granularity,
+                { stores },
             ),
-        [statsFilters, userTimezone, granularity],
+        [statsFilters, userTimezone, granularity, stores],
     )
 
     return (

@@ -43,8 +43,7 @@ import type {
 } from 'domains/reporting/models/scopes/scope'
 import type { DimensionName } from 'domains/reporting/models/scopes/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import type { ReportingGranularity } from 'domains/reporting/models/types'
-import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
 type AutomationDimension =
@@ -147,8 +146,15 @@ const formatDimensionName = (dimension: string) => {
     }
 }
 
-const formatDate = (date: string) =>
-    moment(date).format(DATE_FORMAT).replace(', ', ' ')
+const formatDate = (date: string, granularity?: ReportingGranularity) => {
+    const formatType =
+        granularity === ReportingGranularity.Hour
+            ? DateTimeFormatType.SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_US
+            : granularity === ReportingGranularity.Month
+              ? DateTimeFormatType.MONTH_AND_YEAR_SHORT
+              : DateTimeFormatType.SHORT_DATE_EN_US
+    return moment(date).format(DateTimeFormatMapper[formatType] as string)
+}
 
 const formatBarChartData = (
     data: MetricWithDecile | undefined | null,
@@ -540,9 +546,12 @@ export const getBarChartGraphConfig = (
     }))
 }
 
-const formatTimeSeriesValues = (values: TimeSeriesDataItem[] | undefined) =>
+const formatTimeSeriesValues = (
+    values: TimeSeriesDataItem[] | undefined,
+    granularity?: ReportingGranularity,
+) =>
     values?.map((value) => ({
-        date: formatDate(value.dateTime),
+        date: formatDate(value.dateTime, granularity),
         value: value.value,
     })) ?? []
 
@@ -561,7 +570,7 @@ export const useOverallTimeSeries = (
         }),
     )
 
-    const values = formatTimeSeriesValues(data.data?.[0])
+    const values = formatTimeSeriesValues(data.data?.[0], granularity)
     return {
         data: valueTransform
             ? values.map((item) => ({
@@ -577,64 +586,94 @@ const formatMultiTimeSeriesData = (
     data: Record<string, TimeSeriesDataItem[][]> | undefined,
     dimension: AutomationDimension,
     extra?: ExtraConfigProps,
+    granularity?: ReportingGranularity,
 ): MultipleTimeSeriesDataItem[] => {
-    switch (dimension) {
-        case 'automationFeatureType':
-            return data
-                ? Object.entries(data)
-                      .filter(([metricName]) =>
-                          Object.keys(MAP_AUTOMATION_FEATURE_NAME).includes(
-                              metricName,
+    const series = ((): MultipleTimeSeriesDataItem[] => {
+        switch (dimension) {
+            case 'automationFeatureType':
+                return data
+                    ? Object.entries(data)
+                          .filter(([metricName]) =>
+                              Object.keys(MAP_AUTOMATION_FEATURE_NAME).includes(
+                                  metricName,
+                              ),
+                          )
+                          .map(([metricName, values]) => ({
+                              label: MAP_AUTOMATION_FEATURE_NAME[metricName],
+                              values: formatTimeSeriesValues(
+                                  values[0],
+                                  granularity,
+                              ),
+                          }))
+                    : []
+            case 'channel':
+                return data
+                    ? Object.entries(data).map(([metricName, values]) => ({
+                          label: formatChannelName(metricName),
+                          values: formatTimeSeriesValues(
+                              values[0],
+                              granularity,
                           ),
-                      )
-                      .map(([metricName, values]) => ({
-                          label: MAP_AUTOMATION_FEATURE_NAME[metricName],
-                          values: formatTimeSeriesValues(values[0]),
                       }))
-                : []
-        case 'channel':
-            return data
-                ? Object.entries(data).map(([metricName, values]) => ({
-                      label: formatChannelName(metricName),
-                      values: formatTimeSeriesValues(values[0]),
-                  }))
-                : []
-        case 'engagementType':
-            return data
-                ? Object.entries(data).map(([metricName, values]) => ({
-                      label: MAP_ENGAGEMENT_TYPE_NAME[metricName] ?? metricName,
-                      values: formatTimeSeriesValues(values[0]),
-                  }))
-                : []
-        case 'storeIntegrationId':
-            return data
-                ? Object.entries(data).map(([metricName, values]) => ({
-                      label: formatStoreName(metricName, extra?.stores),
-                      values: formatTimeSeriesValues(values[0]),
-                  }))
-                : []
-        case 'aiAgentRole':
-            return data
-                ? Object.entries(data).map(([metricName, values]) => ({
-                      label: MAP_AI_AGENT_ROLE_NAME[metricName],
-                      values: formatTimeSeriesValues(values[0]),
-                  }))
-                : []
-        case 'aiIntentCustomField':
-            return data
-                ? Object.entries(data).map(([metricName, values]) => ({
-                      label: metricName.replaceAll('::', '/'),
-                      values: formatTimeSeriesValues(values[0]),
-                  }))
-                : []
-        default:
-            return data
-                ? Object.entries(data).map(([metricName, values]) => ({
-                      label: metricName,
-                      values: formatTimeSeriesValues(values[0]),
-                  }))
-                : []
-    }
+                    : []
+            case 'engagementType':
+                return data
+                    ? Object.entries(data).map(([metricName, values]) => ({
+                          label:
+                              MAP_ENGAGEMENT_TYPE_NAME[metricName] ??
+                              metricName,
+                          values: formatTimeSeriesValues(
+                              values[0],
+                              granularity,
+                          ),
+                      }))
+                    : []
+            case 'storeIntegrationId':
+                return data
+                    ? Object.entries(data).map(([metricName, values]) => ({
+                          label: formatStoreName(metricName, extra?.stores),
+                          values: formatTimeSeriesValues(
+                              values[0],
+                              granularity,
+                          ),
+                      }))
+                    : []
+            case 'aiAgentRole':
+                return data
+                    ? Object.entries(data).map(([metricName, values]) => ({
+                          label: MAP_AI_AGENT_ROLE_NAME[metricName],
+                          values: formatTimeSeriesValues(
+                              values[0],
+                              granularity,
+                          ),
+                      }))
+                    : []
+            case 'aiIntentCustomField':
+                return data
+                    ? Object.entries(data).map(([metricName, values]) => ({
+                          label: metricName.replaceAll('::', '/'),
+                          values: formatTimeSeriesValues(
+                              values[0],
+                              granularity,
+                          ),
+                      }))
+                    : []
+            default:
+                return data
+                    ? Object.entries(data).map(([metricName, values]) => ({
+                          label: metricName,
+                          values: formatTimeSeriesValues(
+                              values[0],
+                              granularity,
+                          ),
+                      }))
+                    : []
+        }
+    })()
+
+    return series.filter(({ values }) =>
+        values.some((v) => v.value !== 0 && v.value !== null),
+    )
 }
 
 export const useAutomationTimeSeriesPerAutomationFeatureType = (
@@ -653,7 +692,12 @@ export const useAutomationTimeSeriesPerAutomationFeatureType = (
     )
 
     return {
-        data: formatMultiTimeSeriesData(data.data, 'automationFeatureType'),
+        data: formatMultiTimeSeriesData(
+            data.data,
+            'automationFeatureType',
+            undefined,
+            granularity,
+        ),
         isLoading: data.isFetching,
     }
 }
@@ -674,7 +718,12 @@ export const useAutomationTimeSeriesPerEngagementType = (
     )
 
     return {
-        data: formatMultiTimeSeriesData(data.data, 'engagementType'),
+        data: formatMultiTimeSeriesData(
+            data.data,
+            'engagementType',
+            undefined,
+            granularity,
+        ),
         isLoading: data.isFetching,
     }
 }
@@ -695,7 +744,12 @@ export const useAutomationTimeSeriesPerChannel = (
     )
 
     return {
-        data: formatMultiTimeSeriesData(data.data, 'channel'),
+        data: formatMultiTimeSeriesData(
+            data.data,
+            'channel',
+            undefined,
+            granularity,
+        ),
         isLoading: data.isFetching,
     }
 }
@@ -717,7 +771,12 @@ export const useAutomationTimeSeriesPerStoreIntegrationId = (
     )
 
     return {
-        data: formatMultiTimeSeriesData(data.data, 'storeIntegrationId', extra),
+        data: formatMultiTimeSeriesData(
+            data.data,
+            'storeIntegrationId',
+            extra,
+            granularity,
+        ),
         isLoading: data.isFetching,
     }
 }
@@ -738,7 +797,12 @@ export const useAutomationTimeSeriesPerAiAgentRole = (
     )
 
     return {
-        data: formatMultiTimeSeriesData(data.data, 'aiAgentRole'),
+        data: formatMultiTimeSeriesData(
+            data.data,
+            'aiAgentRole',
+            undefined,
+            granularity,
+        ),
         isLoading: data.isFetching,
     }
 }
@@ -759,7 +823,12 @@ export const useAutomationTimeSeriesPerAiIntentCustomField = (
     )
 
     return {
-        data: formatMultiTimeSeriesData(data.data, 'aiIntentCustomField'),
+        data: formatMultiTimeSeriesData(
+            data.data,
+            'aiIntentCustomField',
+            undefined,
+            granularity,
+        ),
         isLoading: data.isFetching,
     }
 }
@@ -998,7 +1067,7 @@ export const fetchConfigurableLineChartDownloadData =
             )
             return {
                 files: buildTimeSeriesCsvFiles(
-                    formatTimeSeriesValues(data[0]),
+                    formatTimeSeriesValues(data[0], granularity),
                     metric.name,
                     metric.metricFormat,
                     filters.period,
@@ -1018,6 +1087,7 @@ export const fetchConfigurableLineChartDownloadData =
             data,
             dimension as AutomationDimension,
             extra,
+            granularity,
         )
         return {
             files: buildMultipleTimeSeriesCsvFiles(
