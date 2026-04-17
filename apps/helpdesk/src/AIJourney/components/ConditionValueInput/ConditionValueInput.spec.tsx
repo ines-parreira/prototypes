@@ -506,7 +506,7 @@ describe('<ConditionValueInput />', () => {
             expect(screen.getAllByText('New York').length).toBeGreaterThan(0)
         })
 
-        it('should show empty placeholder when value is a non-array (graceful fallback)', () => {
+        it('should display a single string value as a selected item', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
@@ -518,7 +518,8 @@ describe('<ConditionValueInput />', () => {
                 />,
             )
 
-            expect(screen.getByText('Select states')).toBeInTheDocument()
+            expect(screen.queryByText('Select states')).not.toBeInTheDocument()
+            expect(screen.getAllByText('California').length).toBeGreaterThan(0)
         })
 
         it('should call onChange with an array of state codes when states are selected', () => {
@@ -779,7 +780,7 @@ describe('<ConditionValueInput />', () => {
             expect(screen.getAllByText('bundle').length).toBeGreaterThan(0)
         })
 
-        it('should show empty placeholder when value is a non-array (graceful fallback)', () => {
+        it('should display a single string value as a selected item', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
@@ -791,7 +792,8 @@ describe('<ConditionValueInput />', () => {
                 />,
             )
 
-            expect(screen.getByText('Select tags')).toBeInTheDocument()
+            expect(screen.queryByText('Select tags')).not.toBeInTheDocument()
+            expect(screen.getAllByText('sale').length).toBeGreaterThan(0)
         })
 
         it('should fetch product tags using the integration id from context', () => {
@@ -928,7 +930,7 @@ describe('<ConditionValueInput />', () => {
             )
         })
 
-        it('should show empty placeholder when value is a non-array (graceful fallback)', () => {
+        it('should display a single string value as a selected item', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
@@ -940,7 +942,10 @@ describe('<ConditionValueInput />', () => {
                 />,
             )
 
-            expect(screen.getByText('Select collections')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Select collections'),
+            ).not.toBeInTheDocument()
+            expect(screen.getAllByText('Summer Sale').length).toBeGreaterThan(0)
         })
 
         it('should call onChange with an array of external_ids when collections are selected', () => {
@@ -1122,7 +1127,7 @@ describe('<ConditionValueInput />', () => {
             )
         })
 
-        it('should show empty placeholder when value is a non-array (graceful fallback)', () => {
+        it('should display a single string value as a selected item', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
@@ -1134,7 +1139,12 @@ describe('<ConditionValueInput />', () => {
                 />,
             )
 
-            expect(screen.getByText('Select products')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Select products'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getAllByText('Classic T-Shirt').length,
+            ).toBeGreaterThan(0)
         })
 
         it('should call onChange with an array of product titles when products are selected', () => {

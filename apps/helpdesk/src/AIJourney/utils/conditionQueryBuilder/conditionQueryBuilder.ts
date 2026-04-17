@@ -20,20 +20,30 @@ function splitContainsValue(value: string): string[] {
         .filter((v) => v !== '')
 }
 
+function escapeStr(v: string): string {
+    return v.replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+}
+
+function unescapeStr(v: string): string {
+    return v.replace(/\\'/g, "'").replace(/\\\\/g, '\\')
+}
+
 function formatFieldValue(
     value: string | number | string[],
     type: FieldType,
     operator: string,
 ): string {
     if (Array.isArray(value)) {
-        return `[${value.map((v) => `'${v}'`).join(', ')}]`
+        return `[${value.map((v) => `'${escapeStr(v)}'`).join(', ')}]`
     }
     if (type === 'number') return String(value)
     if (operator.toLowerCase().includes('contains')) {
-        const items = splitContainsValue(String(value)).map((v) => `'${v}'`)
+        const items = splitContainsValue(String(value)).map(
+            (v) => `'${escapeStr(v)}'`,
+        )
         return `[${items.join(', ')}]`
     }
-    return `'${value}'`
+    return `'${escapeStr(String(value))}'`
 }
 
 function buildConditionQuery(
@@ -149,13 +159,13 @@ function parseValue(raw: string): string | number | string[] | null {
     if (!raw) return null
     const numMatch = raw.match(/^-?\d+(\.\d+)?$/)
     if (numMatch) return parseFloat(raw)
-    const strMatch = raw.match(/^'([^']*)'$/)
-    if (strMatch) return strMatch[1]
+    const strMatch = raw.match(/^'((?:[^'\\]|\\.)*)'$/)
+    if (strMatch) return unescapeStr(strMatch[1])
     const arrMatch = raw.match(/^\[(.+)\]$/)
     if (arrMatch) {
-        const values = arrMatch[1].match(/'([^']*)'/g)
+        const values = arrMatch[1].match(/'((?:[^'\\]|\\.)*)'/g)
         if (values) {
-            const parsed = values.map((s) => s.slice(1, -1))
+            const parsed = values.map((s) => unescapeStr(s.slice(1, -1)))
             return parsed.length === 1 ? parsed[0] : parsed
         }
     }

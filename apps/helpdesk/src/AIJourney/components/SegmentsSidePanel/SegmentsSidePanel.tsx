@@ -14,6 +14,8 @@ import {
 
 import { AudienceConditionField } from 'AIJourney/components/AudienceConditionField/AudienceConditionField'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
+import { useJourneyContext } from 'AIJourney/providers'
+import { useCreateSegment } from 'AIJourney/queries'
 import { useUpdateSegment } from 'AIJourney/queries/useUpdateSegment/useUpdateSegment'
 import type {
     ConditionsSchema,
@@ -41,6 +43,10 @@ export const SegmentsSidePanel = ({
     segment?: Segment
     schema: ConditionsSchema
 }) => {
+    const { currentIntegration } = useJourneyContext()
+    const { mutateAsync: createSegment, isLoading: isCreatingSegment } =
+        useCreateSegment()
+
     const form = useForm<SegmentFormValues>({
         defaultValues: {
             name: segment?.name ?? '',
@@ -48,7 +54,8 @@ export const SegmentsSidePanel = ({
         },
     })
 
-    const { mutateAsync: updateSegment, isLoading } = useUpdateSegment()
+    const { mutateAsync: updateSegment, isLoading: isUpdatingSegment } =
+        useUpdateSegment()
 
     useEffect(() => {
         if (isOpen) {
@@ -68,10 +75,19 @@ export const SegmentsSidePanel = ({
     const name = useWatch({ control: form.control, name: 'name' })
 
     useEffect(() => {
+        if (isOpen) {
+            form.reset({
+                name: segment?.name ?? '',
+                conditions: [DEFAULT_CONDITION],
+            })
+        }
+    }, [isOpen, segment, form])
+
+    useEffect(() => {
         buildFullQuery(conditions, schema)
     }, [conditions, schema])
 
-    const hasNoConditions = conditions.length === 0
+    const hasNoConditions = buildFullQuery(conditions, schema) === ''
 
     const hasConditionWithoutValue = conditions.some((c) => {
         if (!c.object || !c.field || !c.operator) return false
@@ -90,7 +106,11 @@ export const SegmentsSidePanel = ({
     })
 
     const shouldDisableSaveButton =
-        !name.trim() || hasNoConditions || hasConditionWithoutValue || isLoading
+        !name.trim() ||
+        hasNoConditions ||
+        hasConditionWithoutValue ||
+        isCreatingSegment ||
+        isUpdatingSegment
 
     useEffect(() => {
         if (!isOpen) return
@@ -103,6 +123,22 @@ export const SegmentsSidePanel = ({
     }, [isOpen, segment, form, schema])
 
     const isEditing = segment !== undefined
+
+    const handleSave = form.handleSubmit(async ({ name }) => {
+        if (!schema || !currentIntegration?.id) return
+        const conditions = buildFullQuery(form.getValues('conditions'), schema)
+
+        try {
+            await createSegment({
+                name,
+                conditions,
+                integration_id: currentIntegration.id,
+            })
+            onClose()
+        } catch {
+            // keep modal open on error
+        }
+    })
 
     return (
         <SidePanel
@@ -152,7 +188,7 @@ export const SegmentsSidePanel = ({
                             <Button
                                 isDisabled={shouldDisableSaveButton}
                                 onClick={form.handleSubmit(async ({ name }) => {
-                                    if (isEditing && schema) {
+                                    if (isEditing) {
                                         await updateSegment({
                                             segmentId: segment.id,
                                             updateSegmentRequest: {
@@ -164,7 +200,7 @@ export const SegmentsSidePanel = ({
                                             },
                                         })
                                         onClose()
-                                    }
+                                    } else await handleSave()
                                 })}
                             >
                                 Save segment

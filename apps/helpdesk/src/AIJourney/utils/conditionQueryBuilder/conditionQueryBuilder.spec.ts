@@ -269,6 +269,62 @@ describe('buildFullQuery', () => {
                 "gt(shopper.last_order, '30d')",
             )
         })
+
+        it('escapes apostrophes in string values', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                value: "Women's K1 Flux",
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "eq(shopper.sms_state, 'Women\\'s K1 Flux')",
+            )
+        })
+
+        it('escapes apostrophes in array values', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'containsAny',
+                value: ["Women's K1 Flux"],
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "containsAny(shopper.tags, ['Women\\'s K1 Flux'])",
+            )
+        })
+
+        it('escapes apostrophes in comma-separated contains string values', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'containsAll',
+                value: "Women's K1 Flux, Men's T-Shirt",
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "containsAll(shopper.tags, ['Women\\'s K1 Flux', 'Men\\'s T-Shirt'])",
+            )
+        })
+
+        it('escapes backslashes in string values', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                value: 'Summer\\Fall',
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "eq(shopper.sms_state, 'Summer\\\\Fall')",
+            )
+        })
+
+        it('escapes backslash-apostrophe sequences in array values', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'containsAny',
+                value: ["Women\\'s K1 Flux"],
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "containsAny(shopper.tags, ['Women\\\\\\'s K1 Flux'])",
+            )
+        })
     })
 
     describe('aggregate conditions with where clause', () => {
@@ -781,6 +837,80 @@ describe('parseConditionsQuery', () => {
                 purchaseDateClause: null,
             },
         ])
+    })
+
+    it('unescapes an apostrophe in a string value', () => {
+        expect(
+            parseConditionsQuery(
+                "eq(shopper.sms_state, 'Women\\'s K1 Flux')",
+                schema,
+            ),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'sms_state',
+                isAggregate: false,
+                operator: 'eq',
+                value: "Women's K1 Flux",
+                whereClause: null,
+                purchaseDateClause: null,
+            },
+        ])
+    })
+
+    it('unescapes apostrophes in array values', () => {
+        expect(
+            parseConditionsQuery(
+                "containsAny(shopper.tags, ['Women\\'s K1 Flux', 'Men\\'s T-Shirt'])",
+                schema,
+            ),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'tags',
+                isAggregate: false,
+                operator: 'containsAny',
+                value: ["Women's K1 Flux", "Men's T-Shirt"],
+                whereClause: null,
+                purchaseDateClause: null,
+            },
+        ])
+    })
+
+    it('round-trips a value containing an apostrophe', () => {
+        const condition: ConditionState = {
+            ...baseCondition,
+            field: 'tags',
+            operator: 'containsAny',
+            value: ["Women's K1 Flux"],
+        }
+        const query = buildFullQuery([condition], schema)
+        const parsed = parseConditionsQuery(query, schema)
+        expect(parsed[0].value).toBe("Women's K1 Flux")
+    })
+
+    it('round-trips a value containing a backslash', () => {
+        const condition: ConditionState = {
+            ...baseCondition,
+            field: 'tags',
+            operator: 'containsAny',
+            value: ['Summer\\Fall'],
+        }
+        const query = buildFullQuery([condition], schema)
+        const parsed = parseConditionsQuery(query, schema)
+        expect(parsed[0].value).toBe('Summer\\Fall')
+    })
+
+    it('round-trips a value containing a backslash followed by an apostrophe', () => {
+        const condition: ConditionState = {
+            ...baseCondition,
+            field: 'tags',
+            operator: 'containsAny',
+            value: ["Women\\'s K1 Flux"],
+        }
+        const query = buildFullQuery([condition], schema)
+        const parsed = parseConditionsQuery(query, schema)
+        expect(parsed[0].value).toBe("Women\\'s K1 Flux")
     })
 
     it('skips unparseable conditions and returns only valid ones', () => {

@@ -126,7 +126,11 @@ const StateMultiValueSelect = ({
     onChange: (val: ConditionValue) => void
 }) => {
     const selectedItems = useMemo(() => {
-        const selected = Array.isArray(value) ? value : []
+        const selected = Array.isArray(value)
+            ? value
+            : typeof value === 'string'
+              ? [value]
+              : []
         return ALL_STATES_FLAT.filter((s) => selected.includes(s.id))
     }, [value])
 
@@ -170,7 +174,11 @@ const TagsMultiSelect = ({
     )
 
     const selectedItems = useMemo(() => {
-        const selected = Array.isArray(value) ? value : []
+        const selected = Array.isArray(value)
+            ? value
+            : typeof value === 'string'
+              ? [value]
+              : []
         return tagItems.filter((item) => selected.includes(item.id))
     }, [tagItems, value])
 
@@ -219,7 +227,11 @@ const ProductVariantNamesMultiSelect = ({
     )
 
     const selectedItems = useMemo(() => {
-        const selected = Array.isArray(value) ? value : []
+        const selected = Array.isArray(value)
+            ? value
+            : typeof value === 'string'
+              ? [value]
+              : []
         return productItems.filter((item) => selected.includes(item.id))
     }, [productItems, value])
 
@@ -271,7 +283,11 @@ const ProductCollectionsMultiSelect = ({
     )
 
     const selectedItems = useMemo(() => {
-        const selected = Array.isArray(value) ? value : []
+        const selected = Array.isArray(value)
+            ? value
+            : typeof value === 'string'
+              ? [value]
+              : []
         return collectionItems.filter((item) => selected.includes(item.id))
     }, [collectionItems, value])
 
@@ -324,7 +340,11 @@ const ProductTagsMultiSelect = ({
     )
 
     const selectedItems = useMemo(() => {
-        const selected = Array.isArray(value) ? value : []
+        const selected = Array.isArray(value)
+            ? value
+            : typeof value === 'string'
+              ? [value]
+              : []
         return tagItems.filter((item) => selected.includes(item.id))
     }, [tagItems, value])
 

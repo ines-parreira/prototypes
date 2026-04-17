@@ -6,6 +6,8 @@ import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
+import { useJourneyContext } from 'AIJourney/providers'
+import { useCreateSegment } from 'AIJourney/queries'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
 import { useUpdateSegment } from 'AIJourney/queries/useUpdateSegment/useUpdateSegment'
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
@@ -15,7 +17,7 @@ import { SegmentsSidePanel } from './SegmentsSidePanel'
 jest.mock(
     'AIJourney/queries/useConditionsMetadata/useConditionsMetadata',
     () => ({
-        useConditionsMetadata: jest.fn().mockReturnValue({ data: undefined }),
+        useConditionsMetadata: jest.fn(),
     }),
 )
 
@@ -27,10 +29,11 @@ jest.mock(
     'AIJourney/components/AudienceConditionField/AudienceConditionField',
     () => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const { useFieldArray } = require('@repo/forms')
+        const { useFieldArray, useFormContext } = require('@repo/forms')
         return {
             AudienceConditionField: () => {
                 const { fields, remove } = useFieldArray({ name: 'conditions' })
+                const { setValue } = useFormContext()
                 return (
                     <div>
                         conditions-section
@@ -39,6 +42,23 @@ jest.mock(
                                 Remove condition
                             </button>
                         ))}
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'shopper',
+                                        field: 'lifetime_value',
+                                        isAggregate: false,
+                                        operator: 'gt',
+                                        value: 1000,
+                                        whereClause: null,
+                                        purchaseDateClause: null,
+                                    },
+                                ])
+                            }
+                        >
+                            Set valid condition
+                        </button>
                     </div>
                 )
             },
@@ -60,6 +80,13 @@ const mockSchema: ConditionsSchema = {
         },
     },
 }
+jest.mock('AIJourney/providers', () => ({
+    useJourneyContext: jest.fn(),
+}))
+
+jest.mock('AIJourney/queries', () => ({
+    useCreateSegment: jest.fn(),
+}))
 
 type MockSidePanelProps = {
     children: ReactNode
@@ -87,9 +114,13 @@ const mockSegment: Segment = {
     updated_datetime: '2026-09-12T00:00:00',
 }
 
-const mockMutateAsync = jest.fn()
 const mockUseUpdateSegment = assumeMock(useUpdateSegment)
 const onClose = jest.fn()
+const mockMutateAsync = jest.fn()
+
+const mockUseConditionsMetadata = useConditionsMetadata as jest.Mock
+const mockUseJourneyContext = useJourneyContext as jest.Mock
+const mockUseCreateSegment = useCreateSegment as jest.Mock
 
 const renderComponent = (
     props: Partial<Parameters<typeof SegmentsSidePanel>[0]> = {},
@@ -109,11 +140,19 @@ describe('<SegmentsSidePanel />', () => {
         assumeMock(useConditionsMetadata).mockReturnValue({
             data: undefined,
         } as unknown as ReturnType<typeof useConditionsMetadata>)
-        mockMutateAsync.mockResolvedValue(undefined)
+        mockUseConditionsMetadata.mockReturnValue({ data: undefined })
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 123 },
+        })
+        mockUseCreateSegment.mockReturnValue({
+            mutateAsync: mockMutateAsync,
+            isLoading: false,
+        })
         mockUseUpdateSegment.mockReturnValue({
             mutateAsync: mockMutateAsync,
             isLoading: false,
         } as unknown as ReturnType<typeof useUpdateSegment>)
+        mockMutateAsync.mockResolvedValue({})
     })
 
     describe('create mode (no segment)', () => {
@@ -213,175 +252,343 @@ describe('<SegmentsSidePanel />', () => {
     })
 
     describe('Save segment button', () => {
-        it('should call onClose when segment is successfully created', async () => {
+        it('should be disabled when isLoading is true', () => {
+            mockUseCreateSegment.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                isLoading: true,
+            })
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).toBeDisabled()
+        })
+
+        it('should call createSegment with the segment name, built conditions, and integration id', async () => {
+            mockUseConditionsMetadata.mockReturnValue({ data: mockSchema })
             const user = userEvent.setup()
             renderComponent()
 
             await act(async () => {
                 await user.click(
-                    screen.getByRole('button', { name: /save segment/i }),
+                    screen.getByRole('button', {
+                        name: /set valid condition/i,
+                    }),
                 )
-            })
-
-            expect(mockMutateAsync).not.toHaveBeenCalled()
-            expect(onClose).not.toHaveBeenCalled()
-        })
-
-        it('should call updateSegment with correct args in edit mode when schema is available', async () => {
-            assumeMock(useConditionsMetadata).mockReturnValue({
-                data: mockSchema,
-            } as unknown as ReturnType<typeof useConditionsMetadata>)
-            const user = userEvent.setup()
-            renderComponent({ segment: mockSegment })
-
-            await act(async () => {
+                await user.type(
+                    screen.getByLabelText(/segment name/i),
+                    'My Segment',
+                )
                 await user.click(
                     screen.getByRole('button', { name: /save segment/i }),
                 )
             })
 
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                segmentId: mockSegment.id,
-                updateSegmentRequest: {
-                    name: mockSegment.name,
+            await waitFor(() => {
+                expect(mockMutateAsync).toHaveBeenCalledWith({
+                    name: 'My Segment',
                     conditions: 'gt(shopper.lifetime_value, 1000)',
-                },
+                    integration_id: 123,
+                })
             })
         })
 
-        it('should call onClose after successful update in edit mode', async () => {
-            assumeMock(useConditionsMetadata).mockReturnValue({
-                data: mockSchema,
-            } as unknown as ReturnType<typeof useConditionsMetadata>)
+        expect(mockMutateAsync).not.toHaveBeenCalled()
+        expect(onClose).not.toHaveBeenCalled()
+    })
+
+    it('should call updateSegment with correct args in edit mode when schema is available', async () => {
+        assumeMock(useConditionsMetadata).mockReturnValue({
+            data: mockSchema,
+        } as unknown as ReturnType<typeof useConditionsMetadata>)
+        const user = userEvent.setup()
+        renderComponent({ segment: mockSegment })
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /save segment/i }),
+            )
+        })
+
+        expect(mockMutateAsync).toHaveBeenCalledWith({
+            segmentId: mockSegment.id,
+            updateSegmentRequest: {
+                name: mockSegment.name,
+                conditions: 'gt(shopper.lifetime_value, 1000)',
+            },
+        })
+    })
+
+    it('should call onClose after successful update in edit mode', async () => {
+        assumeMock(useConditionsMetadata).mockReturnValue({
+            data: mockSchema,
+        } as unknown as ReturnType<typeof useConditionsMetadata>)
+        const user = userEvent.setup()
+        renderComponent({ segment: mockSegment })
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /save segment/i }),
+            )
+        })
+
+        expect(onClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call onClose after successful creation', async () => {
+        mockUseConditionsMetadata.mockReturnValue({ data: mockSchema })
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /set valid condition/i }),
+            )
+            await user.type(
+                screen.getByLabelText(/segment name/i),
+                'My Segment',
+            )
+            await user.click(
+                screen.getByRole('button', { name: /save segment/i }),
+            )
+        })
+
+        await waitFor(() => {
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('should not close the panel when creation fails', async () => {
+        mockUseConditionsMetadata.mockReturnValue({ data: mockSchema })
+        mockMutateAsync.mockRejectedValue(new Error('Network error'))
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /set valid condition/i }),
+            )
+            await user.type(
+                screen.getByLabelText(/segment name/i),
+                'My Segment',
+            )
+            await user.click(
+                screen.getByRole('button', { name: /save segment/i }),
+            )
+        })
+
+        await waitFor(() => {
+            expect(mockMutateAsync).toHaveBeenCalled()
+        })
+        expect(onClose).not.toHaveBeenCalled()
+    })
+
+    it('should not call createSegment when currentIntegration is undefined', async () => {
+        mockUseConditionsMetadata.mockReturnValue({ data: mockSchema })
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: undefined,
+        })
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await user.type(
+                screen.getByLabelText(/segment name/i),
+                'My Segment',
+            )
+            await user.click(
+                screen.getByRole('button', { name: /save segment/i }),
+            )
+        })
+
+        expect(mockMutateAsync).not.toHaveBeenCalled()
+    })
+
+    it('should be disabled when only the name is filled and conditions are in the default empty state', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await user.type(
+                screen.getByLabelText(/segment name/i),
+                'My segment',
+            )
+        })
+
+        expect(
+            screen.getByRole('button', { name: /save segment/i }),
+        ).toBeDisabled()
+    })
+
+    it('should be disabled when a condition has a non-unary operator but no value', async () => {
+        const user = userEvent.setup()
+
+        const incompleteSegment = {
+            ...mockSegment,
+            conditions: 'eq(shopper.lifetime_value, )',
+        }
+        renderComponent({ segment: incompleteSegment })
+        await act(async () => {
+            await user.type(
+                screen.getByLabelText(/segment name/i),
+                'My Segment',
+            )
+            await user.click(
+                screen.getByRole('button', { name: /save segment/i }),
+            )
+        })
+
+        expect(mockMutateAsync).not.toHaveBeenCalled()
+        expect(onClose).not.toHaveBeenCalled()
+    })
+
+    it('should not call createSegment when currentIntegration is undefined', async () => {
+        mockUseConditionsMetadata.mockReturnValue({ data: mockSchema })
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: undefined,
+        })
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await user.type(
+                screen.getByLabelText(/segment name/i),
+                'My Segment',
+            )
+            await user.click(
+                screen.getByRole('button', { name: /save segment/i }),
+            )
+        })
+
+        expect(mockMutateAsync).not.toHaveBeenCalled()
+    })
+
+    it('should be disabled when only the name is filled and conditions are in the default empty state', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await act(async () => {
+                await user.type(
+                    screen.getByLabelText(/segment name/i),
+                    'My segment',
+                )
+            })
+        })
+
+        expect(
+            screen.getByRole('button', { name: /save segment/i }),
+        ).toBeDisabled()
+    })
+
+    it('should be disabled when a condition has a non-unary operator but no value', async () => {
+        const incompleteSegment = {
+            ...mockSegment,
+            conditions: 'eq(shopper.lifetime_value, )',
+        }
+        renderComponent({ segment: incompleteSegment })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).toBeDisabled()
+        })
+    })
+
+    it('should be disabled when the segment name is empty', async () => {
+        renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).toBeDisabled()
+        })
+    })
+
+    it('should be disabled when the segment name is empty', () => {
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /save segment/i }),
+        ).toBeDisabled()
+    })
+
+    it('should be disabled when only the segment name is filled and no conditions are set', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await user.type(
+                screen.getByLabelText(/segment name/i),
+                'My segment',
+            )
+        })
+
+        expect(
+            screen.getByRole('button', { name: /save segment/i }),
+        ).toBeDisabled()
+    })
+
+    it('should be disabled when all conditions are removed', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /remove condition/i }),
+            )
+        })
+
+        expect(
+            screen.getByRole('button', { name: /save segment/i }),
+        ).toBeDisabled()
+    })
+
+    it('should be enabled when all conditions have valid values', async () => {
+        renderComponent({ segment: mockSegment })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).not.toBeDisabled()
+        })
+    })
+
+    it('should disable Save button while update is pending', () => {
+        mockUseUpdateSegment.mockReturnValue({
+            mutateAsync: mockMutateAsync,
+            isLoading: true,
+        } as unknown as ReturnType<typeof useUpdateSegment>)
+        renderComponent({ segment: mockSegment })
+
+        expect(
+            screen.getByRole('button', { name: /save segment/i }),
+        ).toBeDisabled()
+    })
+
+    describe('panel close (onOpenChange)', () => {
+        it('should call onClose when the panel is closed externally', async () => {
             const user = userEvent.setup()
-            renderComponent({ segment: mockSegment })
+            renderComponent()
 
             await act(async () => {
                 await user.click(
-                    screen.getByRole('button', { name: /save segment/i }),
+                    screen.getByRole('button', { name: /close panel/i }),
                 )
             })
 
             expect(onClose).toHaveBeenCalledTimes(1)
         })
+    })
 
-        it('should be enabled when the name is filled and conditions are in the default empty state', async () => {
-            const user = userEvent.setup()
+    describe('conditions section', () => {
+        it('should render AudienceConditionField', () => {
+            assumeMock(useConditionsMetadata).mockReturnValue({
+                data: mockSchema,
+            } as unknown as ReturnType<typeof useConditionsMetadata>)
             renderComponent()
 
-            await act(async () => {
-                await user.type(
-                    screen.getByLabelText(/segment name/i),
-                    'My segment',
-                )
-            })
-
-            expect(
-                screen.getByRole('button', { name: /save segment/i }),
-            ).not.toBeDisabled()
-        })
-
-        it('should be disabled when a condition has a non-unary operator but no value', async () => {
-            const incompleteSegment = {
-                ...mockSegment,
-                conditions: 'eq(shopper.lifetime_value, )',
-            }
-            renderComponent({ segment: incompleteSegment })
-
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', { name: /save segment/i }),
-                ).toBeDisabled()
-            })
-        })
-
-        it('should be disabled when the segment name is empty', () => {
-            renderComponent()
-
-            expect(
-                screen.getByRole('button', { name: /save segment/i }),
-            ).toBeDisabled()
-        })
-
-        it('should be enabled when the segment name is filled', async () => {
-            const user = userEvent.setup()
-            renderComponent()
-
-            await act(async () => {
-                await user.type(
-                    screen.getByLabelText(/segment name/i),
-                    'My segment',
-                )
-            })
-
-            expect(
-                screen.getByRole('button', { name: /save segment/i }),
-            ).not.toBeDisabled()
-        })
-
-        it('should be disabled when all conditions are removed', async () => {
-            const user = userEvent.setup()
-            renderComponent()
-
-            await act(async () => {
-                await user.click(
-                    screen.getByRole('button', { name: /remove condition/i }),
-                )
-            })
-
-            expect(
-                screen.getByRole('button', { name: /save segment/i }),
-            ).toBeDisabled()
-        })
-
-        it('should be enabled when all conditions have valid values', async () => {
-            renderComponent({ segment: mockSegment })
-
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', { name: /save segment/i }),
-                ).not.toBeDisabled()
-            })
-        })
-
-        it('should disable Save button while update is pending', () => {
-            mockUseUpdateSegment.mockReturnValue({
-                mutateAsync: mockMutateAsync,
-                isLoading: true,
-            } as unknown as ReturnType<typeof useUpdateSegment>)
-            renderComponent({ segment: mockSegment })
-
-            expect(
-                screen.getByRole('button', { name: /save segment/i }),
-            ).toBeDisabled()
-        })
-
-        describe('panel close (onOpenChange)', () => {
-            it('should call onClose when the panel is closed externally', async () => {
-                const user = userEvent.setup()
-                renderComponent()
-
-                await act(async () => {
-                    await user.click(
-                        screen.getByRole('button', { name: /close panel/i }),
-                    )
-                })
-
-                expect(onClose).toHaveBeenCalledTimes(1)
-            })
-        })
-
-        describe('conditions section', () => {
-            it('should render AudienceConditionField', () => {
-                assumeMock(useConditionsMetadata).mockReturnValue({
-                    data: mockSchema,
-                } as unknown as ReturnType<typeof useConditionsMetadata>)
-                renderComponent()
-
-                expect(
-                    screen.getByText('conditions-section'),
-                ).toBeInTheDocument()
-            })
+            expect(screen.getByText('conditions-section')).toBeInTheDocument()
         })
     })
 })
