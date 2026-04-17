@@ -1,17 +1,13 @@
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {
-    ChatSettingsRevampConnectedChannelsContext,
-    useChatSettingsRevampConnectedChannels,
-} from 'pages/automate/connectedChannels/revamp/hooks/useChatSettingsRevampConnectedChannels'
+import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 
 import LegacyConnectedChannelsViewContainer from './legacy/ConnectedChannelsViewContainer'
 import { ConnectedChannelsViewContainerRevamp } from './revamp/ConnectedChannelsViewContainer'
 
 export const ConnectedChannelsViewContainer = () => {
-    const { selectedChannelId, setSelectedChannelId, shopName } =
-        useChatSettingsRevampConnectedChannels()
+    const { shopName, selectedChannelId } = useChatPreviewChannelsContext()
 
     const storeIntegrations = useStoreIntegrations()
     const storeIntegration = storeIntegrations.find(
@@ -24,15 +20,9 @@ export const ConnectedChannelsViewContainer = () => {
         selectedChannelId,
     )
 
-    return (
-        <ChatSettingsRevampConnectedChannelsContext.Provider
-            value={{ selectedChannelId, setSelectedChannelId }}
-        >
-            {shouldShowFlowsScreensRevamp ? (
-                <ConnectedChannelsViewContainerRevamp />
-            ) : (
-                <LegacyConnectedChannelsViewContainer />
-            )}
-        </ChatSettingsRevampConnectedChannelsContext.Provider>
-    )
+    if (shouldShowFlowsScreensRevamp) {
+        return <ConnectedChannelsViewContainerRevamp />
+    }
+
+    return <LegacyConnectedChannelsViewContainer />
 }

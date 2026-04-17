@@ -8,7 +8,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { DndProvider } from 'utils/wrappers/DndProvider'
@@ -49,9 +49,9 @@ const mockUseListWorkflowEntryPoints =
         typeof useListWorkflowEntryPoints
     >
 
-const mockUseGorgiasChatCreationWizardContext =
-    useGorgiasChatCreationWizardContext as jest.MockedFunction<
-        typeof useGorgiasChatCreationWizardContext
+const mockUseChatPreviewPanelContext =
+    useChatPreviewPanelContext as jest.MockedFunction<
+        typeof useChatPreviewPanelContext
     >
 
 const mockChannel: SelfServiceChatChannel = {
@@ -113,7 +113,7 @@ describe('FlowsSettings', () => {
         })
         mockUseIsAutomateSettings.mockReturnValue(false)
         mockUseListWorkflowEntryPoints.mockReturnValue({} as any)
-        mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+        mockUseChatPreviewPanelContext.mockReturnValue({
             displayPage: jest.fn(),
         } as any)
     })

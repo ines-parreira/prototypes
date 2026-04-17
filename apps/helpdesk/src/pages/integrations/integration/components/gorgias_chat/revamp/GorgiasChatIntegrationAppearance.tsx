@@ -1,6 +1,6 @@
 import type { Map } from 'immutable'
 
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt'
 import { AvatarCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/AvatarCard/AvatarCard'
 import { BrandCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/BrandCard/BrandCard'
@@ -31,7 +31,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         onSubmit,
     } = useAppearanceForm({ integration, loading })
 
-    const { reloadPreview } = useGorgiasChatCreationWizardContext()
+    const { reloadPreview } = useChatPreviewPanelContext()
 
     const onSave = handleSubmit(onSubmit)
 

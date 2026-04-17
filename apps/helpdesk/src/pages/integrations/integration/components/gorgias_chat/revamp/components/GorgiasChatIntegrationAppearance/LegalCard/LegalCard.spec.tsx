@@ -8,7 +8,7 @@ import { LegalCard } from './LegalCard'
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
-        useGorgiasChatCreationWizardContext: () => ({
+        useChatPreviewPanelContext: () => ({
             displayPage: jest.fn(),
             updateLegalDisclaimer: jest.fn(),
             openChat: jest.fn(),

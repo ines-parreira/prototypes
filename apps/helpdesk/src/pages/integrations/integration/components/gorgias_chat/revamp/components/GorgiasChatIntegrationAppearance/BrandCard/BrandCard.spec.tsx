@@ -9,7 +9,7 @@ import { BrandCard } from './BrandCard'
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
-        useGorgiasChatCreationWizardContext: () => ({
+        useChatPreviewPanelContext: () => ({
             updateMainColor: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
             openChat: jest.fn(),

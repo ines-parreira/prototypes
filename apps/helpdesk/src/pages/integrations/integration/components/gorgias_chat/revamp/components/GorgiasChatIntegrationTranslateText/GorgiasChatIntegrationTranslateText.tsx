@@ -15,7 +15,7 @@ import {
 } from '@gorgias/axiom'
 
 import type { LanguageChat } from 'constants/languages'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import { GorgiasChatRevampLayout } from '../../GorgiasChatRevampLayout'
 import SaveChangesPrompt from '../GorgiasChatCreationWizard/components/SaveChangesPrompt'
@@ -59,7 +59,7 @@ export const GorgiasChatIntegrationTranslateTextRevamp = ({
         integrationChat,
     } = useGorgiasTranslateText({ integration })
 
-    const { reloadPreview } = useGorgiasChatCreationWizardContext()
+    const { reloadPreview } = useChatPreviewPanelContext()
 
     const sections = useTranslateSections({
         isAutomateSubscriber,

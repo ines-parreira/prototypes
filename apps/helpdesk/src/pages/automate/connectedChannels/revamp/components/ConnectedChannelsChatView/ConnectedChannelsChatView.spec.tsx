@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { TicketChannel } from 'business/types/ticket'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import type { Workflow } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/types'
 import { mockStore } from 'utils/testing'
 
@@ -32,28 +32,33 @@ jest.mock('react-router-dom', () => ({
         shopType: 'shopify',
     })),
 }))
+jest.mock(
+    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
+    () => ({
+        useChatPreviewChannelsContext: jest.fn().mockReturnValue({
+            shopName: 'test-shop',
+            selectedChannelId: undefined,
+            setSelectedChannelId: jest.fn(),
+        }),
+    }),
+)
 
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock('../../hooks/useArticleRecommendation')
 jest.mock('../../hooks/useFlows')
 jest.mock('../../hooks/useOrderManagement')
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useChatPreviewPanelContext: jest.fn(),
+    }),
+)
 jest.mock('models/workflows/queries', () => ({
     useListWorkflowEntryPoints: jest.fn(() => ({
         data: undefined,
         isLoading: false,
     })),
 }))
-jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
-    () => ({
-        useChatPreviewPanel: jest.fn(() => ({
-            chatPreviewPortal: null,
-            showPreviewPanel: jest.fn(),
-            hidePreviewPanel: jest.fn(),
-            updateWorkflowEntryPoints: jest.fn(),
-        })),
-    }),
-)
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard',
@@ -117,13 +122,14 @@ const mockedUseOrderManagement = useOrderManagement as jest.MockedFunction<
     typeof useOrderManagement
 >
 
-const mockedUseChatPreviewPanel = useChatPreviewPanel as jest.MockedFunction<
-    typeof useChatPreviewPanel
->
-
 const mockedUseListWorkflowEntryPoints =
     useListWorkflowEntryPoints as jest.MockedFunction<
         typeof useListWorkflowEntryPoints
+    >
+
+const mockedUseChatPreviewPanelContext =
+    useChatPreviewPanelContext as jest.MockedFunction<
+        typeof useChatPreviewPanelContext
     >
 
 const mockChannel = {
@@ -149,6 +155,11 @@ const mockOrderManagementCardHandlers: {
 describe('ConnectedChannelsChatView', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockedUseChatPreviewPanelContext.mockReturnValue({
+            updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
+            displayPage: jest.fn(),
+            reloadPreview: mockReloadPreview,
+        } as unknown as ReturnType<typeof useChatPreviewPanelContext>)
         mockedUseSelfServiceChatChannels.mockReturnValue([])
         mockedUseArticleRecommendation.mockReturnValue({
             hasChatChannels: true,
@@ -179,27 +190,6 @@ describe('ConnectedChannelsChatView', () => {
             orderManagementUrl:
                 '/app/settings/order-management/shopify/test-shop',
             handleToggle: mockHandleOrderManagementToggle,
-        })
-        mockedUseChatPreviewPanel.mockReturnValue({
-            chatPreviewPortal: null,
-            showPreviewPanel: jest.fn(),
-            hidePreviewPanel: jest.fn(),
-            openChat: jest.fn(),
-            closeChat: jest.fn(),
-            displayPage: jest.fn(),
-            updateMainColor: jest.fn(),
-            updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
-            reloadPreview: mockReloadPreview,
-            updatePosition: jest.fn(),
-            updateHeaderPictureUrl: jest.fn(),
-            updateLauncher: jest.fn(),
-            updateTexts: jest.fn(),
-            updateLegalDisclaimer: jest.fn(),
-            updateLegalDisclaimerEnabled: jest.fn(),
-            updateAvatarSettings: jest.fn(),
-            updateQuickReplies: jest.fn(),
-            updatePreviewOrders: jest.fn(),
-            setConversationMessages: jest.fn(),
         })
         mockedUseListWorkflowEntryPoints.mockReturnValue({
             data: undefined,

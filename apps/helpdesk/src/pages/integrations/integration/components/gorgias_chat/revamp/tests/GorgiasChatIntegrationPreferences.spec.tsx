@@ -48,7 +48,7 @@ jest.mock(
 
 jest.mock('../components/ChatPreviewPanel/hooks/useChatPreviewPanel', () => ({
     useChatPreviewPanel: jest.fn(),
-    useGorgiasChatCreationWizardContext: () => ({ reloadPreview: jest.fn() }),
+    useChatPreviewPanelContext: () => ({ reloadPreview: jest.fn() }),
 }))
 
 jest.mock(

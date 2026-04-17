@@ -1,14 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { Box, Skeleton, Text } from '@gorgias/axiom'
 
-import type { LANGUAGE } from 'constants/languages'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { ChatChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector'
-import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import useTrackOrderFlow from '../../legacy/trackOrder/hooks/useTrackOrderFlow'
 import { OrderManagementFlowHeader } from '../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
@@ -47,47 +44,16 @@ function buildPreviewOrders(unfulfilledMessage: string) {
 }
 
 export const TrackOrderFlowView = () => {
-    const { shopName, shopType } = useParams<{
+    const { shopName } = useParams<{
         shopName: string
-        shopType: string
     }>()
+
     const {
         trackOrderFlow,
         isUpdatePending,
         selfServiceConfiguration,
         handleTrackOrderFlowUpdate,
     } = useTrackOrderFlow(shopName)
-
-    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
-
-    const [selectedChannelId, setSelectedChannelId] = useState<
-        number | undefined
-    >(() => chatChannels[0]?.value.id)
-
-    const selectedChannel =
-        chatChannels.find((c) => c.value.id === selectedChannelId) ??
-        chatChannels[0]
-
-    const appId = selectedChannel?.value.meta.app_id ?? null
-
-    const selectedChannelLanguage = useMemo(() => {
-        const primaryLanguage: LANGUAGE | undefined =
-            selectedChannel?.value?.meta?.languages?.find((lang) => {
-                return lang.primary === true
-            })?.language
-
-        return primaryLanguage
-    }, [selectedChannel])
-
-    const previewPanelHeaderActions = useMemo(() => {
-        return chatChannels.length > 0 ? (
-            <ChatChannelSelector
-                chatChannels={chatChannels}
-                selectedChannelId={selectedChannelId}
-                onSelect={setSelectedChannelId}
-            />
-        ) : undefined
-    }, [selectedChannelId, chatChannels])
 
     const { register, handleSubmit, formState, watch } = useForm<FormValues>({
         values: {
@@ -102,17 +68,22 @@ export const TrackOrderFlowView = () => {
         [unfulfilledMessage],
     )
 
-    const { showPreviewPanel, chatPreviewPortal, updatePreviewOrders } =
-        useChatPreviewPanel({
-            headerActions: previewPanelHeaderActions,
-            locale: selectedChannelLanguage,
-            initialPage: 'track',
-            previewOrders: computedPreviewOrders,
-        })
+    const { updatePreviewOrders, displayPage, onChatPreviewLoaded } =
+        useChatPreviewPanelContext()
 
     useEffect(() => {
-        showPreviewPanel(appId)
-    }, [showPreviewPanel, appId])
+        return onChatPreviewLoaded(() => {
+            updatePreviewOrders(computedPreviewOrders)
+            displayPage('track', {
+                orderName: Object.values(computedPreviewOrders.orders)[0]?.name,
+            })
+        }, true)
+    }, [
+        onChatPreviewLoaded,
+        updatePreviewOrders,
+        computedPreviewOrders,
+        displayPage,
+    ])
 
     useEffect(() => {
         updatePreviewOrders(computedPreviewOrders)
@@ -157,7 +128,6 @@ export const TrackOrderFlowView = () => {
                     </>
                 )}
             </Box>
-            {chatPreviewPortal}
         </>
     )
 }

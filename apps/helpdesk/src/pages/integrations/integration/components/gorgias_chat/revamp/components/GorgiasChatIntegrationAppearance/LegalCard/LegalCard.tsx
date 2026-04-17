@@ -7,7 +7,7 @@ import { Card, CheckBoxField, Elevation, Heading, Text } from '@gorgias/axiom'
 
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { convertToHTML } from 'utils/editor'
 
 import css from '../GorgiasChatIntegrationAppearance.less'
@@ -30,7 +30,7 @@ export const LegalCard = ({
         updateLegalDisclaimer,
         openChat,
         updateLegalDisclaimerEnabled,
-    } = useGorgiasChatCreationWizardContext()
+    } = useChatPreviewPanelContext()
 
     const isEditorInitializing = useRef(true)
 

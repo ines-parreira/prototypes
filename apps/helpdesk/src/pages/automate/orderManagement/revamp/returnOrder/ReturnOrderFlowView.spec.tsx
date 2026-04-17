@@ -3,14 +3,12 @@ import userEvent from '@testing-library/user-event'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import { useReturnOrderFlow } from './hooks/useReturnOrderFlow'
 import { ReturnOrderFlowView } from './ReturnOrderFlowView'
 
 const mockHandleSave = jest.fn()
-const mockHandleReset = jest.fn()
 const mockHandleEligibilityChange = jest.fn()
 const mockHandleActionChange = jest.fn()
 
@@ -21,22 +19,8 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('./hooks/useReturnOrderFlow')
-
-jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
-    __esModule: true,
-    default: jest.fn(() => []),
-}))
-
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
-    () => ({
-        useChatPreviewPanel: jest.fn(() => ({
-            showPreviewPanel: jest.fn(),
-            chatPreviewPortal: null,
-            setConversationMessages: jest.fn(),
-            updateQuickReplies: jest.fn(),
-        })),
-    }),
 )
 
 const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
@@ -45,32 +29,15 @@ const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
 const mockUseReturnOrderFlow = useReturnOrderFlow as jest.MockedFunction<
     typeof useReturnOrderFlow
 >
-
-jest.mock(
-    'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector',
-    () => ({
-        ChatChannelSelector: () => <div>ChatChannelSelector</div>,
-    }),
-)
-
-const mockUseSelfServiceChatChannels =
-    useSelfServiceChatChannels as jest.MockedFunction<
-        typeof useSelfServiceChatChannels
+const mockUseChatPreviewPanelContext =
+    useChatPreviewPanelContext as jest.MockedFunction<
+        typeof useChatPreviewPanelContext
     >
-const mockUseChatPreviewPanel = useChatPreviewPanel as jest.MockedFunction<
-    typeof useChatPreviewPanel
->
 
-const mockChatChannel = {
-    type: 'chat' as const,
-    value: {
-        id: 1,
-        meta: {
-            app_id: 'test-app-id',
-            languages: [{ language: 'en', primary: true }],
-        },
-    },
-} as any
+const mockUpdateQuickReplies = jest.fn()
+const mockSetConversationMessages = jest.fn()
+const mockOnChatPreviewLoaded = jest.fn()
+const mockDisplayPage = jest.fn()
 
 jest.mock(
     '../components/OrderManagementFlowHeader/OrderManagementFlowHeader',
@@ -152,7 +119,6 @@ const defaultHookReturn = {
     handleEligibilityChange: mockHandleEligibilityChange,
     handleActionChange: mockHandleActionChange,
     handleSave: mockHandleSave,
-    handleReset: mockHandleReset,
 }
 
 describe('ReturnOrderFlowView', () => {
@@ -163,6 +129,16 @@ describe('ReturnOrderFlowView', () => {
             isLoading: false,
         })
         mockUseReturnOrderFlow.mockReturnValue(defaultHookReturn)
+        mockOnChatPreviewLoaded.mockImplementation((callback: () => void) => {
+            callback()
+            return jest.fn()
+        })
+        mockUseChatPreviewPanelContext.mockReturnValue({
+            updateQuickReplies: mockUpdateQuickReplies,
+            setConversationMessages: mockSetConversationMessages,
+            onChatPreviewLoaded: mockOnChatPreviewLoaded,
+            displayPage: mockDisplayPage,
+        } as any)
     })
 
     it('should render the heading and child components when loaded', () => {
@@ -268,21 +244,6 @@ describe('ReturnOrderFlowView', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should initialize the chat preview panel when channels are available', () => {
-        const mockShowPreviewPanel = jest.fn()
-        mockUseSelfServiceChatChannels.mockReturnValue([mockChatChannel])
-        mockUseChatPreviewPanel.mockReturnValue({
-            showPreviewPanel: mockShowPreviewPanel,
-            chatPreviewPortal: null,
-            setConversationMessages: jest.fn(),
-            updateQuickReplies: jest.fn(),
-        } as any)
-
-        render(<ReturnOrderFlowView />)
-
-        expect(mockShowPreviewPanel).toHaveBeenCalledWith('test-app-id')
-    })
-
     it('should not render ReturnOrderAction when no AI agent access', () => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: false,
@@ -298,9 +259,7 @@ describe('ReturnOrderFlowView', () => {
     it('should disable quick replies on mount', () => {
         render(<ReturnOrderFlowView />)
 
-        const { updateQuickReplies } =
-            mockUseChatPreviewPanel.mock.results[0].value
-        expect(updateQuickReplies).toHaveBeenCalledWith({
+        expect(mockUpdateQuickReplies).toHaveBeenCalledWith({
             enabled: false,
             replies: [],
         })
@@ -309,9 +268,7 @@ describe('ReturnOrderFlowView', () => {
     it('should call setConversationMessages with only the customer message when response text is empty', () => {
         render(<ReturnOrderFlowView />)
 
-        const { setConversationMessages } =
-            mockUseChatPreviewPanel.mock.results[0].value
-        expect(setConversationMessages).toHaveBeenCalledWith([
+        expect(mockSetConversationMessages).toHaveBeenCalledWith([
             expect.objectContaining({ fromAgent: false, isHtml: true }),
         ])
     })
@@ -330,9 +287,7 @@ describe('ReturnOrderFlowView', () => {
 
         render(<ReturnOrderFlowView />)
 
-        const { setConversationMessages } =
-            mockUseChatPreviewPanel.mock.results[0].value
-        expect(setConversationMessages).toHaveBeenCalledWith([
+        expect(mockSetConversationMessages).toHaveBeenCalledWith([
             expect.objectContaining({ fromAgent: false, isHtml: true }),
             expect.objectContaining({
                 fromAgent: true,
@@ -353,9 +308,7 @@ describe('ReturnOrderFlowView', () => {
 
         render(<ReturnOrderFlowView />)
 
-        const { setConversationMessages } =
-            mockUseChatPreviewPanel.mock.results[0].value
-        expect(setConversationMessages).toHaveBeenCalledWith([
+        expect(mockSetConversationMessages).toHaveBeenCalledWith([
             expect.objectContaining({ fromAgent: false, isHtml: true }),
         ])
     })

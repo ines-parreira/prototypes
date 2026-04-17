@@ -1,16 +1,13 @@
-import { useParams } from 'react-router-dom'
-
-import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
-import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 
 import LegacyTrackOrderFlowViewContainer from './legacy/trackOrder/TrackOrderFlowViewContainer'
 import { TrackOrderFlowViewContainerRevamp } from './revamp/trackOrder/TrackOrderFlowViewContainer'
 
 export const TrackOrderFlowViewContainer = () => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, selectedChannelId } = useChatPreviewChannelsContext()
 
     const storeIntegrations = useStoreIntegrations()
     const storeIntegration = storeIntegrations.find(
@@ -18,13 +15,8 @@ export const TrackOrderFlowViewContainer = () => {
             getShopNameFromStoreIntegration(integration) === shopName,
     )
 
-    const chatIntegration = useAppSelector(
-        getGorgiasChatIntegrationsByStoreName(shopName ?? ''),
-    )
-    const chatId = chatIntegration?.id
-
     const { shouldShowOrderManagementScreensRevamp } =
-        useShouldShowChatSettingsRevamp(storeIntegration, chatId)
+        useShouldShowChatSettingsRevamp(storeIntegration, selectedChannelId)
 
     if (shouldShowOrderManagementScreensRevamp) {
         return <TrackOrderFlowViewContainerRevamp />

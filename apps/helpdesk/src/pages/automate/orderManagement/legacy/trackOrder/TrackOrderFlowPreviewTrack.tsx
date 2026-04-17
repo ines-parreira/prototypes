@@ -4,6 +4,7 @@ import { createMemoryHistory } from 'history'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import { TicketChannel } from 'business/types/ticket'
 import type {
     PolicyKey,
     ResponseMessageContent,
@@ -12,6 +13,7 @@ import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/pr
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 
 import { useOrderManagementPreviewContext } from '../OrderManagementPreviewContext'
 
@@ -111,6 +113,8 @@ export default function TrackOrderFlowPreview({
     const { channels, channel, onChannelChange } =
         useOrderManagementPreviewContext()
 
+    const { setSelectedChannelId } = useChatPreviewChannelsContext()
+
     const shouldDisplayPreviewButton = useMemo(
         () =>
             !isTrackOrderPreviewPlaying &&
@@ -122,7 +126,12 @@ export default function TrackOrderFlowPreview({
         <SelfServicePreviewContainer
             channels={channels}
             channel={channel}
-            onChange={onChannelChange}
+            onChange={(channel) => {
+                onChannelChange(channel)
+                if (channel?.type === TicketChannel.Chat) {
+                    setSelectedChannelId(channel?.value.id)
+                }
+            }}
             alert={{
                 message:
                     'Connect a Chat or Help Center to your store to use this feature.',

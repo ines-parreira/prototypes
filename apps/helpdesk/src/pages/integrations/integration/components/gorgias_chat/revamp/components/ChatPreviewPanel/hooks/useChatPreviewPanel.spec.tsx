@@ -14,7 +14,7 @@ import type { ChatPreviewPanelContextValue } from './useChatPreviewPanel'
 import {
     ChatPreviewPanelContext,
     useChatPreviewPanel,
-    useGorgiasChatCreationWizardContext,
+    useChatPreviewPanelContext,
 } from './useChatPreviewPanel'
 
 jest.mock('pages/common/hooks/useCollapsibleColumn')
@@ -202,20 +202,6 @@ describe('useChatPreviewPanel', () => {
         expect(() => result.current.displayPage('orders')).not.toThrow()
     })
 
-    it('passes initialPage to ChatPreviewPanel', () => {
-        renderHook(() => useChatPreviewPanel({ initialPage: 'orders' }))
-
-        const element = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
-        expect(element.props.initialPage).toBe('orders')
-    })
-
-    it('does not pass initialPage to ChatPreviewPanel when not provided', () => {
-        renderHook(() => useChatPreviewPanel())
-
-        const element = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
-        expect(element.props.initialPage).toBeUndefined()
-    })
-
     it('reloadPreview does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -268,7 +254,7 @@ describe('useChatPreviewPanel', () => {
         })
 
         expect(mockOpenChat).toHaveBeenCalled()
-        expect(mockDisplayPage).toHaveBeenCalledWith('conversation')
+        expect(mockDisplayPage).toHaveBeenCalledWith('conversation', undefined)
         expect(mockUpdateSettings).toHaveBeenCalledWith({
             decoration: { avatarType: GorgiasChatAvatarType.TEAM_MEMBERS },
         })
@@ -383,7 +369,7 @@ describe('useChatPreviewPanel', () => {
         const entrypoints = [{ id: 'flow-1' }] as any
         result.current.updateWorkflowEntryPoints(entrypoints)
 
-        expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
+        expect(mockDisplayPage).toHaveBeenCalledWith('homepage', undefined)
         expect(mockUpdateWorkflowEntrypoints).toHaveBeenCalledWith(entrypoints)
     })
 
@@ -415,74 +401,40 @@ describe('useChatPreviewPanel', () => {
         expect(mockSetConversationMessages).toHaveBeenCalledWith(messages)
     })
 
-    it('applies pending messages via onChatLoaded when widget becomes ready after setConversationMessages', () => {
-        const mockSetConversationMessages = jest.fn()
-
+    it('onChatPreviewLoaded registers a callback that fires when onPreviewLoaded is called', () => {
+        const mockCallback = jest.fn()
         const { result } = renderHook(() => useChatPreviewPanel())
 
-        const messages = [{ text: 'Hello', isHtml: false, fromAgent: false }]
-        result.current.setConversationMessages(messages)
+        result.current.onChatPreviewLoaded(mockCallback)
 
         const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
-        if (panelArg?.ref) {
-            panelArg.ref.current = {
-                setConversationMessages: mockSetConversationMessages,
-            }
-        }
+        panelArg.props.onPreviewLoaded()
 
-        panelArg.props.onChatLoaded()
-
-        expect(mockSetConversationMessages).toHaveBeenCalledWith(messages)
+        expect(mockCallback).toHaveBeenCalled()
     })
 
-    it('does not call setConversationMessages via onChatLoaded when no messages were set', () => {
-        const mockSetConversationMessages = jest.fn()
-
-        renderHook(() => useChatPreviewPanel())
-
-        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
-        if (panelArg?.ref) {
-            panelArg.ref.current = {
-                setConversationMessages: mockSetConversationMessages,
-            }
-        }
-
-        panelArg.props.onChatLoaded()
-
-        expect(mockSetConversationMessages).not.toHaveBeenCalled()
-    })
-
-    it('applies pending quick replies via onChatLoaded when widget becomes ready after updateQuickReplies', () => {
-        const mockUpdateSettings = jest.fn()
-
+    it('onChatPreviewLoaded returns a cleanup function that unsubscribes the callback', () => {
+        const mockCallback = jest.fn()
         const { result } = renderHook(() => useChatPreviewPanel())
 
-        const quickReplies = { enabled: true, replies: ['reply 1', 'reply 2'] }
-        result.current.updateQuickReplies(quickReplies)
+        const unsubscribe = result.current.onChatPreviewLoaded(mockCallback)
+        unsubscribe()
 
         const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
-        if (panelArg?.ref) {
-            panelArg.ref.current = {
-                updateSettings: mockUpdateSettings,
-            }
-        }
+        panelArg.props.onPreviewLoaded()
 
-        panelArg.props.onChatLoaded()
-
-        expect(mockUpdateSettings).toHaveBeenCalledWith({ quickReplies })
+        expect(mockCallback).not.toHaveBeenCalled()
     })
 })
 
-describe('useGorgiasChatCreationWizardContext', () => {
+describe('useChatPreviewPanelContext', () => {
     it('throws when used outside of ChatPreviewPanelContext', () => {
         const consoleError = jest
             .spyOn(console, 'error')
             .mockImplementation(() => {})
 
-        expect(() =>
-            renderHook(() => useGorgiasChatCreationWizardContext()),
-        ).toThrow(
-            'useGorgiasChatCreationWizardContext must be used within GorgiasChatCreationWizard',
+        expect(() => renderHook(() => useChatPreviewPanelContext())).toThrow(
+            'useChatPreviewPanelContext must be used within ChatPreviewPanelContext',
         )
 
         consoleError.mockRestore()
@@ -506,6 +458,7 @@ describe('useGorgiasChatCreationWizardContext', () => {
             updateQuickReplies: jest.fn(),
             updatePreviewOrders: jest.fn(),
             setConversationMessages: jest.fn(),
+            onChatPreviewLoaded: jest.fn(),
         }
 
         const wrapper = ({ children }: { children: ReactNode }) => (
@@ -514,10 +467,9 @@ describe('useGorgiasChatCreationWizardContext', () => {
             </ChatPreviewPanelContext.Provider>
         )
 
-        const { result } = renderHook(
-            () => useGorgiasChatCreationWizardContext(),
-            { wrapper },
-        )
+        const { result } = renderHook(() => useChatPreviewPanelContext(), {
+            wrapper,
+        })
 
         expect(result.current).toBe(mockContextValue)
     })

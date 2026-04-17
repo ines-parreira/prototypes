@@ -1,15 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { useForm } from 'react-hook-form'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { Box, Button, Icon, Skeleton, Text } from '@gorgias/axiom'
 
-import type { LANGUAGE } from 'constants/languages'
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { ChatChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector'
-import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt'
 
 import { OrderManagementFlowHeader } from '../../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
@@ -22,61 +18,12 @@ type FormValues = {
 
 export const ReportOrderIssueFlowView = () => {
     // Router hooks
-    const { shopName, shopType } = useParams<{
-        shopName: string
-        shopType: string
-    }>()
     const history = useHistory()
     const { pathname } = useLocation()
 
-    // State
-    const [selectedChannelId, setSelectedChannelId] = useState<
-        number | undefined
-    >()
-
     // Data hooks
-    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
     const { isLoading, isUpdatePending, scenarios, handleScenariosUpdate } =
         useReportOrderIssueFlow()
-
-    // Memoized values
-    const selectedChannel = useMemo(
-        () =>
-            chatChannels.find((c) => c.value.id === selectedChannelId) ??
-            chatChannels[0],
-        [chatChannels, selectedChannelId],
-    )
-
-    const appId = selectedChannel?.value.meta.app_id ?? null
-
-    const selectedChannelLanguage = useMemo(() => {
-        const primaryLanguage: LANGUAGE | undefined =
-            selectedChannel?.value?.meta?.languages?.find((lang) => {
-                return lang.primary === true
-            })?.language
-
-        return primaryLanguage
-    }, [selectedChannel])
-
-    const PreviewPanelHeaderActions = useMemo(() => {
-        return chatChannels.length > 0 ? (
-            <ChatChannelSelector
-                chatChannels={chatChannels}
-                selectedChannelId={selectedChannelId}
-                onSelect={setSelectedChannelId}
-            />
-        ) : undefined
-    }, [selectedChannelId, chatChannels])
-
-    // Preview panel
-    const { showPreviewPanel, chatPreviewPortal } = useChatPreviewPanel({
-        headerActions: PreviewPanelHeaderActions,
-        locale: selectedChannelLanguage,
-    })
-
-    useEffect(() => {
-        showPreviewPanel(appId)
-    }, [showPreviewPanel, appId])
 
     // Form
     const {
@@ -157,7 +104,6 @@ export const ReportOrderIssueFlowView = () => {
                     </>
                 )}
             </Box>
-            {chatPreviewPortal}
         </>
     )
 }

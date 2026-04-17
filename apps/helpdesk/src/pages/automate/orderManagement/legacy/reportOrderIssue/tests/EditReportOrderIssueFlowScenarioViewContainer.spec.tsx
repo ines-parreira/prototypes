@@ -28,6 +28,16 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 import EditReportOrderIssueFlowScenarioViewContainer from '../EditReportOrderIssueFlowScenarioViewContainer'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
+jest.mock(
+    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
+    () => ({
+        useChatPreviewChannelsContext: jest.fn().mockReturnValue({
+            shopName: 'my-store',
+            selectedChannelId: undefined,
+            setSelectedChannelId: jest.fn(),
+        }),
+    }),
+)
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 

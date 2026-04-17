@@ -78,7 +78,7 @@ jest.mock(
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
-        useGorgiasChatCreationWizardContext: () => ({
+        useChatPreviewPanelContext: () => ({
             closeChat: jest.fn(),
             openChat: jest.fn(),
             displayPage: jest.fn(),

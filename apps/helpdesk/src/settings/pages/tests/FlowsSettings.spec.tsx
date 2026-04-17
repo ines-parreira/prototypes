@@ -33,12 +33,25 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 )
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        ...jest.requireActual(
+            'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+        ),
+        useChatPreviewPanel: jest.fn(),
+    }),
+)
+
 const getHasAutomateMock = assumeMock(getHasAutomate)
 const useStoreSelectorMock = assumeMock(useStoreSelector)
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 const mockUseShouldShowChatSettingsRevamp = jest.requireMock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 ).useShouldShowChatSettingsRevamp as jest.Mock
+const mockUseChatPreviewPanel = jest.requireMock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+).useChatPreviewPanel as jest.Mock
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -96,6 +109,11 @@ describe('FlowsSettings', () => {
             isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+        })
+        mockUseChatPreviewPanel.mockReturnValue({
+            chatPreviewPortal: null,
+            showPreviewPanel: jest.fn(),
+            hidePreviewPanel: jest.fn(),
         })
     })
 

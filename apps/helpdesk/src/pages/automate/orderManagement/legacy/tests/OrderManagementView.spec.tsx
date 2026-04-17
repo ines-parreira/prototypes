@@ -48,6 +48,16 @@ jest.mock('pages/automate/common/hooks/useContactFormsAutomationSettings')
 jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
+jest.mock(
+    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
+    () => ({
+        useChatPreviewChannelsContext: jest.fn().mockReturnValue({
+            shopName: 'my-store',
+            selectedChannelId: undefined,
+            setSelectedChannelId: jest.fn(),
+        }),
+    }),
+)
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>

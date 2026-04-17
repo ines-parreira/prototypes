@@ -1,18 +1,15 @@
 import { render, screen } from '@testing-library/react'
-import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 
 import { OrderManagementViewContainer } from '../OrderManagementViewContainer'
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useParams: jest.fn(),
-}))
-jest.mock('hooks/useAppSelector')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
+jest.mock(
+    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
+)
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 )
@@ -27,13 +24,13 @@ jest.mock('../revamp/OrderManagementView', () => ({
     OrderManagementViewRevamp: () => <div>RevampOrderManagementView</div>,
 }))
 
-const mockUseParams = useParams as jest.MockedFunction<typeof useParams>
-const mockUseAppSelector = useAppSelector as jest.MockedFunction<
-    typeof useAppSelector
->
 const mockUseStoreIntegrations = useStoreIntegrations as jest.MockedFunction<
     typeof useStoreIntegrations
 >
+const mockUseChatPreviewChannelsContext =
+    useChatPreviewChannelsContext as jest.MockedFunction<
+        typeof useChatPreviewChannelsContext
+    >
 const mockUseShouldShowChatSettingsRevamp =
     useShouldShowChatSettingsRevamp as jest.MockedFunction<
         typeof useShouldShowChatSettingsRevamp
@@ -42,9 +39,12 @@ const mockUseShouldShowChatSettingsRevamp =
 describe('OrderManagementViewContainer', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseParams.mockReturnValue({ shopName: 'my-store' })
-        mockUseAppSelector.mockReturnValue(undefined)
         mockUseStoreIntegrations.mockReturnValue([])
+        mockUseChatPreviewChannelsContext.mockReturnValue({
+            shopName: 'my-store',
+            selectedChannelId: undefined,
+            setSelectedChannelId: jest.fn(),
+        })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,

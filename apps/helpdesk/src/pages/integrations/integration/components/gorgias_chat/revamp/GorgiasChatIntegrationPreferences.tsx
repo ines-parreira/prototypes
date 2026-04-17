@@ -16,7 +16,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt'
 import { ChatAutomationCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatAutomationCard/ChatAutomationCard'
 import { ChatAvailabilityCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatAvailabilityCard/ChatAvailabilityCard'
@@ -99,7 +99,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
     isAiAgentEnabled = false,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const { reloadPreview } = useGorgiasChatCreationWizardContext()
+    const { reloadPreview } = useChatPreviewPanelContext()
     const surveysSettings = useAppSelector(getSurveysSettingsJS)
     const sendCsatGlobal = surveysSettings?.data?.send_survey_for_chat ?? false
     const hasConvert = Boolean(useAppSelector(getCurrentConvertPlan))

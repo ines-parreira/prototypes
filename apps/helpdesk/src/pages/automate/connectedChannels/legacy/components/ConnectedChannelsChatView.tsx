@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -14,7 +14,7 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { useArticleRecommendation } from 'pages/automate/connectedChannels/revamp/hooks/useArticleRecommendation'
-import { ChatSettingsRevampConnectedChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatSettingsRevampConnectedChannels'
+import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useFlows } from 'pages/automate/connectedChannels/revamp/hooks/useFlows'
 import { useOrderManagement } from 'pages/automate/connectedChannels/revamp/hooks/useOrderManagement'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
@@ -75,7 +75,7 @@ export const ConnectedChannelsChatView = ({
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const { selectedChannelId, setSelectedChannelId: setSelectedChannel } =
-        useContext(ChatSettingsRevampConnectedChannelsContext)
+        useChatPreviewChannelsContext()
 
     const selectedChannel = useMemo(() => {
         return selectedChannelId || channelId || chatChannels[0]?.value.id

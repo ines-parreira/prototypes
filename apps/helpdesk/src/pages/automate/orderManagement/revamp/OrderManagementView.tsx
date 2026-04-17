@@ -1,3 +1,7 @@
+import { useEffect } from 'react'
+
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+
 import { OrderManagementFlowsCard } from './components/OrderManagementFlowsCard/OrderManagementFlowsCard'
 import { useOrderManagementFlows } from './components/OrderManagementFlowsCard/useOrderManagementFlows'
 
@@ -11,6 +15,12 @@ export const OrderManagementViewRevamp = () => {
         handleFlowToggle,
         navigateToFlow,
     } = useOrderManagementFlows()
+
+    const { displayPage } = useChatPreviewPanelContext()
+
+    useEffect(() => {
+        displayPage('homepage')
+    }, [displayPage])
 
     return (
         <div className={css.container}>

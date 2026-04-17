@@ -42,7 +42,10 @@ export type SimulateConversationMessage = {
 }
 
 export type ChatPreviewPanelHandle = {
-    displayPage: (page: ChatPreviewPage) => void
+    displayPage: (
+        page: ChatPreviewPage,
+        options?: { orderName?: string },
+    ) => void
     updatePosition: (position: GorgiasChatPosition) => void
     updateSettings: (settings: GorgiasChatPreviewApplicationSettings) => void
     updateTexts: (texts: Record<string, string>) => void
@@ -55,34 +58,21 @@ export type ChatPreviewPanelHandle = {
     updatePreviewOrders: (options: GorgiasChatPreviewOrdersOptions) => void
     simulateConversation: (messages: SimulateConversationMessage[]) => void
     setConversationMessages: (messages: SimulateConversationMessage[]) => void
+    isLoaded: boolean
 }
 
 type Props = {
     appId: string | null
     headerActions?: ReactNode
     locale?: LANGUAGE
-    initialPage?: ChatPreviewPage
-    previewOrders?: GorgiasChatPreviewOrdersOptions
-    onChatLoaded?: () => void
+    onPreviewLoaded?: () => void
 }
 
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
-    (
-        {
-            appId,
-            headerActions,
-            locale,
-            initialPage,
-            previewOrders,
-            onChatLoaded,
-        }: Props,
-        ref,
-    ) => {
+    ({ appId, headerActions, locale, onPreviewLoaded }: Props, ref) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
         const [selectedPage, setSelectedPage] =
-            useState<Exclude<ChatPreviewPage, 'track' | 'orders'>>('homepage')
-        const previewOrdersRef = useRef(previewOrders)
-        previewOrdersRef.current = previewOrders
+            useState<ChatPreviewPage>('homepage')
 
         const [reloadKey, setReloadKey] = useState(0)
         const chatPreviewKey = useMemo(() => {
@@ -118,13 +108,17 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
         }
 
         const displayPage = useCallback(
-            (page: ChatPreviewPage) => {
+            (page: ChatPreviewPage, options?: { orderName?: string }) => {
                 withGorgiasChat((gorgiasChat) => {
-                    if (page === 'homepage' || page === 'conversation') {
-                        if (page === selectedPage) return
+                    const isTabPage =
+                        page === 'homepage' || page === 'conversation'
+                    if (isTabPage && selectedPage === page) return
+
+                    if (isTabPage) {
                         setSelectedPage(page)
                     }
-                    gorgiasChat.setPage(page)
+
+                    gorgiasChat.setPage(page, options)
                 })
             },
             [selectedPage],
@@ -221,20 +215,10 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
 
         const onLoaded = useCallback(
             (gorgiasChat: NonNullable<Window['GorgiasChat']>) => {
-                const currentOrders = previewOrdersRef.current
-                if (currentOrders) {
-                    gorgiasChat.setOrders?.(currentOrders)
-                }
-                const page = initialPage ?? selectedPage
-                if (page === 'track' && currentOrders?.orders) {
-                    const orderName = Object.keys(currentOrders.orders)[0]
-                    gorgiasChat.setPage('track', { orderName })
-                } else {
-                    gorgiasChat.setPage(page)
-                }
-                onChatLoaded?.()
+                gorgiasChat.setPage(selectedPage)
+                onPreviewLoaded?.()
             },
-            [initialPage, selectedPage, onChatLoaded],
+            [selectedPage, onPreviewLoaded],
         )
 
         useImperativeHandle(ref, () => ({
@@ -249,6 +233,9 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             updatePreviewOrders,
             simulateConversation,
             setConversationMessages,
+            get isLoaded() {
+                return chatPreviewRef.current?.isLoaded ?? false
+            },
         }))
 
         return (

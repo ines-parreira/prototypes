@@ -2,12 +2,14 @@ import React, { useMemo } from 'react'
 
 import { createMemoryHistory } from 'history'
 
+import { TicketChannel } from 'business/types/ticket'
 import type { ReturnAction } from 'models/selfServiceConfiguration/types'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 
 import { useOrderManagementPreviewContext } from '../OrderManagementPreviewContext'
 
@@ -30,11 +32,18 @@ const ReturnOrderFlowPreview = ({ returnAction }: Props) => {
     const { channels, channel, onChannelChange } =
         useOrderManagementPreviewContext()
 
+    const { setSelectedChannelId } = useChatPreviewChannelsContext()
+
     return (
         <SelfServicePreviewContainer
             channels={channels}
             channel={channel}
-            onChange={onChannelChange}
+            onChange={(channel) => {
+                onChannelChange(channel)
+                if (channel?.type === TicketChannel.Chat) {
+                    setSelectedChannelId(channel?.value.id)
+                }
+            }}
             alert={{
                 message:
                     'Connect a Chat or Help center to your store to use this feature.',

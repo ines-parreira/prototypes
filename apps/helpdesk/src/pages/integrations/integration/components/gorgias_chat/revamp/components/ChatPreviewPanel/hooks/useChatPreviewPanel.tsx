@@ -36,55 +36,56 @@ export type ChatPreviewPanelContextValue = Omit<
 export const ChatPreviewPanelContext =
     createContext<ChatPreviewPanelContextValue | null>(null)
 
-export const useGorgiasChatCreationWizardContext =
-    (): ChatPreviewPanelContextValue => {
-        const context = useContext(ChatPreviewPanelContext)
-        if (!context) {
-            throw new Error(
-                'useGorgiasChatCreationWizardContext must be used within GorgiasChatCreationWizard',
-            )
-        }
-        return context
+export const useChatPreviewPanelContext = (): ChatPreviewPanelContextValue => {
+    const context = useContext(ChatPreviewPanelContext)
+    if (!context) {
+        throw new Error(
+            'useChatPreviewPanelContext must be used within ChatPreviewPanelContext',
+        )
     }
+    return context
+}
 
 type UseChatPreviewPanelOptions = {
     headerActions?: ReactNode
     locale?: LANGUAGE
-    initialPage?: ChatPreviewPage
-    previewOrders?: GorgiasChatPreviewOrdersOptions
 }
 
 export const useChatPreviewPanel = ({
     headerActions,
     locale,
-    initialPage,
-    previewOrders,
 }: UseChatPreviewPanelOptions = {}) => {
     const { setIsCollapsibleColumnOpen, warpToCollapsibleColumn } =
         useCollapsibleColumn()
 
     const [appId, setAppId] = useState<string | null>(null)
     const chatPreviewPanelRef = useRef<ChatPreviewPanelHandle>(null)
-    const pendingConversationMessages = useRef<
-        SimulateConversationMessage[] | null
-    >(null)
-    const pendingQuickReplies = useRef<{
-        enabled: boolean
-        replies: string[]
-    } | null>(null)
+    const loadSubscribersRef = useRef<Set<() => void>>(new Set())
 
-    const onChatLoaded = useCallback(() => {
-        if (pendingConversationMessages.current) {
-            chatPreviewPanelRef.current?.setConversationMessages(
-                pendingConversationMessages.current,
-            )
-        }
-        if (pendingQuickReplies.current) {
-            chatPreviewPanelRef.current?.updateSettings({
-                quickReplies: pendingQuickReplies.current,
-            })
-        }
+    const handlePreviewLoaded = useCallback(() => {
+        loadSubscribersRef.current.forEach((callback) => callback())
     }, [])
+
+    /**
+     * Subscribes to the chat preview loaded event.
+     *
+     * @param callback - Called when the chat preview iframe finishes loading.
+     * @param fireIfAlreadyLoaded - When `true`, fires `callback` immediately if
+     *   the preview is already loaded, then subscribes for future reloads.
+     * @returns A cleanup function that unsubscribes the callback.
+     */
+    const onChatPreviewLoaded = useCallback(
+        (callback: () => void, fireIfAlreadyLoaded?: boolean) => {
+            if (fireIfAlreadyLoaded && chatPreviewPanelRef.current?.isLoaded) {
+                callback()
+            }
+            loadSubscribersRef.current.add(callback)
+            return () => {
+                loadSubscribersRef.current.delete(callback)
+            }
+        },
+        [],
+    )
 
     const chatPreviewPortal = warpToCollapsibleColumn(
         <ChatPreviewPanel
@@ -92,9 +93,7 @@ export const useChatPreviewPanel = ({
             appId={appId}
             headerActions={headerActions}
             locale={locale}
-            initialPage={initialPage}
-            previewOrders={previewOrders}
-            onChatLoaded={onChatLoaded}
+            onPreviewLoaded={handlePreviewLoaded}
         />,
     )
 
@@ -124,9 +123,12 @@ export const useChatPreviewPanel = ({
         chatPreviewPanelRef.current?.openChat()
     }, [])
 
-    const displayPage = useCallback((page: ChatPreviewPage) => {
-        chatPreviewPanelRef.current?.displayPage(page)
-    }, [])
+    const displayPage = useCallback(
+        (page: ChatPreviewPage, options?: { orderName?: string }) => {
+            chatPreviewPanelRef.current?.displayPage(page, options)
+        },
+        [],
+    )
 
     const updateMainColor = useCallback(
         (color: string) => {
@@ -237,7 +239,6 @@ export const useChatPreviewPanel = ({
 
     const updateQuickReplies = useCallback(
         (quickReplies: { enabled: boolean; replies: string[] }) => {
-            pendingQuickReplies.current = quickReplies
             openChat()
             chatPreviewPanelRef.current?.updateSettings({ quickReplies })
         },
@@ -246,7 +247,6 @@ export const useChatPreviewPanel = ({
 
     const setConversationMessages = useCallback(
         (messages: SimulateConversationMessage[]) => {
-            pendingConversationMessages.current = messages
             chatPreviewPanelRef.current?.setConversationMessages(messages)
         },
         [],
@@ -256,6 +256,7 @@ export const useChatPreviewPanel = ({
         chatPreviewPortal,
         showPreviewPanel,
         hidePreviewPanel,
+        onChatPreviewLoaded,
         openChat,
         closeChat,
         displayPage,

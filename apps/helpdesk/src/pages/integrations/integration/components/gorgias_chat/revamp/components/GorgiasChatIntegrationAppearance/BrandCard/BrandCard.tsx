@@ -3,7 +3,7 @@ import { Card, Elevation, Heading, Text } from '@gorgias/axiom'
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/ColorPicker'
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import css from '../GorgiasChatIntegrationAppearance.less'
 
@@ -21,7 +21,7 @@ export const BrandCard = ({
     onHeaderLogoUrlChange,
 }: Props) => {
     const { updateMainColor, updateHeaderPictureUrl, openChat } =
-        useGorgiasChatCreationWizardContext()
+        useChatPreviewPanelContext()
 
     return (
         <Card className={css.card} elevation={Elevation.Mid}>

@@ -14,7 +14,7 @@ import {
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import css from '../GorgiasChatIntegrationAppearance.less'
 
@@ -25,7 +25,7 @@ type Props = {
 }
 
 export const AvatarCard = ({ name, avatar, onAvatarChange }: Props) => {
-    const { updateAvatarSettings } = useGorgiasChatCreationWizardContext()
+    const { updateAvatarSettings } = useChatPreviewPanelContext()
 
     const handleNameTypeChange = (value: string) => {
         onAvatarChange({

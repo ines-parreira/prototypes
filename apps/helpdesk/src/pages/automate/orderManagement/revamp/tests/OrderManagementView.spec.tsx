@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+
 import { useOrderManagementFlows } from '../components/OrderManagementFlowsCard/useOrderManagementFlows'
 import { OrderManagementViewRevamp } from '../OrderManagementView'
 
@@ -17,12 +19,26 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useChatPreviewPanelContext: jest.fn(),
+    }),
+)
+
 const mockedUseOrderManagementFlows =
     useOrderManagementFlows as jest.MockedFunction<
         typeof useOrderManagementFlows
     >
 
+const mockedUseChatPreviewPanelContext =
+    useChatPreviewPanelContext as jest.MockedFunction<
+        typeof useChatPreviewPanelContext
+    >
+
 describe('OrderManagementViewRevamp', () => {
+    const mockDisplayPage = jest.fn()
+
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -33,6 +49,10 @@ describe('OrderManagementViewRevamp', () => {
             handleFlowToggle: jest.fn(),
             navigateToFlow: jest.fn(),
         })
+
+        mockedUseChatPreviewPanelContext.mockReturnValue({
+            displayPage: mockDisplayPage,
+        } as unknown as ReturnType<typeof useChatPreviewPanelContext>)
     })
 
     it('should render the OrderManagementFlowsCard', () => {
@@ -45,5 +65,11 @@ describe('OrderManagementViewRevamp', () => {
         render(<OrderManagementViewRevamp />)
 
         expect(useOrderManagementFlows).toHaveBeenCalled()
+    })
+
+    it('should call displayPage with "homepage" on mount', () => {
+        render(<OrderManagementViewRevamp />)
+
+        expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
     })
 })

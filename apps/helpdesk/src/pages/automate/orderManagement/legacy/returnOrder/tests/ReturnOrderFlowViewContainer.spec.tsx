@@ -25,6 +25,16 @@ import ReturnOrderFlowViewContainer from '../ReturnOrderFlowViewContainer'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
+jest.mock(
+    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
+    () => ({
+        useChatPreviewChannelsContext: jest.fn().mockReturnValue({
+            shopName: 'my-store',
+            selectedChannelId: undefined,
+            setSelectedChannelId: jest.fn(),
+        }),
+    }),
+)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),

@@ -14,26 +14,33 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { useStoreSelector } from 'settings/automate'
-import { getHasAutomate } from 'state/billing/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { BASE_PATH, OrderManagementSettings } from '../OrderManagementSettings'
-
-jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
-)
 
 jest.mock('settings/automate', () => ({
     ...jest.requireActual('settings/automate'),
     useStoreSelector: jest.fn(),
 }))
 
-jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
-
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        ...jest.requireActual(
+            'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+        ),
+        useChatPreviewPanel: jest.fn(),
+    }),
+)
 
 jest.mock(
     'pages/automate/orderManagement/legacy/OrderManagementPreviewProvider',
@@ -51,12 +58,14 @@ jest.mock(
     }),
 )
 
+const useStoreSelectorMock = assumeMock(useStoreSelector)
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 const mockUseShouldShowChatSettingsRevamp = jest.requireMock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 ).useShouldShowChatSettingsRevamp as jest.Mock
-const getHasAutomateMock = assumeMock(getHasAutomate)
-const useStoreSelectorMock = assumeMock(useStoreSelector)
-const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
+const mockUseChatPreviewPanel = jest.requireMock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+).useChatPreviewPanel as jest.Mock
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -92,7 +101,6 @@ describe('OrderManagementSettings', () => {
 
     beforeEach(() => {
         onChange = jest.fn()
-        getHasAutomateMock.mockReturnValue(true)
         useStoreSelectorMock.mockReturnValue({
             integrations,
             onChange,
@@ -114,6 +122,11 @@ describe('OrderManagementSettings', () => {
             isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+        })
+        mockUseChatPreviewPanel.mockReturnValue({
+            chatPreviewPortal: null,
+            showPreviewPanel: jest.fn(),
+            hidePreviewPanel: jest.fn(),
         })
     })
 

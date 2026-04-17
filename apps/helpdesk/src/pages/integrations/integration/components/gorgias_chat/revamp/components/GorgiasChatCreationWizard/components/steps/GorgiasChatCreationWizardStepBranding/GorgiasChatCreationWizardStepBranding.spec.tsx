@@ -29,7 +29,7 @@ jest.mock(
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
-        useGorgiasChatCreationWizardContext: () => ({
+        useChatPreviewPanelContext: () => ({
             updateMainColor: jest.fn(),
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),

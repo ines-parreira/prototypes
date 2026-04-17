@@ -1,16 +1,15 @@
 import { render, screen } from '@testing-library/react'
-import { useParams } from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 
 import { ConnectedChannelsViewContainer } from '../ConnectedChannelsViewContainer'
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useParams: jest.fn(),
-}))
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
+jest.mock(
+    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
+)
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 )
@@ -27,10 +26,13 @@ jest.mock('../revamp/ConnectedChannelsViewContainer', () => ({
     ),
 }))
 
-const mockUseParams = useParams as jest.MockedFunction<typeof useParams>
 const mockUseStoreIntegrations = useStoreIntegrations as jest.MockedFunction<
     typeof useStoreIntegrations
 >
+const mockUseChatPreviewChannelsContext =
+    useChatPreviewChannelsContext as jest.MockedFunction<
+        typeof useChatPreviewChannelsContext
+    >
 const mockUseShouldShowChatSettingsRevamp =
     useShouldShowChatSettingsRevamp as jest.MockedFunction<
         typeof useShouldShowChatSettingsRevamp
@@ -53,8 +55,12 @@ const defaultMockFlags = {
 describe('ConnectedChannelsViewContainer', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseParams.mockReturnValue({ shopName: 'my-store' })
         mockUseStoreIntegrations.mockReturnValue([])
+        mockUseChatPreviewChannelsContext.mockReturnValue({
+            shopName: 'my-store',
+            selectedChannelId: undefined,
+            setSelectedChannelId: jest.fn(),
+        })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue(defaultMockFlags)
     })
 

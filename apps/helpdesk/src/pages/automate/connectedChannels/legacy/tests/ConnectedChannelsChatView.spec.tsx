@@ -38,6 +38,16 @@ import { initialState as categoriesState } from '../../../../../state/entities/h
 import { ConnectedChannelsChatView } from '../components/ConnectedChannelsChatView'
 
 jest.mock('settings/automate/hooks/useIsAutomateSettings')
+jest.mock(
+    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
+    () => ({
+        useChatPreviewChannelsContext: jest.fn().mockReturnValue({
+            shopName: 'mystore',
+            selectedChannelId: undefined,
+            setSelectedChannelId: jest.fn(),
+        }),
+    }),
+)
 
 const queryClient = mockQueryClient()
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return

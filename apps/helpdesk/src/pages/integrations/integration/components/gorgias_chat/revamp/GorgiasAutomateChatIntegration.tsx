@@ -10,7 +10,7 @@ import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import useIsQuickRepliesEnabled from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { FlowsCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
 import { useFlows } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useFlows'
@@ -46,7 +46,7 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         reloadPreview,
         displayPage,
         updateQuickReplies,
-    } = useGorgiasChatCreationWizardContext()
+    } = useChatPreviewPanelContext()
 
     const {
         applicationsAutomationSettings,

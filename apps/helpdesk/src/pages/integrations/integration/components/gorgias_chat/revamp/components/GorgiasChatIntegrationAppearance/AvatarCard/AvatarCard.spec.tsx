@@ -15,7 +15,7 @@ const mockUpdateAvatarSettings = jest.fn()
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
-        useGorgiasChatCreationWizardContext: () => ({
+        useChatPreviewPanelContext: () => ({
             updateAvatarSettings: mockUpdateAvatarSettings,
         }),
     }),

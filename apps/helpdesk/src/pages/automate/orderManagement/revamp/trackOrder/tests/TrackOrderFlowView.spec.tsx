@@ -1,13 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createPortal } from 'react-dom'
 import { useParams } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import useTrackOrderFlow from '../../../legacy/trackOrder/hooks/useTrackOrderFlow'
 import { TrackOrderFlowView } from '../TrackOrderFlowView'
@@ -48,12 +47,16 @@ const mockUseSelfServiceChatChannels =
     useSelfServiceChatChannels as jest.MockedFunction<
         typeof useSelfServiceChatChannels
     >
-const mockUseChatPreviewPanel = useChatPreviewPanel as jest.MockedFunction<
-    typeof useChatPreviewPanel
->
 
 const mockHandleTrackOrderFlowUpdate = jest.fn()
-const mockShowPreviewPanel = jest.fn()
+
+const mockUpdatePreviewOrders = jest.fn()
+const mockDisplayPage = jest.fn()
+const mockOnChatPreviewLoaded = jest.fn()
+const mockUseChatPreviewPanelContext =
+    useChatPreviewPanelContext as jest.MockedFunction<
+        typeof useChatPreviewPanelContext
+    >
 
 const mockChatChannel = {
     type: TicketChannel.Chat,
@@ -71,30 +74,12 @@ describe('TrackOrderFlowView', () => {
             shopType: 'shopify',
         })
         mockUseSelfServiceChatChannels.mockReturnValue([mockChatChannel])
-        mockUseChatPreviewPanel.mockReturnValue({
-            showPreviewPanel: mockShowPreviewPanel,
-            chatPreviewPortal: createPortal(
-                <div data-testid="chat-preview-portal" />,
-                document.body,
-            ),
-            hidePreviewPanel: jest.fn(),
-            openChat: jest.fn(),
-            closeChat: jest.fn(),
-            displayPage: jest.fn(),
-            updateMainColor: jest.fn(),
-            updatePosition: jest.fn(),
-            updateHeaderPictureUrl: jest.fn(),
-            updateLauncher: jest.fn(),
-            updateTexts: jest.fn(),
-            updateLegalDisclaimer: jest.fn(),
-            updateLegalDisclaimerEnabled: jest.fn(),
-            updateWorkflowEntryPoints: jest.fn(),
-            reloadPreview: jest.fn(),
-            updateAvatarSettings: jest.fn(),
-            updateQuickReplies: jest.fn(),
-            updatePreviewOrders: jest.fn(),
-            setConversationMessages: jest.fn(),
-        } satisfies ReturnType<typeof useChatPreviewPanel>)
+        mockOnChatPreviewLoaded.mockReturnValue(jest.fn())
+        mockUseChatPreviewPanelContext.mockReturnValue({
+            updatePreviewOrders: mockUpdatePreviewOrders,
+            displayPage: mockDisplayPage,
+            onChatPreviewLoaded: mockOnChatPreviewLoaded,
+        } as any)
         mockUseTrackOrderFlow.mockReturnValue({
             trackOrderFlow: {
                 ...selfServiceConfiguration1.trackOrderPolicy,
@@ -168,43 +153,85 @@ describe('TrackOrderFlowView', () => {
     })
 
     describe('chat preview panel', () => {
-        it('renders the chat preview portal', () => {
+        it('should call updatePreviewOrders with initial preview orders on mount', () => {
             render(<TrackOrderFlowView />)
 
-            expect(
-                screen.getByTestId('chat-preview-portal'),
-            ).toBeInTheDocument()
-        })
-
-        it('calls useChatPreviewPanel with "track" as initialPage and track order preview data', () => {
-            render(<TrackOrderFlowView />)
-
-            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+            expect(mockUpdatePreviewOrders).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    headerActions: expect.anything(),
-                    locale: undefined,
-                    initialPage: 'track',
-                    previewOrders: expect.objectContaining({
-                        orders: expect.any(Object),
-                        tracking: expect.any(Object),
-                        flows: expect.objectContaining({ track_order: true }),
+                    orders: expect.objectContaining({
+                        '#1001': expect.objectContaining({ name: '#1001' }),
                     }),
                 }),
             )
         })
 
-        it('calls showPreviewPanel with the appId of the first chat channel', () => {
+        it('should register a callback with onChatPreviewLoaded that fires immediately if already loaded', () => {
             render(<TrackOrderFlowView />)
 
-            expect(mockShowPreviewPanel).toHaveBeenCalledWith('test-app-id-123')
+            expect(mockOnChatPreviewLoaded).toHaveBeenCalledWith(
+                expect.any(Function),
+                true,
+            )
         })
 
-        it('calls showPreviewPanel with null when there are no chat channels', () => {
-            mockUseSelfServiceChatChannels.mockReturnValue([])
+        it('should call updatePreviewOrders and displayPage when onChatPreviewLoaded callback fires', () => {
+            let capturedCallback!: () => void
+            mockOnChatPreviewLoaded.mockImplementation((callback) => {
+                capturedCallback = callback
+                return jest.fn()
+            })
 
             render(<TrackOrderFlowView />)
+            mockUpdatePreviewOrders.mockClear()
+            capturedCallback()
 
-            expect(mockShowPreviewPanel).toHaveBeenCalledWith(null)
+            expect(mockUpdatePreviewOrders).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    orders: expect.objectContaining({
+                        '#1001': expect.objectContaining({ name: '#1001' }),
+                    }),
+                }),
+            )
+            expect(mockDisplayPage).toHaveBeenCalledWith('track', {
+                orderName: '#1001',
+            })
+        })
+
+        it('should update preview orders with the new unfulfilledMessage when the form changes', async () => {
+            const user = userEvent.setup()
+            render(<TrackOrderFlowView />)
+
+            mockUpdatePreviewOrders.mockClear()
+            await user.type(screen.getByRole('textbox'), 'custom message')
+
+            expect(mockUpdatePreviewOrders).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    orders: {
+                        '#1001': expect.objectContaining({
+                            fulfillments: [
+                                expect.objectContaining({
+                                    flows: expect.objectContaining({
+                                        track_order_unfulfilled_message: {
+                                            html: 'custom message',
+                                            text: 'custom message',
+                                        },
+                                    }),
+                                }),
+                            ],
+                        }),
+                    },
+                }),
+            )
+        })
+
+        it('should clean up the onChatPreviewLoaded subscription on unmount', () => {
+            const mockCleanup = jest.fn()
+            mockOnChatPreviewLoaded.mockReturnValue(mockCleanup)
+
+            const { unmount } = render(<TrackOrderFlowView />)
+            unmount()
+
+            expect(mockCleanup).toHaveBeenCalled()
         })
     })
 })

@@ -1,15 +1,12 @@
-import { useContext, useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import type { LANGUAGE } from 'constants/languages'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { AutomateFeatures } from 'pages/automate/common/types'
-import { ChatChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector'
-import { ChatSettingsRevampConnectedChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatSettingsRevampConnectedChannels'
+import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { ArticleRecommendationCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard'
-import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { FlowsCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard'
 import { OrderManagementCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/OrderManagementCard/OrderManagementCard'
 
@@ -25,26 +22,8 @@ export const ConnectedChannelsChatView = () => {
         shopName: string
         shopType: string
     }>()
-    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
-    const { selectedChannelId, setSelectedChannelId } = useContext(
-        ChatSettingsRevampConnectedChannelsContext,
-    )
-
-    const selectedChannel =
-        chatChannels.find((c) => c.value.id === selectedChannelId) ??
-        chatChannels[0]
-
-    const appId = selectedChannel?.value.meta.app_id ?? null
-
-    const selectedChannelLanguage = useMemo(() => {
-        const primaryLanguage: LANGUAGE | undefined =
-            selectedChannel?.value?.meta?.languages?.find((lang) => {
-                return lang.primary === true
-            })?.language
-
-        return primaryLanguage
-    }, [selectedChannel])
+    const { selectedChannelId } = useChatPreviewChannelsContext()
 
     const {
         hasChatChannels,
@@ -78,29 +57,8 @@ export const ConnectedChannelsChatView = () => {
         handleFlowReorder,
     } = useFlows({ shopName, shopType, selectedChannelId })
 
-    const PreviewPanelHeaderActions = useMemo(() => {
-        return chatChannels.length > 0 ? (
-            <ChatChannelSelector
-                chatChannels={chatChannels}
-                selectedChannelId={selectedChannelId}
-                onSelect={setSelectedChannelId}
-            />
-        ) : undefined
-    }, [selectedChannelId, chatChannels, setSelectedChannelId])
-
-    const {
-        showPreviewPanel,
-        chatPreviewPortal,
-        updateWorkflowEntryPoints,
-        reloadPreview,
-    } = useChatPreviewPanel({
-        headerActions: PreviewPanelHeaderActions,
-        locale: selectedChannelLanguage,
-    })
-
-    useEffect(() => {
-        showPreviewPanel(appId)
-    }, [showPreviewPanel, appId])
+    const { updateWorkflowEntryPoints, displayPage, reloadPreview } =
+        useChatPreviewPanelContext()
 
     const { data: entrypointsLabels, isLoading: isEntrypointsLabelsLoading } =
         useListWorkflowEntryPoints({
@@ -109,6 +67,10 @@ export const ConnectedChannelsChatView = () => {
             ),
             language: primaryLanguage,
         })
+
+    useEffect(() => {
+        displayPage('homepage')
+    }, [displayPage])
 
     useEffect(() => {
         if (!isEntrypointsLabelsLoading && !isFlowsLoading) {
@@ -180,7 +142,6 @@ export const ConnectedChannelsChatView = () => {
                     onChange={handleArticleRecommendationToggle}
                 />
             )}
-            {chatPreviewPortal}
         </div>
     )
 }

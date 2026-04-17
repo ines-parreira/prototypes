@@ -8,7 +8,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useIsQuickRepliesEnabled from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { GorgiasAutomateChatIntegrationRevamp } from './GorgiasAutomateChatIntegration'
@@ -27,9 +27,7 @@ const mockUseListWorkflowEntryPoints = jest.mocked(useListWorkflowEntryPoints)
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
 )
-const mockUseGorgiasChatCreationWizardContext = jest.mocked(
-    useGorgiasChatCreationWizardContext,
-)
+const mockUseChatPreviewPanelContext = jest.mocked(useChatPreviewPanelContext)
 
 jest.mock('./hooks/useArticleRecommendation')
 const mockUseArticleRecommendation = jest.mocked(useArticleRecommendation)
@@ -210,7 +208,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
         jest.resetAllMocks()
         mockUseAppDispatch.mockReturnValue(jest.fn())
         mockUseIsQuickRepliesEnabled.mockReturnValue(false)
-        mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+        mockUseChatPreviewPanelContext.mockReturnValue({
             updateWorkflowEntryPoints: jest.fn(),
             reloadPreview: jest.fn(),
             displayPage: jest.fn(),
@@ -536,7 +534,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
         it('should call reloadPreview after saving', async () => {
             const mockReloadPreview = jest.fn()
-            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+            mockUseChatPreviewPanelContext.mockReturnValue({
                 updateWorkflowEntryPoints: jest.fn(),
                 reloadPreview: mockReloadPreview,
                 displayPage: jest.fn(),
@@ -579,7 +577,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
     describe('workflow entry points effect', () => {
         it('should call updateWorkflowEntryPoints with correct shape after flows change', async () => {
             const mockUpdateWorkflowEntryPoints = jest.fn()
-            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+            mockUseChatPreviewPanelContext.mockReturnValue({
                 updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
                 reloadPreview: jest.fn(),
                 displayPage: jest.fn(),
@@ -605,7 +603,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
         it('should not call updateWorkflowEntryPoints while labels are loading and pendingFlows is non-empty', async () => {
             const mockUpdateWorkflowEntrypoints = jest.fn()
-            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+            mockUseChatPreviewPanelContext.mockReturnValue({
                 updateWorkflowEntryPoints: mockUpdateWorkflowEntrypoints,
                 reloadPreview: jest.fn(),
                 displayPage: jest.fn(),
@@ -627,7 +625,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
         it('should not call updateWorkflowEntryPoints on mount when labels are loading and pendingFlows is null', () => {
             const mockUpdateWorkflowEntryPoints = jest.fn()
-            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+            mockUseChatPreviewPanelContext.mockReturnValue({
                 updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
                 reloadPreview: jest.fn(),
                 displayPage: jest.fn(),
@@ -646,7 +644,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
     describe('display page and reload preview effect', () => {
         it('should call displayPage with homepage on mount', () => {
             const mockDisplayPage = jest.fn()
-            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+            mockUseChatPreviewPanelContext.mockReturnValue({
                 updateWorkflowEntryPoints: jest.fn(),
                 reloadPreview: jest.fn(),
                 displayPage: mockDisplayPage,
