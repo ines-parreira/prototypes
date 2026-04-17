@@ -3,7 +3,9 @@ import { screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import {
+    mockGetCustomerHandler,
     mockGetTicketHandler,
+    mockGetUserAvailabilityHandler,
     mockTicket,
     mockTicketMessage,
     mockTicketMessageSource,
@@ -120,6 +122,8 @@ beforeEach(() => {
                 }),
             ),
         ).handler,
+        mockGetCustomerHandler().handler,
+        mockGetUserAvailabilityHandler().handler,
     )
     mockUseTicketThreadDateTimeFormat.mockReturnValue({
         format: {

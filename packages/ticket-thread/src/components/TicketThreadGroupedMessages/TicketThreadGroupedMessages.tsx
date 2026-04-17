@@ -138,7 +138,10 @@ export function TicketThreadGroupedMessages({
                 <Box className={css.groupedHeader} data-grouped-header>
                     <MessageHeaderContainer>
                         <Box alignItems="center" gap="xs">
-                            <MessageAvatar sender={firstMessage.data.sender} />
+                            <MessageAvatar
+                                sender={firstMessage.data.sender}
+                                fromAgent={firstMessage.data.from_agent}
+                            />
                             <MessageSender sender={firstMessage.data.sender} />
                         </Box>
                         <Box alignItems="center" gap="xs">

@@ -1,7 +1,11 @@
 import { screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetCustomerHandler,
+    mockGetUserAvailabilityHandler,
+    mockTicketMessage,
+} from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadSocialMediaInstagramMediaItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
@@ -26,6 +30,8 @@ beforeEach(() => {
     server.use(
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
+        mockGetCustomerHandler().handler,
+        mockGetUserAvailabilityHandler().handler,
     )
     mockUseTicketThreadLegacyBridge.mockReturnValue({
         currentTicketShoppingAssistantData: {

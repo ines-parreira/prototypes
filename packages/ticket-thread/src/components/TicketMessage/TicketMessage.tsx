@@ -30,7 +30,10 @@ export function TicketMessage({ item }: TicketMessageProps) {
         <MessageBubble variant={variant}>
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
-                    <MessageAvatar sender={item.data.sender} />
+                    <MessageAvatar
+                        sender={item.data.sender}
+                        fromAgent={item.data.from_agent}
+                    />
                     <MessageSender sender={item.data.sender} />
                 </Box>
                 <Box alignItems="center" gap="xs">

@@ -3,6 +3,7 @@ import { HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
 import {
+    mockGetCustomerHandler,
     mockListVoiceCallRecordingsHandler,
     mockListVoiceCallRecordingsResponse,
     mockVoiceCall,
@@ -37,7 +38,11 @@ const emptyRecordingsHandler = mockListVoiceCallRecordingsHandler(async () =>
 )
 
 beforeEach(() => {
-    server.use(getCurrentUserHandler().handler, emptyRecordingsHandler.handler)
+    server.use(
+        getCurrentUserHandler().handler,
+        emptyRecordingsHandler.handler,
+        mockGetCustomerHandler().handler,
+    )
 })
 
 const testSender: TicketMessageUserOrCustomer = {

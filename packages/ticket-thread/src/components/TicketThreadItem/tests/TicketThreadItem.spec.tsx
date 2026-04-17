@@ -6,6 +6,7 @@ import {
     mockCustomer,
     mockGetCustomerHandler,
     mockGetTicketHandler,
+    mockGetUserAvailabilityHandler,
     mockListIntegrationsHandler,
     mockListIntegrationsResponse,
     mockListUsersHandler,
@@ -108,6 +109,7 @@ beforeEach(() => {
                 mockListVoiceCallRecordingsResponse({ data: [] }),
             ),
         ).handler,
+        mockGetUserAvailabilityHandler().handler,
     )
     mockUseTicketThreadLegacyBridge.mockReturnValue({
         currentTicketShoppingAssistantData: {

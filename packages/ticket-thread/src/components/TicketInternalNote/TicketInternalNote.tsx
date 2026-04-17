@@ -22,7 +22,7 @@ export function TicketInternalNote({ item }: TicketInternalNoteProps) {
         <MessageBubble variant="internal-note">
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
-                    <MessageAvatar sender={item.data.sender} />
+                    <MessageAvatar sender={item.data.sender} fromAgent />
                     <MessageSender sender={item.data.sender} />
                 </Box>
                 <Box alignItems="center" gap="xs">

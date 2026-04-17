@@ -38,7 +38,10 @@ export function RespondedByDMBubble({
             {sender && (
                 <MessageHeaderContainer>
                     <Box alignItems="center" gap="xs">
-                        <MessageAvatar sender={sender} />
+                        <MessageAvatar
+                            sender={sender}
+                            fromAgent={message?.from_agent}
+                        />
                         <MessageSender sender={sender} />
                     </Box>
                     <Box alignItems="center" gap="xs">

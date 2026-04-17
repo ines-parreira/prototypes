@@ -1,11 +1,15 @@
 import { screen } from '@testing-library/react'
 
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetUserAvailabilityHandler,
+    mockTicketMessage,
+} from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadSocialMediaWhatsAppMessageItem } from '../../../hooks/messages/types'
 import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { render } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
 import { WhatsAppMessage } from '../WhatsAppMessage'
 
 vi.mock('../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
@@ -17,6 +21,7 @@ const mockUseTicketThreadDateTimeFormat = vi.mocked(
 )
 
 beforeEach(() => {
+    server.use(mockGetUserAvailabilityHandler().handler)
     mockUseTicketThreadDateTimeFormat.mockReturnValue({
         format: {
             relative: 'YYYY-MM-DD',

@@ -1,7 +1,11 @@
 import { act, screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetCustomerHandler,
+    mockGetUserAvailabilityHandler,
+    mockTicketMessage,
+} from '@gorgias/helpdesk-mocks'
 import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
@@ -37,6 +41,8 @@ beforeEach(() => {
     server.use(
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
+        mockGetCustomerHandler().handler,
+        mockGetUserAvailabilityHandler().handler,
     )
     mockUseGetTicketMessage.mockReturnValue({ data: undefined } as ReturnType<
         typeof useGetTicketMessage
