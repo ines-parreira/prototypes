@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { history } from '@repo/routing'
 import { useTicketMessageTranslationDisplay } from '@repo/tickets'
 import { useParams } from 'react-router-dom'
 
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import { OutboundTranslationProvider } from 'providers/OutboundTranslationProvider'
-import { useSplitTicketView } from 'split-ticket-view-toggle'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
+
+import useSplitTicketCloseNavigation from './useSplitTicketCloseNavigation'
 
 type Props = {
     isOnSplitTicketView?: boolean
@@ -19,25 +19,14 @@ export default function TicketWrapper({
     isOnSplitTicketView,
     onToggleUnread,
 }: Props) {
-    const { viewId } = useParams<{ viewId: string }>()
     const { ticketId } = useParams<{ ticketId: string }>()
-    const { nextTicketId } = useSplitTicketView()
+    const onGoToNextTicket = useSplitTicketCloseNavigation({
+        isOnSplitTicketView,
+    })
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
     const setAllTicketMessagesToTranslated = useTicketMessageTranslationDisplay(
         (state) => state.setAllTicketMessagesToTranslated,
     )
-
-    const nextUrl = useMemo(
-        () =>
-            nextTicketId
-                ? `/app/views/${viewId}/${nextTicketId}`
-                : `/app/views/${viewId}`,
-        [nextTicketId, viewId],
-    )
-
-    const handleGoToNextTicket = useCallback(() => {
-        history.push(nextUrl)
-    }, [nextUrl])
 
     /**
      * Default the ticket messages display state to translated when the ticketId changes
@@ -51,9 +40,7 @@ export default function TicketWrapper({
     return (
         <OutboundTranslationProvider ticketId={ticketId}>
             <TicketDetailContainer
-                onGoToNextTicket={
-                    isOnSplitTicketView ? handleGoToNextTicket : undefined
-                }
+                onGoToNextTicket={onGoToNextTicket}
                 onToggleUnread={onToggleUnread}
             />
         </OutboundTranslationProvider>
