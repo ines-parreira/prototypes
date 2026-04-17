@@ -12,6 +12,14 @@ UI patterns for AI copilot interface.
 
 ---
 
+## Copilot Behaviors
+
+Click-through demo of four core Copilot interactions — opening, artifacts, approving a plan, and changing a plan.
+
+**[View prototype →](https://ines-parreira.github.io/prototypes/copilot-behaviors/)**
+
+---
+
 ## Adding a new prototype
 
 1. Create a folder inside `copilot-ui-patterns/` (or a new sibling folder for a different project)

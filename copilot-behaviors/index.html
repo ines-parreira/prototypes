@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot Behaviors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: inherit; }
+
+:root {
+  --bg: #0f0f11;
+  --surface: #17171a;
+  --surface2: #1e1e22;
+  --surface3: #252529;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --accent: #7c6ef7;
+  --accent-dim: rgba(124,110,247,0.15);
+  --accent-border: rgba(124,110,247,0.3);
+  --text: #e8e8ed;
+  --text-2: #9898a8;
+  --text-3: #505060;
+  --green: #3ecf8e;
+  --green-dim: rgba(62,207,142,0.12);
+  --yellow: #f5c542;
+  --yellow-dim: rgba(245,197,66,0.12);
+  --send-bg: #e8e8ed;
+  --send-fg: #0f0f11;
+  --r: 10px;
+  --copilot-w: 380px;
+  --artifact-w: 520px;
+}
+:root.light {
+  --bg: #f6f6f8;
+  --surface: #ffffff;
+  --surface2: #ffffff;
+  --surface3: #f0f0f3;
+  --border: #e5e5e8;
+  --border2: #d0d0d5;
+  --accent: #6355e8;
+  --accent-dim: rgba(99,85,232,0.08);
+  --accent-border: rgba(99,85,232,0.25);
+  --text: #111116;
+  --text-2: #6b6b80;
+  --text-3: #b0b0c0;
+  --green: #0d9e6a;
+  --green-dim: rgba(13,158,106,0.1);
+  --yellow: #c9900a;
+  --yellow-dim: rgba(201,144,10,0.1);
+  --send-bg: #111116;
+  --send-fg: #ffffff;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: 'cv02','cv03','cv04','cv11','ss01';
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+/* ── STEPPER HEADER ── */
+.stepper {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--surface);
+}
+.stepper-title { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; margin-right: 16px; }
+.stepper-title .muted { color: var(--text-3); font-weight: 400; margin-left: 6px; }
+
+.steps { display: flex; gap: 4px; align-items: center; flex: 1; }
+.step-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: none; border: 1px solid transparent; border-radius: 8px;
+  padding: 6px 10px; cursor: pointer;
+  color: var(--text-3); font-family: inherit; font-size: 12px; letter-spacing: -0.01em;
+  transition: color .15s, background .15s, border-color .15s;
+}
+.step-btn:hover { color: var(--text-2); background: var(--surface2); }
+.step-btn.active { color: var(--text); background: var(--accent-dim); border-color: var(--accent-border); }
+.step-num {
+  width: 18px; height: 18px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600;
+  background: var(--surface3); color: var(--text-2);
+}
+.step-btn.active .step-num { background: var(--accent); color: #fff; }
+.step-btn.done .step-num { background: var(--green-dim); color: var(--green); }
+
+.stepper-actions { display: flex; gap: 6px; align-items: center; }
+.nav-btn {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 6px 12px; cursor: pointer;
+  color: var(--text); font-family: inherit; font-size: 12px; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s, opacity .15s;
+}
+.nav-btn:hover { background: var(--surface3); }
+.nav-btn.primary { background: var(--send-bg); color: var(--send-fg); border-color: transparent; }
+.nav-btn.primary:hover { opacity: .85; }
+.nav-btn:disabled { opacity: .4; cursor: default; }
+
+.theme-btn {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 8px; color: var(--text-2);
+  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: color .15s;
+}
+.theme-btn:hover { color: var(--text); }
+
+/* ── STAGE ── */
+.stage { flex: 1; display: flex; min-height: 0; position: relative; overflow: hidden; }
+
+/* Mock product (backdrop) */
+.product { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.product-topbar {
+  height: 48px;
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 10px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.breadcrumb { font-size: 12px; color: var(--text-3); }
+.breadcrumb .sep { color: var(--text-3); margin: 0 6px; }
+.breadcrumb .current { color: var(--text); font-weight: 500; }
+.product-topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.ask-copilot-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-dim); border: 1px solid var(--accent-border);
+  border-radius: 8px; padding: 6px 12px; cursor: pointer;
+  color: var(--accent); font-family: inherit; font-size: 12px; font-weight: 500;
+  transition: background .15s, border-color .15s, transform .12s;
+}
+.ask-copilot-btn:hover { background: rgba(124,110,247,0.22); }
+:root.light .ask-copilot-btn:hover { background: rgba(99,85,232,0.14); }
+.ask-copilot-btn.pulse { animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 var(--accent-border); }
+  50% { box-shadow: 0 0 0 6px rgba(124,110,247,0); }
+}
+
+.product-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px;
+  display: flex; flex-direction: column; gap: 18px;
+  min-height: 0;
+}
+.page-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+.page-sub { font-size: 13px; color: var(--text-2); margin-top: -10px; }
+
+.faux-row {
+  display: flex; gap: 10px; align-items: center;
+  padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+}
+.faux-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--surface3); flex-shrink: 0; }
+.faux-lines { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.faux-line { height: 9px; border-radius: 4px; background: var(--surface3); }
+.faux-line.short { width: 40%; }
+.faux-line.mid { width: 70%; }
+.faux-pill { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: var(--surface3); color: var(--text-2); flex-shrink: 0; }
+.faux-pill.green { background: var(--green-dim); color: var(--green); }
+.faux-pill.yellow { background: var(--yellow-dim); color: var(--yellow); }
+
+/* Dim the backdrop when copilot is open so focus is on the panel */
+.product.dim .product-body > * { opacity: .55; transition: opacity .3s; }
+
+/* ── COPILOT PANEL ── */
+.copilot {
+  width: var(--copilot-w); flex-shrink: 0;
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform .45s cubic-bezier(.22,.61,.36,1), opacity .3s;
+  opacity: 0;
+  position: relative;
+}
+.copilot.open { transform: translateX(0); opacity: 1; }
+
+.copilot-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.copilot-brand { display: flex; align-items: center; gap: 8px; flex: 1; }
+.sparkle {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: linear-gradient(135deg, #7c6ef7, #b196f9);
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+}
+.copilot-title { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+.copilot-sub { font-size: 11px; color: var(--text-3); }
+
+.icon-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-3); width: 28px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 6px; transition: background .15s, color .15s;
+}
+.icon-btn:hover { background: var(--surface2); color: var(--text); }
+
+.copilot-body {
+  flex: 1; overflow-y: auto;
+  padding: 16px; display: flex; flex-direction: column; gap: 14px;
+}
+
+.msg { display: flex; flex-direction: column; gap: 6px; }
+.msg.user { align-self: flex-end; max-width: 85%; }
+.msg.ai { max-width: 92%; }
+.msg-bubble {
+  padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.55;
+}
+.msg.ai .msg-bubble { background: var(--surface2); color: var(--text); border-top-left-radius: 4px; }
+.msg.user .msg-bubble { background: var(--accent-dim); color: var(--text); border: 1px solid var(--accent-border); border-top-right-radius: 4px; }
+.msg-enter { animation: enter .35s cubic-bezier(.22,.61,.36,1); }
+@keyframes enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Intro block */
+.intro { padding: 10px 4px 6px; }
+.intro-heading {
+  font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.3;
+  background: linear-gradient(90deg, var(--text), var(--accent));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.intro-sub { font-size: 12px; color: var(--text-2); margin-top: 4px; }
+
+/* Suggestion chips */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.chip {
+  font-size: 12px; padding: 6px 10px; border-radius: 20px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--text-2); cursor: pointer; font-family: inherit;
+  transition: background .15s, color .15s;
+}
+.chip:hover { background: var(--surface3); color: var(--text); }
+
+/* Composer */
+.composer {
+  padding: 10px 12px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+  flex-shrink: 0;
+}
+.composer-input {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 9px 12px;
+  color: var(--text); font-family: inherit; font-size: 13px; outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.composer-input::placeholder { color: var(--text-3); }
+.composer-input:focus { border-color: var(--accent-border); box-shadow: 0 0 0 3px var(--accent-dim); }
+.composer-send {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--send-bg); color: var(--send-fg);
+  border: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: opacity .12s;
+}
+.composer-send:hover { opacity: .85; }
+.composer-send:disabled { opacity: .35; cursor: default; }
+
+/* ── ARTIFACT CHIP (in message) ── */
+.artifact-chip {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface); border: 1px solid var(--border2); border-radius: 10px;
+  padding: 10px 12px; cursor: pointer;
+  transition: border-color .15s, transform .12s;
+  margin-top: 6px;
+}
+.artifact-chip:hover { border-color: var(--accent-border); transform: translateY(-1px); }
+.artifact-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--accent-dim); color: var(--accent);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.artifact-meta { flex: 1; min-width: 0; }
+.artifact-name { font-size: 13px; font-weight: 500; }
+.artifact-type { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+.artifact-chip-arrow { color: var(--text-3); }
+
+/* ── ARTIFACT VIEWER (panel between product + copilot) ── */
+.artifact {
+  width: 0; flex-shrink: 0;
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+  transition: width .45s cubic-bezier(.22,.61,.36,1);
+  display: flex; flex-direction: column;
+}
+.artifact.open { width: var(--artifact-w); }
+.artifact-inner { width: var(--artifact-w); display: flex; flex-direction: column; height: 100%; }
+
+.artifact-header {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.artifact-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.artifact-header-right { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.artifact-tag {
+  font-size: 11px; padding: 3px 9px; border-radius: 20px;
+  background: var(--yellow-dim); color: var(--yellow);
+}
+
+.artifact-body {
+  flex: 1; overflow-y: auto; padding: 24px 28px;
+}
+.artifact-doc-title { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; }
+.artifact-doc-sub { font-size: 13px; color: var(--text-2); margin-bottom: 22px; }
+.artifact-h {
+  font-size: 14px; font-weight: 600; margin: 22px 0 8px;
+}
+.artifact-p {
+  font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 8px;
+}
+.artifact-li {
+  font-size: 13px; color: var(--text-2); line-height: 1.65;
+  padding-left: 16px; position: relative; margin-bottom: 4px;
+}
+.artifact-li::before {
+  content: '•'; position: absolute; left: 4px; color: var(--text-3);
+}
+
+/* ── PLAN CARD ── */
+.plan-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 16px; margin-top: 4px;
+}
+.plan-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.plan-heading { font-size: 13px; font-weight: 600; flex: 1; letter-spacing: -0.01em; }
+.plan-badge {
+  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 2px 8px; border-radius: 20px;
+  background: var(--yellow-dim); color: var(--yellow);
+}
+.plan-badge.done { background: var(--green-dim); color: var(--green); }
+.plan-badge.revised {
+  background: var(--accent-dim); color: var(--accent);
+}
+
+.todo-list { display: flex; flex-direction: column; }
+.todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; position: relative; }
+.todo-item:not(:last-child) .todo-track::after {
+  content: ''; position: absolute; left: 8px; top: 24px; bottom: -6px;
+  width: 1.5px; background: var(--border2); z-index: 0;
+}
+.todo-track { position: relative; flex-shrink: 0; width: 18px; display: flex; align-items: center; justify-content: center; padding-top: 1px; }
+.todo-ico {
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+}
+.todo-ico.done { color: var(--green); }
+.todo-ico.working { border: 2px solid var(--text); color: var(--text); }
+:root.light .todo-ico.working { border-color: #111116; color: #111116; }
+.todo-ico.working svg { animation: spin 1s linear infinite; }
+.todo-ico.queued { border: 2px solid var(--border2); }
+.todo-ico.removed { border: 2px solid var(--border2); color: var(--text-3); opacity: .6; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.todo-body { flex: 1; min-width: 0; }
+.todo-lbl { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+.todo-lbl.bold { color: var(--text); font-weight: 500; }
+.todo-lbl.muted { color: var(--text-3); }
+.todo-lbl.removed { text-decoration: line-through; color: var(--text-3); opacity: .7; }
+.todo-lbl .rev-pill {
+  display: inline-block; vertical-align: middle; margin-left: 6px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 1px 6px; border-radius: 20px;
+  background: var(--accent-dim); color: var(--accent);
+}
+
+.plan-actions {
+  display: flex; gap: 8px; margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid var(--border); justify-content: flex-end;
+}
+.plan-btn {
+  font-family: inherit; font-size: 12px; font-weight: 500;
+  padding: 6px 12px; border-radius: 7px; cursor: pointer;
+  border: 1px solid var(--border2); background: var(--surface2); color: var(--text);
+  transition: background .15s, opacity .15s;
+}
+.plan-btn:hover { background: var(--surface3); }
+.plan-btn.primary { background: var(--accent); color: white; border-color: transparent; }
+.plan-btn.primary:hover { opacity: .9; background: var(--accent); }
+.plan-btn:disabled { opacity: .45; cursor: default; }
+
+/* Todo item reveal for revised plan */
+.todo-item.reveal { animation: reveal .4s cubic-bezier(.22,.61,.36,1); }
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── STEP-LABEL OVERLAY (bottom-right) ── */
+.step-hint {
+  position: absolute; bottom: 20px; left: 20px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 10px 14px;
+  max-width: 320px;
+  font-size: 12px; color: var(--text-2);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  z-index: 5;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .3s, transform .3s;
+  pointer-events: none;
+}
+:root.light .step-hint { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.step-hint.show { opacity: 1; transform: translateY(0); }
+.step-hint-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--accent); font-weight: 600; margin-bottom: 3px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  :root { --copilot-w: 340px; --artifact-w: 360px; }
+  .artifact.open { width: 100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 2; }
+}
+</style>
+</head>
+<body>
+
+<!-- STEPPER -->
+<header class="stepper">
+  <div class="stepper-title">Copilot Behaviors<span class="muted">Demo flow</span></div>
+  <div class="steps" id="steps">
+    <button class="step-btn active" data-step="1" onclick="goStep(1)"><span class="step-num">1</span>Opening Copilot</button>
+    <button class="step-btn" data-step="2" onclick="goStep(2)"><span class="step-num">2</span>Opening an artifact</button>
+    <button class="step-btn" data-step="3" onclick="goStep(3)"><span class="step-num">3</span>Approving a plan</button>
+    <button class="step-btn" data-step="4" onclick="goStep(4)"><span class="step-num">4</span>Changing a plan</button>
+  </div>
+  <div class="stepper-actions">
+    <button class="nav-btn" id="prev-btn" onclick="prevStep()" disabled>← Prev</button>
+    <button class="nav-btn primary" id="next-btn" onclick="nextStep()">Next →</button>
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">
+      <svg id="icon-dark" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg id="icon-light" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- STAGE -->
+<div class="stage">
+
+  <!-- PRODUCT (mock backdrop) -->
+  <div class="product" id="product">
+    <div class="product-topbar">
+      <div class="breadcrumb">
+        <span>Helpdesk</span><span class="sep">/</span>
+        <span>Skills</span><span class="sep">/</span>
+        <span class="current">Order cancellation</span>
+      </div>
+      <div class="product-topbar-right">
+        <button class="ask-copilot-btn pulse" id="ask-copilot-btn" onclick="openCopilot()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.3 6.7L14.5 8L9.3 9.3L8 14.5L6.7 9.3L1.5 8L6.7 6.7L8 1.5Z" fill="currentColor"/></svg>
+          Ask Copilot
+        </button>
+      </div>
+    </div>
+    <div class="product-body">
+      <div class="page-title">Order cancellation</div>
+      <div class="page-sub">This skill handles customer requests to cancel an order before it ships.</div>
+      <div class="faux-row">
+        <div class="faux-avatar"></div>
+        <div class="faux-lines"><div class="faux-line mid"></div><div class="faux-line short"></div></div>
+        <span class="faux-pill green">Active</span>
+      </div>
+      <div class="faux-row">
+        <div class="faux-avatar"></div>
+        <div class="faux-lines"><div class="faux-line"></div><div class="faux-line mid"></div></div>
+        <span class="faux-pill yellow">Needs review</span>
+      </div>
+      <div class="faux-row">
+        <div class="faux-avatar"></div>
+        <div class="faux-lines"><div class="faux-line mid"></div><div class="faux-line short"></div></div>
+        <span class="faux-pill">Draft</span>
+      </div>
+      <div class="faux-row">
+        <div class="faux-avatar"></div>
+        <div class="faux-lines"><div class="faux-line"></div><div class="faux-line short"></div></div>
+        <span class="faux-pill green">Active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTIFACT VIEWER (collapsed by default) -->
+  <aside class="artifact" id="artifact">
+    <div class="artifact-inner">
+      <div class="artifact-header">
+        <div class="artifact-icon" style="width:26px;height:26px;border-radius:7px"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 2h7l3 3v9H3V2z"/><path d="M10 2v3h3"/></svg></div>
+        <div>
+          <div class="artifact-title">Shipping policy draft</div>
+          <div class="artifact-type" style="font-size:11px;color:var(--text-3)">Guidance · generated by Copilot</div>
+        </div>
+        <div class="artifact-header-right">
+          <span class="artifact-tag">Draft</span>
+          <button class="icon-btn" onclick="closeArtifact()" title="Close">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="artifact-body">
+        <div class="artifact-doc-title">Shipping policy</div>
+        <div class="artifact-doc-sub">A customer-facing response template outlining shipping windows, carrier options, and exceptions for the order cancellation flow.</div>
+
+        <div class="artifact-h">When to use</div>
+        <div class="artifact-p">Use this response when a customer asks about shipping timelines or cancellation windows tied to shipping status.</div>
+
+        <div class="artifact-h">Standard shipping windows</div>
+        <div class="artifact-li">Domestic orders ship within <b style="color:var(--text)">2 business days</b></div>
+        <div class="artifact-li">International orders ship within <b style="color:var(--text)">3–5 business days</b></div>
+        <div class="artifact-li">Expedited orders ship within <b style="color:var(--text)">24 hours</b></div>
+
+        <div class="artifact-h">Cancellation rules</div>
+        <div class="artifact-p">Orders can be cancelled up until the carrier picks them up. After that, the customer must request a return instead.</div>
+        <div class="artifact-li">If the order hasn't shipped — cancel immediately and refund in full.</div>
+        <div class="artifact-li">If the order has shipped — explain the return policy and offer to generate a return label.</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- COPILOT PANEL -->
+  <aside class="copilot" id="copilot">
+    <div class="copilot-header">
+      <div class="copilot-brand">
+        <div class="sparkle"><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5L9.3 6.7L14.5 8L9.3 9.3L8 14.5L6.7 9.3L1.5 8L6.7 6.7L8 1.5Z"/></svg></div>
+        <div>
+          <div class="copilot-title">Gaia</div>
+          <div class="copilot-sub">Your AI copilot</div>
+        </div>
+      </div>
+      <button class="icon-btn" onclick="closeCopilot()" title="Close">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+      </button>
+    </div>
+
+    <div class="copilot-body" id="copilot-body">
+      <!-- Content is injected per-step -->
+    </div>
+
+    <div class="composer">
+      <input class="composer-input" id="composer-input" placeholder="Ask Gaia anything…" onkeydown="if(event.key==='Enter')sendComposer()">
+      <button class="composer-send" id="composer-send" onclick="sendComposer()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- STEP HINT -->
+  <div class="step-hint" id="step-hint">
+    <div class="step-hint-label" id="hint-label">Step 1</div>
+    <div id="hint-text">Click "Ask Copilot" in the top right to open the panel.</div>
+  </div>
+</div>
+
+<script>
+// ── ICONS ──
+const icons = {
+  check: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  spinner: '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1.5 A4.5 4.5 0 0 1 10.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  cross: '<svg width="8" height="8" viewBox="0 0 10 10" fill="none"><line x1="2" y1="2" x2="8" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="2" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  file: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 2h7l3 3v9H3V2z"/><path d="M10 2v3h3"/></svg>',
+  arrow: '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></svg>'
+};
+
+function todoIcon(state) {
+  if (state === 'done') return `<div class="todo-ico done">${icons.check}</div>`;
+  if (state === 'working') return `<div class="todo-ico working">${icons.spinner}</div>`;
+  if (state === 'removed') return `<div class="todo-ico removed">${icons.cross}</div>`;
+  return `<div class="todo-ico queued"></div>`;
+}
+
+function renderTodoList(items) {
+  return `<div class="todo-list">${items.map(t => `
+    <div class="todo-item${t.reveal ? ' reveal' : ''}">
+      <div class="todo-track">${todoIcon(t.state)}</div>
+      <div class="todo-body">
+        <div class="todo-lbl ${t.state === 'done' ? 'muted' : t.state === 'working' ? 'bold' : t.state === 'removed' ? 'removed' : ''}">
+          ${t.label}${t.revised ? '<span class="rev-pill">Revised</span>' : ''}${t.added ? '<span class="rev-pill">New</span>' : ''}
+        </div>
+      </div>
+    </div>
+  `).join('')}</div>`;
+}
+
+// ── STATE ──
+let step = 1;
+const TOTAL = 4;
+let planApproved = false;
+let planRevised = false;
+
+// ── STEP DRIVER ──
+function goStep(n) {
+  step = n;
+  updateStepper();
+  renderStep();
+  updateHint();
+}
+function nextStep() { if (step < TOTAL) goStep(step + 1); }
+function prevStep() { if (step > 1) goStep(step - 1); }
+
+function updateStepper() {
+  document.querySelectorAll('.step-btn').forEach(btn => {
+    const n = parseInt(btn.dataset.step);
+    btn.classList.toggle('active', n === step);
+    btn.classList.toggle('done', n < step);
+  });
+  document.getElementById('prev-btn').disabled = step === 1;
+  document.getElementById('next-btn').disabled = step === TOTAL;
+  document.getElementById('next-btn').textContent = step === TOTAL ? 'Restart ↺' : 'Next →';
+  if (step === TOTAL) {
+    document.getElementById('next-btn').onclick = () => goStep(1);
+  } else {
+    document.getElementById('next-btn').onclick = nextStep;
+  }
+}
+
+// ── STEP RENDERERS ──
+function renderStep() {
+  const body = document.getElementById('copilot-body');
+  const copilot = document.getElementById('copilot');
+  const artifact = document.getElementById('artifact');
+  const product = document.getElementById('product');
+  const askBtn = document.getElementById('ask-copilot-btn');
+
+  // Reset state each time a step is entered
+  body.innerHTML = '';
+  artifact.classList.remove('open');
+  planApproved = false;
+  planRevised = false;
+
+  if (step === 1) {
+    // Copilot closed — button pulsing
+    copilot.classList.remove('open');
+    product.classList.remove('dim');
+    askBtn.classList.add('pulse');
+  } else {
+    copilot.classList.add('open');
+    product.classList.add('dim');
+    askBtn.classList.remove('pulse');
+  }
+
+  if (step === 2) renderStep2();
+  if (step === 3) renderStep3();
+  if (step === 4) renderStep4();
+}
+
+// STEP 1 — Copilot closed, user clicks to open.
+function openCopilot() {
+  // Used by the in-product button. Advances to step 2 visual state.
+  if (step === 1) {
+    goStep(2);
+  }
+}
+function closeCopilot() {
+  goStep(1);
+}
+
+// STEP 2 — Copilot opened with intro + artifact chip.
+function renderStep2() {
+  const body = document.getElementById('copilot-body');
+  body.innerHTML = `
+    <div class="intro msg-enter">
+      <div class="intro-heading">Hi, I'm Gaia.</div>
+      <div class="intro-sub">I can help you review, improve, and test your skills.</div>
+    </div>
+    <div class="msg ai msg-enter">
+      <div class="msg-bubble">
+        I've looked at the <b>order cancellation</b> skill. A few customers recently asked about shipping timing — I drafted a shipping policy you could link to.
+      </div>
+      <div class="artifact-chip" onclick="openArtifact()">
+        <div class="artifact-icon">${icons.file}</div>
+        <div class="artifact-meta">
+          <div class="artifact-name">Shipping policy draft</div>
+          <div class="artifact-type">Guidance · 4 sections</div>
+        </div>
+        <div class="artifact-chip-arrow">${icons.arrow}</div>
+      </div>
+    </div>
+    <div class="chips msg-enter">
+      <button class="chip" onclick="openArtifact()">Open the draft</button>
+      <button class="chip">Summarise it for me</button>
+      <button class="chip">Show similar skills</button>
+    </div>
+  `;
+}
+function openArtifact() {
+  document.getElementById('artifact').classList.add('open');
+}
+function closeArtifact() {
+  document.getElementById('artifact').classList.remove('open');
+}
+
+// STEP 3 — Plan with approve action.
+function renderStep3() {
+  const body = document.getElementById('copilot-body');
+  const todos = [
+    { label: 'Analysing recent tickets', state: 'done' },
+    { label: 'Drafting new shipping policy', state: 'queued' },
+    { label: 'Updating order cancellation skill', state: 'queued' },
+    { label: 'Publishing to production', state: 'queued' }
+  ];
+
+  body.innerHTML = `
+    <div class="msg user msg-enter"><div class="msg-bubble">Improve the order cancellation skill.</div></div>
+    <div class="msg ai msg-enter">
+      <div class="msg-bubble">Here's what I'd like to do. Approve and I'll start.</div>
+      <div class="plan-card" id="plan-card">
+        <div class="plan-header">
+          <div class="plan-heading">Skill improvement plan</div>
+          <div class="plan-badge" id="plan-badge">Awaiting approval</div>
+        </div>
+        <div id="plan-body">${renderTodoList(todos)}</div>
+        <div class="plan-actions" id="plan-actions">
+          <button class="plan-btn" onclick="declinePlan()">Decline</button>
+          <button class="plan-btn primary" id="approve-btn" onclick="approvePlan()">Approve &amp; run</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function approvePlan() {
+  if (planApproved) return;
+  planApproved = true;
+
+  // Hide actions, update badge
+  document.getElementById('plan-actions').style.display = 'none';
+  const badge = document.getElementById('plan-badge');
+  badge.textContent = 'Running…';
+
+  // User bubble confirming approval
+  const body = document.getElementById('copilot-body');
+  const confirm = document.createElement('div');
+  confirm.className = 'msg user msg-enter';
+  confirm.innerHTML = '<div class="msg-bubble">Approved</div>';
+  body.appendChild(confirm);
+  body.scrollTop = body.scrollHeight;
+
+  // Animate plan through working states
+  const states = [
+    [1, 'working'],
+    [1, 'done', 2, 'working'],
+    [2, 'done', 3, 'working'],
+    [3, 'done', 4, 'working'],
+    [4, 'done']
+  ];
+  const todos = [
+    { label: 'Analysing recent tickets', state: 'done' },
+    { label: 'Drafting new shipping policy', state: 'queued' },
+    { label: 'Updating order cancellation skill', state: 'queued' },
+    { label: 'Publishing to production', state: 'queued' }
+  ];
+
+  states.forEach((step, i) => {
+    setTimeout(() => {
+      for (let j = 0; j < step.length; j += 2) {
+        todos[step[j]].state = step[j + 1];
+      }
+      document.getElementById('plan-body').innerHTML = renderTodoList(todos);
+      if (i === states.length - 1) {
+        badge.textContent = 'Done';
+        badge.className = 'plan-badge done';
+      }
+    }, 600 + i * 900);
+  });
+}
+
+function declinePlan() {
+  document.getElementById('plan-badge').textContent = 'Declined';
+  document.getElementById('plan-actions').style.display = 'none';
+}
+
+// STEP 4 — Same plan, user revises, plan updates.
+function renderStep4() {
+  const body = document.getElementById('copilot-body');
+  const original = [
+    { label: 'Analysing recent tickets', state: 'done' },
+    { label: 'Drafting new shipping policy', state: 'queued' },
+    { label: 'Updating order cancellation skill', state: 'queued' },
+    { label: 'Publishing to production', state: 'queued' }
+  ];
+  body.innerHTML = `
+    <div class="msg user msg-enter"><div class="msg-bubble">Improve the order cancellation skill.</div></div>
+    <div class="msg ai msg-enter">
+      <div class="msg-bubble">Here's what I'd like to do.</div>
+      <div class="plan-card" id="plan-card">
+        <div class="plan-header">
+          <div class="plan-heading">Skill improvement plan</div>
+          <div class="plan-badge" id="plan-badge">Awaiting approval</div>
+        </div>
+        <div id="plan-body">${renderTodoList(original)}</div>
+        <div class="plan-actions" id="plan-actions">
+          <button class="plan-btn" onclick="declinePlan()">Decline</button>
+          <button class="plan-btn primary" onclick="approvePlan()">Approve &amp; run</button>
+        </div>
+      </div>
+    </div>
+    <div class="chips msg-enter" id="revise-chips">
+      <button class="chip" onclick="revisePlan()">Skip the deploy step</button>
+      <button class="chip" onclick="revisePlan('add-test')">Add a test step</button>
+    </div>
+  `;
+}
+
+function revisePlan(kind) {
+  if (planRevised) return;
+  planRevised = true;
+
+  // User message
+  const body = document.getElementById('copilot-body');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg user msg-enter';
+  userMsg.innerHTML = `<div class="msg-bubble">${kind === 'add-test' ? 'Add a test step before publishing.' : 'Actually — skip the deploy step for now.'}</div>`;
+  body.appendChild(userMsg);
+
+  // Hide the original plan card + chips
+  const oldCard = document.getElementById('plan-card');
+  oldCard.style.transition = 'opacity .3s';
+  oldCard.style.opacity = '0.35';
+  document.getElementById('revise-chips').style.display = 'none';
+
+  // AI ack
+  setTimeout(() => {
+    const ack = document.createElement('div');
+    ack.className = 'msg ai msg-enter';
+    ack.innerHTML = `<div class="msg-bubble">${kind === 'add-test' ? 'Good call — I\'ll add a test step before we publish.' : 'Got it — I\'ll leave the deploy step out. Here\'s the revised plan.'}</div>`;
+    body.appendChild(ack);
+    body.scrollTop = body.scrollHeight;
+  }, 350);
+
+  // New plan card
+  setTimeout(() => {
+    const newTodos = kind === 'add-test'
+      ? [
+          { label: 'Analysing recent tickets', state: 'done' },
+          { label: 'Drafting new shipping policy', state: 'queued' },
+          { label: 'Updating order cancellation skill', state: 'queued' },
+          { label: 'Run test suite on updated skill', state: 'queued', added: true, reveal: true },
+          { label: 'Publishing to production', state: 'queued' }
+        ]
+      : [
+          { label: 'Analysing recent tickets', state: 'done' },
+          { label: 'Drafting new shipping policy', state: 'queued' },
+          { label: 'Updating order cancellation skill', state: 'queued', revised: true },
+          { label: 'Publishing to production', state: 'removed' }
+        ];
+    const revisedCard = document.createElement('div');
+    revisedCard.className = 'msg ai msg-enter';
+    revisedCard.innerHTML = `
+      <div class="plan-card">
+        <div class="plan-header">
+          <div class="plan-heading">Skill improvement plan</div>
+          <div class="plan-badge revised">Revised</div>
+        </div>
+        ${renderTodoList(newTodos)}
+        <div class="plan-actions">
+          <button class="plan-btn">Decline</button>
+          <button class="plan-btn primary">Approve &amp; run</button>
+        </div>
+      </div>
+    `;
+    body.appendChild(revisedCard);
+    body.scrollTop = body.scrollHeight;
+  }, 900);
+}
+
+// Composer — if user types in step 4, trigger a revision too
+function sendComposer() {
+  const input = document.getElementById('composer-input');
+  const txt = input.value.trim();
+  if (!txt) return;
+  if (step === 4 && !planRevised) {
+    input.value = '';
+    revisePlan();
+  } else {
+    // Generic echo behavior on other steps
+    const body = document.getElementById('copilot-body');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg user msg-enter';
+    userMsg.innerHTML = `<div class="msg-bubble">${txt.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</div>`;
+    body.appendChild(userMsg);
+    input.value = '';
+    body.scrollTop = body.scrollHeight;
+  }
+}
+
+// ── HINTS ──
+const HINTS = {
+  1: ['Opening Copilot', 'Click "Ask Copilot" in the top right to open the panel.'],
+  2: ['Opening an artifact', 'Click the "Shipping policy draft" card to open the artifact viewer.'],
+  3: ['Approving a plan', 'Review the plan and click "Approve & run". Watch each step advance.'],
+  4: ['Changing a plan', 'Click a suggestion chip (or type in the composer) to revise the plan.']
+};
+function updateHint() {
+  const [label, text] = HINTS[step];
+  document.getElementById('hint-label').textContent = `Step ${step} · ${label}`;
+  document.getElementById('hint-text').textContent = text;
+  const hint = document.getElementById('step-hint');
+  hint.classList.remove('show');
+  setTimeout(() => hint.classList.add('show'), 100);
+}
+
+// ── THEME ──
+function toggleTheme() {
+  const root = document.documentElement;
+  root.classList.toggle('light');
+  const isLight = root.classList.contains('light');
+  document.getElementById('icon-dark').style.display = isLight ? 'none' : '';
+  document.getElementById('icon-light').style.display = isLight ? '' : 'none';
+}
+
+// ── INIT ──
+updateStepper();
+renderStep();
+updateHint();
+</script>
+</body>
+</html>
