@@ -43,6 +43,11 @@ export function ViewSearchMenuContent({
         ))
     }
 
+    const hasSharedViews =
+        sharedRootViews.length > 0 || sharedSectionViews.length > 0
+    const hasPrivateViews =
+        privateRootViews.length > 0 || privateSectionViews.length > 0
+
     return (
         <>
             <MenuSection id="default-views" name="Default views">
@@ -54,84 +59,88 @@ export function ViewSearchMenuContent({
                     />
                 ))}
             </MenuSection>
-            <MenuSection id="shared-views-root">
-                <SubMenu
-                    label="Shared views"
-                    minWidth={SUBMENU_POPOVER_WIDTH}
-                    maxWidth={SUBMENU_POPOVER_WIDTH}
-                    maxHeight={240}
-                    selectionMode="single"
-                    selectedKeys={[String(viewId)]}
-                >
-                    <MenuSection id="shared-views" name="Shared views">
-                        {sharedRootViews.map((view) => (
-                            <ViewSearchMenuItem
-                                key={view.id}
-                                view={view}
-                                onAction={onAction}
-                            />
-                        ))}
-                        {sharedSectionViews.map(({ section, views }) => (
-                            <SubMenu
-                                key={section.id}
-                                label={section.name}
-                                minWidth={SUBMENU_POPOVER_WIDTH}
-                                maxWidth={SUBMENU_POPOVER_WIDTH}
-                                maxHeight={240}
-                                selectionMode="single"
-                                selectedKeys={[String(viewId)]}
-                            >
-                                {views.map((view) => (
-                                    <ViewSearchMenuItem
-                                        key={view.id}
-                                        view={view}
-                                        onAction={onAction}
-                                    />
-                                ))}
-                            </SubMenu>
-                        ))}
-                    </MenuSection>
-                </SubMenu>
-            </MenuSection>
-            <MenuSection id="private-views-root">
-                <SubMenu
-                    label="Private views"
-                    minWidth={SUBMENU_POPOVER_WIDTH}
-                    maxWidth={SUBMENU_POPOVER_WIDTH}
-                    maxHeight={240}
-                    selectionMode="single"
-                    selectedKeys={[String(viewId)]}
-                >
-                    <MenuSection id="private-views" name="Private views">
-                        {privateRootViews.map((view) => (
-                            <ViewSearchMenuItem
-                                key={view.id}
-                                view={view}
-                                onAction={onAction}
-                            />
-                        ))}
-                        {privateSectionViews.map(({ section, views }) => (
-                            <SubMenu
-                                key={section.id}
-                                label={section.name}
-                                minWidth={SUBMENU_POPOVER_WIDTH}
-                                maxWidth={SUBMENU_POPOVER_WIDTH}
-                                maxHeight={240}
-                                selectionMode="single"
-                                selectedKeys={[String(viewId)]}
-                            >
-                                {views.map((view) => (
-                                    <ViewSearchMenuItem
-                                        key={view.id}
-                                        view={view}
-                                        onAction={onAction}
-                                    />
-                                ))}
-                            </SubMenu>
-                        ))}
-                    </MenuSection>
-                </SubMenu>
-            </MenuSection>
+            {hasSharedViews ? (
+                <MenuSection id="shared-views-root">
+                    <SubMenu
+                        label="Shared views"
+                        minWidth={SUBMENU_POPOVER_WIDTH}
+                        maxWidth={SUBMENU_POPOVER_WIDTH}
+                        maxHeight={240}
+                        selectionMode="single"
+                        selectedKeys={[String(viewId)]}
+                    >
+                        <MenuSection id="shared-views" name="Shared views">
+                            {sharedRootViews.map((view) => (
+                                <ViewSearchMenuItem
+                                    key={view.id}
+                                    view={view}
+                                    onAction={onAction}
+                                />
+                            ))}
+                            {sharedSectionViews.map(({ section, views }) => (
+                                <SubMenu
+                                    key={section.id}
+                                    label={section.name}
+                                    minWidth={SUBMENU_POPOVER_WIDTH}
+                                    maxWidth={SUBMENU_POPOVER_WIDTH}
+                                    maxHeight={240}
+                                    selectionMode="single"
+                                    selectedKeys={[String(viewId)]}
+                                >
+                                    {views.map((view) => (
+                                        <ViewSearchMenuItem
+                                            key={view.id}
+                                            view={view}
+                                            onAction={onAction}
+                                        />
+                                    ))}
+                                </SubMenu>
+                            ))}
+                        </MenuSection>
+                    </SubMenu>
+                </MenuSection>
+            ) : null}
+            {hasPrivateViews ? (
+                <MenuSection id="private-views-root">
+                    <SubMenu
+                        label="Private views"
+                        minWidth={SUBMENU_POPOVER_WIDTH}
+                        maxWidth={SUBMENU_POPOVER_WIDTH}
+                        maxHeight={240}
+                        selectionMode="single"
+                        selectedKeys={[String(viewId)]}
+                    >
+                        <MenuSection id="private-views" name="Private views">
+                            {privateRootViews.map((view) => (
+                                <ViewSearchMenuItem
+                                    key={view.id}
+                                    view={view}
+                                    onAction={onAction}
+                                />
+                            ))}
+                            {privateSectionViews.map(({ section, views }) => (
+                                <SubMenu
+                                    key={section.id}
+                                    label={section.name}
+                                    minWidth={SUBMENU_POPOVER_WIDTH}
+                                    maxWidth={SUBMENU_POPOVER_WIDTH}
+                                    maxHeight={240}
+                                    selectionMode="single"
+                                    selectedKeys={[String(viewId)]}
+                                >
+                                    {views.map((view) => (
+                                        <ViewSearchMenuItem
+                                            key={view.id}
+                                            view={view}
+                                            onAction={onAction}
+                                        />
+                                    ))}
+                                </SubMenu>
+                            ))}
+                        </MenuSection>
+                    </SubMenu>
+                </MenuSection>
+            ) : null}
         </>
     )
 }

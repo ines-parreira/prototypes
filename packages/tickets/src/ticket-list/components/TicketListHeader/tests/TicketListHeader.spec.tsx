@@ -4,12 +4,12 @@ import { history } from '@repo/routing'
 import * as views from '@repo/views'
 import { screen, waitFor } from '@testing-library/react'
 
+import { mockView } from '@gorgias/helpdesk-mocks'
 import { useGetView } from '@gorgias/helpdesk-queries'
 import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { useDefaultViews } from '../../../../sidebar/hooks/useDefaultViews'
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
-import { useTicketsLegacyBridge } from '../../../../utils/LegacyBridge'
 import { TicketListHeader } from '../TicketListHeader'
 
 vi.mock('@repo/views')
@@ -22,7 +22,6 @@ vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
     }
 })
 vi.mock('@repo/routing', () => ({ history: { push: vi.fn() } }))
-vi.mock('../../../../utils/LegacyBridge')
 vi.mock('../../../../sidebar/hooks/useDefaultViews', () => ({
     useDefaultViews: vi.fn(),
 }))
@@ -36,7 +35,6 @@ vi.mock('../SortOrderDropdown', () => ({
 
 const mockHistoryPush = vi.mocked(history.push)
 const mockUseGetView = vi.mocked(useGetView)
-const mockUseTicketsLegacyBridge = vi.mocked(useTicketsLegacyBridge)
 const mockUseDefaultViews = vi.mocked(useDefaultViews)
 const mockUseAllViews = vi.mocked(views.useAllViews)
 const mockUsePublicViews = vi.mocked(views.usePublicViews)
@@ -46,18 +44,17 @@ const mockUseViewCount = vi.mocked(views.useViewCount)
 const mockUsePublicViewsOrdering = vi.mocked(views.usePublicViewsOrdering)
 const mockUsePrivateViewsOrdering = vi.mocked(views.usePrivateViewsOrdering)
 
-const defaultView = {
+const defaultView = mockView({
     id: 1,
     name: 'Inbox',
     category: 'system',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'inbox',
-    uri: '/api/views/1',
     section_id: null,
-}
+})
 
-const privateRootView = {
+const privateRootView = mockView({
     id: 2,
     name: 'Private backlog',
     category: 'custom',
@@ -65,42 +62,38 @@ const privateRootView = {
     decoration: { emoji: '✨' },
     type: 'ticket-list',
     slug: 'private-backlog',
-    uri: '/api/views/2',
     section_id: null,
-}
+})
 
-const privateSectionView = {
+const privateSectionView = mockView({
     id: 3,
     name: 'VIP follow-up',
     category: 'custom',
     visibility: 'private',
     type: 'ticket-list',
     slug: 'vip-follow-up',
-    uri: '/api/views/3',
     section_id: 11,
-}
+})
 
-const sharedRootView = {
+const sharedRootView = mockView({
     id: 4,
     name: 'Shared queue',
     category: 'custom',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'shared-queue',
-    uri: '/api/views/4',
     section_id: null,
-}
+})
 
-const sharedSectionView = {
+const sharedSectionView = mockView({
     id: 5,
     name: 'Shared escalations',
     category: 'custom',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'shared-escalations',
-    uri: '/api/views/5',
     section_id: 21,
-}
+})
 
 const allViews = [
     defaultView,
@@ -122,9 +115,6 @@ describe('TicketListHeader', () => {
         mockHistoryPush.mockReset()
         mockUseGetView.mockReturnValue({
             data: { data: defaultView },
-        } as any)
-        mockUseTicketsLegacyBridge.mockReturnValue({
-            dtpToggle: { isEnabled: true },
         } as any)
         mockUseAllViews.mockReturnValue(allViews as any)
         mockUseDefaultViews.mockReturnValue({

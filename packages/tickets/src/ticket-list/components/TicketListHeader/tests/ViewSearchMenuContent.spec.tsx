@@ -2,6 +2,7 @@ import * as views from '@repo/views'
 import { screen } from '@testing-library/react'
 
 import { Menu } from '@gorgias/axiom'
+import { mockView } from '@gorgias/helpdesk-mocks'
 import type { View } from '@gorgias/helpdesk-types'
 
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
@@ -24,18 +25,17 @@ vi.mock('@repo/views', async (importOriginal) => {
 const mockUseViewCount = vi.mocked(views.useViewCount)
 const mockViewCountBadge = vi.mocked(views.ViewCountBadge)
 
-const defaultView = {
+const defaultView = mockView({
     id: 1,
     name: 'Inbox',
     category: 'system',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'inbox',
-    uri: '/api/views/1',
     section_id: null,
-}
+})
 
-const privateRootView = {
+const privateRootView = mockView({
     id: 2,
     name: 'Private backlog',
     category: 'custom',
@@ -43,42 +43,38 @@ const privateRootView = {
     decoration: { emoji: '✨' },
     type: 'ticket-list',
     slug: 'private-backlog',
-    uri: '/api/views/2',
     section_id: null,
-}
+})
 
-const privateSectionView = {
+const privateSectionView = mockView({
     id: 3,
     name: 'VIP follow-up',
     category: 'custom',
     visibility: 'private',
     type: 'ticket-list',
     slug: 'vip-follow-up',
-    uri: '/api/views/3',
     section_id: 11,
-}
+})
 
-const sharedRootView = {
+const sharedRootView = mockView({
     id: 4,
     name: 'Shared queue',
     category: 'custom',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'shared-queue',
-    uri: '/api/views/4',
     section_id: null,
-}
+})
 
-const sharedSectionView = {
+const sharedSectionView = mockView({
     id: 5,
     name: 'Shared escalations',
     category: 'custom',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'shared-escalations',
-    uri: '/api/views/5',
     section_id: 21,
-}
+})
 
 const sharedSectionViews: ViewSectionGroup[] = [
     {
@@ -98,10 +94,18 @@ function renderContent({
     viewId = 1,
     searchValue = '',
     searchResults = [],
+    sharedRootViewsOverride = [sharedRootView as View],
+    privateRootViewsOverride = [privateRootView as View],
+    sharedSectionViewsOverride = sharedSectionViews,
+    privateSectionViewsOverride = privateSectionViews,
 }: {
     viewId?: number
     searchValue?: string
     searchResults?: ViewSearchResult[]
+    sharedRootViewsOverride?: View[]
+    privateRootViewsOverride?: View[]
+    sharedSectionViewsOverride?: ViewSectionGroup[]
+    privateSectionViewsOverride?: ViewSectionGroup[]
 } = {}) {
     return render(
         <Menu
@@ -115,10 +119,10 @@ function renderContent({
                 viewId={viewId}
                 searchValue={searchValue}
                 defaultViews={[defaultView as View]}
-                sharedRootViews={[sharedRootView as View]}
-                privateRootViews={[privateRootView as View]}
-                sharedSectionViews={sharedSectionViews}
-                privateSectionViews={privateSectionViews}
+                sharedRootViews={sharedRootViewsOverride}
+                privateRootViews={privateRootViewsOverride}
+                sharedSectionViews={sharedSectionViewsOverride}
+                privateSectionViews={privateSectionViewsOverride}
                 searchResults={searchResults}
                 onAction={vi.fn()}
             />
@@ -168,7 +172,11 @@ describe('ViewSearchMenuContent', () => {
         expect(
             await screen.findByRole('menuitem', { name: /team section/i }),
         ).toBeInTheDocument()
-        expect(await screen.findByText('Shared queue')).toBeInTheDocument()
+        expect(
+            await screen.findByRole('menuitemradio', {
+                name: /shared queue/i,
+            }),
+        ).toBeInTheDocument()
 
         await user.hover(privateViewsTrigger)
 
@@ -176,8 +184,26 @@ describe('ViewSearchMenuContent', () => {
             await screen.findByRole('menuitem', { name: /my section/i }),
         ).toBeInTheDocument()
         expect(
-            await screen.findByText('✨ Private backlog'),
+            await screen.findByRole('menuitemradio', {
+                name: /private backlog/i,
+            }),
         ).toBeInTheDocument()
+    })
+
+    it('hides shared and private sections when they have no views', () => {
+        renderContent({
+            sharedRootViewsOverride: [],
+            privateRootViewsOverride: [],
+            sharedSectionViewsOverride: [],
+            privateSectionViewsOverride: [],
+        })
+
+        expect(
+            screen.queryByRole('menuitem', { name: /shared views/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('menuitem', { name: /private views/i }),
+        ).not.toBeInTheDocument()
     })
 
     it('renders flat search results instead of the grouped submenu structure', () => {

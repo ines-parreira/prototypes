@@ -1,5 +1,6 @@
 import * as views from '@repo/views'
 
+import { mockView } from '@gorgias/helpdesk-mocks'
 import { useGetView } from '@gorgias/helpdesk-queries'
 import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
 
@@ -29,18 +30,17 @@ const mockUseAllViewSections = vi.mocked(views.useAllViewSections)
 const mockUsePublicViewsOrdering = vi.mocked(views.usePublicViewsOrdering)
 const mockUsePrivateViewsOrdering = vi.mocked(views.usePrivateViewsOrdering)
 
-const defaultView = {
+const defaultView = mockView({
     id: 1,
     name: 'Inbox',
     category: 'system',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'inbox',
-    uri: '/api/views/1',
     section_id: null,
-}
+})
 
-const privateRootView = {
+const privateRootView = mockView({
     id: 2,
     name: 'Private backlog',
     category: 'custom',
@@ -48,64 +48,58 @@ const privateRootView = {
     decoration: { emoji: '✨' },
     type: 'ticket-list',
     slug: 'private-backlog',
-    uri: '/api/views/2',
     section_id: null,
-}
+})
 
-const privateSectionView = {
+const privateSectionView = mockView({
     id: 3,
     name: 'VIP follow-up',
     category: 'custom',
     visibility: 'private',
     type: 'ticket-list',
     slug: 'vip-follow-up',
-    uri: '/api/views/3',
     section_id: 11,
-}
+})
 
-const privateSecondSectionView = {
+const privateSecondSectionView = mockView({
     id: 6,
     name: 'Billing review',
     category: 'custom',
     visibility: 'private',
     type: 'ticket-list',
     slug: 'billing-review',
-    uri: '/api/views/6',
     section_id: 12,
-}
+})
 
-const sharedRootView = {
+const sharedRootView = mockView({
     id: 4,
     name: 'Shared queue',
     category: 'custom',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'shared-queue',
-    uri: '/api/views/4',
     section_id: null,
-}
+})
 
-const sharedSectionView = {
+const sharedSectionView = mockView({
     id: 5,
     name: 'Shared escalations',
     category: 'custom',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'shared-escalations',
-    uri: '/api/views/5',
     section_id: 21,
-}
+})
 
-const sharedSecondSectionView = {
+const sharedSecondSectionView = mockView({
     id: 7,
     name: 'Shared handoff',
     category: 'custom',
     visibility: 'public',
     type: 'ticket-list',
     slug: 'shared-handoff',
-    uri: '/api/views/7',
     section_id: 22,
-}
+})
 
 const allViews = [
     defaultView,
