@@ -868,6 +868,14 @@ export class RichFieldEditor extends Component<Props, State> {
         if (target.closest('[data-find-replace-dialog]')) return
         if (predictionKey.get()) return
 
+        if (!keyEvent.shiftKey && this.mentionPlugin) {
+            this.mentionPlugin.onTab(keyEvent as unknown as React.KeyboardEvent)
+            if (keyEvent.defaultPrevented) {
+                keyEvent.stopPropagation()
+                return
+            }
+        }
+
         if (keyEvent.shiftKey) {
             const { editorState } = this.props
             const content = editorState.getCurrentContent()

@@ -1554,6 +1554,154 @@ describe('RichFieldEditor', () => {
 
             expect(spyOnchange).not.toHaveBeenCalled()
         })
+
+        it('should call mentionPlugin.onTab and skip indentation when mention dropdown is open', () => {
+            const spyOnchange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            const block = new ContentBlock({
+                key: 'blk1',
+                type: 'unstyled',
+                text: '',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap(),
+            })
+            const content = DraftContentState.createFromBlockArray([block])
+            const state = EditorState.createWithContent(content)
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={state}
+                    onChange={spyOnchange}
+                    ref={instanceRef}
+                />,
+            )
+
+            spyOnchange.mockClear()
+
+            const mockOnTab = jest.fn((keyboardEvent: React.KeyboardEvent) => {
+                keyboardEvent.preventDefault()
+            })
+            instanceRef.current!['mentionPlugin'] = {
+                ...instanceRef.current!['mentionPlugin']!,
+                onTab: mockOnTab,
+            }
+
+            const event = new KeyboardEvent('keydown', {
+                key: 'Tab',
+                cancelable: true,
+                bubbles: true,
+            })
+            instanceRef.current!['editorWrapperRef']?.dispatchEvent(event)
+
+            expect(mockOnTab).toHaveBeenCalled()
+            expect(spyOnchange).not.toHaveBeenCalled()
+        })
+
+        it('should fall through to indentation when mentionPlugin.onTab does not preventDefault (dropdown closed)', () => {
+            const spyOnchange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            const block = new ContentBlock({
+                key: 'blk1',
+                type: 'unstyled',
+                text: '',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap(),
+            })
+            const content = DraftContentState.createFromBlockArray([block])
+            let state = EditorState.createWithContent(content)
+            const sel = SelectionState.createEmpty('blk1').merge({
+                anchorOffset: 0,
+                focusOffset: 0,
+                hasFocus: true,
+            }) as SelectionState
+            state = EditorState.forceSelection(state, sel)
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={state}
+                    onChange={spyOnchange}
+                    ref={instanceRef}
+                />,
+            )
+
+            spyOnchange.mockClear()
+
+            const mockOnTab = jest.fn()
+            instanceRef.current!['mentionPlugin'] = {
+                ...instanceRef.current!['mentionPlugin']!,
+                onTab: mockOnTab,
+            }
+
+            const event = new KeyboardEvent('keydown', {
+                key: 'Tab',
+                cancelable: true,
+                bubbles: true,
+            })
+            instanceRef.current!['editorWrapperRef']?.dispatchEvent(event)
+
+            expect(mockOnTab).toHaveBeenCalled()
+            expect(spyOnchange).toHaveBeenCalled()
+        })
+
+        it('should call mentionPlugin.onTab and skip list indentation when mention dropdown is open on a list item', () => {
+            const spyOnchange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            const block = new ContentBlock({
+                key: 'blk1',
+                type: 'unordered-list-item',
+                text: '',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap(),
+            })
+            const content = DraftContentState.createFromBlockArray([block])
+            const state = EditorState.createWithContent(content)
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={state}
+                    onChange={spyOnchange}
+                    ref={instanceRef}
+                />,
+            )
+
+            spyOnchange.mockClear()
+
+            const mockOnTab = jest.fn((keyboardEvent: React.KeyboardEvent) => {
+                keyboardEvent.preventDefault()
+            })
+            instanceRef.current!['mentionPlugin'] = {
+                ...instanceRef.current!['mentionPlugin']!,
+                onTab: mockOnTab,
+            }
+
+            const event = new KeyboardEvent('keydown', {
+                key: 'Tab',
+                cancelable: true,
+                bubbles: true,
+            })
+            instanceRef.current!['editorWrapperRef']?.dispatchEvent(event)
+
+            expect(mockOnTab).toHaveBeenCalled()
+            expect(spyOnchange).not.toHaveBeenCalled()
+        })
     })
 
     describe('drag events', () => {
