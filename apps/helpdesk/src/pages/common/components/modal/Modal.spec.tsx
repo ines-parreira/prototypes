@@ -125,7 +125,6 @@ describe('<Modal />', () => {
         expect(setReturnFocus?.(document.body)).toBe(false)
         expect(getReturnFocusTarget).toHaveBeenCalled()
     })
-
     it('falls back to the previously focused node when the return focus target is undefined', () => {
         const previouslyFocusedNode = document.createElement('button')
         const getReturnFocusTarget = jest.fn<

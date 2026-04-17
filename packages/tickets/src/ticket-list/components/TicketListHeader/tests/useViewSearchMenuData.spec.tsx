@@ -6,7 +6,10 @@ import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { useDefaultViews } from '../../../../sidebar/hooks/useDefaultViews'
 import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
-import { useViewSearchMenuData } from '../useViewSearchMenuData'
+import {
+    getViewDisplayName,
+    useViewSearchMenuData,
+} from '../useViewSearchMenuData'
 
 vi.mock('@repo/views')
 vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
@@ -37,6 +40,16 @@ const defaultView = mockView({
     visibility: 'public',
     type: 'ticket-list',
     slug: 'inbox',
+    section_id: null,
+})
+
+const hiddenDefaultView = mockView({
+    id: 8,
+    name: 'Closed',
+    category: 'system',
+    visibility: 'public',
+    type: 'ticket-list',
+    slug: 'closed',
     section_id: null,
 })
 
@@ -118,7 +131,8 @@ describe('useViewSearchMenuData', () => {
             data: { data: defaultView },
         } as never)
         mockUseDefaultViews.mockReturnValue({
-            defaultSystemViews: [defaultView],
+            defaultSystemViews: [defaultView, hiddenDefaultView],
+            visibleSystemViews: [defaultView],
         } as never)
         mockUseAllViews.mockReturnValue(allViews as never)
         mockUsePublicViews.mockReturnValue([
@@ -161,7 +175,7 @@ describe('useViewSearchMenuData', () => {
         )
 
         expect(result.current.activeView).toEqual(defaultView)
-        expect(result.current.viewName).toBe('Assigned to me')
+        expect(result.current.viewName).toBe(getViewDisplayName(defaultView))
         expect(result.current.defaultViews).toEqual([defaultView])
         expect(result.current.sharedRootViews).toEqual([sharedRootView])
         expect(result.current.privateRootViews).toEqual([privateRootView])
@@ -211,5 +225,33 @@ describe('useViewSearchMenuData', () => {
         expect(breadcrumbsByViewId[sharedSectionView.id]).toBe(
             'Shared > Team section',
         )
+        expect(breadcrumbsByViewId[hiddenDefaultView.id]).toBeUndefined()
+    })
+
+    it('only exposes visible default views in the menu and search results', () => {
+        const { result } = renderHook(() =>
+            useViewSearchMenuData({ viewId: 1, searchValue: 'clo' }),
+        )
+
+        expect(result.current.defaultViews).toEqual([defaultView])
+        expect(
+            result.current.searchResults.map(({ view }) => view.id),
+        ).not.toContain(hiddenDefaultView.id)
+    })
+
+    it('falls back to default system views when visible system views are unavailable', () => {
+        mockUseDefaultViews.mockReturnValue({
+            defaultSystemViews: [defaultView],
+            visibleSystemViews: undefined,
+        } as never)
+
+        const { result } = renderHook(() =>
+            useViewSearchMenuData({ viewId: 1, searchValue: 'ass' }),
+        )
+
+        expect(result.current.defaultViews).toEqual([defaultView])
+        expect(
+            result.current.searchResults.map(({ view }) => view.id),
+        ).toContain(defaultView.id)
     })
 })

@@ -48,7 +48,11 @@ export function useViewSearchMenuData({
     const viewSections = useAllViewSections()
     const publicOrdering = usePublicViewsOrdering()
     const privateOrdering = usePrivateViewsOrdering()
-    const { defaultSystemViews } = useDefaultViews()
+    const { visibleSystemViews, defaultSystemViews } = useDefaultViews()
+    const systemViews = useMemo(
+        () => visibleSystemViews ?? defaultSystemViews ?? [],
+        [defaultSystemViews, visibleSystemViews],
+    )
 
     const activeView =
         (activeViewResponse?.data as View | undefined) ??
@@ -104,9 +108,7 @@ export function useViewSearchMenuData({
         )
 
         const searchResults = [
-            ...defaultSystemViews.map((view) =>
-                createSearchResult(view, sectionById),
-            ),
+            ...systemViews.map((view) => createSearchResult(view, sectionById)),
             ...privateViews.map((view) =>
                 createSearchResult(view, sectionById),
             ),
@@ -116,7 +118,7 @@ export function useViewSearchMenuData({
         )
 
         return {
-            defaultViews: defaultSystemViews,
+            defaultViews: systemViews,
             sharedRootViews,
             privateRootViews,
             sharedSectionViews,
@@ -124,12 +126,12 @@ export function useViewSearchMenuData({
             searchResults,
         }
     }, [
-        defaultSystemViews,
         privateOrdering.view_sections,
         privateViews,
         publicOrdering.view_sections,
         publicViews,
         searchValue,
+        systemViews,
         viewSections,
     ])
 

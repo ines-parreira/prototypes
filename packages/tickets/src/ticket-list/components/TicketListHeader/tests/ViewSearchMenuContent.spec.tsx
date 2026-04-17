@@ -231,6 +231,23 @@ describe('ViewSearchMenuContent', () => {
         expect(screen.queryByText('Default views')).not.toBeInTheDocument()
     })
 
+    it('renders system view icons in search results', () => {
+        renderContent({
+            searchValue: 'assigned',
+            searchResults: [
+                {
+                    view: defaultView as View,
+                    breadcrumb: undefined,
+                    searchText: 'assigned to me',
+                },
+            ],
+        })
+
+        expect(
+            screen.getByRole('img', { name: 'user-arrow' }),
+        ).toBeInTheDocument()
+    })
+
     it('renders formatted count badges when counts exist and hides them when they do not', async () => {
         mockUseViewCount.mockImplementation((id) => {
             const counts: Record<number, number | undefined> = {
