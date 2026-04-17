@@ -12,8 +12,8 @@ import {
 import { useGetView } from '@gorgias/helpdesk-queries'
 import type { View } from '@gorgias/helpdesk-types'
 
-import { SYSTEM_VIEW_DEFINITIONS } from '../../../sidebar/constants/views'
 import { useDefaultViews } from '../../../sidebar/hooks/useDefaultViews'
+import { getViewDisplayName } from '../../../utils/views'
 
 type NamedViewSection = {
     id: number
@@ -141,19 +141,6 @@ export function useViewSearchMenuData({
         ...menuData,
     }
 }
-
-export function getViewDisplayName(view: View) {
-    if (!view.name) {
-        return ''
-    }
-
-    const baseLabel = SYSTEM_VIEW_DEFINITIONS[view.name]?.label ?? view.name
-
-    return view.decoration?.emoji
-        ? `${view.decoration.emoji} ${baseLabel}`
-        : baseLabel
-}
-
 function groupSectionBuckets(
     sections: NamedViewSection[],
     sectionOrdering: Record<string, { display_order: number }>,

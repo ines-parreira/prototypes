@@ -6,10 +6,8 @@ import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { useDefaultViews } from '../../../../sidebar/hooks/useDefaultViews'
 import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
-import {
-    getViewDisplayName,
-    useViewSearchMenuData,
-} from '../useViewSearchMenuData'
+import { getViewDisplayName } from '../../../../utils/views'
+import { useViewSearchMenuData } from '../useViewSearchMenuData'
 
 vi.mock('@repo/views')
 vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {

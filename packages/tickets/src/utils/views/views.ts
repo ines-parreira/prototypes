@@ -1,5 +1,7 @@
 import type { ValueOf } from '@repo/types'
 
+import { SYSTEM_VIEW_DEFINITIONS } from '../../sidebar/constants/views'
+
 type CanduLinkableDecoration = {
     emoji?: string
 }
@@ -7,6 +9,13 @@ type CanduLinkableDecoration = {
 type CanduLinkableElement = {
     decoration?: CanduLinkableDecoration | null
     name: string
+}
+
+type ViewDisplayNameSource = {
+    decoration?: {
+        emoji?: string | null
+    } | null
+    name?: string | null
 }
 
 export const systemViewIcons = {
@@ -46,6 +55,18 @@ export function isInboxView(
         view?.slug === 'inbox' ||
         (view?.category === 'system' && view?.name === 'Inbox')
     )
+}
+
+export function getViewDisplayName(view: ViewDisplayNameSource) {
+    if (!view.name) {
+        return ''
+    }
+
+    const baseLabel = SYSTEM_VIEW_DEFINITIONS[view.name]?.label ?? view.name
+
+    return view.decoration?.emoji
+        ? `${view.decoration.emoji} ${baseLabel}`
+        : baseLabel
 }
 
 export function getViewAwareEmptyStateMessage({

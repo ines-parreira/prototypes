@@ -11,6 +11,7 @@ import {
 } from '@gorgias/axiom'
 import { useGetView } from '@gorgias/helpdesk-queries'
 
+import { getViewDisplayName } from '../utils/views'
 import { useCreateTicketDraft } from './useCreateTicketDraft'
 
 type ViewHeaderProps = {
@@ -37,7 +38,9 @@ export function ViewHeader({
             enabled: !titleOverride && !isDraftView,
         },
     })
-    const viewName = titleOverride ?? viewResponse?.data?.name
+    const viewName =
+        titleOverride ??
+        (viewResponse?.data ? getViewDisplayName(viewResponse.data) : undefined)
     const { hasDraft, onCreateTicket, onResumeDraft, onDiscardDraft } =
         useCreateTicketDraft()
 

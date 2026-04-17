@@ -4,7 +4,7 @@ import { MenuItem } from '@gorgias/axiom'
 import type { View } from '@gorgias/helpdesk-types'
 
 import { SYSTEM_VIEW_DEFINITIONS } from '../../../sidebar/constants/views'
-import { getViewDisplayName } from './useViewSearchMenuData'
+import { getViewDisplayName } from '../../../utils/views'
 
 type ViewSearchMenuItemProps = {
     view: View

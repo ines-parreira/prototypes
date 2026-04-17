@@ -4,6 +4,7 @@ import {
     addCanduLinkForValidViewOrSection,
     EmptyViewsState,
     getViewAwareEmptyStateMessage,
+    getViewDisplayName,
     isInboxView,
     systemViewIcons,
 } from '../views'
@@ -111,6 +112,25 @@ describe('systemViewIcons', () => {
             trash: 'delete',
             unassigned: 'assignment_ind',
         })
+    })
+})
+
+describe('getViewDisplayName', () => {
+    it('returns an empty string when the view has no name', () => {
+        expect(getViewDisplayName({ name: undefined })).toBe('')
+    })
+
+    it('uses the mapped system view label when available', () => {
+        expect(getViewDisplayName({ name: 'Inbox' })).toBe('Assigned to me')
+    })
+
+    it('prefixes the display name with the emoji when available', () => {
+        expect(
+            getViewDisplayName({
+                decoration: { emoji: '✨' },
+                name: 'Private backlog',
+            }),
+        ).toBe('✨ Private backlog')
     })
 })
 

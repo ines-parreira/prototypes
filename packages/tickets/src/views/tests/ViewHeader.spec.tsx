@@ -103,6 +103,27 @@ describe('ViewHeader', () => {
         })
     })
 
+    it('renders the view emoji from the API when available', async () => {
+        const mockEmojiView = mockGetViewHandler(async () =>
+            HttpResponse.json(
+                mockGetViewResponse({
+                    id: viewId,
+                    name: viewName,
+                    decoration: { emoji: '✨' },
+                }),
+            ),
+        )
+
+        server.resetHandlers()
+        server.use(mockEmojiView.handler)
+
+        renderViewHeader({}, { loadTitleFromApi: true })
+
+        await waitFor(() => {
+            expect(screen.getByText(`✨ ${viewName}`)).toBeInTheDocument()
+        })
+    })
+
     it('renders the draft title override when provided', () => {
         renderViewHeader({ titleOverride: 'New view' })
 
