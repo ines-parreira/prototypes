@@ -33,6 +33,8 @@ type Props = {
     onClose: () => void
     size?: 'small' | 'medium' | 'large' | 'huge'
     forceFocus?: boolean
+    restoreFocusOnClose?: boolean
+    getReturnFocusTarget?: () => HTMLElement | SVGElement | false | undefined
     preventCloseClickOutside?: boolean
 }
 
@@ -61,6 +63,8 @@ const Modal = (
         onClose,
         size,
         forceFocus = false,
+        restoreFocusOnClose = true,
+        getReturnFocusTarget,
         preventCloseClickOutside = false,
     }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>,
@@ -152,7 +156,17 @@ const Modal = (
             <>
                 {createPortal(
                     <ModalContext.Provider value={contextValue}>
-                        <FocusTrap active={isFocusTrapActive}>
+                        <FocusTrap
+                            active={isFocusTrapActive}
+                            focusTrapOptions={{
+                                returnFocusOnDeactivate: restoreFocusOnClose,
+                                setReturnFocus: getReturnFocusTarget
+                                    ? (nodeFocusedBeforeActivation) =>
+                                          getReturnFocusTarget() ??
+                                          nodeFocusedBeforeActivation
+                                    : undefined,
+                            }}
+                        >
                             <div
                                 className={classnames(className, css.modal)}
                                 role="dialog"

@@ -52,6 +52,18 @@ import { renderWithRouter } from 'utils/testing'
 const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
 const CUSTOMER_SPOTLIGHT_ROW_TEST_ID = 'spotlight-customer-row'
 const CALL_SPOTLIGHT_ROW_TEST_ID = 'spotlight-call-row'
+const focusTrapMock = jest.fn(
+    ({
+        children,
+    }: {
+        children: React.ReactNode
+        focusTrapOptions?: {
+            setReturnFocus?: (
+                nodeFocusedBeforeActivation: HTMLElement | SVGElement,
+            ) => false | HTMLElement | SVGElement
+        }
+    }) => <>{children}</>,
+)
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
@@ -139,9 +151,15 @@ const mockUseRecentItems = assumeMock(useRecentItems)
 jest.mock(
     'focus-trap-react',
     () =>
-        ({ children }: { children: React.ReactNode }) => {
-            return <>{children}</>
-        },
+        (props: {
+            children: React.ReactNode
+            focusTrapOptions?: {
+                setReturnFocus?: (
+                    nodeFocusedBeforeActivation: HTMLElement | SVGElement,
+                ) => false | HTMLElement | SVGElement
+            }
+        }) =>
+            focusTrapMock(props),
 )
 
 jest.mock('@repo/hooks', () => ({
@@ -225,6 +243,7 @@ describe('<SpotlightModal/>', () => {
         jest.useRealTimers()
         jest.clearAllTimers()
         jest.clearAllMocks()
+        focusTrapMock.mockClear()
 
         mockUseRecentItems.mockReturnValue({
             items: [],
@@ -246,6 +265,25 @@ describe('<SpotlightModal/>', () => {
         jest.useRealTimers()
         jest.clearAllTimers()
         jest.clearAllMocks()
+    })
+
+    it('keeps restoring the previous focus target until advanced search disables focus restoration', async () => {
+        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+
+        const setReturnFocus =
+            focusTrapMock.mock.calls.at(-1)?.[0].focusTrapOptions
+                ?.setReturnFocus
+        const previouslyFocusedNode = document.createElement('button')
+
+        expect(setReturnFocus?.(previouslyFocusedNode)).toBe(
+            previouslyFocusedNode,
+        )
+
+        await act(async () => {
+            await userEvent.click(screen.getByText('Advanced Search'))
+        })
+
+        expect(setReturnFocus?.(previouslyFocusedNode)).toBe(false)
     })
 
     describe('Tabs', () => {

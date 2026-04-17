@@ -126,6 +126,17 @@ describe('ViewPanel', () => {
         ).toBeInTheDocument()
     })
 
+    it('autofocuses the search field in search mode', () => {
+        render(<ViewPanel viewId={42} titleOverride="All" isSearchMode />, {
+            initialEntries: ['/app/tickets/search'],
+            path: '/app/tickets/search',
+        })
+
+        expect(
+            screen.getByRole('searchbox', { name: 'Search tickets' }),
+        ).toHaveFocus()
+    })
+
     it('submits the trimmed search query', async () => {
         const { user } = render(
             <ViewPanel viewId={42} titleOverride="All" isSearchMode />,

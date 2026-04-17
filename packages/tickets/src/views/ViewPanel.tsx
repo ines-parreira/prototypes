@@ -100,6 +100,7 @@ export function ViewPanel({
                                 onChange={handleSearchChange}
                                 onSubmit={handleSearchSubmit}
                                 onClear={handleSearchClear}
+                                autoFocus
                             />
                         </Box>
                     </Box>

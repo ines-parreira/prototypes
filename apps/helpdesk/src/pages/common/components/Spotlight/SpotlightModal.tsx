@@ -65,6 +65,7 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
 
     const modalBodyRef = useRef<HTMLDivElement>(null)
+    const shouldRestoreFocusRef = useRef(true)
 
     const search = useSearch()
     const {
@@ -86,6 +87,7 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
     const hasAdvancedSearch = searchItemsType !== ViewType.CallList
 
     const goToAdvancedSearch = useCallback(() => {
+        shouldRestoreFocusRef.current = false
         onCloseModal()
 
         if (hasAdvancedSearch) {
@@ -139,6 +141,7 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
 
     useUpdateEffect(() => {
         if (isOpen) {
+            shouldRestoreFocusRef.current = true
             reinitializeSearchQuery()
         } else {
             resetSearch()
@@ -206,6 +209,9 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
             classNameContent={css.spotlightModalContent}
             isScrollable
             forceFocus
+            getReturnFocusTarget={() =>
+                shouldRestoreFocusRef.current ? undefined : false
+            }
         >
             <Search
                 className={css.searchInput}
