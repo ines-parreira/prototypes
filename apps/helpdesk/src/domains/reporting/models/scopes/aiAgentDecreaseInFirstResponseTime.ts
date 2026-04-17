@@ -159,3 +159,14 @@ export const dynamicSupportAgentDecreaseInFRTTimeseries =
 export const dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2 = (
     ctx: Context,
 ) => dynamicSupportAgentDecreaseInFRTTimeseries.build(ctx)
+
+export const aiAgentAllAgentsDecreaseInFRT =
+    aiAgentDecreaseInFirstResponseTimeScope
+        .defineMetricName(METRIC_NAMES.AI_AGENT_ALL_AGENTS_DECREASE_IN_FRT)
+        .defineQuery(() => ({
+            measures: ['averageDecreaseInFirstResponseTime'] as const,
+        }))
+
+export const aiAgentAllAgentsDecreaseInFRTQueryV2Factory = (
+    ctx: AiAgentDecreaseInFirstResponseTimeContext,
+) => aiAgentAllAgentsDecreaseInFRT.build(ctx)

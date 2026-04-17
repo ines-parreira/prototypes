@@ -3,9 +3,9 @@ import { TrendCard } from '@repo/reporting'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { useAiAgentAllAgentsFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsFRTTrend'
+import { useAiAgentAllAgentsDecreaseInFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsDecreaseInFRTTrend'
 
-export const AnalyticsAiAgentAllAgentsFRTCard = ({
+export const AnalyticsAiAgentAllAgentsDecreaseInFRTCard = ({
     chartId,
     dashboard,
     chartConfig,
@@ -14,7 +14,7 @@ export const AnalyticsAiAgentAllAgentsFRTCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useAiAgentAllAgentsFRTTrend,
+        useTrend: useAiAgentAllAgentsDecreaseInFRTTrend,
         isAiAgentTrendCard: true,
         drillDownMetricName: AiAgentDrillDownMetricName.AllAgentsFRTCard,
     })
