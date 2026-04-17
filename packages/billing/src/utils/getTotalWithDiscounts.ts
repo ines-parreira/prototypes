@@ -1,14 +1,10 @@
-import type { ProductType, SelectedPlans } from '../types'
+import type { DiscountVO } from '@gorgias/helpdesk-types'
 
-type CouponSummaryLike = {
-    amount_off_in_cents: number | null
-    percent_off: number | null
-    products: ProductType[]
-}
+import type { ProductType, SelectedPlans } from '../types'
 
 export const getTotalWithDiscounts = (
     selectedPlans: SelectedPlans,
-    coupon: CouponSummaryLike | null,
+    discounts: DiscountVO[],
     totalCancelledAmount: number = 0,
     cancelledProducts: ProductType[] = [],
 ) => {
@@ -26,7 +22,7 @@ export const getTotalWithDiscounts = (
 
     const totalAmountAfterCancellations = totalAmount - totalCancelledAmount
 
-    if (!coupon) {
+    if (!discounts.length) {
         return {
             totalWithDiscounts: totalAmountAfterCancellations,
             totalWithoutDiscounts: totalAmountAfterCancellations,
@@ -34,50 +30,72 @@ export const getTotalWithDiscounts = (
         }
     }
 
-    const couponAppliesToAllProducts = coupon.products.length === 0
+    const sortedDiscounts = [...discounts].sort((a, b) => {
+        if (a.discount_applicability !== b.discount_applicability) {
+            return a.discount_applicability - b.discount_applicability
+        }
+        if (a.discount_type !== b.discount_type) {
+            // SDK types discount_type as a string enum but the API returns 1 (flat) or 2 (percentage).
+            // TODO: remove the cast once the SDK is updated.
+            return (
+                (a.discount_type as unknown as number) -
+                (b.discount_type as unknown as number)
+            )
+        }
+        return a.discount_object_type - b.discount_object_type
+    })
 
-    let amountEligibleForDiscount: number
+    // Exclude cancelled products upfront so their amounts never count toward
+    // discount eligibility, and sum(remainingByProduct) === totalAmountAfterCancellations.
+    // Keyed as string to avoid a TypeScript incompatibility between the local ProductType
+    // enum and the SDK's const-based ProductType used in DiscountVO.products.
+    const remainingByProduct = new Map<string, number>(
+        planAmountList.filter(([type]) => !cancelledProducts.includes(type)),
+    )
 
-    if (couponAppliesToAllProducts) {
-        amountEligibleForDiscount = totalAmountAfterCancellations
-    } else {
-        amountEligibleForDiscount = planAmountList.reduce(
-            (acc, [type, planAmount]) => {
-                if (!couponAppliesToProduct(coupon, type)) {
-                    return acc
-                }
+    let totalDiscountAmount = 0
 
-                if (cancelledProducts.includes(type)) {
-                    return acc
-                }
+    for (const discount of sortedDiscounts) {
+        const appliesToAllProducts = discount.products.length === 0
 
-                return acc + planAmount
-            },
-            0,
-        )
+        const eligibleAmount = appliesToAllProducts
+            ? Array.from(remainingByProduct.values()).reduce(
+                  (acc, amount) => acc + amount,
+                  0,
+              )
+            : discount.products.reduce(
+                  (acc, type) => acc + (remainingByProduct.get(type) ?? 0),
+                  0,
+              )
+
+        let discountAmount = 0
+        if (discount.amount_off_in_cents) {
+            discountAmount = discount.amount_off_in_cents
+        } else if (discount.percent_off) {
+            discountAmount = eligibleAmount * (discount.percent_off / 100)
+        }
+        discountAmount = Math.min(eligibleAmount, discountAmount)
+
+        if (discountAmount > 0 && eligibleAmount > 0) {
+            const ratio = discountAmount / eligibleAmount
+            const productTypes = appliesToAllProducts
+                ? Array.from(remainingByProduct.keys())
+                : discount.products.filter((type: string) =>
+                      remainingByProduct.has(type),
+                  )
+
+            for (const type of productTypes) {
+                const current = remainingByProduct.get(type) ?? 0
+                remainingByProduct.set(type, current * (1 - ratio))
+            }
+        }
+
+        totalDiscountAmount += discountAmount
     }
-
-    let discount = 0
-
-    if (coupon?.amount_off_in_cents) {
-        discount = coupon.amount_off_in_cents
-    }
-
-    if (coupon?.percent_off) {
-        const percentOff = coupon.percent_off / 100
-        discount = amountEligibleForDiscount * percentOff
-    }
-
-    discount = Math.min(amountEligibleForDiscount, discount)
 
     return {
-        totalWithDiscounts: totalAmountAfterCancellations - discount,
+        totalWithDiscounts: totalAmountAfterCancellations - totalDiscountAmount,
         totalWithoutDiscounts: totalAmountAfterCancellations,
-        discountAmount: discount,
+        discountAmount: totalDiscountAmount,
     }
 }
-
-const couponAppliesToProduct = (
-    coupon: CouponSummaryLike,
-    productType: ProductType,
-) => coupon.products?.includes(productType) ?? false

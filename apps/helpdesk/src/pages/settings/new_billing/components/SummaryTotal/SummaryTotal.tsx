@@ -1,12 +1,15 @@
 import { useMemo } from 'react'
 
-import { formatAmount, getTotalWithDiscounts } from '@repo/billing'
+import {
+    formatAmount,
+    getTotalWithDiscounts,
+    useBillingState,
+} from '@repo/billing'
 import type { SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import type { CouponSummary, Plan, ProductType } from 'models/billing/types'
-import { Cadence, SubscriptionStatus } from 'models/billing/types'
-import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
+import type { Plan, ProductType } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
 
 import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
@@ -106,24 +109,19 @@ function usePriceSummary(
         FeatureFlagKey.BillingSummaryTotalWithCoupons,
     )
 
-    const { data: billingState } = useBillingStateWithSideEffects()
-    const coupon: CouponSummary | null =
-        billingState?.subscription?.status === SubscriptionStatus.CANCELED
-            ? billingState?.customer?.coupon || null
-            : billingState?.subscription?.coupon ||
-              billingState?.customer?.coupon ||
-              null
+    const { data: billingState } = useBillingState()
+    const discounts = billingState?.subscription?.discounts
 
     const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
         useMemo(
             () =>
                 getTotalWithDiscounts(
                     selectedPlans,
-                    coupon,
+                    discounts ?? [],
                     totalCancelledAmount,
                     cancelledProducts,
                 ),
-            [coupon, selectedPlans, totalCancelledAmount, cancelledProducts],
+            [discounts, selectedPlans, totalCancelledAmount, cancelledProducts],
         )
     const showDiscountedPrice =
         billingSummaryTotalWithCouponsEnabled && discountAmount > 0

@@ -1,21 +1,25 @@
-import client from '@repo/api-resources'
 import type { SelectedPlans } from '@repo/billing'
+import { useBillingState } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
-import { Cadence, SubscriptionStatus } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SummaryTotal from '../SummaryTotal'
 
 jest.mock('@repo/feature-flags')
+jest.mock('@repo/billing', () => ({
+    ...jest.requireActual('@repo/billing'),
+    useBillingState: jest.fn(),
+}))
 
 const mockUseFlag = useFlag as jest.Mock
+const mockUseBillingState = useBillingState as jest.Mock
 
 const selectedPlans: SelectedPlans = {
     helpdesk: {
@@ -42,11 +46,10 @@ const totalProductAmountDifferent = totalProductAmount + 10000
 const cadence = Cadence.Month
 const currency = 'USD'
 
-const mockedServer = new MockAdapter(client)
-
 describe('SummaryTotal without coupons', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+        mockUseBillingState.mockReturnValue({ data: undefined })
     })
 
     it('should render total price without old price', () => {
@@ -79,22 +82,25 @@ describe('SummaryTotal without coupons', () => {
 describe('SummaryTotal with coupons', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(true)
+        mockUseBillingState.mockReturnValue({ data: undefined })
     })
 
-    it('should render subtotal and discount line if there is a coupon', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Test 100% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 100,
-                    products: [],
+    it('should render subtotal and discount line if there is a discount', async () => {
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Test 100% off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'percentage',
+                            percent_off: 100,
+                            products: [],
+                        },
+                    ],
                 },
             },
-            subscription: {},
         })
 
         renderWithStoreAndQueryClientAndRouter(
@@ -115,20 +121,23 @@ describe('SummaryTotal with coupons', () => {
     })
 
     it('should not render the discount line if the coupon discount amount is 0', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Test $0 off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: 0,
-                    amount_off_decimal: '0',
-                    percent_off: null,
-                    products: [],
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Test $0 off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'fixed_amount',
+                            amount_off_in_cents: 0,
+                            products: [],
+                        },
+                    ],
                 },
             },
-            subscription: {},
         })
+
         renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
@@ -146,32 +155,24 @@ describe('SummaryTotal with coupons', () => {
         })
     })
 
-    it('should prioritise using subscription.coupon over customer.coupon if both exist', async () => {
-        // discount line wouldn't be shown if customer.coupon was used as the discount amount would be 0
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Test $0 off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: 0,
-                    amount_off_decimal: '0',
-                    percent_off: null,
-                    products: [],
-                },
-            },
-            subscription: {
-                coupon: {
-                    name: 'Test 50% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 50,
-                    products: [],
+    it('should render subtotal and discount line with percentage discount from subscription.discounts', async () => {
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Test 50% off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'percentage',
+                            percent_off: 50,
+                            products: [],
+                        },
+                    ],
                 },
             },
         })
+
         renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
@@ -188,80 +189,67 @@ describe('SummaryTotal with coupons', () => {
     })
 
     it('should only render the total, without subtotal & discount line, if there is no coupon', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {},
-            subscription: {},
-        })
-
-        renderWithStoreAndQueryClientAndRouter(
-            <SummaryTotal
-                selectedPlans={selectedPlans}
-                totalProductAmount={totalProductAmount}
-                cadence={cadence}
-                currency={currency}
-            />,
-        )
-
-        await waitFor(() => {
-            expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
-            expect(
-                screen.queryByLabelText('Discount amount'),
-            ).not.toBeInTheDocument()
-            expect(screen.getByLabelText('Total price')).toBeInTheDocument()
-        })
-    })
-
-    it('should only render the total, without subtotal & discount line, if there is no customer or subscription in the billing state', async () => {
-        const mockEndpoint = jest.fn(() => [200, {}])
-
-        mockedServer.onGet('/billing/state').reply(mockEndpoint)
-
-        renderWithStoreAndQueryClientAndRouter(
-            <SummaryTotal
-                selectedPlans={selectedPlans}
-                totalProductAmount={totalProductAmount}
-                cadence={cadence}
-                currency={currency}
-            />,
-        )
-
-        await waitFor(() => {
-            // expect /billing/state to have been called
-            expect(mockEndpoint).toHaveBeenCalled()
-        })
-
-        await waitFor(() => {
-            expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
-            expect(
-                screen.queryByLabelText('Discount amount'),
-            ).not.toBeInTheDocument()
-            expect(screen.getByLabelText('Total price')).toBeInTheDocument()
-        })
-    })
-
-    it('should use customer.coupon when subscription status is CANCELED', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Customer 30% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 30,
-                    products: [],
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [],
                 },
             },
-            subscription: {
-                status: SubscriptionStatus.CANCELED,
-                coupon: {
-                    name: 'Subscription 50% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 50,
-                    products: [],
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Discount amount'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByLabelText('Total price')).toBeInTheDocument()
+        })
+    })
+
+    it('should only render the total, without subtotal & discount line, if there is no subscription in the billing state', async () => {
+        mockUseBillingState.mockReturnValue({ data: {} })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Discount amount'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByLabelText('Total price')).toBeInTheDocument()
+        })
+    })
+
+    it('should apply a 30% discount from subscription.discounts', async () => {
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: '30% off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'percentage',
+                            percent_off: 30,
+                            products: [],
+                        },
+                    ],
                 },
             },
         })
@@ -278,35 +266,25 @@ describe('SummaryTotal with coupons', () => {
         await waitFor(() => {
             expect(screen.queryByLabelText('Subtotal')).toBeVisible()
             expect(screen.queryByLabelText('Discount amount')).toBeVisible()
-            // Verify the discount is 30% (customer coupon) not 50% (subscription coupon)
             const discountElement = screen.getByLabelText('Discount amount')
             expect(discountElement).toHaveTextContent('- $27')
         })
     })
 
-    it('should use subscription.coupon when subscription status is not CANCELED', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Customer 30% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 30,
-                    products: [],
-                },
-            },
-            subscription: {
-                status: 'active',
-                coupon: {
-                    name: 'Subscription 50% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 50,
-                    products: [],
+    it('should apply a 50% discount from subscription.discounts', async () => {
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: '50% off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'percentage',
+                            percent_off: 50,
+                            products: [],
+                        },
+                    ],
                 },
             },
         })
@@ -323,27 +301,26 @@ describe('SummaryTotal with coupons', () => {
         await waitFor(() => {
             expect(screen.queryByLabelText('Subtotal')).toBeVisible()
             expect(screen.queryByLabelText('Discount amount')).toBeVisible()
-            // Verify the discount is 50% (subscription coupon) not 30% (customer coupon)
             const discountElement = screen.getByLabelText('Discount amount')
             expect(discountElement).toHaveTextContent('- $45')
         })
     })
 
-    it('should use customer.coupon when subscription is CANCELED and no subscription.coupon exists', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Customer 25% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 25,
-                    products: [],
+    it('should apply a 25% discount from subscription.discounts', async () => {
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: '25% off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'percentage',
+                            percent_off: 25,
+                            products: [],
+                        },
+                    ],
                 },
-            },
-            subscription: {
-                status: SubscriptionStatus.CANCELED,
             },
         })
 
@@ -421,19 +398,21 @@ describe('SummaryTotal with coupons', () => {
     })
 
     it('should correctly calculate discount with amount_off_in_cents coupon', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Fixed $50 off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: 5000, // $50 off
-                    amount_off_decimal: '50',
-                    percent_off: null,
-                    products: [],
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Fixed $50 off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'fixed_amount',
+                            amount_off_in_cents: 5000,
+                            products: [],
+                        },
+                    ],
                 },
             },
-            subscription: {},
         })
 
         renderWithStoreAndQueryClientAndRouter(
@@ -454,21 +433,21 @@ describe('SummaryTotal with coupons', () => {
     })
 
     it('should correctly calculate discount with amount_off_decimal coupon', async () => {
-        // Since getTotalWithDiscounts doesn't handle amount_off_decimal,
-        // we'll test with amount_off_in_cents instead
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Fixed $75.50 off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: 7550, // $75.50 in cents
-                    amount_off_decimal: '75.50',
-                    percent_off: null,
-                    products: [],
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Fixed $75.50 off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'fixed_amount',
+                            amount_off_in_cents: 7550,
+                            products: [],
+                        },
+                    ],
                 },
             },
-            subscription: {},
         })
 
         renderWithStoreAndQueryClientAndRouter(
@@ -489,19 +468,21 @@ describe('SummaryTotal with coupons', () => {
     })
 
     it('should handle coupon with products restriction correctly', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Helpdesk only 20% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 20,
-                    products: ['helpdesk'],
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Helpdesk only 20% off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'percentage',
+                            percent_off: 20,
+                            products: ['helpdesk'],
+                        },
+                    ],
                 },
             },
-            subscription: {},
         })
 
         renderWithStoreAndQueryClientAndRouter(
@@ -522,11 +503,12 @@ describe('SummaryTotal with coupons', () => {
         })
     })
 
-    it('should not show discount when subscription is CANCELED and no coupons exist', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {},
-            subscription: {
-                status: SubscriptionStatus.CANCELED,
+    it('should not show discount when there are no discounts in subscription', async () => {
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [],
+                },
             },
         })
 
@@ -549,19 +531,21 @@ describe('SummaryTotal with coupons', () => {
     })
 
     it('should handle edge case when discount amount exceeds total price', async () => {
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Fixed $10000 off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: 1000000, // $10,000 off (more than total)
-                    amount_off_decimal: '10000',
-                    percent_off: null,
-                    products: [],
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Fixed $10000 off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'fixed_amount',
+                            amount_off_in_cents: 1000000,
+                            products: [],
+                        },
+                    ],
                 },
             },
-            subscription: {},
         })
 
         renderWithStoreAndQueryClientAndRouter(
@@ -585,19 +569,21 @@ describe('SummaryTotal with coupons', () => {
     it('should subtract totalCancelledAmount from subtotal and total with discounts', async () => {
         const totalCancelledAmount = 3000
 
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Test 50% off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: null,
-                    amount_off_decimal: null,
-                    percent_off: 50,
-                    products: [],
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Test 50% off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'percentage',
+                            percent_off: 50,
+                            products: [],
+                        },
+                    ],
                 },
             },
-            subscription: {},
         })
 
         renderWithStoreAndQueryClientAndRouter(
@@ -607,6 +593,7 @@ describe('SummaryTotal with coupons', () => {
                 cadence={cadence}
                 currency={currency}
                 totalCancelledAmount={totalCancelledAmount}
+                cancelledProducts={[ProductType.Automation]}
             />,
         )
 
@@ -619,7 +606,8 @@ describe('SummaryTotal with coupons', () => {
             const subtotalElement = screen.getByLabelText('Subtotal')
             expect(subtotalElement).toHaveTextContent(`$${expectedSubtotal}`)
 
-            // Discount is now calculated on the amount after cancellations
+            // Automation (3000) is excluded from remainingByProduct, so the 50%
+            // discount is applied only to the helpdesk plan (6000 = post-cancellation amount).
             const expectedDiscount =
                 ((totalProductAmount - totalCancelledAmount) / 100) * 0.5
             const discountElement = screen.getByLabelText('Discount amount')
@@ -632,21 +620,23 @@ describe('SummaryTotal with coupons', () => {
     })
 
     it('should subtract totalCancelledAmount from total with amount_off_in_cents coupon', async () => {
-        const totalCancelledAmount = 2000
+        const totalCancelledAmount = basicMonthlyAutomationPlan.amount
 
-        mockedServer.onGet('/billing/state').reply(200, {
-            customer: {
-                coupon: {
-                    name: 'Fixed $20 off',
-                    duration: 'forever',
-                    duration_in_months: null,
-                    amount_off_in_cents: 2000,
-                    amount_off_decimal: '20',
-                    percent_off: null,
-                    products: [],
+        mockUseBillingState.mockReturnValue({
+            data: {
+                subscription: {
+                    discounts: [
+                        {
+                            coupon_name: 'Fixed $20 off',
+                            discount_applicability: 1,
+                            discount_object_type: 1,
+                            discount_type: 'fixed_amount',
+                            amount_off_in_cents: 2000,
+                            products: [],
+                        },
+                    ],
                 },
             },
-            subscription: {},
         })
 
         renderWithStoreAndQueryClientAndRouter(
@@ -656,6 +646,7 @@ describe('SummaryTotal with coupons', () => {
                 cadence={cadence}
                 currency={currency}
                 totalCancelledAmount={totalCancelledAmount}
+                cancelledProducts={[ProductType.Automation]}
             />,
         )
 
@@ -668,6 +659,7 @@ describe('SummaryTotal with coupons', () => {
             const subtotalElement = screen.getByLabelText('Subtotal')
             expect(subtotalElement).toHaveTextContent(`$${expectedSubtotal}`)
 
+            // Automation is cancelled so only helpdesk (6000) is eligible for the $20 discount.
             const expectedTotal =
                 (totalProductAmount - totalCancelledAmount - 2000) / 100
             const totalElement = screen.getByLabelText('Total price')
