@@ -41,6 +41,7 @@ const defaultView = mockView({
     type: 'ticket-list',
     slug: 'inbox',
     section_id: null,
+    decoration: null,
 })
 
 const hiddenDefaultView = mockView({

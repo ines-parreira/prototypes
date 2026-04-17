@@ -52,7 +52,7 @@ export function TicketNavbarCreateMenu() {
     } = usePlaceCallButton()
 
     return (
-        <>
+        <Box>
             <Menu
                 trigger={({ isOpen }) =>
                     isCollapsed ? (
@@ -76,7 +76,7 @@ export function TicketNavbarCreateMenu() {
                                 <DropdownIcon isOpen={isOpen} size="xs" />
                             }
                         >
-                            Create
+                            <Box width={184}>Create</Box>
                         </Button>
                     )
                 }
@@ -146,6 +146,6 @@ export function TicketNavbarCreateMenu() {
                 setIsOpen={setIsDeviceVisible}
                 target={buttonRef}
             />
-        </>
+        </Box>
     )
 }

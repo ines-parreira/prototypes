@@ -27,7 +27,8 @@
         &[aria-current='page'] {
             background: var(--surface-accent-default);
             border: none;
-            color: var(--content-accent-default) !important;
+            color: var(--content-selected-accent) !important;
+            font-weight: 600;
         }
 
         &[aria-current='page']:hover {
@@ -38,5 +39,21 @@
     .label,
     .title {
         min-width: 0;
+    }
+
+    .header {
+        .actionsSlot {
+            opacity: 0;
+        }
+
+        &:hover {
+            .actionsSlot {
+                opacity: 1;
+            }
+        }
+
+        .actionsSlot:has([data-pressed]) {
+            opacity: 1;
+        }
     }
 }

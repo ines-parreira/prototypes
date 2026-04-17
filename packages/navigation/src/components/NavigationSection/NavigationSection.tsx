@@ -9,6 +9,7 @@ import {
     Disclosure,
     DisclosureHeader,
     DisclosurePanel,
+    DropdownIcon,
     Icon,
     isIconName,
     OverflowTooltip,
@@ -105,6 +106,7 @@ export function NavigationSection(props: NavigationSectionProps) {
                         width="100%"
                         justifyContent="space-between"
                         gap="xs"
+                        className={css.header}
                     >
                         <Box
                             paddingBottom="xxxs"
@@ -118,7 +120,7 @@ export function NavigationSection(props: NavigationSectionProps) {
                                 </Text>
                             </OverflowTooltip>
                         </Box>
-                        {actionsSlot}
+                        <Box className={css.actionsSlot}>{actionsSlot}</Box>
                     </Box>
                 }
                 paddingLeft="xs"
@@ -126,15 +128,7 @@ export function NavigationSection(props: NavigationSectionProps) {
                 leadingSlot={leadingSlot}
                 trailingSlot={({ isExpanded }) => (
                     <Box alignItems="center" gap="xs">
-                        <Icon
-                            name={
-                                isExpanded
-                                    ? 'arrow-chevron-up'
-                                    : 'arrow-chevron-down'
-                            }
-                            size="sm"
-                            color="content-neutral-tertiary"
-                        />
+                        <DropdownIcon isOpen={isExpanded} />
                         {trailingSlot && isIconName(trailingSlot) ? (
                             <Icon name={trailingSlot} size="sm" />
                         ) : (
