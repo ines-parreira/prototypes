@@ -162,6 +162,36 @@ describe('ChatPreviewPanel', () => {
                 screen.queryByTestId('button-group-item-homepage'),
             ).not.toBeInTheDocument()
         })
+
+        it('renders a warning banner when appId is null', () => {
+            renderComponent(null)
+
+            expect(
+                screen.getByText(
+                    'Connect a Chat or Help Center to your store to use this feature.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render warning banner when appId is provided', () => {
+            renderComponent('some-app-id')
+
+            expect(
+                screen.queryByText(
+                    'Connect a Chat or Help Center to your store to use this feature.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders custom headerActions when provided', () => {
+            renderComponent('some-app-id', {
+                headerActions: <button>Custom Action</button>,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'Custom Action' }),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('page navigation', () => {

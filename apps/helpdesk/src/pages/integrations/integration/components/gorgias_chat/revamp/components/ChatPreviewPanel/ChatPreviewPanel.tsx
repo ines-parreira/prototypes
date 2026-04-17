@@ -9,6 +9,7 @@ import {
 } from 'react'
 
 import {
+    Banner,
     Box,
     ButtonGroup,
     ButtonGroupItem,
@@ -258,27 +259,28 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                     className={css.header}
                 >
                     <Text variant={TextVariant.Medium}>Chat preview</Text>
-                    {headerActions ?? (
-                        <ButtonGroup
-                            selectedKey={selectedPage}
-                            defaultSelectedKey="homepage"
-                            onSelectionChange={handlePageChange}
-                        >
-                            <ButtonGroupItem
-                                id="homepage"
-                                icon={<Icon name="nav-home" />}
-                            />
-                            <ButtonGroupItem
-                                id="conversation"
-                                icon={
-                                    <Icon name="comm-chat-conversation-circle" />
-                                }
-                            />
-                        </ButtonGroup>
-                    )}
+                    {headerActions ??
+                        (appId && (
+                            <ButtonGroup
+                                selectedKey={selectedPage}
+                                defaultSelectedKey="homepage"
+                                onSelectionChange={handlePageChange}
+                            >
+                                <ButtonGroupItem
+                                    id="homepage"
+                                    icon={<Icon name="nav-home" />}
+                                />
+                                <ButtonGroupItem
+                                    id="conversation"
+                                    icon={
+                                        <Icon name="comm-chat-conversation-circle" />
+                                    }
+                                />
+                            </ButtonGroup>
+                        ))}
                 </Box>
-                <Box flexGrow={1} className={css.content}>
-                    {appId && (
+                <Box flexGrow={appId ? 1 : 0} className={css.content}>
+                    {appId ? (
                         <ChatPreview
                             key={chatPreviewKey}
                             ref={chatPreviewRef}
@@ -286,6 +288,15 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                             language={locale}
                             onLoaded={onLoaded}
                         />
+                    ) : (
+                        <Box p="md">
+                            <Banner
+                                intent="warning"
+                                icon="triangle-warning"
+                                isClosable={false}
+                                title="Connect a Chat or Help Center to your store to use this feature."
+                            />
+                        </Box>
                     )}
                 </Box>
             </Box>
