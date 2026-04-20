@@ -19,6 +19,15 @@
             right: calc(-1 * var(--spacing-xs));
             pointer-events: auto;
         }
+
+        > :not([data-placement]) {
+            position: relative;
+            z-index: 1;
+        }
+
+        > [data-placement] {
+            z-index: 2;
+        }
     }
 
     .groupedMessages {
@@ -42,6 +51,15 @@
             left: calc(-1 * var(--spacing-xs));
             right: calc(-1 * var(--spacing-xs));
             pointer-events: auto;
+        }
+
+        > :not([data-placement]) {
+            position: relative;
+            z-index: 1;
+        }
+
+        > [data-placement] {
+            z-index: 2;
         }
 
         &:hover {
