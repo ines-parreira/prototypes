@@ -10,7 +10,6 @@ import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscribe
 import css from 'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbar.less'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import { STATS_ROUTES } from 'routes/constants'
-import { analyticsSections } from 'routes/layout/products/analytics'
 
 const CAMPAIGNS_PATH = `/app/stats/${STATS_ROUTES.CONVERT_CAMPAIGNS}`
 
@@ -22,14 +21,8 @@ export const ConvertStatsNavbar = () => {
     const closeModal = () => setISubscriptionModalOpen(false)
 
     return (
-        <Navigation.Section
-            value={analyticsSections[StatsNavbarViewSections.Convert].id}
-            icon={analyticsSections[StatsNavbarViewSections.Convert].icon}
-        >
-            <Navigation.SectionTrigger
-                data-candu-id="navbar-block-convert"
-                icon={analyticsSections[StatsNavbarViewSections.Convert].icon}
-            >
+        <Navigation.Section value={StatsNavbarViewSections.Convert}>
+            <Navigation.SectionTrigger data-candu-id="navbar-block-convert">
                 <span className={css.sectionTriggerTitle}>Convert</span>
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>

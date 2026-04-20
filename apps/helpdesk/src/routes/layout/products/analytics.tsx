@@ -59,7 +59,7 @@ export const analyticsSections: Record<
 > = {
     [StatsNavbarViewSections.Automate]: {
         id: 'automate',
-        label: 'Automate',
+        label: 'AI & automation',
         icon: 'zap',
     },
     [StatsNavbarViewSections.Convert]: {
@@ -74,22 +74,22 @@ export const analyticsSections: Record<
     },
     [StatsNavbarViewSections.Live]: {
         id: 'live',
-        label: 'Live',
+        label: 'Real-time monitoring',
         icon: 'system-monitor-play',
     },
     [StatsNavbarViewSections.SupportPerformance]: {
         id: 'support-performance',
-        label: 'Support Performance',
+        label: 'Support performance',
         icon: 'user-check',
     },
     [StatsNavbarViewSections.TicketInsights]: {
         id: 'ticket-insights',
-        label: 'Ticket insights',
+        label: 'Insights',
         icon: 'inbox',
     },
     [StatsNavbarViewSections.QualityManagement]: {
         id: 'quality-management',
-        label: 'Quality management',
+        label: 'Quality',
         icon: 'wavy-check',
     },
     [StatsNavbarViewSections.Voice]: {
@@ -171,6 +171,98 @@ export function useStatsNavbarConfig() {
                         : dashboard.name,
                 })),
             },
+            {
+                id: StatsNavbarViewSections.Automate,
+                label: analyticsSections[StatsNavbarViewSections.Automate]
+                    .label,
+                icon: analyticsSections[StatsNavbarViewSections.Automate].icon,
+                items: hasAccess
+                    ? [
+                          ...(isAnalyticsDashboardsNewScreensEnabled
+                              ? [
+                                    {
+                                        id: 'analytics-overview',
+                                        route: STATS_ROUTES.ANALYTICS_OVERVIEW,
+                                        label: PAGE_TITLE_OVERVIEW,
+                                        trailingSlot: (
+                                            <Tag color="grey">Beta</Tag>
+                                        ),
+                                    },
+                                    {
+                                        id: 'analytics-ai-agent',
+                                        route: STATS_ROUTES.ANALYTICS_AI_AGENT,
+                                        label: PAGE_TITLE_AI_AGENT,
+                                        trailingSlot: (
+                                            <Tag color="grey">Beta</Tag>
+                                        ),
+                                    },
+                                ]
+                              : []),
+                          {
+                              id: 'automate-overview',
+                              route: STATS_ROUTES.AI_AGENT_OVERVIEW,
+                              label: PAGE_TITLE_OVERVIEW,
+                          },
+                          ...(isAiAgentStatsPageEnabled
+                              ? [
+                                    {
+                                        id: 'automate-ai-agent',
+                                        route: STATS_ROUTES.AUTOMATE_AI_AGENTS,
+                                        label: PAGE_TITLE_AI_AGENT,
+                                    },
+                                ]
+                              : []),
+                          {
+                              id: 'ai-sales-agent',
+                              route: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
+                              label: LINK_AI_SALES_AGENT_TEXT,
+                              requiresUpgrade: !canUseAiSalesAgent,
+                          },
+                          {
+                              id: 'performance-by-features',
+                              route: ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
+                              label: PAGE_TITLE_PERFORMANCE_BY_FEATURES,
+                          },
+                      ]
+                    : [
+                          {
+                              id: 'automate-overview',
+                              route: STATS_ROUTES.AI_AGENT_OVERVIEW,
+                              label: PAGE_TITLE_OVERVIEW,
+                              requiresUpgrade: true,
+                          },
+                      ],
+            },
+            ...(isNewSatisfactionReportEnabled
+                ? [
+                      {
+                          id: StatsNavbarViewSections.QualityManagement,
+                          label: analyticsSections[
+                              StatsNavbarViewSections.QualityManagement
+                          ].label,
+                          icon: analyticsSections[
+                              StatsNavbarViewSections.QualityManagement
+                          ].icon,
+                          sectionCanduId: 'navbar-block-quality-management',
+                          items: [
+                              ...(isAutoQANavLinkAvailable
+                                  ? [
+                                        {
+                                            id: 'auto-qa',
+                                            route: STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA,
+                                            label: 'Auto QA',
+                                        },
+                                    ]
+                                  : []),
+                              {
+                                  id: 'quality-management-satisfaction',
+                                  route: STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION,
+                                  label: 'Satisfaction',
+                              },
+                          ],
+                      },
+                  ]
+                : []),
             {
                 id: StatsNavbarViewSections.SupportPerformance,
                 label: analyticsSections[
@@ -274,111 +366,6 @@ export function useStatsNavbarConfig() {
                     },
                 ],
             },
-            ...(isNewSatisfactionReportEnabled
-                ? [
-                      {
-                          id: StatsNavbarViewSections.QualityManagement,
-                          label: analyticsSections[
-                              StatsNavbarViewSections.QualityManagement
-                          ].label,
-                          icon: analyticsSections[
-                              StatsNavbarViewSections.QualityManagement
-                          ].icon,
-                          sectionCanduId: 'navbar-block-quality-management',
-                          items: [
-                              ...(isAutoQANavLinkAvailable
-                                  ? [
-                                        {
-                                            id: 'auto-qa',
-                                            route: STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA,
-                                            label: 'Auto QA',
-                                        },
-                                    ]
-                                  : []),
-                              {
-                                  id: 'quality-management-satisfaction',
-                                  route: STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION,
-                                  label: 'Satisfaction',
-                              },
-                          ],
-                      },
-                  ]
-                : []),
-            {
-                id: StatsNavbarViewSections.Automate,
-                label: analyticsSections[StatsNavbarViewSections.Automate]
-                    .label,
-                icon: analyticsSections[StatsNavbarViewSections.Automate].icon,
-                items: hasAccess
-                    ? [
-                          ...(isAnalyticsDashboardsNewScreensEnabled
-                              ? [
-                                    {
-                                        id: 'analytics-overview',
-                                        route: STATS_ROUTES.ANALYTICS_OVERVIEW,
-                                        label: PAGE_TITLE_OVERVIEW,
-                                        trailingSlot: (
-                                            <Tag color="grey">Beta</Tag>
-                                        ),
-                                    },
-                                    {
-                                        id: 'analytics-ai-agent',
-                                        route: STATS_ROUTES.ANALYTICS_AI_AGENT,
-                                        label: PAGE_TITLE_AI_AGENT,
-                                        trailingSlot: (
-                                            <Tag color="grey">Beta</Tag>
-                                        ),
-                                    },
-                                ]
-                              : []),
-                          {
-                              id: 'automate-overview',
-                              route: STATS_ROUTES.AI_AGENT_OVERVIEW,
-                              label: PAGE_TITLE_OVERVIEW,
-                          },
-                          ...(isAiAgentStatsPageEnabled
-                              ? [
-                                    {
-                                        id: 'automate-ai-agent',
-                                        route: STATS_ROUTES.AUTOMATE_AI_AGENTS,
-                                        label: PAGE_TITLE_AI_AGENT,
-                                    },
-                                ]
-                              : []),
-                          {
-                              id: 'ai-sales-agent',
-                              route: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
-                              label: LINK_AI_SALES_AGENT_TEXT,
-                              requiresUpgrade: !canUseAiSalesAgent,
-                          },
-                          {
-                              id: 'performance-by-features',
-                              route: ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
-                              label: PAGE_TITLE_PERFORMANCE_BY_FEATURES,
-                          },
-                      ]
-                    : [
-                          {
-                              id: 'automate-overview',
-                              route: STATS_ROUTES.AI_AGENT_OVERVIEW,
-                              label: PAGE_TITLE_OVERVIEW,
-                              requiresUpgrade: true,
-                          },
-                      ],
-            },
-            {
-                id: StatsNavbarViewSections.Convert,
-                label: analyticsSections[StatsNavbarViewSections.Convert].label,
-                icon: analyticsSections[StatsNavbarViewSections.Convert].icon,
-                items: [
-                    {
-                        id: 'convert-campaigns',
-                        route: STATS_ROUTES.CONVERT_CAMPAIGNS,
-                        label: 'Campaigns',
-                        requiresUpgrade: !isConvertSubscriber,
-                    },
-                ],
-            },
             {
                 id: StatsNavbarViewSections.Voice,
                 label: analyticsSections[StatsNavbarViewSections.Voice].label,
@@ -396,6 +383,19 @@ export function useStatsNavbarConfig() {
                         route: STATS_ROUTES.VOICE_AGENTS,
                         label: 'Agents',
                         requiresUpgrade: !hasVoiceFeature,
+                    },
+                ],
+            },
+            {
+                id: StatsNavbarViewSections.Convert,
+                label: analyticsSections[StatsNavbarViewSections.Convert].label,
+                icon: analyticsSections[StatsNavbarViewSections.Convert].icon,
+                items: [
+                    {
+                        id: 'convert-campaigns',
+                        route: STATS_ROUTES.CONVERT_CAMPAIGNS,
+                        label: 'Campaigns',
+                        requiresUpgrade: !isConvertSubscriber,
                     },
                 ],
             },

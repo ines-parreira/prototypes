@@ -113,7 +113,7 @@ describe('SidebarProductHeader', () => {
             ])
         })
 
-        it('should not render Marketing menu item when AiJourneyEnabled flag is off', async () => {
+        it('should not render AI Journey menu item when AiJourneyEnabled flag is off', async () => {
             const user = userEvent.setup()
             mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
                 key === FeatureFlagKey.AiJourneyEnabled ? false : false,
@@ -124,11 +124,11 @@ describe('SidebarProductHeader', () => {
             const menu = await openProductMenu(user)
 
             expect(
-                within(menu).queryByText('Marketing'),
+                within(menu).queryByText('AI Journey'),
             ).not.toBeInTheDocument()
         })
 
-        it('should render Marketing menu item when AiJourneyEnabled flag is on', async () => {
+        it('should render AI Journey menu item when AiJourneyEnabled flag is on', async () => {
             const user = userEvent.setup()
             mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
                 key === FeatureFlagKey.AiJourneyEnabled ? true : false,
@@ -138,7 +138,7 @@ describe('SidebarProductHeader', () => {
 
             const menu = await openProductMenu(user)
 
-            expect(within(menu).getByText('Marketing')).toBeInTheDocument()
+            expect(within(menu).getByText('AI Journey')).toBeInTheDocument()
         })
 
         it('should render AI Agent menu item with Upgrade badge when user has no access', async () => {

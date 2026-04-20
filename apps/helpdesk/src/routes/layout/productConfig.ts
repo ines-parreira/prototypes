@@ -76,7 +76,7 @@ export const productConfig: Record<Product, ProductConfig> = {
     },
     [Product.Marketing]: {
         id: Product.Marketing,
-        name: 'Marketing',
+        name: 'AI Journey',
         productType: 'primary',
         sidebar: MarketingSidebar,
         urlPatterns: ['ai-journey'],
