@@ -11,8 +11,8 @@ type TestResult = {
 
 // Transform flat variable paths into nested objects
 // e.g., { 'a.b.c': 'value' } becomes { a: { b: { c: 'value' } } }
-const transformVariablesToNestedObject = (
-    variables: Record<string, string>,
+export const transformVariablesToNestedObject = (
+    variables: Record<string, string | null>,
 ): Record<string, any> => {
     const result: Record<string, any> = {}
 
@@ -41,13 +41,15 @@ const useSendTestLiquidTemplate = (
     const [isLoading, setIsLoading] = useState(false)
 
     const sendTestRequest = useCallback(
-        async (variables: Record<string, string> = {}) => {
+        async (variables: Record<string, string | null> = {}) => {
             setIsLoading(true)
 
             try {
-                // Replace workflow variables [[var]] with their values
                 let processedTemplate = nodeData.template
                 for (const [variablePath, value] of Object.entries(variables)) {
+                    if (value === null) {
+                        continue
+                    }
                     processedTemplate = processedTemplate.replace(
                         new RegExp(
                             `\\[\\[\\s*${variablePath.replace(/\./g, '\\.')}\\s*\\]\\]`,

@@ -91,6 +91,22 @@ describe('<TestLiquidTemplateModal />', () => {
             ).toBeInTheDocument()
         })
 
+        it('should show helper text indicating empty fields are sent as null', () => {
+            render(<TestLiquidTemplateModal {...defaultProps} />)
+
+            expect(
+                screen.getByText('Leave empty to send as null'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show null helper text when no variables are present', () => {
+            render(<TestLiquidTemplateModal {...defaultProps} variables={[]} />)
+
+            expect(
+                screen.queryByText('Leave empty to send as null'),
+            ).not.toBeInTheDocument()
+        })
+
         it('should show no variables message when no variables are provided', () => {
             render(<TestLiquidTemplateModal {...defaultProps} variables={[]} />)
 
@@ -176,12 +192,11 @@ describe('<TestLiquidTemplateModal />', () => {
     })
 
     describe('test button behavior', () => {
-        it('should disable test button when required fields are empty', () => {
+        it('should enable test button even when fields are empty to allow null inputs', () => {
             render(<TestLiquidTemplateModal {...defaultProps} />)
 
             const testButton = screen.getByRole('button', { name: /test/i })
-            // The button uses aria-disabled instead of disabled attribute
-            expect(testButton).toHaveAttribute('aria-disabled', 'true')
+            expect(testButton).not.toHaveAttribute('aria-disabled', 'true')
         })
 
         it('should enable test button when all required fields are filled', async () => {
@@ -205,6 +220,33 @@ describe('<TestLiquidTemplateModal />', () => {
             expect(testButton).not.toBeDisabled()
         })
 
+        it('should enable test button when only some fields are filled', async () => {
+            const user = userEvent.setup()
+            render(<TestLiquidTemplateModal {...defaultProps} />)
+
+            const customerNameInput = screen.getByLabelText('Customer Name')
+            await user.type(customerNameInput, 'John Doe')
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            expect(testButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should call sendTestRequest with null for empty variable inputs', async () => {
+            const user = userEvent.setup()
+            render(<TestLiquidTemplateModal {...defaultProps} />)
+
+            const customerNameInput = screen.getByLabelText('Customer Name')
+            await user.type(customerNameInput, 'John Doe')
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await user.click(testButton)
+
+            expect(mockSendTestRequest).toHaveBeenCalledWith({
+                'customer.name': 'John Doe',
+                'order.total': null,
+            })
+        })
+
         it('should call sendTestRequest when test button is clicked', async () => {
             const user = userEvent.setup()
             render(<TestLiquidTemplateModal {...defaultProps} />)
@@ -221,6 +263,19 @@ describe('<TestLiquidTemplateModal />', () => {
             expect(mockSendTestRequest).toHaveBeenCalledWith({
                 'customer.name': 'John Doe',
                 'order.total': '$99.99',
+            })
+        })
+
+        it('should call sendTestRequest with all null values when no fields are filled', async () => {
+            const user = userEvent.setup()
+            render(<TestLiquidTemplateModal {...defaultProps} />)
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await user.click(testButton)
+
+            expect(mockSendTestRequest).toHaveBeenCalledWith({
+                'customer.name': null,
+                'order.total': null,
             })
         })
 

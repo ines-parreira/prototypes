@@ -1,6 +1,8 @@
 import { act, renderHook } from '@testing-library/react'
 
-import useSendTestLiquidTemplate from '../useSendTestLiquidTemplate'
+import useSendTestLiquidTemplate, {
+    transformVariablesToNestedObject,
+} from '../useSendTestLiquidTemplate'
 
 // Mock the workflows API client
 const mockValidateStep = jest.fn()
@@ -113,6 +115,30 @@ describe('useSendTestLiquidTemplate', () => {
             expect(mockResponse).toHaveBeenCalledWith({
                 success: false,
                 error: 'Invalid liquid syntax\nMissing variable',
+            })
+        })
+
+        it('should handle missing validation_errors field', async () => {
+            const mockResponse = jest.fn()
+            mockValidateStep.mockResolvedValue({
+                data: {
+                    valid: false,
+                },
+            })
+
+            const { result } = renderHook(() =>
+                useSendTestLiquidTemplate(mockNodeData, mockResponse),
+            )
+
+            await act(async () => {
+                await result.current.sendTestRequest({
+                    'customer.name': 'John Doe',
+                })
+            })
+
+            expect(mockResponse).toHaveBeenCalledWith({
+                success: false,
+                error: 'Template validation failed',
             })
         })
 
@@ -303,6 +329,34 @@ describe('useSendTestLiquidTemplate', () => {
     })
 
     describe('edge cases and missing scenarios', () => {
+        it('should default to empty variables when called without arguments', async () => {
+            const mockResponse = jest.fn()
+            mockValidateStep.mockResolvedValue({
+                data: {
+                    valid: true,
+                    execution_result: {
+                        success: true,
+                        output: { value: 'No variables template' },
+                    },
+                },
+            })
+
+            const { result } = renderHook(() =>
+                useSendTestLiquidTemplate(mockNodeData, mockResponse),
+            )
+
+            await act(async () => {
+                await result.current.sendTestRequest()
+            })
+
+            expect(mockValidateStep).toHaveBeenCalledWith(
+                null,
+                expect.objectContaining({
+                    execution_context: {},
+                }),
+            )
+        })
+
         it('should handle empty variables object', async () => {
             const mockResponse = jest.fn()
             mockValidateStep.mockResolvedValue({
@@ -562,6 +616,121 @@ describe('useSendTestLiquidTemplate', () => {
             })
         })
 
+        it('should handle null variable values by passing them as null in execution context', async () => {
+            const mockResponse = jest.fn()
+            mockValidateStep.mockResolvedValue({
+                data: {
+                    valid: true,
+                    execution_result: {
+                        success: true,
+                        output: { value: 'Hello ' },
+                    },
+                },
+            })
+
+            const { result } = renderHook(() =>
+                useSendTestLiquidTemplate(mockNodeData, mockResponse),
+            )
+
+            await act(async () => {
+                await result.current.sendTestRequest({
+                    'customer.name': null,
+                })
+            })
+
+            expect(mockValidateStep).toHaveBeenCalledWith(
+                null,
+                expect.objectContaining({
+                    execution_context: {
+                        customer: { name: null },
+                    },
+                }),
+            )
+        })
+
+        it('should not replace template variables that have null values', async () => {
+            const mockResponse = jest.fn()
+            mockValidateStep.mockResolvedValue({
+                data: {
+                    valid: true,
+                    execution_result: {
+                        success: true,
+                        output: { value: 'Test output' },
+                    },
+                },
+            })
+
+            const nodeDataWithMultipleVars = {
+                ...mockNodeData,
+                template:
+                    'Hello [[ customer.name ]] your order is [[ order.total ]]',
+            }
+
+            const { result } = renderHook(() =>
+                useSendTestLiquidTemplate(
+                    nodeDataWithMultipleVars,
+                    mockResponse,
+                ),
+            )
+
+            await act(async () => {
+                await result.current.sendTestRequest({
+                    'customer.name': 'John',
+                    'order.total': null,
+                })
+            })
+
+            expect(mockValidateStep).toHaveBeenCalledWith(
+                null,
+                expect.objectContaining({
+                    step: expect.objectContaining({
+                        settings: expect.objectContaining({
+                            template:
+                                'Hello John your order is [[ order.total ]]',
+                        }),
+                    }),
+                    execution_context: {
+                        customer: { name: 'John' },
+                        order: { total: null },
+                    },
+                }),
+            )
+        })
+
+        it('should handle all null variable values', async () => {
+            const mockResponse = jest.fn()
+            mockValidateStep.mockResolvedValue({
+                data: {
+                    valid: true,
+                    execution_result: {
+                        success: true,
+                        output: { value: 'Test output' },
+                    },
+                },
+            })
+
+            const { result } = renderHook(() =>
+                useSendTestLiquidTemplate(mockNodeData, mockResponse),
+            )
+
+            await act(async () => {
+                await result.current.sendTestRequest({
+                    'customer.name': null,
+                })
+            })
+
+            expect(mockValidateStep).toHaveBeenCalledWith(
+                null,
+                expect.objectContaining({
+                    step: expect.objectContaining({
+                        settings: expect.objectContaining({
+                            template: 'Hello [[ customer.name ]]',
+                        }),
+                    }),
+                }),
+            )
+        })
+
         it('should handle null and undefined error objects', async () => {
             const mockResponse = jest.fn()
             mockValidateStep.mockRejectedValue(null)
@@ -584,33 +753,8 @@ describe('useSendTestLiquidTemplate', () => {
     })
 })
 
-describe('Variable transformation', () => {
+describe('transformVariablesToNestedObject', () => {
     it('should transform flat variables to nested objects', () => {
-        // Test the transformation logic that happens in the hook
-        const transformVariablesToNestedObject = (
-            variables: Record<string, string>,
-        ): Record<string, any> => {
-            const result: Record<string, any> = {}
-
-            for (const [path, value] of Object.entries(variables)) {
-                const keys = path.split('.')
-                let current = result
-
-                for (let i = 0; i < keys.length - 1; i++) {
-                    const key = keys[i]
-                    if (!(key in current)) {
-                        current[key] = {}
-                    }
-                    current = current[key]
-                }
-
-                current[keys[keys.length - 1]] = value
-            }
-
-            return result
-        }
-
-        // Test cases
         expect(
             transformVariablesToNestedObject({
                 'customer.name': 'John Doe',
@@ -630,16 +774,19 @@ describe('Variable transformation', () => {
             },
             simple: 'value',
         })
+    })
 
-        // Test empty object
+    it('should return empty object for empty input', () => {
         expect(transformVariablesToNestedObject({})).toEqual({})
+    })
 
-        // Test single property
+    it('should handle single property without nesting', () => {
         expect(transformVariablesToNestedObject({ test: 'value' })).toEqual({
             test: 'value',
         })
+    })
 
-        // Test deep nesting
+    it('should handle deep nesting', () => {
         expect(
             transformVariablesToNestedObject({
                 'a.b.c.d.e': 'deep value',
@@ -653,6 +800,22 @@ describe('Variable transformation', () => {
                         },
                     },
                 },
+            },
+        })
+    })
+
+    it('should preserve null values', () => {
+        expect(
+            transformVariablesToNestedObject({
+                'customer.name': null,
+                'order.total': '$50',
+            }),
+        ).toEqual({
+            customer: {
+                name: null,
+            },
+            order: {
+                total: '$50',
             },
         })
     })

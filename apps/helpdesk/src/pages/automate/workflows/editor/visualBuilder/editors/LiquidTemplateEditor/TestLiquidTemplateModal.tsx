@@ -41,12 +41,13 @@ const TestLiquidTemplateModal = ({
         (result) => setResult(result),
     )
 
-    const isDisabled = variables.some(
-        (variable) => variable && !values[variable.value],
-    )
-
     const handleSubmit = async () => {
-        await sendTestRequest(values)
+        const valuesWithNulls: Record<string, string | null> = {}
+        for (const variable of variables.filter(Boolean)) {
+            const value = values[variable.value]
+            valuesWithNulls[variable.value] = value || null
+        }
+        await sendTestRequest(valuesWithNulls)
     }
 
     const handleClose = () => {
@@ -115,6 +116,9 @@ const TestLiquidTemplateModal = ({
                                                 placeholder="Sample value"
                                             />
                                         ))}
+                                    <p className={css.nullHelpText}>
+                                        Leave empty to send as null
+                                    </p>
                                 </>
                             ) : (
                                 <p className={css.noVariablesMessage}>
@@ -141,14 +145,7 @@ const TestLiquidTemplateModal = ({
                         <Button intent="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button
-                            isLoading={isLoading}
-                            isDisabled={
-                                variables.filter(Boolean).length > 0 &&
-                                isDisabled
-                            }
-                            onClick={handleSubmit}
-                        >
+                        <Button isLoading={isLoading} onClick={handleSubmit}>
                             Test
                         </Button>
                     </>
