@@ -1,5 +1,6 @@
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
-import type { TableColumn } from 'pages/settings/SLAs/features/SLAList/types'
+import type { TableColumn as TableColumnType } from 'pages/settings/SLAs/features/SLAList/types'
+import { TableColumn } from 'pages/settings/SLAs/features/SLAList/types'
 import { UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 import { renderWithRouter } from 'utils/testing'
 
@@ -23,7 +24,7 @@ describe('<TableRow />', () => {
 
     it('should render a row', () => {
         jest.spyOn(SLATableConfig, 'getTableCell').mockImplementation(
-            (column: TableColumn) => () => <div>{column}</div>,
+            (column: TableColumnType) => () => <div>{column}</div>,
         )
 
         const { getByText } = renderWithRouter(
@@ -41,9 +42,11 @@ describe('<TableRow />', () => {
             />,
         )
 
-        columnOrder.forEach((column) => {
-            expect(getByText(column)).toBeInTheDocument()
-        })
+        columnOrder
+            .filter((c) => c !== TableColumn.Conditions)
+            .forEach((column) => {
+                expect(getByText(column)).toBeInTheDocument()
+            })
         expect(getByText('chevron_right')).toBeInTheDocument()
     })
 })

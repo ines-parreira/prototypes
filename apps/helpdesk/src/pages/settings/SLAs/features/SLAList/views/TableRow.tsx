@@ -1,6 +1,7 @@
 import type { Ref, RefObject } from 'react'
 import React from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
@@ -37,6 +38,13 @@ export default function TableRow({
     onDropPolicy,
     isSubmitting,
 }: TableRowProps) {
+    const showConditions = useFlag(
+        FeatureFlagKey.TicketSLAFilterByTagsTicketFields,
+        false,
+    )
+    const visibleColumns = showConditions
+        ? columnOrder
+        : columnOrder.filter((c) => c !== TableColumn.Conditions)
     const { dragRef, dropRef, handlerId, isDragging } =
         useReorderDnD<PolicyDragItem>(
             dragItem,
@@ -59,7 +67,7 @@ export default function TableRow({
                 opacity,
             }}
         >
-            {columnOrder.map((column) => (
+            {visibleColumns.map((column) => (
                 <React.Fragment key={`${column}-${policy.uuid}`}>
                     {React.createElement(getTableCell(column), {
                         policy,

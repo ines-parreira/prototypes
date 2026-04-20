@@ -241,4 +241,5 @@ export enum FeatureFlagKey {
     EmbeddedSpqSettings = 'embedded-spq-settings',
     DisableArticleRecommendationForShopify = 'linear.task_AIEXP-8184.article-recommendation-shopify-kill-switch',
     MarketingPhoneNumber = 'marketing-phone-number',
+    TicketSLAFilterByTagsTicketFields = 'ticket-sla-filter-by-tags-ticket-fields',
 }

@@ -41,9 +41,11 @@ describe('<SLAListView/>', () => {
             />,
         )
 
-        columnConfig.forEach((config) => {
-            expect(getByText(config.title)).toBeInTheDocument()
-        })
+        columnConfig
+            .filter((config) => config.title !== 'Conditions')
+            .forEach((config) => {
+                expect(getByText(config.title)).toBeInTheDocument()
+            })
 
         expect(getAllByText('TableRow').length).toBe(2)
     })

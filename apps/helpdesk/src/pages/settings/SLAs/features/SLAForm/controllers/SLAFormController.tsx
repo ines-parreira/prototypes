@@ -18,6 +18,7 @@ import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 import makeMappedFormSLAPolicy from './makeMappedFormSLAPolicy'
 import type { SLAFormValues } from './useFormValues'
 import useFormValues from './useFormValues'
+import useResolveConditions from './useResolveConditions'
 import useSubmitPolicy from './useSubmitPolicy'
 
 export default function SLAFormController() {
@@ -49,8 +50,11 @@ export default function SLAFormController() {
           }
         : undefined
 
+    const { conditions: resolvedConditions, isLoading: isResolvingConditions } =
+        useResolveConditions(data?.filters)
+
     const defaultValues = useFormValues()
-    const values = useFormValues(data ?? template)
+    const values = useFormValues(data ?? template, resolvedConditions)
 
     const validator = (values: SLAFormValues) => {
         return toFormErrors(
@@ -66,7 +70,9 @@ export default function SLAFormController() {
 
     return (
         <>
-            {(isLoading && !isNewPolicy) || areFlagsLoading ? (
+            {(isLoading && !isNewPolicy) ||
+            areFlagsLoading ||
+            isResolvingConditions ? (
                 <Loader />
             ) : isVoiceSLAEnabled ? (
                 <SLAFormView

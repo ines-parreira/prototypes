@@ -1,0 +1,94 @@
+:local {
+    .popoverContent {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-height: 300px;
+    }
+
+    .searchWrapper {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .listContainer {
+        flex: 1;
+        min-height: 0;
+    }
+
+    .backButton {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border: none;
+        background: none;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        color: var(--content-neutral-default);
+
+        &:hover {
+            background: var(--hover-input);
+        }
+    }
+
+    .drilldownRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border: none;
+        background: none;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        color: var(--content-neutral-default);
+
+        &:hover {
+            background: var(--hover-input);
+        }
+    }
+
+    .emptyState {
+        padding: var(--spacing-md) var(--spacing-sm);
+        text-align: center;
+        justify-content: center;
+    }
+
+    .searchGroup {
+        border-top: 1px solid var(--border-neutral-default);
+
+        &:first-child {
+            border-top: none;
+        }
+    }
+
+    .loadMoreButton {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: var(--spacing-xxs) 0;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .clearAllFooter {
+        border-top: 1px solid var(--border-neutral-default);
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+
+    .clearAllButton {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--content-neutral-default);
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

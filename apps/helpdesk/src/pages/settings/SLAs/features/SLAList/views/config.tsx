@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import type HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import { isExtraLargeScreen } from 'pages/common/utils/mobile'
 import ChannelListCell from 'pages/settings/SLAs/features/SLAList/views/ChannelListCell'
+import ConditionsCell from 'pages/settings/SLAs/features/SLAList/views/ConditionsCell'
 import DatetimeCell from 'pages/settings/SLAs/features/SLAList/views/DatetimeCell'
 import ToggleCell from 'pages/settings/SLAs/features/SLAList/views/ToggleCell'
 
@@ -24,12 +25,14 @@ export const columnConfig: ComponentProps<typeof HeaderCellProperty>[] = [
     },
     { title: 'Last updated' },
     { title: 'Channels' },
+    { title: 'Conditions' },
 ]
 
 export const columnOrder = [
     TableColumn.PolicyName,
     TableColumn.UpdatedDatetime,
     TableColumn.Channels,
+    TableColumn.Conditions,
 ]
 
 export const getColumnWidth = (column: TableColumn) => {
@@ -39,6 +42,8 @@ export const getColumnWidth = (column: TableColumn) => {
         case TableColumn.UpdatedDatetime:
             return isExtraLargeScreen() ? 200 : 400
         case TableColumn.Channels:
+            return isExtraLargeScreen() ? 200 : 400
+        case TableColumn.Conditions:
             return isExtraLargeScreen() ? 200 : 400
     }
 }
@@ -51,6 +56,8 @@ export const getTableCell = (cell: TableColumn) => {
             return DatetimeCell
         case TableColumn.Channels:
             return ChannelListCell
+        case TableColumn.Conditions:
+            return ConditionsCell
         default:
             return ''
     }

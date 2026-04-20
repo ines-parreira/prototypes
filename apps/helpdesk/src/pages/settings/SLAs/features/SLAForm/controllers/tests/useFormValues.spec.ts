@@ -32,7 +32,9 @@ describe('useFormValues', () => {
             ],
             active: true,
             target_channels: ['email', 'chat'],
+            target: undefined,
             business_hours_only: policy.business_hours_only,
+            conditions: [],
         })
     })
 
@@ -67,6 +69,7 @@ describe('useFormValues', () => {
             target_channels: ['phone'],
             target: 0.75,
             business_hours_only: policy.business_hours_only,
+            conditions: [],
         })
     })
 })

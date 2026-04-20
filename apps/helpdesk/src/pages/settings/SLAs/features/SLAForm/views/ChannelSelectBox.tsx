@@ -1,7 +1,15 @@
 import { FormField, useFormContext } from '@repo/forms'
 
 import type { MultiSelectFieldProps } from '@gorgias/axiom'
-import { MultiSelectField, MultiSelectItem } from '@gorgias/axiom'
+import {
+    Box,
+    Icon,
+    Label,
+    MultiSelectField,
+    MultiSelectItem,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 import {
     SLAPolicyMetricType,
@@ -12,6 +20,8 @@ import { getChannels } from 'services/channels'
 
 import type { SLAFormValues } from '../controllers/useFormValues'
 import useFormValues from '../controllers/useFormValues'
+
+import css from './ChannelSelectBox.less'
 
 type Option = {
     id: string
@@ -68,11 +78,28 @@ export function ChannelSelectBox() {
     }
 
     return (
-        <>
+        <Box flexDirection="column">
+            <Box alignItems="center" gap="xxxxs" marginBottom="xxxxs">
+                <Label className={css.channelsLabel} as="span" isRequired>
+                    Channels
+                </Label>
+                <Tooltip
+                    trigger={
+                        <span
+                            tabIndex={0}
+                            aria-label="More information"
+                            className={css.infoIcon}
+                        >
+                            <Icon name="info" size="sm" />
+                        </span>
+                    }
+                >
+                    <TooltipContent title="Select one or more channels. This SLA will apply to tickets from any of the selected channels." />
+                </Tooltip>
+            </Box>
             <FormField
                 field={ChannelSelectField}
                 isSearchable
-                label="Channels"
                 isRequired
                 placeholder="Select"
                 caption="Choose the channels this SLA should apply to. Voice cannot be combined with other channels."
@@ -107,7 +134,7 @@ export function ChannelSelectBox() {
                     )
                 }
             </FormField>
-        </>
+        </Box>
     )
 }
 

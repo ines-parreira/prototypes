@@ -1,3 +1,5 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -31,13 +33,21 @@ export default function SLAListView({
     const { policies, handleMovePolicy, handleDropPolicy } =
         useSortablePolicies(data, onPolicyPriorityChange)
 
+    const showConditions = useFlag(
+        FeatureFlagKey.TicketSLAFilterByTagsTicketFields,
+        false,
+    )
+    const visibleColumns = showConditions
+        ? columnConfig
+        : columnConfig.filter((c) => c.title !== 'Conditions')
+
     return (
         <div className={css.pageContainer}>
             <PageHeader />
             <Header />
             <TableWrapper>
                 <TableHead>
-                    {columnConfig.map((config, index) => (
+                    {visibleColumns.map((config, index) => (
                         <HeaderCellProperty
                             key={index}
                             {...config}

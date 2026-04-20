@@ -45,6 +45,7 @@ const defaultValues = {
     target_channels: [],
     target: null,
     business_hours_only: false,
+    conditions: [],
 }
 
 const defaultProps: ComponentProps<typeof SLAFormView> = {

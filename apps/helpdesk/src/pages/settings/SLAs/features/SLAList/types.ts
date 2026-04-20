@@ -1,6 +1,7 @@
 import type { DropTargetMonitor } from 'react-dnd'
 
 import type { SLAPolicy } from '@gorgias/helpdesk-queries'
+import type { SLAPolicyFilter } from '@gorgias/helpdesk-types'
 
 import type { DragItemRequired } from 'pages/common/hooks/useReorderDnD'
 
@@ -11,12 +12,14 @@ export type UISLAPolicy = {
     isActive: boolean
     updatedDatetime: string | null
     priority: number
+    filters: SLAPolicyFilter[]
 }
 
 export enum TableColumn {
     PolicyName = 'policy_name',
     UpdatedDatetime = 'updated_datetime',
     Channels = 'channels',
+    Conditions = 'conditions',
 }
 
 export type PolicyDragItem = DragItemRequired & { id: SLAPolicy['uuid'] }

@@ -75,6 +75,7 @@ export const UISLAPolicy1: UISLAPolicy = {
     isActive: true,
     updatedDatetime: '2021-07-01T00:00:00Z',
     priority: 1,
+    filters: [],
 }
 
 export const UISLAPolicy2: UISLAPolicy = {
@@ -84,4 +85,5 @@ export const UISLAPolicy2: UISLAPolicy = {
     isActive: true,
     updatedDatetime: '2021-08-01T00:00:00Z',
     priority: 0.5,
+    filters: [],
 }

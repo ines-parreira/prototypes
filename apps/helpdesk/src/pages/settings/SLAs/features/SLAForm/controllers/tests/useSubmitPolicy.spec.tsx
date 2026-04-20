@@ -63,11 +63,18 @@ describe('useSubmitPolicy()', () => {
             name: 'test',
             metrics: undefined,
             target_channels: [],
+            conditions: [],
         } as unknown as SLAFormValues
 
         result.current.save(data)
 
-        expect(createMock).toHaveBeenCalledWith({ data })
+        expect(createMock).toHaveBeenCalledWith({
+            data: {
+                name: 'test',
+                metrics: undefined,
+                target_channels: [],
+            },
+        })
 
         await waitFor(() => {
             expect(invalidateQueryMock).toHaveBeenCalledWith({
@@ -85,11 +92,19 @@ describe('useSubmitPolicy()', () => {
             name: 'test',
             metrics: undefined,
             target_channels: [],
+            conditions: [],
         } as unknown as SLAFormValues
 
         result.current.save(data)
 
-        expect(updateMock).toHaveBeenCalledWith({ id: '1', data })
+        expect(updateMock).toHaveBeenCalledWith({
+            id: '1',
+            data: {
+                name: 'test',
+                metrics: undefined,
+                target_channels: [],
+            },
+        })
 
         await waitFor(() => {
             expect(invalidateQueryMock).toHaveBeenCalledWith({

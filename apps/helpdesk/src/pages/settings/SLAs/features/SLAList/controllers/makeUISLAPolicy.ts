@@ -12,5 +12,6 @@ export default function makeUISLAPolicy(policy: SLAPolicy): UISLAPolicy {
         isActive: policy.deactivated_datetime === null,
         updatedDatetime: policy.updated_datetime || policy.created_datetime,
         priority: Number(policy.priority || 0),
+        filters: policy.filters ?? [],
     }
 }

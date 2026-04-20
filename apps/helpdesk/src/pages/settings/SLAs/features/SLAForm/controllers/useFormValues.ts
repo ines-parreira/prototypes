@@ -5,12 +5,14 @@ import {
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
+import type { ConditionItem } from '../views/ConditionsSelect/types'
 import type { MappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
 
 export type SLAFormValues = ReturnType<typeof useFormValues>
 
 export default function useFormValues(
     policy?: Omit<MappedFormSLAPolicy, 'uuid'>,
+    resolvedConditions?: ConditionItem[],
 ) {
     return useMemo(() => {
         if (!policy) {
@@ -32,6 +34,7 @@ export default function useFormValues(
                 target_channels: [],
                 target: undefined,
                 business_hours_only: true,
+                conditions: resolvedConditions ?? ([] as ConditionItem[]),
             }
         }
 
@@ -68,6 +71,7 @@ export default function useFormValues(
             target_channels: policy.target_channels,
             target: policy.target,
             business_hours_only: policy.business_hours_only,
+            conditions: resolvedConditions ?? ([] as ConditionItem[]),
         }
-    }, [policy])
+    }, [policy, resolvedConditions])
 }

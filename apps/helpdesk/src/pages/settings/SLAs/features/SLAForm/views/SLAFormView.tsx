@@ -15,6 +15,7 @@ import { PolicySection } from 'pages/settings/SLAs/features/SLAForm/views/Policy
 import type { MappedFormSLAPolicy } from '../controllers/makeMappedFormSLAPolicy'
 import type { SLAFormValues } from '../controllers/useFormValues'
 import { ChannelSelectBox } from './ChannelSelectBox'
+import { ConditionsSection } from './ConditionsSection'
 
 import css from './SLAFormView.less'
 
@@ -61,6 +62,8 @@ export function SLAFormView({
                             />
 
                             <ChannelSelectBox />
+
+                            <ConditionsSection />
 
                             <PolicySection />
 
