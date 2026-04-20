@@ -456,4 +456,47 @@ describe('PlaygroundPanel', () => {
             expect(mockOnGuidanceClick).toHaveBeenCalledWith(123)
         })
     })
+
+    describe('banner', () => {
+        it('renders the banner when provided and settings are closed', () => {
+            render(
+                <PlaygroundPanel banner={<div>Custom banner message</div>} />,
+            )
+
+            expect(
+                screen.getByText('Custom banner message'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render a banner container when no banner is provided', () => {
+            render(<PlaygroundPanel />)
+
+            expect(
+                screen.queryByText('Custom banner message'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('hides the banner when settings are open', async () => {
+            const user = userEvent.setup()
+            render(
+                <PlaygroundPanel banner={<div>Custom banner message</div>} />,
+            )
+
+            expect(
+                screen.getByText('Custom banner message'),
+            ).toBeInTheDocument()
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: /open playground settings/i,
+                }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Custom banner message'),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
 })

@@ -11,12 +11,14 @@ import css from './EditorWithPlayground.less'
 type EditorWithPlaygroundProps = {
     playground: PlaygroundState
     draftKnowledge?: { sourceId: number; sourceSetId: number }
+    playgroundBanner?: React.ReactNode
     children: React.ReactNode
 }
 
 export const EditorWithPlayground = ({
     playground,
     draftKnowledge,
+    playgroundBanner,
     children,
 }: EditorWithPlaygroundProps) => {
     return (
@@ -38,6 +40,7 @@ export const EditorWithPlayground = ({
                 <PlaygroundPanel
                     onClose={playground.onClose}
                     draftKnowledge={draftKnowledge}
+                    banner={playgroundBanner}
                 />
             </div>
         </Box>

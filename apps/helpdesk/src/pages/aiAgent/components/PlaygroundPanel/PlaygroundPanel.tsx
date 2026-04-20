@@ -19,6 +19,7 @@ type Props = {
     draftKnowledge?: DraftKnowledge
     onGuidanceClick?: (guidanceArticleId: number) => void
     collapseNavbar?: boolean
+    banner?: React.ReactNode
 }
 
 export const PlaygroundPanel = ({
@@ -27,6 +28,7 @@ export const PlaygroundPanel = ({
     draftKnowledge,
     onGuidanceClick,
     collapseNavbar = true,
+    banner,
 }: Props) => {
     const { setIsCollapsibleColumnOpen } = useAppContext()
     const [resetPlayground, setResetPlayground] = useState(false)
@@ -122,6 +124,9 @@ export const PlaygroundPanel = ({
                 </div>
             )}
             <div className={css['panel-body']}>
+                {!isSettingsOpen && banner ? (
+                    <div className={css['panel-banner']}>{banner}</div>
+                ) : null}
                 <AiAgentPlayground
                     arePlaygroundActionsAllowed={actionsAllowed}
                     resetPlaygroundCallback={resetPlaygroundCallback}

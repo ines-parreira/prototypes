@@ -11,6 +11,7 @@ import { useKnowledgeEditorSkillData } from './hooks/useKnowledgeEditorSkillData
 import { useSkillNotify } from './hooks/useSkillNotify'
 import { KnowledgeEditorSkillContent } from './KnowledgeEditorSkillContent'
 import { KnowledgeEditorSkillLoadingShell } from './KnowledgeEditorSkillLoadingShell'
+import { SkillEditorPlaygroundBanner } from './SkillEditorPlaygroundBanner'
 
 import css from './KnowledgeEditorSkill.less'
 
@@ -35,6 +36,7 @@ const KnowledgeEditorSkillInner = () => {
         <EditorWithPlayground
             playground={playground}
             draftKnowledge={draftKnowledgeForPlayground}
+            playgroundBanner={<SkillEditorPlaygroundBanner />}
         >
             <Card elevation="mid" className={css.editor} padding={0}>
                 <KnowledgeEditorSkillContent />
