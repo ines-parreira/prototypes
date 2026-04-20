@@ -2,10 +2,7 @@ export { ViewingActivity } from './components/TicketActivity/ViewingActivity/Vie
 export { TypingActivity } from './components/TicketActivity/TypingActivity/TypingActivity'
 export { TicketThreadItemsContainer } from './layout/TicketThreadItemsContainer'
 export { TicketThreadContainer } from './layout/TicketThreadContainer/TicketThreadContainer'
-export type { TicketThreadVirtualizedListItem } from './layout/TicketThreadContainer/utils'
-export {
-    isComposerItem,
-    getThreadListItemKey,
-} from './layout/TicketThreadContainer/utils'
+export { getThreadItemKey } from './layout/TicketThreadContainer/utils'
 export { TicketThreadItem } from './components/TicketThreadItem/TicketThreadItem'
+export type { TicketThreadItem as TicketThreadItemType } from './hooks/types'
 export { useTicketThread } from './hooks/useTicketThread'

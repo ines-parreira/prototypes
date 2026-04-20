@@ -63,15 +63,17 @@ describe('TicketThreadContainer', () => {
         recordedVirtuosoProps = []
     })
 
-    it('configures Virtuoso and appends the composer as the last item', () => {
+    it('configures Virtuoso to render the thread items inside the provided scroll container', () => {
         const renderThreadItem = vi.fn(
             (index: number, item: { _tag: string }) => (
                 <div>{`${index}:${item._tag}`}</div>
             ),
         )
+        const containerElement = document.createElement('div')
 
         render(
             <TicketThreadContainer
+                containerElement={containerElement}
                 items={ticketThreadItems}
                 renderThreadItem={renderThreadItem}
                 ticketId="123"
@@ -83,23 +85,15 @@ describe('TicketThreadContainer', () => {
         ).toBeInTheDocument()
         expect(screen.getByText('0:message')).toBeInTheDocument()
         expect(screen.getByText('1:ticket-event')).toBeInTheDocument()
-        expect(screen.getByText('2:composer')).toBeInTheDocument()
-        expect(renderThreadItem).toHaveBeenCalledWith(
-            2,
-            expect.objectContaining({ _tag: 'composer' }),
-            undefined,
-        )
+        expect(screen.queryByText('2:composer')).not.toBeInTheDocument()
+        expect(renderThreadItem).toHaveBeenCalledTimes(2)
         const virtuosoProps =
             recordedVirtuosoProps[recordedVirtuosoProps.length - 1]
         expect(virtuosoProps).toEqual(
             expect.objectContaining({
-                alignToBottom: true,
                 ['aria-label']: 'Ticket thread',
-                data: [
-                    ticketThreadItems[0],
-                    ticketThreadItems[1],
-                    expect.objectContaining({ _tag: 'composer' }),
-                ],
+                customScrollParent: containerElement,
+                data: ticketThreadItems,
                 defaultItemHeight: 200,
                 increaseViewportBy: { top: 2000, bottom: 0 },
                 initialTopMostItemIndex: { index: 'LAST' },
@@ -113,15 +107,11 @@ describe('TicketThreadContainer', () => {
             virtuosoProps.computeItemKey?.(0, ticketThreadItems[0], undefined),
         ).toBe('message:message-1:123:0')
         expect(
-            virtuosoProps.computeItemKey?.(
-                2,
-                { _tag: 'composer', data: null },
-                undefined,
-            ),
-        ).toBe('composer:2:123')
+            virtuosoProps.computeItemKey?.(1, ticketThreadItems[1], undefined),
+        ).toBe('ticket-event:event-1:123:1')
     })
 
-    it('forwards list children and adds item spacing wrappers', () => {
+    it('adds zero-height protection without dropping the item styles provided by Virtuoso', () => {
         render(
             <TicketThreadContainer
                 items={ticketThreadItems}
@@ -133,49 +123,32 @@ describe('TicketThreadContainer', () => {
         )
 
         const virtuosoProps = recordedVirtuosoProps[0]
-        const List = virtuosoProps.components?.List
         const Item = virtuosoProps.components?.Item
 
-        expect(List).toBeDefined()
         expect(Item).toBeDefined()
 
-        if (!List || !Item) {
-            throw new Error('Expected Virtuoso list components to be defined')
+        if (!Item) {
+            throw new Error('Expected a Virtuoso item component to be defined')
         }
 
         render(
-            <>
-                <List
-                    context={undefined}
-                    data-testid="thread-list"
-                    style={{ paddingBottom: 12 }}
-                >
-                    <div>List child</div>
-                </List>
-                <Item
-                    context={undefined}
-                    data-index={0}
-                    data-item-index={0}
-                    data-known-size={16}
-                    item={ticketThreadItems[0]}
-                    style={{ top: 16 }}
-                >
-                    <div>Item child</div>
-                </Item>
-            </>,
+            <Item
+                context={undefined}
+                data-index={0}
+                data-item-index={0}
+                data-known-size={16}
+                item={ticketThreadItems[0]}
+                style={{ top: 16 }}
+            >
+                <div>Item child</div>
+            </Item>,
         )
 
-        const child = screen.getByText('List child')
-        const outerList = child.parentElement
         const outerItem = screen.getByText('Item child').parentElement
 
-        expect(outerList).toHaveStyle({
-            paddingBottom: '12px',
-        })
-        expect(outerList).toContainElement(child)
         expect(outerItem).toHaveStyle({
-            paddingBottom: 'var(--spacing-xxxs)',
-            paddingTop: 'var(--spacing-xxxs)',
+            minHeight: '0.5px',
+            top: '16px',
         })
     })
 })

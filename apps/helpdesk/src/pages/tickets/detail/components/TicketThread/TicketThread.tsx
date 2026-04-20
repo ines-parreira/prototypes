@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react'
 
+import { useCallbackRef } from '@repo/hooks'
 import { useSearchParams } from '@repo/routing'
-import type { TicketThreadVirtualizedListItem } from '@repo/ticket-thread'
+import type { TicketThreadItemType } from '@repo/ticket-thread'
 import {
-    getThreadListItemKey,
-    isComposerItem,
+    getThreadItemKey,
     TicketThreadContainer,
     TicketThreadItem,
     TypingActivity,
@@ -38,6 +38,7 @@ const { key: showTicketEventsKey, parse: parseShowTicketEvents } =
 
 export function TicketThread({ submit }: TicketThreadProps) {
     const dispatch = useAppDispatch()
+    const [threadContainerElement, setThreadContainerElement] = useCallbackRef()
     const ticketState = useAppSelector(getTicketState)
     const { accessFeaturesMapped, isStandaloneAiAgent } =
         useStandaloneAiAccess()
@@ -105,65 +106,44 @@ export function TicketThread({ submit }: TicketThreadProps) {
     }, [dispatch])
 
     const renderThreadItem = useCallback(
-        (index: number, item: TicketThreadVirtualizedListItem) => {
-            const itemKey = getThreadListItemKey(
-                item,
-                index,
-                ticketId,
-                ticketThreadItems.length,
-            )
-
-            return (
-                <div
-                    className={css.threadItem}
-                    data-item-id={itemKey}
-                    role="listitem"
-                >
-                    {isComposerItem(item) ? (
-                        <div className={css.threadComposer}>
-                            <TypingActivity
-                                agents={activityAgentsTyping}
-                                customers={customersTyping}
-                            />
-                            <WhatsAppEditorProvider>
-                                <Editor
-                                    internalNotesOnly={internalNotesOnly}
-                                    initialMacroFilters={initialMacroFilters}
-                                    submit={submit}
-                                    ticket={ticket}
-                                    onFocus={handleFocus}
-                                    onBlur={handleBlur}
-                                />
-                            </WhatsAppEditorProvider>
-                        </div>
-                    ) : (
-                        <TicketThreadItem item={item} />
-                    )}
-                </div>
-            )
-        },
-        [
-            activityAgentsTyping,
-            customersTyping,
-            handleBlur,
-            handleFocus,
-            initialMacroFilters,
-            internalNotesOnly,
-            submit,
-            ticket,
-            ticketId,
-            ticketThreadItems.length,
-        ],
+        (index: number, item: TicketThreadItemType) => (
+            <div
+                data-item-id={getThreadItemKey(item, index, ticketId)}
+                role="listitem"
+            >
+                <TicketThreadItem item={item} />
+            </div>
+        ),
+        [ticketId],
     )
 
     return (
-        <div className={css.wrapper}>
-            <ViewingActivity agents={activityAgentsViewing} />
-            <TicketThreadContainer
-                ticketId={ticketId}
-                items={ticketThreadItems}
-                renderThreadItem={renderThreadItem}
-            />
+        <div className={css.threadContainer} ref={setThreadContainerElement}>
+            <div className={css.threadMessagesContainer}>
+                <ViewingActivity agents={activityAgentsViewing} />
+                <TicketThreadContainer
+                    containerElement={threadContainerElement}
+                    ticketId={ticketId}
+                    items={ticketThreadItems}
+                    renderThreadItem={renderThreadItem}
+                />
+            </div>
+            <div className={css.threadComposer}>
+                <TypingActivity
+                    agents={activityAgentsTyping}
+                    customers={customersTyping}
+                />
+                <WhatsAppEditorProvider>
+                    <Editor
+                        internalNotesOnly={internalNotesOnly}
+                        initialMacroFilters={initialMacroFilters}
+                        submit={submit}
+                        ticket={ticket}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                    />
+                </WhatsAppEditorProvider>
+            </div>
         </div>
     )
 }

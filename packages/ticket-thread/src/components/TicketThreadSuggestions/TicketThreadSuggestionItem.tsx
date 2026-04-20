@@ -27,5 +27,9 @@ export function TicketThreadSuggestionItem({
         }
     }, [item])
 
-    return <Box alignSelf="flex-end">{content}</Box>
+    return (
+        <Box alignSelf="flex-end" paddingBottom="xxxs" paddingTop="xxxs">
+            {content}
+        </Box>
+    )
 }

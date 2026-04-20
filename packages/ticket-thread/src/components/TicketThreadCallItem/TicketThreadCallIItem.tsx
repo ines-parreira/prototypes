@@ -33,6 +33,8 @@ export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
                     alignItems="flex-start"
                     flexDirection="column"
                     gap="xs"
+                    paddingBottom="xxxs"
+                    paddingTop="xxxs"
                 >
                     <MessageBubble>
                         <VoiceCallInbound
@@ -52,6 +54,8 @@ export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
                     alignItems="flex-end"
                     flexDirection="column"
                     gap="xs"
+                    paddingBottom="xxxs"
+                    paddingTop="xxxs"
                 >
                     <MessageBubble variant="from-agent">
                         <VoiceCallOutbound

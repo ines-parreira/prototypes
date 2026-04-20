@@ -103,6 +103,8 @@ export function TicketThreadMessageItem({
                 placement === Placement.Right ? 'flex-end' : 'flex-start'
             }
             className={css.messageRow}
+            paddingBottom="xxxs"
+            paddingTop="xxxs"
         >
             {content}
         </Box>

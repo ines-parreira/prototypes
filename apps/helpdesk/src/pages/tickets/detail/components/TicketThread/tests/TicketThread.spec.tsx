@@ -39,10 +39,12 @@ var mockTicketThreadContainer: jest.Mock
 jest.mock('@repo/ticket-thread', () => {
     mockTicketThreadContainer = jest.fn(
         ({
+            containerElement,
             items,
             renderThreadItem,
             ticketId,
         }: {
+            containerElement?: HTMLElement | null
             items: Array<{ _tag: string; data?: unknown }>
             renderThreadItem: (
                 index: number,
@@ -52,6 +54,7 @@ jest.mock('@repo/ticket-thread', () => {
         }) => (
             <section
                 aria-label="Ticket thread container"
+                data-has-container-element={String(Boolean(containerElement))}
                 data-ticket-id={ticketId}
             >
                 {items.map((item, index) => (
@@ -59,21 +62,12 @@ jest.mock('@repo/ticket-thread', () => {
                         {renderThreadItem(index, item)}
                     </div>
                 ))}
-                <div key="composer">
-                    {renderThreadItem(items.length, {
-                        _tag: 'composer',
-                        data: null,
-                    })}
-                </div>
             </section>
         ),
     )
 
     return {
-        getThreadListItemKey: jest.fn((_item, index) => `thread-item-${index}`),
-        isComposerItem: jest.fn(
-            (item: { _tag: string }) => item._tag === 'composer',
-        ),
+        getThreadItemKey: jest.fn((_item, index) => `thread-item-${index}`),
         ViewingActivity: ({ agents }: { agents: Array<{ name: string }> }) => (
             <div>{agents.map((agent) => agent.name).join(', ')}</div>
         ),
@@ -194,19 +188,26 @@ describe('<TicketThread />', () => {
         })
     })
 
-    it('renders the thread feed, composer, and passes wrapper props to the shared container', () => {
+    it('renders the thread feed, composer, and passes the mounted scroll container to the shared container', () => {
         render(<TicketThread submit={submit} />)
 
         expect(
             screen.getByRole('region', { name: 'Ticket thread container' }),
         ).toBeInTheDocument()
+        expect(
+            screen.getByRole('region', { name: 'Ticket thread container' }),
+        ).toHaveAttribute('data-has-container-element', 'true')
         expect(screen.getByText('Thread feed item 1')).toBeInTheDocument()
         expect(screen.getByText('Thread feed item 100')).toBeInTheDocument()
         expect(
             screen.getByText('TypingActivity customers=Jane Doe agents='),
         ).toBeInTheDocument()
+        expect(
+            mockTicketThreadContainer.mock.calls.at(-1)?.[0].containerElement,
+        ).toBeInstanceOf(HTMLDivElement)
         expect(mockTicketThreadContainer).toHaveBeenCalledWith(
             expect.objectContaining({
+                containerElement: expect.any(HTMLDivElement),
                 items: [
                     { _tag: 'Thread feed item 1' },
                     { _tag: 'Thread feed item 100' },
