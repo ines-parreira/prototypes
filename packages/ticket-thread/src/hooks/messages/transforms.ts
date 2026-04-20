@@ -244,6 +244,10 @@ function shouldGroupConsecutiveMessages(
         return false
     }
 
+    if (!msg1Data.public || !msg2Data.public) {
+        return false
+    }
+
     if (!GROUPING_CHANNELS.includes(msg1Data.channel as GroupingChannels)) {
         return false
     }

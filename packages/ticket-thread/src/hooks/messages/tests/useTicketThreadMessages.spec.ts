@@ -226,4 +226,84 @@ describe('useTicketThreadMessages', () => {
         })
         expect(result.current.activePendingMessages).toEqual([])
     })
+
+    it('keeps pending internal notes ungrouped on grouped channels', async () => {
+        server.use(getTicketMessagesHandler([]).handler)
+
+        const pendingMessages: unknown[] = [
+            createMessage({
+                id: 50,
+                channel: 'whatsapp-message',
+                via: 'helpdesk',
+                public: false,
+                from_agent: true,
+                source: {
+                    type: 'internal-note',
+                    from: {
+                        address: 'agent@gorgias.com',
+                        name: 'Agent',
+                    },
+                    to: [],
+                },
+                sender: {
+                    id: 99,
+                    email: 'agent@gorgias.com',
+                    name: 'Agent',
+                    firstname: 'Agent',
+                    lastname: '',
+                    meta: {},
+                },
+                created_datetime: '2024-03-21T10:30:00Z',
+                failed_datetime: null,
+            }),
+            createMessage({
+                id: 60,
+                channel: 'whatsapp-message',
+                via: 'helpdesk',
+                public: false,
+                from_agent: true,
+                source: {
+                    type: 'internal-note',
+                    from: {
+                        address: 'agent@gorgias.com',
+                        name: 'Agent',
+                    },
+                    to: [],
+                },
+                sender: {
+                    id: 99,
+                    email: 'agent@gorgias.com',
+                    name: 'Agent',
+                    firstname: 'Agent',
+                    lastname: '',
+                    meta: {},
+                },
+                created_datetime: '2024-03-21T10:33:00Z',
+                failed_datetime: null,
+            }),
+        ]
+
+        const { result } = renderHook(() =>
+            useTicketThreadMessages({
+                ticketId: 123,
+                pendingMessages,
+            }),
+        )
+
+        await waitFor(() => {
+            expect(getMessageIds(result.current.activePendingMessages)).toEqual(
+                [50, 60],
+            )
+        })
+
+        expect(result.current.activePendingMessages).toHaveLength(2)
+        expect(result.current.activePendingMessages[0]).toMatchObject({
+            _tag: TicketThreadItemTag.Messages.InternalNote,
+            pendingState: TicketThreadPendingState.Active,
+        })
+        expect(result.current.activePendingMessages[1]).toMatchObject({
+            _tag: TicketThreadItemTag.Messages.InternalNote,
+            pendingState: TicketThreadPendingState.Active,
+        })
+    })
 })

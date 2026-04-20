@@ -91,6 +91,49 @@ describe('groupConsecutiveMessages', () => {
         })
     })
 
+    it('does not merge consecutive internal notes on grouping channels', () => {
+        const first = toTaggedMessage(
+            createMessage({
+                id: 1,
+                channel: 'whatsapp-message',
+                source: { type: 'internal-note' },
+                public: false,
+                from_agent: true,
+                created_datetime: '2024-03-21T11:00:00Z',
+                sender: createSender({
+                    id: 99,
+                    email: 'agent@gorgias.com',
+                    name: 'Agent',
+                }),
+            }),
+        )
+        const second = toTaggedMessage(
+            createMessage({
+                id: 2,
+                channel: 'whatsapp-message',
+                source: { type: 'internal-note' },
+                public: false,
+                from_agent: true,
+                created_datetime: '2024-03-21T11:03:00Z',
+                sender: createSender({
+                    id: 99,
+                    email: 'agent@gorgias.com',
+                    name: 'Agent',
+                }),
+            }),
+        )
+
+        const merged = groupConsecutiveMessages([first, second])
+
+        expect(merged).toHaveLength(2)
+        expect(merged[0]).toMatchObject({
+            _tag: TicketThreadItemTag.Messages.InternalNote,
+        })
+        expect(merged[1]).toMatchObject({
+            _tag: TicketThreadItemTag.Messages.InternalNote,
+        })
+    })
+
     it('does not merge consecutive ai agent messages', () => {
         const aiAgentSender = {
             ...createMessage({}).sender,
