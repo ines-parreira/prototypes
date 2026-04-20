@@ -1,3 +1,4 @@
+import { useIsMobileResolution } from '@repo/hooks'
 import { renderHook } from '@testing-library/react'
 
 import { FeatureFlagKey } from '../featureFlagKey'
@@ -13,9 +14,14 @@ vi.mock('../shared-flags/useHelpdeskV2BaselineFlag', () => ({
     useHelpdeskV2BaselineFlag: vi.fn(),
 }))
 
+vi.mock('@repo/hooks', () => ({
+    useIsMobileResolution: vi.fn(),
+}))
+
 describe('useHelpdeskV2WayfindingMS1Flag', () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        vi.mocked(useIsMobileResolution).mockReturnValue(false)
     })
 
     it('should return true when both flags are enabled', () => {
@@ -74,6 +80,23 @@ describe('useHelpdeskV2WayfindingMS1Flag', () => {
         })
         vi.mocked(useFlag).mockImplementation((key: string) => {
             if (key === FeatureFlagKey.UIVisionWayfindingMS1) return false
+            return false
+        })
+
+        const { result } = renderHook(() => useHelpdeskV2WayfindingMS1Flag())
+
+        expect(result.current).toBe(false)
+    })
+
+    it('should return false when on mobile resolution even if both flags are enabled', () => {
+        vi.mocked(useIsMobileResolution).mockReturnValue(true)
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: vi.fn(),
+        })
+        vi.mocked(useFlag).mockImplementation((key: string) => {
+            if (key === FeatureFlagKey.UIVisionWayfindingMS1) return true
             return false
         })
 
