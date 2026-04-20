@@ -2,10 +2,9 @@ import React, { useCallback, useState } from 'react'
 
 import { FormGroup, Label } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import { useUpdateEmailIntegrationDomain } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import {
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
@@ -17,8 +16,6 @@ import type {
     OutlookIntegration,
 } from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { getDomainFromEmailAddress } from '../../helpers'
 
@@ -31,7 +28,6 @@ export type Props = {
 }
 
 export default function EmailDomainVerificationForm({ integration }: Props) {
-    const dispatch = useAppDispatch()
     const [dkimKeySize, setDkimKeySize] = useState(DEFAULT_EMAIL_DKIM_KEY_SIZE)
 
     const provider = integration.meta?.provider || ''
@@ -46,9 +42,9 @@ export default function EmailDomainVerificationForm({ integration }: Props) {
             const message =
                 (isGorgiasApiError(error) && error.response?.data.error.msg) ||
                 'Failed to create domain'
-            void dispatch(notify({ message, status: NotificationStatus.Error }))
+            toast.error(message)
         },
-        [dispatch],
+        [],
     )
 
     const { mutate: updateDomain, isLoading } = useUpdateEmailIntegrationDomain(

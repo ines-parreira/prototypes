@@ -20,7 +20,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner, toast } from '@gorgias/axiom'
 
 import {
     getLanguagesFromChatConfig,
@@ -54,8 +54,6 @@ import type {
 import { getHasAutomate } from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import * as integrationSelectors from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 import GorgiasTranslateExitModal from './GorgiasTranslateExitModal'
@@ -526,21 +524,6 @@ function GorgiasTranslateText({
     ])
     const filterForlEmailCaptureKeys = { emailCaptureEnforcement }
 
-    const dispatchNotification = useCallback(
-        (
-            message: string,
-            status: NotificationStatus = NotificationStatus.Success,
-        ) => {
-            void dispatch(
-                notify({
-                    status,
-                    message: message,
-                }),
-            )
-        },
-        [dispatch],
-    )
-
     const onClickToExit = useCallback(
         (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
             event.preventDefault()
@@ -657,12 +640,11 @@ function GorgiasTranslateText({
     const resetValues = useCallback(() => {
         setTextsOfSelectedLanguage({ ...initialTextsOfSelectedLanguage })
         setHasChanges(false)
-        dispatchNotification('Discarded changes')
+        toast.success('Discarded changes')
     }, [
         setTextsOfSelectedLanguage,
         setHasChanges,
         initialTextsOfSelectedLanguage,
-        dispatchNotification,
     ])
 
     const submitData = useCallback(
@@ -676,41 +658,29 @@ function GorgiasTranslateText({
                     setInitialTexts(textsOfSelectedLanguage)
                     setInitialTextsOfSelectedLanguage(textsOfSelectedLanguage)
                 } else {
-                    if (language) {
-                        setInitialTexts({
-                            ...initialTexts,
-                            [language?.get('value') as LanguageChat]:
-                                textsOfSelectedLanguage,
-                        })
-                        setInitialTextsOfSelectedLanguage(
+                    setInitialTexts({
+                        ...initialTexts,
+                        [language?.get('value') as LanguageChat]:
                             textsOfSelectedLanguage,
-                        )
-                    } else {
-                        dispatchNotification(
-                            `There was a problem. We couldn't update your changes`,
-                            NotificationStatus.Error,
-                        )
-                        return
-                    }
+                    })
+                    setInitialTextsOfSelectedLanguage(textsOfSelectedLanguage)
                 }
 
                 setHasChanges(false)
-                dispatchNotification('Your changes are now live')
+                toast.success('Your changes are now live')
 
                 logEvent(SegmentEvent.ChatSettingsToneOfVoicePageSaved, {
                     id: integration.get('id'),
                 })
             } catch {
-                dispatchNotification(
+                toast.error(
                     `There was a problem. We couldn't update your changes`,
-                    NotificationStatus.Error,
                 )
             }
         },
         [
             updateApplicationTexts,
             IsLegacyMonoLanguageMode,
-            dispatchNotification,
             integration,
             textsOfSelectedLanguage,
             language,
@@ -735,16 +705,9 @@ function GorgiasTranslateText({
     }
 
     const onSaveValuesAndExit = async () => {
-        try {
-            await submitData()
-            setHasChanges(false)
-            history.push(backUrl)
-        } catch {
-            dispatchNotification(
-                `There was a problem. We couldn't update your changes`,
-                NotificationStatus.Error,
-            )
-        }
+        await submitData()
+        setHasChanges(false)
+        history.push(backUrl)
     }
 
     const onDiscardChangesAndSwitchLanguage = () => {
@@ -756,18 +719,11 @@ function GorgiasTranslateText({
     }
 
     const onSaveValuesAndSwitchLanguage = async () => {
-        try {
-            await submitData()
-            setHasChanges(false)
-            onCloseModals()
-            if (preModalSelectedLanguage) {
-                handleLanguageChange(preModalSelectedLanguage, true)
-            }
-        } catch {
-            dispatchNotification(
-                `There was a problem. We couldn't update your changes`,
-                NotificationStatus.Error,
-            )
+        await submitData()
+        setHasChanges(false)
+        onCloseModals()
+        if (preModalSelectedLanguage) {
+            handleLanguageChange(preModalSelectedLanguage, true)
         }
     }
 
