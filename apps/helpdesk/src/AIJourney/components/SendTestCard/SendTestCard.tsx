@@ -32,6 +32,7 @@ type SendTestCardProps = {
 }
 
 const TEST_SMS_NUMBER_KEY = 'ai-journey-test-sms-number'
+const TEST_SMS_COUNTRY_CODE_KEY = 'ai-journey-test-sms-country-code'
 
 export const SendTestCard = ({
     onProductChange,
@@ -46,9 +47,9 @@ export const SendTestCard = ({
     )
     const [selectedFullProduct, setSelectedFullProduct] =
         useState<Product | null>(null)
-    const [selectedCountryCode, setSelectedCountryCode] = useState<
+    const [selectedCountryCode, setSelectedCountryCode] = useLocalStorage<
         CountryCode | undefined
-    >(undefined)
+    >(TEST_SMS_COUNTRY_CODE_KEY, undefined)
     const [phoneNumber, setPhoneNumber] = useLocalStorage(
         TEST_SMS_NUMBER_KEY,
         '',

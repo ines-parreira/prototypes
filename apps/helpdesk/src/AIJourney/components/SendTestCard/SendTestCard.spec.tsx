@@ -281,4 +281,47 @@ describe('<SendTestCard />', () => {
             )
         })
     })
+
+    describe('country code persistence', () => {
+        it('should restore the country code from localStorage on mount', () => {
+            localStorage.setItem('ai-journey-test-sms-country-code', '"GB"')
+
+            renderComponent()
+
+            expect(screen.getByText('+44')).toBeInTheDocument()
+        })
+
+        it('should save the country code to localStorage when a country is selected', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const countryCodeButton = screen
+                .getByText('+1')
+                .closest('button') as HTMLButtonElement
+            await act(async () => {
+                await user.click(countryCodeButton)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByRole('listbox')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await user.type(screen.getByRole('searchbox'), 'France')
+            })
+
+            const franceOption = await screen.findByRole('option', {
+                name: /france/i,
+            })
+            await act(async () => {
+                await user.click(franceOption)
+            })
+
+            await waitFor(() => {
+                expect(
+                    localStorage.getItem('ai-journey-test-sms-country-code'),
+                ).toBe('"FR"')
+            })
+        })
+    })
 })

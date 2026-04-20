@@ -358,6 +358,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       <div
                         class="ui-input-wrapper-8e5a ui-input-md-8e5a"
                         data-name="input"
+                        style="--trailing-slot-size: 0px;"
                       >
                         <label>
                           <input
@@ -475,6 +476,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       <div
                         class="ui-input-wrapper-8e5a ui-input-md-8e5a"
                         data-name="input"
+                        style="--leading-slot-size: 0px; --trailing-slot-size: 0px;"
                       >
                         <label>
                           <span
