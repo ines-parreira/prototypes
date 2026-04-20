@@ -494,6 +494,108 @@ body {
 .user-bub-inner { padding: 10px 16px; background: var(--surface2); border-radius: 18px 18px 4px 18px; font-size: 14px; max-width: 80%; }
 
 ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+/* ── PRINCIPLES PAGE ── */
+.view.principles-view { max-width: 620px; align-self: flex-start; }
+.principles-header { margin-bottom: 28px; }
+.principles-title { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 10px; letter-spacing: -0.02em; }
+.principles-sub { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+.principle-row { display: flex; gap: 16px; padding: 20px 0; border-top: 1px solid var(--border); }
+.principle-row:first-of-type { border-top: none; padding-top: 0; }
+.principle-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; flex-shrink: 0;
+}
+.principle-num.base { background: var(--surface3); color: var(--text-2); }
+.principle-num.diff { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.principle-body { flex: 1; min-width: 0; }
+.principle-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.principle-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.principle-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+
+/* Differentiator badge on principles page */
+.diff-badge-wrap { position: relative; display: inline-block; }
+.diff-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 20px;
+  background: var(--accent-dim); color: var(--accent);
+  border: 1px solid var(--accent-border);
+  font-size: 10px; font-weight: 500; white-space: nowrap;
+  cursor: help;
+}
+.diff-badge-diamond { font-size: 8px; }
+
+/* Shared dark tooltip */
+.diff-tip-bridge {
+  position: absolute; top: 100%; left: 0;
+  padding-top: 6px;
+  width: 280px; z-index: 100;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s;
+}
+.diff-tip, .grounded-tip {
+  position: relative;
+  background: #1E242E; color: rgba(255,255,255,0.85);
+  border-radius: 6px; padding: 8px 12px;
+  font-size: 12px; font-weight: 400; line-height: 1.45;
+  box-shadow: 0px 2px 20px 0px rgba(0,0,0,0.04);
+  text-align: left;
+}
+.diff-tip strong, .grounded-tip strong { color: #fff; font-weight: 600; }
+.diff-tip::before {
+  content: ''; position: absolute;
+  top: -5px; left: 12px;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-bottom: 5px solid #1E242E;
+}
+.diff-badge-wrap:hover .diff-tip-bridge,
+.diff-tip-bridge:hover { opacity: 1; pointer-events: auto; }
+
+/* ── GROUNDED-IN TAGS ── */
+.grounded-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 20px; width: 100%; }
+.grounded-tag-wrap { position: relative; display: inline-block; }
+.grounded-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 20px;
+  background: var(--accent-dim); color: var(--accent);
+  border: 1px solid var(--accent-border);
+  font-size: 11px; font-weight: 500;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  letter-spacing: -0.005em;
+  transition: background 0.15s, color 0.15s;
+}
+.grounded-tag:hover { background: var(--accent); color: #fff; }
+.grounded-tag-num { font-size: 10px; opacity: 0.7; }
+.grounded-tag:hover .grounded-tag-num { opacity: 0.9; }
+
+.grounded-tip-bridge {
+  position: absolute;
+  bottom: 100%; left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: 6px;
+  width: 240px; z-index: 100;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s;
+}
+.grounded-tip::after {
+  content: ''; position: absolute;
+  bottom: -5px; left: 50%; transform: translateX(-50%);
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 5px solid #1E242E;
+}
+.grounded-tag-wrap:hover .grounded-tip-bridge,
+.grounded-tip-bridge:hover { opacity: 1; pointer-events: auto; }
+
+.tip-link {
+  display: block; margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer; text-decoration: none;
+  transition: color 0.15s;
+}
+.tip-link:hover { color: #fff; }
 </style>
 </head>
 <body>
@@ -507,6 +609,11 @@ body {
     <button class="nav-item" onclick="show(this,'exp-immersive','Experience types','Immersive')">Immersive</button>
     <button class="nav-item" onclick="show(this,'exp-assistive','Experience types','Assistive')">Assistive</button>
     <button class="nav-item" onclick="show(this,'exp-embedded','Experience types','Embedded')">Embedded</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Foundation</div>
+    <button class="nav-item" id="nav-principles" onclick="show(this,'principles','Foundation','Design Principles')">Design principles</button>
   </div>
 
   <div class="nav-section">
@@ -586,6 +693,104 @@ body {
   </div>
 
   <div class="content">
+
+    <!-- FOUNDATION: DESIGN PRINCIPLES -->
+    <div class="view principles-view" id="view-principles">
+      <div class="principles-header">
+        <div class="principles-title">Copilot Design Principles</div>
+        <div class="principles-sub">Seven rules that govern every Copilot design decision. Principles marked with a diamond are competitive differentiators versus Siena AI and similar copilots.</div>
+      </div>
+
+      <div class="principle-row">
+        <div class="principle-num diff">1</div>
+        <div class="principle-body">
+          <div class="principle-head">
+            <span class="principle-name">Arrive with a diagnosis, not a blank state</span>
+            <span class="diff-badge-wrap">
+              <span class="diff-badge"><span class="diff-badge-diamond">◆</span> Differentiator</span>
+              <div class="diff-tip-bridge"><div class="diff-tip"><strong>vs. Siena:</strong> Siena offers generic entry points like "How can I help?" that don't change based on what's actually happening with the merchant's automation. Gorgias Copilot arrives already informed by the data — with a specific diagnosis, not a menu of prompts.</div></div>
+            </span>
+          </div>
+          <div class="principle-desc">Copilot arrives informed by the data. Not "here are four things you could ask me" but "this automation had 34 handovers last week, mostly because the subscription check step is missing. Here's a revised version."</div>
+        </div>
+      </div>
+
+      <div class="principle-row">
+        <div class="principle-num diff">2</div>
+        <div class="principle-body">
+          <div class="principle-head">
+            <span class="principle-name">Show the work</span>
+            <span class="diff-badge-wrap">
+              <span class="diff-badge"><span class="diff-badge-diamond">◆</span> Differentiator</span>
+              <div class="diff-tip-bridge"><div class="diff-tip"><strong>vs. Siena:</strong> Siena shows final answers with no reasoning trail — no indication of what data was checked, how conclusions were reached, or how confident the copilot is. Gorgias Copilot makes every step inspectable with collapsible reasoning and tiered action cards.</div></div>
+            </span>
+          </div>
+          <div class="principle-desc">Every recommendation shows what data was used, what steps were taken, and why. Reasoning traces, data sources, confidence, and change history are always one click away. Understanding is built through interaction.</div>
+        </div>
+      </div>
+
+      <div class="principle-row">
+        <div class="principle-num base">3</div>
+        <div class="principle-body">
+          <div class="principle-head">
+            <span class="principle-name">Lead with the answer, disclose progressively</span>
+          </div>
+          <div class="principle-desc">Surface the most impactful insight first. Depth is available on pull, never dumped upfront. The merchant gets the action and the "so what" immediately — supporting evidence is a click away.</div>
+        </div>
+      </div>
+
+      <div class="principle-row">
+        <div class="principle-num diff">4</div>
+        <div class="principle-body">
+          <div class="principle-head">
+            <span class="principle-name">Center the artifact, not the chat</span>
+            <span class="diff-badge-wrap">
+              <span class="diff-badge"><span class="diff-badge-diamond">◆</span> Differentiator</span>
+              <div class="diff-tip-bridge"><div class="diff-tip"><strong>vs. Siena:</strong> Siena separates diagnosis and action — analysis appears in chat, while editable guidance sits in a different panel with no diff, no preview, and no clear link between the flagged issue and the resulting draft. Gorgias Copilot centers the editable artifact with carried context and inline diff.</div></div>
+            </span>
+          </div>
+          <div class="principle-desc">The editable artifact is the primary interaction surface. Drafts show inline diffs, carry the context that triggered them, and are approved on the artifact itself — not in a separate chat bubble.</div>
+        </div>
+      </div>
+
+      <div class="principle-row">
+        <div class="principle-num diff">5</div>
+        <div class="principle-body">
+          <div class="principle-head">
+            <span class="principle-name">Previewable, approvable, reversible</span>
+            <span class="diff-badge-wrap">
+              <span class="diff-badge"><span class="diff-badge-diamond">◆</span> Differentiator</span>
+              <div class="diff-tip-bridge"><div class="diff-tip"><strong>vs. Siena:</strong> Siena has no visible approval workflow for copilot actions — no preview of what will change, no explicit confirmation step, no undo. Gorgias Copilot makes every state-changing action pass through a preview → approve → undo flow that builds merchant trust.</div></div>
+            </span>
+          </div>
+          <div class="principle-desc">Every AI action shows what will happen before it happens, asks for confirmation, and offers undo. Read-actions and write-actions are visually distinct. The approval flow builds trust, not friction.</div>
+        </div>
+      </div>
+
+      <div class="principle-row">
+        <div class="principle-num diff">6</div>
+        <div class="principle-body">
+          <div class="principle-head">
+            <span class="principle-name">Close the loop</span>
+            <span class="diff-badge-wrap">
+              <span class="diff-badge"><span class="diff-badge-diamond">◆</span> Differentiator</span>
+              <div class="diff-tip-bridge"><div class="diff-tip"><strong>vs. Siena:</strong> Both Siena and Gaia currently end with a ceremonial status badge ("Automation Updated", "Approved") — no estimated impact, no commitment to track outcomes, no learning signal. Gorgias Copilot should state expected impact upfront and follow through with monitoring.</div></div>
+            </span>
+          </div>
+          <div class="principle-desc">After a change is published, Copilot states the expected impact and commits to monitoring. The system shows signals of learning — what worked, what changed, what improved since last time.</div>
+        </div>
+      </div>
+
+      <div class="principle-row">
+        <div class="principle-num base">7</div>
+        <div class="principle-body">
+          <div class="principle-head">
+            <span class="principle-name">Global presence, local intelligence</span>
+          </div>
+          <div class="principle-desc">Copilot is accessible from every product surface but deeply contextual to where you are and what you're doing. On AI Agent it's proactive. On Analytics it's diagnostic. Same system, different mode.</div>
+        </div>
+      </div>
+    </div>
 
     <!-- EXPERIENCE TYPES: IMMERSIVE -->
     <div class="view" id="view-exp-immersive">
@@ -685,7 +890,7 @@ body {
     </div>
 
     <!-- ASK ANYTHING -->
-    <div class="view active" id="view-ask-anything">
+    <div class="view active" id="view-ask-anything" data-grounded="1,7">
       <div class="ask-box" id="ask-box">
         <input class="ask-input" id="ask-input" placeholder="Default state…"
           onfocus="askFocus()" onblur="askBlur()" oninput="askInput()" onkeydown="if(event.key==='Enter')sendAsk()">
@@ -718,7 +923,7 @@ body {
     </div>
 
     <!-- THINKING: IN PROGRESS -->
-    <div class="view" id="view-thinking-progress">
+    <div class="view" id="view-thinking-progress" data-grounded="2,3">
       <div class="plan-card" style="padding:0;overflow:hidden">
         <div class="reasoning-top">
           <span class="reasoning-title">Thinking…</span>
@@ -729,7 +934,7 @@ body {
     </div>
 
     <!-- THINKING: COMPLETED -->
-    <div class="view" id="view-thinking-complete">
+    <div class="view" id="view-thinking-complete" data-grounded="2,3">
       <div class="plan-card" style="padding:0;overflow:hidden">
         <div class="reasoning-top" onclick="toggleThinkingComplete()">
           <span class="reasoning-title">Thought for a moment</span>
@@ -748,7 +953,7 @@ body {
     </div>
 
     <!-- PLAN: SIMPLE -->
-    <div class="view" id="view-plan-simple">
+    <div class="view" id="view-plan-simple" data-grounded="2,5">
       <div class="plan-card">
         <div class="todo-list">
           <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Analyzing tickets</div></div></div>
@@ -931,7 +1136,7 @@ body {
     </div>
 
     <!-- SOURCE -->
-    <div class="view" id="view-source">
+    <div class="view" id="view-source" data-grounded="4,2">
       <div class="source-editor">
         <div class="editor-header"><span>📄</span><span class="file-name">auth.service.ts</span><span style="margin-left:auto;font-size:11px;color:var(--text-3)">TypeScript</span></div>
         <div class="editor-body">
@@ -954,7 +1159,7 @@ body {
     </div>
 
     <!-- DIFF -->
-    <div class="view" id="view-diff">
+    <div class="view" id="view-diff" data-grounded="4,5">
       <div class="diff-wrap">
         <div class="diff-header"><span class="diff-fname">auth.service.ts</span><div class="diff-stat"><span class="diff-add">+8</span><span class="diff-rem">−3</span></div></div>
         <div class="diff-body">
@@ -978,7 +1183,7 @@ body {
     </div>
 
     <!-- CHART -->
-    <div class="view" id="view-chart">
+    <div class="view" id="view-chart" data-grounded="3,4">
       <div class="chart-card">
         <div class="chart-header">
           <div class="chart-header-left">
@@ -1046,7 +1251,7 @@ body {
     </div>
 
     <!-- APPROVAL -->
-    <div class="view" id="view-approval">
+    <div class="view" id="view-approval" data-grounded="5,2">
       <div class="approval-card">
         <div class="approval-header">
           <div class="approval-icon">⚠️</div>
@@ -1069,7 +1274,7 @@ body {
     </div>
 
     <!-- PROCESS INDICATOR: COMPLETE -->
-    <div class="view" id="view-resp-process-done">
+    <div class="view" id="view-resp-process-done" data-grounded="2,3">
       <div class="plan-card" style="padding:0;overflow:hidden">
         <div class="pi-wrap" onclick="this.classList.toggle('open')">
           <button class="pi-trigger">
@@ -1105,7 +1310,7 @@ body {
     </div>
 
     <!-- INSIGHT CARDS -->
-    <div class="view" id="view-resp-insight">
+    <div class="view" id="view-resp-insight" data-grounded="3,1">
       <div style="display:flex;flex-direction:column;gap:16px;width:100%">
         <div class="insight-row">
           <div class="ins-card"><div class="ins-metric">42.4%</div><div class="ins-label">Handover rate</div><div class="ins-trend ins-trend--pos">↓ from 50% in Jan</div></div>
@@ -1120,7 +1325,7 @@ body {
     </div>
 
     <!-- MENTION -->
-    <div class="view" id="view-resp-mention">
+    <div class="view" id="view-resp-mention" data-grounded="3,4">
       <div style="display:flex;flex-direction:column;gap:24px;width:100%">
         <div class="resp-prose">The top handover topic is <span class="mention-chip">Billing & invoicing <span class="mention-detail">247</span></span> followed by <span class="mention-chip">Subscription cancellation <span class="mention-detail">152</span></span> and <span class="mention-chip">Coupons & refunds <span class="mention-detail">51</span></span>.</div>
         <div style="height:1px;background:var(--border)"></div>
@@ -1129,7 +1334,7 @@ body {
     </div>
 
     <!-- REPORT ATTACHMENT -->
-    <div class="view" id="view-resp-attachment">
+    <div class="view" id="view-resp-attachment" data-grounded="4">
       <div style="display:flex;flex-direction:column;gap:16px;width:100%">
         <div class="rpt-card">
           <div class="rpt-top">
@@ -1188,7 +1393,7 @@ body {
     </div>
 
     <!-- FULL RESPONSE COMPOSED -->
-    <div class="view" id="view-resp-composed">
+    <div class="view" id="view-resp-composed" data-grounded="1,2,3,6">
       <div style="display:flex;flex-direction:column;width:100%">
 
         <div class="user-bub"><div class="user-bub-inner">Improve my guidances based on ticket handovers</div></div>
@@ -1495,6 +1700,43 @@ function declinePlan() {
   const n = document.getElementById('approve-note');
   n.textContent = 'Declined. No changes were made.'; n.style.color = 'var(--red)';
 }
+
+/* ── GROUNDED-IN TAGS ── */
+const principles = {
+  1: { label: 'Arrive with a diagnosis',              desc: 'Copilot arrives informed by the data — with a specific diagnosis, not a menu of prompts. The merchant validates, edits, or rejects. Never starts from scratch.' },
+  2: { label: 'Show the work',                        desc: 'Every recommendation shows what data was used, what steps were taken, and why. Reasoning traces, data sources, and confidence are always one click away.' },
+  3: { label: 'Lead with the answer',                 desc: 'Surface the most impactful insight first. Depth is available on pull, never dumped upfront. The merchant gets the "so what" immediately.' },
+  4: { label: 'Center the artifact',                  desc: 'The editable artifact is the primary interaction surface. Drafts show inline diffs, carry context, and are approved on the artifact itself — not in chat bubbles.' },
+  5: { label: 'Previewable, approvable, reversible', desc: 'Every AI action shows what will happen, asks for confirmation, and offers undo. Read-actions and write-actions are visually distinct.' },
+  6: { label: 'Close the loop',                       desc: 'After a change is published, Copilot states the expected impact and commits to monitoring. Shows signals of learning — what worked, what improved since last time.' },
+  7: { label: 'Global presence, local intelligence', desc: 'Accessible from every surface but deeply contextual. On AI Agent it\'s proactive. On Analytics it\'s diagnostic. Same system, different mode.' },
+};
+
+function goToPrinciples(e) {
+  if (e) e.stopPropagation();
+  const nav = document.getElementById('nav-principles');
+  show(nav, 'principles', 'Foundation', 'Design Principles');
+}
+
+function renderGroundedRow(nums) {
+  return '<div class="grounded-row">' + nums.map(function(n){
+    const p = principles[n];
+    return '<span class="grounded-tag-wrap">'
+      + '<button class="grounded-tag" onclick="goToPrinciples(event)">'
+      +   '<span class="grounded-tag-num">P' + n + '</span>' + p.label
+      + '</button>'
+      + '<div class="grounded-tip-bridge"><div class="grounded-tip">'
+      +   p.desc
+      +   '<a class="tip-link" onclick="goToPrinciples(event)">View principles →</a>'
+      + '</div></div>'
+    + '</span>';
+  }).join('') + '</div>';
+}
+
+document.querySelectorAll('[data-grounded]').forEach(function(v){
+  const nums = v.dataset.grounded.split(',').map(function(s){ return parseInt(s, 10); });
+  v.insertAdjacentHTML('afterbegin', renderGroundedRow(nums));
+});
 </script>
 </body>
 </html>
