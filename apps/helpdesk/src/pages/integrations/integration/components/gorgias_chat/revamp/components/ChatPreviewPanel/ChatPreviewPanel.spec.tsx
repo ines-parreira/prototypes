@@ -201,13 +201,6 @@ describe('ChatPreviewPanel', () => {
 
             await user.click(screen.getByTestId('button-group-item-homepage'))
 
-            expect(mockGorgiasChat.setPage).not.toHaveBeenCalledWith('homepage')
-
-            await user.click(
-                screen.getByTestId('button-group-item-conversation'),
-            )
-            await user.click(screen.getByTestId('button-group-item-homepage'))
-
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith(
                 'homepage',
                 undefined,

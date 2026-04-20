@@ -112,8 +112,6 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 withGorgiasChat((gorgiasChat) => {
                     const isTabPage =
                         page === 'homepage' || page === 'conversation'
-                    if (isTabPage && selectedPage === page) return
-
                     if (isTabPage) {
                         setSelectedPage(page)
                     }
@@ -121,7 +119,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                     gorgiasChat.setPage(page, options)
                 })
             },
-            [selectedPage],
+            [],
         )
 
         const closeChat = () => {
