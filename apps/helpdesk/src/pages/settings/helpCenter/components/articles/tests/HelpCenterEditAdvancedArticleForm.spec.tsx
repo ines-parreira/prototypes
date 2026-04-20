@@ -91,12 +91,31 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
     })
 
     it('should display the component correctly', () => {
-        const { container } = render(
+        render(
             <Provider store={mockedStore(defaultState)}>
                 <HelpCenterEditAdvancedArticleForm {...props} />
             </Provider>,
         )
-        expect(container).toMatchSnapshot()
+
+        expect(
+            screen.getByRole('textbox', { name: /^title required$/i }),
+        ).toHaveValue(translation.title)
+        expect(screen.getByRole('textbox', { name: /slug/i })).toHaveValue(
+            translation.slug,
+        )
+        expect(screen.getByRole('textbox', { name: /excerpt/i })).toHaveValue(
+            translation.excerpt,
+        )
+        expect(
+            screen.getByRole('textbox', { name: /meta title/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('textbox', { name: /meta description/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getAllByDisplayValue('- no category -').length,
+        ).toBeGreaterThan(0)
+        expect(screen.getAllByDisplayValue('Public').length).toBeGreaterThan(0)
     })
 
     it('should trigger the onChange callback when updating form inputs', () => {

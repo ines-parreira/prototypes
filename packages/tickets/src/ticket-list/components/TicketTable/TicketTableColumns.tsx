@@ -82,8 +82,8 @@ export function createTicketTableColumns({
             id: 'subject',
             header: 'Subject',
             enableSorting: false,
-            size: 240,
             minSize: 200,
+            maxSize: 240,
             cell: (cell) => {
                 const ticket = cell.row.original
 
@@ -99,8 +99,8 @@ export function createTicketTableColumns({
             id: 'customer',
             header: 'Customer',
             enableSorting: false,
-            size: 220,
             minSize: 180,
+            maxSize: 220,
             cell: (cell) => (
                 <CustomerCell value={cell.row.original.displayCustomer} />
             ),
@@ -115,8 +115,8 @@ export function createTicketTableColumns({
                 id: 'assignee',
                 header: 'Assignee',
                 enableSorting: false,
-                size: 220,
                 minSize: 180,
+                maxSize: 250,
                 cell: (cell) => (
                     <SingleLineTextCell value={{ text: cell.getValue() }} />
                 ),
@@ -149,8 +149,7 @@ export function createTicketTableColumns({
                 header: 'Last message',
                 enableSorting: true,
                 hug: true,
-                size: 180,
-                minSize: 160,
+                maxSize: 180,
                 cell: (cell) => (
                     <DateTimeCell
                         datetime={cell.getValue()}
@@ -163,8 +162,8 @@ export function createTicketTableColumns({
             id: 'tags',
             header: 'Tags',
             enableSorting: false,
-            size: 280,
             minSize: 240,
+            maxSize: 350,
             cell: (cell) => (
                 <DataTableOverflowListCell<
                     TicketTableRow,
@@ -188,8 +187,7 @@ export function createTicketTableColumns({
             id: 'assignee_team',
             header: 'Assignee team',
             enableSorting: false,
-            size: 200,
-            minSize: 160,
+            hug: true,
             cell: (cell) =>
                 cell.getValue() ? (
                     <SingleLineTextCell value={{ text: cell.getValue() }} />
@@ -204,8 +202,8 @@ export function createTicketTableColumns({
                 id: 'integrations',
                 header: 'Integration',
                 enableSorting: false,
-                size: 240,
-                minSize: 200,
+                minSize: 150,
+                maxSize: 250,
                 cell: (cell) =>
                     cell.getValue() ? (
                         <SingleLineTextCell value={{ text: cell.getValue() }} />
@@ -233,8 +231,7 @@ export function createTicketTableColumns({
                 id: 'language',
                 header: 'Language',
                 enableSorting: false,
-                size: 140,
-                minSize: 120,
+                hug: true,
                 cell: (cell) =>
                     cell.getValue() ? (
                         <SingleLineTextCell value={{ text: cell.getValue() }} />
@@ -247,6 +244,7 @@ export function createTicketTableColumns({
             id: 'channel',
             header: 'Channel',
             enableSorting: false,
+            hug: true,
             cell: (cell) => <ChannelCell ticket={cell.row.original} />,
         }),
         columnHelper.accessor((ticket) => ticket.created_datetime, {
@@ -254,8 +252,7 @@ export function createTicketTableColumns({
             header: 'Created',
             enableSorting: true,
             hug: true,
-            size: 180,
-            minSize: 160,
+            maxSize: 180,
             cell: (cell) => (
                 <DateTimeCell
                     datetime={cell.getValue()}
@@ -268,8 +265,7 @@ export function createTicketTableColumns({
             header: 'Updated',
             enableSorting: true,
             hug: true,
-            size: 180,
-            minSize: 160,
+            maxSize: 180,
             cell: (cell) => (
                 <DateTimeCell
                     datetime={cell.getValue()}
@@ -284,8 +280,7 @@ export function createTicketTableColumns({
                 header: 'Last received',
                 enableSorting: true,
                 hug: true,
-                size: 180,
-                minSize: 160,
+                maxSize: 180,
                 cell: (cell) => (
                     <DateTimeCell
                         datetime={cell.getValue()}
@@ -299,8 +294,7 @@ export function createTicketTableColumns({
             header: 'Closed',
             enableSorting: false,
             hug: true,
-            size: 180,
-            minSize: 160,
+            maxSize: 180,
             cell: (cell) => (
                 <DateTimeCell
                     datetime={cell.getValue()}
@@ -313,8 +307,7 @@ export function createTicketTableColumns({
             header: 'Snooze',
             enableSorting: false,
             hug: true,
-            size: 180,
-            minSize: 160,
+            maxSize: 180,
             cell: (cell) => (
                 <DateTimeCell
                     datetime={cell.getValue()}

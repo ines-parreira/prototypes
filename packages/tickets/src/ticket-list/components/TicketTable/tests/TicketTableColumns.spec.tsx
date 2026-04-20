@@ -136,6 +136,34 @@ describe('createTicketTableColumns', () => {
         ).toEqual(expect.objectContaining({ enableSorting: true }))
     })
 
+    it('keeps datetime columns hug-sized with a max width cap', () => {
+        const columns = createTicketTableColumns({
+            dateTimePreferences,
+        })
+
+        const datetimeColumns = [
+            'last_message_datetime',
+            'created_datetime',
+            'updated_datetime',
+            'last_received_message_datetime',
+            'closed',
+            'snooze',
+        ]
+
+        datetimeColumns.forEach((columnId) => {
+            const column = columns.find((c) => c.id === columnId)
+
+            expect(column).toEqual(
+                expect.objectContaining({
+                    hug: true,
+                    maxSize: 180,
+                }),
+            )
+            expect(column).not.toHaveProperty('size')
+            expect(column).not.toHaveProperty('minSize')
+        })
+    })
+
     describe('ticket column (TicketCell)', () => {
         it('renders the ticket subject and excerpt', () => {
             const ticket = mockTicketCompact({
