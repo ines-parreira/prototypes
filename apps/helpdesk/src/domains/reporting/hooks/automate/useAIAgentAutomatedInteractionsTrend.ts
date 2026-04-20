@@ -10,6 +10,7 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 export const useAIAgentAutomatedInteractionsTrend = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) =>
     useTrendFromMultipleMetricsTrend(
         filters,
@@ -18,6 +19,7 @@ export const useAIAgentAutomatedInteractionsTrend = (
         AutomationDatasetMeasure.AutomatedInteractions,
         aiAgentAutomatedInteractionsQueryV2Factory,
         'automatedInteractions',
+        enabled,
     )
 
 export const fetchAIAgentAutomatedInteractionsTrend = (

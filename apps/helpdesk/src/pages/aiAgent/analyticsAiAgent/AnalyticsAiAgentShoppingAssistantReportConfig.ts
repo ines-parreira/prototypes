@@ -3,7 +3,6 @@ import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentSalesHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentSalesHandoverInteractionsTrend'
 import { fetchClickThroughRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useClickThroughRateTrend'
 import { fetchSuccessRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useSuccessRateTrend'
-import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
@@ -21,9 +20,9 @@ import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
-import { AnalyticsAiAgentResolvedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentResolvedInteractionsCard'
 import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
 import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
+import { AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import {
@@ -48,6 +47,7 @@ import { fetchAiAgentMedianPurchaseTimeTrend } from 'pages/aiAgent/analyticsAiAg
 import { fetchAiAgentOrdersInfluencedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentOrdersInfluencedTrend'
 import { fetchAiAgentProductRecommendationsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentProductRecommendationsTrend'
 import { fetchAiAgentSalesPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSalesPerformanceByChannelMetrics'
+import { fetchAiAgentShoppingAssistantAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentShoppingAssistantAutomatedInteractionsTrend'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 import { fetchShoppingAssistantPerformanceByEngagementFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
@@ -122,12 +122,13 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
             },
             [AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard]:
                 {
-                    chartComponent: AnalyticsAiAgentResolvedInteractionsCard,
+                    chartComponent:
+                        AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard,
                     label: 'Automated interactions',
                     csvProducer: [
                         {
                             type: DataExportFormat.Trend,
-                            fetch: fetchTotalNumberOfSalesConversationsTrend,
+                            fetch: fetchAiAgentShoppingAssistantAutomatedInteractionsTrend,
                             metricFormat: 'decimal',
                         },
                     ],

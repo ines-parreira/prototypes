@@ -8,6 +8,7 @@ import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 const useAutomatedSalesConversationsTrend = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) =>
     useMetricTrend(
         automatedSalesConversationsQueryFactory(filters, timezone),
@@ -18,6 +19,9 @@ const useAutomatedSalesConversationsTrend = (
             },
             timezone,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
 const fetchAutomatedSalesConversationsTrend = (

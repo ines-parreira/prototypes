@@ -1,5 +1,4 @@
 import { fetchAiAgentAllAgentsDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useAiAgentAllAgentsDecreaseInResolutionTimeTrend'
-import { fetchAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
 import { fetchAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { fetchCoverageRateTrend } from 'domains/reporting/hooks/automate/useCoverageRateTrend'
@@ -12,6 +11,7 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts//AnalyticsAiAgentCoverageRateCard'
+import { AnalyticsAiAgentAllAgentsAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsAutomatedInteractionsCard'
 import { AnalyticsAiAgentAllAgentsAverageCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsAverageCsatCard'
 import {
     ALL_AGENTS_BAR_CHART_METRICS,
@@ -24,7 +24,6 @@ import {
 import { AnalyticsAiAgentAllAgentsDecreaseInFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsDecreaseInFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
-import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClosedTicketsCard'
 import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCostSavedCard'
@@ -34,6 +33,7 @@ import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/c
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
 import { ChannelPerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTableWrapper'
 import { IntentPerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTableWrapper'
+import { fetchAiAgentAllAgentsAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAutomatedInteractionsTrend'
 import { fetchAiAgentAllAgentsAverageCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAverageCsatTrend'
 import { fetchAiAgentAllAgentsCostSavedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsCostSavedTrend'
 import { fetchAiAgentAllAgentsDecreaseInFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsDecreaseInFRTTrend'
@@ -92,12 +92,13 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AutomatedInteractionsCard]: {
-                chartComponent: AnalyticsAiAgentAutomatedInteractionsCard,
+                chartComponent:
+                    AnalyticsAiAgentAllAgentsAutomatedInteractionsCard,
                 label: 'Automated interactions',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchAIAgentAutomatedInteractionsTrend,
+                        fetch: fetchAiAgentAllAgentsAutomatedInteractionsTrend,
                         metricFormat: 'decimal',
                     },
                 ],

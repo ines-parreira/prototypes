@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { useAutomatedInteractionsBySkill } from 'domains/reporting/hooks/automate/useAutomatedInteractionsBySkill'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
-import { useAiAgentAutomatedInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric'
+import { useAiAgentAllAgentsAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAutomatedInteractionsTrend'
 import { ChartTypeToggle } from 'pages/aiAgent/analyticsOverview/components/ChartTypeToggle/ChartTypeToggle'
 import { useChartTypeToggle } from 'pages/aiAgent/analyticsOverview/hooks/useChartTypeToggle'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
@@ -20,7 +20,7 @@ export const DEPRECATED_AnalyticsOverviewAutomatedInteractionsComboChart =
         const { statsFilters, userTimezone } = useAutomateFilters()
         const { chartType, setChartType } = useChartTypeToggle()
 
-        const trend = useAiAgentAutomatedInteractionsMetric()
+        const trend = useAiAgentAllAgentsAutomatedInteractionsTrend()
 
         const { data: chartData, isLoading: isChartDataLoading } =
             useAutomatedInteractionsBySkill(statsFilters, userTimezone)

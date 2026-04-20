@@ -38,6 +38,9 @@ describe('useAiAgentSupportInteractionsTrend', () => {
             mockTimezone,
             aiAgentSupportInteractionsQueryFactory,
             AIAgentInteractionsBySkillMeasure.Count,
+            undefined,
+            undefined,
+            true,
         )
     })
 

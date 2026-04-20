@@ -5,12 +5,12 @@ import * as automatedInteractionsBySkillHook from 'domains/reporting/hooks/autom
 import * as automateFiltersHook from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { DEPRECATED_AnalyticsOverviewAutomatedInteractionsComboChart as AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsConfigurableBar/DEPRECATED_AnalyticsOverviewAutomatedInteractionsComboChart'
-import * as automatedInteractionsMetricHook from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric'
+import * as automatedInteractionsMetricHook from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAutomatedInteractionsTrend'
 
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 jest.mock('domains/reporting/hooks/automate/useAutomatedInteractionsBySkill')
 jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric',
+    'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAutomatedInteractionsTrend',
 )
 
 describe('AnalyticsOverviewAutomatedInteractionsComboChart', () => {
@@ -45,7 +45,7 @@ describe('AnalyticsOverviewAutomatedInteractionsComboChart', () => {
 
         jest.spyOn(
             automatedInteractionsMetricHook,
-            'useAiAgentAutomatedInteractionsMetric',
+            'useAiAgentAllAgentsAutomatedInteractionsTrend',
         ).mockReturnValue({
             isFetching: false,
             isError: false,
@@ -126,7 +126,7 @@ describe('AnalyticsOverviewAutomatedInteractionsComboChart', () => {
     it('should render loading skeleton when metric is fetching', () => {
         jest.spyOn(
             automatedInteractionsMetricHook,
-            'useAiAgentAutomatedInteractionsMetric',
+            'useAiAgentAllAgentsAutomatedInteractionsTrend',
         ).mockReturnValue({
             isFetching: true,
             isError: false,
@@ -164,7 +164,7 @@ describe('AnalyticsOverviewAutomatedInteractionsComboChart', () => {
     it('should handle null metric value', () => {
         jest.spyOn(
             automatedInteractionsMetricHook,
-            'useAiAgentAutomatedInteractionsMetric',
+            'useAiAgentAllAgentsAutomatedInteractionsTrend',
         ).mockReturnValue({
             isFetching: false,
             isError: false,

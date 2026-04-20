@@ -9,12 +9,16 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 export const useAiAgentSupportInteractionsTrend = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) =>
     useTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         aiAgentSupportInteractionsQueryFactory,
         AIAgentInteractionsBySkillMeasure.Count,
+        undefined,
+        undefined,
+        enabled,
     )
 
 export const fetchAiAgentSupportInteractionsTrend = (

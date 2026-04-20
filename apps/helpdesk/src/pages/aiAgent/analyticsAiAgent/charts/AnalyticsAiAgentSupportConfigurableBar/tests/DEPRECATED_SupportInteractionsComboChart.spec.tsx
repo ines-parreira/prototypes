@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { useAiAgentSupportInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportInteractionsMetric'
+import { useAiAgentSupportAgentAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentAutomatedInteractionsTrend'
 import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
@@ -12,10 +12,10 @@ jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const mockUseStatsFilters = jest.mocked(useStatsFilters)
 
 jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportInteractionsMetric',
+    'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentAutomatedInteractionsTrend',
 )
 const mockUseAiAgentSupportInteractionsMetric = jest.mocked(
-    useAiAgentSupportInteractionsMetric,
+    useAiAgentSupportAgentAutomatedInteractionsTrend,
 )
 
 jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent')
@@ -51,7 +51,7 @@ describe('SupportInteractionsComboChart', () => {
         mockUseAiAgentSupportInteractionsMetric.mockReturnValue({
             isFetching: false,
             isError: false,
-            isFieldsAvailable: true,
+
             data: {
                 label: 'Automated interactions',
                 value: 430,
@@ -98,7 +98,7 @@ describe('SupportInteractionsComboChart', () => {
         mockUseAiAgentSupportInteractionsMetric.mockReturnValue({
             isFetching: true,
             isError: false,
-            isFieldsAvailable: true,
+
             data: {
                 label: 'Automated interactions',
                 value: null,
@@ -211,7 +211,7 @@ describe('SupportInteractionsComboChart', () => {
         expect(mockUseStatsFilters).toHaveBeenCalled()
     })
 
-    it('should use useAiAgentSupportInteractionsMetric for trend data', () => {
+    it('should use useAiAgentSupportAgentAutomatedInteractionsTrend for trend data', () => {
         renderWithQueryClientProvider(
             <DEPRECATED_SupportInteractionsComboChart />,
         )
@@ -231,7 +231,7 @@ describe('SupportInteractionsComboChart', () => {
         mockUseAiAgentSupportInteractionsMetric.mockReturnValue({
             isFetching: false,
             isError: true,
-            isFieldsAvailable: true,
+
             data: {
                 label: 'Automated interactions',
                 value: null,

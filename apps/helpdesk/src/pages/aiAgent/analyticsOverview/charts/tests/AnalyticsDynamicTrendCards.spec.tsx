@@ -10,11 +10,11 @@ import type {
     DashboardChartProps,
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentAllAgentsAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsAutomatedInteractionsCard'
 import { AnalyticsAiAgentAllAgentsAverageCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsAverageCsatCard'
 import { AnalyticsAiAgentAllAgentsDecreaseInFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsDecreaseInFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
-import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageOrderValueCard'
@@ -32,15 +32,15 @@ import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
-import { AnalyticsAiAgentResolvedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentResolvedInteractionsCard'
 import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
 import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
+import { AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
+import { AnalyticsAiAgentSupportAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentAutomatedInteractionsCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportAgentSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentSuccessRateCard'
 import { AnalyticsAiAgentSupportCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportCostSavedCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
-import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
@@ -614,8 +614,8 @@ describe('Analytics Dynamic Trend Cards', () => {
             },
         },
         {
-            name: 'AnalyticsAiAgentAutomatedInteractionsCard',
-            Component: AnalyticsAiAgentAutomatedInteractionsCard,
+            name: 'AnalyticsAiAgentAllAgentsAutomatedInteractionsCard',
+            Component: AnalyticsAiAgentAllAgentsAutomatedInteractionsCard,
             drillDownMetricName:
                 AiAgentDrillDownMetricName.AutomatedInteractionsCard,
             config: {
@@ -642,8 +642,9 @@ describe('Analytics Dynamic Trend Cards', () => {
             timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
-            name: 'AnalyticsAiAgentResolvedInteractionsCard',
-            Component: AnalyticsAiAgentResolvedInteractionsCard,
+            name: 'AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard',
+            Component:
+                AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard,
             drillDownMetricName:
                 AiAgentDrillDownMetricName.ResolvedInteractionsCard,
             config: {
@@ -670,8 +671,8 @@ describe('Analytics Dynamic Trend Cards', () => {
             timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
-            name: 'AnalyticsAiAgentSupportInteractionsCard',
-            Component: AnalyticsAiAgentSupportInteractionsCard,
+            name: 'AnalyticsAiAgentSupportAgentAutomatedInteractionsCard',
+            Component: AnalyticsAiAgentSupportAgentAutomatedInteractionsCard,
             drillDownMetricName:
                 AiAgentDrillDownMetricName.SupportInteractionsCard,
             config: {

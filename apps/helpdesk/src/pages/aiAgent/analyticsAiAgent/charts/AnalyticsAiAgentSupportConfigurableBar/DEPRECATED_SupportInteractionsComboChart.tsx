@@ -1,7 +1,7 @@
 import { ChartCard, HorizontalBarChart } from '@repo/reporting'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useAiAgentSupportInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportInteractionsMetric'
+import { useAiAgentSupportAgentAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentAutomatedInteractionsTrend'
 import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
@@ -10,7 +10,8 @@ const METRIC_TITLE = 'Automated interactions'
 export const DEPRECATED_SupportInteractionsComboChart = () => {
     const { cleanStatsFilters } = useStatsFilters()
 
-    const supportInteractionsTrend = useAiAgentSupportInteractionsMetric()
+    const supportInteractionsTrend =
+        useAiAgentSupportAgentAutomatedInteractionsTrend()
     const {
         data: chartData,
         isLoading: isChartDataLoading,

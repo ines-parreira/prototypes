@@ -41,6 +41,7 @@ describe('useAIAgentAutomatedInteractionsTrend', () => {
             AutomationDatasetMeasure.AutomatedInteractions,
             aiAgentAutomatedInteractionsQueryV2Factory,
             'automatedInteractions',
+            true,
         )
     })
 
