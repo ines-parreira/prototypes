@@ -30,7 +30,13 @@ const viewId = 123
 const viewName = 'Test Support Queue'
 
 const mockGetView = mockGetViewHandler(async () =>
-    HttpResponse.json(mockGetViewResponse({ id: viewId, name: viewName })),
+    HttpResponse.json(
+        mockGetViewResponse({
+            decoration: null,
+            id: viewId,
+            name: viewName,
+        }),
+    ),
 )
 
 const server = setupServer()

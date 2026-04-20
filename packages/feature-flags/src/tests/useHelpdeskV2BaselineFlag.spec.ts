@@ -5,7 +5,6 @@ import { FeatureFlagKey } from '../featureFlagKey'
 import { useHelpdeskV2BaselineFlag } from '../shared-flags/useHelpdeskV2BaselineFlag'
 import { useFlag } from '../useFlag'
 
-const mockSetIsAxiomMigrationEnabled = vi.fn()
 const mockSetIsEnabled = vi.fn()
 
 vi.mock('../useFlag', () => ({
@@ -17,19 +16,15 @@ vi.mock('@repo/hooks', () => ({
 }))
 
 function mockLocalStorageValues({
-    isAxiomMigrationEnabled = true,
     isEnabled = true,
 }: {
-    isAxiomMigrationEnabled?: boolean
     isEnabled?: boolean
 } = {}) {
-    vi.mocked(useLocalStorage)
-        .mockReturnValueOnce([
-            isAxiomMigrationEnabled,
-            mockSetIsAxiomMigrationEnabled,
-            vi.fn(),
-        ])
-        .mockReturnValueOnce([isEnabled, mockSetIsEnabled, vi.fn()])
+    vi.mocked(useLocalStorage).mockReturnValueOnce([
+        isEnabled,
+        mockSetIsEnabled,
+        vi.fn(),
+    ])
 }
 
 describe('useHelpdeskV2BaselineFlag', () => {
@@ -37,7 +32,7 @@ describe('useHelpdeskV2BaselineFlag', () => {
         vi.clearAllMocks()
     })
 
-    it('should return hasUIVisionBeta true when flag is enabled and both localStorage toggles are true', () => {
+    it('should return hasUIVisionBeta true when the baseline flag and localStorage toggle are enabled', () => {
         vi.mocked(useFlag).mockReturnValue(true)
         mockLocalStorageValues()
 
@@ -49,10 +44,7 @@ describe('useHelpdeskV2BaselineFlag', () => {
             FeatureFlagKey.UIVisionBetaBaseline,
             false,
         )
-        expect(useLocalStorage).toHaveBeenCalledWith(
-            'axiom-migration-enabled-v3',
-            true,
-        )
+        expect(useLocalStorage).toHaveBeenCalledTimes(1)
         expect(useLocalStorage).toHaveBeenCalledWith('helpdesk-v2-beta', true)
     })
 
@@ -76,22 +68,9 @@ describe('useHelpdeskV2BaselineFlag', () => {
         expect(result.current.hasUIVisionBeta).toBe(false)
     })
 
-    it('should return hasUIVisionBeta false when axiom-migration localStorage toggle is false', () => {
-        vi.mocked(useFlag).mockReturnValue(true)
-        mockLocalStorageValues({ isAxiomMigrationEnabled: false })
-
-        const { result } = renderHook(() => useHelpdeskV2BaselineFlag())
-
-        expect(result.current.hasUIVisionBetaBaselineFlag).toBe(true)
-        expect(result.current.hasUIVisionBeta).toBe(false)
-    })
-
-    it('should return hasUIVisionBeta false when both flag and localStorage toggles are false', () => {
+    it('should return hasUIVisionBeta false when both the baseline flag and localStorage toggle are false', () => {
         vi.mocked(useFlag).mockReturnValue(false)
-        mockLocalStorageValues({
-            isAxiomMigrationEnabled: false,
-            isEnabled: false,
-        })
+        mockLocalStorageValues({ isEnabled: false })
 
         const { result } = renderHook(() => useHelpdeskV2BaselineFlag())
 
@@ -99,7 +78,7 @@ describe('useHelpdeskV2BaselineFlag', () => {
         expect(result.current.hasUIVisionBeta).toBe(false)
     })
 
-    it('should disable both toggles when onToggle is called while enabled', () => {
+    it('should disable only the Helpdesk V2 toggle when onToggle is called while enabled', () => {
         vi.mocked(useFlag).mockReturnValue(true)
         mockLocalStorageValues({ isEnabled: true })
 
@@ -110,10 +89,9 @@ describe('useHelpdeskV2BaselineFlag', () => {
         })
 
         expect(mockSetIsEnabled).toHaveBeenCalledWith(false)
-        expect(mockSetIsAxiomMigrationEnabled).toHaveBeenCalledWith(false)
     })
 
-    it('should enable both toggles when onToggle is called while disabled', () => {
+    it('should enable only the Helpdesk V2 toggle when onToggle is called while disabled', () => {
         vi.mocked(useFlag).mockReturnValue(true)
         mockLocalStorageValues({ isEnabled: false })
 
@@ -124,6 +102,5 @@ describe('useHelpdeskV2BaselineFlag', () => {
         })
 
         expect(mockSetIsEnabled).toHaveBeenCalledWith(true)
-        expect(mockSetIsAxiomMigrationEnabled).toHaveBeenCalledWith(true)
     })
 })
