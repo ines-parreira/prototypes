@@ -175,6 +175,7 @@ describe('BillingSummaryCard', () => {
                 isPaymentEnabled={true}
                 setUpdateProcessStarted={mockSetUpdateProcessStarted}
                 setSessionSelectedPlans={jest.fn()}
+                subscriptionResourceVersion={12345}
             />,
         )
     }
@@ -325,6 +326,7 @@ describe('BillingSummaryCard', () => {
                 isPaymentEnabled={true}
                 setUpdateProcessStarted={mockSetUpdateProcessStarted}
                 setSessionSelectedPlans={jest.fn()}
+                subscriptionResourceVersion={12345}
             />,
         )
 
@@ -381,6 +383,7 @@ describe('BillingSummaryCard', () => {
                 isPaymentEnabled={true}
                 setUpdateProcessStarted={mockSetUpdateProcessStarted}
                 setSessionSelectedPlans={jest.fn()}
+                subscriptionResourceVersion={12345}
             />,
         )
 

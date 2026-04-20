@@ -20,6 +20,8 @@ type BillingSummaryBreakdownProps = {
     cancelledProducts: ProductType[]
     currency: string
     cancellationDates?: CancellationDates
+    balanceDue?: number | null
+    isEstimateLoading?: boolean
 }
 
 export function BillingSummaryBreakdown({
@@ -31,6 +33,8 @@ export function BillingSummaryBreakdown({
     cancelledProducts,
     currency,
     cancellationDates = {},
+    balanceDue,
+    isEstimateLoading,
 }: BillingSummaryBreakdownProps) {
     return (
         <>
@@ -64,6 +68,8 @@ export function BillingSummaryBreakdown({
                 cancelledProducts={cancelledProducts}
                 cadence={cadence}
                 currency={currency}
+                balanceDue={balanceDue}
+                isEstimateLoading={isEstimateLoading}
             />
         </>
     )

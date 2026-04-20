@@ -9,6 +9,8 @@ import {
 import type { Plan, ProductType, SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { Box, Skeleton, Text } from '@gorgias/axiom'
+
 import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
 import css from './SummaryTotal.less'
@@ -22,6 +24,8 @@ export type SummaryTotalProps = {
     isFrequencyChanged?: boolean
     totalCancelledAmount?: number
     cancelledProducts?: ProductType[]
+    balanceDue?: number | null
+    isEstimateLoading?: boolean
 }
 
 const SummaryTotal = ({
@@ -32,6 +36,8 @@ const SummaryTotal = ({
     isFrequencyChanged = false,
     totalCancelledAmount = 0,
     cancelledProducts = [],
+    balanceDue,
+    isEstimateLoading = false,
 }: SummaryTotalProps) => {
     // Get the total amount of the selected plans
     const amountSelectedPlans = useMemo(() => {
@@ -92,6 +98,21 @@ const SummaryTotal = ({
                         /{cadence}
                     </div>
                 </div>
+            )}
+            {isEstimateLoading ? (
+                <Box paddingTop="sm" flexDirection="column">
+                    <Skeleton />
+                </Box>
+            ) : (
+                balanceDue != null &&
+                balanceDue > 0 && (
+                    <Box justifyContent="space-between" pt="sm" px="sm">
+                        <Text variant="bold">Balance due today</Text>
+                        <Text variant="bold">
+                            {formatAmount(balanceDue / 100, currency)} due today
+                        </Text>
+                    </Box>
+                )
             )}
             <div className={css.disclaimer}>Prices exclusive of sales tax</div>
         </div>

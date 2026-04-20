@@ -61,6 +61,8 @@ type BillingSummaryCardProps = {
     isPaymentEnabled: boolean
     setUpdateProcessStarted: (isStarted: boolean) => void
     setSessionSelectedPlans?: React.Dispatch<SelectedPlans>
+    subscriptionResourceVersion: number
+    subscriptionRenewalRampResourceVersion?: number
 }
 
 export function BillingSummaryCard({
@@ -86,6 +88,8 @@ export function BillingSummaryCard({
     isPaymentEnabled,
     setUpdateProcessStarted,
     setSessionSelectedPlans,
+    subscriptionResourceVersion,
+    subscriptionRenewalRampResourceVersion,
 }: BillingSummaryCardProps) {
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
     const shopifyBillingStatus = useAppSelector(getShopifyBillingStatus)
@@ -229,6 +233,10 @@ export function BillingSummaryCard({
                     cancelledProducts={cancelledProducts}
                     currency={currency}
                     cancellationDates={cancellationDates}
+                    subscriptionResourceVersion={subscriptionResourceVersion}
+                    subscriptionRenewalRampResourceVersion={
+                        subscriptionRenewalRampResourceVersion
+                    }
                 />
             )}
         </Card>

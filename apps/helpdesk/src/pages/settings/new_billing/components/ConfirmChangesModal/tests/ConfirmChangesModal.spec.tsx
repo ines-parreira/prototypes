@@ -1,6 +1,14 @@
 import type { SelectedPlans } from '@repo/billing'
-import { act, render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import {
+    mockGetBillingEstimatesSubscriptionHandler,
+    mockGetBillingEstimatesSubscriptionResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     basicMonthlyAutomationPlan,
@@ -15,9 +23,21 @@ import { Cadence, ProductType } from 'models/billing/types'
 import type { ConfirmChangesModalProps } from '../ConfirmChangesModal'
 import { ConfirmChangesModal } from '../ConfirmChangesModal'
 
+jest.mock('hooks/useGetDateAndTimeFormat', () => jest.fn(() => 'MMMM D, YYYY'))
+
 jest.mock('../../BillingSummaryBreakdown', () => ({
     BillingSummaryBreakdown: jest.fn(() => null),
 }))
+
+const mockUseFlag = jest.fn()
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        MidCycleUpgradeBillingLogic: 'MidCycleUpgradeBillingLogic',
+    },
+    useFlag: (...args: unknown[]) => mockUseFlag(...args),
+}))
+
+const server = setupServer()
 
 const selectedPlans: SelectedPlans = {
     [ProductType.Helpdesk]: {
@@ -57,15 +77,78 @@ const defaultProps: ConfirmChangesModalProps = {
     cancelledProducts: [],
     currency: 'USD',
     cancellationDates: {},
+    subscriptionResourceVersion: 12345,
 }
 
 function renderModal(overrides: Partial<ConfirmChangesModalProps> = {}) {
-    return render(<ConfirmChangesModal {...defaultProps} {...overrides} />)
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false, retryDelay: 0 },
+        },
+    })
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <ConfirmChangesModal {...defaultProps} {...overrides} />
+        </QueryClientProvider>,
+    )
+}
+
+const immediateOnlySummary = {
+    changes_will_apply_at: null,
+    contract_cadence_change: null,
+    invoice_cadence_change: null,
+    is_ramp: false,
+    new_term_end: 1735689600,
+    new_term_start: 1704067200,
+    product_changes: {},
+}
+
+const scheduledOnlySummary = {
+    changes_will_apply_at: 1735689600,
+    contract_cadence_change: null,
+    invoice_cadence_change: null,
+    is_ramp: false,
+    new_term_end: 1767225600,
+    new_term_start: 1735689600,
+    product_changes: {},
+}
+
+function useSuccessHandler(
+    overrides: Partial<
+        ReturnType<typeof mockGetBillingEstimatesSubscriptionResponse>
+    > = {},
+) {
+    server.use(
+        mockGetBillingEstimatesSubscriptionHandler(async () =>
+            HttpResponse.json(
+                mockGetBillingEstimatesSubscriptionResponse({
+                    balance_due: null,
+                    immediate_changes_summary: immediateOnlySummary,
+                    scheduled_changes_summary: null,
+                    ...overrides,
+                }),
+            ),
+        ).handler,
+    )
 }
 
 describe('ConfirmChangesModal', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(true)
+        useSuccessHandler()
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('renders the modal with title and buttons', () => {
@@ -82,7 +165,11 @@ describe('ConfirmChangesModal', () => {
         ).toBeInTheDocument()
     })
 
-    describe('description text', () => {
+    describe('description text (fallback, no estimates)', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(false)
+        })
+
         it('shows upgrade-only description when plan is upgraded', () => {
             const upgradePlans: SelectedPlans = {
                 ...selectedPlans,
@@ -91,21 +178,7 @@ describe('ConfirmChangesModal', () => {
                     isSelected: true,
                 },
             }
-            const upgradeByProduct: ConfirmChangesModalProps['plansByProduct'] =
-                {
-                    ...plansByProduct,
-                    [ProductType.Helpdesk]: {
-                        current: basicMonthlyHelpdeskPlan,
-                        available: [
-                            basicMonthlyHelpdeskPlan,
-                            proMonthlyHelpdeskPlan,
-                        ],
-                    },
-                }
-            renderModal({
-                selectedPlans: upgradePlans,
-                plansByProduct: upgradeByProduct,
-            })
+            renderModal({ selectedPlans: upgradePlans })
 
             expect(
                 screen.getByText(
@@ -115,13 +188,6 @@ describe('ConfirmChangesModal', () => {
         })
 
         it('shows downgrade-only description when plan is downgraded', () => {
-            const downgradePlans: SelectedPlans = {
-                ...selectedPlans,
-                [ProductType.Helpdesk]: {
-                    plan: basicMonthlyHelpdeskPlan,
-                    isSelected: true,
-                },
-            }
             const downgradeByProduct: ConfirmChangesModalProps['plansByProduct'] =
                 {
                     ...plansByProduct,
@@ -133,10 +199,7 @@ describe('ConfirmChangesModal', () => {
                         ],
                     },
                 }
-            renderModal({
-                selectedPlans: downgradePlans,
-                plansByProduct: downgradeByProduct,
-            })
+            renderModal({ plansByProduct: downgradeByProduct })
 
             expect(
                 screen.getByText(
@@ -159,13 +222,6 @@ describe('ConfirmChangesModal', () => {
             }
             const mixedByProduct: ConfirmChangesModalProps['plansByProduct'] = {
                 ...plansByProduct,
-                [ProductType.Helpdesk]: {
-                    current: basicMonthlyHelpdeskPlan,
-                    available: [
-                        basicMonthlyHelpdeskPlan,
-                        proMonthlyHelpdeskPlan,
-                    ],
-                },
                 [ProductType.Automation]: {
                     current: basicMonthlyAutomationPlan,
                     available: [basicMonthlyAutomationPlan],
@@ -185,15 +241,165 @@ describe('ConfirmChangesModal', () => {
         })
     })
 
+    describe('estimates integration', () => {
+        it('keeps Confirm enabled while estimates are loading', async () => {
+            server.use(
+                mockGetBillingEstimatesSubscriptionHandler(
+                    () => new Promise(() => {}),
+                ).handler,
+            )
+            renderModal()
+
+            expect(
+                screen.getByRole('button', { name: /confirm/i }),
+            ).toBeEnabled()
+        })
+
+        it('shows error state with retry button but keeps Confirm enabled', async () => {
+            server.use(
+                mockGetBillingEstimatesSubscriptionHandler(
+                    async () => new HttpResponse(null, { status: 500 }),
+                ).handler,
+            )
+            renderModal()
+
+            expect(
+                await screen.findByText(/failed to load estimate/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /retry/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /confirm/i }),
+            ).toBeEnabled()
+        })
+
+        it('refetches estimate when retry button is clicked', async () => {
+            const user = userEvent.setup()
+            let requestCount = 0
+            server.use(
+                mockGetBillingEstimatesSubscriptionHandler(async () => {
+                    requestCount++
+                    return new HttpResponse(null, { status: 500 })
+                }).handler,
+            )
+            renderModal()
+
+            const retryButton = await screen.findByRole('button', {
+                name: /retry/i,
+            })
+            const countBefore = requestCount
+
+            await user.click(retryButton)
+
+            await waitFor(() => {
+                expect(requestCount).toBeGreaterThan(countBefore)
+            })
+        })
+
+        it('passes balanceDue to BillingSummaryBreakdown when estimate has balance_due', async () => {
+            const { BillingSummaryBreakdown } = jest.requireMock(
+                '../../BillingSummaryBreakdown',
+            )
+            useSuccessHandler({ balance_due: 5000 })
+            renderModal()
+
+            await waitFor(() => {
+                expect(BillingSummaryBreakdown).toHaveBeenCalledWith(
+                    expect.objectContaining({ balanceDue: 5000 }),
+                    expect.anything(),
+                )
+            })
+        })
+
+        it('uses immediate-only description when only immediate changes exist', async () => {
+            useSuccessHandler({
+                immediate_changes_summary: immediateOnlySummary,
+                scheduled_changes_summary: null,
+            })
+            renderModal()
+
+            expect(
+                await screen.findByText(
+                    'Once you confirm, your changes will take effect immediately.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('uses scheduled-only description with formatted date when only scheduled changes exist', async () => {
+            useSuccessHandler({
+                immediate_changes_summary: null,
+                scheduled_changes_summary: scheduledOnlySummary,
+            })
+            renderModal()
+
+            expect(
+                await screen.findByText(
+                    /your changes will take effect at the end of your billing cycle on January 1, 2025/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('uses mixed description when both immediate and scheduled changes exist', async () => {
+            useSuccessHandler({
+                immediate_changes_summary: immediateOnlySummary,
+                scheduled_changes_summary: scheduledOnlySummary,
+            })
+            renderModal()
+
+            expect(
+                await screen.findByText(
+                    /upgraded and added products will take effect immediately.*downgraded products will take effect at the end of your billing cycle on January 1, 2025/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('falls back to local detection when estimate has no summaries', async () => {
+            const { BillingSummaryBreakdown } = jest.requireMock(
+                '../../BillingSummaryBreakdown',
+            )
+            useSuccessHandler({
+                balance_due: 42,
+                immediate_changes_summary: null,
+                scheduled_changes_summary: null,
+            })
+            const upgradePlans: SelectedPlans = {
+                ...selectedPlans,
+                [ProductType.Helpdesk]: {
+                    plan: proMonthlyHelpdeskPlan,
+                    isSelected: true,
+                },
+            }
+            renderModal({ selectedPlans: upgradePlans })
+
+            await waitFor(() => {
+                expect(BillingSummaryBreakdown).toHaveBeenCalledWith(
+                    expect.objectContaining({ balanceDue: 42 }),
+                    expect.anything(),
+                )
+            })
+
+            expect(
+                screen.getByText(
+                    'Once you confirm, your changes will take effect immediately.',
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+
     describe('button interactions', () => {
         it('calls onConfirm when Confirm button is clicked', async () => {
             const user = userEvent.setup()
             const onConfirm = jest.fn()
             renderModal({ onConfirm })
 
-            await act(() =>
-                user.click(screen.getByRole('button', { name: /confirm/i })),
-            )
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /confirm/i }),
+                ).toBeEnabled()
+            })
+
+            await user.click(screen.getByRole('button', { name: /confirm/i }))
 
             expect(onConfirm).toHaveBeenCalledTimes(1)
         })
@@ -203,9 +409,7 @@ describe('ConfirmChangesModal', () => {
             const onClose = jest.fn()
             renderModal({ onClose })
 
-            await act(() =>
-                user.click(screen.getByRole('button', { name: /go back/i })),
-            )
+            await user.click(screen.getByRole('button', { name: /go back/i }))
 
             expect(onClose).toHaveBeenCalledTimes(1)
         })

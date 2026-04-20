@@ -326,6 +326,13 @@ export const BillingProcessView = ({
                 isPaymentEnabled={isPaymentEnabled}
                 setUpdateProcessStarted={setUpdateProcessStarted}
                 setSessionSelectedPlans={setSessionSelectedPlans}
+                subscriptionResourceVersion={
+                    billingState.data?.subscription.resource_version ?? 0
+                }
+                subscriptionRenewalRampResourceVersion={
+                    billingState.data?.subscription.schedule_resource_version ??
+                    undefined
+                }
             />
         )
     }
