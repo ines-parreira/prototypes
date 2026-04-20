@@ -38,31 +38,49 @@ export function formatTagCount(tagsString: string | undefined): string {
 export function buildShopTagOptions(
     shopTags: string[] | undefined,
     search: string,
-    existingTags: string[],
 ): TagOption[] {
-    const options = (shopTags ?? []).map((tag) => ({
+    const searchLower = search.trim().toLowerCase()
+
+    const filteredTags = searchLower
+        ? (shopTags ?? []).filter((tag) =>
+              tag.toLowerCase().includes(searchLower),
+          )
+        : (shopTags ?? [])
+
+    return filteredTags.map((tag) => ({
         id: tag,
         label: tag,
     }))
+}
 
-    if (search.trim()) {
-        const searchLower = search.toLowerCase()
-        const optionLabelsLower = new Set(
-            (shopTags ?? []).map((t) => t.toLowerCase()),
-        )
-        const existingTagsLower = new Set(
-            existingTags.map((t) => t.toLowerCase()),
-        )
-        if (
-            !optionLabelsLower.has(searchLower) &&
-            !existingTagsLower.has(searchLower)
-        ) {
-            options.unshift({
-                id: `__new__${search}`,
-                label: `Add "${search}"`,
-            })
-        }
-    }
+export function canCreateTag(
+    search: string,
+    shopTags: string[] | undefined,
+    existingTags: string[],
+): boolean {
+    const searchTrimmed = search.trim()
+    if (!searchTrimmed) return false
 
-    return options
+    const searchLower = searchTrimmed.toLowerCase()
+    const shopTagsLower = new Set((shopTags ?? []).map((t) => t.toLowerCase()))
+    const existingTagsLower = new Set(existingTags.map((t) => t.toLowerCase()))
+
+    return (
+        !shopTagsLower.has(searchLower) && !existingTagsLower.has(searchLower)
+    )
+}
+
+export function deduplicateTagIds(selectedOptions: TagOption[]): string[] {
+    return [...new Set(selectedOptions.map((opt) => opt.id))]
+}
+
+export function addTagToList(existingTags: string[], newTag: string): string[] {
+    return [...new Set([...existingTags, newTag])]
+}
+
+export function removeTagFromList(
+    existingTags: string[],
+    tagToRemove: string,
+): string[] {
+    return existingTags.filter((tag) => tag !== tagToRemove)
 }

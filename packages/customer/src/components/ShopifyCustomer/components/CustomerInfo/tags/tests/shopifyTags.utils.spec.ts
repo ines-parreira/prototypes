@@ -1,8 +1,12 @@
 import {
+    addTagToList,
     buildShopTagOptions,
+    canCreateTag,
+    deduplicateTagIds,
     extractTagValues,
     formatTagCount,
     parseTags,
+    removeTagFromList,
     tagsToString,
 } from '../shopifyTags.utils'
 
@@ -116,7 +120,7 @@ describe('formatTagCount', () => {
 
 describe('buildShopTagOptions', () => {
     it('converts shop tags to options', () => {
-        const result = buildShopTagOptions(['VIP', 'Wholesale'], '', [])
+        const result = buildShopTagOptions(['VIP', 'Wholesale'], '')
         expect(result).toEqual([
             { id: 'VIP', label: 'VIP' },
             { id: 'Wholesale', label: 'Wholesale' },
@@ -124,44 +128,145 @@ describe('buildShopTagOptions', () => {
     })
 
     it('handles undefined shop tags', () => {
-        const result = buildShopTagOptions(undefined, '', [])
+        const result = buildShopTagOptions(undefined, '')
         expect(result).toEqual([])
     })
 
-    it('adds "Add X" option when search does not match existing shop tag', () => {
-        const result = buildShopTagOptions(['VIP', 'Wholesale'], 'NewTag', [])
-        expect(result).toEqual([
-            { id: '__new__NewTag', label: 'Add "NewTag"' },
-            { id: 'VIP', label: 'VIP' },
-            { id: 'Wholesale', label: 'Wholesale' },
-        ])
+    it('filters options by search term', () => {
+        const result = buildShopTagOptions(
+            ['VIP', 'Wholesale', 'Returning'],
+            'Wholesale',
+        )
+        expect(result).toEqual([{ id: 'Wholesale', label: 'Wholesale' }])
     })
 
-    it('does not add "Add X" when search matches shop tag (case insensitive)', () => {
-        const result = buildShopTagOptions(['VIP', 'Wholesale'], 'vip', [])
-        expect(result).toEqual([
-            { id: 'VIP', label: 'VIP' },
-            { id: 'Wholesale', label: 'Wholesale' },
-        ])
-    })
-
-    it('does not add "Add X" when search matches existing tag (case insensitive)', () => {
-        const result = buildShopTagOptions(['VIP', 'Wholesale'], 'existing', [
-            'Existing',
-        ])
-        expect(result).toEqual([
-            { id: 'VIP', label: 'VIP' },
-            { id: 'Wholesale', label: 'Wholesale' },
-        ])
-    })
-
-    it('does not add "Add X" when search is empty', () => {
-        const result = buildShopTagOptions(['VIP'], '', [])
+    it('filters case-insensitively', () => {
+        const result = buildShopTagOptions(['VIP', 'Wholesale'], 'vip')
         expect(result).toEqual([{ id: 'VIP', label: 'VIP' }])
     })
 
-    it('does not add "Add X" when search is whitespace only', () => {
-        const result = buildShopTagOptions(['VIP'], '   ', [])
-        expect(result).toEqual([{ id: 'VIP', label: 'VIP' }])
+    it('returns all options when search is empty', () => {
+        const result = buildShopTagOptions(['VIP', 'Wholesale'], '')
+        expect(result).toEqual([
+            { id: 'VIP', label: 'VIP' },
+            { id: 'Wholesale', label: 'Wholesale' },
+        ])
+    })
+
+    it('returns all options when search is whitespace only', () => {
+        const result = buildShopTagOptions(['VIP', 'Wholesale'], '   ')
+        expect(result).toEqual([
+            { id: 'VIP', label: 'VIP' },
+            { id: 'Wholesale', label: 'Wholesale' },
+        ])
+    })
+
+    it('returns empty when no tags match search', () => {
+        const result = buildShopTagOptions(['VIP', 'Wholesale'], 'NewTag')
+        expect(result).toEqual([])
+    })
+})
+
+describe('canCreateTag', () => {
+    it('returns true when search does not match any shop or existing tag', () => {
+        expect(canCreateTag('NewTag', ['VIP', 'Wholesale'], [])).toBe(true)
+    })
+
+    it('returns false when search matches a shop tag (case insensitive)', () => {
+        expect(canCreateTag('vip', ['VIP', 'Wholesale'], [])).toBe(false)
+    })
+
+    it('returns false when search matches an existing tag (case insensitive)', () => {
+        expect(
+            canCreateTag('existing', ['VIP', 'Wholesale'], ['Existing']),
+        ).toBe(false)
+    })
+
+    it('returns false when search is empty', () => {
+        expect(canCreateTag('', ['VIP'], [])).toBe(false)
+    })
+
+    it('returns false when search is whitespace only', () => {
+        expect(canCreateTag('   ', ['VIP'], [])).toBe(false)
+    })
+})
+
+describe('deduplicateTagIds', () => {
+    it('returns unique ids from options', () => {
+        const options = [
+            { id: 'VIP', label: 'VIP' },
+            { id: 'Wholesale', label: 'Wholesale' },
+        ]
+        expect(deduplicateTagIds(options)).toEqual(['VIP', 'Wholesale'])
+    })
+
+    it('deduplicates repeated ids', () => {
+        const options = [
+            { id: 'VIP', label: 'VIP' },
+            { id: 'VIP', label: 'VIP' },
+            { id: 'Wholesale', label: 'Wholesale' },
+        ]
+        expect(deduplicateTagIds(options)).toEqual(['VIP', 'Wholesale'])
+    })
+
+    it('returns empty array for empty input', () => {
+        expect(deduplicateTagIds([])).toEqual([])
+    })
+
+    it('preserves first occurrence order', () => {
+        const options = [
+            { id: 'B', label: 'B' },
+            { id: 'A', label: 'A' },
+            { id: 'B', label: 'B' },
+        ]
+        expect(deduplicateTagIds(options)).toEqual(['B', 'A'])
+    })
+})
+
+describe('addTagToList', () => {
+    it('adds new tag to existing list', () => {
+        expect(addTagToList(['VIP', 'Wholesale'], 'Returning')).toEqual([
+            'VIP',
+            'Wholesale',
+            'Returning',
+        ])
+    })
+
+    it('deduplicates when tag already exists', () => {
+        expect(addTagToList(['VIP', 'Wholesale'], 'VIP')).toEqual([
+            'VIP',
+            'Wholesale',
+        ])
+    })
+
+    it('works with empty existing list', () => {
+        expect(addTagToList([], 'VIP')).toEqual(['VIP'])
+    })
+
+    it('preserves existing tags', () => {
+        expect(addTagToList(['A', 'B'], 'C')).toEqual(['A', 'B', 'C'])
+    })
+})
+
+describe('removeTagFromList', () => {
+    it('removes specified tag', () => {
+        expect(removeTagFromList(['VIP', 'Wholesale'], 'VIP')).toEqual([
+            'Wholesale',
+        ])
+    })
+
+    it('returns same list when tag not found', () => {
+        expect(removeTagFromList(['VIP', 'Wholesale'], 'Returning')).toEqual([
+            'VIP',
+            'Wholesale',
+        ])
+    })
+
+    it('returns empty array when removing last tag', () => {
+        expect(removeTagFromList(['VIP'], 'VIP')).toEqual([])
+    })
+
+    it('returns empty array for empty input', () => {
+        expect(removeTagFromList([], 'VIP')).toEqual([])
     })
 })

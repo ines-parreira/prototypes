@@ -4,24 +4,29 @@ import { useDebouncedCallback } from '@repo/hooks'
 
 import {
     Button,
-    CheckBoxField,
     Icon,
-    ListItem,
+    ListFooter,
     MultiSelect,
+    MultiSelectItem,
     OverflowList,
     OverflowListItem,
     OverflowListShowLess,
     OverflowListShowMore,
+    OverflowTooltip,
     Tag,
+    Text,
 } from '@gorgias/axiom'
 
 import { useShopifyShopTags } from '../../../hooks/useShopifyShopTags'
 import { useUpdateShopifyOrderTags } from '../../../hooks/useUpdateShopifyOrderTags'
 import type { TagOption } from '../tags/shopifyTags.utils'
 import {
+    addTagToList,
     buildShopTagOptions,
-    extractTagValues,
+    canCreateTag,
+    deduplicateTagIds,
     parseTags,
+    removeTagFromList,
     tagsToString,
 } from '../tags/shopifyTags.utils'
 
@@ -43,6 +48,7 @@ export function OrderTags({
     readOnly = false,
 }: OrderTagsProps) {
     const [search, setSearch] = useState('')
+    const [isOpen, setIsOpen] = useState(false)
     const [localTagsString, setLocalTagsString] = useState<string | undefined>(
         tags,
     )
@@ -72,9 +78,11 @@ export function OrderTags({
     const { mutate: updateTags, isLoading } = useUpdateShopifyOrderTags()
 
     const shopTagOptions = useMemo(
-        () => buildShopTagOptions(shopTags, search, parsedTags),
-        [shopTags, search, parsedTags],
+        () => buildShopTagOptions(shopTags, search),
+        [shopTags, search],
     )
+
+    const showCreateTag = canCreateTag(search, shopTags, parsedTags)
 
     const debouncedUpdateTags = useDebouncedCallback(updateTags, 300)
 
@@ -82,7 +90,7 @@ export function OrderTags({
         (selectedOptions: { id: string; label: string }[]) => {
             if (!integrationId || orderId === undefined || isLoading) return
 
-            const uniqueTags = extractTagValues(selectedOptions)
+            const uniqueTags = deduplicateTagIds(selectedOptions)
             const tagsList = tagsToString(uniqueTags)
 
             setLocalTagsString(tagsList)
@@ -96,11 +104,38 @@ export function OrderTags({
         [integrationId, orderId, isLoading, debouncedUpdateTags, ticketId],
     )
 
+    const handleCreateTag = useCallback(() => {
+        if (!integrationId || orderId === undefined || isLoading) return
+
+        const newTag = search.trim()
+        if (!newTag) return
+
+        const uniqueTags = addTagToList(parsedTags, newTag)
+        const tagsList = tagsToString(uniqueTags)
+
+        setLocalTagsString(tagsList)
+        debouncedUpdateTags({
+            integrationId,
+            orderId,
+            tagsList,
+            ticketId,
+        })
+        setSearch('')
+    }, [
+        search,
+        parsedTags,
+        integrationId,
+        orderId,
+        isLoading,
+        debouncedUpdateTags,
+        ticketId,
+    ])
+
     const handleCloseTag = useCallback(
         (tagToRemove: string) => {
             if (!integrationId || orderId === undefined || isLoading) return
 
-            const updatedTags = parsedTags.filter((tag) => tag !== tagToRemove)
+            const updatedTags = removeTagFromList(parsedTags, tagToRemove)
             const tagsList = tagsToString(updatedTags)
 
             setLocalTagsString(tagsList)
@@ -121,6 +156,13 @@ export function OrderTags({
         ],
     )
 
+    const handleOpenChange = useCallback((open: boolean) => {
+        setIsOpen(open)
+        if (!open) {
+            setSearch('')
+        }
+    }, [])
+
     if (!integrationId || orderId === undefined) {
         return null
     }
@@ -131,50 +173,70 @@ export function OrderTags({
                 {!readOnly && (
                     <OverflowListItem>
                         <MultiSelect
-                            trigger={({ ref }) => (
-                                <>
-                                    {selectedTags.length === 0 ? (
-                                        <Button
-                                            ref={ref}
-                                            slot="button"
-                                            leadingSlot={
-                                                <Icon name="add-plus" />
-                                            }
-                                            variant="secondary"
-                                            size="sm"
-                                        >
-                                            Add tags
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            ref={ref}
-                                            slot="button"
-                                            icon="add-plus"
-                                            variant="secondary"
-                                            size="sm"
-                                        />
-                                    )}
-                                </>
-                            )}
+                            trigger={({ ref }) =>
+                                selectedTags.length === 0 ? (
+                                    <Button
+                                        ref={ref}
+                                        leadingSlot={<Icon name="add-plus" />}
+                                        variant="secondary"
+                                        size="sm"
+                                    >
+                                        Add tags
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        ref={ref}
+                                        icon="add-plus"
+                                        variant="secondary"
+                                        size="sm"
+                                    />
+                                )
+                            }
+                            isOpen={isOpen}
+                            onOpenChange={handleOpenChange}
                             isSearchable
                             searchValue={search}
                             onSearchChange={setSearch}
                             items={shopTagOptions}
                             selectedItems={selectedTags}
                             onSelect={handleSelectChange}
+                            minWidth={256}
+                            maxWidth={256}
                             maxHeight={256}
                             isLoading={isLoadingShopTags}
                             aria-label="Shopify order tags"
+                            footer={
+                                showCreateTag ? (
+                                    <ListFooter>
+                                        <Button
+                                            size="sm"
+                                            variant="tertiary"
+                                            onClick={handleCreateTag}
+                                        >
+                                            <Text variant="bold" size="sm">
+                                                Create tag:
+                                            </Text>
+                                            {` `}
+                                            <Text variant="regular" size="sm">
+                                                {search}
+                                            </Text>
+                                        </Button>
+                                    </ListFooter>
+                                ) : undefined
+                            }
                         >
                             {(option) => (
-                                <ListItem
+                                <MultiSelectItem
                                     key={option.id}
-                                    label={option.label}
-                                    leadingSlot={({ isSelected }) =>
-                                        !option.id.startsWith('__new__') ? (
-                                            <CheckBoxField value={isSelected} />
-                                        ) : null
+                                    textValue={option.label}
+                                    label={
+                                        <OverflowTooltip placement="right">
+                                            <Text overflow="ellipsis">
+                                                {option.label}
+                                            </Text>
+                                        </OverflowTooltip>
                                     }
+                                    wrap={false}
                                 />
                             )}
                         </MultiSelect>

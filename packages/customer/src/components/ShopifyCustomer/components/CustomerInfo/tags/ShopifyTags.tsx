@@ -3,14 +3,15 @@ import { useCallback, useMemo, useState } from 'react'
 import {
     Box,
     Button,
-    CheckBoxField,
     Icon,
-    ListItem,
+    ListFooter,
     MultiSelect,
+    MultiSelectItem,
     OverflowList,
     OverflowListItem,
     OverflowListShowLess,
     OverflowListShowMore,
+    OverflowTooltip,
     Tag,
     Text,
     Tooltip,
@@ -21,9 +22,12 @@ import { useShopifyShopTags } from '../../../hooks/useShopifyShopTags'
 import { useUpdateShopifyCustomerTags } from '../../../hooks/useUpdateShopifyCustomerTags'
 import type { TagOption } from './shopifyTags.utils'
 import {
+    addTagToList,
     buildShopTagOptions,
-    extractTagValues,
+    canCreateTag,
+    deduplicateTagIds,
     parseTags,
+    removeTagFromList,
     tagsToString,
 } from './shopifyTags.utils'
 
@@ -45,6 +49,7 @@ export function ShopifyTags({
     ticketId,
 }: ShopifyTagsProps) {
     const [search, setSearch] = useState('')
+    const [isOpen, setIsOpen] = useState(false)
 
     const parsedTags = useMemo(() => parseTags(tags), [tags])
 
@@ -66,13 +71,15 @@ export function ShopifyTags({
     const { mutate: updateTags } = useUpdateShopifyCustomerTags()
 
     const shopTagOptions = useMemo(
-        () => buildShopTagOptions(shopTags, search, parsedTags),
-        [shopTags, search, parsedTags],
+        () => buildShopTagOptions(shopTags, search),
+        [shopTags, search],
     )
+
+    const showCreateTag = canCreateTag(search, shopTags, parsedTags)
 
     const handleSelectChange = useCallback(
         (selectedOptions: { id: string; label: string }[]) => {
-            const uniqueTags = extractTagValues(selectedOptions)
+            const uniqueTags = deduplicateTagIds(selectedOptions)
 
             updateTags({
                 integrationId: integrationId!,
@@ -85,9 +92,32 @@ export function ShopifyTags({
         [integrationId, externalId, customerId, updateTags, ticketId],
     )
 
+    const handleCreateTag = useCallback(() => {
+        const newTag = search.trim()
+        if (!newTag) return
+
+        const uniqueTags = addTagToList(parsedTags, newTag)
+        updateTags({
+            integrationId: integrationId!,
+            userId: String(customerId!),
+            externalId: externalId!,
+            tagsList: tagsToString(uniqueTags),
+            ticketId,
+        })
+        setSearch('')
+    }, [
+        search,
+        parsedTags,
+        integrationId,
+        customerId,
+        externalId,
+        updateTags,
+        ticketId,
+    ])
+
     const handleCloseTag = useCallback(
         (tagToRemove: string) => {
-            const updatedTags = parsedTags.filter((tag) => tag !== tagToRemove)
+            const updatedTags = removeTagFromList(parsedTags, tagToRemove)
             updateTags({
                 integrationId: integrationId!,
                 userId: String(customerId!),
@@ -106,6 +136,13 @@ export function ShopifyTags({
         ],
     )
 
+    const handleOpenChange = useCallback((open: boolean) => {
+        setIsOpen(open)
+        if (!open) {
+            setSearch('')
+        }
+    }, [])
+
     if (!integrationId || !externalId || !customerId) {
         return null
     }
@@ -115,10 +152,11 @@ export function ShopifyTags({
             <OverflowList gap="xxxs" nonExpandedLineCount={2}>
                 <OverflowListItem>
                     <MultiSelect
-                        trigger={() =>
+                        trigger={({ ref }) =>
                             selectedTags.length === 0 ? (
                                 <Button
-                                    leadingSlot="add-plus"
+                                    ref={ref}
+                                    leadingSlot={<Icon name="add-plus" />}
                                     variant="secondary"
                                     size="sm"
                                 >
@@ -126,31 +164,58 @@ export function ShopifyTags({
                                 </Button>
                             ) : (
                                 <Button
+                                    ref={ref}
                                     icon="add-plus"
                                     variant="secondary"
                                     size="sm"
                                 />
                             )
                         }
+                        isOpen={isOpen}
+                        onOpenChange={handleOpenChange}
                         isSearchable
                         searchValue={search}
                         onSearchChange={setSearch}
                         items={shopTagOptions}
                         selectedItems={selectedTags}
                         onSelect={handleSelectChange}
+                        minWidth={256}
+                        maxWidth={256}
                         maxHeight={256}
                         isLoading={isLoadingShopTags}
                         aria-label="Shopify customer tags"
+                        footer={
+                            showCreateTag ? (
+                                <ListFooter>
+                                    <Button
+                                        size="sm"
+                                        variant="tertiary"
+                                        onClick={handleCreateTag}
+                                    >
+                                        <Text variant="bold" size="sm">
+                                            Create tag:
+                                        </Text>
+                                        {` `}
+                                        <Text variant="regular" size="sm">
+                                            {search}
+                                        </Text>
+                                    </Button>
+                                </ListFooter>
+                            ) : undefined
+                        }
                     >
                         {(option) => (
-                            <ListItem
+                            <MultiSelectItem
                                 key={option.id}
-                                label={option.label}
-                                leadingSlot={({ isSelected }) =>
-                                    !option.id.startsWith('__new__') ? (
-                                        <CheckBoxField value={isSelected} />
-                                    ) : null
+                                textValue={option.label}
+                                label={
+                                    <OverflowTooltip placement="right">
+                                        <Text overflow="ellipsis">
+                                            {option.label}
+                                        </Text>
+                                    </OverflowTooltip>
                                 }
+                                wrap={false}
                             />
                         )}
                     </MultiSelect>

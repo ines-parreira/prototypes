@@ -120,10 +120,7 @@ describe('OrderTags', () => {
             expect(screen.getByText('VIP')).toBeInTheDocument()
         })
 
-        const buttons = screen.getAllByRole('button')
-        const plusButton = buttons.find(
-            (button) => button.getAttribute('slot') === 'button',
-        )
+        const plusButton = screen.getByRole('button', { name: /add-plus/ })
         expect(plusButton).toBeInTheDocument()
     })
 
@@ -175,6 +172,123 @@ describe('OrderTags', () => {
         await waitFor(() => {
             expect(screen.getByText('VIP')).toBeInTheDocument()
             expect(screen.getByText('Summer')).toBeInTheDocument()
+        })
+    })
+
+    it('clears search when dropdown is closed', async () => {
+        const { user } = render(
+            <OrderTags
+                tags="VIP"
+                integrationId={1}
+                orderId={123}
+                ticketId="456"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('VIP')).toBeInTheDocument()
+        })
+
+        const triggerButton = screen.getByRole('button', {
+            name: /add-plus/,
+        })
+        await user.click(triggerButton)
+
+        const searchbox = screen.getByRole('searchbox')
+        await user.type(searchbox, 'Summer')
+
+        await waitFor(() => {
+            expect(searchbox).toHaveValue('Summer')
+        })
+
+        await user.keyboard('{Escape}')
+        await user.keyboard('{Escape}')
+
+        await waitFor(() => {
+            expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+        })
+
+        await user.click(triggerButton)
+
+        await waitFor(() => {
+            expect(screen.getByRole('searchbox')).toHaveValue('')
+        })
+    })
+
+    it('sends correct payload when selecting a tag from dropdown', async () => {
+        const executeActionMock = mockExecuteActionHandler()
+        server.use(executeActionMock.handler)
+
+        const waitForExecuteActionRequest =
+            executeActionMock.waitForRequest(server)
+
+        const { user } = render(
+            <OrderTags
+                tags=""
+                integrationId={1}
+                orderId={123}
+                ticketId="456"
+            />,
+        )
+
+        const addButton = await screen.findByRole('button', {
+            name: /add tags/i,
+        })
+        await user.click(addButton)
+
+        const option = await screen.findByRole('option', { name: 'Summer' })
+        await user.click(option)
+
+        await waitForExecuteActionRequest(async (request) => {
+            const body = await request.json()
+            expect(body.action_name).toBe('shopifyUpdateOrderTags')
+            expect(body.payload.tags_list).toBe('Summer')
+            expect(body.payload.order_id).toBe(123)
+            expect(body.integration_id).toBe(1)
+            expect(body.ticket_id).toBe(456)
+        })
+    })
+
+    it('sends correct payload when creating a new tag', async () => {
+        const executeActionMock = mockExecuteActionHandler()
+        server.use(executeActionMock.handler)
+
+        const waitForExecuteActionRequest =
+            executeActionMock.waitForRequest(server)
+
+        const { user } = render(
+            <OrderTags
+                tags="VIP"
+                integrationId={1}
+                orderId={123}
+                ticketId="456"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('VIP')).toBeInTheDocument()
+        })
+
+        const triggerButton = screen.getByRole('button', {
+            name: /add-plus/,
+        })
+        await user.click(triggerButton)
+
+        const searchbox = screen.getByRole('searchbox')
+        await user.type(searchbox, 'NewTag')
+
+        const createButton = await screen.findByRole('button', {
+            name: /create tag/i,
+        })
+        await user.click(createButton)
+
+        await waitForExecuteActionRequest(async (request) => {
+            const body = await request.json()
+            expect(body.action_name).toBe('shopifyUpdateOrderTags')
+            expect(body.payload.tags_list).toBe('VIP, NewTag')
+            expect(body.payload.order_id).toBe(123)
+            expect(body.integration_id).toBe(1)
+            expect(body.ticket_id).toBe(456)
         })
     })
 })
