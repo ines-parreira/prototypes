@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useListIntents } from 'models/helpCenter/queries'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { GuidanceTemplatesData } from 'pages/aiAgent/hooks/useGuidanceTemplates'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { IntentStatus } from 'pages/aiAgent/skills/types'
@@ -97,24 +97,24 @@ export const useSkillsTemplates = () => {
 
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId
 
-    const { data } = useListIntents(helpCenterId || 0, {
-        enabled: !isLoadingStoreConfiguration && !!helpCenterId,
-    })
-
-    const intentsByName = useMemo(() => {
-        const map = new Map<string, Intent>()
-        ;(data?.intents ?? []).forEach((intent) => map.set(intent.name, intent))
-        return map
-    }, [data])
+    const { data } = useGetHelpCenterArticleList(
+        helpCenterId || 0,
+        {
+            origin: 'skill',
+            version_status: 'latest_draft',
+            per_page: 200,
+        },
+        {
+            enabled: !isLoadingStoreConfiguration && !!helpCenterId,
+        },
+    )
 
     const createdTemplateKeys = useMemo(() => {
         const keys = new Set<string>()
-        data?.intents.forEach((intent) => {
-            intent.articles.forEach((article) => {
-                if (article.template_key) {
-                    keys.add(article.template_key)
-                }
-            })
+        data?.data.forEach((article) => {
+            if (article.template_key) {
+                keys.add(article.template_key)
+            }
         })
         return keys
     }, [data])
@@ -127,23 +127,21 @@ export const useSkillsTemplates = () => {
                     GuidanceTemplatesData,
                     template.guidanceId,
                 ),
-                intents: intentNames.map(
-                    (name) =>
-                        intentsByName.get(name) ?? {
-                            name,
-                            status: IntentStatus.NotLinked,
-                            help_center_id: helpCenterId || 0,
-                            articles: [],
-                        },
-                ),
+                intents: intentNames.map<Intent>((name) => ({
+                    name,
+                    status: IntentStatus.NotLinked,
+                    help_center_id: helpCenterId || 0,
+                    articles: [],
+                })),
             })),
-        [intentsByName, helpCenterId],
+        [helpCenterId],
     )
 
     const availableSkillsTemplates = useMemo(
         () =>
             mappedSkillsTemplates.filter(
-                (template) => !createdTemplateKeys.has(template.id),
+                (template) =>
+                    !createdTemplateKeys.has(`template_skill_${template.id}`),
             ),
         [mappedSkillsTemplates, createdTemplateKeys],
     )

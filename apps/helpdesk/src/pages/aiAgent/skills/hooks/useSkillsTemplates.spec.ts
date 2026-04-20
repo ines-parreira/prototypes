@@ -3,13 +3,13 @@ import type React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 
-import { useListIntents } from 'models/helpCenter/queries'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import { SkillTemplatesData, useSkillsTemplates } from './useSkillsTemplates'
 
 jest.mock('models/helpCenter/queries', () => ({
-    useListIntents: jest.fn(),
+    useGetHelpCenterArticleList: jest.fn(),
 }))
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
@@ -18,7 +18,7 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
 
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
-const mockUseListIntents = useListIntents as jest.Mock
+const mockUseGetHelpCenterArticleList = useGetHelpCenterArticleList as jest.Mock
 
 describe('useSkillsTemplates', () => {
     const queryClient = new QueryClient({
@@ -41,8 +41,8 @@ describe('useSkillsTemplates', () => {
             },
         })
 
-        mockUseListIntents.mockReturnValue({
-            data: { intents: [] },
+        mockUseGetHelpCenterArticleList.mockReturnValue({
+            data: { data: [] },
             isLoading: false,
             isError: false,
         })
@@ -108,39 +108,7 @@ describe('useSkillsTemplates', () => {
         expect(template?.guidance?.name).toBe(guidanceName)
     })
 
-    it('should set intent status to linked when API returns linked intent', () => {
-        mockUseListIntents.mockReturnValue({
-            data: {
-                intents: [
-                    {
-                        name: 'order::status',
-                        status: 'linked',
-                        help_center_id: 123,
-                        articles: [],
-                    },
-                ],
-            },
-            isLoading: false,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
-
-        const template = result.current.allSkillsTemplates.find(
-            (t) => t.name === 'Order status, tracking or delivery timing',
-        )
-        const intent = template?.intents.find((i) => i.name === 'order::status')
-
-        expect(intent?.status).toBe('linked')
-    })
-
-    it('should default intent status to not_linked when intent is not in API response', () => {
-        mockUseListIntents.mockReturnValue({
-            data: { intents: [] },
-            isLoading: false,
-            isError: false,
-        })
-
+    it('should default intent status to not_linked', () => {
         const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
 
         const template = result.current.allSkillsTemplates.find(
@@ -151,26 +119,59 @@ describe('useSkillsTemplates', () => {
         expect(intent?.status).toBe('not_linked')
     })
 
+    it('returns all templates as available when the article list data is undefined', () => {
+        mockUseGetHelpCenterArticleList.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
+
+        expect(result.current.availableSkillsTemplates).toHaveLength(
+            SkillTemplatesData.length,
+        )
+    })
+
+    describe('missing store configuration', () => {
+        it('falls back to 0 help_center_id on intents when storeConfiguration is undefined', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                isLoading: false,
+                storeConfiguration: undefined,
+            })
+
+            const { result } = renderHook(() => useSkillsTemplates(), {
+                wrapper,
+            })
+
+            const template = result.current.allSkillsTemplates[0]
+            expect(template?.intents[0]?.help_center_id).toBe(0)
+        })
+
+        it('falls back to 0 help_center_id on intents when guidanceHelpCenterId is missing', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                isLoading: false,
+                storeConfiguration: {},
+            })
+
+            const { result } = renderHook(() => useSkillsTemplates(), {
+                wrapper,
+            })
+
+            const template = result.current.allSkillsTemplates[0]
+            expect(template?.intents[0]?.help_center_id).toBe(0)
+        })
+    })
+
     describe('template filtering (already created templates)', () => {
         it('should filter out a template from availableSkillsTemplates when its id matches a template_key in an article', () => {
-            mockUseListIntents.mockReturnValue({
+            mockUseGetHelpCenterArticleList.mockReturnValue({
                 data: {
-                    intents: [
+                    data: [
                         {
-                            name: 'order::status',
-                            status: 'linked',
-                            help_center_id: 123,
-                            articles: [
-                                {
-                                    id: 1,
-                                    locale: 'en',
-                                    title: 'Order Status',
-                                    status: 'published',
-                                    template_key:
-                                        'order-status-tracking-or-delivery-timing',
-                                    visibility_status: 'PUBLIC',
-                                },
-                            ],
+                            id: 1,
+                            template_key:
+                                'template_skill_order-status-tracking-or-delivery-timing',
                         },
                     ],
                 },
@@ -196,23 +197,12 @@ describe('useSkillsTemplates', () => {
         })
 
         it('should include a template in availableSkillsTemplates when no article has a matching template_key', () => {
-            mockUseListIntents.mockReturnValue({
+            mockUseGetHelpCenterArticleList.mockReturnValue({
                 data: {
-                    intents: [
+                    data: [
                         {
-                            name: 'order::status',
-                            status: 'linked',
-                            help_center_id: 123,
-                            articles: [
-                                {
-                                    id: 1,
-                                    locale: 'en',
-                                    title: 'Order Status',
-                                    status: 'published',
-                                    template_key: null,
-                                    visibility_status: 'PUBLIC',
-                                },
-                            ],
+                            id: 1,
+                            template_key: null,
                         },
                     ],
                 },
@@ -230,23 +220,12 @@ describe('useSkillsTemplates', () => {
         })
 
         it('should only filter templates whose id matches a template_key', () => {
-            mockUseListIntents.mockReturnValue({
+            mockUseGetHelpCenterArticleList.mockReturnValue({
                 data: {
-                    intents: [
+                    data: [
                         {
-                            name: 'order::cancel',
-                            status: 'linked',
-                            help_center_id: 123,
-                            articles: [
-                                {
-                                    id: 2,
-                                    locale: 'en',
-                                    title: 'Cancel Order',
-                                    status: 'published',
-                                    template_key: 'order-cancellations',
-                                    visibility_status: 'PUBLIC',
-                                },
-                            ],
+                            id: 2,
+                            template_key: 'template_skill_order-cancellations',
                         },
                     ],
                 },
