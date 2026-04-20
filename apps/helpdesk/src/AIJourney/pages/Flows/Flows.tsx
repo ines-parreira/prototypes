@@ -50,15 +50,6 @@ export const Flows = () => {
         MetricConfigItem[]
     >('ai-journey-flows-table-metrics-preferences', journeyTableDataMetrics)
 
-    const isAiJourneyWinBackEnabled = useFlag(
-        FeatureFlagKey.AiJourneyWinBackEnabled,
-    )
-    const isAiJourneyWelcomeFlowEnabled = useFlag(
-        FeatureFlagKey.AiJourneyWelcomeFlowEnabled,
-    )
-    const isAiJourneyPostPurchaseEnabled = useFlag(
-        FeatureFlagKey.AiJourneyPostPurchaseEnabled,
-    )
     const isAiJourneyCustomFlowEnabled = useFlag(
         FeatureFlagKey.AiJourneyCustomFlowEnabled,
     )
@@ -115,31 +106,14 @@ export const Flows = () => {
     }, [flowsTableKpisConfig])
 
     // The source of truth of existent journeys comes from the BE
-    const availableFlows = Object.values(JourneyTypeEnum).filter(
-        (journeyType) => journeyType !== JourneyTypeEnum.Campaign,
-    )
+    const availableFlows: JourneyTypeEnum[] = Object.values(
+        JourneyTypeEnum,
+    ).filter((journeyType) => journeyType !== JourneyTypeEnum.Campaign)
 
-    // We might have existent journeys that are not enabled for the merchant
-    const enabledAvailableFlows: JourneyTypeEnum[] = availableFlows?.filter(
-        (flowType) => {
-            switch (flowType) {
-                case JourneyTypeEnum.WinBack:
-                    return !!isAiJourneyWinBackEnabled
-                case JourneyTypeEnum.Welcome:
-                    return !!isAiJourneyWelcomeFlowEnabled
-                case JourneyTypeEnum.PostPurchase:
-                    return !!isAiJourneyPostPurchaseEnabled
-                default:
-                    return true
-            }
-        },
-    )
-
-    // Configured flows filtering the disabled ones above (we can enable a flow for a customer but don't want to show it in the UI)
     const configuredFlows: ConfiguredFlowWithMetrics[] | undefined =
         useMemo(() => {
             const filteredJourneys = journeys?.filter((journey) =>
-                enabledAvailableFlows.includes(journey.type),
+                availableFlows.includes(journey.type),
             )
 
             return filteredJourneys?.map((journey) => ({
@@ -148,16 +122,16 @@ export const Flows = () => {
                     ? LOADING_TABLE_METRICS
                     : tableMetrics[journey.id] || DEFAULT_TABLE_METRICS,
             }))
-        }, [journeys, enabledAvailableFlows, tableMetrics, isMetricLoading])
+        }, [journeys, availableFlows, tableMetrics, isMetricLoading])
 
-    // Flows that are available, enabled but hasn't been configured by an user (configured !== activated)
+    // Flows that are available but hasn't been configured by an user (configured !== activated)
     const unconfiguredFlows: UnconfiguredFlowWithMetrics[] | undefined =
         useMemo(() => {
             const configuredFlowTypes =
                 configuredFlows?.map((flow) => flow.type) || []
 
-            return enabledAvailableFlows
-                ?.filter((flowType) => !configuredFlowTypes.includes(flowType))
+            return availableFlows
+                .filter((flowType) => !configuredFlowTypes.includes(flowType))
                 .map((flowType) => ({
                     type: flowType,
                     state: JourneyStatusEnum.Draft,
@@ -166,7 +140,7 @@ export const Flows = () => {
                     id: undefined,
                     campaign: undefined,
                 }))
-        }, [configuredFlows, enabledAvailableFlows, shopName])
+        }, [configuredFlows, availableFlows, shopName])
 
     const tableRows: TableRow[] = useMemo(() => {
         return [...(configuredFlows || []), ...(unconfiguredFlows || [])]

@@ -157,7 +157,7 @@ describe('<Flows />', () => {
             expect(screen.getByText('Cart Abandoned')).toBeInTheDocument()
         })
 
-        it('should render unconfigured flows when feature flags are enabled', () => {
+        it('should render all unconfigured flows when the flows list is empty', () => {
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContextDefaults,
                 journeys: [],
@@ -169,21 +169,7 @@ describe('<Flows />', () => {
             expect(screen.getByText('Browse Abandoned')).toBeInTheDocument()
             expect(screen.getByText('Welcome')).toBeInTheDocument()
             expect(screen.getByText('Customer Win-back')).toBeInTheDocument()
-        })
-
-        it('should not render disabled flows', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            mockUseJourneyContext.mockReturnValue({
-                ...mockJourneyContextDefaults,
-                journeys: [],
-            })
-
-            renderComponent()
-
-            expect(
-                screen.queryByText('Customer Win-back'),
-            ).not.toBeInTheDocument()
+            expect(screen.getByText('Post-purchase')).toBeInTheDocument()
         })
     })
 
@@ -329,75 +315,6 @@ describe('<Flows />', () => {
             expect(
                 screen.queryByRole('button', { name: /add custom flow/i }),
             ).not.toBeInTheDocument()
-        })
-    })
-
-    describe('Feature flags', () => {
-        it('should show Win-back flow when feature flag is enabled', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyWinBackEnabled) return true
-                return false
-            })
-
-            mockUseJourneyContext.mockReturnValue({
-                ...mockJourneyContextDefaults,
-                journeys: [],
-            })
-
-            renderComponent()
-
-            expect(screen.getByText('Customer Win-back')).toBeInTheDocument()
-        })
-
-        it('should show Welcome flow when feature flag is enabled', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyWelcomeFlowEnabled)
-                    return true
-                return false
-            })
-
-            mockUseJourneyContext.mockReturnValue({
-                ...mockJourneyContextDefaults,
-                journeys: [],
-            })
-
-            renderComponent()
-
-            expect(screen.getByText('Welcome')).toBeInTheDocument()
-        })
-
-        it('should show Post-purchase flow when feature flag is enabled', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyPostPurchaseEnabled)
-                    return true
-                return false
-            })
-
-            mockUseJourneyContext.mockReturnValue({
-                ...mockJourneyContextDefaults,
-                journeys: [],
-            })
-
-            renderComponent()
-
-            expect(screen.getByText('Post-purchase')).toBeInTheDocument()
-        })
-
-        it('should hide Post-purchase flow when feature flag is disabled', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyPostPurchaseEnabled)
-                    return false
-                return true
-            })
-
-            mockUseJourneyContext.mockReturnValue({
-                ...mockJourneyContextDefaults,
-                journeys: [],
-            })
-
-            renderComponent()
-
-            expect(screen.queryByText('Post-purchase')).not.toBeInTheDocument()
         })
     })
 
