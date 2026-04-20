@@ -104,21 +104,27 @@ describe('Toggle', () => {
         it('should render the Axiom Button component', () => {
             renderWithProvider(<Toggle />)
 
-            const button = screen.getByRole('button')
+            const button = screen.getByRole('button', {
+                name: /system-window-sidebar/i,
+            })
             expect(button).toBeInTheDocument()
         })
 
         it('should have data-candu-id attribute', () => {
             renderWithProvider(<Toggle />)
 
-            const button = screen.getByRole('button')
+            const button = screen.getByRole('button', {
+                name: /system-window-sidebar/i,
+            })
             expect(button).toHaveAttribute('data-candu-id', 'dtp-toggle')
         })
 
         it('should toggle aria-describedby on click', async () => {
             renderWithProvider(<Toggle />)
 
-            const button = screen.getByRole('button')
+            const button = screen.getByRole('button', {
+                name: /system-window-sidebar/i,
+            })
             const initialLabel = button.getAttribute('aria-describedby')
 
             await act(() => userEvent.click(button))
@@ -134,7 +140,9 @@ describe('Toggle', () => {
         it('should use Axiom Button styling', () => {
             renderWithProvider(<Toggle />)
 
-            const button = screen.getByRole('button')
+            const button = screen.getByRole('button', {
+                name: /system-window-sidebar/i,
+            })
             expect(button).toHaveAttribute('data-name', 'button')
         })
     })

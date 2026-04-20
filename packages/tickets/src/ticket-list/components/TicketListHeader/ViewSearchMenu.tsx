@@ -86,6 +86,7 @@ export function ViewSearchMenu({ viewId }: ViewSearchMenuProps) {
                                 <Text
                                     overflow="ellipsis"
                                     wrap="nowrap"
+                                    variant="medium"
                                     className={css.viewName}
                                     color="content-neutral-default"
                                 >

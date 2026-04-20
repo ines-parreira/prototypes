@@ -32,6 +32,21 @@ export function TicketTitleCustomer({
     )
 }
 
+type TicketTitleViewProps = {
+    viewName: string
+    viewUrl: string
+}
+
+export function TicketTitleView({ viewName, viewUrl }: TicketTitleViewProps) {
+    return (
+        <Breadcrumb>
+            <Link className={css.viewLink} to={viewUrl}>
+                {viewName}
+            </Link>
+        </Breadcrumb>
+    )
+}
+
 type TicketTitleSubjectProps = {
     value: string | null
     placeholder?: string

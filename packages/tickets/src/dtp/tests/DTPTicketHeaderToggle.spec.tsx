@@ -63,7 +63,7 @@ describe('DTPTicketHeaderToggle', () => {
         })
 
         const button = screen.getByRole('button', {
-            name: /system-bar-left-expand/i,
+            name: /system-window-sidebar/i,
         })
         expect(button).toBeInTheDocument()
         expect(button).toHaveAttribute('aria-describedby', 'Show ticket panel')
@@ -146,7 +146,7 @@ describe('DTPTicketHeaderToggle', () => {
         })
 
         expect(
-            screen.getByRole('button', { name: /system-bar-left-expand/i }),
+            screen.getByRole('button', { name: /system-window-sidebar/i }),
         ).toBeDisabled()
     })
 
@@ -169,7 +169,7 @@ describe('DTPTicketHeaderToggle', () => {
         })
 
         const button = screen.getByRole('button', {
-            name: /system-bar-left-expand/i,
+            name: /system-window-sidebar/i,
         })
 
         await act(() => user.click(button))
@@ -194,7 +194,7 @@ describe('DTPTicketHeaderToggle', () => {
         })
 
         const button = screen.getByRole('button', {
-            name: /system-bar-left-expand/i,
+            name: /system-window-sidebar/i,
         })
 
         await act(() => user.click(button))

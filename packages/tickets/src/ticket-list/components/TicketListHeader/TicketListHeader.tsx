@@ -27,21 +27,6 @@ export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
                 flex={1}
                 minWidth={0}
             >
-                <Box flexShrink={0}>
-                    <Tooltip
-                        trigger={
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                                icon="system-bar-left-collapse"
-                                aria-label="Hide ticket panel"
-                                onClick={onCollapse}
-                            />
-                        }
-                    >
-                        <TooltipContent title="Hide ticket panel" />
-                    </Tooltip>
-                </Box>
                 <Box flex={1} minWidth={0}>
                     <ViewSearchMenu viewId={viewId} />
                 </Box>
@@ -66,6 +51,19 @@ export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
                     <TooltipContent title="Edit view" />
                 </Tooltip>
                 <SortOrderDropdown viewId={viewId} />
+                <Tooltip
+                    trigger={
+                        <Button
+                            variant="tertiary"
+                            size="sm"
+                            icon="close"
+                            aria-label="Hide ticket panel"
+                            onClick={onCollapse}
+                        />
+                    }
+                >
+                    <TooltipContent title="Hide ticket panel" />
+                </Tooltip>
             </Box>
         </Box>
     )

@@ -47,7 +47,7 @@ export function DTPTicketHeaderToggle() {
                     id={buttonId}
                     isDisabled={!isToggleEnabled}
                     data-candu-id="dtp-toggle"
-                    icon="system-bar-left-expand"
+                    icon="system-window-sidebar"
                     aria-describedby={
                         isEnabled ? Labels.FullWidth : Labels.SplitTicket
                     }

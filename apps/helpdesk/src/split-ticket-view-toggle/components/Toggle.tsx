@@ -49,7 +49,7 @@ export default function Toggle() {
                         id={buttonId}
                         isDisabled={!isToggleEnabled}
                         data-candu-id="dtp-toggle"
-                        icon="system-bar-left-collapse"
+                        icon="system-window-sidebar"
                         aria-describedby={
                             isEnabled ? Labels.FullWidth : Labels.SplitTicket
                         }
