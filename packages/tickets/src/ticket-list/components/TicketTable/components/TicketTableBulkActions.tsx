@@ -117,7 +117,7 @@ export function TicketTableBulkActions({
                 }
             >
                 {() => (
-                    <Box alignItems="flex-start" gap="xs" minHeight="25px">
+                    <Box alignItems="center" gap="xs" height="24px">
                         <BulkStatusSelect
                             onChange={onSetStatus}
                             isDisabled={isDisabled}
