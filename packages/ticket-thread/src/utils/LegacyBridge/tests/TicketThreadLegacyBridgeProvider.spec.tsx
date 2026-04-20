@@ -51,6 +51,25 @@ describe('TicketThreadLegacyBridgeProvider', () => {
         expect(result.current.voiceCallCallbacks).toBeUndefined()
     })
 
+    it('exposes safe default pending message callbacks when legacy overrides are omitted', () => {
+        const { result } = renderHook(() => useTicketThreadLegacyBridge(), {
+            wrapper,
+        })
+
+        expect(
+            result.current.legacyActions.undoTicketPendingMessage?.({
+                id: 'pending-message',
+            }),
+        ).toBeUndefined()
+        expect(
+            result.current.legacyState.newMessage.canUndoTicketPendingMessage?.(
+                {
+                    id: 'pending-message',
+                },
+            ),
+        ).toBe(false)
+    })
+
     it('passes voiceCallCallbacks through to context when provided', () => {
         const callbacks: VoiceCallBridgeCallbacks = {
             renderMonitorCallButton: () => null,

@@ -105,10 +105,10 @@ describe('TicketThreadContainer', () => {
 
         expect(
             virtuosoProps.computeItemKey?.(0, ticketThreadItems[0], undefined),
-        ).toBe('message:message-1:123:0')
+        ).toBe('message:message-1:123')
         expect(
             virtuosoProps.computeItemKey?.(1, ticketThreadItems[1], undefined),
-        ).toBe('ticket-event:event-1:123:1')
+        ).toBe('ticket-event:event-1:123')
     })
 
     it('adds zero-height protection without dropping the item styles provided by Virtuoso', () => {
@@ -150,5 +150,51 @@ describe('TicketThreadContainer', () => {
             minHeight: '0.5px',
             top: '16px',
         })
+    })
+
+    it('keeps the same key for an existing item after a new row is inserted', () => {
+        const insertedEvent = {
+            _tag: TicketThreadItemTag.Events.TicketEvent,
+            data: { id: 'event-2' } as any,
+            datetime: '2024-03-21T10:59:00Z',
+        } as TicketThreadItem
+
+        const { rerender } = render(
+            <TicketThreadContainer
+                items={ticketThreadItems}
+                renderThreadItem={(index, item) => (
+                    <div>{`${index}:${item._tag}`}</div>
+                )}
+                ticketId="123"
+            />,
+        )
+
+        const initialVirtuosoProps =
+            recordedVirtuosoProps[recordedVirtuosoProps.length - 1]
+        const initialMessageKey = initialVirtuosoProps.computeItemKey?.(
+            0,
+            ticketThreadItems[0],
+            undefined,
+        )
+
+        rerender(
+            <TicketThreadContainer
+                items={[insertedEvent, ...ticketThreadItems]}
+                renderThreadItem={(index, item) => (
+                    <div>{`${index}:${item._tag}`}</div>
+                )}
+                ticketId="123"
+            />,
+        )
+
+        const rerenderedVirtuosoProps =
+            recordedVirtuosoProps[recordedVirtuosoProps.length - 1]
+        const rerenderedMessageKey = rerenderedVirtuosoProps.computeItemKey?.(
+            1,
+            ticketThreadItems[0],
+            undefined,
+        )
+
+        expect(rerenderedMessageKey).toBe(initialMessageKey)
     })
 })

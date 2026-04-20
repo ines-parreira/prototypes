@@ -90,10 +90,12 @@ export type FacebookCommentLikeData = {
 export type LegacyBridgeActions = {
     deleteTicketPendingMessage: (message: unknown) => unknown
     retrySubmitTicketMessage: (message: unknown) => unknown
+    undoTicketPendingMessage?: (message: unknown) => unknown
 }
 
 export type LegacyBridgeNewMessageState = {
     isSubmittingMessage: boolean
+    canUndoTicketPendingMessage?: (message: unknown) => boolean
 }
 
 export type LegacyBridgeState = {

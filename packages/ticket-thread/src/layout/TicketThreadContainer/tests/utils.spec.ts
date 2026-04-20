@@ -24,7 +24,7 @@ describe('TicketThreadContainer utils', () => {
                 0,
                 '1',
             ),
-        ).toBe('grouped-events:ticket-event:first:ticket-event:last:1:0')
+        ).toBe('grouped-events:ticket-event:first:ticket-event:last:1')
         expect(
             getThreadItemKey(
                 {
@@ -38,7 +38,7 @@ describe('TicketThreadContainer utils', () => {
                 1,
                 '1',
             ),
-        ).toBe('rule-suggestion:55:1:1')
+        ).toBe('rule-suggestion:55:1')
         expect(
             getThreadItemKey(
                 {
@@ -49,7 +49,7 @@ describe('TicketThreadContainer utils', () => {
                 2,
                 '1',
             ),
-        ).toBe('grouped-events:2024-03-21T11:00:00Z:1:2')
+        ).toBe('grouped-events:2024-03-21T11:00:00Z:1')
         expect(
             getThreadItemKey(
                 {
@@ -72,6 +72,16 @@ describe('TicketThreadContainer utils', () => {
         ).toBe('contact-reason-suggestion:ticket:1')
     })
 
+    it('keeps identified item keys stable when their index changes', () => {
+        const item = {
+            _tag: TicketThreadItemTag.Messages.Message,
+            data: { id: 'message-1' } as any,
+            datetime: '2024-03-21T11:00:00Z',
+        } as const
+
+        expect(getThreadItemKey(item, 0, '1')).toBe('message:message-1:1')
+        expect(getThreadItemKey(item, 1, '1')).toBe('message:message-1:1')
+    })
     it('falls back to the tag and index when grouped items are empty', () => {
         const item = {
             _tag: TicketThreadItemTag.Events.GroupedEvents,
@@ -106,7 +116,7 @@ describe('TicketThreadContainer utils', () => {
                 1,
                 '1',
             ),
-        ).toBe('rule-suggestion:2024-03-21T11:00:00Z:1:1')
+        ).toBe('rule-suggestion:2024-03-21T11:00:00Z:1')
 
         expect(
             getThreadItemKey(
@@ -120,7 +130,7 @@ describe('TicketThreadContainer utils', () => {
                 2,
                 '1',
             ),
-        ).toBe('rule-suggestion:2024-03-21T11:01:00Z:1:2')
+        ).toBe('rule-suggestion:2024-03-21T11:01:00Z:1')
 
         expect(
             getThreadItemKey(
@@ -136,6 +146,6 @@ describe('TicketThreadContainer utils', () => {
                 3,
                 '1',
             ),
-        ).toBe('rule-suggestion:2024-03-21T11:02:00Z:1:3')
+        ).toBe('rule-suggestion:2024-03-21T11:02:00Z:1')
     })
 })

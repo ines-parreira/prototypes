@@ -38,6 +38,7 @@ function makeLegacyActions(): LegacyBridgeActions {
     return {
         deleteTicketPendingMessage: vi.fn(),
         retrySubmitTicketMessage: vi.fn(),
+        undoTicketPendingMessage: vi.fn(),
     }
 }
 

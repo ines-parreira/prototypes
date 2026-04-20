@@ -24,19 +24,31 @@ import {
 import type {
     TicketThreadMessageData,
     TicketThreadMessageItem,
+    TicketThreadPendingState,
     TicketThreadSingleMessageItem,
 } from './types'
 
+type ToTaggedMessageOptions = {
+    pendingState?: TicketThreadPendingState
+}
+
 export function toTaggedMessage(
     message: TicketThreadMessageData,
+    options: ToTaggedMessageOptions = {},
 ): TicketThreadSingleMessageItem {
     const datetime = message.created_datetime
+    const metadata = options.pendingState
+        ? {
+              pendingState: options.pendingState,
+          }
+        : {}
 
     if (isAiAgentDraftMessage(message)) {
         return {
             _tag: TicketThreadItemTag.Messages.AiAgentDraftMessage,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -45,6 +57,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.AiAgentTrialMessage,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -53,6 +66,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.AiAgentInternalNote,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -61,6 +75,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.AiAgentMessage,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -69,6 +84,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaFacebookComment,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -77,6 +93,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaFacebookPost,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -85,6 +102,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaFacebookMessage,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -93,6 +111,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -101,6 +120,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -109,6 +129,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -118,6 +139,7 @@ export function toTaggedMessage(
                 .SocialMediaInstagramDirectMessage,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -126,6 +148,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -134,6 +157,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaTwitterTweet,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -142,6 +166,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -150,6 +175,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -158,6 +184,7 @@ export function toTaggedMessage(
             _tag: TicketThreadItemTag.Messages.InternalNote,
             data: message,
             datetime,
+            ...metadata,
         }
     }
 
@@ -165,6 +192,7 @@ export function toTaggedMessage(
         _tag: TicketThreadItemTag.Messages.Message,
         data: message,
         datetime,
+        ...metadata,
     }
 }
 

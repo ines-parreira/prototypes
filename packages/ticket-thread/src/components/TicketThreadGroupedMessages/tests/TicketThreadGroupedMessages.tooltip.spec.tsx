@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import {
     mockTicketMessage,
@@ -8,6 +8,7 @@ import {
     mockTicketMessageSourceAddress,
 } from '@gorgias/helpdesk-mocks'
 
+import { TicketThreadPendingState } from '../../../hooks/messages/types'
 import type {
     TicketThreadGroupedMessagesItem,
     TicketThreadRegularMessageItem,
@@ -73,6 +74,10 @@ vi.mock('../../MessageBubble/components/MessageFooter', () => ({
 
 vi.mock('../../MessageBubble/components/MessageErrors', () => ({
     MessageErrors: () => <div>MessageErrors</div>,
+}))
+
+vi.mock('../../MessageBubble/components/PendingMessageBanner', () => ({
+    PendingMessageBanner: () => <div>PendingMessageBanner</div>,
 }))
 
 vi.mock('../../TicketMessageActions/TicketMessageActions', () => ({
@@ -203,5 +208,22 @@ describe('TicketThreadGroupedMessages tooltip', () => {
                 bcc: 'Audit (audit@example.com)',
             }),
         )
+    })
+
+    it('renders the pending banner above message errors for pending grouped messages', () => {
+        const item = createGroupedItem()
+        item.data[0] = {
+            ...item.data[0],
+            pendingState: TicketThreadPendingState.Active,
+        }
+
+        render(<TicketThreadGroupedMessages item={item} />)
+
+        const pendingMessageBanner = screen.getByText('PendingMessageBanner')
+        const [messageErrors] = screen.getAllByText('MessageErrors')
+
+        expect(
+            pendingMessageBanner.compareDocumentPosition(messageErrors),
+        ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     })
 })

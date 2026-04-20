@@ -59,5 +59,12 @@ export function getThreadItemKey(
     index: number,
     ticketId?: string,
 ): string {
-    return `${getThreadItemIdentifier(item)}:${ticketId ?? 'ticket'}:${index}`
+    const identifier = getThreadItemIdentifier(item)
+    const ticketIdentifier = ticketId ?? 'ticket'
+
+    if (identifier === item._tag) {
+        return `${identifier}:${ticketIdentifier}:${index}`
+    }
+
+    return `${identifier}:${ticketIdentifier}`
 }

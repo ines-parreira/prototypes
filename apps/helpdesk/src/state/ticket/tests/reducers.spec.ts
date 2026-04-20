@@ -146,6 +146,43 @@ describe('ticket reducers', () => {
         jest.useRealTimers()
     })
 
+    it('should remove matching pending message on NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS', () => {
+        const pendingMessage = {
+            _internal: {
+                id: '123',
+                status: 'open',
+            },
+            source: {
+                type: 'email',
+                from: {},
+                to: [{ address: 'alex@gorgias.io' }],
+                cc: [],
+                bcc: [],
+            },
+            body_text: 'hello',
+            body_html: '<div>hello</div>',
+            channel: 'email',
+            created_datetime: '2017-01-01T00:00:00.000Z',
+            originalMessage: {
+                body_text: 'hello',
+            },
+        }
+
+        expect(
+            reducer(
+                initialState.mergeDeep({
+                    _internal: {
+                        pendingMessages: [pendingMessage],
+                    },
+                }),
+                {
+                    type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
+                    messageId: '123',
+                } as unknown as GorgiasAction,
+            ).getIn(['_internal', 'pendingMessages']),
+        ).toEqualImmutable(fromJS([]))
+    })
+
     it('should handle NEW_MESSAGE_SUBMIT_TICKET_SUCCESS', () => {
         // success
         expect(

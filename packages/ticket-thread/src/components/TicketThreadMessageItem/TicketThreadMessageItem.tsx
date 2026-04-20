@@ -98,6 +98,7 @@ export function TicketThreadMessageItem({
 
     return (
         <Box
+            data-variant={item._tag}
             width="100%"
             justifyContent={
                 placement === Placement.Right ? 'flex-end' : 'flex-start'

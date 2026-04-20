@@ -11,6 +11,7 @@ import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetch
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useRuleSuggestionForDemos from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
+import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 
 import { TicketThreadAiAgentDraftMessage } from '../TicketThreadAiAgentDraftMessage'
 import { TicketThreadAiAgentTrialMessage } from '../TicketThreadAiAgentTrialMessage'
@@ -20,6 +21,14 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket')
 jest.mock('pages/tickets/detail/hooks/useRuleSuggestionForDemos')
+jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
+    __esModule: true,
+    default: {
+        pendingSendMessagesArgs: null,
+        timeoutId: null,
+        undoMessage: jest.fn(),
+    },
+}))
 jest.mock('../useInstagramCommentActions', () => ({
     useInstagramCommentActions: jest.fn(() => ({
         privateReplyData: null,
@@ -66,6 +75,9 @@ const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseFetchInfluencedOrdersForCurrentTicket =
     useFetchInfluencedOrdersForCurrentTicket as jest.Mock
 const mockUseRuleSuggestionForDemos = useRuleSuggestionForDemos as jest.Mock
+const mockPendingMessageManager = pendingMessageManager as jest.Mocked<
+    typeof pendingMessageManager
+>
 const mockTicketThreadLegacyBridgeProvider =
     TicketThreadLegacyBridgeProvider as jest.Mock
 const mockTicketThreadAiAgentDraftMessage =
@@ -92,6 +104,9 @@ describe('TicketThreadLegacyBridge', () => {
         mockUseRuleSuggestionForDemos.mockReturnValue({
             shouldDisplayDemoSuggestion: false,
         })
+        mockPendingMessageManager.pendingSendMessagesArgs = null
+        mockPendingMessageManager.timeoutId = null
+        mockPendingMessageManager.undoMessage.mockReset()
     })
 
     it('passes Shopping Assistant bridge data through to the ticket-thread provider', () => {
@@ -208,5 +223,67 @@ describe('TicketThreadLegacyBridge', () => {
             },
             expect.anything(),
         )
+    })
+
+    it('undoes the current pending message when the bridge receives the active message id', () => {
+        mockPendingMessageManager.pendingSendMessagesArgs = {
+            messageId: 123,
+        } as never
+        mockPendingMessageManager.timeoutId = 1 as never
+
+        render(
+            <TicketThreadLegacyBridge>
+                <div>Ticket thread child</div>
+            </TicketThreadLegacyBridge>,
+        )
+
+        const providerProps =
+            mockTicketThreadLegacyBridgeProvider.mock.calls[0][0]
+        const message = {
+            _internal: {
+                id: 123,
+            },
+        }
+
+        expect(
+            providerProps.legacyState.newMessage.canUndoTicketPendingMessage(
+                message,
+            ),
+        ).toBe(true)
+
+        providerProps.legacyActions.undoTicketPendingMessage(message)
+
+        expect(mockPendingMessageManager.undoMessage).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not undo a pending message when the ids do not match', () => {
+        mockPendingMessageManager.pendingSendMessagesArgs = {
+            messageId: 456,
+        } as never
+        mockPendingMessageManager.timeoutId = 1 as never
+
+        render(
+            <TicketThreadLegacyBridge>
+                <div>Ticket thread child</div>
+            </TicketThreadLegacyBridge>,
+        )
+
+        const providerProps =
+            mockTicketThreadLegacyBridgeProvider.mock.calls[0][0]
+        const message = {
+            _internal: {
+                id: 123,
+            },
+        }
+
+        expect(
+            providerProps.legacyState.newMessage.canUndoTicketPendingMessage(
+                message,
+            ),
+        ).toBe(false)
+
+        providerProps.legacyActions.undoTicketPendingMessage(message)
+
+        expect(mockPendingMessageManager.undoMessage).not.toHaveBeenCalled()
     })
 })

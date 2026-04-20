@@ -8,6 +8,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { VoiceCallMonitorButton } from 'pages/common/components/VoiceCallMonitorButton'
 import useRuleSuggestionForDemos from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
+import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import * as NewMessageActions from 'state/newMessage/actions'
 import * as TicketActions from 'state/ticket/actions'
 
@@ -20,6 +21,16 @@ import { useInstagramCommentActions } from './useInstagramCommentActions'
 
 type TicketThreadLegacyBridgeProps = {
     children: React.ReactNode
+}
+
+function getPendingMessageId(message: unknown) {
+    return (
+        message as {
+            _internal?: {
+                id?: number
+            }
+        }
+    )?._internal?.id
 }
 
 export const TicketThreadLegacyBridge = ({
@@ -41,6 +52,19 @@ export const TicketThreadLegacyBridge = ({
     )
     const legacyActions = useMemo(
         () => ({
+            undoTicketPendingMessage: (message: unknown) => {
+                const pendingMessageId = getPendingMessageId(message)
+                const undoableMessageId =
+                    pendingMessageManager.pendingSendMessagesArgs?.messageId
+
+                if (
+                    pendingMessageId &&
+                    undoableMessageId === pendingMessageId &&
+                    pendingMessageManager.timeoutId
+                ) {
+                    pendingMessageManager.undoMessage()
+                }
+            },
             deleteTicketPendingMessage: (message: unknown) =>
                 dispatch(
                     TicketActions.deleteTicketPendingMessage(fromJS(message)),
@@ -56,6 +80,16 @@ export const TicketThreadLegacyBridge = ({
         () => ({
             newMessage: {
                 isSubmittingMessage,
+                canUndoTicketPendingMessage: (message: unknown) => {
+                    const pendingMessageId = getPendingMessageId(message)
+
+                    return Boolean(
+                        pendingMessageId &&
+                            pendingMessageManager.timeoutId &&
+                            pendingMessageManager.pendingSendMessagesArgs
+                                ?.messageId === pendingMessageId,
+                    )
+                },
             },
         }),
         [isSubmittingMessage],

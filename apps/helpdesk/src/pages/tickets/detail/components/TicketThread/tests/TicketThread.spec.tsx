@@ -128,6 +128,8 @@ const mockUseSearchParams = jest.requireMock('@repo/routing')
     .useSearchParams as jest.Mock
 const mockTicketThreadItem = jest.requireMock('@repo/ticket-thread')
     .TicketThreadItem as jest.Mock
+const mockGetThreadItemKey = jest.requireMock('@repo/ticket-thread')
+    .getThreadItemKey as jest.Mock
 const mockUseTicketThread = jest.requireMock('@repo/ticket-thread')
     .useTicketThread as jest.Mock
 
@@ -239,6 +241,26 @@ describe('<TicketThread />', () => {
             }),
             expect.objectContaining({}),
         )
+    })
+
+    it('uses the shared thread key helper for rendered list items', () => {
+        render(<TicketThread submit={submit} />)
+
+        expect(mockGetThreadItemKey).toHaveBeenCalledWith(
+            { _tag: 'Thread feed item 1' },
+            0,
+            '1',
+        )
+        expect(mockGetThreadItemKey).toHaveBeenCalledWith(
+            { _tag: 'Thread feed item 100' },
+            1,
+            '1',
+        )
+
+        const listItems = screen.getAllByRole('listitem')
+
+        expect(listItems[0]).toHaveAttribute('data-item-id', 'thread-item-0')
+        expect(listItems[1]).toHaveAttribute('data-item-id', 'thread-item-1')
     })
 
     it('renders the agents viewing banner before the thread items', () => {

@@ -4,6 +4,7 @@ import cn from 'classnames'
 
 import { Box } from '@gorgias/axiom'
 
+import { isActivePendingMessageItem } from '../../hooks/messages/predicates'
 import type {
     TicketThreadGroupedMessagesItem,
     TicketThreadRegularMessageItem,
@@ -20,6 +21,7 @@ import { MessageChannel } from '../MessageBubble/components/MessageHeader/Messag
 import { MessageDeliveryIcon } from '../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
 import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
+import { PendingMessageBanner } from '../MessageBubble/components/PendingMessageBanner'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
 import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
 import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
@@ -46,6 +48,7 @@ function RegularGroupedMessage({
     children?: ReactNode
 }) {
     const displayedItem = useDisplayedTicketMessage({ item })
+    const isPendingMessage = isActivePendingMessageItem(item)
 
     return (
         <Box
@@ -57,11 +60,14 @@ function RegularGroupedMessage({
             <MessageBody item={displayedItem} />
             <MessageFooter item={displayedItem} />
             {children}
+            {isPendingMessage ? (
+                <PendingMessageBanner message={displayedItem.data} />
+            ) : null}
             {item.data.ticket_id && (
                 <MessageErrors
                     message={displayedItem.data}
                     ticketId={item.data.ticket_id}
-                    isPending={'isPending' in item ? item.isPending : undefined}
+                    isPending={isPendingMessage}
                 />
             )}
         </Box>
@@ -73,6 +79,8 @@ function SocialGroupedMessage({
     className,
     children,
 }: GroupedMessageProps) {
+    const isPendingMessage = isActivePendingMessageItem(item)
+
     return (
         <Box
             flexDirection="column"
@@ -82,11 +90,14 @@ function SocialGroupedMessage({
         >
             <MessageBody item={item} />
             {children}
+            {isPendingMessage ? (
+                <PendingMessageBanner message={item.data} />
+            ) : null}
             {item.data.ticket_id && (
                 <MessageErrors
                     message={item.data}
                     ticketId={item.data.ticket_id}
-                    isPending={'isPending' in item ? item.isPending : undefined}
+                    isPending={isPendingMessage}
                 />
             )}
         </Box>

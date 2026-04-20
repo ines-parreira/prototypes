@@ -43,7 +43,11 @@ import {
     socialMediaWhatsAppMessageSchema,
     ticketMessageSchema,
 } from './schemas'
-import type { TicketThreadMessageData } from './types'
+import { TicketThreadPendingState } from './types'
+import type {
+    TicketThreadMessageData,
+    TicketThreadSingleMessageItem,
+} from './types'
 
 export function isTicketMessage(
     input: unknown,
@@ -64,6 +68,18 @@ export function isActivePendingMessage(
         activePendingMessageSchema.safeParse(input).success &&
         !isFailedPendingMessage(input)
     )
+}
+
+export function isActivePendingMessageItem(
+    item: TicketThreadSingleMessageItem,
+): boolean {
+    return item.pendingState === TicketThreadPendingState.Active
+}
+
+export function isFailedPendingMessageItem(
+    item: TicketThreadSingleMessageItem,
+): boolean {
+    return item.pendingState === TicketThreadPendingState.Failed
 }
 
 export function isHiddenMessage(input: unknown): boolean {

@@ -1,5 +1,10 @@
 import { Box, IconName } from '@gorgias/axiom'
 
+import {
+    isActivePendingMessageItem,
+    isFailedPendingMessageItem,
+} from '../../hooks/messages/predicates'
+import { TicketThreadPendingState } from '../../hooks/messages/types'
 import type { TicketThreadInternalNoteItem } from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
@@ -18,8 +23,20 @@ type TicketInternalNoteProps = {
 }
 
 export function TicketInternalNote({ item }: TicketInternalNoteProps) {
+    const isPendingMessage = isActivePendingMessageItem(item)
+    const isFailedPendingState = isFailedPendingMessageItem(item)
+
     return (
-        <MessageBubble variant="internal-note">
+        <MessageBubble
+            variant="internal-note"
+            pendingState={
+                isFailedPendingState
+                    ? TicketThreadPendingState.Failed
+                    : isPendingMessage
+                      ? TicketThreadPendingState.Active
+                      : undefined
+            }
+        >
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
                     <MessageAvatar sender={item.data.sender} fromAgent />

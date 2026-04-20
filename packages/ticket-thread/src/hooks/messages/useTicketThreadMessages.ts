@@ -9,7 +9,12 @@ import {
     isTicketMessage,
 } from './predicates'
 import { groupConsecutiveMessages, toTaggedMessage } from './transforms'
-import type { TicketThreadMessageData, TicketThreadMessageItem } from './types'
+import { TicketThreadPendingState } from './types'
+import type {
+    TicketThreadMessageData,
+    TicketThreadMessageItem,
+    TicketThreadSingleMessageItem,
+} from './types'
 
 type UseTicketThreadMessagesParams = {
     ticketId: number
@@ -27,6 +32,12 @@ function sortMessagesByDate<TMessage extends TicketThreadMessageData>(
     return [...messages].sort((a, b) =>
         a.created_datetime.localeCompare(b.created_datetime),
     )
+}
+
+function sortItemsByDate<TItem extends TicketThreadSingleMessageItem>(
+    items: TItem[],
+): TItem[] {
+    return [...items].sort((a, b) => a.datetime.localeCompare(b.datetime))
 }
 
 function stableSerialize(value: unknown): string {
@@ -97,13 +108,25 @@ export function useTicketThreadMessages({
             isActivePendingMessage,
         )
         const groupedMessages = groupConsecutiveMessages(
-            sortMessagesByDate([
-                ...persistedMessages,
-                ...failedPendingMessages,
-            ]).map(toTaggedMessage),
+            sortItemsByDate([
+                ...sortMessagesByDate(persistedMessages).map((message) =>
+                    toTaggedMessage(message),
+                ),
+                ...sortMessagesByDate(failedPendingMessages).map((message) =>
+                    toTaggedMessage(message, {
+                        pendingState: TicketThreadPendingState.Failed,
+                    }),
+                ),
+            ]),
         )
         const groupedActivePendingMessages = groupConsecutiveMessages(
-            sortMessagesByDate(activePendingMessages).map(toTaggedMessage),
+            sortItemsByDate(
+                sortMessagesByDate(activePendingMessages).map((message) =>
+                    toTaggedMessage(message, {
+                        pendingState: TicketThreadPendingState.Active,
+                    }),
+                ),
+            ),
         )
 
         return {

@@ -47,11 +47,13 @@ type TicketThreadLegacyBridgeProviderProps = {
 const defaultLegacyActions: LegacyBridgeActions = {
     deleteTicketPendingMessage: () => undefined,
     retrySubmitTicketMessage: () => undefined,
+    undoTicketPendingMessage: () => undefined,
 }
 
 const defaultLegacyState: LegacyBridgeState = {
     newMessage: {
         isSubmittingMessage: false,
+        canUndoTicketPendingMessage: () => false,
     },
 }
 

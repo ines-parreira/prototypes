@@ -158,6 +158,25 @@ export default function reducer(
             )
         }
 
+        case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
+            return state.updateIn(
+                ['_internal', 'pendingMessages'],
+                (messages: List<any>) => {
+                    const messageIndex = messages.findIndex(
+                        (message: Map<any, any>) =>
+                            message.getIn(['_internal', 'id']) ===
+                            action.messageId,
+                    )
+
+                    if (!~messageIndex) {
+                        return messages
+                    }
+
+                    return messages.splice(messageIndex, 1)
+                },
+            )
+        }
+
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
             // Make sure we reset the cache before we send the message
             ticketReplyCache.delete(state.get('id'))

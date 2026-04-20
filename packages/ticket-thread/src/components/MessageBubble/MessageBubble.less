@@ -55,6 +55,19 @@
                 pointer-events: none;
             }
         }
+
+        &[data-pending-state='active'],
+        &[data-pending-state='failed'] {
+            &::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-color: var(--elevation-neutral-default);
+                opacity: 0.5;
+                pointer-events: none;
+                z-index: 1;
+            }
+        }
     }
 
     .bubbleActions {

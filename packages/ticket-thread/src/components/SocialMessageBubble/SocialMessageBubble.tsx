@@ -4,6 +4,10 @@ import cn from 'classnames'
 
 import { Box } from '@gorgias/axiom'
 
+import {
+    isActivePendingMessageItem,
+    isFailedPendingMessageItem,
+} from '../../hooks/messages/predicates'
 import type {
     TicketThreadSingleMessageItem,
     TicketThreadSocialMediaFacebookCommentItem,
@@ -18,6 +22,7 @@ import type {
     TicketThreadSocialMediaTwitterTweetItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
 } from '../../hooks/messages/types'
+import { TicketThreadPendingState } from '../../hooks/messages/types'
 import type { GoToLink } from '../../utils/buildGoToLink'
 import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
 import { MessageErrors } from '../MessageBubble/components/MessageErrors'
@@ -27,6 +32,7 @@ import { MessageChannel } from '../MessageBubble/components/MessageHeader/Messag
 import { MessageDeliveryIcon } from '../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
 import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
+import { PendingMessageBanner } from '../MessageBubble/components/PendingMessageBanner'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
 import { GoToLinkFooter } from './GoToLinkFooter'
 
@@ -72,9 +78,21 @@ export function SocialMessageBubble({
     const resolvedChannelName = channelName ?? item.data.channel
     const variant = item.data.from_agent ? 'from-agent' : 'regular'
     const hasFailed = !!item.data.failed_datetime
+    const isPendingMessage = isActivePendingMessageItem(item)
+    const isFailedPendingState = isFailedPendingMessageItem(item)
 
     return (
-        <MessageBubble variant={variant} className={className}>
+        <MessageBubble
+            variant={variant}
+            className={className}
+            pendingState={
+                isFailedPendingState
+                    ? TicketThreadPendingState.Failed
+                    : isPendingMessage
+                      ? TicketThreadPendingState.Active
+                      : undefined
+            }
+        >
             <Box
                 flexDirection="column"
                 gap="xs"
@@ -108,10 +126,14 @@ export function SocialMessageBubble({
                 {children}
                 {goToLink && <GoToLinkFooter goToLink={goToLink} />}
             </Box>
+            {isPendingMessage ? (
+                <PendingMessageBanner message={item.data} />
+            ) : null}
             <MessageErrors
                 message={item.data}
                 ticketId={item.data.ticket_id}
                 failedMessageError={failedMessageError}
+                isPending={isPendingMessage}
             />
         </MessageBubble>
     )

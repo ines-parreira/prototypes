@@ -1755,6 +1755,7 @@ describe('actions', () => {
                     queryKey: queryKeys.ticketMessages.listMessages({
                         ticket_id: 12,
                     }),
+                    refetchType: 'none',
                 })
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
                     queryKey: queryKeys.tickets.getTicket(12),

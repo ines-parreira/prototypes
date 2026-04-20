@@ -1,6 +1,6 @@
-import { Icon, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import { Icon, Loader } from '@gorgias/axiom'
 
-import { isActivePendingMessage } from '../../../../hooks/messages/predicates'
+import { isActivePendingMessageItem } from '../../../../hooks/messages/predicates'
 import type { TicketThreadSingleMessageItem } from '../../../../hooks/messages/types'
 
 type MessageDeliveryIconProps = {
@@ -21,6 +21,6 @@ export function MessageDeliveryIcon({ item }: MessageDeliveryIconProps) {
         )
     if (item.data.sent_datetime)
         return <Icon name="check" size="sm" color="content-neutral-secondary" />
-    if (isActivePendingMessage(item)) return <LoadingSpinner size={16} />
+    if (isActivePendingMessageItem(item)) return <Loader size="sm" />
     return null
 }

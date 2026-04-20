@@ -5,6 +5,7 @@ import {
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
+import { TicketThreadPendingState } from '../../../hooks/messages/types'
 import type { TicketThreadSocialMediaWhatsAppMessageItem } from '../../../hooks/messages/types'
 import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
 import { TicketThreadItemTag } from '../../../hooks/types'
@@ -96,6 +97,21 @@ describe('WhatsAppMessage', () => {
         render(<WhatsAppMessage item={item} />)
 
         expect(screen.getByText('Hello from WhatsApp')).toBeInTheDocument()
+    })
+
+    it('renders the pending banner for active pending WhatsApp messages', () => {
+        const item = {
+            ...makeItem({
+                from_agent: true,
+                stripped_text: 'Hello from WhatsApp',
+                body_text: 'Hello from WhatsApp',
+            }),
+            pendingState: TicketThreadPendingState.Active,
+        }
+
+        render(<WhatsAppMessage item={item} />)
+
+        expect(screen.getByText('Message sending...')).toBeInTheDocument()
     })
 
     it('renders only the message body when grouped', () => {

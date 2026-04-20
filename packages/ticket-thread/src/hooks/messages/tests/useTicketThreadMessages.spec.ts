@@ -10,7 +10,11 @@ import {
 import { renderHook } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { TicketThreadItemTag } from '../../types'
-import type { TicketThreadMessageItem } from '../types'
+import { TicketThreadPendingState } from '../types'
+import type {
+    TicketThreadMessageItem,
+    TicketThreadSingleMessageItem,
+} from '../types'
 import { useTicketThreadMessages } from '../useTicketThreadMessages'
 
 function createMessage(overrides?: Record<string, unknown>) {
@@ -46,6 +50,31 @@ function getMessageIds(items: TicketThreadMessageItem[]): number[] {
 
         return [item.data.id as number]
     })
+}
+
+function findMessageItemById(
+    items: TicketThreadMessageItem[],
+    id: number,
+): TicketThreadSingleMessageItem | undefined {
+    for (const item of items) {
+        if (item._tag === TicketThreadItemTag.Messages.GroupedMessages) {
+            const groupedItem = item.data.find(
+                (message) => message.data.id === id,
+            )
+
+            if (groupedItem) {
+                return groupedItem
+            }
+
+            continue
+        }
+
+        if (item.data.id === id) {
+            return item
+        }
+    }
+
+    return undefined
 }
 
 describe('useTicketThreadMessages', () => {
@@ -94,6 +123,16 @@ describe('useTicketThreadMessages', () => {
         expect(getMessageIds(result.current.activePendingMessages)).toEqual([
             50,
         ])
+        expect(
+            findMessageItemById(result.current.messages, 10)?.pendingState,
+        ).toBe(undefined)
+        expect(
+            findMessageItemById(result.current.messages, 40)?.pendingState,
+        ).toBe(TicketThreadPendingState.Failed)
+        expect(
+            findMessageItemById(result.current.activePendingMessages, 50)
+                ?.pendingState,
+        ).toBe(TicketThreadPendingState.Active)
     })
 
     it('ignores non-ticket pending payloads', async () => {

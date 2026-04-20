@@ -1,5 +1,10 @@
 import { Box } from '@gorgias/axiom'
 
+import {
+    isActivePendingMessageItem,
+    isFailedPendingMessageItem,
+} from '../../hooks/messages/predicates'
+import { TicketThreadPendingState } from '../../hooks/messages/types'
 import type { TicketThreadRegularMessageItem } from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../MessageBubble/components/MessageErrors'
@@ -11,6 +16,7 @@ import { MessageChannel } from '../MessageBubble/components/MessageHeader/Messag
 import { MessageDeliveryIcon } from '../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
 import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
+import { PendingMessageBanner } from '../MessageBubble/components/PendingMessageBanner'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
 import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 import { useDisplayedTicketMessage } from './hooks/useDisplayedTicketMessage'
@@ -22,12 +28,23 @@ type TicketMessageProps = {
 export function TicketMessage({ item }: TicketMessageProps) {
     const displayedItem = useDisplayedTicketMessage({ item })
     const variant = item.data.from_agent ? 'from-agent' : 'regular'
+    const isPendingMessage = isActivePendingMessageItem(item)
+    const isFailedPendingState = isFailedPendingMessageItem(item)
     const { from, to, cc, bcc } = getMessageChannelParticipants(
         item.data.source,
     )
 
     return (
-        <MessageBubble variant={variant}>
+        <MessageBubble
+            variant={variant}
+            pendingState={
+                isFailedPendingState
+                    ? TicketThreadPendingState.Failed
+                    : isPendingMessage
+                      ? TicketThreadPendingState.Active
+                      : undefined
+            }
+        >
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
                     <MessageAvatar
@@ -54,11 +71,14 @@ export function TicketMessage({ item }: TicketMessageProps) {
             <MessageBody item={displayedItem} />
             <MessageFooter item={displayedItem} />
             <TicketMessageActions message={item.data} />
+            {isPendingMessage ? (
+                <PendingMessageBanner message={displayedItem.data} />
+            ) : null}
             {item.data.ticket_id && (
                 <MessageErrors
                     message={displayedItem.data}
                     ticketId={item.data.ticket_id}
-                    isPending={item.isPending}
+                    isPending={isPendingMessage}
                 />
             )}
         </MessageBubble>

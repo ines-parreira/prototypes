@@ -1320,6 +1320,7 @@ export function sendTicketMessage(
                                         ticket_id: sentTicketId,
                                     },
                                 ),
+                                refetchType: 'none',
                             })
                             void appQueryClient.invalidateQueries({
                                 queryKey:
