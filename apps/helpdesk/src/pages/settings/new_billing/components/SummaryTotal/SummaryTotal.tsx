@@ -1,15 +1,13 @@
 import { useMemo } from 'react'
 
 import {
+    Cadence,
     formatAmount,
     getTotalWithDiscounts,
     useBillingState,
 } from '@repo/billing'
-import type { SelectedPlans } from '@repo/billing'
+import type { Plan, ProductType, SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
-import type { Plan, ProductType } from 'models/billing/types'
-import { Cadence } from 'models/billing/types'
 
 import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
@@ -110,18 +108,22 @@ function usePriceSummary(
     )
 
     const { data: billingState } = useBillingState()
-    const discounts = billingState?.subscription?.discounts
 
     const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
         useMemo(
             () =>
                 getTotalWithDiscounts(
                     selectedPlans,
-                    discounts ?? [],
+                    billingState?.subscription?.discounts ?? [],
                     totalCancelledAmount,
                     cancelledProducts,
                 ),
-            [discounts, selectedPlans, totalCancelledAmount, cancelledProducts],
+            [
+                selectedPlans,
+                totalCancelledAmount,
+                cancelledProducts,
+                billingState,
+            ],
         )
     const showDiscountedPrice =
         billingSummaryTotalWithCouponsEnabled && discountAmount > 0

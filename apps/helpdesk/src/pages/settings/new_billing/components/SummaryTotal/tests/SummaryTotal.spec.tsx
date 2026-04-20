@@ -1,5 +1,5 @@
 import type { SelectedPlans } from '@repo/billing'
-import { useBillingState } from '@repo/billing'
+import { Cadence, ProductType, useBillingState } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 
@@ -7,7 +7,6 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
-import { Cadence, ProductType } from 'models/billing/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SummaryTotal from '../SummaryTotal'
