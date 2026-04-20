@@ -184,4 +184,27 @@ describe('shortcutManager', () => {
 
         activeElementSpy.mockRestore()
     })
+
+    it('stops shortcuts when an editable element is present in the composed event path', () => {
+        const target = document.createElement('div')
+        const searchInput = document.createElement('input')
+        searchInput.setAttribute('type', 'search')
+
+        const event = {
+            target,
+            composedPath: () => [target, searchInput, document.body],
+        } as unknown as Parameters<typeof sm._stopCallback>[0]
+
+        expect(sm._stopCallback(event, target, 'a')).toBe(true)
+    })
+
+    it('falls back safely when the keyboard event has no composed path', () => {
+        const target = document.createElement('div')
+        const event = {
+            target,
+            composedPath: undefined,
+        } as unknown as Parameters<typeof sm._stopCallback>[0]
+
+        expect(sm._stopCallback(event, target, 'a')).toBe(false)
+    })
 })

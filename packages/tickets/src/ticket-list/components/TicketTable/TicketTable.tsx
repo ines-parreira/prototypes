@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
 import { useUserDateTimePreferences } from '@repo/preferences'
+import { useViewCount } from '@repo/views'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -10,7 +11,11 @@ import {
     DataTablePagination,
     toast,
 } from '@gorgias/axiom'
-import type { RowSelectionState, SortingState } from '@gorgias/axiom'
+import type {
+    RowSelectionState,
+    SelectAllEvent,
+    SortingState,
+} from '@gorgias/axiom'
 import { useGetView } from '@gorgias/helpdesk-queries'
 import { ViewVisibility } from '@gorgias/helpdesk-types'
 import type {
@@ -94,12 +99,14 @@ function TicketTableComponent({
     const history = useHistory()
     const { currentUserId } = useCurrentUserId()
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+    const [isAllSelected, setIsAllSelected] = useState(false)
     const hasSelection = useMemo(
-        () => Object.values(rowSelection).some(Boolean),
-        [rowSelection],
+        () => isAllSelected || Object.values(rowSelection).some(Boolean),
+        [isAllSelected, rowSelection],
     )
     const { query, filters } = useTicketSearchUrlState()
     const [searchCursor, setSearchCursor] = useState<string | undefined>()
+    const viewCount = useViewCount(viewId)
 
     const { data: viewResponse } = useGetView(viewId, {
         query: {
@@ -146,6 +153,7 @@ function TicketTableComponent({
         isDraftView,
         searchTracking,
     })
+    const canSelectAllInView = !isDraftView && (hasNextPage || hasPreviousPage)
 
     const placeholderKind = getPlaceholderKind({
         view,
@@ -166,7 +174,30 @@ function TicketTableComponent({
     const previousSortOrder = usePrevious(sortOrder)
     const clearSelection = useCallback(() => {
         setRowSelection({})
+        setIsAllSelected(false)
     }, [])
+
+    const handleSelectAll = useCallback(
+        ({ scope, selected }: SelectAllEvent) => {
+            if (scope === 'all') {
+                if (!selected) {
+                    clearSelection()
+                    return
+                }
+
+                setIsAllSelected(selected)
+                return
+            }
+
+            if (!selected) {
+                clearSelection()
+                return
+            }
+
+            setIsAllSelected(false)
+        },
+        [clearSelection],
+    )
 
     useEffect(() => {
         viewVisibleTickets(items)
@@ -282,7 +313,7 @@ function TicketTableComponent({
         viewId,
         selectedTicketIds,
         visibleTicketIds: displayedTicketIds,
-        hasSelectedAll: false,
+        hasSelectedAll: isAllSelected,
         onActionComplete: clearSelection,
         onApplyMacro,
     })
@@ -432,6 +463,12 @@ function TicketTableComponent({
                     multiple: true,
                     value: rowSelection,
                     onChange: setRowSelection,
+                    ...(canSelectAllInView
+                        ? {
+                              isAllSelected,
+                              onSelectAll: handleSelectAll,
+                          }
+                        : {}),
                 }}
                 sorting={{
                     enable: true,
@@ -447,6 +484,7 @@ function TicketTableComponent({
                     enable: true,
                     manual: true,
                     value: { pageIndex: currentPageIndex, pageSize },
+                    rowCount: viewCount,
                     hasNextPage,
                     hasPreviousPage,
                     onPageChange,
@@ -473,7 +511,10 @@ function TicketTableComponent({
             >
                 <TicketTableBulkActions
                     viewId={viewId}
-                    selectedCount={selectedTicketIds.size}
+                    canSelectAllAcrossPages={canSelectAllInView}
+                    hasSelectedAll={isAllSelected}
+                    viewName={view?.name ?? undefined}
+                    viewCount={viewCount}
                     isAssignUserOpen={isAssignUserOpen}
                     isAddTagOpen={isAddTagOpen}
                     isDisabled={isBulkActionLoading}

@@ -1,4 +1,12 @@
-import { Box, DataTableColumnEditing, DataTableToolbar } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    DataTableBulkActions,
+    DataTableColumnEditing,
+    DataTableItemCount,
+    DataTableToolbar,
+    Text,
+} from '@gorgias/axiom'
 import type { DataTableColumnEditingProps } from '@gorgias/axiom'
 import type {
     Team,
@@ -16,7 +24,10 @@ import { BulkUserAssignSelect } from './BulkMoreActionsMenu/components/BulkUserA
 
 type Props = {
     viewId: number
-    selectedCount: number
+    canSelectAllAcrossPages: boolean
+    hasSelectedAll: boolean
+    viewName?: string
+    viewCount?: number
     isDisabled: boolean
     isAssignUserOpen: boolean
     onAssignUserOpenChange: (open: boolean) => void
@@ -37,9 +48,21 @@ type Props = {
     columnEditingFooter?: DataTableColumnEditingProps['footer']
 }
 
+type ItemCountRenderProps = {
+    isAllSelected: boolean
+    text: string
+}
+
+type SelectAllActionRenderProps = {
+    onSelectAll: () => void
+}
+
 export function TicketTableBulkActions({
     viewId,
-    selectedCount,
+    canSelectAllAcrossPages,
+    hasSelectedAll,
+    viewName,
+    viewCount,
     isDisabled,
     isAssignUserOpen,
     onAssignUserOpenChange,
@@ -59,11 +82,42 @@ export function TicketTableBulkActions({
     onDeleteForever,
     columnEditingFooter,
 }: Props) {
+    const viewLabel = viewName?.trim() || 'the view'
+
     return (
         <DataTableToolbar>
-            <Box alignItems="flex-start" gap="xs" minHeight="25px">
-                {selectedCount > 0 ? (
-                    <>
+            <DataTableItemCount>
+                {({ isAllSelected, text }: ItemCountRenderProps) =>
+                    isAllSelected || hasSelectedAll ? (
+                        <Text size="sm">
+                            {viewCount != null
+                                ? `All ${viewCount} tickets in ${viewLabel} selected`
+                                : `All tickets in ${viewLabel} selected`}
+                        </Text>
+                    ) : (
+                        text
+                    )
+                }
+            </DataTableItemCount>
+            <DataTableBulkActions
+                selectAllAction={
+                    canSelectAllAcrossPages
+                        ? ({ onSelectAll }: SelectAllActionRenderProps) => (
+                              <Button
+                                  variant="tertiary"
+                                  size="sm"
+                                  onClick={onSelectAll}
+                              >
+                                  {viewCount != null
+                                      ? `Select all ${viewCount} tickets in ${viewLabel}`
+                                      : `Select all tickets in ${viewLabel}`}
+                              </Button>
+                          )
+                        : undefined
+                }
+            >
+                {() => (
+                    <Box alignItems="flex-start" gap="xs" minHeight="25px">
                         <BulkStatusSelect
                             onChange={onSetStatus}
                             isDisabled={isDisabled}
@@ -96,9 +150,9 @@ export function TicketTableBulkActions({
                             onUndelete={onUndelete}
                             onDeleteForever={onDeleteForever}
                         />
-                    </>
-                ) : null}
-            </Box>
+                    </Box>
+                )}
+            </DataTableBulkActions>
             <DataTableColumnEditing footer={columnEditingFooter} />
         </DataTableToolbar>
     )

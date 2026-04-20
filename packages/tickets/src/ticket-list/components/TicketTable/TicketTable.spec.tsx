@@ -1,32 +1,33 @@
 import type { ComponentProps } from 'react'
 
 import { UserRole } from '@repo/permissions'
-import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
+import { clearViewsCount, setViewsCount } from '@repo/views'
+import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import type * as AxiomModule from '@gorgias/axiom'
 import {
     mockGetCurrentUserHandler,
     mockGetViewHandler,
     mockGetViewResponse,
-    mockListTeamsHandler,
-    mockListUsersHandler,
-    mockTag,
-    mockTeam,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
-import { useSearchTickets } from '@gorgias/helpdesk-queries'
 
-import { useCreateTicketTag } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
-import { useListTagsSearch } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
-import { createTestQueryClient, render } from '../../../tests/render.utils'
-import { TicketStatus } from '../../../types/ticket'
-import { useTicketSearchUrlState } from '../../hooks/useTicketSearchUrlState'
+import { render, testAppQueryClient } from '../../../tests/render.utils'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
-import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
-import { getTicketTableErrorMessage, TicketTable } from './TicketTable'
+import { TicketTable } from './TicketTable'
 
-const { createTicketTableColumnsMock, pushMock } = vi.hoisted(() => ({
+const {
+    createTicketTableColumnsMock,
+    pushMock,
+    getItemMock,
+    setItemMock,
+    removeItemMock,
+    clearMock,
+    readyMock,
+    observeTableMock,
+} = vi.hoisted(() => ({
     createTicketTableColumnsMock: vi.fn(() => [
         {
             id: 'ticket',
@@ -36,78 +37,23 @@ const { createTicketTableColumnsMock, pushMock } = vi.hoisted(() => ({
     ]),
     pushMock: vi.fn(),
     getItemMock: vi.fn(),
+    setItemMock: vi.fn(),
+    removeItemMock: vi.fn(),
     clearMock: vi.fn().mockResolvedValue(undefined),
     readyMock: vi.fn().mockResolvedValue(undefined),
-    unsubscribeMock: vi.fn(),
     observeTableMock: vi.fn(() => ({ unsubscribe: vi.fn() })),
 }))
 
-const localStorageState = new Map<string, string>()
-
-vi.stubGlobal('localStorage', {
-    getItem: vi.fn((key: string) => localStorageState.get(key) ?? null),
-    setItem: vi.fn((key: string, value: string) => {
-        localStorageState.set(key, value)
-    }),
-    removeItem: vi.fn((key: string) => {
-        localStorageState.delete(key)
-    }),
-    clear: vi.fn(() => {
-        localStorageState.clear()
-    }),
-})
-
-const listUser1 = mockUser({ id: 5, name: 'Agent Smith' })
-const listUser2 = mockUser({ id: 6, name: 'Alice Agent' })
-const supportTeam = mockTeam({ id: 8, name: 'Support' })
-const salesTeam = mockTeam({ id: 9, name: 'Sales' })
-const vipTag = mockTag({ id: 11, name: 'VIP' })
-const urgentTag = mockTag({ id: 12, name: 'Urgent' })
-
-const mockListUsers = mockListUsersHandler(async ({ data }) =>
-    HttpResponse.json({
-        ...data,
-        data: [listUser1, listUser2],
-        meta: { prev_cursor: null, next_cursor: null },
-    }),
-)
-
-const mockListTeams = mockListTeamsHandler(async ({ data }) =>
-    HttpResponse.json({
-        ...data,
-        data: [supportTeam, salesTeam],
-        meta: { prev_cursor: null, next_cursor: null },
-    }),
-)
-
 const server = setupServer()
-let queryClient = createTestQueryClient()
 
 const mockState = {
     sortOrder: 'last_message_datetime:desc',
     viewFilters: '',
     tickets: [] as Array<{ id: number; subject: string; is_unread?: boolean }>,
-    error: null as unknown,
-    isBulkActionLoading: false,
-    canSaveColumnsForEveryone: true,
-    isSavingColumnsForEveryone: false,
-    handleApplyMacroSpy: vi.fn(),
-    handleAddTagSpy: vi.fn(),
-    handleChangePrioritySpy: vi.fn(),
-    handleExportTicketsSpy: vi.fn(),
-    handleMarkAsReadSpy: vi.fn(),
-    handleMarkAsUnreadSpy: vi.fn(),
-    handleMoveToTrashSpy: vi.fn(),
-    handleUndeleteSpy: vi.fn(),
-    handleDeleteForeverSpy: vi.fn(),
-    handleSetStatusSpy: vi.fn(),
-    handleAssignUserSpy: vi.fn(),
-    handleAssignTeamSpy: vi.fn(),
+    error: null as Error | null,
     markAsRead: vi.fn(),
     refetchSpy: vi.fn(),
     setSortOrder: vi.fn(),
-    onLocalColumnChangeSpy: vi.fn(),
-    saveColumnsForEveryoneSpy: vi.fn().mockResolvedValue(undefined),
 }
 
 vi.mock('react-router-dom', async () => {
@@ -115,6 +61,19 @@ vi.mock('react-router-dom', async () => {
     return {
         ...actual,
         useHistory: () => ({ push: pushMock }),
+    }
+})
+
+vi.mock('@gorgias/axiom', async () => {
+    const actual = await vi.importActual<typeof AxiomModule>('@gorgias/axiom')
+
+    return {
+        ...actual,
+        createLocalStoragePersistence: () => ({
+            read: () => ({}),
+            write: vi.fn(),
+            clear: vi.fn(() => true),
+        }),
     }
 })
 
@@ -126,33 +85,18 @@ vi.mock('@repo/preferences', () => ({
     }),
 }))
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual('@gorgias/helpdesk-queries')
-    return {
-        ...actual,
-        useSearchTickets: vi.fn(() => ({
-            data: undefined,
-            isLoading: false,
-            isFetching: false,
-            error: null,
-            refetch: vi.fn(),
-        })),
-    }
-})
-
-vi.mock(
-    '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch',
-    () => ({
-        useListTagsSearch: vi.fn(),
-    }),
-)
-
-vi.mock(
-    '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag',
-    () => ({
-        useCreateTicketTag: vi.fn(),
-    }),
-)
+vi.mock('@repo/browser-storage', () => ({
+    localForageManager: {
+        getTable: () => ({
+            getItem: getItemMock,
+            setItem: setItemMock,
+            removeItem: removeItemMock,
+            clear: clearMock,
+            ready: readyMock,
+        }),
+        observeTable: observeTableMock,
+    },
+}))
 
 vi.mock(
     '../../../translations/hooks/useCurrentUserLanguagePreferences',
@@ -179,20 +123,6 @@ vi.mock('../../hooks/useSortOrder', () => ({
     useSortOrder: () => [mockState.sortOrder, mockState.setSortOrder],
 }))
 
-vi.mock('../../hooks/useTicketTableBulkActionShortcuts', () => ({
-    useTicketTableBulkActionShortcuts: vi.fn(),
-}))
-
-vi.mock('../../hooks/useTicketSearchUrlState', () => ({
-    useTicketSearchUrlState: vi.fn(() => ({
-        query: '',
-        filters: '',
-        cursor: undefined,
-        setQuery: vi.fn(),
-        setCursor: vi.fn(),
-    })),
-}))
-
 vi.mock('../../hooks/useTicketsList', () => ({
     useTicketsList: vi.fn(() => ({
         tickets: mockState.tickets,
@@ -208,11 +138,7 @@ vi.mock('../../hooks/useTicketsList', () => ({
 vi.mock('../../hooks/useTicketTableColumnVisibility', () => ({
     useTicketTableColumnVisibility: () => ({
         defaultVisibleColumns: ['ticket', 'subject'],
-        onLocalChange: mockState.onLocalColumnChangeSpy,
-        onColumnOrderChange: vi.fn(),
-        saveForEveryone: mockState.saveColumnsForEveryoneSpy,
-        canSaveForEveryone: mockState.canSaveColumnsForEveryone,
-        isSavingForEveryone: mockState.isSavingColumnsForEveryone,
+        onChange: vi.fn(),
     }),
 }))
 
@@ -229,62 +155,20 @@ vi.mock('../../../hooks/useCurrentUserId', () => ({
 }))
 
 vi.mock('../../hooks/useTicketListActions', () => ({
-    useTicketListActions: ({
-        onActionComplete,
-    }: {
-        onActionComplete: () => void
-    }) => ({
-        isLoading: mockState.isBulkActionLoading,
-        handleApplyMacro: () => {
-            mockState.handleApplyMacroSpy()
-            onActionComplete()
-        },
-        handleAddTag: async (tag: { id: number; name: string }) => {
-            mockState.handleAddTagSpy(tag)
-            onActionComplete()
-        },
-        handleSetStatus: async (status: TicketStatus) => {
-            mockState.handleSetStatusSpy(status)
-            onActionComplete()
-        },
-        handleAssignUser: async (user: { id: number; name: string } | null) => {
-            mockState.handleAssignUserSpy(user)
-            onActionComplete()
-        },
-        handleAssignTeam: async (team: { id: number; name: string } | null) => {
-            mockState.handleAssignTeamSpy(team)
-            onActionComplete()
-        },
-        handleChangePriority: async (priority: string) => {
-            mockState.handleChangePrioritySpy(priority)
-            onActionComplete()
-        },
-        handleExportTickets: async () => {
-            mockState.handleExportTicketsSpy()
-            onActionComplete()
-        },
-        handleMarkAsRead: async () => {
-            mockState.handleMarkAsReadSpy()
-            onActionComplete()
-        },
-        handleMarkAsUnread: async () => {
-            mockState.handleMarkAsUnreadSpy()
-            onActionComplete()
-        },
-        handleMoveToTrash: async () => {
-            mockState.handleMoveToTrashSpy()
-            onActionComplete()
-        },
-        handleUndelete: async (options?: {
-            removeFromCurrentViewCache?: boolean
-        }) => {
-            mockState.handleUndeleteSpy(options)
-            onActionComplete()
-        },
-        handleDeleteForever: async () => {
-            mockState.handleDeleteForeverSpy()
-            onActionComplete()
-        },
+    useTicketListActions: () => ({
+        isLoading: false,
+        handleApplyMacro: vi.fn(),
+        handleAddTag: vi.fn(),
+        handleSetStatus: vi.fn(),
+        handleAssignUser: vi.fn(),
+        handleAssignTeam: vi.fn(),
+        handleChangePriority: vi.fn(),
+        handleExportTickets: vi.fn(),
+        handleMarkAsRead: vi.fn(),
+        handleMarkAsUnread: vi.fn(),
+        handleMoveToTrash: vi.fn(),
+        handleUndelete: vi.fn(),
+        handleDeleteForever: vi.fn(),
     }),
 }))
 
@@ -295,135 +179,18 @@ vi.mock('./TicketTableColumns', () => ({
 function renderTicketTable(
     props?: Partial<ComponentProps<typeof TicketTable>>,
 ) {
-    return render(<TicketTable viewId={123} {...props} />, { queryClient })
+    return render(<TicketTable viewId={123} {...props} />)
 }
 
-function rerenderTicketTable(
-    rerender: ReturnType<typeof render>['rerender'],
-    props?: Partial<ComponentProps<typeof TicketTable>>,
-) {
-    rerender(
-        <TicketTable viewId={123} onNavigateToTicket={vi.fn()} {...props} />,
-    )
-}
-
-const bulkActionTestTimeout = 10000
-
-async function waitForSelectedCount(count = 1) {
-    await waitFor(() => {
-        expect(
-            screen.getAllByText(`${count} items selected`).length,
-        ).toBeGreaterThan(0)
-    })
-}
-
-async function openBulkMoreActionsMenu() {
-    const moreActionsButton = await waitFor(() => {
-        const button = screen.getByRole('button', { name: 'More actions' })
-        expect(button).toBeEnabled()
-
-        return button
-    })
-
-    fireEvent.click(moreActionsButton)
-    const menu = (await screen.findAllByRole('menu')).at(-1)!
-    await within(menu).findByRole('menuitem', { name: /mark as read/i })
-
-    return menu
-}
-
-function getTicketRow(subject = 'First ticket') {
-    const ticketCell = screen.getByRole('cell', { name: subject })
-    const row = ticketCell.closest('tr')
-
-    if (!row) {
-        throw new Error(`Expected a row for ticket "${subject}"`)
-    }
-
-    return row
-}
-
-async function waitForTicketTableToBeReady(subject = 'First ticket') {
+async function waitForTicketTableToBeReady() {
     await waitFor(() => {
         expect(screen.getByRole('table')).toBeInTheDocument()
-        expect(getRowSelectionCheckbox(subject)).toBeEnabled()
+        expect(getRowSelectionCheckbox()).toBeEnabled()
     })
 }
 
-async function waitForBulkToolbarToBeReady() {
-    await waitForSelectedCount()
-    await waitFor(() => {
-        expect(
-            screen.getByRole('button', { name: 'More actions' }),
-        ).toBeEnabled()
-    })
-}
-
-function getRowSelectionCheckbox(subject = 'First ticket') {
-    return within(getTicketRow(subject)).getByRole('checkbox')
-}
-
-async function selectFirstRow(user: ReturnType<typeof render>['user']) {
-    await waitForTicketTableToBeReady()
-
-    await act(async () => {
-        await user.click(getRowSelectionCheckbox())
-    })
-
-    await waitFor(() => {
-        expect(getRowSelectionCheckbox()).toBeChecked()
-    })
-    await waitForSelectedCount()
-}
-
-async function getEnabledBulkControl(label: string) {
-    return waitFor(() => {
-        const control = screen.getByLabelText(label)
-        expect(control).toBeEnabled()
-        return control
-    })
-}
-
-async function openStatusSelection(user: ReturnType<typeof render>['user']) {
-    const statusSelection = await getEnabledBulkControl('Status selection')
-    await user.click(statusSelection)
-    return screen.findByRole('listbox')
-}
-
-async function waitForSelectionToClear() {
-    await waitFor(() => {
-        expect(screen.queryAllByText('1 items selected')).toHaveLength(0)
-        expect(
-            screen.queryByLabelText('Status selection'),
-        ).not.toBeInTheDocument()
-        expect(
-            screen.queryByRole('button', { name: 'More actions' }),
-        ).not.toBeInTheDocument()
-    })
-}
-
-const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
-const mockUseCreateTicketTag = vi.mocked(useCreateTicketTag)
-const mockUseSearchTickets = vi.mocked(useSearchTickets)
-const mockUseTicketSearchUrlState = vi.mocked(useTicketSearchUrlState)
-const mockUseTicketTableBulkActionShortcuts = vi.mocked(
-    useTicketTableBulkActionShortcuts,
-)
-
-function getLatestBulkShortcutConfig() {
-    const [config] = mockUseTicketTableBulkActionShortcuts.mock.lastCall ?? []
-
-    if (!config) {
-        throw new Error('Expected bulk shortcut config to be registered')
-    }
-
-    expect(config.handleOpenAssignUser).toBeDefined()
-    expect(config.handleOpenTags).toBeDefined()
-
-    return config as typeof config & {
-        handleOpenAssignUser: () => void
-        handleOpenTags: () => void
-    }
+function getRowSelectionCheckbox() {
+    return screen.getAllByRole('checkbox').at(1)!
 }
 
 const agentUser = mockUser({
@@ -435,16 +202,17 @@ const agentUser = mockUser({
 })
 
 beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
+    server.listen({
+        onUnhandledRequest({ method, url }) {
+            throw new Error(
+                `[TicketTable.spec] unhandled request: ${method} ${url}`,
+            )
+        },
+    })
 })
 
-beforeEach(() => {
-    queryClient = createTestQueryClient()
-})
-
-afterEach(async () => {
-    await queryClient.cancelQueries()
-    queryClient.clear()
+afterEach(() => {
+    clearViewsCount()
     server.resetHandlers()
 })
 
@@ -453,24 +221,10 @@ afterAll(() => {
 })
 
 describe('TicketTable', () => {
-    it('returns an error message for Error instances', () => {
-        expect(
-            getTicketTableErrorMessage(new Error('Failed to load tickets')),
-        ).toBe('Failed to load tickets')
-    })
-
-    it('returns undefined for non-Error values', () => {
-        expect(getTicketTableErrorMessage(undefined)).toBeUndefined()
-        expect(getTicketTableErrorMessage(null)).toBeUndefined()
-        expect(
-            getTicketTableErrorMessage('Failed to load tickets'),
-        ).toBeUndefined()
-    })
-
     beforeEach(() => {
         createTicketTableColumnsMock.mockClear()
-        localStorageState.clear()
-        localStorage.clear()
+        testAppQueryClient.clear()
+        setViewsCount({ 123: 7 })
         server.use(
             mockGetCurrentUserHandler(async () => HttpResponse.json(agentUser))
                 .handler,
@@ -483,8 +237,6 @@ describe('TicketTable', () => {
                     }),
                 ),
             ).handler,
-            mockListUsers.handler,
-            mockListTeams.handler,
         )
         mockState.sortOrder = 'last_message_datetime:desc'
         mockState.viewFilters = ''
@@ -493,63 +245,11 @@ describe('TicketTable', () => {
             { id: 2, subject: 'Second ticket' },
         ]
         mockState.error = null
-        mockState.isBulkActionLoading = false
-        mockState.canSaveColumnsForEveryone = true
-        mockState.isSavingColumnsForEveryone = false
-        mockState.handleApplyMacroSpy.mockReset()
-        mockState.handleAddTagSpy.mockReset()
-        mockState.handleChangePrioritySpy.mockReset()
-        mockState.handleExportTicketsSpy.mockReset()
-        mockState.handleMarkAsReadSpy.mockReset()
-        mockState.handleMarkAsUnreadSpy.mockReset()
-        mockState.handleMoveToTrashSpy.mockReset()
-        mockState.handleUndeleteSpy.mockReset()
-        mockState.handleDeleteForeverSpy.mockReset()
-        mockState.handleSetStatusSpy.mockReset()
-        mockState.handleAssignUserSpy.mockReset()
-        mockState.handleAssignTeamSpy.mockReset()
         pushMock.mockReset()
         mockState.markAsRead.mockReset()
         mockState.refetchSpy.mockReset()
         mockState.setSortOrder.mockReset()
-        mockUseTicketTableBulkActionShortcuts.mockImplementation(
-            () => undefined,
-        )
-        mockState.onLocalColumnChangeSpy.mockReset()
-        mockState.saveColumnsForEveryoneSpy.mockReset()
-        mockState.saveColumnsForEveryoneSpy.mockResolvedValue(undefined)
-        mockUseTicketSearchUrlState.mockReturnValue({
-            query: '',
-            filters: '',
-            cursor: undefined,
-            setQuery: vi.fn(),
-            setCursor: vi.fn(),
-        })
-        mockUseSearchTickets.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isFetching: false,
-            error: null,
-            refetch: vi.fn(),
-        } as unknown as ReturnType<typeof useSearchTickets>)
         vi.mocked(useTicketsListModule.useTicketsList).mockClear()
-        mockUseListTagsSearch.mockReturnValue({
-            tags: [vipTag, urgentTag],
-            search: '',
-            setSearch: vi.fn(),
-            isLoading: false,
-            shouldLoadMore: false,
-            onLoad: vi.fn(),
-            data: undefined,
-            isFetchingNextPage: false,
-            hasNextPage: false,
-            fetchNextPage: vi.fn(),
-            isFetching: false,
-        } as unknown as ReturnType<typeof useListTagsSearch>)
-        mockUseCreateTicketTag.mockReturnValue({
-            createTicketTag: vi.fn(),
-            isCreating: false,
-        })
     })
 
     it('keeps rendering loaded rows when a refresh fails', async () => {
@@ -562,20 +262,6 @@ describe('TicketTable', () => {
         expect(screen.getByRole('table')).toBeInTheDocument()
         expect(getRowSelectionCheckbox()).toBeInTheDocument()
         expect(screen.queryByText('Network error')).not.toBeInTheDocument()
-    })
-
-    it('does not render the bulk action controls with no selection', () => {
-        renderTicketTable()
-
-        expect(
-            screen.queryByLabelText('Status selection'),
-        ).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Assign agent')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Assign team')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-        expect(
-            screen.queryByRole('button', { name: 'More actions' }),
-        ).not.toBeInTheDocument()
     })
 
     it('marks unread tickets as read and navigates when a row is clicked', async () => {
@@ -594,76 +280,6 @@ describe('TicketTable', () => {
         expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
     })
 
-    it('navigates when a row is clicked without onNavigateToTicket', async () => {
-        mockState.tickets = [
-            { id: 1, subject: 'First ticket', is_unread: true },
-            { id: 2, subject: 'Second ticket', is_unread: false },
-        ]
-        const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getByText('First ticket'))
-
-        expect(mockState.markAsRead).toHaveBeenCalledWith(1)
-        expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
-    })
-
-    it('opens search results in the standalone ticket route', async () => {
-        mockState.tickets = [
-            { id: 1, subject: 'First ticket', is_unread: true },
-            { id: 2, subject: 'Second ticket', is_unread: false },
-        ]
-        mockUseTicketSearchUrlState.mockReturnValue({
-            query: 'hello',
-            filters: '',
-            cursor: undefined,
-            setQuery: vi.fn(),
-            setCursor: vi.fn(),
-        })
-        mockUseSearchTickets.mockReturnValue({
-            data: {
-                data: {
-                    data: mockState.tickets,
-                    meta: {},
-                },
-                headers: {},
-            },
-            isLoading: false,
-            isFetching: false,
-            error: null,
-            refetch: vi.fn(),
-        } as unknown as ReturnType<typeof useSearchTickets>)
-        const { user } = renderTicketTable({ isSearchMode: true })
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getByText('First ticket'))
-
-        expect(mockState.markAsRead).toHaveBeenCalledWith(1)
-        expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
-    })
-
-    it('tracks the selected search result before navigating', async () => {
-        mockState.tickets = [
-            { id: 1, subject: 'First ticket', is_unread: true },
-            { id: 2, subject: 'Second ticket', is_unread: false },
-        ]
-        const onSelection = vi.fn()
-
-        const { user } = renderTicketTable({
-            searchTracking: {
-                onSelection,
-            },
-        })
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getByText('Second ticket'))
-
-        expect(onSelection).toHaveBeenCalledWith({
-            id: 2,
-            index: 1,
-        })
-    })
-
     it('does not mark already read tickets as read when a row is clicked', async () => {
         mockState.tickets = [
             { id: 1, subject: 'First ticket', is_unread: false },
@@ -677,17 +293,6 @@ describe('TicketTable', () => {
         expect(mockState.markAsRead).not.toHaveBeenCalled()
         expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
     })
-
-    it(
-        'enables the bulk action controls and shows the selected count when a row is selected',
-        async () => {
-            const { user } = renderTicketTable()
-            await selectFirstRow(user)
-
-            await waitForBulkToolbarToBeReady()
-        },
-        bulkActionTestTimeout,
-    )
 
     it('pauses updates while a row is selected and resumes after clearing the selection', async () => {
         const { user } = renderTicketTable()
@@ -746,245 +351,6 @@ describe('TicketTable', () => {
         })
     })
 
-    it('passes the trash-like view context to the bulk menu when the view filters are trash-like', async () => {
-        mockState.viewFilters = 'isNotEmpty(ticket.trashed_datetime)'
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-        const menu = await openBulkMoreActionsMenu()
-
-        expect(
-            within(menu).getByRole('menuitem', { name: /undelete/i }),
-        ).toBeInTheDocument()
-        expect(
-            within(menu).getByRole('menuitem', { name: /delete forever/i }),
-        ).toBeInTheDocument()
-        expect(
-            within(menu).queryByRole('menuitem', { name: /^delete$/i }),
-        ).not.toBeInTheDocument()
-    }, 10000)
-
-    it('wires mark as read through the bulk more actions menu', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-        const menu = await openBulkMoreActionsMenu()
-        await user.click(
-            within(menu).getByRole('menuitem', { name: /mark as read/i }),
-        )
-
-        await waitFor(() => {
-            expect(mockState.handleMarkAsReadSpy).toHaveBeenCalledTimes(1)
-        })
-
-        await waitForSelectionToClear()
-    }, 10000)
-
-    it('passes the trash-view cache removal option when undeleting from the bulk more actions menu', async () => {
-        mockState.viewFilters = 'isNotEmpty(ticket.trashed_datetime)'
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-        const menu = await openBulkMoreActionsMenu()
-        await user.click(
-            within(menu).getByRole('menuitem', { name: /undelete/i }),
-        )
-
-        await waitFor(() => {
-            expect(mockState.handleUndeleteSpy).toHaveBeenCalledWith({
-                removeFromCurrentViewCache: true,
-            })
-        })
-    }, 10000)
-
-    it('opens the assignee and tag menus from the bulk action shortcuts', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-
-        act(() => {
-            getLatestBulkShortcutConfig().handleOpenAssignUser()
-        })
-
-        expect(
-            await screen.findByRole('button', { name: /unassigned/i }),
-        ).toBeInTheDocument()
-
-        act(() => {
-            getLatestBulkShortcutConfig().handleOpenTags()
-        })
-
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('button', { name: /unassigned/i }),
-            ).not.toBeInTheDocument()
-        })
-        expect((await screen.findAllByText('VIP')).length).toBeGreaterThan(0)
-    }, 10000)
-
-    it(
-        'sets the selected tickets to open and clears the selection on success',
-        async () => {
-            const { user } = renderTicketTable()
-            await selectFirstRow(user)
-
-            const statusListbox = await openStatusSelection(user)
-            await user.click(
-                within(statusListbox).getByRole('option', { name: 'Open' }),
-            )
-
-            await waitFor(() => {
-                expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
-                    TicketStatus.Open,
-                )
-            })
-
-            await waitForSelectionToClear()
-
-            expect(
-                screen.queryByLabelText('Status selection'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByLabelText('Assign agent'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByLabelText('Assign team'),
-            ).not.toBeInTheDocument()
-            expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'More actions' }),
-            ).not.toBeInTheDocument()
-        },
-        bulkActionTestTimeout,
-    )
-
-    it(
-        'sets the selected tickets to closed',
-        async () => {
-            const { user } = renderTicketTable()
-            await selectFirstRow(user)
-
-            const statusListbox = await openStatusSelection(user)
-            await user.click(
-                within(statusListbox).getByRole('option', { name: 'Close' }),
-            )
-
-            await waitFor(() => {
-                expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
-                    TicketStatus.Closed,
-                )
-            })
-
-            await waitForSelectionToClear()
-        },
-        bulkActionTestTimeout,
-    )
-
-    it(
-        'assigns the selected tickets to an agent and clears the selection on success',
-        async () => {
-            const { user } = renderTicketTable()
-            await selectFirstRow(user)
-            await user.click(await getEnabledBulkControl('Assign agent'))
-            const agentOptions = await screen.findAllByText('Agent Smith')
-            await user.click(agentOptions[agentOptions.length - 1])
-
-            expect(mockState.handleAssignUserSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    id: 5,
-                    name: 'Agent Smith',
-                }),
-            )
-
-            await waitForSelectionToClear()
-
-            expect(
-                screen.queryByLabelText('Assign agent'),
-            ).not.toBeInTheDocument()
-        },
-        bulkActionTestTimeout,
-    )
-
-    it(
-        'assigns the selected tickets to a team and clears the selection on success',
-        async () => {
-            const { user } = renderTicketTable()
-            await selectFirstRow(user)
-            await user.click(await getEnabledBulkControl('Assign team'))
-            const supportOptions = await screen.findAllByText('Support')
-            await user.click(supportOptions[supportOptions.length - 1])
-
-            expect(mockState.handleAssignTeamSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    id: 8,
-                    name: 'Support',
-                }),
-            )
-
-            await waitForSelectionToClear()
-
-            expect(
-                screen.queryByLabelText('Assign team'),
-            ).not.toBeInTheDocument()
-        },
-        bulkActionTestTimeout,
-    )
-
-    it(
-        'adds a tag to the selected tickets and clears the selection on success',
-        async () => {
-            const { user } = renderTicketTable()
-            await selectFirstRow(user)
-            await user.click(await getEnabledBulkControl('Add tag'))
-            const vipOptions = await screen.findAllByText('VIP')
-            await user.click(vipOptions[vipOptions.length - 1])
-
-            expect(mockState.handleAddTagSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    id: 11,
-                    name: 'VIP',
-                }),
-            )
-
-            await waitForSelectionToClear()
-
-            expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-        },
-        bulkActionTestTimeout,
-    )
-
-    it(
-        'clears the selected team assignment when requested',
-        async () => {
-            const { user } = renderTicketTable()
-            await selectFirstRow(user)
-            await user.click(await getEnabledBulkControl('Assign team'))
-            const noTeamOptions = await screen.findAllByText('No team')
-            await user.click(noTeamOptions[noTeamOptions.length - 1])
-
-            expect(mockState.handleAssignTeamSpy).toHaveBeenCalledWith(null)
-        },
-        bulkActionTestTimeout,
-    )
-
-    it(
-        'disables team assignment while the bulk action is loading',
-        async () => {
-            const { user, rerender } = renderTicketTable()
-            await selectFirstRow(user)
-
-            mockState.isBulkActionLoading = true
-            rerenderTicketTable(rerender)
-
-            await waitFor(() => {
-                expect(screen.getByLabelText('Status selection')).toBeDisabled()
-                expect(screen.getByLabelText('Assign agent')).toBeDisabled()
-                expect(screen.getByLabelText('Assign team')).toBeDisabled()
-                expect(screen.getByLabelText('Add tag')).toBeDisabled()
-                expect(
-                    screen.getByRole('button', { name: 'More actions' }),
-                ).toBeDisabled()
-            })
-        },
-        bulkActionTestTimeout,
-    )
-
     it('renders the table empty state when the loaded view has no tickets', async () => {
         mockState.tickets = []
         server.use(
@@ -1025,34 +391,11 @@ describe('TicketTable', () => {
             expect(
                 screen.getByRole('button', { name: 'Refresh' }),
             ).toBeInTheDocument()
-            expect(
-                screen.getByText('Failed to load tickets'),
-            ).toBeInTheDocument()
         })
 
         await user.click(screen.getByRole('button', { name: 'Refresh' }))
 
         expect(mockState.refetchSpy).toHaveBeenCalledTimes(1)
-    })
-
-    it('does not render an error message when loading tickets fails with a non-Error value', async () => {
-        mockState.tickets = []
-        mockState.error = 'Failed to load tickets'
-
-        renderTicketTable()
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('heading', { name: 'Network error' }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: 'Refresh' }),
-            ).toBeInTheDocument()
-        })
-
-        expect(
-            screen.queryByText('Failed to load tickets'),
-        ).not.toBeInTheDocument()
     })
 
     it('renders loading placeholders while the view is still loading', () => {
@@ -1062,36 +405,6 @@ describe('TicketTable', () => {
         expect(screen.queryByRole('table')).not.toBeInTheDocument()
     })
 
-    it('does not block search mode on the view query loading state', async () => {
-        mockUseTicketSearchUrlState.mockReturnValue({
-            query: 'hello',
-            filters: '',
-            cursor: undefined,
-            setQuery: vi.fn(),
-            setCursor: vi.fn(),
-        })
-        mockUseSearchTickets.mockReturnValue({
-            data: {
-                data: {
-                    data: mockState.tickets,
-                    meta: {},
-                },
-                headers: {},
-            },
-            isLoading: false,
-            isFetching: false,
-            error: null,
-            refetch: vi.fn(),
-        } as unknown as ReturnType<typeof useSearchTickets>)
-
-        renderTicketTable({ isSearchMode: true })
-
-        await waitForTicketTableToBeReady()
-
-        expect(screen.getByRole('table')).toBeInTheDocument()
-        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
-    })
-
     it('renders draft views with the table content', async () => {
         renderTicketTable({ isDraftView: true })
 
@@ -1099,79 +412,4 @@ describe('TicketTable', () => {
 
         expect(screen.getByRole('table')).toBeInTheDocument()
     })
-
-    it(
-        'clears the selection when the displayed tickets change',
-        async () => {
-            const { user, rerender } = renderTicketTable()
-            await selectFirstRow(user)
-
-            mockState.tickets = [
-                { id: 3, subject: 'Replacement ticket' },
-                { id: 4, subject: 'Another replacement ticket' },
-            ]
-            rerenderTicketTable(rerender)
-
-            await waitForTicketTableToBeReady('Replacement ticket')
-            await waitForSelectionToClear()
-
-            expect(
-                screen.queryByLabelText('Status selection'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByLabelText('Assign agent'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByLabelText('Assign team'),
-            ).not.toBeInTheDocument()
-            expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'More actions' }),
-            ).not.toBeInTheDocument()
-        },
-        bulkActionTestTimeout,
-    )
-
-    it(
-        'clears the selection when the sort order changes',
-        async () => {
-            const { user, rerender } = renderTicketTable()
-            await selectFirstRow(user)
-
-            mockState.sortOrder = 'updated_datetime:desc'
-            rerenderTicketTable(rerender)
-
-            await waitFor(() => {
-                expect(
-                    useTicketsListModule.useTicketsList,
-                ).toHaveBeenLastCalledWith(
-                    123,
-                    expect.objectContaining({
-                        params: {
-                            order_by: 'updated_datetime:desc',
-                            limit: 20,
-                        },
-                        pauseUpdates: false,
-                        enableStaleUpdates: true,
-                    }),
-                )
-            })
-            await waitForSelectionToClear()
-
-            expect(
-                screen.queryByLabelText('Status selection'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByLabelText('Assign agent'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByLabelText('Assign team'),
-            ).not.toBeInTheDocument()
-            expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'More actions' }),
-            ).not.toBeInTheDocument()
-        },
-        bulkActionTestTimeout,
-    )
 })

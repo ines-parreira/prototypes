@@ -356,7 +356,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       data-rac=""
                     >
                       <div
-                        class="ui-input-wrapper-8e5a ui-input-md-8e5a ui-input-hastrailingslot-8e5a ui-input-hastrailingicon-8e5a"
+                        class="ui-input-wrapper-8e5a ui-input-md-8e5a"
                         data-name="input"
                       >
                         <label>
@@ -372,8 +372,10 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                             value="- no parent -"
                           />
                           <span
-                            class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-trailing-0bf5 ui-inputslot-icon-0bf5"
+                            class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-trailing-0bf5"
+                            data-kind="icon"
                             data-name="input-slot"
+                            data-position="trailing"
                           >
                             <span
                               class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-regularicon-b14f"
@@ -471,13 +473,15 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       data-rac=""
                     >
                       <div
-                        class="ui-input-wrapper-8e5a ui-input-md-8e5a ui-input-hasleadingslot-8e5a ui-input-hastrailingslot-8e5a ui-input-hasleadingicon-8e5a ui-input-hastrailingicon-8e5a"
+                        class="ui-input-wrapper-8e5a ui-input-md-8e5a"
                         data-name="input"
                       >
                         <label>
                           <span
-                            class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-leading-0bf5 ui-inputslot-icon-0bf5"
+                            class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-leading-0bf5"
+                            data-kind="icon"
                             data-name="input-slot"
+                            data-position="leading"
                           >
                             <span
                               class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-regularicon-b14f"
@@ -505,8 +509,10 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                             value="Public"
                           />
                           <span
-                            class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-trailing-0bf5 ui-inputslot-icon-0bf5"
+                            class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-trailing-0bf5"
+                            data-kind="icon"
                             data-name="input-slot"
+                            data-position="trailing"
                           >
                             <span
                               class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-regularicon-b14f"

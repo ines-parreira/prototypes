@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { act } from '@testing-library/react'
 
 import type * as AxiomModule from '@gorgias/axiom'
+import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
 
 import { render } from '../../../tests/render.utils'
 import { TicketTable } from './TicketTable'
@@ -87,16 +88,23 @@ vi.mock('@repo/preferences', () => ({
     }),
 }))
 
-vi.mock('@gorgias/helpdesk-queries', () => ({
-    useGetView: () => ({
-        data: {
+vi.mock('@gorgias/helpdesk-queries', async () => {
+    const actual = await vi.importActual<typeof HelpdeskQueriesModule>(
+        '@gorgias/helpdesk-queries',
+    )
+
+    return {
+        ...actual,
+        useGetView: () => ({
             data: {
-                id: 123,
-                visibility: columnEditingConfig.viewVisibility,
+                data: {
+                    id: 123,
+                    visibility: columnEditingConfig.viewVisibility,
+                },
             },
-        },
-    }),
-}))
+        }),
+    }
+})
 
 vi.mock('../../../hooks/useCurrentUserId', () => ({
     useCurrentUserId: () => ({

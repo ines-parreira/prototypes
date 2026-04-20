@@ -30,6 +30,13 @@ export class ShortcutManager {
         combo: string,
     ) => {
         const activeElement = document.activeElement
+        const eventTarget = e.target
+        const composedPath =
+            typeof e.composedPath === 'function' ? e.composedPath() : []
+        const editableElementInPath = composedPath.find(
+            (pathElement): pathElement is Element =>
+                pathElement instanceof Element && isEditable(pathElement),
+        )
 
         // if one of the element's parents
         // has the class "shortcuts-enable" then no need to stop.
@@ -51,6 +58,8 @@ export class ShortcutManager {
         // and buttons.
         return (
             isEditable(element) ||
+            (eventTarget instanceof Element && isEditable(eventTarget)) ||
+            editableElementInPath !== undefined ||
             (activeElement instanceof Element && isEditable(activeElement)) ||
             isButton(element)
         )

@@ -751,6 +751,73 @@ describe('useTicketTableData', () => {
         expect(result.current.items).toEqual([{ id: 12 }])
     })
 
+    it('resets to the first page when filters change after browsing persisted results', async () => {
+        const persistedTickets = Array.from({ length: 25 }, (_, index) => ({
+            id: index + 1,
+        }))
+        type HookProps = {
+            dirtyView?: Parameters<typeof useTicketTableData>[0]['dirtyView']
+        }
+
+        useTicketsListMock.mockReturnValue(
+            makePersistedResult({
+                tickets: persistedTickets as ReturnType<
+                    typeof useTicketsList
+                >['tickets'],
+            }),
+        )
+
+        const { result, rerender } = renderHook<
+            ReturnType<typeof useTicketTableData>,
+            HookProps
+        >(
+            ({ dirtyView }) =>
+                useTicketTableData({
+                    viewId: 123,
+                    enablePersistedUpdates: true,
+                    pauseUpdates: false,
+                    dirtyView,
+                }),
+            {
+                initialProps: {
+                    dirtyView: undefined,
+                } satisfies HookProps,
+            },
+        )
+
+        act(() => {
+            result.current.onPageChange('next')
+        })
+
+        expect(result.current.currentPageIndex).toBe(1)
+        expect(result.current.items).toEqual(persistedTickets.slice(20, 25))
+
+        useSearchTicketsMock.mockReturnValue(
+            makeDirtyQueryResult({
+                data: {
+                    data: [{ id: 9001 }, { id: 9002 }] as never[],
+                    meta: {},
+                },
+            }),
+        )
+
+        const nextProps: HookProps = {
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: true,
+            },
+        }
+
+        rerender(nextProps)
+
+        await waitFor(() => {
+            expect(result.current.currentPageIndex).toBe(0)
+            expect(result.current.items).toEqual([{ id: 9001 }, { id: 9002 }])
+        })
+    })
+
     it('uses dirty cursors for pagination in dirty mode', () => {
         const dirtyResponse = {
             data: [{ id: 50 }] as never[],
