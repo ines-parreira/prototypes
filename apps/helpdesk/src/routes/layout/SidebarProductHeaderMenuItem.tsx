@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Box, Icon, MenuItem, Tag } from '@gorgias/axiom'
+import { Box, IconBox, MenuItem, Tag } from '@gorgias/axiom'
 
 import type { ProductConfig } from 'routes/layout/productConfig'
 
@@ -16,30 +16,29 @@ export function SidebarProductHeaderMenuItem({
     return (
         <MenuItem
             id={item.id}
-            selectionStyle="neutral"
             as={Link}
             to={item.defaultPath}
             label={
-                requiresUpgrade ? (
-                    <Box alignItems="center" gap="xxs">
-                        <div>{item.name}</div>
-                        <Tag color="green" size="sm">
-                            Upgrade
-                        </Tag>
-                    </Box>
-                ) : (
-                    item.name
-                )
+                <Box width={162}>
+                    {requiresUpgrade ? (
+                        <Box alignItems="center" gap="xxs">
+                            <div>{item.name}</div>
+                            <Tag color="green" size="sm">
+                                Upgrade
+                            </Tag>
+                        </Box>
+                    ) : (
+                        item.name
+                    )}
+                </Box>
             }
-            caption={item.description}
-            leadingSlot={
-                <Icon
-                    name={item.icon}
-                    color={item.color}
-                    size="md"
-                    withBackground
+            leadingSlot={({ isSelected }) => (
+                <IconBox
+                    icon={item.icon}
+                    color={isSelected ? 'accent' : 'grey'}
+                    variant="secondary"
                 />
-            }
+            )}
         />
     )
 }

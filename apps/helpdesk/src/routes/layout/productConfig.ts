@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 
-import type { ColorValue, IconName } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 import { ANALYTICS_DEFAULT_PATH } from 'routes/layout/products/analytics'
 import { CUSTOMERS_DEFAULT_PATH } from 'routes/layout/products/customers'
@@ -38,19 +38,19 @@ export enum Product {
 export type ProductConfig = {
     id: Product
     name: string
-    description?: string
+    productType?: 'primary' | 'secondary'
     sidebarContentType?: SidebarContentType
     sidebar: ComponentType | null
     urlPatterns: string[]
     icon: IconName
     defaultPath: string
-    color?: ColorValue
 }
 
 export const productConfig: Record<Product, ProductConfig> = {
     [Product.Home]: {
         id: Product.Home,
         name: 'Home',
+        productType: 'secondary',
         sidebar: null,
         urlPatterns: ['home'],
         icon: 'nav-home',
@@ -59,56 +59,52 @@ export const productConfig: Record<Product, ProductConfig> = {
     [Product.Inbox]: {
         id: Product.Inbox,
         name: 'Inbox',
-        description: 'Talk with customers',
+        productType: 'primary',
         sidebar: InboxSidebar,
         urlPatterns: ['tickets', 'ticket', 'views'],
         icon: 'comm-chat-conversation-circle',
-        color: 'blue',
         defaultPath: '/app/',
     },
     [Product.AiAgent]: {
         id: Product.AiAgent,
         name: 'AI Agent',
-        description: 'Automate support and sales',
+        productType: 'primary',
         sidebar: AiAgentSidebar,
         urlPatterns: ['ai-agent', 'automation'],
         icon: 'ai-alt-1',
-        color: 'fuchsia',
         defaultPath: '/app/ai-agent',
     },
     [Product.Marketing]: {
         id: Product.Marketing,
         name: 'Marketing',
-        description: 'Send outbound campaigns',
+        productType: 'primary',
         sidebar: MarketingSidebar,
         urlPatterns: ['ai-journey'],
         icon: 'ai',
-        color: 'coral',
         defaultPath: '/app/ai-journey',
     },
     [Product.Analytics]: {
         id: Product.Analytics,
         name: 'Analytics',
-        description: 'Gather insights and improve',
+        productType: 'primary',
         sidebar: AnalyticsSidebar,
         urlPatterns: ['stats', 'voice-of-customer'],
         icon: 'chart-bar-vertical',
-        color: 'teal',
         defaultPath: ANALYTICS_DEFAULT_PATH,
     },
     [Product.Convert]: {
         id: Product.Convert,
         name: 'Convert',
-        description: 'Launch onsite campaigns',
+        productType: 'primary',
         sidebar: ConvertSidebar,
         urlPatterns: ['convert'],
         icon: 'attach-money',
-        color: 'yellow',
         defaultPath: '/app/convert/overview',
     },
     [Product.Workflows]: {
         id: Product.Workflows,
         name: 'Workflows',
+        productType: 'secondary',
         sidebar: WorkflowsSidebar,
         urlPatterns: ['workflows'],
         icon: 'route',
@@ -117,6 +113,7 @@ export const productConfig: Record<Product, ProductConfig> = {
     [Product.Customers]: {
         id: Product.Customers,
         name: 'Customers',
+        productType: 'secondary',
         sidebar: CustomersSidebar,
         urlPatterns: ['customers', 'customer'],
         icon: 'users',
@@ -126,6 +123,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         id: Product.Settings,
         sidebarContentType: SidebarContentType.Sticky,
         name: 'Settings',
+        productType: 'secondary',
         sidebar: SettingsSidebar,
         urlPatterns: ['settings'],
         icon: 'settings',

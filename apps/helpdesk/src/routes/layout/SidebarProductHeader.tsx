@@ -9,7 +9,7 @@ import {
     Button,
     DropdownIcon,
     Heading,
-    Icon,
+    IconBox,
     Menu,
     MenuSection,
     Tooltip,
@@ -39,11 +39,12 @@ export function SidebarProductHeader({
 
     const icon =
         selectedItem.icon != null ? (
-            <Icon
-                name={selectedItem.icon}
-                color={selectedItem.color}
-                size="md"
-                withBackground
+            <IconBox
+                icon={selectedItem.icon}
+                color={
+                    selectedItem.productType === 'primary' ? 'accent' : 'grey'
+                }
+                variant="primary"
             />
         ) : null
 
@@ -55,13 +56,7 @@ export function SidebarProductHeader({
                 isCollapsed && selectedItem.icon ? (
                     <Tooltip
                         placement="right"
-                        trigger={
-                            <Button
-                                icon={icon}
-                                variant="tertiary"
-                                color={selectedItem.color}
-                            />
-                        }
+                        trigger={<Button icon={icon} variant="tertiary" />}
                     >
                         <TooltipContent title={selectedItem.name} />
                     </Tooltip>
@@ -72,7 +67,7 @@ export function SidebarProductHeader({
                         trailingSlot={<DropdownIcon isOpen={isOpen} />}
                     >
                         <Box pl="xxxxs">
-                            <Heading size="md">{selectedItem.name}</Heading>
+                            <Heading size="sm">{selectedItem.name}</Heading>
                         </Box>
                     </Button>
                 )
