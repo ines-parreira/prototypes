@@ -10,7 +10,6 @@ import {
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
     useIsCancellationAvailable,
 } from '@repo/billing'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import moment from 'moment'
@@ -41,7 +40,6 @@ import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
-import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../CancelProductModal/CancelProductModal'
 import CounterText from '../CounterText'
 
@@ -89,16 +87,6 @@ const ProductPlanSelection = ({
     const productInfo = getProductInfo(type, currentPlan)
     const currentAccount = useAppSelector(getCurrentAccountState)
 
-    // Feature flag to enable consolidated cancellation modal for all products.
-    const useConsolidatedCancellationModal = useFlag(
-        FeatureFlagKey.EnableConsolidatedCancellationModal,
-        false,
-    )
-    const useConsolidatedCancellationModalPhone = useFlag(
-        FeatureFlagKey.EnableConsolidatedCancellationModalPhone,
-        false,
-    )
-
     const isActive = useMemo(() => {
         if (!currentPlan) return false
         if (isTrialing) return false
@@ -109,7 +97,6 @@ const ProductPlanSelection = ({
     const selectedPlan = selectedPlans[type].plan
 
     const [isCancellationFlowOpen, setIsCancellationFlowOpen] = useState(false)
-    const [isCancelAAOModalOpen, setIsCancelAAOModalOpen] = useState(false)
 
     const isStarterHelpdeskPlanDisabled = useCallback(
         (plan: Plan) => {
@@ -203,21 +190,8 @@ const ProductPlanSelection = ({
     }, [setSelectedPlans, type])
 
     const handleConvertClose = useCallback(() => {
-        if (useConsolidatedCancellationModal) {
-            setIsCancellationFlowOpen(true)
-        } else {
-            handleClose()
-            handleConvertProductRemoved(
-                selectedPlan?.plan_id,
-                currentAccount.get('domain'),
-            )
-        }
-    }, [
-        handleClose,
-        selectedPlan,
-        currentAccount,
-        useConsolidatedCancellationModal,
-    ])
+        setIsCancellationFlowOpen(true)
+    }, [])
 
     const currentProducts = useAppSelector(getCurrentPlansByProduct)
     const currentSubscriptionProducts = useMemo(
@@ -245,16 +219,9 @@ const ProductPlanSelection = ({
     const showCancelProductModal = useMemo(
         () =>
             (type === ProductType.Helpdesk && isCancellationAvailable) ||
-            ([ProductType.Voice, ProductType.SMS].includes(type) &&
-                useConsolidatedCancellationModalPhone) ||
-            ([ProductType.Automation, ProductType.Convert].includes(type) &&
-                useConsolidatedCancellationModal),
-        [
-            type,
-            isCancellationAvailable,
-            useConsolidatedCancellationModalPhone,
-            useConsolidatedCancellationModal,
-        ],
+            [ProductType.Voice, ProductType.SMS].includes(type) ||
+            [ProductType.Automation, ProductType.Convert].includes(type),
+        [type, isCancellationAvailable],
     )
 
     const statusBadge = useMemo(() => {
@@ -490,25 +457,15 @@ const ProductPlanSelection = ({
         }
         if (type === ProductType.Automation) {
             return renderRemoveProductButton(() => {
-                if (useConsolidatedCancellationModal) {
-                    setIsCancellationFlowOpen(true)
-                } else {
-                    setIsCancelAAOModalOpen(true)
-                }
+                setIsCancellationFlowOpen(true)
             })
         } else if (type === ProductType.Convert) {
             return renderRemoveProductButton(handleConvertClose)
-        } else if (
-            type === ProductType.SMS &&
-            useConsolidatedCancellationModalPhone
-        ) {
+        } else if (type === ProductType.SMS) {
             return renderRemoveProductButton(() => {
                 setIsCancellationFlowOpen(true)
             })
-        } else if (
-            type === ProductType.Voice &&
-            useConsolidatedCancellationModalPhone
-        ) {
+        } else if (type === ProductType.Voice) {
             return renderRemoveProductButton(() => {
                 setIsCancellationFlowOpen(true)
             })
@@ -621,15 +578,6 @@ const ProductPlanSelection = ({
                         availablePlans={availablePlans}
                     />
                 )}
-            {!!currentUsage && !useConsolidatedCancellationModal && (
-                <CancelAAOModal
-                    isOpen={isCancelAAOModalOpen}
-                    handleCancelAAO={handleClose}
-                    handleOnClose={() => setIsCancelAAOModalOpen(false)}
-                    periodEnd={periodEnd}
-                    currentUsage={currentUsage}
-                />
-            )}
             {showCancelProductModal && currentSubscriptionProducts && (
                 <CancelProductModal
                     onClose={() => {
