@@ -21,6 +21,7 @@ export {
     formatOrderDate,
     getFinancialStatusInfo,
     getFulfillmentStatusInfo,
+    getShipmentStatusInfo,
     getLineItemImageSrc,
     getProductImageList,
     getSizedImageUrl,

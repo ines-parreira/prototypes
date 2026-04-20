@@ -1,6 +1,7 @@
+import { getShipmentStatusInfo } from '@repo/ecommerce/shopify/utils'
 import { useUserDateTimePreferences } from '@repo/preferences'
 
-import { Box, Text } from '@gorgias/axiom'
+import { Box, Tag, Text } from '@gorgias/axiom'
 
 import type { OrderDetailsData, OrderFieldRenderContext } from '../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
@@ -59,6 +60,9 @@ export function OrderShipmentSection({
                         ...baseContext,
                         shippingEntryIndex: entryIndex,
                     }
+                    const shipmentStatusInfo = getShipmentStatusInfo(
+                        order.fulfillments?.[entryIndex]?.shipment_status,
+                    )
 
                     return (
                         <Box
@@ -69,6 +73,28 @@ export function OrderShipmentSection({
                                 entryIndex > 0 ? css.groupDivider : undefined
                             }
                         >
+                            {shipmentStatusInfo && (
+                                <Box
+                                    display="grid"
+                                    w="100%"
+                                    alignItems="flex-start"
+                                    gap="xs"
+                                    className={css.row}
+                                >
+                                    <Text
+                                        as="span"
+                                        size="md"
+                                        className={css.label}
+                                    >
+                                        Shipment status
+                                    </Text>
+                                    <Box>
+                                        <Tag color={shipmentStatusInfo.color}>
+                                            {shipmentStatusInfo.label}
+                                        </Tag>
+                                    </Box>
+                                </Box>
+                            )}
                             {fields.map((field) => {
                                 const value = field.getValue(context)
                                 const displayValue =

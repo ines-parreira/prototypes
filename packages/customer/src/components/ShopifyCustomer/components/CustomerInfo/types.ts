@@ -64,6 +64,7 @@ export type OrderDetailsData = {
     fulfillments?: Array<{
         tracking_url?: string | null
         tracking_number?: string | null
+        shipment_status?: string | null
     }> | null
     shipping_address?: {
         name?: string

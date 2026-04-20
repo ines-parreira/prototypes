@@ -246,6 +246,107 @@ describe('OrderShipmentSection', () => {
         })
     })
 
+    describe('shipment status tag', () => {
+        it('does not render shipment status when fulfillments is null', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({ fulfillments: null })}
+                />,
+            )
+
+            expect(
+                screen.queryByText('Shipment status'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render shipment status when shipment_status is undefined', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [{ tracking_number: '123' }],
+                    })}
+                />,
+            )
+
+            expect(
+                screen.queryByText('Shipment status'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render shipment status when shipment_status is null', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [
+                            {
+                                tracking_number: '123',
+                                shipment_status: null,
+                            },
+                        ],
+                    })}
+                />,
+            )
+
+            expect(
+                screen.queryByText('Shipment status'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders "Delivered" tag for delivered status', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [{ shipment_status: 'delivered' }],
+                    })}
+                />,
+            )
+
+            expect(screen.getByText('Shipment status')).toBeInTheDocument()
+            expect(screen.getByText('Delivered')).toBeInTheDocument()
+        })
+
+        it('renders "In transit" tag for in_transit status', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [{ shipment_status: 'in_transit' }],
+                    })}
+                />,
+            )
+
+            expect(screen.getByText('In transit')).toBeInTheDocument()
+        })
+
+        it('renders "Failure" tag for failure status', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [{ shipment_status: 'failure' }],
+                    })}
+                />,
+            )
+
+            expect(screen.getByText('Failure')).toBeInTheDocument()
+        })
+
+        it('renders shipment status per entry for multiple fulfillments', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [
+                            { shipment_status: 'delivered' },
+                            { shipment_status: 'in_transit' },
+                        ],
+                    })}
+                />,
+            )
+
+            expect(screen.getByText('Delivered')).toBeInTheDocument()
+            expect(screen.getByText('In transit')).toBeInTheDocument()
+            expect(screen.getAllByText('Shipment status')).toHaveLength(2)
+        })
+    })
+
     describe('multiple shipping entries', () => {
         it('renders one entry group when both arrays are empty', () => {
             render(

@@ -131,6 +131,7 @@ export type FulfillmentStatus =
 export type OrderFulfillment = {
     tracking_url?: string | null
     tracking_number?: string | null
+    shipment_status?: string | null
 }
 
 export type OrderShippingAddress = {
