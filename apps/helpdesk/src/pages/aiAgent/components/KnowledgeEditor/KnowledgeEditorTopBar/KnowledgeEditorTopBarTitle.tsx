@@ -2,6 +2,8 @@ import classNames from 'classnames'
 
 import { Text } from '@gorgias/axiom'
 
+import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
+
 import css from './KnowledgeEditorTopBarTitle.less'
 
 type Props = {
@@ -11,7 +13,11 @@ type Props = {
 
 export const KnowledgeEditorTopBarTitle = ({ title, onChangeTitle }: Props) => {
     if (!onChangeTitle) {
-        return <span className={css.title}>{title}</span>
+        return (
+            <TruncatedTextWithTooltip tooltipContent={title}>
+                <span className={css.title}>{title}</span>
+            </TruncatedTextWithTooltip>
+        )
     }
 
     return (

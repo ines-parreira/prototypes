@@ -12,6 +12,8 @@ import { useSkillEditorStore } from './context'
 import { useSkillVersionBanner } from './hooks/useSkillVersionBanner'
 import { useSkillVersionHistory } from './hooks/useSkillVersionHistory'
 
+import css from './KnowledgeEditorSkill.less'
+
 export function KnowledgeEditorSkillVersionBanner() {
     const {
         isViewingDraft,
@@ -136,6 +138,7 @@ export function KnowledgeEditorSkillVersionBanner() {
             historicalVersion={historicalVersion}
             isDiffMode={isDiffMode}
             onToggleDiff={shouldShowDiffToggle ? onToggleDiff : undefined}
+            className={css.versionBanner}
         />
     )
 }

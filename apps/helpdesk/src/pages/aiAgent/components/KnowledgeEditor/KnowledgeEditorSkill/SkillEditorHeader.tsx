@@ -46,6 +46,8 @@ export const SkillEditorHeader = ({
             justifyContent="space-between"
             padding="lg"
             height="80px"
+            gap="sm"
+            minWidth={570}
         >
             <Box alignItems="center" gap="sm" flex={1} minWidth={0}>
                 <Button

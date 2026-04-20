@@ -3,5 +3,33 @@
         flex: 1;
         min-width: 0;
         width: 100%;
+        border: none;
+    }
+
+    .contentContainer {
+        min-width: 0;
+        overflow-x: auto;
+    }
+
+    .editorContent {
+        // 522px+24px+24px
+        min-width: 570px;
+        overflow-y: auto;
+    }
+
+    .versionBanner {
+        padding: 0 var(--spacing-lg);
+        // 522px+24px+24px
+        min-width: 570px;
+        // 600px+24px+24px
+        max-width: 648px;
+
+        @media (min-width: 841px) {
+            max-width: 648px;
+        }
+
+        @media (max-width: 840px) {
+            max-width: 570px;
+        }
     }
 }

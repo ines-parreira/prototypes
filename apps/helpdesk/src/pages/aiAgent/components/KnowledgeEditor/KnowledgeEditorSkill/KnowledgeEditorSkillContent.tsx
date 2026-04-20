@@ -23,6 +23,8 @@ import { KnowledgeEditorSkillReadView } from './read/KnowledgeEditorSkillReadVie
 import { SkillEditorSidePanel } from './sidePanel/SkillEditorSidePanel'
 import { SkillEditorHeader } from './SkillEditorHeader'
 
+import css from './KnowledgeEditorSkill.less'
+
 export const KnowledgeEditorSkillContent = () => {
     const { shopName, shopType, onClose } = useSkillEditorStore(
         useShallow((storeState) => ({
@@ -92,7 +94,12 @@ export const KnowledgeEditorSkillContent = () => {
 
     return (
         <Box flexDirection="row" height="100%">
-            <Box flexDirection="column" flex={1} height="100%">
+            <Box
+                flexDirection="column"
+                flex={1}
+                height="100%"
+                className={css.contentContainer}
+            >
                 <SkillEditorHeader
                     title={title}
                     onChangeTitle={isEditableMode ? onChangeTitle : undefined}
@@ -104,7 +111,12 @@ export const KnowledgeEditorSkillContent = () => {
                     <SkillToolbarControls />
                 </SkillEditorHeader>
 
-                <Box flexDirection="column" flex={1} alignItems="center">
+                <Box
+                    flexDirection="column"
+                    flex={1}
+                    alignItems="center"
+                    className={css.editorContent}
+                >
                     <KnowledgeEditorSkillVersionBanner />
 
                     {mode === 'diff' && (
