@@ -2,55 +2,51 @@ import { useCallback } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { Button } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import { hasDraft, useSkillEditorStore } from '../KnowledgeEditorSkill/context'
+import {
+    isFormValid,
+    useSkillEditorStore,
+} from '../KnowledgeEditorSkill/context'
 import type { SkillModeType } from '../KnowledgeEditorSkill/context/types'
 import { useSkillVersionHistory } from '../KnowledgeEditorSkill/hooks/useSkillVersionHistory'
 import { VersionHistoryButton } from '../shared/VersionHistoryButton'
-import {
-    DeleteDraftButton,
-    EditIconButton,
-    TestButton,
-} from './KnowledgeEditorTopBarCommonControls'
+import { DeleteButton, TestButton } from './KnowledgeEditorTopBarCommonControls'
 
 type SkillToolbarState =
-    | { type: 'published-with-draft' }
-    | { type: 'published-without-draft' }
-    | { type: 'published-without-draft-edit' }
-    | { type: 'draft-view' }
-    | { type: 'draft-edit' }
-    | { type: 'create' }
+    | { type: 'new-skill' }
+    | { type: 'draft-only' }
+    | { type: 'published-with-draft-changes' }
+    | { type: 'published-enabled' }
+    | { type: 'published-disabled' }
     | { type: 'viewing-historical-version' }
 
-function getToolbarState(
+export function getToolbarState(
     mode: SkillModeType,
     isCurrent: boolean | undefined,
-    skillHasDraft: boolean,
     isViewingHistoricalVersion: boolean,
+    isEnabled: boolean,
+    hasPublishedVersion: boolean,
 ): SkillToolbarState {
     if (isViewingHistoricalVersion) {
         return { type: 'viewing-historical-version' }
     }
 
     if (mode === 'create') {
-        return { type: 'create' }
+        return { type: 'new-skill' }
     }
 
-    const isViewingDraft = isCurrent === false
-    const isEditMode = mode === 'edit'
-
-    if (isViewingDraft) {
-        return isEditMode ? { type: 'draft-edit' } : { type: 'draft-view' }
+    if (isCurrent === true) {
+        return isEnabled
+            ? { type: 'published-enabled' }
+            : { type: 'published-disabled' }
     }
 
-    if (skillHasDraft) {
-        return { type: 'published-with-draft' }
+    if (!hasPublishedVersion) {
+        return { type: 'draft-only' }
     }
 
-    return isEditMode
-        ? { type: 'published-without-draft-edit' }
-        : { type: 'published-without-draft' }
+    return { type: 'published-with-draft-changes' }
 }
 
 export const SkillToolbarControls = () => {
@@ -58,23 +54,33 @@ export const SkillToolbarControls = () => {
         mode,
         isUpdating,
         isAutoSaving,
-        canEditSkill,
         skillIsCurrent,
+        visibility,
+        hasPublishedVersion,
         historicalPublishedDatetime,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             mode: storeState.state.mode,
             isUpdating: storeState.state.isUpdating,
             isAutoSaving: storeState.state.isAutoSaving,
-            canEditSkill: !!storeState.state.skill,
             skillIsCurrent: storeState.state.skill?.isCurrent,
+            visibility: storeState.state.visibility,
+            hasPublishedVersion: !!storeState.state.skill?.publishedVersionId,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
         })),
     )
 
-    const skillHasDraft = useSkillEditorStore((storeState) =>
-        hasDraft(storeState.state),
+    const formValid = useSkillEditorStore((storeState) =>
+        isFormValid(storeState.state),
+    )
+
+    const { hasTitle, hasContent, hasIntents } = useSkillEditorStore(
+        useShallow((storeState) => ({
+            hasTitle: storeState.state.title.trim() !== '',
+            hasContent: storeState.state.content.trim() !== '',
+            hasIntents: storeState.state.intents.length > 0,
+        })),
     )
 
     const dispatch = useSkillEditorStore((storeState) => storeState.dispatch)
@@ -84,18 +90,41 @@ export const SkillToolbarControls = () => {
 
     const versionHistory = useSkillVersionHistory()
 
-    const isDisabled = isUpdating || isAutoSaving
+    const isBusy = isUpdating || isAutoSaving
 
-    const onEdit = useCallback(() => {
-        dispatch({ type: 'SET_MODE', payload: 'edit' })
+    const getValidationTooltip = (): string | undefined => {
+        if (formValid) return undefined
+
+        const missing = [
+            !hasTitle && 'title',
+            !hasContent && 'instructions',
+            !hasIntents && 'intents',
+        ].filter(Boolean)
+
+        if (missing.length > 1)
+            return 'Fill in the required fields to publish changes'
+        if (!hasTitle) return 'Add title to publish changes'
+        if (!hasContent) return 'Add instructions to publish changes'
+        if (!hasIntents) return 'Link at least one intent to publish changes'
+        return undefined
+    }
+
+    const validationTooltip = getValidationTooltip()
+
+    const onOpenEnableModal = useCallback(() => {
+        dispatch({ type: 'SET_MODAL', payload: 'enable' })
+    }, [dispatch])
+
+    const onOpenDisableModal = useCallback(() => {
+        dispatch({ type: 'SET_MODAL', payload: 'disable' })
     }, [dispatch])
 
     const onOpenPublishModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'publish' })
     }, [dispatch])
 
-    const onOpenDiscardModal = useCallback(() => {
-        dispatch({ type: 'SET_MODAL', payload: 'discard' })
+    const onOpenRestoreModal = useCallback(() => {
+        dispatch({ type: 'SET_MODAL', payload: 'restore' })
     }, [dispatch])
 
     const onOpenDeleteModal = useCallback(() => {
@@ -105,9 +134,10 @@ export const SkillToolbarControls = () => {
     const toolbarState = getToolbarState(
         mode,
         skillIsCurrent,
-        skillHasDraft,
         historicalPublishedDatetime !== null &&
             historicalPublishedDatetime !== undefined,
+        visibility,
+        hasPublishedVersion,
     )
 
     const versionHistoryButton = (
@@ -124,130 +154,119 @@ export const SkillToolbarControls = () => {
         />
     )
 
+    const deleteButton = (
+        <DeleteButton onDelete={onOpenDeleteModal} disabled={isBusy} />
+    )
+
+    const testButton = playground.onTest ? (
+        <TestButton onTest={playground.onTest} disabled={isBusy} />
+    ) : null
+
+    const wrapWithValidationTooltip = (button: React.ReactElement) =>
+        validationTooltip ? (
+            <Tooltip placement="bottom" trigger={button}>
+                <TooltipContent caption={validationTooltip} />
+            </Tooltip>
+        ) : (
+            button
+        )
+
+    const enableButton = (
+        <Button
+            variant="primary"
+            onClick={onOpenEnableModal}
+            isDisabled={isBusy || !formValid}
+        >
+            Enable
+        </Button>
+    )
+
+    const disableButton = (
+        <Button
+            variant="primary"
+            onClick={onOpenDisableModal}
+            isDisabled={isBusy}
+        >
+            Disable
+        </Button>
+    )
+
+    const publishButton = wrapWithValidationTooltip(
+        <Button
+            variant="primary"
+            onClick={onOpenPublishModal}
+            isDisabled={isBusy || !formValid}
+        >
+            Publish changes
+        </Button>,
+    )
+
+    const restoreButton = (
+        <Button
+            variant="primary"
+            onClick={onOpenRestoreModal}
+            isDisabled={isBusy}
+        >
+            Restore draft
+        </Button>
+    )
+
     switch (toolbarState.type) {
+        case 'new-skill':
+            return (
+                <>
+                    {enableButton}
+                    {testButton}
+                </>
+            )
+
+        case 'draft-only':
+            return (
+                <>
+                    {deleteButton}
+                    {versionHistoryButton}
+                    {enableButton}
+                    {testButton}
+                </>
+            )
+
+        case 'published-enabled':
+            return (
+                <>
+                    {deleteButton}
+                    {versionHistoryButton}
+                    {disableButton}
+                    {testButton}
+                </>
+            )
+
+        case 'published-disabled':
+            return (
+                <>
+                    {deleteButton}
+                    {versionHistoryButton}
+                    {enableButton}
+                    {testButton}
+                </>
+            )
+
+        case 'published-with-draft-changes':
+            return (
+                <>
+                    {deleteButton}
+                    {versionHistoryButton}
+                    {publishButton}
+                    {testButton}
+                </>
+            )
+
         case 'viewing-historical-version':
             return (
                 <>
                     {versionHistoryButton}
+                    {restoreButton}
                     {playground.onTest && (
                         <TestButton onTest={playground.onTest} disabled />
-                    )}
-                </>
-            )
-
-        case 'published-with-draft':
-            return (
-                <>
-                    {versionHistoryButton}
-                    {playground.onTest && (
-                        <TestButton
-                            onTest={playground.onTest}
-                            disabled={isDisabled}
-                        />
-                    )}
-                </>
-            )
-
-        case 'published-without-draft':
-            return (
-                <>
-                    {canEditSkill && (
-                        <EditIconButton onEdit={onEdit} disabled={isDisabled} />
-                    )}
-                    {versionHistoryButton}
-                    {playground.onTest && (
-                        <TestButton
-                            onTest={playground.onTest}
-                            disabled={isDisabled}
-                        />
-                    )}
-                </>
-            )
-
-        case 'draft-view':
-            return (
-                <>
-                    <EditIconButton onEdit={onEdit} disabled={isDisabled} />
-                    {versionHistoryButton}
-                    <Button
-                        onClick={onOpenPublishModal}
-                        isDisabled={isDisabled}
-                        variant="primary"
-                    >
-                        Publish
-                    </Button>
-                    {playground.onTest && (
-                        <TestButton
-                            onTest={playground.onTest}
-                            disabled={isDisabled}
-                        />
-                    )}
-                </>
-            )
-
-        case 'published-without-draft-edit':
-            return (
-                <>
-                    {versionHistoryButton}
-                    <DeleteDraftButton
-                        onDelete={onOpenDeleteModal}
-                        disabled={isDisabled}
-                    />
-                    <Button
-                        onClick={onOpenPublishModal}
-                        isDisabled
-                        variant="primary"
-                    >
-                        Publish changes
-                    </Button>
-                    {playground.onTest && (
-                        <TestButton
-                            onTest={playground.onTest}
-                            disabled={isDisabled}
-                        />
-                    )}
-                </>
-            )
-
-        case 'draft-edit':
-            return (
-                <>
-                    {versionHistoryButton}
-                    <DeleteDraftButton
-                        onDelete={onOpenDiscardModal}
-                        disabled={isDisabled}
-                    />
-                    <Button
-                        onClick={onOpenPublishModal}
-                        isDisabled={isDisabled}
-                        variant="primary"
-                    >
-                        Publish changes
-                    </Button>
-                    {playground.onTest && (
-                        <TestButton
-                            onTest={playground.onTest}
-                            disabled={isDisabled}
-                        />
-                    )}
-                </>
-            )
-
-        case 'create':
-            return (
-                <>
-                    <Button
-                        variant="primary"
-                        onClick={onOpenPublishModal}
-                        isDisabled={isDisabled}
-                    >
-                        Publish changes
-                    </Button>
-                    {playground.onTest && (
-                        <TestButton
-                            onTest={playground.onTest}
-                            disabled={isDisabled}
-                        />
                     )}
                 </>
             )

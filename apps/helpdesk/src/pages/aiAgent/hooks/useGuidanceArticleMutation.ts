@@ -19,9 +19,16 @@ import {
     mapUpdateGuidanceArticleToArticleApi,
 } from 'pages/aiAgent/utils/guidance.utils'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import type { Paths } from 'rest_api/help_center_api/client.generated'
+import type {
+    Components,
+    Paths,
+} from 'rest_api/help_center_api/client.generated'
 
 import type { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
+
+type ArticleOrigin = Components.Schemas.CreateArticleDto['origin']
+type ArticleIntents =
+    Components.Schemas.CreateArticleDto['translation']['intents']
 
 export const useGuidanceArticleMutation = ({
     guidanceHelpCenterId,
@@ -64,18 +71,38 @@ export const useGuidanceArticleMutation = ({
     } = useRebasePublishArticleTranslation(guidanceHelpCenterId)
 
     const createGuidanceArticle = useCallback(
-        async (createGuidanceArticle: CreateGuidanceArticle) => {
+        async (
+            createGuidanceArticle: CreateGuidanceArticle,
+            options?: {
+                origin?: ArticleOrigin
+                intents?: string[]
+            },
+        ) => {
             if (createGuidanceArticle.content === '') {
                 throw new Error('Content is required for creating the article')
             }
 
             const payload = mapGuidanceToArticleApi(createGuidanceArticle)
 
+            const intents = options?.intents as ArticleIntents
+            const translationWithIntents =
+                intents && intents.length > 0
+                    ? {
+                          ...payload.translation,
+                          intents,
+                          is_intent_usage_enabled: true,
+                      }
+                    : payload.translation
+
             try {
                 const article = await createArticleMutateAsync([
                     undefined,
                     { help_center_id: guidanceHelpCenterId },
-                    payload,
+                    {
+                        ...payload,
+                        translation: translationWithIntents,
+                        origin: options?.origin,
+                    },
                 ])
 
                 return article?.data

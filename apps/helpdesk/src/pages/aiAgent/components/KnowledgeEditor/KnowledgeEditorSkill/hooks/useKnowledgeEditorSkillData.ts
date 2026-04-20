@@ -48,7 +48,7 @@ export const useKnowledgeEditorSkillData = ({
         return allSkillsTemplates.find((t) => t.id === templateId)
     }, [templateId, allSkillsTemplates])
 
-    const initialMode: SkillModeType = isCreateMode ? 'create' : 'read'
+    const initialMode: SkillModeType = isCreateMode ? 'create' : 'edit'
 
     return {
         helpCenter,

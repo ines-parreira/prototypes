@@ -3,12 +3,12 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { Card } from '@gorgias/axiom'
 
 import { EditorWithPlayground } from 'common/knowledge-editor/components'
-import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 
 import { KnowledgeEditorSkillProvider, useSkillEditorStore } from './context'
 import type { SkillContextConfig, SkillRouteState } from './context'
 import { useKnowledgeEditorSkillData } from './hooks/useKnowledgeEditorSkillData'
+import { useSkillNotify } from './hooks/useSkillNotify'
 import { KnowledgeEditorSkillContent } from './KnowledgeEditorSkillContent'
 import { KnowledgeEditorSkillLoadingShell } from './KnowledgeEditorSkillLoadingShell'
 
@@ -85,7 +85,7 @@ export const KnowledgeEditorSkill = ({
         templateId,
     })
 
-    const { error: notifyError } = useNotify()
+    const { error: notifyError } = useSkillNotify()
 
     useEffect(() => {
         if (isError && skillId && error) {

@@ -15,7 +15,15 @@ import type { Components } from 'rest_api/help_center_api/client.generated'
 
 export type SkillModeType = EditorMode
 
-export type ModalType = 'unsaved' | 'discard' | 'delete' | 'publish' | null
+export type ModalType =
+    | 'unsaved'
+    | 'discard'
+    | 'delete'
+    | 'publish'
+    | 'enable'
+    | 'disable'
+    | 'restore'
+    | null
 
 export type ImpactDateRange = BaseImpactDateRange
 
@@ -179,11 +187,14 @@ export const createInitialState = (
     const content = article?.content ?? templateContent
     const useSupportingContent = article?.useSupportingContent ?? true
 
-    const intents: string[] =
-        article?.intents ??
-        routeState?.intents ??
-        skillTemplate?.intents?.map((i) => i.name) ??
-        []
+    const intents: string[] = [
+        ...new Set(
+            article?.intents ??
+                routeState?.intents ??
+                skillTemplate?.intents?.map((i) => i.name) ??
+                [],
+        ),
+    ]
 
     const state: SkillState = {
         mode: initialMode,

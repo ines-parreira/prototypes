@@ -42,12 +42,14 @@ export const useLinkedIntentsModalSkill = (
     const { persistLinkedIntents, isUpdating: isSaving } =
         usePersistLinkedIntentsSkill()
 
-    const { helpCenterId, selectedIntentIds } = useSkillEditorStore(
-        useShallow((storeState) => ({
-            helpCenterId: storeState.config.helpCenter?.id,
-            selectedIntentIds: storeState.state.intents,
-        })),
-    )
+    const { helpCenterId, selectedIntentIds, skillArticleId } =
+        useSkillEditorStore(
+            useShallow((storeState) => ({
+                helpCenterId: storeState.config.helpCenter?.id,
+                selectedIntentIds: storeState.state.intents,
+                skillArticleId: storeState.state.skill?.id,
+            })),
+        )
 
     const isHelpCenterReady = helpCenterId !== undefined
 
@@ -74,7 +76,10 @@ export const useLinkedIntentsModalSkill = (
 
             const groupName = parts[0]
             const publishedArticle = intent.articles.find(
-                (a) => a.status === 'published',
+                (a) =>
+                    a.status === 'published' &&
+                    a.visibility_status === 'PUBLIC' &&
+                    a.id !== skillArticleId,
             )
 
             const item: SkillIntentItem = {
@@ -104,7 +109,7 @@ export const useLinkedIntentsModalSkill = (
             name,
             children,
         }))
-    }, [listIntentsData?.intents])
+    }, [listIntentsData?.intents, skillArticleId])
 
     const [searchValue, setSearchValue] = useState('')
     const [draftIntentIds, setDraftIntentIds] = useState<string[]>(

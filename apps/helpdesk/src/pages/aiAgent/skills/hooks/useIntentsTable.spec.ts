@@ -362,7 +362,7 @@ describe('useIntentsTable', () => {
     })
 
     describe('Handover-only intents', () => {
-        it('should force "other::no reply" to handover status', () => {
+        it('should set toggle disabled for "other::no reply"', () => {
             mockUseListIntents.mockReturnValue({
                 data: {
                     intents: [
@@ -383,11 +383,11 @@ describe('useIntentsTable', () => {
             })
 
             const l2Intent = result.current.intents[0].children?.[0]
-            expect(l2Intent?.status).toBe(IntentStatus.Handover)
+            expect(l2Intent?.status).toBe(IntentStatus.NotLinked)
             expect(l2Intent?.toggleState).toBe('disabled')
         })
 
-        it('should force "other::spam" to handover status', () => {
+        it('should set toggle disabled for "other::spam"', () => {
             mockUseListIntents.mockReturnValue({
                 data: {
                     intents: [
@@ -408,7 +408,7 @@ describe('useIntentsTable', () => {
             })
 
             const l2Intent = result.current.intents[0].children?.[0]
-            expect(l2Intent?.status).toBe(IntentStatus.Handover)
+            expect(l2Intent?.status).toBe(IntentStatus.Linked)
             expect(l2Intent?.toggleState).toBe('disabled')
         })
 

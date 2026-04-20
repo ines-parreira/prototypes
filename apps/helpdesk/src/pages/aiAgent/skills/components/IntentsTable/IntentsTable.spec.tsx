@@ -108,6 +108,7 @@ describe('IntentsTable', () => {
             name: 'order',
             formattedName: 'Order',
             toggleState: 'enabled',
+            status: IntentStatus.NotLinked,
             children: [
                 {
                     id: 'order::status',
@@ -137,6 +138,7 @@ describe('IntentsTable', () => {
             name: 'shipping',
             formattedName: 'Shipping',
             toggleState: 'enabled',
+            status: IntentStatus.NotLinked,
             children: [
                 {
                     id: 'shipping::delay',
@@ -165,6 +167,7 @@ describe('IntentsTable', () => {
             name: 'other',
             formattedName: 'Other',
             toggleState: 'disabled',
+            status: IntentStatus.NotLinked,
             children: [
                 {
                     id: 'other::no reply',
@@ -724,6 +727,7 @@ describe('IntentsTable', () => {
                 name: 'order',
                 formattedName: 'Order',
                 toggleState: 'enabled',
+                status: IntentStatus.NotLinked,
                 metrics: {
                     ticketVolume: 100,
                     ticketVolumePercent: 50,
@@ -851,6 +855,7 @@ describe('IntentsTable', () => {
                     name: 'order',
                     formattedName: 'Order',
                     toggleState: 'enabled',
+                    status: IntentStatus.NotLinked,
                     metrics: {
                         ticketVolume: 0,
                         ticketVolumePercent: 0,
@@ -995,6 +1000,7 @@ describe('IntentsTable', () => {
                     name: 'order',
                     formattedName: 'Order',
                     toggleState: 'disabled',
+                    status: IntentStatus.NotLinked,
                     children: [
                         {
                             id: 'order::cancel',
@@ -1049,6 +1055,7 @@ describe('IntentsTable', () => {
                     name: 'order',
                     formattedName: 'Order',
                     toggleState: 'disabled',
+                    status: IntentStatus.NotLinked,
                     children: [
                         {
                             id: 'order::cancel',

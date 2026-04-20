@@ -14,6 +14,22 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => null,
 }))
 
+jest.mock('./modals/SkillDeleteModal', () => ({
+    SkillDeleteModal: () => null,
+}))
+jest.mock('./modals/SkillDisableModal', () => ({
+    SkillDisableModal: () => null,
+}))
+jest.mock('./modals/SkillEnableModal', () => ({
+    SkillEnableModal: () => null,
+}))
+jest.mock('./modals/SkillPublishModal', () => ({
+    SkillPublishModal: () => null,
+}))
+jest.mock('./modals/SkillRestoreVersionModal', () => ({
+    SkillRestoreVersionModal: () => null,
+}))
+
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     SidePanel: ({
@@ -26,8 +42,8 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 const mockNotifyError = jest.fn()
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(() => ({
+jest.mock('./hooks/useSkillNotify', () => ({
+    useSkillNotify: jest.fn(() => ({
         error: mockNotifyError,
         success: jest.fn(),
     })),
@@ -69,6 +85,16 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
+    useGuidanceArticleMutation: () => ({
+        createGuidanceArticle: jest.fn(),
+        updateGuidanceArticle: jest.fn(),
+        rebasePublishGuidanceArticle: jest.fn(),
+        getGuidanceArticleTranslation: jest.fn(),
+        deleteGuidanceArticle: jest.fn(),
+    }),
+}))
+
 jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
     PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
         <div>
@@ -99,6 +125,10 @@ jest.mock('models/helpCenter/queries', () => ({
         isFetchingNextPage: false,
         hasNextPage: false,
         fetchNextPage: jest.fn(),
+    })),
+    useListIntents: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
     })),
     useGetArticleTranslationIntents: jest.fn(() => ({
         data: undefined,
@@ -204,7 +234,7 @@ describe('KnowledgeEditorSkill', () => {
         ).not.toBeNull()
     })
 
-    it('renders the editor content when data is loaded in read mode', () => {
+    it('renders the editor content when data is loaded', () => {
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: {
                 ...guidanceArticle,
@@ -221,7 +251,9 @@ describe('KnowledgeEditorSkill', () => {
             </Wrapper>,
         )
 
-        expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
+        expect(
+            screen.getByDisplayValue(guidanceArticle.title),
+        ).toBeInTheDocument()
     })
 
     it('renders in create mode when skillId is not provided', () => {
@@ -232,7 +264,7 @@ describe('KnowledgeEditorSkill', () => {
         )
 
         expect(
-            screen.getByRole('button', { name: /publish changes/i }),
+            screen.getByRole('button', { name: /enable/i }),
         ).toBeInTheDocument()
     })
 

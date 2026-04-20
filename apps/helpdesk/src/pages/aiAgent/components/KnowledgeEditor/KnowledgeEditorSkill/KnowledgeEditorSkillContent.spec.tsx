@@ -6,6 +6,24 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock('./context')
+jest.mock('./hooks/useSkillAutoSave', () => ({
+    useSkillAutoSave: () => ({ onChangeField: jest.fn() }),
+}))
+jest.mock('./modals/SkillDeleteModal', () => ({
+    SkillDeleteModal: () => null,
+}))
+jest.mock('./modals/SkillDisableModal', () => ({
+    SkillDisableModal: () => null,
+}))
+jest.mock('./modals/SkillEnableModal', () => ({
+    SkillEnableModal: () => null,
+}))
+jest.mock('./modals/SkillPublishModal', () => ({
+    SkillPublishModal: () => null,
+}))
+jest.mock('./modals/SkillRestoreVersionModal', () => ({
+    SkillRestoreVersionModal: () => null,
+}))
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
     () => ({
@@ -51,6 +69,10 @@ describe('KnowledgeEditorSkillContent', () => {
                     mode: 'read',
                     title: 'Test Skill',
                     content: '<p>content</p>',
+                    isAutoSaving: false,
+                    hasAutoSavedInSession: false,
+                    autoSaveError: false,
+                    skill: null,
                 },
                 config: {
                     shopName: 'test-shop',
@@ -77,6 +99,10 @@ describe('KnowledgeEditorSkillContent', () => {
                     mode: 'edit',
                     title: 'Test Skill',
                     content: '<p>content</p>',
+                    isAutoSaving: false,
+                    hasAutoSavedInSession: false,
+                    autoSaveError: false,
+                    skill: null,
                 },
                 config: {
                     shopName: 'test-shop',
@@ -104,6 +130,10 @@ describe('KnowledgeEditorSkillContent', () => {
                         title: 'Published Title',
                         content: '<p>published</p>',
                     },
+                    isAutoSaving: false,
+                    hasAutoSavedInSession: false,
+                    autoSaveError: false,
+                    skill: null,
                 },
                 config: {
                     shopName: 'test-shop',
@@ -135,6 +165,10 @@ describe('KnowledgeEditorSkillContent', () => {
                         title: 'Published Title',
                         content: '<p>published</p>',
                     },
+                    isAutoSaving: false,
+                    hasAutoSavedInSession: false,
+                    autoSaveError: false,
+                    skill: null,
                 },
                 config: {
                     shopName: 'test-shop',

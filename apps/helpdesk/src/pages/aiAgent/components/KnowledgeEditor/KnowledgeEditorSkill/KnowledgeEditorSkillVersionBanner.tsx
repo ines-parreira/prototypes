@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { appQueryClient } from '@repo/api-resources'
 import { useShallow } from 'zustand/react/shallow'
@@ -77,21 +77,20 @@ export function KnowledgeEditorSkillVersionBanner() {
     }, [client, helpCenterId, helpCenterLocale, skillId, dispatch])
 
     // Eagerly load comparison version when viewing a draft
-    const hasLoadedRef = useRef(false)
     useEffect(() => {
         if (
             isViewingDraft &&
             hasPublishedVersion &&
             !comparisonVersion &&
-            !hasLoadedRef.current
+            skillId > 0
         ) {
-            hasLoadedRef.current = true
             void fetchAndSetComparisonVersion()
         }
     }, [
         isViewingDraft,
         hasPublishedVersion,
         comparisonVersion,
+        skillId,
         fetchAndSetComparisonVersion,
     ])
 

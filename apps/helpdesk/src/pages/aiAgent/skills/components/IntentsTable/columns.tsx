@@ -373,13 +373,11 @@ export const getColumns = ({
             cell: ({ row }) => {
                 const intent = row.original
                 const isParent = !!intent.children
+                const isLinked = intent.status === IntentStatus.Linked
                 const isHandoverOnly = HANDOVER_ONLY_INTENTS.includes(
                     intent.name,
                 )
-                const isDisabled =
-                    isParent ||
-                    intent.status === IntentStatus.Linked ||
-                    isHandoverOnly
+                const isDisabled = isParent || isLinked || isHandoverOnly
                 const toggleValue = intent.toggleState === 'enabled'
 
                 const toggle = (
@@ -392,15 +390,13 @@ export const getColumns = ({
                     />
                 )
 
-                if (!isDisabled) {
-                    return toggle
-                }
+                if (!isDisabled) return toggle
 
                 const tooltipMessage = isParent
                     ? TOOLTIP_MESSAGES.L1_DISABLED
-                    : isHandoverOnly
-                      ? TOOLTIP_MESSAGES.HANDOVER_ONLY
-                      : TOOLTIP_MESSAGES.L2_LINKED
+                    : isLinked
+                      ? TOOLTIP_MESSAGES.L2_LINKED
+                      : TOOLTIP_MESSAGES.HANDOVER_ONLY
 
                 return (
                     <Tooltip trigger={toggle}>

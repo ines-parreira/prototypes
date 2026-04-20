@@ -28,7 +28,7 @@ export interface TransformedIntent {
     children?: TransformedIntent[]
     metrics?: IntentMetrics
     toggleState: ToggleState
-    status?: IntentStatus
+    status: IntentStatus
     articles?: ArticleInIntentDto[]
 }
 
@@ -40,6 +40,12 @@ const calculateL1ToggleState = (children: TransformedIntent[]): ToggleState => {
     )
 
     return hasEnabledChild ? 'enabled' : 'disabled'
+}
+
+const getToggleState = (intent: IntentResponseDto): ToggleState => {
+    if (intent.status === IntentStatus.Handover) return 'disabled'
+    if (HANDOVER_ONLY_INTENTS.includes(intent.name)) return 'disabled'
+    return 'enabled'
 }
 
 export const useIntentsTable = (helpCenterId: number) => {
@@ -62,29 +68,19 @@ export const useIntentsTable = (helpCenterId: number) => {
 
         data.intents.forEach((intent: IntentResponseDto) => {
             const parts = intent.name.split('::')
-            if (parts.length !== 2) {
-                return
-            }
+            if (parts.length !== 2) return
 
             const l1Name = parts[0]
             const l2Name = parts[1]
 
-            const publishedArticles = intent.articles.filter(
-                (article) => article.status === 'published',
-            )
-
-            const isHandoverOnlyIntent = HANDOVER_ONLY_INTENTS.includes(
-                intent.name,
-            )
-
-            const toggleState =
-                !isHandoverOnlyIntent && intent.status !== IntentStatus.Handover
-                    ? 'enabled'
-                    : 'disabled'
-
-            const intentStatus = isHandoverOnlyIntent
-                ? IntentStatus.Handover
-                : (intent.status as IntentStatus)
+            const isLinked = intent.status === IntentStatus.Linked
+            const publishedArticles = isLinked
+                ? intent.articles.filter(
+                      (article) =>
+                          article.status === 'published' &&
+                          article.visibility_status === 'PUBLIC',
+                  )
+                : []
 
             if (!l1ParentsMap.has(l1Name)) {
                 l1ParentsMap.set(l1Name, {
@@ -92,6 +88,7 @@ export const useIntentsTable = (helpCenterId: number) => {
                     name: l1Name,
                     formattedName: formatIntentName(l1Name),
                     toggleState: 'enabled',
+                    status: IntentStatus.NotLinked,
                     children: [],
                 })
             }
@@ -101,8 +98,8 @@ export const useIntentsTable = (helpCenterId: number) => {
                 name: intent.name,
                 formattedName: formatIntentName(l2Name),
                 description: INTENT_DESCRIPTIONS[intent.name],
-                toggleState,
-                status: intentStatus,
+                toggleState: getToggleState(intent),
+                status: intent.status as IntentStatus,
                 parentId: l1Name,
                 articles: publishedArticles,
                 metrics: metricsMap.get(intent.name),

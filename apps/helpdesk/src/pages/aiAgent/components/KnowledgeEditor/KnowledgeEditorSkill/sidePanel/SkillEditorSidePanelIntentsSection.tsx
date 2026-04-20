@@ -68,6 +68,9 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
             <Text size="md" variant="bold">
                 Intents
             </Text>
+            <Text size="md" color="content-error-default">
+                *
+            </Text>
             <Quantity quantity={intentsCount} />
         </Box>
     )

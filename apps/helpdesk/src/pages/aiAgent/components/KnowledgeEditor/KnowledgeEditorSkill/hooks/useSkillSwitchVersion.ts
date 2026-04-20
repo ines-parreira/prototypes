@@ -3,12 +3,12 @@ import { useCallback } from 'react'
 import { appQueryClient } from '@repo/api-resources'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useNotify } from 'hooks/useNotify'
 import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { fromArticleTranslation } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/utils'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import { useSkillEditorStore } from '../context/KnowledgeEditorSkillContext'
+import { useSkillNotify } from './useSkillNotify'
 
 export type VersionStatus = 'latest_draft' | 'current'
 
@@ -22,7 +22,7 @@ export function useSkillSwitchVersion() {
                 storeState.config.helpCenter.default_locale ?? 'en-US',
         })),
     )
-    const { error: notifyError } = useNotify()
+    const { error: notifyError } = useSkillNotify()
     const { client } = useHelpCenterApi()
 
     const switchToVersion = useCallback(

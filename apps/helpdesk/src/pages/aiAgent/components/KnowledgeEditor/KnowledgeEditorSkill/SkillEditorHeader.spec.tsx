@@ -25,6 +25,11 @@ jest.mock(
     }),
 )
 
+jest.mock('hooks/useGetDateAndTimeFormat', () => ({
+    __esModule: true,
+    default: () => 'MMM d, yyyy h:mm a',
+}))
+
 describe('SkillEditorHeader', () => {
     const defaultProps = {
         title: 'My Skill',
@@ -71,6 +76,46 @@ describe('SkillEditorHeader', () => {
 
         expect(
             screen.getByRole('button', { name: /publish/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('renders saving indicator when isSaving is true', () => {
+        render(
+            <SkillEditorHeader
+                {...defaultProps}
+                onChangeTitle={jest.fn()}
+                isSaving
+            />,
+        )
+
+        expect(screen.getByText('Saving')).toBeInTheDocument()
+    })
+
+    it('renders error icon when autoSaveError is true and editable', () => {
+        render(
+            <SkillEditorHeader
+                {...defaultProps}
+                onChangeTitle={jest.fn()}
+                autoSaveError
+            />,
+        )
+
+        expect(
+            screen.getByRole('img', { name: /cloud-off/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('renders success icon when lastUpdatedDatetime is provided and editable', () => {
+        render(
+            <SkillEditorHeader
+                {...defaultProps}
+                onChangeTitle={jest.fn()}
+                lastUpdatedDatetime={new Date('2024-03-15T00:00:00Z')}
+            />,
+        )
+
+        expect(
+            screen.getByRole('img', { name: /cloud-check/i }),
         ).toBeInTheDocument()
     })
 })

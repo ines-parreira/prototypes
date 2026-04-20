@@ -12,26 +12,36 @@
         min-width: 0;
     }
 
+    .editableTitleWrapper {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        pointer-events: none;
+        color: var(--content-neutral-tertiary);
+
+        .heading-subsection-semibold();
+    }
+
     .editableTitle {
         color: var(--content-neutral-default);
+        background: transparent;
 
-        display: flex;
-        max-width: 65%;
-        min-width: 285px;
-        overflow-x: scroll;
-        border: 1px solid var(--border-neutral-default);
-
-        padding: 6px 8px;
-        align-items: center;
-        gap: 8px;
+        width: 100%;
+        border: none;
+        padding: 0;
         box-sizing: border-box;
-        border-radius: 4px;
 
         &:focus {
-            border: 2px solid var(--main-primary, #0075ff); // legacy
-            box-shadow: 0 0 0 2px rgba(74, 141, 249, 0.2);
             outline: none;
-            padding-left: 6px;
         }
     }
 }
@@ -39,7 +49,7 @@
 .axiom :local {
     .editableTitle {
         &:focus {
-            border: 2px solid var(--border-accent-default);
+            outline: none;
         }
     }
 }

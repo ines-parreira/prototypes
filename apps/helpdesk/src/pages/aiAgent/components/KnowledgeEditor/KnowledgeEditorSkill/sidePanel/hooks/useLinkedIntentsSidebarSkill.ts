@@ -5,12 +5,12 @@ import { useShallow } from 'zustand/react/shallow'
 import { formatIntentName } from 'pages/aiAgent/skills/utils'
 
 import { useSkillEditorStore } from '../../context/KnowledgeEditorSkillContext'
-import { useIntentConflicts } from './useIntentConflicts'
+import { useSkillIntentConflicts } from '../../hooks/useSkillIntentConflicts'
 import { useIntentLinkButton } from './useIntentLinkButton'
 
 const EMPTY_INTENT_IDS: string[] = []
 
-type TagColor = 'green' | 'red' | 'grey' | 'purple'
+type TagColor = 'green' | 'red' | 'purple'
 
 export type IntentItem = {
     intentId: string
@@ -27,16 +27,13 @@ function buildDiffItems(
     const nextIntentSet = new Set(newIntents)
     const previousIntentSet = new Set(oldIntents)
 
-    const unchangedAndRemoved = oldIntents.map((intentId) => {
-        const isRemoved = !nextIntentSet.has(intentId)
-        return {
-            intentId,
-            label: formatIntentName(intentId),
-            color: isRemoved ? ('red' as TagColor) : undefined,
-            showLeadingDot: false,
-            tooltip: undefined,
-        }
-    })
+    const unchangedAndRemoved = oldIntents.map((intentId) => ({
+        intentId,
+        label: formatIntentName(intentId),
+        color: nextIntentSet.has(intentId) ? undefined : ('red' as TagColor),
+        showLeadingDot: false,
+        tooltip: undefined,
+    }))
 
     const added = newIntents
         .filter((intentId) => !previousIntentSet.has(intentId))
@@ -51,6 +48,16 @@ function buildDiffItems(
     return [...unchangedAndRemoved, ...added]
 }
 
+function buildPlainItems(intentIds: string[]): IntentItem[] {
+    return intentIds.map((intentId) => ({
+        intentId,
+        label: formatIntentName(intentId),
+        color: undefined,
+        showLeadingDot: false,
+        tooltip: undefined,
+    }))
+}
+
 export const useLinkedIntentsSidebarSkill = () => {
     const {
         mode,
@@ -58,8 +65,7 @@ export const useLinkedIntentsSidebarSkill = () => {
         historicalVersionIntentIds,
         comparisonVersionIntentIds,
         publishedVersionId,
-        draftVersionId,
-        isFromTemplate,
+        isCurrent,
         historicalPublishedDatetime,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
@@ -70,44 +76,31 @@ export const useLinkedIntentsSidebarSkill = () => {
             comparisonVersionIntentIds:
                 storeState.state.comparisonVersion?.intents ?? EMPTY_INTENT_IDS,
             publishedVersionId: storeState.state.skill?.publishedVersionId,
-            draftVersionId: storeState.state.skill?.draftVersionId,
-            isFromTemplate: storeState.state.isFromTemplate,
+            isCurrent: storeState.state.skill?.isCurrent,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
         })),
     )
 
     const linkButton = useIntentLinkButton()
-    const conflictingIntentIds = useIntentConflicts()
+    const { conflictingIntentIds } = useSkillIntentConflicts()
 
     const isViewingHistoricalVersion = historicalPublishedDatetime != null
     const isDiffMode = mode === 'diff'
-    const hasDraft =
-        draftVersionId != null &&
-        publishedVersionId != null &&
-        draftVersionId !== publishedVersionId
     const hasPublishedVersion = publishedVersionId != null
+    const isViewingDraft = isCurrent === false
 
     const displayedIntentIds = isViewingHistoricalVersion
         ? historicalVersionIntentIds
         : intentIds
 
-    const publishedIntentIdsSet = useMemo<Set<string>>(() => {
-        if (!hasDraft) {
-            if (hasPublishedVersion) {
-                return new Set(displayedIntentIds)
-            }
-            return new Set()
-        }
-        return new Set(comparisonVersionIntentIds)
-    }, [
-        hasDraft,
-        hasPublishedVersion,
-        displayedIntentIds,
-        comparisonVersionIntentIds,
-    ])
+    const publishedIntentIdsSet = useMemo(
+        () => new Set(comparisonVersionIntentIds),
+        [comparisonVersionIntentIds],
+    )
 
     const items = useMemo<IntentItem[]>(() => {
+        // Diff mode: red (removed), green (added), empty (unchanged)
         if (isDiffMode) {
             const oldIntents = isViewingHistoricalVersion
                 ? historicalVersionIntentIds
@@ -118,19 +111,15 @@ export const useLinkedIntentsSidebarSkill = () => {
             return buildDiffItems(oldIntents, newIntents)
         }
 
+        // Version history: empty background
         if (isViewingHistoricalVersion) {
-            return displayedIntentIds.map((intentId) => ({
-                intentId,
-                label: formatIntentName(intentId),
-                color: undefined,
-                showLeadingDot: false,
-                tooltip: undefined,
-            }))
+            return buildPlainItems(displayedIntentIds)
         }
 
+        // Normal view: conflict / purple (new in draft) / empty
         return displayedIntentIds.map((intentId) => {
-            const isConflict = conflictingIntentIds.has(intentId)
-            if (isConflict) {
+            // Conflict: intent linked to another published+enabled skill
+            if (conflictingIntentIds.has(intentId)) {
                 return {
                     intentId,
                     label: formatIntentName(intentId),
@@ -140,11 +129,12 @@ export const useLinkedIntentsSidebarSkill = () => {
                 }
             }
 
-            const isNewInDraft =
-                !publishedIntentIdsSet.has(intentId) &&
-                !isFromTemplate &&
-                hasPublishedVersion
-            if (isNewInDraft) {
+            // Added on top of published: exists in draft but not in published
+            if (
+                isViewingDraft &&
+                hasPublishedVersion &&
+                !publishedIntentIdsSet.has(intentId)
+            ) {
                 return {
                     intentId,
                     label: formatIntentName(intentId),
@@ -155,6 +145,7 @@ export const useLinkedIntentsSidebarSkill = () => {
                 }
             }
 
+            // Available: empty background
             return {
                 intentId,
                 label: formatIntentName(intentId),
@@ -172,7 +163,7 @@ export const useLinkedIntentsSidebarSkill = () => {
         displayedIntentIds,
         conflictingIntentIds,
         publishedIntentIdsSet,
-        isFromTemplate,
+        isViewingDraft,
         hasPublishedVersion,
     ])
 

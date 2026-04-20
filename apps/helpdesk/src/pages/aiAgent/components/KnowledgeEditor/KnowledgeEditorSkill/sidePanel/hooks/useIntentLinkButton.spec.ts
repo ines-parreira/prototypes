@@ -12,6 +12,7 @@ jest.mock('../../context/KnowledgeEditorSkillContext', () => ({
 const createStoreState = (overrides?: Record<string, unknown>) => ({
     state: {
         skill: {
+            id: 1,
             isCurrent: true,
             publishedVersionId: 1,
             draftVersionId: 1,
@@ -70,9 +71,20 @@ describe('useIntentLinkButton', () => {
         expect(result.current.isDisabled).toBe(true)
     })
 
+    it('shows no-article tooltip when skill has not been saved yet', () => {
+        setupStore({ skill: undefined })
+        const { result } = renderHook(() => useIntentLinkButton())
+
+        expect(result.current.disabledTooltip).toBe(
+            'Add a title and instructions first to link intents.',
+        )
+        expect(result.current.isDisabled).toBe(true)
+    })
+
     it('shows draft tooltip when viewing published with draft', () => {
         setupStore({
             skill: {
+                id: 1,
                 isCurrent: true,
                 publishedVersionId: 1,
                 draftVersionId: 2,

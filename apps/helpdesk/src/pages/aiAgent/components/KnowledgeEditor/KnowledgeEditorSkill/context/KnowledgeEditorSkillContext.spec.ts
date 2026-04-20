@@ -7,11 +7,28 @@ import {
 import { createInitialState } from './types'
 
 describe('KnowledgeEditorSkillContext utility functions', () => {
-    it('isFormValid returns true when title and content are non-empty', () => {
+    it('isFormValid returns true when title, content, and intents are provided', () => {
         const state = createInitialState(undefined, undefined, 'create')
-        const validState = { ...state, title: 'Title', content: 'Content' }
+        const validState = {
+            ...state,
+            title: 'Title',
+            content: 'Content',
+            intents: ['intent-1'],
+        }
 
         expect(isFormValid(validState)).toBe(true)
+    })
+
+    it('isFormValid returns false when intents are empty', () => {
+        const state = createInitialState(undefined, undefined, 'create')
+        const invalidState = {
+            ...state,
+            title: 'Title',
+            content: 'Content',
+            intents: [],
+        }
+
+        expect(isFormValid(invalidState)).toBe(false)
     })
 
     it('isFormValid returns false when title is empty', () => {

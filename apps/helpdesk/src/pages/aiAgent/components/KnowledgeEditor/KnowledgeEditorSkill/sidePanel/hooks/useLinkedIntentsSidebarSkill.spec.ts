@@ -15,8 +15,13 @@ jest.mock('./useIntentLinkButton', () => ({
     useIntentLinkButton: () => mockUseIntentLinkButton(),
 }))
 
-jest.mock('./useIntentConflicts', () => ({
-    useIntentConflicts: () => mockUseIntentConflicts(),
+jest.mock('../../hooks/useSkillIntentConflicts', () => ({
+    useSkillIntentConflicts: () => ({
+        conflictingIntentIds: mockUseIntentConflicts(),
+        conflictsBySkill: [],
+        affectedArticleIds: [],
+        hasConflicts: false,
+    }),
 }))
 
 const defaultLinkButton = {
@@ -96,6 +101,7 @@ describe('useLinkedIntentsSidebarSkill', () => {
             setupStore({
                 intents: ['order::status', 'order::cancel', 'order::refund'],
                 skill: {
+                    isCurrent: false,
                     publishedVersionId: 1,
                     draftVersionId: 2,
                 },
@@ -118,10 +124,11 @@ describe('useLinkedIntentsSidebarSkill', () => {
             )
         })
 
-        it('does not mark intents as draft for template-based skills', () => {
+        it('marks new intents as purple for template-based skills with published version', () => {
             setupStore({
                 intents: ['order::status', 'order::refund'],
                 skill: {
+                    isCurrent: false,
                     publishedVersionId: 1,
                     draftVersionId: 2,
                 },
@@ -132,9 +139,8 @@ describe('useLinkedIntentsSidebarSkill', () => {
             })
             const { result } = renderHook(() => useLinkedIntentsSidebarSkill())
 
-            expect(
-                result.current.items.every((i) => i.color === undefined),
-            ).toBe(true)
+            expect(result.current.items[0].color).toBeUndefined()
+            expect(result.current.items[1].color).toBe('purple')
         })
 
         it('does not show purple for draft-only skill with no published version', () => {

@@ -60,22 +60,13 @@ export const LinkToSkillModal = ({
         }
     }, [isOpen])
 
-    const eligibleArticles = useMemo(
-        () =>
-            articles.filter(
-                (article) =>
-                    !article.intents.some((intent) => intent.name === intentId),
-            ),
-        [articles, intentId],
-    )
-
     const filteredArticles = useMemo(() => {
-        if (!searchTerm.trim()) return eligibleArticles
+        if (!searchTerm.trim()) return articles
         const lower = searchTerm.toLowerCase()
-        return eligibleArticles.filter((article) =>
+        return articles.filter((article) =>
             article.title.toLowerCase().includes(lower),
         )
-    }, [eligibleArticles, searchTerm])
+    }, [articles, searchTerm])
 
     const handleToggleArticle = (articleId: number) => {
         setSelectedArticleId((prev) => (prev === articleId ? null : articleId))
@@ -83,9 +74,7 @@ export const LinkToSkillModal = ({
 
     const handleConfirm = () => {
         if (!intentId || selectedArticleId === null) return
-        const selectedArticle = eligibleArticles.find(
-            (a) => a.id === selectedArticleId,
-        )
+        const selectedArticle = articles.find((a) => a.id === selectedArticleId)
         if (!selectedArticle) return
         onConfirm(intentId, selectedArticle)
     }

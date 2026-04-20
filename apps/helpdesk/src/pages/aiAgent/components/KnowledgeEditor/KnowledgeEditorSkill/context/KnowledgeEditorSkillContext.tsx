@@ -48,7 +48,8 @@ export const hasPendingChanges = (state: SkillState): boolean =>
 export const isFormValid = (state: SkillState): boolean =>
     state.title.trim() !== '' &&
     state.content.trim() !== '' &&
-    getPlainTextLength(state.content) <= textLimit
+    getPlainTextLength(state.content) <= textLimit &&
+    state.intents.length > 0
 
 export const hasDraft = (state: SkillState): boolean =>
     baseHasDraft(state.skill)
@@ -71,7 +72,7 @@ const useSyncEffects = (
         if (config.skill && config.skill.id !== currentSkillId) {
             store.getState().dispatch({
                 type: 'SWITCH_SKILL',
-                payload: { article: config.skill, mode: 'read' },
+                payload: { article: config.skill, mode: 'edit' },
             })
         }
     }, [store, config.skill])

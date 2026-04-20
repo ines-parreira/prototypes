@@ -233,8 +233,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
             if (!locale) return
 
             const newIntents = [
-                ...article.intents.map((i) => i.name),
-                intentId,
+                ...new Set([...article.intents.map((i) => i.name), intentId]),
             ] as UpdateGuidanceArticle['intents']
 
             updateGuidanceArticle(

@@ -95,12 +95,12 @@ describe('LinkToSkillModal', () => {
         })
     })
 
-    it('should not display articles that already have the intent linked', () => {
+    it('should display all articles including ones that already have the intent linked', () => {
         renderComponent({ intentId: 'order::status' })
 
         expect(
-            screen.queryByText('Order status, tracking or delivery timing'),
-        ).not.toBeInTheDocument()
+            screen.getByText('Order status, tracking or delivery timing'),
+        ).toBeInTheDocument()
         expect(screen.getByText('Order cancellations')).toBeInTheDocument()
         expect(screen.getByText('Shipping address updates')).toBeInTheDocument()
     })
