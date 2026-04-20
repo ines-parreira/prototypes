@@ -19,6 +19,7 @@ import type {
     EmailMarketingConsentData,
     SmsMarketingConsentData,
 } from '../../types'
+import { sortOrdersByDateDesc } from './orders/sortOrders'
 import type { FieldRenderContext } from './types'
 
 type Params = {
@@ -70,9 +71,19 @@ export function useCustomerInfoData({
             objectType: ObjectType.DraftOrder,
         })
 
+    const sortedOrders = useMemo(
+        () => (orders ? sortOrdersByDateDesc(orders) : undefined),
+        [orders],
+    )
+
+    const sortedDraftOrders = useMemo(
+        () => (draftOrders ? sortOrdersByDateDesc(draftOrders) : undefined),
+        [draftOrders],
+    )
+
     const { productsMap } = useGetOrderProducts({
         integrationId: selectedIntegration?.id,
-        orders: [...(orders ?? []), ...(draftOrders ?? [])],
+        orders: [...(sortedOrders ?? []), ...(sortedDraftOrders ?? [])],
     })
 
     const { purchaseSummary } = useGetPurchaseSummary({
@@ -113,7 +124,7 @@ export function useCustomerInfoData({
                 ...existingIntegrations,
                 [integrationType]: {
                     ...shopper?.data,
-                    orders: orders?.map((o) => o.data) ?? [],
+                    orders: sortedOrders?.map((o) => o.data) ?? [],
                 },
             },
         }
@@ -121,7 +132,7 @@ export function useCustomerInfoData({
         ticketData?.data?.customer,
         selectedIntegration?.type,
         shopper?.data,
-        orders,
+        sortedOrders,
     ])
 
     const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
@@ -150,9 +161,9 @@ export function useCustomerInfoData({
         isLoadingIntegrations,
         onCreateOrder,
         shopper,
-        orders,
+        orders: sortedOrders,
         isLoadingOrders,
-        draftOrders,
+        draftOrders: sortedDraftOrders,
         isLoadingDraftOrders,
         productsMap,
         purchaseSummary,
