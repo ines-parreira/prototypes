@@ -5,6 +5,7 @@ import {
     aiJourneyOptOutAfterReplyDrillDownQueryFactory,
     aiJourneyOptOutRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
+    aiJourneyProviderOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
     aiJourneySankeyConversionsDrillDownQueryFactory,
     aiJourneyTotalConversationsDrillDownQueryFactory,
@@ -543,6 +544,22 @@ export const getDrillDownQuery = (
                 sorting?: OrderDirection,
             ) =>
                 aiJourneyOrdersDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyIds,
+                )
+        }
+        case AIJourneyMetric.ProviderTotalOrders: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyProviderOrdersDrillDownQueryFactory(
+                    metricData.provider ?? null,
+                )(
                     statsFilters,
                     timezone,
                     metricData.integrationId,

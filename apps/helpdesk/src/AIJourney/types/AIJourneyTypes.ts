@@ -5,6 +5,7 @@ import type {
     TrendDirection,
 } from '@repo/reporting'
 
+import type { AttributionModelComparison } from 'AIJourney/utils/attributionModelComparison'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
@@ -12,6 +13,7 @@ import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDown
 
 export enum AIJourneyMetric {
     TotalOrders = 'aiJourneyTotalOrders',
+    ProviderTotalOrders = 'aiJourneyProviderTotalOrders',
     ResponseRate = 'aiJourneyResponseRate',
     OptOutRate = 'aiJourneyOptOutRate',
     ClickThroughRate = 'aiJourneyClickThroughRate',
@@ -39,6 +41,7 @@ export type AIJourneyMetrics = {
     integrationId: string
     shopName?: string
     engagementCategory?: string
+    provider?: AttributionModelComparison
 }
 
 export const AIJourneyMetricsConfig: Record<
@@ -52,6 +55,12 @@ export const AIJourneyMetricsConfig: Record<
 > = {
     [AIJourneyMetric.TotalOrders]: {
         title: 'Total Orders',
+        metricFormat: 'decimal-precision-1',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.ProviderTotalOrders]: {
+        title: 'Total Orders (custom attribution model)',
         metricFormat: 'decimal-precision-1',
         showMetric: false,
         domain: Domain.AIJourney,

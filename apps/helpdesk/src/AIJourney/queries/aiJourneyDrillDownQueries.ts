@@ -3,12 +3,19 @@ import {
     AIJourneyDiscountCodesUsedQueryFactory,
     aiJourneyOptedOutAfterReplyQueryFactory,
     aiJourneyOptedOutQueryFactory,
+    aiJourneyProviderTotalNumberOfOrderQueryFactory,
     aiJourneyRepliedMessagesQueryFactory,
     aiJourneySankeyOrdersQueryFactory,
     aiJourneyTotalConversationsQueryFactory,
     aiJourneyTotalNumberOfOrderQueryFactory,
     aiJourneyUniqClicksQueryFactory,
 } from 'AIJourney/utils/analytics-factories/factories'
+import type { AttributionModelComparison } from 'AIJourney/utils/attributionModelComparison'
+import type { AIJourneyOrdersAsProviderCube } from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
+import {
+    AIJourneyOrdersAsProviderDimension,
+    AIJourneyOrdersAsProviderMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
 import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
@@ -51,6 +58,40 @@ export const aiJourneyOrdersDrillDownQueryFactory = (
               order: [],
           }),
 })
+
+export const aiJourneyProviderOrdersDrillDownQueryFactory =
+    (provider: AttributionModelComparison | null) =>
+    (
+        filters: StatsFilters,
+        timezone: string,
+        integrationId: string,
+        sorting?: OrderDirection,
+        journeyIds?: string[],
+    ): ReportingQuery<AIJourneyOrdersAsProviderCube> => ({
+        ...aiJourneyProviderTotalNumberOfOrderQueryFactory(provider)(
+            integrationId,
+            filters,
+            timezone,
+            journeyIds,
+        ),
+        measures: [AIJourneyOrdersAsProviderMeasure.GmvUsd],
+        dimensions: [
+            AIJourneyOrdersAsProviderDimension.TicketId,
+            AIJourneyOrdersAsProviderDimension.OrderId,
+            AIJourneyOrdersAsProviderDimension.TotalAmount,
+            AIJourneyOrdersAsProviderDimension.CustomerId,
+        ],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [
+                      [AIJourneyOrdersAsProviderDimension.TicketId, sorting],
+                  ],
+              }
+            : {
+                  order: [],
+              }),
+    })
 
 export const aiJourneyResponseRateDrillDownQueryFactory = (
     filters: StatsFilters,

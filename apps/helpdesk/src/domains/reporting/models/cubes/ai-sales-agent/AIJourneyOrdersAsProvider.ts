@@ -2,6 +2,7 @@ import type { Cube } from 'domains/reporting/models/types'
 
 export enum AIJourneyOrdersAsProviderMeasure {
     Gmv = 'AIJourneyOrdersAsProvider.gmv',
+    GmvUsd = 'AIJourneyOrdersAsProvider.gmvUsd',
     Count = 'AIJourneyOrdersAsProvider.count',
 }
 
@@ -14,6 +15,10 @@ export enum AIJourneyOrdersAsProviderDimension {
     JourneyId = 'AIJourneyOrdersAsProvider.journeyId',
     Currency = 'AIJourneyOrdersAsProvider.currency',
     InfluencedBy = 'AIJourneyOrdersAsProvider.influencedBy',
+    TicketId = 'AIJourneyOrdersAsProvider.ticketId',
+    OrderId = 'AIJourneyOrdersAsProvider.orderId',
+    TotalAmount = 'AIJourneyOrdersAsProvider.totalAmount',
+    CustomerId = 'AIJourneyOrdersAsProvider.customerId',
 }
 
 export enum AIJourneyOrdersAsProviderFilterMember {
@@ -25,6 +30,7 @@ export enum AIJourneyOrdersAsProviderFilterMember {
     JourneyId = 'AIJourneyOrdersAsProvider.journeyId',
     Channel = 'AIJourneyOrdersAsProvider.channel',
     Outcome = 'AIJourneyOrdersAsProvider.outcome',
+    OrderId = 'AIJourneyOrdersAsProvider.orderId',
 }
 
 export type AIJourneyOrdersAsProviderTimeDimension =

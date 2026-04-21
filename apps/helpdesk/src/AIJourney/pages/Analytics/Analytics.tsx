@@ -252,6 +252,16 @@ export const Analytics = () => {
         journeyIds: journeysIdsToFilter,
     })
 
+    const providerOrdersDrillDown = useDrillDownModalTrigger({
+        metricName: AIJourneyMetric.ProviderTotalOrders,
+        title: attributionLabel
+            ? `Total Orders (${attributionLabel})`
+            : 'Total Orders',
+        integrationId,
+        journeyIds: journeysIdsToFilter,
+        provider: gatedAttributionModelComparison ?? undefined,
+    })
+
     const seriesBaseOptions = {
         dateFormatter: (date: string) => moment(date).format('MMM D'),
         withEndPeriod: {
@@ -441,6 +451,7 @@ export const Analytics = () => {
                       prevValue: providerOrders.prevValue ?? null,
                       value: providerOrders.value,
                   },
+                  drillDown: providerOrdersDrillDown,
               },
           ]
         : []

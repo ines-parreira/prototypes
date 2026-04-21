@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
+import type { AttributionModelComparison } from 'AIJourney/utils/attributionModelComparison'
 import {
     DomainsConfig,
     MetricsConfig,
@@ -67,12 +68,14 @@ export const useDrillDownModalTrigger = ({
     title,
     integrationId,
     journeyIds,
+    provider,
 }: {
     metricName: DrillDownMetric['metricName']
     title?: string
     integrationId?: string
     journeyIds?: string[] | []
     segmentEventName?: SegmentEvent
+    provider?: AttributionModelComparison
 }) => {
     const tooltipText = title || getTooltipText(metricName)
 
@@ -81,6 +84,7 @@ export const useDrillDownModalTrigger = ({
         metricName: metricName,
         integrationId,
         journeyIds,
+        provider,
     } as DrillDownMetric
 
     const openDrillDownModal = useCreateDrillDownModalHandler({

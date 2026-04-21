@@ -1,5 +1,6 @@
 import type { HandleTimeCubeWithJoins } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
 import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/ai-agent/HandoverInteractionsCube'
+import type { AIJourneyOrdersAsProviderCube } from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
 import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import type { TicketQAScoreCubeWithJoins } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
@@ -87,6 +88,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | TicketMessagesEnrichedResponseTimes
     | AiSalesAgentConversationsCube
     | AiSalesAgentOrdersCube
+    | AIJourneyOrdersAsProviderCube
     | SuccessRateCube
     | AIAgentDecreaseInFRTCube
     | AIAgentDecreaseInResolutionTimeCube

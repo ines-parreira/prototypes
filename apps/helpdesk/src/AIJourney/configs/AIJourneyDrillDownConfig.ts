@@ -17,6 +17,7 @@ import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDown
 export const getEnrichmentFields = (metricName: string) => {
     switch (metricName) {
         case AIJourneyMetric.TotalOrders:
+        case AIJourneyMetric.ProviderTotalOrders:
             return [
                 ...defaultEnrichmentFields,
                 EnrichmentFields.CustomerName,
@@ -59,6 +60,8 @@ export const AIJourneyDrillDownConfig: DomainConfig<AIJourneyMetric> = {
     metricsConfig: {
         [AIJourneyMetric.TotalOrders]:
             AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders],
+        [AIJourneyMetric.ProviderTotalOrders]:
+            AIJourneyMetricsConfig[AIJourneyMetric.ProviderTotalOrders],
         [AIJourneyMetric.ResponseRate]:
             AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate],
         [AIJourneyMetric.ClickThroughRate]:

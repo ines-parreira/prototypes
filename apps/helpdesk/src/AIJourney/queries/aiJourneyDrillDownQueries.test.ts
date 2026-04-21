@@ -7,6 +7,7 @@ import {
     aiJourneyDiscountCodesUsedDrillDownQueryFactory,
     aiJourneyOptOutRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
+    aiJourneyProviderOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
 } from './aiJourneyDrillDownQueries'
 
@@ -232,6 +233,96 @@ describe('aiJourneyDrillDownQueries', () => {
                 metricName: 'ai-journey-total-number-of-order',
                 order: [['AiSalesAgentOrders.ticketId', 'asc']],
                 timezone,
+            })
+        })
+    })
+
+    describe('aiJourneyProviderOrdersDrillDownQueryFactory', () => {
+        it('should produce query scoped to the given provider', () => {
+            const query = aiJourneyProviderOrdersDrillDownQueryFactory(
+                'klaviyo',
+            )(statsFilters, timezone, integrationId)
+
+            expect(query).toEqual({
+                dimensions: [
+                    'AIJourneyOrdersAsProvider.ticketId',
+                    'AIJourneyOrdersAsProvider.orderId',
+                    'AIJourneyOrdersAsProvider.totalAmount',
+                    'AIJourneyOrdersAsProvider.customerId',
+                ],
+                filters: [
+                    {
+                        member: 'AIJourneyOrdersAsProvider.provider',
+                        operator: 'equals',
+                        values: ['klaviyo'],
+                    },
+                    {
+                        member: 'AIJourneyOrdersAsProvider.influencedBy',
+                        operator: 'set',
+                        values: [],
+                    },
+                    {
+                        member: 'AIJourneyOrdersAsProvider.integrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AIJourneyOrdersAsProvider.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AIJourneyOrdersAsProvider.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AIJourneyOrdersAsProvider.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                ],
+                limit: 100,
+                measures: ['AIJourneyOrdersAsProvider.gmvUsd'],
+                metricName: 'ai-journey-provider-total-number-of-order',
+                order: [],
+                timezone,
+            })
+        })
+
+        it('should produce query with sorting and journeyId', () => {
+            const query = aiJourneyProviderOrdersDrillDownQueryFactory(
+                'attentive',
+            )(statsFilters, timezone, integrationId, OrderDirection.Desc, [
+                journeyId,
+            ])
+
+            expect(query.order).toEqual([
+                ['AIJourneyOrdersAsProvider.ticketId', 'desc'],
+            ])
+            expect(query.filters).toContainEqual({
+                member: 'AIJourneyOrdersAsProvider.provider',
+                operator: 'equals',
+                values: ['attentive'],
+            })
+            expect(query.filters).toContainEqual({
+                member: 'AIJourneyOrdersAsProvider.journeyId',
+                operator: 'equals',
+                values: ['journey-123'],
+            })
+        })
+
+        it('should send empty provider values when provider is null', () => {
+            const query = aiJourneyProviderOrdersDrillDownQueryFactory(null)(
+                statsFilters,
+                timezone,
+                integrationId,
+            )
+
+            expect(query.filters).toContainEqual({
+                member: 'AIJourneyOrdersAsProvider.provider',
+                operator: 'equals',
+                values: [],
             })
         })
     })
