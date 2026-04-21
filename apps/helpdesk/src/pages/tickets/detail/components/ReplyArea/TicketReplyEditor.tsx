@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Component } from 'react'
 
-import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { ContentState, EditorState } from 'draft-js'
@@ -538,6 +538,26 @@ function withOutboundTranslationContext<P>(
     }
 }
 
+function withTicketReplyEditorFlags<P extends { flags?: FeatureFlagsMap }>(
+    Component: React.ComponentType<P>,
+) {
+    return (props: P) => {
+        const debounceValue = useFlag<number>(
+            FeatureFlagKey.PhrasePredictionDebounce,
+            0,
+        )
+        const evaluatedFlags: FeatureFlagsMap = {
+            [FeatureFlagKey.PhrasePredictionDebounce]: debounceValue,
+        }
+        const flags: FeatureFlagsMap = {
+            ...evaluatedFlags,
+            ...props.flags,
+        }
+
+        return <Component {...props} flags={flags} />
+    }
+}
+
 const connector = connect(
     (state: RootState) => ({
         agents: getOtherAgents(state),
@@ -557,6 +577,8 @@ const connector = connect(
 
 export default connector(
     withOutboundTranslationContext(
-        withTypingActivity(withFeatureFlags(TicketReplyEditorContainer)),
+        withTypingActivity(
+            withTicketReplyEditorFlags(TicketReplyEditorContainer),
+        ),
     ),
 )

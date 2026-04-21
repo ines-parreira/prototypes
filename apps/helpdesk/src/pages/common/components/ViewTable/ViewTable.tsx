@@ -2,7 +2,7 @@ import type { ComponentType, ContextType, ReactNode } from 'react'
 import { Component } from 'react'
 
 import { tryLocalStorage } from '@repo/browser-storage'
-import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
@@ -430,6 +430,27 @@ export class ViewTableContainer extends Component<Props> {
     }
 }
 
+function withViewTableFlags<P extends { flags?: FeatureFlagsMap }>(
+    WrappedComponent: ComponentType<P>,
+) {
+    return (props: P) => {
+        const redirectDeprecatedTicketRoutesEnabled = useFlag(
+            FeatureFlagKey.RedirectDeprecatedTicketRoutes,
+        )
+
+        const evaluatedFlags: FeatureFlagsMap = {
+            [FeatureFlagKey.RedirectDeprecatedTicketRoutes]:
+                redirectDeprecatedTicketRoutesEnabled,
+        }
+        const flags: FeatureFlagsMap = {
+            ...evaluatedFlags,
+            ...props.flags,
+        }
+
+        return <WrappedComponent {...props} flags={flags} />
+    }
+}
+
 const connector = connect(
     (state: RootState, ownProps: OwnProps) => {
         const config = getConfigByName(ownProps.type)
@@ -462,5 +483,5 @@ export default withRouter(
     >(
         'fetchViewItemsCancellable',
         fetchViewItems,
-    )(connector(withViewSearchUrlSync(withFeatureFlags(ViewTableContainer)))),
+    )(connector(withViewSearchUrlSync(withViewTableFlags(ViewTableContainer)))),
 )

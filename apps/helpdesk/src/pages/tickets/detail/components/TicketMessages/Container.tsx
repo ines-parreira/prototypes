@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Component } from 'react'
 
 import { AiAgentMessageType } from '@repo/ai-agent'
-import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classNamesBind from 'classnames/bind'
 import type { Map } from 'immutable'
@@ -335,4 +335,33 @@ export class Container extends Component<Props> {
     }
 }
 
-export default withFeatureFlags(withMessageTranslations(Container))
+function withTicketMessageFlags<P extends { flags?: FeatureFlagsMap }>(
+    WrappedComponent: React.ComponentType<P>,
+) {
+    return (props: P) => {
+        const ticketThreadRevampEnabled = useFlag(
+            FeatureFlagKey.TicketThreadRevamp,
+        )
+        const showAiReasoningInTicketEnabled = useFlag(
+            FeatureFlagKey.ShowAiReasoningInTicket,
+        )
+        const onlyShowReasoningWhileImpersonatingEnabled = useFlag(
+            FeatureFlagKey.OnlyShowReasoningWhileImpersonating,
+        )
+        const evaluatedFlags: FeatureFlagsMap = {
+            [FeatureFlagKey.TicketThreadRevamp]: ticketThreadRevampEnabled,
+            [FeatureFlagKey.ShowAiReasoningInTicket]:
+                showAiReasoningInTicketEnabled,
+            [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]:
+                onlyShowReasoningWhileImpersonatingEnabled,
+        }
+        const flags: FeatureFlagsMap = {
+            ...evaluatedFlags,
+            ...props.flags,
+        }
+
+        return <WrappedComponent {...props} flags={flags} />
+    }
+}
+
+export default withTicketMessageFlags(withMessageTranslations(Container))

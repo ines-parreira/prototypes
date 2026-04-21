@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
+import type { ComponentType } from 'react'
 import { Component } from 'react'
 
-import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { sanitizeHtmlDefault } from '@repo/utils'
@@ -1682,7 +1683,44 @@ const connector = connect(
     },
 )
 
-const ConnectedComponent = withFeatureFlags(
+function withGorgiasChatIntegrationPreferencesFlags<
+    P extends { flags?: FeatureFlagsMap },
+>(WrappedComponent: ComponentType<P>) {
+    return (props: P) => {
+        const privacyPolicyDisclaimerEnabled = useFlag(
+            FeatureFlagKey.ChatPrivacyPolicyDisclaimer,
+        )
+        const chatMultiLanguagesEnabled = useFlag(
+            FeatureFlagKey.ChatMultiLanguages,
+        )
+        const chatTranscriptEnabled = useFlag(FeatureFlagKey.ChatTranscript)
+        const chatRenameContactFormEnabled = useFlag(
+            FeatureFlagKey.ChatRenameContactForm,
+        )
+
+        const revenueBetaTestersEnabled = useFlag(
+            FeatureFlagKey.RevenueBetaTesters,
+        )
+
+        const evaluatedFlags: FeatureFlagsMap = {
+            [FeatureFlagKey.ChatPrivacyPolicyDisclaimer]:
+                privacyPolicyDisclaimerEnabled,
+            [FeatureFlagKey.ChatMultiLanguages]: chatMultiLanguagesEnabled,
+            [FeatureFlagKey.ChatTranscript]: chatTranscriptEnabled,
+            [FeatureFlagKey.ChatRenameContactForm]:
+                chatRenameContactFormEnabled,
+            [FeatureFlagKey.RevenueBetaTesters]: revenueBetaTestersEnabled,
+        }
+        const flags: FeatureFlagsMap = {
+            ...evaluatedFlags,
+            ...props.flags,
+        }
+
+        return <WrappedComponent {...props} flags={flags} />
+    }
+}
+
+const ConnectedComponent = withGorgiasChatIntegrationPreferencesFlags(
     connector(GorgiasChatIntegrationPreferencesComponent),
 )
 
