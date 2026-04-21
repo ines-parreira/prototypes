@@ -69,7 +69,9 @@ jest.mock('@repo/ticket-thread', () => {
     return {
         getThreadItemKey: jest.fn((_item, index) => `thread-item-${index}`),
         ViewingActivity: ({ agents }: { agents: Array<{ name: string }> }) => (
-            <div>{agents.map((agent) => agent.name).join(', ')}</div>
+            <div data-testid="viewing-activity">
+                {agents.map((agent) => agent.name).join(', ')}
+            </div>
         ),
         TypingActivity: ({
             agents,
@@ -287,6 +289,28 @@ describe('<TicketThread />', () => {
                 Node.DOCUMENT_POSITION_FOLLOWING,
         ).toBeTruthy()
         expect(mockUseCollisionDetection).toHaveBeenCalledWith(1)
+    })
+
+    it('renders the viewing activity outside the scrollable thread region', () => {
+        mockUseCollisionDetection.mockReturnValue({
+            agentsViewing: [{ id: 1, name: 'Alice' }],
+            agentsViewingNotTyping: [{ id: 1, name: 'Alice' }],
+            agentsTyping: [],
+            hasBoth: false,
+        })
+
+        render(<TicketThread submit={submit} />)
+
+        const viewingActivity = screen.getByTestId('viewing-activity')
+        const threadRegion = screen.getByRole('region', {
+            name: 'Ticket thread container',
+        })
+
+        expect(threadRegion).not.toContainElement(viewingActivity)
+        expect(
+            viewingActivity.compareDocumentPosition(threadRegion) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy()
     })
 
     it.each([

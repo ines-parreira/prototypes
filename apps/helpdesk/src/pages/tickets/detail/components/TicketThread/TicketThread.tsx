@@ -119,8 +119,8 @@ export function TicketThread({ submit }: TicketThreadProps) {
 
     return (
         <div className={css.threadContainer} ref={setThreadContainerElement}>
+            <ViewingActivity agents={activityAgentsViewing} />
             <div className={css.threadMessagesContainer}>
-                <ViewingActivity agents={activityAgentsViewing} />
                 <TicketThreadContainer
                     containerElement={threadContainerElement}
                     ticketId={ticketId}
