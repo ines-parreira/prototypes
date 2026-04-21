@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { evalStore } from '../debug/evalStore'
 import {
+    CONTROL_FLAG,
     evaluateFlag,
     evaluateFlagAsync,
     getEngineContexts,
@@ -37,7 +38,6 @@ vi.mock('@splitsoftware/splitio-browserjs', () => ({
 }))
 
 const testFlag = 'test-flag' as FeatureFlagKey
-const CONTROL_FLAG = 'feature-flag-engine-primary'
 
 const flagContext: FlagContext = {
     key: 'acc-456',
@@ -57,7 +57,7 @@ function setupEngines(
     > = {},
 ) {
     fakeLDClient = createFakeLDClient({
-        [CONTROL_FLAG]: 'launchdarkly',
+        [CONTROL_FLAG]: false,
         ...ldFlags,
     })
     fakeSplitClient = createFakeSplitClient(splitTreatments)
@@ -76,7 +76,7 @@ describe('dualEvaluation', () => {
     describe('initEngines', () => {
         it('should initialize both engines and seed the eval store after ready', async () => {
             fakeLDClient = createFakeLDClient({
-                [CONTROL_FLAG]: 'launchdarkly',
+                [CONTROL_FLAG]: false,
                 'some-flag': true,
             })
             fakeSplitClient = createFakeSplitClient({
@@ -186,7 +186,7 @@ describe('dualEvaluation', () => {
 
         it('should use harness as primary when control flag says so', () => {
             setupEngines(
-                { [CONTROL_FLAG]: 'harness', 'test-flag': 'ld-value' },
+                { [CONTROL_FLAG]: true, 'test-flag': 'ld-value' },
                 { 'test-flag': { treatment: 'harness-value', config: null } },
             )
 

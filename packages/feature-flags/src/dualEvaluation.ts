@@ -10,7 +10,7 @@ type EngineId = 'launchdarkly' | 'harness'
 
 const engines = { launchdarkly: ld, harness } as const
 
-const CONTROL_FLAG = 'feature-flag-engine-primary'
+export const CONTROL_FLAG = 'linear.RD-500.use-harness-platform'
 
 export function initEngines(flagContext: FlagContext): void {
     ld.initialize(flagContext)
@@ -25,7 +25,9 @@ export function initEngines(flagContext: FlagContext): void {
 }
 
 function getPrimaryEngineId(): EngineId {
-    return ld.evaluate<EngineId>(CONTROL_FLAG, 'launchdarkly')
+    return ld.evaluate<boolean>(CONTROL_FLAG, false)
+        ? 'harness'
+        : 'launchdarkly'
 }
 
 function getEngines() {
