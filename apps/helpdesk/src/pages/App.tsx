@@ -112,28 +112,32 @@ const App = ({
                     }}
                 >
                     <div className={cn('app-content', css.content)}>
-                        <div className="mobile-nav">
-                            <IconButton
-                                className="mr-3"
-                                fillStyle="ghost"
-                                intent="secondary"
-                                onClick={() => dispatch(openPanel('navbar'))}
-                            >
-                                menu
-                            </IconButton>
-                            {infobarOnMobile && (
-                                <Button
-                                    className="ml-3"
+                        {!hasWayfindingMS1Flag && (
+                            <div className="mobile-nav">
+                                <IconButton
+                                    className="mr-3"
                                     fillStyle="ghost"
                                     intent="secondary"
                                     onClick={() =>
-                                        dispatch(openPanel('infobar'))
+                                        dispatch(openPanel('navbar'))
                                     }
                                 >
-                                    More info
-                                </Button>
-                            )}
-                        </div>
+                                    menu
+                                </IconButton>
+                                {infobarOnMobile && (
+                                    <Button
+                                        className="ml-3"
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        onClick={() =>
+                                            dispatch(openPanel('infobar'))
+                                        }
+                                    >
+                                        More info
+                                    </Button>
+                                )}
+                            </div>
+                        )}
 
                         <Wrapper {...wrapperProps}>
                             <ErrorBoundary>{content || null}</ErrorBoundary>

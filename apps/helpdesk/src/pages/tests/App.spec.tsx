@@ -5,10 +5,12 @@ import { useIsMobileResolution } from '@repo/hooks'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { store } from 'common/store'
+import { openPanel } from 'state/layout/actions'
 
 import App from '../App'
 
@@ -136,5 +138,90 @@ describe('App Navbar rendering', () => {
             expect(queryByTestId('global-navigation')).not.toBeInTheDocument()
             expect(queryByTestId('navbar')).not.toBeInTheDocument()
         })
+    })
+})
+
+describe('App mobile-nav rendering', () => {
+    let dispatchSpy: jest.SpyInstance
+
+    const renderWithContext = (component: React.ReactNode) => {
+        return render(
+            <Provider store={store}>
+                <NavBarProvider>{component}</NavBarProvider>
+            </Provider>,
+        )
+    }
+
+    beforeEach(() => {
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
+        mockUseIsMobileResolution.mockReturnValue(false)
+        ;(useTicketInfobarNavigation as jest.Mock).mockReturnValue({
+            activeTab: TicketInfobarTab.Customer,
+            onChangeTab: jest.fn(),
+        })
+    })
+
+    afterEach(() => {
+        dispatchSpy?.mockRestore()
+    })
+
+    it('should render mobile-nav menu button when wayfinding flag is disabled', () => {
+        const { getByRole } = renderWithContext(<App />)
+
+        expect(getByRole('button', { name: /menu/i })).toBeInTheDocument()
+    })
+
+    it('should not render mobile-nav menu button when wayfinding flag is enabled', () => {
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+
+        const { queryByRole } = renderWithContext(<App />)
+
+        expect(queryByRole('button', { name: /menu/i })).not.toBeInTheDocument()
+    })
+
+    it('should show "More info" button when infobarOnMobile is true', () => {
+        const { getByRole } = renderWithContext(<App infobarOnMobile />)
+
+        expect(getByRole('button', { name: /more info/i })).toBeInTheDocument()
+    })
+
+    it('should not show "More info" button when infobarOnMobile is not set', () => {
+        const { queryByRole } = renderWithContext(<App />)
+
+        expect(
+            queryByRole('button', { name: /more info/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not show "More info" button when wayfinding flag is enabled even if infobarOnMobile is true', () => {
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+
+        const { queryByRole } = renderWithContext(<App infobarOnMobile />)
+
+        expect(
+            queryByRole('button', { name: /more info/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should dispatch openPanel navbar when menu button is clicked', async () => {
+        const user = userEvent.setup()
+        dispatchSpy = jest.spyOn(store, 'dispatch')
+
+        const { getByRole } = renderWithContext(<App />)
+
+        await user.click(getByRole('button', { name: /menu/i }))
+
+        expect(dispatchSpy).toHaveBeenCalledWith(openPanel('navbar'))
+    })
+
+    it('should dispatch openPanel infobar when "More info" button is clicked', async () => {
+        const user = userEvent.setup()
+        dispatchSpy = jest.spyOn(store, 'dispatch')
+
+        const { getByRole } = renderWithContext(<App infobarOnMobile />)
+
+        await user.click(getByRole('button', { name: /more info/i }))
+
+        expect(dispatchSpy).toHaveBeenCalledWith(openPanel('infobar'))
     })
 })

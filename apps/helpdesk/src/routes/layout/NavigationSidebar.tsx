@@ -1,5 +1,6 @@
 import { DebugMenu, DebugMenuItem } from '@repo/debug'
 import { EvaluationsDebugPanel } from '@repo/feature-flags'
+import { useIsMobileResolution } from '@repo/hooks'
 import {
     SidebarContent,
     SidebarFooter,
@@ -33,6 +34,7 @@ export function NavigationSidebar() {
     const { isCollapsed, toggleCollapse } = useSidebar()
     const buttonSize = useSidebarButtonSize()
     const isChatReady = useIsChatReady()
+    const isMobileResolution = useIsMobileResolution()
 
     useSidebarShortcuts()
 
@@ -91,28 +93,30 @@ export function NavigationSidebar() {
                     <NavigationSidebarNotificationsButton />
                     <NavigationSidebarSpotlightButton />
 
-                    <Tooltip
-                        placement="bottom"
-                        trigger={
-                            <Button
-                                icon={
-                                    isCollapsed
-                                        ? 'system-bar-collapse'
-                                        : 'system-bar-expand'
-                                }
-                                size={buttonSize}
-                                variant="tertiary"
-                                onClick={toggleCollapse}
-                                aria-label={
-                                    isCollapsed
-                                        ? 'Expand sidebar'
-                                        : 'Collapse sidebar'
-                                }
-                            />
-                        }
-                    >
-                        <TooltipContent shortcut={'['} />
-                    </Tooltip>
+                    {!isMobileResolution && (
+                        <Tooltip
+                            placement="bottom"
+                            trigger={
+                                <Button
+                                    icon={
+                                        isCollapsed
+                                            ? 'system-bar-collapse'
+                                            : 'system-bar-expand'
+                                    }
+                                    size={buttonSize}
+                                    variant="tertiary"
+                                    onClick={toggleCollapse}
+                                    aria-label={
+                                        isCollapsed
+                                            ? 'Expand sidebar'
+                                            : 'Collapse sidebar'
+                                    }
+                                />
+                            }
+                        >
+                            <TooltipContent shortcut={'['} />
+                        </Tooltip>
+                    )}
                 </Box>
             </Box>
 

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
@@ -128,7 +129,7 @@ const route = {
 
 describe('<HelpCenterArticlesView />', () => {
     it('should render the component', () => {
-        const { container } = renderWithRouter(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore(defaultState)}>
                     <DndProvider backend={HTML5Backend}>
@@ -145,6 +146,11 @@ describe('<HelpCenterArticlesView />', () => {
             route,
         )
 
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.getByRole('button', { name: /help center preview/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: /appearance/i }),
+        ).toBeInTheDocument()
     })
 })

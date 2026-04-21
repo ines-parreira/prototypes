@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useIsMobileResolution, useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 export type SidebarContextValue = {
@@ -22,6 +22,7 @@ export function SidebarProvider({
         'navigation-sidebar-collapsed',
         false,
     )
+    const isMobileResolution = useIsMobileResolution()
 
     const toggleCollapse = useCallback(
         () => setIsCollapsed((prev) => !prev),
@@ -36,8 +37,17 @@ export function SidebarProvider({
     }, [isCollapsed, toggleCollapse])
 
     const value = useMemo(
-        () => ({ isCollapsed, toggleCollapse, onSidebarShortcutToggle }),
-        [isCollapsed, toggleCollapse, onSidebarShortcutToggle],
+        () => ({
+            isCollapsed: isMobileResolution ? false : isCollapsed,
+            toggleCollapse,
+            onSidebarShortcutToggle,
+        }),
+        [
+            isCollapsed,
+            toggleCollapse,
+            onSidebarShortcutToggle,
+            isMobileResolution,
+        ],
     )
 
     return (

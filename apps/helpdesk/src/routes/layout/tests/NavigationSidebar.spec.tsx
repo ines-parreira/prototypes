@@ -1,3 +1,4 @@
+import { useIsMobileResolution } from '@repo/hooks'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
@@ -30,6 +31,12 @@ jest.mock('common/navigation/components/UserItem', () => ({
     __esModule: true,
     default: () => <div>UserItem</div>,
 }))
+
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useIsMobileResolution: jest.fn(),
+}))
+const mockUseIsMobileResolution = assumeMock(useIsMobileResolution)
 
 jest.mock('routes/layout/NavigationSidebarNotificationsButton', () => ({
     NavigationSidebarNotificationsButton: () => <div>NotificationsButton</div>,
@@ -71,6 +78,7 @@ describe('NavigationSidebar', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         usePreviousProductNavigationMock.mockReturnValue('/app/tickets')
+        mockUseIsMobileResolution.mockReturnValue(false)
     })
 
     describe('non-sticky products', () => {
@@ -145,6 +153,18 @@ describe('NavigationSidebar', () => {
                 name: /collapse sidebar/i,
             })
             expect(collapseButton).toBeInTheDocument()
+        })
+
+        it('should not render collapse toggle button on mobile resolution', () => {
+            mockUseIsMobileResolution.mockReturnValue(true)
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
+            expect(
+                screen.queryByRole('button', { name: /collapse sidebar/i }),
+            ).not.toBeInTheDocument()
         })
 
         it('should call toggleCollapse when collapse button is clicked', async () => {

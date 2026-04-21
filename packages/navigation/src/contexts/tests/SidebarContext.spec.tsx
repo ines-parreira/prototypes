@@ -1,7 +1,13 @@
+import { useIsMobileResolution } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@testing-library/react'
 
 import { SidebarProvider, useSidebar } from '../SidebarContext'
+
+vi.mock('@repo/hooks', async () => ({
+    ...(await vi.importActual('@repo/hooks')),
+    useIsMobileResolution: vi.fn(),
+}))
 
 vi.mock('@repo/logging', () => ({
     logEvent: vi.fn(),
@@ -14,6 +20,7 @@ vi.mock('@repo/logging', () => ({
 describe('SidebarContext', () => {
     beforeEach(() => {
         localStorage.clear()
+        vi.mocked(useIsMobileResolution).mockReturnValue(false)
     })
 
     describe('useSidebar', () => {
@@ -70,6 +77,17 @@ describe('SidebarContext', () => {
             })
 
             expect(result.current.isCollapsed).toBe(true)
+        })
+
+        it('should always return false for isCollapsed on mobile resolution regardless of stored value', () => {
+            vi.mocked(useIsMobileResolution).mockReturnValue(true)
+            localStorage.setItem('navigation-sidebar-collapsed', 'true')
+
+            const { result } = renderHook(() => useSidebar(), {
+                wrapper: SidebarProvider,
+            })
+
+            expect(result.current.isCollapsed).toBe(false)
         })
 
         it('should log event with current visibility state when onSidebarShortcutToggle is called', () => {
