@@ -2010,6 +2010,15 @@ exports[`ticket actions setTrashed() should undo when clicking on notification b
     },
     "type": "TICKET_PARTIAL_UPDATE_START",
   },
+  {
+    "resp": {
+      "data": {},
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
+  {
+    "type": "setTrashedSuccess",
+  },
 ]
 `;
 

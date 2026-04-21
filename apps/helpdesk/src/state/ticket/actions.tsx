@@ -9,8 +9,8 @@ import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
 import { compressToEncodedURIComponent } from 'lz-string'
 import type { Moment } from 'moment'
-import { dismissNotification } from 'reapop'
 
+import { Button, toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type {
     Macro as MacroModel,
@@ -59,12 +59,6 @@ import * as newMessageActions from 'state/newMessage/actions'
 import * as newMessageTypes from 'state/newMessage/constants'
 import { getSourceTypeCache } from 'state/newMessage/responseUtils'
 import type { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
-import { notify } from 'state/notifications/actions'
-import type {
-    Notification,
-    NotificationButton,
-} from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
 import * as ticketsSelectors from 'state/tickets/selectors'
 import type { RootState, StoreDispatch, StoreState } from 'state/types'
 import * as viewsSelectors from 'state/views/selectors'
@@ -78,6 +72,27 @@ import {
     getSourceTypeOfResponse,
     guessReceiversFromTicket,
 } from './utils'
+
+type MacroAlert = {
+    title?: string
+    message?: string
+    type?: string
+    status?: string
+}
+
+export const notifyFromMacroAlert = (notification: MacroAlert) => {
+    const text = notification.title || notification.message || ''
+    const status = notification.type ?? notification.status
+    if (status === 'error') {
+        toast.error(text)
+    } else if (status === 'warning') {
+        toast.warning(text)
+    } else if (status === 'info') {
+        toast.info(text)
+    } else {
+        toast.success(text)
+    }
+}
 
 export const mergeTicket =
     (ticket: Ticket) =>
@@ -301,33 +316,26 @@ export const setSpam =
                 type: types.SET_SPAM_SUCCESS,
             })
             if (spam) {
-                return dispatch(
-                    notify({
-                        id: `spam-${ticketId}`,
-                        dismissAfter: 5000,
-                        buttons: [
-                            {
-                                name: 'Undo',
-                                onClick: () => {
-                                    void dispatch(
-                                        dismissNotification(`spam-${ticketId}`),
-                                    )
-                                    goToTicket(ticketId)
-                                    return dispatch(
-                                        fetchTicket(ticketId, {
-                                            isCurrentlyOnTicket: true,
-                                        }),
-                                    ).then(() => {
-                                        void dispatch(setSpam(false))
-                                    })
-                                },
-                                primary: true,
-                            },
-                        ],
-                        status: NotificationStatus.Success,
-                        message: 'Ticket has been marked as spam',
-                    }),
-                )
+                toast.success('Ticket has been marked as spam', {
+                    id: `spam-${ticketId}`,
+                    inlineActions: ({ id }) => (
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            onClick={() => {
+                                toast.dismiss(id)
+                                goToTicket(ticketId)
+                                return dispatch(
+                                    fetchTicket(ticketId, {
+                                        isCurrentlyOnTicket: true,
+                                    }),
+                                ).then(() => dispatch(setSpam(false)))
+                            }}
+                        >
+                            Undo
+                        </Button>
+                    ),
+                })
             }
         })
     }
@@ -362,35 +370,26 @@ export const setTrashed =
             })
             // display a notification when we trash a ticket
             if (datetime) {
-                return dispatch(
-                    notify({
-                        id: `trash-${ticketId}`,
-                        dismissAfter: 5000,
-                        buttons: [
-                            {
-                                name: 'Undo',
-                                onClick: () => {
-                                    dispatch(
-                                        dismissNotification(
-                                            `trash-${ticketId}`,
-                                        ),
-                                    )
-                                    goToTicket(ticketId)
-                                    return dispatch(
-                                        fetchTicket(ticketId, {
-                                            isCurrentlyOnTicket: true,
-                                        }),
-                                    ).then(() => {
-                                        void dispatch(setTrashed(null))
-                                    })
-                                },
-                                primary: true,
-                            },
-                        ],
-                        status: NotificationStatus.Success,
-                        message: 'Ticket has been deleted',
-                    }),
-                )
+                toast.success('Ticket has been deleted', {
+                    id: `trash-${ticketId}`,
+                    inlineActions: ({ id }) => (
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            onClick={() => {
+                                toast.dismiss(id)
+                                goToTicket(ticketId)
+                                return dispatch(
+                                    fetchTicket(ticketId, {
+                                        isCurrentlyOnTicket: true,
+                                    }),
+                                ).then(() => dispatch(setTrashed(null)))
+                            }}
+                        >
+                            Undo
+                        </Button>
+                    ),
+                })
             }
         })
     }
@@ -522,12 +521,7 @@ export const snoozeTicket =
 
         return dispatch(ticketPartialUpdate(data)).then(() => {
             if (datetime) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Ticket has been closed and snoozed',
-                    }),
-                )
+                toast.success('Ticket has been closed and snoozed')
             }
 
             callback?.()
@@ -713,9 +707,7 @@ export const applyMacro =
                                 args,
                                 state.ticket,
                                 state.currentUser,
-                                ((args: Notification) => {
-                                    return dispatch(notify(args))
-                                }) as any,
+                                notifyFromMacroAlert as any,
                             ) as List<any>,
                     ),
                 ) ?? actions,
@@ -1163,12 +1155,7 @@ export const displayAuditLogEvents =
         }
 
         if (!allEvents.size) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Info,
-                    message: 'No event for this ticket',
-                }),
-            )
+            toast.info('No event for this ticket')
 
             dispatch({
                 type: types.HIDE_TICKET_AUDIT_LOG_EVENTS,
@@ -1188,19 +1175,21 @@ export const hideAuditLogEvents = () => (dispatch: StoreDispatch) => {
 
 export const handleMessageActionError =
     (ticketId: string) => (dispatch: StoreDispatch) => {
-        let buttons: NotificationButton[] = []
         let fetchPromise = null
 
         if (!isCurrentlyOnTicket(ticketId)) {
-            buttons = [
-                {
-                    primary: true,
-                    name: 'Review',
-                    onClick: () => {
-                        history.push(`/app/ticket/${ticketId}`)
-                    },
-                },
-            ]
+            toast.error('Last message not sent because an action failed.', {
+                duration: 0,
+                inlineActions: (
+                    <Button
+                        size="sm"
+                        variant="tertiary"
+                        onClick={() => history.push(`/app/ticket/${ticketId}`)}
+                    >
+                        Review
+                    </Button>
+                ),
+            })
         } else {
             fetchPromise = dispatch(
                 fetchTicket(ticketId, {
@@ -1208,17 +1197,10 @@ export const handleMessageActionError =
                     isCurrentlyOnTicket: true,
                 }),
             )
+            toast.error('Last message not sent because an action failed.', {
+                duration: 0,
+            })
         }
-
-        void dispatch(
-            notify({
-                status: NotificationStatus.Error,
-                dismissAfter: 0,
-                allowHTML: true,
-                message: 'Last message not sent because an action failed.',
-                buttons,
-            }),
-        )
 
         return fetchPromise || Promise.resolve()
     }
@@ -1303,12 +1285,7 @@ export function deleteTicket(id: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client.delete(`/api/tickets/${id}/`).then(
             () => {
-                return dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Ticket deleted',
-                    }),
-                )
+                toast.success('Ticket deleted')
             },
             (error: AxiosError) => {
                 return dispatch({
@@ -1339,12 +1316,7 @@ export const findAndSetCustomer =
 
             return dispatch(setCustomer(fromJS(data)))
         } catch {
-            return dispatch(
-                notify({
-                    message: 'Failed to fetch customer',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to fetch customer')
         }
     }
 
@@ -1432,12 +1404,8 @@ export function triggerTicketFieldsErrors(
 ) {
     return (dispatch: StoreDispatch) => {
         void dispatch(setInvalidCustomFieldsToErrored(erroredCustomFields))
-        void dispatch(
-            notify({
-                message:
-                    'This ticket cannot be closed. Please fill the required fields.',
-                status: NotificationStatus.Error,
-            }),
+        toast.error(
+            'This ticket cannot be closed. Please fill the required fields.',
         )
     }
 }

@@ -32,7 +32,7 @@ jest.mock('common/store', () => {
 })
 jest.mock('state/newMessage/actions.ts')
 jest.mock('state/notifications/actions.ts')
-jest.mock('state/ticket/actions.ts')
+jest.mock('state/ticket/actions')
 jest.useFakeTimers()
 
 describe('services', () => {

@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react'
+
 import client, { appQueryClient } from '@repo/api-resources'
 import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
@@ -5,11 +7,11 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import moment from 'moment'
-import { dismissNotification } from 'reapop'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
 import type { ListSatisfactionSurveys200, Tag } from '@gorgias/helpdesk-types'
 
 import { agents } from 'fixtures/agents'
@@ -33,9 +35,6 @@ import socketManager from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { initialState as integrationsState } from 'state/integrations/reducers'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
-import { notify } from 'state/notifications/actions'
-import type { AlertNotification } from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
 import {
     MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
@@ -97,6 +96,23 @@ jest.mock('services/socketManager/socketManager', () => {
 jest.mock('state/notifications/actions', () => {
     return {
         notify: jest.fn(() => (args: Record<string, unknown>) => args),
+    }
+})
+
+jest.mock('@gorgias/axiom', () => {
+    const actual = jest.requireActual('@gorgias/axiom')
+    const toastMock = Object.assign(jest.fn(), {
+        info: jest.fn(),
+        success: jest.fn(),
+        warning: jest.fn(),
+        error: jest.fn(),
+        ai: jest.fn(),
+        promise: jest.fn(),
+        dismiss: jest.fn(),
+    })
+    return {
+        ...actual,
+        toast: toastMock,
     }
 })
 jest.mock('@repo/routing', () => ({
@@ -440,21 +456,26 @@ describe('ticket actions', () => {
                 .reply(202, { data: {} })
 
             return store.dispatch(actions.setSpam(true)).then(() => {
-                const button = (
-                    (notify as jest.MockedFunction<typeof notify>).mock
-                        .calls[0][0]! as AlertNotification
-                ).buttons?.[0] as unknown as {
-                    onClick: () => Promise<void>
+                const toastSuccess = toast.success as jest.MockedFunction<
+                    typeof toast.success
+                >
+                const call = toastSuccess.mock.calls.find(
+                    ([, options]) => options?.id === 'spam-1',
+                )
+                if (!call) {
+                    throw new Error('toast.success was not called for spam-1')
                 }
-
-                if (!button) {
-                    throw new Error('property buttons is undefined')
+                const inlineActions = call[1]?.inlineActions as (props: {
+                    id: string | number
+                }) => ReactElement<{ onClick: () => void }>
+                if (!inlineActions) {
+                    throw new Error('inlineActions is undefined')
                 }
-                return button.onClick().then(() => {
-                    expect(dismissNotification).toHaveBeenNthCalledWith(
-                        1,
-                        'spam-1',
-                    )
+                const button = inlineActions({ id: 'spam-1' })
+                return (
+                    button.props.onClick() as unknown as Promise<unknown>
+                ).then(() => {
+                    expect(toast.dismiss).toHaveBeenNthCalledWith(1, 'spam-1')
                     expect(store.getActions()).toMatchSnapshot()
                 })
             })
@@ -507,21 +528,26 @@ describe('ticket actions', () => {
                 .reply(202, { data: {} })
 
             return store.dispatch(actions.setTrashed(date)).then(() => {
-                const button = (
-                    (notify as jest.MockedFunction<typeof notify>).mock
-                        .calls[0][0]! as AlertNotification
-                ).buttons?.[0] as unknown as {
-                    onClick: () => Promise<void>
+                const toastSuccess = toast.success as jest.MockedFunction<
+                    typeof toast.success
+                >
+                const call = toastSuccess.mock.calls.find(
+                    ([, options]) => options?.id === 'trash-1',
+                )
+                if (!call) {
+                    throw new Error('toast.success was not called for trash-1')
                 }
-
-                if (!button) {
-                    throw new Error('property buttons is undefined')
+                const inlineActions = call[1]?.inlineActions as (props: {
+                    id: string | number
+                }) => ReactElement<{ onClick: () => void }>
+                if (!inlineActions) {
+                    throw new Error('inlineActions is undefined')
                 }
-                return button.onClick().then(() => {
-                    expect(dismissNotification).toHaveBeenNthCalledWith(
-                        1,
-                        'trash-1',
-                    )
+                const button = inlineActions({ id: 'trash-1' })
+                return (
+                    button.props.onClick() as unknown as Promise<unknown>
+                ).then(() => {
+                    expect(toast.dismiss).toHaveBeenNthCalledWith(1, 'trash-1')
                     expect(store.getActions()).toMatchSnapshot()
                 })
             })
@@ -777,10 +803,9 @@ describe('ticket actions', () => {
 
         it('notifies a warning', async () => {
             await store.dispatch(actions.applyMacro(macro, 1))
-            expect(notify).toBeCalledWith({
-                type: NotificationStatus.Warning,
-                title: 'This customer does not have any Magento2 information',
-            })
+            expect(toast.warning).toBeCalledWith(
+                'This customer does not have any Magento2 information',
+            )
         })
 
         it('keeps forward by email actions without checking a feature flag', async () => {
@@ -2221,5 +2246,27 @@ describe('ticket actions', () => {
     it('setShouldDisplayAllFollowUps with false', () => {
         store.dispatch(actions.setShouldDisplayAllFollowUps(false))
         return expect(store.getActions()).toMatchSnapshot()
+    })
+
+    describe('notifyFromMacroAlert()', () => {
+        it('maps error status to toast.error', () => {
+            actions.notifyFromMacroAlert({ status: 'error', title: 'Boom' })
+            expect(toast.error).toHaveBeenCalledWith('Boom')
+        })
+
+        it('maps warning type to toast.warning', () => {
+            actions.notifyFromMacroAlert({ type: 'warning', title: 'Heads up' })
+            expect(toast.warning).toHaveBeenCalledWith('Heads up')
+        })
+
+        it('maps info status to toast.info', () => {
+            actions.notifyFromMacroAlert({ status: 'info', message: 'FYI' })
+            expect(toast.info).toHaveBeenCalledWith('FYI')
+        })
+
+        it('falls back to toast.success and uses message when title is missing', () => {
+            actions.notifyFromMacroAlert({ message: 'All good' })
+            expect(toast.success).toHaveBeenCalledWith('All good')
+        })
     })
 })
