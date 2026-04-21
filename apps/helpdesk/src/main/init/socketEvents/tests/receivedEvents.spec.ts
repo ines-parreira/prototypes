@@ -1015,6 +1015,12 @@ describe('receivedEvents', () => {
                     ticket_id: ticket.id,
                 }),
             })
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.ticketMessages.listAllMessages({
+                    ticket_id: ticket.id,
+                    limit: 100,
+                }),
+            })
         })
 
         it('should seed the ticket messages query cache with the created message', () => {
@@ -1022,6 +1028,11 @@ describe('receivedEvents', () => {
             const ticketMessagesQueryKey =
                 queryKeys.ticketMessages.listMessages({
                     ticket_id: ticket.id,
+                })
+            const ticketThreadMessagesQueryKey =
+                queryKeys.ticketMessages.listAllMessages({
+                    ticket_id: ticket.id,
+                    limit: 100,
                 })
             const cachedMessage = {
                 ...event.message,
@@ -1033,6 +1044,21 @@ describe('receivedEvents', () => {
                 data: {
                     data: [cachedMessage],
                 },
+            })
+            appQueryClient.setQueryData(ticketThreadMessagesQueryKey, {
+                pageParams: [undefined],
+                pages: [
+                    {
+                        data: {
+                            data: [cachedMessage],
+                            meta: {
+                                prev_cursor: null,
+                                next_cursor: null,
+                                total_resources: 1,
+                            },
+                        },
+                    },
+                ],
             })
 
             handler.onReceive(event)
@@ -1048,6 +1074,33 @@ describe('receivedEvents', () => {
                         cachedMessage,
                     ],
                 },
+            })
+            expect(
+                appQueryClient.getQueryData<{
+                    pageParams: unknown[]
+                    pages: Array<{
+                        data: { data: Array<{ id?: number }> }
+                    }>
+                }>(ticketThreadMessagesQueryKey),
+            ).toEqual({
+                pageParams: [undefined],
+                pages: [
+                    {
+                        data: {
+                            data: [
+                                cachedMessage,
+                                expect.objectContaining({
+                                    id: event.message.id,
+                                }),
+                            ],
+                            meta: {
+                                next_cursor: null,
+                                prev_cursor: null,
+                                total_resources: 2,
+                            },
+                        },
+                    },
+                ],
             })
         })
 

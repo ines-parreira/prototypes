@@ -1324,6 +1324,14 @@ export function sendTicketMessage(
                             })
                             void appQueryClient.invalidateQueries({
                                 queryKey:
+                                    queryKeys.ticketMessages.listAllMessages({
+                                        ticket_id: sentTicketId,
+                                        limit: 100,
+                                    }),
+                                refetchType: 'none',
+                            })
+                            void appQueryClient.invalidateQueries({
+                                queryKey:
                                     queryKeys.tickets.getTicket(sentTicketId),
                             })
                         }

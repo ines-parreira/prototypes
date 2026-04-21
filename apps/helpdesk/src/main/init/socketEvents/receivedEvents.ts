@@ -174,6 +174,12 @@ const receivedEvents: ReceivedEvent[] = [
                     ticket_id: ticket.id,
                 }),
             })
+            void appQueryClient.invalidateQueries({
+                queryKey: queryKeys.ticketMessages.listAllMessages({
+                    ticket_id: ticket.id,
+                    limit: 100,
+                }),
+            })
 
             if (isCurrentlyOnTicket(ticket.id)) {
                 ;(this as unknown as SocketManager).send(

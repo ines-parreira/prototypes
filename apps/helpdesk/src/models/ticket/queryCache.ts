@@ -1,4 +1,5 @@
 import { appQueryClient } from '@repo/api-resources'
+import type { InfiniteData } from '@tanstack/react-query'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
@@ -14,6 +15,104 @@ type TicketMessagesCache<TMessage extends PersistedTicketMessage> = {
     }
 }
 
+type TicketMessagesPage<TMessage extends PersistedTicketMessage> = {
+    data: {
+        data: TMessage[]
+        meta?: {
+            next_cursor?: string | null
+            prev_cursor?: string | null
+            total_resources?: number
+        }
+    }
+}
+
+const TICKET_THREAD_MESSAGES_PAGE_LIMIT = 100
+
+function sortMessagesByDateAsc<TMessage extends PersistedTicketMessage>(
+    messageA: TMessage,
+    messageB: TMessage,
+): number {
+    return messageA.created_datetime.localeCompare(messageB.created_datetime)
+}
+
+function sortMessagesByDateDesc<TMessage extends PersistedTicketMessage>(
+    messageA: TMessage,
+    messageB: TMessage,
+): number {
+    return messageB.created_datetime.localeCompare(messageA.created_datetime)
+}
+
+function upsertTicketMessageInListAllMessagesCache<
+    TMessage extends PersistedTicketMessage,
+>(message: TMessage, ticketId: number): void {
+    appQueryClient.setQueryData<InfiniteData<TicketMessagesPage<TMessage>>>(
+        queryKeys.ticketMessages.listAllMessages({
+            ticket_id: ticketId,
+            limit: TICKET_THREAD_MESSAGES_PAGE_LIMIT,
+        }),
+        (cache) => {
+            const existingMessages =
+                cache?.pages.flatMap((page) => page.data.data) ?? []
+
+            if (
+                message.id &&
+                existingMessages.some(
+                    (currentMessage) => currentMessage.id === message.id,
+                )
+            ) {
+                return cache
+            }
+
+            if (!cache?.pages.length) {
+                return {
+                    pageParams: [undefined],
+                    pages: [
+                        {
+                            data: {
+                                data: [message],
+                                meta: {
+                                    next_cursor: null,
+                                    prev_cursor: null,
+                                    total_resources: 1,
+                                },
+                            },
+                        },
+                    ],
+                }
+            }
+
+            const [firstPage, ...remainingPages] = cache.pages
+            const nextFirstPageMessages = [
+                message,
+                ...firstPage.data.data,
+            ].sort(sortMessagesByDateDesc)
+
+            return {
+                ...cache,
+                pages: [
+                    {
+                        ...firstPage,
+                        data: {
+                            ...firstPage.data,
+                            data: nextFirstPageMessages,
+                            meta: {
+                                ...firstPage.data.meta,
+                                total_resources:
+                                    typeof firstPage.data.meta
+                                        ?.total_resources === 'number'
+                                        ? firstPage.data.meta.total_resources +
+                                          1
+                                        : firstPage.data.meta?.total_resources,
+                            },
+                        },
+                    },
+                    ...remainingPages,
+                ],
+            }
+        },
+    )
+}
+
 export function upsertTicketMessageInListMessagesCache<
     TMessage extends PersistedTicketMessage,
 >(message: TMessage): void {
@@ -22,6 +121,8 @@ export function upsertTicketMessageInListMessagesCache<
     if (!ticketId) {
         return
     }
+
+    upsertTicketMessageInListAllMessagesCache(message, ticketId)
 
     appQueryClient.setQueryData(
         queryKeys.ticketMessages.listMessages({
@@ -39,8 +140,8 @@ export function upsertTicketMessageInListMessagesCache<
                 return cache
             }
 
-            const nextMessages = [...currentMessages, message].sort((a, b) =>
-                a.created_datetime.localeCompare(b.created_datetime),
+            const nextMessages = [...currentMessages, message].sort(
+                sortMessagesByDateAsc,
             )
 
             if (!cache) {

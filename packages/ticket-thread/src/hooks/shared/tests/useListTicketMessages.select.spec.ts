@@ -1,4 +1,4 @@
-import { useListMessages } from '@gorgias/helpdesk-queries'
+import { useListAllMessages } from '@gorgias/helpdesk-queries'
 
 import { renderHook } from '../../../tests/render.utils'
 import { useListTicketMessages } from '../useListTicketMessages'
@@ -8,33 +8,33 @@ vi.mock('@gorgias/helpdesk-queries', async () => {
 
     return {
         ...actual,
-        useListMessages: vi.fn(),
+        useListAllMessages: vi.fn(),
     }
 })
 
-describe('useListTicketMessages select fallback', () => {
+describe('useListTicketMessages fallback', () => {
     afterEach(() => {
         vi.clearAllMocks()
     })
 
-    it('returns an empty array when the selected response has no nested message list', () => {
-        vi.mocked(useListMessages).mockImplementation((_params, options) => {
-            return {
-                data: options?.query?.select?.({
-                    data: undefined,
-                } as any),
-            } as any
-        })
+    it('returns an empty array when the exhausted query has no data yet', () => {
+        vi.mocked(useListAllMessages).mockReturnValue({
+            items: undefined,
+        } as any)
 
         const { result } = renderHook(() =>
             useListTicketMessages({ ticketId: 456 }),
         )
 
-        expect(useListMessages).toHaveBeenCalledWith(
-            { ticket_id: 456 },
+        expect(useListAllMessages).toHaveBeenCalledWith(
             expect.objectContaining({
+                ticket_id: 456,
+                limit: 100,
+            }),
+            expect.objectContaining({
+                exhaustPages: true,
                 query: expect.objectContaining({
-                    select: expect.any(Function),
+                    enabled: true,
                 }),
             }),
         )

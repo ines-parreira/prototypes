@@ -1758,6 +1758,13 @@ describe('actions', () => {
                     refetchType: 'none',
                 })
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: queryKeys.ticketMessages.listAllMessages({
+                        ticket_id: 12,
+                        limit: 100,
+                    }),
+                    refetchType: 'none',
+                })
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
                     queryKey: queryKeys.tickets.getTicket(12),
                 })
             })
@@ -1766,6 +1773,11 @@ describe('actions', () => {
                 const ticketMessagesQueryKey =
                     queryKeys.ticketMessages.listMessages({
                         ticket_id: 12,
+                    })
+                const ticketThreadMessagesQueryKey =
+                    queryKeys.ticketMessages.listAllMessages({
+                        ticket_id: 12,
+                        limit: 100,
                     })
                 const cachedMessage = {
                     id: 77,
@@ -1791,6 +1803,21 @@ describe('actions', () => {
                     data: {
                         data: [cachedMessage],
                     },
+                })
+                appQueryClient.setQueryData(ticketThreadMessagesQueryKey, {
+                    pageParams: [undefined],
+                    pages: [
+                        {
+                            data: {
+                                data: [cachedMessage],
+                                meta: {
+                                    prev_cursor: null,
+                                    next_cursor: null,
+                                    total_resources: 1,
+                                },
+                            },
+                        },
+                    ],
                 })
 
                 store = mockStore({
@@ -1838,6 +1865,31 @@ describe('actions', () => {
                             expect.objectContaining({ id: 101 }),
                         ],
                     },
+                })
+                expect(
+                    appQueryClient.getQueryData<{
+                        pageParams: unknown[]
+                        pages: Array<{
+                            data: { data: Array<{ id: number }> }
+                        }>
+                    }>(ticketThreadMessagesQueryKey),
+                ).toEqual({
+                    pageParams: [undefined],
+                    pages: [
+                        {
+                            data: {
+                                data: [
+                                    expect.objectContaining({ id: 101 }),
+                                    cachedMessage,
+                                ],
+                                meta: {
+                                    next_cursor: null,
+                                    prev_cursor: null,
+                                    total_resources: 2,
+                                },
+                            },
+                        },
+                    ],
                 })
             })
         })

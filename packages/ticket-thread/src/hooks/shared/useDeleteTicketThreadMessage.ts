@@ -32,6 +32,12 @@ export function useDeleteTicketThreadMessage() {
                         }),
                     }),
                     queryClient.invalidateQueries({
+                        queryKey: queryKeys.ticketMessages.listAllMessages({
+                            ticket_id: ticketId,
+                            limit: 100,
+                        }),
+                    }),
+                    queryClient.invalidateQueries({
                         queryKey: queryKeys.ticketMessages.getTicketMessage(
                             ticketId,
                             messageId,
