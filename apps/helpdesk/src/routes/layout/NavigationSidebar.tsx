@@ -9,6 +9,7 @@ import {
     useSidebarShortcuts,
 } from '@repo/navigation'
 import { history } from '@repo/routing'
+import { ViewCountDebugPanel } from '@repo/views'
 
 import { Box, Button, Separator, Tooltip, TooltipContent } from '@gorgias/axiom'
 
@@ -134,6 +135,13 @@ export function NavigationSidebar() {
                             label="Flag evaluations"
                         >
                             <EvaluationsDebugPanel />
+                        </DebugMenuItem>
+                        <DebugMenuItem
+                            id="view-counts"
+                            icon="list-ordered"
+                            label="View count refresh"
+                        >
+                            <ViewCountDebugPanel />
                         </DebugMenuItem>
                     </DebugMenu>
                     <Tooltip

@@ -1,7 +1,7 @@
 import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
 import { history } from '@repo/routing'
-import { setViewsCount } from '@repo/views'
+import { logViewEvent, setViewsCount } from '@repo/views'
 import * as Sentry from '@sentry/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -303,6 +303,11 @@ const receivedEvents: ReceivedEvent[] = [
         name: 'views-count-updated',
         onReceive: function (json) {
             const { counts } = json as ViewCountUpdatedEvent
+            logViewEvent(
+                'inbound',
+                'views-count-updated',
+                Object.keys(counts).map(Number),
+            )
             setViewsCount(counts)
             reduxStore.dispatch(viewsActions.handleViewsCount(counts) as any)
         },

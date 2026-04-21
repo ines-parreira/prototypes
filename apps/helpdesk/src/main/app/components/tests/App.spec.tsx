@@ -98,7 +98,11 @@ jest.mock('../../hooks/useSetBanners', () => ({
     useSetBanners: jest.fn(),
 }))
 jest.mock('../../hooks/useAppShortcuts', () => jest.fn(() => undefined))
+jest.mock('../../hooks/useInitialViewCountsFetch', () =>
+    jest.fn(() => undefined),
+)
 jest.mock('../../hooks/usePollingManager', () => jest.fn(() => undefined))
+jest.mock('../../hooks/useViewCountScheduler', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useActivityTracker', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useApplyWayfindingMs1', () => jest.fn(() => undefined))

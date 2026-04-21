@@ -6,7 +6,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import userActivityManager from 'services/userActivityManager'
 import { handle2FAEnforced } from 'state/currentUser/actions'
-import { fetchVisibleViewsCounts } from 'state/views/actions'
 
 import useSharedLogic from '../useSharedLogic'
 
@@ -17,7 +16,6 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('services/userActivityManager')
 jest.mock('state/currentUser/actions')
-jest.mock('state/views/actions')
 jest.mock('@repo/logging')
 jest.mock('@repo/activity-tracker')
 
@@ -38,12 +36,6 @@ describe('useSharedLogic', () => {
         renderHook(() => useSharedLogic())
 
         expect(userActivityManager.watch).toHaveBeenCalled()
-    })
-
-    it("should fetch visible views' counts", () => {
-        renderHook(() => useSharedLogic())
-
-        expect(dispatch).toHaveBeenCalledWith(fetchVisibleViewsCounts())
     })
 
     it('should identify user', () => {

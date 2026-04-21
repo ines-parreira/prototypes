@@ -43,9 +43,11 @@ import ImpersonationBanner from '../../../AlertBanners/components/ImpersonationB
 import useActivityTracker from '../hooks/useActivityTracker'
 import useApplyWayfindingMs1 from '../hooks/useApplyWayfindingMs1'
 import useAppShortcuts from '../hooks/useAppShortcuts'
+import useInitialViewCountsFetch from '../hooks/useInitialViewCountsFetch'
 import usePollingManager from '../hooks/usePollingManager'
 import { useSetBanners } from '../hooks/useSetBanners'
 import useSharedLogic from '../hooks/useSharedLogic'
+import useViewCountScheduler from '../hooks/useViewCountScheduler'
 
 import css from './App.less'
 
@@ -78,7 +80,9 @@ export default function App({ children }: Props) {
     useApplyTheme()
     useApplyWayfindingMs1()
     useAppShortcuts()
+    useInitialViewCountsFetch()
     usePollingManager()
+    useViewCountScheduler()
     useSetBanners()
     useDesktopNotifications()
 

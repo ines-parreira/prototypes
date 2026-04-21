@@ -156,7 +156,7 @@ export const isDirty = createSelector(
     (state) => (state.get('dirty') as boolean) || false,
 )
 
-export const isActiveViewTrashView = createSelector(getActiveView, (state) =>
+export const isViewActiveTrashView = createSelector(getActiveView, (state) =>
     (state.get('filters', '') as string).includes(
         'isNotEmpty(ticket.trashed_datetime)',
     ),

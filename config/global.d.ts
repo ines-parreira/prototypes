@@ -11,7 +11,10 @@ declare global {
         currentAccount: GorgiasStateCurrentAccount
     }
 
+    // Navigation API (not yet in lib.dom). Explicit declaration needed because
+    // @trackstar/react-trackstar-link declares `[string]: Trackstar` on Window.
     interface Window {
+        navigation?: EventTarget
         CLIENT_ID: string
         DEVELOPMENT: boolean
         PRODUCTION: boolean

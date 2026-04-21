@@ -159,7 +159,7 @@ export const FilterTopbar = ({
 
     const searchRank = useContext(SearchRankScenarioContext)
     const orderBy = activeView.get('order_by') as string
-    const isActiveViewValid =
+    const isViewActiveValid =
         (activeView.get('name') as string).trim().length > 0
     const fetchParams = useMemo(
         () =>
@@ -367,7 +367,7 @@ export const FilterTopbar = ({
         [isViewDirty],
     )
 
-    const isSystemView = ViewCategory.System === activeView.get('category')
+    const isViewSystem = ViewCategory.System === activeView.get('category')
 
     useUnmount(cancelFetchViewItemsCancellable)
 
@@ -445,7 +445,7 @@ export const FilterTopbar = ({
                     <CardFooter>
                         <div className="d-flex align-items-center justify-content-between">
                             <div className={css.footer}>
-                                {isSystemView ? (
+                                {isViewSystem ? (
                                     <span>
                                         <i className="material-icons mr-2">
                                             info
@@ -489,7 +489,7 @@ export const FilterTopbar = ({
                                                             }
                                                             isDisabled={
                                                                 !areFiltersValid ||
-                                                                !isActiveViewValid
+                                                                !isViewActiveValid
                                                             }
                                                             onClick={
                                                                 onDisplayConfirmation
@@ -501,7 +501,7 @@ export const FilterTopbar = ({
                                                         >
                                                             Update view
                                                         </Button>
-                                                        {!isActiveViewValid && (
+                                                        {!isViewActiveValid && (
                                                             <Tooltip
                                                                 target={uid}
                                                             >
@@ -524,12 +524,12 @@ export const FilterTopbar = ({
                                                 isDisabled={
                                                     isSubmitting ||
                                                     !areFiltersValid ||
-                                                    !isActiveViewValid
+                                                    !isViewActiveValid
                                                 }
                                             >
                                                 arrow_drop_down
                                             </IconButton>
-                                            {!isActiveViewValid && (
+                                            {!isViewActiveValid && (
                                                 <Tooltip target="arrow-save-view-button">
                                                     You must give a name to your
                                                     view before saving it.
@@ -557,7 +557,7 @@ export const FilterTopbar = ({
                                         isDisabled={
                                             isSubmitting ||
                                             !areFiltersValid ||
-                                            !isActiveViewValid
+                                            !isViewActiveValid
                                         }
                                         onClick={createView}
                                         type="submit"
@@ -587,7 +587,7 @@ export const FilterTopbar = ({
                                     No changes have been made.
                                 </span>
                             </div>
-                            {!isSearch && !isSystemView && isUpdate && (
+                            {!isSearch && !isViewSystem && isUpdate && (
                                 <ConfirmButton
                                     id="delete-view"
                                     intent="destructive"

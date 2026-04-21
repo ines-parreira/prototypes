@@ -152,6 +152,8 @@ describe('useUpdatePublicViewsOrdering', () => {
     })
 
     it('rolls back on error', async () => {
+        vi.spyOn(console, 'error').mockImplementation(() => {})
+
         const originalOrdering: PublicViewsOrderingData = {
             views: { '1': { display_order: 5 } },
             views_top: {},

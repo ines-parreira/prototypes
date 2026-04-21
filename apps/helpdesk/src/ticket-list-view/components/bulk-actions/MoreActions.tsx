@@ -18,7 +18,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import { getCurrentUserState } from 'state/currentUser/selectors'
-import { isActiveViewTrashView as getIsActiveViewTrashView } from 'state/views/selectors'
+import { isViewActiveTrashView as getIsActiveViewTrashView } from 'state/views/selectors'
 import { TagDropdownMenu } from 'tags'
 import { hasRole } from 'utils'
 import { getMoment } from 'utils/date'
@@ -33,7 +33,7 @@ import css from './style.less'
 
 const getActions = (
     hasUserRole: boolean,
-    isActiveViewTrashView: boolean,
+    isViewActiveTrashView: boolean,
 ): Record<string, Job> => ({
     tag: {
         label: 'Add tag',
@@ -93,7 +93,7 @@ const getActions = (
           }
         : {}),
     ...(hasUserRole
-        ? isActiveViewTrashView
+        ? isViewActiveTrashView
             ? {
                   untrash: {
                       label: 'Undelete',
@@ -176,8 +176,8 @@ export default function MoreActions({
         () => hasRole(currentUser, UserRole.Agent),
         [currentUser],
     )
-    const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
-    const actions = getActions(hasAgentRole, isActiveViewTrashView)
+    const isViewActiveTrashView = useAppSelector(getIsActiveViewTrashView)
+    const actions = getActions(hasAgentRole, isViewActiveTrashView)
     const dropdownItems = getDropdownItems(actions)
 
     const toggle = useCallback((value: boolean) => {
@@ -190,13 +190,13 @@ export default function MoreActions({
             () => ({
                 intent: 'destructive',
                 onClick: () => {
-                    const action = isActiveViewTrashView
+                    const action = isViewActiveTrashView
                         ? actions['delete']
                         : actions['trash']
                     void launchJob(action, action.params?.())
                 },
             }),
-            [actions, isActiveViewTrashView, launchJob],
+            [actions, isViewActiveTrashView, launchJob],
         )
 
     const onClick = useCallback(
@@ -325,7 +325,7 @@ export default function MoreActions({
             >
                 Are you sure you want to delete {selectionCount} ticket
                 {selectionCount !== 1 && 's'}
-                {isActiveViewTrashView && ' forever'}?
+                {isViewActiveTrashView && ' forever'}?
             </Popover>
         </>
     )

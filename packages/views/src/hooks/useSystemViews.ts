@@ -13,40 +13,6 @@ export type SystemView = View & {
     icon: IconName | null
 }
 
-const TOP_VIEW_NAMES = new Set(['Inbox', 'Unassigned', 'All', 'Snoozed'])
-const BOTTOM_VIEW_NAMES = new Set(['Closed', 'Trash', 'Spam'])
-
-const DEFAULT_TOP_ORDER: Record<string, number> = {
-    Inbox: 0,
-    Unassigned: 1,
-    All: 2,
-    Snoozed: 3,
-}
-
-const DEFAULT_BOTTOM_ORDER: Record<string, number> = {
-    Closed: 0,
-    Trash: 1,
-    Spam: 2,
-}
-
-function sortWithFallback(
-    items: SystemView[],
-    orderingMap: Record<string, { display_order: number }>,
-    defaultOrder: Record<string, number>,
-): SystemView[] {
-    return [...items].sort((a, b) => {
-        const orderA =
-            orderingMap[String(a.id)]?.display_order ??
-            defaultOrder[a.name] ??
-            Infinity
-        const orderB =
-            orderingMap[String(b.id)]?.display_order ??
-            defaultOrder[b.name] ??
-            Infinity
-        return orderA - orderB
-    })
-}
-
 export function useSystemViews(): SystemView[] {
     const { items: views } = useListAllViews(
         { limit: 100, category: 'system' },
@@ -85,6 +51,40 @@ export function useSystemViews(): SystemView[] {
 
         return [...top, ...bottom]
     }, [views, ordering.views_top, ordering.views_bottom])
+}
+
+const TOP_VIEW_NAMES = new Set(['Inbox', 'Unassigned', 'All', 'Snoozed'])
+const BOTTOM_VIEW_NAMES = new Set(['Closed', 'Trash', 'Spam'])
+
+const DEFAULT_TOP_ORDER: Record<string, number> = {
+    Inbox: 0,
+    Unassigned: 1,
+    All: 2,
+    Snoozed: 3,
+}
+
+const DEFAULT_BOTTOM_ORDER: Record<string, number> = {
+    Closed: 0,
+    Trash: 1,
+    Spam: 2,
+}
+
+function sortWithFallback(
+    items: SystemView[],
+    orderingMap: Record<string, { display_order: number }>,
+    defaultOrder: Record<string, number>,
+): SystemView[] {
+    return [...items].sort((a, b) => {
+        const orderA =
+            orderingMap[String(a.id)]?.display_order ??
+            defaultOrder[a.name] ??
+            Infinity
+        const orderB =
+            orderingMap[String(b.id)]?.display_order ??
+            defaultOrder[b.name] ??
+            Infinity
+        return orderA - orderB
+    })
 }
 
 const ICON_BY_NAME = new Map<string, IconName>([

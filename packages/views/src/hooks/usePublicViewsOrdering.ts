@@ -4,13 +4,6 @@ import { VIEWS_STALE_TIME } from '../constants'
 import type { PublicViewsOrderingData } from '../types'
 import { isViewsOrderingData } from '../types'
 
-const EMPTY_ORDERING: PublicViewsOrderingData = {
-    views: {},
-    views_top: {},
-    views_bottom: {},
-    view_sections: {},
-}
-
 export type PublicViewsOrderingSetting = {
     id: number | undefined
     data: PublicViewsOrderingData
@@ -43,4 +36,11 @@ export function usePublicViewsOrderingSetting(): PublicViewsOrderingSetting {
 
 export function usePublicViewsOrdering(): PublicViewsOrderingData {
     return usePublicViewsOrderingSetting().data
+}
+
+const EMPTY_ORDERING: PublicViewsOrderingData = {
+    views: {},
+    views_top: {},
+    views_bottom: {},
+    view_sections: {},
 }

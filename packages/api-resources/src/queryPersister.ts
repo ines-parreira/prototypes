@@ -45,6 +45,7 @@ export function createLocalForageStorage() {
 export const asyncStoragePersister = createAsyncStoragePersister({
     storage: createLocalForageStorage(),
     key: getStorageKey(),
+    throttleTime: DurationInMs.TenSeconds,
 })
 
 const WHITELISTED_QUERY_KEY_PREFIXES = ['views', 'account']

@@ -40,6 +40,7 @@ vi.mock('../usePublicViewsOrdering', () => ({
 const mockListViews = mockListViewsHandler(async () =>
     HttpResponse.json(
         mockListViewsResponse({
+            meta: { next_cursor: null, prev_cursor: null, total_resources: 0 },
             data: [inboxView, unassignedView, closedView, trashView],
         }),
     ),
@@ -123,6 +124,11 @@ describe('useSystemViews', () => {
             mockListViewsHandler(async () =>
                 HttpResponse.json(
                     mockListViewsResponse({
+                        meta: {
+                            next_cursor: null,
+                            prev_cursor: null,
+                            total_resources: 0,
+                        },
                         data: [
                             spamView,
                             trashV,
@@ -161,6 +167,11 @@ describe('useSystemViews', () => {
             mockListViewsHandler(async () =>
                 HttpResponse.json(
                     mockListViewsResponse({
+                        meta: {
+                            next_cursor: null,
+                            prev_cursor: null,
+                            total_resources: 0,
+                        },
                         data: [inboxView, namelessView],
                     }),
                 ),

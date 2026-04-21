@@ -46,7 +46,7 @@ import {
     areAllActiveViewItemsSelected,
     getActiveView,
     areFiltersValid as getAreFiltersValid,
-    isActiveViewTrashView as getIsActiveViewTrashView,
+    isViewActiveTrashView as getIsActiveViewTrashView,
 } from 'state/views/selectors'
 import { TagDropdownMenu } from 'tags'
 import PriorityDropdownMenu from 'ticket-list-view/components/bulk-actions/PriorityDropdownMenu'
@@ -78,7 +78,7 @@ export const TicketListActions = ({
     const currentUser = useAppSelector((state) => state.currentUser)
     const teams = useAppSelector(getTeams)
     const agents = useAppSelector(getHumanAgents)
-    const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
+    const isViewActiveTrashView = useAppSelector(getIsActiveViewTrashView)
     const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
     const areFiltersValid = useAppSelector(getAreFiltersValid)
     const activeView = useAppSelector(getActiveView)
@@ -640,7 +640,7 @@ export const TicketListActions = ({
                             Export tickets
                         </DropdownItemInternal>
                         <div className={css.divider} />
-                        {isActiveViewTrashView ? (
+                        {isViewActiveTrashView ? (
                             <>
                                 <DropdownItemInternal
                                     option={{
@@ -701,7 +701,7 @@ export const TicketListActions = ({
                 buttonProps={{
                     size: 'small',
                     intent: 'primary',
-                    onClick: isActiveViewTrashView ? bulkDelete : bulkTrash,
+                    onClick: isViewActiveTrashView ? bulkDelete : bulkTrash,
                     className: css.popoverFooter,
                 }}
             >
@@ -709,7 +709,7 @@ export const TicketListActions = ({
                 <div className={css.popoverBody}>
                     Are you sure you want to delete {selectedCount} ticket
                     {selectedCount && selectedCount > 1 && 's'}
-                    {isActiveViewTrashView && ' forever'}?
+                    {isViewActiveTrashView && ' forever'}?
                 </div>
             </Popover>
         </div>

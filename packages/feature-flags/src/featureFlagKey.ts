@@ -155,6 +155,7 @@ export enum FeatureFlagKey {
     HelpCenterOnePager = 'help-center-one-pager',
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HttpIntegrationOAuth = 'http-integration-oauth',
+    ImprovedViewCountUpdates = 'improved-view-count-updates',
     IncreaseGuidanceCreationLimit = 'increase-guidance-creation-limitation',
     IncreaseVisibilityOfOpportunity = 'linear.project_increase-visibility-of-opportunities.top-opportunities',
     KnowledgeIntentManagementSystem = 'linear.project_knowledge-intent-management-system.enable-feature',

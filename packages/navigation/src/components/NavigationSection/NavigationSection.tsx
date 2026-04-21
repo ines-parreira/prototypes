@@ -32,6 +32,8 @@ type CollapsibleSectionProps = BaseSectionProps & {
     actionsSlot?: ReactNode
     trailingSlot?: IconName | ReactNode
     isDisabled?: boolean
+    defaultExpanded?: boolean
+    onExpandedChange?: (isExpanded: boolean) => void
 }
 
 type LinkSectionProps = BaseSectionProps & {
@@ -91,12 +93,16 @@ export function NavigationSection(props: NavigationSectionProps) {
         actionsSlot,
         trailingSlot,
         isDisabled,
+        defaultExpanded,
+        onExpandedChange,
     } = props
 
     return (
         <Disclosure
             isDisabled={isDisabled}
             id={id}
+            defaultExpanded={defaultExpanded}
+            onExpandedChange={onExpandedChange}
             {...(canduId ? { 'data-candu-id': canduId } : {})}
         >
             <DisclosureHeader

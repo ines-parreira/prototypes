@@ -65,14 +65,10 @@ type AccountSettingsCache = {
 }
 
 function isAccountSettingsCache(value: unknown): value is AccountSettingsCache {
-    if (typeof value !== 'object' || value === null || !('data' in value)) {
+    if (value == null || typeof value !== 'object' || !('data' in value)) {
         return false
     }
-    const outer = value.data
-    if (typeof outer !== 'object' || outer === null || !('data' in outer)) {
-        return false
-    }
-    return Array.isArray(outer.data)
+    return Array.isArray((value as AccountSettingsCache).data?.data)
 }
 
 function patchCache(

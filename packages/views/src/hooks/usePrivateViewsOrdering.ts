@@ -5,11 +5,6 @@ import type { PrivateViewsOrderingData } from '../types'
 import { isViewsOrderingData } from '../types'
 import { getWindowUserSettings } from './windowUserSettings'
 
-const EMPTY_ORDERING: PrivateViewsOrderingData = {
-    views: {},
-    view_sections: {},
-}
-
 export type PrivateViewsOrderingSetting = {
     id: number | undefined
     data: PrivateViewsOrderingData
@@ -32,6 +27,11 @@ export function usePrivateViewsOrderingSetting(): PrivateViewsOrderingSetting {
 
 export function usePrivateViewsOrdering(): PrivateViewsOrderingData {
     return usePrivateViewsOrderingSetting().data
+}
+
+const EMPTY_ORDERING: PrivateViewsOrderingData = {
+    views: {},
+    view_sections: {},
 }
 
 function loadFromWindow(): PrivateViewsOrderingSetting {

@@ -2,17 +2,55 @@ import { useLocalStorage } from '@repo/hooks'
 
 import { DisclosureGroup } from '@gorgias/axiom'
 
-export type NavigationSectionGroupProps = {
+type UncontrolledProps = {
     children: React.ReactNode
     storageKey: string
     defaultExpandedKeys?: string[]
+    expandedKeys?: never
+    onExpandedChange?: never
 }
 
-export function NavigationSectionGroup({
+type ControlledProps = {
+    children: React.ReactNode
+    expandedKeys: string[]
+    onExpandedChange: (keys: string[]) => void
+    storageKey?: never
+    defaultExpandedKeys?: never
+}
+
+export type NavigationSectionGroupProps = UncontrolledProps | ControlledProps
+
+export function NavigationSectionGroup(props: NavigationSectionGroupProps) {
+    if ('expandedKeys' in props && props.expandedKeys !== undefined) {
+        return (
+            <DisclosureGroup
+                gap="xs"
+                allowsMultipleExpanded
+                expandedKeys={props.expandedKeys}
+                onExpandedChange={(keys) =>
+                    props.onExpandedChange([...keys] as string[])
+                }
+            >
+                {props.children}
+            </DisclosureGroup>
+        )
+    }
+
+    return (
+        <UncontrolledNavigationSectionGroup
+            storageKey={props.storageKey}
+            defaultExpandedKeys={props.defaultExpandedKeys}
+        >
+            {props.children}
+        </UncontrolledNavigationSectionGroup>
+    )
+}
+
+function UncontrolledNavigationSectionGroup({
     children,
     storageKey,
     defaultExpandedKeys = [],
-}: NavigationSectionGroupProps) {
+}: UncontrolledProps) {
     const [expandedKeys, setExpandedKeys] = useLocalStorage(
         `${storageKey}:expanded-sections`,
         defaultExpandedKeys,

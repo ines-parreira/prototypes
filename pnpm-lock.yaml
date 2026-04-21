@@ -3847,12 +3847,18 @@ importers:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
         version: 0.9.117
+      '@repo/api-resources':
+        specifier: workspace:*
+        version: link:../api-resources
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/feature-flags':
+        specifier: workspace:*
+        version: link:../feature-flags
       '@repo/testing':
         specifier: workspace:*
         version: link:../testing

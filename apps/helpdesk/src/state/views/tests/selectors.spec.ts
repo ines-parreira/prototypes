@@ -30,7 +30,7 @@ describe('selectors', () => {
         localStorage.clear()
     })
 
-    describe('isActiveViewTrashView()', () => {
+    describe('isViewActiveTrashView()', () => {
         it('should be the trash view', () => {
             const state = {
                 views: initialState.set(
@@ -40,7 +40,7 @@ describe('selectors', () => {
                     }),
                 ),
             } as RootState
-            expect(selectors.isActiveViewTrashView(state)).toBe(true)
+            expect(selectors.isViewActiveTrashView(state)).toBe(true)
         })
         it('should not be the trash view', () => {
             const state = {
@@ -53,7 +53,7 @@ describe('selectors', () => {
                     }),
                 ),
             } as RootState
-            expect(selectors.isActiveViewTrashView(state)).toBe(false)
+            expect(selectors.isViewActiveTrashView(state)).toBe(false)
         })
     })
 

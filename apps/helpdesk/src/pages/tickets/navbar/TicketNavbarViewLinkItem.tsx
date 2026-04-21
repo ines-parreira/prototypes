@@ -1,7 +1,7 @@
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, useCallback, useMemo } from 'react'
 
 import { NavigationSectionItem } from '@repo/navigation'
-import { useViewCount } from '@repo/views'
+import { useTrackViewInViewport, useViewCount } from '@repo/views'
 import { matchPath, useLocation } from 'react-router-dom'
 
 import type { IconName } from '@gorgias/axiom'
@@ -28,6 +28,15 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
         ref,
     ) {
         const viewCount = useViewCount(view.id)
+        const viewportRef = useTrackViewInViewport(view.id)
+        const mergedRef = useCallback(
+            (node: HTMLAnchorElement | null) => {
+                viewportRef(node)
+                if (typeof ref === 'function') ref(node)
+                else if (ref) ref.current = node
+            },
+            [ref, viewportRef],
+        )
         const { isEnabled: splitTicketViewEnabled } = useSplitTicketView()
         const { pathname } = useLocation()
         const match = matchPath<{ viewId: string }>(pathname, {
@@ -57,7 +66,7 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
 
         return (
             <NavigationSectionItem
-                ref={ref}
+                ref={mergedRef}
                 canduId={canduId}
                 onClick={onClick}
                 id={`view-${view.id}`}
