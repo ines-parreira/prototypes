@@ -165,6 +165,42 @@ describe('SummaryFooter', () => {
         expect(mockHistoryPush).not.toHaveBeenCalled()
     })
 
+    describe('impersonation warning', () => {
+        afterEach(() => {
+            window.USER_IMPERSONATED = null
+        })
+
+        it('does not render the External page tag when not impersonating', () => {
+            render(
+                <Provider store={store}>
+                    <SummaryFooter {...props} />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByText(
+                    'This is a customer-facing page. Make changes from the internal billing page.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders the External page tag when impersonating', () => {
+            window.USER_IMPERSONATED = true
+
+            render(
+                <Provider store={store}>
+                    <SummaryFooter {...props} />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText(
+                    'This is a customer-facing page. Make changes from the internal billing page.',
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+
     it('calls setSessionSelectedPlans with selectedPlans when subscription is updated', async () => {
         const user = userEvent.setup()
         const mockSetSessionSelectedPlans = jest.fn()

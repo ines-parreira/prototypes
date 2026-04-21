@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useMemo, useState } from 'react'
 
+import { isSessionImpersonated } from '@repo/activity-tracker'
 import type { SelectedPlans } from '@repo/billing'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
@@ -11,7 +12,7 @@ import { reportError } from '@repo/logging'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Button, toast } from '@gorgias/axiom'
+import { Box, Button, Color, Tag, toast } from '@gorgias/axiom'
 
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
 
@@ -221,7 +222,13 @@ const SummaryFooter = ({
                 </>
             )}
             {!hideSubscribeButton && (
-                <div className={css.button}>
+                <Box flexDirection="column" alignItems="flex-end" gap="xs">
+                    {isSessionImpersonated() && (
+                        <Tag color={Color.Orange}>
+                            This is a customer-facing page. Make changes from
+                            the internal billing page.
+                        </Tag>
+                    )}
                     <Button
                         isDisabled={
                             isTrialing || isCurrentSubscriptionCanceled
@@ -242,7 +249,7 @@ const SummaryFooter = ({
                     >
                         {ctaText}
                     </Button>
-                </div>
+                </Box>
             )}
         </div>
     )
