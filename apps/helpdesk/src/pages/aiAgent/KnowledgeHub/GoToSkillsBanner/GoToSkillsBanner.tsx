@@ -58,44 +58,41 @@ export const GoToSkillsBanner: React.FC<Props> = ({ shopName }) => {
                 />
             </Box>
             <Box gap="80px">
-                <Box
-                    display="flex"
-                    flexDirection="column"
-                    gap="xs"
-                    paddingBottom="lg"
-                >
-                    <Box>
-                        <Tag color={TagColor.Purple}>New</Tag>
+                <Box gap="lg" flexDirection="column">
+                    <Box flexDirection="column" gap="xs">
+                        <Box>
+                            <Tag color={TagColor.Purple}>New</Tag>
+                        </Box>
+                        <Heading size="xl">
+                            Take control of how AI Agent handles specific
+                            conversations
+                        </Heading>
+                        <Text>
+                            Skills let you write step-by-step instructions for
+                            your most common request types — like order updates,
+                            returns, or product questions. Your existing
+                            knowledge still works; skills just give you more say
+                            over what AI Agent does and says.
+                        </Text>
                     </Box>
-                    <Heading size="xl">
-                        Take control of how AI Agent handles specific
-                        conversations
-                    </Heading>
-                    <Text>
-                        Skills let you write step-by-step instructions for your
-                        most common request types — like order updates, returns,
-                        or product questions. Your existing knowledge still
-                        works; skills just give you more say over what AI Agent
-                        does and says.
-                    </Text>
+                    <Box gap="xs">
+                        <Button
+                            onClick={handleGoToSkills}
+                            aria-label="Go to skills"
+                            variant="primary"
+                        >
+                            Go to skills
+                        </Button>
+                        <Button
+                            onClick={handleLearnMore}
+                            variant="tertiary"
+                            aria-label="Learn more"
+                        >
+                            Learn more
+                        </Button>
+                    </Box>
                 </Box>
                 <Card className={css.placeholder} />
-            </Box>
-            <Box>
-                <Button
-                    onClick={handleGoToSkills}
-                    aria-label="Go to skills"
-                    variant="primary"
-                >
-                    Go to skills
-                </Button>
-                <Button
-                    onClick={handleLearnMore}
-                    variant="tertiary"
-                    aria-label="Learn more"
-                >
-                    Learn more
-                </Button>
             </Box>
         </Card>
     )

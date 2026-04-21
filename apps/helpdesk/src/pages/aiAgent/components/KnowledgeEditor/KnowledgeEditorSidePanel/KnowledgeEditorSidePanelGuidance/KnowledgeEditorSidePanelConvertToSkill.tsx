@@ -13,7 +13,7 @@ export const KnowledgeEditorSidePanelConvertToSkill = ({
         <Box display="flex" gap="xs" flexDirection="column">
             <Box display="flex" flexDirection="column" marginTop="md">
                 <Text size="md" variant="bold">
-                    Convert To Skill
+                    Convert to skill
                 </Text>
                 <Text size="md" color="content-neutral-secondary">
                     Create a skill from this content and link intents so AI

@@ -17,10 +17,10 @@ describe('KnowledgeEditorSidePanelConvertToSkill', () => {
     afterEach(() => jest.clearAllMocks())
 
     describe('content', () => {
-        it('renders the "Convert To Skill" heading', () => {
+        it('renders the "Convert to skill" heading', () => {
             renderComponent()
 
-            expect(screen.getByText('Convert To Skill')).toBeInTheDocument()
+            expect(screen.getByText('Convert to skill')).toBeInTheDocument()
         })
 
         it('renders the description text', () => {
