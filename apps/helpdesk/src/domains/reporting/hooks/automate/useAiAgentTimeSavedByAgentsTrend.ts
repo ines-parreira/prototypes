@@ -12,12 +12,18 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 export const useAiAgentTimeSavedByAgentsTrend = (
     statsFilters: StatsFilters,
     userTimezone: string,
+    enabled: boolean = true,
 ) => {
     const aiAiAgentAutomatedInteractionTrend =
-        useAIAgentAutomatedInteractionsTrend(statsFilters, userTimezone)
+        useAIAgentAutomatedInteractionsTrend(
+            statsFilters,
+            userTimezone,
+            enabled,
+        )
     const ticketHandleTimeTrend = useTicketHandleTimeTrend(
         statsFilters,
         userTimezone,
+        enabled,
     )
 
     return {

@@ -128,3 +128,25 @@ export const dynamicSupportAgentTimeSaved = aiAgentTimeSavedScope
 
 export const dynamicSupportAgentTimeSavedQueryFactoryV2 = (ctx: Context) =>
     dynamicSupportAgentTimeSaved.build(ctx)
+
+export const averageTimeSavedSupportAgentTimeseries = aiAgentTimeSavedScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_TIMESERIES)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['averageTimeSavedByAgent'] as const,
+        time_dimensions: [
+            { dimension: 'eventDatetime', granularity: ctx.granularity },
+        ] as const,
+        filters: createScopeFilters(
+            {
+                ...ctx.filters,
+                aiAgentRole: withLogicalOperator([
+                    AutomationSkillType.AiAgentSupport,
+                ]),
+            },
+            config,
+        ),
+    }))
+
+export const averageTimeSavedSupportAgentTimeseriesQueryV2Factory = (
+    ctx: Context,
+) => averageTimeSavedSupportAgentTimeseries.build(ctx)

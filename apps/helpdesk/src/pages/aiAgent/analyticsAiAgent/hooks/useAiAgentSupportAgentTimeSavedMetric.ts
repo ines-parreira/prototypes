@@ -10,19 +10,19 @@ import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
-    dynamicAllAgentsTimeSaved,
-    dynamicAllAgentsTimeSavedQueryFactoryV2,
+    dynamicSupportAgentTimeSaved,
+    dynamicSupportAgentTimeSavedQueryFactoryV2,
 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
-export const useAiAgentAllAgentsTimeSavedMetric = (): MetricTrend => {
+export const useAiAgentSupportAgentTimeSavedMetric = (): MetricTrend => {
     const { statsFilters, userTimezone } = useAutomateFilters()
 
     const stage = useGetNewStatsFeatureFlagMigration(
-        METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED,
     )
     const isV2 = stage === 'live' || stage === 'complete'
 
@@ -33,11 +33,11 @@ export const useAiAgentAllAgentsTimeSavedMetric = (): MetricTrend => {
     )
 
     const v2Trend = useStatsMetricTrend(
-        dynamicAllAgentsTimeSavedQueryFactoryV2({
+        dynamicSupportAgentTimeSavedQueryFactoryV2({
             filters: statsFilters,
             timezone: userTimezone,
         }),
-        dynamicAllAgentsTimeSavedQueryFactoryV2({
+        dynamicSupportAgentTimeSavedQueryFactoryV2({
             filters: {
                 ...statsFilters,
                 period: getPreviousPeriod(statsFilters.period),
@@ -60,20 +60,20 @@ export const useAiAgentAllAgentsTimeSavedMetric = (): MetricTrend => {
     }
 }
 
-export const fetchAiAgentAllAgentsTimeSavedTrend = async (
+export const fetchAiAgentSupportAgentTimeSavedTrend = async (
     statsFilters: StatsFilters,
     userTimezone: string,
 ) => {
     const stage = await getNewStatsFeatureFlagMigration(
-        dynamicAllAgentsTimeSaved.name,
+        dynamicSupportAgentTimeSaved.name,
     )
     if (stage === 'live' || stage === 'complete') {
         return fetchStatsMetricTrend(
-            dynamicAllAgentsTimeSavedQueryFactoryV2({
+            dynamicSupportAgentTimeSavedQueryFactoryV2({
                 filters: statsFilters,
                 timezone: userTimezone,
             }),
-            dynamicAllAgentsTimeSavedQueryFactoryV2({
+            dynamicSupportAgentTimeSavedQueryFactoryV2({
                 filters: {
                     ...statsFilters,
                     period: getPreviousPeriod(statsFilters.period),

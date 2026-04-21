@@ -2,6 +2,8 @@ import {
     aiAgentSupportAgentTimeSavedPerIntent,
     aiAgentSupportAgentTimeSavedPerIntentQueryFactoryV2,
     aiAgentTimeSavedScope,
+    averageTimeSavedSupportAgentTimeseries,
+    averageTimeSavedSupportAgentTimeseriesQueryV2Factory,
     dynamicAllAgentsTimeSaved,
     dynamicAllAgentsTimeSavedQueryFactoryV2,
     dynamicAllAgentsTimeSavedTimeseries,
@@ -568,6 +570,110 @@ describe('dynamicSupportAgentTimeSaved', () => {
             expect(dynamicSupportAgentTimeSavedQueryFactoryV2(ctx)).toEqual(
                 dynamicSupportAgentTimeSaved.build(ctx),
             )
+        })
+    })
+})
+
+describe('averageTimeSavedSupportAgentTimeseries', () => {
+    const baseFilters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    const supportSkillFilter = {
+        member: 'aiAgentRole',
+        operator: 'one-of',
+        values: ['ai-agent-support'],
+    }
+
+    const context = {
+        filters: baseFilters,
+        timezone: 'utc',
+    }
+
+    describe('averageTimeSavedSupportAgentTimeseries', () => {
+        it('builds query with correct metricName, measures, time_dimensions, and support agent filter', () => {
+            expect(
+                averageTimeSavedSupportAgentTimeseries.build({
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                }),
+            ).toEqual({
+                metricName: 'ai-agent-support-agent-time-saved-timeseries',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+            })
+        })
+
+        it('uses granularity from context in time_dimensions', () => {
+            expect(
+                averageTimeSavedSupportAgentTimeseries.build({
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                }),
+            ).toEqual({
+                metricName: 'ai-agent-support-agent-time-saved-timeseries',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'week' },
+                ],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+            })
+        })
+    })
+
+    describe('averageTimeSavedSupportAgentTimeseriesQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            const ctx = {
+                ...context,
+                granularity: 'day' as AggregationWindow,
+            }
+
+            expect(
+                averageTimeSavedSupportAgentTimeseriesQueryV2Factory(ctx),
+            ).toEqual(averageTimeSavedSupportAgentTimeseries.build(ctx))
+        })
+
+        it('returns query with time_dimensions when granularity is provided', () => {
+            const result = averageTimeSavedSupportAgentTimeseriesQueryV2Factory(
+                {
+                    ...context,
+                    granularity: 'month' as AggregationWindow,
+                },
+            )
+
+            expect(result).toEqual({
+                metricName: 'ai-agent-support-agent-time-saved-timeseries',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'month' },
+                ],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+            })
         })
     })
 })
