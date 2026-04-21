@@ -200,6 +200,10 @@ export const usePendingTasksRuleEngine = ({
     const isTriggerOnSearchDisabled = useFlag(
         FeatureFlagKey.TriggerOnSearchKillSwitch,
     )
+    const isAiSalesAgentEmailEnabled = !!useFlag(
+        FeatureFlagKey.AiSalesAgentActivationEmailSettings,
+        false,
+    )
 
     // Calculate tasks using useMemo to prevent infinite rerenders
     const { completedTasks, pendingTasks } = useMemo(() => {
@@ -222,6 +226,7 @@ export const usePendingTasksRuleEngine = ({
                 ticketToReviewViewData: ticketToReviewViewData,
                 pageInteractions: pageInteractionsData,
                 isActivationEnabled,
+                isAiSalesAgentEmailEnabled,
                 selfServiceChatChannels,
                 storeKnowledgeStatus: storeKnowledgeStatusData,
                 alreadyUsedEmailIntegrationsIds,
@@ -248,6 +253,7 @@ export const usePendingTasksRuleEngine = ({
         ticketToReviewViewData,
         pageInteractionsData,
         isActivationEnabled,
+        isAiSalesAgentEmailEnabled,
         selfServiceChatChannels,
         storeKnowledgeStatusData,
         alreadyUsedEmailIntegrationsIds,

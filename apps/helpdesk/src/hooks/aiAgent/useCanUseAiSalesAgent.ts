@@ -1,3 +1,5 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import useAppSelector from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
@@ -42,8 +44,12 @@ export const useCanUseAiSalesAgent = (shopName?: string) => {
 
 export const canStoreUseAiSalesAgent = (
     storeConfiguration: StoreConfiguration,
+    trialExtensionPeriodInDays = 0,
 ) => {
-    const trialState = getAiSalesAgentTrialState(storeConfiguration)
+    const trialState = getAiSalesAgentTrialState(
+        storeConfiguration,
+        trialExtensionPeriodInDays,
+    )
 
     return trialState === TrialState.Trial
 }
@@ -54,11 +60,14 @@ export const canStoreUseAiSalesAgent = (
 export const useAtLeastOneStoreHasActiveTrial = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
+    const trialExtensionPeriodInDays =
+        useFlag<number>(FeatureFlagKey.AiShoppingAssistantTrialExtension, 0) ||
+        0
 
     const { storeConfigurations } = useStoreConfigurations(accountDomain)
 
     return storeConfigurations.some((storeConfiguration) =>
-        canStoreUseAiSalesAgent(storeConfiguration),
+        canStoreUseAiSalesAgent(storeConfiguration, trialExtensionPeriodInDays),
     )
 }
 
@@ -67,8 +76,12 @@ export const useAtLeastOneStoreHasActiveTrial = () => {
  */
 export const atLeastOneStoreHasActiveTrialOnSpecificStores = (
     storeActivations: Record<string, StoreActivation>,
+    trialExtensionPeriodInDays = 0,
 ) => {
     return Object.values(storeActivations).some((storeActivation) =>
-        canStoreUseAiSalesAgent(storeActivation.configuration),
+        canStoreUseAiSalesAgent(
+            storeActivation.configuration,
+            trialExtensionPeriodInDays,
+        ),
     )
 }

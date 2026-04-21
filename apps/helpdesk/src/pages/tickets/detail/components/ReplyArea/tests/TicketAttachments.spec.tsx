@@ -1,30 +1,18 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { StyleSheetTestUtils } from 'aphrodite'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
 import { AttachmentEnum } from 'common/types'
-import * as discountedPriceFlagModule from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import type { Account } from 'state/currentAccount/types'
 import { replaceAttachmentURL } from 'utils'
 
-import TicketAttachments from '../TicketAttachments'
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
-    })),
-}))
+import { TicketAttachments as TicketAttachmentsComponent } from '../TicketAttachments'
 
 describe('TicketAttachments component', () => {
     beforeAll(() => {
@@ -33,94 +21,98 @@ describe('TicketAttachments component', () => {
         } as Account
     })
 
-    const attachments: ComponentProps<typeof TicketAttachments>['attachments'] =
-        fromJS([
-            {
-                name: 'foo',
-                content_type: 'image/png',
-                url: 'https://uploads.gorgi.us/bar',
+    const attachments: ComponentProps<
+        typeof TicketAttachmentsComponent
+    >['attachments'] = fromJS([
+        {
+            name: 'foo',
+            content_type: 'image/png',
+            url: 'https://uploads.gorgi.us/bar',
+        },
+        {
+            name: 'bar',
+            content_type: 'text/html',
+            url: 'foo',
+        },
+        {
+            name: 'qux',
+            content_type: 'application/productCard',
+            url: 'http://gorgias.io/bar',
+            extra: {
+                price: 2,
+                variant_name: 'quux',
+                product_link: 'http://gorgias.io/bar',
+                currency: 'USD',
             },
-            {
-                name: 'bar',
-                content_type: 'text/html',
-                url: 'foo',
+        },
+        {
+            name: 'Similar Browsed Products',
+            content_type: 'application/productRecommendation',
+            extra: {
+                id: '01J4VFPQ477Z2CNXAB5ES70GN3',
+                scenario: 'similar_seen',
             },
-            {
-                name: 'qux',
-                content_type: 'application/productCard',
-                url: 'http://gorgias.io/bar',
-                extra: {
-                    price: 2,
-                    variant_name: 'quux',
-                    product_link: 'http://gorgias.io/bar',
-                    currency: 'USD',
-                },
-            },
-            {
-                name: 'Similar Browsed Products',
-                content_type: 'application/productRecommendation',
-                extra: {
-                    id: '01J4VFPQ477Z2CNXAB5ES70GN3',
-                    scenario: 'similar_seen',
-                },
-            },
-            {
-                name: 'Contact Form',
-                content_type: AttachmentEnum.ContactForm,
-                extra: {
-                    steps: [
-                        {
-                            fields: [
-                                {
-                                    name: 'email',
-                                    type: 'email',
-                                    required: true,
-                                    label: 'Enter your email',
-                                },
-                            ],
-                            cta: 'Subscribe now!',
-                        },
-                    ],
-                    disclaimer: 'Disclaimer',
-                    on_success_content: {
-                        message: 'Congrats',
+        },
+        {
+            name: 'Contact Form',
+            content_type: AttachmentEnum.ContactForm,
+            extra: {
+                steps: [
+                    {
+                        fields: [
+                            {
+                                name: 'email',
+                                type: 'email',
+                                required: true,
+                                label: 'Enter your email',
+                            },
+                        ],
+                        cta: 'Subscribe now!',
                     },
-                    targets: [
-                        {
-                            type: 'shopify',
-                            subscriber_types: ['email', 'sms'],
-                            tags: [],
-                        },
-                    ],
+                ],
+                disclaimer: 'Disclaimer',
+                on_success_content: {
+                    message: 'Congrats',
                 },
+                targets: [
+                    {
+                        type: 'shopify',
+                        subscriber_types: ['email', 'sms'],
+                        tags: [],
+                    },
+                ],
             },
-        ])
+        },
+    ])
 
     window.IMAGE_PROXY_URL = 'http://proxy-url/'
     window.IMAGE_PROXY_SIGN_KEY = 'test-key'
 
-    const minProps: ComponentProps<typeof TicketAttachments> = {
+    const minProps: ComponentProps<typeof TicketAttachmentsComponent> = {
         context: 'campaign-message',
         attachments: attachments,
         removable: false,
         deleteAttachment: jest.fn(),
+        flags: {},
     }
 
     describe('read-only', () => {
         it('should match snapshot', () => {
-            const { container } = render(<TicketAttachments {...minProps} />)
+            const { container } = render(
+                <TicketAttachmentsComponent {...minProps} />,
+            )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display all attachments', () => {
-            render(<TicketAttachments {...minProps} />)
+            render(<TicketAttachmentsComponent {...minProps} />)
             expect(
                 document.getElementsByClassName('attachmentContainer').length,
             ).toBe(attachments.size)
         })
 
         it('should set a preview on the first attachment', () => {
-            render(<TicketAttachments {...minProps} />)
+            render(<TicketAttachmentsComponent {...minProps} />)
             expect(screen.getAllByRole('link')[0]).toHaveStyle(
                 `backgroundImage: url(${replaceAttachmentURL(
                     'https://uploads.gorgi.us/bar',
@@ -130,7 +122,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('should not set a preview on the second attachment', () => {
-            render(<TicketAttachments {...minProps} />)
+            render(<TicketAttachmentsComponent {...minProps} />)
             expect(screen.getAllByRole('link')[1]).not.toHaveAttribute('style')
         })
 
@@ -143,7 +135,7 @@ describe('TicketAttachments component', () => {
 
     describe('removable', () => {
         it('should show the remove button', () => {
-            render(<TicketAttachments {...minProps} removable />)
+            render(<TicketAttachmentsComponent {...minProps} removable />)
 
             expect(
                 document.getElementsByClassName('itemRemove').length,
@@ -153,7 +145,7 @@ describe('TicketAttachments component', () => {
 
     describe('lightbox', () => {
         beforeEach(() => {
-            render(<TicketAttachments {...minProps} />)
+            render(<TicketAttachmentsComponent {...minProps} />)
 
             // aphrodite does not work in jsdom
             StyleSheetTestUtils.suppressStyleInjection()
@@ -205,7 +197,7 @@ describe('TicketAttachments component', () => {
     describe('private', () => {
         it("should display an error message if there's private attachments", () => {
             const { container } = render(
-                <TicketAttachments
+                <TicketAttachmentsComponent
                     {...minProps}
                     attachments={fromJS([
                         {
@@ -278,7 +270,10 @@ describe('TicketAttachments component', () => {
                 },
             ]) as List<Map<string, string>>
             const { getByText, queryByText } = render(
-                <TicketAttachments {...minProps} attachments={attachments} />,
+                <TicketAttachmentsComponent
+                    {...minProps}
+                    attachments={attachments}
+                />,
             )
 
             expect(getByText('warning')).toBeInTheDocument()
@@ -307,7 +302,10 @@ describe('TicketAttachments component', () => {
                 },
             ]) as List<Map<string, string>>
             const { getAllByText } = render(
-                <TicketAttachments {...minProps} attachments={attachments} />,
+                <TicketAttachmentsComponent
+                    {...minProps}
+                    attachments={attachments}
+                />,
             )
 
             expect(getAllByText(attachments.getIn([0, 'name']))).toHaveLength(2)
@@ -328,32 +326,38 @@ describe('TicketAttachments component', () => {
             },
         ]) as List<Map<string, string>>
 
-        it('should display compare-at price if flag is enabled', () => {
-            jest.spyOn(
-                discountedPriceFlagModule,
-                'getIsProductCardDiscountedPriceEnabled',
-            ).mockReturnValue(true)
-
+        it('should display compare-at price if flag is enabled', async () => {
             const { getByText } = render(
-                <TicketAttachments {...minProps} attachments={attachments} />,
+                <TicketAttachmentsComponent
+                    {...minProps}
+                    attachments={attachments}
+                    flags={{
+                        [FeatureFlagKey.ProductCardDiscountedPrice]: true,
+                    }}
+                />,
             )
 
             getByText('$31.24')
-            getByText('$55.55')
+
+            await waitFor(() => expect(getByText('$55.55')).toBeInTheDocument())
         })
 
-        it('should display compare-at price if flag is disabled', () => {
-            jest.spyOn(
-                discountedPriceFlagModule,
-                'getIsProductCardDiscountedPriceEnabled',
-            ).mockReturnValue(false)
-
+        it('should display compare-at price if flag is disabled', async () => {
             const { getByText, queryByText } = render(
-                <TicketAttachments {...minProps} attachments={attachments} />,
+                <TicketAttachmentsComponent
+                    {...minProps}
+                    attachments={attachments}
+                    flags={{
+                        [FeatureFlagKey.ProductCardDiscountedPrice]: false,
+                    }}
+                />,
             )
 
             getByText('$31.24')
-            expect(queryByText('$55.55')).not.toBeInTheDocument()
+
+            await waitFor(() => {
+                expect(queryByText('$55.55')).not.toBeInTheDocument()
+            })
         })
     })
 })

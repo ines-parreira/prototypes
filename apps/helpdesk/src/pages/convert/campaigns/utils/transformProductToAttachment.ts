@@ -13,7 +13,17 @@ export function transformProductToAttachment(
     isConvertSubscriber: boolean,
     utmEnabled: boolean = true,
     utmQueryString: string = '',
+    shouldDisableUtmParams: boolean = false,
 ): CampaignAttachment {
+    const productLink = attachUtmToCampaignProduct(
+        product,
+        context.campaignName,
+        isConvertSubscriber,
+        utmEnabled,
+        utmQueryString,
+        shouldDisableUtmParams,
+    )
+
     return {
         contentType: AttachmentEnum.Product,
         url: product.featured_image,
@@ -24,13 +34,7 @@ export function transformProductToAttachment(
             compare_at_price: product.compareAtPrice,
             currency: product?.currency ?? context.currency ?? 'USD',
             product_id: product.id,
-            product_link: attachUtmToCampaignProduct(
-                product,
-                context.campaignName,
-                isConvertSubscriber,
-                utmEnabled,
-                utmQueryString,
-            ),
+            product_link: productLink,
             variant_name: product?.variant_name,
             position: product?.position,
         },

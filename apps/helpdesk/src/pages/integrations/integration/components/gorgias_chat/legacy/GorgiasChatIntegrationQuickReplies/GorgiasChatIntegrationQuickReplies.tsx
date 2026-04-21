@@ -1,7 +1,8 @@
 import type { FormEvent } from 'react'
 import { Component } from 'react'
 
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import type { FeatureFlagsMap } from '@repo/feature-flags'
+import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -48,6 +49,7 @@ type Props = {
     integration: Map<any, any>
     storeIntegration?: StoreIntegration
     shouldShowPreviewForRevamp: boolean
+    flags?: FeatureFlagsMap
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -55,8 +57,35 @@ type State = {
     quickRepliesEnabled: boolean
     isUpdating: boolean
     isInitialized: boolean
-    chatMultiLanguageFeatureFlag: boolean
-    changeAutomateSettingButtomPosition: boolean
+}
+
+const getQuickRepliesState = (
+    integration: Map<any, any>,
+): Pick<State, 'quickReplies' | 'quickRepliesEnabled' | 'isInitialized'> => {
+    if (integration.isEmpty()) {
+        return {
+            quickReplies: fromJS([]),
+            quickRepliesEnabled: false,
+            isInitialized: false,
+        }
+    }
+
+    const quickRepliesState: Map<any, any> =
+        integration.getIn(['meta', 'quick_replies']) || fromJS({})
+    let quickReplies: List<string> =
+        quickRepliesState.get('replies') || fromJS([])
+
+    // If quickRepliesState is empty, it means this integration never had any quick replies set for it, so we
+    // want to set the default as examples
+    if (quickRepliesState.isEmpty()) {
+        quickReplies = QUICK_REPLIES_DEFAULTS
+    }
+
+    return {
+        quickRepliesEnabled: quickRepliesState.get('enabled') || false,
+        quickReplies,
+        isInitialized: true,
+    }
 }
 
 export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
@@ -64,53 +93,16 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
     State
 > {
     state: State = {
-        quickReplies: fromJS([]),
-        quickRepliesEnabled: false,
+        ...getQuickRepliesState(this.props.integration),
         isUpdating: false,
-        isInitialized: false,
-        chatMultiLanguageFeatureFlag: false,
-        changeAutomateSettingButtomPosition: false,
     }
 
-    _initState = () => {
-        const { integration } = this.props
-        const quickRepliesState: Map<any, any> =
-            integration.getIn(['meta', 'quick_replies']) || fromJS({})
-        let quickReplies: List<any> =
-            quickRepliesState.get('replies') || fromJS([])
-
-        // If quickRepliesState is empty, it means this integration never had any quick replies set for it, so we
-        // want to set the default as examples
-        if (quickRepliesState.isEmpty()) {
-            quickReplies = QUICK_REPLIES_DEFAULTS
-        }
-
-        const chatMultiLanguageFeatureFlag =
-            !!getLDClient().allFlags()[FeatureFlagKey.ChatMultiLanguages]
-
-        const changeAutomateSettingButtomPosition =
-            !!getLDClient().allFlags()[
-                FeatureFlagKey.ChangeAutomateSettingButtomPosition
-            ]
-
-        this.setState({
-            quickRepliesEnabled: quickRepliesState.get('enabled') || false,
-            quickReplies,
-            isInitialized: true,
-            chatMultiLanguageFeatureFlag,
-            changeAutomateSettingButtomPosition,
-        })
-    }
-
-    componentDidMount() {
-        if (!this.props.integration.isEmpty() && !this.state.isInitialized) {
-            this._initState()
-        }
-    }
-
-    componentDidUpdate() {
-        if (!this.props.integration.isEmpty() && !this.state.isInitialized) {
-            this._initState()
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        if (prevProps.integration !== this.props.integration) {
+            this.setState((prevState) => ({
+                ...prevState,
+                ...getQuickRepliesState(this.props.integration),
+            }))
         }
     }
 
@@ -145,8 +137,10 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
     }
 
     render() {
-        const { integration } = this.props
+        const { integration, flags } = this.props
         const { quickRepliesEnabled, isUpdating } = this.state
+        const chatMultiLanguageFeatureFlag =
+            !!flags?.[FeatureFlagKey.ChatMultiLanguages]
 
         const position = {
             alignment: integration.getIn(
@@ -280,7 +274,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         <div className="mb-4">
                             <h4>Quick replies</h4>
                             <p className={css.section}>
-                                {this.state.chatMultiLanguageFeatureFlag ? (
+                                {chatMultiLanguageFeatureFlag ? (
                                     <>
                                         When a customer opens the chat, select
                                         the quick replies the customer can click
@@ -368,8 +362,8 @@ const connector = connect(
     },
 )
 
-const ConnectedComponent = connector(
-    GorgiasChatIntegrationQuickRepliesComponent,
+const ConnectedComponent = withFeatureFlags(
+    connector(GorgiasChatIntegrationQuickRepliesComponent),
 )
 
 function GorgiasChatIntegrationQuickRepliesWithHook(props: {

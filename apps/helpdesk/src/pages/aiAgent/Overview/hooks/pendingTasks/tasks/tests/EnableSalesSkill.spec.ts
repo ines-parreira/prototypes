@@ -1,26 +1,11 @@
 import { AiAgentScope } from 'models/aiAgent/types'
-import {
-    FocusActivationModal,
-    getAiSalesAgentEmailEnabledFlag,
-} from 'pages/aiAgent/Activation/utils'
+import { FocusActivationModal } from 'pages/aiAgent/Activation/utils'
 
 import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
 import { EnableSalesSkill } from '../EnableSalesSkill'
 import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
-jest.mock('pages/aiAgent/Activation/utils', () => ({
-    ...jest.requireActual('pages/aiAgent/Activation/utils'),
-    getAiSalesAgentEmailEnabledFlag: jest.fn(),
-}))
-
 describe('EnableSalesSkill', () => {
-    const mockedGetAiSalesAgentEmailEnabledFlag =
-        getAiSalesAgentEmailEnabledFlag as jest.Mock
-
-    beforeEach(() => {
-        mockedGetAiSalesAgentEmailEnabledFlag.mockReturnValue(true)
-    })
-
     it('should display the task if sales skill is not enabled and at least one sales channel is enabled and the feature flag is enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
@@ -33,6 +18,7 @@ describe('EnableSalesSkill', () => {
         const task = new EnableSalesSkill(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
+                isAiSalesAgentEmailEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )
@@ -80,8 +66,6 @@ describe('EnableSalesSkill', () => {
     })
 
     it('should not display the task if the feature flag is disabled', () => {
-        mockedGetAiSalesAgentEmailEnabledFlag.mockReturnValue(false)
-
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
                 .withoutConnectedHelpCenter()
@@ -93,6 +77,7 @@ describe('EnableSalesSkill', () => {
         const task = new EnableSalesSkill(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
+                isAiSalesAgentEmailEnabled: false,
             }),
             buildRuleEngineRoutes(),
         )
@@ -126,6 +111,7 @@ describe('EnableSalesSkill', () => {
                         storeName,
                     },
                     isActivationEnabled: true,
+                    isAiSalesAgentEmailEnabled: true,
                 }),
                 routes,
             )
@@ -150,6 +136,7 @@ describe('EnableSalesSkill', () => {
                         storeName,
                     },
                     isActivationEnabled: false,
+                    isAiSalesAgentEmailEnabled: true,
                 }),
                 routes,
             )

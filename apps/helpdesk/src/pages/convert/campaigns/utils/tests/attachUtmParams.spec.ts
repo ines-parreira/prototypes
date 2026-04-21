@@ -1,5 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
 import type { CampaignProduct } from '../../types/CampaignProduct'
 import {
     attachUtmToCampaignProduct,
@@ -7,22 +5,6 @@ import {
     removeRevenueUtmFromUrl,
     shouldAppendUtmParam,
 } from '../attachUtmParams'
-
-const allFlagsMock = jest.fn(() => ({
-    [FeatureFlagKey.RevenueDisableUtmParams]: false,
-}))
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: allFlagsMock,
-    })),
-}))
 
 const MOCK_PRODUCT: CampaignProduct = {
     id: 1,
@@ -41,11 +23,7 @@ const MOCK_UTM_ENABLED = true
 describe('shouldAppendUtmParam', () => {
     it('returns false only for exact excepted merchants', () => {
         expect(shouldAppendUtmParam(true)).toEqual(true)
-
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.RevenueDisableUtmParams]: true,
-        })
-        expect(shouldAppendUtmParam(true)).toEqual(false)
+        expect(shouldAppendUtmParam(true, true, true)).toEqual(false)
     })
 
     it('returns false if utm is not enabled', () => {
@@ -56,9 +34,6 @@ describe('shouldAppendUtmParam', () => {
 describe('attachUtmToCampaignProduct', () => {
     describe(`merchant doesn't accept UTM in the links`, () => {
         it('returns the original product url', () => {
-            allFlagsMock.mockReturnValue({
-                [FeatureFlagKey.RevenueDisableUtmParams]: true,
-            })
             expect(
                 attachUtmToCampaignProduct(
                     MOCK_PRODUCT,
@@ -66,16 +41,13 @@ describe('attachUtmToCampaignProduct', () => {
                     true,
                     MOCK_UTM_ENABLED,
                     MOCK_UTM_QUERY_STRING,
+                    true,
                 ),
             ).toEqual(MOCK_PRODUCT.url)
         })
     })
 
     it('adds the source, medium and campaign UTMs', () => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.RevenueDisableUtmParams]: false,
-        })
-
         const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '%20')
         const expectedFullUrl = `${MOCK_PRODUCT.url}?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignNameConcat}`
 
@@ -105,9 +77,6 @@ describe('attachUtmToUrl', () => {
     const MOCK_IS_CONVERT_SUBSCRIBER = true
 
     it('returns the original URL if UTM params should not be appended', () => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.RevenueDisableUtmParams]: true,
-        })
         expect(
             attachUtmToUrl(
                 MOCK_PRODUCT.url,
@@ -115,15 +84,12 @@ describe('attachUtmToUrl', () => {
                 MOCK_IS_CONVERT_SUBSCRIBER,
                 MOCK_UTM_ENABLED,
                 MOCK_UTM_QUERY_STRING,
+                true,
             ),
         ).toEqual(MOCK_PRODUCT.url)
     })
 
     it('attaches UTM parameters to the URL', () => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.RevenueDisableUtmParams]: false,
-        })
-
         const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '%20')
         const expectedFullUrl = `${MOCK_PRODUCT.url}?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignNameConcat}`
 
@@ -139,10 +105,6 @@ describe('attachUtmToUrl', () => {
     })
 
     it('allow custom utm parameters if UTM is disabled', () => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.RevenueDisableUtmParams]: false,
-        })
-
         const stringWithCustomUTM = `${MOCK_PRODUCT.url}?utm_source=FilledByMerchant`
 
         expect(

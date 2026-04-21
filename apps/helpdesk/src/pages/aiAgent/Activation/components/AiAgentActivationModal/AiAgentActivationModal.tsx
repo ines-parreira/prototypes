@@ -31,6 +31,7 @@ type Props = {
     isOpen: boolean
     isFetchLoading: boolean
     isSaveLoading: boolean
+    trialExtensionPeriodInDays: number
     onClose: () => void
     progressPercentage: number
     storeActivations: Record<string, StoreActivation>
@@ -51,6 +52,7 @@ export const AiAgentActivationModal = ({
     isOpen,
     isFetchLoading,
     isSaveLoading,
+    trialExtensionPeriodInDays,
     onClose,
     progressPercentage,
     storeActivations,
@@ -69,7 +71,10 @@ export const AiAgentActivationModal = ({
     const currentUser = useAppSelector(getCurrentUser)
     const userRole = useAppSelector(getRoleName)
     const atLeastOneStoreHasActiveTrial =
-        atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
+        atLeastOneStoreHasActiveTrialOnSpecificStores(
+            storeActivations,
+            trialExtensionPeriodInDays,
+        )
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -213,6 +218,7 @@ export const AiAgentActivationModal = ({
                                                                 [storeName]:
                                                                     store,
                                                             },
+                                                            trialExtensionPeriodInDays,
                                                         ),
                                                     )
                                                 }

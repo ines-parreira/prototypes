@@ -79,6 +79,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> conditional chat preview renderin
                 >
                   <input
                     aria-label="Enable quick replies"
+                    checked=""
                     class="ui-togglefield-input-9b7c"
                     disabled=""
                     type="checkbox"
@@ -310,6 +311,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> conditional chat preview renderin
                 >
                   <input
                     aria-label="Enable quick replies"
+                    checked=""
                     class="ui-togglefield-input-9b7c"
                     disabled=""
                     type="checkbox"
@@ -1235,6 +1237,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 >
                   <input
                     aria-label="Enable quick replies"
+                    checked=""
                     class="ui-togglefield-input-9b7c"
                     disabled=""
                     type="checkbox"

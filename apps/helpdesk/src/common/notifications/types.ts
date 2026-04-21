@@ -40,7 +40,6 @@ export type CategoryConfig = {
     description: string
     typeLabel: string
     notifications?: string[]
-    isEnabled?: () => boolean
 }
 
 export type NotificationConfig<T = unknown> = {
@@ -58,5 +57,4 @@ export type NotificationConfig<T = unknown> = {
         icon?: string
         tooltip?: string
     }
-    isEnabled?: () => boolean
 }

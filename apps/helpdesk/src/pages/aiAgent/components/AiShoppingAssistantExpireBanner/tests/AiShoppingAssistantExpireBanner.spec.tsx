@@ -1,10 +1,9 @@
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import moment from 'moment'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
@@ -16,11 +15,6 @@ jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
         showEarlyAccessModal: jest.fn(),
     })),
 }))
-
-jest.mock('pages/aiAgent/Activation/utils')
-const getAiShoppingAssistantTrialExtensionEnabledFlagMock = assumeMock(
-    getAiShoppingAssistantTrialExtensionEnabledFlag,
-)
 
 // Mock dependencies
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -45,16 +39,19 @@ describe('AiShoppingAssistantExpireBanner', () => {
             }
             return null
         })
-        useFlagMock.mockReturnValue(false)
+        useFlagMock.mockImplementation((flag, defaultValue) => {
+            if (flag === FeatureFlagKey.AiShoppingAssistantTrialExtension) {
+                return 0
+            }
+
+            return defaultValue ?? false
+        })
 
         // Mock trial revamp to be disabled so the banner can show
         useSalesTrialRevampMilestoneMock.mockReturnValue('off')
-
-        // Mock trial extension to be disabled
-        getAiShoppingAssistantTrialExtensionEnabledFlagMock.mockReturnValue(0)
     })
 
-    it('should render correctly', () => {
+    it('should render correctly', async () => {
         jest.spyOn(moment, 'now').mockReturnValue(
             new Date('2025-05-10T00:00:00Z').getTime(),
         )
@@ -63,14 +60,16 @@ describe('AiShoppingAssistantExpireBanner', () => {
             <AiShoppingAssistantExpireBanner deactiveDatetime="2025-05-15T00:00:00Z" />,
         )
 
-        expect(
-            screen.getByText(
-                /Your trial for Shopping Assistant expires in 5 days/i,
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your trial for Shopping Assistant expires in 5 days/i,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
-    it('should render correctly when the trial expires today', () => {
+    it('should render correctly when the trial expires today', async () => {
         jest.spyOn(moment, 'now').mockReturnValue(
             new Date('2025-05-15T00:00:00Z').getTime(),
         )
@@ -79,25 +78,35 @@ describe('AiShoppingAssistantExpireBanner', () => {
             <AiShoppingAssistantExpireBanner deactiveDatetime="2025-05-15T00:00:00Z" />,
         )
 
-        expect(
-            screen.getByText(
-                /Your trial for Shopping Assistant expires today/i,
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your trial for Shopping Assistant expires today/i,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
-    it('should render correctly when the trial extended for 3 days', () => {
-        getAiShoppingAssistantTrialExtensionEnabledFlagMock.mockReturnValue(3)
+    it('should render correctly when the trial extended for 3 days', async () => {
+        useFlagMock.mockImplementation((flag, defaultValue) => {
+            if (flag === FeatureFlagKey.AiShoppingAssistantTrialExtension) {
+                return 3
+            }
+
+            return defaultValue ?? false
+        })
 
         render(
             <AiShoppingAssistantExpireBanner deactiveDatetime="2025-05-15T00:00:00Z" />,
         )
 
-        expect(
-            screen.getByText(
-                /Your trial for Shopping Assistant expires in 3 days/i,
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your trial for Shopping Assistant expires in 3 days/i,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should not render when plan is upgraded', () => {

@@ -1,8 +1,5 @@
 import { AiAgentScope } from 'models/aiAgent/types'
-import {
-    FocusActivationModal,
-    getAiSalesAgentEmailEnabledFlag,
-} from 'pages/aiAgent/Activation/utils'
+import { FocusActivationModal } from 'pages/aiAgent/Activation/utils'
 
 import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
@@ -28,7 +25,7 @@ export class EnableSalesSkill extends Task {
         const chatSet = conf.chatChannelDeactivatedDatetime === null
         const salesNotEnabled = !conf.scopes.includes(AiAgentScope.Sales)
         const atLeastOneSalesChannelEnabled = chatSet || emailSet
-        const ffEnabled = getAiSalesAgentEmailEnabledFlag()
+        const ffEnabled = data.isAiSalesAgentEmailEnabled
         return salesNotEnabled && atLeastOneSalesChannelEnabled && ffEnabled
     }
 

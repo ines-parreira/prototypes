@@ -20,6 +20,8 @@ import {
     useFloating,
     useInteractions,
 } from '@floating-ui/react'
+import type { FeatureFlagsMap } from '@repo/feature-flags'
+import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import { linkify } from '@repo/utils'
 import { EditorState, Modifier, SelectionState } from 'draft-js'
 import ReactPlayer from 'react-player'
@@ -218,6 +220,7 @@ type Props = {
     onClose: () => void
     getWorkflowVariables?: () => WorkflowVariableList
     linkSelectionRect?: DOMRect
+    flags?: FeatureFlagsMap
 } & ActionInjectedProps &
     Pick<
         ToolbarContextType,
@@ -307,12 +310,15 @@ export class AddLinkContainer extends Component<Props> {
     _updateUrlWithConfiguredUtm = (url: string) => {
         if (!this.context.canAddUtm) return url
         const { appliedUtmQueryString, appliedUtmEnabled } = this.state
+        const shouldDisableRevenueUtmParams =
+            !!this.props.flags?.[FeatureFlagKey.RevenueDisableUtmParams]
         return attachUtmToUrl(
             url,
             '',
             this.context.canAddUtm,
             appliedUtmEnabled,
             appliedUtmQueryString,
+            shouldDisableRevenueUtmParams,
         )
     }
 
@@ -814,4 +820,4 @@ const connector = connect(null, {
     linkEditionEnded,
 })
 
-export default connector(withToolbarContext(AddLinkContainer))
+export default connector(withToolbarContext(withFeatureFlags(AddLinkContainer)))

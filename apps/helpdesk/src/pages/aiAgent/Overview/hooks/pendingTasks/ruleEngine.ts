@@ -63,6 +63,7 @@ export type RuleEngineData = {
     ticketToReviewViewData?: TicketViewData
     pageInteractions: PageInteractionsData | null
     isActivationEnabled: boolean
+    isAiSalesAgentEmailEnabled: boolean
     isStandaloneMerchant?: boolean
     isTriggerOnSearchDisabled?: boolean
 }

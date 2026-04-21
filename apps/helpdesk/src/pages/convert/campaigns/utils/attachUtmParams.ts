@@ -1,4 +1,3 @@
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { attachSearchParamsToUrl } from '@repo/utils'
 import { parse } from 'qs'
 
@@ -7,12 +6,9 @@ import type { CampaignProduct } from '../types/CampaignProduct'
 export function shouldAppendUtmParam(
     isConvertSubscriber: boolean,
     utmEnabled: boolean = true,
+    shouldDisableUtmParams: boolean = false,
 ): boolean {
-    const shouldDisableUtmParams = Boolean(
-        getLDClient().allFlags()[FeatureFlagKey.RevenueDisableUtmParams],
-    )
-
-    return isConvertSubscriber && !shouldDisableUtmParams && utmEnabled
+    return isConvertSubscriber && !Boolean(shouldDisableUtmParams) && utmEnabled
 }
 
 export function removeRevenueUtmFromUrl(url: string): string {
@@ -33,8 +29,15 @@ export function attachUtmToUrl(
     isConvertSubscriber: boolean,
     utmEnabled: boolean = true,
     utmQueryString: string = '',
+    shouldDisableUtmParams: boolean = false,
 ): string {
-    if (shouldAppendUtmParam(isConvertSubscriber, utmEnabled)) {
+    if (
+        shouldAppendUtmParam(
+            isConvertSubscriber,
+            utmEnabled,
+            shouldDisableUtmParams,
+        )
+    ) {
         if (utmQueryString.length > 0) {
             const cleanUrl = removeRevenueUtmFromUrl(url)
             const { ...parameters } = parse(utmQueryString, {
@@ -61,6 +64,7 @@ export function attachUtmToCampaignProduct(
     isConvertSubscriber: boolean,
     utmEnabled: boolean,
     utmQueryString: string,
+    shouldDisableUtmParams: boolean = false,
 ): string {
     return attachUtmToUrl(
         product.url,
@@ -68,5 +72,6 @@ export function attachUtmToCampaignProduct(
         isConvertSubscriber,
         utmEnabled,
         utmQueryString,
+        shouldDisableUtmParams,
     )
 }

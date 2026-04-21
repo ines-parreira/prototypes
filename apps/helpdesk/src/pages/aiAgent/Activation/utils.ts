@@ -1,20 +1,12 @@
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Location } from 'history'
 
-export const getAiSalesAgentEmailEnabledFlag = () => {
-    const launchDarklyClient = getLDClient()
-    return !!launchDarklyClient?.variation(
-        FeatureFlagKey.AiSalesAgentActivationEmailSettings,
-    )
+export const useAiSalesAgentEmailEnabledFlag = () => {
+    return !!useFlag(FeatureFlagKey.AiSalesAgentActivationEmailSettings, false)
 }
 
-export const getAiShoppingAssistantTrialExtensionEnabledFlag = (): number => {
-    const launchDarklyClient = getLDClient()
-    return (
-        launchDarklyClient?.variation(
-            FeatureFlagKey.AiShoppingAssistantTrialExtension,
-        ) ?? 0
-    )
+export const useAiShoppingAssistantTrialExtensionEnabledFlag = () => {
+    return useFlag<number>(FeatureFlagKey.AiShoppingAssistantTrialExtension, 0)
 }
 
 export const SalesEarlyAccessUtils = (accountId: number) => ({

@@ -3,8 +3,6 @@ import moment from 'moment'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
-import { getAiShoppingAssistantTrialExtensionEnabledFlag } from '../Activation/utils'
-
 export enum TrialState {
     NotTrial = 'notTrial',
     Trial = 'trial',
@@ -13,9 +11,13 @@ export enum TrialState {
 
 export const isAtLeastOneStoreEligibleForTrial = async (
     storeActivations: Record<string, StoreActivation>,
+    trialExtensionPeriodInDays = 0,
 ) => {
     const isCanduTrial = await isAccountPartOfCanduTrial()
-    const storesEligibleForTrial = getStoresEligibleForTrial(storeActivations)
+    const storesEligibleForTrial = getStoresEligibleForTrial(
+        storeActivations,
+        trialExtensionPeriodInDays,
+    )
     return isCanduTrial && storesEligibleForTrial.length > 0
 }
 
@@ -25,9 +27,13 @@ export const isAtLeastOneStoreEligibleForTrial = async (
  */
 export const getStoresEligibleForTrial = (
     storeActivations: Record<string, StoreActivation>,
+    trialExtensionPeriodInDays = 0,
 ) => {
     return Object.values(storeActivations).filter((storeActivation) => {
-        return isStoreEligibleForTrial(storeActivation)
+        return isStoreEligibleForTrial(
+            storeActivation,
+            trialExtensionPeriodInDays,
+        )
     })
 }
 
@@ -35,11 +41,16 @@ export const getStoresEligibleForTrial = (
  * @deprecated this function will be removed once we have a new trial banner component. Going forward use the function from 'src/pages/aiAgent/trial/utils/utils.ts'
  * @date 2025-06-27
  */
-export const isStoreEligibleForTrial = (storeActivation: StoreActivation) => {
+export const isStoreEligibleForTrial = (
+    storeActivation: StoreActivation,
+    trialExtensionPeriodInDays = 0,
+) => {
     return (
         !storeActivation.support.chat.isIntegrationMissing &&
-        getAiSalesAgentTrialState(storeActivation.configuration) ===
-            TrialState.NotTrial
+        getAiSalesAgentTrialState(
+            storeActivation.configuration,
+            trialExtensionPeriodInDays,
+        ) === TrialState.NotTrial
     )
 }
 
@@ -49,10 +60,8 @@ export const isStoreEligibleForTrial = (storeActivation: StoreActivation) => {
  */
 export const getAiSalesAgentTrialState = (
     storeConfiguration: StoreConfiguration,
+    trialExtensionPeriodInDays = 0,
 ): TrialState => {
-    const trialExtensionPeriodInDays =
-        getAiShoppingAssistantTrialExtensionEnabledFlag()
-
     const trialEnd = storeConfiguration.salesDeactivatedDatetime
     const now = new Date()
 

@@ -200,7 +200,7 @@ describe('<AddLink />', () => {
 
     it.each(['Enter', 'Escape'])(
         'should close when pressing enter or escape',
-        (inputKey) => {
+        async (inputKey) => {
             const mockOnClose = jest.fn()
 
             const Wrapped = () => {
@@ -223,7 +223,7 @@ describe('<AddLink />', () => {
             })
             fireEvent.keyDown(getByLabelText('Link text'), { key: inputKey })
 
-            expect(mockOnClose).toBeCalled()
+            await waitFor(() => expect(mockOnClose).toBeCalled())
         },
     )
 
@@ -264,7 +264,7 @@ describe('<AddLink />', () => {
         await waitFor(() => getByText('Insert Link').focus())
     })
 
-    it('should replace the querystring when utm is enabled and has a applied valid utm configuration', () => {
+    it('should replace the querystring when utm is enabled and has a applied valid utm configuration', async () => {
         const baseUrl = 'https://foo.bar'
         const baseUtmQueryString = '?foo=bar'
         useCampaignFormContextMock.mockReturnValue({
@@ -289,16 +289,19 @@ describe('<AddLink />', () => {
             fireEvent.click(getByText(/Insert Link/))
         })
 
-        expect(attachUtmtoUrlMock).toHaveBeenCalledWith(
-            baseUrl,
-            '',
-            true,
-            true,
-            baseUtmQueryString,
-        )
+        await waitFor(() => {
+            expect(attachUtmtoUrlMock).toHaveBeenCalledWith(
+                baseUrl,
+                '',
+                true,
+                true,
+                baseUtmQueryString,
+                false,
+            )
+        })
     })
 
-    it('shouldnt call the link utm udate if the flag is off', () => {
+    it('shouldnt call the link utm udate if the flag is off', async () => {
         const baseUrl = 'https://foo.bar'
         const baseUtmQueryString = '?foo=bar'
         useCampaignFormContextMock.mockReturnValue({
@@ -323,7 +326,9 @@ describe('<AddLink />', () => {
             fireEvent.click(getByText(/Insert Link/))
         })
 
-        expect(attachUtmtoUrlMock).not.toHaveBeenCalled()
+        await waitFor(() => {
+            expect(attachUtmtoUrlMock).not.toHaveBeenCalled()
+        })
     })
 
     it('should allow to submit an url with a variable', () => {
@@ -344,7 +349,7 @@ describe('<AddLink />', () => {
         expect(button).toHaveAttribute('aria-disabled', 'false')
     })
 
-    it('should add a video at the bottom when URL is compatible and under a chat channel', () => {
+    it('should add a video at the bottom when URL is compatible and under a chat channel', async () => {
         const addVideoSpy = jest
             .spyOn(draftjsPluginsUtils, 'addVideo')
             .mockImplementation((editorState) => editorState)
@@ -363,7 +368,7 @@ describe('<AddLink />', () => {
         fireEvent.click(screen.getByText(/link/))
         fireEvent.click(getByText(/Insert Link/))
 
-        expect(addVideoSpy).toHaveBeenCalled()
+        await waitFor(() => expect(addVideoSpy).toHaveBeenCalled())
     })
 
     it('should not add a video at the bottom when URL is compatible because channel is not chat', () => {
@@ -492,7 +497,7 @@ describe('<AddLink />', () => {
         expect(mockOnTargetChange).toHaveBeenNthCalledWith(2, '_blank')
     })
 
-    it('should set templatedUrl attribute if url starts with template', () => {
+    it('should set templatedUrl attribute if url starts with template', async () => {
         const editorState = EditorState.createEmpty()
 
         const contentState = editorState.getCurrentContent()
@@ -518,14 +523,16 @@ describe('<AddLink />', () => {
             fireEvent.click(screen.getByText('Insert Link'))
         })
 
-        expect(createEntitySpy).toHaveBeenCalledWith('link', 'MUTABLE', {
-            target: '_blank',
-            templatedUrl: '{{ticket.url}}',
-            url: '{{ticket.url}}',
+        await waitFor(() => {
+            expect(createEntitySpy).toHaveBeenCalledWith('link', 'MUTABLE', {
+                target: '_blank',
+                templatedUrl: '{{ticket.url}}',
+                url: '{{ticket.url}}',
+            })
         })
     })
 
-    it('should set templatedUrl attribute if url starts with template during update', () => {
+    it('should set templatedUrl attribute if url starts with template during update', async () => {
         const editorState = EditorState.createEmpty()
 
         const contentState = editorState.getCurrentContent()
@@ -562,10 +569,12 @@ describe('<AddLink />', () => {
             fireEvent.click(screen.getByText('Update Link'))
         })
 
-        expect(replaceEntityDataSpy).toHaveBeenCalledWith(entityKey, {
-            target: '_blank',
-            templatedUrl: '{{ticket.url}}',
-            url: '{{ticket.url}}',
+        await waitFor(() => {
+            expect(replaceEntityDataSpy).toHaveBeenCalledWith(entityKey, {
+                target: '_blank',
+                templatedUrl: '{{ticket.url}}',
+                url: '{{ticket.url}}',
+            })
         })
     })
 
@@ -806,7 +815,7 @@ describe('<AddLink />', () => {
         )
     })
 
-    it('should update link text via entity selection when updating existing link', () => {
+    it('should update link text via entity selection when updating existing link', async () => {
         const { Modifier } = require('draft-js')
         const contentState = ContentState.createFromText('Click Here')
         const contentStateWithEntity = contentState.createEntity(
@@ -859,10 +868,10 @@ describe('<AddLink />', () => {
             fireEvent.click(screen.getByText('Update Link'))
         })
 
-        expect(setEditorState).toHaveBeenCalled()
+        await waitFor(() => expect(setEditorState).toHaveBeenCalled())
     })
 
-    it('should insert link using highlighted selection and remove highlights on close', () => {
+    it('should insert link using highlighted selection and remove highlights on close', async () => {
         const { Modifier, SelectionState } = require('draft-js')
         const contentState = ContentState.createFromText('Hello World')
         const block = contentState.getFirstBlock()
@@ -911,7 +920,7 @@ describe('<AddLink />', () => {
             fireEvent.click(screen.getByText('Insert Link'))
         })
 
-        expect(setEditorState).toHaveBeenCalled()
+        await waitFor(() => expect(setEditorState).toHaveBeenCalled())
     })
 
     it('should not submit when text is empty', () => {
@@ -1019,7 +1028,7 @@ describe('<AddLink />', () => {
         }
     })
 
-    it('should insert link using current editor selection when no LINK_HIGHLIGHT exists', () => {
+    it('should insert link using current editor selection when no LINK_HIGHLIGHT exists', async () => {
         const setEditorState = jest.fn()
         const contentState = ContentState.createFromText('Hello World')
         const block = contentState.getFirstBlock()
@@ -1058,7 +1067,7 @@ describe('<AddLink />', () => {
             fireEvent.click(screen.getByText('Insert Link'))
         })
 
-        expect(setEditorState).toHaveBeenCalled()
+        await waitFor(() => expect(setEditorState).toHaveBeenCalled())
         const resultState = setEditorState.mock.calls[
             setEditorState.mock.calls.length - 1
         ][0] as EditorState
@@ -1066,7 +1075,7 @@ describe('<AddLink />', () => {
         expect(resultBlock.getText()).toContain('Hello')
     })
 
-    it('should return early from _updateLink when entityKey is null', () => {
+    it('should return early from _updateLink when entityKey is null', async () => {
         const setEditorState = jest.fn()
         const editorState = EditorState.createEmpty()
 
@@ -1089,7 +1098,7 @@ describe('<AddLink />', () => {
             fireEvent.click(screen.getByText('Insert Link'))
         })
 
-        expect(setEditorState).toHaveBeenCalled()
+        await waitFor(() => expect(setEditorState).toHaveBeenCalled())
     })
 
     it('should NOT call _insertExtraVideoIfApplicable in update mode', () => {
@@ -1297,7 +1306,7 @@ describe('<AddLink />', () => {
         window.getSelection = originalGetSelection
     })
 
-    it('should render CampaignFormContextInterceptor and call callback when UTM context updates', () => {
+    it('should render CampaignFormContextInterceptor and call callback when UTM context updates', async () => {
         useFlagMock.mockReturnValue(true)
         const testUtmQueryString = '?utm_source=test'
         const testUtmEnabled = true
@@ -1328,13 +1337,16 @@ describe('<AddLink />', () => {
             fireEvent.click(getByText(/Insert Link/))
         })
 
-        expect(attachUtmtoUrlMock).toHaveBeenCalledWith(
-            'https://foo.bar',
-            '',
-            true,
-            testUtmEnabled,
-            testUtmQueryString,
-        )
+        await waitFor(() => {
+            expect(attachUtmtoUrlMock).toHaveBeenCalledWith(
+                'https://foo.bar',
+                '',
+                true,
+                testUtmEnabled,
+                testUtmQueryString,
+                false,
+            )
+        })
     })
 
     it('should use button as popover target when no anchor position is set and no linkSelectionRect', () => {

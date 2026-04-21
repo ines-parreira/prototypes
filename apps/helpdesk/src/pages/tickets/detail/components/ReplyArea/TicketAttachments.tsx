@@ -1,6 +1,8 @@
 import type { MouseEvent } from 'react'
 import React, { Component } from 'react'
 
+import type { FeatureFlagsMap } from '@repo/feature-flags'
+import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -10,7 +12,6 @@ import { AttachmentEnum } from 'common/types'
 import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import { ContactFormAttachmentContainer } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
-import { getIsProductCardDiscountedPriceEnabled } from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import { fileIconFromContentType } from 'pages/tickets/common/utils'
 import { DiscountOfferTicketAttachment } from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
 import { proxifyURL, replaceAttachmentURL } from 'utils'
@@ -21,7 +22,7 @@ type Attachment = Map<any, any>
 
 type Props = {
     attachments: List<Attachment>
-    removable: boolean
+    removable?: boolean
     deleteAttachment?: (number: number) => void
     className?: string
     onCampaignFormEdit?: () => void
@@ -32,6 +33,7 @@ type Props = {
         | 'embedded-card'
         | 'content-form'
         | 'quick-reply'
+    flags?: FeatureFlagsMap
 }
 
 type State = {
@@ -39,7 +41,7 @@ type State = {
     currentImage: number
 }
 
-export default class TicketAttachments extends Component<Props, State> {
+export class TicketAttachments extends Component<Props, State> {
     static defaultProps = {
         removable: false,
     }
@@ -182,9 +184,8 @@ export default class TicketAttachments extends Component<Props, State> {
     _renderProductAttachment(attachment: Attachment, idx: number) {
         const price = attachment.getIn(['extra', 'price'])
         const compareAtPrice = attachment.getIn(['extra', 'compare_at_price'])
-
         const isDiscountedPriceEnabled =
-            getIsProductCardDiscountedPriceEnabled()
+            !!this.props.flags?.[FeatureFlagKey.ProductCardDiscountedPrice]
 
         return (
             <div className={css.productCard}>
@@ -404,3 +405,5 @@ export default class TicketAttachments extends Component<Props, State> {
         )
     }
 }
+
+export default withFeatureFlags(TicketAttachments)

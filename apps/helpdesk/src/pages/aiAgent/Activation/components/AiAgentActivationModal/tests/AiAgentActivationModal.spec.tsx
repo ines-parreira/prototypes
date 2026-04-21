@@ -169,6 +169,7 @@ describe('AiAgentActivationModal', () => {
         isOpen: true,
         isFetchLoading: false,
         isSaveLoading: false,
+        trialExtensionPeriodInDays: 0,
         onClose: jest.fn(),
         progressPercentage: 50,
         storeActivations: mockStoreActivations,

@@ -1,4 +1,4 @@
-import { shouldAppendUtmParam } from '../attachUtmParams'
+import { attachUtmToCampaignProduct } from '../attachUtmParams'
 import { transformProductToAttachment } from '../transformProductToAttachment'
 
 jest.mock('../attachUtmParams')
@@ -24,7 +24,7 @@ const PRODUCT_WITHOUT_CURRENCY = {
 
 describe('transformProductToAttachment()', () => {
     it('adds the currency code if product is missing it', () => {
-        ;(shouldAppendUtmParam as jest.Mock).mockImplementation(() => true)
+        ;(attachUtmToCampaignProduct as jest.Mock).mockReturnValue(undefined)
         expect(
             transformProductToAttachment(
                 PRODUCT_WITHOUT_CURRENCY,

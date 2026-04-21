@@ -5,7 +5,6 @@ import moment from 'moment'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
-import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
@@ -22,10 +21,8 @@ type AiShoppingAssistantExpireBannerProps = {
  */
 export const getShoppingAssistantExpirationDays = (
     deactiveDatetime?: string | null,
+    trialExtensionPeriodInDays = 0,
 ) => {
-    const trialExtensionPeriodInDays =
-        getAiShoppingAssistantTrialExtensionEnabledFlag()
-
     if (!deactiveDatetime) {
         return undefined
     }
@@ -55,6 +52,9 @@ const AiShoppingAssistantExpireBanner: React.FC<
 
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const hasNewAutomatePlan = hasAutomatePlanAboveGen6(currentAutomatePlan)
+    const trialExtensionPeriodInDays =
+        useFlag<number>(FeatureFlagKey.AiShoppingAssistantTrialExtension, 0) ||
+        0
 
     const { earlyAccessModal, showEarlyAccessModal } = useActivation()
 
@@ -62,8 +62,12 @@ const AiShoppingAssistantExpireBanner: React.FC<
     const isTrialRevampEnabled = trialMilestone !== 'off'
 
     const days = useMemo(
-        () => getShoppingAssistantExpirationDays(deactiveDatetime),
-        [deactiveDatetime],
+        () =>
+            getShoppingAssistantExpirationDays(
+                deactiveDatetime,
+                trialExtensionPeriodInDays,
+            ),
+        [deactiveDatetime, trialExtensionPeriodInDays],
     )
 
     if (isTrialRevampEnabled) return null

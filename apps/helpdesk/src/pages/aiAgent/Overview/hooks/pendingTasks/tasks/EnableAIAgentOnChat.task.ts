@@ -1,5 +1,3 @@
-import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
-
 import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
@@ -9,7 +7,7 @@ export class EnableAIAgentOnChatTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable AI Agent on Chat',
-            getAiSalesAgentEmailEnabledFlag()
+            data.isAiSalesAgentEmailEnabled
                 ? 'Automates up to 60% of chat support tickets'
                 : 'Boost GMV through automated sales',
             'BASIC',

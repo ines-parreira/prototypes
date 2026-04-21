@@ -1,5 +1,3 @@
-import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
-
 import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
@@ -9,7 +7,7 @@ export class EnableAIAgentOnEmailTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable AI Agent on Email',
-            getAiSalesAgentEmailEnabledFlag()
+            data.isAiSalesAgentEmailEnabled
                 ? 'Automates up to 60% of email support tickets'
                 : 'Automates up to 60% of support tickets',
             'BASIC',

@@ -1,7 +1,9 @@
 import React from 'react'
 
 import { useAreFlagsLoading } from '@repo/feature-flags'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { useAutomateNotificationSettingsVisibility } from 'automate/notifications/hooks/useAutomateNotificationSettingsVisibility'
 
 import { categories, notifications } from '../../data'
 import type { Settings } from '../../types'
@@ -11,6 +13,13 @@ jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useAreFlagsLoading: jest.fn(),
 }))
+jest.mock(
+    'automate/notifications/hooks/useAutomateNotificationSettingsVisibility',
+)
+
+const useAutomateNotificationSettingsVisibilityMock = jest.mocked(
+    useAutomateNotificationSettingsVisibility,
+)
 
 jest.mock(
     '../SoundSelect',
@@ -88,12 +97,15 @@ const notificationsWithSettings = categories
 describe('EventSettings', () => {
     beforeEach(() => {
         ;(useAreFlagsLoading as jest.Mock).mockReturnValue(false)
+        useAutomateNotificationSettingsVisibilityMock.mockReturnValue({
+            hiddenNotificationTypes: [],
+        })
     })
 
     it.each(notificationsWithSettings.map((n) => [n.type, n.settings?.label]))(
         'should render event %s',
-        (_, label) => {
-            const { getByText } = render(
+        async (_, label) => {
+            render(
                 <EventSettings
                     settings={settings}
                     onChangeChannel={jest.fn()}
@@ -101,7 +113,7 @@ describe('EventSettings', () => {
                 />,
             )
 
-            expect(getByText(label as string)).toBeInTheDocument()
+            expect(await screen.findByText(label as string)).toBeInTheDocument()
         },
     )
 
@@ -119,10 +131,10 @@ describe('EventSettings', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('should call a function to handle a channel change', () => {
+    it('should call a function to handle a channel change', async () => {
         const onChangeChannel = jest.fn()
 
-        const { getAllByRole } = render(
+        render(
             <EventSettings
                 settings={settings}
                 onChangeChannel={onChangeChannel}
@@ -130,7 +142,7 @@ describe('EventSettings', () => {
             />,
         )
 
-        const checkbox = getAllByRole('checkbox')[0]
+        const checkbox = (await screen.findAllByRole('checkbox'))[0]
         fireEvent.click(checkbox)
 
         expect(onChangeChannel).toHaveBeenCalledWith(
@@ -140,10 +152,10 @@ describe('EventSettings', () => {
         )
     })
 
-    it('should call a function to handle a sound change', () => {
+    it('should call a function to handle a sound change', async () => {
         const onChangeSound = jest.fn()
 
-        const { getAllByRole } = render(
+        render(
             <EventSettings
                 settings={settings}
                 onChangeChannel={jest.fn()}
@@ -151,9 +163,49 @@ describe('EventSettings', () => {
             />,
         )
 
-        const combobox = getAllByRole('combobox')[0]
+        const combobox = (await screen.findAllByRole('combobox'))[0]
         fireEvent.change(combobox, { target: { value: 'sound 1' } })
 
         expect(onChangeSound).toHaveBeenCalledWith('user.mentioned', 'sound 1')
+    })
+
+    it('should hide categories with only hidden notification types', async () => {
+        useAutomateNotificationSettingsVisibilityMock.mockReturnValue({
+            hiddenNotificationTypes: ['user.mentioned'],
+        })
+
+        render(
+            <EventSettings
+                settings={settings}
+                onChangeChannel={jest.fn()}
+                onChangeSound={jest.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Mentioned in an internal note'),
+            ).not.toBeInTheDocument()
+        })
+
+        expect(screen.queryByText('Ticket updates')).not.toBeInTheDocument()
+    })
+
+    it('should keep visible notifications rendered when nothing is hidden', async () => {
+        useAutomateNotificationSettingsVisibilityMock.mockReturnValue({
+            hiddenNotificationTypes: [],
+        })
+
+        render(
+            <EventSettings
+                settings={settings}
+                onChangeChannel={jest.fn()}
+                onChangeSound={jest.fn()}
+            />,
+        )
+
+        expect(
+            await screen.findByText('Mentioned in an internal note'),
+        ).toBeInTheDocument()
     })
 })

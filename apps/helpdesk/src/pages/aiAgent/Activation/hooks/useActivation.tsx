@@ -44,8 +44,14 @@ export const useActivation = (
     })
 
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
+    const trialExtensionPeriodInDays =
+        useFlag<number>(FeatureFlagKey.AiShoppingAssistantTrialExtension, 0) ||
+        0
     const atLeastOneStoreHasActiveTrial =
-        atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
+        atLeastOneStoreHasActiveTrialOnSpecificStores(
+            storeActivations,
+            trialExtensionPeriodInDays,
+        )
 
     const {
         isOnNewPlan,
@@ -130,6 +136,7 @@ export const useActivation = (
             <AiAgentActivationModal
                 onLearnMoreClick={showEarlyAccessModal}
                 isOpen={isModalVisible}
+                trialExtensionPeriodInDays={trialExtensionPeriodInDays}
                 isSaveLoading={isSaveLoading}
                 isFetchLoading={isFetchLoading}
                 onClose={() => {

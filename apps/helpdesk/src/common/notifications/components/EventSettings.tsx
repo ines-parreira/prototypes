@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useMemo } from 'react'
 
 import { useAreFlagsLoading } from '@repo/feature-flags'
 
+import { useAutomateNotificationSettingsVisibility } from 'automate/notifications/hooks/useAutomateNotificationSettingsVisibility'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import type { SoundValue } from 'services/NotificationSounds'
@@ -23,30 +24,49 @@ type Props = {
     onChangeSound: (notificationType: string, sound: '' | SoundValue) => void
 }
 
+type ResolvedCategory = {
+    category: CategoryConfig
+    notificationTypes: string[]
+}
+
 export default function EventSettings({
     settings,
     onChangeChannel,
     onChangeSound,
 }: Props) {
     const areFlagsLoading = useAreFlagsLoading()
+    const { hiddenNotificationTypes } =
+        useAutomateNotificationSettingsVisibility()
+
+    const resolvedCategories = useMemo(() => {
+        const hiddenNotificationTypesSet = new Set(hiddenNotificationTypes)
+
+        return categories.reduce<ResolvedCategory[]>((acc, category) => {
+            const notificationTypes = (category.notifications || []).filter(
+                (notificationType) =>
+                    !hiddenNotificationTypesSet.has(notificationType),
+            )
+
+            if (notificationTypes.length === 0) {
+                return acc
+            }
+
+            acc.push({
+                category,
+                notificationTypes,
+            })
+
+            return acc
+        }, [])
+    }, [hiddenNotificationTypes])
 
     if (areFlagsLoading) {
         return null
     }
 
-    const filteredEnabledCategories = categories.filter(
-        (category) => category.isEnabled?.() ?? true,
-    )
-
-    const filteredEnabledNotifications = (category: CategoryConfig) =>
-        (category.notifications || []).filter(
-            (notificationType) =>
-                notifications[notificationType].isEnabled?.() ?? true,
-        )
-
     return (
         <>
-            {filteredEnabledCategories.map((category) => (
+            {resolvedCategories.map(({ category, notificationTypes }) => (
                 <Fragment key={category.type}>
                     <h2 className={css.heading}>{category.label}</h2>
                     <p className={css.subtitle}>{category.description}</p>
@@ -56,30 +76,23 @@ export default function EventSettings({
                             typeHeader={category.typeLabel}
                         />
                         <TableBody>
-                            {filteredEnabledNotifications(category).map(
-                                (notificationType) => (
-                                    <EventSettingsRow
-                                        key={notificationType}
-                                        config={notifications[notificationType]}
-                                        setting={
-                                            settings.events[notificationType]
-                                        }
-                                        onChangeChannel={(channel, value) => {
-                                            onChangeChannel(
-                                                notificationType,
-                                                channel,
-                                                value,
-                                            )
-                                        }}
-                                        onChangeSound={(sound) => {
-                                            onChangeSound(
-                                                notificationType,
-                                                sound,
-                                            )
-                                        }}
-                                    />
-                                ),
-                            )}
+                            {notificationTypes.map((notificationType) => (
+                                <EventSettingsRow
+                                    key={notificationType}
+                                    config={notifications[notificationType]}
+                                    setting={settings.events[notificationType]}
+                                    onChangeChannel={(channel, value) => {
+                                        onChangeChannel(
+                                            notificationType,
+                                            channel,
+                                            value,
+                                        )
+                                    }}
+                                    onChangeSound={(sound) => {
+                                        onChangeSound(notificationType, sound)
+                                    }}
+                                />
+                            ))}
                         </TableBody>
                     </TableWrapper>
                 </Fragment>

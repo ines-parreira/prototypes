@@ -115,6 +115,7 @@ const meta: Meta<typeof AiAgentActivationModal> = {
         isOpen: true,
         isFetchLoading: false,
         isSaveLoading: false,
+        trialExtensionPeriodInDays: 0,
         storeActivations: {
             'steve-madden': dummyStoreActivation,
             'betsey-johnson': dummyStoreActivation2,

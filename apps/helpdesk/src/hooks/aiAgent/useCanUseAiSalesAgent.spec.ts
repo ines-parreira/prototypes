@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
@@ -260,6 +260,17 @@ describe('canStoreUseAiSalesAgent', () => {
             canStoreUseAiSalesAgent(storeConfiguration as StoreConfiguration),
         ).toBe(false)
     })
+
+    it('should forward the trial extension period to the trial-state helper', () => {
+        getAiSalesAgentTrialStateMock.mockReturnValue(TrialState.Trial)
+
+        canStoreUseAiSalesAgent(storeConfiguration as StoreConfiguration, 7)
+
+        expect(getAiSalesAgentTrialStateMock).toHaveBeenCalledWith(
+            storeConfiguration,
+            7,
+        )
+    })
 })
 
 describe('atLeastOneStoreHasActiveTrialOnSpecificStores', () => {
@@ -308,6 +319,27 @@ describe('atLeastOneStoreHasActiveTrialOnSpecificStores', () => {
                 storeActivations as unknown as Record<string, StoreActivation>,
             ),
         ).toBe(true)
+    })
+
+    it('should pass the trial extension period to each store evaluation', () => {
+        const storeActivations = {
+            store1: {
+                configuration: {
+                    salesDeactivatedDatetime: null,
+                },
+            },
+        }
+        getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.Trial)
+
+        atLeastOneStoreHasActiveTrialOnSpecificStores(
+            storeActivations as unknown as Record<string, StoreActivation>,
+            5,
+        )
+
+        expect(getAiSalesAgentTrialStateMock).toHaveBeenCalledWith(
+            storeActivations.store1.configuration,
+            5,
+        )
     })
 })
 
@@ -360,5 +392,38 @@ describe('useAtLeastOneStoreHasActiveTrial', () => {
         } as any)
         getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.Trial)
         expect(useAtLeastOneStoreHasActiveTrial()).toBe(true)
+    })
+
+    it('should use the trial extension flag when checking store configurations', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return { generation: 5 }
+            }
+            if (selector === getCurrentAccountState) {
+                return fromJS({ domain: 'test' }) as Map<string, string>
+            }
+            return null
+        })
+        useFlagMock.mockReturnValue(4)
+        useStoreConfigurationsMock.mockReturnValueOnce({
+            storeConfigurations: [
+                {
+                    salesDeactivatedDatetime: null,
+                },
+            ],
+        } as any)
+        getAiSalesAgentTrialStateMock.mockReturnValueOnce(TrialState.Trial)
+
+        expect(useAtLeastOneStoreHasActiveTrial()).toBe(true)
+        expect(useFlagMock).toHaveBeenCalledWith(
+            FeatureFlagKey.AiShoppingAssistantTrialExtension,
+            0,
+        )
+        expect(getAiSalesAgentTrialStateMock).toHaveBeenCalledWith(
+            {
+                salesDeactivatedDatetime: null,
+            },
+            4,
+        )
     })
 })

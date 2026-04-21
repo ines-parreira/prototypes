@@ -1,3 +1,5 @@
+import type React from 'react'
+
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import type { Map } from 'immutable'
@@ -35,15 +37,20 @@ jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({
-            [FeatureFlagKey.ChatMultiLanguages]: true,
-        })),
-    })),
+    withFeatureFlags:
+        (WrappedComponent: React.ComponentType<any>) => (props: any) => {
+            const actual = jest.requireActual('@repo/feature-flags')
+            return (
+                <WrappedComponent
+                    {...props}
+                    flags={{
+                        [actual.FeatureFlagKey.ChatMultiLanguages]: true,
+                        [actual.FeatureFlagKey
+                            .ChangeAutomateSettingButtomPosition]: false,
+                    }}
+                />
+            )
+        },
 }))
 
 describe('<GorgiasChatIntegrationQuickReplies/>', () => {
@@ -66,6 +73,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
         storeIntegration: undefined,
         updateOrCreateIntegration: jest.fn(),
         shouldShowPreviewForRevamp: true,
+        flags: {
+            [FeatureFlagKey.ChatMultiLanguages]: true,
+            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: false,
+        },
     }
 
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>

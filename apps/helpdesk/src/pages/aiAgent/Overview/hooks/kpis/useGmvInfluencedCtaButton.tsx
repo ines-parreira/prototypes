@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
@@ -38,9 +39,15 @@ export const useGmvInfluencedCtaButton = ({
     const userRole = useAppSelector(getRoleName)
 
     const { storeActivations } = useStoreActivations()
+    const trialExtensionPeriodInDays =
+        useFlag<number>(FeatureFlagKey.AiShoppingAssistantTrialExtension, 0) ||
+        0
 
     const atLeastOneStoreHasActiveTrial =
-        atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
+        atLeastOneStoreHasActiveTrialOnSpecificStores(
+            storeActivations,
+            trialExtensionPeriodInDays,
+        )
 
     const hasSales = aiAgentType === 'mixed' || aiAgentType === 'sales'
 

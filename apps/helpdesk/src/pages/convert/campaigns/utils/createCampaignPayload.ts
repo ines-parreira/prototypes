@@ -31,6 +31,7 @@ type CreateCampaignPayloadType = {
     isActive: boolean
     utmEnabled: boolean
     utmQueryString: string
+    shouldDisableRevenueUtmParams?: boolean
 }
 
 export const createCampaignPayload = ({
@@ -47,7 +48,28 @@ export const createCampaignPayload = ({
     isActive = false,
     utmEnabled = true,
     utmQueryString = '',
+    shouldDisableRevenueUtmParams = false,
 }: CreateCampaignPayloadType): Campaign => {
+    const productAttachments =
+        shopifyProducts.length > 0
+            ? shopifyProducts.map((product) => {
+                  return transformProductToAttachment(
+                      product,
+                      {
+                          campaignName: _trim(campaignData.name),
+                          currency: shopifyIntegration.getIn([
+                              'meta',
+                              'currency',
+                          ]),
+                      },
+                      isConvertSubscriber,
+                      utmEnabled,
+                      utmQueryString,
+                      shouldDisableRevenueUtmParams,
+                  )
+              })
+            : []
+
     const payload: Campaign = produce(campaignData, (draft) => {
         const trimmedCampaignName = _trim(draft.name)
 
@@ -74,23 +96,7 @@ export const createCampaignPayload = ({
                 discountOfferAttachment,
             ]
         }
-        if (shopifyProducts.length > 0) {
-            const productAttachments = shopifyProducts.map((product) => {
-                return transformProductToAttachment(
-                    product,
-                    {
-                        campaignName: trimmedCampaignName,
-                        currency: shopifyIntegration.getIn([
-                            'meta',
-                            'currency',
-                        ]),
-                    },
-                    isConvertSubscriber,
-                    utmEnabled,
-                    utmQueryString,
-                )
-            })
-
+        if (productAttachments.length > 0) {
             draft.attachments = [
                 ...(draft.attachments || []),
                 ...productAttachments,

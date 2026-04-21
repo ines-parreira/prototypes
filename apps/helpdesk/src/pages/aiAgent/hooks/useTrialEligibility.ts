@@ -16,13 +16,19 @@ export const useTrialEligibility = (
 ) => {
     const [canStartTrial, setCanStartTrial] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+    const trialExtensionPeriodInDays =
+        useFlag<number>(FeatureFlagKey.AiShoppingAssistantTrialExtension, 0) ||
+        0
 
     useEffect(() => {
         const checkEligibility = async () => {
             setIsLoading(true)
             try {
                 const hasEligibleStoreForTrial =
-                    await isAtLeastOneStoreEligibleForTrial(storeActivations)
+                    await isAtLeastOneStoreEligibleForTrial(
+                        storeActivations,
+                        trialExtensionPeriodInDays,
+                    )
 
                 setCanStartTrial(
                     hasEligibleStoreForTrial &&
@@ -38,7 +44,12 @@ export const useTrialEligibility = (
         }
 
         checkEligibility()
-    }, [storeActivations, isOnEligiblePan, isCurrentUserTeamLead])
+    }, [
+        storeActivations,
+        isOnEligiblePan,
+        isCurrentUserTeamLead,
+        trialExtensionPeriodInDays,
+    ])
 
     const trialMilestone = useSalesTrialRevampMilestone()
     const isTrialRevampEnabled = trialMilestone !== 'off'
@@ -62,12 +73,18 @@ export const useTrialEligibilityForManualActivationFromFeatureFlag = (
     const isAiShoppingAssistantTrialMerchantsEnabled = useFlag(
         FeatureFlagKey.AiShoppingAssistantTrialMerchants,
     )
+    const trialExtensionPeriodInDays =
+        useFlag<number>(FeatureFlagKey.AiShoppingAssistantTrialExtension, 0) ||
+        0
 
     useEffect(() => {
         const checkEligibility = async () => {
             try {
                 const hasEligibleStoreForTrial =
-                    getStoresEligibleForTrial(storeActivations).length > 0
+                    getStoresEligibleForTrial(
+                        storeActivations,
+                        trialExtensionPeriodInDays,
+                    ).length > 0
                 setCanStartTrial(
                     hasEligibleStoreForTrial &&
                         isCurrentUserTeamLead &&
@@ -85,6 +102,7 @@ export const useTrialEligibilityForManualActivationFromFeatureFlag = (
         isOnEligiblePan,
         isAiShoppingAssistantTrialMerchantsEnabled,
         isCurrentUserTeamLead,
+        trialExtensionPeriodInDays,
     ])
 
     return { canStartTrial }

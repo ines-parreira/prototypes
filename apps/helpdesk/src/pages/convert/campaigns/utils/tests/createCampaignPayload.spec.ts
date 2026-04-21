@@ -13,12 +13,9 @@ import { createCampaignPayload } from '../createCampaignPayload'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
+    fetchFlag: jest.fn(async (_flag, defaultValue = false) => ({
+        flag: defaultValue,
+        error: null,
     })),
 }))
 
@@ -62,8 +59,8 @@ describe('createCampaignPayload', () => {
         utmEnabled: true,
     }
 
-    it('returns campaign payload', () => {
-        const payload = createCampaignPayload(defaultProps)
+    it('returns campaign payload', async () => {
+        const payload = await createCampaignPayload(defaultProps)
 
         expect(payload.status).toEqual('inactive')
         expect(payload.trigger_rule).toEqual(
@@ -71,8 +68,8 @@ describe('createCampaignPayload', () => {
         )
     })
 
-    it('returns campaign payload with products card and discount', () => {
-        const payload = createCampaignPayload({
+    it('returns campaign payload with products card and discount', async () => {
+        const payload = await createCampaignPayload({
             ...defaultProps,
             shopifyIntegration: integration,
             shopifyProducts: [MOCK_CAMPAIGN_PRODUCT],
@@ -111,8 +108,8 @@ describe('createCampaignPayload', () => {
         ])
     })
 
-    it('do not modify status if is in edit mode', () => {
-        const payload = createCampaignPayload({
+    it('do not modify status if is in edit mode', async () => {
+        const payload = await createCampaignPayload({
             ...defaultProps,
             canChangeStatus: false,
         })
@@ -121,7 +118,7 @@ describe('createCampaignPayload', () => {
     })
 
     describe('copySuggestion is handled properly', () => {
-        it('do not add copySuggestion to payload if not set', () => {
+        it('do not add copySuggestion to payload if not set', async () => {
             const campaign = {
                 ...campaignFixture,
                 meta: {
@@ -130,7 +127,7 @@ describe('createCampaignPayload', () => {
                 },
             } as Campaign
 
-            const payload = createCampaignPayload({
+            const payload = await createCampaignPayload({
                 ...defaultProps,
                 campaignData: campaign,
             })
@@ -138,7 +135,7 @@ describe('createCampaignPayload', () => {
             expect(payload.meta?.copySuggestion).toBeUndefined()
         })
 
-        it('add copySuggestion to payload if it matches campaign message', () => {
+        it('add copySuggestion to payload if it matches campaign message', async () => {
             const suggestion = 'Hello, world! - was suggested'
             const campaign = {
                 ...campaignFixture,
@@ -149,7 +146,7 @@ describe('createCampaignPayload', () => {
                 },
             } as Campaign
 
-            const payload = createCampaignPayload({
+            const payload = await createCampaignPayload({
                 ...defaultProps,
                 campaignData: campaign,
             })
@@ -157,7 +154,7 @@ describe('createCampaignPayload', () => {
             expect(payload.meta?.copySuggestion).toEqual(suggestion)
         })
 
-        it('set copySuggestion to payload as null if campaign message changed too much', () => {
+        it('set copySuggestion to payload as null if campaign message changed too much', async () => {
             const campaign = {
                 ...campaignFixture,
                 message_text: 'Welcome to the internet',
@@ -167,7 +164,7 @@ describe('createCampaignPayload', () => {
                 },
             } as Campaign
 
-            const payload = createCampaignPayload({
+            const payload = await createCampaignPayload({
                 ...defaultProps,
                 campaignData: campaign,
             })

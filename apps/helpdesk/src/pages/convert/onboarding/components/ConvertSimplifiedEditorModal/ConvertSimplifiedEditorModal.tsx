@@ -99,6 +99,10 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     )
     const { mutateAsync: createCampaign } = useCreateCampaign()
     const { mutateAsync: updateCampaign } = useUpdateCampaign()
+    const shouldDisableRevenueUtmParams = !!useFlag(
+        FeatureFlagKey.RevenueDisableUtmParams,
+        false,
+    )
 
     const defaultLanguage = useMemo<string>(() => {
         return getPrimaryLanguageFromChatConfig(gorgiasChatIntegration.meta)
@@ -232,6 +236,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             canChangeStatus: !campaign?.id,
             utmEnabled: appliedUtmEnabled,
             utmQueryString: appliedUtmQueryString,
+            shouldDisableRevenueUtmParams,
         })
 
         try {

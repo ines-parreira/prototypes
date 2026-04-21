@@ -178,6 +178,10 @@ export const CampaignDetailsForm = ({
     }, [isEditMode, wizardConfiguration, openedStep])
 
     const isConvertSubscriber = useIsConvertSubscriber()
+    const shouldDisableRevenueUtmParams = !!useFlag(
+        FeatureFlagKey.RevenueDisableUtmParams,
+        false,
+    )
 
     const { pristine, onChangePristine } = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
@@ -514,6 +518,7 @@ export const CampaignDetailsForm = ({
                 isActive: activateCampaign,
                 utmEnabled: appliedUtmEnabled,
                 utmQueryString: appliedUtmQueryString,
+                shouldDisableRevenueUtmParams,
             })
 
             if (isEditMode) {
