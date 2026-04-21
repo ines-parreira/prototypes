@@ -54,6 +54,10 @@ describe('<GeneralCard />', () => {
         })
 
         describe('SenderPhoneNumber', () => {
+            afterEach(() => {
+                window.USER_IMPERSONATED = null
+            })
+
             it('renders when AiJourneyStoreSettingsEnabled flag is off', () => {
                 render(<GeneralCard isFormReady={true} />)
 
@@ -73,6 +77,20 @@ describe('<GeneralCard />', () => {
                 expect(
                     screen.queryByText('SenderPhoneNumber'),
                 ).not.toBeInTheDocument()
+            })
+
+            it('renders when AiJourneyStoreSettingsEnabled flag is on and USER_IMPERSONATED is true', () => {
+                window.USER_IMPERSONATED = true
+                mockUseFlag.mockImplementation(
+                    (key: string) =>
+                        key === 'ai-journey-store-settings-enabled',
+                )
+
+                render(<GeneralCard isFormReady={true} />)
+
+                expect(
+                    screen.getByText('SenderPhoneNumber'),
+                ).toBeInTheDocument()
             })
         })
 

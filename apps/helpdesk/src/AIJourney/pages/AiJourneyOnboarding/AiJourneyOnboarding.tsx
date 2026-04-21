@@ -68,7 +68,9 @@ export const AiJourneyOnboarding = ({
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiJourneyStoreConfiguration(currentIntegration?.id)
     const isMissingSmsSender =
-        storeSettingsEnabled && !storeConfiguration?.sms_sender_integration_id
+        storeSettingsEnabled &&
+        !window.USER_IMPERSONATED &&
+        !storeConfiguration?.sms_sender_integration_id
 
     const { setIsCollapsibleColumnOpen } = useCollapsibleColumn()
 
@@ -146,7 +148,7 @@ export const AiJourneyOnboarding = ({
 
         if (journeyData?.id) {
             await handleUpdate({
-                ...(!storeSettingsEnabled && {
+                ...((!storeSettingsEnabled || window.USER_IMPERSONATED) && {
                     phoneNumberIntegrationId:
                         data.sms_sender_integration_id?.id,
                     phoneNumber: data.sms_sender_integration_id?.label,
@@ -174,7 +176,7 @@ export const AiJourneyOnboarding = ({
             )
         } else {
             await handleCreate({
-                ...(!storeSettingsEnabled && {
+                ...((!storeSettingsEnabled || window.USER_IMPERSONATED) && {
                     phoneNumberIntegrationId:
                         data.sms_sender_integration_id?.id,
                     phoneNumber: data.sms_sender_integration_id?.label,

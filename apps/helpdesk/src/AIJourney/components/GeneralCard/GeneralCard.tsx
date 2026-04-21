@@ -40,7 +40,9 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
             <CardHeader title="General" />
             <Box flexDirection="column" gap="md">
                 {isCampaign && <CampaignName />}
-                {!storeSettingsEnabled && <SenderPhoneNumber />}
+                {(!storeSettingsEnabled || window.USER_IMPERSONATED) && (
+                    <SenderPhoneNumber />
+                )}
                 {!isCampaign && <NumberOfMessages />}
                 {shouldRenderIncludeImage && (
                     <IncludeImage journeyType={journeyType} />

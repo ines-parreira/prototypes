@@ -81,7 +81,9 @@ export const RowAdditionalOptions = ({
     )
     const { storeConfiguration } = useAiJourneyStoreConfiguration(integrationId)
     const isMissingSmsSender =
-        storeSettingsEnabled && !storeConfiguration?.sms_sender_integration_id
+        storeSettingsEnabled &&
+        !window.USER_IMPERSONATED &&
+        !storeConfiguration?.sms_sender_integration_id
     const isCampaign = journeyType === JourneyTypeEnum.Campaign
 
     const [isSmsSenderModalOpen, setIsSmsSenderModalOpen] = useState(false)

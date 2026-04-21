@@ -70,7 +70,9 @@ export default function CampaignsTable<TData, TValue>({
         currentIntegration?.id,
     )
     const isMissingSmsSender =
-        storeSettingsEnabled && !storeConfiguration?.sms_sender_integration_id
+        storeSettingsEnabled &&
+        !window.USER_IMPERSONATED &&
+        !storeConfiguration?.sms_sender_integration_id
 
     const createNewJourney = useCreateNewJourney()
 

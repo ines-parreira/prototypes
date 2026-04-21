@@ -576,6 +576,10 @@ describe('useGeneratePlaygroundMessage', () => {
     })
 
     describe('settings - smsSender and brandName sourcing', () => {
+        afterEach(() => {
+            window.USER_IMPERSONATED = null
+        })
+
         const setupAndTrigger = async (props: {
             storeSettingsEnabled: boolean
             smsSenderNumber?: string | null
@@ -728,6 +732,28 @@ describe('useGeneratePlaygroundMessage', () => {
                     settings: expect.objectContaining({
                         smsSenderNumber: null,
                         smsSenderIntegrationId: null,
+                    }),
+                }),
+            ])
+        })
+
+        it('uses journeyParams sender values when flag is ON and USER_IMPERSONATED is true', async () => {
+            window.USER_IMPERSONATED = true
+
+            await setupAndTrigger({
+                storeSettingsEnabled: true,
+                smsSenderNumber: '+10000000000',
+                smsSenderIntegrationId: 999,
+            })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber:
+                            hookParameters.journeyParams.sms_sender_number,
+                        smsSenderIntegrationId:
+                            hookParameters.journeyParams
+                                .sms_sender_integration_id,
                     }),
                 }),
             ])

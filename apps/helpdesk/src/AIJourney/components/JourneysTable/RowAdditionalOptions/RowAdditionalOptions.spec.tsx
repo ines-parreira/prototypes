@@ -567,6 +567,10 @@ describe('<RowAdditionalOptions />', () => {
             } as any)
         })
 
+        afterEach(() => {
+            window.USER_IMPERSONATED = null
+        })
+
         it('should open modal instead of navigating when Activation clicked and sender is missing', async () => {
             const user = userEvent.setup()
             renderWithRouter(
@@ -629,6 +633,68 @@ describe('<RowAdditionalOptions />', () => {
                     screen.getByText('Add sender phone number'),
                 ).toBeInTheDocument()
             })
+        })
+
+        it('should navigate normally when Activation clicked, sender missing, but USER_IMPERSONATED is true', async () => {
+            window.USER_IMPERSONATED = true
+            const user = userEvent.setup()
+            renderWithRouter(
+                <RowAdditionalOptions
+                    journeyRowData={{
+                        ...mockJourneyRowData,
+                        state: JourneyStatusEnum.Active,
+                    }}
+                />,
+            )
+
+            const trigger = screen.getByLabelText('Open options')
+            await act(() => user.click(trigger))
+
+            const activationOptions = screen.getAllByText('Activation')
+            const activationListItem = activationOptions.find(
+                (el) =>
+                    el.closest('[role="option"]') ||
+                    el.closest('.ui-text-text-d239'),
+            )
+            if (activationListItem) {
+                await act(() => user.click(activationListItem))
+            }
+
+            expect(mockHistoryPush).toHaveBeenCalled()
+            expect(
+                screen.queryByText('Add sender phone number'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call handleUpdate normally when Play clicked, sender missing, but USER_IMPERSONATED is true', async () => {
+            window.USER_IMPERSONATED = true
+            const user = userEvent.setup()
+            renderWithRouter(
+                <RowAdditionalOptions
+                    journeyRowData={{
+                        ...mockJourneyRowData,
+                        state: JourneyStatusEnum.Paused,
+                    }}
+                />,
+            )
+
+            const trigger = screen.getByLabelText('Open options')
+            await act(() => user.click(trigger))
+
+            const playOptions = screen.getAllByText('Play')
+            const playListItem = playOptions.find(
+                (el) =>
+                    el.closest('[role="option"]') ||
+                    el.closest('.ui-text-text-d239'),
+            )
+            if (playListItem) {
+                await act(() => user.click(playListItem))
+            }
+
+            expect(mockHandleUpdate).toHaveBeenCalled()
+            expect(
+                screen.queryByText('Add sender phone number'),
+            ).not.toBeInTheDocument()
         })
 
         it('should show flow text in modal for non-campaign journey type', async () => {

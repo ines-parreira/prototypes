@@ -872,6 +872,10 @@ describe('<AiJourneyOnboarding />', () => {
             mockUseFlag.mockReturnValue(true)
         })
 
+        afterEach(() => {
+            window.USER_IMPERSONATED = null
+        })
+
         it('does not pass phoneNumberIntegrationId to handleCreate when flag is ON', async () => {
             mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
 
@@ -920,6 +924,58 @@ describe('<AiJourneyOnboarding />', () => {
             const callArgs = mockHandleUpdate.mock.calls[0][0]
             expect(callArgs).not.toHaveProperty('phoneNumberIntegrationId')
             expect(callArgs).not.toHaveProperty('phoneNumber')
+        })
+
+        it('passes phoneNumberIntegrationId to handleCreate when flag is ON and USER_IMPERSONATED is true', async () => {
+            window.USER_IMPERSONATED = true
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalled()
+            })
+
+            const callArgs = mockHandleCreate.mock.calls[0][0]
+            expect(callArgs).toHaveProperty('phoneNumberIntegrationId', 123)
+            expect(callArgs).toHaveProperty('phoneNumber', '+1234567890')
+        })
+
+        it('passes phoneNumberIntegrationId to handleUpdate when flag is ON and USER_IMPERSONATED is true', async () => {
+            window.USER_IMPERSONATED = true
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalled()
+            })
+
+            const callArgs = mockHandleUpdate.mock.calls[0][0]
+            expect(callArgs).toHaveProperty('phoneNumberIntegrationId', 123)
+            expect(callArgs).toHaveProperty('phoneNumber', '+1234567890')
         })
     })
 
@@ -1023,6 +1079,10 @@ describe('<AiJourneyOnboarding />', () => {
             )
         })
 
+        afterEach(() => {
+            window.USER_IMPERSONATED = null
+        })
+
         it('disables the continue button while store config is loading', () => {
             mockUseAiJourneyStoreConfiguration.mockReturnValue(
                 buildStoreConfigMock({
@@ -1094,6 +1154,26 @@ describe('<AiJourneyOnboarding />', () => {
             expect(
                 screen.getByRole('button', { name: /continue/i }),
             ).not.toBeDisabled()
+        })
+
+        it('does not disable the continue button when sender is missing but USER_IMPERSONATED is true', () => {
+            window.USER_IMPERSONATED = true
+
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).not.toBeDisabled()
+        })
+
+        it('does not show the SMS sender required banner when sender is missing but USER_IMPERSONATED is true', () => {
+            window.USER_IMPERSONATED = true
+
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.queryByText('Add sender phone number to activate'),
+            ).not.toBeInTheDocument()
         })
     })
 

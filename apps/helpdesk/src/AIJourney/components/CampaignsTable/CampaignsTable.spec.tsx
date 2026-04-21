@@ -142,6 +142,10 @@ describe('CampaignsTable', () => {
         jest.clearAllMocks()
     })
 
+    afterEach(() => {
+        window.USER_IMPERSONATED = null
+    })
+
     it('should render table with data', () => {
         renderWithRouter(
             wrapper(<CampaignsTable columns={columns} data={mockFields} />),
@@ -446,6 +450,38 @@ describe('CampaignsTable', () => {
         })
 
         expect(screen.queryByText('Send Campaign?')).not.toBeInTheDocument()
+    })
+
+    it('should open send modal normally when sender is missing but USER_IMPERSONATED is true', async () => {
+        mockUseFlag.mockImplementation(() => true)
+        mockUseAiJourneyStoreConfiguration.mockReturnValue({
+            storeConfiguration: { sms_sender_integration_id: null },
+            isLoading: false,
+        })
+        window.USER_IMPERSONATED = true
+
+        renderWithRouter(
+            wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
+        )
+
+        const user = userEvent.setup()
+
+        const moreOptionsButton = screen.getAllByLabelText('Open options')[0]
+        await act(() => user.click(moreOptionsButton))
+
+        const sendOption = screen
+            .getAllByText('Send')
+            .find((el) => el.closest('[role="option"]'))
+
+        if (sendOption) {
+            await act(() => user.click(sendOption))
+        }
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Add sender phone number'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     it('should close SMS sender required modal when Cancel is clicked', async () => {

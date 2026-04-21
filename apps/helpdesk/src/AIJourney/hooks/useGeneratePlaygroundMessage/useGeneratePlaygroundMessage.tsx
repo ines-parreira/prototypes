@@ -170,12 +170,14 @@ export const useGeneratePlaygroundMessage = ({
                 settings: {
                     maxFollowUpMessages:
                         journeyParams.max_follow_up_messages ?? null,
-                    smsSenderNumber: storeSettingsEnabled
-                        ? (smsSenderNumber ?? null)
-                        : (journeyParams.sms_sender_number ?? null),
-                    smsSenderIntegrationId: storeSettingsEnabled
-                        ? (smsSenderIntegrationId ?? null)
-                        : (journeyParams.sms_sender_integration_id ?? null),
+                    smsSenderNumber:
+                        storeSettingsEnabled && !window.USER_IMPERSONATED
+                            ? (smsSenderNumber ?? null)
+                            : (journeyParams.sms_sender_number ?? null),
+                    smsSenderIntegrationId:
+                        storeSettingsEnabled && !window.USER_IMPERSONATED
+                            ? (smsSenderIntegrationId ?? null)
+                            : (journeyParams.sms_sender_integration_id ?? null),
                     offerDiscount: journeyParams.offer_discount ?? false,
                     maxDiscountPercent:
                         journeyParams.max_discount_percent ?? null,
