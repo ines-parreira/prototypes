@@ -70,7 +70,10 @@ describe('useAiAgentSupportAgentTimeSavedMetric', () => {
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
         })
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('off')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
         mockUseAiAgentTimeSavedByAgentsTrend.mockReturnValue(mockV1Trend)
         mockUseStatsMetricTrend.mockReturnValue(mockV2Trend)
     })
@@ -145,7 +148,10 @@ describe('useAiAgentSupportAgentTimeSavedMetric', () => {
 
     describe('when feature flag is live', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
         })
 
         it('should return data from v2 trend with label', () => {
@@ -196,7 +202,10 @@ describe('useAiAgentSupportAgentTimeSavedMetric', () => {
 
     describe('when feature flag is complete', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
         })
 
         it('should call useStatsMetricTrend with enabled=true', () => {
@@ -206,6 +215,38 @@ describe('useAiAgentSupportAgentTimeSavedMetric', () => {
                 expect.any(Object),
                 expect.any(Object),
                 true,
+            )
+        })
+    })
+
+    describe('when feature flag is loading', () => {
+        beforeEach(() => {
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'off',
+                isLoading: true,
+            })
+        })
+
+        it('should return isFetching=true', () => {
+            const { result } = renderHook(() =>
+                useAiAgentSupportAgentTimeSavedMetric(),
+            )
+
+            expect(result.current.isFetching).toBe(true)
+        })
+
+        it('should call both queries with enabled=false', () => {
+            renderHook(() => useAiAgentSupportAgentTimeSavedMetric())
+
+            expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
+                expect.any(Object),
+                expect.any(Object),
+                false,
+            )
+            expect(mockUseAiAgentTimeSavedByAgentsTrend).toHaveBeenCalledWith(
+                statsFilters,
+                timezone,
+                false,
             )
         })
     })

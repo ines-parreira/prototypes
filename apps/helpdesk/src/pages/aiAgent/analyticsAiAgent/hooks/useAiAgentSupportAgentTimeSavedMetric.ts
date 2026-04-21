@@ -21,15 +21,16 @@ import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useG
 export const useAiAgentSupportAgentTimeSavedMetric = (): MetricTrend => {
     const { statsFilters, userTimezone } = useAutomateFilters()
 
-    const stage = useGetNewStatsFeatureFlagMigration(
-        METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED,
-    )
+    const { stage, isLoading: isFlagLoading } =
+        useGetNewStatsFeatureFlagMigration(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED,
+        )
     const isV2 = stage === 'live' || stage === 'complete'
 
     const v1Trend = useAiAgentTimeSavedByAgentsTrend(
         statsFilters,
         userTimezone,
-        !isV2,
+        !isFlagLoading && !isV2,
     )
 
     const v2Trend = useStatsMetricTrend(
@@ -44,13 +45,13 @@ export const useAiAgentSupportAgentTimeSavedMetric = (): MetricTrend => {
             },
             timezone: userTimezone,
         }),
-        isV2,
+        !isFlagLoading && isV2,
     )
 
     const { isFetching, isError, data } = isV2 ? v2Trend : v1Trend
 
     return {
-        isFetching,
+        isFetching: isFetching || isFlagLoading,
         isError,
         data: {
             label: 'Time saved by agents',
