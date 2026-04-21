@@ -4,16 +4,15 @@ import { useGetFeatureFlagMigration } from 'core/flags/hooks/useGetFeatureFlagMi
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 
-/**
- *
- * @param metricName - The name of the metric to check the feature flag for
- * @returns The migration stage for the metric
- */
-export function useGetNewStatsFeatureFlagMigration(
-    metricName: MetricName,
-): MigrationStage {
+export function useGetNewStatsFeatureFlagMigration(metricName: MetricName): {
+    stage: MigrationStage
+    isLoading: boolean
+} {
     const flagName = resolveMetricFlag(metricName)
-    const migrationStage = useGetFeatureFlagMigration(flagName, 'off')
+    const { migrationStage, isLoading } = useGetFeatureFlagMigration(
+        flagName,
+        'off',
+    )
 
-    return migrationStage
+    return { stage: migrationStage, isLoading }
 }

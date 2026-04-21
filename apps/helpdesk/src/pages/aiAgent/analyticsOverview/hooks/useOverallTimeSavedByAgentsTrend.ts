@@ -16,12 +16,16 @@ export const useOverallTimeSavedByAgentsTrend = (
     statsFilters: StatsFilters,
     userTimezone: string,
 ) => {
-    const stage = useGetNewStatsFeatureFlagMigration(
+    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT,
     )
     const isV2 = stage === 'live' || stage === 'complete'
 
-    const v1Trend = useTimeSavedByAgentsTrend(statsFilters, userTimezone, !isV2)
+    const v1Trend = useTimeSavedByAgentsTrend(
+        statsFilters,
+        userTimezone,
+        !isLoading && !isV2,
+    )
     const v2Trend = useStatsMetricTrend(
         dynamicAverageTimeSavedByAgentQueryFactoryV2({
             filters: statsFilters,
@@ -34,7 +38,7 @@ export const useOverallTimeSavedByAgentsTrend = (
             },
             timezone: userTimezone,
         }),
-        isV2,
+        !isLoading && isV2,
     )
 
     return isV2 ? v2Trend : v1Trend

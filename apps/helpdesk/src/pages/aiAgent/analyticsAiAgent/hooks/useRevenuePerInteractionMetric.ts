@@ -27,7 +27,7 @@ import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useG
 export const useRevenuePerInteractionMetric = (): MetricTrend => {
     const { statsFilters, userTimezone } = useAutomateFilters()
 
-    const stage = useGetNewStatsFeatureFlagMigration(
+    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
     )
     const isV2 = stage === 'live' || stage === 'complete'
@@ -43,7 +43,7 @@ export const useRevenuePerInteractionMetric = (): MetricTrend => {
         },
         ({ gmvInfluenced, totalNumberOfAgentSalesConverations }) =>
             safeDivide(gmvInfluenced, totalNumberOfAgentSalesConverations),
-        !isV2,
+        !isLoading && !isV2,
     )
 
     const v2Trend = useStatsMetricTrend(
@@ -58,7 +58,7 @@ export const useRevenuePerInteractionMetric = (): MetricTrend => {
             },
             timezone: userTimezone,
         }),
-        isV2,
+        !isLoading && isV2,
     )
 
     const { isFetching, isError, data } = isV2 ? v2Trend : v1Trend

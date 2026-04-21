@@ -41,9 +41,8 @@ export const useMultipleMetricsTrends = <
     previousPeriodQueryV2?: BuiltQuery<TMeta>,
     enabled?: boolean,
 ): MultipleMetricsTrend<TCube> => {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(
-        currentPeriodQuery.metricName,
-    )
+    const { stage: migrationStage, isLoading } =
+        useGetNewStatsFeatureFlagMigration(currentPeriodQuery.metricName)
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
 
     const currentMetrics = usePostReportingV2<
@@ -53,7 +52,7 @@ export const useMultipleMetricsTrends = <
         TMeta
     >([currentPeriodQuery], currentPeriodQueryV2, {
         select: multipleMetricsSelect,
-        enabled,
+        enabled: !isLoading && enabled,
     })
 
     const previousMetrics = usePostReportingV2<
@@ -63,7 +62,7 @@ export const useMultipleMetricsTrends = <
         TMeta
     >([previousPeriodQuery], previousPeriodQueryV2, {
         select: multipleMetricsSelect,
-        enabled,
+        enabled: !isLoading && enabled,
     })
 
     const measures =

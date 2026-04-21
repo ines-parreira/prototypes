@@ -170,7 +170,8 @@ export function useMetricPerDimensionV2<
     dimensionId?: string,
     enabled?: boolean,
 ): MetricWithDecile<string, TCube> {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
+    const { stage: migrationStage, isLoading } =
+        useGetNewStatsFeatureFlagMigration(query.metricName)
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
 
     const metricData = usePostReportingV2<
@@ -188,7 +189,7 @@ export function useMetricPerDimensionV2<
                 dimensionId,
             ),
         queryFn: queryWithDeciles<string, TCube, TMeta>(query, newQuery),
-        enabled,
+        enabled: !isLoading && enabled,
     })
 
     return handleDataOnError(metricData)

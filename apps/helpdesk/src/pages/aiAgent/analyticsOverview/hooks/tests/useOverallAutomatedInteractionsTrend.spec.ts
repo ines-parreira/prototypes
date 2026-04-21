@@ -63,7 +63,10 @@ describe('useOverallAutomatedInteractionsTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('off')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
         mockUseFilteredAutomatedInteractions.mockReturnValue(mockV1Trend)
         mockUseStatsMetricTrend.mockReturnValue(mockV2Trend)
     })
@@ -125,7 +128,10 @@ describe('useOverallAutomatedInteractionsTrend', () => {
 
     describe('when feature flag is live', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
         })
 
         it('should call useFilteredAutomatedInteractions with enabled=false', () => {
@@ -176,7 +182,10 @@ describe('useOverallAutomatedInteractionsTrend', () => {
 
     describe('when feature flag is complete', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
         })
 
         it('should call useStatsMetricTrend with enabled=true', () => {
@@ -229,7 +238,10 @@ describe('useOverallAutomatedInteractionsTrend', () => {
     })
 
     it('should propagate isFetching=true from v2 trend', () => {
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'live',
+            isLoading: false,
+        })
         mockUseStatsMetricTrend.mockReturnValue({
             ...mockV2Trend,
             isFetching: true,
@@ -241,7 +253,10 @@ describe('useOverallAutomatedInteractionsTrend', () => {
     })
 
     it('should propagate isError=true from v2 trend', () => {
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'live',
+            isLoading: false,
+        })
         mockUseStatsMetricTrend.mockReturnValue({
             ...mockV2Trend,
             isError: true,

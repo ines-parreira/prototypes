@@ -21,7 +21,7 @@ const V1DIMENSION = TicketDimension.Channel
 const V2DIMENSION = 'channel'
 
 export const AverageScorePerChannelMetric = () => {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(
+    const { stage: migrationStage } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_CHANNEL_TIME_SERIES,
     )
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'

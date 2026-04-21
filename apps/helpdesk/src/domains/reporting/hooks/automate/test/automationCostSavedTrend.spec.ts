@@ -72,7 +72,10 @@ describe('useAutomationCostSavedTrend', () => {
         mockUseMoneySavedPerInteractionWithAutomate.mockReturnValue(
             moneySavedPerInteractionWithAutomate,
         )
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('off')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
         mockUseFilteredAutomatedInteractions.mockReturnValue(mockV1Trend)
         mockUseStatsMetricTrend.mockReturnValue(mockV2Trend)
     })
@@ -139,7 +142,10 @@ describe('useAutomationCostSavedTrend', () => {
 
     describe('when feature flag is live', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
         })
 
         it('should call useFilteredAutomatedInteractions with enabled=false', () => {
@@ -187,7 +193,10 @@ describe('useAutomationCostSavedTrend', () => {
 
     describe('when feature flag is complete', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
         })
 
         it('should call useStatsMetricTrend with enabled=true', () => {

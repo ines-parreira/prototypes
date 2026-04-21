@@ -68,7 +68,10 @@ describe('gmvInfluencedRateTrend', () => {
 
     beforeEach(() => {
         getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
-        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
     })
 
     describe('useGmvInfluecedTrend', () => {

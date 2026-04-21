@@ -109,7 +109,10 @@ describe('AutomationRateTrend', () => {
     describe('useAutomationRateTrend', () => {
         beforeEach(() => {
             useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'off',
+                isLoading: false,
+            })
             fetchFilteredAutomatedInteractionsMock.mockResolvedValue({
                 data: filteredAutomatedInteractions,
                 isFetching: false,

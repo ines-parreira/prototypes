@@ -21,7 +21,7 @@ const V1DIMENSION = TicketDimension.AssigneeUserId
 const V2DIMENSION = 'agentId'
 
 export const AverageScorePerAssigneeMetric = () => {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(
+    const { stage: migrationStage } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES,
     )
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'

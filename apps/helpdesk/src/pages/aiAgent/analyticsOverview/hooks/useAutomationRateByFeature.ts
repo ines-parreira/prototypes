@@ -48,8 +48,7 @@ export const useAutomationRateByFeature = (): {
 } => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    // We don't support double-reads for this metric as the V1 implementation doesn't use a single Cube
-    const stage = useGetNewStatsFeatureFlagMigration(
+    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         automationRatePerFeature.name,
     )
     const newQueryEnabled = stage === 'live' || stage === 'complete'
@@ -59,9 +58,9 @@ export const useAutomationRateByFeature = (): {
             timezone: userTimezone,
         }),
         'automationFeatureType',
-        newQueryEnabled,
+        !isLoading && newQueryEnabled,
     )
-    const oldData = useAutomationRateByFeatureV1(!newQueryEnabled)
+    const oldData = useAutomationRateByFeatureV1(!isLoading && !newQueryEnabled)
 
     return newQueryEnabled
         ? {

@@ -258,7 +258,8 @@ export function useTimeSeries<TCube extends Cubes, TMeta extends ScopeMeta>(
     queryV2?: BuiltQuery<TMeta>,
     enabled = true,
 ): TimeSeriesResult {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
+    const { stage: migrationStage, isLoading } =
+        useGetNewStatsFeatureFlagMigration(query.metricName)
 
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
 
@@ -270,7 +271,7 @@ export function useTimeSeries<TCube extends Cubes, TMeta extends ScopeMeta>(
     >([query], queryV2, {
         select: (res) =>
             selectTimeSeriesByMeasures<TCube, TMeta>(res, query, queryV2, isV2),
-        enabled,
+        enabled: !isLoading && enabled,
     })
 
     return {
@@ -303,7 +304,8 @@ export function useTimeSeriesPerDimension<
     TCube extends Cubes,
     TMeta extends ScopeMeta,
 >(query: TimeSeriesQuery<TCube>, newQuery?: BuiltQuery<TMeta>, enabled = true) {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
+    const { stage: migrationStage, isLoading } =
+        useGetNewStatsFeatureFlagMigration(query.metricName)
 
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
 
@@ -319,7 +321,7 @@ export function useTimeSeriesPerDimension<
                 newQuery,
                 isV2,
             )(res.data.data),
-        enabled,
+        enabled: !isLoading && enabled,
     })
 }
 

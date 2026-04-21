@@ -59,7 +59,10 @@ describe('useOverallTimeSavedByAgentsTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('off')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
         mockUseTimeSavedByAgentsTrend.mockReturnValue(mockV1Trend)
         mockUseStatsMetricTrend.mockReturnValue(mockV2Trend)
     })
@@ -97,7 +100,10 @@ describe('useOverallTimeSavedByAgentsTrend', () => {
 
     describe('when feature flag is live', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
         })
 
         it('should call useStatsMetricTrend with current and previous period queries', () => {
@@ -128,7 +134,10 @@ describe('useOverallTimeSavedByAgentsTrend', () => {
 
     describe('when feature flag is complete', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
         })
 
         it('should call useStatsMetricTrend with enabled=true', () => {
@@ -171,7 +180,10 @@ describe('useOverallTimeSavedByAgentsTrend', () => {
     })
 
     it('should propagate isFetching=true from v2 trend', () => {
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'live',
+            isLoading: false,
+        })
         mockUseStatsMetricTrend.mockReturnValue({
             ...mockV2Trend,
             isFetching: true,
@@ -183,7 +195,10 @@ describe('useOverallTimeSavedByAgentsTrend', () => {
     })
 
     it('should propagate isError=true from v2 trend', () => {
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'live',
+            isLoading: false,
+        })
         mockUseStatsMetricTrend.mockReturnValue({
             ...mockV2Trend,
             isError: true,

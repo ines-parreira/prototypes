@@ -16,7 +16,7 @@ import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useG
 export const useAiAgentAllAgentsAutomatedInteractionsTrend = () => {
     const { statsFilters, userTimezone } = useAutomateFilters()
 
-    const stage = useGetNewStatsFeatureFlagMigration(
+    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS,
     )
     const isV2 = stage === 'live' || stage === 'complete'
@@ -24,7 +24,7 @@ export const useAiAgentAllAgentsAutomatedInteractionsTrend = () => {
     const v1 = useAIAgentAutomatedInteractionsTrend(
         statsFilters,
         userTimezone,
-        !isV2,
+        !isLoading && !isV2,
     )
     const v2 = useStatsMetricTrend(
         dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
@@ -38,7 +38,7 @@ export const useAiAgentAllAgentsAutomatedInteractionsTrend = () => {
             },
             timezone: userTimezone,
         }),
-        isV2,
+        !isLoading && isV2,
     )
 
     const { isFetching, isError, data } = isV2 ? v2 : v1

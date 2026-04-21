@@ -97,7 +97,10 @@ describe('useRevenuePerInteractionMetric', () => {
         })
         mockUseGenericTrend.mockReturnValue(trendData)
         mockUseStatsMetricTrend.mockReturnValue(trendData)
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('off')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
     })
 
     describe('when feature flag is off', () => {
@@ -164,7 +167,10 @@ describe('useRevenuePerInteractionMetric', () => {
 
     describe('when feature flag is live', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
         })
 
         it('should use the v2 (useStatsMetricTrend) result', () => {
@@ -263,7 +269,10 @@ describe('useRevenuePerInteractionMetric', () => {
 
     describe('when feature flag is complete', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
         })
 
         it('should use the v2 (useStatsMetricTrend) result', () => {

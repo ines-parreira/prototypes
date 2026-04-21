@@ -88,7 +88,10 @@ describe('useAiAgentSupportCostSaved', () => {
         mockUseMoneySavedPerInteractionWithAutomate.mockReturnValue(
             AGENT_COST_PER_TICKET,
         )
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('off')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
         mockUseFilteredAutomatedInteractions.mockReturnValue(mockV1Trend)
         mockUseStatsMetricTrend.mockReturnValue(mockV2Trend)
         mockFormatCostSavedData.mockReturnValue({
@@ -153,7 +156,10 @@ describe('useAiAgentSupportCostSaved', () => {
 
     describe('when feature flag is live', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
             mockFormatCostSavedData.mockReturnValue({
                 value: 120 * AGENT_COST_PER_TICKET,
                 prevValue: 95 * AGENT_COST_PER_TICKET,
@@ -205,7 +211,10 @@ describe('useAiAgentSupportCostSaved', () => {
 
     describe('when feature flag is complete', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
         })
 
         it('should call useStatsMetricTrend with enabled=true', () => {

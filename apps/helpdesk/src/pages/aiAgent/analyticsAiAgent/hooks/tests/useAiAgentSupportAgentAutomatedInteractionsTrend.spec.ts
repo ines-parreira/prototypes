@@ -71,7 +71,10 @@ describe('useAiAgentSupportAgentAutomatedInteractionsTrend', () => {
             userTimezone,
             granularity: ReportingGranularity.Day,
         })
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('off')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
         mockUseAiAgentSupportInteractionsTrend.mockReturnValue(mockV1Trend)
         mockUseStatsMetricTrend.mockReturnValue(mockV2Trend)
     })
@@ -141,7 +144,10 @@ describe('useAiAgentSupportAgentAutomatedInteractionsTrend', () => {
 
     describe('when feature flag is live', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
         })
 
         it('should call useAiAgentSupportInteractionsTrend with enabled=false', () => {
@@ -206,7 +212,10 @@ describe('useAiAgentSupportAgentAutomatedInteractionsTrend', () => {
 
     describe('when feature flag is complete', () => {
         beforeEach(() => {
-            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+            mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
         })
 
         it('should call useStatsMetricTrend with enabled=true', () => {

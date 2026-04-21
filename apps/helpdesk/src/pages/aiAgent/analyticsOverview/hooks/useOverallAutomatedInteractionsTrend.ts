@@ -17,7 +17,7 @@ export const useOverallAutomatedInteractionsTrend = (
     userTimezone: string,
     enabled: boolean = true,
 ) => {
-    const stage = useGetNewStatsFeatureFlagMigration(
+    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,
     )
     const isV2 = stage === 'live' || stage === 'complete'
@@ -25,7 +25,7 @@ export const useOverallAutomatedInteractionsTrend = (
     const v1Trend = useFilteredAutomatedInteractions(
         statsFilters,
         userTimezone,
-        !isV2 && enabled,
+        !isLoading && !isV2 && enabled,
     )
     const v2Trend = useStatsMetricTrend(
         dynamicOverallAutomatedInteractionsQueryFactoryV2({
@@ -39,7 +39,7 @@ export const useOverallAutomatedInteractionsTrend = (
             },
             timezone: userTimezone,
         }),
-        isV2 && enabled,
+        !isLoading && isV2 && enabled,
     )
 
     return isV2 ? v2Trend : v1Trend

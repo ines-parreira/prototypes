@@ -90,7 +90,10 @@ const mockV2TrendResult = {
 describe('useAiAgentSupportAgentFRTTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
         useDecreaseInFirstResponseTimeTrendMock.mockReturnValue(
             mockV1TrendResult,
         )
@@ -136,7 +139,10 @@ describe('useAiAgentSupportAgentFRTTrend', () => {
 
         it('should return v2 trend when migration stage is live', () => {
             useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('live')
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
 
             const { result } = renderHook(() =>
                 useAiAgentSupportAgentFRTTrend(statsFilters, timezone),
@@ -147,7 +153,10 @@ describe('useAiAgentSupportAgentFRTTrend', () => {
 
         it('should return v2 trend when migration stage is complete', () => {
             useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('complete')
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
 
             const { result } = renderHook(() =>
                 useAiAgentSupportAgentFRTTrend(statsFilters, timezone),
@@ -158,7 +167,10 @@ describe('useAiAgentSupportAgentFRTTrend', () => {
 
         it('should call useDecreaseInFirstResponseTimeTrend with enabled=false when migration stage is live', () => {
             useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('live')
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
 
             renderHook(() =>
                 useAiAgentSupportAgentFRTTrend(statsFilters, timezone),
@@ -171,7 +183,10 @@ describe('useAiAgentSupportAgentFRTTrend', () => {
 
         it('should call v2 factory without aiAgentRole in filters to avoid duplicate filter', () => {
             useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('live')
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'live',
+                isLoading: false,
+            })
 
             renderHook(() =>
                 useAiAgentSupportAgentFRTTrend(statsFilters, timezone),

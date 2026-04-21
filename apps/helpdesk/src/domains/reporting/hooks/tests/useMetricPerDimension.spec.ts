@@ -231,9 +231,10 @@ describe('MetricPerDimension', () => {
 
     describe('useMetricPerDimensionV2', () => {
         beforeEach(() => {
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
-                'off' as MigrationStage,
-            )
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'off' as MigrationStage,
+                isLoading: false,
+            })
             jest.clearAllMocks()
         })
 
@@ -367,9 +368,10 @@ describe('MetricPerDimension', () => {
 
     describe('useMetricPerDimensionV2 with migration stage complete or live', () => {
         beforeEach(() => {
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
-                'complete' as MigrationStage,
-            )
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'complete' as MigrationStage,
+                isLoading: false,
+            })
 
             const mockResponse = {
                 ...mockedResponseWithDeciles,
@@ -446,9 +448,10 @@ describe('MetricPerDimension', () => {
         })
 
         it('should call selectMeasurePerDimension with correct parameters when migration stage is off', () => {
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
-                'off' as MigrationStage,
-            )
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'off' as MigrationStage,
+                isLoading: false,
+            })
 
             let capturedSelect: ((data: any) => any) | undefined
             const testData = [
@@ -498,9 +501,10 @@ describe('MetricPerDimension', () => {
         })
 
         it('should call selectMeasurePerDimension with isV2=true when migration stage is complete', () => {
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
-                'complete' as MigrationStage,
-            )
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'complete' as MigrationStage,
+                isLoading: false,
+            })
 
             let capturedSelect: ((data: any) => any) | undefined
             const testData = [
@@ -550,9 +554,10 @@ describe('MetricPerDimension', () => {
         })
 
         it('should call selectMeasurePerDimension with isV2=true when migration stage is live', () => {
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
-                'live' as MigrationStage,
-            )
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'live' as MigrationStage,
+                isLoading: false,
+            })
 
             let capturedSelect: ((data: any) => any) | undefined
             const testData = [
@@ -602,9 +607,10 @@ describe('MetricPerDimension', () => {
         })
 
         it('should pass correct parameters to selectMeasurePerDimension including dimensionId', () => {
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
-                'off' as MigrationStage,
-            )
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'off' as MigrationStage,
+                isLoading: false,
+            })
 
             let capturedSelect: ((data: any) => any) | undefined
             const testData = [

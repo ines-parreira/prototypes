@@ -32,7 +32,7 @@ export const useAiAgentSupportAgentFRTTrend = (
     const agentFilters = applyAiAgentFilter(filters, aiAgentUserId)
     const v1Filters = applySupportAgentFilter(agentFilters)
 
-    const stage = useGetNewStatsFeatureFlagMigration(
+    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT,
     )
     const isV2 = stage === 'live' || stage === 'complete'
@@ -40,7 +40,7 @@ export const useAiAgentSupportAgentFRTTrend = (
     const v1Trend = useDecreaseInFirstResponseTimeTrend(
         v1Filters,
         timezone,
-        !isV2,
+        !isLoading && !isV2,
     )
     const v2Trend = useStatsMetricTrend(
         aiAgentSupportAgentDecreaseInFRTQueryV2Factory({
@@ -54,7 +54,7 @@ export const useAiAgentSupportAgentFRTTrend = (
             },
             timezone,
         }),
-        isV2,
+        !isLoading && isV2,
     )
 
     return isV2 ? v2Trend : v1Trend

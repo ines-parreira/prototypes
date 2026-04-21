@@ -57,7 +57,10 @@ describe('Metric', () => {
     describe('useMetric', () => {
         beforeEach(() => {
             usePostReportingV2Mock.mockReturnValue(defaultReporting)
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'off',
+                isLoading: false,
+            })
         })
 
         it('should return isFetching=false when no queries are fetching', () => {

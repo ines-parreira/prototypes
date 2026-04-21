@@ -45,9 +45,10 @@ export function useMetric<
     queryV2?: BuiltQuery<TMeta>,
     enabled: boolean = true,
 ): Metric {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(
-        queryV2?.metricName || query!.metricName,
-    )
+    const { stage: migrationStage, isLoading } =
+        useGetNewStatsFeatureFlagMigration(
+            queryV2?.metricName || query!.metricName,
+        )
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
 
     const currentPeriodMetric = usePostReportingV2<
@@ -58,7 +59,7 @@ export function useMetric<
     >(query ? [query] : [], queryV2, {
         select: (data) =>
             selectMeasure<TCube, TMeta>(data, query, queryV2, isV2),
-        enabled,
+        enabled: !isLoading && enabled,
     })
 
     return {

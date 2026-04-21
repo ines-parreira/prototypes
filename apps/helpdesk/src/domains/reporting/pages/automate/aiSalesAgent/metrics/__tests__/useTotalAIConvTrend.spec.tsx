@@ -56,7 +56,10 @@ describe('totalAIConvTrend', () => {
 
     beforeEach(() => {
         getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
-        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
     })
 
     describe('useTotalAIConvTrend', () => {

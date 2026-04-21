@@ -128,9 +128,10 @@ describe('useTimeSeries', () => {
             isFetching: false,
             isError: false,
         } as any)
-        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
-            'off' as MigrationStage,
-        )
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+            stage: 'off' as MigrationStage,
+            isLoading: false,
+        })
     })
 
     const expectedTimeSeriesResult = [
@@ -569,7 +570,10 @@ describe('useTimeSeries', () => {
 
     it('should call usePostReportingV2 with V2 queries when provided', () => {
         const migrationMode: MigrationStage = 'shadow'
-        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(migrationMode)
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+            stage: migrationMode,
+            isLoading: false,
+        })
         const queryV2 = {
             metricName: METRIC_NAMES.TEST_METRIC,
             scope: 'test-scope',
@@ -590,7 +594,10 @@ describe('useTimeSeries', () => {
 
     it('should return data when using V2 queries', () => {
         const migrationMode: MigrationStage = 'complete'
-        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(migrationMode)
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+            stage: migrationMode,
+            isLoading: false,
+        })
         const queryV2 = {
             metricName: METRIC_NAMES.TEST_METRIC,
             scope: 'test-scope',
@@ -1076,9 +1083,10 @@ describe('TimeSeriesPerDimension', () => {
 
     describe('useTimeSeriesPerDimension', () => {
         beforeEach(() => {
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
-                'off' as MigrationStage,
-            )
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'off' as MigrationStage,
+                isLoading: false,
+            })
         })
 
         it('should return separate time series per escaped dimension value', () => {

@@ -24,7 +24,10 @@ describe('useGetNewStatsFeatureFlagMigration', () => {
         const expectedMigrationStage: MigrationStage = 'shadow'
 
         resolveMetricFlagMocked.mockReturnValue(expectedFlag)
-        useGetFeatureFlagMigrationMocked.mockReturnValue(expectedMigrationStage)
+        useGetFeatureFlagMigrationMocked.mockReturnValue({
+            migrationStage: expectedMigrationStage,
+            isLoading: false,
+        })
 
         const { result } = renderHook(() =>
             useGetNewStatsFeatureFlagMigration(metricName),
@@ -35,7 +38,10 @@ describe('useGetNewStatsFeatureFlagMigration', () => {
             expectedFlag,
             'off',
         )
-        expect(result.current).toBe(expectedMigrationStage)
+        expect(result.current).toEqual({
+            stage: expectedMigrationStage,
+            isLoading: false,
+        })
     })
 
     it('should use "off" as default value when calling useGetFeatureFlagMigration', () => {
@@ -44,7 +50,10 @@ describe('useGetNewStatsFeatureFlagMigration', () => {
         const expectedMigrationStage: MigrationStage = 'off'
 
         resolveMetricFlagMocked.mockReturnValue(expectedFlag)
-        useGetFeatureFlagMigrationMocked.mockReturnValue(expectedMigrationStage)
+        useGetFeatureFlagMigrationMocked.mockReturnValue({
+            migrationStage: expectedMigrationStage,
+            isLoading: false,
+        })
 
         const { result } = renderHook(() =>
             useGetNewStatsFeatureFlagMigration(metricName),
@@ -54,7 +63,10 @@ describe('useGetNewStatsFeatureFlagMigration', () => {
             expectedFlag,
             'off',
         )
-        expect(result.current).toBe(expectedMigrationStage)
+        expect(result.current).toEqual({
+            stage: expectedMigrationStage,
+            isLoading: false,
+        })
     })
 
     it('should return different migration stages based on the resolved flag', () => {
@@ -63,13 +75,16 @@ describe('useGetNewStatsFeatureFlagMigration', () => {
         const expectedMigrationStage: MigrationStage = 'live'
 
         resolveMetricFlagMocked.mockReturnValue(expectedFlag)
-        useGetFeatureFlagMigrationMocked.mockReturnValue(expectedMigrationStage)
+        useGetFeatureFlagMigrationMocked.mockReturnValue({
+            migrationStage: expectedMigrationStage,
+            isLoading: false,
+        })
 
         const { result } = renderHook(() =>
             useGetNewStatsFeatureFlagMigration(metricName),
         )
 
-        expect(result.current).toBe('live')
+        expect(result.current).toEqual({ stage: 'live', isLoading: false })
         expect(useGetFeatureFlagMigrationMocked).toHaveBeenCalledWith(
             expectedFlag,
             'off',

@@ -1,6 +1,10 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -154,6 +158,7 @@ jest.mock('domains/reporting/hooks/metricTrends')
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
+const useFlagWithLoadingMock = assumeMock(useFlagWithLoading)
 
 jest.mock(
     'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend',
@@ -313,6 +318,10 @@ describe('<AutomateOverview />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useFlagMock.mockReturnValue(false)
+        useFlagWithLoadingMock.mockReturnValue({
+            value: 'off',
+            isLoading: false,
+        })
 
         useFilteredAutomatedInteractionsMock.mockReturnValue(
             automatedInteractionTrend,

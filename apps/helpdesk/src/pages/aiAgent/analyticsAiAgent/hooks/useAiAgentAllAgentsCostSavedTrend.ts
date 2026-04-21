@@ -28,7 +28,7 @@ export const useAiAgentAllAgentsCostSavedTrend = (
         AGENT_COST_PER_TICKET,
     )
 
-    const stage = useGetNewStatsFeatureFlagMigration(
+    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS,
     )
     const isV2 = stage === 'live' || stage === 'complete'
@@ -36,7 +36,7 @@ export const useAiAgentAllAgentsCostSavedTrend = (
     const v1Trend = useFilteredAutomatedInteractions(
         filteredFilters,
         timezone,
-        !isV2,
+        !isLoading && !isV2,
     )
     const v2Trend = useStatsMetricTrend(
         dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
@@ -50,7 +50,7 @@ export const useAiAgentAllAgentsCostSavedTrend = (
             },
             timezone,
         }),
-        isV2,
+        !isLoading && isV2,
     )
 
     const trend = isV2 ? v2Trend : v1Trend

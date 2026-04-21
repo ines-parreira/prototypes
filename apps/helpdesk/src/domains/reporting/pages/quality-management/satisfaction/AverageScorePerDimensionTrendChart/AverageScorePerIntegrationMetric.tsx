@@ -21,7 +21,7 @@ const V1DIMENSION = TicketMessagesDimension.Integration
 const V2DIMENSION = 'integrationId'
 
 export const AverageScorePerIntegrationMetric = () => {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(
+    const { stage: migrationStage } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_INTEGRATION_TIME_SERIES,
     )
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'

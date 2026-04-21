@@ -1,5 +1,5 @@
 import type { FeatureFlagKey, MigrationStage } from '@repo/feature-flags'
-import { useFlag } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 
 const ALLOWED_VALUES: Set<MigrationStage> = new Set([
@@ -9,19 +9,17 @@ const ALLOWED_VALUES: Set<MigrationStage> = new Set([
     'complete',
 ])
 
-/**
- * @param flag - The feature flag to check from the FeatureFlagKey enum
- * @param defaultValue - The default value to return if the feature flag is not set, defaults to 'off'
- * @returns The active migration stage for this flag
- */
 export function useGetFeatureFlagMigration(
     flag: FeatureFlagKey,
     defaultValue: MigrationStage = 'off',
-): MigrationStage {
-    const migrationStage = useFlag<MigrationStage>(flag, defaultValue)
-    if (!ALLOWED_VALUES.has(migrationStage)) {
-        reportError('Unknown migration stage: ' + migrationStage)
-        return defaultValue
+): { migrationStage: MigrationStage; isLoading: boolean } {
+    const { value, isLoading } = useFlagWithLoading<MigrationStage>(
+        flag,
+        defaultValue,
+    )
+    if (!ALLOWED_VALUES.has(value)) {
+        reportError('Unknown migration stage: ' + value)
+        return { migrationStage: defaultValue, isLoading }
     }
-    return migrationStage
+    return { migrationStage: value, isLoading }
 }

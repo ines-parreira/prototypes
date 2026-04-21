@@ -319,7 +319,10 @@ describe('useAutomationDatasetV2', () => {
 
     describe('useAutomateMetricsTrendV2', () => {
         beforeEach(() => {
-            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'off',
+                isLoading: false,
+            })
         })
 
         it('should calculate automation rate correctly', async () => {

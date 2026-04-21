@@ -10,7 +10,9 @@ jest.mock('domains/reporting/hooks/automate/automationTrends')
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration', () => ({
-    useGetNewStatsFeatureFlagMigration: jest.fn().mockReturnValue('off'),
+    useGetNewStatsFeatureFlagMigration: jest
+        .fn()
+        .mockReturnValue({ stage: 'off', isLoading: false }),
 }))
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useStatsMetricPerDimension: jest.fn(),
@@ -368,7 +370,10 @@ describe('useAutomationRateByFeature when stage is live or complete', () => {
     ]
 
     beforeEach(() => {
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'live',
+            isLoading: false,
+        })
         mockUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {},
             userTimezone: 'UTC',
@@ -490,7 +495,10 @@ describe('useAutomationRateByFeature when stage is live or complete', () => {
     })
 
     it('should use the V2 path when stage is complete', () => {
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue({
+            stage: 'complete',
+            isLoading: false,
+        })
 
         const { result } = renderHook(() => useAutomationRateByFeature())
 

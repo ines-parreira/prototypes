@@ -46,7 +46,10 @@ const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
 describe('useAutomationRateTimeSeriesData', () => {
     beforeEach(() => {
         getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
-        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+            stage: 'off',
+            isLoading: false,
+        })
     })
     const statsFilters: StatsFilters = {
         period: {
