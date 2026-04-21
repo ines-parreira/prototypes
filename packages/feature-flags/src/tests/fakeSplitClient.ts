@@ -27,10 +27,26 @@ export function createFakeSplitClient(
         }
     }
 
+    let attributes: Record<string, unknown> = {}
+
     return {
         Event,
         on,
         off,
+
+        setAttributes(attrs: Record<string, unknown>) {
+            attributes = { ...attrs }
+            return true
+        },
+
+        getAttributes() {
+            return attributes
+        },
+
+        clearAttributes() {
+            attributes = {}
+            return true
+        },
 
         getTreatmentWithConfig(
             flag: string,

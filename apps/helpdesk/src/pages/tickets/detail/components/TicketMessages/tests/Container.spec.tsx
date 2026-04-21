@@ -38,6 +38,8 @@ jest.mock('tickets/ticket-detail/components/withMessageTranslations', () => ({
 // Mock the FeatureFlags consumer
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(() => false),
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
     withFeatureFlags: (Component: React.ComponentType<any>) => Component,
 }))
 

@@ -24,7 +24,7 @@ export function initEngines(flagContext: FlagContext): void {
         .catch(() => {})
 }
 
-function getPrimaryEngineId(): EngineId {
+export function getPrimaryEngineId(): EngineId {
     return ld.evaluate<boolean>(CONTROL_FLAG, false)
         ? 'harness'
         : 'launchdarkly'

@@ -2,9 +2,11 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { SplitFactoryProvider } from '@splitsoftware/splitio-react'
 import type { LDClient } from 'launchdarkly-js-client-sdk'
 import { LDProvider } from 'launchdarkly-react-client-sdk'
 
+import { getFactory } from './engines/harness'
 import { getLDClient, LDContext } from './launchdarkly'
 
 type FeatureFlagsProviderProps = {
@@ -21,6 +23,8 @@ export function FeatureFlagsProvider({ children }: FeatureFlagsProviderProps) {
         })
     })
 
+    const splitFactory = getFactory()
+
     return (
         <LDProvider
             clientSideID={window.GORGIAS_LAUNCHDARKLY_CLIENT_ID}
@@ -28,7 +32,9 @@ export function FeatureFlagsProvider({ children }: FeatureFlagsProviderProps) {
             reactOptions={{ useCamelCaseFlagKeys: false }}
             context={LDContext}
         >
-            {children}
+            <SplitFactoryProvider factory={splitFactory ?? undefined}>
+                {children}
+            </SplitFactoryProvider>
         </LDProvider>
     )
 }

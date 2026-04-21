@@ -13,13 +13,16 @@ export type HarnessRawValue = {
     config: unknown
 }
 
-export type HarnessEngine = Engine<HarnessRawValue | null, HarnessContext>
+export type HarnessEngine = Engine<HarnessRawValue | null, HarnessContext> & {
+    getFactory: () => SplitIO.IBrowserSDK | null
+}
 
 export function normalizeFlagId(flag: string): string {
     return flag.replaceAll('.', '-')
 }
 
 export function createEngine(): HarnessEngine {
+    let factory: SplitIO.IBrowserSDK | null = null
     let client: SplitIO.IBrowserClient
     let harnessAttributes: SplitIO.Attributes = {}
     let harnessContext: HarnessContext = {
@@ -54,7 +57,7 @@ export function createEngine(): HarnessEngine {
             attributes: harnessAttributes,
         }
 
-        const factory = SplitFactory({
+        factory = SplitFactory({
             core: {
                 authorizationKey: sdkKey,
                 key,
@@ -63,7 +66,15 @@ export function createEngine(): HarnessEngine {
         })
 
         client = factory.client()
+        // Persist attributes on the client so the Split React hooks (which
+        // read via `client.getAttributes()` internally) evaluate treatments
+        // with the correct targeting context.
+        client.setAttributes(harnessAttributes)
         initialized = true
+    }
+
+    function getFactory(): SplitIO.IBrowserSDK | null {
+        return factory
     }
 
     function getRawValue(flag: string): HarnessRawValue | null {
@@ -160,6 +171,7 @@ export function createEngine(): HarnessEngine {
         isReady,
         getContext,
         ensureInitialization,
+        getFactory,
     }
 }
 
@@ -170,6 +182,7 @@ export const {
     getRawValue,
     evaluate,
     evaluateAsync,
+    getFactory,
     subscribe,
     isReady,
     getContext,
@@ -199,7 +212,7 @@ function coerceValue<T>(raw: string, defaultValue: T): T {
     }
 }
 
-function parseTreatment<T>(
+export function parseTreatment<T>(
     treatment: string,
     config: string | null,
     defaultValue: T,

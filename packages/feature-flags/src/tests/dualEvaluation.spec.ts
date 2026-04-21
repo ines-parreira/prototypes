@@ -57,7 +57,7 @@ function setupEngines(
     > = {},
 ) {
     fakeLDClient = createFakeLDClient({
-        [CONTROL_FLAG]: false,
+        [CONTROL_FLAG]: true,
         ...ldFlags,
     })
     fakeSplitClient = createFakeSplitClient(splitTreatments)
@@ -76,7 +76,7 @@ describe('dualEvaluation', () => {
     describe('initEngines', () => {
         it('should initialize both engines and seed the eval store after ready', async () => {
             fakeLDClient = createFakeLDClient({
-                [CONTROL_FLAG]: false,
+                [CONTROL_FLAG]: true,
                 'some-flag': true,
             })
             fakeSplitClient = createFakeSplitClient({
@@ -100,8 +100,11 @@ describe('dualEvaluation', () => {
     })
 
     describe('evaluateFlag', () => {
-        it('should return the value from the primary (LD) engine', () => {
-            setupEngines({ 'test-flag': true })
+        it('should return the value from the primary (harness) engine', () => {
+            setupEngines(
+                {},
+                { 'test-flag': { treatment: 'true', config: null } },
+            )
 
             const result = evaluateFlag(testFlag, false)
 
@@ -119,7 +122,7 @@ describe('dualEvaluation', () => {
             await vi.waitFor(() => {
                 const entry = evalStore.getState().entries[testFlag]
                 expect(entry).toBeDefined()
-                expect(entry.harnessValue).toBe(true)
+                expect(entry.launchdarklyValue).toBe(true)
             })
         })
 
@@ -173,9 +176,10 @@ describe('dualEvaluation', () => {
         })
 
         it('should not propagate secondary engine errors', async () => {
-            setupEngines({ 'test-flag': true })
-            // harness has no treatment for test-flag → returns 'control' → default
-            // This won't throw, so let's verify the primary still returns correctly
+            setupEngines(
+                {},
+                { 'test-flag': { treatment: 'true', config: null } },
+            )
 
             const result = evaluateFlag(testFlag, false)
 
@@ -183,22 +187,14 @@ describe('dualEvaluation', () => {
 
             await new Promise((resolve) => setTimeout(resolve, 10))
         })
-
-        it('should use harness as primary when control flag says so', () => {
-            setupEngines(
-                { [CONTROL_FLAG]: true, 'test-flag': 'ld-value' },
-                { 'test-flag': { treatment: 'harness-value', config: null } },
-            )
-
-            const result = evaluateFlag(testFlag, 'default')
-
-            expect(result).toBe('harness-value')
-        })
     })
 
     describe('evaluateFlagAsync', () => {
         it('should return the value from the primary engine', async () => {
-            setupEngines({ 'test-flag': 'async-value' })
+            setupEngines(
+                {},
+                { 'test-flag': { treatment: 'async-value', config: null } },
+            )
 
             fakeLDClient._resolveInit()
             fakeSplitClient._emitReady()
@@ -245,11 +241,15 @@ describe('dualEvaluation', () => {
                 .spyOn(console, 'error')
                 .mockImplementation(() => {})
 
-            setupEngines({ 'test-flag': 'value' })
+            setupEngines(
+                {},
+                { 'test-flag': { treatment: 'value', config: null } },
+            )
 
-            fakeLDClient._rejectInit(new Error('primary failed'))
+            const resultPromise = evaluateFlagAsync(testFlag, 'default')
+            fakeSplitClient._emitTimeout()
 
-            const result = await evaluateFlagAsync(testFlag, 'default')
+            const result = await resultPromise
 
             expect(result.value).toBe('default')
             expect(result.error).toBeInstanceOf(Error)
@@ -261,12 +261,12 @@ describe('dualEvaluation', () => {
             vi.useFakeTimers()
 
             setupEngines(
-                { 'test-flag': 'value' },
-                { 'test-flag': { treatment: 'other', config: null } },
+                { 'test-flag': 'other' },
+                { 'test-flag': { treatment: 'value', config: null } },
             )
 
-            fakeLDClient._resolveInit()
-            // Don't emit ready for harness — it will time out
+            fakeSplitClient._emitReady()
+            // Don't resolve LD — it will time out on the secondary evaluation
 
             const resultPromise = evaluateFlagAsync(testFlag, 'default')
 
@@ -320,23 +320,29 @@ describe('dualEvaluation', () => {
 
     describe('subscribeToFlag', () => {
         it('should subscribe via the primary engine and receive updates', () => {
-            setupEngines({ 'test-flag': false })
+            setupEngines(
+                {},
+                { 'test-flag': { treatment: 'off', config: null } },
+            )
 
             const callback = vi.fn()
             subscribeToFlag(testFlag, false, callback)
 
-            fakeLDClient._setFlag(testFlag, true)
+            fakeSplitClient._setTreatment(testFlag, 'on')
             expect(callback).toHaveBeenCalledWith(true)
         })
 
         it('should return an unsubscribe function that stops callbacks', () => {
-            setupEngines({ 'test-flag': false })
+            setupEngines(
+                {},
+                { 'test-flag': { treatment: 'off', config: null } },
+            )
 
             const callback = vi.fn()
             const unsubscribe = subscribeToFlag(testFlag, false, callback)
             unsubscribe()
 
-            fakeLDClient._setFlag(testFlag, true)
+            fakeSplitClient._setTreatment(testFlag, 'on')
             expect(callback).not.toHaveBeenCalled()
         })
     })
