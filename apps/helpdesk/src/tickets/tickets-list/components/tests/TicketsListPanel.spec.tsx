@@ -5,7 +5,7 @@ import { assumeMock } from '@repo/testing'
 import { useHelpdeskV2MS4Flag } from '@repo/tickets/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { setViewEditMode } from 'state/views/actions'
 
@@ -13,9 +13,11 @@ import TicketsListPanel from '../TicketsListPanel'
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
+    useLocation: jest.fn(),
     useParams: jest.fn(),
 }))
 const useHistoryMock = assumeMock(useHistory)
+const useLocationMock = assumeMock(useLocation)
 const useParamsMock = assumeMock(useParams)
 
 jest.mock('@repo/tickets/feature-flags', () => ({
@@ -116,6 +118,7 @@ jest.mock('hooks/useAppDispatch', () => ({
 }))
 const dispatchMock = jest.fn()
 const historyPushMock = jest.fn()
+const historyReplaceMock = jest.fn()
 const useAppDispatchMock = jest.requireMock('hooks/useAppDispatch')
     .default as jest.Mock
 
@@ -130,11 +133,21 @@ describe('TicketsListPanel', () => {
         setSplitTicketViewMock.mockReset()
         mockTicketListComponent.mockClear()
         historyPushMock.mockReset()
+        historyReplaceMock.mockReset()
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useSplitTicketViewMock.mockReturnValue({
+            isEnabled: true,
             setIsEnabled: setSplitTicketViewMock,
         })
-        useHistoryMock.mockReturnValue({ push: historyPushMock } as any)
+        useHistoryMock.mockReturnValue({
+            action: 'PUSH',
+            push: historyPushMock,
+            replace: historyReplaceMock,
+        } as any)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/views/123456',
+            state: undefined,
+        } as any)
         useParamsMock.mockReturnValue({})
         useHelpdeskV2MS4FlagMock.mockReturnValue(false)
     })
@@ -242,7 +255,7 @@ describe('TicketsListPanel', () => {
         expect(screen.queryByText('TicketList')).not.toBeInTheDocument()
     })
 
-    it('should dispatch view edit mode, disable split ticket view and navigate when fix filters is clicked', async () => {
+    it('should store the previous split ticket view value, disable split ticket view and navigate when fix filters is clicked', async () => {
         useHelpdeskV2MS4FlagMock.mockReturnValue(true)
         const user = userEvent.setup()
 
@@ -254,6 +267,9 @@ describe('TicketsListPanel', () => {
 
         await user.click(screen.getByRole('button', { name: 'Fix filters' }))
 
+        expect(historyReplaceMock).toHaveBeenCalledWith('/app/views/123456', {
+            previousSplitTicketViewEnabled: true,
+        })
         expect(dispatchMock).toHaveBeenCalledWith(setViewEditMode())
         expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
         expect(historyPushMock).toHaveBeenCalledWith('/app/tickets/123456', {
@@ -261,7 +277,7 @@ describe('TicketsListPanel', () => {
         })
     })
 
-    it('should wire TicketList onFixFilters to edit mode, split view disable and navigation handlers', () => {
+    it('should wire TicketList onFixFilters to store the previous split view value, disable split view and navigate', () => {
         useHelpdeskV2MS4FlagMock.mockReturnValue(true)
 
         render(
@@ -273,10 +289,36 @@ describe('TicketsListPanel', () => {
         const ticketListProps = mockTicketListComponent.mock.calls[0]?.[0]
         ticketListProps?.onFixFilters?.()
 
+        expect(historyReplaceMock).toHaveBeenCalledWith('/app/views/123456', {
+            previousSplitTicketViewEnabled: true,
+        })
         expect(dispatchMock).toHaveBeenCalledWith(setViewEditMode())
         expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
         expect(historyPushMock).toHaveBeenCalledWith('/app/tickets/123456', {
             openViewFilters: true,
+        })
+    })
+
+    it('should restore the previous split ticket view value when revisiting the route via browser back', () => {
+        useHistoryMock.mockReturnValue({
+            action: 'POP',
+            push: historyPushMock,
+            replace: historyReplaceMock,
+        } as any)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/views/123456',
+            state: { previousSplitTicketViewEnabled: true },
+        } as any)
+
+        render(
+            <Panels size={1000}>
+                <TicketsListPanel />
+            </Panels>,
+        )
+
+        expect(setSplitTicketViewMock).toHaveBeenCalledWith(true)
+        expect(historyReplaceMock).toHaveBeenCalledWith('/app/views/123456', {
+            previousSplitTicketViewEnabled: undefined,
         })
     })
 

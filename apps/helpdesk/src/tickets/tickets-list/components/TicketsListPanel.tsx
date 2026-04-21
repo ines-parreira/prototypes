@@ -10,6 +10,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
+import useSyncSplitTicketViewHistoryState from 'split-ticket-view-toggle/hooks/useSyncSplitTicketViewHistoryState'
 import { setViewActive, setViewEditMode } from 'state/views/actions'
 import { getViewPlainJS } from 'state/views/selectors'
 import { TicketListView } from 'ticket-list-view'
@@ -32,8 +33,16 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
     const { ticketId: urlTicketId } = useParams<{ ticketId?: string }>()
     const viewId = useViewId()
     const { currentUserId } = useCurrentUserId()
-    const { setIsEnabled: setSplitTicketView } = useSplitTicketView()
+    const {
+        isEnabled: isSplitTicketViewEnabled,
+        setIsEnabled: setSplitTicketView,
+    } = useSplitTicketView()
     const history = useHistory()
+    const { syncSplitTicketViewHistoryState } =
+        useSyncSplitTicketViewHistoryState({
+            isSplitTicketViewEnabled,
+            setSplitTicketView,
+        })
 
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
@@ -47,12 +56,19 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
     const [macroTicketIds, setMacroTicketIds] = useState<number[] | null>(null)
 
     const handleFixFilters = useCallback(() => {
+        syncSplitTicketViewHistoryState()
         dispatch(setViewEditMode())
         setSplitTicketView(false)
         history.push(`/app/tickets/${viewId}`, {
             openViewFilters: true,
         })
-    }, [dispatch, history, setSplitTicketView, viewId])
+    }, [
+        dispatch,
+        history,
+        setSplitTicketView,
+        syncSplitTicketViewHistoryState,
+        viewId,
+    ])
 
     const ticketId = urlTicketId ? parseInt(urlTicketId, 10) : undefined
     if (hasUIVisionMS4) {
