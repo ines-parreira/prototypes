@@ -1,4 +1,11 @@
-import { Card, Elevation, Heading, Text } from '@gorgias/axiom'
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    Elevation,
+    Heading,
+    Text,
+} from '@gorgias/axiom'
 
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/ColorPicker'
@@ -10,18 +17,26 @@ import css from '../GorgiasChatIntegrationAppearance.less'
 type Props = {
     mainColor: string
     headerPictureUrl?: string
+    headerAlternativePictureUrl?: string
     onMainColorChange: (value: string) => void
     onHeaderLogoUrlChange: (url?: string) => void
+    onHeaderAlternativePictureUrlChange: (url?: string) => void
 }
 
 export const BrandCard = ({
     mainColor,
     headerPictureUrl,
+    headerAlternativePictureUrl,
     onMainColorChange,
     onHeaderLogoUrlChange,
+    onHeaderAlternativePictureUrlChange,
 }: Props) => {
-    const { updateMainColor, updateHeaderPictureUrl, openChat } =
-        useChatPreviewPanelContext()
+    const {
+        updateMainColor,
+        updateHeaderPictureUrl,
+        updateHeaderAlternativePictureUrl,
+        openChat,
+    } = useChatPreviewPanelContext()
 
     return (
         <Card className={css.card} elevation={Elevation.Mid}>
@@ -60,16 +75,47 @@ export const BrandCard = ({
                         </Text>
                         <Text size="sm" className={css.caption}>
                             Upload a horizontal logo (PNG, JPG, or GIF) with a
-                            transparent background. This logo will appear in
-                            your chat home screen.
+                            transparent background. You only need an alternative
+                            logo if your default isn&apos;t visible on white
+                            backgrounds.
                         </Text>
-                        <LogoUpload
-                            url={headerPictureUrl}
-                            onChange={(url) => {
-                                onHeaderLogoUrlChange(url)
-                                updateHeaderPictureUrl(url)
-                            }}
-                        />
+                        <div className={css.logoUploadsContainer}>
+                            <Card className={css.logoUploadCard}>
+                                <CardHeader
+                                    title="Default logo"
+                                    description="Works on your brand color"
+                                />
+                                <CardContent>
+                                    <LogoUpload
+                                        url={headerPictureUrl}
+                                        onChange={(url) => {
+                                            onHeaderLogoUrlChange(url)
+                                            updateHeaderPictureUrl(url)
+                                        }}
+                                    />
+                                </CardContent>
+                            </Card>
+
+                            <Card className={css.logoUploadCard}>
+                                <CardHeader
+                                    title="Alternative logo"
+                                    description="Works on white backgrounds"
+                                />
+                                <CardContent>
+                                    <LogoUpload
+                                        url={headerAlternativePictureUrl}
+                                        onChange={(url) => {
+                                            onHeaderAlternativePictureUrlChange(
+                                                url,
+                                            )
+                                            updateHeaderAlternativePictureUrl(
+                                                url,
+                                            )
+                                        }}
+                                    />
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                 </div>
             </div>

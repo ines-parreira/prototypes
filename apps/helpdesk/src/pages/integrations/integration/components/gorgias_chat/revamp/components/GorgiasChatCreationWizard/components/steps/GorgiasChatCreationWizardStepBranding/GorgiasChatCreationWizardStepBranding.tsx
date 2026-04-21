@@ -48,8 +48,13 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     integration,
     isSubmitting,
 }) => {
-    const { updateMainColor, updatePosition, updateHeaderPictureUrl } =
-        useChatPreviewPanelContext()
+    const {
+        updateMainColor,
+        updatePosition,
+        updateHeaderPictureUrl,
+        updateHeaderAlternativePictureUrl,
+    } = useChatPreviewPanelContext()
+
     const logWizardEvent = useLogWizardEvent()
 
     const dispatch = useAppDispatch()
@@ -61,6 +66,10 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     const [currentMainColor, setCurrentMainColor] = useState<string>()
     const [currentHeaderPictureUrl, setCurrentHeaderPictureUrl] =
         useState<string>()
+    const [
+        currentHeaderAlternativePictureUrl,
+        setCurrentHeaderAlternativePictureUrl,
+    ] = useState<string>()
     const [currentPosition, setCurrentPosition] =
         useState<GorgiasChatPosition>()
 
@@ -75,6 +84,11 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         (integration.getIn(['decoration', 'header_picture_url']) as
             | string
             | undefined)
+    const headerAlternativePictureUrl =
+        currentHeaderAlternativePictureUrl ??
+        (integration.getIn(['decoration', 'header_alternative_picture_url']) as
+            | string
+            | undefined)
 
     const savedPosition: GorgiasChatPosition | undefined = integration
         .getIn(['decoration', 'position'])
@@ -86,6 +100,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     const isPristine =
         currentMainColor === undefined &&
         currentHeaderPictureUrl === undefined &&
+        currentHeaderAlternativePictureUrl === undefined &&
         currentPosition === undefined
 
     const handleColorChange = (color: string) => {
@@ -103,6 +118,13 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         updateHeaderPictureUrl(imageUrl)
     }
 
+    const headerAlternativePictureUrlChange = (
+        imageUrl: string | undefined,
+    ) => {
+        setCurrentHeaderAlternativePictureUrl(imageUrl)
+        updateHeaderAlternativePictureUrl(imageUrl)
+    }
+
     const onSave = (shouldGoToNextStep = false, isContinueLater = false) => {
         const form: SubmitForm = {
             type: IntegrationType.GorgiasChat,
@@ -111,6 +133,10 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                 .set('conversation_color', mainColor) // Backwards compatibility: setting main color for conversation color
                 .set('main_color', mainColor)
                 .set('header_picture_url', headerPictureUrl)
+                .set(
+                    'header_alternative_picture_url',
+                    headerAlternativePictureUrl,
+                )
                 .set('position', position)
                 .toJS(),
             meta: (integration.get('meta') as Map<any, any>)
@@ -201,9 +227,20 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                         />
                         <BrandLogoUploader
                             headerPictureUrl={headerPictureUrl}
-                            onChange={headerPictureUrlChange}
+                            headerAlternativePictureUrl={
+                                headerAlternativePictureUrl
+                            }
+                            onDefaultLogoChange={headerPictureUrlChange}
+                            onAlternativeLogoChange={
+                                headerAlternativePictureUrlChange
+                            }
                             onFocus={() =>
                                 headerPictureUrlChange(headerPictureUrl)
+                            }
+                            onAlternativeFocus={() =>
+                                headerAlternativePictureUrlChange(
+                                    headerAlternativePictureUrl,
+                                )
                             }
                         />
                         <div className={css.section}>

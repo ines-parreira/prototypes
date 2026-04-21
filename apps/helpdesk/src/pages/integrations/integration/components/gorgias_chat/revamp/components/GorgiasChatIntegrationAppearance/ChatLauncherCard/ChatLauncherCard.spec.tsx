@@ -85,6 +85,7 @@ jest.mock(
             updateMainColor: jest.fn(),
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
+            updateHeaderAlternativePictureUrl: jest.fn(),
             updateLauncher: jest.fn(),
             updateTexts: jest.fn(),
             updateLegalDisclaimer: jest.fn(),

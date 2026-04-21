@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -21,6 +21,23 @@ import * as actions from 'state/integrations/actions'
 
 import GorgiasChatCreationWizardStepBranding from './GorgiasChatCreationWizardStepBranding'
 
+type LogoUploadProps = {
+    url?: string
+    onChange: (url?: string) => void
+}
+
+const mockLogoUpload = jest.fn()
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload',
+    () => ({
+        LogoUpload: (props: LogoUploadProps) => {
+            mockLogoUpload(props)
+            return null
+        },
+    }),
+)
+
 jest.mock(
     'pages/common/hooks/useIsIntersectingWithBrowserViewport',
     () => () => false,
@@ -33,6 +50,7 @@ jest.mock(
             updateMainColor: jest.fn(),
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
+            updateHeaderAlternativePictureUrl: jest.fn(),
         }),
     }),
 )
@@ -67,7 +85,11 @@ const mockStoreState = {
 const integration = fromJS({
     id: 1,
     name: 'Test Integration',
-    decoration: {},
+    decoration: {
+        header_picture_url: 'https://example.com/logo.png',
+        header_alternative_picture_url:
+            'https://example.com/alternative-logo.png',
+    },
     meta: {
         language: 'en-US',
     },
@@ -81,6 +103,10 @@ const minProps: React.ComponentProps<
 }
 
 describe('<GorgiasChatCreationWizardStepBranding />', () => {
+    beforeEach(() => {
+        mockLogoUpload.mockClear()
+    })
+
     it('renders wizard with default options selected', () => {
         const { container } = render(
             <MemoryRouter>
@@ -100,6 +126,8 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
 
         expect(screen.getByText('Launcher position')).toBeInTheDocument()
         expect(screen.getByText('Home page logo')).toBeInTheDocument()
+        expect(screen.getByText('Default logo')).toBeInTheDocument()
+        expect(screen.getByText('Alternative logo')).toBeInTheDocument()
     })
 
     it('submits form when fields have been changed', () => {
@@ -131,6 +159,12 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
         expect(form.id).toBe(1)
         expect(form.decoration.main_color).toBe('#f00ba5')
         expect(form.decoration.conversation_color).toBe('#f00ba5')
+        expect(form.decoration.header_picture_url).toBe(
+            'https://example.com/logo.png',
+        )
+        expect(form.decoration.header_alternative_picture_url).toBe(
+            'https://example.com/alternative-logo.png',
+        )
         expect(form.decoration.position).toEqual(
             GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
         )
@@ -140,6 +174,70 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
         expect(silentUpdate).toBe(true)
         expect(goToNextStep).toBe(true)
         expect(successMessage).toBe('Changes saved')
+    })
+
+    it('submits new default logo when onChange is called', () => {
+        const { getByRole } = render(
+            <MemoryRouter>
+                <Provider store={mockStore(mockStoreState)}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBranding {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>,
+        )
+
+        const defaultLogoCall = mockLogoUpload.mock.calls.find(
+            ([props]: [LogoUploadProps]) =>
+                props.url === 'https://example.com/logo.png',
+        )
+        const { onChange } = defaultLogoCall?.[0] as LogoUploadProps
+        act(() => {
+            onChange('https://example.com/new-default-logo.png')
+        })
+
+        const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+        const form = (spy.mock.calls[0][0] as Map<string, unknown>).toJS() as {
+            decoration: { header_picture_url: string }
+        }
+        expect(form.decoration.header_picture_url).toBe(
+            'https://example.com/new-default-logo.png',
+        )
+    })
+
+    it('submits new alternative logo when onChange is called', () => {
+        const { getByRole } = render(
+            <MemoryRouter>
+                <Provider store={mockStore(mockStoreState)}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBranding {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>,
+        )
+
+        const alternativeLogoCall = mockLogoUpload.mock.calls.find(
+            ([props]: [LogoUploadProps]) =>
+                props.url === 'https://example.com/alternative-logo.png',
+        )
+        const { onChange } = alternativeLogoCall?.[0] as LogoUploadProps
+        act(() => {
+            onChange('https://example.com/new-alternative-logo.png')
+        })
+
+        const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+        const form = (spy.mock.calls[0][0] as Map<string, unknown>).toJS() as {
+            decoration: { header_alternative_picture_url: string }
+        }
+        expect(form.decoration.header_alternative_picture_url).toBe(
+            'https://example.com/new-alternative-logo.png',
+        )
     })
 
     it('disables buttons when submitting form', () => {

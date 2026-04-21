@@ -32,6 +32,7 @@ export type AppearanceFormValues = {
     name: string
     mainColor: string
     headerPictureUrl?: string
+    headerAlternativePictureUrl?: string
     position: GorgiasChatPosition
     launcher: GorgiasChatLauncherSettings
     avatar: GorgiasChatAvatarSettings
@@ -45,6 +46,10 @@ const buildFormValues = (integration: Map<any, any>): AppearanceFormValues => ({
         GORGIAS_CHAT_DEFAULT_COLOR,
     ),
     headerPictureUrl: integration.getIn(['decoration', 'header_picture_url']),
+    headerAlternativePictureUrl: integration.getIn([
+        'decoration',
+        'header_alternative_picture_url',
+    ]),
     position: {
         alignment: integration.getIn(
             ['decoration', 'position', 'alignment'],
@@ -164,6 +169,8 @@ export const useAppearanceForm = ({
                 main_color: mainColor,
                 conversation_color: mainColor,
                 header_picture_url: data.headerPictureUrl,
+                header_alternative_picture_url:
+                    data.headerAlternativePictureUrl,
                 position: data.position,
                 launcher: {
                     type: data.launcher.type,

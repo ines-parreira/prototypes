@@ -12,6 +12,7 @@ jest.mock(
         useChatPreviewPanelContext: () => ({
             updateMainColor: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
+            updateHeaderAlternativePictureUrl: jest.fn(),
             openChat: jest.fn(),
             closeChat: jest.fn(),
             displayPage: jest.fn(),
@@ -71,8 +72,10 @@ describe('BrandCard', () => {
     const defaultProps = {
         mainColor: '#FF0000',
         headerPictureUrl: 'https://example.com/logo.png',
+        headerAlternativePictureUrl: 'https://example.com/alternative-logo.png',
         onMainColorChange: jest.fn(),
         onHeaderLogoUrlChange: jest.fn(),
+        onHeaderAlternativePictureUrlChange: jest.fn(),
     }
 
     const renderComponent = (props = {}) => {
@@ -128,6 +131,35 @@ describe('BrandCard', () => {
 
             expect(defaultProps.onHeaderLogoUrlChange).toHaveBeenCalledWith(
                 'https://example.com/new-logo.png',
+            )
+        })
+    })
+
+    describe('Alternative LogoUpload', () => {
+        it('should receive the current headerAlternativePictureUrl', () => {
+            renderComponent()
+
+            expect(mockLogoUpload).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    url: 'https://example.com/alternative-logo.png',
+                }),
+            )
+        })
+
+        it('should call onHeaderAlternativePictureUrlChange when alternative logo changes', () => {
+            renderComponent()
+
+            const alternativeCall = mockLogoUpload.mock.calls.find(
+                ([props]: [LogoUploadProps]) =>
+                    props.url === 'https://example.com/alternative-logo.png',
+            )
+            const { onChange } = alternativeCall?.[0] as LogoUploadProps
+            onChange('https://example.com/new-alternative-logo.png')
+
+            expect(
+                defaultProps.onHeaderAlternativePictureUrlChange,
+            ).toHaveBeenCalledWith(
+                'https://example.com/new-alternative-logo.png',
             )
         })
     })

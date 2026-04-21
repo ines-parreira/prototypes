@@ -49,6 +49,8 @@ const makeIntegration = (overrides = {}) =>
         decoration: {
             main_color: '#FF0000',
             header_picture_url: 'https://example.com/logo.png',
+            header_alternative_picture_url:
+                'https://example.com/alternative-logo.png',
             position: {
                 alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
                 offsetX: 10,
@@ -91,6 +93,8 @@ describe('useAppearanceForm', () => {
                 name: 'Test Chat',
                 mainColor: '#FF0000',
                 headerPictureUrl: 'https://example.com/logo.png',
+                headerAlternativePictureUrl:
+                    'https://example.com/alternative-logo.png',
                 position: {
                     alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
                     offsetX: 10,
@@ -123,6 +127,9 @@ describe('useAppearanceForm', () => {
 
             expect(result.current.values.mainColor).toBe('#115cb5')
             expect(result.current.values.headerPictureUrl).toBeUndefined()
+            expect(
+                result.current.values.headerAlternativePictureUrl,
+            ).toBeUndefined()
             expect(result.current.values.legalDisclaimerEnabled).toBe(false)
             expect(result.current.values.launcher).toEqual({
                 type: GorgiasChatLauncherType.ICON,
@@ -187,6 +194,8 @@ describe('useAppearanceForm', () => {
                     main_color: '#FF0000',
                     conversation_color: '#FF0000',
                     header_picture_url: 'https://example.com/logo.png',
+                    header_alternative_picture_url:
+                        'https://example.com/alternative-logo.png',
                     launcher: {
                         type: GorgiasChatLauncherType.ICON_AND_LABEL,
                         label: 'Shop with AI',

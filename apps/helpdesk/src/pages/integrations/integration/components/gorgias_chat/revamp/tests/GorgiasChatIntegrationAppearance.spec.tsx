@@ -42,8 +42,10 @@ const mockUpdateOrCreateIntegration = jest.mocked(updateOrCreateIntegration)
 type BrandCardProps = {
     mainColor: string
     headerPictureUrl?: string
+    headerAlternativePictureUrl?: string
     onMainColorChange: (value: string) => void
     onHeaderLogoUrlChange: (url?: string) => void
+    onHeaderAlternativePictureUrlChange: (url?: string) => void
 }
 
 type ChatLauncherCardProps = {
@@ -181,6 +183,8 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
         decoration: {
             main_color: '#FF0000',
             header_picture_url: 'https://example.com/logo.png',
+            header_alternative_picture_url:
+                'https://example.com/alternative-logo.png',
             position: {
                 alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
                 offsetX: 10,
@@ -267,6 +271,36 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             expect(mockBrandCard).toHaveBeenLastCalledWith(
                 expect.objectContaining({
                     headerPictureUrl: 'https://new-logo.png',
+                }),
+            )
+        })
+
+        it('should receive headerAlternativePictureUrl from integration', () => {
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    headerAlternativePictureUrl:
+                        'https://example.com/alternative-logo.png',
+                }),
+            )
+        })
+
+        it('should update headerAlternativePictureUrl when onHeaderAlternativePictureUrlChange is called', () => {
+            renderComponent()
+
+            act(() => {
+                const { onHeaderAlternativePictureUrlChange } = mockBrandCard
+                    .mock.calls[0][0] as BrandCardProps
+                onHeaderAlternativePictureUrlChange(
+                    'https://new-alternative-logo.png',
+                )
+            })
+
+            expect(mockBrandCard).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    headerAlternativePictureUrl:
+                        'https://new-alternative-logo.png',
                 }),
             )
         })
@@ -478,6 +512,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
                 expect.objectContaining({
                     mainColor: '#115cb5',
                     headerPictureUrl: undefined,
+                    headerAlternativePictureUrl: undefined,
                 }),
             )
 

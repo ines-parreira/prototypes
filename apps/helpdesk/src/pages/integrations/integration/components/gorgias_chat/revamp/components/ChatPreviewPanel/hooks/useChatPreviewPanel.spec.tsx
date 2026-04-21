@@ -143,6 +143,24 @@ describe('useChatPreviewPanel', () => {
         ).not.toThrow()
     })
 
+    it('updateHeaderAlternativePictureUrl does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateHeaderAlternativePictureUrl(
+                'https://example.com/alternative-img.png',
+            ),
+        ).not.toThrow()
+    })
+
+    it('updateHeaderAlternativePictureUrl does not throw when called with undefined', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateHeaderAlternativePictureUrl(undefined),
+        ).not.toThrow()
+    })
+
     it('updateTexts does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -445,6 +463,7 @@ describe('useChatPreviewPanelContext', () => {
             updateMainColor: jest.fn(),
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
+            updateHeaderAlternativePictureUrl: jest.fn(),
             openChat: jest.fn(),
             closeChat: jest.fn(),
             displayPage: jest.fn(),

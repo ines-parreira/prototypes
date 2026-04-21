@@ -169,6 +169,17 @@ export const useChatPreviewPanel = ({
         [displayPage, openChat],
     )
 
+    const updateHeaderAlternativePictureUrl = useCallback(
+        (imageUrl: string | undefined) => {
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: { headerAlternativePictureUrl: imageUrl },
+            })
+            displayPage('homepage')
+            openChat()
+        },
+        [displayPage, openChat],
+    )
+
     const updateTexts = useCallback((texts: Record<string, string>) => {
         chatPreviewPanelRef.current?.updateTexts(texts)
     }, [])
@@ -263,6 +274,7 @@ export const useChatPreviewPanel = ({
         updateMainColor,
         updatePosition,
         updateHeaderPictureUrl,
+        updateHeaderAlternativePictureUrl,
         updateLauncher,
         updateTexts,
         updateLegalDisclaimer,

@@ -54,11 +54,17 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                         <BrandCard
                             mainColor={values.mainColor}
                             headerPictureUrl={values.headerPictureUrl}
+                            headerAlternativePictureUrl={
+                                values.headerAlternativePictureUrl
+                            }
                             onMainColorChange={(value) =>
                                 setValue('mainColor', value)
                             }
                             onHeaderLogoUrlChange={(url) =>
                                 setValue('headerPictureUrl', url)
+                            }
+                            onHeaderAlternativePictureUrlChange={(url) =>
+                                setValue('headerAlternativePictureUrl', url)
                             }
                         />
                         <ChatLauncherCard

@@ -22,6 +22,7 @@ export type GorgiasChatIntegration = IntegrationBase & {
         background_color_style?: GorgiasChatBackgroundColorStyle
         header_picture_url?: string
         header_picture_url_offline?: string
+        header_alternative_picture_url?: string
         display_bot_label?: boolean
         use_main_color_outside_business_hours?: boolean
     }
@@ -136,6 +137,7 @@ export type GorgiasChatPreviewApplicationSettings = {
     decoration?: {
         mainColor?: string
         headerPictureUrl?: string
+        headerAlternativePictureUrl?: string
         position?: GorgiasChatPosition
         launcher?: GorgiasChatLauncherSettings
         avatarTeamPictureUrl?: string
