@@ -195,7 +195,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 ) {
                     filters.push(
                         createStandardFilter(
-                            'integrationId',
+                            'storeIntegrationId',
                             statFilters.storeIntegrations.operator,
                             statFilters.storeIntegrations.values,
                         ),

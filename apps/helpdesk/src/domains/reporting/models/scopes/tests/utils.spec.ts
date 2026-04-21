@@ -198,6 +198,30 @@ describe('utils', () => {
             })
         })
 
+        it('should add storeIntegrations filter when present in scope config and stat filters', () => {
+            const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
+                scope: MetricScope.TicketsOpen,
+                filters: ['storeIntegrationId'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                storeIntegrations: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [555, 666],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).toContainEqual({
+                member: 'storeIntegrationId',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [555, 666],
+            })
+        })
+
         it('should add teams filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
                 measures: ['ticketCount'],

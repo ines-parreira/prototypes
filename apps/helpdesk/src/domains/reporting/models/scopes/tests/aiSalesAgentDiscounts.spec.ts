@@ -122,7 +122,7 @@ describe('aiSalesAgentDiscountsScope', () => {
 
         expect(result).toContainEqual(
             expect.objectContaining({
-                member: 'integrationId',
+                member: 'storeIntegrationId',
                 operator: 'one-of',
             }),
         )
