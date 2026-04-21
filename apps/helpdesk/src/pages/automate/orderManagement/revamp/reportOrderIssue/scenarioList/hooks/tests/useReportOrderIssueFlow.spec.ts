@@ -101,7 +101,7 @@ describe('useReportOrderIssueFlow', () => {
             await result.current.handleScenariosUpdate([])
         })
 
-        expect(mockHandleUpdate).toHaveBeenCalledWith(expect.any(Function))
+        expect(mockHandleUpdate).toHaveBeenCalledWith(expect.any(Function), {})
     })
 
     it('should update draft reportIssuePolicy cases with provided scenarios', async () => {

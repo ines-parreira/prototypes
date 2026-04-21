@@ -22,10 +22,13 @@ export const useReportOrderIssueFlow = () => {
     )
 
     const handleScenariosUpdate = useCallback(
-        (updatedScenarios: SelfServiceReportIssueCase[]) => {
+        (
+            updatedScenarios: SelfServiceReportIssueCase[],
+            messages: { success?: string; error?: string } = {},
+        ) => {
             return handleSelfServiceConfigurationUpdate((draft) => {
                 draft.reportIssuePolicy.cases = updatedScenarios
-            })
+            }, messages)
         },
         [handleSelfServiceConfigurationUpdate],
     )
