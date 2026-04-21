@@ -3,17 +3,16 @@ import { useCallback, useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import type { Draft } from 'immer'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     selfServiceConfigurationKeys,
     useGetSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/queries'
 import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
-import { notify } from 'state/notifications/actions'
 import type { AlertNotification } from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useSelfServiceConfigurationUpdate } from './useSelfServiceConfigurationUpdate'
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
@@ -23,7 +22,6 @@ const useSelfServiceConfiguration = (
     shopName: string,
     notificationHandler?: (notification: AlertNotification) => void,
 ) => {
-    const dispatch = useAppDispatch()
     const { hasAccess } = useAiAgentAccess(shopName)
     const queryClient = useQueryClient()
 
@@ -53,10 +51,19 @@ const useSelfServiceConfiguration = (
             if (notificationHandler) {
                 notificationHandler(notif)
             } else {
-                void dispatch(notify(notif))
+                const message = notif.message ?? ''
+                if (notif.status === 'error') {
+                    toast.error(message)
+                } else if (notif.status === 'warning') {
+                    toast.warning(message)
+                } else if (notif.status === 'success') {
+                    toast.success(message)
+                } else {
+                    toast.info(message)
+                }
             }
         },
-        [notificationHandler, dispatch],
+        [notificationHandler],
     )
 
     const {
@@ -89,7 +96,7 @@ const useSelfServiceConfiguration = (
         if (!storeIntegrationId && shopName && shopType) {
             handleNotify({
                 message: 'Failed to fetch store integration',
-                status: NotificationStatus.Error,
+                status: 'error' as AlertNotification['status'],
             })
         }
     }, [storeIntegrationId, handleNotify, shopName, shopType])

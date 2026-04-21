@@ -5,16 +5,14 @@ import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { Skeleton } from '@gorgias/axiom'
+import { Skeleton, toast } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
 import type { Notification } from 'state/notifications/types'
 
 import WorkflowAnalytics from './WorkflowAnalytics'
@@ -31,18 +29,24 @@ export default function WorkflowAnalyticsContainer() {
         shopName: string
         editWorkflowId: string
     }>()
-    const dispatch = useAppDispatch()
     const history = useHistory()
     const location = useLocation<{ from?: string }>()
     const isAutomateSettings = useIsAutomateSettings()
     const { from } = location.state || {}
 
-    const notifyMerchant = useCallback(
-        (message: Notification) => {
-            void dispatch(notify(message))
-        },
-        [dispatch],
-    )
+    const notifyMerchant = useCallback((message: Notification) => {
+        const text = String(('message' in message ? message.message : '') || '')
+        const status = 'status' in message ? message.status : undefined
+        if (status === 'error') {
+            toast.error(text)
+        } else if (status === 'warning') {
+            toast.warning(text)
+        } else if (status === 'success') {
+            toast.success(text)
+        } else {
+            toast.info(text)
+        }
+    }, [])
 
     const baseURL = useAutomateBaseURL()
 

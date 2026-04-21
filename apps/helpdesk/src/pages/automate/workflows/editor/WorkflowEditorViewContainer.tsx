@@ -6,12 +6,12 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { notify } from 'state/notifications/actions'
 import type { Notification } from 'state/notifications/types'
 
 import WorkflowEditorView from './WorkflowEditorView'
@@ -25,7 +25,6 @@ export default function WorkflowEditorViewContainer() {
         editWorkflowId: string
     }>()
     const history = useHistory()
-    const dispatch = useAppDispatch()
     const { hasAccess } = useAiAgentAccess(shopName)
     const isAutomateSettings = useIsAutomateSettings()
     const location = useLocation<{ from?: string }>()
@@ -52,12 +51,19 @@ export default function WorkflowEditorViewContainer() {
     const isNewWorkflow = editWorkflowId == null
     const workflowId = useMemo(() => editWorkflowId ?? ulid(), [editWorkflowId])
 
-    const notifyMerchant = useCallback(
-        (message: Notification) => {
-            void dispatch(notify(message))
-        },
-        [dispatch],
-    )
+    const notifyMerchant = useCallback((message: Notification) => {
+        const text = String(('message' in message ? message.message : '') || '')
+        const status = 'status' in message ? message.status : undefined
+        if (status === 'error') {
+            toast.error(text)
+        } else if (status === 'warning') {
+            toast.warning(text)
+        } else if (status === 'success') {
+            toast.success(text)
+        } else {
+            toast.info(text)
+        }
+    }, [])
 
     const handleNewWorkflowCreated = useCallback(
         (isDraft: boolean) => {
