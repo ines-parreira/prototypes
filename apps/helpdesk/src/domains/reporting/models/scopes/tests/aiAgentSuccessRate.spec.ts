@@ -1,11 +1,15 @@
 import {
     aiAgentAllAgentsSuccessRateTrend,
     aiAgentAllAgentsSuccessRateTrendQueryFactory,
+    aiAgentShoppingAssistantSuccessRateTrend,
+    aiAgentShoppingAssistantSuccessRateTrendQueryFactory,
     aiAgentSuccessRatePerChannel,
     aiAgentSuccessRatePerChannelQueryFactoryV2,
     aiAgentSuccessRatePerIntent,
     aiAgentSuccessRatePerIntentQueryFactoryV2,
     aiAgentSuccessRateScope,
+    aiSupportAgentSuccessRatePerIntent,
+    aiSupportAgentSuccessRatePerIntentQueryFactoryV2,
     aiSupportAgentSuccessRateTrend,
     aiSupportAgentSuccessRateTrendQueryFactory,
 } from 'domains/reporting/models/scopes/aiAgentSuccessRate'
@@ -322,6 +326,79 @@ describe('successRatePerIntent', () => {
             expect(aiAgentSuccessRatePerIntentQueryFactoryV2(context)).toEqual(
                 aiAgentSuccessRatePerIntent.build(context),
             )
+        })
+    })
+})
+
+describe('aiAgentShoppingAssistantSuccessRateTrend', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    it('builds query with correct metricName, scope, measures, and aiAgentRole fixed filter', () => {
+        const actual = aiAgentShoppingAssistantSuccessRateTrend.build(context)
+
+        expect(actual).toMatchObject({
+            metricName: 'ai-agent-shopping-assistant-success-rate',
+            scope: 'ai-agent-success-rate',
+            measures: ['successRate'],
+        })
+        expect(actual.filters).toContainEqual(
+            expect.objectContaining({
+                member: 'aiAgentRole',
+                operator: 'one-of',
+                values: ['ai-agent-sales'],
+            }),
+        )
+    })
+
+    describe('aiAgentShoppingAssistantSuccessRateTrendQueryFactory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentShoppingAssistantSuccessRateTrendQueryFactory(context),
+            ).toEqual(aiAgentShoppingAssistantSuccessRateTrend.build(context))
+        })
+    })
+})
+
+describe('aiSupportAgentSuccessRatePerIntent', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    it('builds query with correct metricName, scope, measures, dimensions, and aiAgentRole fixed filter', () => {
+        const actual = aiSupportAgentSuccessRatePerIntent.build(context)
+
+        expect(actual).toMatchObject({
+            metricName: 'ai-agent-support-success-rate-per-intent',
+            scope: 'ai-agent-success-rate',
+            measures: ['successRate'],
+            dimensions: ['aiIntentCustomField'],
+        })
+        expect(actual.filters).toContainEqual(
+            expect.objectContaining({
+                member: 'aiAgentRole',
+                operator: 'one-of',
+                values: ['ai-agent-support'],
+            }),
+        )
+    })
+
+    describe('aiSupportAgentSuccessRatePerIntentQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiSupportAgentSuccessRatePerIntentQueryFactoryV2(context),
+            ).toEqual(aiSupportAgentSuccessRatePerIntent.build(context))
         })
     })
 })

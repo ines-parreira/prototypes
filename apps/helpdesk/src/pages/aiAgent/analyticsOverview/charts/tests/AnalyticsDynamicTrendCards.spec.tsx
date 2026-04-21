@@ -35,7 +35,7 @@ import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyt
 import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
 import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
 import { AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard'
-import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
+import { AnalyticsAiAgentShoppingAssistantSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentShoppingAssistantSuccessRateCard'
 import { AnalyticsAiAgentSupportAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentAutomatedInteractionsCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportAgentSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentSuccessRateCard'
@@ -335,8 +335,8 @@ describe('Analytics Dynamic Trend Cards', () => {
             },
         },
         {
-            name: 'AnalyticsAiAgentSuccessRateSalesCard',
-            Component: AnalyticsAiAgentSuccessRateSalesCard,
+            name: 'AnalyticsAiAgentShoppingAssistantSuccessRateCard',
+            Component: AnalyticsAiAgentShoppingAssistantSuccessRateCard,
             drillDownMetricName:
                 AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
             config: {

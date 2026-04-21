@@ -2,7 +2,6 @@ import { fetchAiAgentBuyThroughRateTrend } from 'domains/reporting/hooks/automat
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentSalesHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentSalesHandoverInteractionsTrend'
 import { fetchClickThroughRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useClickThroughRateTrend'
-import { fetchSuccessRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useSuccessRateTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
@@ -23,7 +22,7 @@ import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyt
 import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
 import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
 import { AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentShoppingAssistantAutomatedInteractionsCard'
-import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
+import { AnalyticsAiAgentShoppingAssistantSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentShoppingAssistantSuccessRateCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import {
     AnalyticsShoppingAssistantConfigurableBar,
@@ -48,6 +47,7 @@ import { fetchAiAgentOrdersInfluencedTrend } from 'pages/aiAgent/analyticsAiAgen
 import { fetchAiAgentProductRecommendationsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentProductRecommendationsTrend'
 import { fetchAiAgentSalesPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSalesPerformanceByChannelMetrics'
 import { fetchAiAgentShoppingAssistantAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentShoppingAssistantAutomatedInteractionsTrend'
+import { fetchAiAgentShoppingAssistantSuccessRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentShoppingAssistantSuccessRateTrend'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 import { fetchShoppingAssistantPerformanceByEngagementFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
@@ -301,12 +301,13 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.SuccessRateCard]: {
-                chartComponent: AnalyticsAiAgentSuccessRateSalesCard,
+                chartComponent:
+                    AnalyticsAiAgentShoppingAssistantSuccessRateCard,
                 label: 'Success rate',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchSuccessRateTrend,
+                        fetch: fetchAiAgentShoppingAssistantSuccessRateTrend,
                         metricFormat: 'decimal-to-percent',
                     },
                 ],

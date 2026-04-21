@@ -84,6 +84,24 @@ export const aiAgentSuccessRatePerIntentQueryFactoryV2 = (
     ctx: AiAgentSuccessRateContext,
 ) => aiAgentSuccessRatePerIntent.build(ctx)
 
+export const aiAgentShoppingAssistantSuccessRateTrend = aiAgentSuccessRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_SUCCESS_RATE)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['successRate'] as const,
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'aiAgentRole',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomationSkillType.AiAgentSales],
+            },
+        ] as any,
+    }))
+
+export const aiAgentShoppingAssistantSuccessRateTrendQueryFactory = (
+    ctx: AiAgentSuccessRateContext,
+) => aiAgentShoppingAssistantSuccessRateTrend.build(ctx)
+
 export const aiSupportAgentSuccessRatePerIntent = aiAgentSuccessRateScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_SUPPORT_SUCCESS_RATE_PER_INTENT)
     .defineQuery(({ ctx, config }) => ({
