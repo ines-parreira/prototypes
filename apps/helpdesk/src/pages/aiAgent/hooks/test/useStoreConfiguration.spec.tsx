@@ -107,6 +107,23 @@ describe('useStoreConfiguration', () => {
         })
     })
 
+    it('should return undefined without throwing when storeConfigurations is missing from the response', async () => {
+        mockUseGetStoresConfigurationForAccount.mockReturnValue({
+            isLoading: false,
+            data: {} as StoreConfigurationsResponse,
+        } as UseQueryResult<StoreConfigurationsResponse, unknown>)
+
+        const { result } = renderHook(
+            () => useStoreConfiguration({ shopName, accountDomain }),
+            { wrapper: createWrapper },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.storeConfiguration).toBeUndefined()
+        })
+    })
+
     it('should respect the enabled parameter', async () => {
         mockUseGetStoresConfigurationForAccount.mockReturnValue({
             isLoading: false,

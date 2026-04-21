@@ -27,9 +27,10 @@ export const useStoreConfiguration = ({
         },
     )
 
-    const storeConfiguration = storeConfigurationData?.storeConfigurations.find(
-        (storeConfig) => storeConfig.storeName === shopName,
-    )
+    const storeConfiguration =
+        storeConfigurationData?.storeConfigurations?.find(
+            (storeConfig) => storeConfig.storeName === shopName,
+        )
 
     return {
         isLoading: isStoreConfigurationLoading,
