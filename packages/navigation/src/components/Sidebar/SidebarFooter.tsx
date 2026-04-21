@@ -13,6 +13,7 @@ export function SidebarFooter({ children }: SidebarFooterProps) {
 
     return (
         <Box flexDirection="column" gap="md" pl="xs" pr="xs">
+            {!isCollapsed && <div data-candu-id="navbar-menu-spacer" />}
             <Separator />
             <Box
                 justifyContent="space-between"
