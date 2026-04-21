@@ -60,10 +60,6 @@ export const AiAgentOverview = () => {
         FeatureFlagKey.ShoppingAssistantTrialImprovement,
     )
 
-    const isShopifyStorefrontPermissionsEnabled = useFlag(
-        FeatureFlagKey.ShopifyStorefrontPermissions,
-    )
-
     const isTopOpportunitiesEnabled = useFlag(
         FeatureFlagKey.IncreaseVisibilityOfOpportunity,
         false,
@@ -205,11 +201,7 @@ export const AiAgentOverview = () => {
     }, [shopName, redirectUriTemplate])
 
     useEffect(() => {
-        if (
-            isShopifyStorefrontPermissionsEnabled &&
-            needScopeUpdate &&
-            shopName
-        ) {
+        if (needScopeUpdate && shopName) {
             dispatch(
                 notify({
                     id: `ai-agent-inventory-scope-${shopName}`,
@@ -225,13 +217,7 @@ export const AiAgentOverview = () => {
                 }),
             )
         }
-    }, [
-        dispatch,
-        isShopifyStorefrontPermissionsEnabled,
-        needScopeUpdate,
-        shopName,
-        retriggerOAuthFlow,
-    ])
+    }, [dispatch, needScopeUpdate, shopName, retriggerOAuthFlow])
 
     return (
         <AiAgentOverviewLayout shopName={shopName}>

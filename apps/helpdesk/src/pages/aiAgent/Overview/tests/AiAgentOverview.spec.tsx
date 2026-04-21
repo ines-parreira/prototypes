@@ -739,13 +739,6 @@ describe('AiAgentOverview', () => {
 
     describe('Inventory Scope Update Banner', () => {
         beforeEach(() => {
-            // Enable the feature flag by default for these tests
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.ShopifyStorefrontPermissions ||
-                    false,
-            )
-
             useParamsMock.mockReturnValue({
                 shopName: 'test-shop',
                 shopType: 'shopify',
@@ -832,58 +825,6 @@ describe('AiAgentOverview', () => {
             }
 
             const store = mockStore(storeWithAllScopes)
-
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <AiAgentOverview />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
-            )
-
-            // Check that the notification action was NOT dispatched
-            const actions = store.getActions()
-            const notifyAction = actions.find(
-                (action) =>
-                    action.type === 'reapop/upsertNotification' &&
-                    action.payload?.message?.includes(
-                        'Unlock smarter recommendations',
-                    ),
-            )
-
-            expect(notifyAction).toBeUndefined()
-        })
-
-        it('should not dispatch inventory scope warning when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const storeWithMissingScopes = {
-                ...defaultStore,
-                integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: IntegrationType.Shopify,
-                            name: 'test-shop',
-                            meta: {
-                                shop_name: 'test-shop',
-                                need_scope_update: true,
-                                oauth: {
-                                    scope: 'read_products,write_products,read_orders',
-                                },
-                            },
-                        },
-                    ],
-                    redirect_uris: {
-                        shopify:
-                            'https://admin.shopify.com/store/{shop_name}/oauth/authorize',
-                    },
-                }),
-            }
-
-            const store = mockStore(storeWithMissingScopes)
 
             render(
                 <MemoryRouter>
