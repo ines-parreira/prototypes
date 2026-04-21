@@ -5,6 +5,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useStore } from 'zustand'
 
 import {
+    Banner,
     Box,
     Card,
     createColumnHelper,
@@ -22,6 +23,7 @@ import {
     Icon,
     OverlayContent,
     OverlayHeader,
+    Quantity,
     SidePanel,
     Tag,
     Text,
@@ -68,6 +70,7 @@ export function ViewCountDebugPanel({
     const events = useStore(viewEventLogStore, (s) => s.events)
 
     const rows = useMemo<Row[]>(() => {
+        if (!isEnabled) return []
         return allViews.map((v) => {
             const entry = counts[v.id]
             return {
@@ -90,6 +93,7 @@ export function ViewCountDebugPanel({
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps -- activeViewId, expandedSectionIds, and viewportViewIds invalidate predicates that read from the store
     }, [
+        isEnabled,
         allViews,
         counts,
         scores,
@@ -97,8 +101,6 @@ export function ViewCountDebugPanel({
         expandedSectionIds,
         viewportViewIds,
     ])
-
-    if (!isEnabled) return null
 
     return (
         <SidePanel
@@ -112,40 +114,53 @@ export function ViewCountDebugPanel({
                 <Box
                     flexDirection="column"
                     gap="md"
-                    style={{ maxHeight: 'calc(100vh - 120px)' }}
+                    w="100%"
+                    maxHeight="calc(100vh - 120px)"
                 >
-                    <StatsBar rows={rows} events={events} />
-                    <Box flexGrow={1} style={{ overflow: 'auto' }}>
-                        <DataTable
-                            data={rows}
-                            columns={getColumns()}
-                            sorting={{
-                                enable: true,
-                                defaultValue: [
-                                    { id: 'lastFetchedAt', desc: true },
-                                ],
-                            }}
-                            search={{ enable: true }}
-                            pagination={{
-                                enable: true,
-                                defaultValue: {
-                                    pageIndex: 0,
-                                    pageSize: 50,
-                                },
-                            }}
-                            elevation="high"
-                            withBorder
-                        >
-                            <DataTableToolbar>
-                                <DataTableSearch placeholder="Search views..." />
-                            </DataTableToolbar>
-                            <DataTablePagination />
-                        </DataTable>
-                    </Box>
-                    <Disclosure defaultExpanded={false} mb="md">
+                    {isEnabled ? (
+                        <>
+                            <StatsBar rows={rows} events={events} />
+                            <Box flexGrow={1}>
+                                <DataTable
+                                    data={rows}
+                                    columns={getColumns()}
+                                    sorting={{
+                                        enable: true,
+                                        defaultValue: [
+                                            { id: 'lastFetchedAt', desc: true },
+                                        ],
+                                    }}
+                                    search={{ enable: true }}
+                                    pagination={{
+                                        enable: true,
+                                        defaultValue: {
+                                            pageIndex: 0,
+                                            pageSize: 50,
+                                        },
+                                    }}
+                                    elevation="high"
+                                    withBorder
+                                >
+                                    <DataTableToolbar>
+                                        <DataTableSearch placeholder="Search views..." />
+                                    </DataTableToolbar>
+                                    <DataTablePagination />
+                                </DataTable>
+                            </Box>
+                        </>
+                    ) : (
+                        <Banner
+                            intent="warning"
+                            isClosable={false}
+                            title="Legacy view count scheduling in use"
+                            description="The ImprovedViewCountUpdates flag is disabled, so view counts are fetched by the legacy scheduler."
+                        />
+                    )}
+
+                    <Disclosure defaultExpanded={!isEnabled} w="100%">
                         <DisclosureHeader title="Event Log" />
                         <DisclosurePanel>
-                            <Box flexGrow={1} style={{ overflow: 'auto' }}>
+                            <Box flexDirection="column" flexGrow={1} w="100%">
                                 <DataTable
                                     data={events}
                                     columns={getEventColumns()}
@@ -738,13 +753,21 @@ function buildEventColumns() {
             cell: (info) => <DataTableTextCell {...info} />,
             hug: true,
         }),
+        columnHelper.accessor((row) => row.viewIds.length, {
+            id: 'viewCount',
+            header: 'Count',
+            cell: (info) => (
+                <DataTableBaseCell>
+                    <Quantity quantity={info.getValue()} size="sm" />
+                </DataTableBaseCell>
+            ),
+            hug: true,
+        }),
         columnHelper.accessor('viewIds', {
             header: 'View IDs',
             cell: (info) => (
                 <DataTableBaseCell>
-                    <Text size="sm">
-                        {info.getValue().join(', ')} ({info.getValue().length})
-                    </Text>
+                    <Text size="sm">{info.getValue().join(', ')}</Text>
                 </DataTableBaseCell>
             ),
         }),

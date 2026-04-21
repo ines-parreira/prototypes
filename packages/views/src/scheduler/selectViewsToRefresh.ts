@@ -88,6 +88,8 @@ const TIER_BONUS: Record<Tier, number> = {
     rest: 0,
 }
 
+const IN_VIEWPORT_BONUS = 1500
+
 export type ScoreViewParams = {
     candidate: ViewRefreshCandidate
     config: RefreshConfig
@@ -102,16 +104,17 @@ export type ScoreViewParams = {
  *
  * **Tiers** (based on view state):
  * - `active` — the view currently shown in the URL → +10000
- * - `recent` — viewed within the recently-active window → +2000
- * - `visible` — expanded in the sidebar → +1000
+ * - `recent` — viewed within the recently-active window → +3000
+ * - `visible` — expanded in the sidebar → +2000
  * - `rest` — everything else → +0
  *
  * **Base score**: staleness in seconds since last fetch.
- * Never-fetched views get `staleSeconds × 2` as base.
+ * Never-fetched views get `staleSeconds × 4` as base.
  *
  * **Modifiers** (applied in order after tier bonus):
  * 1. Never fetched: +6000 if in viewport, +5000 if visible, +3000 otherwise
- * 2. In viewport: score × 1.5
+ * 2. In viewport: +1500 flat bonus, then score × 1.5 (weighted more heavily
+ *    since these views are the ones the user is actually looking at)
  * 3. Realtime views (chat) AND visible: score × 2
  * 4. Large count (≥ largeCountThreshold) AND not stale: score × 0.25
  * 5. Low priority (Trash, Spam) AND not stale: score × 0.1
@@ -119,12 +122,12 @@ export type ScoreViewParams = {
  * 7. Recently fetched (< staleSeconds) AND not `active`/`recent` tier: score × 0.1
  *
  * "Stale" (≥ staleSeconds or never fetched) overrides
- * the penalties in steps 3-5 and guarantees at least the `visible` tier
+ * the penalties in steps 4-6 and guarantees at least the `visible` tier
  * bonus, ensuring all views eventually get refreshed regardless of
  * count size, priority, or visibility.
  *
  * Recently fetched views that aren't active or recently viewed get a heavy
- * penalty (step 6), pushing bandwidth toward staler views first.
+ * penalty (step 7), pushing bandwidth toward staler views first.
  */
 export function scoreView({
     candidate,
@@ -153,6 +156,7 @@ export function scoreView({
     }
 
     if (candidate.isInViewport) {
+        score += IN_VIEWPORT_BONUS
         score *= 1.5
     }
 

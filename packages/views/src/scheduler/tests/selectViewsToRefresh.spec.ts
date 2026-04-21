@@ -223,7 +223,7 @@ describe('scoreView', () => {
             expect(score(visible)).toBeGreaterThan(score(hidden))
         })
 
-        it('in-viewport multiplier applies to fetched views', () => {
+        it('in-viewport boost applies to fetched views', () => {
             const inViewport = candidate({
                 viewId: 1,
                 isInViewport: true,
@@ -234,6 +234,42 @@ describe('scoreView', () => {
             })
 
             expect(score(inViewport)).toBeGreaterThan(score(notInViewport))
+        })
+
+        it('in-viewport boost is weightier than the 1.5x multiplier alone', () => {
+            // The in-viewport path adds a flat bonus on top of the 1.5x
+            // multiplier, so the resulting score should exceed what the
+            // multiplier alone would produce.
+            const inViewport = candidate({
+                viewId: 1,
+                isInViewport: true,
+            })
+            const notInViewport = candidate({
+                viewId: 2,
+                isInViewport: false,
+            })
+
+            const withMultiplierOnly = score(notInViewport) * 1.5
+            expect(score(inViewport)).toBeGreaterThan(withMultiplierOnly)
+        })
+
+        it('in-viewport stale rest-tier view outranks a fresh visible non-viewport view', () => {
+            const inViewportStaleRest = candidate({
+                viewId: 1,
+                isInViewport: true,
+                isVisible: false,
+                lastFetchedAt: null,
+            })
+            const freshVisible = candidate({
+                viewId: 2,
+                isInViewport: false,
+                isVisible: true,
+                lastFetchedAt: new Date(NOW - 30_000).toISOString(),
+            })
+
+            expect(score(inViewportStaleRest)).toBeGreaterThan(
+                score(freshVisible),
+            )
         })
     })
 
