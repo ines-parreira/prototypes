@@ -18,7 +18,11 @@ import type {
 import { useTicketThreadMessages } from '../useTicketThreadMessages'
 
 function createMessage(overrides?: Record<string, unknown>) {
+    const id = overrides?.id ?? 'default'
+
     return mockTicketMessage({
+        body_html: `<p>message-${id}</p>`,
+        body_text: `message-${id}`,
         channel: 'email',
         from_agent: false,
         via: 'email',
