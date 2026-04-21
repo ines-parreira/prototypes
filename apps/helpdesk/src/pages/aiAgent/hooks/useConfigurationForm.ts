@@ -9,6 +9,7 @@ import _isEqual from 'lodash/isEqual'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
+import { isGorgiasApiError } from 'models/api/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -285,9 +286,15 @@ export const useConfigurationForm = ({
                     }),
                 )
             } else {
+                const backendMessage = isGorgiasApiError(error)
+                    ? error.response.data.error.msg
+                    : null
+
                 void dispatch(
                     notify({
-                        message: 'Failed to save AI Agent configuration',
+                        message:
+                            backendMessage ||
+                            'Failed to save AI Agent configuration',
                         status: NotificationStatus.Error,
                     }),
                 )

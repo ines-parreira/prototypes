@@ -916,6 +916,7 @@ export const StoreConfigForm = ({
                                 isPendingCreateOrUpdate ||
                                 isLoadingOnboardingNotificationState
                             }
+                            isLoading={isPendingCreateOrUpdate}
                             className="mb-3"
                         >
                             Save Changes

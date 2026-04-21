@@ -354,6 +354,92 @@ describe('useConfigurationForm', () => {
         })
     })
 
+    it('should surface backend error message when a Gorgias API error is thrown', async () => {
+        const mockError = {
+            isAxiosError: true,
+            response: {
+                status: 400,
+                data: {
+                    error: {
+                        msg: 'Signature is too long',
+                    },
+                },
+            },
+        }
+
+        mockUseStoreConfigurationMutation.mockReturnValue({
+            isLoading: false,
+            upsertStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration:
+                mockCreateStoreConfiguration.mockRejectedValueOnce(mockError),
+            error: null,
+        })
+
+        const { result } = renderHook(() =>
+            useConfigurationForm({
+                shopName,
+                initValues: {
+                    monitoredChatIntegrations: [],
+                    monitoredEmailIntegrations: [],
+                    emailChannelDeactivatedDatetime: '',
+                    chatChannelDeactivatedDatetime: '',
+                    signature: 'valid signature',
+                    helpCenterId: 1,
+                },
+                shopType,
+            }),
+        )
+
+        await act(async () => {
+            await result.current.handleOnSave({
+                shopName: 'test-shop',
+            })
+        })
+
+        expect(notify).toHaveBeenCalledWith({
+            message: 'Signature is too long',
+            status: 'error',
+        })
+    })
+
+    it('should show fallback error message when a non-Gorgias error is thrown', async () => {
+        mockUseStoreConfigurationMutation.mockReturnValue({
+            isLoading: false,
+            upsertStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration:
+                mockCreateStoreConfiguration.mockRejectedValueOnce(
+                    new Error('boom'),
+                ),
+            error: null,
+        })
+
+        const { result } = renderHook(() =>
+            useConfigurationForm({
+                shopName,
+                initValues: {
+                    monitoredChatIntegrations: [],
+                    monitoredEmailIntegrations: [],
+                    emailChannelDeactivatedDatetime: '',
+                    chatChannelDeactivatedDatetime: '',
+                    signature: 'valid signature',
+                    helpCenterId: 1,
+                },
+                shopType,
+            }),
+        )
+
+        await act(async () => {
+            await result.current.handleOnSave({
+                shopName: 'test-shop',
+            })
+        })
+
+        expect(notify).toHaveBeenCalledWith({
+            message: 'Failed to save AI Agent configuration',
+            status: 'error',
+        })
+    })
+
     it('should initialize form values from store configuration only once', () => {
         const initialStoreConfig = getStoreConfigurationFixture({
             storeName: 'test-shop',
