@@ -96,7 +96,7 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
             </SidebarProvider>
             <Handle className={css.handle} />
             <PanelGroup subtractSize={10} className={css.panelGroup}>
-                {hasPanel && !isMobileResolution ? (
+                {hasPanel ? (
                     children
                 ) : (
                     <Panel name="main-panel" config={mainPanelConfig}>

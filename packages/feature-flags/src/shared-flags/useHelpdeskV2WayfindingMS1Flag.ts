@@ -1,5 +1,3 @@
-import { useIsMobileResolution } from '@repo/hooks'
-
 import { FeatureFlagKey } from '../featureFlagKey'
 import { useFlag } from '../useFlag'
 import { useHelpdeskV2BaselineFlag } from './useHelpdeskV2BaselineFlag'
@@ -11,12 +9,6 @@ export function useHelpdeskV2WayfindingMS1Flag(): boolean {
         FeatureFlagKey.UIVisionWayfindingMS1,
         false,
     )
-
-    const isMobileResolution = useIsMobileResolution()
-
-    if (isMobileResolution) {
-        return false
-    }
 
     return hasUIVisionBeta && hasUIVisionWayfindingMS1
 }
