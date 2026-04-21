@@ -681,6 +681,47 @@ describe('ViewPanelEntrypoint', () => {
         )
     })
 
+    it.each([true, false])(
+        'does not strip a filtered search URL from a stale empty search view when MS4.5 is %s',
+        async (isMS4Dot5Enabled) => {
+            const encodedFilters = compressToEncodedURIComponent(
+                "eq(ticket.channel, 'chat')",
+            )
+
+            useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(isMS4Dot5Enabled)
+            useLocationMock.mockReturnValue({
+                pathname: '/app/tickets/search',
+                search: `?filters=${encodedFilters}`,
+                state: undefined,
+            } as ReturnType<typeof useLocation>)
+            mockSelectors({
+                currentActiveView: fromJS({
+                    id: BASE_VIEW_ID,
+                    name: 'Search',
+                    search: '',
+                    filters: '',
+                }),
+                isEditMode: false,
+            })
+
+            render(
+                <Panels size={1000}>
+                    <ViewPanelEntrypoint />
+                </Panels>,
+            )
+
+            await waitFor(() => {
+                expect(pushMock).not.toHaveBeenCalled()
+            })
+
+            if (isMS4Dot5Enabled) {
+                expect(setViewActiveMock).toHaveBeenCalled()
+            } else {
+                expect(setViewActiveMock).not.toHaveBeenCalled()
+            }
+        },
+    )
+
     it('removes empty search params from the URL in search mode', async () => {
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
         useLocationMock.mockReturnValue({

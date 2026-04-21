@@ -299,7 +299,7 @@ export function ViewPanelEntrypoint() {
     }, [history, isEditMode, location.pathname, location.state])
 
     useEffect(() => {
-        if (!isSearchMode || !areFiltersValid) {
+        if (!isSearchMode || !isEditMode || !areFiltersValid) {
             return
         }
 
@@ -339,6 +339,7 @@ export function ViewPanelEntrypoint() {
         activeView,
         areFiltersValid,
         history,
+        isEditMode,
         isSearchMode,
         location,
         searchFilters,
