@@ -1,7 +1,7 @@
+import { CopyableField } from '@repo/ecommerce/shopify/components'
 import { formatOrderDate } from '@repo/ecommerce/shopify/utils'
-import { useCopyToClipboard } from '@repo/hooks'
 
-import { Box, Button, Text } from '@gorgias/axiom'
+import { Text } from '@gorgias/axiom'
 
 import { OrderTags } from '../orders/OrderTags'
 import type { OrderFieldConfig } from '../types'
@@ -9,22 +9,12 @@ import type { OrderFieldConfig } from '../types'
 import css from '../orders/sidePanel/OrderSidePanelPreview.less'
 
 function CheckoutUrlField({ url }: { url: string }) {
-    const [, copyToClipboard] = useCopyToClipboard()
-
     return (
-        <Box flexDirection="row" alignItems="center" gap="xxxs" minWidth={0}>
+        <CopyableField value={url} ariaLabel="Copy checkout URL" inline>
             <Text size="md" className={css.checkoutUrl}>
                 {url}
             </Text>
-            <Button
-                as="button"
-                icon="copy"
-                intent="regular"
-                variant="tertiary"
-                onClick={() => copyToClipboard(url)}
-                aria-label="Copy checkout URL"
-            />
-        </Box>
+        </CopyableField>
     )
 }
 
@@ -51,19 +41,23 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
         id: 'store',
         type: 'readonly',
         label: 'Store',
+        copyable: true,
         getValue: (ctx) => ctx.storeName,
     },
     id: {
         id: 'id',
         type: 'readonly',
         label: 'ID',
+        copyable: true,
         getValue: (ctx) => ctx.order.id,
     },
     created_at: {
         id: 'created_at',
         type: 'readonly',
         label: 'Created',
+        copyable: true,
         getValue: (ctx) => ctx.order.created_at,
+        copyValue: (_, ctx) => ctx.order.created_at,
         formatValue: (_, ctx) =>
             ctx.order.created_at
                 ? formatOrderDate(
@@ -78,6 +72,7 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
         id: 'note',
         type: 'readonly',
         label: 'Note',
+        copyable: true,
         getValue: (ctx) => ctx.order.note,
     },
     invoice_url: {
@@ -95,6 +90,7 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
         id: 'discount_codes',
         type: 'readonly',
         label: 'Discount codes',
+        copyable: true,
         getValue: (ctx) => {
             const codes = ctx.order.discount_codes
             if (!codes || codes.length === 0) return undefined

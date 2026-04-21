@@ -11,6 +11,14 @@ import {
 import { server } from '../../../../../../tests/server'
 import { OrderSidePanelPreview } from '../sidePanel/OrderSidePanelPreview'
 
+vi.mock('@repo/hooks', async (importOriginal) => ({
+    ...((await importOriginal()) as Record<string, unknown>),
+    useCopyToClipboard: () => [
+        {},
+        (text: string) => navigator.clipboard.writeText(text),
+    ],
+}))
+
 vi.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         EnableShopifyMetafieldsIngestionUI:
@@ -610,6 +618,58 @@ describe('OrderSidePanelPreview — Order Details section', () => {
                 screen.queryByText('Handle with care'),
             ).not.toBeInTheDocument()
         })
+    })
+})
+
+describe('OrderSidePanelPreview — copy-on-hover', () => {
+    beforeEach(() => {
+        server.use(shopOrderTagsHandler, metafieldsHandler, definitionsHandler)
+    })
+
+    it('renders a "Copy order name" button in the header that copies the raw order name', async () => {
+        const writeTextSpy = vi
+            .spyOn(navigator.clipboard, 'writeText')
+            .mockResolvedValue(undefined)
+
+        const { user } = render(
+            <OrderSidePanelPreview
+                order={mockOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        const copyButton = await screen.findByRole('button', {
+            name: /copy order name/i,
+        })
+
+        await user.click(copyButton)
+
+        expect(writeTextSpy).toHaveBeenCalledWith('#3519')
+    })
+
+    it('migrates the Checkout URL copy button to the hover-reveal pattern and copies the URL', async () => {
+        const writeTextSpy = vi
+            .spyOn(navigator.clipboard, 'writeText')
+            .mockResolvedValue(undefined)
+        const invoiceUrl = 'https://checkout.example.com/order/123'
+
+        const { user } = render(
+            <OrderSidePanelPreview
+                order={{ ...mockOrderWithDetails, invoice_url: invoiceUrl }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                isDraftOrder={true}
+            />,
+        )
+
+        const copyButton = await screen.findByRole('button', {
+            name: /copy checkout url/i,
+        })
+
+        await user.click(copyButton)
+
+        expect(writeTextSpy).toHaveBeenCalledWith(invoiceUrl)
     })
 })
 

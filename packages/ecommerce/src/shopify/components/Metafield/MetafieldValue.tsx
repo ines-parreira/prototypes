@@ -1,12 +1,12 @@
 import { Box } from '@gorgias/axiom'
 
+import { CopyableField } from '../CopyableField'
 import {
     BooleanMetafield,
     ColorMetafield,
     DateMetafield,
     DateTimeMetafield,
     DimensionMetafield,
-    FieldWithCopyButton,
     JsonMetafield,
     LinkMetafield,
     MoneyMetafield,
@@ -27,10 +27,7 @@ export function MetafieldValue({ metafield, storeName }: Props) {
         case 'multi_line_text_field':
         case 'single_line_text_field':
             return (
-                <FieldWithCopyButton
-                    value={String(metafield.value)}
-                    tooltip={true}
-                />
+                <CopyableField value={String(metafield.value)} tooltip={true} />
             )
 
         case 'variant_reference':
@@ -40,7 +37,7 @@ export function MetafieldValue({ metafield, storeName }: Props) {
         case 'number_decimal':
         case 'number_integer':
         case 'id':
-            return <FieldWithCopyButton value={String(metafield.value)} />
+            return <CopyableField value={String(metafield.value)} />
 
         case 'date':
             return <DateMetafield value={metafield.value} />
@@ -139,7 +136,7 @@ export function MetafieldValue({ metafield, storeName }: Props) {
             return (
                 <Box flexDirection="column" gap="xxs">
                     {(metafield.value as unknown[]).map((value, index) => (
-                        <FieldWithCopyButton
+                        <CopyableField
                             key={index}
                             value={String(value)}
                             tooltip={

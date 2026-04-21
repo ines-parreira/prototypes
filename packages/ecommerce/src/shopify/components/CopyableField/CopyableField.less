@@ -1,0 +1,47 @@
+:local {
+    .field {
+        display: block;
+        position: relative;
+        width: fit-content;
+        padding-right: 20px;
+
+        &:hover {
+            .copyButton {
+                visibility: visible;
+            }
+        }
+    }
+
+    .copyButton {
+        display: inline-block;
+        visibility: hidden;
+        margin-left: var(--spacing-xxs);
+        position: absolute;
+        top: 0;
+        right: -5px;
+    }
+
+    .fieldInline {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        min-width: 0;
+        max-width: 100%;
+
+        &:hover {
+            .copyButtonInline {
+                visibility: visible;
+            }
+        }
+    }
+
+    .copyButtonInline {
+        display: inline-flex;
+        visibility: hidden;
+        flex-shrink: 0;
+    }
+
+    .tooltip {
+        color: white;
+    }
+}

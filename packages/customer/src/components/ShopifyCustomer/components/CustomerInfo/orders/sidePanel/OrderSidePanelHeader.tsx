@@ -1,5 +1,7 @@
 import type { ComponentProps } from 'react'
 
+import { CopyableField } from '@repo/ecommerce/shopify/components'
+
 import { Box, Button, Heading, Icon, Tag } from '@gorgias/axiom'
 
 type TagColor = ComponentProps<typeof Tag>['color']
@@ -35,9 +37,15 @@ export function OrderSidePanelHeader({
             </Box>
 
             <Box flex={1} minWidth={0} alignItems="center" gap="xs">
-                <Heading size="lg" overflow="ellipsis">
-                    Order {orderName}
-                </Heading>
+                <CopyableField
+                    value={orderName}
+                    ariaLabel="Copy order name"
+                    inline
+                >
+                    <Heading size="lg" overflow="ellipsis">
+                        Order {orderName}
+                    </Heading>
+                </CopyableField>
                 <Box gap="xxxs">
                     {isCancelled && <Tag color="red">Cancelled</Tag>}
                     <Tag color={financialColor}>{financialLabel}</Tag>

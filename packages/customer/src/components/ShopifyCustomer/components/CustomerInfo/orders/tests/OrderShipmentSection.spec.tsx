@@ -6,6 +6,14 @@ import type { OrderDetailsData } from '../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderShipmentSection } from '../sections/OrderShipmentSection'
 
+vi.mock('@repo/hooks', async (importOriginal) => ({
+    ...((await importOriginal()) as Record<string, unknown>),
+    useCopyToClipboard: () => [
+        {},
+        (text: string) => navigator.clipboard.writeText(text),
+    ],
+}))
+
 vi.mock('../../widget/useOrderFieldPreferences', () => ({
     useOrderFieldPreferences: vi.fn(),
 }))
@@ -468,6 +476,63 @@ describe('OrderShipmentSection', () => {
             )
             expect(screen.getByText('STANDARD')).toBeInTheDocument()
             expect(screen.getByText('EXPRESS')).toBeInTheDocument()
+        })
+    })
+
+    describe('copyable fields', () => {
+        it('renders copy buttons for tracking URL, tracking number, and code but not shipping cost', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        currency: 'USD',
+                        fulfillments: [
+                            {
+                                tracking_url: 'https://track.example.com/1',
+                                tracking_number: 'TBA1',
+                            },
+                        ],
+                        shipping_lines: [{ code: 'STANDARD', price: '10.00' }],
+                    })}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /copy tracking url/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /copy tracking number/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /copy code/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /copy shipping cost/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('copies the tracking URL to the clipboard while keeping the anchor link functional', async () => {
+            const writeTextSpy = vi
+                .spyOn(navigator.clipboard, 'writeText')
+                .mockResolvedValue(undefined)
+            const trackingUrl = 'https://track.example.com/ABC123'
+
+            const { user } = render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [{ tracking_url: trackingUrl }],
+                    })}
+                />,
+            )
+
+            expect(
+                screen.getByRole('link', { name: trackingUrl }),
+            ).toHaveAttribute('href', trackingUrl)
+
+            await user.click(
+                screen.getByRole('button', { name: /copy tracking url/i }),
+            )
+
+            expect(writeTextSpy).toHaveBeenCalledWith(trackingUrl)
         })
     })
 })

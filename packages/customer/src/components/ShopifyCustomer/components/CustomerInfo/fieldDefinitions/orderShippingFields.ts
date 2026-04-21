@@ -26,12 +26,14 @@ export const SHIPPING_FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
         id: 'tracking_url',
         type: 'readonly',
         label: 'Tracking URL',
+        copyable: true,
         getValue: (ctx) => getFulfillmentValue(ctx, 'tracking_url'),
     },
     tracking_number: {
         id: 'tracking_number',
         type: 'readonly',
         label: 'Tracking number',
+        copyable: true,
         getValue: (ctx) => getFulfillmentValue(ctx, 'tracking_number'),
     },
     shipping_cost: {
@@ -51,6 +53,7 @@ export const SHIPPING_FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
         id: 'code',
         type: 'readonly',
         label: 'Code',
+        copyable: true,
         getValue: (ctx) => {
             const i = ctx.shippingEntryIndex ?? 0
             return ctx.order.shipping_lines?.[i]?.code

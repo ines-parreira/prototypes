@@ -1,3 +1,4 @@
+import { CopyableField } from '@repo/ecommerce/shopify/components'
 import { getShipmentStatusInfo } from '@repo/ecommerce/shopify/utils'
 import { useUserDateTimePreferences } from '@repo/preferences'
 
@@ -101,6 +102,31 @@ export function OrderShipmentSection({
                                     field.formatValue?.(value, context) ??
                                     String(value ?? '-')
 
+                                const rawCopy =
+                                    value == null
+                                        ? undefined
+                                        : (field.copyValue?.(value, context) ??
+                                          String(value))
+                                const canCopy = Boolean(
+                                    field.copyable &&
+                                        rawCopy &&
+                                        rawCopy.length > 0,
+                                )
+
+                                const valueNode =
+                                    field.id === 'tracking_url' && value ? (
+                                        <a
+                                            href={String(value)}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={css.trackingUrl}
+                                        >
+                                            {String(value)}
+                                        </a>
+                                    ) : (
+                                        <Text size="md">{displayValue}</Text>
+                                    )
+
                                 return (
                                     <Box
                                         key={field.id}
@@ -117,20 +143,16 @@ export function OrderShipmentSection({
                                         >
                                             {field.label}
                                         </Text>
-                                        {field.id === 'tracking_url' &&
-                                        value ? (
-                                            <a
-                                                href={String(value)}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className={css.trackingUrl}
+                                        {canCopy ? (
+                                            <CopyableField
+                                                value={rawCopy!}
+                                                ariaLabel={`Copy ${field.label}`}
+                                                inline
                                             >
-                                                {String(value)}
-                                            </a>
+                                                {valueNode}
+                                            </CopyableField>
                                         ) : (
-                                            <Text size="md">
-                                                {displayValue}
-                                            </Text>
+                                            valueNode
                                         )}
                                     </Box>
                                 )

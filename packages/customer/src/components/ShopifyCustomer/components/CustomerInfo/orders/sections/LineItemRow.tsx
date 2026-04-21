@@ -1,3 +1,4 @@
+import { CopyableField } from '@repo/ecommerce/shopify/components'
 import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
 import { getLineItemImageSrc } from '@repo/ecommerce/shopify/utils'
 
@@ -34,11 +35,23 @@ export function LineItemRow({
                 className={css.lineItemImage}
             />
             <Box flex={1} flexDirection="column">
-                <Text size="md">{lineItem.title}</Text>
+                <CopyableField
+                    value={lineItem.title}
+                    ariaLabel="Copy product title"
+                    inline
+                >
+                    <Text size="md">{lineItem.title}</Text>
+                </CopyableField>
                 {lineItem.sku && (
-                    <Text size="md" className={css.label}>
-                        SKU: {lineItem.sku}
-                    </Text>
+                    <CopyableField
+                        value={lineItem.sku}
+                        ariaLabel="Copy SKU"
+                        inline
+                    >
+                        <Text size="md" className={css.label}>
+                            SKU: {lineItem.sku}
+                        </Text>
+                    </CopyableField>
                 )}
             </Box>
 

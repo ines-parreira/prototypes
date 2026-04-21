@@ -1,5 +1,8 @@
 import type { FullShopifyMetafield } from '@repo/ecommerce/shopify/components'
-import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
+import {
+    CopyableField,
+    normalizeMetafields,
+} from '@repo/ecommerce/shopify/components'
 import { useUserDateTimePreferences } from '@repo/preferences'
 
 import { Box, Text } from '@gorgias/axiom'
@@ -86,6 +89,13 @@ export function OrderDetailsSection({
                     const displayValue =
                         field.formatValue?.(value, context) ?? String(value)
 
+                    const rawCopy =
+                        field.copyValue?.(value, context) ?? String(value)
+                    const canCopy = Boolean(
+                        field.copyable && rawCopy && rawCopy.length > 0,
+                    )
+                    const valueNode = <Text size="md">{displayValue}</Text>
+
                     return (
                         <Box
                             key={field.id}
@@ -98,7 +108,17 @@ export function OrderDetailsSection({
                             <Text as="span" size="md" className={css.label}>
                                 {field.label}
                             </Text>
-                            <Text size="md">{displayValue}</Text>
+                            {canCopy ? (
+                                <CopyableField
+                                    value={rawCopy}
+                                    ariaLabel={`Copy ${field.label}`}
+                                    inline
+                                >
+                                    {valueNode}
+                                </CopyableField>
+                            ) : (
+                                valueNode
+                            )}
                         </Box>
                     )
                 })}

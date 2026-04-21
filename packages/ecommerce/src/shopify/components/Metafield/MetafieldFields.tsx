@@ -1,15 +1,7 @@
-import type React from 'react'
-
-import {
-    Box,
-    Button,
-    Tag,
-    toast,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
+import { Box, Tag } from '@gorgias/axiom'
 import type { MetafieldType } from '@gorgias/helpdesk-types'
 
+import { CopyableField } from '../CopyableField'
 import { extractGid, prepareGidUrl } from './helpers/Gid'
 import { shortenUrl } from './helpers/shortenUrl'
 import { formatDate, formatDateTime } from './metafieldUtils'
@@ -20,94 +12,30 @@ export type MetafieldProps = {
     value: string
 }
 
-function truncateStr(value: string, length: number): string {
-    if (value.length <= length) return value
-    return value.substring(0, length) + '...'
-}
-
-export function FieldWithCopyButton({
-    value,
-    children,
-    tooltip,
-}: {
-    value: string
-    children?: React.ReactNode
-    tooltip?: boolean
-}) {
-    const isTrimmed = value.length > 80
-    const shortenedValue = truncateStr(value, 80)
-
-    async function handleCopy(e: React.MouseEvent) {
-        e.stopPropagation()
-        try {
-            await navigator.clipboard.writeText(value)
-            toast.success('Copied to clipboard')
-        } catch {
-            // ignore
-        }
-    }
-
-    const content = (
-        <div className={css.field}>
-            {children ?? shortenedValue}
-            <span className={css.copyButton}>
-                <Button
-                    as="button"
-                    icon="copy"
-                    intent="regular"
-                    variant="tertiary"
-                    onClick={handleCopy}
-                    aria-label="Copy to clipboard"
-                />
-            </span>
-        </div>
-    )
-
-    if (isTrimmed && tooltip) {
-        return (
-            <Tooltip trigger={content}>
-                <TooltipContent>
-                    <pre className={css.tooltip}>{value}</pre>
-                </TooltipContent>
-            </Tooltip>
-        )
-    }
-
-    return content
-}
-
 export function UrlMetafield({ value }: MetafieldProps) {
     return (
-        <FieldWithCopyButton value={value}>
+        <CopyableField value={value}>
             <a href={value} target="_blank" rel="noreferrer">
                 {value}
             </a>
-        </FieldWithCopyButton>
+        </CopyableField>
     )
 }
 
 export function DateMetafield({ value }: MetafieldProps) {
-    return (
-        <FieldWithCopyButton value={value}>
-            {formatDate(value)}
-        </FieldWithCopyButton>
-    )
+    return <CopyableField value={value}>{formatDate(value)}</CopyableField>
 }
 
 export function DateTimeMetafield({ value }: MetafieldProps) {
-    return (
-        <FieldWithCopyButton value={value}>
-            {formatDateTime(value)}
-        </FieldWithCopyButton>
-    )
+    return <CopyableField value={value}>{formatDateTime(value)}</CopyableField>
 }
 
 export function BooleanMetafield({ value }: { value: boolean }) {
     const text = value ? 'true' : 'false'
     return (
-        <FieldWithCopyButton value={text}>
+        <CopyableField value={text}>
             <Tag color={value ? 'green' : 'red'}>{text}</Tag>
-        </FieldWithCopyButton>
+        </CopyableField>
     )
 }
 
@@ -123,7 +51,7 @@ export function DimensionMetafield({
         unit = unit.replace(/_/g, ' ').replace(/us/g, '').replace(/3/g, '³')
     }
     const copiableValue = `${value.value} ${unit}`
-    return <FieldWithCopyButton value={copiableValue} />
+    return <CopyableField value={copiableValue} />
 }
 
 export function RatingMetafield({
@@ -132,7 +60,7 @@ export function RatingMetafield({
     value: { value: string | number; scale_max: string | number }
 }) {
     const copiableValue = `${value.value} out of ${value.scale_max}`
-    return <FieldWithCopyButton value={copiableValue} />
+    return <CopyableField value={copiableValue} />
 }
 
 export function MoneyMetafield({
@@ -141,12 +69,12 @@ export function MoneyMetafield({
     value: { amount: string; currency_code: string }
 }) {
     const copiableValue = `${value.amount} ${value.currency_code}`
-    return <FieldWithCopyButton value={copiableValue} />
+    return <CopyableField value={copiableValue} />
 }
 
 export function ColorMetafield({ value }: MetafieldProps) {
     return (
-        <FieldWithCopyButton value={value}>
+        <CopyableField value={value}>
             <Box flexDirection="row" alignItems="center" gap="xxs">
                 <span
                     className={css.colorSwatch}
@@ -154,7 +82,7 @@ export function ColorMetafield({ value }: MetafieldProps) {
                 />
                 <span>{value}</span>
             </Box>
-        </FieldWithCopyButton>
+        </CopyableField>
     )
 }
 
@@ -174,16 +102,16 @@ export function ReferenceMetafield({
         const url = prepareGidUrl(type, storeName, gid)
         if (url) {
             return (
-                <FieldWithCopyButton value={gid}>
+                <CopyableField value={gid}>
                     <a href={url} target="_blank" rel="noreferrer">
                         {gid}
                     </a>
-                </FieldWithCopyButton>
+                </CopyableField>
             )
         }
     }
 
-    return <FieldWithCopyButton value={gid} />
+    return <CopyableField value={gid} />
 }
 
 export function LinkMetafield({
@@ -193,11 +121,11 @@ export function LinkMetafield({
 }) {
     const displayText = value.text || shortenUrl(value.url)
     return (
-        <FieldWithCopyButton value={value.url}>
+        <CopyableField value={value.url}>
             <a href={value.url} target="_blank" rel="noreferrer">
                 {displayText}
             </a>
-        </FieldWithCopyButton>
+        </CopyableField>
     )
 }
 
@@ -218,10 +146,10 @@ export function RichTextFieldMetafield({
         return ''
     }
     const compactValue = render(value)
-    return <FieldWithCopyButton value={compactValue} tooltip={true} />
+    return <CopyableField value={compactValue} tooltip={true} />
 }
 
 export function JsonMetafield({ value }: { value: Record<string, unknown> }) {
     const formattedJson = JSON.stringify(value, null, 4)
-    return <FieldWithCopyButton value={formattedJson} tooltip={true} />
+    return <CopyableField value={formattedJson} tooltip={true} />
 }

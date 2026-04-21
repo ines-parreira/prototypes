@@ -110,6 +110,11 @@ type BaseFieldConfig = {
     id: string
     label: string
     alwaysVisible?: boolean
+    copyable?: boolean
+    copyValue?: (
+        value: string | number | undefined,
+        context: FieldRenderContext,
+    ) => string | undefined
 }
 
 export type ReadOnlyFieldConfig = BaseFieldConfig & {
@@ -158,6 +163,11 @@ export type OrderFieldRenderContext = {
 type BaseOrderFieldConfig = {
     id: string
     label: string
+    copyable?: boolean
+    copyValue?: (
+        value: string | number | undefined,
+        context: OrderFieldRenderContext,
+    ) => string | undefined
 }
 
 export type ReadOnlyOrderFieldConfig = BaseOrderFieldConfig & {

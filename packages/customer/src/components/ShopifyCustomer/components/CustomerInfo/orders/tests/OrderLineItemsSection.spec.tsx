@@ -1,7 +1,16 @@
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
+import { vi } from 'vitest'
 
 import { OrderLineItemsSection } from '../sections/OrderLineItemsSection'
+
+vi.mock('@repo/hooks', async (importOriginal) => ({
+    ...((await importOriginal()) as Record<string, unknown>),
+    useCopyToClipboard: () => [
+        {},
+        (text: string) => navigator.clipboard.writeText(text),
+    ],
+}))
 
 const mockLineItem = {
     id: 1,
@@ -106,6 +115,58 @@ describe('OrderLineItemsSection', () => {
 
         expect(screen.getByText('Fixie Bike')).toBeInTheDocument()
         expect(screen.getByText('Road Bike')).toBeInTheDocument()
+    })
+
+    describe('copy-on-hover', () => {
+        it('renders copy buttons for product title and SKU', () => {
+            render(<OrderLineItemsSection {...defaultProps} />)
+
+            expect(
+                screen.getByRole('button', { name: /copy product title/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /copy sku/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render a copy button for SKU when SKU is absent', () => {
+            render(
+                <OrderLineItemsSection
+                    {...defaultProps}
+                    lineItems={[mockLineItemWithoutSku]}
+                />,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: /copy sku/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('copies the product title on click', async () => {
+            const writeTextSpy = vi
+                .spyOn(navigator.clipboard, 'writeText')
+                .mockResolvedValue(undefined)
+
+            const { user } = render(<OrderLineItemsSection {...defaultProps} />)
+
+            await user.click(
+                screen.getByRole('button', { name: /copy product title/i }),
+            )
+
+            expect(writeTextSpy).toHaveBeenCalledWith('Fixie Bike')
+        })
+
+        it('copies the SKU (without the "SKU: " prefix) on click', async () => {
+            const writeTextSpy = vi
+                .spyOn(navigator.clipboard, 'writeText')
+                .mockResolvedValue(undefined)
+
+            const { user } = render(<OrderLineItemsSection {...defaultProps} />)
+
+            await user.click(screen.getByRole('button', { name: /copy sku/i }))
+
+            expect(writeTextSpy).toHaveBeenCalledWith('fixie-bike')
+        })
     })
 })
 
