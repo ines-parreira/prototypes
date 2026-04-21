@@ -3,10 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import { useUpdateTicket } from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClient,
-    renderHook,
-} from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { useMarkAsSpam } from '../useMarkAsSpam'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -40,10 +37,7 @@ describe('useMarkAsSpam', () => {
             mutateAsync,
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(() => useMarkAsSpam(1), {
-            queryClient,
-        })
+        const { result } = renderHook(() => useMarkAsSpam(1))
 
         await result.current.markAsSpam(1, { spam: true })
 
@@ -60,10 +54,7 @@ describe('useMarkAsSpam', () => {
             mutateAsync,
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(() => useMarkAsSpam(1), {
-            queryClient,
-        })
+        const { result } = renderHook(() => useMarkAsSpam(1))
 
         await result.current.markAsSpam(1, { spam: true })
 

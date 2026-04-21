@@ -1,8 +1,7 @@
-import { createTestQueryClient, render } from '@repo/testing/vitest'
+import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockEcommerceData,
@@ -20,12 +19,11 @@ import type { Integration } from '@gorgias/helpdesk-types'
 
 import { CustomerInfo } from '../'
 import type { OrderSidePanelRenderProps } from '../'
+import { server } from '../../../../../tests/server'
 import { useListShopifyOrders } from '../../../hooks/useListShopifyOrders'
 import { ShopifyCustomerContext } from '../../../ShopifyCustomerContext'
 import type { OrderEcommerceData } from '../../../types'
 import { OrderSidePanelPreview } from '../orders/sidePanel/OrderSidePanelPreview'
-
-const queryClient = createTestQueryClient()
 
 const mockRenderOrderSidePanel = (props: OrderSidePanelRenderProps) => (
     <OrderSidePanelPreview {...props} />
@@ -58,20 +56,6 @@ vi.mock('@repo/preferences', () => ({
         timezone: undefined,
     }),
 }))
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const mockShopifyIntegration = {
     id: 1,
@@ -237,13 +221,6 @@ describe('CustomerInfo', () => {
                 ticketId="123"
                 renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
-        )
-
-        await waitFor(
-            () => {
-                expect(queryClient.isFetching()).toBe(0)
-            },
-            { timeout: 5000 },
         )
 
         await waitFor(

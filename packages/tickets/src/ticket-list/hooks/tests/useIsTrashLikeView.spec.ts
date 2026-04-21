@@ -8,7 +8,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { useGetView } from '@gorgias/helpdesk-queries'
 
-import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { useIsTrashLikeView } from '../useIsTrashLikeView'
 
 vi.mock('@gorgias/helpdesk-queries', { spy: true })
@@ -24,7 +24,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
     server.use(
         mockGetViewHandler(async () =>
             HttpResponse.json(

@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing/vitest'
 import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockCreateWidgetHandler,
@@ -10,21 +9,8 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
+import { server } from '../../../../../../tests/server'
 import { useWidgetFieldPreferences } from '../useWidgetFieldPreferences'
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const shopifyWidget = {
     id: 1,

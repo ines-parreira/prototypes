@@ -3,10 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import { useMergeTickets as useMergeTicketsPrimitive } from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClient,
-    renderHook,
-} from '../../../../../tests/render.utils'
+import { renderHook } from '../../../../../tests/render.utils'
 import { useMergeTickets } from '../useMergeTickets'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -40,10 +37,7 @@ describe('useMergeTickets', () => {
             mutateAsync,
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(() => useMergeTickets(123), {
-            queryClient,
-        })
+        const { result } = renderHook(() => useMergeTickets(123))
 
         await result.current.mergeTickets(
             { source_ids: [123] } as any,
@@ -63,10 +57,7 @@ describe('useMergeTickets', () => {
             mutateAsync,
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(() => useMergeTickets(123), {
-            queryClient,
-        })
+        const { result } = renderHook(() => useMergeTickets(123))
 
         await result.current.mergeTickets(
             { source_ids: [123] } as any,

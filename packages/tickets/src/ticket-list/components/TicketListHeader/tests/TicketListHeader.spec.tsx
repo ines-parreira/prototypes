@@ -9,7 +9,7 @@ import { useGetView } from '@gorgias/helpdesk-queries'
 import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { useDefaultViews } from '../../../../sidebar/hooks/useDefaultViews'
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { TicketListHeader } from '../TicketListHeader'
 
 vi.mock('@repo/views')
@@ -111,7 +111,6 @@ function renderHeader() {
 
 describe('TicketListHeader', () => {
     beforeEach(() => {
-        testAppQueryClient.clear()
         mockHistoryPush.mockReset()
         mockUseGetView.mockReturnValue({
             data: { data: defaultView },

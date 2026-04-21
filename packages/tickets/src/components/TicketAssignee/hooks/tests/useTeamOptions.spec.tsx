@@ -8,7 +8,7 @@ import {
     mockTicketTeam,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { NO_TEAM_OPTION, useTeamOptions } from '../useTeamOptions'
 
 const team1 = mockTeam({ id: 1, name: 'Support', decoration: { emoji: '🛠️' } })
@@ -34,7 +34,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(mockListTeams.handler)
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

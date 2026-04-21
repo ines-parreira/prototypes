@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 
-import { render, testAppQueryClient } from '../../../../../tests/render.utils'
+import { render } from '../../../../../tests/render.utils'
 import { TicketListItemTrailingSlot } from '../TicketListItemTrailingSlot'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
@@ -26,10 +26,6 @@ vi.mock('@repo/utils', async (importOriginal) => ({
     ...(await importOriginal()),
     shortenRelativeDurationLabel: vi.fn(() => '2h'),
 }))
-
-beforeEach(() => {
-    testAppQueryClient.clear()
-})
 
 describe('TicketListItemTrailingSlot', () => {
     describe('status', () => {

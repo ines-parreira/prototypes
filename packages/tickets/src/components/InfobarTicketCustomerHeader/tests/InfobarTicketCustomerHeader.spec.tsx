@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node'
 
 import { mockTicketCustomer } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { InfobarTicketCustomerHeader } from '../InfobarTicketCustomerHeader'
 
 const ticketId = '123'
@@ -18,10 +18,6 @@ const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
-})
-
-beforeEach(() => {
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

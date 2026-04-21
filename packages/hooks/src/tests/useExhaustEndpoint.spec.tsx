@@ -1,17 +1,7 @@
 import { renderHook } from '@repo/testing/vitest'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
 import { useExhaustEndpoint } from '../useExhaustEndpoint'
-
-function createWrapper() {
-    const queryClient = new QueryClient()
-    return ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-}
 
 describe('useExhaustEndpoint', () => {
     it('fetches and flattens paginated data', async () => {
@@ -30,9 +20,8 @@ describe('useExhaustEndpoint', () => {
                 },
             })
 
-        const { result } = renderHook(
-            () => useExhaustEndpoint(['test'], (cursor) => mockFetch(cursor)),
-            { wrapper: createWrapper() },
+        const { result } = renderHook(() =>
+            useExhaustEndpoint(['test'], (cursor) => mockFetch(cursor)),
         )
 
         await waitFor(() => {
@@ -51,12 +40,10 @@ describe('useExhaustEndpoint', () => {
             },
         })
 
-        const { result } = renderHook(
-            () =>
-                useExhaustEndpoint(['test-empty'], (cursor) => {
-                    return mockFetch(cursor)
-                }),
-            { wrapper: createWrapper() },
+        const { result } = renderHook(() =>
+            useExhaustEndpoint(['test-empty'], (cursor) => {
+                return mockFetch(cursor)
+            }),
         )
 
         await waitFor(() => {

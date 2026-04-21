@@ -1,140 +1,186 @@
 import { renderHook } from '@repo/testing/vitest'
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 
 import {
-    queryKeys,
-    useDeleteCustomUserAvailabilityStatus,
-} from '@gorgias/helpdesk-queries'
+    mockCustomUserAvailabilityStatus,
+    mockDeleteCustomUserAvailabilityStatusHandler,
+    mockListCustomUserAvailabilityStatusesHandler,
+} from '@gorgias/helpdesk-mocks'
+import { useListCustomUserAvailabilityStatuses } from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClientWithSpies,
-    getMutationConfig,
-} from '../../tests/render.utils'
-import { useDeleteCustomUserAvailabilityStatus as useDeleteStatusHook } from '../useDeleteCustomUserAvailabilityStatus'
+import { useDeleteCustomUserAvailabilityStatus } from '../useDeleteCustomUserAvailabilityStatus'
 
-type DeleteStatusConfig = NonNullable<
-    Parameters<typeof useDeleteCustomUserAvailabilityStatus>[0]
->
+const server = setupServer()
 
-vi.mock('@tanstack/react-query', async () => {
-    const actual = await vi.importActual('@tanstack/react-query')
-    return {
-        ...actual,
-        useQueryClient: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual('@gorgias/helpdesk-queries')
-    return {
-        ...actual,
-        useDeleteCustomUserAvailabilityStatus: vi.fn(),
-    }
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('useDeleteCustomUserAvailabilityStatus', () => {
-    const listKey =
-        queryKeys.customUserAvailabilityStatus.listCustomUserAvailabilityStatuses()
-
-    beforeEach(() => {
-        vi.clearAllMocks()
-        ;(window as any).CSRF_TOKEN = 'test-csrf-token'
-    })
-
-    it('should optimistically remove status from cache and return previous state', async () => {
-        const { queryClient, spies } = createTestQueryClientWithSpies({
-            withCancelQueriesSpy: true,
+    it('optimistically removes the deleted status and keeps the list in sync', async () => {
+        const firstStatus = mockCustomUserAvailabilityStatus({
+            id: 'status-1',
+            name: 'Lunch break',
+        })
+        const secondStatus = mockCustomUserAvailabilityStatus({
+            id: 'status-2',
+            name: 'Coffee break',
         })
 
-        const mockStatuses = {
-            data: {
-                data: [
-                    { id: 'status-1', name: 'Lunch' },
-                    { id: 'status-2', name: 'Break' },
-                ],
+        let statuses = [firstStatus, secondStatus]
+        let resolveDeleteRequest: (() => void) | undefined
+        const deleteRequestCompleted = new Promise<void>((resolve) => {
+            resolveDeleteRequest = resolve
+        })
+
+        const listStatusesMock = mockListCustomUserAvailabilityStatusesHandler(
+            async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: statuses,
+                }),
+        )
+        const deleteStatusMock = mockDeleteCustomUserAvailabilityStatusHandler(
+            async () => {
+                await deleteRequestCompleted
+                statuses = [secondStatus]
+
+                return new HttpResponse(null, { status: 204 })
             },
-        }
-        queryClient.setQueryData(listKey, mockStatuses)
+        )
+        const waitForDeleteRequest = deleteStatusMock.waitForRequest(server)
 
-        vi.mocked(useQueryClient).mockReturnValue(queryClient)
-        renderHook(() => useDeleteStatusHook(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
+        server.use(listStatusesMock.handler, deleteStatusMock.handler)
+
+        const { result } = renderHook(() => ({
+            deleteStatus: useDeleteCustomUserAvailabilityStatus(),
+            customStatuses: useListCustomUserAvailabilityStatuses(),
+        }))
+
+        await waitFor(() => {
+            expect(
+                result.current.customStatuses.data?.data.data.map(
+                    ({ id }) => id,
+                ),
+            ).toEqual(['status-1', 'status-2'])
         })
 
-        const config = getMutationConfig<DeleteStatusConfig>(
-            vi.mocked(useDeleteCustomUserAvailabilityStatus),
-        )
-        const context = await config?.mutation?.onMutate?.({ pk: 'status-1' })
+        let mutationPromise: Promise<unknown> | undefined
+        act(() => {
+            mutationPromise = result.current.deleteStatus.mutateAsync({
+                pk: 'status-1',
+            })
+        })
 
-        expect(spies.cancelQueries).toHaveBeenCalledWith({ queryKey: listKey })
+        await waitFor(() => {
+            expect(
+                result.current.customStatuses.data?.data.data.map(
+                    ({ id }) => id,
+                ),
+            ).toEqual(['status-2'])
+        })
 
-        const updatedData =
-            queryClient.getQueryData<typeof mockStatuses>(listKey)
-        expect(updatedData?.data?.data).toHaveLength(1)
-        expect(updatedData?.data?.data[0].id).toBe('status-2')
-        expect(context).toEqual({ previousStatuses: mockStatuses })
+        resolveDeleteRequest?.()
+        await mutationPromise
+        await waitForDeleteRequest(() => undefined)
+
+        await waitFor(() => {
+            expect(
+                result.current.customStatuses.data?.data.data.map(
+                    ({ id }) => id,
+                ),
+            ).toEqual(['status-2'])
+        })
     })
 
-    it('should rollback cache on error with provided statuses in error handler', () => {
-        const { queryClient } = createTestQueryClientWithSpies()
-        const mockStatuses = {
-            data: { data: [{ id: 'status-1', name: 'Lunch' }] },
-        }
-
-        vi.mocked(useQueryClient).mockReturnValue(queryClient)
-        renderHook(() => useDeleteStatusHook(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
+    it('rolls back the list when deleting a status fails', async () => {
+        const firstStatus = mockCustomUserAvailabilityStatus({
+            id: 'status-1',
+            name: 'Lunch break',
+        })
+        const secondStatus = mockCustomUserAvailabilityStatus({
+            id: 'status-2',
+            name: 'Coffee break',
         })
 
-        expect(queryClient.getQueryData(listKey)).toBeUndefined()
-
-        const config = getMutationConfig<DeleteStatusConfig>(
-            vi.mocked(useDeleteCustomUserAvailabilityStatus),
-        )
-        config?.mutation?.onError?.(
-            new Error(),
-            { pk: 'status-1' },
-            { previousStatuses: mockStatuses },
-        )
-
-        expect(queryClient.getQueryData(listKey)).toEqual(mockStatuses)
-    })
-
-    it('should invalidate queries on settled', () => {
-        const { queryClient, spies } = createTestQueryClientWithSpies({
-            withInvalidateQueriesSpy: true,
+        const statuses = [firstStatus, secondStatus]
+        let resolveDeleteRequest: (() => void) | undefined
+        const deleteRequestCompleted = new Promise<void>((resolve) => {
+            resolveDeleteRequest = resolve
         })
 
-        vi.mocked(useQueryClient).mockReturnValue(queryClient)
-        renderHook(() => useDeleteStatusHook(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
+        const listStatusesMock = mockListCustomUserAvailabilityStatusesHandler(
+            async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: statuses,
+                }),
+        )
+        const deleteStatusMock = mockDeleteCustomUserAvailabilityStatusHandler(
+            async () => {
+                await deleteRequestCompleted
+
+                return HttpResponse.json(
+                    {
+                        error: {
+                            msg: 'Failed to delete status',
+                        },
+                    } as any,
+                    { status: 500 },
+                )
+            },
+        )
+
+        server.use(listStatusesMock.handler, deleteStatusMock.handler)
+
+        const { result } = renderHook(() => ({
+            deleteStatus: useDeleteCustomUserAvailabilityStatus(),
+            customStatuses: useListCustomUserAvailabilityStatuses(),
+        }))
+
+        await waitFor(() => {
+            expect(
+                result.current.customStatuses.data?.data.data.map(
+                    ({ id }) => id,
+                ),
+            ).toEqual(['status-1', 'status-2'])
         })
 
-        const config = getMutationConfig<DeleteStatusConfig>(
-            vi.mocked(useDeleteCustomUserAvailabilityStatus),
-        )
-        config?.mutation?.onSettled?.(
-            undefined,
-            null,
-            { pk: 'status-1' },
-            undefined,
-        )
+        let mutationPromise: Promise<unknown> | undefined
+        act(() => {
+            mutationPromise = result.current.deleteStatus.mutateAsync({
+                pk: 'status-1',
+            })
+        })
 
-        expect(spies.invalidateQueries).toHaveBeenCalledWith({
-            queryKey: listKey,
+        await waitFor(() => {
+            expect(
+                result.current.customStatuses.data?.data.data.map(
+                    ({ id }) => id,
+                ),
+            ).toEqual(['status-2'])
+        })
+
+        resolveDeleteRequest?.()
+        await expect(mutationPromise).rejects.toThrow()
+
+        await waitFor(() => {
+            expect(
+                result.current.customStatuses.data?.data.data.map(
+                    ({ id }) => id,
+                ),
+            ).toEqual(['status-1', 'status-2'])
         })
     })
 })

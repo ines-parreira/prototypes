@@ -1,74 +1,115 @@
-import { renderHook } from '@repo/testing'
-import { createTestQueryClient } from '@repo/testing/vitest'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
-import { HttpResponse } from 'msw'
+import { delay, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import {
+    afterAll,
+    afterEach,
+    beforeAll,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vitest'
 
-import { mockGetBillingStateHandler } from '@gorgias/helpdesk-mocks'
-import type { BillingState } from '@gorgias/helpdesk-queries'
+import {
+    mockBillingState,
+    mockCreditCard,
+    mockCustomerSummary,
+    mockGetBillingStateHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { useBillingState } from '../useBillingState'
 
 const server = setupServer()
-const queryClient = createTestQueryClient()
 
-beforeAll(() => server.listen())
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
 afterEach(() => {
     server.resetHandlers()
-    queryClient.removeQueries()
 })
-afterAll(() => server.close())
 
-const renderBillingStateHook = () => {
-    return renderHook(() => useBillingState(), {
-        wrapper: ({ children }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        ),
-    })
-}
+afterAll(() => {
+    server.close()
+})
 
 describe('useBillingState()', () => {
     it('should return the billing state if the request succeeds', async () => {
-        const getStateMock = mockGetBillingStateHandler()
-        server.use(getStateMock.handler)
+        const billingState = mockBillingState({
+            customer: mockCustomerSummary({
+                credit_card: mockCreditCard(),
+            }),
+        })
+        const mockGetBillingState = mockGetBillingStateHandler(async () =>
+            HttpResponse.json(billingState),
+        )
 
-        const { result } = renderBillingStateHook()
+        server.use(mockGetBillingState.handler)
+
+        const { result } = renderHook(() => useBillingState())
 
         await waitFor(() => {
-            expect(result.current.data).toEqual(getStateMock.data)
+            expect(result.current.isSuccess).toBe(true)
         })
+
+        expect(result.current.data).toEqual(billingState)
     })
 
     it('should return isFetching as true while the request is loading', async () => {
-        vi.useFakeTimers()
-        const getStateMock = mockGetBillingStateHandler(async ({ data }) => {
-            await new Promise((resolve) => setTimeout(resolve, 1000))
-            return HttpResponse.json(data)
+        const billingState = mockBillingState()
+        let releaseResponse!: () => void
+
+        const pendingResponse = new Promise<void>((resolve) => {
+            releaseResponse = resolve
         })
 
-        server.use(getStateMock.handler)
+        const mockGetBillingState = mockGetBillingStateHandler(async () => {
+            await pendingResponse
+            return HttpResponse.json(billingState)
+        })
 
-        const { result } = renderBillingStateHook()
-        expect(result.current.isFetching).toBe(true)
+        server.use(mockGetBillingState.handler)
 
-        vi.useRealTimers()
+        const { result } = renderHook(() => useBillingState())
+
+        await waitFor(() => {
+            expect(result.current.isFetching).toBe(true)
+        })
+
+        expect(result.current.data).toBeUndefined()
+
+        releaseResponse()
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
     })
 
     it('should return undefined if the request fails', async () => {
-        const getStateMock = mockGetBillingStateHandler(async () => {
-            return HttpResponse.json(
-                { error: { msg: 'Server error' } } as unknown as BillingState,
-                { status: 500 },
-            )
+        const mockGetBillingState = mockGetBillingStateHandler(async () => {
+            await delay(20)
+
+            return HttpResponse.json(mockBillingState(), { status: 500 })
         })
 
-        server.use(getStateMock.handler)
+        server.use(mockGetBillingState.handler)
 
-        const { result } = renderBillingStateHook()
+        const consoleErrorSpy = vi
+            .spyOn(console, 'error')
+            .mockImplementation(() => {})
 
-        expect(result.current.data).toBeUndefined()
+        try {
+            const { result } = renderHook(() => useBillingState())
+
+            await waitFor(() => {
+                expect(result.current.isError).toBe(true)
+            })
+
+            expect(result.current.data).toBeUndefined()
+        } finally {
+            consoleErrorSpy.mockRestore()
+        }
     })
 })

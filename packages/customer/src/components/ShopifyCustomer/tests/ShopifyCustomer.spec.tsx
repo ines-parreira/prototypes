@@ -2,7 +2,6 @@ import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import { mockGetEcommerceDataByExternalIdHandler } from '@gorgias/ecommerce-storage-mocks'
 import {
@@ -15,6 +14,7 @@ import {
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import { ShopifyCustomer } from '../'
+import { server } from '../../../tests/server'
 import type { OrderSidePanelRenderProps } from '../components/CustomerInfo'
 import { OrderSidePanelPreview } from '../components/CustomerInfo/orders/sidePanel/OrderSidePanelPreview'
 
@@ -40,20 +40,6 @@ vi.mock('@repo/preferences', () => ({
         timezone: undefined,
     }),
 }))
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const mockShopifyIntegration = {
     id: 1,

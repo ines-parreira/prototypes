@@ -15,10 +15,7 @@ import {
 import { useCreateTicketTag } from '../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
 import { useListTagsSearch } from '../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
 import { useTeamOptions } from '../../../../components/TicketAssignee/hooks/useTeamOptions'
-import {
-    createTestQueryClient,
-    render as renderPrimitive,
-} from '../../../../tests/render.utils'
+import { render as renderPrimitive } from '../../../../tests/render.utils'
 import { useIsTrashLikeView } from '../../../hooks/useIsTrashLikeView'
 import { MoreActionsMenu } from '../MoreActionsMenu'
 
@@ -107,7 +104,6 @@ const mockUseTeamOptions = vi.mocked(useTeamOptions)
 const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
 const mockUseCreateTicketTag = vi.mocked(useCreateTicketTag)
 const mockUseIsTrashLikeView = vi.mocked(useIsTrashLikeView)
-let queryClient = createTestQueryClient()
 const supportTeam = mockTeam({
     id: 1,
     name: 'Support',
@@ -125,7 +121,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    queryClient = createTestQueryClient()
     server.use(mockAgentCurrentUser.handler)
     mockUseTeamOptions.mockReturnValue({
         teamsMap: new Map([
@@ -173,8 +168,6 @@ beforeEach(() => {
 })
 
 afterEach(async () => {
-    await queryClient.cancelQueries()
-    queryClient.clear()
     server.resetHandlers()
 })
 
@@ -197,9 +190,7 @@ const defaultProps = {
     onDeleteForever: vi.fn(),
 }
 
-const render = (ui: React.ReactElement) => {
-    return renderPrimitive(ui, { queryClient })
-}
+const render = (ui: React.ReactElement) => renderPrimitive(ui)
 
 function mockTrashLikeView() {
     mockUseIsTrashLikeView.mockReturnValue(true)

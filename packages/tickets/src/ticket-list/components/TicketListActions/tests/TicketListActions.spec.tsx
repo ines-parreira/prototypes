@@ -13,7 +13,7 @@ import { useCreateTicketTag } from '../../../../components/InfobarTicketDetails/
 import { useListTagsSearch } from '../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
 import { useTeamOptions } from '../../../../components/TicketAssignee/hooks/useTeamOptions'
 import { useUserOptions } from '../../../../components/TicketAssignee/hooks/useUserOptions'
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { TicketListActions } from '../TicketListActions'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
@@ -79,7 +79,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
     server.use(
         mockCurrentUser.handler,
         mockCreateJob.handler,

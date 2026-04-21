@@ -13,7 +13,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { TicketCustomer, TicketMessage } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { InfobarTicketCustomerInstagramSection } from '../InfobarTicketCustomerInstagramSection'
 
 vi.mock('@repo/logging', () => ({
@@ -137,9 +137,7 @@ beforeEach(() => {
     server.use(mockListIntegrations.handler)
 })
 
-afterEach(async () => {
-    await testAppQueryClient.cancelQueries()
-    testAppQueryClient.clear()
+afterEach(() => {
     server.resetHandlers()
     vi.clearAllMocks()
 })

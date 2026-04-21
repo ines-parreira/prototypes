@@ -1,29 +1,15 @@
 import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockEcommerceData,
     mockGetEcommerceDataByExternalIdHandler,
 } from '@gorgias/ecommerce-storage-mocks'
 
+import { server } from '../../../../tests/server'
 import type { PurchaseSummaryData } from '../../types'
 import { useGetPurchaseSummary } from '../useGetPurchaseSummary'
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const mockPurchaseSummaryData: PurchaseSummaryData = {
     id: 123,

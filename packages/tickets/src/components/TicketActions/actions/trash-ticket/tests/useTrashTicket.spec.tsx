@@ -3,10 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import { useUpdateTicket } from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClient,
-    renderHook,
-} from '../../../../../tests/render.utils'
+import { renderHook } from '../../../../../tests/render.utils'
 import { useTrashTicket } from '../useTrashTicket'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -40,10 +37,7 @@ describe('useTrashTicket', () => {
             mutateAsync,
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(() => useTrashTicket(1), {
-            queryClient,
-        })
+        const { result } = renderHook(() => useTrashTicket(1))
 
         await result.current.trashTicket(1, {
             trashed_datetime: '2024-01-01',
@@ -62,10 +56,7 @@ describe('useTrashTicket', () => {
             mutateAsync,
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(() => useTrashTicket(1), {
-            queryClient,
-        })
+        const { result } = renderHook(() => useTrashTicket(1))
 
         await result.current.trashTicket(1, {
             trashed_datetime: '2024-01-01',

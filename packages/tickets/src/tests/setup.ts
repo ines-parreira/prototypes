@@ -1,8 +1,6 @@
 import { cleanup } from '@testing-library/react'
 import { afterEach, vi } from 'vitest'
 
-import { testAppQueryClient } from './render.utils'
-
 global.IntersectionObserver = class IntersectionObserver {
     constructor() {}
     disconnect() {}
@@ -32,8 +30,6 @@ if (typeof document.elementsFromPoint !== 'function') {
 
 afterEach(async () => {
     cleanup()
-    await testAppQueryClient.cancelQueries()
-    testAppQueryClient.clear()
     vi.restoreAllMocks()
     vi.useRealTimers()
 })

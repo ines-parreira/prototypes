@@ -19,7 +19,7 @@ import {
     mockGetViewResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { createTestQueryClient, render } from '../../tests/render.utils'
+import { render } from '../../tests/render.utils'
 import { useCreateTicketDraft } from '../useCreateTicketDraft'
 import { ViewHeader } from '../ViewHeader'
 
@@ -40,13 +40,6 @@ const mockGetView = mockGetViewHandler(async () =>
 )
 
 const server = setupServer()
-let queryClient = createTestQueryClient()
-
-const waitForQueriesSettled = async () => {
-    await waitFor(() => {
-        expect(queryClient.isFetching()).toBe(0)
-    })
-}
 
 const renderViewHeader = (
     props: Partial<React.ComponentProps<typeof ViewHeader>> = {},
@@ -69,7 +62,6 @@ const renderViewHeader = (
             {...props}
             titleOverride={titleOverride}
         />,
-        { queryClient },
     )
 }
 
@@ -78,7 +70,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    queryClient = createTestQueryClient()
     server.use(mockGetView.handler)
     useCreateTicketDraftMock.mockReturnValue({
         hasDraft: false,
@@ -90,9 +81,6 @@ beforeEach(() => {
 
 afterEach(async () => {
     cleanup()
-    await waitForQueriesSettled()
-    await queryClient.cancelQueries()
-    queryClient.clear()
     server.resetHandlers()
     vi.clearAllMocks()
 })

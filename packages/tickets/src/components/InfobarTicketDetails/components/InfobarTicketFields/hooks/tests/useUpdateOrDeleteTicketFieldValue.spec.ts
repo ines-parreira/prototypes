@@ -1,9 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 
-import {
-    createTestQueryClient,
-    renderHook,
-} from '../../../../../../tests/render.utils'
+import { renderHook } from '../../../../../../tests/render.utils'
 import { useDeleteTicketFieldValue } from '../useDeleteTicketFieldValue'
 import { useUpdateOrDeleteTicketFieldValue } from '../useUpdateOrDeleteTicketFieldValue'
 import { useUpdateTicketFieldValue } from '../useUpdateTicketFieldValue'
@@ -43,10 +40,8 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
             mutateAsync: vi.fn().mockResolvedValue(undefined),
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(
-            () => useUpdateOrDeleteTicketFieldValue(123),
-            { queryClient },
+        const { result } = renderHook(() =>
+            useUpdateOrDeleteTicketFieldValue(123),
         )
 
         await result.current.updateOrDeleteCustomerFieldValue({

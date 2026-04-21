@@ -1,16 +1,13 @@
-import type { ReactElement } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+    renderHook as renderHookPrimitive,
+    render as renderPrimitive,
+} from '@repo/testing/vitest'
 import type {
     RenderHookOptions as RenderHookOptionsPrimitive,
     RenderOptions as RenderOptionsPrimitive,
 } from '@testing-library/react'
-import {
-    renderHook as renderHookPrimitive,
-    render as renderPrimitive,
-} from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
-import { MemoryRouter, Route } from 'react-router-dom'
 
 import { ExpandedMessagesProvider } from '../contexts/ExpandedMessages'
 import { TicketThreadLegacyBridgeProvider } from '../utils/LegacyBridge'
@@ -20,23 +17,8 @@ import type {
     LegacyBridgeActions,
     LegacyBridgeContextType,
     LegacyBridgeState,
+    VoiceCallBridgeCallbacks,
 } from '../utils/LegacyBridge/types'
-
-export const createTestQueryClient = () =>
-    new QueryClient({
-        defaultOptions: {
-            queries: {
-                retry: false,
-                staleTime: 0,
-                cacheTime: 0,
-            },
-            mutations: {
-                retry: false,
-            },
-        },
-    })
-
-export const testAppQueryClient = createTestQueryClient()
 
 type LegacyBridgeOptions = {
     currentTicketShoppingAssistantData?: CurrentTicketShoppingAssistantData
@@ -46,20 +28,20 @@ type LegacyBridgeOptions = {
     renderAiAgentDraftMessage?: LegacyBridgeContextType['renderAiAgentDraftMessage']
     renderAiAgentTrialMessage?: LegacyBridgeContextType['renderAiAgentTrialMessage']
     renderAiAgentReasoning?: LegacyBridgeContextType['renderAiAgentReasoning']
+    voiceCallCallbacks?: VoiceCallBridgeCallbacks
 }
 
-type RenderOptions = RenderOptionsPrimitive &
+type RenderOptions = Omit<RenderOptionsPrimitive, 'wrapper'> &
     LegacyBridgeOptions & {
         initialEntries?: string[]
         path?: string
-        queryClient?: QueryClient
+        wrapper?: RenderOptionsPrimitive['wrapper']
     }
 
 type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> &
     LegacyBridgeOptions & {
         initialEntries?: string[]
         path?: string
-        queryClient?: QueryClient
     }
 
 const defaultOptions = {
@@ -76,10 +58,12 @@ const defaultOptions = {
     legacyActions: {
         deleteTicketPendingMessage: () => undefined,
         retrySubmitTicketMessage: () => undefined,
+        undoTicketPendingMessage: () => undefined,
     },
     legacyState: {
         newMessage: {
             isSubmittingMessage: false,
+            canUndoTicketPendingMessage: () => false,
         },
     },
 }
@@ -89,22 +73,33 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         ...defaultOptions,
         ...options,
     }
-
-    const queryClient = options?.queryClient ?? testAppQueryClient
-    const user = userEvent.setup()
+    const {
+        initialEntries,
+        path,
+        currentTicketShoppingAssistantData,
+        currentTicketRuleSuggestionData,
+        legacyActions,
+        legacyState,
+        renderAiAgentDraftMessage,
+        renderAiAgentTrialMessage,
+        renderAiAgentReasoning,
+        voiceCallCallbacks,
+        wrapper: ExtraWrapper,
+        ...renderOptions
+    } = mergedOptions
     const legacyBridgeProps = {
         currentTicketShoppingAssistantData:
-            mergedOptions.currentTicketShoppingAssistantData ??
+            currentTicketShoppingAssistantData ??
             defaultOptions.currentTicketShoppingAssistantData,
         currentTicketRuleSuggestionData:
-            mergedOptions.currentTicketRuleSuggestionData ??
+            currentTicketRuleSuggestionData ??
             defaultOptions.currentTicketRuleSuggestionData,
-        legacyActions:
-            mergedOptions.legacyActions ?? defaultOptions.legacyActions,
-        legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
-        renderAiAgentDraftMessage: mergedOptions.renderAiAgentDraftMessage,
-        renderAiAgentTrialMessage: mergedOptions.renderAiAgentTrialMessage,
-        renderAiAgentReasoning: mergedOptions.renderAiAgentReasoning,
+        legacyActions: legacyActions ?? defaultOptions.legacyActions,
+        legacyState: legacyState ?? defaultOptions.legacyState,
+        renderAiAgentDraftMessage,
+        renderAiAgentTrialMessage,
+        renderAiAgentReasoning,
+        voiceCallCallbacks,
         onInstagramCommentPrivateReply: () => undefined,
         onInstagramCommentHideComment: () => undefined,
         onFacebookCommentPrivateReply: () => undefined,
@@ -112,18 +107,18 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         onFacebookCommentLike: () => undefined,
     }
 
-    const result = renderPrimitive(element, {
-        ...options,
-        wrapper: ({ children }) => (
+    const { user, ...result } = renderPrimitive(element, {
+        ...renderOptions,
+        initialEntries,
+        path,
+        wrapper: ({ children }: { children: ReactNode }) => (
             <TicketThreadLegacyBridgeProvider {...legacyBridgeProps}>
                 <ExpandedMessagesProvider>
-                    <QueryClientProvider client={queryClient}>
-                        <MemoryRouter
-                            initialEntries={mergedOptions.initialEntries}
-                        >
-                            <Route path={mergedOptions.path}>{children}</Route>
-                        </MemoryRouter>
-                    </QueryClientProvider>
+                    {ExtraWrapper ? (
+                        <ExtraWrapper>{children as ReactElement}</ExtraWrapper>
+                    ) : (
+                        children
+                    )}
                 </ExpandedMessagesProvider>
             </TicketThreadLegacyBridgeProvider>
         ),
@@ -144,21 +139,33 @@ export const renderHook = <TProps, TResult>(
         ...defaultOptions,
         ...options,
     }
-
-    const queryClient = options?.queryClient ?? testAppQueryClient
+    const {
+        initialEntries,
+        path,
+        currentTicketShoppingAssistantData,
+        currentTicketRuleSuggestionData,
+        legacyActions,
+        legacyState,
+        renderAiAgentDraftMessage,
+        renderAiAgentTrialMessage,
+        renderAiAgentReasoning,
+        voiceCallCallbacks,
+        wrapper: ExtraWrapper,
+        ...renderHookOptions
+    } = mergedOptions
     const legacyBridgeProps = {
         currentTicketShoppingAssistantData:
-            mergedOptions.currentTicketShoppingAssistantData ??
+            currentTicketShoppingAssistantData ??
             defaultOptions.currentTicketShoppingAssistantData,
         currentTicketRuleSuggestionData:
-            mergedOptions.currentTicketRuleSuggestionData ??
+            currentTicketRuleSuggestionData ??
             defaultOptions.currentTicketRuleSuggestionData,
-        legacyActions:
-            mergedOptions.legacyActions ?? defaultOptions.legacyActions,
-        legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
-        renderAiAgentDraftMessage: mergedOptions.renderAiAgentDraftMessage,
-        renderAiAgentTrialMessage: mergedOptions.renderAiAgentTrialMessage,
-        renderAiAgentReasoning: mergedOptions.renderAiAgentReasoning,
+        legacyActions: legacyActions ?? defaultOptions.legacyActions,
+        legacyState: legacyState ?? defaultOptions.legacyState,
+        renderAiAgentDraftMessage,
+        renderAiAgentTrialMessage,
+        renderAiAgentReasoning,
+        voiceCallCallbacks,
         onInstagramCommentPrivateReply: () => undefined,
         onInstagramCommentHideComment: () => undefined,
         onFacebookCommentPrivateReply: () => undefined,
@@ -166,20 +173,21 @@ export const renderHook = <TProps, TResult>(
         onFacebookCommentLike: () => undefined,
     }
 
-    return renderHookPrimitive(hook, {
-        ...options,
-        wrapper: ({ children }) => (
+    const result = renderHookPrimitive(hook, {
+        ...renderHookOptions,
+        initialEntries,
+        path,
+        wrapper: ({ children }: { children: ReactNode }) => (
             <TicketThreadLegacyBridgeProvider {...legacyBridgeProps}>
                 <ExpandedMessagesProvider>
-                    <QueryClientProvider client={queryClient}>
-                        <MemoryRouter
-                            initialEntries={mergedOptions.initialEntries}
-                        >
-                            <Route path={mergedOptions.path}>{children}</Route>
-                        </MemoryRouter>
-                    </QueryClientProvider>
+                    {ExtraWrapper ? (
+                        <ExtraWrapper>{children as ReactElement}</ExtraWrapper>
+                    ) : (
+                        children
+                    )}
                 </ExpandedMessagesProvider>
             </TicketThreadLegacyBridgeProvider>
         ),
     })
+    return result
 }

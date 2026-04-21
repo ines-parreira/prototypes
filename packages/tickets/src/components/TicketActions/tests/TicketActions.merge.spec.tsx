@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import { mockTicket } from '@gorgias/helpdesk-mocks'
 import type { TicketsSearchListDataItem } from '@gorgias/helpdesk-types'
 
-import { createTestQueryClient, render } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { MergeTicketsModal } from '../actions/merge-tickets/MergeTicketsModal'
 import * as useMergeTicketsModule from '../actions/merge-tickets/useMergeTickets'
 import * as useMergeTicketSearchModule from '../actions/merge-tickets/useMergeTicketSearch'
@@ -54,9 +54,6 @@ function renderComponent() {
             onOpenChange={mockOnOpenChange}
             ticket={sourceTicket}
         />,
-        {
-            queryClient: createTestQueryClient(),
-        },
     )
 }
 

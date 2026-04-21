@@ -6,10 +6,7 @@ import {
     useUpdateCustomerCustomFieldValue,
 } from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClient,
-    renderHook,
-} from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { useUpdateOrDeleteCustomCustomerFieldValue } from '../useUpdateOrDeleteCustomCustomerFieldValue'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -47,10 +44,8 @@ describe('useUpdateOrDeleteCustomCustomerFieldValue', () => {
             mutateAsync: mutateAsyncDelete,
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(
-            () => useUpdateOrDeleteCustomCustomerFieldValue(123),
-            { queryClient },
+        const { result } = renderHook(() =>
+            useUpdateOrDeleteCustomCustomerFieldValue(123),
         )
 
         await result.current.updateOrDeleteCustomerFieldValue({

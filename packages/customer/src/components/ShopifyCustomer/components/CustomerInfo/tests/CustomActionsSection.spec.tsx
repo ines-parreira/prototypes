@@ -1,28 +1,14 @@
 import { render } from '@repo/testing/vitest'
 import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockListWidgetsHandler,
     mockUpdateWidgetHandler,
 } from '@gorgias/helpdesk-mocks'
 
+import { server } from '../../../../../tests/server'
 import { CustomActionsSection } from '../CustomActionsSection'
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const shopifyWidget = {
     id: 1,

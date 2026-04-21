@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node'
 import { mockGetCurrentUserHandler, mockUser } from '@gorgias/helpdesk-mocks'
 import type { TicketsSearchListDataItem, User } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../../../tests/render.utils'
+import { render } from '../../../../../tests/render.utils'
 import { MergeTicketsModalSearchTab } from '../MergeTicketsModalSearchTab'
 import { useMergeTicketsTable } from '../useMergeTicketsTable'
 
@@ -14,10 +14,6 @@ const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
-})
-
-beforeEach(() => {
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

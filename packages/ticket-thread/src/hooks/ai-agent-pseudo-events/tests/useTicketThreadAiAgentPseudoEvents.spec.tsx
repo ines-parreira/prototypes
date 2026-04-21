@@ -9,7 +9,7 @@ import {
 import { TicketStatus } from '@gorgias/helpdesk-queries'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { createTestQueryClient, renderHook } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import type {
     TicketThreadAiAgentMessageItem,
@@ -83,15 +83,13 @@ describe('useTicketThreadAiAgentPseudoEvents', () => {
             }).handler,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadAiAgentPseudoEvents({
-                    ticketId: 7,
-                    messages: [message],
-                    persistedItems: [message],
-                    showTicketEvents: false,
-                }),
-            { queryClient: createTestQueryClient() },
+        const { result } = renderHook(() =>
+            useTicketThreadAiAgentPseudoEvents({
+                ticketId: 7,
+                messages: [message],
+                persistedItems: [message],
+                showTicketEvents: false,
+            }),
         )
 
         await waitFor(() => {
@@ -154,15 +152,13 @@ describe('useTicketThreadAiAgentPseudoEvents', () => {
             }).handler,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadAiAgentPseudoEvents({
-                    ticketId: 8,
-                    messages: [message],
-                    persistedItems: [message],
-                    showTicketEvents: false,
-                }),
-            { queryClient: createTestQueryClient() },
+        const { result } = renderHook(() =>
+            useTicketThreadAiAgentPseudoEvents({
+                ticketId: 8,
+                messages: [message],
+                persistedItems: [message],
+                showTicketEvents: false,
+            }),
         )
 
         await waitFor(() => {
@@ -202,15 +198,13 @@ describe('useTicketThreadAiAgentPseudoEvents', () => {
             }).handler,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadAiAgentPseudoEvents({
-                    ticketId: 10,
-                    messages: [message],
-                    persistedItems: [message],
-                    showTicketEvents: false,
-                }),
-            { queryClient: createTestQueryClient() },
+        const { result } = renderHook(() =>
+            useTicketThreadAiAgentPseudoEvents({
+                ticketId: 10,
+                messages: [message],
+                persistedItems: [message],
+                showTicketEvents: false,
+            }),
         )
 
         await waitFor(() => {
@@ -241,15 +235,13 @@ describe('useTicketThreadAiAgentPseudoEvents', () => {
             }) as TicketMessage,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadAiAgentPseudoEvents({
-                    ticketId: 7,
-                    messages: [message],
-                    persistedItems: [message],
-                    showTicketEvents: true,
-                }),
-            { queryClient: createTestQueryClient() },
+        const { result } = renderHook(() =>
+            useTicketThreadAiAgentPseudoEvents({
+                ticketId: 7,
+                messages: [message],
+                persistedItems: [message],
+                showTicketEvents: true,
+            }),
         )
 
         expect(result.current).toEqual([message])
@@ -267,15 +259,13 @@ describe('useTicketThreadAiAgentPseudoEvents', () => {
             }) as TicketMessage,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadAiAgentPseudoEvents({
-                    ticketId: 9,
-                    messages: [message],
-                    persistedItems: [message],
-                    showTicketEvents: false,
-                }),
-            { queryClient: createTestQueryClient() },
+        const { result } = renderHook(() =>
+            useTicketThreadAiAgentPseudoEvents({
+                ticketId: 9,
+                messages: [message],
+                persistedItems: [message],
+                showTicketEvents: false,
+            }),
         )
 
         expect(result.current).toEqual([message])
@@ -299,15 +289,13 @@ describe('useTicketThreadAiAgentPseudoEvents', () => {
             }) as TicketMessage,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadAiAgentPseudoEvents({
-                    ticketId: 0,
-                    messages: [message],
-                    persistedItems: [message],
-                    showTicketEvents: false,
-                }),
-            { queryClient: createTestQueryClient() },
+        const { result } = renderHook(() =>
+            useTicketThreadAiAgentPseudoEvents({
+                ticketId: 0,
+                messages: [message],
+                persistedItems: [message],
+                showTicketEvents: false,
+            }),
         )
 
         expect(result.current[0]).toHaveProperty(
@@ -343,15 +331,13 @@ describe('useTicketThreadAiAgentPseudoEvents', () => {
             }).handler,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadAiAgentPseudoEvents({
-                    ticketId: 12,
-                    messages: [message],
-                    persistedItems: [message],
-                    showTicketEvents: false,
-                }),
-            { queryClient: createTestQueryClient() },
+        const { result } = renderHook(() =>
+            useTicketThreadAiAgentPseudoEvents({
+                ticketId: 12,
+                messages: [message],
+                persistedItems: [message],
+                showTicketEvents: false,
+            }),
         )
 
         await waitFor(() => {

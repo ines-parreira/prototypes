@@ -1,3 +1,4 @@
+import { QueryClient } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { vi } from 'vitest'
@@ -12,7 +13,7 @@ import {
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
-import { createTestQueryClient, render } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { VoiceCallAudioPlayer } from '../components/VoiceCallAudioPlayer'
 import {
@@ -63,12 +64,6 @@ describe('VoiceCallAudioPlayer', () => {
         })
 
         it('invalidates voice call recordings query cache on successful delete', async () => {
-            const queryClient = createTestQueryClient()
-            const invalidateQueriesSpy = vi.spyOn(
-                queryClient,
-                'invalidateQueries',
-            )
-
             const audio = mockVoiceCallRecording({
                 id: 1,
                 url: 'https://example.com/audio.mp3',
@@ -76,12 +71,15 @@ describe('VoiceCallAudioPlayer', () => {
                 error_code: null,
             }) as VoiceCallRecording
 
+            const invalidateQueriesSpy = vi.spyOn(
+                QueryClient.prototype,
+                'invalidateQueries',
+            )
             const { user } = render(
                 <VoiceCallAudioPlayer
                     audio={audio}
                     type={VoiceCallRecordingType.Recording}
                 />,
-                { queryClient },
             )
 
             await user.click(

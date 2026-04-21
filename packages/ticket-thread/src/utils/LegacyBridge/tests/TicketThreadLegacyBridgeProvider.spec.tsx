@@ -1,8 +1,4 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react'
-import { MemoryRouter, Route } from 'react-router-dom'
-
-import { TicketThreadLegacyBridgeProvider } from '../TicketThreadLegacyBridgeProvider'
+import { renderHook } from '../../../tests/render.utils'
 import type {
     CurrentTicketShoppingAssistantData,
     VoiceCallBridgeCallbacks,
@@ -24,28 +20,10 @@ const defaultProps = {
     onFacebookCommentLike: () => undefined,
 }
 
-const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
-})
-
-function wrapper({ children }: { children: React.ReactNode }) {
-    return (
-        <QueryClientProvider client={queryClient}>
-            <MemoryRouter>
-                <Route path="/">
-                    <TicketThreadLegacyBridgeProvider {...defaultProps}>
-                        {children}
-                    </TicketThreadLegacyBridgeProvider>
-                </Route>
-            </MemoryRouter>
-        </QueryClientProvider>
-    )
-}
-
 describe('TicketThreadLegacyBridgeProvider', () => {
     it('voiceCallCallbacks is undefined in context when not provided', () => {
         const { result } = renderHook(() => useTicketThreadLegacyBridge(), {
-            wrapper,
+            ...defaultProps,
         })
 
         expect(result.current.voiceCallCallbacks).toBeUndefined()
@@ -53,7 +31,7 @@ describe('TicketThreadLegacyBridgeProvider', () => {
 
     it('exposes safe default pending message callbacks when legacy overrides are omitted', () => {
         const { result } = renderHook(() => useTicketThreadLegacyBridge(), {
-            wrapper,
+            ...defaultProps,
         })
 
         expect(
@@ -75,27 +53,9 @@ describe('TicketThreadLegacyBridgeProvider', () => {
             renderMonitorCallButton: () => null,
         }
 
-        const wrapperWithCallbacks = ({
-            children,
-        }: {
-            children: React.ReactNode
-        }) => (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter>
-                    <Route path="/">
-                        <TicketThreadLegacyBridgeProvider
-                            {...defaultProps}
-                            voiceCallCallbacks={callbacks}
-                        >
-                            {children}
-                        </TicketThreadLegacyBridgeProvider>
-                    </Route>
-                </MemoryRouter>
-            </QueryClientProvider>
-        )
-
         const { result } = renderHook(() => useTicketThreadLegacyBridge(), {
-            wrapper: wrapperWithCallbacks,
+            ...defaultProps,
+            voiceCallCallbacks: callbacks,
         })
 
         expect(result.current.voiceCallCallbacks).toBe(callbacks)

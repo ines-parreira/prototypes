@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node'
 
 import { mockListUsersHandler, mockUser } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { useListUsersSearch } from '../useListUsersSearch'
 
 const user1 = mockUser({ id: 1, name: 'Support Agent' })
@@ -34,7 +34,6 @@ beforeEach(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

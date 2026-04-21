@@ -1,4 +1,4 @@
-import { cleanup, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -7,18 +7,11 @@ import { UserSettingType } from '@gorgias/helpdesk-queries'
 import type { UserPreferencesSettingData } from '@gorgias/helpdesk-types'
 import { Language } from '@gorgias/helpdesk-types'
 
-import {
-    createTestQueryClient,
-    renderHook as renderHookPrimitive,
-} from '../../tests/render.utils'
+import { renderHook } from '../../tests/render.utils'
 import type { CurrentUser } from '../hooks/useCurrentUserLanguagePreferences'
 import { useCurrentUserLanguagePreferences } from '../hooks/useCurrentUserLanguagePreferences'
 
 const server = setupServer()
-let queryClient = createTestQueryClient()
-
-const renderHook = <TResult,>(hook: () => TResult) =>
-    renderHookPrimitive(hook, { queryClient })
 
 const mockGetCurrentUser = mockGetCurrentUserHandler()
 
@@ -29,13 +22,9 @@ describe('useCurrentUserLanguagePreferences', () => {
 
     beforeEach(() => {
         server.use(mockGetCurrentUser.handler)
-        queryClient = createTestQueryClient()
     })
 
-    afterEach(async () => {
-        cleanup()
-        await queryClient.cancelQueries()
-        queryClient.clear()
+    afterEach(() => {
         server.resetHandlers()
     })
 

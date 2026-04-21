@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { useDefaultViews } from '../../hooks/useDefaultViews'
 import { useUpdateDefaultViewsVisibility } from '../../hooks/useUpdateDefaultViewsVisibility'
 import type { SystemView } from '../../types/views'
@@ -42,7 +42,6 @@ describe('DefaultViewsMenu', () => {
     const mockUpdateVisibility = vi.fn()
 
     beforeEach(() => {
-        testAppQueryClient.clear()
         mockUseDefaultViews.mockReturnValue({
             defaultSystemViews: systemViews,
             visibleSystemViews: systemViews,

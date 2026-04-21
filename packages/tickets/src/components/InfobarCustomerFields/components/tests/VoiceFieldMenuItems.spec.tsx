@@ -11,7 +11,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { PhoneIntegration, SmsIntegration } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { formatPhoneNumberInternational } from '../../../../utils/validation'
 import { EditableMenuField } from '../EditableMenuField/EditableMenuField'
 import { TriggerLabel } from '../TriggerLabel'
@@ -25,7 +25,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

@@ -1,20 +1,22 @@
-import type { InfiniteData } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import { toast } from '@gorgias/axiom'
 import {
     mockCreateJobHandler,
+    mockListViewItemsHandler,
     mockTag,
     mockTeam,
     mockTicket,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
-import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { Ticket } from '@gorgias/helpdesk-queries'
 import { JobType } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { useTicketListActions } from '../useTicketListActions'
+import { useTicketsList } from '../useTicketsList'
 
 const mockCreateJob = mockCreateJobHandler()
 
@@ -25,8 +27,8 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
-    server.use(mockCreateJob.handler)
+    viewTicketsState.current = []
+    server.use(mockCreateJob.handler, mockListViewItems.handler)
 })
 
 afterEach(() => {
@@ -42,25 +44,22 @@ const TICKET_IDS = [1, 2]
 const SUPPORT_TEAM = mockTeam({ id: 8, name: 'Support' })
 const SUPPORT_USER = mockUser({ id: 7, name: 'Jane Doe' })
 const VIP_TAG = mockTag({ id: 55, name: 'VIP', decoration: null })
-
-function makeInfiniteData(tickets: Ticket[]): InfiniteData<{ data: Ticket[] }> {
-    return {
-        pages: [{ data: tickets }],
-        pageParams: [undefined],
-    }
+const viewTicketsState: { current: Ticket[] } = {
+    current: [],
 }
 
-function seedViewCache(tickets: Ticket[]) {
-    const key = queryKeys.views.listViewItems(VIEW_ID, undefined)
-    testAppQueryClient.setQueryData(key, makeInfiniteData(tickets))
-}
-
-function getViewCache() {
-    const key = queryKeys.views.listViewItems(VIEW_ID, undefined)
-    return testAppQueryClient.getQueryData<InfiniteData<{ data: Ticket[] }>>(
-        key,
-    )
-}
+const mockListViewItems = mockListViewItemsHandler(async () =>
+    HttpResponse.json({
+        data: viewTicketsState.current,
+        meta: {
+            current_cursor: null,
+            next_items: null,
+            prev_items: null,
+        },
+        object: 'list',
+        uri: `/api/views/${VIEW_ID}/items/`,
+    } as any),
+)
 
 function setup(
     overrides: {
@@ -72,17 +71,38 @@ function setup(
     } = {},
 ) {
     const onActionComplete = overrides.onActionComplete ?? vi.fn()
-    const { result } = renderHook(() =>
-        useTicketListActions({
+    const hook = renderHook(() => {
+        const list = useTicketsList(VIEW_ID, {
+            enableStaleUpdates: false,
+        })
+        const actions = useTicketListActions({
             viewId: VIEW_ID,
             selectedTicketIds: new Set(overrides.ticketIds ?? TICKET_IDS),
             visibleTicketIds: overrides.visibleTicketIds ?? TICKET_IDS,
             hasSelectedAll: overrides.hasSelectedAll ?? false,
             onActionComplete,
             onApplyMacro: overrides.onApplyMacro,
-        }),
-    )
-    return { result, onActionComplete }
+        })
+
+        return {
+            ...actions,
+            list,
+        }
+    })
+
+    return { onActionComplete, ...hook }
+}
+
+async function waitForListToLoad(
+    result: ReturnType<typeof setup>['result'],
+    expectedTicketIds: number[],
+) {
+    await waitFor(() => {
+        expect(result.current.list.isLoading).toBe(false)
+        expect(result.current.list.tickets.map((ticket) => ticket.id)).toEqual(
+            expectedTicketIds,
+        )
+    })
 }
 
 describe('useTicketListActions', () => {
@@ -106,19 +126,25 @@ describe('useTicketListActions', () => {
         })
 
         it('optimistically updates unread state in the ticket list cache', async () => {
-            seedViewCache([
+            viewTicketsState.current = [
                 mockTicket({ id: 1, is_unread: false }),
                 mockTicket({ id: 2, is_unread: false }),
                 mockTicket({ id: 3, is_unread: false }),
-            ])
+            ]
 
             const { result } = setup()
 
+            await waitForListToLoad(result, [1, 2, 3])
+
             await result.current.handleMarkAsUnread()
 
-            expect(getViewCache()?.pages[0].data[0]?.is_unread).toBe(true)
-            expect(getViewCache()?.pages[0].data[1]?.is_unread).toBe(true)
-            expect(getViewCache()?.pages[0].data[2]?.is_unread).toBe(false)
+            await waitFor(() => {
+                expect(
+                    result.current.list.tickets.map(
+                        (ticket) => ticket.is_unread,
+                    ),
+                ).toEqual([true, true, false])
+            })
         })
 
         it('calls onActionComplete after the job completes', async () => {
@@ -151,19 +177,25 @@ describe('useTicketListActions', () => {
         })
 
         it('optimistically clears unread state in the ticket list cache', async () => {
-            seedViewCache([
+            viewTicketsState.current = [
                 mockTicket({ id: 1, is_unread: true }),
                 mockTicket({ id: 2, is_unread: true }),
                 mockTicket({ id: 3, is_unread: true }),
-            ])
+            ]
 
             const { result } = setup()
 
+            await waitForListToLoad(result, [1, 2, 3])
+
             await result.current.handleMarkAsRead()
 
-            expect(getViewCache()?.pages[0].data[0]?.is_unread).toBe(false)
-            expect(getViewCache()?.pages[0].data[1]?.is_unread).toBe(false)
-            expect(getViewCache()?.pages[0].data[2]?.is_unread).toBe(true)
+            await waitFor(() => {
+                expect(
+                    result.current.list.tickets.map(
+                        (ticket) => ticket.is_unread,
+                    ),
+                ).toEqual([false, false, true])
+            })
         })
 
         it('calls onActionComplete after the job completes', async () => {
@@ -324,6 +356,9 @@ describe('useTicketListActions', () => {
         })
 
         it('uses the view-scoped success message when hasSelectedAll is true', async () => {
+            const toastSuccessSpy = vi
+                .spyOn(toast, 'success')
+                .mockImplementation(() => '' as any)
             const { result } = setup({
                 hasSelectedAll: true,
                 visibleTicketIds: [1, 2, 3, 4],
@@ -332,11 +367,9 @@ describe('useTicketListActions', () => {
             await result.current.handleAssignUser(SUPPORT_USER)
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
+                expect(toastSuccessSpy).toHaveBeenCalledWith(
                     'All tickets in this view assigned to Jane Doe. Updates may take a few seconds to apply.',
                 )
-                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -370,16 +403,17 @@ describe('useTicketListActions', () => {
         })
 
         it('uses the eventual-consistency success message', async () => {
+            const toastSuccessSpy = vi
+                .spyOn(toast, 'success')
+                .mockImplementation(() => '' as any)
             const { result } = setup()
 
             await result.current.handleAddTag(VIP_TAG)
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
+                expect(toastSuccessSpy).toHaveBeenCalledWith(
                     '2 tickets tagged with VIP. Updates may take a few seconds to apply.',
                 )
-                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
     })
@@ -433,38 +467,46 @@ describe('useTicketListActions', () => {
         })
 
         it('does not remove tickets from the ticket list cache by default', async () => {
-            seedViewCache([
+            viewTicketsState.current = [
                 mockTicket({ id: 1 }),
                 mockTicket({ id: 2 }),
                 mockTicket({ id: 3 }),
-            ])
+            ]
 
             const { result } = setup()
+
+            await waitForListToLoad(result, [1, 2, 3])
 
             await result.current.handleUndelete()
 
-            expect(
-                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
-            ).toEqual([1, 2, 3])
+            await waitFor(() => {
+                expect(
+                    result.current.list.tickets.map((ticket) => ticket.id),
+                ).toEqual([1, 2, 3])
+            })
         })
 
         it('optimistically removes selected tickets from the ticket list cache when requested', async () => {
-            seedViewCache([
+            viewTicketsState.current = [
                 mockTicket({ id: 1 }),
                 mockTicket({ id: 2 }),
                 mockTicket({ id: 3 }),
-            ])
+            ]
 
             const { result } = setup()
             const waitForRequest = mockCreateJob.waitForRequest(server)
+
+            await waitForListToLoad(result, [1, 2, 3])
 
             await result.current.handleUndelete({
                 removeFromCurrentViewCache: true,
             })
 
-            expect(
-                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
-            ).toEqual([3])
+            await waitFor(() => {
+                expect(
+                    result.current.list.tickets.map((ticket) => ticket.id),
+                ).toEqual([3])
+            })
 
             await waitForRequest(async (request) => {
                 const body = await request.json()
@@ -505,19 +547,23 @@ describe('useTicketListActions', () => {
         })
 
         it('optimistically removes selected tickets from the ticket list cache', async () => {
-            seedViewCache([
+            viewTicketsState.current = [
                 mockTicket({ id: 1 }),
                 mockTicket({ id: 2 }),
                 mockTicket({ id: 3 }),
-            ])
+            ]
 
             const { result } = setup()
 
+            await waitForListToLoad(result, [1, 2, 3])
+
             await result.current.handleDeleteForever()
 
-            expect(
-                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
-            ).toEqual([3])
+            await waitFor(() => {
+                expect(
+                    result.current.list.tickets.map((ticket) => ticket.id),
+                ).toEqual([3])
+            })
         })
 
         it('calls onActionComplete after the job completes', async () => {

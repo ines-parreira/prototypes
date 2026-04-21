@@ -27,7 +27,7 @@ import { TicketThreadItemTag } from '../../../hooks/types'
 import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
 import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
-import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
+import * as LegacyBridgeModule from '../../../utils/LegacyBridge'
 import { TicketThreadItem as TicketThreadItemComponent } from '../TicketThreadItem'
 
 vi.mock('../../MessageBubble/components/TranslationsDropdown', () => ({
@@ -49,11 +49,10 @@ vi.mock('@repo/tickets', async () => {
     }
 })
 
-vi.mock('../../../utils/LegacyBridge', () => ({
-    useTicketThreadLegacyBridge: vi.fn(),
-}))
-
-const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
+const mockUseTicketThreadLegacyBridge = vi.spyOn(
+    LegacyBridgeModule,
+    'useTicketThreadLegacyBridge',
+)
 
 beforeEach(() => {
     window.GORGIAS_STATE = {

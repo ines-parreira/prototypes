@@ -4,10 +4,7 @@ import { setupServer } from 'msw/node'
 
 import { mockListTeamsHandler, mockTeam } from '@gorgias/helpdesk-mocks'
 
-import {
-    render,
-    testAppQueryClient,
-} from '../../../../../../../tests/render.utils'
+import { render } from '../../../../../../../tests/render.utils'
 import { BulkTeamAssignSelect } from '../BulkTeamAssignSelect'
 
 const team1 = mockTeam({ id: 1, name: 'Support' })
@@ -29,7 +26,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(mockListTeams.handler)
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

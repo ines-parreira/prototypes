@@ -18,7 +18,7 @@ import {
 import type { TicketCustomerChannel } from '@gorgias/helpdesk-queries'
 import type { CustomerHighlightDataItem } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../../../tests/render.utils'
+import { render } from '../../../../../tests/render.utils'
 import { SearchAndPreviewCustomersPanel } from '../SearchAndPreviewCustomersPanel'
 
 const mockOnClose = vi.fn()
@@ -92,12 +92,9 @@ beforeAll(() => {
 
 beforeEach(() => {
     vi.clearAllMocks()
-    testAppQueryClient.clear()
 })
 
-afterEach(async () => {
-    await testAppQueryClient.cancelQueries()
-    testAppQueryClient.clear()
+afterEach(() => {
     server.resetHandlers()
 })
 

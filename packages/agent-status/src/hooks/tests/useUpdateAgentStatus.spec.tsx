@@ -1,87 +1,98 @@
 import { renderHook } from '@repo/testing/vitest'
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 
 import {
-    queryKeys,
-    useUpdateCustomUserAvailabilityStatus,
-} from '@gorgias/helpdesk-queries'
-import type {
-    CustomUserAvailabilityStatus,
-    HttpResponse,
-} from '@gorgias/helpdesk-queries'
+    mockCustomUserAvailabilityStatus,
+    mockListCustomUserAvailabilityStatusesHandler,
+    mockUpdateCustomUserAvailabilityStatus,
+    mockUpdateCustomUserAvailabilityStatusHandler,
+} from '@gorgias/helpdesk-mocks'
+import { useListCustomUserAvailabilityStatuses } from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClientWithSpies,
-    getMutationConfig,
-} from '../../tests/render.utils'
 import { useUpdateAgentStatus } from '../useUpdateAgentStatus'
 
-type UpdateStatusConfig = NonNullable<
-    Parameters<typeof useUpdateCustomUserAvailabilityStatus>[0]
->
+const server = setupServer()
 
-vi.mock('@tanstack/react-query', async () => {
-    const actual = await vi.importActual('@tanstack/react-query')
-    return {
-        ...actual,
-        useQueryClient: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual('@gorgias/helpdesk-queries')
-    return {
-        ...actual,
-        useUpdateCustomUserAvailabilityStatus: vi.fn(),
-    }
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('useUpdateAgentStatus', () => {
-    const listKey =
-        queryKeys.customUserAvailabilityStatus.listCustomUserAvailabilityStatuses()
-
-    beforeEach(() => {
-        vi.clearAllMocks()
-    })
-
-    it('should invalidate queries on success', () => {
-        const { queryClient, spies } = createTestQueryClientWithSpies({
-            withInvalidateQueriesSpy: true,
+    it('updates a status and refreshes the custom statuses list', async () => {
+        const existingStatus = mockCustomUserAvailabilityStatus({
+            id: 'status-1',
+            name: 'Lunch break',
+            duration_unit: 'minutes',
+            duration_value: 30,
+        })
+        const updatedStatus = mockCustomUserAvailabilityStatus({
+            ...existingStatus,
+            name: 'Extended lunch break',
+            duration_unit: 'hours',
+            duration_value: 1,
+        })
+        const updateStatusPayload = mockUpdateCustomUserAvailabilityStatus({
+            name: updatedStatus.name,
+            description: updatedStatus.description,
+            duration_unit: updatedStatus.duration_unit,
+            duration_value: updatedStatus.duration_value,
         })
 
-        vi.mocked(useQueryClient).mockReturnValue(queryClient)
-        renderHook(() => useUpdateAgentStatus(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        let statuses = [existingStatus]
 
-        const config = getMutationConfig<UpdateStatusConfig>(
-            vi.mocked(useUpdateCustomUserAvailabilityStatus),
+        const listStatusesMock = mockListCustomUserAvailabilityStatusesHandler(
+            async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: statuses,
+                }),
         )
+        const updateStatusMock = mockUpdateCustomUserAvailabilityStatusHandler(
+            async () => {
+                statuses = [updatedStatus]
 
-        const mockData = {
-            data: {
-                id: 'status-1',
-                name: 'Updated lunch break',
-                duration_unit: 'hours' as const,
-                duration_value: 1,
-                created_datetime: '2024-01-01T00:00:00Z',
-                updated_datetime: '2024-01-02T00:00:00Z',
+                return HttpResponse.json(updatedStatus)
             },
-        } as HttpResponse<CustomUserAvailabilityStatus>
-
-        config?.mutation?.onSuccess?.(
-            mockData,
-            { pk: 'status-1', data: mockData.data },
-            undefined,
         )
+        const waitForUpdateRequest = updateStatusMock.waitForRequest(server)
 
-        expect(spies.invalidateQueries).toHaveBeenCalledWith({
-            queryKey: listKey,
+        server.use(listStatusesMock.handler, updateStatusMock.handler)
+
+        const { result } = renderHook(() => ({
+            updateStatus: useUpdateAgentStatus(),
+            customStatuses: useListCustomUserAvailabilityStatuses(),
+        }))
+
+        await waitFor(() => {
+            expect(result.current.customStatuses.data?.data.data[0].name).toBe(
+                'Lunch break',
+            )
+        })
+
+        await result.current.updateStatus.mutateAsync({
+            pk: existingStatus.id,
+            data: updateStatusPayload,
+        })
+
+        await waitForUpdateRequest(async (request) => {
+            expect(await request.json()).toEqual(updateStatusPayload)
+        })
+
+        await waitFor(() => {
+            expect(result.current.customStatuses.data?.data.data[0]).toEqual(
+                updatedStatus,
+            )
         })
     })
 })

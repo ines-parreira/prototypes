@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node'
 import { mockTicket, mockUpdateTicketHandler } from '@gorgias/helpdesk-mocks'
 import { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { TicketPriority } from '../TicketPriority'
 
 const ticketId = 123
@@ -27,7 +27,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(mockUpdateTicket.handler)
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

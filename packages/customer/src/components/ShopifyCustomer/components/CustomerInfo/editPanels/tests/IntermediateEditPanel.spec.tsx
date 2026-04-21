@@ -2,11 +2,11 @@ import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import { mockListWidgetsHandler } from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
+import { server } from '../../../../../../tests/server'
 import { FIELD_DEFINITIONS } from '../../fieldDefinitions/fields'
 import type {
     FieldConfig,
@@ -27,20 +27,6 @@ vi.mock('react-dnd-html5-backend', () => ({
 }))
 
 const defaultListWidgetsMock = mockListWidgetsHandler()
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const mockContext: FieldRenderContext = {
     purchaseSummary: undefined,

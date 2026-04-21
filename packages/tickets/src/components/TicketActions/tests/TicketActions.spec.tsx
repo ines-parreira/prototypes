@@ -18,7 +18,7 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { TicketActions } from '../TicketActions'
 
 vi.mock('@repo/logging', () => ({
@@ -86,7 +86,6 @@ beforeAll(() => {
 })
 
 afterEach(() => {
-    testAppQueryClient.clear()
     server.resetHandlers()
 })
 

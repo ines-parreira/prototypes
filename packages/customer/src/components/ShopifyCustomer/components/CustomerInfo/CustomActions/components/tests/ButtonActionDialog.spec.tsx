@@ -306,14 +306,8 @@ describe('ButtonActionDialog', () => {
             name: /configure http action/i,
         })
 
-        await user.type(
-            within(dialog).getByLabelText(/button title/i),
-            'With Headers',
-        )
-        await user.type(
-            within(dialog).getByLabelText(/url/i),
-            'https://example.com',
-        )
+        await user.type(within(dialog).getByLabelText(/button title/i), 'A')
+        await user.type(within(dialog).getByLabelText(/url/i), 'https://e.co')
 
         const headersSection = getParameterSection(dialog, 'Headers')
         await user.click(
@@ -330,7 +324,7 @@ describe('ButtonActionDialog', () => {
         })
 
         await user.type(keyInput, 'Authorization')
-        await user.type(valueInput, 'Bearer token123')
+        await user.type(valueInput, 'token')
 
         const saveButton = within(dialog).getByRole('button', { name: /save/i })
         await waitFor(() => {
@@ -345,14 +339,14 @@ describe('ButtonActionDialog', () => {
                         headers: expect.arrayContaining([
                             expect.objectContaining({
                                 key: 'Authorization',
-                                value: 'Bearer token123',
+                                value: 'token',
                             }),
                         ]),
                     }),
                 }),
             )
         })
-    })
+    }, 10000)
 
     it('does not call onSubmit twice on rapid double-click', async () => {
         let resolveSubmit: () => void

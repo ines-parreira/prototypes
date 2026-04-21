@@ -1,9 +1,18 @@
 import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
 import { render } from '@repo/testing/vitest'
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen } from '@testing-library/react'
 
 import type { OrderEcommerceData } from '../../../../types'
 import { OrdersList } from '../OrdersList'
+
+vi.mock('@repo/preferences', () => ({
+    useUserDateTimePreferences: () => ({
+        dateFormat: DateFormatType.en_US,
+        timeFormat: TimeFormatType.AmPm,
+        timezone: undefined,
+    }),
+}))
 
 const mockOrderData: OrderEcommerceData = {
     id: 'order-1',

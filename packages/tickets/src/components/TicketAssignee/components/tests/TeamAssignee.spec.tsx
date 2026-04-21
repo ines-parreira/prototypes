@@ -10,7 +10,7 @@ import {
     mockUpdateTicketHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { TeamAssignee } from '../TeamAssignee'
 
 let capturedActions: Record<string, { action: (event: Event) => void }> = {}
@@ -70,7 +70,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(mockListTeams.handler, mockUpdateTicket.handler)
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

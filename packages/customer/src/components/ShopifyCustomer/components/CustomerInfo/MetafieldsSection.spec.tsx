@@ -1,8 +1,8 @@
 import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
+import { server } from '../../../../tests/server'
 import { MetafieldsSection } from './MetafieldsSection'
 
 const DEFINITIONS_URL =
@@ -14,21 +14,11 @@ function mockDefinitionsHandler(definitions: object[]) {
     )
 }
 
-const server = setupServer(mockDefinitionsHandler([]))
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
-
 const defaultProps = { integrationId: 1, metafields: [] }
+
+beforeEach(() => {
+    server.use(mockDefinitionsHandler([]))
+})
 
 describe('MetafieldsSection', () => {
     it('renders nothing when there is no integrationId', () => {

@@ -1,19 +1,15 @@
 import { history } from '@repo/routing'
 import { screen, waitFor } from '@testing-library/react'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
-import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
+import { render } from '../../../tests/render.utils'
 import { useExpandableDefaultViews } from '../../hooks/useExpandableDefaultViews'
 import type { SystemView } from '../../types/views'
 import { CollapsedDefaultViews } from '../CollapsedDefaultViews'
 
 vi.mock('../../hooks/useExpandableDefaultViews')
 vi.mock('@repo/routing', () => ({ history: { push: vi.fn() } }))
-vi.mock('../../../utils/LegacyBridge')
 
 const mockHistoryPush = vi.mocked(history.push)
-const mockUseTicketsLegacyBridge = vi.mocked(useTicketsLegacyBridge)
-
 const mockUseExpandableDefaultViews = vi.mocked(useExpandableDefaultViews)
 
 const makeViews = (count: number): SystemView[] =>
@@ -35,7 +31,6 @@ const makeViews = (count: number): SystemView[] =>
 
 describe('CollapsedDefaultViews', () => {
     beforeEach(() => {
-        testAppQueryClient.clear()
         mockHistoryPush.mockClear()
         mockUseExpandableDefaultViews.mockReturnValue({
             displayedViews: makeViews(3),
@@ -43,9 +38,6 @@ describe('CollapsedDefaultViews', () => {
             isExpanded: false,
             toggleExpanded: vi.fn(),
         })
-        mockUseTicketsLegacyBridge.mockReturnValue({
-            dtpToggle: { isEnabled: false },
-        } as any)
     })
 
     it('should render one button per displayed view', () => {
@@ -130,11 +122,17 @@ describe('CollapsedDefaultViews', () => {
     })
 
     it('should navigate to the views URL when dtpToggle is enabled', async () => {
-        mockUseTicketsLegacyBridge.mockReturnValue({
-            dtpToggle: { isEnabled: true },
-        } as any)
-
-        const { user } = render(<CollapsedDefaultViews />)
+        const { user } = render(<CollapsedDefaultViews />, {
+            dtpToggle: {
+                isEnabled: true,
+                setIsEnabled: vi.fn(),
+                previousTicketId: undefined,
+                nextTicketId: undefined,
+                setPrevNextTicketIds: vi.fn(),
+                shouldRedirectToSplitView: false,
+                setShouldRedirectToSplitView: vi.fn(),
+            },
+        })
 
         await user.click(screen.getAllByRole('radio')[0])
 

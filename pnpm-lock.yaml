@@ -3314,6 +3314,9 @@ importers:
       '@repo/teams':
         specifier: workspace:*
         version: link:../teams
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/tickets':
         specifier: workspace:*
         version: link:../tickets
@@ -3492,6 +3495,9 @@ importers:
       '@repo/teams':
         specifier: workspace:*
         version: link:../teams
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/types':
         specifier: workspace:*
         version: link:../types

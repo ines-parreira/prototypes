@@ -75,9 +75,9 @@ export function useTicketTranslationCompleteEventHandler() {
                             )
 
                         const newTicketTranslation = {
+                            ...ticketTranslation,
                             excerpt: null,
                             ticket_translation_id: null,
-                            ...ticketTranslation,
                             ...event.data,
                         }
 

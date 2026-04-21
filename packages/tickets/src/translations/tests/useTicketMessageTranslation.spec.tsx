@@ -1,9 +1,5 @@
-import type React from 'react'
-
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import type { QueryClient } from '@tanstack/react-query'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { cleanup, renderHook, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -16,7 +12,7 @@ import {
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import { createTestQueryClient } from '../../tests/render.utils'
+import { renderHook } from '../../tests/render.utils'
 import { useTicketMessageTranslation } from '../hooks/useTicketMessageTranslation'
 
 // Mock the feature flag hook
@@ -59,7 +55,6 @@ const mockCurrentUser = {
 
 // Server setup
 const server = setupServer()
-let queryClient: QueryClient = createTestQueryClient()
 
 // Create mock handlers
 const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
@@ -91,16 +86,12 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(...localHandlers)
-    queryClient = createTestQueryClient()
     mockUseFlag.mockImplementation(
         (flag) => flag === FeatureFlagKey.MessagesTranslations,
     )
 })
 
-afterEach(async () => {
-    cleanup()
-    await queryClient.cancelQueries()
-    queryClient.clear()
+afterEach(() => {
     server.resetHandlers()
     vi.clearAllMocks()
 })
@@ -108,19 +99,13 @@ afterEach(async () => {
 afterAll(() => {
     server.close()
 })
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-)
 describe('useTicketMessageTranslation', () => {
     it('should return undefined when messageId is not provided', async () => {
-        const { result } = renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: 123,
-                    messageId: undefined,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: 123,
+                messageId: undefined,
+            }),
         )
 
         await waitFor(() => {
@@ -129,13 +114,11 @@ describe('useTicketMessageTranslation', () => {
     })
 
     it('should return undefined when messageId is not in the translation map', async () => {
-        const { result } = renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: 123,
-                    messageId: 456,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: 123,
+                messageId: 456,
+            }),
         )
 
         await waitFor(() => {
@@ -144,13 +127,11 @@ describe('useTicketMessageTranslation', () => {
     })
 
     it('should return translation when messageId exists in the translation map', async () => {
-        const { result } = renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: 123,
-                    messageId: 101,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: 123,
+                messageId: 101,
+            }),
         )
 
         await waitFor(() => {
@@ -173,13 +154,11 @@ describe('useTicketMessageTranslation', () => {
         )
         server.use(mockGetCurrentUser.handler, handler)
 
-        const { result } = renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: 123,
-                    messageId: 123,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: 123,
+                messageId: 123,
+            }),
         )
 
         await waitFor(() => {
@@ -188,13 +167,11 @@ describe('useTicketMessageTranslation', () => {
     })
 
     it('should handle undefined ticketId by not making API call', async () => {
-        const { result } = renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: undefined,
-                    messageId: 123,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: undefined,
+                messageId: 123,
+            }),
         )
 
         await waitFor(() => {
@@ -203,13 +180,11 @@ describe('useTicketMessageTranslation', () => {
     })
 
     it('should handle null ticketId by not making API call', async () => {
-        const { result } = renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: null as any,
-                    messageId: 123,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: null as any,
+                messageId: 123,
+            }),
         )
 
         await waitFor(() => {
@@ -221,13 +196,11 @@ describe('useTicketMessageTranslation', () => {
         const waitForRequest =
             mockListTicketMessageTranslations.waitForRequest(server)
 
-        renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: 42,
-                    messageId: 123,
-                }),
-            { wrapper },
+        renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: 42,
+                messageId: 123,
+            }),
         )
 
         await waitForRequest(async (request) => {
@@ -245,7 +218,6 @@ describe('useTicketMessageTranslation', () => {
                     messageId,
                 }),
             {
-                wrapper,
                 initialProps: {
                     ticketId: 123,
                     messageId: 101,
@@ -273,7 +245,6 @@ describe('useTicketMessageTranslation', () => {
                     messageId,
                 }),
             {
-                wrapper,
                 initialProps: {
                     ticketId: 123,
                     messageId: 101,
@@ -311,13 +282,11 @@ describe('useTicketMessageTranslation', () => {
     it('should handle feature flag disabled', async () => {
         mockUseFlag.mockReturnValue(false)
 
-        const { result } = renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: 123,
-                    messageId: 101,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: 123,
+                messageId: 101,
+            }),
         )
 
         await waitFor(() => {
@@ -331,13 +300,11 @@ describe('useTicketMessageTranslation', () => {
         )
         server.use(mockGetCurrentUser.handler, handler)
 
-        const { result } = renderHook(
-            () =>
-                useTicketMessageTranslation({
-                    ticketId: 123,
-                    messageId: 101,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useTicketMessageTranslation({
+                ticketId: 123,
+                messageId: 101,
+            }),
         )
 
         await waitFor(() => {

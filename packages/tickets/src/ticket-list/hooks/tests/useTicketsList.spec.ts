@@ -8,7 +8,7 @@ import {
     mockTicket,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import * as useRefreshStaleTicketsModule from '../useRefreshStaleTickets'
 import { useTicketsList } from '../useTicketsList'
 
@@ -102,7 +102,6 @@ beforeEach(() => {
         mockListViewItemsPage1.handler,
         mockListViewItemsUpdatesNoOp.handler,
     )
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

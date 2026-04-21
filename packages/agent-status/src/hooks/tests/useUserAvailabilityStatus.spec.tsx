@@ -1,17 +1,8 @@
-import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import {
-    afterAll,
-    afterEach,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    it,
-    vi,
-} from 'vitest'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 
 import {
     mockCustomUserAvailabilityStatus,
@@ -19,21 +10,14 @@ import {
     mockListCustomUserAvailabilityStatusesHandler,
     mockUserAvailabilityDetail,
 } from '@gorgias/helpdesk-mocks'
-import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { AVAILABLE_STATUS, UNAVAILABLE_STATUS } from '../../constants'
 import { useUserAvailabilityStatus } from '../useUserAvailabilityStatus'
 
-const queryClient = createTestQueryClient()
-
 const server = setupServer()
 
 beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-beforeEach(() => {
-    queryClient.clear()
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
 afterEach(() => {
@@ -84,9 +68,8 @@ describe('useUserAvailabilityStatus', () => {
                 mockListCustomStatuses.handler,
             )
 
-            const { result } = renderHook(
-                () => useUserAvailabilityStatus({ userId }),
-                { queryClient },
+            const { result } = renderHook(() =>
+                useUserAvailabilityStatus({ userId }),
             )
 
             await waitFor(() => {
@@ -126,9 +109,8 @@ describe('useUserAvailabilityStatus', () => {
                 mockListCustomStatuses.handler,
             )
 
-            const { result } = renderHook(
-                () => useUserAvailabilityStatus({ userId }),
-                { queryClient },
+            const { result } = renderHook(() =>
+                useUserAvailabilityStatus({ userId }),
             )
 
             await waitFor(() => {
@@ -169,9 +151,8 @@ describe('useUserAvailabilityStatus', () => {
                 mockListCustomStatuses.handler,
             )
 
-            const { result } = renderHook(
-                () => useUserAvailabilityStatus({ userId }),
-                { queryClient },
+            const { result } = renderHook(() =>
+                useUserAvailabilityStatus({ userId }),
             )
 
             await waitFor(() => {
@@ -216,9 +197,8 @@ describe('useUserAvailabilityStatus', () => {
                 mockListCustomStatuses.handler,
             )
 
-            const { result } = renderHook(
-                () => useUserAvailabilityStatus({ userId }),
-                { queryClient },
+            const { result } = renderHook(() =>
+                useUserAvailabilityStatus({ userId }),
             )
 
             await waitFor(() => {
@@ -227,135 +207,6 @@ describe('useUserAvailabilityStatus', () => {
 
             expect(result.current.status).toBeUndefined()
             expect(result.current.availability?.user_status).toBe('custom')
-        })
-    })
-
-    describe('cacheOnly mode', () => {
-        it('should disable query when cacheOnly is true', () => {
-            const { result } = renderHook(
-                () => useUserAvailabilityStatus({ userId, cacheOnly: true }),
-                { queryClient },
-            )
-
-            expect(result.current.availability).toBeUndefined()
-            expect(result.current.status).toBeUndefined()
-        })
-
-        it('should return cached data when cacheOnly is true', async () => {
-            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
-                async () =>
-                    HttpResponse.json(
-                        mockUserAvailabilityDetail({
-                            user_id: userId,
-                            user_status: 'available',
-                        }),
-                    ),
-            )
-
-            const mockListCustomStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(async () =>
-                    HttpResponse.json({
-                        data: [customStatus],
-                        meta: {
-                            next_cursor: null,
-                            prev_cursor: null,
-                        },
-                        object: 'list',
-                        uri: '/api/custom-user-availability-statuses',
-                    }),
-                )
-
-            server.use(
-                mockGetUserAvailability.handler,
-                mockListCustomStatuses.handler,
-            )
-
-            // First render without cacheOnly to populate the cache
-            const { unmount } = renderHook(
-                () => useUserAvailabilityStatus({ userId }),
-                { queryClient },
-            )
-
-            await waitFor(() => {
-                const data = queryClient.getQueryData(
-                    queryKeys.userAvailability.getUserAvailability(userId),
-                )
-                expect(data).toBeDefined()
-            })
-
-            unmount()
-
-            // Second render with cacheOnly should use cached data
-            const { result } = renderHook(
-                () => useUserAvailabilityStatus({ userId, cacheOnly: true }),
-                { queryClient },
-            )
-
-            expect(result.current.availability?.user_status).toBe('available')
-            expect(result.current.status).toEqual(AVAILABLE_STATUS)
-        })
-
-        it('should re-render when cache is manually updated', async () => {
-            const mockListCustomStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(async () =>
-                    HttpResponse.json({
-                        data: [customStatus],
-                        meta: {
-                            next_cursor: null,
-                            prev_cursor: null,
-                        },
-                        object: 'list',
-                        uri: '/api/custom-user-availability-statuses',
-                    }),
-                )
-
-            server.use(mockListCustomStatuses.handler)
-
-            // Track if handler is called to verify no network request is made
-            const handlerSpy = vi.fn()
-            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
-                async () => {
-                    handlerSpy()
-                    return HttpResponse.json(
-                        mockUserAvailabilityDetail({
-                            user_status: 'available',
-                        }),
-                    )
-                },
-            )
-            server.use(mockGetUserAvailability.handler)
-
-            // Start with cacheOnly mode (no initial data)
-            const { result } = renderHook(
-                () => useUserAvailabilityStatus({ userId, cacheOnly: true }),
-                { queryClient },
-            )
-
-            // Initially, availability should be undefined (no cache)
-            expect(result.current.availability).toBeUndefined()
-
-            // Manually update the cache (like updateUserAvailabilityInCache does)
-            const updatedAvailability = mockUserAvailabilityDetail({
-                user_id: userId,
-                user_status: 'unavailable',
-            })
-
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                { data: updatedAvailability },
-            )
-
-            // Hook should re-render with the new cached data
-            await waitFor(() => {
-                expect(result.current.availability?.user_status).toBe(
-                    'unavailable',
-                )
-            })
-
-            expect(result.current.status).toEqual(UNAVAILABLE_STATUS)
-
-            // Verify no network request was made to getUserAvailability
-            expect(handlerSpy).not.toHaveBeenCalled()
         })
     })
 })

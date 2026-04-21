@@ -14,7 +14,7 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
 import { TicketTable } from './TicketTable'
 
@@ -223,7 +223,6 @@ afterAll(() => {
 describe('TicketTable', () => {
     beforeEach(() => {
         createTicketTableColumnsMock.mockClear()
-        testAppQueryClient.clear()
         setViewsCount({ 123: 7 })
         server.use(
             mockGetCurrentUserHandler(async () => HttpResponse.json(agentUser))

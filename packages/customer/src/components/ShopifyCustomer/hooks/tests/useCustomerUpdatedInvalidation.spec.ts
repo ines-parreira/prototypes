@@ -1,4 +1,5 @@
-import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
+import { renderHook } from '@repo/testing/vitest'
+import * as reactQuery from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 import { vi } from 'vitest'
 
@@ -6,9 +7,24 @@ import { queryKeys } from '@gorgias/ecommerce-storage-queries'
 
 import { useCustomerUpdatedInvalidation } from '../useCustomerUpdatedInvalidation'
 
-const queryClient = createTestQueryClient()
+vi.mock('@tanstack/react-query', async () => {
+    const actual = await vi.importActual<typeof reactQuery>(
+        '@tanstack/react-query',
+    )
+    return {
+        ...actual,
+        useQueryClient: vi.fn(),
+    }
+})
 
-afterEach(() => {})
+const invalidateQueries = vi.fn()
+
+beforeEach(() => {
+    invalidateQueries.mockClear()
+    vi.mocked(reactQuery.useQueryClient).mockReturnValue({
+        invalidateQueries,
+    } as unknown as reactQuery.QueryClient)
+})
 
 function dispatchCustomerUpdated(customerId: number) {
     window.dispatchEvent(
@@ -20,33 +36,25 @@ function dispatchCustomerUpdated(customerId: number) {
 
 describe('useCustomerUpdatedInvalidation', () => {
     it('invalidates ecommerce data queries when matching customer-updated event is dispatched', async () => {
-        const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries')
-
-        renderHook(() => useCustomerUpdatedInvalidation(42), { queryClient })
+        renderHook(() => useCustomerUpdatedInvalidation(42))
 
         act(() => {
             dispatchCustomerUpdated(42)
         })
 
-        expect(invalidateSpy).toHaveBeenCalledWith({
+        expect(invalidateQueries).toHaveBeenCalledWith({
             queryKey: queryKeys.ecommerceData.all(),
         })
-
-        invalidateSpy.mockRestore()
     })
 
     it('does not invalidate queries when event customerId does not match', () => {
-        const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries')
-
-        renderHook(() => useCustomerUpdatedInvalidation(42), { queryClient })
+        renderHook(() => useCustomerUpdatedInvalidation(42))
 
         act(() => {
             dispatchCustomerUpdated(999)
         })
 
-        expect(invalidateSpy).not.toHaveBeenCalled()
-
-        invalidateSpy.mockRestore()
+        expect(invalidateQueries).not.toHaveBeenCalled()
     })
 
     it('does not add event listener when customerId is undefined', () => {
@@ -58,8 +66,6 @@ describe('useCustomerUpdatedInvalidation', () => {
             'customer-updated',
             expect.any(Function),
         )
-
-        addEventSpy.mockRestore()
     })
 
     it('removes event listener on unmount', () => {
@@ -73,8 +79,6 @@ describe('useCustomerUpdatedInvalidation', () => {
             'customer-updated',
             expect.any(Function),
         )
-
-        removeEventSpy.mockRestore()
     })
 
     it('re-registers listener when customerId changes', () => {
@@ -99,8 +103,5 @@ describe('useCustomerUpdatedInvalidation', () => {
             'customer-updated',
             expect.any(Function),
         )
-
-        addEventSpy.mockRestore()
-        removeEventSpy.mockRestore()
     })
 })

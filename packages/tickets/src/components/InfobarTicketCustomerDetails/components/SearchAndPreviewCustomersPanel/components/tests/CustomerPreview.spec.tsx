@@ -15,10 +15,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { CustomerChannelsItem } from '@gorgias/helpdesk-types'
 
-import {
-    render,
-    testAppQueryClient,
-} from '../../../../../../tests/render.utils'
+import { render } from '../../../../../../tests/render.utils'
 import { CustomerPreview } from '../CustomerPreview'
 
 const mockOnGoBack = vi.fn()
@@ -76,7 +73,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     vi.clearAllMocks()
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

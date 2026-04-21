@@ -21,7 +21,7 @@ import {
     ObjectType,
 } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { CustomCustomerField } from '../CustomCustomerField'
 
 const customerId = 123
@@ -61,7 +61,6 @@ beforeEach(() => {
         mockUpdateCustomerCustomFieldValue.handler,
         mockDeleteCustomerCustomFieldValue.handler,
     )
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

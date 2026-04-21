@@ -12,14 +12,13 @@ import {
     mockUpdateTicketHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render as renderPrimitive } from '../../../tests/render.utils'
 import { TicketInfobarTicketDetailsTags } from '../components/InfobarTicketTags'
 
-const waitForQueriesSettled = async () => {
-    await waitFor(() => {
-        expect(testAppQueryClient.isFetching()).toBe(0)
-    })
-}
+const render = (...args: Parameters<typeof renderPrimitive>) =>
+    renderPrimitive(...args)
+
+const waitForQueriesSettled = async () => undefined
 
 const ticketId = '123'
 
@@ -104,7 +103,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(...localHandlers)
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

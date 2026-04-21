@@ -5,7 +5,7 @@ import { useGetView } from '@gorgias/helpdesk-queries'
 import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { useDefaultViews } from '../../../../sidebar/hooks/useDefaultViews'
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { getViewDisplayName } from '../../../../utils/views'
 import { useViewSearchMenuData } from '../useViewSearchMenuData'
 
@@ -125,7 +125,6 @@ const allViews = [
 
 describe('useViewSearchMenuData', () => {
     beforeEach(() => {
-        testAppQueryClient.clear()
         mockUseGetView.mockReturnValue({
             data: { data: defaultView },
         } as never)

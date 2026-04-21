@@ -15,7 +15,7 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { useExpandedMessages } from '../../../../contexts/ExpandedMessages'
+import * as ExpandedMessagesModule from '../../../../contexts/ExpandedMessages'
 import type { TicketThreadRegularMessageItem } from '../../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../../hooks/types'
 import { render } from '../../../../tests/render.utils'
@@ -43,10 +43,6 @@ vi.mock('react-player', () => ({
     default: ({ url }: { url: string }) => <div>{`react-player:${url}`}</div>,
 }))
 
-vi.mock('../../../../contexts/ExpandedMessages', () => ({
-    useExpandedMessages: vi.fn(),
-}))
-
 vi.mock('../MessageAttachments', async () => {
     const actual = await vi.importActual<typeof MessageAttachmentsModule>(
         '../MessageAttachments',
@@ -72,7 +68,10 @@ vi.mock('../TranslationsDropdown', () => ({
     }) => <div>{`translations:${messageId}:${ticketId}`}</div>,
 }))
 
-const mockUseExpandedMessages = vi.mocked(useExpandedMessages)
+const mockUseExpandedMessages = vi.spyOn(
+    ExpandedMessagesModule,
+    'useExpandedMessages',
+)
 const mockUseTicketMessageTranslations = vi.mocked(useTicketMessageTranslations)
 const mockUseTicketMessageDisplayState = vi.mocked(useTicketMessageDisplayState)
 

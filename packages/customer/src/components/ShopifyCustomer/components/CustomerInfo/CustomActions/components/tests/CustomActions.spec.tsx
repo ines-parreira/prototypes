@@ -1,7 +1,6 @@
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockExecuteActionHandler,
@@ -9,22 +8,9 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
+import { server } from '../../../../../../../tests/server'
 import { CustomActions } from '../CustomActions'
 import { TemplateResolverProvider } from '../TemplateResolverContext'
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const widgetListResponse = (data: Widget[]) => ({
     data,

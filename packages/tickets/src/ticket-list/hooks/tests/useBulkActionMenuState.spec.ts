@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node'
 
 import { mockGetCurrentUserHandler, mockUser } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { useBulkActionMenuState } from '../useBulkActionMenuState'
 
 const agentUser = mockUser({
@@ -31,7 +31,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
     server.use(
         mockGetCurrentUserHandler(async () => HttpResponse.json(agentUser))
             .handler,

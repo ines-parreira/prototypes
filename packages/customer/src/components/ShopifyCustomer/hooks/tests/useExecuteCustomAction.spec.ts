@@ -1,24 +1,10 @@
 import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
-import { setupServer } from 'msw/node'
 
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
+import { server } from '../../../../tests/server'
 import { useExecuteCustomAction } from '../useExecuteCustomAction'
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 describe('useExecuteCustomAction', () => {
     it('calls executeAction with correct payload for GET request', async () => {

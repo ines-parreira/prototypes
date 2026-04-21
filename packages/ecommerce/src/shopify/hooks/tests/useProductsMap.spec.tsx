@@ -13,7 +13,7 @@ import { useProductsMap } from '../useProductsMap'
 
 const server = setupServer()
 
-beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 afterEach(() => {
     server.resetHandlers()
 })

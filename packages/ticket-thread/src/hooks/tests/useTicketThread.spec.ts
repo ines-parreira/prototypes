@@ -10,7 +10,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { TicketStatus } from '@gorgias/helpdesk-queries'
 
-import { createTestQueryClient, renderHook } from '../../tests/render.utils'
+import { renderHook } from '../../tests/render.utils'
 import { server } from '../../tests/server'
 import { TicketThreadAiAgentPseudoEventAction } from '../ai-agent-pseudo-events/types'
 import { useContactReasonPrediction } from '../contact-reason-prediction/useContactReasonPrediction'
@@ -306,9 +306,8 @@ describe('useTicketThread', () => {
             }).handler,
         )
 
-        const hiddenResult = renderHook(
-            () => useTicketThread({ ticketId: 7, showTicketEvents: false }),
-            { queryClient: createTestQueryClient() },
+        const hiddenResult = renderHook(() =>
+            useTicketThread({ ticketId: 7, showTicketEvents: false }),
         )
 
         await waitFor(() => {
@@ -330,9 +329,8 @@ describe('useTicketThread', () => {
         expect(onRequest).toHaveBeenCalledTimes(1)
         expect(onRequest).toHaveBeenCalledWith({ ticketId: 7 })
 
-        const visibleResult = renderHook(
-            () => useTicketThread({ ticketId: 7, showTicketEvents: true }),
-            { queryClient: createTestQueryClient() },
+        const visibleResult = renderHook(() =>
+            useTicketThread({ ticketId: 7, showTicketEvents: true }),
         )
 
         expect(visibleResult.result.current.ticketThreadItems).toEqual([

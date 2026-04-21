@@ -1,16 +1,21 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import type { InfiniteData } from '@tanstack/react-query'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useLocation } from 'react-router'
 
-import { mockTicketCompact } from '@gorgias/helpdesk-mocks'
+import {
+    mockListViewItemsHandler,
+    mockTicketCompact,
+} from '@gorgias/helpdesk-mocks'
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import { createTestQueryClient, render } from '../../tests/render.utils'
+import { render } from '../../tests/render.utils'
 import * as useSortOrderModule from '../../ticket-list/hooks/useSortOrder'
-import { getNavigableTicketsListQueryKey } from '../../ticket-list/hooks/useTicketsList'
+import { useTicketsList } from '../../ticket-list/hooks/useTicketsList'
 import type { LegacyBridgeContextType } from '../../utils/LegacyBridge/context'
 import { TicketViewNavigator } from './TicketViewNavigator'
 
@@ -51,13 +56,58 @@ function makeInfiniteData(
     }
 }
 
+const server = setupServer()
+
+const mockListViewItems = mockListViewItemsHandler(async () =>
+    HttpResponse.json({
+        data: makeInfiniteData([
+            [
+                mockTicketCompact({ id: 100 }),
+                mockTicketCompact({ id: 101 }),
+                mockTicketCompact({ id: 102 }),
+            ],
+        ]).pages[0].data,
+        meta: {
+            current_cursor: null,
+            next_items: null,
+            prev_items: null,
+        },
+        object: 'list',
+        uri: '/api/views/1/items/',
+    } as any),
+)
+
+function ViewListLoader({ viewId }: { viewId: number }) {
+    useTicketsList(viewId, {
+        enableStaleUpdates: false,
+        params: {
+            order_by: ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
+        },
+    })
+
+    return null
+}
+
 describe('TicketViewNavigator', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         vi.clearAllMocks()
+        server.use(mockListViewItems.handler)
         vi.spyOn(useSortOrderModule, 'useSortOrder').mockReturnValue([
             ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
             vi.fn(),
         ])
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     describe('when shouldDisplay is false', () => {
@@ -90,42 +140,38 @@ describe('TicketViewNavigator', () => {
         })
 
         it('should render buttons from active view cache even when legacy navigation is hidden', () => {
-            const queryClient = createTestQueryClient()
-            queryClient.setQueryData(
-                getNavigableTicketsListQueryKey(
-                    1,
-                    ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
-                ),
-                makeInfiniteData([
-                    [
-                        mockTicketCompact({ id: 100 }),
-                        mockTicketCompact({ id: 101 }),
-                        mockTicketCompact({ id: 102 }),
-                    ],
-                ]),
+            render(
+                <>
+                    <ViewListLoader viewId={1} />
+                    <TicketViewNavigator />
+                </>,
+                {
+                    ticketViewNavigation: {
+                        ...mockTicketViewNavigation,
+                        shouldDisplay: false,
+                        shouldUseLegacyFunctions: true,
+                        previousTicketId: undefined,
+                        nextTicketId: undefined,
+                        isPreviousEnabled: false,
+                        isNextEnabled: false,
+                    },
+                    initialEntries: ['/app/views/1/101'],
+                    path: '/app/views/:viewId/:ticketId',
+                },
             )
 
-            render(<TicketViewNavigator />, {
-                queryClient,
-                ticketViewNavigation: {
-                    ...mockTicketViewNavigation,
-                    shouldDisplay: false,
-                    shouldUseLegacyFunctions: true,
-                    previousTicketId: undefined,
-                    nextTicketId: undefined,
-                    isPreviousEnabled: false,
-                    isNextEnabled: false,
-                },
-                initialEntries: ['/app/views/1/101'],
-                path: '/app/views/:viewId/:ticketId',
+            return waitFor(() => {
+                expect(
+                    screen.getByRole('button', {
+                        name: /arrow-chevron-left/i,
+                    }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', {
+                        name: /arrow-chevron-right/i,
+                    }),
+                ).toBeInTheDocument()
             })
-
-            expect(
-                screen.getByRole('button', { name: /arrow-chevron-left/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: /arrow-chevron-right/i }),
-            ).toBeInTheDocument()
         })
     })
 

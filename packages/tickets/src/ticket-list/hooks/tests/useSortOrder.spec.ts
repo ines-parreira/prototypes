@@ -8,7 +8,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { useSortOrder } from '../useSortOrder'
 
 const viewId = 123
@@ -31,7 +31,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(mockGetView.handler)
-    testAppQueryClient.clear()
     localStorage.clear()
 })
 

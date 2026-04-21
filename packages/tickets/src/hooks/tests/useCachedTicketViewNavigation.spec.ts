@@ -1,42 +1,117 @@
-import type { InfiniteData } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { queryKeys } from '@gorgias/helpdesk-queries'
+import {
+    mockListViewItemsHandler,
+    mockTicketCompact,
+} from '@gorgias/helpdesk-mocks'
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 import type {
     ListViewItemsUpdatesOrderBy as ListViewItemsUpdatesOrderByType,
     TicketCompact,
 } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
+import { renderHook } from '../../tests/render.utils'
 import * as useSortOrderModule from '../../ticket-list/hooks/useSortOrder'
+import { useTicketsList } from '../../ticket-list/hooks/useTicketsList'
 import { useCachedTicketViewNavigation } from '../useCachedTicketViewNavigation'
 
-function seedTicketsListCache(
-    viewId: number,
-    orderBy: ListViewItemsUpdatesOrderBy,
-    tickets: TicketCompact[],
-) {
-    testAppQueryClient.setQueryData<
-        InfiniteData<{ data?: Array<{ id?: number }> }>
-    >(queryKeys.views.listViewItems(viewId, { order_by: orderBy }), {
-        pages: [{ data: tickets }],
-        pageParams: [undefined],
+const VIEW_ID = 1
+
+const ticketsBySortOrder: Partial<
+    Record<ListViewItemsUpdatesOrderByType, TicketCompact[]>
+> = {
+    [ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc]: [
+        mockTicketCompact({ id: 122 }),
+        mockTicketCompact({ id: 123 }),
+        mockTicketCompact({ id: 124 }),
+    ],
+    [ListViewItemsUpdatesOrderBy.LastMessageDatetimeDesc]: [
+        mockTicketCompact({ id: 224 }),
+        mockTicketCompact({ id: 123 }),
+        mockTicketCompact({ id: 222 }),
+    ],
+    [ListViewItemsUpdatesOrderBy.CreatedDatetimeAsc]: [],
+    [ListViewItemsUpdatesOrderBy.CreatedDatetimeDesc]: [],
+}
+
+const mockListViewItems = mockListViewItemsHandler(async ({ request }) => {
+    const url = new URL(request.url)
+    const orderBy =
+        (url.searchParams.get('order_by') as ListViewItemsUpdatesOrderByType) ??
+        ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc
+
+    return HttpResponse.json({
+        data: ticketsBySortOrder[orderBy] ?? [],
+        meta: {
+            current_cursor: null,
+            next_items: null,
+            prev_items: null,
+        },
+        object: 'list',
+        uri: `/api/views/${VIEW_ID}/items/`,
+    } as any)
+})
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    localStorage.clear()
+    vi.restoreAllMocks()
+    ticketsBySortOrder[ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc] = [
+        mockTicketCompact({ id: 122 }),
+        mockTicketCompact({ id: 123 }),
+        mockTicketCompact({ id: 124 }),
+    ]
+    ticketsBySortOrder[ListViewItemsUpdatesOrderBy.LastMessageDatetimeDesc] = [
+        mockTicketCompact({ id: 224 }),
+        mockTicketCompact({ id: 123 }),
+        mockTicketCompact({ id: 222 }),
+    ]
+    server.use(mockListViewItems.handler)
+    vi.spyOn(useSortOrderModule, 'useSortOrder').mockReturnValue([
+        ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
+        vi.fn(),
+    ])
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+function useHooks({
+    ticketId,
+    viewId,
+    orderBy,
+}: {
+    ticketId?: number
+    viewId?: number
+    orderBy?: ListViewItemsUpdatesOrderByType
+}) {
+    const effectiveViewId = viewId ?? 0
+    const list = useTicketsList(effectiveViewId, {
+        enabled: viewId != null,
+        enableStaleUpdates: false,
+        params: orderBy ? { order_by: orderBy } : undefined,
     })
+    const navigation = useCachedTicketViewNavigation({
+        viewId,
+        ticketId,
+    })
+
+    return { list, navigation }
 }
 
 describe('useCachedTicketViewNavigation', () => {
-    beforeEach(() => {
-        localStorage.clear()
-        vi.restoreAllMocks()
-        testAppQueryClient.clear()
-        vi.spyOn(useSortOrderModule, 'useSortOrder').mockReturnValue([
-            ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
-            vi.fn(),
-        ])
-    })
-
     it('returns undefined when not in a view context', () => {
         const { result } = renderHook(() => useCachedTicketViewNavigation({}), {
             initialEntries: ['/app/ticket/123'],
@@ -46,52 +121,47 @@ describe('useCachedTicketViewNavigation', () => {
         expect(result.current).toBeUndefined()
     })
 
-    it('derives previous and next ticket ids from the cached list', () => {
-        seedTicketsListCache(
-            1,
-            ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
-            [
-                { id: 122 } as TicketCompact,
-                { id: 123 } as TicketCompact,
-                { id: 124 } as TicketCompact,
-            ],
-        )
-
+    it('derives previous and next ticket ids from the loaded tickets list', async () => {
         const { result } = renderHook(() =>
-            useCachedTicketViewNavigation({
-                viewId: 1,
+            useHooks({
+                viewId: VIEW_ID,
                 ticketId: 123,
+                orderBy: ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
             }),
         )
 
-        expect(result.current).toMatchObject({
-            shouldDisplay: true,
-            shouldUseLegacyFunctions: false,
-            previousTicketId: 122,
-            nextTicketId: 124,
-            isPreviousEnabled: true,
-            isNextEnabled: true,
+        await waitFor(() => {
+            expect(result.current.list.isLoading).toBe(false)
+            expect(result.current.navigation).toMatchObject({
+                shouldDisplay: true,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: 122,
+                nextTicketId: 124,
+                isPreviousEnabled: true,
+                isNextEnabled: true,
+            })
         })
     })
 
-    it('returns undefined when the cached list does not contain the ticket', () => {
-        seedTicketsListCache(
-            1,
-            ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
-            [{ id: 122 } as TicketCompact, { id: 124 } as TicketCompact],
-        )
+    it('returns undefined when the loaded tickets list does not contain the ticket', async () => {
+        ticketsBySortOrder[ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc] =
+            [mockTicketCompact({ id: 122 }), mockTicketCompact({ id: 124 })]
 
         const { result } = renderHook(() =>
-            useCachedTicketViewNavigation({
-                viewId: 1,
+            useHooks({
+                viewId: VIEW_ID,
                 ticketId: 123,
+                orderBy: ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
             }),
         )
 
-        expect(result.current).toBeUndefined()
+        await waitFor(() => {
+            expect(result.current.list.isLoading).toBe(false)
+            expect(result.current.navigation).toBeUndefined()
+        })
     })
 
-    it('updates when the sort-order-specific cache changes after mount', () => {
+    it('updates when the sort-order-specific query changes after mount', async () => {
         const sortOrderState: {
             current: ListViewItemsUpdatesOrderByType
         } = {
@@ -103,82 +173,67 @@ describe('useCachedTicketViewNavigation', () => {
             vi.fn(),
         ])
 
-        seedTicketsListCache(
-            1,
-            ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
-            [
-                { id: 122 } as TicketCompact,
-                { id: 123 } as TicketCompact,
-                { id: 124 } as TicketCompact,
-            ],
-        )
-        seedTicketsListCache(
-            1,
-            ListViewItemsUpdatesOrderBy.LastMessageDatetimeDesc,
-            [
-                { id: 222 } as TicketCompact,
-                { id: 123 } as TicketCompact,
-                { id: 224 } as TicketCompact,
-            ],
-        )
-
         const { result, rerender } = renderHook(() =>
-            useCachedTicketViewNavigation({
-                viewId: 1,
+            useHooks({
+                viewId: VIEW_ID,
                 ticketId: 123,
+                orderBy: sortOrderState.current,
             }),
         )
 
-        expect(result.current).toMatchObject({
-            previousTicketId: 122,
-            nextTicketId: 124,
+        await waitFor(() => {
+            expect(result.current.navigation).toMatchObject({
+                previousTicketId: 122,
+                nextTicketId: 124,
+            })
         })
 
         sortOrderState.current =
             ListViewItemsUpdatesOrderBy.LastMessageDatetimeDesc
         rerender()
 
-        expect(result.current).toMatchObject({
-            previousTicketId: 222,
-            nextTicketId: 224,
+        await waitFor(() => {
+            expect(result.current.navigation).toMatchObject({
+                previousTicketId: 224,
+                nextTicketId: 222,
+            })
         })
     })
 
-    it('reacts to cache updates without mounting a second tickets list hook', () => {
-        seedTicketsListCache(
-            1,
-            ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
-            [{ id: 123 } as TicketCompact, { id: 124 } as TicketCompact],
-        )
+    it('reacts to refetched query data without mounting a second tickets list hook', async () => {
+        ticketsBySortOrder[ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc] =
+            [mockTicketCompact({ id: 123 }), mockTicketCompact({ id: 124 })]
 
         const { result } = renderHook(() =>
-            useCachedTicketViewNavigation({
-                viewId: 1,
+            useHooks({
+                viewId: VIEW_ID,
                 ticketId: 123,
+                orderBy: ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
             }),
         )
 
-        expect(result.current).toMatchObject({
-            previousTicketId: undefined,
-            nextTicketId: 124,
-            isPreviousEnabled: false,
-            isNextEnabled: true,
+        await waitFor(() => {
+            expect(result.current.navigation).toMatchObject({
+                previousTicketId: undefined,
+                nextTicketId: 124,
+                isPreviousEnabled: false,
+                isNextEnabled: true,
+            })
         })
 
-        act(() => {
-            seedTicketsListCache(
-                1,
-                ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
-                [
-                    { id: 122 } as TicketCompact,
-                    { id: 123 } as TicketCompact,
-                    { id: 124 } as TicketCompact,
-                ],
-            )
+        ticketsBySortOrder[ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc] =
+            [
+                mockTicketCompact({ id: 122 }),
+                mockTicketCompact({ id: 123 }),
+                mockTicketCompact({ id: 124 }),
+            ]
+
+        await act(async () => {
+            await result.current.list.refetch()
         })
 
-        return waitFor(() => {
-            expect(result.current).toMatchObject({
+        await waitFor(() => {
+            expect(result.current.navigation).toMatchObject({
                 previousTicketId: 122,
                 nextTicketId: 124,
                 isPreviousEnabled: true,

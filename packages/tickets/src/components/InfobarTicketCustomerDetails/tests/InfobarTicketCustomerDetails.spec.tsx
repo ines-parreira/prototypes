@@ -21,7 +21,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { CustomerHighlightDataItem } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { InfobarTicketCustomerDetails } from '../InfobarTicketCustomerDetails'
 
 const ticketId = '123'
@@ -91,12 +91,9 @@ beforeAll(() => {
 
 beforeEach(() => {
     vi.clearAllMocks()
-    testAppQueryClient.clear()
 })
 
-afterEach(async () => {
-    await testAppQueryClient.cancelQueries()
-    testAppQueryClient.clear()
+afterEach(() => {
     server.resetHandlers()
 })
 

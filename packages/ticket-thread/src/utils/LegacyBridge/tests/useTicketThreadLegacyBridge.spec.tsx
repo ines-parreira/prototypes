@@ -1,7 +1,4 @@
-import {
-    renderHook as renderHookPrimitive,
-    screen,
-} from '@testing-library/react'
+import { render as renderPrimitive, screen } from '@testing-library/react'
 
 import { render, renderHook } from '../../../tests/render.utils'
 import { TicketThreadLegacyBridgeProvider } from '../TicketThreadLegacyBridgeProvider'
@@ -69,16 +66,34 @@ const renderAiAgentTrialMessage: LegacyBridgeContextType['renderAiAgentTrialMess
 
 describe('useTicketThreadLegacyBridge', () => {
     it('throws when used outside of TicketThreadLegacyBridgeProvider', () => {
-        const originalError = console.error
-        console.error = vi.fn()
+        const TestComponent = () => {
+            useTicketThreadLegacyBridge()
+            return null
+        }
+        const preventExpectedWindowError = (event: ErrorEvent) => {
+            if (
+                event.error instanceof Error &&
+                event.error.message ===
+                    'useTicketThreadLegacyBridge must be used within TicketThreadLegacyBridgeProvider'
+            ) {
+                event.preventDefault()
+            }
+        }
+        const consoleErrorSpy = vi
+            .spyOn(console, 'error')
+            .mockImplementation(() => {})
+        window.addEventListener('error', preventExpectedWindowError)
 
-        expect(() => {
-            renderHookPrimitive(() => useTicketThreadLegacyBridge())
-        }).toThrow(
-            'useTicketThreadLegacyBridge must be used within TicketThreadLegacyBridgeProvider',
-        )
-
-        console.error = originalError
+        try {
+            expect(() => {
+                renderPrimitive(<TestComponent />)
+            }).toThrow(
+                'useTicketThreadLegacyBridge must be used within TicketThreadLegacyBridgeProvider',
+            )
+        } finally {
+            window.removeEventListener('error', preventExpectedWindowError)
+            consoleErrorSpy.mockRestore()
+        }
     })
 
     it('returns legacy bridge data from the provider', () => {

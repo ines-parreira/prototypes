@@ -33,8 +33,8 @@ import { TicketThreadItemTag } from '../../../hooks/types'
 import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
 import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
+import * as LegacyBridgeModule from '../../../utils/LegacyBridge'
 import type { LegacyBridgeContextType } from '../../../utils/LegacyBridge'
-import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadMessageItem as TicketThreadMessageItemComponent } from '../TicketThreadMessageItem'
 
 vi.mock('@repo/tickets', async () => {
@@ -60,10 +60,6 @@ vi.mock('@repo/feature-flags', () => ({
     useFlag: vi.fn(),
 }))
 
-vi.mock('../../../utils/LegacyBridge', () => ({
-    useTicketThreadLegacyBridge: vi.fn(),
-}))
-
 vi.mock('../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
@@ -82,7 +78,10 @@ const mockUseFlag = vi.mocked(useFlag)
 const mockUseTicketThreadDateTimeFormat = vi.mocked(
     useTicketThreadDateTimeFormat,
 )
-const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
+const mockUseTicketThreadLegacyBridge = vi.spyOn(
+    LegacyBridgeModule,
+    'useTicketThreadLegacyBridge',
+)
 const renderAiAgentReasoning = vi.fn(() => <div>AiAgentReasoningSlot</div>)
 const renderAiAgentDraftMessage = vi.fn(() => (
     <div>AiAgentDraftMessageSlot</div>

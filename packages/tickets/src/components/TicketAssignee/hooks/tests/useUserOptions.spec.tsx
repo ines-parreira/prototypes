@@ -9,7 +9,7 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { NO_USER_OPTION, useUserOptions } from '../useUserOptions'
 
 const currentUser = mockUser({
@@ -43,7 +43,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(mockGetCurrentUser.handler, mockListUsers.handler)
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

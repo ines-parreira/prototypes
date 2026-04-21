@@ -17,7 +17,7 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { TicketStatusMenu } from '../TicketStatusMenu'
 import * as useSnoozeTicketModule from '../useSnoozeTicket'
 import { TicketStatus } from '../utils'
@@ -136,15 +136,12 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
     server.use(mockGetView.handler)
     server.use(mockListViewItems.handler)
     server.use(mockListViewItemsUpdates.handler)
 })
 
-afterEach(async () => {
-    await testAppQueryClient.cancelQueries()
-    testAppQueryClient.clear()
+afterEach(() => {
     vi.restoreAllMocks()
     server.resetHandlers()
 })

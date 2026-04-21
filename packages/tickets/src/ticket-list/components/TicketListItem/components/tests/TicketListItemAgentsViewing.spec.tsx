@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 
-import { render, testAppQueryClient } from '../../../../../tests/render.utils'
+import { render } from '../../../../../tests/render.utils'
 import { TicketListItemAgentsViewing } from '../TicketListItemAgentsViewing'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
@@ -37,10 +37,6 @@ const agentWithAvatar = {
         profile_picture_url: 'https://example.com/avatar.jpg',
     },
 }
-
-beforeEach(() => {
-    testAppQueryClient.clear()
-})
 
 describe('TicketListItemAgentsViewing', () => {
     it('renders nothing when the agents list is empty', () => {

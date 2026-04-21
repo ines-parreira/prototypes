@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-import type { QueryClient } from '@tanstack/react-query'
 import { act, cleanup, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -27,7 +26,7 @@ import type {
     TicketCompact,
 } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import * as useCurrentUserLanguagePreferencesModule from '../../../translations/hooks/useCurrentUserLanguagePreferences'
 import * as useTicketsTranslatedPropertiesModule from '../../../translations/hooks/useTicketsTranslatedProperties'
 import * as useMarkTicketAsReadModule from '../../hooks/useMarkTicketAsRead'
@@ -113,7 +112,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
     vi.clearAllMocks()
     mockGetTicketActivity.mockReturnValue({ viewing: [] })
 
@@ -136,17 +134,13 @@ beforeEach(() => {
     )
 })
 
-function renderWithVirtuoso(
-    component: React.ReactElement,
-    options?: { queryClient?: QueryClient },
-) {
+function renderWithVirtuoso(component: React.ReactElement) {
     return render(
         <VirtuosoMockContext.Provider
             value={{ viewportHeight: 600, itemHeight: 100 }}
         >
             {component}
         </VirtuosoMockContext.Provider>,
-        options,
     )
 }
 

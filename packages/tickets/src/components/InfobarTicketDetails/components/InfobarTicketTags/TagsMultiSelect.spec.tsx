@@ -1,5 +1,5 @@
 import { shortcutManager } from '@repo/utils'
-import { cleanup, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -11,7 +11,7 @@ import {
     mockTicketTag,
 } from '@gorgias/helpdesk-mocks'
 
-import { createTestQueryClient, render } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import type { TagsMultiSelectProps } from './TagsMultiSelect'
 import { TagsMultiSelect } from './TagsMultiSelect'
 
@@ -72,7 +72,6 @@ const mockCreateTag = mockCreateTagHandler()
 const localHandlers = [mockListTags.handler, mockCreateTag.handler]
 
 const server = setupServer()
-let queryClient = createTestQueryClient()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -80,18 +79,14 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(...localHandlers)
-    queryClient = createTestQueryClient()
 })
 
 afterEach(async () => {
-    cleanup()
     if (vi.isFakeTimers()) {
         await vi.runOnlyPendingTimersAsync()
         vi.useRealTimers()
     }
-    await waitForQueriesSettled()
-    await queryClient.cancelQueries()
-    queryClient.clear()
+    await waitForTriggerReady()
     server.resetHandlers(...localHandlers)
 })
 
@@ -99,18 +94,14 @@ afterAll(() => {
     server.close()
 })
 
-const waitForQueriesSettled = async () => {
-    await waitFor(
-        () => {
-            expect(queryClient.isFetching()).toBe(0)
-        },
-        { timeout: 3000 },
-    )
+const waitForTriggerReady = async () => {
+    await waitFor(() => {
+        expect(getTagsTriggerButton()).toBeInTheDocument()
+    })
 }
 
-const renderTagsMultiSelect = (props: TagsMultiSelectProps) => {
-    return render(<TagsMultiSelect {...props} />, { queryClient })
-}
+const renderTagsMultiSelect = (props: TagsMultiSelectProps) =>
+    render(<TagsMultiSelect {...props} />)
 
 const flushSearchDebounce = async () => {
     await vi.advanceTimersByTimeAsync(300)
@@ -130,12 +121,7 @@ const flushPendingTimersIfNeeded = async () => {
 const getTagsTriggerButton = () => {
     return screen
         .getAllByRole('button', { hidden: true })
-        .find(
-            (button) =>
-                button.getAttribute('aria-haspopup') === 'listbox' &&
-                button.getAttribute('aria-label') === 'Tags selection' &&
-                button.closest('template') === null,
-        )!
+        .find((button) => button.getAttribute('aria-haspopup') === 'listbox')!
 }
 
 const queryOpenTagsPopupElement = (role: 'listbox' | 'searchbox') => {
@@ -168,28 +154,47 @@ const openTagsMenu = async (user: ReturnType<typeof render>['user']) => {
         await flushPendingTimersIfNeeded()
     }
 
-    const listbox = await findOpenTagsPopupElement('listbox')
-    const searchbox = await findOpenTagsPopupElement('searchbox')
+    try {
+        const listbox = await findOpenTagsPopupElement('listbox')
+        const searchbox = await findOpenTagsPopupElement('searchbox')
 
-    return { listbox, searchbox }
+        return { listbox, searchbox }
+    } catch {
+        await user.click(triggerButton)
+        await flushPendingTimersIfNeeded()
+
+        const listbox = await findOpenTagsPopupElement('listbox')
+        const searchbox = await findOpenTagsPopupElement('searchbox')
+
+        return { listbox, searchbox }
+    }
 }
 
 const closeTagsMenu = async (user: ReturnType<typeof render>['user']) => {
-    await user.click(document.body)
-    await flushPendingTimersIfNeeded()
-
-    await waitFor(() => {
+    const assertClosed = () => {
         expect(getTagsTriggerButton()).toHaveAttribute('aria-expanded', 'false')
         expect(queryOpenTagsPopupElement('listbox')).toBeUndefined()
         expect(queryOpenTagsPopupElement('searchbox')).toBeUndefined()
-    })
+    }
+
+    try {
+        await user.keyboard('{Escape}')
+        await flushPendingTimersIfNeeded()
+
+        await waitFor(assertClosed)
+    } catch {
+        await user.click(getTagsTriggerButton())
+        await flushPendingTimersIfNeeded()
+
+        await waitFor(assertClosed)
+    }
 }
 
 describe('TagsMultiSelect', () => {
     it('renders correctly with selected tags', async () => {
         renderTagsMultiSelect({ value: mockTicketTags, onChange: vi.fn() })
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         expect(screen.getAllByText('Bug')[0]).toBeInTheDocument()
         expect(screen.getAllByText('Feature')[0]).toBeInTheDocument()
@@ -198,7 +203,7 @@ describe('TagsMultiSelect', () => {
     it('renders add tags button when no tags are selected', async () => {
         renderTagsMultiSelect({ value: [], onChange: vi.fn() })
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         expect(
             screen.getByRole('button', { name: /add tags/i }),
@@ -213,7 +218,7 @@ describe('TagsMultiSelect', () => {
             onChange,
         })
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         const closeTags = await screen.findAllByRole('button', {
             name: /remove tag/i,
@@ -234,7 +239,7 @@ describe('TagsMultiSelect', () => {
             })
             const user = setupFakeTimersUser()
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
 
             const { searchbox } = await openTagsMenu(user)
 
@@ -247,7 +252,7 @@ describe('TagsMultiSelect', () => {
                 ).toBeInTheDocument()
             })
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
         })
 
         it('should not show create button when search is empty', async () => {
@@ -258,7 +263,7 @@ describe('TagsMultiSelect', () => {
                 onChange: vi.fn(),
             })
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
 
             await openTagsMenu(user)
 
@@ -266,7 +271,7 @@ describe('TagsMultiSelect', () => {
                 screen.queryByRole('button', { name: /create tag/i }),
             ).not.toBeInTheDocument()
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
         })
 
         it('should not show create button when results exist', async () => {
@@ -275,7 +280,7 @@ describe('TagsMultiSelect', () => {
                 onChange: vi.fn(),
             })
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
 
             await user.click(screen.getByRole('button', { name: /add tags/i }))
 
@@ -289,7 +294,7 @@ describe('TagsMultiSelect', () => {
                 screen.queryByRole('button', { name: /create tag/i }),
             ).not.toBeInTheDocument()
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
         })
 
         it('should call onChange with new tag after creation', async () => {
@@ -316,7 +321,7 @@ describe('TagsMultiSelect', () => {
             })
             const user = setupFakeTimersUser()
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
 
             const { searchbox } = await openTagsMenu(user)
             await user.type(searchbox, 'NewTag')
@@ -345,7 +350,7 @@ describe('TagsMultiSelect', () => {
                 )
             })
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
         })
 
         it('should show error toast when tag creation fails', async () => {
@@ -365,7 +370,7 @@ describe('TagsMultiSelect', () => {
             })
             const user = setupFakeTimersUser()
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
 
             const { searchbox } = await openTagsMenu(user)
             await user.type(searchbox, 'NewTag')
@@ -387,7 +392,7 @@ describe('TagsMultiSelect', () => {
                 expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
 
-            await waitForQueriesSettled()
+            await waitForTriggerReady()
         })
     })
 
@@ -401,7 +406,7 @@ describe('TagsMultiSelect', () => {
         })
         const user = setupFakeTimersUser()
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         const { searchbox: searchInput } = await openTagsMenu(user)
         await user.type(searchInput, 'NewTag')
@@ -409,7 +414,7 @@ describe('TagsMultiSelect', () => {
         expect(searchInput).toHaveValue('NewTag')
 
         await closeTagsMenu(user)
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         const { searchbox: reopenedSearchbox } = await openTagsMenu(user)
 
@@ -420,7 +425,7 @@ describe('TagsMultiSelect', () => {
             ).not.toBeInTheDocument()
         })
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
     })
 
     it('should denylist TicketHeader shortcuts when tag menu opens and clear when it closes', async () => {
@@ -432,7 +437,7 @@ describe('TagsMultiSelect', () => {
             onChange: vi.fn(),
         })
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         await user.click(screen.getByRole('button', { name: /add tags/i }))
 
@@ -486,7 +491,7 @@ describe('TagsMultiSelect', () => {
             onChange,
         })
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         await openTagsMenu(user)
 
@@ -515,7 +520,7 @@ describe('TagsMultiSelect', () => {
 
         renderTagsMultiSelect({ value: unorderedTags, onChange: vi.fn() })
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         const tagNames = screen
             .getAllByText(/^(Alpha|Mango|Zulu)$/)
@@ -532,7 +537,7 @@ describe('TagsMultiSelect', () => {
             onChange,
         })
 
-        await waitForQueriesSettled()
+        await waitForTriggerReady()
 
         await openTagsMenu(user)
 

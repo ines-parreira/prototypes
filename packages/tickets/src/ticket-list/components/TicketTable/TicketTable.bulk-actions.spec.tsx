@@ -17,7 +17,7 @@ import {
 
 import { useCreateTicketTag } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
 import { useListTagsSearch } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
-import { createTestQueryClient, render } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { TicketStatus } from '../../../types/ticket'
 import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
 import { TicketTable } from './TicketTable'
@@ -72,7 +72,6 @@ const mockListTeams = mockListTeamsHandler(async ({ data }) =>
 )
 
 const server = setupServer()
-let queryClient = createTestQueryClient()
 const bulkActionTestTimeout = 10000
 
 const mockState = {
@@ -337,7 +336,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    queryClient = createTestQueryClient()
     clearViewsCount()
     setViewsCount({ 123: 7 })
     mockState.lastTicketListActionsArgs = null
@@ -397,9 +395,7 @@ beforeEach(() => {
     })
 })
 
-afterEach(async () => {
-    await queryClient.cancelQueries()
-    queryClient.clear()
+afterEach(() => {
     server.resetHandlers()
 })
 
@@ -408,7 +404,7 @@ afterAll(() => {
 })
 
 function renderTicketTable(props?: { isDraftView?: boolean }) {
-    return render(<TicketTable viewId={123} {...props} />, { queryClient })
+    return render(<TicketTable viewId={123} {...props} />)
 }
 
 function rerenderTicketTable(
@@ -547,17 +543,21 @@ describe('TicketTable bulk actions', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('enables the bulk action controls and shows the selected count when a row is selected', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
+    it(
+        'enables the bulk action controls and shows the selected count when a row is selected',
+        async () => {
+            const { user } = renderTicketTable()
+            await selectFirstRow(user)
 
-        expect(screen.getAllByText('1 items selected').length).toBeGreaterThan(
-            0,
-        )
-        expect(
-            screen.getByRole('button', { name: 'More actions' }),
-        ).toBeEnabled()
-    })
+            expect(
+                screen.getAllByText('1 items selected').length,
+            ).toBeGreaterThan(0)
+            expect(
+                screen.getByRole('button', { name: 'More actions' }),
+            ).toBeEnabled()
+        },
+        bulkActionTestTimeout,
+    )
 
     it('shows the Axiom select-all CTA when the view count is available', async () => {
         mockState.hasNextPage = true
@@ -594,43 +594,50 @@ describe('TicketTable bulk actions', () => {
         })
     })
 
-    it('clears full-view selection when the header checkbox is unchecked', async () => {
-        mockState.hasNextPage = true
-        const { user } = renderTicketTable()
-        await selectAllRowsOnPage(user)
-        await user.click(
-            await screen.findByRole('button', {
-                name: 'Select all 7 tickets in VIP Customers',
-            }),
-        )
+    it(
+        'clears full-view selection when the header checkbox is unchecked',
+        async () => {
+            mockState.hasNextPage = true
+            const { user } = renderTicketTable()
+            await selectAllRowsOnPage(user)
+            await user.click(
+                await screen.findByRole('button', {
+                    name: 'Select all 7 tickets in VIP Customers',
+                }),
+            )
 
-        await waitFor(() => {
-            expect(
-                screen.getAllByText('All 7 tickets in VIP Customers selected')
-                    .length,
-            ).toBeGreaterThan(0)
-        })
-
-        await user.click(
-            screen.getByRole('checkbox', {
-                name: 'Select all rows',
-            }),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.queryByText('All 7 tickets in VIP Customers selected'),
-            ).not.toBeInTheDocument()
-            expect(mockState.lastTicketListActionsArgs).toMatchObject({
-                hasSelectedAll: false,
-                viewId: 123,
-                visibleTicketIds: [1, 2],
+            await waitFor(() => {
+                expect(
+                    screen.getAllByText(
+                        'All 7 tickets in VIP Customers selected',
+                    ).length,
+                ).toBeGreaterThan(0)
             })
-            expect(
-                mockState.lastTicketListActionsArgs?.selectedTicketIds.size,
-            ).toBe(0)
-        })
-    })
+
+            await user.click(
+                screen.getByRole('checkbox', {
+                    name: 'Select all rows',
+                }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        'All 7 tickets in VIP Customers selected',
+                    ),
+                ).not.toBeInTheDocument()
+                expect(mockState.lastTicketListActionsArgs).toMatchObject({
+                    hasSelectedAll: false,
+                    viewId: 123,
+                    visibleTicketIds: [1, 2],
+                })
+                expect(
+                    mockState.lastTicketListActionsArgs?.selectedTicketIds.size,
+                ).toBe(0)
+            })
+        },
+        bulkActionTestTimeout,
+    )
 
     it('shows the fallback cross-page select-all CTA when the view count is unavailable', async () => {
         mockState.hasNextPage = true

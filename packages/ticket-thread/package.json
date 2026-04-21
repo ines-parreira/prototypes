@@ -58,6 +58,7 @@
         "@repo/preferences": "workspace:*",
         "@repo/routing": "workspace:*",
         "@repo/teams": "workspace:*",
+        "@repo/testing": "workspace:*",
         "@repo/tickets": "workspace:*",
         "@repo/types": "workspace:*",
         "@repo/users": "workspace:*",

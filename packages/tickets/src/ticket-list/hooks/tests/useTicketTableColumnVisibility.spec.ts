@@ -1,9 +1,10 @@
 import { UserRole } from '@repo/permissions'
+import { QueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
 import { ViewField } from '@gorgias/helpdesk-types'
 
-import { createTestQueryClient, renderHook } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { useTicketTableColumnVisibility } from '../useTicketTableColumnVisibility'
 
 const useGetCurrentUserMock = vi.fn()
@@ -123,11 +124,12 @@ describe('useTicketTableColumnVisibility', () => {
     })
 
     it('persists mapped fields and invalidates the view query on success', async () => {
-        const queryClient = createTestQueryClient()
-        const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries')
-        const { result } = renderHook(
-            () => useTicketTableColumnVisibility(viewId),
-            { queryClient },
+        const invalidateQueriesSpy = vi.spyOn(
+            QueryClient.prototype,
+            'invalidateQueries',
+        )
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
         )
 
         await result.current.saveForEveryone([
@@ -224,16 +226,16 @@ describe('useTicketTableColumnVisibility', () => {
 
     it('does not save for everyone in draft mode', async () => {
         const onDraftFieldsChange = vi.fn()
-        const queryClient = createTestQueryClient()
-        const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries')
-        const { result } = renderHook(
-            () =>
-                useTicketTableColumnVisibility(viewId, {
-                    isDraftView: true,
-                    draftFields: [ViewField.Subject, ViewField.Customer],
-                    onDraftFieldsChange,
-                }),
-            { queryClient },
+        const invalidateQueriesSpy = vi.spyOn(
+            QueryClient.prototype,
+            'invalidateQueries',
+        )
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId, {
+                isDraftView: true,
+                draftFields: [ViewField.Subject, ViewField.Customer],
+                onDraftFieldsChange,
+            }),
         )
 
         await result.current.saveForEveryone([

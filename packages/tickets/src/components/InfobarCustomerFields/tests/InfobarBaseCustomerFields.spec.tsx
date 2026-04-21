@@ -11,7 +11,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { TicketCustomer, User } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { InfobarBaseCustomerFields } from '../InfobarBaseCustomerFields'
 
 const mockPush = vi.fn()
@@ -41,7 +41,6 @@ beforeEach(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

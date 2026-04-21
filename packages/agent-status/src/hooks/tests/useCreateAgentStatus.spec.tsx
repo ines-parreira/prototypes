@@ -1,98 +1,102 @@
 import { renderHook } from '@repo/testing/vitest'
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 
 import {
-    queryKeys,
-    useCreateCustomUserAvailabilityStatus,
-} from '@gorgias/helpdesk-queries'
+    mockCreateCustomUserAvailabilityStatus,
+    mockCreateCustomUserAvailabilityStatusHandler,
+    mockCustomUserAvailabilityStatus,
+    mockListCustomUserAvailabilityStatusesHandler,
+} from '@gorgias/helpdesk-mocks'
+import { useListCustomUserAvailabilityStatuses } from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClientWithSpies,
-    getMutationConfig,
-} from '../../tests/render.utils'
 import { useCreateAgentStatus } from '../useCreateAgentStatus'
 
-type CreateStatusConfig = NonNullable<
-    Parameters<typeof useCreateCustomUserAvailabilityStatus>[0]
->
+const server = setupServer()
 
-vi.mock('@tanstack/react-query', async () => {
-    const actual = await vi.importActual('@tanstack/react-query')
-    return {
-        ...actual,
-        useQueryClient: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual('@gorgias/helpdesk-queries')
-    return {
-        ...actual,
-        useCreateCustomUserAvailabilityStatus: vi.fn(),
-    }
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('useCreateAgentStatus', () => {
-    const listKey =
-        queryKeys.customUserAvailabilityStatus.listCustomUserAvailabilityStatuses()
-
-    beforeEach(() => {
-        vi.clearAllMocks()
-    })
-
-    it('should invalidate queries on success', () => {
-        const { queryClient, spies } = createTestQueryClientWithSpies({
-            withInvalidateQueriesSpy: true,
+    it('creates a status and refreshes the custom statuses list', async () => {
+        const existingStatus = mockCustomUserAvailabilityStatus({
+            id: 'status-1',
+            name: 'Lunch break',
+            duration_unit: 'minutes',
+            duration_value: 30,
+        })
+        const createdStatus = mockCustomUserAvailabilityStatus({
+            id: 'status-2',
+            name: 'Coffee break',
+            description: 'Quick recharge',
+            duration_unit: 'minutes',
+            duration_value: 15,
+        })
+        const createStatusPayload = mockCreateCustomUserAvailabilityStatus({
+            name: createdStatus.name,
+            description: createdStatus.description,
+            duration_unit: createdStatus.duration_unit,
+            duration_value: createdStatus.duration_value,
         })
 
-        vi.mocked(useQueryClient).mockReturnValue(queryClient)
-        renderHook(() => useCreateAgentStatus(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        let statuses = [existingStatus]
 
-        const config = getMutationConfig<CreateStatusConfig>(
-            vi.mocked(useCreateCustomUserAvailabilityStatus),
+        const listStatusesMock = mockListCustomUserAvailabilityStatusesHandler(
+            async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: statuses,
+                }),
         )
+        const createStatusMock = mockCreateCustomUserAvailabilityStatusHandler(
+            async () => {
+                statuses = [...statuses, createdStatus]
 
-        const mockData = {
-            data: {
-                id: 'status-1',
-                name: 'Lunch break',
-                duration_unit: 'minutes' as const,
-                duration_value: 30,
-                created_datetime: '2024-01-01T00:00:00Z',
-                updated_datetime: '2024-01-01T00:00:00Z',
+                return HttpResponse.json(createdStatus)
             },
-        }
-
-        config?.mutation?.onSuccess?.(mockData as any, {} as any, undefined)
-
-        expect(spies.invalidateQueries).toHaveBeenCalledWith({
-            queryKey: listKey,
-        })
-    })
-
-    it('should define onSuccess callback in config', () => {
-        const { queryClient } = createTestQueryClientWithSpies()
-
-        vi.mocked(useQueryClient).mockReturnValue(queryClient)
-        renderHook(() => useCreateAgentStatus(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
-
-        const config = getMutationConfig<CreateStatusConfig>(
-            vi.mocked(useCreateCustomUserAvailabilityStatus),
         )
+        const waitForCreateRequest = createStatusMock.waitForRequest(server)
 
-        expect(config?.mutation?.onSuccess).toBeDefined()
+        server.use(listStatusesMock.handler, createStatusMock.handler)
+
+        const { result } = renderHook(() => ({
+            createStatus: useCreateAgentStatus(),
+            customStatuses: useListCustomUserAvailabilityStatuses(),
+        }))
+
+        await waitFor(() => {
+            expect(
+                result.current.customStatuses.data?.data.data.map(
+                    ({ id }) => id,
+                ),
+            ).toEqual(['status-1'])
+        })
+
+        await result.current.createStatus.mutateAsync({
+            data: createStatusPayload,
+        })
+
+        await waitForCreateRequest(async (request) => {
+            expect(await request.json()).toEqual(createStatusPayload)
+        })
+
+        await waitFor(() => {
+            expect(
+                result.current.customStatuses.data?.data.data.map(
+                    ({ id }) => id,
+                ),
+            ).toEqual(['status-1', 'status-2'])
+        })
     })
 })

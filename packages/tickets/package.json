@@ -80,6 +80,7 @@
         "@repo/preferences": "workspace:*",
         "@repo/routing": "workspace:*",
         "@repo/teams": "workspace:*",
+        "@repo/testing": "workspace:*",
         "@repo/types": "workspace:*",
         "@repo/permissions": "workspace:*",
         "@repo/utils": "workspace:*",

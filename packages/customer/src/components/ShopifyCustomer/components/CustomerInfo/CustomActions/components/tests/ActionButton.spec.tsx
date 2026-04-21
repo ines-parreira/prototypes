@@ -1,26 +1,12 @@
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
-import { setupServer } from 'msw/node'
 
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
+import { server } from '../../../../../../../tests/server'
 import type { ButtonAction, ButtonConfig } from '../../utils/customActionTypes'
 import { ActionButton } from '../ActionButton'
 import { TemplateResolverProvider } from '../TemplateResolverContext'
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const makeAction = (overrides: Partial<ButtonAction> = {}): ButtonAction => ({
     method: 'POST',

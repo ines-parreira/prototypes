@@ -1,25 +1,11 @@
 import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
+import { server } from '../../../../../../tests/server'
 import { OrderTags } from '../OrderTags'
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const mockShopOrderTagsResponse = {
     data: {

@@ -14,7 +14,7 @@ import {
     mockTicketSatisfactionSurvey,
 } from '@gorgias/helpdesk-mocks'
 
-import { createTestQueryClient, renderHook } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { TicketThreadItemTag } from '../../types'
 import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../constants'
@@ -91,15 +91,11 @@ describe('useTicketThreadSatisfactionSurveys', () => {
             ).handler,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadSatisfactionSurveys({
-                    ticketId: 24,
-                    ticket,
-                }),
-            {
-                queryClient: createTestQueryClient(),
-            },
+        const { result } = renderHook(() =>
+            useTicketThreadSatisfactionSurveys({
+                ticketId: 24,
+                ticket,
+            }),
         )
 
         await waitFor(() => {
@@ -125,15 +121,11 @@ describe('useTicketThreadSatisfactionSurveys', () => {
             body_text: null,
         })
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadSatisfactionSurveys({
-                    ticketId: 24,
-                    ticket,
-                }),
-            {
-                queryClient: createTestQueryClient(),
-            },
+        const { result } = renderHook(() =>
+            useTicketThreadSatisfactionSurveys({
+                ticketId: 24,
+                ticket,
+            }),
         )
 
         expect(result.current).toHaveLength(1)
@@ -172,15 +164,11 @@ describe('useTicketThreadSatisfactionSurveys', () => {
             },
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadSatisfactionSurveys({
-                    ticketId: 24,
-                    ticket,
-                }),
-            {
-                queryClient: createTestQueryClient(),
-            },
+        const { result } = renderHook(() =>
+            useTicketThreadSatisfactionSurveys({
+                ticketId: 24,
+                ticket,
+            }),
         )
 
         expect(result.current[0]?.datetime).toBe('2024-03-21T11:00:00Z')
@@ -208,15 +196,11 @@ describe('useTicketThreadSatisfactionSurveys', () => {
             should_send_datetime: null,
         })
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadSatisfactionSurveys({
-                    ticketId: 24,
-                    ticket,
-                }),
-            {
-                queryClient: createTestQueryClient(),
-            },
+        const { result } = renderHook(() =>
+            useTicketThreadSatisfactionSurveys({
+                ticketId: 24,
+                ticket,
+            }),
         )
 
         expect(result.current[0]?.data).toMatchObject({
@@ -272,21 +256,17 @@ describe('useTicketThreadSatisfactionSurveys', () => {
             ).handler,
         )
 
-        const { result } = renderHook(
-            () =>
-                useTicketThreadSatisfactionSurveys({
-                    ticketId: 24,
-                    ticket: mockTicket({
-                        customer: mockTicketCustomer({
-                            name: 'Jane Customer',
-                            email: 'jane@example.com',
-                        }),
-                        satisfaction_survey: null,
+        const { result } = renderHook(() =>
+            useTicketThreadSatisfactionSurveys({
+                ticketId: 24,
+                ticket: mockTicket({
+                    customer: mockTicketCustomer({
+                        name: 'Jane Customer',
+                        email: 'jane@example.com',
                     }),
+                    satisfaction_survey: null,
                 }),
-            {
-                queryClient: createTestQueryClient(),
-            },
+            }),
         )
 
         await waitFor(() => {

@@ -8,10 +8,7 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import {
-    render,
-    testAppQueryClient,
-} from '../../../../../../../tests/render.utils'
+import { render } from '../../../../../../../tests/render.utils'
 import { BulkUserAssignSelect } from '../BulkUserAssignSelect'
 
 const currentUser = mockUser({ id: 99, name: 'Current User' })
@@ -38,7 +35,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(mockGetCurrentUser.handler, mockListUsers.handler)
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

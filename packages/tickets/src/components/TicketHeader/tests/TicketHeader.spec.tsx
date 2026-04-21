@@ -19,7 +19,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import type { CurrentUser } from '../../../translations/hooks/useCurrentUserLanguagePreferences'
 import { DisplayedContent } from '../../../translations/store/constants'
 import { useTicketMessageTranslationDisplay } from '../../../translations/store/useTicketMessageTranslationDisplay'
@@ -127,7 +127,6 @@ beforeEach(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

@@ -14,7 +14,7 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { InfobarCustomerFields } from '../InfobarCustomerFields'
 
 const server = setupServer()
@@ -25,7 +25,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
     vi.clearAllMocks()
 })
 

@@ -9,7 +9,7 @@ import type { Mock, MockInstance } from 'vitest'
 
 import { mockGetCurrentUserHandler, mockUser } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { TicketInfobarNavigation } from '../TicketInfobarNavigation'
 
 vi.mock('@repo/feature-flags', async (importOriginal) => ({
@@ -69,7 +69,6 @@ describe('TicketInfobarNavigation', () => {
         useHistory.mockReturnValue({ push: mockPush })
         mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
         server.use(mockGetCurrentUser.handler)
-        testAppQueryClient.clear()
 
         useTicketInfobarNavigationMock = vi.spyOn(
             repoNavigation,

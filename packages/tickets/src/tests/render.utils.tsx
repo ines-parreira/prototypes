@@ -1,38 +1,16 @@
-import type { ReactElement } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+    renderHook as renderHookPrimitive,
+    render as renderPrimitive,
+} from '@repo/testing/vitest'
 import type {
     RenderHookOptions as RenderHookOptionsPrimitive,
     RenderOptions as RenderOptionsPrimitive,
 } from '@testing-library/react'
-import {
-    renderHook as renderHookPrimitive,
-    render as renderPrimitive,
-} from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
-import { createPortal } from 'react-dom'
-import { MemoryRouter, Route } from 'react-router-dom'
-
-import { Toaster } from '@gorgias/axiom'
 
 import { TicketsLegacyBridgeProvider } from '../utils/LegacyBridge'
 import type { LegacyBridgeContextType } from '../utils/LegacyBridge/context'
-
-export const createTestQueryClient = () =>
-    new QueryClient({
-        defaultOptions: {
-            queries: {
-                retry: false,
-                staleTime: 0,
-                cacheTime: 0,
-            },
-            mutations: {
-                retry: false,
-            },
-        },
-    })
-
-export const testAppQueryClient = createTestQueryClient()
 
 type LegacyBridgeOptions = {
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
@@ -48,18 +26,17 @@ type LegacyBridgeOptions = {
     humanizeChannel?: LegacyBridgeContextType['humanizeChannel']
 }
 
-type RenderOptions = RenderOptionsPrimitive &
+type RenderOptions = Omit<RenderOptionsPrimitive, 'wrapper'> &
     LegacyBridgeOptions & {
         initialEntries?: string[]
         path?: string
-        queryClient?: QueryClient
+        wrapper?: RenderOptionsPrimitive['wrapper']
     }
 
 type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> &
     LegacyBridgeOptions & {
         initialEntries?: string[]
         path?: string
-        queryClient?: QueryClient
     }
 
 const defaultOptions = {
@@ -110,20 +87,50 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         ...defaultOptions,
         ...options,
     }
+    const {
+        initialEntries,
+        path,
+        ticketViewNavigation,
+        dispatchAuditLogEvents,
+        dispatchHideAuditLogEvents,
+        toggleQuickReplies,
+        onToggleUnread,
+        handleTicketDraft,
+        makeOutboundCall,
+        voiceDevice,
+        dtpToggle,
+        dtpEnabled,
+        humanizeChannel,
+        wrapper: ExtraWrapper,
+        ...renderOptions
+    } = mergedOptions
 
-    const queryClient = options?.queryClient ?? testAppQueryClient
-    const user = userEvent.setup()
-
-    const result = renderPrimitive(element, {
-        ...options,
-        wrapper: ({ children }) => (
-            <TicketsLegacyBridgeProvider {...mergedOptions}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter initialEntries={mergedOptions.initialEntries}>
-                        <Route path={mergedOptions.path}>{children}</Route>
-                    </MemoryRouter>
-                    {createPortal(<Toaster />, document.body)}
-                </QueryClientProvider>
+    const legacyBridgeOptions = {
+        initialEntries,
+        path,
+        ticketViewNavigation,
+        dispatchAuditLogEvents,
+        dispatchHideAuditLogEvents,
+        toggleQuickReplies,
+        onToggleUnread,
+        handleTicketDraft,
+        makeOutboundCall,
+        voiceDevice,
+        dtpToggle,
+        dtpEnabled,
+        humanizeChannel,
+    }
+    const { user, ...result } = renderPrimitive(element, {
+        ...renderOptions,
+        initialEntries,
+        path,
+        wrapper: ({ children }: { children: ReactNode }) => (
+            <TicketsLegacyBridgeProvider {...legacyBridgeOptions}>
+                {ExtraWrapper ? (
+                    <ExtraWrapper>{children as ReactElement}</ExtraWrapper>
+                ) : (
+                    children
+                )}
             </TicketsLegacyBridgeProvider>
         ),
     })
@@ -152,20 +159,53 @@ export const renderHook = <TProps, TResult>(
         ...defaultOptions,
         ...options,
     }
+    const {
+        initialEntries,
+        path,
+        ticketViewNavigation,
+        dispatchAuditLogEvents,
+        dispatchHideAuditLogEvents,
+        toggleQuickReplies,
+        onToggleUnread,
+        handleTicketDraft,
+        makeOutboundCall,
+        voiceDevice,
+        dtpToggle,
+        dtpEnabled,
+        humanizeChannel,
+        wrapper: ExtraWrapper,
+        ...renderHookOptions
+    } = mergedOptions
 
-    const queryClient = options?.queryClient ?? testAppQueryClient
+    const legacyBridgeOptions = {
+        initialEntries,
+        path,
+        ticketViewNavigation,
+        dispatchAuditLogEvents,
+        dispatchHideAuditLogEvents,
+        toggleQuickReplies,
+        onToggleUnread,
+        handleTicketDraft,
+        makeOutboundCall,
+        voiceDevice,
+        dtpToggle,
+        dtpEnabled,
+        humanizeChannel,
+    }
 
-    return renderHookPrimitive(hook, {
-        ...options,
-        wrapper: ({ children }) => (
-            <TicketsLegacyBridgeProvider {...mergedOptions}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter initialEntries={mergedOptions.initialEntries}>
-                        <Route path={mergedOptions.path}>{children}</Route>
-                    </MemoryRouter>
-                    {createPortal(<Toaster />, document.body)}
-                </QueryClientProvider>
+    const result = renderHookPrimitive(hook, {
+        ...renderHookOptions,
+        initialEntries,
+        path,
+        wrapper: ({ children }: { children: ReactNode }) => (
+            <TicketsLegacyBridgeProvider {...legacyBridgeOptions}>
+                {ExtraWrapper ? (
+                    <ExtraWrapper>{children as ReactElement}</ExtraWrapper>
+                ) : (
+                    children
+                )}
             </TicketsLegacyBridgeProvider>
         ),
     })
+    return result
 }

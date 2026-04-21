@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import { Menu } from '@gorgias/axiom'
 import type { View } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { ViewSearchMenuItem } from '../ViewSearchMenuItem'
 
 vi.mock('@repo/views', async (importOriginal) => {
@@ -58,7 +58,6 @@ function renderMenuItem(view: View) {
 
 describe('ViewSearchMenuItem', () => {
     beforeEach(() => {
-        testAppQueryClient.clear()
         mockUseViewCount.mockReturnValue(undefined)
         mockViewCountBadge.mockReturnValue(null)
     })

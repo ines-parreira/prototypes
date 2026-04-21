@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import {
     Box,
     Button,
@@ -7,7 +9,10 @@ import {
     DataTableToolbar,
     Text,
 } from '@gorgias/axiom'
-import type { DataTableColumnEditingProps } from '@gorgias/axiom'
+import type {
+    DataTableBulkActionsProps,
+    DataTableColumnEditingProps,
+} from '@gorgias/axiom'
 import type {
     Team,
     TicketPriority,
@@ -57,6 +62,25 @@ type SelectAllActionRenderProps = {
     onSelectAll: () => void
 }
 
+type LegacyDataTableItemCountProps = {
+    children?: (props: ItemCountRenderProps) => ReactNode
+}
+
+type LegacyDataTableBulkActionsProps<TData = unknown> =
+    DataTableBulkActionsProps<TData> & {
+        selectAllAction?: (props: SelectAllActionRenderProps) => ReactNode
+    }
+
+const DataTableItemCountWithChildren = DataTableItemCount as unknown as (
+    props: LegacyDataTableItemCountProps,
+) => JSX.Element
+
+const DataTableBulkActionsWithSelectAll = DataTableBulkActions as unknown as <
+    TData = unknown,
+>(
+    props: LegacyDataTableBulkActionsProps<TData>,
+) => JSX.Element | null
+
 export function TicketTableBulkActions({
     viewId,
     canSelectAllAcrossPages,
@@ -86,7 +110,7 @@ export function TicketTableBulkActions({
 
     return (
         <DataTableToolbar>
-            <DataTableItemCount>
+            <DataTableItemCountWithChildren>
                 {({ isAllSelected, text }: ItemCountRenderProps) =>
                     isAllSelected || hasSelectedAll ? (
                         <Text size="sm">
@@ -98,8 +122,8 @@ export function TicketTableBulkActions({
                         text
                     )
                 }
-            </DataTableItemCount>
-            <DataTableBulkActions
+            </DataTableItemCountWithChildren>
+            <DataTableBulkActionsWithSelectAll
                 selectAllAction={
                     canSelectAllAcrossPages
                         ? ({ onSelectAll }: SelectAllActionRenderProps) => (
@@ -152,7 +176,7 @@ export function TicketTableBulkActions({
                         />
                     </Box>
                 )}
-            </DataTableBulkActions>
+            </DataTableBulkActionsWithSelectAll>
             <DataTableColumnEditing footer={columnEditingFooter} />
         </DataTableToolbar>
     )

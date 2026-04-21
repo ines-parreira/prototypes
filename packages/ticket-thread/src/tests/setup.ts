@@ -1,6 +1,5 @@
 import { afterAll, afterEach, beforeAll, vi } from 'vitest'
 
-import { testAppQueryClient } from './render.utils'
 import { server } from './server'
 
 global.ResizeObserver = vi.fn().mockImplementation(function ResizeObserver() {
@@ -15,9 +14,8 @@ beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
-afterEach(() => {
+afterEach(async () => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

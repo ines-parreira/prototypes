@@ -7,7 +7,7 @@ import {
     mockTicketCustomerChannel,
 } from '@gorgias/helpdesk-mocks'
 
-import { createTestQueryClient, render } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import * as useMergeCustomersModule from '../hooks/useMergeCustomers'
 import * as useSourceCustomerModule from '../hooks/useSourceCustomer'
 import { MergeCustomersModal } from '../MergeCustomersModal'
@@ -56,9 +56,6 @@ describe('MergeCustomersModal', () => {
                 onMerge={mockOnMerge}
                 {...props}
             />,
-            {
-                queryClient: createTestQueryClient(),
-            },
         )
     }
 

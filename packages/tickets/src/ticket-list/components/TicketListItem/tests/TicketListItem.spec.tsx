@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { mockTicketCompact } from '@gorgias/helpdesk-mocks'
 import { Language } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { TicketListItem } from '../TicketListItem'
 
 vi.mock('@gorgias/realtime', () => ({
@@ -37,10 +37,6 @@ const ticket = mockTicketCompact({
 })
 const viewId = 123
 const defaultProps = { ticket, viewId, isActive: false }
-
-beforeEach(() => {
-    testAppQueryClient.clear()
-})
 
 describe('TicketListItem', () => {
     it('calls onSelect with ticket id, checked state, and false for shiftKey when checkbox is changed', async () => {

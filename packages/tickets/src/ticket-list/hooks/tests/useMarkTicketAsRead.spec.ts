@@ -2,7 +2,7 @@ import { setupServer } from 'msw/node'
 
 import { mockUpdateTicketHandler } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { useMarkTicketAsRead } from '../useMarkTicketAsRead'
 
 const mockUpdateTicket = mockUpdateTicketHandler()
@@ -14,7 +14,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
     server.use(mockUpdateTicket.handler)
 })
 

@@ -12,6 +12,12 @@ import {
     removeTicketFromViewListCache,
 } from '../viewListCache'
 
+function createQueryClient() {
+    return new QueryClient({
+        defaultOptions: { queries: { retry: false } },
+    })
+}
+
 function makeInfiniteData(pages: Ticket[][]): InfiniteData<{ data: Ticket[] }> {
     return {
         pages: pages.map((data) => ({ data })),
@@ -29,13 +35,7 @@ function getViewListCache(
 let queryClient: QueryClient
 
 beforeEach(() => {
-    queryClient = new QueryClient({
-        defaultOptions: { queries: { retry: false } },
-    })
-})
-
-afterEach(() => {
-    queryClient.clear()
+    queryClient = createQueryClient()
 })
 
 describe('patchTicketInViewListCache', () => {

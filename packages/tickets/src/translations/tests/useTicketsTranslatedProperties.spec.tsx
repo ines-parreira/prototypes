@@ -1,9 +1,5 @@
-import type React from 'react'
-
 import { useFlag } from '@repo/feature-flags'
-import type { QueryClient } from '@tanstack/react-query'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act, cleanup, renderHook, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -13,10 +9,8 @@ import {
     mockTicketTranslationCompact,
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
-import type { ListTicketTranslations200 } from '@gorgias/helpdesk-types'
 
-import { createTestQueryClient } from '../../tests/render.utils'
-import { KeyPrefixes } from '../hooks/constants'
+import { renderHook } from '../../tests/render.utils'
 import type { CurrentUser } from '../hooks/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../hooks/useTicketsTranslatedProperties'
 
@@ -33,7 +27,6 @@ const mockUseFlag = vi.mocked(useFlag)
 
 // Server setup
 const server = setupServer()
-let queryClient: QueryClient = createTestQueryClient()
 
 // Mock data constants
 const mockPreferences = {
@@ -96,23 +89,7 @@ const defaultHandlers = [
     mockGetCurrentUserEnglish.handler,
     mockListTicketTranslations.handler,
 ]
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-)
-
-const createTicketTranslationsQueryKey = (
-    ticketIds: number[],
-    language: Language = Language.En,
-) => [
-    ...KeyPrefixes.ticketTranslations,
-    {
-        queryParams: {
-            language,
-            ticket_ids: ticketIds,
-        },
-    },
-]
+const wrapper = undefined
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -120,15 +97,11 @@ beforeAll(() => {
 
 beforeEach(() => {
     vi.clearAllMocks()
-    queryClient = createTestQueryClient()
     mockUseFlag.mockReturnValue(true)
     server.use(...defaultHandlers)
 })
 
-afterEach(async () => {
-    cleanup()
-    await queryClient.cancelQueries()
-    queryClient.clear()
+afterEach(() => {
     server.resetHandlers()
 })
 
@@ -722,23 +695,35 @@ describe('useTicketsTranslatedProperties', () => {
                     excerpt: 'Cached excerpt',
                 })
 
-                queryClient.setQueryData(
-                    createTicketTranslationsQueryKey([123]),
-                    {
-                        data: {
+                server.use(
+                    mockListTicketTranslationsHandler(async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
                             data: [cachedTranslation],
-                        },
-                    } as unknown as HttpResponse<ListTicketTranslations200>,
+                        }),
+                    ).handler,
                 )
 
-                const { result } = renderHook(
-                    () =>
+                const { result, rerender } = renderHook(
+                    ({ ticketsRequiresTranslations }) =>
                         useTicketsTranslatedProperties({
                             ticket_ids: [123],
-                            ticketsRequiresTranslations: false,
+                            ticketsRequiresTranslations,
                         }),
-                    { wrapper },
+                    {
+                        initialProps: {
+                            ticketsRequiresTranslations: true,
+                        },
+                    },
                 )
+
+                await waitFor(() => {
+                    expect(result.current.translationMap).toEqual({
+                        123: cachedTranslation,
+                    })
+                })
+
+                rerender({ ticketsRequiresTranslations: false })
 
                 await waitFor(() => {
                     expect(result.current.translationMap).toEqual({
@@ -759,14 +744,32 @@ describe('useTicketsTranslatedProperties', () => {
                     excerpt: 'Fresh excerpt',
                 })
 
-                queryClient.setQueryData(
-                    createTicketTranslationsQueryKey([123]),
-                    {
-                        data: {
+                server.use(
+                    mockListTicketTranslationsHandler(async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
                             data: [cachedTranslation],
-                        },
-                    } as unknown as HttpResponse<ListTicketTranslations200>,
+                        }),
+                    ).handler,
                 )
+
+                const { result, rerender } = renderHook(
+                    ({ ticketIds }) =>
+                        useTicketsTranslatedProperties({
+                            ticket_ids: ticketIds,
+                        }),
+                    {
+                        initialProps: {
+                            ticketIds: [123],
+                        },
+                    },
+                )
+
+                await waitFor(() => {
+                    expect(result.current.translationMap).toEqual({
+                        123: cachedTranslation,
+                    })
+                })
 
                 let resolveRequest: (() => void) | undefined
                 const pendingRequest = new Promise<void>((resolve) => {
@@ -785,10 +788,7 @@ describe('useTicketsTranslatedProperties', () => {
                 )
                 server.use(handler)
 
-                const { result } = renderHook(
-                    () => useTicketsTranslatedProperties({ ticket_ids: [123] }),
-                    { wrapper },
-                )
+                rerender({ ticketIds: [123, 456] })
 
                 await waitFor(() => {
                     expect(result.current.translationMap).toEqual({

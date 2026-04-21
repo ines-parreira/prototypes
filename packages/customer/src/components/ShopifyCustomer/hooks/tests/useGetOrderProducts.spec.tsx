@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockEcommerceData,
@@ -9,16 +8,9 @@ import {
     mockPaginatedDataEcommerceData,
 } from '@gorgias/ecommerce-storage-mocks'
 
+import { server } from '../../../../tests/server'
 import type { OrderEcommerceData, OrderLineItem } from '../../types'
 import { useGetOrderProducts } from '../useGetOrderProducts'
-
-const server = setupServer()
-
-beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
-afterEach(() => {
-    server.resetHandlers()
-})
-afterAll(() => server.close())
 
 const createOrder = (
     id: string,

@@ -3,10 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import { useUpdateTicket } from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClient,
-    renderHook,
-} from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { useUpdateTicketCustomer } from '../useUpdateTicketCustomer'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -34,10 +31,7 @@ describe('useUpdateTicketCustomer', () => {
             isLoading: false,
         } as any)
 
-        const queryClient = createTestQueryClient()
-        const { result } = renderHook(() => useUpdateTicketCustomer('123'), {
-            queryClient,
-        })
+        const { result } = renderHook(() => useUpdateTicketCustomer('123'))
 
         await result.current.updateTicketCustomer({ id: 456 } as any)
 

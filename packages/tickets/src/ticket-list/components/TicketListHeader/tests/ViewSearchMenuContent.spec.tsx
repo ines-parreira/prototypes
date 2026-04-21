@@ -5,7 +5,7 @@ import { Menu } from '@gorgias/axiom'
 import { mockView } from '@gorgias/helpdesk-mocks'
 import type { View } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import type {
     ViewSearchResult,
     ViewSectionGroup,
@@ -132,7 +132,6 @@ function renderContent({
 
 describe('ViewSearchMenuContent', () => {
     beforeEach(() => {
-        testAppQueryClient.clear()
         mockUseViewCount.mockReturnValue(undefined)
         mockViewCountBadge.mockImplementation(({ viewId }) => {
             const count = mockUseViewCount(viewId)

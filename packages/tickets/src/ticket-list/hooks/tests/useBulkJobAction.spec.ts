@@ -1,27 +1,50 @@
-import type { InfiniteData } from '@tanstack/react-query'
-import { act, screen, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { mockCreateJobHandler, mockTicket } from '@gorgias/helpdesk-mocks'
-import { queryKeys } from '@gorgias/helpdesk-queries'
+import { toast } from '@gorgias/axiom'
+import {
+    mockCreateJobHandler,
+    mockListViewItemsHandler,
+    mockTicket,
+} from '@gorgias/helpdesk-mocks'
 import type { Ticket } from '@gorgias/helpdesk-queries'
 import { JobType } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
+import { renderHook } from '../../../tests/render.utils'
 import { useBulkJobAction } from '../useBulkJobAction'
+import { useTicketsList } from '../useTicketsList'
 
 const mockCreateJob = mockCreateJobHandler()
 
 const server = setupServer()
+
+const VIEW_ID = 10
+const TICKET_IDS = [1, 2, 3]
+const viewTicketsState: { current: Ticket[] } = {
+    current: [],
+}
+
+const mockListViewItems = mockListViewItemsHandler(async () =>
+    HttpResponse.json({
+        data: viewTicketsState.current,
+        meta: {
+            current_cursor: null,
+            next_items: null,
+            prev_items: null,
+        },
+        object: 'list',
+        uri: `/api/views/${VIEW_ID}/items/`,
+    } as any),
+)
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
-    server.use(mockCreateJob.handler)
+    viewTicketsState.current = []
+    server.use(mockCreateJob.handler, mockListViewItems.handler)
 })
 
 afterEach(() => {
@@ -32,50 +55,47 @@ afterAll(() => {
     server.close()
 })
 
-const VIEW_ID = 10
-const TICKET_IDS = [1, 2, 3]
+function useHooks(
+    props: { ticketIds?: number[]; hasSelectedAll?: boolean } = {},
+) {
+    const list = useTicketsList(VIEW_ID, {
+        enableStaleUpdates: false,
+    })
+    const bulkAction = useBulkJobAction({
+        viewId: VIEW_ID,
+        ticketIds: props.ticketIds ?? TICKET_IDS,
+        hasSelectedAll: props.hasSelectedAll ?? false,
+    })
 
-function makeInfiniteData(tickets: Ticket[]): InfiniteData<{ data: Ticket[] }> {
-    return {
-        pages: [{ data: tickets }],
-        pageParams: [undefined],
-    }
-}
-
-function seedViewCache(tickets: Ticket[]) {
-    testAppQueryClient.setQueryData(
-        queryKeys.views.listViewItems(VIEW_ID, undefined),
-        makeInfiniteData(tickets),
-    )
-}
-
-function getViewCache() {
-    return testAppQueryClient.getQueryData<InfiniteData<{ data: Ticket[] }>>(
-        queryKeys.views.listViewItems(VIEW_ID, undefined),
-    )
+    return { bulkAction, list }
 }
 
 function setup(props: { ticketIds?: number[]; hasSelectedAll?: boolean } = {}) {
-    const { result } = renderHook(() =>
-        useBulkJobAction({
-            viewId: VIEW_ID,
-            ticketIds: props.ticketIds ?? TICKET_IDS,
-            hasSelectedAll: props.hasSelectedAll ?? false,
-        }),
-    )
-    return { result }
+    return renderHook(() => useHooks(props))
+}
+
+async function waitForListToLoad(
+    hook: ReturnType<typeof setup>,
+    expectedTicketIds: number[],
+) {
+    await waitFor(() => {
+        expect(hook.result.current.list.isLoading).toBe(false)
+        expect(
+            hook.result.current.list.tickets.map((ticket) => ticket.id),
+        ).toEqual(expectedTicketIds)
+    })
 }
 
 describe('useBulkJobAction', () => {
     describe('createJob', () => {
         it('posts with ticket_ids when hasSelectedAll is false', async () => {
-            const { result } = setup({
+            const hook = setup({
                 ticketIds: [1, 2],
                 hasSelectedAll: false,
             })
             const waitForRequest = mockCreateJob.waitForRequest(server)
 
-            await result.current.createJob(JobType.UpdateTicket)
+            await hook.result.current.bulkAction.createJob(JobType.UpdateTicket)
 
             await waitForRequest(async (request) => {
                 const body = await request.json()
@@ -88,10 +108,10 @@ describe('useBulkJobAction', () => {
         })
 
         it('posts with view_id when hasSelectedAll is true', async () => {
-            const { result } = setup({ hasSelectedAll: true })
+            const hook = setup({ hasSelectedAll: true })
             const waitForRequest = mockCreateJob.waitForRequest(server)
 
-            await result.current.createJob(JobType.UpdateTicket)
+            await hook.result.current.bulkAction.createJob(JobType.UpdateTicket)
 
             await waitForRequest(async (request) => {
                 const body = await request.json()
@@ -104,11 +124,14 @@ describe('useBulkJobAction', () => {
         })
 
         it('includes updates in the request body when provided', async () => {
-            const { result } = setup({ ticketIds: [1] })
+            const hook = setup({ ticketIds: [1] })
             const waitForRequest = mockCreateJob.waitForRequest(server)
             const updates = { status: 'closed' as const }
 
-            await result.current.createJob(JobType.UpdateTicket, updates)
+            await hook.result.current.bulkAction.createJob(
+                JobType.UpdateTicket,
+                updates,
+            )
 
             await waitForRequest(async (request) => {
                 const body = await request.json()
@@ -116,169 +139,203 @@ describe('useBulkJobAction', () => {
             })
         })
 
-        it('optimistically patches list cache when a list patch is provided', async () => {
-            seedViewCache([
+        it('optimistically patches the loaded tickets list when a list patch is provided', async () => {
+            viewTicketsState.current = [
                 mockTicket({ id: 1, is_unread: false }),
                 mockTicket({ id: 2, is_unread: false }),
                 mockTicket({ id: 3, is_unread: false }),
-            ])
-            const { result } = setup({ ticketIds: [1, 2] })
+            ]
 
-            await result.current.createJob(
+            const hook = setup({ ticketIds: [1, 2] })
+
+            await waitForListToLoad(hook, [1, 2, 3])
+
+            await hook.result.current.bulkAction.createJob(
                 JobType.UpdateTicket,
                 { is_unread: true },
                 undefined,
                 { is_unread: true },
             )
 
-            expect(getViewCache()?.pages[0].data[0]?.is_unread).toBe(true)
-            expect(getViewCache()?.pages[0].data[1]?.is_unread).toBe(true)
-            expect(getViewCache()?.pages[0].data[2]?.is_unread).toBe(false)
+            await waitFor(() => {
+                expect(
+                    hook.result.current.list.tickets.map(
+                        (ticket) => ticket.is_unread,
+                    ),
+                ).toEqual([true, true, false])
+            })
         })
 
         it('dispatches a success notification after the job completes', async () => {
-            const { result } = setup()
+            const toastSuccessSpy = vi
+                .spyOn(toast, 'success')
+                .mockImplementation(() => '' as any)
+            const hook = setup()
 
-            await result.current.createJob(
+            await hook.result.current.bulkAction.createJob(
                 JobType.UpdateTicket,
                 undefined,
                 'Done!',
             )
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Done!')
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(toastSuccessSpy).toHaveBeenCalledWith('Done!')
             })
         })
 
-        it('uses default success message when none is provided', async () => {
-            const { result } = setup()
+        it('uses the default success message when none is provided', async () => {
+            const toastSuccessSpy = vi
+                .spyOn(toast, 'success')
+                .mockImplementation(() => '' as any)
+            const hook = setup()
 
-            await result.current.createJob(JobType.UpdateTicket)
+            await hook.result.current.bulkAction.createJob(JobType.UpdateTicket)
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Action applied successfully')
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(toastSuccessSpy).toHaveBeenCalledWith(
+                    'Action applied successfully',
+                )
             })
         })
 
-        it('dispatches error notification on failure', async () => {
+        it('dispatches an error notification on failure', async () => {
+            const toastErrorSpy = vi
+                .spyOn(toast, 'error')
+                .mockImplementation(() => '' as any)
             server.use(
                 mockCreateJobHandler(async () =>
                     HttpResponse.json(null, { status: 500 }),
                 ).handler,
             )
 
-            const { result } = setup({
+            const hook = setup({
                 ticketIds: [1],
                 hasSelectedAll: false,
             })
 
-            await result.current.createJob(JobType.UpdateTicket)
+            await hook.result.current.bulkAction.createJob(JobType.UpdateTicket)
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
+                expect(toastErrorSpy).toHaveBeenCalledWith(
                     'Failed to apply action. Please try again.',
                 )
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
-        it('rolls back the list cache when an optimistic list patch fails', async () => {
-            seedViewCache([
-                mockTicket({ id: 1, is_unread: false }),
-                mockTicket({ id: 2, is_unread: false }),
-            ])
+        it('rolls back the loaded tickets list when an optimistic patch fails', async () => {
             server.use(
                 mockCreateJobHandler(async () =>
                     HttpResponse.json(null, { status: 500 }),
                 ).handler,
             )
-            const { result } = setup({ ticketIds: [1, 2] })
+            viewTicketsState.current = [
+                mockTicket({ id: 1, is_unread: false }),
+                mockTicket({ id: 2, is_unread: false }),
+            ]
 
-            await result.current.createJob(
+            const hook = setup({ ticketIds: [1, 2] })
+
+            await waitForListToLoad(hook, [1, 2])
+
+            await hook.result.current.bulkAction.createJob(
                 JobType.UpdateTicket,
                 { is_unread: true },
                 undefined,
                 { is_unread: true },
             )
 
-            expect(getViewCache()?.pages[0].data[0]?.is_unread).toBe(false)
-            expect(getViewCache()?.pages[0].data[1]?.is_unread).toBe(false)
+            await waitFor(() => {
+                expect(
+                    hook.result.current.list.tickets.map(
+                        (ticket) => ticket.is_unread,
+                    ),
+                ).toEqual([false, false])
+            })
         })
     })
 
     describe('createJobRemovingTickets', () => {
-        it('optimistically removes selected tickets from list cache', async () => {
-            seedViewCache([
+        it('optimistically removes selected tickets from the loaded tickets list', async () => {
+            viewTicketsState.current = [
                 mockTicket({ id: 1 }),
                 mockTicket({ id: 2 }),
                 mockTicket({ id: 3 }),
-            ])
-            const { result } = setup({ ticketIds: [1, 2] })
+            ]
 
-            await result.current.createJobRemovingTickets(JobType.DeleteTicket)
+            const hook = setup({ ticketIds: [1, 2] })
 
-            expect(
-                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
-            ).toEqual([3])
+            await waitForListToLoad(hook, [1, 2, 3])
+
+            await hook.result.current.bulkAction.createJobRemovingTickets(
+                JobType.DeleteTicket,
+            )
+
+            await waitFor(() => {
+                expect(
+                    hook.result.current.list.tickets.map((ticket) => ticket.id),
+                ).toEqual([3])
+            })
         })
 
-        it('dispatches success notification', async () => {
-            const { result } = setup()
+        it('dispatches a success notification', async () => {
+            const toastSuccessSpy = vi
+                .spyOn(toast, 'success')
+                .mockImplementation(() => '' as any)
+            const hook = setup()
 
-            await result.current.createJobRemovingTickets(
+            await hook.result.current.bulkAction.createJobRemovingTickets(
                 JobType.DeleteTicket,
                 undefined,
                 'Tickets deleted',
             )
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Tickets deleted')
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(toastSuccessSpy).toHaveBeenCalledWith('Tickets deleted')
             })
         })
 
-        it('dispatches error notification on failure', async () => {
+        it('dispatches an error notification on failure', async () => {
+            const toastErrorSpy = vi
+                .spyOn(toast, 'error')
+                .mockImplementation(() => '' as any)
             server.use(
                 mockCreateJobHandler(async () =>
                     HttpResponse.json(null, { status: 500 }),
                 ).handler,
             )
+            viewTicketsState.current = [
+                mockTicket({ id: 1 }),
+                mockTicket({ id: 2 }),
+            ]
 
-            const { result } = setup({
-                ticketIds: [1, 2],
-                hasSelectedAll: false,
-            })
+            const hook = setup({ ticketIds: [1, 2] })
 
-            seedViewCache([mockTicket({ id: 1 }), mockTicket({ id: 2 })])
+            await waitForListToLoad(hook, [1, 2])
 
-            await act(() =>
-                result.current.createJobRemovingTickets(JobType.DeleteTicket),
+            await hook.result.current.bulkAction.createJobRemovingTickets(
+                JobType.DeleteTicket,
             )
 
-            expect(
-                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
-            ).toEqual([1, 2])
+            await waitFor(() => {
+                expect(
+                    hook.result.current.list.tickets.map((ticket) => ticket.id),
+                ).toEqual([1, 2])
+            })
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
+                expect(toastErrorSpy).toHaveBeenCalledWith(
                     'Failed to apply action. Please try again.',
                 )
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
         it('posts with view_id when hasSelectedAll is true', async () => {
-            const { result } = setup({ hasSelectedAll: true })
+            const hook = setup({ hasSelectedAll: true })
             const waitForRequest = mockCreateJob.waitForRequest(server)
 
-            await result.current.createJobRemovingTickets(JobType.DeleteTicket)
+            await hook.result.current.bulkAction.createJobRemovingTickets(
+                JobType.DeleteTicket,
+            )
 
             await waitForRequest(async (request) => {
                 const body = await request.json()
@@ -290,16 +347,23 @@ describe('useBulkJobAction', () => {
         })
 
         it('optimistically clears the whole visible list when hasSelectedAll is true', async () => {
-            seedViewCache([
+            viewTicketsState.current = [
                 mockTicket({ id: 1 }),
                 mockTicket({ id: 2 }),
                 mockTicket({ id: 3 }),
-            ])
-            const { result } = setup({ hasSelectedAll: true })
+            ]
 
-            await result.current.createJobRemovingTickets(JobType.DeleteTicket)
+            const hook = setup({ hasSelectedAll: true })
 
-            expect(getViewCache()?.pages[0].data).toEqual([])
+            await waitForListToLoad(hook, [1, 2, 3])
+
+            await hook.result.current.bulkAction.createJobRemovingTickets(
+                JobType.DeleteTicket,
+            )
+
+            await waitFor(() => {
+                expect(hook.result.current.list.tickets).toEqual([])
+            })
         })
     })
 })

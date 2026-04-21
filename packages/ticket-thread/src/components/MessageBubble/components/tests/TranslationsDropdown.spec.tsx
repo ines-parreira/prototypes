@@ -12,7 +12,7 @@ import { HttpResponse } from 'msw'
 
 import { mockGetTicketHandler, mockTicket } from '@gorgias/helpdesk-mocks'
 
-import { useExpandedMessages } from '../../../../contexts/ExpandedMessages'
+import * as ExpandedMessagesModule from '../../../../contexts/ExpandedMessages'
 import { render } from '../../../../tests/render.utils'
 import { server } from '../../../../tests/server'
 import { TranslationsDropdown } from '../TranslationsDropdown'
@@ -27,10 +27,6 @@ vi.mock('@repo/tickets', async () => {
     }
 })
 
-vi.mock('../../../../contexts/ExpandedMessages', () => ({
-    useExpandedMessages: vi.fn(),
-}))
-
 const mockUseCurrentUserLanguagePreferences = vi.mocked(
     useCurrentUserLanguagePreferences,
 )
@@ -38,7 +34,10 @@ const mockUseTicketMessageTranslations = vi.mocked(useTicketMessageTranslations)
 const mockUseRegenerateTicketMessageTranslations = vi.mocked(
     useRegenerateTicketMessageTranslations,
 )
-const mockUseExpandedMessages = vi.mocked(useExpandedMessages)
+const mockUseExpandedMessages = vi.spyOn(
+    ExpandedMessagesModule,
+    'useExpandedMessages',
+)
 
 const regenerateTicketMessageTranslations = vi.fn()
 

@@ -1,4 +1,4 @@
-import { act, cleanup } from '@testing-library/react'
+import { act } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -9,10 +9,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import {
-    createTestQueryClient,
-    renderHook as renderHookPrimitive,
-} from '../../tests/render.utils'
+import { renderHook } from '../../tests/render.utils'
 import { useRegenerateTicketMessageTranslations } from '../hooks/useRegenerateTicketMessageTranslations'
 import { DisplayedContent } from '../store/constants'
 import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
@@ -42,12 +39,8 @@ const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
 const mockRequestTranslation = mockRequestTicketMessageTranslationHandler()
 
 const server = setupServer()
-let queryClient = createTestQueryClient()
 
 const mockSetTicketMessageTranslationDisplay = vi.fn()
-
-const renderHook = <TResult,>(hook: () => TResult) =>
-    renderHookPrimitive(hook, { queryClient })
 
 describe('useRegenerateTicketMessageTranslations', () => {
     beforeAll(() => {
@@ -62,7 +55,6 @@ describe('useRegenerateTicketMessageTranslations', () => {
     beforeEach(() => {
         vi.clearAllMocks()
         mockSetTicketMessageTranslationDisplay.mockClear()
-        queryClient = createTestQueryClient()
         // Reset zustand store
         useTicketMessageTranslationDisplay.setState({
             ticketMessagesTranslationDisplayMap: {},
@@ -71,10 +63,7 @@ describe('useRegenerateTicketMessageTranslations', () => {
         server.use(mockGetCurrentUser.handler, mockRequestTranslation.handler)
     })
 
-    afterEach(async () => {
-        cleanup()
-        await queryClient.cancelQueries()
-        queryClient.clear()
+    afterEach(() => {
         server.resetHandlers()
     })
 

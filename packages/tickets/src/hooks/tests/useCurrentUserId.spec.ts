@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node'
 
 import { mockGetCurrentUserHandler, mockUser } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
+import { renderHook } from '../../tests/render.utils'
 import { useCurrentUserId } from '../useCurrentUserId'
 
 const currentUser = mockUser({
@@ -25,7 +25,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(mockGetCurrentUser.handler)
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

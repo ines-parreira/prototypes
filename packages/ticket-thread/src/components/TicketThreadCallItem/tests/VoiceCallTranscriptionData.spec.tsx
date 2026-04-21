@@ -7,7 +7,7 @@ import {
     mockGetVoiceCallRecordingTranscriptionResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { createTestQueryClient, render } from '../../../tests/render.utils'
+import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { VoiceCallTranscriptionData } from '../components/VoiceCallTranscriptionData'
 import { VoiceCallRecordingType } from '../models/types'
@@ -97,7 +97,6 @@ describe('VoiceCallTranscriptionData', () => {
                     recordingId={1}
                     recordingType={VoiceCallRecordingType.Recording}
                 />,
-                { queryClient: createTestQueryClient() },
             )
 
             await waitFor(() => {
@@ -123,7 +122,6 @@ describe('VoiceCallTranscriptionData', () => {
                     recordingId={1}
                     recordingType={VoiceCallRecordingType.Recording}
                 />,
-                { queryClient: createTestQueryClient() },
             )
 
             await waitFor(() => {
@@ -139,7 +137,6 @@ describe('VoiceCallTranscriptionData', () => {
                     recordingId={1}
                     recordingType={VoiceCallRecordingType.Recording}
                 />,
-                { queryClient: createTestQueryClient() },
             )
 
             await waitFor(() => {

@@ -1,53 +1,22 @@
-import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import {
-    afterAll,
-    afterEach,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    it,
-    vi,
-} from 'vitest'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 
 import {
+    mockGetUserAvailabilityHandler,
     mockUpdateUserAvailabilityHandler,
     mockUserAvailability,
 } from '@gorgias/helpdesk-mocks'
-import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { useUpdateUserAvailabilityStatus } from '../useUpdateUserAvailabilityStatus'
-
-const queryClient = createTestQueryClient()
-
-const renderUseUpdateUserAvailabilityStatus = (
-    callback = useUpdateUserAvailabilityStatus,
-) => {
-    return renderHook(callback, { queryClient })
-}
-
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueries>(
-        '@gorgias/helpdesk-queries',
-    )
-    return {
-        ...actual,
-        useUpdateUserAvailability: vi.fn(),
-    }
-})
+import { useUserAvailability } from '../useUserAvailability'
 
 const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
-})
-
-beforeEach(() => {
-    queryClient.clear()
-    vi.clearAllMocks()
 })
 
 afterEach(() => {
@@ -61,19 +30,6 @@ afterAll(() => {
 describe('useUpdateUserAvailabilityStatus', () => {
     const userId = 123
 
-    beforeEach(async () => {
-        const actual = await vi.importActual<typeof helpdeskQueries>(
-            '@gorgias/helpdesk-queries',
-        )
-        vi.mocked(helpdeskQueries.useUpdateUserAvailability).mockImplementation(
-            actual.useUpdateUserAvailability,
-        )
-    })
-
-    afterEach(() => {
-        vi.clearAllMocks()
-    })
-
     it('updates availability status to available', async () => {
         const mockUpdatedAvailability = mockUserAvailability({
             user_id: userId,
@@ -86,7 +42,7 @@ describe('useUpdateUserAvailabilityStatus', () => {
 
         server.use(mockUpdateUserAvailability.handler)
 
-        const { result } = renderUseUpdateUserAvailabilityStatus()
+        const { result } = renderHook(() => useUpdateUserAvailabilityStatus())
 
         await result.current.updateStatusAsync(userId, 'available')
 
@@ -109,7 +65,7 @@ describe('useUpdateUserAvailabilityStatus', () => {
 
         server.use(mockUpdateUserAvailability.handler)
 
-        const { result } = renderUseUpdateUserAvailabilityStatus()
+        const { result } = renderHook(() => useUpdateUserAvailabilityStatus())
 
         await result.current.updateStatusAsync(userId, 'unavailable')
 
@@ -134,7 +90,7 @@ describe('useUpdateUserAvailabilityStatus', () => {
 
         server.use(mockUpdateUserAvailability.handler)
 
-        const { result } = renderUseUpdateUserAvailabilityStatus()
+        const { result } = renderHook(() => useUpdateUserAvailabilityStatus())
 
         await result.current.updateStatusAsync(userId, customStatusId)
 
@@ -153,12 +109,9 @@ describe('useUpdateUserAvailabilityStatus', () => {
             user_id: userId,
             user_status: 'unavailable',
         })
-
-        const queryKey =
-            helpdeskQueries.queryKeys.userAvailability.getUserAvailability(
-                userId,
-            )
-        queryClient.setQueryData(queryKey, { data: initialAvailability })
+        const mockGetUserAvailability = mockGetUserAvailabilityHandler(
+            async () => HttpResponse.json(initialAvailability),
+        )
 
         const mockUpdateUserAvailability = mockUpdateUserAvailabilityHandler(
             async () =>
@@ -170,23 +123,38 @@ describe('useUpdateUserAvailabilityStatus', () => {
                 ),
         )
 
-        server.use(mockUpdateUserAvailability.handler)
+        server.use(
+            mockGetUserAvailability.handler,
+            mockUpdateUserAvailability.handler,
+        )
 
-        const { result } = renderUseUpdateUserAvailabilityStatus()
+        const { result } = renderHook(() => {
+            const mutation = useUpdateUserAvailabilityStatus()
+            const availability = useUserAvailability({ userId })
+
+            return {
+                mutation,
+                availability,
+            }
+        })
+
+        await waitFor(() => {
+            expect(result.current.availability.availability).toEqual(
+                initialAvailability,
+            )
+        })
 
         await expect(
-            result.current.updateStatusAsync(userId, 'available'),
+            result.current.mutation.updateStatusAsync(userId, 'available'),
         ).rejects.toThrow()
 
         await waitFor(() => {
-            expect(result.current.isError).toBe(true)
+            expect(result.current.mutation.isError).toBe(true)
         })
 
-        expect(result.current.error).toBeTruthy()
-
-        const cacheData = queryClient.getQueryData(queryKey) as {
-            data: typeof initialAvailability
-        }
-        expect(cacheData?.data).toEqual(initialAvailability)
+        expect(result.current.mutation.error).toBeTruthy()
+        expect(result.current.availability.availability).toEqual(
+            initialAvailability,
+        )
     })
 })

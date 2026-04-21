@@ -14,10 +14,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import {
-    createTestQueryClient,
-    render as renderPrimitive,
-} from '../../../tests/render.utils'
+import { render as renderPrimitive } from '../../../tests/render.utils'
 import type { CurrentUser } from '../../hooks/useCurrentUserLanguagePreferences'
 import { DisplayedContent } from '../../store/constants'
 import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
@@ -79,12 +76,11 @@ const mockTranslation = mockTicketTranslationCompact({
     ticket_id: testTicket.id,
     subject: 'Translated subject',
 })
-let queryClient = createTestQueryClient()
 
 const render = (
     element: ReactElement,
-    options?: Omit<Parameters<typeof renderPrimitive>[1], 'queryClient'>,
-) => renderPrimitive(element, { ...options, queryClient })
+    options?: Parameters<typeof renderPrimitive>[1],
+) => renderPrimitive(element, options)
 
 const mockListTicketTranslations = mockListTicketTranslationsHandler(
     async ({ data }) =>
@@ -100,7 +96,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     mockUseFlag.mockReturnValue(true)
-    queryClient = createTestQueryClient()
     useTicketMessageTranslationDisplay.setState({
         ticketMessagesTranslationDisplayMap: {},
         allMessageDisplayState: DisplayedContent.Translated,
@@ -113,11 +108,6 @@ beforeEach(() => {
 
 afterEach(async () => {
     cleanup()
-    await waitFor(() => {
-        expect(queryClient.isFetching()).toBe(0)
-    })
-    await queryClient.cancelQueries()
-    queryClient.clear()
     server.resetHandlers()
     vi.clearAllMocks()
 })

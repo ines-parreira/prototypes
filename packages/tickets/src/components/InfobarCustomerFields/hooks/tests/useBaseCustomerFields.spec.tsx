@@ -7,17 +7,13 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { TicketCustomerChannel } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { useBaseCustomerFields } from '../useBaseCustomerFields'
 
 const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
-})
-
-beforeEach(() => {
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

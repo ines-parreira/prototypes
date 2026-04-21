@@ -11,7 +11,7 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { render } from '../../../../tests/render.utils'
 import { UserAssignee } from '../UserAssignee'
 
 let capturedActions: Record<string, { action: (event: Event) => void }> = {}
@@ -90,7 +90,6 @@ beforeEach(() => {
         mockListUsers.handler,
         mockUpdateTicket.handler,
     )
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

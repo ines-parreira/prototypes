@@ -1,32 +1,16 @@
-import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
+import { renderHook } from '@repo/testing/vitest'
 import { act, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
-    ObjectType,
-    queryKeys,
-    SourceType,
-} from '@gorgias/ecommerce-storage-queries'
+    mockEcommerceData,
+    mockGetEcommerceDataByExternalIdHandler,
+} from '@gorgias/ecommerce-storage-mocks'
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
+import { server } from '../../../../tests/server'
+import { useGetShopper } from '../useGetShopper'
 import { useUpdateShopifyCustomerTags } from '../useUpdateShopifyCustomerTags'
-
-const queryClient = createTestQueryClient()
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const mockParams = {
     integrationId: 1,
@@ -35,16 +19,43 @@ const mockParams = {
     tagsList: 'VIP, Wholesale',
 }
 
+const mockShopper = mockEcommerceData({
+    external_id: mockParams.externalId,
+    data: {
+        tags: 'OldTag',
+    },
+})
+
+function renderUpdateShopifyCustomerTags() {
+    return renderHook(() => useUpdateShopifyCustomerTags())
+}
+
+function renderUpdateShopifyCustomerTagsWithShopper() {
+    return renderHook(() => ({
+        updateShopifyCustomerTags: useUpdateShopifyCustomerTags(),
+        shopper: useGetShopper({
+            integrationId: mockParams.integrationId,
+            externalId: mockParams.externalId,
+        }),
+    }))
+}
+
 describe('useUpdateShopifyCustomerTags', () => {
+    beforeEach(() => {
+        const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler(
+            async () => HttpResponse.json(mockShopper),
+        )
+
+        server.use(mockGetEcommerceData.handler)
+    })
+
     it('calls mutation with correct action body', async () => {
         const executeActionMock = mockExecuteActionHandler()
         server.use(executeActionMock.handler)
 
         const waitForRequest = executeActionMock.waitForRequest(server)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
-            queryClient,
-        })
+        const { result } = renderUpdateShopifyCustomerTags()
 
         act(() => {
             result.current.mutate(mockParams)
@@ -65,9 +76,7 @@ describe('useUpdateShopifyCustomerTags', () => {
 
         const waitForRequest = executeActionMock.waitForRequest(server)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
-            queryClient,
-        })
+        const { result } = renderUpdateShopifyCustomerTags()
 
         act(() => {
             result.current.mutate(mockParams)
@@ -88,9 +97,7 @@ describe('useUpdateShopifyCustomerTags', () => {
 
         const waitForRequest = executeActionMock.waitForRequest(server)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
-            queryClient,
-        })
+        const { result } = renderUpdateShopifyCustomerTags()
 
         act(() => {
             result.current.mutate({
@@ -111,9 +118,7 @@ describe('useUpdateShopifyCustomerTags', () => {
 
         const waitForRequest = executeActionMock.waitForRequest(server)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
-            queryClient,
-        })
+        const { result } = renderUpdateShopifyCustomerTags()
 
         act(() => {
             result.current.mutate(mockParams)
@@ -129,36 +134,22 @@ describe('useUpdateShopifyCustomerTags', () => {
         const executeActionMock = mockExecuteActionHandler()
         server.use(executeActionMock.handler)
 
-        const queryKey = queryKeys.ecommerceData.getEcommerceDataByExternalId(
-            ObjectType.Shopper,
-            SourceType.Shopify,
-            '1',
-            'ext_456',
-        )
+        const { result } = renderUpdateShopifyCustomerTagsWithShopper()
 
-        const initialData = {
-            data: {
-                data: {
-                    tags: 'OldTag',
-                },
-            },
-        }
-
-        queryClient.setQueryData(queryKey, initialData)
-
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
-            queryClient,
+        await waitFor(() => {
+            expect(result.current.shopper.isLoadingShopper).toBe(false)
         })
 
+        expect(result.current.shopper.shopper?.data.tags).toBe('OldTag')
+
         act(() => {
-            result.current.mutate(mockParams)
+            result.current.updateShopifyCustomerTags.mutate(mockParams)
         })
 
         await waitFor(() => {
-            const cachedData = queryClient.getQueryData(queryKey) as {
-                data: { data: { tags: string } }
-            }
-            expect(cachedData.data.data.tags).toBe('VIP, Wholesale')
+            expect(result.current.shopper.shopper?.data.tags).toBe(
+                'VIP, Wholesale',
+            )
         })
     })
 
@@ -168,38 +159,22 @@ describe('useUpdateShopifyCustomerTags', () => {
         )
         server.use(errorHandler)
 
-        const queryKey = queryKeys.ecommerceData.getEcommerceDataByExternalId(
-            ObjectType.Shopper,
-            SourceType.Shopify,
-            '1',
-            'ext_456',
-        )
+        const { result } = renderUpdateShopifyCustomerTagsWithShopper()
 
-        const initialData = {
-            data: {
-                data: {
-                    tags: 'OldTag',
-                },
-            },
-        }
-
-        queryClient.setQueryData(queryKey, initialData)
-
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
-            queryClient,
+        await waitFor(() => {
+            expect(result.current.shopper.isLoadingShopper).toBe(false)
         })
 
         act(() => {
-            result.current.mutate(mockParams)
+            result.current.updateShopifyCustomerTags.mutate(mockParams)
         })
 
         await waitFor(() => {
-            expect(result.current.isError).toBe(true)
+            expect(result.current.updateShopifyCustomerTags.isError).toBe(true)
         })
 
-        const cachedData = queryClient.getQueryData(queryKey) as {
-            data: { data: { tags: string } }
-        }
-        expect(cachedData.data.data.tags).toBe('OldTag')
+        await waitFor(() => {
+            expect(result.current.shopper.shopper?.data.tags).toBe('OldTag')
+        })
     })
 })

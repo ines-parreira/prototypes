@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 
-import { cleanup, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -26,42 +26,24 @@ import {
     ObjectType,
 } from '@gorgias/helpdesk-types'
 
-import {
-    createTestQueryClient,
-    render as renderPrimitive,
-} from '../../../tests/render.utils'
+import { render as renderPrimitive } from '../../../tests/render.utils'
 import { InfobarCustomCustomerFields } from '../InfobarCustomCustomerFields'
 
 const server = setupServer()
-let queryClient = createTestQueryClient()
 
-const render = (element: ReactElement) =>
-    renderPrimitive(element, { queryClient })
+const render = (element: ReactElement) => renderPrimitive(element)
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
-afterEach(async () => {
-    cleanup()
-    await waitForQueriesSettled()
-    await queryClient.cancelQueries()
-    queryClient.clear()
+afterEach(() => {
     server.resetHandlers()
 })
 
 afterAll(() => {
     server.close()
 })
-
-const waitForQueriesSettled = async () => {
-    await waitFor(
-        () => {
-            expect(queryClient.isFetching()).toBe(0)
-        },
-        { timeout: 5000 },
-    )
-}
 
 const customerId = 123
 
@@ -144,10 +126,6 @@ const TestComponent = () => {
 }
 
 describe('InfobarCustomCustomerFields', () => {
-    beforeEach(() => {
-        queryClient = createTestQueryClient()
-    })
-
     it('should render custom fields', async () => {
         const textField = createTextField()
         const numberField = createNumberField()
@@ -182,9 +160,7 @@ describe('InfobarCustomCustomerFields', () => {
 
         render(<TestComponent />)
 
-        await waitForQueriesSettled()
-
-        expect(screen.getByText('Company')).toBeInTheDocument()
+        expect(await screen.findByText('Company')).toBeInTheDocument()
         expect(screen.getByText('Age')).toBeInTheDocument()
         expect(screen.getByText('Status')).toBeInTheDocument()
     })

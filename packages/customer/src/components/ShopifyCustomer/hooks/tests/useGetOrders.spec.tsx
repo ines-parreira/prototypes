@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockEcommerceData,
@@ -10,22 +9,9 @@ import {
 } from '@gorgias/ecommerce-storage-mocks'
 import { ObjectType } from '@gorgias/ecommerce-storage-queries'
 
+import { server } from '../../../../tests/server'
 import type { OrderData } from '../../types'
 import { useListShopifyOrders } from '../useListShopifyOrders'
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
-})
 
 const SHOPPER_IDENTITY_ID = '01956de4-e1ff-7523-ac68-a00ca2dd6e3f'
 

@@ -1,224 +1,330 @@
-import { toast } from '@gorgias/axiom'
-import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
-import {
-    queryKeys,
-    useCreateAccountSetting,
-    useUpdateAccountSetting,
-} from '@gorgias/helpdesk-queries'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { createTestQueryClient, renderHook } from '../../../tests/render.utils'
+import { toast } from '@gorgias/axiom'
+import {
+    mockCreateAccountSettingHandler,
+    mockListAccountSettingsHandler,
+    mockUpdateAccountSettingHandler,
+} from '@gorgias/helpdesk-mocks'
+import { useListAccountSettings } from '@gorgias/helpdesk-queries'
+
+import { renderHook } from '../../../tests/render.utils'
 import { useUpdateDefaultViewsVisibility } from '../useUpdateDefaultViewsVisibility'
 
-vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
-    const original = await importOriginal<typeof HelpdeskQueries>()
-    return {
-        ...original,
-        useUpdateAccountSetting: vi.fn(),
-        useCreateAccountSetting: vi.fn(),
-    }
+const server = setupServer()
+
+const listState: {
+    current: Array<{
+        id?: number
+        type: string
+        data: Record<string, unknown>
+    }>
+} = {
+    current: [],
+}
+const requestCount = {
+    list: 0,
+}
+
+const mockListAccountSettings = mockListAccountSettingsHandler(async () => {
+    requestCount.list += 1
+
+    return HttpResponse.json({
+        data: listState.current,
+        meta: {
+            next_cursor: null,
+            prev_cursor: null,
+            total_resources: listState.current.length,
+        },
+        object: 'list',
+        uri: '/api/account-settings',
+    } as any)
 })
 
-const mockUseUpdateAccountSetting = vi.mocked(useUpdateAccountSetting)
-const mockUseCreateAccountSetting = vi.mocked(useCreateAccountSetting)
+const mockCreateAccountSetting = mockCreateAccountSettingHandler(async () =>
+    HttpResponse.json({
+        id: 42,
+        type: 'views-visibility',
+        data: { hidden_views: [1, 2] },
+    }),
+)
+
+const mockUpdateAccountSetting = mockUpdateAccountSettingHandler(async () =>
+    HttpResponse.json({
+        id: 42,
+        type: 'views-visibility',
+        data: { hidden_views: [4] },
+    }),
+)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    requestCount.list = 0
+    listState.current = [
+        {
+            id: 1,
+            type: 'other-setting',
+            data: {},
+        },
+    ]
+    server.use(
+        mockListAccountSettings.handler,
+        mockCreateAccountSetting.handler,
+        mockUpdateAccountSetting.handler,
+    )
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+function useHooks() {
+    const settings = useListAccountSettings({ type: 'views-visibility' })
+    const updateVisibility = useUpdateDefaultViewsVisibility()
+    return { settings, updateVisibility }
+}
+
+type UseHooksResult = ReturnType<typeof useHooks>
+
+function getSettings(result: { current: UseHooksResult }) {
+    return result.current.settings.data?.data.data ?? []
+}
 
 describe('useUpdateDefaultViewsVisibility', () => {
-    const mockUpdate = vi.fn()
-    const mockCreate = vi.fn()
+    it('calls updateAccountSetting when id is provided', async () => {
+        const { result } = renderHook(() => useHooks())
+        const waitForRequest = mockUpdateAccountSetting.waitForRequest(server)
 
-    beforeEach(() => {
-        mockUseUpdateAccountSetting.mockReturnValue({
-            mutate: mockUpdate,
-        } as any)
-        mockUseCreateAccountSetting.mockReturnValue({
-            mutate: mockCreate,
-        } as any)
-    })
-
-    it('should call updateAccountSetting when id is provided', () => {
-        const { result } = renderHook(() => useUpdateDefaultViewsVisibility())
-
-        result.current({
+        result.current.updateVisibility({
             id: 42,
             data: { type: 'views-visibility', data: { hidden_views: [1] } },
         })
 
-        expect(mockUpdate).toHaveBeenCalledWith({
-            id: 42,
-            data: { type: 'views-visibility', data: { hidden_views: [1] } },
+        await waitForRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toEqual({
+                type: 'views-visibility',
+                data: { hidden_views: [1] },
+            })
         })
-        expect(mockCreate).not.toHaveBeenCalled()
     })
 
-    it('should call createAccountSetting when id is undefined', () => {
-        const { result } = renderHook(() => useUpdateDefaultViewsVisibility())
+    it('calls createAccountSetting when id is undefined', async () => {
+        const { result } = renderHook(() => useHooks())
+        const waitForRequest = mockCreateAccountSetting.waitForRequest(server)
 
-        result.current({
+        result.current.updateVisibility({
             id: undefined,
             data: { type: 'views-visibility', data: { hidden_views: [3, 5] } },
         })
 
-        expect(mockCreate).toHaveBeenCalledWith({
-            data: { type: 'views-visibility', data: { hidden_views: [3, 5] } },
+        await waitForRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toEqual({
+                type: 'views-visibility',
+                data: { hidden_views: [3, 5] },
+            })
         })
-        expect(mockUpdate).not.toHaveBeenCalled()
     })
 
-    describe('createVisibility', () => {
-        const queryKey = queryKeys.account.listAccountSettings({
-            type: 'views-visibility',
-        })
-        const seedCacheData = {
-            data: { data: [{ id: 1, type: 'other-setting', data: {} }] },
-        }
-        let capturedMutation: any
-
-        beforeEach(() => {
-            mockUseCreateAccountSetting.mockImplementation((options) => {
-                capturedMutation = options!.mutation
-                return { mutate: mockCreate } as any
-            })
+    it('optimistically adds the new views-visibility setting and keeps existing entries', async () => {
+        let resolveRequest: (() => void) | undefined
+        const pendingRequest = new Promise<void>((resolve) => {
+            resolveRequest = resolve
         })
 
-        describe('onMutate', () => {
-            it('should cancel pending queries for account settings', async () => {
-                const queryClient = createTestQueryClient()
-                const cancelSpy = vi.spyOn(queryClient, 'cancelQueries')
-                renderHook(() => useUpdateDefaultViewsVisibility(), {
-                    queryClient,
-                })
-
-                await capturedMutation.onMutate({
-                    data: {
-                        type: 'views-visibility',
-                        data: { hidden_views: [] },
+        server.use(
+            mockCreateAccountSettingHandler(async () => {
+                await pendingRequest
+                listState.current = [
+                    {
+                        id: 1,
+                        type: 'other-setting',
+                        data: {},
                     },
-                })
-
-                expect(cancelSpy).toHaveBeenCalledWith({ queryKey })
-            })
-
-            it('should optimistically add the new views-visibility setting to the cache', async () => {
-                const queryClient = createTestQueryClient()
-                queryClient.setQueryData(queryKey, seedCacheData)
-                renderHook(() => useUpdateDefaultViewsVisibility(), {
-                    queryClient,
-                })
-
-                await capturedMutation.onMutate({
-                    data: {
+                    {
+                        id: 42,
                         type: 'views-visibility',
                         data: { hidden_views: [1, 2] },
                     },
-                })
+                ]
 
-                const result =
-                    queryClient.getQueryData<typeof seedCacheData>(queryKey)
-                expect(result?.data.data).toContainEqual({
+                return HttpResponse.json({
+                    id: 42,
                     type: 'views-visibility',
                     data: { hidden_views: [1, 2] },
                 })
-            })
+            }).handler,
+        )
 
-            it('should preserve existing settings when adding the new entry', async () => {
-                const queryClient = createTestQueryClient()
-                queryClient.setQueryData(queryKey, seedCacheData)
-                renderHook(() => useUpdateDefaultViewsVisibility(), {
-                    queryClient,
-                })
+        const { result } = renderHook(() => useHooks())
 
-                await capturedMutation.onMutate({
-                    data: {
-                        type: 'views-visibility',
-                        data: { hidden_views: [] },
-                    },
-                })
+        await waitFor(() => {
+            expect(getSettings(result)).toEqual(listState.current)
+        })
 
-                const result =
-                    queryClient.getQueryData<typeof seedCacheData>(queryKey)
-                expect(result?.data.data).toContainEqual({
+        result.current.updateVisibility({
+            id: undefined,
+            data: { type: 'views-visibility', data: { hidden_views: [1, 2] } },
+        })
+
+        await waitFor(() => {
+            expect(getSettings(result)).toEqual([
+                {
                     id: 1,
                     type: 'other-setting',
                     data: {},
-                })
+                },
+                {
+                    type: 'views-visibility',
+                    data: { hidden_views: [1, 2] },
+                },
+            ])
+        })
+
+        resolveRequest?.()
+
+        await waitFor(() => {
+            expect(getSettings(result)).toEqual([
+                {
+                    id: 1,
+                    type: 'other-setting',
+                    data: {},
+                },
+                {
+                    id: 42,
+                    type: 'views-visibility',
+                    data: { hidden_views: [1, 2] },
+                },
+            ])
+        })
+    })
+
+    it('rolls back the cache and shows an error toast when create fails', async () => {
+        const toastErrorSpy = vi
+            .spyOn(toast, 'error')
+            .mockImplementation(() => '' as any)
+        let resolveRequest: (() => void) | undefined
+        const pendingRequest = new Promise<void>((resolve) => {
+            resolveRequest = resolve
+        })
+
+        server.use(
+            mockCreateAccountSettingHandler(async () => {
+                await pendingRequest
+                return new HttpResponse(null, { status: 500 })
+            }).handler,
+        )
+
+        const { result } = renderHook(() => useHooks())
+
+        await waitFor(() => {
+            expect(getSettings(result)).toEqual(listState.current)
+        })
+
+        result.current.updateVisibility({
+            id: undefined,
+            data: { type: 'views-visibility', data: { hidden_views: [7] } },
+        })
+
+        await waitFor(() => {
+            expect(getSettings(result)).toContainEqual({
+                type: 'views-visibility',
+                data: { hidden_views: [7] },
             })
+        })
 
-            it('should return previous data for rollback', async () => {
-                const queryClient = createTestQueryClient()
-                queryClient.setQueryData(queryKey, seedCacheData)
-                renderHook(() => useUpdateDefaultViewsVisibility(), {
-                    queryClient,
-                })
+        resolveRequest?.()
 
-                const context = await capturedMutation.onMutate({
-                    data: {
+        await waitFor(() => {
+            expect(getSettings(result)).toEqual(listState.current)
+        })
+
+        expect(toastErrorSpy).toHaveBeenCalledWith(
+            'Failed to update views visibility',
+        )
+    })
+
+    it('optimistically updates an existing setting and refetches the settled server data', async () => {
+        listState.current = [
+            {
+                id: 42,
+                type: 'views-visibility',
+                data: { hidden_views: [1] },
+            },
+        ]
+        let resolveRequest: (() => void) | undefined
+        const pendingRequest = new Promise<void>((resolve) => {
+            resolveRequest = resolve
+        })
+
+        server.use(
+            mockUpdateAccountSettingHandler(async () => {
+                await pendingRequest
+                listState.current = [
+                    {
+                        id: 42,
                         type: 'views-visibility',
-                        data: { hidden_views: [] },
+                        data: { hidden_views: [4] },
                     },
+                ]
+
+                return HttpResponse.json({
+                    id: 42,
+                    type: 'views-visibility',
+                    data: { hidden_views: [4] },
                 })
+            }).handler,
+        )
 
-                expect(context.previousData).toEqual(seedCacheData)
-            })
+        const { result } = renderHook(() => useHooks())
 
-            it('should not modify cache when no existing data is present', async () => {
-                const queryClient = createTestQueryClient()
-                renderHook(() => useUpdateDefaultViewsVisibility(), {
-                    queryClient,
-                })
-
-                await capturedMutation.onMutate({
-                    data: {
-                        type: 'views-visibility',
-                        data: { hidden_views: [] },
-                    },
-                })
-
-                expect(queryClient.getQueryData(queryKey)).toBeUndefined()
-            })
+        await waitFor(() => {
+            expect(getSettings(result)).toEqual([
+                {
+                    id: 42,
+                    type: 'views-visibility',
+                    data: { hidden_views: [1] },
+                },
+            ])
         })
 
-        describe('onError', () => {
-            it('should rollback the cache to the previous data', () => {
-                const queryClient = createTestQueryClient()
-                renderHook(() => useUpdateDefaultViewsVisibility(), {
-                    queryClient,
-                })
-
-                const previousData = { data: { data: [] } }
-                capturedMutation.onError(
-                    new Error('Network error'),
-                    {},
-                    { previousData },
-                )
-
-                expect(queryClient.getQueryData(queryKey)).toEqual(previousData)
-            })
-
-            it('should show an error toast', () => {
-                const toastErrorSpy = vi
-                    .spyOn(toast, 'error')
-                    .mockImplementation(() => '' as any)
-                renderHook(() => useUpdateDefaultViewsVisibility())
-
-                capturedMutation.onError(new Error('Network error'), {}, {})
-
-                expect(toastErrorSpy).toHaveBeenCalledWith(
-                    'Failed to update views visibility',
-                )
-            })
+        result.current.updateVisibility({
+            id: 42,
+            data: { type: 'views-visibility', data: { hidden_views: [2, 3] } },
         })
 
-        describe('onSettled', () => {
-            it('should invalidate the account settings query', () => {
-                const queryClient = createTestQueryClient()
-                const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries')
-                renderHook(() => useUpdateDefaultViewsVisibility(), {
-                    queryClient,
-                })
-
-                capturedMutation.onSettled()
-
-                expect(invalidateSpy).toHaveBeenCalledWith({ queryKey })
-            })
+        await waitFor(() => {
+            expect(getSettings(result)).toEqual([
+                {
+                    id: 42,
+                    type: 'views-visibility',
+                    data: { hidden_views: [2, 3] },
+                },
+            ])
         })
+
+        resolveRequest?.()
+
+        await waitFor(() => {
+            expect(getSettings(result)).toEqual([
+                {
+                    id: 42,
+                    type: 'views-visibility',
+                    data: { hidden_views: [4] },
+                },
+            ])
+        })
+
+        expect(requestCount.list).toBeGreaterThan(1)
     })
 })

@@ -1,3 +1,4 @@
+import { QueryClient } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 
 import {
@@ -6,10 +7,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
 
-import {
-    createTestQueryClient,
-    renderHook,
-} from '../../../../tests/render.utils'
+import { renderHook } from '../../../../tests/render.utils'
 import { useMergeCustomers } from '../useMergeCustomers'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -37,16 +35,11 @@ describe('useMergeCustomers', () => {
             isLoading: false,
         } as any)
 
-        const queryClient = createTestQueryClient()
-
         const invalidateQueries = vi
-            .spyOn(queryClient, 'invalidateQueries')
+            .spyOn(QueryClient.prototype, 'invalidateQueries')
             .mockResolvedValue(undefined)
-        const removeQueries = vi.spyOn(queryClient, 'removeQueries')
-
-        const { result } = renderHook(() => useMergeCustomers(123), {
-            queryClient,
-        })
+        const removeQueries = vi.spyOn(QueryClient.prototype, 'removeQueries')
+        const { result } = renderHook(() => useMergeCustomers(123))
 
         const data = {
             name: 'Merged Name',
@@ -88,11 +81,7 @@ describe('useMergeCustomers', () => {
             isLoading: false,
         } as any)
 
-        const queryClient = createTestQueryClient()
-
-        const { result } = renderHook(() => useMergeCustomers(123), {
-            queryClient,
-        })
+        const { result } = renderHook(() => useMergeCustomers(123))
 
         await expect(
             result.current.mergeCustomers(
