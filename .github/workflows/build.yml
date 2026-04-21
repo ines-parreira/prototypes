@@ -37,6 +37,10 @@ on:
         type: string
         required: false
         default: ''
+    secrets:
+      GH_READ_PACKAGES_TOKEN:
+        description: Read token for GitHub Packages dependencies
+        required: true
 
 env:
   GH_TOKEN: ${{ github.token }}
