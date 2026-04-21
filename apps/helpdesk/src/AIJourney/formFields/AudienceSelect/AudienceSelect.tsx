@@ -114,6 +114,7 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                 render={({ field }) => (
                     <MultiSelectField
                         isSearchable
+                        shouldFlip={false}
                         items={sections}
                         isOpen={isMultiSelectOpen}
                         onOpenChange={setIsMultiSelectOpen}

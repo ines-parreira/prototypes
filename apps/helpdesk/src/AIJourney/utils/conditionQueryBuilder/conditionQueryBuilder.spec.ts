@@ -55,6 +55,7 @@ const baseCondition: ConditionState = {
     value: 'subscribed',
     whereClause: null,
     purchaseDateClause: null,
+    isWhereVisible: false,
 }
 
 const baseAggregateCondition: ConditionState = {
@@ -65,6 +66,7 @@ const baseAggregateCondition: ConditionState = {
     value: 5,
     whereClause: null,
     purchaseDateClause: null,
+    isWhereVisible: false,
 }
 
 describe('buildFullQuery', () => {
@@ -417,6 +419,7 @@ describe('buildFullQuery', () => {
                     value: 'subscribed',
                 },
                 purchaseDateClause: null,
+                isWhereVisible: false,
             }
             expect(buildFullQuery([condition], schema)).toBe(
                 'gt(shopper.orders_count(), 3)',
@@ -566,6 +569,7 @@ describe('parseConditionsQuery', () => {
                 value: 'subscribed',
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -582,6 +586,7 @@ describe('parseConditionsQuery', () => {
                 value: 5,
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -598,6 +603,7 @@ describe('parseConditionsQuery', () => {
                 value: -3,
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -614,6 +620,7 @@ describe('parseConditionsQuery', () => {
                 value: 'vip',
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -633,6 +640,7 @@ describe('parseConditionsQuery', () => {
                 value: ['vip', 'wholesale', 'new-customer'],
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -649,6 +657,7 @@ describe('parseConditionsQuery', () => {
                 value: null,
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -668,6 +677,7 @@ describe('parseConditionsQuery', () => {
                 value: 'subscribed',
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
             {
                 object: 'shopper',
@@ -677,6 +687,7 @@ describe('parseConditionsQuery', () => {
                 value: 5,
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -696,6 +707,7 @@ describe('parseConditionsQuery', () => {
                         value: null,
                     },
                     purchaseDateClause: null,
+                    isWhereVisible: true,
                 },
             ],
         )
@@ -720,6 +732,7 @@ describe('parseConditionsQuery', () => {
                     value: 'subscribed',
                 },
                 purchaseDateClause: null,
+                isWhereVisible: true,
             },
         ])
     })
@@ -743,6 +756,7 @@ describe('parseConditionsQuery', () => {
                     value: null,
                 },
                 purchaseDateClause: null,
+                isWhereVisible: true,
             },
         ])
     })
@@ -759,6 +773,7 @@ describe('parseConditionsQuery', () => {
                 value: 5,
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -775,6 +790,7 @@ describe('parseConditionsQuery', () => {
                 value: 3,
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -791,6 +807,7 @@ describe('parseConditionsQuery', () => {
                 value: null,
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -818,6 +835,7 @@ describe('parseConditionsQuery', () => {
                     value: null,
                     whereClause: null,
                     purchaseDateClause: null,
+                    isWhereVisible: false,
                 },
             ],
         )
@@ -835,6 +853,7 @@ describe('parseConditionsQuery', () => {
                 value: null,
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -854,6 +873,7 @@ describe('parseConditionsQuery', () => {
                 value: "Women's K1 Flux",
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -873,6 +893,7 @@ describe('parseConditionsQuery', () => {
                 value: ["Women's K1 Flux", "Men's T-Shirt"],
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
     })
@@ -928,8 +949,59 @@ describe('parseConditionsQuery', () => {
                 value: 'active',
                 whereClause: null,
                 purchaseDateClause: null,
+                isWhereVisible: false,
             },
         ])
+    })
+
+    describe('isWhereVisible', () => {
+        it('should be true when the aggregate has a parsed where clause', () => {
+            const [condition] = parseConditionsQuery(
+                "gt(shopper.orders(eq(sms_state, 'subscribed')), 5)",
+                schema,
+            )
+            expect(condition.isWhereVisible).toBe(true)
+        })
+
+        it('should be true when the aggregate defaults to the first field (empty parens, supports_where)', () => {
+            const [condition] = parseConditionsQuery(
+                'gt(shopper.orders(), 5)',
+                schema,
+            )
+            expect(condition.isWhereVisible).toBe(true)
+        })
+
+        it('should be false when the aggregate has no parseable where content', () => {
+            const [condition] = parseConditionsQuery(
+                'gt(shopper.orders(invalid), 5)',
+                schema,
+            )
+            expect(condition.isWhereVisible).toBe(false)
+        })
+
+        it('should be false when the aggregate does not support where', () => {
+            const [condition] = parseConditionsQuery(
+                'gt(shopper.orders_count(), 3)',
+                schema,
+            )
+            expect(condition.isWhereVisible).toBe(false)
+        })
+
+        it('should be false for regular (non-aggregate) conditions', () => {
+            const [condition] = parseConditionsQuery(
+                "eq(shopper.sms_state, 'subscribed')",
+                schema,
+            )
+            expect(condition.isWhereVisible).toBe(false)
+        })
+
+        it('should be false when only a purchase_date clause is inside the aggregate', () => {
+            const [condition] = parseConditionsQuery(
+                "gt(shopper.orders(gt(purchase_date, '30d')), 5)",
+                schema,
+            )
+            expect(condition.isWhereVisible).toBe(false)
+        })
     })
 
     describe('purchase_date merging', () => {
@@ -952,6 +1024,7 @@ describe('parseConditionsQuery', () => {
                         value: null,
                     },
                     purchaseDateClause: { operator: 'gt', value: '30d' },
+                    isWhereVisible: true,
                 },
             ])
         })
@@ -975,6 +1048,7 @@ describe('parseConditionsQuery', () => {
                         value: null,
                     },
                     purchaseDateClause: { operator: 'gt', value: '90d' },
+                    isWhereVisible: true,
                 },
             ])
         })
@@ -998,6 +1072,7 @@ describe('parseConditionsQuery', () => {
                         value: null,
                     },
                     purchaseDateClause: null,
+                    isWhereVisible: true,
                 },
                 {
                     object: 'shopper',
@@ -1007,6 +1082,7 @@ describe('parseConditionsQuery', () => {
                     value: 'subscribed',
                     whereClause: null,
                     purchaseDateClause: null,
+                    isWhereVisible: false,
                 },
             ])
         })
@@ -1026,6 +1102,7 @@ describe('parseConditionsQuery', () => {
                     value: 'subscribed',
                     whereClause: null,
                     purchaseDateClause: null,
+                    isWhereVisible: false,
                 },
                 {
                     object: 'shopper',
@@ -1035,6 +1112,7 @@ describe('parseConditionsQuery', () => {
                     value: '30d',
                     whereClause: null,
                     purchaseDateClause: null,
+                    isWhereVisible: false,
                 },
             ])
         })
@@ -1054,6 +1132,7 @@ describe('parseConditionsQuery', () => {
                     value: 5,
                     whereClause: null,
                     purchaseDateClause: { operator: 'gt', value: '30d' },
+                    isWhereVisible: false,
                 },
             ])
         })
@@ -1077,6 +1156,7 @@ describe('parseConditionsQuery', () => {
                         value: 'subscribed',
                     },
                     purchaseDateClause: { operator: 'gt', value: '30d' },
+                    isWhereVisible: true,
                 },
             ])
         })

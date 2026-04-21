@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { useFormContext, useWatch } from '@repo/forms'
 
 import {
@@ -57,14 +55,7 @@ export const ConditionRow = ({
     schema: ConditionsSchema
     onRemove: () => void
 }) => {
-    const { setValue, getValues } = useFormContext()
-
-    const [showWhere, setShowWhere] = useState(() => {
-        const wc = getValues(
-            `conditions.${index}.whereClause`,
-        ) as WhereClause | null
-        return !!wc?.field
-    })
+    const { setValue } = useFormContext()
 
     const [
         object,
@@ -74,6 +65,7 @@ export const ConditionRow = ({
         value,
         whereClause,
         purchaseDateClause,
+        isWhereVisible,
     ] = useWatch({
         name: [
             `conditions.${index}.object`,
@@ -83,6 +75,7 @@ export const ConditionRow = ({
             `conditions.${index}.value`,
             `conditions.${index}.whereClause`,
             `conditions.${index}.purchaseDateClause`,
+            `conditions.${index}.isWhereVisible`,
         ],
     }) as [
         string | null,
@@ -92,6 +85,7 @@ export const ConditionRow = ({
         string | number | string[] | null,
         WhereClause | null,
         PurchaseDateClause | null,
+        boolean,
     ]
 
     const set = (path: string, val: unknown) =>
@@ -172,7 +166,7 @@ export const ConditionRow = ({
                   } satisfies PurchaseDateClause)
                 : null,
         )
-        setShowWhere(false)
+        set('isWhereVisible', false)
     }
 
     const supportsWhere =
@@ -214,7 +208,7 @@ export const ConditionRow = ({
                 value: defaultValueForType(firstFieldDef?.type ?? 'string'),
             })
         }
-        setShowWhere(false)
+        set('isWhereVisible', false)
     }
 
     return (
@@ -313,11 +307,11 @@ export const ConditionRow = ({
                     )}
                 </Box>
 
-                {supportsWhere && whereClause && !showWhere && (
+                {supportsWhere && whereClause && !isWhereVisible && (
                     <Box>
                         <button
                             className={css.addWhereButton}
-                            onClick={() => setShowWhere(true)}
+                            onClick={() => set('isWhereVisible', true)}
                         >
                             <Text color="content-accent-default">
                                 Add property
@@ -326,7 +320,7 @@ export const ConditionRow = ({
                     </Box>
                 )}
 
-                {supportsWhere && whereClause && showWhere && (
+                {supportsWhere && whereClause && isWhereVisible && (
                     <Box alignItems="center" gap={Size.Xs} flexWrap="wrap">
                         <Text color="content-neutral-secondary">where</Text>
                         <ConditionInlineSelect

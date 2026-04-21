@@ -1,5 +1,6 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
+import { useDebouncedValue } from '@repo/hooks'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 
 import {
@@ -13,9 +14,11 @@ import {
 } from '@gorgias/axiom'
 
 import { AudienceConditionField } from 'AIJourney/components/AudienceConditionField/AudienceConditionField'
+import { SegmentCountPreview } from 'AIJourney/components/SegmentCountPreview/SegmentCountPreview'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateSegment } from 'AIJourney/queries'
+import { useAudienceCount } from 'AIJourney/queries/useAudienceCount/useAudienceCount'
 import { useUpdateSegment } from 'AIJourney/queries/useUpdateSegment/useUpdateSegment'
 import type {
     ConditionsSchema,
@@ -86,6 +89,20 @@ export const SegmentsSidePanel = ({
     useEffect(() => {
         buildFullQuery(conditions, schema)
     }, [conditions, schema])
+    const conditionsQuery = useMemo(
+        () => buildFullQuery(conditions, schema),
+        [conditions, schema],
+    )
+    const debouncedConditionsQuery = useDebouncedValue(conditionsQuery, 500)
+
+    const { data: audienceCountData, isFetching: isAudienceCountFetching } =
+        useAudienceCount(
+            {
+                integration_id: currentIntegration?.id,
+                conditions: debouncedConditionsQuery,
+            },
+            { enabled: !!debouncedConditionsQuery },
+        )
 
     const hasNoConditions = buildFullQuery(conditions, schema) === ''
 
@@ -101,6 +118,27 @@ export const SegmentsSidePanel = ({
                 .map((v) => v.trim())
                 .filter((v) => v !== '')
             return items.length === 0
+        }
+        if (c.isWhereVisible && c.whereClause) {
+            const wc = c.whereClause
+            if (!schema.operators.unary.includes(wc.operator)) {
+                const whereVal = wc.value
+                if (
+                    whereVal === null ||
+                    whereVal === undefined ||
+                    whereVal === ''
+                )
+                    return true
+                if (Array.isArray(whereVal) && whereVal.length === 0)
+                    return true
+                if (typeof whereVal === 'string') {
+                    const items = whereVal
+                        .split(',')
+                        .map((v) => v.trim())
+                        .filter((v) => v !== '')
+                    return items.length === 0
+                }
+            }
         }
         return false
     })
@@ -178,6 +216,10 @@ export const SegmentsSidePanel = ({
                             )}
                         />
                         <AudienceConditionField schema={schema} />
+                        <SegmentCountPreview
+                            count={audienceCountData?.count}
+                            isLoading={isAudienceCountFetching}
+                        />
                         <Box gap={Size.Xs} justifyContent="flex-end">
                             <Button
                                 variant="tertiary"

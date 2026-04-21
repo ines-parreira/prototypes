@@ -74,6 +74,41 @@ function groupBySectionId(items: StateItem[]) {
 
 const ALL_STATE_SECTIONS = groupBySectionId(ALL_STATES_FLAT)
 
+const SMS_STATE_OPTIONS = [
+    { id: 'subscribed', label: 'Subscribed' },
+    { id: 'not_subscribed', label: 'Not subscribed' },
+]
+
+const SmsStateValueSelect = ({
+    value,
+    onChange,
+}: {
+    value: string | number | null
+    onChange: (val: ConditionValue) => void
+}) => {
+    const selectedItem = useMemo(
+        () => SMS_STATE_OPTIONS.find((o) => o.id === value),
+        [value],
+    )
+
+    return (
+        <SelectField
+            aria-label="Value"
+            placement="bottom left"
+            placeholder="Select status"
+            items={SMS_STATE_OPTIONS}
+            value={selectedItem}
+            onChange={(item) => {
+                onChange((item as { id: string } | null)?.id ?? null)
+            }}
+        >
+            {(item: { id: string; label: string }) => (
+                <ListItem id={item.id} label={item.label} />
+            )}
+        </SelectField>
+    )
+}
+
 const StateValueSelect = ({
     value,
     onChange,
@@ -412,6 +447,15 @@ export const ConditionValueInput = ({
     ) {
         return (
             <ProductCollectionsMultiSelect value={value} onChange={onChange} />
+        )
+    }
+
+    if (field === 'sms_state') {
+        return (
+            <SmsStateValueSelect
+                value={value as string | number | null}
+                onChange={onChange}
+            />
         )
     }
 

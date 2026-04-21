@@ -264,7 +264,7 @@ describe('<ConditionRow />', () => {
                 label: 'SMS subscription status',
             })
 
-            expect(mockSetValue).toHaveBeenCalledTimes(7)
+            expect(mockSetValue).toHaveBeenCalledTimes(8)
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.object',
                 'shopper',
@@ -293,6 +293,10 @@ describe('<ConditionRow />', () => {
                 'conditions.0.purchaseDateClause',
                 null,
             )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.isWhereVisible',
+                false,
+            )
         })
 
         it('should set whereClause and default purchaseDateClause to isNotEmpty when selecting an aggregate field with supports_where', () => {
@@ -303,7 +307,7 @@ describe('<ConditionRow />', () => {
                 label: 'Number of orders',
             })
 
-            expect(mockSetValue).toHaveBeenCalledTimes(7)
+            expect(mockSetValue).toHaveBeenCalledTimes(8)
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.object',
                 'orders',
@@ -622,33 +626,56 @@ describe('<ConditionRow />', () => {
                 'eq',
                 null,
                 whereClauseFixture,
+                null, // purchaseDateClause
+                true, // isWhereVisible
             ])
         })
 
-        it('should initialize showWhere as true when whereClause has a field', () => {
+        it('should show the where section when isWhereVisible is true', () => {
             renderComponent()
 
             expect(screen.getByText('where')).toBeInTheDocument()
         })
 
-        it('should show the "Add property" button when showWhere is false', () => {
-            mockGetValues.mockReturnValue(null)
+        it('should show the "Add property" button when isWhereVisible is false', () => {
+            useWatchMock.mockReturnValue([
+                'orders',
+                'count',
+                true,
+                'eq',
+                null,
+                whereClauseFixture,
+                null, // purchaseDateClause
+                false, // isWhereVisible
+            ])
             renderComponent()
 
             expect(screen.getByText('Add property')).toBeInTheDocument()
         })
 
-        it('should show the where section when "Add property" is clicked', async () => {
+        it('should set isWhereVisible to true when "Add property" is clicked', async () => {
             const user = userEvent.setup()
-            mockGetValues.mockReturnValue(null)
+            useWatchMock.mockReturnValue([
+                'orders',
+                'count',
+                true,
+                'eq',
+                null,
+                whereClauseFixture,
+                null, // purchaseDateClause
+                false, // isWhereVisible
+            ])
             renderComponent()
 
             await user.click(screen.getByText('Add property'))
 
-            expect(screen.getByText('where')).toBeInTheDocument()
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.isWhereVisible',
+                true,
+            )
         })
 
-        it('should hide the where section when the close button is clicked', async () => {
+        it('should set isWhereVisible to false when the close button is clicked', async () => {
             const user = userEvent.setup()
             renderComponent()
 
@@ -656,7 +683,10 @@ describe('<ConditionRow />', () => {
                 screen.getByRole('button', { name: 'remove-where-condition' }),
             )
 
-            expect(screen.queryByText('where')).not.toBeInTheDocument()
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.isWhereVisible',
+                false,
+            )
         })
 
         it('should reset whereClause to the first allowlisted field defaults when the close button is clicked', async () => {
@@ -694,6 +724,8 @@ describe('<ConditionRow />', () => {
                 'eq',
                 null,
                 modifiedWhereClause,
+                null, // purchaseDateClause
+                true, // isWhereVisible
             ])
             render(
                 <ConditionRow
@@ -834,6 +866,8 @@ describe('<ConditionRow />', () => {
                 'eq',
                 null,
                 whereClauseFixtureForAllowlist,
+                null, // purchaseDateClause
+                true, // isWhereVisible
             ])
         })
 

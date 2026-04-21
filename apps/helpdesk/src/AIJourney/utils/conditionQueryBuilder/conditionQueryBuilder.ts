@@ -264,6 +264,7 @@ function parseConditionStr(
             value: args.length > 1 ? parseValue(args[1]) : null,
             whereClause,
             purchaseDateClause,
+            isWhereVisible: whereClause !== null,
         }
     }
 
@@ -277,6 +278,7 @@ function parseConditionStr(
             value: args.length > 1 ? parseValue(args[1]) : null,
             whereClause: null,
             purchaseDateClause: null,
+            isWhereVisible: false,
         }
     }
 

@@ -1,3 +1,4 @@
+export { useAudienceCount } from './useAudienceCount/useAudienceCount'
 export { useConditionsMetadata } from './useConditionsMetadata/useConditionsMetadata'
 export { useJourneyData } from './useJourneyData/useJourneyData'
 export { useSegments } from './useSegments/useSegments'

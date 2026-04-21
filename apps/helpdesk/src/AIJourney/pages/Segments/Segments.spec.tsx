@@ -73,6 +73,13 @@ jest.mock('AIJourney/queries/useUpdateSegment/useUpdateSegment', () => ({
         .mockReturnValue({ mutateAsync: jest.fn(), isLoading: false }),
 }))
 
+jest.mock('AIJourney/queries/useAudienceCount/useAudienceCount', () => ({
+    useAudienceCount: jest.fn().mockReturnValue({
+        data: undefined,
+        isFetching: false,
+    }),
+}))
+
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
 }))

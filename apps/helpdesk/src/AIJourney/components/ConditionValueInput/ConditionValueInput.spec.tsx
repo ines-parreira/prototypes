@@ -369,6 +369,129 @@ describe('<ConditionValueInput />', () => {
         })
     })
 
+    describe('sms_state field (SmsStateValueSelect)', () => {
+        it('should render "Select status" placeholder when no value is set', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="sms_state"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.getByText('Select status')).toBeInTheDocument()
+        })
+
+        it('should render both subscription status options', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="sms_state"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.getByText('Subscribed')).toBeInTheDocument()
+            expect(screen.getByText('Not subscribed')).toBeInTheDocument()
+        })
+
+        it('should display "Subscribed" label when value is "subscribed"', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="sms_state"
+                    value="subscribed"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.queryByText('Select status')).not.toBeInTheDocument()
+            expect(screen.getAllByText('Subscribed').length).toBeGreaterThan(0)
+        })
+
+        it('should display "Not subscribed" label when value is "not_subscribed"', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="sms_state"
+                    value="not_subscribed"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.queryByText('Select status')).not.toBeInTheDocument()
+            expect(
+                screen.getAllByText('Not subscribed').length,
+            ).toBeGreaterThan(0)
+        })
+
+        it('should call onChange with "subscribed" when that option is selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="sms_state"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            act(() => {
+                capturedSelectField.onChange!({
+                    id: 'subscribed',
+                    label: 'Subscribed',
+                })
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith('subscribed')
+        })
+
+        it('should call onChange with "not_subscribed" when that option is selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="sms_state"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            act(() => {
+                capturedSelectField.onChange!({
+                    id: 'not_subscribed',
+                    label: 'Not subscribed',
+                })
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith('not_subscribed')
+        })
+
+        it('should call onChange with null when the selection is cleared', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="sms_state"
+                    value="subscribed"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            act(() => {
+                capturedSelectField.onChange!(null)
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(null)
+        })
+    })
+
     describe('address_state_code field (StateValueSelect)', () => {
         it('should render "Select state" placeholder when no value is set', () => {
             render(

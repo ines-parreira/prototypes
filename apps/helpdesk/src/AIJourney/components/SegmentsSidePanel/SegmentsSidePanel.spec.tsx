@@ -8,11 +8,24 @@ import { act } from 'react-dom/test-utils'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateSegment } from 'AIJourney/queries'
+import { useAudienceCount } from 'AIJourney/queries/useAudienceCount/useAudienceCount'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
 import { useUpdateSegment } from 'AIJourney/queries/useUpdateSegment/useUpdateSegment'
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 
 import { SegmentsSidePanel } from './SegmentsSidePanel'
+
+jest.mock('AIJourney/providers', () => ({
+    useJourneyContext: jest.fn(),
+}))
+
+jest.mock('AIJourney/queries/useAudienceCount/useAudienceCount', () => ({
+    useAudienceCount: jest.fn(),
+}))
+
+jest.mock('AIJourney/queries/useUpdateSegment/useUpdateSegment', () => ({
+    useUpdateSegment: jest.fn(),
+}))
 
 jest.mock(
     'AIJourney/queries/useConditionsMetadata/useConditionsMetadata',
@@ -20,10 +33,6 @@ jest.mock(
         useConditionsMetadata: jest.fn(),
     }),
 )
-
-jest.mock('AIJourney/queries/useUpdateSegment/useUpdateSegment', () => ({
-    useUpdateSegment: jest.fn(),
-}))
 
 jest.mock(
     'AIJourney/components/AudienceConditionField/AudienceConditionField',
@@ -59,11 +68,172 @@ jest.mock(
                         >
                             Set valid condition
                         </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'shopper',
+                                        field: 'lifetime_value',
+                                        isAggregate: false,
+                                        operator: 'gt',
+                                        value: 1000,
+                                        isWhereVisible: true,
+                                        whereClause: {
+                                            field: 'lifetime_value',
+                                            operator: 'eq',
+                                            value: null,
+                                        },
+                                        purchaseDateClause: null,
+                                    },
+                                ])
+                            }
+                        >
+                            Set visible whereClause with null value
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'shopper',
+                                        field: 'lifetime_value',
+                                        isAggregate: false,
+                                        operator: 'gt',
+                                        value: 1000,
+                                        isWhereVisible: true,
+                                        whereClause: {
+                                            field: 'lifetime_value',
+                                            operator: 'eq',
+                                            value: '',
+                                        },
+                                        purchaseDateClause: null,
+                                    },
+                                ])
+                            }
+                        >
+                            Set visible whereClause with empty string value
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'shopper',
+                                        field: 'lifetime_value',
+                                        isAggregate: false,
+                                        operator: 'gt',
+                                        value: 1000,
+                                        isWhereVisible: true,
+                                        whereClause: {
+                                            field: 'lifetime_value',
+                                            operator: 'eq',
+                                            value: [],
+                                        },
+                                        purchaseDateClause: null,
+                                    },
+                                ])
+                            }
+                        >
+                            Set visible whereClause with empty array value
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'shopper',
+                                        field: 'lifetime_value',
+                                        isAggregate: false,
+                                        operator: 'gt',
+                                        value: 1000,
+                                        isWhereVisible: true,
+                                        whereClause: {
+                                            field: 'lifetime_value',
+                                            operator: 'eq',
+                                            value: ' , ',
+                                        },
+                                        purchaseDateClause: null,
+                                    },
+                                ])
+                            }
+                        >
+                            Set visible whereClause with whitespace value
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'shopper',
+                                        field: 'lifetime_value',
+                                        isAggregate: false,
+                                        operator: 'gt',
+                                        value: 1000,
+                                        isWhereVisible: true,
+                                        whereClause: {
+                                            field: 'lifetime_value',
+                                            operator: 'eq',
+                                            value: 'valid-value',
+                                        },
+                                        purchaseDateClause: null,
+                                    },
+                                ])
+                            }
+                        >
+                            Set visible whereClause with valid value
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'shopper',
+                                        field: 'lifetime_value',
+                                        isAggregate: false,
+                                        operator: 'gt',
+                                        value: 1000,
+                                        isWhereVisible: true,
+                                        whereClause: {
+                                            field: 'lifetime_value',
+                                            operator: 'isEmpty',
+                                            value: null,
+                                        },
+                                        purchaseDateClause: null,
+                                    },
+                                ])
+                            }
+                        >
+                            Set visible whereClause with unary operator
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'shopper',
+                                        field: 'lifetime_value',
+                                        isAggregate: false,
+                                        operator: 'gt',
+                                        value: 1000,
+                                        isWhereVisible: false,
+                                        whereClause: {
+                                            field: 'lifetime_value',
+                                            operator: 'eq',
+                                            value: null,
+                                        },
+                                        purchaseDateClause: null,
+                                    },
+                                ])
+                            }
+                        >
+                            Set hidden whereClause with null value
+                        </button>
                     </div>
                 )
             },
         }
     },
+)
+
+jest.mock(
+    'AIJourney/components/SegmentCountPreview/SegmentCountPreview',
+    () => ({
+        SegmentCountPreview: () => <div>segment-count-preview</div>,
+    }),
 )
 
 const mockSchema: ConditionsSchema = {
@@ -115,6 +285,7 @@ const mockSegment: Segment = {
 }
 
 const mockUseUpdateSegment = assumeMock(useUpdateSegment)
+const mockUseAudienceCount = assumeMock(useAudienceCount)
 const onClose = jest.fn()
 const mockMutateAsync = jest.fn()
 
@@ -141,13 +312,19 @@ describe('<SegmentsSidePanel />', () => {
             data: undefined,
         } as unknown as ReturnType<typeof useConditionsMetadata>)
         mockUseConditionsMetadata.mockReturnValue({ data: undefined })
-        mockUseJourneyContext.mockReturnValue({
-            currentIntegration: { id: 123 },
-        })
         mockUseCreateSegment.mockReturnValue({
             mutateAsync: mockMutateAsync,
             isLoading: false,
         })
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 123 },
+        } as unknown as ReturnType<typeof useJourneyContext>)
+        mockUseAudienceCount.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as unknown as ReturnType<typeof useAudienceCount>)
+
+        mockMutateAsync.mockResolvedValue(undefined)
         mockUseUpdateSegment.mockReturnValue({
             mutateAsync: mockMutateAsync,
             isLoading: false,
@@ -589,6 +766,145 @@ describe('<SegmentsSidePanel />', () => {
             renderComponent()
 
             expect(screen.getByText('conditions-section')).toBeInTheDocument()
+        })
+    })
+
+    describe('audience count query', () => {
+        it('should call useAudienceCount with enabled=false when conditions are empty', () => {
+            renderComponent()
+
+            expect(mockUseAudienceCount).toHaveBeenCalledWith(
+                expect.objectContaining({ conditions: '' }),
+                expect.objectContaining({ enabled: false }),
+            )
+        })
+
+        it('should call useAudienceCount with the current integration id', () => {
+            mockUseJourneyContext.mockReturnValue({
+                currentIntegration: { id: 42 },
+            } as unknown as ReturnType<typeof useJourneyContext>)
+
+            renderComponent()
+
+            expect(mockUseAudienceCount).toHaveBeenCalledWith(
+                expect.objectContaining({ integration_id: 42 }),
+                expect.any(Object),
+            )
+        })
+    })
+
+    describe('whereClause validation', () => {
+        const setupWithConditionAndName = async (
+            user: ReturnType<typeof userEvent.setup>,
+            conditionButtonLabel: RegExp,
+        ) => {
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: conditionButtonLabel }),
+                )
+                await user.type(
+                    screen.getByLabelText(/segment name/i),
+                    'My Segment',
+                )
+            })
+        }
+
+        it('should disable Save when isWhereVisible is true and whereClause value is null', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await setupWithConditionAndName(
+                user,
+                /set visible whereClause with null value/i,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).toBeDisabled()
+        })
+
+        it('should disable Save when isWhereVisible is true and whereClause value is an empty string', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await setupWithConditionAndName(
+                user,
+                /set visible whereClause with empty string value/i,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).toBeDisabled()
+        })
+
+        it('should disable Save when isWhereVisible is true and whereClause value is an empty array', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await setupWithConditionAndName(
+                user,
+                /set visible whereClause with empty array value/i,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).toBeDisabled()
+        })
+
+        it('should disable Save when isWhereVisible is true and whereClause value is whitespace-only', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await setupWithConditionAndName(
+                user,
+                /set visible whereClause with whitespace value/i,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).toBeDisabled()
+        })
+
+        it('should enable Save when isWhereVisible is true and whereClause has a valid value', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await setupWithConditionAndName(
+                user,
+                /set visible whereClause with valid value/i,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).not.toBeDisabled()
+        })
+
+        it('should enable Save when isWhereVisible is true and whereClause uses a unary operator', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await setupWithConditionAndName(
+                user,
+                /set visible whereClause with unary operator/i,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).not.toBeDisabled()
+        })
+
+        it('should enable Save when isWhereVisible is false even if whereClause value is null', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await setupWithConditionAndName(
+                user,
+                /set hidden whereClause with null value/i,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /save segment/i }),
+            ).not.toBeDisabled()
         })
     })
 })

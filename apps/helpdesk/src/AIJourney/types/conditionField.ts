@@ -51,6 +51,7 @@ export type ConditionState = {
     value: ConditionValue
     whereClause: WhereClause | null
     purchaseDateClause: PurchaseDateClause | null
+    isWhereVisible: boolean
 }
 
 export const DEFAULT_CONDITION: ConditionState = {
@@ -61,4 +62,5 @@ export const DEFAULT_CONDITION: ConditionState = {
     value: null,
     whereClause: null,
     purchaseDateClause: null,
+    isWhereVisible: false,
 }
