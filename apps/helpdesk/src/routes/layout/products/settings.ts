@@ -30,7 +30,7 @@ export const settingsSections: Record<SettingsSection, SettingsSectionConfig> =
             id: SettingsSection.Workspace,
             label: 'Workspace',
             icon: 'nav-building-alt-4',
-            requiredRole: UserRole.Agent,
+            requiredRole: UserRole.Admin,
         },
         [SettingsSection.Channels]: {
             id: SettingsSection.Channels,
