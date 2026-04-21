@@ -1,8 +1,8 @@
-import type { FormEvent } from 'react'
+import type { ComponentType, FormEvent } from 'react'
 import { Component } from 'react'
 
 import type { FeatureFlagsMap } from '@repo/feature-flags'
-import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -362,7 +362,26 @@ const connector = connect(
     },
 )
 
-const ConnectedComponent = withFeatureFlags(
+function withGorgiasChatIntegrationQuickRepliesFlags<
+    P extends { flags?: FeatureFlagsMap },
+>(WrappedComponent: ComponentType<P>) {
+    return (props: P) => {
+        const isChatMultiLanguagesEnabled = useFlag(
+            FeatureFlagKey.ChatMultiLanguages,
+        )
+        const evaluatedFlags: FeatureFlagsMap = {
+            [FeatureFlagKey.ChatMultiLanguages]: isChatMultiLanguagesEnabled,
+        }
+        const flags: FeatureFlagsMap = {
+            ...evaluatedFlags,
+            ...props.flags,
+        }
+
+        return <WrappedComponent {...props} flags={flags} />
+    }
+}
+
+const ConnectedComponent = withGorgiasChatIntegrationQuickRepliesFlags(
     connector(GorgiasChatIntegrationQuickRepliesComponent),
 )
 

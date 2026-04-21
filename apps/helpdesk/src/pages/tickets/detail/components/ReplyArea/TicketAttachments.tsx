@@ -2,7 +2,7 @@ import type { MouseEvent } from 'react'
 import React, { Component } from 'react'
 
 import type { FeatureFlagsMap } from '@repo/feature-flags'
-import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -406,4 +406,24 @@ export class TicketAttachments extends Component<Props, State> {
     }
 }
 
-export default withFeatureFlags(TicketAttachments)
+function withTicketAttachmentsFlags<P extends { flags?: FeatureFlagsMap }>(
+    WrappedComponent: React.ComponentType<P>,
+) {
+    return (props: P) => {
+        const isDiscountedPriceEnabled = useFlag(
+            FeatureFlagKey.ProductCardDiscountedPrice,
+        )
+        const evaluatedFlags: FeatureFlagsMap = {
+            [FeatureFlagKey.ProductCardDiscountedPrice]:
+                isDiscountedPriceEnabled,
+        }
+        const flags: FeatureFlagsMap = {
+            ...evaluatedFlags,
+            ...props.flags,
+        }
+
+        return <WrappedComponent {...props} flags={flags} />
+    }
+}
+
+export default withTicketAttachmentsFlags(TicketAttachments)

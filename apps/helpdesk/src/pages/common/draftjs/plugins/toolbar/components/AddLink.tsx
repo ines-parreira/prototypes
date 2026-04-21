@@ -21,7 +21,7 @@ import {
     useInteractions,
 } from '@floating-ui/react'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
-import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { linkify } from '@repo/utils'
 import { EditorState, Modifier, SelectionState } from 'draft-js'
 import ReactPlayer from 'react-player'
@@ -820,4 +820,21 @@ const connector = connect(null, {
     linkEditionEnded,
 })
 
-export default connector(withToolbarContext(withFeatureFlags(AddLinkContainer)))
+function withAddLinkFlags<P extends { flags?: FeatureFlagsMap }>(
+    WrappedComponent: React.ComponentType<P>,
+) {
+    return (props: P) => {
+        const isUtmDisabled = useFlag(FeatureFlagKey.RevenueDisableUtmParams)
+        const evaluatedFlags: FeatureFlagsMap = {
+            [FeatureFlagKey.RevenueDisableUtmParams]: isUtmDisabled,
+        }
+        const flags: FeatureFlagsMap = {
+            ...evaluatedFlags,
+            ...props.flags,
+        }
+
+        return <WrappedComponent {...props} flags={flags} />
+    }
+}
+
+export default connector(withToolbarContext(withAddLinkFlags(AddLinkContainer)))
