@@ -20,7 +20,6 @@ import cn from 'classnames'
 import { HelpdeskV2BetaToggle } from 'common/navigation/components/HelpdeskV2BetaToggle'
 import { THEME_CONFIGS, useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
@@ -50,7 +49,6 @@ type Props = {
 }
 
 export default function UserMenu({ onClose }: Props) {
-    const { hasFlag: hasAxiomMigration } = useAxiomMigration()
     const { hasUIVisionBetaBaselineFlag } = useHelpdeskV2BaselineFlag()
     const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)
@@ -135,7 +133,7 @@ export default function UserMenu({ onClose }: Props) {
                         </button>
                     </>
                 )}
-                {hasAxiomMigration && !hasUIVisionBetaBaselineFlag && (
+                {!hasUIVisionBetaBaselineFlag && (
                     <>
                         <hr className={css.separator} />
                         <AxiomMigrationToggle />

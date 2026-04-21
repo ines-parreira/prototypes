@@ -6088,7 +6088,7 @@
         },
         {
           "name": "LegacyToggleField",
-          "count": 43,
+          "count": 42,
           "files": [
             "apps/helpdesk/src/common/navigation/components/AvailabilityToggle.tsx",
             "apps/helpdesk/src/common/navigation/components/AxiomMigrationToggle.tsx",
@@ -6106,7 +6106,6 @@
             "apps/helpdesk/src/pages/automate/orderManagement/legacy/components/OrderManagementFlowItem.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReasonAction.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/publisher/channels/ChannelToggle.tsx",
-            "apps/helpdesk/src/pages/common/components/AxiomMigrationHighlightTokensToggle.tsx",
             "apps/helpdesk/src/pages/common/components/Collapse/Collapse.stories.tsx",
             "apps/helpdesk/src/pages/common/components/ExtraHtmlSection/ExtraHtmlSection.tsx",
             "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/AddUtm.tsx",

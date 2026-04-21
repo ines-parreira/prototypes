@@ -79,12 +79,8 @@ jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
 )
 jest.mock('hooks/useAxiomMigration', () => ({
     useAxiomMigration: jest.fn().mockReturnValue({
-        hasFlag: true,
         isEnabled: true,
-        isDebugging: false,
-        isHighlightingTokens: false,
         onToggle: jest.fn(),
-        onToggleTokenHighlighting: jest.fn(),
     }),
 }))
 jest.mock('core/theme', () => ({
@@ -222,29 +218,10 @@ describe('App component', () => {
     })
 
     describe('Axiom migration', () => {
-        it('should not include the axiom class if the flag is disabled', () => {
-            mockUseAxiomMigration.mockReturnValue({
-                hasFlag: false,
-                isEnabled: false,
-                isDebugging: false,
-                isHighlightingTokens: false,
-                onToggle: jest.fn(),
-                onToggleTokenHighlighting: jest.fn(),
-            })
-
-            const { container } = renderWithRouter(<App>boop</App>)
-            const child = container.firstChild as HTMLElement
-            expect(child.classList.contains('axiom')).toBe(false)
-        })
-
         it('should not include the axiom class if the toggle is disabled', () => {
             mockUseAxiomMigration.mockReturnValue({
-                hasFlag: true,
                 isEnabled: false,
-                isDebugging: false,
-                isHighlightingTokens: false,
                 onToggle: jest.fn(),
-                onToggleTokenHighlighting: jest.fn(),
             })
 
             const { container } = renderWithRouter(<App>boop</App>)
@@ -253,37 +230,16 @@ describe('App component', () => {
             expect(child.classList.contains('legacy')).toBe(true)
         })
 
-        it('should render the Axiom migration toggle if the flag is enabled', () => {
+        it('should include the axiom class if the toggle is enabled', () => {
             mockUseAxiomMigration.mockReturnValue({
-                hasFlag: true,
                 isEnabled: true,
-                isDebugging: false,
-                isHighlightingTokens: false,
                 onToggle: jest.fn(),
-                onToggleTokenHighlighting: jest.fn(),
             })
 
             const { container } = renderWithRouter(<App>boop</App>)
             const child = container.firstChild as HTMLElement
             expect(child.classList.contains('axiom')).toBe(true)
             expect(child.classList.contains('legacy')).toBe(false)
-        })
-
-        it('should render the Axiom token highlighting toggle if the flag is enabled and the token highlighting is enabled', () => {
-            mockUseAxiomMigration.mockReturnValue({
-                hasFlag: true,
-                isEnabled: true,
-                isDebugging: true,
-                isHighlightingTokens: true,
-                onToggle: jest.fn(),
-                onToggleTokenHighlighting: jest.fn(),
-            })
-
-            const { container } = renderWithRouter(<App>boop</App>)
-            const child = container.firstChild as HTMLElement
-            expect(child.classList.contains('axiomHighlightLegacyTokens')).toBe(
-                true,
-            )
         })
     })
 })

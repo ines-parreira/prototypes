@@ -14,7 +14,6 @@ import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { ignoreHTML } from 'tests/ignoreHTML'
 
@@ -33,8 +32,6 @@ jest.mock('pages/common/components/NoticeableIndicator', () => () => (
     <div>NoticeableIndicator</div>
 ))
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
-jest.mock('hooks/useAxiomMigration', () => ({ useAxiomMigration: jest.fn() }))
-const useAxiomMigrationMock = useAxiomMigration as jest.Mock
 
 jest.mock('@repo/activity-tracker', () => ({
     ...jest.requireActual('@repo/activity-tracker'),
@@ -117,7 +114,6 @@ describe('UserMenu', () => {
 
     beforeEach(() => {
         onClose = jest.fn()
-        useAxiomMigrationMock.mockReturnValue({ hasFlag: false })
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
         useHelpdeskV2BaselineFlagMock.mockReturnValue({
             hasUIVisionBetaBaselineFlag: false,
@@ -150,9 +146,7 @@ describe('UserMenu', () => {
         })
 
         expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
-        expect(
-            screen.queryByText('AxiomMigrationToggle'),
-        ).not.toBeInTheDocument()
+        expect(screen.getByText('AxiomMigrationToggle')).toBeInTheDocument()
         expect(
             screen.queryByText(ignoreHTML('Status:None')),
         ).not.toBeInTheDocument()
@@ -166,14 +160,7 @@ describe('UserMenu', () => {
         expect(screen.getByText('Log out')).toBeInTheDocument()
     })
 
-    it('should render the AxiomMigrationToggle when axiom migration flag is enabled and baseline flag is disabled', () => {
-        useAxiomMigrationMock.mockReturnValue({ hasFlag: true })
-        render(<UserMenu onClose={onClose} />, { wrapper })
-        expect(screen.getByText('AxiomMigrationToggle')).toBeInTheDocument()
-    })
-
-    it('should not render the AxiomMigrationToggle when axiom migration flag is enabled but baseline flag is also enabled', () => {
-        useAxiomMigrationMock.mockReturnValue({ hasFlag: true })
+    it('should not render the AxiomMigrationToggle when the baseline flag is enabled', () => {
         useHelpdeskV2BaselineFlagMock.mockReturnValue({
             hasUIVisionBetaBaselineFlag: true,
             hasUIVisionBeta: true,

@@ -83,12 +83,8 @@ describe('PeriodPicker', () => {
         global.MutationObserver = MockMutationObserver as any
 
         jest.mocked(useAxiomMigration).mockReturnValue({
-            hasFlag: false,
             isEnabled: false,
-            isDebugging: false,
-            isHighlightingTokens: false,
             onToggle: jest.fn(),
-            onToggleTokenHighlighting: jest.fn(),
         })
     })
 
@@ -321,12 +317,8 @@ describe('PeriodPicker', () => {
 
     it('should add axiom class when axiom migration is enabled', () => {
         jest.mocked(useAxiomMigration).mockReturnValue({
-            hasFlag: true,
             isEnabled: true,
-            isDebugging: false,
-            isHighlightingTokens: false,
             onToggle: jest.fn(),
-            onToggleTokenHighlighting: jest.fn(),
         })
 
         const { getByTestId } = render(<PickerWithDefaultProps />)
@@ -343,12 +335,8 @@ describe('PeriodPicker', () => {
 
     it('should not add axiom class when axiom migration is disabled', () => {
         jest.mocked(useAxiomMigration).mockReturnValue({
-            hasFlag: false,
             isEnabled: false,
-            isDebugging: false,
-            isHighlightingTokens: false,
             onToggle: jest.fn(),
-            onToggleTokenHighlighting: jest.fn(),
         })
 
         const { getByTestId } = render(<PickerWithDefaultProps />)

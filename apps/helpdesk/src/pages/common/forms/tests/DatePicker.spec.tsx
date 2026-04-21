@@ -59,12 +59,8 @@ describe('DatePicker', () => {
         } as any)
 
         useAxiomMigrationMock.mockReturnValue({
-            hasFlag: false,
             isEnabled: false,
-            isDebugging: false,
-            isHighlightingTokens: false,
             onToggle: jest.fn(),
-            onToggleTokenHighlighting: jest.fn(),
         })
 
         localStorageMock = {
@@ -385,12 +381,8 @@ describe('DatePicker', () => {
     describe('Axiom migration', () => {
         it('should add axiom class to daterangepicker when axiom migration is enabled', async () => {
             useAxiomMigrationMock.mockReturnValue({
-                hasFlag: true,
                 isEnabled: true,
-                isDebugging: false,
-                isHighlightingTokens: false,
                 onToggle: jest.fn(),
-                onToggleTokenHighlighting: jest.fn(),
             })
 
             render(
@@ -416,12 +408,8 @@ describe('DatePicker', () => {
 
         it('should not add axiom class to daterangepicker when axiom migration is disabled', async () => {
             useAxiomMigrationMock.mockReturnValue({
-                hasFlag: false,
                 isEnabled: false,
-                isDebugging: false,
-                isHighlightingTokens: false,
                 onToggle: jest.fn(),
-                onToggleTokenHighlighting: jest.fn(),
             })
 
             render(
@@ -447,12 +435,8 @@ describe('DatePicker', () => {
 
         it('should remove axiom class from daterangepicker when closed with axiom migration enabled', async () => {
             useAxiomMigrationMock.mockReturnValue({
-                hasFlag: true,
                 isEnabled: true,
-                isDebugging: false,
-                isHighlightingTokens: false,
                 onToggle: jest.fn(),
-                onToggleTokenHighlighting: jest.fn(),
             })
 
             const onHideSpy = jest.fn()
