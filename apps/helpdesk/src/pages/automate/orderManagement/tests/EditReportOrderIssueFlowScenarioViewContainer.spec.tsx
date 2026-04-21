@@ -71,7 +71,7 @@ describe('EditReportOrderIssueFlowScenarioViewContainer', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue(defaultRevampFlags)
     })
 
-    it('should render the revamp view when shouldShowOrderManagementScreensRevamp is true', async () => {
+    it('should render the revamp view when shouldShowOrderManagementScreensRevamp is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             ...defaultRevampFlags,
             shouldShowOrderManagementScreensRevamp: true,
@@ -80,7 +80,7 @@ describe('EditReportOrderIssueFlowScenarioViewContainer', () => {
         render(<EditReportOrderIssueFlowScenarioViewContainer />)
 
         expect(
-            await screen.findByText(
+            screen.getByText(
                 'RevampEditReportOrderIssueFlowScenarioViewContainer',
             ),
         ).toBeInTheDocument()

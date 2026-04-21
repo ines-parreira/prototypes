@@ -177,6 +177,22 @@ describe('OrderManagementFlowHeader', () => {
                 '/app/settings/order-management/shopify/my-store',
             )
         })
+
+        it('should navigate to backPath when provided', async () => {
+            const user = userEvent.setup()
+            render(
+                <OrderManagementFlowHeader
+                    {...defaultProps}
+                    backPath="/app/settings/order-management/shopify/my-store/report-issue"
+                />,
+            )
+
+            await user.click(screen.getByRole('button', { name: /go back/i }))
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/settings/order-management/shopify/my-store/report-issue',
+            )
+        })
     })
 
     describe('help link', () => {

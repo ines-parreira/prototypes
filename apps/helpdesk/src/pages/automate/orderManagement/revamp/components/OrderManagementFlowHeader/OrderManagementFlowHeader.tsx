@@ -33,6 +33,7 @@ const HELP_URL =
 
 type Props = {
     title: string
+    backPath?: string
     onSave?: () => void
     isSaveDisabled?: boolean
     isSaveLoading?: boolean
@@ -40,6 +41,7 @@ type Props = {
 
 export const OrderManagementFlowHeader = ({
     title,
+    backPath,
     onSave,
     isSaveDisabled = true,
     isSaveLoading = false,
@@ -102,7 +104,9 @@ export const OrderManagementFlowHeader = ({
                                 variant={ButtonVariant.Secondary}
                                 intent={ButtonIntent.Regular}
                                 aria-label="Go back"
-                                onClick={() => history.push(storePath)}
+                                onClick={() =>
+                                    history.push(backPath ?? storePath)
+                                }
                             />
                             <Heading size={HeadingSize.Xl}>{title}</Heading>
                         </>

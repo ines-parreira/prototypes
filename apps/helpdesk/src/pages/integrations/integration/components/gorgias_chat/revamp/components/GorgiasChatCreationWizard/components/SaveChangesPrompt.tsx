@@ -19,6 +19,7 @@ type Props = {
     onSave: () => Promise<unknown> | void
     onDiscard?: () => void
     shouldRedirectAfterSave?: boolean
+    isSaveDisabled?: boolean
 }
 
 const SaveChangesPrompt: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const SaveChangesPrompt: React.FC<Props> = ({
     onSave,
     onDiscard,
     shouldRedirectAfterSave = false,
+    isSaveDisabled = false,
 }) => {
     const isDiscarding = useRef(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -104,7 +106,11 @@ const SaveChangesPrompt: React.FC<Props> = ({
                         <Button variant="secondary" onClick={hideModal}>
                             Keep editing
                         </Button>
-                        <Button variant="primary" onClick={handleSave}>
+                        <Button
+                            variant="primary"
+                            onClick={handleSave}
+                            isDisabled={isSaveDisabled}
+                        >
                             Save changes
                         </Button>
                     </div>
