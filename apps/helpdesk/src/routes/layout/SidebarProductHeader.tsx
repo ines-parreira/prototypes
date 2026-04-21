@@ -9,7 +9,7 @@ import {
     Button,
     DropdownIcon,
     Heading,
-    Icon,
+    IconBox,
     Menu,
     MenuSection,
     Tooltip,
@@ -39,12 +39,12 @@ export function SidebarProductHeader({
 
     const icon =
         selectedItem.icon != null ? (
-            <Icon
-                name={selectedItem.icon}
+            <IconBox
+                icon={selectedItem.icon}
                 color={
                     selectedItem.productType === 'primary' ? 'accent' : 'grey'
                 }
-                withBackground
+                variant="primary"
             />
         ) : null
 

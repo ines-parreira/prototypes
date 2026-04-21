@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Box, Icon, MenuItem, Tag } from '@gorgias/axiom'
+import { Box, IconBox, MenuItem, Tag } from '@gorgias/axiom'
 
 import type { ProductConfig } from 'routes/layout/productConfig'
 
@@ -33,10 +33,10 @@ export function SidebarProductHeaderMenuItem({
                 </Box>
             }
             leadingSlot={({ isSelected }) => (
-                <Icon
-                    name={item.icon}
+                <IconBox
+                    icon={item.icon}
                     color={isSelected ? 'accent' : 'grey'}
-                    withBackground
+                    variant="secondary"
                 />
             )}
         />
