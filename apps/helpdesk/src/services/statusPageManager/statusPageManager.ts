@@ -286,11 +286,17 @@ export class StatusPageManager {
                         style: NotificationStyle.Banner,
                         type: notification.status,
                         message,
-                        onClose: () =>
+                        onClose: () => {
+                            this.store.dispatch(
+                                dismissNotification(
+                                    `${INCIDENTS_NOTIFICATION_ID}-${incident.id}`,
+                                ),
+                            )
                             StatusPageManager.hideNotification(
                                 incident.id,
                                 DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
-                            ),
+                            )
+                        },
                     }) as any,
                 )
             }
@@ -414,11 +420,17 @@ Find out more on our <a href="${
                                 ? AlertBannerTypes.Info
                                 : AlertBannerTypes.Warning,
                         message,
-                        onClose: () =>
+                        onClose: () => {
+                            this.store.dispatch(
+                                dismissNotification(
+                                    MAINTENANCE_NOTIFICATION_ID,
+                                ),
+                            )
                             StatusPageManager.hideNotification(
                                 maintenance.id,
                                 DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
-                            ),
+                            )
+                        },
                     }) as any,
                 )
             }

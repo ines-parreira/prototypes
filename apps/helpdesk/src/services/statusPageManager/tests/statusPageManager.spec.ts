@@ -238,6 +238,44 @@ describe('statusPageManager', () => {
             expect(notifySpy.mock.calls).toMatchSnapshot()
         })
 
+        it('should dismiss and persist an incident banner when it is closed', () => {
+            statusPageManager.processIncidents({
+                page: {
+                    url: 'https://status.gorgias.com/',
+                },
+                incidents: [
+                    {
+                        id: 'my-incident-id',
+                        impact: IncidentImpact.Critical,
+                        components: [
+                            {
+                                name: 'REST API',
+                                status: ComponentStatus.MajorOutage,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                        ],
+                    },
+                ],
+            } as StatusPageIncidentsResponseData)
+
+            const notification = notifySpy.mock.calls[0]?.[0] as {
+                onClose: () => void
+            }
+
+            notification.onClose()
+
+            expect(dismissNotificationSpy).toHaveBeenCalledWith(
+                `${INCIDENTS_NOTIFICATION_ID}-my-incident-id`,
+            )
+            expect(
+                JSON.parse(
+                    localStorage.getItem(
+                        DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+                    ) || '[]',
+                ),
+            ).toEqual(['my-incident-id'])
+        })
+
         describe('cluster filtering', () => {
             it('should not notify if cluster is not a match', () => {
                 const clusterName = 'us-east1-abc'
@@ -452,6 +490,96 @@ describe('statusPageManager', () => {
                 expect(notifySpy.mock.calls).toMatchSnapshot()
             },
         )
+
+        it('should notify for a scheduled maintenance within 7 days', () => {
+            statusPageManager.processScheduledMaintenances({
+                page: {
+                    url: 'https://status.gorgias.com/',
+                },
+                scheduled_maintenances: [
+                    {
+                        id: 'maintenance-in-6-days',
+                        impact: IncidentImpact.Maintenance,
+                        status: MAINTENANCE_STATUSES.SCHEDULED,
+                        scheduled_for: moment().add(6, 'days').format(),
+                        components: [
+                            {
+                                name: 'REST API',
+                                status: ComponentStatus.Operational,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                        ],
+                    },
+                ],
+            } as StatusPageScheduledMaintenanceResponseData)
+
+            expect(notifySpy).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not notify for a scheduled maintenance more than 7 days away', () => {
+            statusPageManager.processScheduledMaintenances({
+                page: {
+                    url: 'https://status.gorgias.com/',
+                },
+                scheduled_maintenances: [
+                    {
+                        id: 'maintenance-in-8-days',
+                        impact: IncidentImpact.Maintenance,
+                        status: MAINTENANCE_STATUSES.SCHEDULED,
+                        scheduled_for: moment().add(8, 'days').format(),
+                        components: [
+                            {
+                                name: 'REST API',
+                                status: ComponentStatus.Operational,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                        ],
+                    },
+                ],
+            } as StatusPageScheduledMaintenanceResponseData)
+
+            expect(notifySpy).not.toHaveBeenCalled()
+        })
+
+        it('should dismiss and persist a maintenance banner when it is closed', () => {
+            statusPageManager.processScheduledMaintenances({
+                page: {
+                    url: 'https://status.gorgias.com/',
+                },
+                scheduled_maintenances: [
+                    {
+                        id: 'maintenance-id',
+                        impact: IncidentImpact.Maintenance,
+                        status: MAINTENANCE_STATUSES.SCHEDULED,
+                        scheduled_for: moment().add(6, 'days').format(),
+                        components: [
+                            {
+                                name: 'REST API',
+                                status: ComponentStatus.Operational,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                        ],
+                    },
+                ],
+            } as StatusPageScheduledMaintenanceResponseData)
+
+            const notification = notifySpy.mock.calls[0]?.[0] as {
+                onClose: () => void
+            }
+
+            notification.onClose()
+
+            expect(dismissNotificationSpy).toHaveBeenLastCalledWith(
+                MAINTENANCE_NOTIFICATION_ID,
+            )
+            expect(
+                JSON.parse(
+                    localStorage.getItem(
+                        DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
+                    ) || '[]',
+                ),
+            ).toEqual(['maintenance-id'])
+        })
 
         describe('cluster filtering', () => {
             it('should not notify if cluster is not a match', () => {
