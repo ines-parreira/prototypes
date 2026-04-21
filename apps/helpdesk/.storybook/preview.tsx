@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { PropsWithChildren } from 'react'
 
-import { initLaunchDarkly } from '@repo/feature-flags'
+import { FeatureFlagsProvider, initLaunchDarkly } from '@repo/feature-flags'
 import {
     ArcElement,
     BarController,
@@ -36,6 +36,8 @@ const STORYBOOK_ACCOUNT = {
     id: 'storybook-account',
     domain: 'storybook.local',
 }
+
+window.GORGIAS_LAUNCHDARKLY_CLIENT_ID ??= 'storybook-client-id'
 
 void initLaunchDarkly(STORYBOOK_USER, STORYBOOK_ACCOUNT)
 
@@ -153,13 +155,15 @@ const withTheme: Preview['decorators'][number] = (Story, context) => {
 
     return (
         <div className={theme} style={{ height: '100%' }}>
-            <ThemeProvider>
-                <StorybookTheme theme={theme}>
-                    <ThemeBlock background={getThemeBackground(theme)}>
-                        <Story />
-                    </ThemeBlock>
-                </StorybookTheme>
-            </ThemeProvider>
+            <FeatureFlagsProvider>
+                <ThemeProvider>
+                    <StorybookTheme theme={theme}>
+                        <ThemeBlock background={getThemeBackground(theme)}>
+                            <Story />
+                        </ThemeBlock>
+                    </StorybookTheme>
+                </ThemeProvider>
+            </FeatureFlagsProvider>
         </div>
     )
 }
