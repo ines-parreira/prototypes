@@ -1,20 +1,34 @@
 import type { ReactNode } from 'react'
 
+import { screen } from '@testing-library/react'
+
 import {
     mockListTicketTagsHandler,
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
+import { TicketThreadPendingState } from '../../hooks/messages/types'
 import type { TicketThreadInternalNoteItem } from '../../hooks/messages/types'
 import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
 import { render } from '../../tests/render.utils'
 import { server } from '../../tests/server'
 import { TicketInternalNote } from './TicketInternalNote'
 
+const messageBubbleSpy = vi.fn()
+const messageErrorsSpy = vi.fn()
+
 vi.mock('../MessageBubble/MessageBubble', () => ({
-    MessageBubble: ({ children }: { children: ReactNode }) => (
-        <div>{children}</div>
-    ),
+    MessageBubble: ({
+        children,
+        pendingState,
+    }: {
+        children: ReactNode
+        pendingState?: string
+    }) => {
+        messageBubbleSpy({ pendingState })
+
+        return <div>{children}</div>
+    },
 }))
 
 vi.mock('../MessageBubble/components/MessageHeader/Layout', () => ({
@@ -47,11 +61,30 @@ vi.mock('../MessageBubble/components/MessageFooter', () => ({
     MessageFooter: () => <div>MessageFooter</div>,
 }))
 
+vi.mock('../MessageBubble/components/MessageErrors', () => ({
+    MessageErrors: (props: {
+        isPending?: boolean
+        message: TicketThreadInternalNoteItem['data']
+        ticketId: number
+    }) => {
+        messageErrorsSpy(props)
+
+        return <div>MessageErrors</div>
+    },
+}))
+
+vi.mock('../MessageBubble/components/MessageAppliedActions', () => ({
+    MessageAppliedActions: () => <div>MessageAppliedActions</div>,
+}))
+
 vi.mock('../TicketMessageActions/TicketMessageActions', () => ({
     TicketMessageActions: () => <div>TicketMessageActions</div>,
 }))
 
 beforeEach(() => {
+    messageBubbleSpy.mockClear()
+    messageErrorsSpy.mockClear()
+
     server.use(
         mockListTicketTagsHandler().handler,
         getCurrentUserHandler().handler,
@@ -89,6 +122,81 @@ function createItem(): TicketThreadInternalNoteItem {
 describe('TicketInternalNote', () => {
     it('renders without errors', () => {
         const { container } = render(<TicketInternalNote item={createItem()} />)
+
         expect(container).not.toBeEmptyDOMElement()
+    })
+
+    it('passes the active pending state to the message bubble', () => {
+        render(
+            <TicketInternalNote
+                item={{
+                    ...createItem(),
+                    pendingState: TicketThreadPendingState.Active,
+                }}
+            />,
+        )
+
+        expect(messageBubbleSpy).toHaveBeenCalledWith({
+            pendingState: TicketThreadPendingState.Active,
+        })
+    })
+
+    it('passes the failed pending state to the message bubble', () => {
+        render(
+            <TicketInternalNote
+                item={{
+                    ...createItem(),
+                    pendingState: TicketThreadPendingState.Failed,
+                }}
+            />,
+        )
+
+        expect(messageBubbleSpy).toHaveBeenCalledWith({
+            pendingState: TicketThreadPendingState.Failed,
+        })
+    })
+
+    it('renders message errors with the internal note ticket context', () => {
+        const item = createItem()
+
+        render(<TicketInternalNote item={item} />)
+
+        expect(screen.getByText('MessageErrors')).toBeInTheDocument()
+        expect(messageErrorsSpy).toHaveBeenCalledWith({
+            isPending: false,
+            message: item.data,
+            ticketId: 123,
+        })
+    })
+
+    it('passes the pending state through to message errors', () => {
+        const item = {
+            ...createItem(),
+            pendingState: TicketThreadPendingState.Active,
+        }
+
+        render(<TicketInternalNote item={item} />)
+
+        expect(messageErrorsSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isPending: true,
+                ticketId: 123,
+            }),
+        )
+    })
+
+    it('does not render message errors when the internal note has no ticket id', () => {
+        const item = {
+            ...createItem(),
+            data: {
+                ...createItem().data,
+                ticket_id: 0,
+            } as TicketThreadInternalNoteItem['data'],
+        }
+
+        render(<TicketInternalNote item={item} />)
+
+        expect(screen.queryByText('MessageErrors')).not.toBeInTheDocument()
+        expect(messageErrorsSpy).not.toHaveBeenCalled()
     })
 })

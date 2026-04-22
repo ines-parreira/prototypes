@@ -198,6 +198,21 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-message-action-failed',
         onReceive: function (json) {
+            const ticketId = Number(
+                (json as TicketMessageActionFailedEvent).ticket_id,
+            )
+
+            if (ticketId) {
+                void appQueryClient.invalidateQueries({
+                    queryKey: queryKeys.tickets.getTicket(ticketId),
+                })
+                void appQueryClient.invalidateQueries({
+                    queryKey: queryKeys.ticketMessages.listMessages({
+                        ticket_id: ticketId,
+                    }),
+                })
+            }
+
             void appQueryClient.invalidateQueries({
                 queryKey: queryKeys.customFields.all(),
             })

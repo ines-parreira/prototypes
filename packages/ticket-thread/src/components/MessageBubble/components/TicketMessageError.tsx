@@ -135,41 +135,45 @@ export function TicketMessageError({
     )
 
     return (
-        <Banner
-            description={
-                splitError?.content ? (
-                    <TicketMessageErrorContent content={splitError.content} />
-                ) : undefined
-            }
-            icon={IconName.TriangleWarning}
-            isClosable={false}
-            intent="destructive"
-            title={
-                shouldRenderErrorTitle ? (
-                    <TicketMessageErrorTitle
-                        error={error}
-                        title={splitError?.title}
+        <div className={css.messageErrorContainer}>
+            <Banner
+                description={
+                    splitError?.content ? (
+                        <TicketMessageErrorContent
+                            content={splitError.content}
+                        />
+                    ) : undefined
+                }
+                icon={IconName.TriangleWarning}
+                isClosable={false}
+                intent="destructive"
+                title={
+                    shouldRenderErrorTitle ? (
+                        <TicketMessageErrorTitle
+                            error={error}
+                            title={splitError?.title}
+                        />
+                    ) : undefined
+                }
+            >
+                <Box className={css.content} flexDirection="column" gap="xs">
+                    {failedActions.length > 0 ? (
+                        <FailedActionsDisclosure actions={failedActions} />
+                    ) : null}
+                    <TicketMessageErrorFooter
+                        isCancelable={isCancelable}
+                        isForceable={isForceable}
+                        isLoading={isLoading}
+                        isRetriable={isRetriable}
+                        isSubmittingMessage={isSubmittingMessage}
+                        onCancel={handleCancel}
+                        onForce={handleForce}
+                        onRetry={handleRetry}
+                        retryTooltipMessage={retryTooltipMessage}
                     />
-                ) : undefined
-            }
-        >
-            <Box className={css.content} flexDirection="column" gap="xs">
-                {failedActions.length > 0 ? (
-                    <FailedActionsDisclosure actions={failedActions} />
-                ) : null}
-                <TicketMessageErrorFooter
-                    isCancelable={isCancelable}
-                    isForceable={isForceable}
-                    isLoading={isLoading}
-                    isRetriable={isRetriable}
-                    isSubmittingMessage={isSubmittingMessage}
-                    onCancel={handleCancel}
-                    onForce={handleForce}
-                    onRetry={handleRetry}
-                    retryTooltipMessage={retryTooltipMessage}
-                />
-            </Box>
-        </Banner>
+                </Box>
+            </Banner>
+        </div>
     )
 }
 

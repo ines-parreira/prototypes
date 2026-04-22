@@ -161,6 +161,39 @@ describe('MessageErrors', () => {
         })
     })
 
+    it('forces persisted messages through ticket-thread query hooks', async () => {
+        const message = mockTicketMessage({
+            actions: [
+                {
+                    name: 'http',
+                    response: {
+                        msg: 'Action failed',
+                        response: 'Bad Request',
+                        status_code: 400,
+                    },
+                    status: 'error',
+                    title: 'HTTP hook',
+                    type: 'http',
+                },
+            ],
+            failed_datetime: null,
+            id: 456,
+            ticket_id: 123,
+        })
+        const { user } = render(
+            <MessageErrors message={message} ticketId={123} />,
+        )
+
+        await user.click(screen.getByRole('button', { name: 'Send Anyway' }))
+
+        expect(mutateAsyncUpdateTicketMessage).toHaveBeenCalledWith({
+            ticketId: 123,
+            id: 456,
+            data: {},
+            params: { action: 'force' },
+        })
+    })
+
     it('cancels pending messages through the legacy bridge', async () => {
         const legacyActions = makeLegacyActions()
         const message = {

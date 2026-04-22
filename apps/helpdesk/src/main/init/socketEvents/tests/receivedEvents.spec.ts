@@ -1130,6 +1130,46 @@ describe('receivedEvents', () => {
         })
     })
 
+    describe('ticket-message-action-failed', () => {
+        const handler = _find(receivedEvents, {
+            name: 'ticket-message-action-failed',
+        }) as ReceivedEvent
+
+        it('should invalidate the ticket thread queries for the failed ticket', () => {
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
+
+            handler.onReceive({
+                event: { type: 'ticket-message-action-failed' },
+                ticket_id: 42,
+            } as any)
+
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.tickets.getTicket(42),
+            })
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.ticketMessages.listMessages({
+                    ticket_id: 42,
+                }),
+            })
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.customFields.all(),
+            })
+        })
+
+        it('should dispatch the action failure handler with the failed ticket id', () => {
+            handler.onReceive({
+                event: { type: 'ticket-message-action-failed' },
+                ticket_id: 42,
+            } as any)
+
+            expect(ticketActions.handleMessageActionError).toHaveBeenCalledWith(
+                42,
+            )
+        })
+    })
+
     describe('agent-availability-updated', () => {
         const handler = _find(receivedEvents, {
             name: SocketEventType.AgentAvailabilityUpdated,
