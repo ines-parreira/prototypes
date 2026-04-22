@@ -146,10 +146,11 @@ describe('useRevenuePerInteractionMetric', () => {
             expect(mockUseGmvInfluencedTrend).toHaveBeenCalledWith(
                 statsFilters,
                 timezone,
+                true,
             )
             expect(
                 mockUseTotalNumberOfSalesConversationsTrend,
-            ).toHaveBeenCalledWith(statsFilters, timezone)
+            ).toHaveBeenCalledWith(statsFilters, timezone, true)
         })
 
         it('should compute the trend value using safeDivide', () => {

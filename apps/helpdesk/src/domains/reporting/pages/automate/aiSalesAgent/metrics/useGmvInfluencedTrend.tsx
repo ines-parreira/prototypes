@@ -48,6 +48,7 @@ export const formatGmvInfluencedData = (
 const useGmvInfluencedTrend = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ): MetricTrendWithCurrency => {
     const currentPeriodQuery = gmvInfluencedQueryFactory(filters, timezone)
     const previousPeriodQuery = gmvInfluencedQueryFactory(
@@ -64,6 +65,8 @@ const useGmvInfluencedTrend = (
             filters,
             timezone,
         }),
+        undefined,
+        enabled,
     )
 
     const {
@@ -79,6 +82,8 @@ const useGmvInfluencedTrend = (
             },
             timezone,
         }),
+        undefined,
+        enabled,
     )
 
     const formattedData = useMemo(

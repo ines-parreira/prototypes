@@ -34,11 +34,16 @@ export const useRevenuePerInteractionMetric = (): MetricTrend => {
 
     const v1Trend = useGenericTrend(
         {
-            gmvInfluenced: useGmvInfluencedTrend(statsFilters, userTimezone),
+            gmvInfluenced: useGmvInfluencedTrend(
+                statsFilters,
+                userTimezone,
+                !isLoading && !isV2,
+            ),
             totalNumberOfAgentSalesConverations:
                 useTotalNumberOfSalesConversationsTrend(
                     statsFilters,
                     userTimezone,
+                    !isLoading && !isV2,
                 ),
         },
         ({ gmvInfluenced, totalNumberOfAgentSalesConverations }) =>
