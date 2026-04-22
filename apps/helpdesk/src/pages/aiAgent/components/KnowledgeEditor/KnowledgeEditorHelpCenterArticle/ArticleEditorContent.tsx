@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
+
 import { KnowledgeEditorSidePanelHelpCenterArticle } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelHelpCenterArticle'
 import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
 import { ArticleToolbarControls } from './ArticleToolbarControls'
@@ -162,6 +164,7 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
             <ArticleTranslationDeleteModal />
             <ArticlePublishModal />
             <ArticleRestoreVersionModal />
+            <DrillDownModal isLegacy={false} />
         </div>
     )
 }

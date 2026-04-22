@@ -38,6 +38,10 @@ jest.mock(
     }),
 )
 
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: () => null,
+}))
+
 // Mock other components
 jest.mock('../KnowledgeEditorTopBar/KnowledgeEditorTopBar', () => ({
     KnowledgeEditorTopBar: ({ children }: { children: React.ReactNode }) => (

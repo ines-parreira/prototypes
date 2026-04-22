@@ -24,6 +24,10 @@ import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance'
 
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: () => null,
+}))
+
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     SidePanel: ({
