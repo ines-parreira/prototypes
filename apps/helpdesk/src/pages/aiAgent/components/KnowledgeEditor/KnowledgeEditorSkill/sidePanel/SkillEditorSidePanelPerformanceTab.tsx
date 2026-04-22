@@ -30,44 +30,44 @@ export const SkillEditorSidePanelPerformanceTab = () => {
                     </Text>
                 </Box>
 
-                {hasNoData ? (
-                    <Box
-                        height="100%"
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
-                        gap="sm"
-                    >
-                        <Icon name="chart-bar-vertical" />
-                        <Box
-                            width="220px"
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                            justifyContent="center"
-                            gap="xxxxs"
-                        >
-                            <Text size="md" variant="bold">
-                                No data yet
-                            </Text>
-                            <Text
-                                size="sm"
-                                color="content-neutral-tertiary"
-                                align="center"
-                            >
-                                Data will appear here once AI Agent handles
-                                conversations using this skill.
-                            </Text>
-                        </Box>
-                    </Box>
-                ) : (
+                {!hasNoData && (
                     <SkillEditorSidePanelPerformanceMetricCards
                         {...skillMetrics}
                     />
                 )}
             </Box>
-            {!hasNoData && (
+            {hasNoData ? (
+                <Box
+                    flexGrow={1}
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap="sm"
+                >
+                    <Icon name="chart-bar-vertical" />
+                    <Box
+                        width="220px"
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        justifyContent="center"
+                        gap="xxxxs"
+                    >
+                        <Text size="md" variant="bold">
+                            No data yet
+                        </Text>
+                        <Text
+                            size="sm"
+                            color="content-neutral-tertiary"
+                            align="center"
+                        >
+                            Data will appear here once AI Agent handles
+                            conversations using this skill.
+                        </Text>
+                    </Box>
+                </Box>
+            ) : (
                 <SkillEditorSidePanelRecentTicketsSection sectionId="recent-tickets" />
             )}
         </Box>

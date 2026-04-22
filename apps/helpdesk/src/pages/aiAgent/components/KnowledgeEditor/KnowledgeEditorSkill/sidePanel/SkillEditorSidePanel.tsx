@@ -33,7 +33,6 @@ export const SkillEditorSidePanel = () => {
                     {activeTab === 'performance' && (
                         <SkillEditorSidePanelPerformanceTab />
                     )}
-                    <div className={css.contentDivider}></div>
                 </div>
             )}
 

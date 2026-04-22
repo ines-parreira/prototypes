@@ -57,7 +57,7 @@ export const GoToSkillsBanner: React.FC<Props> = ({ shopName }) => {
                     icon="close"
                 />
             </Box>
-            <Box gap="80px">
+            <Box gap="80px" justifyContent="space-between">
                 <Box gap="lg" flexDirection="column">
                     <Box flexDirection="column" gap="xs">
                         <Box>
