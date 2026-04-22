@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -9,6 +11,14 @@ import * as themeHooks from '../../../../core/theme'
 import { IntegrationType } from '../../../../models/integration/constants'
 import type { StoreIntegration } from '../../../../models/integration/types'
 import StoreSelector from './StoreSelector'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
+}))
+const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
 
 jest.mock('../../../../core/theme', () => ({
     ...jest.requireActual('../../../../core/theme'),
@@ -37,6 +47,7 @@ describe('StoreSelector', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
         mockUseTheme.mockReturnValue({
             name: THEME_NAME.Light,
             resolvedName: THEME_NAME.Light,
@@ -838,6 +849,350 @@ describe('StoreSelector', () => {
 
             const wrapper = container.firstChild as HTMLElement
             expect(wrapper.className).not.toContain('darkDropdown')
+        })
+    })
+
+    describe('wayfinding FF ON variant', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        const getSelectFieldTrigger = () =>
+            screen.getByRole('textbox', { name: 'Store selector' })
+
+        describe('basic functionality', () => {
+            it('returns null when integrations array is empty', () => {
+                const { container } = render(
+                    <StoreSelector
+                        integrations={[]}
+                        selected={undefined}
+                        onChange={mockOnChange}
+                    />,
+                )
+
+                expect(container.firstChild).toBeNull()
+            })
+
+            it('renders with a "Store selector" accessible name', () => {
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                    />,
+                )
+
+                expect(getSelectFieldTrigger()).toBeInTheDocument()
+            })
+
+            it('displays the selected store name in the trigger', () => {
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                    />,
+                )
+
+                expect(getSelectFieldTrigger()).toHaveValue('Shopify Store')
+            })
+
+            it('displays "All Stores" in the trigger when selected is null and withAllOption is true', () => {
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={null}
+                        onChange={mockOnChange}
+                        withAllOption
+                    />,
+                )
+
+                expect(getSelectFieldTrigger()).toHaveValue('All Stores')
+            })
+        })
+
+        describe('dropdown interactions', () => {
+            it('opens dropdown and shows store options when trigger is clicked', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                await waitFor(() => {
+                    const options = screen.getAllByRole('option')
+                    expect(options).toHaveLength(2)
+                    expect(options[0]).toHaveTextContent('Shopify Store')
+                    expect(options[1]).toHaveTextContent('BigCommerce Store')
+                })
+            })
+
+            it('calls onChange with the store id when a store is selected', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                const options = await screen.findAllByRole('option')
+                const bigCommerceOption = options.find((option) =>
+                    option.textContent?.includes('BigCommerce Store'),
+                )
+                await user.click(bigCommerceOption!)
+
+                await waitFor(() => {
+                    expect(mockOnChange).toHaveBeenCalledWith(2)
+                })
+            })
+        })
+
+        describe('with all option', () => {
+            it('displays "All Stores" option in dropdown when withAllOption is true', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        withAllOption
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                await waitFor(() => {
+                    const options = screen.getAllByRole('option')
+                    expect(options).toHaveLength(3)
+                    expect(options[0]).toHaveTextContent('All Stores')
+                })
+            })
+
+            it('calls onChange with null when "All Stores" is selected', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        withAllOption
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                const options = await screen.findAllByRole('option')
+                const allStoresOption = options.find((option) =>
+                    option.textContent?.includes('All Stores'),
+                )
+                await user.click(allStoresOption!)
+
+                await waitFor(() => {
+                    expect(mockOnChange).toHaveBeenCalledWith(null)
+                })
+            })
+        })
+
+        describe('with search', () => {
+            it('displays search input when withSearch is true', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        withSearch
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                await waitFor(() => {
+                    expect(screen.getByRole('searchbox')).toBeInTheDocument()
+                })
+            })
+
+            it('does not display search input when withSearch is false', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        withSearch={false}
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                await waitFor(() => {
+                    expect(
+                        screen.queryByRole('searchbox'),
+                    ).not.toBeInTheDocument()
+                })
+            })
+        })
+
+        describe('shouldShowActiveStatus prop', () => {
+            it('displays a status dot in the trigger', () => {
+                const mockShowActiveStatus = jest.fn().mockReturnValue(true)
+
+                const { container } = render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        shouldShowActiveStatus={mockShowActiveStatus}
+                    />,
+                )
+
+                expect(
+                    container.querySelectorAll('[data-name="dot"]'),
+                ).toHaveLength(1)
+            })
+
+            it('displays status indicators in the trigger and dropdown items', async () => {
+                const user = userEvent.setup()
+                const mockShowActiveStatus = jest
+                    .fn()
+                    .mockImplementation((integration) => integration.id === 1)
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        shouldShowActiveStatus={mockShowActiveStatus}
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                await waitFor(() => {
+                    expect(
+                        document.querySelectorAll('[data-name="dot"]'),
+                    ).toHaveLength(3)
+                    expect(mockShowActiveStatus).toHaveBeenCalledWith(
+                        mockShopifyIntegration,
+                    )
+                    expect(mockShowActiveStatus).toHaveBeenCalledWith(
+                        mockBigCommerceIntegration,
+                    )
+                })
+            })
+
+            it('does not display status indicators when shouldShowActiveStatus is not provided', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                await waitFor(() => {
+                    expect(
+                        document.querySelectorAll('[data-name="dot"]'),
+                    ).toHaveLength(0)
+                })
+            })
+        })
+
+        describe('hideSelectedFromDropdown prop', () => {
+            it('hides selected store from dropdown when hideSelectedFromDropdown is true', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        hideSelectedFromDropdown
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                await waitFor(() => {
+                    const options = screen.getAllByRole('option')
+                    expect(options).toHaveLength(1)
+                    expect(options[0]).toHaveTextContent('BigCommerce Store')
+                })
+            })
+
+            it('shows all stores in dropdown when hideSelectedFromDropdown is false', async () => {
+                const user = userEvent.setup()
+
+                render(
+                    <StoreSelector
+                        integrations={mockIntegrations}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        hideSelectedFromDropdown={false}
+                    />,
+                )
+
+                await user.click(getSelectFieldTrigger())
+
+                await waitFor(() => {
+                    const options = screen.getAllByRole('option')
+                    expect(options).toHaveLength(2)
+                })
+            })
+        })
+
+        describe('single store behavior', () => {
+            const mockSingleIntegration = [mockShopifyIntegration]
+
+            it('renders as disabled when single store and withAllOption is false', () => {
+                render(
+                    <StoreSelector
+                        integrations={mockSingleIntegration}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                    />,
+                )
+
+                expect(getSelectFieldTrigger()).toHaveAttribute(
+                    'aria-disabled',
+                    'true',
+                )
+            })
+
+            it('renders as enabled when single store and withAllOption is true', () => {
+                render(
+                    <StoreSelector
+                        integrations={mockSingleIntegration}
+                        selected={mockShopifyIntegration}
+                        onChange={mockOnChange}
+                        withAllOption
+                    />,
+                )
+
+                expect(getSelectFieldTrigger()).toHaveAttribute(
+                    'aria-disabled',
+                    'false',
+                )
+            })
         })
     })
 })

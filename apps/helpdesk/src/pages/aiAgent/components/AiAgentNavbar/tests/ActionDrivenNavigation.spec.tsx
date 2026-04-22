@@ -63,17 +63,24 @@ jest.mock('pages/common/components/StoreSelector/StoreSelector', () => {
             integrations,
             selected,
             onChange,
-            shouldShowActiveStatus: __shouldShowActiveStatus,
+            shouldShowActiveStatus,
+            withSearch,
             fullWidth: __fullWidth,
         }: any) => (
-            <div data-testid="store-selector">
+            <div
+                data-testid="store-selector"
+                data-with-search={String(!!withSearch)}
+            >
                 <button>{selected?.name || 'Select a store'}</button>
                 {integrations?.map((integration: any) => {
+                    const isActive =
+                        shouldShowActiveStatus?.(integration) ?? false
                     return (
                         <div
                             key={integration.id}
                             role="option"
                             aria-selected={selected?.id === integration.id}
+                            data-active={String(isActive)}
                             onClick={() => {
                                 const integrationMatch = integrations.find(
                                     (i: any) => i.id === integration.id,
@@ -525,6 +532,69 @@ describe('ActionDrivenNavigation', () => {
             expect(
                 screen.queryByTestId('collapsed-navigation-items'),
             ).not.toBeInTheDocument()
+        })
+
+        describe('store selector behavior', () => {
+            it('calls handleStoreSelect with the correct shop name when a store is selected', async () => {
+                const user = userEvent.setup()
+
+                renderComponent(false)
+
+                const options = screen.getAllByRole('option')
+                await act(() => user.click(options[0]))
+
+                expect(mockHandleStoreSelect).toHaveBeenCalledWith(
+                    'test-store-1',
+                )
+            })
+
+            it('calls getStoreActivationStatus via shouldShowActiveStatus for each integration', () => {
+                mockGetStoreActivationStatus.mockReturnValue(true)
+
+                renderComponent(false)
+
+                expect(mockGetStoreActivationStatus).toHaveBeenCalledWith(
+                    'test-store-1',
+                )
+            })
+
+            it('passes withSearch=false when there are 10 or fewer integrations', () => {
+                renderComponent(false)
+
+                expect(screen.getByTestId('store-selector')).toHaveAttribute(
+                    'data-with-search',
+                    'false',
+                )
+            })
+
+            it('passes withSearch=true when there are more than 10 integrations', () => {
+                const manyIntegrations = Array.from({ length: 11 }, (_, i) => ({
+                    ...mockShopifyIntegration,
+                    id: i + 1,
+                    name: `Store ${i + 1}`,
+                    meta: { shop_name: `store-${i + 1}` },
+                }))
+
+                mockUseActionDrivenNavbarSections.mockReturnValue({
+                    selectedStore: 'store-1',
+                    selectedStoreIntegration: manyIntegrations[0],
+                    storeIntegrations: manyIntegrations,
+                    handleStoreSelect: mockHandleStoreSelect,
+                    getStoreActivationStatus: mockGetStoreActivationStatus,
+                    getChannelStatus: mockGetChannelStatus,
+                    navigationItems: mockNavigationItems,
+                    expandedSections: ['analyze'],
+                    handleExpandedSectionsChange:
+                        mockHandleExpandedSectionsChange,
+                })
+
+                renderComponent(false)
+
+                expect(screen.getByTestId('store-selector')).toHaveAttribute(
+                    'data-with-search',
+                    'true',
+                )
+            })
         })
     })
 

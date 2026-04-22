@@ -1,20 +1,26 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import classNames from 'classnames'
 import type { ClassValue } from 'classnames/types'
 
 import {
+    Box,
     Button,
     Dot,
+    DropdownIcon,
     Icon,
     ListItem,
     ListSection,
     Select,
+    SelectField,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
 import type { ColorValue } from '@gorgias/axiom'
 import { THEME_NAME } from '@gorgias/design-tokens'
+
+import { getStoreIconNameFromType } from 'state/integrations/helpers'
 
 import { useTheme } from '../../../../core/theme'
 import type { StoreIntegration } from '../../../../models/integration/types'
@@ -78,6 +84,8 @@ export default function StoreSelector({
     const theme = useTheme()
     const inlineNameRef = useRef<HTMLSpanElement>(null)
     const buttonTextRef = useRef<HTMLSpanElement>(null)
+
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const displayName =
         selected === undefined
@@ -232,6 +240,72 @@ export default function StoreSelector({
                     <Dot color={selectedStatusColor} size="md" />
                 )}
             </div>
+        )
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <Box w={222}>
+                <SelectField
+                    maxHeight={400}
+                    items={sections}
+                    value={selectedItem || undefined}
+                    onChange={handleSelect}
+                    isSearchable={withSearch}
+                    isDisabled={isDisabled}
+                    placement="bottom left"
+                    aria-label="Store selector"
+                    leadingSlot={
+                        selected
+                            ? getStoreIconNameFromType(selected.type)
+                            : undefined
+                    }
+                    trailingSlot={({ isOpen }) => (
+                        <>
+                            {selectedStatusColor && (
+                                <Dot color={selectedStatusColor} size="md" />
+                            )}
+                            <DropdownIcon isOpen={isOpen} />
+                        </>
+                    )}
+                >
+                    {(section: StoreSelectorSection) => (
+                        <ListSection id={section.id} items={section.items}>
+                            {(item: StoreSelectorItem) => {
+                                const statusColor = item.isAllOption
+                                    ? undefined
+                                    : getStatusColor(
+                                          integrations.find(
+                                              (i) => i.id === item.id,
+                                          )!,
+                                      )
+                                return (
+                                    <ListItem
+                                        id={item.id}
+                                        textValue={item.name}
+                                        label={item.name}
+                                        leadingSlot={
+                                            item.isAllOption
+                                                ? undefined
+                                                : getStoreIconNameFromType(
+                                                      item.type!,
+                                                  )
+                                        }
+                                        trailingSlot={
+                                            statusColor ? (
+                                                <Dot
+                                                    color={statusColor}
+                                                    size="md"
+                                                />
+                                            ) : undefined
+                                        }
+                                    />
+                                )
+                            }}
+                        </ListSection>
+                    )}
+                </SelectField>
+            </Box>
         )
     }
 

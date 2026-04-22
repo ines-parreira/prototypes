@@ -115,33 +115,31 @@ export const ActionDrivenNavigation = () => {
                     />
                 )}
 
-                <div className={css.storeSelector}>
-                    <StoreSelector
-                        key={String(isActivationDataReady)}
-                        integrations={storeIntegrations}
-                        selected={selectedStoreIntegration}
-                        onChange={(id) => {
-                            const integration = storeIntegrations.find(
-                                (i) => i.id === id,
-                            )
-                            if (!integration) return
-                            const shopName =
-                                getShopNameFromStoreIntegration(integration)
-                            handleStoreSelect(shopName)
-                        }}
-                        shouldShowActiveStatus={(integration) =>
-                            getStoreActivationStatus(
-                                getShopNameFromStoreIntegration(integration),
-                            )
-                        }
-                        enableDynamicHeight
-                        fullWidth
-                        singleStoreInline
-                        buttonClassName={css.storeSelectorButton}
-                        applyClassicThemeOverride
-                        withSearch={storeIntegrations.length > 10}
-                    />
-                </div>
+                <StoreSelector
+                    key={String(isActivationDataReady)}
+                    integrations={storeIntegrations}
+                    selected={selectedStoreIntegration}
+                    onChange={(id) => {
+                        const integration = storeIntegrations.find(
+                            (i) => i.id === id,
+                        )
+                        if (!integration) return
+                        const shopName =
+                            getShopNameFromStoreIntegration(integration)
+                        handleStoreSelect(shopName)
+                    }}
+                    shouldShowActiveStatus={(integration) =>
+                        getStoreActivationStatus(
+                            getShopNameFromStoreIntegration(integration),
+                        )
+                    }
+                    enableDynamicHeight
+                    fullWidth
+                    singleStoreInline
+                    buttonClassName={css.storeSelectorButton}
+                    applyClassicThemeOverride
+                    withSearch={storeIntegrations.length > 10}
+                />
 
                 {shouldRenderCollapsedItem && (
                     <NavigationSection
