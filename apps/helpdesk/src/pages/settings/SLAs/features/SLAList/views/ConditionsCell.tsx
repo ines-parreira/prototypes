@@ -1,7 +1,7 @@
 import type { PropsWithRef } from 'react'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 
-import { Tag, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Button, Tag, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -24,12 +24,15 @@ export default function ConditionsCell({
 }) {
     const { uuid, filters } = policy
     const { conditions } = useResolveConditions(filters)
+    const [isExpanded, setIsExpanded] = useState(false)
 
     const hasMore = conditions.length > CONDITIONS_LIMIT
+    const hiddenCount = conditions.length - CONDITIONS_LIMIT
     const slicedConditions = useMemo(
         () => conditions.slice(0, CONDITIONS_LIMIT),
         [conditions],
     )
+    const visibleConditions = isExpanded ? conditions : slicedConditions
 
     const tooltipContent = useMemo(
         () => conditions.map((c) => c.displayLabel).join(', '),
@@ -37,8 +40,8 @@ export default function ConditionsCell({
     )
 
     const tags = (
-        <div className={css.container}>
-            {slicedConditions.map((item) => (
+        <div className={css.tags}>
+            {visibleConditions.map((item) => (
                 <Tag
                     key={`${uuid}-${item.category}-${item.fieldId}-${item.value}`}
                     size="sm"
@@ -46,25 +49,41 @@ export default function ConditionsCell({
                     {getShortLabel(item)}
                 </Tag>
             ))}
-            {hasMore && (
-                <span className={css.surplus}>
-                    +{conditions.length - CONDITIONS_LIMIT}
-                </span>
-            )}
         </div>
     )
 
     return (
         <BodyCell {...bodyCellProps}>
-            <CellLinkWrapper to={`/app/settings/sla/${uuid}`}>
-                {conditions.length > 0 ? (
-                    <Tooltip trigger={<span>{tags}</span>}>
-                        <TooltipContent title={tooltipContent} />
-                    </Tooltip>
-                ) : (
-                    tags
+            <div className={css.container}>
+                <CellLinkWrapper to={`/app/settings/sla/${uuid}`}>
+                    {conditions.length > 0 ? (
+                        <Tooltip trigger={<span>{tags}</span>}>
+                            <TooltipContent title={tooltipContent} />
+                        </Tooltip>
+                    ) : (
+                        tags
+                    )}
+                </CellLinkWrapper>
+                {hasMore && (
+                    <Button
+                        variant="tertiary"
+                        size="sm"
+                        trailingSlot={
+                            isExpanded
+                                ? 'arrow-chevron-up'
+                                : 'arrow-chevron-down'
+                        }
+                        onClick={() => setIsExpanded((v) => !v)}
+                        aria-label={
+                            isExpanded
+                                ? 'Collapse conditions'
+                                : `Show ${hiddenCount} more conditions`
+                        }
+                    >
+                        {!isExpanded && `+${hiddenCount}`}
+                    </Button>
                 )}
-            </CellLinkWrapper>
+            </div>
         </BodyCell>
     )
 }

@@ -75,7 +75,7 @@ export function TicketFieldValuesLevel({
     fieldLabel,
     searchQuery,
     selectedConditions,
-    isAtLimit,
+    maxSelections,
     onNavigate,
     onToggle,
 }: {
@@ -85,7 +85,7 @@ export function TicketFieldValuesLevel({
     fieldLabel: string
     searchQuery: string
     selectedConditions: ConditionsFormValue
-    isAtLimit: boolean
+    maxSelections?: number
     onNavigate: (level: DrilldownLevel) => void
     onToggle: (item: ConditionItem) => void
 }) {
@@ -96,6 +96,8 @@ export function TicketFieldValuesLevel({
         const query = searchQuery.toLowerCase()
         return collectMatchingLeaves(currentNodes, query, path, fieldLabel)
     }, [currentNodes, searchQuery, path, fieldLabel])
+
+    const selectedCaption = `Only one ticket field [${fieldLabel}] can be applied to the same ticket`
 
     if (searchResults) {
         if (searchResults.length === 0) {
@@ -115,7 +117,8 @@ export function TicketFieldValuesLevel({
                         )}
                         label={match.displayLabel}
                         selectedConditions={selectedConditions}
-                        isAtLimit={isAtLimit}
+                        maxSelections={maxSelections}
+                        selectedCaption={selectedCaption}
                         onToggle={onToggle}
                     />
                 ))}
@@ -173,7 +176,8 @@ export function TicketFieldValuesLevel({
                         )}
                         label={label}
                         selectedConditions={selectedConditions}
-                        isAtLimit={isAtLimit}
+                        maxSelections={maxSelections}
+                        selectedCaption={selectedCaption}
                         onToggle={onToggle}
                     />
                 )

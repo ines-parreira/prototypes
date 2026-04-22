@@ -27,7 +27,7 @@ const buildProps = (
     fieldLabel: FIELD_LABEL,
     searchQuery: '',
     selectedConditions: [] as ConditionsFormValue,
-    isAtLimit: false,
+    maxSelections: undefined,
     onNavigate: jest.fn(),
     onToggle: jest.fn(),
     ...overrides,
@@ -162,6 +162,124 @@ describe('TicketFieldValuesLevel', () => {
             )
 
             expect(screen.getByText('No results')).toBeInTheDocument()
+        })
+    })
+
+    describe('per-root-field single-value rule', () => {
+        it('disables every other leaf at the current level when a value for the same field is already selected', () => {
+            const alreadySelected = makeConditionItem(
+                'ticket_fields',
+                FIELD_ID,
+                'optA',
+                'Priority / optA',
+            )
+            render(
+                <TicketFieldValuesLevel
+                    {...buildProps({
+                        selectedConditions: [alreadySelected],
+                        maxSelections: 5,
+                    })}
+                />,
+            )
+
+            expect(screen.getByLabelText('optA')).toBeChecked()
+            expect(screen.getByLabelText('optA')).toBeEnabled()
+            expect(screen.getByLabelText('optB')).toBeDisabled()
+        })
+
+        it('disables leaves at a drilled-down level when a sibling branch already has a selection', () => {
+            const alreadySelected = makeConditionItem(
+                'ticket_fields',
+                FIELD_ID,
+                'optA',
+                'Priority / optA',
+            )
+            render(
+                <TicketFieldValuesLevel
+                    {...buildProps({
+                        path: ['Parent::branch'],
+                        selectedConditions: [alreadySelected],
+                        maxSelections: 5,
+                    })}
+                />,
+            )
+
+            expect(screen.getByLabelText('Child1')).toBeDisabled()
+            expect(screen.getByLabelText('Child2')).toBeDisabled()
+        })
+
+        it('disables search-result leaves for the same root when one is selected', () => {
+            const alreadySelected = makeConditionItem(
+                'ticket_fields',
+                FIELD_ID,
+                'Parent::Child1',
+                'Priority / Parent > Child1',
+            )
+            render(
+                <TicketFieldValuesLevel
+                    {...buildProps({
+                        searchQuery: 'child',
+                        selectedConditions: [alreadySelected],
+                        maxSelections: 5,
+                    })}
+                />,
+            )
+
+            expect(
+                screen.getByLabelText('Priority / Parent > Child1'),
+            ).toBeChecked()
+            expect(
+                screen.getByLabelText('Priority / Parent > Child2'),
+            ).toBeDisabled()
+        })
+    })
+
+    describe('selected-value caption', () => {
+        const captionText = `Only one ticket field [${FIELD_LABEL}] can be applied to the same ticket`
+
+        it('renders the restriction caption under the selected leaf', () => {
+            const alreadySelected = makeConditionItem(
+                'ticket_fields',
+                FIELD_ID,
+                'optA',
+                'Priority / optA',
+            )
+            render(
+                <TicketFieldValuesLevel
+                    {...buildProps({
+                        selectedConditions: [alreadySelected],
+                    })}
+                />,
+            )
+
+            expect(screen.getByText(captionText)).toBeInTheDocument()
+        })
+
+        it('does not render the caption when no leaf is selected', () => {
+            render(<TicketFieldValuesLevel {...buildProps()} />)
+
+            expect(
+                screen.queryByText(/Only one ticket field/),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders the caption for a selected leaf in search results', () => {
+            const alreadySelected = makeConditionItem(
+                'ticket_fields',
+                FIELD_ID,
+                'Parent::Child1',
+                'Priority / Parent > Child1',
+            )
+            render(
+                <TicketFieldValuesLevel
+                    {...buildProps({
+                        searchQuery: 'child1',
+                        selectedConditions: [alreadySelected],
+                    })}
+                />,
+            )
+
+            expect(screen.getByText(captionText)).toBeInTheDocument()
         })
     })
 })

@@ -28,7 +28,7 @@ function renderTicketFieldsLevel(
         isLoading: false,
         getFieldChoices,
         selectedConditions: [] as ConditionsFormValue,
-        isAtLimit: false,
+        maxSelections: undefined,
         onNavigate: jest.fn(),
         onToggle: jest.fn(),
         ...overrides,

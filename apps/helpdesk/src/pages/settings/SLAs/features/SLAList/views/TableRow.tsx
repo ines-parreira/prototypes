@@ -72,6 +72,7 @@ export default function TableRow({
                     {React.createElement(getTableCell(column), {
                         policy,
                         onToggle: onToggle || _noop,
+                        rowIndex: dragItem.position,
                         bodyCellProps: {
                             ...(column !== TableColumn.PolicyName && {
                                 innerClassName: css.cellContent,

@@ -10,13 +10,13 @@ export function TagsLevel({
     tags,
     selectedConditions,
     isLoading,
-    isAtLimit,
+    maxSelections,
     onToggle,
 }: {
     tags: Tag[]
     selectedConditions: ConditionsFormValue
     isLoading: boolean
-    isAtLimit: boolean
+    maxSelections?: number
     onToggle: (item: ConditionItem) => void
 }) {
     if (isLoading) {
@@ -40,7 +40,7 @@ export function TagsLevel({
                     )}
                     label={tag.name}
                     selectedConditions={selectedConditions}
-                    isAtLimit={isAtLimit}
+                    maxSelections={maxSelections}
                     onToggle={onToggle}
                 />
             ))}

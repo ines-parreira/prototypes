@@ -16,6 +16,7 @@ export type UISLAPolicy = {
 }
 
 export enum TableColumn {
+    RowNumber = 'row_number',
     PolicyName = 'policy_name',
     UpdatedDatetime = 'updated_datetime',
     Channels = 'channels',

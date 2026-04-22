@@ -29,6 +29,43 @@ mockUseConditionsData.mockReturnValue({
     getFieldTree: jest.fn().mockReturnValue(new Map()),
 })
 
+function mockUseConditionsDataWithFields() {
+    mockUseConditionsData.mockReturnValue({
+        tags: [
+            { id: 1, name: 'urgent' },
+            { id: 2, name: 'vip' },
+        ],
+        isLoadingTags: false,
+        onLoadMoreTags: jest.fn().mockResolvedValue(undefined),
+        shouldLoadMoreTags: false,
+        dropdownFields: [
+            { id: 10, label: 'Priority' },
+            { id: 20, label: 'Region' },
+        ],
+        isLoadingFields: false,
+        getFieldChoices: jest.fn((fieldId: number) => {
+            if (fieldId === 10) return ['high', 'low']
+            if (fieldId === 20) return ['EU', 'US']
+            return []
+        }),
+        getFieldTree: jest.fn((fieldId: number) => {
+            if (fieldId === 10) {
+                return new Map([
+                    ['high::leaf', { value: 'high', children: new Map() }],
+                    ['low::leaf', { value: 'low', children: new Map() }],
+                ])
+            }
+            if (fieldId === 20) {
+                return new Map([
+                    ['EU::leaf', { value: 'EU', children: new Map() }],
+                    ['US::leaf', { value: 'US', children: new Map() }],
+                ])
+            }
+            return new Map()
+        }),
+    })
+}
+
 function renderWithForm(
     props: { maxSelections?: number } = {},
     defaultConditions: ReturnType<typeof makeConditionItem>[] = [],
@@ -157,6 +194,85 @@ describe('ConditionsSelectBox', () => {
         expect(
             screen.getByRole('button', { name: /^Ticket fields/ }),
         ).toBeInTheDocument()
+    })
+
+    it('ignores a second value selection for the same root ticket field', async () => {
+        mockUseConditionsDataWithFields()
+        const user = userEvent.setup()
+        renderWithForm({ maxSelections: 5 }, [
+            makeConditionItem('ticket_fields', 10, 'high', 'Priority / high'),
+        ])
+
+        await user.click(getTriggerButton())
+        await user.click(screen.getByRole('button', { name: /^Ticket fields/ }))
+        await user.click(screen.getByRole('button', { name: /^Priority/ }))
+        await user.click(screen.getByLabelText('low'))
+
+        expect(screen.getByLabelText('low')).not.toBeChecked()
+        expect(screen.getByLabelText('high')).toBeChecked()
+    })
+
+    it('allows selecting values for different root ticket fields independently', async () => {
+        mockUseConditionsDataWithFields()
+        const user = userEvent.setup()
+        renderWithForm({ maxSelections: 5 }, [
+            makeConditionItem('ticket_fields', 10, 'high', 'Priority / high'),
+        ])
+
+        await user.click(getTriggerButton())
+        await user.click(screen.getByRole('button', { name: /^Ticket fields/ }))
+        await user.click(screen.getByRole('button', { name: /^Region/ }))
+        await user.click(screen.getByLabelText('EU'))
+
+        expect(screen.getByLabelText('EU')).toBeChecked()
+    })
+
+    it('does not block tag selection when a ticket field is already selected', async () => {
+        mockUseConditionsDataWithFields()
+        const user = userEvent.setup()
+        renderWithForm({ maxSelections: 5 }, [
+            makeConditionItem('ticket_fields', 10, 'high', 'Priority / high'),
+        ])
+
+        await user.click(getTriggerButton())
+        await user.click(screen.getByRole('button', { name: /^Tags/ }))
+        await user.click(screen.getByLabelText('urgent'))
+
+        expect(screen.getByLabelText('urgent')).toBeChecked()
+    })
+
+    it('still allows deselecting an item when at the global cap', async () => {
+        const user = userEvent.setup()
+        renderWithForm({ maxSelections: 2 }, [
+            makeConditionItem('tags', 1, 'urgent', 'urgent'),
+            makeConditionItem('tags', 2, 'vip', 'vip'),
+        ])
+
+        await user.click(getTriggerButton())
+        await user.click(screen.getByRole('button', { name: /^Tags/ }))
+        await user.click(screen.getByLabelText('urgent'))
+
+        expect(screen.getByLabelText('urgent')).not.toBeChecked()
+    })
+
+    it('renders legacy multi-value selections as individually deselectable and blocks adding a third', async () => {
+        mockUseConditionsDataWithFields()
+        const user = userEvent.setup()
+        renderWithForm({ maxSelections: 5 }, [
+            makeConditionItem('ticket_fields', 10, 'high', 'Priority / high'),
+            makeConditionItem('ticket_fields', 10, 'low', 'Priority / low'),
+        ])
+
+        await user.click(getTriggerButton())
+        await user.click(screen.getByRole('button', { name: /^Ticket fields/ }))
+        await user.click(screen.getByRole('button', { name: /^Priority/ }))
+
+        expect(screen.getByLabelText('high')).toBeChecked()
+        expect(screen.getByLabelText('low')).toBeChecked()
+
+        await user.click(screen.getByLabelText('high'))
+        expect(screen.getByLabelText('high')).not.toBeChecked()
+        expect(screen.getByLabelText('low')).toBeChecked()
     })
 
     it('renders a plain tag for tags-category conditions and a tooltip-wrapped tag for ticket_fields', () => {

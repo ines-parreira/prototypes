@@ -13,6 +13,30 @@ export function isSameCondition(a: ConditionItem, b: ConditionItem): boolean {
     return a.fieldId === b.fieldId
 }
 
+export function isConditionDisabled(
+    condition: ConditionItem,
+    selectedConditions: ConditionsFormValue,
+    maxSelections?: number,
+): boolean {
+    if (selectedConditions.some((c) => isSameCondition(c, condition))) {
+        return false
+    }
+    if (
+        maxSelections !== undefined &&
+        selectedConditions.length >= maxSelections
+    ) {
+        return true
+    }
+    if (condition.category === 'ticket_fields') {
+        return selectedConditions.some(
+            (c) =>
+                c.category === 'ticket_fields' &&
+                c.fieldId === condition.fieldId,
+        )
+    }
+    return false
+}
+
 export type DrilldownLevel =
     | { type: 'root' }
     | { type: 'tags' }

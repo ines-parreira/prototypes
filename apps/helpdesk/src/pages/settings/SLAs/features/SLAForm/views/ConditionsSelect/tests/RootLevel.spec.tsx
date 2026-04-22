@@ -38,7 +38,7 @@ function renderRootLevel(
         selectedConditions: [] as ConditionsFormValue,
         isLoadingTags: false,
         isLoadingFields: false,
-        isAtLimit: false,
+        maxSelections: undefined,
         onLoadMoreTags: jest.fn().mockResolvedValue(undefined),
         shouldLoadMoreTags: false,
         onNavigate: jest.fn(),
@@ -200,6 +200,27 @@ describe('RootLevel', () => {
                     'Priority / high',
                 ),
             )
+        })
+
+        describe('per-root-field single-value rule', () => {
+            it('disables other matching values from the same root when one is selected, but keeps different roots and tags enabled', () => {
+                renderRootLevel({
+                    searchQuery: 'e',
+                    selectedConditions: [
+                        makeConditionItem(
+                            'ticket_fields',
+                            10,
+                            'medium',
+                            'Priority / medium',
+                        ),
+                    ],
+                    maxSelections: 5,
+                })
+
+                expect(screen.getByLabelText('Priority / medium')).toBeChecked()
+                expect(screen.getByLabelText('Region / EU')).toBeEnabled()
+                expect(screen.getByLabelText('other')).toBeEnabled()
+            })
         })
     })
 })

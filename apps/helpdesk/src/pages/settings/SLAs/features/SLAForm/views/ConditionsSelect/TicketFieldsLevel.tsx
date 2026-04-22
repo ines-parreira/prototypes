@@ -22,7 +22,7 @@ export function TicketFieldsLevel({
     isLoading,
     getFieldChoices,
     selectedConditions,
-    isAtLimit,
+    maxSelections,
     onNavigate,
     onToggle,
 }: {
@@ -31,7 +31,7 @@ export function TicketFieldsLevel({
     isLoading: boolean
     getFieldChoices: (fieldId: number) => string[]
     selectedConditions: ConditionsFormValue
-    isAtLimit: boolean
+    maxSelections?: number
     onNavigate: (level: DrilldownLevel) => void
     onToggle: (item: ConditionItem) => void
 }) {
@@ -69,7 +69,7 @@ export function TicketFieldsLevel({
                             )}
                             label={displayLabel}
                             selectedConditions={selectedConditions}
-                            isAtLimit={isAtLimit}
+                            maxSelections={maxSelections}
                             onToggle={onToggle}
                         />
                     )

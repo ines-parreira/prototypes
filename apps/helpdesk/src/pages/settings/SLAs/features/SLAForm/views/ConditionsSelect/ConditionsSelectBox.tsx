@@ -26,7 +26,7 @@ import type {
     ConditionsFormValue,
     DrilldownLevel,
 } from './types'
-import { getShortLabel, isSameCondition } from './types'
+import { getShortLabel, isConditionDisabled, isSameCondition } from './types'
 import useConditionsData from './useConditionsData'
 
 import css from './ConditionsSelectBox.less'
@@ -103,16 +103,9 @@ export function ConditionsSelectBox({
     const handleToggleCondition = useCallback(
         (item: ConditionItem) => {
             const current = (field.value ?? []) as ConditionsFormValue
+            if (isConditionDisabled(item, current, maxSelections)) return
+
             const exists = current.some((c) => isSameCondition(c, item))
-
-            if (
-                !exists &&
-                maxSelections !== undefined &&
-                current.length >= maxSelections
-            ) {
-                return
-            }
-
             const nextValue = exists
                 ? current.filter((c) => !isSameCondition(c, item))
                 : [...current, item]
@@ -210,6 +203,18 @@ export function ConditionsSelectBox({
                     ) : (
                         <Text className={css.placeholder}>Select</Text>
                     )}
+                    {maxSelections !== undefined &&
+                        selectedConditions.length > 0 && (
+                            <Tag
+                                color={
+                                    selectedConditions.length === maxSelections
+                                        ? 'red'
+                                        : 'grey'
+                                }
+                            >
+                                {selectedConditions.length}/{maxSelections}
+                            </Tag>
+                        )}
                     <Box className={css.iconWrapper}>
                         <DropdownIcon isOpen={isOpen} />
                     </Box>

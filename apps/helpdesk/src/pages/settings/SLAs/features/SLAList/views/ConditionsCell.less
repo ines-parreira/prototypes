@@ -1,21 +1,15 @@
-@import (reference) '~css/typography';
-
 :local {
     .container {
         display: flex;
+        flex-wrap: wrap;
         gap: var(--layout-spacing-xxs);
         align-items: center;
     }
 
-    .surplus {
-        .body-regular();
-        color: var(--neutral-grey-4);
-        white-space: nowrap;
-    }
-}
-
-.axiom :local {
-    .surplus {
-        color: var(--content-neutral-secondary);
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--layout-spacing-xxs);
+        align-items: center;
     }
 }

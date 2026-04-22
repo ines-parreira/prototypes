@@ -1,19 +1,21 @@
 import { CheckBoxField } from '@gorgias/axiom'
 
 import type { ConditionItem, ConditionsFormValue } from './types'
-import { isSameCondition } from './types'
+import { isConditionDisabled, isSameCondition } from './types'
 
 export function ConditionCheckBoxField({
     condition,
     label,
     selectedConditions,
-    isAtLimit,
+    maxSelections,
+    selectedCaption,
     onToggle,
 }: {
     condition: ConditionItem
     label: string
     selectedConditions: ConditionsFormValue
-    isAtLimit: boolean
+    maxSelections?: number
+    selectedCaption?: string
     onToggle: (item: ConditionItem) => void
 }) {
     const isSelected = selectedConditions.some((c) =>
@@ -23,9 +25,14 @@ export function ConditionCheckBoxField({
     return (
         <CheckBoxField
             label={label}
+            caption={isSelected ? selectedCaption : undefined}
             value={isSelected}
             onChange={() => onToggle(condition)}
-            isDisabled={isAtLimit && !isSelected}
+            isDisabled={isConditionDisabled(
+                condition,
+                selectedConditions,
+                maxSelections,
+            )}
         />
     )
 }

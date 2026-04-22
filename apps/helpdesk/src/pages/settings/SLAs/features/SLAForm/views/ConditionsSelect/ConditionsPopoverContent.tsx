@@ -56,10 +56,6 @@ export function ConditionsPopoverContent({
     onToggleCondition,
     onClearAll,
 }: ConditionsPopoverContentProps) {
-    const isAtLimit =
-        maxSelections !== undefined &&
-        selectedConditions.length >= maxSelections
-
     return (
         <Box flexDirection="column" className={css.popoverContent}>
             {level.type !== 'root' && (
@@ -89,7 +85,7 @@ export function ConditionsPopoverContent({
                         selectedConditions={selectedConditions}
                         isLoadingTags={isLoadingTags}
                         isLoadingFields={isLoadingFields}
-                        isAtLimit={isAtLimit}
+                        maxSelections={maxSelections}
                         onLoadMoreTags={onLoadMoreTags}
                         shouldLoadMoreTags={shouldLoadMoreTags}
                         onNavigate={onNavigate}
@@ -101,7 +97,7 @@ export function ConditionsPopoverContent({
                         tags={tags}
                         selectedConditions={selectedConditions}
                         isLoading={isLoadingTags}
-                        isAtLimit={isAtLimit}
+                        maxSelections={maxSelections}
                         onToggle={onToggleCondition}
                     />
                 )}
@@ -112,7 +108,7 @@ export function ConditionsPopoverContent({
                         isLoading={isLoadingFields}
                         getFieldChoices={getFieldChoices}
                         selectedConditions={selectedConditions}
-                        isAtLimit={isAtLimit}
+                        maxSelections={maxSelections}
                         onNavigate={onNavigate}
                         onToggle={onToggleCondition}
                     />
@@ -125,7 +121,7 @@ export function ConditionsPopoverContent({
                         fieldLabel={level.fieldLabel}
                         searchQuery={searchQuery}
                         selectedConditions={selectedConditions}
-                        isAtLimit={isAtLimit}
+                        maxSelections={maxSelections}
                         onNavigate={onNavigate}
                         onToggle={onToggleCondition}
                     />

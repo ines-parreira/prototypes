@@ -53,7 +53,7 @@ export function RootLevel({
     selectedConditions,
     isLoadingTags,
     isLoadingFields,
-    isAtLimit,
+    maxSelections,
     onLoadMoreTags,
     shouldLoadMoreTags,
     onNavigate,
@@ -66,7 +66,7 @@ export function RootLevel({
     selectedConditions: ConditionsFormValue
     isLoadingTags: boolean
     isLoadingFields: boolean
-    isAtLimit: boolean
+    maxSelections?: number
     onLoadMoreTags: () => Promise<unknown>
     shouldLoadMoreTags: boolean
     onNavigate: (level: DrilldownLevel) => void
@@ -132,7 +132,7 @@ export function RootLevel({
                                     )}
                                     label={tag.name}
                                     selectedConditions={selectedConditions}
-                                    isAtLimit={isAtLimit}
+                                    maxSelections={maxSelections}
                                     onToggle={onToggleCondition}
                                 />
                             ))}
@@ -174,7 +174,7 @@ export function RootLevel({
                                     )}
                                     label={displayLabel}
                                     selectedConditions={selectedConditions}
-                                    isAtLimit={isAtLimit}
+                                    maxSelections={maxSelections}
                                     onToggle={onToggleCondition}
                                 />
                             )
