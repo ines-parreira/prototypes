@@ -44,6 +44,40 @@ const schema: ConditionsSchema = {
                 },
             },
         },
+        last_order: {
+            fields: {
+                product_variant_names: {
+                    type: 'array_string',
+                    operators: ['eq', 'containsAny'],
+                },
+                product_tags: {
+                    type: 'array_string',
+                    operators: ['containsAny'],
+                },
+                product_collection_ids: {
+                    type: 'array_string',
+                    operators: ['containsAny'],
+                },
+            },
+            aggregates: {},
+        },
+        last_cart: {
+            fields: {
+                product_variant_names: {
+                    type: 'array_string',
+                    operators: ['eq', 'containsAny'],
+                },
+                product_tags: {
+                    type: 'array_string',
+                    operators: ['containsAny'],
+                },
+                product_collection_ids: {
+                    type: 'array_string',
+                    operators: ['containsAny'],
+                },
+            },
+            aggregates: {},
+        },
     },
 }
 
@@ -1164,6 +1198,274 @@ describe('parseConditionsQuery', () => {
         it('round-trips an aggregate with a where clause and a purchase_date period', () => {
             const original =
                 "gt(shopper.orders(eq(sms_state, 'subscribed') && gt(purchase_date, '365d')), 5)"
+            const parsed = parseConditionsQuery(original, schema)
+            expect(buildFullQuery(parsed, schema)).toBe(original)
+        })
+    })
+})
+
+describe('existence conditions', () => {
+    describe('buildFullQuery', () => {
+        it('should produce operator(object.field, value) for an existence condition with a where clause value', () => {
+            const conditions: ConditionState[] = [
+                {
+                    object: 'last_order',
+                    field: 'last_order',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: {
+                        field: 'product_variant_names',
+                        operator: 'eq',
+                        value: ["Women's K1 Flux"],
+                    },
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ]
+            expect(buildFullQuery(conditions, schema)).toBe(
+                "eq(last_order.product_variant_names, ['Women\\'s K1 Flux'])",
+            )
+        })
+
+        it('should fall back to isNotEmpty(object) when whereClause is null', () => {
+            const conditions: ConditionState[] = [
+                {
+                    object: 'last_order',
+                    field: 'last_order',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: null,
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ]
+            expect(buildFullQuery(conditions, schema)).toBe(
+                'isNotEmpty(last_order)',
+            )
+        })
+
+        it('should fall back to isNotEmpty(object) when whereClause value is null', () => {
+            const conditions: ConditionState[] = [
+                {
+                    object: 'last_order',
+                    field: 'last_order',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: {
+                        field: 'product_variant_names',
+                        operator: 'eq',
+                        value: null,
+                    },
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ]
+            expect(buildFullQuery(conditions, schema)).toBe(
+                'isNotEmpty(last_order)',
+            )
+        })
+
+        it('should fall back to isNotEmpty(object) when whereClause value is an empty array', () => {
+            const conditions: ConditionState[] = [
+                {
+                    object: 'last_order',
+                    field: 'last_order',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: {
+                        field: 'product_variant_names',
+                        operator: 'eq',
+                        value: [],
+                    },
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ]
+            expect(buildFullQuery(conditions, schema)).toBe(
+                'isNotEmpty(last_order)',
+            )
+        })
+
+        it('should fall back to isNotEmpty(object) when whereClause field is not in schema', () => {
+            const conditions: ConditionState[] = [
+                {
+                    object: 'last_order',
+                    field: 'last_order',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: {
+                        field: 'unknown_field',
+                        operator: 'eq',
+                        value: ['something'],
+                    },
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ]
+            expect(buildFullQuery(conditions, schema)).toBe(
+                'isNotEmpty(last_order)',
+            )
+        })
+
+        it('should produce operator(object.field) for a unary where operator', () => {
+            const conditions: ConditionState[] = [
+                {
+                    object: 'last_order',
+                    field: 'last_order',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: {
+                        field: 'product_variant_names',
+                        operator: 'isEmpty',
+                        value: null,
+                    },
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ]
+            expect(buildFullQuery(conditions, schema)).toBe(
+                'isEmpty(last_order.product_variant_names)',
+            )
+        })
+
+        it('should use containsAny when the where clause operator is containsAny', () => {
+            const conditions: ConditionState[] = [
+                {
+                    object: 'last_order',
+                    field: 'last_order',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: {
+                        field: 'product_tags',
+                        operator: 'containsAny',
+                        value: ['sale', 'new'],
+                    },
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ]
+            expect(buildFullQuery(conditions, schema)).toBe(
+                "containsAny(last_order.product_tags, ['sale', 'new'])",
+            )
+        })
+
+        it('should work for last_cart the same as last_order', () => {
+            const conditions: ConditionState[] = [
+                {
+                    object: 'last_cart',
+                    field: 'last_cart',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: {
+                        field: 'product_variant_names',
+                        operator: 'eq',
+                        value: ['Blue Shirt'],
+                    },
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ]
+            expect(buildFullQuery(conditions, schema)).toBe(
+                "eq(last_cart.product_variant_names, ['Blue Shirt'])",
+            )
+        })
+    })
+
+    describe('parseConditionsQuery', () => {
+        it('should reconstruct an existence ConditionState from eq(last_order.field, [value])', () => {
+            const result = parseConditionsQuery(
+                "eq(last_order.product_variant_names, ['Women\\'s K1 Flux'])",
+                schema,
+            )
+            expect(result).toEqual([
+                {
+                    object: 'last_order',
+                    field: 'last_order',
+                    isAggregate: false,
+                    operator: 'isNotEmpty',
+                    value: null,
+                    whereClause: {
+                        field: 'product_variant_names',
+                        operator: 'eq',
+                        // parseValue normalises single-element arrays to a bare string
+                        value: "Women's K1 Flux",
+                    },
+                    purchaseDateClause: null,
+                    isWhereVisible: true,
+                },
+            ])
+        })
+
+        it('should set field equal to object (existence sentinel) when parsing last_order condition', () => {
+            const result = parseConditionsQuery(
+                "eq(last_order.product_variant_names, ['T-Shirt'])",
+                schema,
+            )
+            expect(result[0].field).toBe('last_order')
+            expect(result[0].object).toBe('last_order')
+        })
+
+        it('should set isWhereVisible to true for existence conditions', () => {
+            const result = parseConditionsQuery(
+                "eq(last_order.product_variant_names, ['T-Shirt'])",
+                schema,
+            )
+            expect(result[0].isWhereVisible).toBe(true)
+        })
+
+        it('should correctly populate whereClause from the parsed DSL', () => {
+            const result = parseConditionsQuery(
+                "containsAny(last_order.product_tags, ['sale', 'new'])",
+                schema,
+            )
+            expect(result[0].whereClause).toEqual({
+                field: 'product_tags',
+                operator: 'containsAny',
+                value: ['sale', 'new'],
+            })
+        })
+
+        it('should reconstruct an existence ConditionState for last_cart', () => {
+            const result = parseConditionsQuery(
+                "eq(last_cart.product_variant_names, ['Blue Shirt'])",
+                schema,
+            )
+            expect(result[0]).toEqual({
+                object: 'last_cart',
+                field: 'last_cart',
+                isAggregate: false,
+                operator: 'isNotEmpty',
+                value: null,
+                whereClause: {
+                    field: 'product_variant_names',
+                    operator: 'eq',
+                    value: 'Blue Shirt',
+                },
+                purchaseDateClause: null,
+                isWhereVisible: true,
+            })
+        })
+
+        it('should round-trip an existence condition with a single value', () => {
+            // Single-element array DSL normalises to a bare quoted string after
+            // parsing, so the round-trip uses the non-array form.
+            const original =
+                "eq(last_order.product_variant_names, 'Women\\'s K1 Flux')"
+            const parsed = parseConditionsQuery(original, schema)
+            expect(buildFullQuery(parsed, schema)).toBe(original)
+        })
+
+        it('should round-trip an existence condition with multiple values', () => {
+            const original =
+                "containsAny(last_order.product_tags, ['sale', 'new'])"
             const parsed = parseConditionsQuery(original, schema)
             expect(buildFullQuery(parsed, schema)).toBe(original)
         })

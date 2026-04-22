@@ -11,6 +11,8 @@ import { DEFAULT_CONDITION } from 'AIJourney/types/conditionField'
 import {
     defaultValueForType,
     getFieldDef,
+    isExistenceCondition,
+    isExistenceObject,
 } from 'AIJourney/utils/conditionField/conditionField'
 
 function splitContainsValue(value: string): string[] {
@@ -61,6 +63,27 @@ function buildConditionQuery(
     if (!fieldDef) return null
 
     const { operator, value } = condition
+
+    if (isExistenceCondition(condition.object, condition.field)) {
+        const wc = condition.whereClause
+        if (!wc?.field || !wc.operator) return `isNotEmpty(${condition.object})`
+        const whereFieldDef = schema.objects[condition.object]?.fields[wc.field]
+        if (!whereFieldDef) return `isNotEmpty(${condition.object})`
+        const isWcUnary = schema.operators.unary.includes(wc.operator)
+        if (isWcUnary) {
+            return `${wc.operator}(${condition.object}.${wc.field})`
+        }
+        if (
+            wc.value === null ||
+            wc.value === undefined ||
+            wc.value === '' ||
+            (Array.isArray(wc.value) && wc.value.length === 0)
+        ) {
+            return `isNotEmpty(${condition.object})`
+        }
+        return `${wc.operator}(${condition.object}.${wc.field}, ${formatFieldValue(wc.value, whereFieldDef.type, wc.operator)})`
+    }
+
     const dslRef = `${condition.object}.${condition.field}`
     const isUnary = schema.operators.unary.includes(operator)
 
@@ -270,6 +293,23 @@ function parseConditionStr(
 
     if (fieldMatch) {
         const [, object, field] = fieldMatch
+        // eq(last_order.product_variant_names, [...]) — existence with where clause
+        if (isExistenceObject(object)) {
+            return {
+                object,
+                field: object,
+                isAggregate: false,
+                operator: 'isNotEmpty',
+                value: null,
+                whereClause: {
+                    field,
+                    operator,
+                    value: args.length > 1 ? parseValue(args[1]) : null,
+                },
+                purchaseDateClause: null,
+                isWhereVisible: true,
+            }
+        }
         return {
             object,
             field,

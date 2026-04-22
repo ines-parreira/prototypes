@@ -28,6 +28,25 @@ export const DATETIME_PRESETS: SelectOption[] = [
     { id: '365d', label: '365 days' },
 ]
 
+export const EXISTENCE_OBJECTS = ['last_cart', 'last_order'] as const
+export type ExistenceObject = (typeof EXISTENCE_OBJECTS)[number]
+
+// Fields used in the where clause for both regular aggregates and existence conditions
+export const WHERE_FIELD_ALLOWLIST = [
+    { field: 'product_variant_names', label: 'Product name' },
+    { field: 'product_tags', label: 'Product tag' },
+    { field: 'product_collection_ids', label: 'Collection' },
+] as const
+
+export function isExistenceObject(obj: string): obj is ExistenceObject {
+    return (EXISTENCE_OBJECTS as readonly string[]).includes(obj)
+}
+
+// Sentinel: field === object signals an existence-mode condition (last_cart / last_order)
+export function isExistenceCondition(object: string, field: string): boolean {
+    return isExistenceObject(object) && object === field
+}
+
 export function toLabel(name: string): string {
     return name.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 }
@@ -57,6 +76,13 @@ export function getFieldDef(
 ): FieldDef | AggregateDef | null {
     const obj = schema.objects[object]
     if (!obj) return null
+    if (isExistenceCondition(object, field)) {
+        // Existence conditions expose only isEmpty / isNotEmpty as operators
+        return {
+            type: 'string' as FieldType,
+            operators: ['isNotEmpty'],
+        } satisfies FieldDef
+    }
     return isAggregate
         ? (obj.aggregates?.[field] ?? null)
         : (obj.fields[field] ?? null)
@@ -79,6 +105,8 @@ const CONDITION_ALLOWLIST = [
         items: [
             { field: 'count', label: 'Number of orders' },
             { field: 'total_amount', label: 'Total amount spent' },
+            { field: 'last_cart', label: 'Last Cart' },
+            { field: 'last_order', label: 'Last Order' },
         ],
     },
 ] as const
@@ -88,6 +116,12 @@ export function buildSections(schema: ConditionsSchema) {
         const objectDef = schema.objects[sectionId]
         if (!objectDef) return []
         const allowedItems = items.flatMap(({ field, label }) => {
+            if (isExistenceObject(field)) {
+                // Existence items reference their own schema object (not the section's)
+                return schema.objects[field] != null
+                    ? [{ id: buildSelectId(field, field, false), label }]
+                    : []
+            }
             if (objectDef.fields[field] != null) {
                 return [{ id: buildSelectId(sectionId, field, false), label }]
             }

@@ -7,11 +7,15 @@ import {
     buildSections,
     buildSelectId,
     defaultValueForType,
+    EXISTENCE_OBJECTS,
     getFieldDef,
     getOperatorOptions,
+    isExistenceCondition,
+    isExistenceObject,
     OPERATOR_LABELS,
     parseSelectId,
     toLabel,
+    WHERE_FIELD_ALLOWLIST,
 } from './conditionField'
 
 const mockSchema: ConditionsSchema = {
@@ -223,5 +227,222 @@ describe('defaultValueForType', () => {
 
     it('should return null for boolean type', () => {
         expect(defaultValueForType('boolean')).toBeNull()
+    })
+})
+
+describe('EXISTENCE_OBJECTS', () => {
+    it('should contain last_cart and last_order', () => {
+        expect(EXISTENCE_OBJECTS).toContain('last_cart')
+        expect(EXISTENCE_OBJECTS).toContain('last_order')
+    })
+
+    it('should contain exactly two entries', () => {
+        expect(EXISTENCE_OBJECTS).toHaveLength(2)
+    })
+})
+
+describe('WHERE_FIELD_ALLOWLIST', () => {
+    it('should contain product_variant_names with label Product name', () => {
+        expect(
+            WHERE_FIELD_ALLOWLIST.find(
+                (e) => e.field === 'product_variant_names',
+            )?.label,
+        ).toBe('Product name')
+    })
+
+    it('should contain product_tags with label Product tag', () => {
+        expect(
+            WHERE_FIELD_ALLOWLIST.find((e) => e.field === 'product_tags')
+                ?.label,
+        ).toBe('Product tag')
+    })
+
+    it('should contain product_collection_ids with label Collection', () => {
+        expect(
+            WHERE_FIELD_ALLOWLIST.find(
+                (e) => e.field === 'product_collection_ids',
+            )?.label,
+        ).toBe('Collection')
+    })
+
+    it('should contain exactly three entries', () => {
+        expect(WHERE_FIELD_ALLOWLIST).toHaveLength(3)
+    })
+})
+
+describe('isExistenceObject', () => {
+    it('should return true for last_cart', () => {
+        expect(isExistenceObject('last_cart')).toBe(true)
+    })
+
+    it('should return true for last_order', () => {
+        expect(isExistenceObject('last_order')).toBe(true)
+    })
+
+    it('should return false for shopper', () => {
+        expect(isExistenceObject('shopper')).toBe(false)
+    })
+
+    it('should return false for orders', () => {
+        expect(isExistenceObject('orders')).toBe(false)
+    })
+
+    it('should return false for an empty string', () => {
+        expect(isExistenceObject('')).toBe(false)
+    })
+})
+
+describe('isExistenceCondition', () => {
+    it('should return true when object is last_order and field equals object', () => {
+        expect(isExistenceCondition('last_order', 'last_order')).toBe(true)
+    })
+
+    it('should return true when object is last_cart and field equals object', () => {
+        expect(isExistenceCondition('last_cart', 'last_cart')).toBe(true)
+    })
+
+    it('should return false when object is an existence object but field is different', () => {
+        expect(isExistenceCondition('last_order', 'amount')).toBe(false)
+    })
+
+    it('should return false when object is not an existence object even if field matches', () => {
+        expect(isExistenceCondition('shopper', 'shopper')).toBe(false)
+    })
+})
+
+const schemaWithExistenceObjects: ConditionsSchema = {
+    operators: { comparison: [], set: [], unary: [] },
+    objects: {
+        orders: {
+            fields: {},
+            aggregates: {
+                count: {
+                    type: 'number',
+                    operators: ['eq'],
+                    supports_where: true,
+                },
+            },
+        },
+        last_order: {
+            fields: {
+                product_variant_names: {
+                    type: 'array_string',
+                    operators: ['eq'],
+                },
+            },
+            aggregates: {},
+        },
+        last_cart: {
+            fields: {
+                product_variant_names: {
+                    type: 'array_string',
+                    operators: ['eq'],
+                },
+            },
+            aggregates: {},
+        },
+    },
+}
+
+describe('getFieldDef (existence conditions)', () => {
+    it('should return a FieldDef with only isNotEmpty operator for the last_order sentinel', () => {
+        expect(
+            getFieldDef(
+                schemaWithExistenceObjects,
+                'last_order',
+                'last_order',
+                false,
+            ),
+        ).toEqual({ type: 'string', operators: ['isNotEmpty'] })
+    })
+
+    it('should return a FieldDef with only isNotEmpty operator for the last_cart sentinel', () => {
+        expect(
+            getFieldDef(
+                schemaWithExistenceObjects,
+                'last_cart',
+                'last_cart',
+                false,
+            ),
+        ).toEqual({ type: 'string', operators: ['isNotEmpty'] })
+    })
+
+    it('should return null when the existence object is not present in the schema', () => {
+        const emptySchema: ConditionsSchema = {
+            operators: { comparison: [], set: [], unary: [] },
+            objects: {},
+        }
+        expect(
+            getFieldDef(emptySchema, 'last_order', 'last_order', false),
+        ).toBeNull()
+    })
+
+    it('should still return the regular field when field differs from object on an existence object', () => {
+        expect(
+            getFieldDef(
+                schemaWithExistenceObjects,
+                'last_order',
+                'product_variant_names',
+                false,
+            ),
+        ).toEqual({ type: 'array_string', operators: ['eq'] })
+    })
+})
+
+describe('buildSections (existence conditions)', () => {
+    it('should include Last Cart and Last Order items in the orders section', () => {
+        const sections = buildSections(schemaWithExistenceObjects)
+        const ordersSection = sections.find((s) => s.id === 'orders')
+        expect(ordersSection).toBeDefined()
+        expect(ordersSection?.items).toContainEqual({
+            id: 'last_cart:field:last_cart',
+            label: 'Last Cart',
+        })
+        expect(ordersSection?.items).toContainEqual({
+            id: 'last_order:field:last_order',
+            label: 'Last Order',
+        })
+    })
+
+    it('should use field === object as the select id for existence items', () => {
+        const sections = buildSections(schemaWithExistenceObjects)
+        const ordersSection = sections.find((s) => s.id === 'orders')
+        expect(
+            ordersSection?.items.find((i) => i.label === 'Last Order')?.id,
+        ).toBe('last_order:field:last_order')
+        expect(
+            ordersSection?.items.find((i) => i.label === 'Last Cart')?.id,
+        ).toBe('last_cart:field:last_cart')
+    })
+
+    it('should exclude existence items when their schema objects are absent', () => {
+        const schemaWithoutExistence: ConditionsSchema = {
+            operators: { comparison: [], set: [], unary: [] },
+            objects: {
+                orders: {
+                    fields: {},
+                    aggregates: {
+                        count: {
+                            type: 'number',
+                            operators: ['eq'],
+                            supports_where: true,
+                        },
+                    },
+                },
+            },
+        }
+        const sections = buildSections(schemaWithoutExistence)
+        const ordersSection = sections.find((s) => s.id === 'orders')
+        const ids = ordersSection?.items.map((i) => i.id) ?? []
+        expect(ids).not.toContain('last_cart:field:last_cart')
+        expect(ids).not.toContain('last_order:field:last_order')
+    })
+
+    it('should keep non-existence items alongside existence items in the same section', () => {
+        const sections = buildSections(schemaWithExistenceObjects)
+        const ordersSection = sections.find((s) => s.id === 'orders')
+        expect(
+            ordersSection?.items.find((i) => i.id === 'orders:aggregate:count'),
+        ).toBeDefined()
     })
 })

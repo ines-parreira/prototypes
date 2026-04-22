@@ -17,8 +17,10 @@ import {
     defaultValueForType,
     getFieldDef,
     getOperatorOptions,
+    isExistenceCondition,
     parseSelectId,
     toLabel,
+    WHERE_FIELD_ALLOWLIST,
 } from 'AIJourney/utils/conditionField/conditionField'
 
 import type {
@@ -32,12 +34,6 @@ import { ConditionInlineSelect } from '../ConditionInlineSelect/ConditionInlineS
 import { ConditionValueInput } from '../ConditionValueInput/ConditionValueInput'
 
 import css from './ConditionRow.less'
-
-const WHERE_FIELD_ALLOWLIST = [
-    { field: 'product_variant_names', label: 'Product name' },
-    { field: 'product_tags', label: 'Product tag' },
-    { field: 'product_collection_ids', label: 'Collection' },
-] as const
 
 const PURCHASE_DATE_OPTIONS: SelectOption[] = [
     { id: 'all_time', label: 'All time' },
@@ -91,10 +87,14 @@ export const ConditionRow = ({
     const set = (path: string, val: unknown) =>
         setValue(`conditions.${index}.${path}`, val)
 
+    const existenceMode =
+        object !== null && field !== null && isExistenceCondition(object, field)
+
     const fieldDef =
         object && field ? getFieldDef(schema, object, field, isAggregate) : null
 
     const operatorOptions = fieldDef ? getOperatorOptions(fieldDef) : []
+
     const isUnary = schema.operators.unary.includes(operator)
     const sections = buildSections(schema)
 
@@ -111,6 +111,21 @@ export const ConditionRow = ({
               })
             : undefined
 
+    const buildDefaultWhereClause = (obj: string): WhereClause => {
+        const firstField =
+            WHERE_FIELD_ALLOWLIST.find(
+                ({ field: wf }) => schema.objects[obj]?.fields[wf] != null,
+            )?.field ?? ''
+        const firstFieldDef = firstField
+            ? schema.objects[obj]?.fields[firstField]
+            : null
+        return {
+            field: firstField,
+            operator: firstFieldDef?.operators[0] ?? '',
+            value: defaultValueForType(firstFieldDef?.type ?? 'string'),
+        }
+    }
+
     const handleFieldChange = (item: SelectOption | null | undefined) => {
         if (!item) return
         const parsed = parseSelectId(item.id)
@@ -124,6 +139,18 @@ export const ConditionRow = ({
         )
         if (!newFieldDef) return
 
+        if (isExistenceCondition(parsed.object, parsed.field)) {
+            set('object', parsed.object)
+            set('field', parsed.field)
+            set('isAggregate', false)
+            set('operator', 'isNotEmpty')
+            set('value', null)
+            set('whereClause', buildDefaultWhereClause(parsed.object))
+            set('purchaseDateClause', null)
+            set('isWhereVisible', true)
+            return
+        }
+
         const defaultOperator = newFieldDef.operators[0] ?? ''
         const defaultValue = defaultValueForType(newFieldDef.type)
 
@@ -134,8 +161,8 @@ export const ConditionRow = ({
         ) {
             const firstField =
                 WHERE_FIELD_ALLOWLIST.find(
-                    ({ field }) =>
-                        schema.objects[parsed.object]?.fields[field] != null,
+                    ({ field: wf }) =>
+                        schema.objects[parsed.object]?.fields[wf] != null,
                 )?.field ?? ''
             const firstFieldDef = firstField
                 ? schema.objects[parsed.object]?.fields[firstField]
@@ -170,17 +197,21 @@ export const ConditionRow = ({
     }
 
     const supportsWhere =
-        fieldDef && isAggregate && (fieldDef as AggregateDef).supports_where
+        !existenceMode &&
+        fieldDef &&
+        isAggregate &&
+        (fieldDef as AggregateDef).supports_where
 
     const supportsPurchaseDateFilter =
+        !existenceMode &&
         isAggregate &&
         object != null &&
         schema.objects[object]?.fields['purchase_date'] != null
 
     const whereFieldOptions = object
-        ? WHERE_FIELD_ALLOWLIST.flatMap(({ field, label }) =>
-              schema.objects[object]?.fields[field] != null
-                  ? [{ id: field, label }]
+        ? WHERE_FIELD_ALLOWLIST.flatMap(({ field: wf, label }) =>
+              schema.objects[object]?.fields[wf] != null
+                  ? [{ id: wf, label }]
                   : [],
           )
         : []
@@ -210,6 +241,88 @@ export const ConditionRow = ({
         }
         set('isWhereVisible', false)
     }
+
+    const handleOperatorChange = (id: string) => {
+        set('operator', id)
+        if (existenceMode) {
+            set('whereClause', buildDefaultWhereClause(object!))
+            set('isWhereVisible', true)
+            return
+        }
+        if (schema.operators.unary.includes(id)) {
+            set('value', null)
+        } else if (field === 'address_state_code') {
+            const isMulti = id === 'containsAny' || id === 'notContainsAny'
+            const wasMulti =
+                operator === 'containsAny' || operator === 'notContainsAny'
+            if (isMulti !== wasMulti) {
+                set('value', null)
+            }
+        }
+    }
+
+    const renderWhereClause = (showCloseButton: boolean) => (
+        <Box alignItems="center" gap={Size.Xs} flexWrap="wrap">
+            <Text color="content-neutral-secondary">where</Text>
+            <ConditionInlineSelect
+                items={whereFieldOptions}
+                selectedId={whereClause!.field}
+                onSelect={(f) => {
+                    const newWhereFieldDef = object
+                        ? schema.objects[object]?.fields[f]
+                        : null
+                    set('whereClause', {
+                        field: f,
+                        operator: newWhereFieldDef?.operators[0] ?? '',
+                        value: defaultValueForType(
+                            newWhereFieldDef?.type ?? 'string',
+                        ),
+                    })
+                }}
+                ariaLabel="Where field"
+            />
+            <ConditionInlineSelect
+                items={whereOperatorOptions}
+                selectedId={whereClause!.operator}
+                onSelect={(op) => {
+                    set('whereClause', {
+                        ...whereClause,
+                        operator: op,
+                        value: schema.operators.unary.includes(op)
+                            ? null
+                            : whereClause!.value,
+                    })
+                }}
+                ariaLabel="Where operator"
+            />
+            <Box alignItems="center" gap={Size.Xs}>
+                {whereFieldDef && !isWhereUnary && (
+                    <ConditionValueInput
+                        fieldDef={whereFieldDef}
+                        field={whereClause!.field}
+                        value={whereClause!.value}
+                        onChange={(val) =>
+                            set('whereClause', {
+                                ...whereClause,
+                                value: val,
+                            })
+                        }
+                        isUnary={false}
+                        operator={whereClause!.operator}
+                    />
+                )}
+                {showCloseButton && (
+                    <button
+                        className={css.addWhereButton}
+                        aria-label="remove-where-condition"
+                        onClick={handleCloseWhereClause}
+                    >
+                        <Icon name="close" />
+                    </button>
+                )}
+            </Box>
+        </Box>
+    )
 
     return (
         <Box alignItems="flex-start" gap={Size.Sm}>
@@ -244,35 +357,24 @@ export const ConditionRow = ({
 
                     {fieldDef && (
                         <>
-                            <ConditionInlineSelect
-                                items={operatorOptions}
-                                selectedId={operator}
-                                onSelect={(id) => {
-                                    set('operator', id)
-                                    if (schema.operators.unary.includes(id)) {
-                                        set('value', null)
-                                    } else if (field === 'address_state_code') {
-                                        const isMulti =
-                                            id === 'containsAny' ||
-                                            id === 'notContainsAny'
-                                        const wasMulti =
-                                            operator === 'containsAny' ||
-                                            operator === 'notContainsAny'
-                                        if (isMulti !== wasMulti) {
-                                            set('value', null)
-                                        }
-                                    }
-                                }}
-                                ariaLabel="operator"
-                            />
-                            <ConditionValueInput
-                                fieldDef={fieldDef}
-                                field={field ?? undefined}
-                                value={value}
-                                onChange={(val) => set('value', val)}
-                                isUnary={isUnary}
-                                operator={operator}
-                            />
+                            {!existenceMode && (
+                                <ConditionInlineSelect
+                                    items={operatorOptions}
+                                    selectedId={operator}
+                                    onSelect={handleOperatorChange}
+                                    ariaLabel="operator"
+                                />
+                            )}
+                            {!existenceMode && (
+                                <ConditionValueInput
+                                    fieldDef={fieldDef}
+                                    field={field ?? undefined}
+                                    value={value}
+                                    onChange={(val) => set('value', val)}
+                                    isUnary={isUnary}
+                                    operator={operator}
+                                />
+                            )}
                             {supportsPurchaseDateFilter && (
                                 <>
                                     <Text color="content-neutral-secondary">
@@ -307,6 +409,13 @@ export const ConditionRow = ({
                     )}
                 </Box>
 
+                {/* Existence mode: where clause is mandatory when operator is isNotEmpty */}
+                {existenceMode &&
+                    operator === 'isNotEmpty' &&
+                    whereClause &&
+                    renderWhereClause(false)}
+
+                {/* Regular aggregate where clause */}
                 {supportsWhere && whereClause && !isWhereVisible && (
                     <Box>
                         <button
@@ -319,68 +428,10 @@ export const ConditionRow = ({
                         </button>
                     </Box>
                 )}
-
-                {supportsWhere && whereClause && isWhereVisible && (
-                    <Box alignItems="center" gap={Size.Xs} flexWrap="wrap">
-                        <Text color="content-neutral-secondary">where</Text>
-                        <ConditionInlineSelect
-                            items={whereFieldOptions}
-                            selectedId={whereClause.field}
-                            onSelect={(f) => {
-                                const newWhereFieldDef = object
-                                    ? schema.objects[object]?.fields[f]
-                                    : null
-                                set('whereClause', {
-                                    field: f,
-                                    operator:
-                                        newWhereFieldDef?.operators[0] ?? '',
-                                    value: defaultValueForType(
-                                        newWhereFieldDef?.type ?? 'string',
-                                    ),
-                                })
-                            }}
-                            ariaLabel="Where field"
-                        />
-                        <ConditionInlineSelect
-                            items={whereOperatorOptions}
-                            selectedId={whereClause.operator}
-                            onSelect={(op) => {
-                                set('whereClause', {
-                                    ...whereClause,
-                                    operator: op,
-                                    value: schema.operators.unary.includes(op)
-                                        ? null
-                                        : whereClause.value,
-                                })
-                            }}
-                            ariaLabel="Where operator"
-                        />
-                        <Box alignItems="center" gap={Size.Xs}>
-                            {whereFieldDef && !isWhereUnary && (
-                                <ConditionValueInput
-                                    fieldDef={whereFieldDef}
-                                    field={whereClause.field}
-                                    value={whereClause.value}
-                                    onChange={(val) =>
-                                        set('whereClause', {
-                                            ...whereClause,
-                                            value: val,
-                                        })
-                                    }
-                                    isUnary={false}
-                                    operator={whereClause.operator}
-                                />
-                            )}
-                            <button
-                                className={css.addWhereButton}
-                                aria-label="remove-where-condition"
-                                onClick={handleCloseWhereClause}
-                            >
-                                <Icon name="close" />
-                            </button>
-                        </Box>
-                    </Box>
-                )}
+                {supportsWhere &&
+                    whereClause &&
+                    isWhereVisible &&
+                    renderWhereClause(true)}
             </Box>
 
             <Button

@@ -6,9 +6,6 @@ import userEvent from '@testing-library/user-event'
 import type { ConditionsSchema, SelectOption } from '../../types/conditionField'
 import { ConditionRow } from './ConditionRow'
 
-// Capture callbacks from mocked components so tests can trigger them directly.
-// These are assigned when the component renders, at which point the module is
-// fully initialized and the object reference is valid.
 const captured = {
     fieldSelectOnChange: undefined as
         | ((item: SelectOption | null | undefined) => void)
@@ -119,6 +116,40 @@ const mockSchema: ConditionsSchema = {
                 },
             },
         },
+        last_order: {
+            fields: {
+                product_variant_names: {
+                    type: 'array_string',
+                    operators: ['eq', 'containsAny'],
+                },
+                product_tags: {
+                    type: 'array_string',
+                    operators: ['containsAny'],
+                },
+                product_collection_ids: {
+                    type: 'array_string',
+                    operators: ['containsAny'],
+                },
+            },
+            aggregates: {},
+        },
+        last_cart: {
+            fields: {
+                product_variant_names: {
+                    type: 'array_string',
+                    operators: ['eq', 'containsAny'],
+                },
+                product_tags: {
+                    type: 'array_string',
+                    operators: ['containsAny'],
+                },
+                product_collection_ids: {
+                    type: 'array_string',
+                    operators: ['containsAny'],
+                },
+            },
+            aggregates: {},
+        },
     },
 }
 
@@ -211,8 +242,6 @@ describe('<ConditionRow />', () => {
         })
 
         it('should fall back to buildSelectId and toLabel when field is not in sections', () => {
-            // 'name' is in the schema but not in CONDITION_ALLOWLIST,
-            // so .find() returns undefined and the ?? fallback branch runs
             useWatchMock.mockReturnValue(['shopper', 'name', false, 'eq', null])
             renderComponent()
 
@@ -328,8 +357,6 @@ describe('<ConditionRow />', () => {
                 'conditions.0.value',
                 null,
             )
-            // mockSchema.orders.fields has no allowlisted fields, so the first
-            // allowlisted field is not found and defaults to an empty string
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.whereClause',
                 { field: '', operator: '', value: null },
@@ -626,8 +653,8 @@ describe('<ConditionRow />', () => {
                 'eq',
                 null,
                 whereClauseFixture,
-                null, // purchaseDateClause
-                true, // isWhereVisible
+                null,
+                true,
             ])
         })
 
@@ -645,8 +672,8 @@ describe('<ConditionRow />', () => {
                 'eq',
                 null,
                 whereClauseFixture,
-                null, // purchaseDateClause
-                false, // isWhereVisible
+                null,
+                false,
             ])
             renderComponent()
 
@@ -662,8 +689,8 @@ describe('<ConditionRow />', () => {
                 'eq',
                 null,
                 whereClauseFixture,
-                null, // purchaseDateClause
-                false, // isWhereVisible
+                null,
+                false,
             ])
             renderComponent()
 
@@ -724,8 +751,8 @@ describe('<ConditionRow />', () => {
                 'eq',
                 null,
                 modifiedWhereClause,
-                null, // purchaseDateClause
-                true, // isWhereVisible
+                null,
+                true,
             ])
             render(
                 <ConditionRow
@@ -809,7 +836,6 @@ describe('<ConditionRow />', () => {
                             type: 'string',
                             operators: ['containsAny'],
                         },
-                        // product_collection_ids intentionally absent
                     },
                     aggregates: {
                         count: {
@@ -866,8 +892,8 @@ describe('<ConditionRow />', () => {
                 'eq',
                 null,
                 whereClauseFixtureForAllowlist,
-                null, // purchaseDateClause
-                true, // isWhereVisible
+                null,
+                true,
             ])
         })
 
@@ -943,6 +969,238 @@ describe('<ConditionRow />', () => {
                 { id: 'product_tags', label: 'Product tag' },
                 { id: 'product_collection_ids', label: 'Collection' },
             ])
+        })
+    })
+
+    describe('existence mode (last_order / last_cart)', () => {
+        const existenceWhereClause = {
+            field: 'product_variant_names',
+            operator: 'eq',
+            value: null,
+        } as const
+
+        beforeEach(() => {
+            useWatchMock.mockReturnValue([
+                'last_order',
+                'last_order',
+                false,
+                'isNotEmpty',
+                null,
+                existenceWhereClause,
+                null,
+                true,
+            ])
+        })
+
+        it('should not render the operator dropdown in existence mode', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByText('operator-select'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render the where clause section in existence mode', () => {
+            renderComponent()
+
+            expect(screen.getByText('where')).toBeInTheDocument()
+        })
+
+        it('should not render the close button for the where clause in existence mode', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', {
+                    name: 'remove-where-condition',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render the "Add property" button in existence mode', () => {
+            renderComponent()
+
+            expect(screen.queryByText('Add property')).not.toBeInTheDocument()
+        })
+
+        it('should set all condition parts correctly when an existence field is selected', () => {
+            renderComponent()
+
+            captured.fieldSelectOnChange?.({
+                id: 'last_order:field:last_order',
+                label: 'Last Order',
+            })
+
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.object',
+                'last_order',
+            )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.field',
+                'last_order',
+            )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.isAggregate',
+                false,
+            )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.operator',
+                'isNotEmpty',
+            )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.value',
+                null,
+            )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.purchaseDateClause',
+                null,
+            )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.isWhereVisible',
+                true,
+            )
+        })
+
+        it('should set whereClause to first allowlisted field defaults when an existence field is selected', () => {
+            renderComponent()
+
+            captured.fieldSelectOnChange?.({
+                id: 'last_order:field:last_order',
+                label: 'Last Order',
+            })
+
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.whereClause',
+                {
+                    field: 'product_variant_names',
+                    operator: 'eq',
+                    value: null,
+                },
+            )
+        })
+
+        it('should work for last_cart the same as last_order', () => {
+            useWatchMock.mockReturnValue([
+                'last_cart',
+                'last_cart',
+                false,
+                'isNotEmpty',
+                null,
+                existenceWhereClause,
+                null,
+                true,
+            ])
+            renderComponent()
+
+            expect(
+                screen.queryByText('operator-select'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('where')).toBeInTheDocument()
+        })
+
+        it('should set whereClause defaults when selecting last_cart', () => {
+            renderComponent()
+
+            captured.fieldSelectOnChange?.({
+                id: 'last_cart:field:last_cart',
+                label: 'Last Cart',
+            })
+
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.object',
+                'last_cart',
+            )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.field',
+                'last_cart',
+            )
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.isWhereVisible',
+                true,
+            )
+        })
+
+        it('should set whereClause with empty defaults when the existence object has no allowlisted fields', () => {
+            const schemaNoAllowlisted: ConditionsSchema = {
+                operators: mockSchema.operators,
+                objects: {
+                    orders: { fields: {}, aggregates: {} },
+                    last_order: {
+                        fields: {
+                            some_other: { type: 'string', operators: ['eq'] },
+                        },
+                        aggregates: {},
+                    },
+                },
+            }
+            render(
+                <ConditionRow
+                    index={0}
+                    schema={schemaNoAllowlisted}
+                    onRemove={mockOnRemove}
+                />,
+            )
+
+            captured.fieldSelectOnChange?.({
+                id: 'last_order:field:last_order',
+                label: 'Last Order',
+            })
+
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.whereClause',
+                { field: '', operator: '', value: null },
+            )
+        })
+    })
+
+    describe('handleFieldChange — operator fallback', () => {
+        it('should default operator to empty string when the selected field has no operators', () => {
+            const schemaEmptyOps: ConditionsSchema = {
+                operators: mockSchema.operators,
+                objects: {
+                    shopper: {
+                        fields: {
+                            no_ops_field: { type: 'string', operators: [] },
+                        },
+                    },
+                },
+            }
+            render(
+                <ConditionRow
+                    index={0}
+                    schema={schemaEmptyOps}
+                    onRemove={mockOnRemove}
+                />,
+            )
+
+            captured.fieldSelectOnChange?.({
+                id: 'shopper:field:no_ops_field',
+                label: 'No Ops',
+            })
+
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.operator',
+                '',
+            )
+        })
+    })
+
+    describe('derived values when object is absent from schema', () => {
+        it('should not render purchase date selector when object is not in schema', () => {
+            useWatchMock.mockReturnValue([
+                'unknown_object',
+                'count',
+                true,
+                'gt',
+                null,
+                null,
+                null,
+                false,
+            ])
+            renderComponent()
+
+            expect(
+                screen.queryByText('Purchase date period-select'),
+            ).not.toBeInTheDocument()
         })
     })
 })
