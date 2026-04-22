@@ -18,6 +18,7 @@ type Props = {
     children: React.ReactNode
     sectionId: string
     alwaysExpanded?: boolean
+    withBorderBottom?: boolean
 }
 
 export const KnowledgeEditorSidePanelSection = ({
@@ -26,6 +27,7 @@ export const KnowledgeEditorSidePanelSection = ({
     children,
     sectionId,
     alwaysExpanded = false,
+    withBorderBottom = true,
 }: Props) => {
     const headerTooltipContent =
         typeof header?.tooltip === 'string' ? (
@@ -74,7 +76,12 @@ export const KnowledgeEditorSidePanelSection = ({
 
     if (alwaysExpanded) {
         return (
-            <div className={css.section}>
+            <div
+                className={classNames(
+                    css.section,
+                    withBorderBottom && css.sectionWithBorderBottom,
+                )}
+            >
                 {header && (
                     <div
                         className={classNames(
@@ -95,11 +102,17 @@ export const KnowledgeEditorSidePanelSection = ({
 
     return (
         <Accordion.Item value={sectionId}>
-            <div className={css.section}>
+            <div
+                className={classNames(
+                    css.section,
+                    withBorderBottom && css.sectionWithBorderBottom,
+                )}
+            >
                 {header && (
                     <Accordion.ItemTrigger
                         className={classNames(
                             css.header,
+                            css.headerWithAccordion,
                             header.subtitle && css.headerWithSubtitle,
                         )}
                     >

@@ -7,6 +7,7 @@ import useScreenSize from 'panels/hooks/useScreenSize'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance/KnowledgeEditorGuidance'
 import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterArticle'
+import { KnowledgeEditorSkill } from './KnowledgeEditorSkill/KnowledgeEditorSkill'
 import { KnowledgeEditorSnippet } from './KnowledgeEditorSnippet/KnowledgeEditorSnippet'
 import type { KnowledgeEditorSharedPanelState } from './sharedPanel.types'
 
@@ -23,10 +24,16 @@ type HelpCenterArticleEditorProps = {
     isOpen: boolean
 } & ComponentProps<typeof KnowledgeEditorHelpCenterArticle>
 
+type SkillEditorProps = {
+    variant: 'skill'
+    isOpen: boolean
+} & ComponentProps<typeof KnowledgeEditorSkill>
+
 type Props =
     | GuidanceEditorProps
     | SnippetEditorProps
     | HelpCenterArticleEditorProps
+    | SkillEditorProps
 
 const MOBILE_PANEL_WIDTH_BREAKPOINT = 918
 const DEFAULT_PANEL_BASE_WIDTH =
@@ -95,6 +102,22 @@ export const KnowledgeEditor = (props: Props) => {
                 <KnowledgeEditorHelpCenterArticle
                     {...articleProps}
                     isOpen={props.isOpen}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />
+            )
+            break
+        }
+        case 'skill': {
+            const {
+                variant: __variant,
+                isOpen: __isOpen,
+                ...skillProps
+            } = resolvedProps
+
+            fallbackOnClose = resolvedProps.onClose
+            content = (
+                <KnowledgeEditorSkill
+                    {...skillProps}
                     onSharedPanelStateChange={onSharedPanelStateChange}
                 />
             )

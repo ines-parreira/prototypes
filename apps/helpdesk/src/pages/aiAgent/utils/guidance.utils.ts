@@ -83,6 +83,7 @@ export const mapArticleApiToGuidanceArticle = (
         publishedVersionId: article.translation.published_version_id,
         intents: article.translation.intents,
         useSupportingContent: article.translation.use_supporting_content,
+        origin: article.origin,
     }
 }
 

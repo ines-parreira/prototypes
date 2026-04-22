@@ -18,6 +18,8 @@ import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import type { KnowledgeMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { KnowledgeEditorSidePanelSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection'
+import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 import RelativeTime from 'pages/common/components/RelativeTime'
 
@@ -32,80 +34,90 @@ type Ticket = {
 }
 
 export type Props = {
-    ticketCount?: number
-    latest3Tickets?: Ticket[]
-    isLoading?: boolean
-    resourceSourceId?: number
-    resourceSourceSetId?: number
-    shopIntegrationId?: number
-    dateRange?: {
-        start_datetime: string
-        end_datetime: string
-    }
-    outcomeCustomFieldId?: number
-    intentCustomFieldId?: number
+    sectionId: string
 }
 
 export const SkillEditorSidePanelRecentTicketsSection = ({
-    ticketCount,
-    latest3Tickets,
-    isLoading,
-    resourceSourceId,
-    resourceSourceSetId,
-    shopIntegrationId,
-    dateRange,
-    outcomeCustomFieldId,
-    intentCustomFieldId,
+    sectionId,
 }: Props) => {
+    const { recentTickets, isPreview } = useSkillPerformanceFromContext()
     const dispatch = useAppDispatch()
 
     const handleViewMoreClick = useCallback(() => {
-        if (!resourceSourceId || !resourceSourceSetId || !dateRange) return
+        if (
+            !recentTickets?.resourceSourceId ||
+            !recentTickets?.resourceSourceSetId ||
+            !recentTickets?.dateRange
+        )
+            return
 
         const metricData: KnowledgeMetrics = {
             metricName: KnowledgeMetric.Tickets,
             title: 'Recent tickets',
-            resourceSourceId,
-            resourceSourceSetId,
-            shopIntegrationId: shopIntegrationId ?? 0,
-            dateRange,
-            outcomeCustomFieldId,
-            intentCustomFieldId,
+            resourceSourceId: recentTickets.resourceSourceId,
+            resourceSourceSetId: recentTickets.resourceSourceSetId,
+            shopIntegrationId: recentTickets.shopIntegrationId ?? 0,
+            dateRange: recentTickets.dateRange,
+            outcomeCustomFieldId: recentTickets.outcomeCustomFieldId,
+            intentCustomFieldId: recentTickets.intentCustomFieldId,
         }
 
         dispatch(setMetricData(metricData))
-    }, [
-        dispatch,
+    }, [dispatch, recentTickets])
+
+    if (!recentTickets) {
+        return null
+    }
+
+    const {
+        ticketCount,
+        latest3Tickets,
+        isLoading,
         resourceSourceId,
         resourceSourceSetId,
-        shopIntegrationId,
         dateRange,
-        outcomeCustomFieldId,
-        intentCustomFieldId,
-    ])
+    } = recentTickets
 
     if (!isLoading && (!latest3Tickets || latest3Tickets.length === 0)) {
         return null
     }
 
+    const header = (
+        <Box gap="xxs" alignItems="center">
+            <Text size="md" variant="bold">
+                Recent tickets
+            </Text>
+            {isLoading ? (
+                <Skeleton width={22} height={18} />
+            ) : (
+                <Quantity quantity={ticketCount ?? 0} />
+            )}
+        </Box>
+    )
+
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap="md"
-            paddingTop="md"
-            paddingBottom="md"
+        <KnowledgeEditorSidePanelSection
+            header={{ title: header }}
+            sectionId={sectionId}
+            alwaysExpanded={!isPreview}
+            withBorderBottom={false}
+            bottomElement={
+                ticketCount !== undefined &&
+                ticketCount > 3 &&
+                resourceSourceId &&
+                resourceSourceSetId &&
+                dateRange ? (
+                    <Button
+                        variant="tertiary"
+                        size="sm"
+                        intent="regular"
+                        onClick={handleViewMoreClick}
+                    >
+                        View more
+                    </Button>
+                ) : undefined
+            }
         >
-            <Box gap="xxs" alignItems="center">
-                <Text size="md" variant="bold">
-                    Recent tickets
-                </Text>
-                {isLoading ? (
-                    <Skeleton width={22} height={18} />
-                ) : (
-                    <Quantity quantity={ticketCount ?? 0} />
-                )}
-            </Box>
             {isLoading ? (
                 <Box display="flex" flexDirection="column" gap="xs">
                     {[1, 2, 3].map((index) => (
@@ -119,25 +131,9 @@ export const SkillEditorSidePanelRecentTicketsSection = ({
                             <TicketCard key={index} ticket={ticket} />
                         ))}
                     </Box>
-                    {ticketCount !== undefined &&
-                    ticketCount > 3 &&
-                    resourceSourceId &&
-                    resourceSourceSetId &&
-                    dateRange ? (
-                        <Box>
-                            <Button
-                                variant="tertiary"
-                                size="sm"
-                                intent="regular"
-                                onClick={handleViewMoreClick}
-                            >
-                                View more
-                            </Button>
-                        </Box>
-                    ) : null}
                 </Box>
             ) : null}
-        </Box>
+        </KnowledgeEditorSidePanelSection>
     )
 }
 

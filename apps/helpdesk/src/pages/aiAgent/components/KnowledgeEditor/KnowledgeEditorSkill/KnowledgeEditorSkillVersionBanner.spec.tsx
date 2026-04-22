@@ -35,6 +35,7 @@ jest.mock('../shared/VersionBanner', () => ({
         isViewingHistoricalVersion?: boolean
         isDiffMode?: boolean
         onToggleDiff?: () => void
+        isFromConversation?: boolean
     }) => (
         <div data-testid="version-banner">
             {props.isViewingDraft && <span>draft</span>}
@@ -43,6 +44,7 @@ jest.mock('../shared/VersionBanner', () => ({
             {props.onToggleDiff && (
                 <button onClick={props.onToggleDiff}>Toggle diff</button>
             )}
+            {props.isFromConversation && <span>from-conversation</span>}
         </div>
     ),
 }))
@@ -60,6 +62,7 @@ const mockVersionBannerState = {
     hasPublishedVersion: true,
     isDisabled: false,
     switchVersion: mockSwitchVersion,
+    isPreview: false,
 }
 
 const mockVersionHistoryState = {
@@ -97,6 +100,7 @@ describe('KnowledgeEditorSkillVersionBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockVersionBannerState.isViewingDraft = true
+        mockVersionBannerState.isPreview = false
         mockVersionHistoryState.isViewingHistoricalVersion = false
         setupStore()
     })
@@ -173,5 +177,12 @@ describe('KnowledgeEditorSkillVersionBanner', () => {
         render(<KnowledgeEditorSkillVersionBanner />)
 
         expect(mockFetchQuery).not.toHaveBeenCalled()
+    })
+
+    it('passes isFromConversation true to VersionBanner when isPreview is true', () => {
+        mockVersionBannerState.isPreview = true
+        render(<KnowledgeEditorSkillVersionBanner />)
+
+        expect(screen.getByText('from-conversation')).toBeInTheDocument()
     })
 })

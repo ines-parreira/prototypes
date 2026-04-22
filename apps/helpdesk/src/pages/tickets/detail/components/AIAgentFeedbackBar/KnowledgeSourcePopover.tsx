@@ -22,6 +22,7 @@ type KnowledgeSourcePopoverProps = {
     title: string
     content: string
     knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum
+    origin?: string | null
     id: string
     children: (
         ref: React.RefObject<HTMLElement>,
@@ -42,6 +43,7 @@ const KnowledgeSourcePopover = ({
     title,
     content,
     knowledgeResourceType,
+    origin,
     children,
     onClick,
     shopName,
@@ -136,6 +138,7 @@ const KnowledgeSourcePopover = ({
                             <KnowledgeSourceIcon
                                 type={mapToKnowledgeSourceType(
                                     knowledgeResourceType,
+                                    origin,
                                 )}
                                 withLabel
                             />

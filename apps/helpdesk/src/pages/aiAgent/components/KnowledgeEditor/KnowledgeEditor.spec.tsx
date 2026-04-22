@@ -57,6 +57,10 @@ jest.mock(
     }),
 )
 
+jest.mock('./KnowledgeEditorSkill/KnowledgeEditorSkill', () => ({
+    KnowledgeEditorSkill: jest.fn(() => <div>KnowledgeEditorSkill</div>),
+}))
+
 describe('KnowledgeEditor', () => {
     beforeEach(() => {
         sharedPanelOnRequestClose.mockReset()
@@ -116,6 +120,75 @@ describe('KnowledgeEditor', () => {
         expect(
             screen.getByText('KnowledgeEditorHelpCenterArticle'),
         ).toBeInTheDocument()
+    })
+
+    it('renders skill editor when variant is skill', () => {
+        render(
+            <KnowledgeEditor
+                variant="skill"
+                isOpen
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                onClose={jest.fn()}
+            />,
+        )
+
+        expect(screen.getByText('KnowledgeEditorSkill')).toBeInTheDocument()
+    })
+
+    it('passes shared panel state callback to skill editor', () => {
+        const mockSkillComponent = jest.requireMock(
+            './KnowledgeEditorSkill/KnowledgeEditorSkill',
+        ).KnowledgeEditorSkill as jest.Mock
+
+        render(
+            <KnowledgeEditor
+                variant="skill"
+                isOpen
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                onClose={jest.fn()}
+            />,
+        )
+
+        const skillProps = mockSkillComponent.mock.calls.at(-1)?.[0]
+        expect(skillProps).toEqual(
+            expect.objectContaining({
+                onSharedPanelStateChange: expect.any(Function),
+            }),
+        )
+    })
+
+    it('updates panel width when skill editor calls onSharedPanelStateChange', async () => {
+        const mockSkillComponent = jest.requireMock(
+            './KnowledgeEditorSkill/KnowledgeEditorSkill',
+        ).KnowledgeEditorSkill as jest.Mock
+
+        render(
+            <KnowledgeEditor
+                variant="skill"
+                isOpen
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                onClose={jest.fn()}
+            />,
+        )
+
+        const skillProps = mockSkillComponent.mock.calls.at(-1)?.[0]
+
+        act(() => {
+            skillProps.onSharedPanelStateChange({
+                width: sharedPanelWidth,
+                onRequestClose: sharedPanelOnRequestClose,
+            })
+        })
+
+        await waitFor(() => {
+            expect(screen.getByTestId('side-panel')).toHaveAttribute(
+                'data-width',
+                sharedPanelWidth,
+            )
+        })
     })
 
     it('renders closed side panel when the active variant is closed', () => {

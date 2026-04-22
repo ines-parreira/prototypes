@@ -7,9 +7,14 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { getTimezone } from 'state/currentUser/selectors'
 
+type DateRange = {
+    start_datetime: string
+    end_datetime: string
+}
+
 /**
  * Hook to fetch metrics for all skills articles
- * Fetches metrics for the last 28 days:
+ * Fetches metrics for the provided date range, or the last 28 days by default:
  * - Number of tickets where each article was used
  * - Number of handover tickets
  * - Average CSAT score
@@ -17,15 +22,17 @@ import { getTimezone } from 'state/currentUser/selectors'
 export const useSkillsMetrics = (
     shopIntegrationId: number,
     enabled: boolean = true,
+    dateRange?: DateRange,
 ) => {
     const timezone = useAppSelector(getTimezone)
-    const metricsDateRange = useMemo(() => getLast28DaysDateRange(), [])
+    const defaultDateRange = useMemo(() => getLast28DaysDateRange(), [])
+    const metricsDateRange = dateRange ?? defaultDateRange
 
     return useAllResourcesMetrics({
         shopIntegrationId,
         timezone: timezone ?? 'UTC',
         enabled: enabled && !!shopIntegrationId,
-        loadIntents: false, // Don't load intents for skills table
+        loadIntents: false,
         dateRange: metricsDateRange,
     })
 }

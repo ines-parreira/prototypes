@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { getArticleFixture } from 'pages/aiAgent/fixtures/article.fixture'
@@ -8,8 +9,38 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import KnowledgeSourceSideBar from '../KnowledgeSourceSideBar'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 
+const useFlagMock = useFlag as jest.Mock
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(() => false),
+    FeatureFlagKey: {
+        KnowledgeIntentManagementSystem: 'KnowledgeIntentManagementSystem',
+    },
+}))
+
 jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
     KnowledgeEditor: (props: any) => {
+        if (props.variant === 'skill') {
+            return (
+                <div data-testid="mock-skill-editor">
+                    Skill Editor - ID: {props.skillId || 'none'}
+                    <span data-testid="editor-open-state">
+                        Open: {String(props.isOpen)}
+                    </span>
+                    <button onClick={props.onClose}>Close</button>
+                    {props.onUpdate && (
+                        <button onClick={() => props.onUpdate()}>
+                            Update Skill
+                        </button>
+                    )}
+                    {props.onEdit && (
+                        <button onClick={() => props.onEdit()}>Edit</button>
+                    )}
+                </div>
+            )
+        }
+
         if (props.variant === 'guidance') {
             return (
                 <div data-testid="mock-guidance-editor">
@@ -201,8 +232,18 @@ describe('KnowledgeSourceSideBar', () => {
         helpCenterId: 'help-center-1',
     }
 
+    const skillResource = {
+        id: 'skill-123',
+        knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+        origin: 'skill',
+        url: 'http://test.com',
+        helpCenterId: 'help-center-1',
+        resourceVersionId: 42,
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
+        useFlagMock.mockReturnValue(false)
         mockOnKnowledgeResourceEditClick.mockClear()
         mockOnKnowledgeResourceSaved.mockClear()
         mockOnSubmitNewMissingKnowledge.mockClear()
@@ -667,6 +708,103 @@ describe('KnowledgeSourceSideBar', () => {
             fireEvent.click(screen.getByText('Delete Article'))
 
             expect(mockCloseModal).toHaveBeenCalled()
+        })
+    })
+
+    describe('skill preview mode (KnowledgeIntentManagementSystem flag enabled)', () => {
+        beforeEach(() => {
+            useFlagMock.mockReturnValue(true)
+        })
+
+        it('renders skill editor when resource has origin "skill" in preview mode', () => {
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: skillResource,
+                mode: KnowledgeSourceSideBarMode.PREVIEW,
+                isClosing: false,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            expect(screen.getByTestId('mock-skill-editor')).toBeInTheDocument()
+            expect(
+                screen.getByText(/Skill Editor - ID: skill-123/),
+            ).toBeInTheDocument()
+        })
+
+        it('renders guidance editor (not skill editor) when resource has GUIDANCE type but no skill origin', () => {
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: guidanceResource,
+                mode: KnowledgeSourceSideBarMode.PREVIEW,
+                isClosing: false,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            expect(
+                screen.getByTestId('mock-guidance-editor'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('mock-skill-editor'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('calls onKnowledgeResourceSaved when skill editor onUpdate is triggered', () => {
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: skillResource,
+                mode: KnowledgeSourceSideBarMode.PREVIEW,
+                isClosing: false,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.click(screen.getByText('Update Skill'))
+
+            expect(mockOnKnowledgeResourceSaved).toHaveBeenCalledWith(
+                'skill-123',
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                'help-center-1',
+                false,
+            )
+        })
+
+        it('closes modal when skill editor Close is clicked', () => {
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: skillResource,
+                mode: KnowledgeSourceSideBarMode.PREVIEW,
+                isClosing: false,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.click(screen.getByText('Close'))
+
+            expect(mockCloseModal).toHaveBeenCalled()
+        })
+
+        it('does not render skill editor when flag is disabled even with skill origin', () => {
+            useFlagMock.mockReturnValue(false)
+
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: skillResource,
+                mode: KnowledgeSourceSideBarMode.PREVIEW,
+                isClosing: false,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            expect(
+                screen.queryByTestId('mock-skill-editor'),
+            ).not.toBeInTheDocument()
         })
     })
 })

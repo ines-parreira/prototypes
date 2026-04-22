@@ -1,12 +1,20 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import { Card } from '@gorgias/axiom'
 
 import { EditorWithPlayground } from 'common/knowledge-editor/components'
 import { isGorgiasApiError } from 'models/api/types'
+import { getVersionImpactDateRange } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 
+import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { KnowledgeEditorSkillProvider, useSkillEditorStore } from './context'
-import type { SkillContextConfig, SkillRouteState } from './context'
+import type {
+    SkillContextConfig,
+    SkillModeType,
+    SkillRouteState,
+} from './context'
 import { useKnowledgeEditorSkillData } from './hooks/useKnowledgeEditorSkillData'
 import { useSkillNotify } from './hooks/useSkillNotify'
 import { KnowledgeEditorSkillContent } from './KnowledgeEditorSkillContent'
@@ -15,9 +23,16 @@ import { SkillEditorPlaygroundBanner } from './SkillEditorPlaygroundBanner'
 
 import css from './KnowledgeEditorSkill.less'
 
-const KnowledgeEditorSkillInner = () => {
-    const playground = useSkillEditorStore(
-        (storeState) => storeState.playground,
+const KnowledgeEditorSkillInner = ({
+    onSharedPanelStateChange,
+}: {
+    onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
+}) => {
+    const { playground, onClose } = useSkillEditorStore(
+        useShallow((storeState) => ({
+            playground: storeState.playground,
+            onClose: storeState.config.onClose,
+        })),
     )
     const skill = useSkillEditorStore((storeState) => storeState.state.skill)
     const helpCenterId = useSkillEditorStore(
@@ -31,6 +46,17 @@ const KnowledgeEditorSkillInner = () => {
         isInDraftState && skill
             ? { sourceId: skill.id, sourceSetId: helpCenterId }
             : undefined
+
+    useEffect(() => {
+        if (!onSharedPanelStateChange) {
+            return
+        }
+
+        onSharedPanelStateChange({
+            width: playground.sidePanelWidth,
+            onRequestClose: onClose,
+        })
+    }, [onSharedPanelStateChange, playground.sidePanelWidth, onClose])
 
     return (
         <EditorWithPlayground
@@ -57,6 +83,10 @@ type Props = {
     onUpdate?: () => void
     onEdit?: () => void
     handleVisibilityUpdate?: (visibility: string) => void
+    isPreviewMode?: boolean
+    initialVersionId?: number
+    skillMode?: SkillModeType
+    onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
 }
 
 export const KnowledgeEditorSkill = ({
@@ -71,6 +101,10 @@ export const KnowledgeEditorSkill = ({
     onUpdate,
     onEdit,
     handleVisibilityUpdate,
+    isPreviewMode,
+    initialVersionId,
+    skillMode,
+    onSharedPanelStateChange,
 }: Props) => {
     const {
         helpCenter,
@@ -81,10 +115,14 @@ export const KnowledgeEditorSkill = ({
         error,
         skillTemplate,
         initialMode,
+        initialVersionData,
+        isInitialVersionLoading,
     } = useKnowledgeEditorSkillData({
         shopName,
         skillId,
         templateId,
+        initialVersionId,
+        skillMode,
     })
 
     const { error: notifyError } = useSkillNotify()
@@ -110,6 +148,22 @@ export const KnowledgeEditorSkill = ({
         [onCreate],
     )
 
+    const computedInitialVersionData = useMemo(() => {
+        if (!initialVersionData) return undefined
+        return {
+            versionId: initialVersionData.id,
+            version: initialVersionData.version,
+            title: initialVersionData.title,
+            content: initialVersionData.content,
+            publishedDatetime: initialVersionData.published_datetime,
+            publisherUserId: initialVersionData.publisher_user_id,
+            commitMessage: initialVersionData.commit_message,
+            impactDateRange: getVersionImpactDateRange(initialVersionData.id, [
+                initialVersionData,
+            ]),
+        }
+    }, [initialVersionData])
+
     const memoizedConfig = useMemo<SkillContextConfig | null>(() => {
         if (!helpCenter) {
             return null
@@ -129,6 +183,8 @@ export const KnowledgeEditorSkill = ({
             onEditFn: onEdit,
             handleVisibilityUpdate,
             routeState,
+            isPreviewMode,
+            initialVersionData: computedInitialVersionData,
         }
     }, [
         shopName,
@@ -144,16 +200,26 @@ export const KnowledgeEditorSkill = ({
         onEdit,
         handleVisibilityUpdate,
         routeState,
+        isPreviewMode,
+        computedInitialVersionData,
     ])
-    const isLoading = !!skillId && skillId !== 'new' && isArticleLoading
+    const isLoading =
+        (!!skillId && skillId !== 'new' && isArticleLoading) ||
+        isInitialVersionLoading
 
     if (isHelpCenterLoading || !memoizedConfig || isLoading) {
-        return <KnowledgeEditorSkillLoadingShell />
+        return (
+            <KnowledgeEditorSkillLoadingShell
+                isPreview={isPreviewMode ?? false}
+            />
+        )
     }
 
     return (
         <KnowledgeEditorSkillProvider config={memoizedConfig}>
-            <KnowledgeEditorSkillInner />
+            <KnowledgeEditorSkillInner
+                onSharedPanelStateChange={onSharedPanelStateChange}
+            />
         </KnowledgeEditorSkillProvider>
     )
 }

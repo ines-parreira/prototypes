@@ -118,4 +118,32 @@ describe('SkillEditorHeader', () => {
             screen.getByRole('img', { name: /cloud-check/i }),
         ).toBeInTheDocument()
     })
+
+    describe('preview mode (isPreview=true)', () => {
+        it('hides the back button when isPreview is true', () => {
+            render(<SkillEditorHeader {...defaultProps} isPreview />)
+
+            expect(
+                screen.queryByRole('button', { name: /back to skills/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('still renders the title in preview mode', () => {
+            render(<SkillEditorHeader {...defaultProps} isPreview />)
+
+            expect(screen.getByText('My Skill')).toBeInTheDocument()
+        })
+
+        it('still renders children in preview mode', () => {
+            render(
+                <SkillEditorHeader {...defaultProps} isPreview>
+                    <button>Publish</button>
+                </SkillEditorHeader>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /publish/i }),
+            ).toBeInTheDocument()
+        })
+    })
 })

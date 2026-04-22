@@ -240,7 +240,35 @@ describe('KnowledgeSourceFeedback', () => {
                 helpCenterId: resource.resource.resourceSetId,
                 shopName: 'test-shop',
                 shopType: 'test-type',
+                resourceVersionId: resource.metadata?.versionId,
+                origin: undefined,
             })
+        })
+
+        it('passes origin from metadata when KnowledgeIntentManagementSystem flag is enabled', () => {
+            const { useFlag } = jest.requireMock('@repo/feature-flags')
+            useFlag.mockReturnValue(true)
+
+            const resource = mockResource({
+                resource: { resourceType: 'ARTICLE' },
+                metadata: {
+                    ...defaultResource.metadata,
+                    origin: 'skill',
+                },
+            })
+
+            render(
+                <KnowledgeSourceFeedback
+                    {...defaultProps}
+                    resource={resource}
+                />,
+            )
+            const knowledgeSource = screen.getByText('Test Knowledge Title')
+            fireEvent.click(knowledgeSource)
+
+            expect(mockOpenPreview).toHaveBeenCalledWith(
+                expect.objectContaining({ origin: 'skill' }),
+            )
         })
 
         it('should not call any functions when isMetadataLoading is true', () => {

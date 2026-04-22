@@ -31,7 +31,14 @@ const defaultLinkButton = {
     isUpdating: false,
 }
 
-const createStoreState = (overrides?: Record<string, unknown>) => ({
+const createStoreState = (
+    overrides?: Record<string, unknown>,
+    configOverrides?: Record<string, unknown>,
+) => ({
+    config: {
+        isPreviewMode: false,
+        ...configOverrides,
+    },
     state: {
         mode: 'edit',
         intents: ['order::status', 'order::cancel'],
@@ -49,8 +56,9 @@ const createStoreState = (overrides?: Record<string, unknown>) => ({
 const setupStore = (
     overrides?: Record<string, unknown>,
     conflicts = new Set<string>(),
+    configOverrides?: Record<string, unknown>,
 ) => {
-    const storeState = createStoreState(overrides)
+    const storeState = createStoreState(overrides, configOverrides)
     mockUseSkillEditorStore.mockImplementation((selector: Function) =>
         selector(storeState),
     )
@@ -253,6 +261,22 @@ describe('useLinkedIntentsSidebarSkill', () => {
             const { result } = renderHook(() => useLinkedIntentsSidebarSkill())
 
             expect(result.current.intentsCount).toBe(2)
+        })
+    })
+
+    describe('isPreview', () => {
+        it('returns false when isPreviewMode is not set', () => {
+            setupStore()
+            const { result } = renderHook(() => useLinkedIntentsSidebarSkill())
+
+            expect(result.current.isPreview).toBe(false)
+        })
+
+        it('returns true when isPreviewMode is set in config', () => {
+            setupStore(undefined, new Set(), { isPreviewMode: true })
+            const { result } = renderHook(() => useLinkedIntentsSidebarSkill())
+
+            expect(result.current.isPreview).toBe(true)
         })
     })
 })

@@ -21,6 +21,7 @@ export function KnowledgeEditorSkillVersionBanner() {
         hasPublishedVersion,
         isDisabled,
         switchVersion,
+        isPreview,
     } = useSkillVersionBanner()
 
     const { isViewingHistoricalVersion, onGoToLatest } =
@@ -142,6 +143,8 @@ export function KnowledgeEditorSkillVersionBanner() {
             isDiffMode={isDiffMode}
             onToggleDiff={shouldShowDiffToggle ? onToggleDiff : undefined}
             className={css.versionBanner}
+            isFromConversation={!!isPreview}
+            hasUpdatedPolicy
         />
     )
 }

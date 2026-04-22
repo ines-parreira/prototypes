@@ -9,10 +9,13 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetKnowledgeHubArticles } from 'models/helpCenter/queries'
 import { useSkillEditorStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/context'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import type { KnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { transformKnowledgeHubArticlesToKnowledgeItems } from 'pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles'
-import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountId,
+    getCurrentDomain,
+} from 'state/currentAccount/selectors'
 import { getTimezone } from 'state/currentUser/selectors'
 
 export type TopSupportingKnowledge = KnowledgeItem & {
@@ -34,6 +37,7 @@ export type UseSkillTopKnowledgesResult = {
 export const useSkillTopKnowledges = (): UseSkillTopKnowledgesResult => {
     const {
         skillId,
+        shopName,
         isUpdating,
         isAutoSaving,
         useSupportingContent,
@@ -43,6 +47,7 @@ export const useSkillTopKnowledges = (): UseSkillTopKnowledgesResult => {
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             skillId: storeState.state.skill?.id,
+            shopName: storeState.config.shopName,
             isUpdating: storeState.state.isUpdating,
             isAutoSaving: storeState.state.isAutoSaving,
             useSupportingContent: storeState.state.useSupportingContent,
@@ -55,10 +60,11 @@ export const useSkillTopKnowledges = (): UseSkillTopKnowledgesResult => {
     )
 
     const accountId = useAppSelector(getCurrentAccountId)
+    const accountDomain = useAppSelector(getCurrentDomain)
     const timezone = useAppSelector(getTimezone) ?? 'UTC'
 
     const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
-        useAiAgentStoreConfigurationContext()
+        useStoreConfiguration({ shopName, accountDomain })
 
     const guidanceHelpCenterId = storeConfiguration?.guidanceHelpCenterId
     const snippetHelpCenterId = storeConfiguration?.snippetHelpCenterId

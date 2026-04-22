@@ -26,8 +26,14 @@ type Props = {
 }
 
 export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
-    const { items, showBanner, showLinkButton, linkButton, intentsCount } =
-        useLinkedIntentsSidebarSkill()
+    const {
+        items,
+        showBanner,
+        showLinkButton,
+        linkButton,
+        intentsCount,
+        isPreview,
+    } = useLinkedIntentsSidebarSkill()
 
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [intentPendingUnlink, setIntentPendingUnlink] = useState<
@@ -88,7 +94,7 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
                     ),
                 }}
                 sectionId={sectionId}
-                alwaysExpanded
+                alwaysExpanded={!isPreview}
             >
                 <div className={css.linkedIntentsContent}>
                     {showBanner && (

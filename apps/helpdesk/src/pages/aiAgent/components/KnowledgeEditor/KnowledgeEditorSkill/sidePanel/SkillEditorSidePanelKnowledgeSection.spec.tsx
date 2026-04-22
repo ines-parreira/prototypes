@@ -12,13 +12,14 @@ jest.mock(
     () => ({
         KnowledgeEditorSidePanelSection: ({
             children,
-            headerElement,
+            header,
         }: {
             children: React.ReactNode
-            headerElement: React.ReactNode
+            header?: { title: React.ReactNode; subtitle?: React.ReactNode }
         }) => (
             <div>
-                {headerElement}
+                {header?.title}
+                {header?.subtitle}
                 {children}
             </div>
         ),
@@ -71,6 +72,11 @@ const defaultSupportingKnowledgeHook = {
     updateUseSupportingKnowledge: mockUpdateUseSupportingKnowledge,
     isUpdating: false,
     isAutoSaving: false,
+    isPreview: false,
+    isDiffMode: false,
+    isViewingHistoricalVersion: false,
+    isViewingPublishedWithDraft: false,
+    isReadInPreview: false,
 }
 
 const defaultTopKnowledgesHook = {
@@ -94,7 +100,8 @@ const baseTopKnowledges = [
     },
 ]
 
-const renderComponent = () => render(<SkillEditorSidePanelKnowledgeSection />)
+const renderComponent = () =>
+    render(<SkillEditorSidePanelKnowledgeSection sectionId="knowledge" />)
 
 describe('SkillEditorSidePanelKnowledgeSection', () => {
     beforeEach(() => {
@@ -157,6 +164,66 @@ describe('SkillEditorSidePanelKnowledgeSection', () => {
             expect(
                 await screen.findByText(
                     /A draft of this skill exists\. Switch to the draft to change knowledge settings\./i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('disables the toggle and shows a tooltip when in diff mode', async () => {
+            const user = userEvent.setup()
+            mockUseSkillSupportingKnowledgeFromContext.mockReturnValue({
+                ...defaultSupportingKnowledgeHook,
+                isDiffMode: true,
+            })
+
+            renderComponent()
+
+            expect(screen.getByRole('switch')).toBeDisabled()
+
+            await user.hover(screen.getByRole('switch'))
+
+            expect(
+                await screen.findByText(
+                    /You are comparing versions\. Switch to the draft to change knowledge settings\./i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('disables the toggle and shows a tooltip when viewing a historical version', async () => {
+            const user = userEvent.setup()
+            mockUseSkillSupportingKnowledgeFromContext.mockReturnValue({
+                ...defaultSupportingKnowledgeHook,
+                isViewingHistoricalVersion: true,
+            })
+
+            renderComponent()
+
+            expect(screen.getByRole('switch')).toBeDisabled()
+
+            await user.hover(screen.getByRole('switch'))
+
+            expect(
+                await screen.findByText(
+                    /You are viewing a past version\. Switch to the current version to change knowledge settings\./i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('disables the toggle and shows a tooltip when in read-only preview mode', async () => {
+            const user = userEvent.setup()
+            mockUseSkillSupportingKnowledgeFromContext.mockReturnValue({
+                ...defaultSupportingKnowledgeHook,
+                isReadInPreview: true,
+            })
+
+            renderComponent()
+
+            expect(screen.getByRole('switch')).toBeDisabled()
+
+            await user.hover(screen.getByRole('switch'))
+
+            expect(
+                await screen.findByText(
+                    /This skill is in read-only mode\. Switch to edit mode to change knowledge settings\./i,
                 ),
             ).toBeInTheDocument()
         })
@@ -258,7 +325,9 @@ describe('SkillEditorSidePanelKnowledgeSection', () => {
                 isUpdating: true,
             })
 
-            render(<SkillEditorSidePanelKnowledgeSection />)
+            render(
+                <SkillEditorSidePanelKnowledgeSection sectionId="knowledge" />,
+            )
 
             // Modal is not open by default, so we check the toggle is rendered
             expect(screen.getByRole('switch')).toBeInTheDocument()

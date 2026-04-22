@@ -28,7 +28,10 @@ jest.mock('./useSkillSwitchVersion', () => ({
     }),
 }))
 
-const setupStore = (overrides: Record<string, unknown> = {}) => {
+const setupStore = (
+    stateOverrides: Record<string, unknown> = {},
+    configOverrides: Record<string, unknown> = {},
+) => {
     mockUseSkillEditorStore.mockImplementation((selector: Function) =>
         selector({
             state: {
@@ -40,7 +43,11 @@ const setupStore = (overrides: Record<string, unknown> = {}) => {
                 },
                 isUpdating: false,
                 isAutoSaving: false,
-                ...overrides,
+                ...stateOverrides,
+            },
+            config: {
+                isPreviewMode: false,
+                ...configOverrides,
             },
         }),
     )
@@ -76,5 +83,12 @@ describe('useSkillVersionBanner', () => {
         const { result } = renderHook(() => useSkillVersionBanner())
 
         expect(result.current.isDisabled).toBe(true)
+    })
+
+    it('returns isPreview true when isPreviewMode is true', () => {
+        setupStore({}, { isPreviewMode: true })
+        const { result } = renderHook(() => useSkillVersionBanner())
+
+        expect(result.current.isPreview).toBe(true)
     })
 })

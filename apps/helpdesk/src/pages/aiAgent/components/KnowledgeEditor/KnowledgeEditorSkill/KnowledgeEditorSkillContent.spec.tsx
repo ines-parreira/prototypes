@@ -50,6 +50,9 @@ jest.mock('./read/KnowledgeEditorSkillReadView', () => ({
 jest.mock('./sidePanel/SkillEditorSidePanel', () => ({
     SkillEditorSidePanel: () => <div>Side Panel</div>,
 }))
+jest.mock('./sidePanel/SkillPreviewSidePanel', () => ({
+    SkillPreviewSidePanel: () => <div>Preview Side Panel</div>,
+}))
 jest.mock('./KnowledgeEditorSkillVersionBanner', () => ({
     KnowledgeEditorSkillVersionBanner: () => null,
 }))
@@ -78,6 +81,7 @@ describe('KnowledgeEditorSkillContent', () => {
                     shopName: 'test-shop',
                     shopType: 'shopify',
                     onClose: jest.fn(),
+                    isPreviewMode: false,
                 },
                 dispatch: jest.fn(),
             }),
@@ -108,6 +112,7 @@ describe('KnowledgeEditorSkillContent', () => {
                     shopName: 'test-shop',
                     shopType: 'shopify',
                     onClose: jest.fn(),
+                    isPreviewMode: false,
                 },
                 dispatch: jest.fn(),
             }),
@@ -139,6 +144,7 @@ describe('KnowledgeEditorSkillContent', () => {
                     shopName: 'test-shop',
                     shopType: 'shopify',
                     onClose: jest.fn(),
+                    isPreviewMode: false,
                 },
                 dispatch: jest.fn(),
             }),
@@ -174,6 +180,7 @@ describe('KnowledgeEditorSkillContent', () => {
                     shopName: 'test-shop',
                     shopType: 'shopify',
                     onClose: jest.fn(),
+                    isPreviewMode: false,
                 },
                 dispatch: jest.fn(),
             }),
@@ -181,5 +188,58 @@ describe('KnowledgeEditorSkillContent', () => {
         render(<KnowledgeEditorSkillContent />)
 
         expect(screen.getByText('Diff View')).toBeInTheDocument()
+    })
+
+    describe('preview mode (isPreviewMode=true)', () => {
+        const makePreviewStore = (isDetailsView: boolean) => ({
+            state: {
+                mode: 'read',
+                title: 'Preview Skill',
+                content: '<p>content</p>',
+                isAutoSaving: false,
+                hasAutoSavedInSession: false,
+                autoSaveError: false,
+                isDetailsView,
+                skill: null,
+            },
+            config: {
+                shopName: 'test-shop',
+                shopType: 'shopify',
+                onClose: jest.fn(),
+                isPreviewMode: true,
+            },
+            dispatch: jest.fn(),
+        })
+
+        beforeEach(() => {
+            mockUseSkillEditorStore.mockImplementation((selector: Function) =>
+                selector(makePreviewStore(true)),
+            )
+        })
+
+        it('renders SkillPreviewSidePanel when isDetailsView is true', () => {
+            render(<KnowledgeEditorSkillContent />)
+
+            expect(screen.getByText('Preview Side Panel')).toBeInTheDocument()
+            expect(screen.queryByText('Side Panel')).not.toBeInTheDocument()
+        })
+
+        it('hides SkillPreviewSidePanel when isDetailsView is false', () => {
+            mockUseSkillEditorStore.mockImplementation((selector: Function) =>
+                selector(makePreviewStore(false)),
+            )
+            render(<KnowledgeEditorSkillContent />)
+
+            expect(
+                screen.queryByText('Preview Side Panel'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Side Panel')).not.toBeInTheDocument()
+        })
+
+        it('renders the read view in preview mode', () => {
+            render(<KnowledgeEditorSkillContent />)
+
+            expect(screen.getByText('Read View')).toBeInTheDocument()
+        })
     })
 })

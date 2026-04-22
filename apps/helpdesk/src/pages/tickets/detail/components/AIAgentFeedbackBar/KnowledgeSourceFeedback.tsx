@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 
 import {
@@ -62,6 +63,9 @@ const KnowledgeSourceFeedback = ({
     isMetadataLoading,
 }: KnowledgeSourceProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
 
     const isDeleted = resource.metadata?.isDeleted || false
     const isLink = knowledgeResourceShouldBeLink(
@@ -88,6 +92,9 @@ const KnowledgeSourceFeedback = ({
         shopName,
         shopType,
         resourceVersionId: resource.metadata?.versionId,
+        origin: isKnowledgeIntentManagementSystemEnabled
+            ? resource.metadata?.origin
+            : undefined,
     }
 
     const onClick = () => {
@@ -120,6 +127,11 @@ const KnowledgeSourceFeedback = ({
                 resourceType={
                     resource.resource
                         .resourceType as AiAgentKnowledgeResourceTypeEnum
+                }
+                origin={
+                    isKnowledgeIntentManagementSystemEnabled
+                        ? resource.metadata?.origin
+                        : undefined
                 }
                 title={
                     resource.metadata?.title || resource.resource?.resourceTitle

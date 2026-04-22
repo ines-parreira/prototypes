@@ -43,6 +43,7 @@ export type ResourceMetadata = {
     isDeleted?: boolean
     isLoading?: boolean
     versionId?: number
+    origin?: string | null
 }
 
 export type FeedbackDto = FindFeedbackResult['data']
@@ -148,6 +149,7 @@ export type KnowledgeResourcePreview = {
     content: string
     helpCenterId?: string
     resourceVersionId?: number
+    origin?: string | null
 }
 
 export enum KnowledgePendingCloseType {

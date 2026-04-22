@@ -15,6 +15,7 @@ import css from './KnowledgeSourceRenderer.less'
 type KnowledgeSourceRendererProps = {
     id: string
     resourceType: AiAgentKnowledgeResourceTypeEnum
+    origin?: string | null
     title: string
     content?: string
     url?: string
@@ -39,6 +40,7 @@ type KnowledgeSourceRendererProps = {
 const KnowledgeSourceRenderer = ({
     id,
     resourceType,
+    origin,
     title,
     content,
     url,
@@ -60,6 +62,7 @@ const KnowledgeSourceRenderer = ({
         title,
         content: content || '',
         knowledgeResourceType: resourceType,
+        origin,
         helpCenterId,
         shopName,
         shopType,
@@ -70,7 +73,7 @@ const KnowledgeSourceRenderer = ({
 
     const icon = (
         <KnowledgeSourceIcon
-            type={mapToKnowledgeSourceType(resourceType)}
+            type={mapToKnowledgeSourceType(resourceType, origin)}
             badgeIconClassname={iconClassName}
         />
     )

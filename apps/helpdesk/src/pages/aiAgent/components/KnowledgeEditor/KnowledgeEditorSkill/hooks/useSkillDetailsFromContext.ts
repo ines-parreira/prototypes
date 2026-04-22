@@ -15,6 +15,7 @@ export type SkillDetailsData = {
     createdDatetime?: Date
     lastUpdatedDatetime?: Date
     mode: SkillModeType
+    isPreview?: boolean
 }
 
 export const useSkillDetailsFromContext = (): SkillDetailsData => {
@@ -24,6 +25,7 @@ export const useSkillDetailsFromContext = (): SkillDetailsData => {
         createdDatetime,
         lastUpdated,
         isCurrent,
+        isPreview,
         historicalPublishedDatetime,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
@@ -32,6 +34,7 @@ export const useSkillDetailsFromContext = (): SkillDetailsData => {
             createdDatetime: storeState.state.skill?.createdDatetime,
             lastUpdated: storeState.state.skill?.lastUpdated,
             isCurrent: storeState.state.skill?.isCurrent,
+            isPreview: storeState.config.isPreviewMode,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
         })),
@@ -56,6 +59,7 @@ export const useSkillDetailsFromContext = (): SkillDetailsData => {
                 ? new Date(lastUpdated)
                 : undefined,
             mode,
+            isPreview,
         }),
         [
             visibility,
@@ -64,6 +68,7 @@ export const useSkillDetailsFromContext = (): SkillDetailsData => {
             createdDatetime,
             lastUpdated,
             mode,
+            isPreview,
         ],
     )
 }

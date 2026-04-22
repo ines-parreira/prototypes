@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+import type { ImpactDateRange } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useSkillsMetrics } from 'pages/aiAgent/skills/hooks/useSkillsMetrics'
 import { useTotalAiAgentTickets } from 'pages/aiAgent/skills/hooks/useTotalAiAgentTickets'
@@ -28,25 +29,39 @@ export type SkillRecentTicketsData = KnowledgeRecentTicketsData
 export type SkillPerformanceData = {
     skillMetrics: SkillMetricsData
     recentTickets: SkillRecentTicketsData | undefined
+    isPreview?: boolean
+    historicalVersionDateRange?: ImpactDateRange
 }
 
 export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
-    const { skillArticleId, shopIntegrationId, helpCenterId } =
-        useSkillEditorStore(
-            useShallow((storeState) => ({
-                skillArticleId: storeState.state.skill?.id,
-                shopIntegrationId:
-                    storeState.config.helpCenter.shop_integration_id ?? 0,
-                helpCenterId: storeState.config.helpCenter.id,
-            })),
-        )
+    const {
+        skillArticleId,
+        shopIntegrationId,
+        helpCenterId,
+        isPreview,
+        historicalVersionDateRange,
+    } = useSkillEditorStore(
+        useShallow((storeState) => ({
+            skillArticleId: storeState.state.skill?.id,
+            shopIntegrationId:
+                storeState.config.helpCenter.shop_integration_id ?? 0,
+            helpCenterId: storeState.config.helpCenter.id,
+            isPreview: storeState.config.isPreviewMode,
+            historicalVersionDateRange:
+                storeState.state.historicalVersion?.impactDateRange,
+        })),
+    )
+
+    const dateRange = useMemo(
+        () => historicalVersionDateRange ?? getLast28DaysDateRange(),
+        [historicalVersionDateRange],
+    )
 
     const { data: metricsData, isLoading } = useSkillsMetrics(
         shopIntegrationId,
         !!skillArticleId && !!shopIntegrationId,
+        dateRange,
     )
-
-    const dateRange = useMemo(() => getLast28DaysDateRange(), [])
 
     const metrics = useMemo<SkillMetrics | null>(() => {
         if (!metricsData || !skillArticleId) return null
@@ -101,7 +116,12 @@ export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
     )
 
     return useMemo(
-        () => ({ skillMetrics, recentTickets }),
-        [skillMetrics, recentTickets],
+        () => ({
+            skillMetrics,
+            recentTickets,
+            isPreview,
+            historicalVersionDateRange,
+        }),
+        [skillMetrics, recentTickets, isPreview, historicalVersionDateRange],
     )
 }

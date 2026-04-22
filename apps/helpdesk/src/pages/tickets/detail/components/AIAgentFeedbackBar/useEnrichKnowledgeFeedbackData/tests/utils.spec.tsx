@@ -2307,6 +2307,69 @@ describe('utils', () => {
             expect(resourceTypes).toEqual(['GUIDANCE', 'ACTION', 'ARTICLE'])
         })
 
+        it('should sort skill GUIDANCE before regular GUIDANCE', () => {
+            const resourceData = {
+                ...mockResourceData,
+                guidanceArticles: [
+                    {
+                        id: 10,
+                        title: 'Regular Guidance',
+                        content: 'Content',
+                        helpCenterId: 200,
+                        origin: undefined,
+                    },
+                    {
+                        id: 11,
+                        title: 'Skill Guidance',
+                        content: 'Content',
+                        helpCenterId: 200,
+                        origin: 'skill',
+                    },
+                ],
+            } as any
+
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '10',
+                            resourceType: 'GUIDANCE',
+                            resourceSetId: '200',
+                            resourceTitle: 'Regular Guidance',
+                            resourceLocale: null,
+                            resourceVersion: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-2',
+                            resourceId: '11',
+                            resourceType: 'GUIDANCE',
+                            resourceSetId: '200',
+                            resourceTitle: 'Skill Guidance',
+                            resourceLocale: null,
+                            resourceVersion: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useProcessResources(executions, 'test-store', resourceData),
+                { wrapper },
+            )
+
+            const titles = result.current.knowledgeResources.map(
+                (kr) => kr.metadata.origin,
+            )
+            expect(titles).toEqual(['skill', undefined])
+        })
+
         it('should handle feedback with non-TICKET target type', () => {
             const executionsWithNonTicketFeedback: FeedbackExecutionsItem[] = [
                 {

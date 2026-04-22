@@ -1,4 +1,5 @@
 import { DrillDownModalTrigger } from '@repo/reporting'
+import { useShallow } from 'zustand/react/shallow'
 
 import { Box, Card, Icon, Skeleton, Text } from '@gorgias/axiom'
 
@@ -77,11 +78,11 @@ const TopKnowledgeCard = ({
     } = knowledge
     const icon = typeConfig[type].icon
     const { shopName, shopIntegrationId } = useSkillEditorStore(
-        (storeState) => ({
+        useShallow((storeState) => ({
             shopName: storeState.config.shopName,
             shopIntegrationId:
                 storeState.config.helpCenter.shop_integration_id ?? 0,
-        }),
+        })),
     )
     const { routes } = useAiAgentNavigation({ shopName })
 

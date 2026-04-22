@@ -21,16 +21,18 @@ import { SkillPublishModal } from './modals/SkillPublishModal'
 import { SkillRestoreVersionModal } from './modals/SkillRestoreVersionModal'
 import { KnowledgeEditorSkillReadView } from './read/KnowledgeEditorSkillReadView'
 import { SkillEditorSidePanel } from './sidePanel/SkillEditorSidePanel'
+import { SkillPreviewSidePanel } from './sidePanel/SkillPreviewSidePanel'
 import { SkillEditorHeader } from './SkillEditorHeader'
 
 import css from './KnowledgeEditorSkill.less'
 
 export const KnowledgeEditorSkillContent = () => {
-    const { shopName, shopType, onClose } = useSkillEditorStore(
+    const { shopName, shopType, onClose, isPreviewMode } = useSkillEditorStore(
         useShallow((storeState) => ({
             shopName: storeState.config.shopName,
             shopType: storeState.config.shopType,
             onClose: storeState.config.onClose,
+            isPreviewMode: storeState.config.isPreviewMode,
         })),
     )
 
@@ -44,6 +46,8 @@ export const KnowledgeEditorSkillContent = () => {
         hasAutoSavedInSession,
         autoSaveError,
         skillLastUpdated,
+        isPreview,
+        isDetailsView,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             mode: storeState.state.mode,
@@ -55,6 +59,8 @@ export const KnowledgeEditorSkillContent = () => {
             hasAutoSavedInSession: storeState.state.hasAutoSavedInSession,
             autoSaveError: storeState.state.autoSaveError,
             skillLastUpdated: storeState.state.skill?.lastUpdated,
+            isPreview: storeState.config.isPreviewMode,
+            isDetailsView: storeState.state.isDetailsView,
         })),
     )
 
@@ -92,81 +98,93 @@ export const KnowledgeEditorSkillContent = () => {
               ? new Date(skillLastUpdated)
               : undefined
 
-    return (
-        <Box flexDirection="row" height="100%">
-            <Box
-                flexDirection="column"
-                flex={1}
-                height="100%"
-                className={css.contentContainer}
-            >
-                <SkillEditorHeader
-                    title={title}
-                    onChangeTitle={isEditableMode ? onChangeTitle : undefined}
-                    onBack={onClickBack}
-                    isSaving={isAutoSaving}
-                    autoSaveError={autoSaveError}
-                    lastUpdatedDatetime={lastUpdatedDatetime}
-                >
-                    <SkillToolbarControls />
-                </SkillEditorHeader>
+    const SkillEditorHeaderSection = (
+        <SkillEditorHeader
+            title={title}
+            onChangeTitle={isEditableMode ? onChangeTitle : undefined}
+            onBack={onClickBack}
+            isSaving={isAutoSaving}
+            autoSaveError={autoSaveError}
+            lastUpdatedDatetime={lastUpdatedDatetime}
+            isPreview={isPreview}
+        >
+            <SkillToolbarControls />
+        </SkillEditorHeader>
+    )
 
+    return (
+        <Box flexDirection="column" height="100%">
+            {isPreview && SkillEditorHeaderSection}
+            <Box flexDirection="row" height="100%" overflow="auto">
                 <Box
                     flexDirection="column"
                     flex={1}
-                    alignItems="center"
-                    className={css.editorContent}
+                    height="100%"
+                    className={css.contentContainer}
                 >
-                    <KnowledgeEditorSkillVersionBanner />
+                    {!isPreview && SkillEditorHeaderSection}
 
-                    {mode === 'diff' && (
-                        <DiffView
-                            oldTitle={
-                                historicalVersion
-                                    ? historicalVersion.title
-                                    : (comparisonVersion?.title ?? '')
-                            }
-                            oldContent={
-                                historicalVersion
-                                    ? historicalVersion.content
-                                    : (comparisonVersion?.content ?? '')
-                            }
-                            newTitle={
-                                historicalVersion
-                                    ? (comparisonVersion?.title ?? '')
-                                    : title
-                            }
-                            newContent={
-                                historicalVersion
-                                    ? (comparisonVersion?.content ?? '')
-                                    : content
-                            }
-                            availableVariables={guidanceVariables}
-                            availableActions={guidanceActions}
-                        />
-                    )}
+                    <Box
+                        flexDirection="column"
+                        flex={1}
+                        alignItems="center"
+                        className={css.editorContent}
+                    >
+                        <KnowledgeEditorSkillVersionBanner />
 
-                    {mode === 'read' && (
-                        <KnowledgeEditorSkillReadView
-                            content={content}
-                            availableActions={guidanceActions}
-                            availableVariables={guidanceVariables}
-                        />
-                    )}
+                        {mode === 'diff' && (
+                            <DiffView
+                                oldTitle={
+                                    historicalVersion
+                                        ? historicalVersion.title
+                                        : (comparisonVersion?.title ?? '')
+                                }
+                                oldContent={
+                                    historicalVersion
+                                        ? historicalVersion.content
+                                        : (comparisonVersion?.content ?? '')
+                                }
+                                newTitle={
+                                    historicalVersion
+                                        ? (comparisonVersion?.title ?? '')
+                                        : title
+                                }
+                                newContent={
+                                    historicalVersion
+                                        ? (comparisonVersion?.content ?? '')
+                                        : content
+                                }
+                                availableVariables={guidanceVariables}
+                                availableActions={guidanceActions}
+                            />
+                        )}
 
-                    {isEditableMode && (
-                        <KnowledgeEditorSkillEditView
-                            content={content}
-                            onChangeContent={onChangeContent}
-                            shopName={shopName}
-                            availableActions={guidanceActions}
-                            availableVariables={guidanceVariables}
-                        />
-                    )}
+                        {mode === 'read' && (
+                            <KnowledgeEditorSkillReadView
+                                content={content}
+                                availableActions={guidanceActions}
+                                availableVariables={guidanceVariables}
+                            />
+                        )}
+
+                        {isEditableMode && (
+                            <KnowledgeEditorSkillEditView
+                                content={content}
+                                onChangeContent={onChangeContent}
+                                shopName={shopName}
+                                availableActions={guidanceActions}
+                                availableVariables={guidanceVariables}
+                            />
+                        )}
+                    </Box>
                 </Box>
+                {isPreviewMode ? (
+                    isDetailsView && <SkillPreviewSidePanel />
+                ) : (
+                    <SkillEditorSidePanel />
+                )}
             </Box>
 
-            <SkillEditorSidePanel />
             <DrillDownModal isLegacy={false} />
             <SkillDeleteModal />
             <SkillDisableModal />

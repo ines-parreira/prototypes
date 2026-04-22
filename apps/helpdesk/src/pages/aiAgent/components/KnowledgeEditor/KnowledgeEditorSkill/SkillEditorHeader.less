@@ -1,4 +1,10 @@
 :local {
+    .header {
+        padding-left: var(--spacing-md);
+        padding-right: var(--spacing-md);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
     .titleArea {
         display: grid;
         grid-template-columns: minmax(0, max-content) auto;
@@ -6,6 +12,8 @@
         gap: var(--spacing-sm);
         flex: 1;
         min-width: 0;
+        padding-top: var(--spacing-md);
+        padding-bottom: var(--spacing-md);
 
         > div,
         > span:first-child {

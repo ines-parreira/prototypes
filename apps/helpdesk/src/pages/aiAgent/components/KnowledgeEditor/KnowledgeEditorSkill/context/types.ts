@@ -140,6 +140,7 @@ export type SkillContextConfig = {
     initialVersionId?: number
     initialVersionData?: HistoricalVersionState
     routeState?: SkillRouteState
+    isPreviewMode?: boolean
 }
 
 export type { PlaygroundState } from 'common/knowledge-editor/types'

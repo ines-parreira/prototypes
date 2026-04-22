@@ -5,8 +5,8 @@ import {
     useSkillSupportingKnowledgesMetric,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useGetKnowledgeHubArticles } from 'models/helpCenter/queries'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { transformKnowledgeHubArticlesToKnowledgeItems } from 'pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles'
-import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import { useSkillEditorStore } from '../context'
 import { useSkillTopKnowledges } from './useSkillTopKnowledges'
@@ -30,8 +30,8 @@ jest.mock(
     () => ({ transformKnowledgeHubArticlesToKnowledgeItems: jest.fn() }),
 )
 
-jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
+    useStoreConfiguration: jest.fn(),
 }))
 
 jest.mock('hooks/useAppSelector', () => ({
@@ -48,8 +48,7 @@ const mockUseSkillTopKnowledgesMetric =
 const mockUseGetKnowledgeHubArticles = useGetKnowledgeHubArticles as jest.Mock
 const mockTransformKnowledgeHubArticlesToKnowledgeItems =
     transformKnowledgeHubArticlesToKnowledgeItems as jest.Mock
-const mockUseAiAgentStoreConfigurationContext =
-    useAiAgentStoreConfigurationContext as jest.Mock
+const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock
 const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
 
 const mockDateRange = {
@@ -73,6 +72,7 @@ const makeStoreState = (overrides: Record<string, unknown> = {}) => ({
         historicalVersion: null,
     },
     config: {
+        shopName: 'test-shop',
         helpCenter: { id: 100, shop_integration_id: 999 },
     },
     ...overrides,
@@ -111,7 +111,7 @@ describe('useSkillTopKnowledges', () => {
             selector(makeStoreState()),
         )
 
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+        mockUseStoreConfiguration.mockReturnValue({
             isLoading: false,
             storeConfiguration: {
                 guidanceHelpCenterId: 11,
@@ -358,7 +358,7 @@ describe('useSkillTopKnowledges', () => {
         })
 
         it('passes enabled=false to metric while store configuration is loading', () => {
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            mockUseStoreConfiguration.mockReturnValue({
                 isLoading: true,
                 storeConfiguration: undefined,
             })

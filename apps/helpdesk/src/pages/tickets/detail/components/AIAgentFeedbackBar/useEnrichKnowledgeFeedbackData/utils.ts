@@ -416,6 +416,7 @@ export const getResourceMetadata = (
                           idAsNumber,
                       ),
                       helpCenterId: guidance.helpCenterId,
+                      origin: guidance.origin,
                   }
                 : getEmptyMetadata()
         }
@@ -664,6 +665,10 @@ export const useProcessResources = (
                               versionId: isLatestVersion
                                   ? undefined
                                   : versionedData.versionId,
+                              origin:
+                                  fallback && 'origin' in fallback
+                                      ? fallback.origin
+                                      : undefined,
                           }
                       })()
                     : getResourceMetadata(
@@ -758,7 +763,12 @@ export const useProcessResources = (
                 b.resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
             )
 
-            return aIndex - bIndex
+            if (aIndex !== bIndex) return aIndex - bIndex
+
+            // Within GUIDANCE, skills sort before regular guidance
+            const aIsSkill = a.metadata.origin === 'skill' ? 0 : 1
+            const bIsSkill = b.metadata.origin === 'skill' ? 0 : 1
+            return aIsSkill - bIsSkill
         })
 
         output.suggestedResources.sort((a, b) => {

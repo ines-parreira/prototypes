@@ -23,6 +23,7 @@ type Props = {
     isSaving?: boolean
     autoSaveError?: boolean
     lastUpdatedDatetime?: Date
+    isPreview?: boolean
 }
 
 export const SkillEditorHeader = ({
@@ -33,6 +34,7 @@ export const SkillEditorHeader = ({
     isSaving,
     autoSaveError,
     lastUpdatedDatetime,
+    isPreview,
 }: Props) => {
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.RelativeDateAndTime,
@@ -44,19 +46,21 @@ export const SkillEditorHeader = ({
         <Box
             alignItems="center"
             justifyContent="space-between"
-            padding="lg"
-            height="80px"
+            padding={!isPreview ? 'lg' : undefined}
             gap="sm"
             minWidth={570}
+            className={isPreview ? css.header : undefined}
         >
             <Box alignItems="center" gap="sm" flex={1} minWidth={0}>
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    icon="arrow-left"
-                    aria-label="Back to skills"
-                    onClick={onBack}
-                />
+                {!isPreview && (
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        icon="arrow-left"
+                        aria-label="Back to skills"
+                        onClick={onBack}
+                    />
+                )}
                 <div className={css.titleArea}>
                     <KnowledgeEditorTopBarTitle
                         onChangeTitle={onChangeTitle}

@@ -57,6 +57,7 @@ const defaultHookReturn = {
         isUpdating: false,
     },
     intentsCount: 0,
+    isPreview: false,
 }
 
 const setup = (overrides?: Partial<typeof defaultHookReturn>) => {

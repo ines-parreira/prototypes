@@ -18,6 +18,7 @@ export type IntentItem = {
     color?: TagColor
     showLeadingDot: boolean
     tooltip?: string
+    isPreview?: boolean
 }
 
 function buildDiffItems(
@@ -67,6 +68,7 @@ export const useLinkedIntentsSidebarSkill = () => {
         publishedVersionId,
         isCurrent,
         historicalPublishedDatetime,
+        isPreview,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             mode: storeState.state.mode,
@@ -79,6 +81,7 @@ export const useLinkedIntentsSidebarSkill = () => {
             isCurrent: storeState.state.skill?.isCurrent,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
+            isPreview: storeState.config.isPreviewMode,
         })),
     )
 
@@ -175,5 +178,6 @@ export const useLinkedIntentsSidebarSkill = () => {
         showLinkButton: !isDiffMode,
         linkButton,
         intentsCount: displayedIntentIds.length,
+        isPreview,
     }
 }

@@ -102,6 +102,7 @@ export const isTrialMessageFromAIAgent = (message: TicketMessage) => {
 
 export const mapToKnowledgeSourceType = (
     type: AiAgentKnowledgeResourceTypeEnum,
+    origin?: string | null,
 ) => {
     switch (type) {
         case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
@@ -109,7 +110,7 @@ export const mapToKnowledgeSourceType = (
         case AiAgentKnowledgeResourceTypeEnum.ACTION:
             return 'action'
         case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
-            return 'guidance'
+            return origin === 'skill' ? 'skill' : 'guidance'
         case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
             return 'external_snippet'
         case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:

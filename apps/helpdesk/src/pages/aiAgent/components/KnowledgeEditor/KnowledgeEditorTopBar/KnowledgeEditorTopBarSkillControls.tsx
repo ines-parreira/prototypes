@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Box, Button, Separator, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import {
     isFormValid,
@@ -11,7 +11,11 @@ import {
 import type { SkillModeType } from '../KnowledgeEditorSkill/context/types'
 import { useSkillVersionHistory } from '../KnowledgeEditorSkill/hooks/useSkillVersionHistory'
 import { VersionHistoryButton } from '../shared/VersionHistoryButton'
-import { DeleteButton, TestButton } from './KnowledgeEditorTopBarCommonControls'
+import {
+    DeleteButton,
+    EditIconButton,
+    TestButton,
+} from './KnowledgeEditorTopBarCommonControls'
 
 type SkillToolbarState =
     | { type: 'new-skill' }
@@ -20,14 +24,25 @@ type SkillToolbarState =
     | { type: 'published-enabled' }
     | { type: 'published-disabled' }
     | { type: 'viewing-historical-version' }
+    | { type: 'preview-read' }
+    | { type: 'preview-edit' }
+    | { type: 'preview-previous-version' }
 
 export function getToolbarState(
     mode: SkillModeType,
+    isPreview: boolean | undefined,
     isCurrent: boolean | undefined,
     isViewingHistoricalVersion: boolean,
     isEnabled: boolean,
     hasPublishedVersion: boolean,
 ): SkillToolbarState {
+    if (!!isPreview) {
+        if (isViewingHistoricalVersion)
+            return { type: 'preview-previous-version' }
+        if (mode === 'edit') return { type: 'preview-edit' }
+        return { type: 'preview-read' }
+    }
+
     if (isViewingHistoricalVersion) {
         return { type: 'viewing-historical-version' }
     }
@@ -52,22 +67,30 @@ export function getToolbarState(
 export const SkillToolbarControls = () => {
     const {
         mode,
+        isDetailsView,
+        isFullScreen,
         isUpdating,
         isAutoSaving,
+        isPreview,
         skillIsCurrent,
         visibility,
         hasPublishedVersion,
         historicalPublishedDatetime,
+        onClose,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             mode: storeState.state.mode,
+            isDetailsView: storeState.state.isDetailsView,
+            isFullScreen: storeState.state.isFullscreen,
             isUpdating: storeState.state.isUpdating,
             isAutoSaving: storeState.state.isAutoSaving,
+            isPreview: storeState.config.isPreviewMode,
             skillIsCurrent: storeState.state.skill?.isCurrent,
             visibility: storeState.state.visibility,
             hasPublishedVersion: !!storeState.state.skill?.publishedVersionId,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
+            onClose: storeState.config.onClose,
         })),
     )
 
@@ -89,6 +112,10 @@ export const SkillToolbarControls = () => {
     )
 
     const versionHistory = useSkillVersionHistory()
+
+    const isViewingHistoricalVersion =
+        historicalPublishedDatetime !== null &&
+        historicalPublishedDatetime !== undefined
 
     const isBusy = isUpdating || isAutoSaving
 
@@ -144,11 +171,23 @@ export const SkillToolbarControls = () => {
         dispatch({ type: 'SET_MODAL', payload: 'delete' })
     }, [dispatch])
 
+    const onEdit = useCallback(() => {
+        dispatch({ type: 'SET_MODE', payload: 'edit' })
+    }, [dispatch])
+
+    const onToggleDetailsView = useCallback(() => {
+        dispatch({ type: 'TOGGLE_DETAILS_VIEW' })
+    }, [dispatch])
+
+    const onToggleFullscreen = useCallback(() => {
+        dispatch({ type: 'TOGGLE_FULLSCREEN' })
+    }, [dispatch])
+
     const toolbarState = getToolbarState(
         mode,
+        isPreview,
         skillIsCurrent,
-        historicalPublishedDatetime !== null &&
-            historicalPublishedDatetime !== undefined,
+        isViewingHistoricalVersion,
         visibility,
         hasPublishedVersion,
     )
@@ -172,7 +211,10 @@ export const SkillToolbarControls = () => {
     )
 
     const testButton = playground.onTest ? (
-        <TestButton onTest={playground.onTest} disabled={isBusy} />
+        <TestButton
+            onTest={playground.onTest}
+            disabled={isBusy || (isPreview && isViewingHistoricalVersion)}
+        />
     ) : null
 
     const wrapWithValidationTooltip = (
@@ -229,6 +271,68 @@ export const SkillToolbarControls = () => {
         </Button>
     )
 
+    const editButton = <EditIconButton onEdit={onEdit} disabled={isBusy} />
+
+    const detailsViewToggle = (
+        <Tooltip
+            trigger={
+                <Button
+                    variant="tertiary"
+                    icon={
+                        isDetailsView
+                            ? 'system-bar-collapse'
+                            : 'system-bar-expand'
+                    }
+                    aria-label={isDetailsView ? 'Collapse' : 'Expand'}
+                    onClick={onToggleDetailsView}
+                />
+            }
+        >
+            <TooltipContent title={isDetailsView ? 'Collapse' : 'Expand'} />
+        </Tooltip>
+    )
+
+    const separator = (
+        <Box height={32}>
+            <Separator direction="vertical" />
+        </Box>
+    )
+
+    const fullscreenToogle = (
+        <Tooltip
+            trigger={
+                <Button
+                    variant="tertiary"
+                    icon={isFullScreen ? 'arrow-collapse' : 'arrow-expand'}
+                    aria-label={
+                        isFullScreen ? 'Leave fullscreen' : 'fullscreen'
+                    }
+                    onClick={onToggleFullscreen}
+                />
+            }
+        >
+            <TooltipContent
+                title={isFullScreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+            />
+        </Tooltip>
+    )
+
+    const closeButton = (
+        <Tooltip
+            trigger={
+                <Button
+                    variant="tertiary"
+                    icon="close"
+                    aria-label="close"
+                    onClick={onClose}
+                    isDisabled={isBusy}
+                />
+            }
+        >
+            <TooltipContent title="Close" />
+        </Tooltip>
+    )
+
     switch (toolbarState.type) {
         case 'new-skill':
             return (
@@ -243,6 +347,7 @@ export const SkillToolbarControls = () => {
                 <>
                     {deleteButton}
                     {versionHistoryButton}
+                    {separator}
                     {enableButton}
                     {testButton}
                 </>
@@ -253,6 +358,7 @@ export const SkillToolbarControls = () => {
                 <>
                     {deleteButton}
                     {versionHistoryButton}
+                    {separator}
                     {disableButton}
                     {testButton}
                 </>
@@ -263,6 +369,7 @@ export const SkillToolbarControls = () => {
                 <>
                     {deleteButton}
                     {versionHistoryButton}
+                    {separator}
                     {enableButton}
                     {testButton}
                 </>
@@ -273,6 +380,7 @@ export const SkillToolbarControls = () => {
                 <>
                     {deleteButton}
                     {versionHistoryButton}
+                    {separator}
                     {publishButton}
                     {testButton}
                 </>
@@ -282,10 +390,61 @@ export const SkillToolbarControls = () => {
             return (
                 <>
                     {versionHistoryButton}
+                    {separator}
                     {restoreButton}
                     {playground.onTest && (
                         <TestButton onTest={playground.onTest} disabled />
                     )}
+                </>
+            )
+
+        case 'preview-read':
+            return (
+                <>
+                    {editButton}
+                    {versionHistoryButton}
+                    {testButton}
+                    {detailsViewToggle}
+                    {separator}
+                    {fullscreenToogle}
+                    {closeButton}
+                </>
+            )
+
+        case 'preview-edit': {
+            const actionButton =
+                skillIsCurrent === true
+                    ? visibility
+                        ? disableButton
+                        : enableButton
+                    : !hasPublishedVersion
+                      ? enableButton
+                      : publishButton
+
+            return (
+                <>
+                    {deleteButton}
+                    {versionHistoryButton}
+                    {actionButton}
+                    {testButton}
+                    {detailsViewToggle}
+                    {separator}
+                    {fullscreenToogle}
+                    {closeButton}
+                </>
+            )
+        }
+
+        case 'preview-previous-version':
+            return (
+                <>
+                    {versionHistoryButton}
+                    {restoreButton}
+                    {testButton}
+                    {detailsViewToggle}
+                    {separator}
+                    {fullscreenToogle}
+                    {closeButton}
                 </>
             )
     }

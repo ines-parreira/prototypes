@@ -28,6 +28,7 @@ const defaultDetails: SkillDetailsData = {
     createdDatetime: new Date('2024-03-01T00:00:00Z'),
     lastUpdatedDatetime: new Date('2024-03-15T00:00:00Z'),
     mode: 'read',
+    isPreview: false,
 }
 
 describe('SkillEditorSidePanelDetailsSection', () => {
@@ -65,5 +66,22 @@ describe('SkillEditorSidePanelDetailsSection', () => {
         expect(screen.getByText('Draft')).toBeInTheDocument()
         expect(screen.queryByText('Enabled')).not.toBeInTheDocument()
         expect(screen.queryByText('Disabled')).not.toBeInTheDocument()
+    })
+
+    it('hides the "Info" heading when isPreview is true', () => {
+        mockUseSkillDetailsFromContext.mockReturnValue({
+            ...defaultDetails,
+            isPreview: true,
+        })
+
+        render(<SkillEditorSidePanelDetailsSection sectionId="details" />)
+
+        expect(screen.queryByText('Info')).not.toBeInTheDocument()
+    })
+
+    it('shows the "Info" heading when isPreview is false', () => {
+        render(<SkillEditorSidePanelDetailsSection sectionId="details" />)
+
+        expect(screen.getByText('Info')).toBeInTheDocument()
     })
 })

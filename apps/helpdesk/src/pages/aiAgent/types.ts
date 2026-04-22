@@ -91,6 +91,7 @@ export type GuidanceArticle = {
     publishedVersionId: number | null
     intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
     useSupportingContent?: boolean | null
+    origin?: string | null
 }
 
 export type CreateGuidanceArticle = Omit<

@@ -268,6 +268,36 @@ describe('KnowledgeEditorSkill', () => {
         ).toBeInTheDocument()
     })
 
+    it('calls onSharedPanelStateChange with playground sidePanelWidth on mount', () => {
+        const onSharedPanelStateChange = jest.fn()
+
+        render(
+            <Wrapper>
+                <KnowledgeEditorSkill
+                    {...defaultProps}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />
+            </Wrapper>,
+        )
+
+        expect(onSharedPanelStateChange).toHaveBeenCalledWith(
+            expect.objectContaining({
+                width: expect.any(String),
+                onRequestClose: expect.any(Function),
+            }),
+        )
+    })
+
+    it('does not call onSharedPanelStateChange when not provided', () => {
+        expect(() => {
+            render(
+                <Wrapper>
+                    <KnowledgeEditorSkill {...defaultProps} />
+                </Wrapper>,
+            )
+        }).not.toThrow()
+    })
+
     it('calls onClose and shows error notification on 404 error', () => {
         const onClose = jest.fn()
         isGorgiasApiError.mockReturnValue(true)

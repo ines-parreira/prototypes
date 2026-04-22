@@ -135,6 +135,36 @@ describe('mapToKnowledgeSourceType', () => {
             ),
         ).toBe('article')
     })
+
+    it('returns "skill" for GUIDANCE type when origin is "skill"', () => {
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                'skill',
+            ),
+        ).toBe('skill')
+    })
+
+    it('returns "guidance" for GUIDANCE type when origin is not "skill"', () => {
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                null,
+            ),
+        ).toBe('guidance')
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                undefined,
+            ),
+        ).toBe('guidance')
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                'other',
+            ),
+        ).toBe('guidance')
+    })
 })
 
 describe('getKnowledgeResourceTypeLabel', () => {

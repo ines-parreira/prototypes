@@ -4,10 +4,36 @@ import userEvent from '@testing-library/user-event'
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
+import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { SkillEditorSidePanelRecentTicketsSection } from './SkillEditorSidePanelRecentTicketsSection'
-import type { Props } from './SkillEditorSidePanelRecentTicketsSection'
+
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection',
+    () => ({
+        KnowledgeEditorSidePanelSection: ({
+            children,
+            header,
+            bottomElement,
+        }: {
+            children: React.ReactNode
+            header: { title: React.ReactNode }
+            bottomElement?: React.ReactNode
+        }) => (
+            <div>
+                <div>{header.title}</div>
+                {children}
+                {bottomElement}
+            </div>
+        ),
+    }),
+)
+
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext',
+    () => ({ useSkillPerformanceFromContext: jest.fn() }),
+)
 
 jest.mock('pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip', () => ({
     TruncatedTextWithTooltip: ({ children }: { children: React.ReactNode }) =>
@@ -18,6 +44,9 @@ jest.mock('pages/common/components/RelativeTime', () => ({
     __esModule: true,
     default: () => <span>1 hour ago</span>,
 }))
+
+const mockUseSkillPerformanceFromContext =
+    useSkillPerformanceFromContext as jest.Mock
 
 const testDateRange = {
     start_datetime: '2024-01-01T00:00:00Z',
@@ -50,7 +79,7 @@ const baseTickets = [
     },
 ]
 
-const baseProps: Props = {
+const baseRecentTickets = {
     ticketCount: 3,
     latest3Tickets: baseTickets,
     isLoading: false,
@@ -60,12 +89,36 @@ const baseProps: Props = {
     dateRange: testDateRange,
 }
 
-const renderComponent = (props: Partial<Props> = {}) =>
-    renderWithStoreAndQueryClientAndRouter(
-        <SkillEditorSidePanelRecentTicketsSection {...baseProps} {...props} />,
+const renderComponent = (
+    recentTicketsOverrides: Partial<typeof baseRecentTickets> | null = {},
+    isPreview = false,
+) => {
+    mockUseSkillPerformanceFromContext.mockReturnValue({
+        recentTickets:
+            recentTicketsOverrides === null
+                ? undefined
+                : { ...baseRecentTickets, ...recentTicketsOverrides },
+        skillMetrics: { metrics: null, isLoading: false },
+        isPreview,
+    })
+    return renderWithStoreAndQueryClientAndRouter(
+        <SkillEditorSidePanelRecentTicketsSection sectionId="recent-tickets" />,
     )
+}
 
 describe('SkillEditorSidePanelRecentTicketsSection', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    describe('when recentTickets is undefined', () => {
+        it('renders nothing when recentTickets is not available', () => {
+            const { container } = renderComponent(null)
+
+            expect(container).toBeEmptyDOMElement()
+        })
+    })
+
     describe('empty state', () => {
         it('renders nothing when not loading and latest3Tickets is undefined', () => {
             const { container } = renderComponent({

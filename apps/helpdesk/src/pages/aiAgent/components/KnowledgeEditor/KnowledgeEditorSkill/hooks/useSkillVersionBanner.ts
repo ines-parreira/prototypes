@@ -14,6 +14,7 @@ export type SkillVersionBannerState = {
     hasPublishedVersion: boolean
     isDisabled: boolean
     switchVersion: () => Promise<void>
+    isPreview?: boolean
 }
 
 export function useSkillVersionBanner(): SkillVersionBannerState {
@@ -23,6 +24,7 @@ export function useSkillVersionBanner(): SkillVersionBannerState {
         hasPublishedVersion,
         isUpdating,
         isAutoSaving,
+        isPreview,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             historicalPublishedDatetime:
@@ -31,6 +33,7 @@ export function useSkillVersionBanner(): SkillVersionBannerState {
             hasPublishedVersion: !!storeState.state.skill?.publishedVersionId,
             isUpdating: storeState.state.isUpdating,
             isAutoSaving: storeState.state.isAutoSaving,
+            isPreview: storeState.config.isPreviewMode,
         })),
     )
     const skillHasDraft = useSkillEditorStore((storeState) =>
@@ -61,5 +64,6 @@ export function useSkillVersionBanner(): SkillVersionBannerState {
         hasPublishedVersion,
         isDisabled,
         switchVersion,
+        isPreview,
     }
 }

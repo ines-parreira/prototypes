@@ -8,6 +8,8 @@ const LINK_INTENTS_PUBLISHED_WITH_DRAFT_TOOLTIP =
     'A draft of this skill exists. Switch to the draft to link intents.'
 const LINK_INTENTS_NO_ARTICLE_TOOLTIP =
     'Add a title and instructions first to link intents.'
+const LINK_INTENTS_READ_IN_PREVIEW_TOOLTIP =
+    'You are on read mode. Switch to edit mode to link intents.'
 
 export const useIntentLinkButton = () => {
     const {
@@ -18,6 +20,8 @@ export const useIntentLinkButton = () => {
         historicalPublishedDatetime,
         isUpdating,
         isAutoSaving,
+        mode,
+        isPreview,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             skillId: storeState.state.skill?.id,
@@ -28,6 +32,8 @@ export const useIntentLinkButton = () => {
                 storeState.state.historicalVersion?.publishedDatetime,
             isUpdating: storeState.state.isUpdating,
             isAutoSaving: storeState.state.isAutoSaving,
+            mode: storeState.state.mode,
+            isPreview: storeState.config.isPreviewMode,
         })),
     )
 
@@ -38,14 +44,17 @@ export const useIntentLinkButton = () => {
         publishedVersionId != null &&
         draftVersionId !== publishedVersionId
     const isViewingPublishedWithDraft = skillIsCurrent === true && hasDraft
+    const isReadingOnPreview = !!isPreview && mode === 'read'
 
     const disabledTooltip = !hasArticle
         ? LINK_INTENTS_NO_ARTICLE_TOOLTIP
-        : isViewingHistoricalVersion
-          ? LINK_INTENTS_HISTORICAL_TOOLTIP
-          : isViewingPublishedWithDraft
-            ? LINK_INTENTS_PUBLISHED_WITH_DRAFT_TOOLTIP
-            : undefined
+        : isReadingOnPreview
+          ? LINK_INTENTS_READ_IN_PREVIEW_TOOLTIP
+          : isViewingHistoricalVersion
+            ? LINK_INTENTS_HISTORICAL_TOOLTIP
+            : isViewingPublishedWithDraft
+              ? LINK_INTENTS_PUBLISHED_WITH_DRAFT_TOOLTIP
+              : undefined
 
     const isDisabled =
         disabledTooltip !== undefined || isUpdating || isAutoSaving

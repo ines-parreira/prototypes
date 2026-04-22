@@ -42,6 +42,17 @@ jest.mock('./KnowledgeEditorTopBarCommonControls', () => ({
             Test
         </button>
     ),
+    EditIconButton: ({
+        disabled,
+        onEdit,
+    }: {
+        disabled: boolean
+        onEdit?: () => void
+    }) => (
+        <button disabled={disabled} onClick={onEdit} aria-label="edit">
+            Edit
+        </button>
+    ),
 }))
 
 jest.mock('../shared/VersionHistoryButton', () => ({
@@ -71,6 +82,8 @@ const defaultStoreData = {
         mode: 'read' as const,
         isUpdating: false,
         isAutoSaving: false,
+        isDetailsView: false,
+        isFullscreen: false,
         visibility: true,
         title: 'My Skill',
         content: 'Some content',
@@ -83,6 +96,12 @@ const defaultStoreData = {
         },
         historicalVersion: null,
     },
+    config: {
+        isPreviewMode: false,
+        isDetailsView: false,
+        isFullscreen: false,
+        onClose: jest.fn(),
+    },
     dispatch: mockDispatch,
     playground: {
         isOpen: false,
@@ -94,6 +113,10 @@ const setStoreData = (overrides: Record<string, unknown> = {}) => {
     const data = {
         ...defaultStoreData,
         state: { ...defaultStoreData.state, ...(overrides.state as object) },
+        config: {
+            ...defaultStoreData.config,
+            ...(overrides.config as object),
+        },
         playground: {
             ...defaultStoreData.playground,
             ...(overrides.playground as object),
@@ -107,48 +130,76 @@ const setStoreData = (overrides: Record<string, unknown> = {}) => {
 
 describe('getToolbarState', () => {
     it('returns viewing-historical-version when viewing historical version', () => {
-        expect(getToolbarState('read', true, true, true, true)).toEqual({
+        expect(getToolbarState('read', false, true, true, true, true)).toEqual({
             type: 'viewing-historical-version',
         })
     })
 
     it('returns new-skill when in create mode', () => {
         expect(
-            getToolbarState('create', undefined, false, false, false),
+            getToolbarState('create', false, undefined, false, false, false),
         ).toEqual({
             type: 'new-skill',
         })
     })
 
     it('returns published-enabled when viewing published and enabled', () => {
-        expect(getToolbarState('read', true, false, true, true)).toEqual({
-            type: 'published-enabled',
-        })
+        expect(getToolbarState('read', false, true, false, true, true)).toEqual(
+            {
+                type: 'published-enabled',
+            },
+        )
     })
 
     it('returns published-disabled when viewing published and disabled', () => {
-        expect(getToolbarState('read', true, false, false, true)).toEqual({
+        expect(
+            getToolbarState('read', false, true, false, false, true),
+        ).toEqual({
             type: 'published-disabled',
         })
     })
 
     it('returns draft-only when isCurrent is undefined', () => {
-        expect(getToolbarState('edit', undefined, false, false, false)).toEqual(
-            {
-                type: 'draft-only',
-            },
-        )
+        expect(
+            getToolbarState('edit', false, undefined, false, false, false),
+        ).toEqual({
+            type: 'draft-only',
+        })
     })
 
     it('returns draft-only when isCurrent is false but no published version', () => {
-        expect(getToolbarState('edit', false, false, false, false)).toEqual({
+        expect(
+            getToolbarState('edit', false, false, false, false, false),
+        ).toEqual({
             type: 'draft-only',
         })
     })
 
     it('returns published-with-draft-changes when viewing draft with published version', () => {
-        expect(getToolbarState('edit', false, false, true, true)).toEqual({
+        expect(
+            getToolbarState('edit', false, false, false, true, true),
+        ).toEqual({
             type: 'published-with-draft-changes',
+        })
+    })
+
+    describe('preview mode', () => {
+        it('returns preview-read when isPreview and mode is read', () => {
+            expect(
+                getToolbarState('read', true, true, false, true, true),
+            ).toEqual({ type: 'preview-read' })
+        })
+
+        it('returns preview-edit when isPreview and mode is edit', () => {
+            expect(
+                getToolbarState('edit', true, true, false, true, true),
+            ).toEqual({ type: 'preview-edit' })
+        })
+
+        it('returns preview-previous-version when isPreview and viewing historical version', () => {
+            expect(
+                getToolbarState('read', true, true, true, true, true),
+            ).toEqual({ type: 'preview-previous-version' })
         })
     })
 })
@@ -461,6 +512,209 @@ describe('SkillToolbarControls', () => {
             expect(
                 screen.getByRole('button', { name: /disable/i }),
             ).toBeDisabled()
+        })
+    })
+
+    describe('preview-read state', () => {
+        beforeEach(() => {
+            setStoreData({
+                config: { isPreviewMode: true },
+                state: {
+                    mode: 'read',
+                    visibility: true,
+                    skill: {
+                        id: 1,
+                        isCurrent: true,
+                        publishedVersionId: 1,
+                        draftVersionId: 1,
+                    },
+                },
+            })
+        })
+
+        it('renders Edit button', () => {
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /edit/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders version history and test buttons', () => {
+            render(<SkillToolbarControls />)
+
+            expect(screen.getByTestId('version-history')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /test/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders Close button', () => {
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /close/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('dispatches SET_MODE edit on edit click', async () => {
+            const user = userEvent.setup()
+            render(<SkillToolbarControls />)
+
+            await user.click(screen.getByRole('button', { name: /edit/i }))
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_MODE',
+                payload: 'edit',
+            })
+        })
+    })
+
+    describe('preview-edit state', () => {
+        it('renders Disable button when published and enabled (published-enabled)', () => {
+            setStoreData({
+                config: { isPreviewMode: true },
+                state: {
+                    mode: 'edit',
+                    visibility: true,
+                    skill: {
+                        id: 1,
+                        isCurrent: true,
+                        publishedVersionId: 1,
+                        draftVersionId: 1,
+                    },
+                },
+            })
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /delete/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /disable/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders Enable button when published and disabled (published-disabled)', () => {
+            setStoreData({
+                config: { isPreviewMode: true },
+                state: {
+                    mode: 'edit',
+                    visibility: false,
+                    skill: {
+                        id: 1,
+                        isCurrent: true,
+                        publishedVersionId: 1,
+                        draftVersionId: 1,
+                    },
+                },
+            })
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /enable/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders Publish changes button when draft changes exist (published-with-draft-changes)', () => {
+            setStoreData({
+                config: { isPreviewMode: true },
+                state: {
+                    mode: 'edit',
+                    visibility: true,
+                    skill: {
+                        id: 1,
+                        isCurrent: false,
+                        publishedVersionId: 1,
+                        draftVersionId: 2,
+                    },
+                },
+            })
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /publish changes/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders Enable button when no published version (draft-only)', () => {
+            setStoreData({
+                config: { isPreviewMode: true },
+                state: {
+                    mode: 'edit',
+                    visibility: false,
+                    skill: {
+                        id: 1,
+                        isCurrent: undefined,
+                        publishedVersionId: null,
+                        draftVersionId: 1,
+                    },
+                },
+            })
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /enable/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render Edit button', () => {
+            setStoreData({
+                config: { isPreviewMode: true },
+                state: {
+                    mode: 'edit',
+                    visibility: true,
+                    skill: {
+                        id: 1,
+                        isCurrent: true,
+                        publishedVersionId: 1,
+                        draftVersionId: 1,
+                    },
+                },
+            })
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /^edit$/i }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('preview-previous-version state', () => {
+        beforeEach(() => {
+            setStoreData({
+                config: { isPreviewMode: true },
+                state: {
+                    mode: 'read',
+                    historicalVersion: {
+                        publishedDatetime: '2024-01-01',
+                        versionId: 5,
+                    },
+                },
+            })
+        })
+
+        it('renders Restore draft and version history buttons', () => {
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /restore draft/i }),
+            ).toBeInTheDocument()
+            expect(screen.getByTestId('version-history')).toBeInTheDocument()
+        })
+
+        it('does not render Edit button', () => {
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /^edit$/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('test button is disabled when viewing historical version in preview', () => {
+            render(<SkillToolbarControls />)
+
+            expect(screen.getByRole('button', { name: /test/i })).toBeDisabled()
         })
     })
 })

@@ -39,6 +39,7 @@ type DefaultProps = {
     onToggleDiff?: jest.Mock
     className?: string
     isFromConversation?: boolean
+    hasUpdatedPolicy?: boolean
 }
 
 const defaultProps: DefaultProps = {
@@ -458,7 +459,7 @@ describe('VersionBanner', () => {
 
                 expect(
                     screen.getByText(
-                        /This is the version used in this conversation, published on Jan 1, 2024 12:00 PM\. A newer version is available\./i,
+                        /This is the version used in this conversation, published on Jan 1, 2024 12:00 PM\. There is a newer version available\./i,
                     ),
                 ).toBeInTheDocument()
             })
@@ -477,6 +478,24 @@ describe('VersionBanner', () => {
                 expect(
                     screen.queryByRole('button', { name: /Back to latest/i }),
                 ).not.toBeInTheDocument()
+            })
+
+            it('shows updated policy description when hasUpdatedPolicy is true and no commit message or author', () => {
+                renderComponent({
+                    isViewingDraft: false,
+                    isViewingHistoricalVersion: true,
+                    historicalVersion: {
+                        publishedDatetime: '2024-01-01T12:00:00Z',
+                    },
+                    isFromConversation: true,
+                    hasUpdatedPolicy: true,
+                })
+
+                expect(
+                    screen.getByText(
+                        'Changes in this version: Updated policy to 30-day window',
+                    ),
+                ).toBeInTheDocument()
             })
         })
 

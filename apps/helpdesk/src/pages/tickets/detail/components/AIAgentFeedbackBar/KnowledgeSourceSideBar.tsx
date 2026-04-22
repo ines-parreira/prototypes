@@ -1,6 +1,8 @@
 import type { ComponentProps } from 'react'
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -44,6 +46,9 @@ const KnowledgeSourceSideBar = ({
     const { selectedResource, mode, closeModal, isClosing } =
         useKnowledgeSourceSideBar()
     const helpCenter = useCurrentHelpCenter()
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
 
     const handleEdit = useCallback(() => {
         if (!selectedResource) return
@@ -59,9 +64,14 @@ const KnowledgeSourceSideBar = ({
     const isCreateMode = mode === KnowledgeSourceSideBarMode.CREATE
     const isEditorOpen = !isClosing
 
+    const isSkill =
+        isKnowledgeIntentManagementSystemEnabled &&
+        selectedResource?.origin === 'skill'
+
     const isGuidance =
+        !isSkill &&
         selectedResource?.knowledgeResourceType ===
-        AiAgentKnowledgeResourceTypeEnum.GUIDANCE
+            AiAgentKnowledgeResourceTypeEnum.GUIDANCE
 
     const selectedResourceIdAsNumber = useMemo(
         () => Number(selectedResource?.id),
@@ -83,6 +93,29 @@ const KnowledgeSourceSideBar = ({
     }, [articles, selectedResourceIdAsNumber])
 
     const editorProps = useMemo((): KnowledgeEditorProps | null => {
+        if (isPreviewMode && isSkill) {
+            return {
+                variant: 'skill',
+                isOpen: isEditorOpen,
+                shopName,
+                shopType,
+                skillId: selectedResource.id,
+                isPreviewMode: true,
+                skillMode: 'read',
+                initialVersionId: selectedResource.resourceVersionId,
+                onClose: closeModal,
+                onUpdate: () => {
+                    onKnowledgeResourceSaved(
+                        selectedResource.id,
+                        selectedResource.knowledgeResourceType,
+                        selectedResource.helpCenterId || '',
+                        false,
+                    )
+                },
+                onEdit: handleEdit,
+            }
+        }
+
         if (isPreviewMode && isGuidance) {
             return {
                 variant: 'guidance',
@@ -214,6 +247,7 @@ const KnowledgeSourceSideBar = ({
     }, [
         isPreviewMode,
         isCreateMode,
+        isSkill,
         isGuidance,
         selectedResource,
         selectedArticle,

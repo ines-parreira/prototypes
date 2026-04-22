@@ -20,6 +20,7 @@ export const SkillEditorSidePanelDetailsSection = ({ sectionId }: Props) => {
         createdDatetime,
         lastUpdatedDatetime,
         mode,
+        isPreview,
     } = useSkillDetailsFromContext()
 
     const getStatusTag = () => {
@@ -64,14 +65,16 @@ export const SkillEditorSidePanelDetailsSection = ({ sectionId }: Props) => {
 
     return (
         <>
-            <Heading size="lg" className={css.infoTitle}>
-                Info
-            </Heading>
+            {!isPreview && (
+                <Heading size="lg" className={css.infoTitle}>
+                    Info
+                </Heading>
+            )}
 
             <KnowledgeEditorSidePanelSection
                 header={{ title: 'Details' }}
                 sectionId={sectionId}
-                alwaysExpanded
+                alwaysExpanded={!isPreview}
             >
                 <KnowledgeEditorSidePanelTwoColumnsContent columns={columns} />
             </KnowledgeEditorSidePanelSection>

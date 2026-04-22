@@ -26,6 +26,7 @@ const defaultSkill = {
 const setStoreData = (
     skillOverrides?: Partial<typeof defaultSkill> | undefined,
     stateOverrides?: Record<string, unknown>,
+    configOverrides?: Record<string, unknown>,
 ) => {
     const skill =
         skillOverrides === undefined
@@ -40,6 +41,10 @@ const setStoreData = (
                 skill,
                 historicalVersion: null,
                 ...stateOverrides,
+            },
+            config: {
+                isPreviewMode: false,
+                ...configOverrides,
             },
         }),
     )
@@ -110,6 +115,22 @@ describe('useSkillDetailsFromContext', () => {
 
             expect(result.current.createdDatetime).toBeUndefined()
             expect(result.current.lastUpdatedDatetime).toBeUndefined()
+        })
+    })
+
+    describe('isPreview', () => {
+        it('returns false when isPreviewMode is not set', () => {
+            const { result } = renderHook(() => useSkillDetailsFromContext())
+
+            expect(result.current.isPreview).toBe(false)
+        })
+
+        it('returns true when isPreviewMode is set in config', () => {
+            setStoreData({}, {}, { isPreviewMode: true })
+
+            const { result } = renderHook(() => useSkillDetailsFromContext())
+
+            expect(result.current.isPreview).toBe(true)
         })
     })
 })

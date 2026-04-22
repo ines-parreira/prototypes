@@ -9,7 +9,10 @@ jest.mock('../../context/KnowledgeEditorSkillContext', () => ({
         mockUseSkillEditorStore(selector),
 }))
 
-const createStoreState = (overrides?: Record<string, unknown>) => ({
+const createStoreState = (
+    overrides?: Record<string, unknown>,
+    configOverrides?: Record<string, unknown>,
+) => ({
     state: {
         skill: {
             id: 1,
@@ -20,12 +23,20 @@ const createStoreState = (overrides?: Record<string, unknown>) => ({
         historicalVersion: null,
         isUpdating: false,
         isAutoSaving: false,
+        mode: 'edit',
         ...overrides,
+    },
+    config: {
+        isPreviewMode: false,
+        ...configOverrides,
     },
 })
 
-const setupStore = (overrides?: Record<string, unknown>) => {
-    const storeState = createStoreState(overrides)
+const setupStore = (
+    overrides?: Record<string, unknown>,
+    configOverrides?: Record<string, unknown>,
+) => {
+    const storeState = createStoreState(overrides, configOverrides)
     mockUseSkillEditorStore.mockImplementation((selector: Function) =>
         selector(storeState),
     )
@@ -96,5 +107,25 @@ describe('useIntentLinkButton', () => {
             'A draft of this skill exists. Switch to the draft to link intents.',
         )
         expect(result.current.isDisabled).toBe(true)
+    })
+
+    describe('isPreview', () => {
+        it('shows read-in-preview tooltip when in preview mode with read mode', () => {
+            setupStore({ mode: 'read' }, { isPreviewMode: true })
+            const { result } = renderHook(() => useIntentLinkButton())
+
+            expect(result.current.disabledTooltip).toBe(
+                'You are on read mode. Switch to edit mode to link intents.',
+            )
+            expect(result.current.isDisabled).toBe(true)
+        })
+
+        it('does not show read-in-preview tooltip when not in preview mode', () => {
+            setupStore({ mode: 'read' }, { isPreviewMode: false })
+            const { result } = renderHook(() => useIntentLinkButton())
+
+            expect(result.current.disabledTooltip).toBeUndefined()
+            expect(result.current.isDisabled).toBe(false)
+        })
     })
 })

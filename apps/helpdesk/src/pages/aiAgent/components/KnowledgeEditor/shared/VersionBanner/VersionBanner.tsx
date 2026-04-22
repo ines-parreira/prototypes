@@ -30,6 +30,7 @@ type VersionBannerProps = {
     onToggleDiff?: () => void
     className?: string
     isFromConversation?: boolean
+    hasUpdatedPolicy?: boolean
 }
 
 const USER_STALE_TIME = 5 * 60 * 1000
@@ -47,6 +48,7 @@ export function VersionBanner({
     onToggleDiff,
     className,
     isFromConversation,
+    hasUpdatedPolicy,
 }: VersionBannerProps) {
     const timezone = useAppSelector(getTimezone)
     const dateAndTimeFormatter = useAppSelector(getDateAndTimeFormatter)
@@ -87,6 +89,9 @@ export function VersionBanner({
             if (publisherName) {
                 return `Last published by ${publisherName}`
             }
+            if (isFromConversation && hasUpdatedPolicy) {
+                return 'Changes in this version: Updated policy to 30-day window'
+            }
             return null
         }
 
@@ -101,7 +106,7 @@ export function VersionBanner({
                     isClosable={false}
                     title={
                         isFromConversation
-                            ? `This is the version used in this conversation, published on ${formattedDate}. A newer version is available.`
+                            ? `This is the version used in this conversation, published on ${formattedDate}. There is a newer version available.`
                             : `You are viewing a previous version published on ${formattedDate}`
                     }
                     description={
