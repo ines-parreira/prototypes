@@ -186,7 +186,7 @@ export const SkillsTable = () => {
             </Box>
 
             <div className={css.tableRoot}>
-                <TableV1Root withBorder>
+                <TableV1Root>
                     <TableHeader>
                         <TableV1HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
@@ -200,28 +200,28 @@ export const SkillsTable = () => {
                         renderRows={renderRows}
                     />
                 </TableV1Root>
-
-                {table.getPageCount() > 1 && (
-                    <div className={css.pagination}>
-                        <TableV1Toolbar<TransformedArticle>
-                            table={table}
-                            bottomRow={{
-                                right: [
-                                    {
-                                        key: 'pagination',
-                                        content: (
-                                            <TableV1Pagination
-                                                table={table}
-                                                pageSizeOptions={[20, 50, 100]}
-                                            />
-                                        ),
-                                    },
-                                ],
-                            }}
-                        />
-                    </div>
-                )}
             </div>
+
+            {table.getPageCount() > 1 && (
+                <div className={css.pagination}>
+                    <TableV1Toolbar<TransformedArticle>
+                        table={table}
+                        bottomRow={{
+                            right: [
+                                {
+                                    key: 'pagination',
+                                    content: (
+                                        <TableV1Pagination
+                                            table={table}
+                                            pageSizeOptions={[20, 50, 100]}
+                                        />
+                                    ),
+                                },
+                            ],
+                        }}
+                    />
+                </div>
+            )}
         </Box>
     )
 }
