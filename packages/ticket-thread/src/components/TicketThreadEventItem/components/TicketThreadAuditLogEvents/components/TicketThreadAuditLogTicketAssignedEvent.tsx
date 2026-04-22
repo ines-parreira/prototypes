@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useListAllHumanAgents } from '@repo/users'
+import { useAllUsers } from '@repo/users'
 
 import { Icon, Text } from '@gorgias/axiom'
 
@@ -18,11 +18,10 @@ export function TicketThreadAuditLogTicketAssignedEvent({
 }: TicketThreadAuditLogTicketAssignedEventProps) {
     const event = item.data
 
-    const { data: agents } = useListAllHumanAgents()
+    const agents = useAllUsers()
 
     const assignedAgent = useMemo(
-        () =>
-            agents?.find((agent) => agent.id === event.data?.assignee_user_id),
+        () => agents.find((agent) => agent.id === event.data?.assignee_user_id),
         [agents, event.data?.assignee_user_id],
     )
 

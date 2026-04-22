@@ -57,7 +57,7 @@ describe('shouldPersistQuery', () => {
         ).toBe(false)
     })
 
-    it('returns false for non-view queries', () => {
+    it('returns false for non-whitelisted queries', () => {
         expect(
             shouldPersistQuery(
                 createMockQuery({ queryKey: ['tickets', 'list'] }),
@@ -68,6 +68,16 @@ describe('shouldPersistQuery', () => {
                 createMockQuery({ queryKey: ['macros', 'getMacro', 1] }),
             ),
         ).toBe(false)
+    })
+
+    it('returns true for users queries', () => {
+        expect(
+            shouldPersistQuery(
+                createMockQuery({
+                    queryKey: ['users', 'listUsers', { queryParams: {} }],
+                }),
+            ),
+        ).toBe(true)
     })
 
     it('returns false for queries that are not successful', () => {

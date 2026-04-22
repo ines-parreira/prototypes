@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useListAllTeams } from '@repo/teams'
-import { useListAllHumanAgents } from '@repo/users'
+import { useAllUsers } from '@repo/users'
 
 import { Text } from '@gorgias/axiom'
 
@@ -14,7 +14,7 @@ type TicketThreadEventTargetProps =
       }
 
 export function TicketThreadEventTarget(props: TicketThreadEventTargetProps) {
-    const { data: agents } = useListAllHumanAgents()
+    const agents = useAllUsers()
     const { data: teams } = useListAllTeams()
     const assigneeUserId =
         'assignee_user_id' in props ? props.assignee_user_id : null
@@ -23,7 +23,7 @@ export function TicketThreadEventTarget(props: TicketThreadEventTargetProps) {
     const eventAuthor = useMemo(
         () =>
             assigneeUserId
-                ? agents?.find((agent) => agent.id === assigneeUserId)
+                ? agents.find((agent) => agent.id === assigneeUserId)
                 : null,
         [agents, assigneeUserId],
     )

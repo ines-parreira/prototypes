@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
-import { useListAllHumanAgents } from '@repo/users'
+import { useAllUsers } from '@repo/users'
 
 export function useVoiceCallAgent(agentId: number | null | undefined) {
-    const { data: agents } = useListAllHumanAgents()
+    const agents = useAllUsers()
 
     return useMemo(() => {
-        if (!agentId || !agents) return undefined
+        if (!agentId) return undefined
         return agents.find((agent) => agent.id === agentId)
     }, [agentId, agents])
 }

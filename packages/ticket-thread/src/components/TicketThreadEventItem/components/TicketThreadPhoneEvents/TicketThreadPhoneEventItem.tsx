@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useListAllHumanAgents } from '@repo/users'
+import { useAllUsers } from '@repo/users'
 import { Link } from 'react-router-dom'
 
 import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
@@ -27,7 +27,7 @@ export function TicketThreadPhoneEventItem({
     item,
 }: TicketThreadPhoneEventItemProps) {
     const event = item.data
-    const { data: agents } = useListAllHumanAgents()
+    const agents = useAllUsers()
 
     const agentName = useMemo(
         () =>

@@ -48,7 +48,7 @@ export const asyncStoragePersister = createAsyncStoragePersister({
     throttleTime: DurationInMs.TenSeconds,
 })
 
-const WHITELISTED_QUERY_KEY_PREFIXES = ['views', 'account']
+const WHITELISTED_QUERY_KEY_PREFIXES = ['views', 'account', 'users']
 const BLACKLISTED_QUERY_KEY_OPERATIONS = ['listViewItems']
 
 export function shouldPersistQuery(query: Query): boolean {

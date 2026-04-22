@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useListAllHumanAgents } from '@repo/users'
+import { useAllUsers } from '@repo/users'
 
 import { Text } from '@gorgias/axiom'
 
@@ -11,9 +11,9 @@ type TicketThreadEventAuthorProps = {
 export function TicketThreadEventAuthor({
     authorId,
 }: TicketThreadEventAuthorProps) {
-    const { data: agents } = useListAllHumanAgents()
+    const agents = useAllUsers()
     const eventAuthor = useMemo(
-        () => agents?.find((agent) => agent.id === authorId),
+        () => agents.find((agent) => agent.id === authorId),
         [agents, authorId],
     )
     if (!eventAuthor) {
