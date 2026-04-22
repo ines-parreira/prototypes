@@ -4,13 +4,18 @@ import type { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { NAMED_INTEGRATION_WIDGET_TYPES } from 'state/widgets/constants'
-import { getWidgetsWithContext } from 'state/widgets/selectors'
+import {
+    getSourcesWithCustomer,
+    getWidgetsWithContext,
+} from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
+import { getWidgetSourcePath } from 'state/widgets/utils'
 
 export default function useHasCustomIntegrations() {
     const widgets = useAppSelector(
         getWidgetsWithContext(WidgetEnvironment.Ticket),
     )
+    const sources = useAppSelector(getSourcesWithCustomer)
 
     return useMemo(
         () =>
@@ -18,8 +23,8 @@ export default function useHasCustomIntegrations() {
                 (w: Map<string, unknown>) =>
                     !NAMED_INTEGRATION_WIDGET_TYPES.has(
                         w?.get('type') as string,
-                    ),
+                    ) && getWidgetSourcePath(w, sources) !== null,
             ),
-        [widgets],
+        [widgets, sources],
     )
 }

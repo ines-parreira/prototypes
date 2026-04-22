@@ -23,6 +23,23 @@ jest.mock('Widgets/contexts/WidgetContext', () => ({
     WidgetContextProvider: ({ children }: any) => <>{children}</>,
 }))
 
+const defaultTemplate = {
+    type: 'wrapper',
+    widgets: [
+        {
+            type: 'card',
+            path: 'customer',
+            widgets: [
+                {
+                    type: 'text',
+                    path: 'email',
+                    title: 'Email',
+                },
+            ],
+        },
+    ],
+}
+
 function buildWidgets({
     isEditing = false,
     items = [] as any[],
@@ -43,9 +60,9 @@ function buildWidgets({
 
 function buildSources(
     path: string[],
-    data: Record<string, unknown> = { subscriptions: [] },
+    data: Record<string, unknown> = { customer: { email: 'a@b.com' } },
 ) {
-    let sources: Record<string, any> = {}
+    const sources: Record<string, any> = {}
     let current = sources
     for (let i = 0; i < path.length - 1; i++) {
         current[path[i]] = {}
@@ -60,7 +77,7 @@ function buildWidget(type: string, overrides: Record<string, unknown> = {}) {
         id: 1,
         type,
         context: WidgetEnvironment.Ticket,
-        template: { fields: [] },
+        template: defaultTemplate,
         ...overrides,
     }
 }
@@ -79,7 +96,7 @@ describe('IntegrationTabContent', () => {
                 sources={sources}
                 widgets={widgets}
                 widgetType={IntegrationType.Recharge}
-                sourcePath={defaultSourcePath}
+                sourcePaths={[defaultSourcePath]}
                 WidgetComponent={MockWidget}
             />,
         )
@@ -104,7 +121,7 @@ describe('IntegrationTabContent', () => {
                 sources={sources}
                 widgets={widgets}
                 widgetType={IntegrationType.Recharge}
-                sourcePath={defaultSourcePath}
+                sourcePaths={[defaultSourcePath]}
                 WidgetComponent={MockWidget}
             />,
         )
@@ -123,7 +140,7 @@ describe('IntegrationTabContent', () => {
                 sources={sources}
                 widgets={widgets}
                 widgetType={IntegrationType.Recharge}
-                sourcePath={defaultSourcePath}
+                sourcePaths={[defaultSourcePath]}
                 WidgetComponent={MockWidget}
             />,
         )
@@ -144,7 +161,7 @@ describe('IntegrationTabContent', () => {
                 sources={sources}
                 widgets={widgets}
                 widgetType={IntegrationType.Recharge}
-                sourcePath={defaultSourcePath}
+                sourcePaths={[defaultSourcePath]}
                 WidgetComponent={MockWidget}
             />,
         )
@@ -164,7 +181,7 @@ describe('IntegrationTabContent', () => {
                 sources={sources}
                 widgets={widgets}
                 widgetType={IntegrationType.Recharge}
-                sourcePath={defaultSourcePath}
+                sourcePaths={[defaultSourcePath]}
                 WidgetComponent={MockWidget}
             />,
         )
@@ -184,7 +201,7 @@ describe('IntegrationTabContent', () => {
                 sources={sources}
                 widgets={widgets}
                 widgetType={IntegrationType.Bigcommerce}
-                sourcePath={sourcePath}
+                sourcePaths={[sourcePath]}
                 WidgetComponent={MockWidget}
             />,
         )
@@ -204,6 +221,7 @@ describe('IntegrationTabContent', () => {
         })
         const sources = buildSources(sourcePath, {
             store: { type: 'woocommerce' },
+            customer: { email: 'woo@example.com' },
         })
 
         render(
@@ -211,11 +229,164 @@ describe('IntegrationTabContent', () => {
                 sources={sources}
                 widgets={widgets}
                 widgetType="woocommerce"
-                sourcePath={sourcePath}
+                sourcePaths={[sourcePath]}
                 WidgetComponent={MockWidget}
             />,
         )
 
         expect(screen.getByText(/MockWidget/)).toBeInTheDocument()
+    })
+
+    it('should render all displayable integrations in view mode', () => {
+        const path1 = ['ticket', 'customer', 'integrations', '111']
+        const path2 = ['ticket', 'customer', 'integrations', '222']
+        const widgets = buildWidgets({
+            items: [buildWidget(IntegrationType.Smile)],
+        })
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    integrations: {
+                        '111': { customer: { email: 'one@example.com' } },
+                        '222': { customer: { email: 'two@example.com' } },
+                    },
+                },
+            },
+        })
+
+        render(
+            <IntegrationTabContent
+                sources={sources}
+                widgets={widgets}
+                widgetType={IntegrationType.Smile}
+                sourcePaths={[path1, path2]}
+                WidgetComponent={MockWidget}
+            />,
+        )
+
+        expect(screen.getAllByText(/MockWidget/)).toHaveLength(2)
+    })
+
+    it('should render only the first displayable integration in edit mode', () => {
+        const path1 = ['ticket', 'customer', 'integrations', '111']
+        const path2 = ['ticket', 'customer', 'integrations', '222']
+        const smileWidget = buildWidget(IntegrationType.Smile)
+        const widgets = buildWidgets({
+            isEditing: true,
+            items: [smileWidget],
+            editedItems: [smileWidget],
+        })
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    integrations: {
+                        '111': { customer: { email: 'one@example.com' } },
+                        '222': { customer: { email: 'two@example.com' } },
+                    },
+                },
+            },
+        })
+
+        render(
+            <IntegrationTabContent
+                sources={sources}
+                widgets={widgets}
+                widgetType={IntegrationType.Smile}
+                sourcePaths={[path1, path2]}
+                WidgetComponent={MockWidget}
+            />,
+        )
+
+        expect(screen.getAllByText(/MockWidget/)).toHaveLength(1)
+        expect(screen.getByText(/one@example.com/)).toBeInTheDocument()
+    })
+
+    it('should drop source paths whose data is empty per canDisplayWidget', () => {
+        const path1 = ['ticket', 'customer', 'integrations', '111']
+        const path2 = ['ticket', 'customer', 'integrations', '222']
+        const widgets = buildWidgets({
+            items: [buildWidget(IntegrationType.Smile)],
+        })
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    integrations: {
+                        '111': { customer: {} },
+                        '222': { customer: { email: 'two@example.com' } },
+                    },
+                },
+            },
+        })
+
+        render(
+            <IntegrationTabContent
+                sources={sources}
+                widgets={widgets}
+                widgetType={IntegrationType.Smile}
+                sourcePaths={[path1, path2]}
+                WidgetComponent={MockWidget}
+            />,
+        )
+
+        expect(screen.getAllByText(/MockWidget/)).toHaveLength(1)
+    })
+
+    it('should return null when every source path is empty per canDisplayWidget', () => {
+        const path1 = ['ticket', 'customer', 'integrations', '111']
+        const path2 = ['ticket', 'customer', 'integrations', '222']
+        const widgets = buildWidgets({
+            items: [buildWidget(IntegrationType.Smile)],
+        })
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    integrations: {
+                        '111': { customer: {} },
+                        '222': { customer: {} },
+                    },
+                },
+            },
+        })
+
+        const { container } = render(
+            <IntegrationTabContent
+                sources={sources}
+                widgets={widgets}
+                widgetType={IntegrationType.Smile}
+                sourcePaths={[path1, path2]}
+                WidgetComponent={MockWidget}
+            />,
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('should skip source paths with no data and render remaining widgets', () => {
+        const path1 = ['ticket', 'customer', 'integrations', '111']
+        const path2 = ['ticket', 'customer', 'integrations', '222']
+        const widgets = buildWidgets({
+            items: [buildWidget(IntegrationType.Smile)],
+        })
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    integrations: {
+                        '111': { customer: { email: 'one@example.com' } },
+                    },
+                },
+            },
+        })
+
+        render(
+            <IntegrationTabContent
+                sources={sources}
+                widgets={widgets}
+                widgetType={IntegrationType.Smile}
+                sourcePaths={[path1, path2]}
+                WidgetComponent={MockWidget}
+            />,
+        )
+
+        expect(screen.getAllByText(/MockWidget/)).toHaveLength(1)
     })
 })

@@ -5,6 +5,7 @@ import { fromJS } from 'immutable'
 import type { List, Map } from 'immutable'
 
 import type { Source, Template } from 'models/widget/types'
+import { canDisplayWidget } from 'pages/common/components/infobar/utils'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import type { WidgetsState } from 'state/widgets/types'
 import { WidgetEnvironment } from 'state/widgets/types'
@@ -20,7 +21,7 @@ type Props = {
     sources: Map<string, unknown>
     widgets: WidgetsState
     widgetType: string
-    sourcePath: string[]
+    sourcePaths: string[][]
     WidgetComponent: ComponentType<WidgetProps>
 }
 
@@ -28,7 +29,7 @@ export default function IntegrationTabContent({
     sources,
     widgets,
     widgetType,
-    sourcePath,
+    sourcePaths,
     WidgetComponent,
 }: Props) {
     const isEditing = useMemo(
@@ -60,32 +61,74 @@ export default function IntegrationTabContent({
         )
     }, [contextFilteredItems, integrationWidget])
 
-    const source = useMemo(
-        () => sources.getIn(sourcePath) as Map<string, unknown> | undefined,
-        [sources, sourcePath],
-    )
+    const widgetInstances = useMemo(() => {
+        if (!integrationWidget) return []
+        const template = (
+            integrationWidget.get('template') as Map<string, unknown>
+        ).toJS() as Template
 
-    if (!integrationWidget || !source) {
+        if (isEditing) {
+            for (const path of sourcePaths) {
+                const source = sources.getIn(path) as
+                    | Map<string, unknown>
+                    | undefined
+                if (
+                    source &&
+                    canDisplayWidget(template, source, source.toJS() as Source)
+                ) {
+                    return [{ sourcePath: path, source }]
+                }
+            }
+            return []
+        }
+
+        return sourcePaths
+            .map((path) => ({
+                sourcePath: path,
+                source: sources.getIn(path) as Map<string, unknown> | undefined,
+            }))
+            .filter((instance) => {
+                if (!instance.source) return false
+                return canDisplayWidget(
+                    template,
+                    instance.source,
+                    instance.source.toJS() as Source,
+                )
+            })
+    }, [sources, sourcePaths, integrationWidget, isEditing])
+
+    if (!integrationWidget || widgetInstances.length === 0) {
         return null
     }
 
     const template = integrationWidget.get('template') as Map<string, unknown>
-    const passedTemplate = {
-        ...(template.toJS() as Template),
-        templatePath: `${integrationWidgetIndex}.template`,
-        absolutePath: sourcePath,
-    }
 
     return (
         <div className={css.integrationContainer}>
             <EditionContext.Provider value={{ isEditing }}>
                 <div className={css.integrationContent}>
-                    <WidgetContextProvider value={integrationWidget}>
-                        <WidgetComponent
-                            source={source.toJS() as Source}
-                            template={passedTemplate}
-                        />
-                    </WidgetContextProvider>
+                    {widgetInstances.map(({ sourcePath, source }) => {
+                        const passedTemplate = {
+                            ...(template.toJS() as Template),
+                            templatePath: `${integrationWidgetIndex}.template`,
+                            absolutePath: sourcePath,
+                        }
+                        return (
+                            <WidgetContextProvider
+                                key={sourcePath.join('.')}
+                                value={integrationWidget}
+                            >
+                                <WidgetComponent
+                                    source={
+                                        (
+                                            source as Map<string, unknown>
+                                        ).toJS() as Source
+                                    }
+                                    template={passedTemplate}
+                                />
+                            </WidgetContextProvider>
+                        )
+                    })}
                 </div>
                 {isEditing && (
                     <WidgetEditionTools

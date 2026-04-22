@@ -9,8 +9,8 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import useHasCustomIntegrations from 'pages/tickets/detail/hooks/useHasCustomIntegrations'
 import useHasIntegration from 'pages/tickets/detail/hooks/useHasIntegration'
-import useHasRecharge from 'pages/tickets/detail/hooks/useHasRecharge'
-import useHasWooCommerce from 'pages/tickets/detail/hooks/useHasWooCommerce'
+import useIsIntegrationDisplayable from 'pages/tickets/detail/hooks/useIsIntegrationDisplayable'
+import useIsWooCommerceDisplayable from 'pages/tickets/detail/hooks/useIsWooCommerceDisplayable'
 
 const panelConfig = {
     defaultSize: 49,
@@ -34,12 +34,14 @@ export function InfobarNavigationPanel() {
 
     const hasCustomIntegrations = useHasCustomIntegrations()
     const hasShopify = useHasIntegration(IntegrationType.Shopify)
-    const hasRecharge = useHasRecharge()
-    const hasBigCommerce = useHasIntegration(IntegrationType.Bigcommerce)
-    const hasMagento = useHasIntegration(IntegrationType.Magento2)
-    const hasWooCommerce = useHasWooCommerce()
-    const hasSmile = useHasIntegration(IntegrationType.Smile)
-    const hasYotpo = useHasIntegration(IntegrationType.Yotpo)
+    const hasRecharge = useIsIntegrationDisplayable(IntegrationType.Recharge)
+    const hasBigCommerce = useIsIntegrationDisplayable(
+        IntegrationType.Bigcommerce,
+    )
+    const hasMagento = useIsIntegrationDisplayable(IntegrationType.Magento2)
+    const hasWooCommerce = useIsWooCommerceDisplayable()
+    const hasSmile = useIsIntegrationDisplayable(IntegrationType.Smile)
+    const hasYotpo = useIsIntegrationDisplayable(IntegrationType.Yotpo)
 
     return (
         <Panel name="infobar-navigation" config={panelConfig}>
