@@ -80,11 +80,16 @@ describe('PeriodFilterCompact', () => {
                 end_datetime: end,
             })
 
+            const tz = moment.tz.guess()
             expect(store.getActions()).toContainEqual(
                 mergeStatsFilters({
                     period: {
-                        start_datetime: moment(start).startOf('day').format(),
-                        end_datetime: moment(start)
+                        start_datetime: moment
+                            .tz(start, tz)
+                            .startOf('day')
+                            .format(),
+                        end_datetime: moment
+                            .tz(start, tz)
                             .add(90, 'days')
                             .subtract(1, 'seconds')
                             .format(),
@@ -102,11 +107,16 @@ describe('PeriodFilterCompact', () => {
                 { maxSpan: 30 },
             )
 
+            const tz = moment.tz.guess()
             expect(store.getActions()).toContainEqual(
                 mergeStatsFilters({
                     period: {
-                        start_datetime: moment(start).startOf('day').format(),
-                        end_datetime: moment(start)
+                        start_datetime: moment
+                            .tz(start, tz)
+                            .startOf('day')
+                            .format(),
+                        end_datetime: moment
+                            .tz(start, tz)
                             .add(30, 'days')
                             .subtract(1, 'seconds')
                             .format(),
@@ -267,14 +277,17 @@ describe('PeriodFilterCompact', () => {
                 screen.getByRole('button', { name: /January 15, 2017/ }),
             )
 
+            const tz = moment.tz.guess()
             await waitFor(() => {
                 expect(store.getActions()).toContainEqual(
                     mergeStatsFilters({
                         period: {
-                            start_datetime: moment('2017-01-05')
+                            start_datetime: moment
+                                .tz('2017-01-05', tz)
                                 .startOf('day')
                                 .format(),
-                            end_datetime: moment('2017-01-15')
+                            end_datetime: moment
+                                .tz('2017-01-15', tz)
                                 .endOf('day')
                                 .format(),
                         },
@@ -300,14 +313,17 @@ describe('PeriodFilterCompact', () => {
                 screen.getByRole('button', { name: /January 20, 2017/ }),
             )
 
+            const tz = moment.tz.guess()
             await waitFor(() => {
                 expect(store.getActions()).toContainEqual(
                     mergeStatsFilters({
                         period: {
-                            start_datetime: moment('2017-01-05')
+                            start_datetime: moment
+                                .tz('2017-01-05', tz)
                                 .startOf('day')
                                 .format(),
-                            end_datetime: moment('2017-01-05')
+                            end_datetime: moment
+                                .tz('2017-01-05', tz)
                                 .startOf('day')
                                 .add(7, 'days')
                                 .subtract(1, 'seconds')
@@ -316,6 +332,62 @@ describe('PeriodFilterCompact', () => {
                     }),
                 )
             })
+        })
+    })
+
+    describe('timezone handling', () => {
+        const originalDefaultZone = moment.tz.guess()
+
+        beforeEach(() => {
+            moment.tz.setDefault('Pacific/Auckland')
+            jest.spyOn(moment.tz, 'guess').mockReturnValue('Pacific/Auckland')
+        })
+
+        afterEach(() => {
+            moment.tz.setDefault(originalDefaultZone)
+        })
+
+        it('formats the trigger label in the guessed timezone so it matches the picker selection', async () => {
+            const user = userEvent.setup()
+            const store = mockStore(defaultState)
+            const { rerender } = render(
+                <Provider store={store}>
+                    <PeriodFilterCompact
+                        value={{
+                            start_datetime: '2017-01-01T00:00:00+13:00',
+                            end_datetime: '2017-01-30T23:59:59+13:00',
+                        }}
+                    />
+                </Provider>,
+            )
+
+            await user.click(screen.getByRole('button', { name: /calendar/i }))
+            await user.click(
+                screen.getByRole('button', { name: /January 5, 2017/ }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /January 15, 2017/ }),
+            )
+
+            const dispatched = store.getActions().at(-1)
+            expect(dispatched).toEqual(
+                mergeStatsFilters({
+                    period: {
+                        start_datetime: expect.any(String),
+                        end_datetime: expect.any(String),
+                    },
+                }),
+            )
+
+            rerender(
+                <Provider store={store}>
+                    <PeriodFilterCompact value={dispatched.payload.period} />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText('Jan 5, 2017 – Jan 15, 2017'),
+            ).toBeInTheDocument()
         })
     })
 })

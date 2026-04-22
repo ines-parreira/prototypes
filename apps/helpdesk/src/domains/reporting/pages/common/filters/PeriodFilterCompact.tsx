@@ -28,9 +28,12 @@ type CompactPeriodFilterProps = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & { maxSpan?: number }
 }
 
-function toCalendarDate(value: DateOrString | undefined): CalendarDate | null {
+function toCalendarDate(
+    value: DateOrString | undefined,
+    timeZone: string,
+): CalendarDate | null {
     if (!value) return null
-    const m = moment(value)
+    const m = moment.tz(value, timeZone)
     if (!m.isValid()) return null
     return new CalendarDate(m.year(), m.month() + 1, m.date())
 }
@@ -41,21 +44,18 @@ export function PeriodFilterCompact({
 }: CompactPeriodFilterProps) {
     const dispatch = useAppDispatch()
     const effectiveMaxSpan = initialSettingsProp?.maxSpan ?? MAX_SPAN
+    const timeZone = moment.tz.guess()
 
     useEffectOnce(() => {
-        if (
-            moment(value.end_datetime).diff(
-                moment(value.start_datetime),
-                'days',
-            ) > effectiveMaxSpan
-        ) {
+        const start = moment.tz(value.start_datetime, timeZone)
+        const end = moment.tz(value.end_datetime, timeZone)
+        if (end.diff(start, 'days') > effectiveMaxSpan) {
             dispatch(
                 mergeStatsFilters({
                     period: {
-                        start_datetime: moment(value.start_datetime)
-                            .startOf('day')
-                            .format(),
-                        end_datetime: moment(value.start_datetime)
+                        start_datetime: start.clone().startOf('day').format(),
+                        end_datetime: start
+                            .clone()
                             .add(effectiveMaxSpan, 'days')
                             .subtract(1, 'seconds')
                             .format(),
@@ -67,58 +67,54 @@ export function PeriodFilterCompact({
 
     const handleChange = useCallback(
         (newValue: { start: ZonedDateTime; end: ZonedDateTime } | null) => {
-            if (newValue) {
-                const startMoment = moment(newValue.start.toDate()).startOf(
-                    'day',
-                )
-                const endMoment = moment(newValue.end.toDate()).endOf('day')
-                const clampedEnd =
-                    endMoment.diff(startMoment, 'days') > effectiveMaxSpan
-                        ? startMoment
-                              .clone()
-                              .add(effectiveMaxSpan, 'days')
-                              .subtract(1, 'seconds')
-                        : endMoment
-                dispatch(
-                    mergeStatsFilters({
-                        period: {
-                            start_datetime: startMoment.format(),
-                            end_datetime: clampedEnd.format(),
-                        },
-                    }),
-                )
-            }
+            if (!newValue) return
+            const start = moment
+                .tz(newValue.start.toDate(), timeZone)
+                .startOf('day')
+            const end = moment.tz(newValue.end.toDate(), timeZone).endOf('day')
+            const clampedEnd =
+                end.diff(start, 'days') > effectiveMaxSpan
+                    ? start
+                          .clone()
+                          .add(effectiveMaxSpan, 'days')
+                          .subtract(1, 'seconds')
+                    : end
+            dispatch(
+                mergeStatsFilters({
+                    period: {
+                        start_datetime: start.format(),
+                        end_datetime: clampedEnd.format(),
+                    },
+                }),
+            )
         },
-        [dispatch, effectiveMaxSpan],
+        [dispatch, effectiveMaxSpan, timeZone],
     )
 
     const pickerValue = useMemo(() => {
-        const timeZone = moment.tz.guess()
-        const startMoment = moment(value.start_datetime)
-        const endMoment = moment(value.end_datetime)
+        const toZoned = (iso: string) => {
+            const m = moment.tz(iso, timeZone)
+            return now(timeZone).set({
+                year: m.year(),
+                month: m.month() + 1,
+                day: m.date(),
+            })
+        }
 
         return {
-            start: now(timeZone).set({
-                year: startMoment.year(),
-                month: startMoment.month() + 1,
-                day: startMoment.date(),
-            }),
-            end: now(timeZone).set({
-                year: endMoment.year(),
-                month: endMoment.month() + 1,
-                day: endMoment.date(),
-            }),
+            start: toZoned(value.start_datetime),
+            end: toZoned(value.end_datetime),
         }
-    }, [value.start_datetime, value.end_datetime])
+    }, [value.start_datetime, value.end_datetime, timeZone])
 
     const minDate = useMemo(
-        () => toCalendarDate(initialSettingsProp?.minDate),
-        [initialSettingsProp?.minDate],
+        () => toCalendarDate(initialSettingsProp?.minDate, timeZone),
+        [initialSettingsProp?.minDate, timeZone],
     )
 
     const maxDate = useMemo(
-        () => toCalendarDate(initialSettingsProp?.maxDate),
-        [initialSettingsProp?.maxDate],
+        () => toCalendarDate(initialSettingsProp?.maxDate, timeZone),
+        [initialSettingsProp?.maxDate, timeZone],
     )
 
     const presets = useMemo(() => {
@@ -149,17 +145,17 @@ export function PeriodFilterCompact({
             { id: 'last-year', label: 'Last year', duration: { years: -1 } },
         ]
 
+        const nowTz = moment.tz(timeZone)
+        const minDateMoment = initialSettingsProp?.minDate
+            ? moment.tz(initialSettingsProp.minDate, timeZone)
+            : null
+
         return allPresets.filter((preset) => {
-            const presetStart = moment().add(preset.duration)
-            if (moment().diff(presetStart, 'days') > effectiveMaxSpan)
-                return false
-            if (!initialSettingsProp?.minDate) return true
-            return !presetStart.isBefore(
-                moment(initialSettingsProp.minDate),
-                'day',
-            )
+            const presetStart = nowTz.clone().add(preset.duration)
+            if (nowTz.diff(presetStart, 'days') > effectiveMaxSpan) return false
+            return !minDateMoment || !presetStart.isBefore(minDateMoment, 'day')
         })
-    }, [effectiveMaxSpan, initialSettingsProp?.minDate])
+    }, [effectiveMaxSpan, initialSettingsProp?.minDate, timeZone])
 
     const isDateUnavailable = useCallback(
         (date: DateValue) => {
@@ -172,8 +168,8 @@ export function PeriodFilterCompact({
     const formatDateRange = useCallback(() => {
         const format =
             DateTimeFormatMapper[DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US]
-        return `${formatDatetime(value.start_datetime, format)} – ${formatDatetime(value.end_datetime, format)}`
-    }, [value.start_datetime, value.end_datetime])
+        return `${formatDatetime(value.start_datetime, format, timeZone)} – ${formatDatetime(value.end_datetime, format, timeZone)}`
+    }, [value.start_datetime, value.end_datetime, timeZone])
 
     return (
         <DateRangePicker
