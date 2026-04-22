@@ -770,7 +770,7 @@ describe('getVersionImpactDateRange', () => {
                 new Date(result.end_datetime).getTime() -
                 new Date(result.start_datetime).getTime()
             const diffDays = diffMs / (1000 * 60 * 60 * 24)
-            expect(diffDays).toBeCloseTo(28, 0)
+            expect(diffDays).toBeCloseTo(29, 0)
         })
 
         it('should return default date range when version has no published_datetime', () => {
@@ -786,7 +786,7 @@ describe('getVersionImpactDateRange', () => {
                 new Date(result.end_datetime).getTime() -
                 new Date(result.start_datetime).getTime()
             const diffDays = diffMs / (1000 * 60 * 60 * 24)
-            expect(diffDays).toBeCloseTo(28, 0)
+            expect(diffDays).toBeCloseTo(29, 0)
         })
 
         it('should return default date range when versions array is empty', () => {
@@ -798,7 +798,7 @@ describe('getVersionImpactDateRange', () => {
                 new Date(result.end_datetime).getTime() -
                 new Date(result.start_datetime).getTime()
             const diffDays = diffMs / (1000 * 60 * 60 * 24)
-            expect(diffDays).toBeCloseTo(28, 0)
+            expect(diffDays).toBeCloseTo(29, 0)
         })
     })
 

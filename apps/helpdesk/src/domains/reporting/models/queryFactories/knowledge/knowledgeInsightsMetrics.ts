@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import _groupBy from 'lodash/groupBy'
+import moment from 'moment'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
@@ -1296,16 +1297,13 @@ type UseRecentTicketsResult = {
 }
 
 export const getLast28DaysDateRange = () => {
-    const endDate = new Date()
-    endDate.setHours(endDate.getHours() + 1, 0, 0, 0)
+    const endDate = moment().endOf('day').format()
 
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - 28)
-    startDate.setHours(startDate.getHours() + 1, 0, 0, 0)
+    const startDate = moment().subtract(28, 'day').startOf('day').format()
 
     return {
-        start_datetime: startDate.toISOString(),
-        end_datetime: endDate.toISOString(),
+        start_datetime: startDate,
+        end_datetime: endDate,
     }
 }
 
