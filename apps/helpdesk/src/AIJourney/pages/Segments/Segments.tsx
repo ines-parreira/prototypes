@@ -1,14 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { Box, Button, Heading, Size } from '@gorgias/axiom'
+import {
+    AudienceListSource,
+    JourneyCampaignStateEnum,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
 
 import {
     DeleteSegmentConfirmation,
+    SegmentInUseModal,
     SegmentsSidePanel,
     SegmentsTable,
 } from 'AIJourney/components'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useDeleteSegment, useSegments } from 'AIJourney/queries'
+import { useAudiencesUsage } from 'AIJourney/queries/UseAudiencesUsage/UseAudiencesUsage'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -33,7 +40,10 @@ export const Segments = () => {
     )
     const [cursor, setCursor] = useState<string | undefined>(undefined)
     const [pageSize, setPageSize] = useState(10)
-    const { currentIntegration } = useJourneyContext()
+    const [isSegmentInUseModalOpen, setIsSegmentInUseModalOpen] =
+        useState(false)
+    const { currentIntegration, campaigns } = useJourneyContext()
+    const { data: audienceUsage } = useAudiencesUsage(currentIntegration?.id)
     const { mutate: deleteSegment } = useDeleteSegment()
     const { data: segmentsData, isLoading } = useSegments(
         currentIntegration?.id,
@@ -77,6 +87,46 @@ export const Segments = () => {
         openSidePanel({ ...segment, name: `${segment.name} (copy)` })
     }
 
+    const blockedCampaignStates: JourneyCampaignStateEnum[] = [
+        JourneyCampaignStateEnum.Scheduled,
+        JourneyCampaignStateEnum.Active,
+        JourneyCampaignStateEnum.Paused,
+    ]
+
+    const isSegmentUsedInBlockedCampaigns = (segmentId: string): boolean => {
+        if (!audienceUsage || !campaigns) return false
+
+        const audienceEntry = audienceUsage.data.find(
+            (entry) =>
+                entry.identifier === segmentId &&
+                entry.source === AudienceListSource.Gorgias,
+        )
+
+        if (!audienceEntry) return false
+
+        return audienceEntry.usage.some((usageItem) => {
+            const campaign = campaigns.find(
+                (c) =>
+                    c.id === usageItem.id &&
+                    c.type === JourneyTypeEnum.Campaign,
+            )
+            return (
+                campaign?.campaign?.state !== undefined &&
+                blockedCampaignStates.includes(
+                    campaign.campaign.state as JourneyCampaignStateEnum,
+                )
+            )
+        })
+    }
+
+    const handleDeleteClick = (segment: Segment) => {
+        if (isSegmentUsedInBlockedCampaigns(segment.id)) {
+            setIsSegmentInUseModalOpen(true)
+        } else {
+            setSegmentToDelete(segment)
+        }
+    }
+
     return (
         <Box className={css.container}>
             <Box m={Size.Lg} flexDirection="column">
@@ -114,7 +164,11 @@ export const Segments = () => {
                 onSegmentClick={openSidePanel}
                 onEditClick={openSidePanel}
                 onDuplicateClick={handleDuplicateClick}
-                onDeleteClick={(segment) => setSegmentToDelete(segment)}
+                onDeleteClick={handleDeleteClick}
+            />
+            <SegmentInUseModal
+                isOpen={isSegmentInUseModalOpen}
+                onClose={() => setIsSegmentInUseModalOpen(false)}
             />
             <DeleteSegmentConfirmation
                 isOpen={!!segmentToDelete}

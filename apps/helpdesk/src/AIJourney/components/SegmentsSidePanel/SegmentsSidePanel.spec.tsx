@@ -34,6 +34,16 @@ jest.mock(
     }),
 )
 
+jest.mock('AIJourney/queries/useUpdateSegment/useUpdateSegment', () => ({
+    useUpdateSegment: jest.fn(),
+}))
+
+jest.mock('AIJourney/components/SegmentsSidePanel/SegmentUsageTable', () => ({
+    SegmentUsageTable: ({ segmentId }: { segmentId: string }) => (
+        <div data-segment-id={segmentId}>segment-usage-table</div>
+    ),
+}))
+
 jest.mock(
     'AIJourney/components/AudienceConditionField/AudienceConditionField',
     () => {
@@ -379,6 +389,38 @@ describe('<SegmentsSidePanel />', () => {
             expect(screen.getByLabelText(/segment name/i)).toHaveValue(
                 'Support small business',
             )
+        })
+
+        it('should render "Used in" heading', () => {
+            renderComponent({ segment: mockSegment })
+
+            expect(
+                screen.getByRole('heading', { name: 'Used in' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should render SegmentUsageTable with the segment id', () => {
+            renderComponent({ segment: mockSegment })
+
+            expect(screen.getByText('segment-usage-table')).toBeInTheDocument()
+        })
+    })
+
+    describe('create mode (no segment) - "Used in" section', () => {
+        it('should not render "Used in" heading', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByRole('heading', { name: 'Used in' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render SegmentUsageTable', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByText('segment-usage-table'),
+            ).not.toBeInTheDocument()
         })
     })
 

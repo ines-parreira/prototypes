@@ -14,7 +14,11 @@ type Props = {
     onConfirm: () => void
 }
 
-const DeleteSegmentConfirmation = ({ isOpen, onClose, onConfirm }: Props) => {
+export const DeleteSegmentConfirmation = ({
+    isOpen,
+    onClose,
+    onConfirm,
+}: Props) => {
     return (
         <Modal size="sm" isOpen={isOpen} isDismissable onOpenChange={onClose}>
             <OverlayHeader title="Delete segment?" />
@@ -43,5 +47,3 @@ const DeleteSegmentConfirmation = ({ isOpen, onClose, onConfirm }: Props) => {
         </Modal>
     )
 }
-
-export default DeleteSegmentConfirmation

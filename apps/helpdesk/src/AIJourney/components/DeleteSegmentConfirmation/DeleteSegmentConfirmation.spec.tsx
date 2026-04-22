@@ -3,7 +3,7 @@ import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
-import DeleteSegmentConfirmation from './DeleteSegmentConfirmation'
+import { DeleteSegmentConfirmation } from './DeleteSegmentConfirmation'
 
 describe('DeleteSegmentConfirmation', () => {
     const defaultProps = {

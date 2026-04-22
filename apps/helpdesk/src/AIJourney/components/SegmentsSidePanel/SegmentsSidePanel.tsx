@@ -15,6 +15,7 @@ import {
 
 import { AudienceConditionField } from 'AIJourney/components/AudienceConditionField/AudienceConditionField'
 import { SegmentCountPreview } from 'AIJourney/components/SegmentCountPreview/SegmentCountPreview'
+import { SegmentUsageTable } from 'AIJourney/components/SegmentsSidePanel/SegmentUsageTable'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateSegment } from 'AIJourney/queries'
@@ -188,8 +189,8 @@ export const SegmentsSidePanel = ({
             <FormProvider {...form}>
                 <Box
                     flexDirection="column"
-                    padding={Size.Md}
-                    paddingTop={Size.Lg}
+                    padding={Size.Lg}
+                    paddingTop={Size.Md}
                     overflow="scroll"
                 >
                     <Heading size="xl">
@@ -220,6 +221,12 @@ export const SegmentsSidePanel = ({
                             count={audienceCountData?.count}
                             isLoading={isAudienceCountFetching}
                         />
+                        {isEditing && segment && (
+                            <Box gap="md" flexDirection="column">
+                                <Heading size="md">Used in</Heading>
+                                <SegmentUsageTable segmentId={segment.id} />
+                            </Box>
+                        )}
                         <Box gap={Size.Xs} justifyContent="flex-end">
                             <Button
                                 variant="tertiary"

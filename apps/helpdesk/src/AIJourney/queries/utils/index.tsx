@@ -1,4 +1,7 @@
-import type { JourneyTypeEnum } from '@gorgias/convert-client'
+import type {
+    GetAudiencesSegmentsParams,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
 import type {
     GetAudienceCountParams,
     ListSegmentsParams,
@@ -24,4 +27,14 @@ export const aiJourneyKeys = {
         integrationId?: number,
         params?: Omit<ListSegmentsParams, 'integration_id'>,
     ) => [...aiJourneyKeys.all(), 'segments', integrationId, params] as const,
+    audienceUsage: (
+        integrationId?: number,
+        params?: Omit<GetAudiencesSegmentsParams, 'store_integration_id'>,
+    ) =>
+        [
+            ...aiJourneyKeys.all(),
+            'audienceUsage',
+            integrationId,
+            params,
+        ] as const,
 }

@@ -4,8 +4,15 @@ import type { ReactNode, Ref } from 'react'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import {
+    AudienceListSource,
+    JourneyCampaignStateEnum,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
+
 import { useJourneyContext } from 'AIJourney/providers'
 import { useDeleteSegment, useSegments } from 'AIJourney/queries'
+import { useAudiencesUsage } from 'AIJourney/queries/UseAudiencesUsage/UseAudiencesUsage'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -80,6 +87,13 @@ jest.mock('AIJourney/queries/useAudienceCount/useAudienceCount', () => ({
     }),
 }))
 
+jest.mock('AIJourney/queries/UseAudiencesUsage/UseAudiencesUsage', () => ({
+    useAudiencesUsage: jest.fn().mockReturnValue({
+        data: undefined,
+        isLoading: false,
+    }),
+}))
+
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
 }))
@@ -92,10 +106,33 @@ const mockUseSegments = useSegments as jest.Mock
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseDeleteSegment = useDeleteSegment as jest.Mock
 const mockUseConditionsMetadata = useConditionsMetadata as jest.Mock
+const mockUseAudiencesUsage = useAudiencesUsage as jest.Mock
 const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
     typeof useAppDispatch
 >
 const mockNotify = notify as jest.MockedFunction<typeof notify>
+
+const mockActiveCampaign = {
+    id: 'campaign-1',
+    type: JourneyTypeEnum.Campaign,
+    campaign: {
+        title: 'Summer Sale',
+        state: JourneyCampaignStateEnum.Active,
+    },
+}
+
+const mockAudienceUsageForSegment1 = {
+    data: [
+        {
+            id: 'audience-1',
+            identifier: '1',
+            source: AudienceListSource.Gorgias,
+            count_campaigns: 1,
+            count_journeys: 0,
+            usage: [{ id: 'campaign-1', type: JourneyTypeEnum.Campaign }],
+        },
+    ],
+}
 
 const mockSchema: ConditionsSchema = {
     operators: {
@@ -542,6 +579,96 @@ describe('<Segments />', () => {
             expect(mockMutate).not.toHaveBeenCalled()
             expect(
                 screen.queryByText('Delete segment?'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should open the in-use modal when the segment is used in an active campaign', async () => {
+            const user = userEvent.setup()
+            mockUseJourneyContext.mockReturnValue({
+                currentIntegration: { id: 123 },
+                campaigns: [mockActiveCampaign],
+            })
+            mockUseAudiencesUsage.mockReturnValue({
+                data: mockAudienceUsageForSegment1,
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: 'Delete' })[0],
+                )
+            })
+
+            expect(
+                screen.getByText("This segment can't be deleted"),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /It's currently used in campaigns that are scheduled, active, or paused/,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Delete segment?'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should close the in-use modal when "Got it" is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseJourneyContext.mockReturnValue({
+                currentIntegration: { id: 123 },
+                campaigns: [mockActiveCampaign],
+            })
+            mockUseAudiencesUsage.mockReturnValue({
+                data: mockAudienceUsageForSegment1,
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: 'Delete' })[0],
+                )
+            })
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Got it' }))
+            })
+
+            expect(
+                screen.queryByText("This segment can't be deleted"),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should open the delete confirmation modal when the segment is used only in non-blocked campaigns', async () => {
+            const user = userEvent.setup()
+            mockUseJourneyContext.mockReturnValue({
+                currentIntegration: { id: 123 },
+                campaigns: [
+                    {
+                        ...mockActiveCampaign,
+                        campaign: {
+                            title: 'Old Sale',
+                            state: JourneyCampaignStateEnum.Sent,
+                        },
+                    },
+                ],
+            })
+            mockUseAudiencesUsage.mockReturnValue({
+                data: mockAudienceUsageForSegment1,
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: 'Delete' })[0],
+                )
+            })
+
+            expect(screen.getByText('Delete segment?')).toBeInTheDocument()
+            expect(
+                screen.queryByText("This segment can't be deleted"),
             ).not.toBeInTheDocument()
         })
     })
