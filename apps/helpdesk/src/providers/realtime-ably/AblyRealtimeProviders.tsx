@@ -9,6 +9,7 @@ import {
     AgentOnlineStatusProvider,
     RealtimeProvider,
 } from '@gorgias/realtime'
+import type { RealtimeConnectionStateChange } from '@gorgias/realtime'
 
 type Props = {
     children: ReactNode
@@ -38,10 +39,31 @@ const AblyRealtimeProviders = ({ children }: Props) => {
         }
     }, [])
 
+    const onConnectionStateChange = useCallback(
+        (stateChange: RealtimeConnectionStateChange) => {
+            if (
+                isErrorReportingEnabled.current &&
+                stateChange.current === 'failed'
+            ) {
+                reportError(new Error('RealtimeFailedConnectionState'), {
+                    tags: {
+                        current: stateChange.current,
+                        previous: stateChange.previous,
+                        message: stateChange.reason?.message,
+                        code: stateChange.reason?.code,
+                        statusCode: stateChange.reason?.statusCode,
+                    },
+                })
+            }
+        },
+        [],
+    )
+
     return (
         <RealtimeProvider
             enableLogging={isAblyRealtimeLoggingEnabled}
             logHandler={logHandler}
+            onConnectionStateChange={onConnectionStateChange}
         >
             <AgentOnlineStatusProvider>
                 <AgentActivityProvider>{children}</AgentActivityProvider>
