@@ -98,10 +98,13 @@ export function KnowledgeEditorSkillVersionBanner() {
 
     const onToggleDiff = useCallback(async () => {
         if (isDiffMode) {
-            dispatch({ type: 'SET_MODE', payload: 'read' })
             if (isViewingDraft) {
                 dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
             }
+            dispatch({
+                type: 'SET_MODE',
+                payload: isViewingDraft ? 'edit' : 'read',
+            })
         } else {
             if (
                 (isViewingDraft || isViewingHistoricalVersion) &&

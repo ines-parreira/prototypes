@@ -64,14 +64,14 @@ describe('SkillIntentRow', () => {
         expect(screen.getByText('Linked to another skill')).toBeInTheDocument()
     })
 
-    it('hides linked tag when intent is already added', () => {
+    it('shows "Pending reassignment" when intent is already added and linked to another skill', () => {
         renderComponent({
             intent: {
                 ...baseIntent,
                 used_by_article: {
-                    id: 100,
+                    id: 200,
                     version: 1,
-                    title: 'Current Skill',
+                    title: 'Other Skill',
                     locale: 'en',
                 },
             } as SkillIntentItem,
@@ -79,10 +79,36 @@ describe('SkillIntentRow', () => {
             isChecked: true,
         })
 
+        expect(screen.getByText('Pending reassignment')).toBeInTheDocument()
+        expect(screen.queryByText('Already added')).not.toBeInTheDocument()
         expect(
             screen.queryByText('Linked to another skill'),
         ).not.toBeInTheDocument()
-        expect(screen.getByText('Already added')).toBeInTheDocument()
+    })
+
+    it('does not call onToggle for pending-reassignment rows', async () => {
+        const user = userEvent.setup()
+        const onToggle = jest.fn()
+        const intent = {
+            ...baseIntent,
+            used_by_article: {
+                id: 200,
+                version: 1,
+                title: 'Other Skill',
+                locale: 'en',
+            },
+        } as SkillIntentItem
+
+        renderComponent({
+            intent,
+            isAlreadyAdded: true,
+            isChecked: true,
+            onToggle,
+        })
+
+        await user.click(screen.getByText('Order / Status'))
+
+        expect(onToggle).not.toHaveBeenCalled()
     })
 
     it('calls onToggle when clickable row is clicked', async () => {

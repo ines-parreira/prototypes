@@ -19,6 +19,8 @@ export const useSkillSupportingKnowledgeFromContext = () => {
         skillTemplateKey,
         helpCenterId,
         isCurrent,
+        publishedVersionId,
+        draftVersionId,
         hasPublishedVersion,
         isUpdating,
         isAutoSaving,
@@ -36,6 +38,8 @@ export const useSkillSupportingKnowledgeFromContext = () => {
             skillTemplateKey: storeState.state.skill?.templateKey,
             helpCenterId: storeState.config.helpCenter?.id ?? 0,
             isCurrent: storeState.state.skill?.isCurrent,
+            publishedVersionId: storeState.state.skill?.publishedVersionId,
+            draftVersionId: storeState.state.skill?.draftVersionId,
             hasPublishedVersion: !!storeState.state.skill?.publishedVersionId,
             isUpdating: storeState.state.isUpdating,
             isAutoSaving: storeState.state.isAutoSaving,
@@ -56,6 +60,11 @@ export const useSkillSupportingKnowledgeFromContext = () => {
     const isViewingHistoricalVersion =
         historicalPublishedDatetime !== null &&
         historicalPublishedDatetime !== undefined
+    const hasDraft =
+        draftVersionId != null &&
+        publishedVersionId != null &&
+        draftVersionId !== publishedVersionId
+    const isViewingPublishedWithDraft = isCurrent === true && hasDraft
 
     const appDispatch = useAppDispatch()
 
@@ -152,6 +161,7 @@ export const useSkillSupportingKnowledgeFromContext = () => {
         useSupportingKnowledge: displayedUseSupportingKnowledge,
         isDiffMode,
         isViewingHistoricalVersion,
+        isViewingPublishedWithDraft,
         updateUseSupportingKnowledge,
         isCurrent,
         hasPublishedVersion,

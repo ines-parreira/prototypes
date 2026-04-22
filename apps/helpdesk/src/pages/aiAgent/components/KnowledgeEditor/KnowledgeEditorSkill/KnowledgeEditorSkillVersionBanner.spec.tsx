@@ -54,21 +54,25 @@ jest.mock('./context', () => ({
         mockUseSkillEditorStore(selector),
 }))
 
+const mockVersionBannerState = {
+    isViewingDraft: true,
+    hasDraftVersion: true,
+    hasPublishedVersion: true,
+    isDisabled: false,
+    switchVersion: mockSwitchVersion,
+}
+
+const mockVersionHistoryState = {
+    isViewingHistoricalVersion: false,
+    onGoToLatest: mockOnGoToLatest,
+}
+
 jest.mock('./hooks/useSkillVersionBanner', () => ({
-    useSkillVersionBanner: () => ({
-        isViewingDraft: true,
-        hasDraftVersion: true,
-        hasPublishedVersion: true,
-        isDisabled: false,
-        switchVersion: mockSwitchVersion,
-    }),
+    useSkillVersionBanner: () => mockVersionBannerState,
 }))
 
 jest.mock('./hooks/useSkillVersionHistory', () => ({
-    useSkillVersionHistory: () => ({
-        isViewingHistoricalVersion: false,
-        onGoToLatest: mockOnGoToLatest,
-    }),
+    useSkillVersionHistory: () => mockVersionHistoryState,
 }))
 
 const setupStore = (overrides: Record<string, unknown> = {}) => {
@@ -92,6 +96,8 @@ const setupStore = (overrides: Record<string, unknown> = {}) => {
 describe('KnowledgeEditorSkillVersionBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockVersionBannerState.isViewingDraft = true
+        mockVersionHistoryState.isViewingHistoricalVersion = false
         setupStore()
     })
 
@@ -122,8 +128,26 @@ describe('KnowledgeEditorSkillVersionBanner', () => {
         })
     })
 
-    it('dispatches SET_MODE read when toggling off diff mode', async () => {
+    it('dispatches SET_MODE edit when toggling off diff mode while viewing draft', async () => {
         setupStore({ mode: 'diff' })
+        const user = userEvent.setup()
+        render(<KnowledgeEditorSkillVersionBanner />)
+
+        await user.click(screen.getByRole('button', { name: /toggle diff/i }))
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'SET_MODE',
+            payload: 'edit',
+        })
+    })
+
+    it('dispatches SET_MODE read when toggling off diff mode while viewing a historical version', async () => {
+        mockVersionBannerState.isViewingDraft = false
+        mockVersionHistoryState.isViewingHistoricalVersion = true
+        setupStore({
+            mode: 'diff',
+            historicalVersion: { publishedDatetime: '2024-01-01' },
+        })
         const user = userEvent.setup()
         render(<KnowledgeEditorSkillVersionBanner />)
 

@@ -1,9 +1,12 @@
 import { useCallback } from 'react'
 
+import { useQueryClient } from '@tanstack/react-query'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
+import { helpCenterKeys } from 'models/helpCenter/queries'
 import type { SkillRouteState } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/context'
 import { KnowledgeEditorSkill } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/KnowledgeEditorSkill'
+import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 export const SkillEditorPage = () => {
@@ -23,6 +26,18 @@ export const SkillEditorPage = () => {
         history.push(routes.skills)
     }, [history, routes.skills])
 
+    const queryClient = useQueryClient()
+    const helpCenter = useAiAgentHelpCenter({
+        shopName,
+        helpCenterType: 'guidance',
+    })
+    const helpCenterId = helpCenter?.id
+
+    const invalidateIntents = useCallback(() => {
+        if (!helpCenterId) return
+        queryClient.invalidateQueries(helpCenterKeys.intents(helpCenterId))
+    }, [queryClient, helpCenterId])
+
     return (
         <KnowledgeEditorSkill
             shopName={shopName}
@@ -31,6 +46,8 @@ export const SkillEditorPage = () => {
             templateId={templateId}
             routeState={location.state}
             onClose={onClose}
+            onUpdate={invalidateIntents}
+            onDelete={invalidateIntents}
         />
     )
 }

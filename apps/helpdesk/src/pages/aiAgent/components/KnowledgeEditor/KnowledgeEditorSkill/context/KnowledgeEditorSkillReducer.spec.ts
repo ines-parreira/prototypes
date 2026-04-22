@@ -164,6 +164,8 @@ describe('skillReducer', () => {
         const newArticle = getGuidanceArticleFixture(2, {
             title: 'Published',
             content: 'Published content',
+            publishedVersionId: 20,
+            draftVersionId: 30,
         })
         const state = createDefaultState({
             versionStatus: 'latest_draft',
@@ -181,6 +183,42 @@ describe('skillReducer', () => {
         expect(result.mode).toBe('read')
         expect(result.hasAutoSavedInSession).toBe(false)
         expect(result.historicalVersion).toBeNull()
+    })
+
+    it('SWITCH_VERSION sets mode to edit when switching to current and there is no draft', () => {
+        const newArticle = getGuidanceArticleFixture(2, {
+            publishedVersionId: 20,
+            draftVersionId: 20,
+        })
+        const state = createDefaultState({
+            versionStatus: 'latest_draft',
+            mode: 'read',
+        })
+        const result = skillReducer(state, {
+            type: 'SWITCH_VERSION',
+            payload: newArticle,
+        })
+
+        expect(result.versionStatus).toBe('current')
+        expect(result.mode).toBe('edit')
+    })
+
+    it('SWITCH_VERSION sets mode to edit when switching to latest_draft', () => {
+        const newArticle = getGuidanceArticleFixture(2, {
+            publishedVersionId: 20,
+            draftVersionId: 30,
+        })
+        const state = createDefaultState({
+            versionStatus: 'current',
+            mode: 'read',
+        })
+        const result = skillReducer(state, {
+            type: 'SWITCH_VERSION',
+            payload: newArticle,
+        })
+
+        expect(result.versionStatus).toBe('latest_draft')
+        expect(result.mode).toBe('edit')
     })
 
     it('SWITCH_VERSION updates intents from the new article', () => {
@@ -220,7 +258,7 @@ describe('skillReducer', () => {
         expect(result.mode).toBe('read')
     })
 
-    it('CLEAR_HISTORICAL_VERSION restores skill title/content and sets mode to read', () => {
+    it('CLEAR_HISTORICAL_VERSION restores skill title/content and preserves mode', () => {
         const state = createDefaultState({
             skill: mockArticle,
             title: 'Historical title',

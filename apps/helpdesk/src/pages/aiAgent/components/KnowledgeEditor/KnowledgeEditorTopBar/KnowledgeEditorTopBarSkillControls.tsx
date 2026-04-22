@@ -171,14 +171,14 @@ export const SkillToolbarControls = () => {
             button
         )
 
-    const enableButton = (
+    const enableButton = wrapWithValidationTooltip(
         <Button
             variant="primary"
             onClick={onOpenEnableModal}
             isDisabled={isBusy || !formValid}
         >
             Enable
-        </Button>
+        </Button>,
     )
 
     const disableButton = (

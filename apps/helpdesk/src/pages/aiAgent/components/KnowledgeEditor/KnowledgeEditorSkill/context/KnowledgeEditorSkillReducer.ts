@@ -121,6 +121,13 @@ export function skillReducer(
                     ? 'current'
                     : 'latest_draft'
 
+            const { draftVersionId, publishedVersionId } = action.payload
+            const hasDraft =
+                draftVersionId != null &&
+                publishedVersionId != null &&
+                draftVersionId !== publishedVersionId
+            const isLatest = newVersionStatus === 'latest_draft' || !hasDraft
+
             return {
                 ...state,
                 versionStatus: newVersionStatus,
@@ -135,7 +142,7 @@ export function skillReducer(
                 },
                 title: action.payload.title,
                 content: action.payload.content,
-                mode: newVersionStatus === 'current' ? 'read' : state.mode,
+                mode: isLatest ? 'edit' : 'read',
                 hasAutoSavedInSession: false,
                 historicalVersion: null,
             }
@@ -169,7 +176,6 @@ export function skillReducer(
                     state.skill?.title ?? '',
                     state.skill?.content ?? '',
                 ),
-                mode: 'read',
             }
 
         case 'SET_COMPARISON_VERSION':

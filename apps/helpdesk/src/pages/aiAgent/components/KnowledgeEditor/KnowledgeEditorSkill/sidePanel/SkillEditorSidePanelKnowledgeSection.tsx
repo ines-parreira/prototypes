@@ -1,11 +1,14 @@
 import { useState } from 'react'
 
-import { Box, Text, ToggleField } from '@gorgias/axiom'
+import { Box, Text, ToggleField, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useSkillSupportingKnowledgeFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillSupportingKnowledgeFromContext'
 import { useSkillTopKnowledges } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillTopKnowledges'
 import { SkillDisableKnowledgeModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/sidePanel/modals/SkillDisableKnowledgeModal'
 import { SkillEditorSidePanelTopKnowledgeSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/sidePanel/SkillEditorSidePanelTopKnowledgeSection'
+
+const KNOWLEDGE_PUBLISHED_WITH_DRAFT_TOOLTIP =
+    'A draft of this skill exists. Switch to the draft to change knowledge settings.'
 
 export const SkillEditorSidePanelKnowledgeSection = () => {
     const [isDisableKnowledgeModalOpen, setIsDisableKnowledgeModalOpen] =
@@ -16,6 +19,7 @@ export const SkillEditorSidePanelKnowledgeSection = () => {
         useSupportingKnowledge,
         isDiffMode,
         isViewingHistoricalVersion,
+        isViewingPublishedWithDraft,
         updateUseSupportingKnowledge,
         hasPublishedVersion,
         isUpdating: isSaving,
@@ -57,13 +61,32 @@ export const SkillEditorSidePanelKnowledgeSection = () => {
                         <Text size="md" variant="bold">
                             Knowledge
                         </Text>
-                        <ToggleField
-                            value={useSupportingKnowledge}
-                            onChange={handleToggleKnowledge}
-                            isDisabled={
-                                isDiffMode || isViewingHistoricalVersion
-                            }
-                        />
+                        {isViewingPublishedWithDraft ? (
+                            <Tooltip
+                                placement="top"
+                                trigger={
+                                    <span tabIndex={0}>
+                                        <ToggleField
+                                            value={useSupportingKnowledge}
+                                            onChange={handleToggleKnowledge}
+                                            isDisabled
+                                        />
+                                    </span>
+                                }
+                            >
+                                <TooltipContent>
+                                    {KNOWLEDGE_PUBLISHED_WITH_DRAFT_TOOLTIP}
+                                </TooltipContent>
+                            </Tooltip>
+                        ) : (
+                            <ToggleField
+                                value={useSupportingKnowledge}
+                                onChange={handleToggleKnowledge}
+                                isDisabled={
+                                    isDiffMode || isViewingHistoricalVersion
+                                }
+                            />
+                        )}
                     </Box>
                     <Text size="sm" color="content-neutral-tertiary">
                         AI Agent uses your knowledge to complement skill

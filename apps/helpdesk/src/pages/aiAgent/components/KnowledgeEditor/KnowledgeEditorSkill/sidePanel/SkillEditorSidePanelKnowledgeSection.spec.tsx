@@ -141,6 +141,26 @@ describe('SkillEditorSidePanelKnowledgeSection', () => {
             ).toBeInTheDocument()
         })
 
+        it('disables the toggle and shows a tooltip when viewing a published version with a draft on top', async () => {
+            const user = userEvent.setup()
+            mockUseSkillSupportingKnowledgeFromContext.mockReturnValue({
+                ...defaultSupportingKnowledgeHook,
+                isViewingPublishedWithDraft: true,
+            })
+
+            renderComponent()
+
+            expect(screen.getByRole('switch')).toBeDisabled()
+
+            await user.hover(screen.getByRole('switch'))
+
+            expect(
+                await screen.findByText(
+                    /A draft of this skill exists\. Switch to the draft to change knowledge settings\./i,
+                ),
+            ).toBeInTheDocument()
+        })
+
         it('does not show top knowledge content when knowledge is disabled', () => {
             mockUseSkillSupportingKnowledgeFromContext.mockReturnValue({
                 ...defaultSupportingKnowledgeHook,

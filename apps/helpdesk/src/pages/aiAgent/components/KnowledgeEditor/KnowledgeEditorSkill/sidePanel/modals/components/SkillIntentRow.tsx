@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Icon, Tag, Text } from '@gorgias/axiom'
+import { Dot, Icon, Tag, Text } from '@gorgias/axiom'
 
 import { INTENT_DESCRIPTIONS } from 'pages/aiAgent/skills/components/IntentsTable/intentDescriptions'
 import { HANDOVER_ONLY_INTENTS } from 'pages/aiAgent/skills/hooks/useIntentsTable'
@@ -26,6 +26,8 @@ export const SkillIntentRow = ({
     onToggle,
 }: Props) => {
     const isHandoverOnly = HANDOVER_ONLY_INTENTS.includes(intent.intent)
+    const isPendingReassignment =
+        !isHandoverOnly && isAlreadyAdded && !!intent.used_by_article
     const isLinkedToAnotherSkill =
         !isHandoverOnly && !isAlreadyAdded && !!intent.used_by_article
     const description = INTENT_DESCRIPTIONS[intent.intent]
@@ -76,7 +78,15 @@ export const SkillIntentRow = ({
                 )}
             </div>
             <div className={css.intentTrailing}>
-                {isAlreadyAdded && (
+                {isPendingReassignment && (
+                    <Tag
+                        size="sm"
+                        leadingSlot={<Dot color="orange" size="sm" />}
+                    >
+                        Pending reassignment
+                    </Tag>
+                )}
+                {isAlreadyAdded && !isPendingReassignment && (
                     <Tag color="grey" size="sm">
                         Already added
                     </Tag>
