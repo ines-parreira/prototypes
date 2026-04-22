@@ -13,6 +13,7 @@ import userEvent from '@testing-library/user-event'
 import { Map } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
@@ -653,6 +654,81 @@ describe('AiAgentReasoningHelpdeskV2', () => {
                 objectId: '',
             }),
         )
+    })
+
+    describe('Internal note messages', () => {
+        it('returns null when message is an internal note with no reasoning content', () => {
+            reasoningState = {
+                ...reasoningState,
+                reasoningContent: null,
+            }
+
+            const { container } = renderComponent(
+                createMessage({
+                    source: { type: TicketMessageSourceType.InternalNote },
+                }),
+            )
+
+            expect(container).toBeEmptyDOMElement()
+        })
+
+        it('returns null when message is an internal note with empty reasoning', () => {
+            reasoningState = {
+                ...reasoningState,
+                reasoningContent: '',
+            }
+
+            const { container } = renderComponent(
+                createMessage({
+                    source: { type: TicketMessageSourceType.InternalNote },
+                }),
+            )
+
+            expect(container).toBeEmptyDOMElement()
+        })
+
+        it('renders the reasoning toggle when an internal note has reasoning content', () => {
+            reasoningState = {
+                ...reasoningState,
+                reasoningContent: 'Some reasoning text',
+            }
+
+            renderComponent(
+                createMessage({
+                    source: { type: TicketMessageSourceType.InternalNote },
+                }),
+            )
+
+            expect(
+                screen.getByRole('button', { name: /show reasoning/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('eagerly enables the reasoning query for internal notes without user interaction', () => {
+            renderComponent(
+                createMessage({
+                    source: { type: TicketMessageSourceType.InternalNote },
+                }),
+            )
+
+            expect(mockUseAiAgentReasoning).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    enabled: true,
+                    messageId: '10',
+                    objectId: '123',
+                }),
+            )
+        })
+
+        it('does not eagerly enable the reasoning query for non-internal-note messages', () => {
+            renderComponent()
+
+            expect(mockUseAiAgentReasoning).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
     })
 
     it('defaults tracking ids to zero when account and user stores are briefly unavailable', () => {

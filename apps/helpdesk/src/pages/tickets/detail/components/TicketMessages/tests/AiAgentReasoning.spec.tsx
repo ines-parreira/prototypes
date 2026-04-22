@@ -18,6 +18,7 @@ import configureMockStore from 'redux-mock-store'
 
 import type { AiReasoningResourcesItem } from '@gorgias/knowledge-service-types'
 
+import { TicketMessageSourceType } from 'business/types/ticket'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
@@ -2447,6 +2448,85 @@ describe('AiAgentReasoning', () => {
                 expect.objectContaining({
                     enabled: true,
                 }),
+            )
+        })
+    })
+
+    describe('Internal note messages', () => {
+        it('should not render anything when message is an internal note with no reasoning data', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            const { container } = renderComponent({
+                source: { type: TicketMessageSourceType.InternalNote },
+            })
+
+            expect(container).toBeEmptyDOMElement()
+        })
+
+        it('should not render anything when message is an internal note with empty reasoning', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: { reasoning: [], resources: [] },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            const { container } = renderComponent({
+                source: { type: TicketMessageSourceType.InternalNote },
+            })
+
+            expect(container).toBeEmptyDOMElement()
+        })
+
+        it('should render the reasoning toggle when an internal note has reasoning content', () => {
+            // beforeEach provides rich reasoning data that produces non-empty reasoningContent
+            renderComponent({
+                source: { type: TicketMessageSourceType.InternalNote },
+            })
+
+            expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+        })
+
+        it('should eagerly enable the reasoning query without user interaction', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                refetch: jest.fn(),
+            } as any)
+
+            renderComponent({
+                source: { type: TicketMessageSourceType.InternalNote },
+            })
+
+            expect(mockUseGetMessageAiReasoning).toHaveBeenCalledWith(
+                expect.objectContaining({ messageId: '1' }),
+                expect.objectContaining({ enabled: true }),
+            )
+        })
+
+        it('should not eagerly enable the reasoning query for non-internal-note messages', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            renderComponent() // regular message without source
+
+            expect(mockUseGetMessageAiReasoning).toHaveBeenCalledWith(
+                expect.objectContaining({ messageId: '1' }),
+                expect.objectContaining({ enabled: false }),
             )
         })
     })

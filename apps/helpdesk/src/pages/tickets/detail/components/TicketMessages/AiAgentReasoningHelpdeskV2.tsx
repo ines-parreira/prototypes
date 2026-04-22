@@ -24,6 +24,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
@@ -52,6 +53,8 @@ export const AiAgentReasoningHelpdeskV2 = ({
 }: AiAgentReasoningProps) => {
     const ticket = useAppSelector(getTicketState)
     const isEvoliTicket = useIsEvoliTicket()
+    const isInternalNote =
+        message.source?.type === TicketMessageSourceType.InternalNote
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])
     const isMessageAfterEvoliCutoff =
         new Date(message.created_datetime).getTime() >
@@ -101,7 +104,7 @@ export const AiAgentReasoningHelpdeskV2 = ({
     })
 
     const isReasoningEnabled =
-        state !== 'collapsed' &&
+        (state !== 'collapsed' || isInternalNote) &&
         ticketId > 0 &&
         messageId > 0 &&
         (!isEvoliTicket || isMessageAfterEvoliCutoff || isImpersonated)
@@ -227,6 +230,10 @@ export const AiAgentReasoningHelpdeskV2 = ({
     }
 
     const executionId = storeConfiguration?.executionId
+
+    if (isInternalNote && !reasoningContent) {
+        return null
+    }
 
     return (
         <>

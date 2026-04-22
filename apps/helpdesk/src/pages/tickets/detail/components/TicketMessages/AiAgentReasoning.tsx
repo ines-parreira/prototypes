@@ -15,6 +15,7 @@ import { useLocation } from 'react-router-dom'
 
 import { LegacyButton as Button, Icon } from '@gorgias/axiom'
 
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
@@ -98,8 +99,10 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         messageId,
     })
 
+    const isMessageInternalNote =
+        message.source?.type === TicketMessageSourceType.InternalNote
     const isReasoningQueryEnabled =
-        isQueryEnabled &&
+        (isQueryEnabled || isMessageInternalNote) &&
         ticketId > 0 &&
         messageId > 0 &&
         (!isEvoliTicket || isMessageAfterEvoliCutoff || isImpersonated)
@@ -326,6 +329,10 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                 {content}
             </div>
         )
+    }
+
+    if (isMessageInternalNote && !reasoningContent) {
+        return null
     }
 
     return (
