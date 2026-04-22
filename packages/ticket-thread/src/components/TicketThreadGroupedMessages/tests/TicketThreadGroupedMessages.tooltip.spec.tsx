@@ -84,6 +84,10 @@ vi.mock('../../TicketMessageActions/TicketMessageActions', () => ({
     TicketMessageActions: () => <div>TicketMessageActions</div>,
 }))
 
+vi.mock('../../MessageBubble/components/MessageAppliedActions', () => ({
+    MessageAppliedActions: () => <div>MessageAppliedActions</div>,
+}))
+
 vi.mock('../../TicketMessage/hooks/useDisplayedTicketMessage', () => ({
     useDisplayedTicketMessage: ({
         item,

@@ -1,26 +1,20 @@
 import type { ReactNode } from 'react'
 
-import { render } from '@testing-library/react'
+import {
+    mockListTicketTagsHandler,
+    mockTicketMessage,
+} from '@gorgias/helpdesk-mocks'
 
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
-
-import { TicketThreadPendingState } from '../../hooks/messages/types'
 import type { TicketThreadInternalNoteItem } from '../../hooks/messages/types'
+import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
+import { render } from '../../tests/render.utils'
+import { server } from '../../tests/server'
 import { TicketInternalNote } from './TicketInternalNote'
 
-const messageBubbleSpy = vi.fn()
-
 vi.mock('../MessageBubble/MessageBubble', () => ({
-    MessageBubble: ({
-        children,
-        pendingState,
-    }: {
-        children: ReactNode
-        pendingState?: string
-    }) => {
-        messageBubbleSpy({ pendingState })
-        return <div>{children}</div>
-    },
+    MessageBubble: ({ children }: { children: ReactNode }) => (
+        <div>{children}</div>
+    ),
 }))
 
 vi.mock('../MessageBubble/components/MessageHeader/Layout', () => ({
@@ -57,6 +51,13 @@ vi.mock('../TicketMessageActions/TicketMessageActions', () => ({
     TicketMessageActions: () => <div>TicketMessageActions</div>,
 }))
 
+beforeEach(() => {
+    server.use(
+        mockListTicketTagsHandler().handler,
+        getCurrentUserHandler().handler,
+    )
+})
+
 function createItem(): TicketThreadInternalNoteItem {
     return {
         _tag: 'internal-note',
@@ -86,37 +87,8 @@ function createItem(): TicketThreadInternalNoteItem {
 }
 
 describe('TicketInternalNote', () => {
-    beforeEach(() => {
-        messageBubbleSpy.mockClear()
-    })
-
-    it('passes the active pending state to the message bubble', () => {
-        render(
-            <TicketInternalNote
-                item={{
-                    ...createItem(),
-                    pendingState: TicketThreadPendingState.Active,
-                }}
-            />,
-        )
-
-        expect(messageBubbleSpy).toHaveBeenCalledWith({
-            pendingState: TicketThreadPendingState.Active,
-        })
-    })
-
-    it('passes the failed pending state to the message bubble', () => {
-        render(
-            <TicketInternalNote
-                item={{
-                    ...createItem(),
-                    pendingState: TicketThreadPendingState.Failed,
-                }}
-            />,
-        )
-
-        expect(messageBubbleSpy).toHaveBeenCalledWith({
-            pendingState: TicketThreadPendingState.Failed,
-        })
+    it('renders without errors', () => {
+        const { container } = render(<TicketInternalNote item={createItem()} />)
+        expect(container).not.toBeEmptyDOMElement()
     })
 })

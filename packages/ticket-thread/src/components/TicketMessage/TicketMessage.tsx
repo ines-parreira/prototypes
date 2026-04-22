@@ -6,6 +6,7 @@ import {
 } from '../../hooks/messages/predicates'
 import { TicketThreadPendingState } from '../../hooks/messages/types'
 import type { TicketThreadRegularMessageItem } from '../../hooks/messages/types'
+import { MessageAppliedActions } from '../MessageBubble/components/MessageAppliedActions'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
@@ -35,52 +36,62 @@ export function TicketMessage({ item }: TicketMessageProps) {
     )
 
     return (
-        <MessageBubble
-            variant={variant}
-            pendingState={
-                isFailedPendingState
-                    ? TicketThreadPendingState.Failed
-                    : isPendingMessage
-                      ? TicketThreadPendingState.Active
-                      : undefined
-            }
+        <Box
+            flexDirection="column"
+            width="100%"
+            alignItems={item.data.from_agent ? 'flex-end' : 'flex-start'}
         >
-            <MessageHeaderContainer>
-                <Box alignItems="center" gap="xs">
-                    <MessageAvatar
-                        sender={item.data.sender}
-                        fromAgent={item.data.from_agent}
+            <MessageBubble
+                variant={variant}
+                pendingState={
+                    isFailedPendingState
+                        ? TicketThreadPendingState.Failed
+                        : isPendingMessage
+                          ? TicketThreadPendingState.Active
+                          : undefined
+                }
+            >
+                <MessageHeaderContainer>
+                    <Box alignItems="center" gap="xs">
+                        <MessageAvatar
+                            sender={item.data.sender}
+                            fromAgent={item.data.from_agent}
+                        />
+                        <MessageSender sender={item.data.sender} />
+                    </Box>
+                    <Box alignItems="center" gap="xs">
+                        <MessageChannel
+                            channel={item.data.channel}
+                            createdDatetime={item.data.created_datetime}
+                            from={from}
+                            to={to}
+                            cc={cc}
+                            bcc={bcc}
+                        />
+                        <MessageDeliveryIcon item={item} />
+                        <MessageTimestamp
+                            createdDatetime={item.data.created_datetime}
+                        />
+                    </Box>
+                </MessageHeaderContainer>
+                <MessageBody item={displayedItem} />
+                <MessageFooter item={displayedItem} />
+                <TicketMessageActions message={item.data} />
+                {isPendingMessage ? (
+                    <PendingMessageBanner message={displayedItem.data} />
+                ) : null}
+                {item.data.ticket_id && (
+                    <MessageErrors
+                        message={displayedItem.data}
+                        ticketId={item.data.ticket_id}
+                        isPending={isPendingMessage}
                     />
-                    <MessageSender sender={item.data.sender} />
-                </Box>
-                <Box alignItems="center" gap="xs">
-                    <MessageChannel
-                        channel={item.data.channel}
-                        createdDatetime={item.data.created_datetime}
-                        from={from}
-                        to={to}
-                        cc={cc}
-                        bcc={bcc}
-                    />
-                    <MessageDeliveryIcon item={item} />
-                    <MessageTimestamp
-                        createdDatetime={item.data.created_datetime}
-                    />
-                </Box>
-            </MessageHeaderContainer>
-            <MessageBody item={displayedItem} />
-            <MessageFooter item={displayedItem} />
-            <TicketMessageActions message={item.data} />
-            {isPendingMessage ? (
-                <PendingMessageBanner message={displayedItem.data} />
-            ) : null}
-            {item.data.ticket_id && (
-                <MessageErrors
-                    message={displayedItem.data}
-                    ticketId={item.data.ticket_id}
-                    isPending={isPendingMessage}
-                />
-            )}
-        </MessageBubble>
+                )}
+            </MessageBubble>
+            <MessageAppliedActions
+                message={item.data}
+                isPending={isPendingMessage}
+            />
+        </Box>
     )
 }

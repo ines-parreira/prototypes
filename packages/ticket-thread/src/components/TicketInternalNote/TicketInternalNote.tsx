@@ -6,6 +6,7 @@ import {
 } from '../../hooks/messages/predicates'
 import { TicketThreadPendingState } from '../../hooks/messages/types'
 import type { TicketThreadInternalNoteItem } from '../../hooks/messages/types'
+import { MessageAppliedActions } from '../MessageBubble/components/MessageAppliedActions'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
@@ -27,36 +28,42 @@ export function TicketInternalNote({ item }: TicketInternalNoteProps) {
     const isFailedPendingState = isFailedPendingMessageItem(item)
 
     return (
-        <MessageBubble
-            variant="internal-note"
-            pendingState={
-                isFailedPendingState
-                    ? TicketThreadPendingState.Failed
-                    : isPendingMessage
-                      ? TicketThreadPendingState.Active
-                      : undefined
-            }
-        >
-            <MessageHeaderContainer>
-                <Box alignItems="center" gap="xs">
-                    <MessageAvatar sender={item.data.sender} fromAgent />
-                    <MessageSender sender={item.data.sender} />
-                </Box>
-                <Box alignItems="center" gap="xs">
-                    <MessageChannel
-                        channel={item.data.channel}
-                        createdDatetime={item.data.created_datetime}
-                        channelIcon={IconName.Note}
-                        variant="internal-note"
-                    />
-                    <MessageTimestamp
-                        createdDatetime={item.data.created_datetime}
-                    />
-                </Box>
-            </MessageHeaderContainer>
-            <MessageBody item={item} className={css.internalNoteContent} />
-            <MessageFooter item={item} showTranslations={false} />
-            <TicketMessageActions message={item.data} />
-        </MessageBubble>
+        <Box flexDirection="column" width="100%" alignItems="flex-end">
+            <MessageBubble
+                variant="internal-note"
+                pendingState={
+                    isFailedPendingState
+                        ? TicketThreadPendingState.Failed
+                        : isPendingMessage
+                          ? TicketThreadPendingState.Active
+                          : undefined
+                }
+            >
+                <MessageHeaderContainer>
+                    <Box alignItems="center" gap="xs">
+                        <MessageAvatar sender={item.data.sender} fromAgent />
+                        <MessageSender sender={item.data.sender} />
+                    </Box>
+                    <Box alignItems="center" gap="xs">
+                        <MessageChannel
+                            channel={item.data.channel}
+                            createdDatetime={item.data.created_datetime}
+                            channelIcon={IconName.Note}
+                            variant="internal-note"
+                        />
+                        <MessageTimestamp
+                            createdDatetime={item.data.created_datetime}
+                        />
+                    </Box>
+                </MessageHeaderContainer>
+                <MessageBody item={item} className={css.internalNoteContent} />
+                <MessageFooter item={item} showTranslations={false} />
+                <TicketMessageActions message={item.data} />
+            </MessageBubble>
+            <MessageAppliedActions
+                message={item.data}
+                isPending={isPendingMessage}
+            />
+        </Box>
     )
 }
