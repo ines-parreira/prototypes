@@ -15,6 +15,7 @@ import {
     Menu,
     MenuItem,
     MenuSection,
+    Text,
 } from '@gorgias/axiom'
 
 import { TranslationLimit } from './TranslationLimit'
@@ -58,7 +59,9 @@ export function TranslationsDropdown({
                 size="sm"
                 isDisabled
             >
-                Translating...
+                <Text size="sm" color="content-neutral-secondary">
+                    Translating...
+                </Text>
             </Button>
         )
     }
@@ -80,7 +83,9 @@ export function TranslationsDropdown({
                         ])
                     }
                 >
-                    See translation
+                    <Text size="sm" color="content-neutral-secondary">
+                        See translation
+                    </Text>
                 </Button>
             ) : (
                 <Menu
@@ -95,9 +100,11 @@ export function TranslationsDropdown({
                                 <DropdownIcon isOpen={isTranslationsMenuOpen} />
                             }
                         >
-                            {ticketLanguage
-                                ? `Translated from ${IntlDisplayNames.of(ticketLanguage)}`
-                                : 'Translated'}
+                            <Text size="sm" color="content-neutral-secondary">
+                                {ticketLanguage
+                                    ? `Translated from ${IntlDisplayNames.of(ticketLanguage)}`
+                                    : 'Translated'}
+                            </Text>
                         </Button>
                     }
                 >
