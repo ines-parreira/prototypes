@@ -246,6 +246,69 @@ describe('<Settings />', () => {
             })
         })
 
+        it('should pre-populate klaviyo_api_key from storeConfiguration', async () => {
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    brand_name: '',
+                    sms_sender_integration_id: null,
+                    sms_sender_number: null,
+                    texas_exclusion_enabled: false,
+                    klaviyo_api_key: 'pk_realkey1234',
+                },
+                isLoading: false,
+                error: null,
+                isFetched: true,
+                saveConfiguration: mockSaveConfiguration,
+            })
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(screen.getByRole('tab', { name: 'Integrations' }))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByDisplayValue('**********1234'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should pre-populate quiet_hours_start and quiet_hours_end from storeConfiguration', async () => {
+            mockSaveConfiguration.mockResolvedValue(undefined)
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    brand_name: '',
+                    sms_sender_integration_id: null,
+                    sms_sender_number: null,
+                    texas_exclusion_enabled: false,
+                    quiet_hours_start: '21:00',
+                    quiet_hours_end: '08:00',
+                },
+                isLoading: false,
+                error: null,
+                isFetched: true,
+                saveConfiguration: mockSaveConfiguration,
+            })
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.type(screen.getByLabelText('Brand name'), 'A')
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Save' }))
+            })
+
+            await waitFor(() => {
+                expect(mockSaveConfiguration).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        quiet_hours_start: '21:00',
+                        quiet_hours_end: '08:00',
+                    }),
+                )
+            })
+        })
+
         it('should pre-check the Texas exclusion toggle when enabled in storeConfiguration', async () => {
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: {
@@ -263,11 +326,7 @@ describe('<Settings />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await act(async () => {
-                await user.click(
-                    screen.getByRole('tab', { name: 'Compliance' }),
-                )
-            })
+            await user.click(screen.getByRole('tab', { name: 'Compliance' }))
 
             await waitFor(() => {
                 expect(
@@ -297,6 +356,9 @@ describe('<Settings />', () => {
                     sms_sender_number: null,
                     brand_name: 'My Store',
                     texas_exclusion_enabled: false,
+                    klaviyo_api_key: null,
+                    quiet_hours_start: null,
+                    quiet_hours_end: null,
                 })
             })
         })
@@ -355,6 +417,56 @@ describe('<Settings />', () => {
                     message: 'Error saving settings. Please try again.',
                     status: NotificationStatus.Error,
                 })
+            })
+        })
+
+        it('should set a klaviyo_api_key field error when save returns a 400 with detail', async () => {
+            mockSaveConfiguration.mockRejectedValue({
+                response: {
+                    data: {
+                        detail: [
+                            { klaviyo_api_key: 'This API key is not valid.' },
+                        ],
+                    },
+                },
+            })
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(screen.getByRole('tab', { name: 'Integrations' }))
+            await user.type(screen.getByLabelText('Klaviyo API key'), 'pk_test')
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Save' }))
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('This API key is not valid.'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should set a klaviyo_api_key field error when save fails with a 422 status', async () => {
+            mockSaveConfiguration.mockRejectedValue({
+                response: { status: 422 },
+            })
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(screen.getByRole('tab', { name: 'Integrations' }))
+            await user.type(screen.getByLabelText('Klaviyo API key'), 'pk_test')
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Save' }))
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Invalid Klaviyo API key. Please check your key and try again.',
+                    ),
+                ).toBeInTheDocument()
             })
         })
     })

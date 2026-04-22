@@ -34,3 +34,6 @@ export { SmsSenderRequiredBanner } from './SmsSenderRequiredBanner/SmsSenderRequ
 export { SmsSenderRequiredModal } from './SmsSenderRequiredModal/SmsSenderRequiredModal'
 export { RcsEnabledCard } from './RcsEnabledCard/RcsEnabledCard'
 export { SegmentCountPreview } from './SegmentCountPreview/SegmentCountPreview'
+export { IntegrationsTab } from './IntegrationsTab/IntegrationsTab'
+export { KlaviyoCard } from './KlaviyoCard/KlaviyoCard'
+export { QuietHoursCard } from './QuietHoursCard/QuietHoursCard'

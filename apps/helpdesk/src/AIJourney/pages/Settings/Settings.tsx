@@ -13,7 +13,11 @@ import {
     Tabs,
 } from '@gorgias/axiom'
 
-import { ComplianceTab, SenderIdentityTab } from 'AIJourney/components'
+import {
+    ComplianceTab,
+    IntegrationsTab,
+    SenderIdentityTab,
+} from 'AIJourney/components'
 import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration'
 import { useJourneyContext } from 'AIJourney/providers'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -38,6 +42,9 @@ type SettingsFormValues = {
     sms_sender: SmsSender
     brand_name: string
     texas_exclusion_enabled: boolean
+    klaviyo_api_key: string | null
+    quiet_hours_start: string | null
+    quiet_hours_end: string | null
 }
 
 export const Settings = () => {
@@ -64,10 +71,13 @@ export const Settings = () => {
             },
             brand_name: '',
             texas_exclusion_enabled: false,
+            klaviyo_api_key: null,
+            quiet_hours_start: null,
+            quiet_hours_end: null,
         },
     })
 
-    const { formState, handleSubmit, reset } = methods
+    const { formState, handleSubmit, reset, setError } = methods
 
     useEffect(() => {
         if (storeConfiguration) {
@@ -81,6 +91,9 @@ export const Settings = () => {
                 brand_name: storeConfiguration.brand_name ?? '',
                 texas_exclusion_enabled:
                     storeConfiguration.texas_exclusion_enabled ?? false,
+                klaviyo_api_key: storeConfiguration.klaviyo_api_key ?? null,
+                quiet_hours_start: storeConfiguration.quiet_hours_start ?? null,
+                quiet_hours_end: storeConfiguration.quiet_hours_end ?? null,
             })
         }
     }, [storeConfiguration, reset])
@@ -94,6 +107,9 @@ export const Settings = () => {
                     sms_sender_number: values.sms_sender.sms_sender_number,
                     brand_name: values.brand_name,
                     texas_exclusion_enabled: values.texas_exclusion_enabled,
+                    klaviyo_api_key: values.klaviyo_api_key,
+                    quiet_hours_start: values.quiet_hours_start,
+                    quiet_hours_end: values.quiet_hours_end,
                 })
                 reset(values)
                 void dispatch(
@@ -102,7 +118,38 @@ export const Settings = () => {
                         status: NotificationStatus.Success,
                     }),
                 )
-            } catch {
+            } catch (error) {
+                const response = (
+                    error as {
+                        response?: {
+                            status?: number
+                            data?: {
+                                detail?: Array<Record<string, string>> | null
+                            }
+                        }
+                    }
+                )?.response
+                const detail = response?.data?.detail
+
+                if (Array.isArray(detail)) {
+                    for (const fieldError of detail) {
+                        if ('klaviyo_api_key' in fieldError) {
+                            setError('klaviyo_api_key', {
+                                message: fieldError.klaviyo_api_key,
+                            })
+                            return
+                        }
+                    }
+                }
+
+                if (response?.status === 422) {
+                    setError('klaviyo_api_key', {
+                        message:
+                            'Invalid Klaviyo API key. Please check your key and try again.',
+                    })
+                    return
+                }
+
                 void dispatch(
                     notify({
                         message: 'Error saving settings. Please try again.',
@@ -111,7 +158,7 @@ export const Settings = () => {
                 )
             }
         },
-        [saveConfiguration, reset, dispatch],
+        [saveConfiguration, reset, dispatch, setError],
     )
 
     useBeforeUnload(formState.isDirty)
@@ -124,7 +171,7 @@ export const Settings = () => {
         )
     }
 
-    const isSaveDisabled = !formState.isDirty
+    const isSaveDisabled = !formState.isDirty || formState.isSubmitting
 
     return (
         <FormProvider {...methods}>
@@ -132,6 +179,7 @@ export const Settings = () => {
                 <PageHeader title="Settings">
                     <Button
                         isDisabled={isSaveDisabled}
+                        isLoading={formState.isSubmitting}
                         onClick={handleSubmit(onSubmit)}
                     >
                         Save
@@ -163,7 +211,9 @@ export const Settings = () => {
                         <TabPanel id={SettingsTab.Compliance}>
                             <ComplianceTab isFormReady={!isLoading} />
                         </TabPanel>
-                        <TabPanel id={SettingsTab.Integrations} />
+                        <TabPanel id={SettingsTab.Integrations}>
+                            <IntegrationsTab isFormReady={!isLoading} />
+                        </TabPanel>
                     </Tabs>
                 </div>
             </Box>

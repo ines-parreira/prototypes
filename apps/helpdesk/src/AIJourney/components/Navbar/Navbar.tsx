@@ -158,7 +158,7 @@ export const AiJourneyNavbar = () => {
 
         if (isAiJourneyStoreSettingsEnabled) {
             items.push({
-                icon: IconName.Settings,
+                icon: IconName.SliderFilter,
                 to: `/app/ai-journey/${shopName}/settings`,
                 label: 'Settings',
                 exact: true,
