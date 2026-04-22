@@ -138,6 +138,7 @@ export const TimeSeriesChart = ({
                             axisLine={false}
                             tickLine={{ stroke: GRID_COLOR, strokeWidth: 0.75 }}
                             tickMargin={8}
+                            minTickGap={8}
                         />
                         <YAxis
                             tick={{ fill: TICK_COLOR, fontSize: 12 }}

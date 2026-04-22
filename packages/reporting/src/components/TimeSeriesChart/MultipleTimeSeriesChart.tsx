@@ -184,6 +184,7 @@ export const MultipleTimeSeriesChart = ({
                             tick={{ fill: TICK_COLOR, fontSize: 12 }}
                             axisLine={false}
                             tickLine={{ stroke: GRID_COLOR, strokeWidth: 0.75 }}
+                            minTickGap={8}
                             tickMargin={8}
                         />
                         <YAxis
