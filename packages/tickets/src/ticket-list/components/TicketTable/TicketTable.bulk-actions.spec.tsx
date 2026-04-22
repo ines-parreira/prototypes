@@ -424,6 +424,9 @@ async function waitForTicketTableToBeReady() {
         ).toBeEnabled()
         expect(getFirstRowSelectionCheckbox()).toBeEnabled()
     })
+    await waitFor(() => {
+        expect(queryClient.isFetching()).toBe(0)
+    })
 }
 
 function getFirstRowSelectionCheckbox() {
@@ -441,9 +444,7 @@ async function waitForBulkToolbarToBeReady() {
 
 async function selectFirstRow(user: ReturnType<typeof render>['user']) {
     await waitForTicketTableToBeReady()
-    await act(async () => {
-        await user.click(getFirstRowSelectionCheckbox())
-    })
+    await user.click(getFirstRowSelectionCheckbox())
     await waitFor(() => {
         expect(getFirstRowSelectionCheckbox()).toBeChecked()
     })
@@ -452,11 +453,7 @@ async function selectFirstRow(user: ReturnType<typeof render>['user']) {
 
 async function selectAllRowsOnPage(user: ReturnType<typeof render>['user']) {
     await waitForTicketTableToBeReady()
-    await act(async () => {
-        await user.click(
-            screen.getByRole('checkbox', { name: 'Select all rows' }),
-        )
-    })
+    await user.click(screen.getByRole('checkbox', { name: 'Select all rows' }))
     await waitForSelectedCount(2)
     await waitFor(() => {
         expect(
