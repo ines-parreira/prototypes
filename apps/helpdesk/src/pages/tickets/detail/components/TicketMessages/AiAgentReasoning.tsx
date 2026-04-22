@@ -34,12 +34,9 @@ type AiAgentReasoningProps = {
 }
 
 const EVOLI_STATIC_MESSAGE =
-    "Message powered by AI Agent's new brain (beta). Reasoning will be available soon."
+    "Message powered by AI Agent's new brain (beta). Reasoning is not available for this ticket."
 
 const EVOLI_BRAIN_MESSAGE = "Message powered by AI Agent's new brain (beta)"
-
-const IMPERSONATION_REASONING_NOTICE =
-    'Reasoning is visible because you are impersonating this account.'
 
 /**
  * The Helpdesk V2 version of this component is located in AiAgentReasoningHelpdeskV2.tsx
@@ -54,9 +51,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         REASONING_CUTOFF_DATE.getTime()
 
     const [state, setState] = useState<AiAgentReasoningState>(
-        isEvoliTicket && !isMessageAfterEvoliCutoff && !isImpersonated
-            ? 'static'
-            : 'collapsed',
+        isEvoliTicket && !isMessageAfterEvoliCutoff ? 'static' : 'collapsed',
     )
     const [isRetriable] = useState(true)
     const [isQueryEnabled, setIsQueryEnabled] = useState(false)
@@ -105,7 +100,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         (isQueryEnabled || isMessageInternalNote) &&
         ticketId > 0 &&
         messageId > 0 &&
-        (!isEvoliTicket || isMessageAfterEvoliCutoff || isImpersonated)
+        (!isEvoliTicket || isMessageAfterEvoliCutoff)
 
     const {
         reasoningContent,
@@ -250,9 +245,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                                 color="content-accent-default"
                             />
                         )}
-                        {isEvoliTicket &&
-                        !isMessageAfterEvoliCutoff &&
-                        !isImpersonated
+                        {isEvoliTicket && !isMessageAfterEvoliCutoff
                             ? EVOLI_STATIC_MESSAGE
                             : staticMessage}
                     </span>
@@ -355,26 +348,20 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                         {renderTitle()}
                     </div>
                 )}
-                {isImpersonated && isEvoliTicket && (
-                    <span className={css.impersonationNotice}>
-                        {IMPERSONATION_REASONING_NOTICE}
-                    </span>
+                {isEvoliTicket && isMessageAfterEvoliCutoff && (
+                    <div
+                        className={classNames(css.evoliMessage, {
+                            [css.expanded]: isExpanded,
+                        })}
+                    >
+                        <Icon
+                            name="info"
+                            size="sm"
+                            color="content-neutral-default"
+                        />
+                        <span>{EVOLI_BRAIN_MESSAGE}</span>
+                    </div>
                 )}
-                {isEvoliTicket &&
-                    (isMessageAfterEvoliCutoff || isImpersonated) && (
-                        <div
-                            className={classNames(css.evoliMessage, {
-                                [css.expanded]: isExpanded,
-                            })}
-                        >
-                            <Icon
-                                name="info"
-                                size="sm"
-                                color="content-neutral-default"
-                            />
-                            <span>{EVOLI_BRAIN_MESSAGE}</span>
-                        </div>
-                    )}
                 {renderBody()}
                 {renderFooter()}
             </div>

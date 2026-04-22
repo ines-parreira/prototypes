@@ -43,10 +43,7 @@ type AiAgentReasoningProps = {
 }
 
 const EVOLI_STATIC_MESSAGE =
-    "Message powered by AI Agent's new brain (beta). Reasoning will be available soon."
-
-const IMPERSONATION_REASONING_NOTICE =
-    'Reasoning is visible because you are impersonating this account.'
+    "Message powered by AI Agent's new brain (beta). Reasoning is not available for this ticket."
 
 export const AiAgentReasoningHelpdeskV2 = ({
     message,
@@ -60,7 +57,7 @@ export const AiAgentReasoningHelpdeskV2 = ({
         new Date(message.created_datetime).getTime() >
         REASONING_CUTOFF_DATE.getTime()
     const shouldUseEvoliStaticState =
-        isEvoliTicket && !isMessageAfterEvoliCutoff && !isImpersonated
+        isEvoliTicket && !isMessageAfterEvoliCutoff
 
     const [state, setState] = useState<AiAgentReasoningState>(
         shouldUseEvoliStaticState ? 'static' : 'collapsed',
@@ -75,7 +72,6 @@ export const AiAgentReasoningHelpdeskV2 = ({
     const searchParams = useMemo(() => new URLSearchParams(search), [search])
     const shouldDisplayExecutionId =
         isImpersonated || searchParams.get('showAiAgentExecutionIds') === 'true'
-    const shouldShowImpersonationNotice = isImpersonated && isEvoliTicket
 
     const ticketId = Number(ticket.get('id') ?? 0)
     const accountId = Number(account.get('id') ?? 0)
@@ -107,7 +103,7 @@ export const AiAgentReasoningHelpdeskV2 = ({
         (state !== 'collapsed' || isInternalNote) &&
         ticketId > 0 &&
         messageId > 0 &&
-        (!isEvoliTicket || isMessageAfterEvoliCutoff || isImpersonated)
+        (!isEvoliTicket || isMessageAfterEvoliCutoff)
 
     const {
         reasoningContent,
@@ -169,16 +165,6 @@ export const AiAgentReasoningHelpdeskV2 = ({
     if (isStatic) {
         return (
             <>
-                {shouldShowImpersonationNotice && (
-                    <span className={css.impersonationNotice}>
-                        <Icon
-                            name="info"
-                            size="sm"
-                            color="content-accent-default"
-                        />
-                        {IMPERSONATION_REASONING_NOTICE}
-                    </span>
-                )}
                 <div className={css.staticContainer}>
                     <span className={css.staticContent}>
                         {isEvoliTicket && (
@@ -237,16 +223,6 @@ export const AiAgentReasoningHelpdeskV2 = ({
 
     return (
         <>
-            {shouldShowImpersonationNotice && (
-                <span className={css.impersonationNotice}>
-                    <Icon
-                        name="info"
-                        size="sm"
-                        color="content-accent-default"
-                    />
-                    {IMPERSONATION_REASONING_NOTICE}
-                </span>
-            )}
             <Disclosure
                 isExpanded={isExpanded}
                 onExpandedChange={handleExpandedChange}

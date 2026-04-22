@@ -177,9 +177,7 @@ const ticket = Map({ id: 123 })
 const account = Map({ id: 456 })
 const currentUser = Map({ id: 789 })
 const EVOLI_STATIC_MESSAGE =
-    "Message powered by AI Agent's new brain (beta). Reasoning will be available soon."
-const IMPERSONATION_REASONING_NOTICE =
-    'Reasoning is visible because you are impersonating this account.'
+    "Message powered by AI Agent's new brain (beta). Reasoning is not available for this ticket."
 
 const refetch = jest.fn()
 const onReasoningOpened = jest.fn()
@@ -300,35 +298,6 @@ describe('AiAgentReasoningHelpdeskV2', () => {
         expect(screen.queryByText(EVOLI_STATIC_MESSAGE)).not.toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: /show reasoning/i }),
-        ).toBeInTheDocument()
-        expect(
-            screen.queryByText(IMPERSONATION_REASONING_NOTICE),
-        ).not.toBeInTheDocument()
-
-        await user.click(
-            screen.getByRole('button', { name: /show reasoning/i }),
-        )
-
-        expect(mockUseAiAgentReasoning).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                enabled: true,
-            }),
-        )
-    })
-
-    it('shows the impersonation notice and unlocks evoli reasoning while impersonating', async () => {
-        const user = userEvent.setup()
-        mockUseIsEvoliTicket.mockReturnValue(true)
-        mockIsSessionImpersonated.mockReturnValue(true)
-
-        renderComponent()
-
-        expect(screen.queryByText(EVOLI_STATIC_MESSAGE)).not.toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: /show reasoning/i }),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(IMPERSONATION_REASONING_NOTICE),
         ).toBeInTheDocument()
 
         await user.click(

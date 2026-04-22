@@ -20,4 +20,4 @@ export type AiAgentReasoningState =
 
 // For now, we do not want to show V3 reasoning in the UI.
 // Set this to a proper date once reasoning QA is done and reasoning is ready.
-export const REASONING_CUTOFF_DATE = new Date()
+export const REASONING_CUTOFF_DATE = new Date('2026-04-22')
