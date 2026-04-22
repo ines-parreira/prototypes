@@ -11,9 +11,11 @@ import {
     Text,
 } from '@gorgias/axiom'
 
+import { isGorgiasApiError } from 'models/api/types'
 import type { BillingState } from 'models/billing/types'
 
 import { ConfirmSummaryTable } from './ConfirmSummaryTable'
+import { useInternalConfirmChangesEstimate } from './useInternalConfirmChangesEstimate'
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
 const INVOICE_ACTIONS = ['with', 'without'] as const
@@ -38,9 +40,32 @@ export function InternalConfirmModal({
 }: InternalConfirmModalProps) {
     const [activeAction, setActiveAction] = useState<InvoiceAction | null>(null)
 
+    const {
+        data: estimate,
+        error: estimateError,
+        isLoading: isEstimateLoading,
+        isFetching: isEstimateFetching,
+        isError: isEstimateError,
+        refetch: refetchEstimate,
+    } = useInternalConfirmChangesEstimate(
+        isOpen,
+        resolvedPlans,
+        billingState.subscription.resource_version,
+        billingState.subscription.schedule_resource_version,
+    )
+
     const hasUpgrade = resolvedPlans.some(
         ({ status }) => status === 'upgraded' || status === 'added',
     )
+
+    const isApplyDisabled =
+        isSubmitting || isEstimateFetching || isEstimateError
+
+    const estimateErrorMessage = isEstimateError
+        ? isGorgiasApiError(estimateError)
+            ? estimateError.response.data.error.msg
+            : 'Failed to load estimate.'
+        : undefined
 
     function handleApply(action: InvoiceAction) {
         setActiveAction(action)
@@ -62,6 +87,10 @@ export function InternalConfirmModal({
                 <ConfirmSummaryTable
                     billingState={billingState}
                     resolvedPlans={resolvedPlans}
+                    balanceDue={estimate?.balance_due}
+                    isEstimateLoading={isEstimateLoading || isEstimateFetching}
+                    estimateErrorMessage={estimateErrorMessage}
+                    onRetryEstimate={() => void refetchEstimate()}
                 />
             </OverlayContent>
             <OverlayFooter>
@@ -74,7 +103,7 @@ export function InternalConfirmModal({
                                 isLoading={
                                     isSubmitting && activeAction === 'without'
                                 }
-                                isDisabled={isSubmitting}
+                                isDisabled={isApplyDisabled}
                             >
                                 Apply without invoice
                             </Button>
@@ -83,7 +112,7 @@ export function InternalConfirmModal({
                                 isLoading={
                                     isSubmitting && activeAction === 'with'
                                 }
-                                isDisabled={isSubmitting}
+                                isDisabled={isApplyDisabled}
                             >
                                 Apply with invoice
                             </Button>
@@ -92,7 +121,7 @@ export function InternalConfirmModal({
                         <Button
                             onClick={() => handleApply('without')}
                             isLoading={isSubmitting}
-                            isDisabled={isSubmitting}
+                            isDisabled={isApplyDisabled}
                         >
                             Apply
                         </Button>

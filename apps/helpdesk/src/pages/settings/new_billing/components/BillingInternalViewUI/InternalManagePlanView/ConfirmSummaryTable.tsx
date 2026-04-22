@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 
 import { formatAmount } from '@repo/billing'
 
-import { Box, Separator, Text } from '@gorgias/axiom'
+import { Box, Button, Separator, Skeleton, Text } from '@gorgias/axiom'
 
 import type { BillingState } from 'models/billing/types'
 import { getPlanPrice, isTrial } from 'models/billing/utils'
@@ -14,11 +14,19 @@ import css from './ConfirmSummaryTable.less'
 type ConfirmSummaryTableProps = {
     billingState: BillingState
     resolvedPlans: ResolvedPlan[]
+    balanceDue?: number | null
+    isEstimateLoading?: boolean
+    estimateErrorMessage?: string
+    onRetryEstimate?: () => void
 }
 
 export function ConfirmSummaryTable({
     billingState,
     resolvedPlans,
+    balanceDue,
+    isEstimateLoading = false,
+    estimateErrorMessage,
+    onRetryEstimate,
 }: ConfirmSummaryTableProps) {
     const cadence = billingState.current_plans.helpdesk.cadence
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
@@ -37,7 +45,6 @@ export function ConfirmSummaryTable({
     )
 
     const totalChanged = totalPrice !== currentTotalPrice
-    const balanceDue = totalPrice - currentTotalPrice
 
     const visiblePlans = resolvedPlans.filter(
         ({ plan, currentPlan }) => plan !== null || currentPlan !== null,
@@ -84,13 +91,43 @@ export function ConfirmSummaryTable({
                         </Text>
                     </Box>
                 </Box>
-                <Box justifyContent="space-between">
-                    <Text variant="bold">Balance due today</Text>
-                    <Text variant="bold" className={css.highlighted}>
-                        {formatAmount(Math.max(balanceDue, 0), currency)} due
-                        today
-                    </Text>
-                </Box>
+                {isEstimateLoading ? (
+                    <Box paddingTop="sm" flexDirection="column">
+                        <Skeleton />
+                    </Box>
+                ) : (
+                    <Box
+                        justifyContent="space-between"
+                        alignItems="center"
+                        gap="sm"
+                    >
+                        <Text variant="bold">Balance due today</Text>
+                        {estimateErrorMessage ? (
+                            <Box alignItems="center" gap="xs">
+                                <Text color="content-error-default" size="sm">
+                                    {estimateErrorMessage}
+                                </Text>
+                                {onRetryEstimate && (
+                                    <Button size="sm" onClick={onRetryEstimate}>
+                                        Retry
+                                    </Button>
+                                )}
+                            </Box>
+                        ) : balanceDue == null ? (
+                            <Text variant="bold" className={css.highlighted}>
+                                —
+                            </Text>
+                        ) : (
+                            <Text variant="bold" className={css.highlighted}>
+                                {formatAmount(
+                                    Math.max(balanceDue, 0),
+                                    currency,
+                                )}{' '}
+                                due today
+                            </Text>
+                        )}
+                    </Box>
+                )}
                 <Box marginTop="sm" marginBottom="sm" flexDirection="column">
                     <Text
                         size="sm"

@@ -18,6 +18,12 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 
 import { InternalManagePlanView } from './InternalManagePlanView'
 
+const mockUseGetBillingInternalEstimatesSubscription = jest.fn()
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    useGetBillingInternalEstimatesSubscription: (...args: unknown[]) =>
+        mockUseGetBillingInternalEstimatesSubscription(...args),
+}))
+
 jest.mock('models/billing/queries')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('pages/common/components/Loader/Loader', () => ({
@@ -45,6 +51,12 @@ function mockMutationHook() {
         mutateAsync: jest.fn().mockResolvedValue({ products: {} }),
         isLoading: false,
     } as any)
+    mockUseGetBillingInternalEstimatesSubscription.mockReturnValue({
+        data: { balance_due: 0, immediate_changes_summary: null },
+        isLoading: false,
+        isError: false,
+        refetch: jest.fn(),
+    })
 }
 
 function mockLoadingState() {
