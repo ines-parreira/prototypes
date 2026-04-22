@@ -4,7 +4,7 @@ import {
     useHelpdeskV2BaselineFlag,
 } from '@repo/feature-flags'
 import { useIsMobileResolution } from '@repo/hooks'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 import { renderHook } from '../../tests/render.utils'
 import { useHelpdeskV2MS3Flag } from '../useHelpdeskV2MS3Flag'
@@ -25,13 +25,24 @@ vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom')
     return {
         ...actual,
+        useLocation: vi.fn(),
         useParams: vi.fn(),
     }
 })
 
 describe('useHelpdeskV2MS3Flag', () => {
+    const mockLocation = (
+        pathname: string,
+    ): ReturnType<typeof useLocation> => ({
+        pathname,
+        search: '',
+        hash: '',
+        state: undefined,
+    })
+
     beforeEach(() => {
         vi.clearAllMocks()
+        vi.mocked(useLocation).mockReturnValue(mockLocation('/app/ticket/123'))
     })
 
     it('should return true when all conditions are met', () => {
@@ -118,6 +129,27 @@ describe('useHelpdeskV2MS3Flag', () => {
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
         vi.mocked(useParams).mockReturnValue({ ticketId: 'new' })
+
+        const { result } = renderHook(() => useHelpdeskV2MS3Flag())
+
+        expect(result.current).toBe(false)
+    })
+
+    it('should return false on the print route', () => {
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: vi.fn(),
+        })
+        vi.mocked(useFlag).mockImplementation((key: string) => {
+            if (key === FeatureFlagKey.UIVisionMilestone3) return true
+            return false
+        })
+        vi.mocked(useIsMobileResolution).mockReturnValue(false)
+        vi.mocked(useParams).mockReturnValue({ ticketId: '123' })
+        vi.mocked(useLocation).mockReturnValue(
+            mockLocation('/app/ticket/123/print'),
+        )
 
         const { result } = renderHook(() => useHelpdeskV2MS3Flag())
 

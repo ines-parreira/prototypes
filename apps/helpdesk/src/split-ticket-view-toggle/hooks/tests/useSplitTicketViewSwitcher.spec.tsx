@@ -75,6 +75,12 @@ describe('useSplitTicketViewSwitcher', () => {
 
             expect(history.location.pathname).toBe('/app/views/123')
         })
+
+        it('should not redirect from /app/ticket/TICKET_ID/print', () => {
+            const history = renderSwitcherHook('/app/ticket/123/print')
+
+            expect(history.location.pathname).toBe('/app/ticket/123/print')
+        })
     })
 
     describe('Split view disabled', () => {
@@ -111,6 +117,12 @@ describe('useSplitTicketViewSwitcher', () => {
             )
 
             expect(history.location.pathname).toBe('/app/ticket/456')
+        })
+
+        it('should not redirect from /app/ticket/TICKET_ID/print', () => {
+            const history = renderSwitcherHook('/app/ticket/123/print')
+
+            expect(history.location.pathname).toBe('/app/ticket/123/print')
         })
     })
 })

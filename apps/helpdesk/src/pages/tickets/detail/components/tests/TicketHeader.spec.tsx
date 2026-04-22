@@ -11,7 +11,7 @@ import moment from 'moment'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -156,6 +156,7 @@ jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () =>
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
     useParams: jest.fn(),
 }))
 
@@ -167,6 +168,7 @@ jest.mock('../TicketNavigation/hooks/useIsTicketNavigationAvailable')
 const mockUseIsTicketNavigationAvailable =
     useIsTicketNavigationAvailable as jest.Mock
 
+const useLocationMock = useLocation as jest.Mock
 const useParamsMock = useParams as jest.Mock
 const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
@@ -288,6 +290,12 @@ describe('<TicketHeader />', () => {
             createMockStandaloneAiAccess(),
         )
         mockUseIsTicketNavigationAvailable.mockReturnValue(false)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/ticket/123',
+            search: '',
+            hash: '',
+            state: undefined,
+        })
         useParamsMock.mockReturnValue({})
         mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, false)
 

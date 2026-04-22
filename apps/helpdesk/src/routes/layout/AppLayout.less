@@ -1,10 +1,21 @@
 :local {
     .handle {
         width: 16px;
+
+        @media print {
+            display: none !important;
+        }
     }
 
     .panelGroup {
         flex-shrink: 1;
         overflow: hidden;
+    }
+}
+
+@media print {
+    [data-panel-name='sidebar-expanded'],
+    [data-panel-name='sidebar-collapsed'] {
+        display: none !important;
     }
 }

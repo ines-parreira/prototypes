@@ -15,6 +15,10 @@ interface LocationState {
     skipRedirect?: boolean
 }
 
+const directTicketPathRegexp = /^\/app\/ticket\/\d+$/
+const excludedTicketSubPathRegexp =
+    /^\/app\/ticket\/\d+\/(?:edit-widgets|print)$/
+
 export default function useSplitTicketViewSwitcher() {
     const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
         FeatureFlagKey.RedirectDeprecatedTicketRoutes,
@@ -56,7 +60,7 @@ export default function useSplitTicketViewSwitcher() {
         if (!match) {
             match = matchPath(path, '/app/tickets/:viewId/:viewSlug?')
         }
-        if (!match) {
+        if (!match && directTicketPathRegexp.test(path)) {
             match = matchPath(path, '/app/ticket/:ticketId')
         }
 
@@ -85,7 +89,7 @@ export default function useSplitTicketViewSwitcher() {
 
         previousIsSplitTicketViewEnabled.current = isSplitTicketViewEnabled
 
-        if (path.match(/^\/app\/ticket\/\d+\/edit-widgets$/)) {
+        if (excludedTicketSubPathRegexp.test(path)) {
             return
         }
 
