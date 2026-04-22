@@ -131,8 +131,13 @@ const TopKnowledgeCard = ({
                 <DrillDownModalTrigger
                     openDrillDownModal={openDrillDownModal}
                     tooltipText={
-                        `AI Agent referenced this content in ${ticketCount} ` +
-                        (ticketCount === 1 ? 'ticket' : 'tickets')
+                        <>
+                            AI Agent referenced this content in{' '}
+                            <strong>
+                                {ticketCount}{' '}
+                                {ticketCount === 1 ? 'ticket' : 'tickets'}
+                            </strong>
+                        </>
                     }
                     enabled={ticketCount > 0}
                 >

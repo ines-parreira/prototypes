@@ -27,16 +27,21 @@ export const DisableIntentModal = ({
         <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">
             <OverlayHeader title="Disable intent?" />
             <OverlayContent>
-                <Text>
-                    AI Agent will stop handling this intent entirely and will
-                    automatically hand over tickets for{' '}
-                    <Text as="span" variant="bold">
-                        {trafficPercent !== undefined
-                            ? `${trafficPercent}%`
-                            : '–'}{' '}
-                        of your traffic.
+                {trafficPercent !== undefined ? (
+                    <Text>
+                        AI Agent will stop handling this intent entirely and
+                        will automatically hand over tickets for{' '}
+                        <Text as="span" variant="bold">
+                            {trafficPercent}% of your traffic.
+                        </Text>
                     </Text>
-                </Text>
+                ) : (
+                    <Text>
+                        AI Agent will stop handling this intent entirely and
+                        will automatically hand over tickets matching this
+                        intent.
+                    </Text>
+                )}
             </OverlayContent>
             <OverlayFooter hideCancelButton>
                 <Box gap="sm" justifyContent="flex-end" width="100%">

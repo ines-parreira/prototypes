@@ -27,11 +27,13 @@ import css from './IntentsTable.less'
 
 const TOOLTIP_MESSAGES = {
     L1_DISABLED:
-        'L1 intents are not linkable. Check L2 intents to enable or disable them.',
+        'This is an intent category. Expand it to link individual intents to a skill.',
     L2_LINKED:
         'This intent is linked to a skill. Open the linked skill to turn it off or remove this intent from it.',
     HANDOVER_ONLY:
         'This intent is set to handover only and cannot be linked to a skill.',
+    INTENT_DISABLED:
+        'Intent is disabled. Any conversations that match this intent, will be handover to an agent.',
 } as const
 
 export const COLUMN_IDS = {
@@ -378,6 +380,7 @@ export const getColumns = ({
                     intent.name,
                 )
                 const isDisabled = isParent || isLinked || isHandoverOnly
+                const isIntentDisabled = intent.toggleState === 'disabled'
                 const toggleValue = intent.toggleState === 'enabled'
 
                 const toggle = (
@@ -390,7 +393,18 @@ export const getColumns = ({
                     />
                 )
 
-                if (!isDisabled) return toggle
+                if (!isDisabled) {
+                    if (isIntentDisabled) {
+                        return (
+                            <Tooltip trigger={toggle}>
+                                <TooltipContent
+                                    caption={TOOLTIP_MESSAGES.INTENT_DISABLED}
+                                />
+                            </Tooltip>
+                        )
+                    }
+                    return toggle
+                }
 
                 const tooltipMessage = isParent
                     ? TOOLTIP_MESSAGES.L1_DISABLED

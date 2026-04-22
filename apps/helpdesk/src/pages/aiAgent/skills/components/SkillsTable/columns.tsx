@@ -104,7 +104,7 @@ export const getColumns = ({
             <SortableHeaderCell
                 label="Intents"
                 sortDirection={info.column.getIsSorted()}
-                tooltipTitle="Intents linked to the skill"
+                tooltipTitle="Intents are how Gorgias classifies what a conversation is about. When AI Agent detects a linked intent, it follows that skill's instructions."
             />
         ),
         cell: ({ row }) => {
@@ -153,7 +153,6 @@ export const getColumns = ({
             <SortableHeaderCell
                 label="Ticket volume"
                 sortDirection={info.column.getIsSorted()}
-                tooltipTitle="Number of tickets using this skill"
             />
         ),
         cell: ({ row }) => {

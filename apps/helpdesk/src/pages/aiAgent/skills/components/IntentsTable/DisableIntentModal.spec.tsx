@@ -38,10 +38,14 @@ describe('DisableIntentModal', () => {
         expect(screen.getByText(/30%/)).toBeInTheDocument()
     })
 
-    it('should display dash when trafficPercent is not provided', () => {
+    it('should display fallback copy when trafficPercent is not provided', () => {
         renderComponent({ trafficPercent: undefined })
 
-        expect(screen.getByText(/–/)).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                /automatically hand over tickets matching this intent/i,
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should not render when closed', () => {

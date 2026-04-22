@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react'
+import type { PropsWithChildren, ReactNode } from 'react'
 
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
@@ -12,7 +12,7 @@ import css from './DrillDownModalTrigger.less'
 export const TRIGGER_ID = 'drill-down'
 
 type Props = {
-    tooltipText: string
+    tooltipText: ReactNode
     enabled?: boolean
     highlighted?: boolean
     openDrillDownModal: () => void

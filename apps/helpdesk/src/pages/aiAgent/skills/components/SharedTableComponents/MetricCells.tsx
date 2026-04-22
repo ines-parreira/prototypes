@@ -62,6 +62,7 @@ export const MetricCell = (props: MetricCellProps) => {
         dateRange: props.dateRange,
         outcomeCustomFieldId: props.outcomeCustomFieldId,
         intentCustomFieldId: props.intentCustomFieldId,
+        title: knowledgeData?.title,
     })
 
     const {
@@ -92,6 +93,7 @@ export const MetricCell = (props: MetricCellProps) => {
             flexDirection={props?.isRow ? 'row' : 'column'}
             gap={props.isSmall ? 'xxxxs' : 'xxs'}
             className={css.metricCell}
+            onClick={(e) => e.stopPropagation()}
         >
             <DrillDownModalTrigger
                 openDrillDownModal={openDrillDownModal}

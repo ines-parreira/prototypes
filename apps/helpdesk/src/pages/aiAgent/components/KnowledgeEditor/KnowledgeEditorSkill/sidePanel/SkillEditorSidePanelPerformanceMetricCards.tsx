@@ -66,6 +66,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                         <>
                             <MetricCell
                                 type="knowledge"
+                                title="Ticket volume"
                                 metricName={KnowledgeMetric.Tickets}
                                 value={tickets}
                                 displayValue={String(tickets)}
@@ -79,6 +80,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                             />
                             <MetricCell
                                 type="knowledge"
+                                title="Ticket volume"
                                 metricName={KnowledgeMetric.Tickets}
                                 value={tickets}
                                 displayValue={`${ticketPercentageValue}%`}
@@ -112,6 +114,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 ) : (
                     <MetricCell
                         type="knowledge"
+                        title="Handover tickets"
                         metricName={KnowledgeMetric.HandoverTickets}
                         value={handoverTickets}
                         displayValue={String(handoverTickets)}
@@ -140,6 +143,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 ) : (
                     <MetricCell
                         type="knowledge"
+                        title="Average CSAT"
                         metricName={KnowledgeMetric.CSAT}
                         value={csat!}
                         displayValue={formattedCsat}

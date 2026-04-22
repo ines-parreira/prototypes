@@ -92,7 +92,9 @@ export const SkillToolbarControls = () => {
 
     const isBusy = isUpdating || isAutoSaving
 
-    const getValidationTooltip = (): string | undefined => {
+    const getValidationTooltip = (
+        action: 'publish' | 'enable',
+    ): string | undefined => {
         if (formValid) return undefined
 
         const missing = [
@@ -100,6 +102,16 @@ export const SkillToolbarControls = () => {
             !hasContent && 'instructions',
             !hasIntents && 'intents',
         ].filter(Boolean)
+
+        if (action === 'enable') {
+            if (missing.length > 1)
+                return 'Fill in the required fields to enable this skill'
+            if (!hasTitle) return 'Add a title to enable this skill'
+            if (!hasContent) return 'Add instructions to enable this skill'
+            if (!hasIntents)
+                return 'Link at least one intent to enable this skill'
+            return undefined
+        }
 
         if (missing.length > 1)
             return 'Fill in the required fields to publish changes'
@@ -109,7 +121,8 @@ export const SkillToolbarControls = () => {
         return undefined
     }
 
-    const validationTooltip = getValidationTooltip()
+    const publishValidationTooltip = getValidationTooltip('publish')
+    const enableValidationTooltip = getValidationTooltip('enable')
 
     const onOpenEnableModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'enable' })
@@ -162,10 +175,13 @@ export const SkillToolbarControls = () => {
         <TestButton onTest={playground.onTest} disabled={isBusy} />
     ) : null
 
-    const wrapWithValidationTooltip = (button: React.ReactElement) =>
-        validationTooltip ? (
+    const wrapWithValidationTooltip = (
+        button: React.ReactElement,
+        tooltip: string | undefined,
+    ) =>
+        tooltip ? (
             <Tooltip placement="bottom" trigger={button}>
-                <TooltipContent caption={validationTooltip} />
+                <TooltipContent caption={tooltip} />
             </Tooltip>
         ) : (
             button
@@ -179,6 +195,7 @@ export const SkillToolbarControls = () => {
         >
             Enable
         </Button>,
+        enableValidationTooltip,
     )
 
     const disableButton = (
@@ -199,6 +216,7 @@ export const SkillToolbarControls = () => {
         >
             Publish changes
         </Button>,
+        publishValidationTooltip,
     )
 
     const restoreButton = (

@@ -82,7 +82,7 @@ export const useSkillPublishModal = () => {
                     })
                     dispatch({ type: 'SET_VISIBILITY', payload: true })
                     dispatch({ type: 'SET_MODE', payload: 'edit' })
-                    notifySuccess('Skill published successfully.')
+                    notifySuccess('Changes published')
                     onUpdateFn?.()
                     handleVisibilityUpdate?.('PUBLIC')
                     invalidateAffectedCaches()

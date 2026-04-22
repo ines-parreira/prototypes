@@ -39,7 +39,7 @@ jest.mock('@repo/reporting', () => ({
         enabled,
     }: {
         children: React.ReactNode
-        tooltipText: string
+        tooltipText: React.ReactNode
         openDrillDownModal: () => void
         enabled: boolean
     }) => (
@@ -209,11 +209,7 @@ describe('SkillEditorSidePanelTopKnowledgeSection', () => {
                 />,
             )
 
-            expect(
-                screen.getByText(
-                    'AI Agent referenced this content in 1 ticket',
-                ),
-            ).toBeInTheDocument()
+            expect(screen.getByText('1 ticket')).toBeInTheDocument()
         })
 
         it('uses plural "tickets" in tooltip for count > 1', () => {
@@ -225,11 +221,7 @@ describe('SkillEditorSidePanelTopKnowledgeSection', () => {
                 />,
             )
 
-            expect(
-                screen.getByText(
-                    'AI Agent referenced this content in 5 tickets',
-                ),
-            ).toBeInTheDocument()
+            expect(screen.getByText('5 tickets')).toBeInTheDocument()
         })
     })
 

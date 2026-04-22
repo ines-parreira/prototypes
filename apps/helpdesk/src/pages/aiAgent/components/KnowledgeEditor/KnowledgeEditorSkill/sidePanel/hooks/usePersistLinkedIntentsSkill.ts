@@ -39,18 +39,6 @@ export const usePersistLinkedIntentsSkill = () => {
 
     const appDispatch = useAppDispatch()
 
-    const notifySuccess = useCallback(
-        (message: string) =>
-            appDispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Success,
-                    position: POSITIONS.bottomRight,
-                }),
-            ),
-        [appDispatch],
-    )
-
     const notifyError = useCallback(
         (message: string) =>
             appDispatch(
@@ -69,11 +57,7 @@ export const usePersistLinkedIntentsSkill = () => {
     const queryClient = useQueryClient()
 
     const persistLinkedIntents = useCallback(
-        async (
-            nextLinkedIntentIds: string[],
-            onSuccess: () => void,
-            successMessage?: string,
-        ) => {
+        async (nextLinkedIntentIds: string[], onSuccess: () => void) => {
             if (!skillId || !skillLocale || isUpdating || isAutoSaving) {
                 return
             }
@@ -111,7 +95,6 @@ export const usePersistLinkedIntentsSkill = () => {
                     queryKey: helpCenterKeys.intents(helpCenterId),
                 })
 
-                notifySuccess(successMessage ?? 'Intent successfully linked')
                 onUpdateFn?.()
                 onSuccess()
             } catch {
@@ -131,7 +114,6 @@ export const usePersistLinkedIntentsSkill = () => {
             updateGuidanceArticle,
             queryClient,
             onUpdateFn,
-            notifySuccess,
             notifyError,
         ],
     )
@@ -145,12 +127,8 @@ export const usePersistLinkedIntentsSkill = () => {
             const nextIntentIds = currentIntentIds.filter(
                 (id) => id !== intentIdToRemove,
             )
-            const message =
-                nextIntentIds.length === 0
-                    ? 'Intent and skill successfully disabled'
-                    : 'Intent successfully disabled'
 
-            await persistLinkedIntents(nextIntentIds, onSuccess, message)
+            await persistLinkedIntents(nextIntentIds, onSuccess)
         },
         [persistLinkedIntents],
     )

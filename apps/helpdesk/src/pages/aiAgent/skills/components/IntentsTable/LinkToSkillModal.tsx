@@ -89,7 +89,7 @@ export const LinkToSkillModal = ({
         >
             <OverlayHeader
                 title={
-                    <Heading size="lg">Link intent to existent skill</Heading>
+                    <Heading size="lg">Link intent to existing skill</Heading>
                 }
             />
             <OverlayContent display="block">
@@ -144,7 +144,7 @@ export const LinkToSkillModal = ({
                         isDisabled={selectedArticleId === null}
                         isLoading={isLoading}
                     >
-                        Link
+                        Review and test
                     </Button>
                 </Box>
             </OverlayFooter>

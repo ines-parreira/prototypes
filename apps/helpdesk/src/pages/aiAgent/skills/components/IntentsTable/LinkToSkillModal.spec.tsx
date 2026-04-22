@@ -105,13 +105,23 @@ describe('LinkToSkillModal', () => {
         expect(screen.getByText('Shipping address updates')).toBeInTheDocument()
     })
 
-    it('should call onConfirm with intentId and full article when Link is clicked', async () => {
+    it('renders the modal title with correct text', () => {
+        renderComponent()
+
+        expect(
+            screen.getByText('Link intent to existing skill'),
+        ).toBeInTheDocument()
+    })
+
+    it('should call onConfirm with intentId and full article when Review and test is clicked', async () => {
         const user = userEvent.setup()
         const onConfirm = jest.fn()
         renderComponent({ onConfirm })
 
         await user.click(screen.getByText('Order cancellations'))
-        await user.click(screen.getByRole('button', { name: /^link$/i }))
+        await user.click(
+            screen.getByRole('button', { name: /^review and test$/i }),
+        )
 
         expect(onConfirm).toHaveBeenCalledWith(
             'order::payment',

@@ -204,9 +204,7 @@ describe('useSkillPublishModal', () => {
             await result.current.onPublish('msg')
         })
 
-        expect(mockNotifySuccess).toHaveBeenCalledWith(
-            'Skill published successfully.',
-        )
+        expect(mockNotifySuccess).toHaveBeenCalledWith('Changes published')
         expect(mockOnUpdateFn).toHaveBeenCalled()
         expect(mockHandleVisibilityUpdate).toHaveBeenCalledWith('PUBLIC')
     })

@@ -440,7 +440,34 @@ describe('IntentsTable', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText(/L1 intents are not linkable/i),
+                    screen.getByText(/This is an intent category/i),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should show tooltip for a disabled (not handover-only) L2 intent toggle', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(async () => {
+                const toggles = screen.getAllByRole('switch')
+                const disabledToggle = toggles.find((toggle) =>
+                    toggle.closest('tr')?.textContent?.includes('Cancel'),
+                )
+                expect(disabledToggle).toBeDefined()
+                await user.hover(disabledToggle!)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        /Intent is disabled\. Any conversations that match this intent, will be handover to an agent\./i,
+                    ),
                 ).toBeInTheDocument()
             })
         })

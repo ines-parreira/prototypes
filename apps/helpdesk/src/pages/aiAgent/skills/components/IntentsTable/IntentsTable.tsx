@@ -188,7 +188,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         updateIntentStatus(pendingDisableIntent.id, IntentStatus.Handover)
             .then(() => {
                 setPendingDisableIntent(null)
-                notifySuccess('Intent successfully disabled')
+                notifySuccess('Intent disabled')
             })
             .catch(() =>
                 notifyError('An error occurred while disabling the intent'),
@@ -245,7 +245,6 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                         queryKey: helpCenterKeys.intents(helpCenterId),
                     })
                     setPendingLinkIntentId(null)
-                    notifySuccess('Intent successfully linked to skill')
                     history.push(routes.skillDetail(article.id))
                 })
                 .catch(() =>
@@ -256,7 +255,6 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
             updateGuidanceArticle,
             queryClient,
             helpCenterId,
-            notifySuccess,
             notifyError,
             history,
             routes,
