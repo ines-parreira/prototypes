@@ -7,7 +7,7 @@ import OpenAPIClientAxios from 'openapi-client-axios'
 import type { Client } from './client.generated'
 import OpenAPIDoc from './gorgias-chat-protected-api.openapi.json'
 
-function getGorgiasChatApiBaseUrl(): string {
+export function getGorgiasChatApiBaseUrl(): string {
     if (isProduction()) {
         return 'https://us-east1-898b.gorgias.chat'
     }

@@ -106,6 +106,33 @@ jest.mock(
     },
 )
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreviewDefault/ChatPreviewDefault',
+    () => {
+        const React = require('react')
+
+        const ChatPreviewDefault = React.forwardRef(
+            (
+                props: {
+                    onLoaded?: (
+                        gorgiasChat: NonNullable<Window['GorgiasChat']>,
+                    ) => void
+                },
+                ref: React.Ref<ChatPreviewHandle>,
+            ) => {
+                React.useImperativeHandle(ref, () => ({
+                    iframeRef: { current: null },
+                    isLoaded: mockIsLoaded,
+                    hasError: mockHasError,
+                }))
+                return <div data-testid="chat-preview-default" />
+            },
+        )
+
+        return { ChatPreviewDefault }
+    },
+)
+
 const { mockGorgiasChat, triggerOnLoaded } = jest.requireMock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreview',
 )
@@ -462,6 +489,57 @@ describe('ChatPreviewPanel', () => {
             expect(
                 mockGorgiasChat.updateSelfServiceConfiguration,
             ).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('withHeader prop', () => {
+        it('does not render header when withHeader is false', () => {
+            renderComponent('test-app-id', { withHeader: false })
+
+            expect(screen.queryByText('Chat preview')).not.toBeInTheDocument()
+        })
+
+        it('renders header by default', () => {
+            renderComponent('test-app-id')
+
+            expect(screen.getByText('Chat preview')).toBeInTheDocument()
+        })
+    })
+
+    describe('supportDefaultChatPreview prop', () => {
+        it('renders ChatPreviewDefault when appId is null and supportDefaultChatPreview is true', () => {
+            renderComponent(null, { supportDefaultChatPreview: true })
+
+            expect(
+                screen.getByTestId('chat-preview-default'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    'Connect a Chat or Help Center to your store to use this feature.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders warning banner when appId is null and supportDefaultChatPreview is false', () => {
+            renderComponent(null, { supportDefaultChatPreview: false })
+
+            expect(
+                screen.getByText(
+                    'Connect a Chat or Help Center to your store to use this feature.',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('chat-preview-default'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders ChatPreview when appId is provided regardless of supportDefaultChatPreview', () => {
+            renderComponent('test-app-id', { supportDefaultChatPreview: true })
+
+            expect(screen.getByTestId('chat-preview')).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('chat-preview-default'),
+            ).not.toBeInTheDocument()
         })
     })
 

@@ -34,6 +34,7 @@ import type {
 
 import { ChatPreview } from './components/ChatPreview/ChatPreview'
 import type { ChatPreviewHandle } from './components/ChatPreview/ChatPreview'
+import { ChatPreviewDefault } from './components/ChatPreviewDefault/ChatPreviewDefault'
 
 import css from './ChatPreviewPanel.less'
 
@@ -84,10 +85,22 @@ type Props = {
     headerActions?: ReactNode
     locale?: LANGUAGE
     onPreviewLoaded?: () => void
+    withHeader?: boolean
+    supportDefaultChatPreview?: boolean
 }
 
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
-    ({ appId, headerActions, locale, onPreviewLoaded }: Props, ref) => {
+    (
+        {
+            appId,
+            headerActions,
+            locale,
+            onPreviewLoaded,
+            withHeader = true,
+            supportDefaultChatPreview = false,
+        }: Props,
+        ref,
+    ) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
         const [selectedPage, setSelectedPage] =
             useState<ChatPreviewPage>('homepage')
@@ -226,7 +239,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
         const simulateConversation = useCallback(
             (messages: SimulateConversationMessage[]) => {
                 withGorgiasChat((gorgiasChat) => {
-                    gorgiasChat.simulateConversation?.(messages, 0)
+                    gorgiasChat.simulateConversation?.(messages, 1500)
                 })
             },
             [],
@@ -263,6 +276,41 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             [selectedPage, onPreviewLoaded, locale, createIframeObject],
         )
 
+        const renderPreviewContent = () => {
+            if (appId) {
+                return (
+                    <ChatPreview
+                        key={chatPreviewKey}
+                        ref={chatPreviewRef}
+                        appId={appId}
+                        language={locale}
+                        onLoaded={onLoaded}
+                    />
+                )
+            }
+
+            if (supportDefaultChatPreview) {
+                return (
+                    <ChatPreviewDefault
+                        key={chatPreviewKey}
+                        ref={chatPreviewRef}
+                        onLoaded={onLoaded}
+                    />
+                )
+            }
+
+            return (
+                <Box p="md">
+                    <Banner
+                        intent="warning"
+                        icon="triangle-warning"
+                        isClosable={false}
+                        title="Connect a Chat or Help Center to your store to use this feature."
+                    />
+                </Box>
+            )
+        }
+
         useImperativeHandle(ref, () => ({
             displayPage,
             updatePosition,
@@ -283,51 +331,39 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
 
         return (
             <Box flexDirection="column" className={css.panel}>
+                {withHeader && (
+                    <Box
+                        alignItems="center"
+                        justifyContent="space-between"
+                        className={css.header}
+                    >
+                        <Text variant={TextVariant.Medium}>Chat preview</Text>
+                        {headerActions ??
+                            (appId && (
+                                <ButtonGroup
+                                    selectedKey={selectedPage}
+                                    defaultSelectedKey="homepage"
+                                    onSelectionChange={handlePageChange}
+                                >
+                                    <ButtonGroupItem
+                                        id="homepage"
+                                        icon={<Icon name="nav-home" />}
+                                    />
+                                    <ButtonGroupItem
+                                        id="conversation"
+                                        icon={
+                                            <Icon name="comm-chat-conversation-circle" />
+                                        }
+                                    />
+                                </ButtonGroup>
+                            ))}
+                    </Box>
+                )}
                 <Box
-                    alignItems="center"
-                    justifyContent="space-between"
-                    className={css.header}
+                    flexGrow={appId || supportDefaultChatPreview ? 1 : 0}
+                    className={css.content}
                 >
-                    <Text variant={TextVariant.Medium}>Chat preview</Text>
-                    {headerActions ??
-                        (appId && (
-                            <ButtonGroup
-                                selectedKey={selectedPage}
-                                defaultSelectedKey="homepage"
-                                onSelectionChange={handlePageChange}
-                            >
-                                <ButtonGroupItem
-                                    id="homepage"
-                                    icon={<Icon name="nav-home" />}
-                                />
-                                <ButtonGroupItem
-                                    id="conversation"
-                                    icon={
-                                        <Icon name="comm-chat-conversation-circle" />
-                                    }
-                                />
-                            </ButtonGroup>
-                        ))}
-                </Box>
-                <Box flexGrow={appId ? 1 : 0} className={css.content}>
-                    {appId ? (
-                        <ChatPreview
-                            key={chatPreviewKey}
-                            ref={chatPreviewRef}
-                            appId={appId}
-                            language={locale}
-                            onLoaded={onLoaded}
-                        />
-                    ) : (
-                        <Box p="md">
-                            <Banner
-                                intent="warning"
-                                icon="triangle-warning"
-                                isClosable={false}
-                                title="Connect a Chat or Help Center to your store to use this feature."
-                            />
-                        </Box>
-                    )}
+                    {renderPreviewContent()}
                 </Box>
             </Box>
         )

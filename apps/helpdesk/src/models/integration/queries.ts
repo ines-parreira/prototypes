@@ -15,6 +15,7 @@ import GorgiasApi from 'services/gorgiasApi'
 import {
     getApplications,
     getInstallationSnippet,
+    getPreviewInstallationSnippet,
 } from 'state/integrations/actions/gorgias-chat.actions'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 
@@ -53,6 +54,21 @@ export const useGetInstallationSnippet = (
             )
         },
         ...overrides,
+    })
+
+export const useGetPreviewInstallationSnippet = () =>
+    useQuery({
+        queryKey: [
+            'integration',
+            'gorgias-chat',
+            'getPreviewInstallationSnippet',
+        ],
+        queryFn: getPreviewInstallationSnippet,
+        onError: () => {
+            reportError(
+                new Error('Failed to fetch chat preview installation snippet'),
+            )
+        },
     })
 
 export const useApplications = () =>

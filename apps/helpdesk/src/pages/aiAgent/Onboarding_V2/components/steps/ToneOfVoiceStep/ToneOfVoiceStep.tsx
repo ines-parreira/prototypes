@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
@@ -23,9 +24,11 @@ import {
     OnboardingContentContainer,
 } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
+import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 
 import { ToneOfVoiceFormSection } from './components/ToneOfVoiceFormSection'
-import { ToneOfVoicePreviewSection } from './components/ToneOfVoicePreviewSection'
+import { ToneOfVoicePreviewSection as ToneOfVoicePreviewSectionLegacy } from './legacy/ToneOfVoicePreviewSection'
+import { ToneOfVoicePreviewSection } from './revamp/ToneOfVoicePreviewSection'
 
 const toneOfVoiceSchema = z
     .object({
@@ -75,6 +78,15 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
 
     const gorgiasDomain = useAppSelector(getCurrentDomain)
     const scopes = useAiAgentScopesForAutomationPlan(shopName)
+
+    const { value: isChatSettingsRevampEnabled } = useFlagWithLoading(
+        FeatureFlagKey.ChatSettingsRevamp,
+    )
+
+    const chatIntegration = useAppSelector(
+        getGorgiasChatIntegrationsByStoreName(shopName),
+    )
+    const appId = chatIntegration?.meta.app_id ?? null
 
     useCheckStoreIntegration(!isFirstStep)
     useCheckOnboardingCompleted()
@@ -198,15 +210,28 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
                         isPreviewError={isCustomToneOfVoicePreviewError}
                     />
                 </OnboardingContentContainer>
-                <ToneOfVoicePreviewSection
-                    toneOfVoice={toneOfVoice}
-                    latestCustomToneOfVoicePreview={
-                        latestCustomToneOfVoicePreview
-                    }
-                    isCustomToneOfVoicePreviewLoading={
-                        isCustomToneOfVoicePreviewLoading
-                    }
-                />
+                {isChatSettingsRevampEnabled ? (
+                    <ToneOfVoicePreviewSection
+                        appId={appId}
+                        toneOfVoice={toneOfVoice}
+                        latestCustomToneOfVoicePreview={
+                            latestCustomToneOfVoicePreview
+                        }
+                        isCustomToneOfVoicePreviewLoading={
+                            isCustomToneOfVoicePreviewLoading
+                        }
+                    />
+                ) : (
+                    <ToneOfVoicePreviewSectionLegacy
+                        toneOfVoice={toneOfVoice}
+                        latestCustomToneOfVoicePreview={
+                            latestCustomToneOfVoicePreview
+                        }
+                        isCustomToneOfVoicePreviewLoading={
+                            isCustomToneOfVoicePreviewLoading
+                        }
+                    />
+                )}
             </OnboardingBody>
         </FormProvider>
     )

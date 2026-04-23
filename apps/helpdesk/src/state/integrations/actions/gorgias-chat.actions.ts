@@ -3,7 +3,10 @@ import type {
     GetInstallationSnippetParams,
     GetInstallationSnippetResponse,
 } from 'models/integration/types'
-import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
+import {
+    getGorgiasChatApiBaseUrl,
+    getGorgiasChatProtectedApiClient,
+} from 'rest_api/gorgias_chat_protected_api/client'
 import type {
     InstallationStatus,
     InstallationStatuses,
@@ -64,6 +67,18 @@ export async function getInstallationSnippet(
     const { data }: { data: GetInstallationSnippetResponse } =
         await client.getInstallationSnippet(params)
     return data
+}
+
+export async function getPreviewInstallationSnippet(): Promise<GetInstallationSnippetResponse> {
+    const baseUrl = getGorgiasChatApiBaseUrl()
+    const scriptSrc = `${baseUrl}/bundle-loader/preview`
+
+    return {
+        snippet: `<script id="gorgias-chat-widget-install-v3" src="${scriptSrc}"></script>`,
+        snippetVersion:
+            'v3' as GetInstallationSnippetResponse['snippetVersion'],
+        appKey: 'preview',
+    }
 }
 
 export async function getApplications() {
