@@ -369,12 +369,12 @@ describe('<ConditionValueInput />', () => {
         })
     })
 
-    describe('sms_state field (SmsStateValueSelect)', () => {
+    describe('sms_consent_status field (SmsConsentStatusValueSelect)', () => {
         it('should render "Select status" placeholder when no value is set', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="sms_state"
+                    field="sms_consent_status"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}
@@ -388,7 +388,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="sms_state"
+                    field="sms_consent_status"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}
@@ -403,7 +403,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="sms_state"
+                    field="sms_consent_status"
                     value="subscribed"
                     onChange={mockOnChange}
                     isUnary={false}
@@ -418,7 +418,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="sms_state"
+                    field="sms_consent_status"
                     value="not_subscribed"
                     onChange={mockOnChange}
                     isUnary={false}
@@ -435,7 +435,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="sms_state"
+                    field="sms_consent_status"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}
@@ -456,7 +456,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="sms_state"
+                    field="sms_consent_status"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}
@@ -477,7 +477,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="sms_state"
+                    field="sms_consent_status"
                     value="subscribed"
                     onChange={mockOnChange}
                     isUnary={false}

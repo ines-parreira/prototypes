@@ -27,7 +27,10 @@ const mockSchema: ConditionsSchema = {
     objects: {
         shopper: {
             fields: {
-                sms_state: { type: 'string', operators: ['eq', 'neq'] },
+                sms_consent_status: {
+                    type: 'string',
+                    operators: ['eq', 'neq'],
+                },
                 name: { type: 'string', operators: ['eq'] },
             },
             aggregates: {
@@ -60,7 +63,7 @@ describe('OPERATOR_LABELS', () => {
 
 describe('toLabel', () => {
     it('should replace underscores with spaces and capitalize each word', () => {
-        expect(toLabel('sms_state')).toBe('Sms State')
+        expect(toLabel('sms_consent_status')).toBe('Sms Consent Status')
         expect(toLabel('lifetime_value')).toBe('Lifetime Value')
     })
 
@@ -71,8 +74,8 @@ describe('toLabel', () => {
 
 describe('buildSelectId', () => {
     it('should build an id with "field" when isAggregate is false', () => {
-        expect(buildSelectId('shopper', 'sms_state', false)).toBe(
-            'shopper:field:sms_state',
+        expect(buildSelectId('shopper', 'sms_consent_status', false)).toBe(
+            'shopper:field:sms_consent_status',
         )
     })
 
@@ -85,9 +88,9 @@ describe('buildSelectId', () => {
 
 describe('parseSelectId', () => {
     it('should parse a field id correctly', () => {
-        expect(parseSelectId('shopper:field:sms_state')).toEqual({
+        expect(parseSelectId('shopper:field:sms_consent_status')).toEqual({
             object: 'shopper',
-            field: 'sms_state',
+            field: 'sms_consent_status',
             isAggregate: false,
         })
     })
@@ -103,13 +106,20 @@ describe('parseSelectId', () => {
     it('should return null when the id does not have exactly 3 parts', () => {
         expect(parseSelectId('shopper:field')).toBeNull()
         expect(parseSelectId('shopper')).toBeNull()
-        expect(parseSelectId('shopper:field:sms_state:extra')).toBeNull()
+        expect(
+            parseSelectId('shopper:field:sms_consent_status:extra'),
+        ).toBeNull()
     })
 })
 
 describe('getFieldDef', () => {
     it('should return the FieldDef for a known field', () => {
-        const result = getFieldDef(mockSchema, 'shopper', 'sms_state', false)
+        const result = getFieldDef(
+            mockSchema,
+            'shopper',
+            'sms_consent_status',
+            false,
+        )
         expect(result).toEqual({ type: 'string', operators: ['eq', 'neq'] })
     })
 
@@ -124,7 +134,12 @@ describe('getFieldDef', () => {
 
     it('should return null when the object does not exist', () => {
         expect(
-            getFieldDef(mockSchema, 'unknown_object', 'sms_state', false),
+            getFieldDef(
+                mockSchema,
+                'unknown_object',
+                'sms_consent_status',
+                false,
+            ),
         ).toBeNull()
     })
 
@@ -150,7 +165,7 @@ describe('buildSections', () => {
                 name: 'Shopper characteristics',
                 items: [
                     {
-                        id: 'shopper:field:sms_state',
+                        id: 'shopper:field:sms_consent_status',
                         label: 'SMS subscription status',
                     },
                 ],
@@ -167,7 +182,7 @@ describe('buildSections', () => {
     })
 
     it('should return an empty array when none of the allowed fields exist in schema', () => {
-        const schemaWithoutSmsState: ConditionsSchema = {
+        const schemaWithoutSmsConsentStatus: ConditionsSchema = {
             operators: { comparison: [], set: [], unary: [] },
             objects: {
                 shopper: {
@@ -175,7 +190,7 @@ describe('buildSections', () => {
                 },
             },
         }
-        expect(buildSections(schemaWithoutSmsState)).toEqual([])
+        expect(buildSections(schemaWithoutSmsConsentStatus)).toEqual([])
     })
 })
 

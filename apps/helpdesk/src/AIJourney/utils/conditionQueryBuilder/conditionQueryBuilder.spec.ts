@@ -18,7 +18,10 @@ const schema: ConditionsSchema = {
     objects: {
         shopper: {
             fields: {
-                sms_state: { type: 'string', operators: ['eq', 'isEmpty'] },
+                sms_consent_status: {
+                    type: 'string',
+                    operators: ['eq', 'isEmpty'],
+                },
                 order_count: { type: 'number', operators: ['gt'] },
                 tags: {
                     type: 'array_string',
@@ -83,7 +86,7 @@ const schema: ConditionsSchema = {
 
 const baseCondition: ConditionState = {
     object: 'shopper',
-    field: 'sms_state',
+    field: 'sms_consent_status',
     isAggregate: false,
     operator: 'eq',
     value: 'subscribed',
@@ -153,7 +156,7 @@ describe('buildFullQuery', () => {
                 value: null,
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                'isEmpty(shopper.sms_state)',
+                'isEmpty(shopper.sms_consent_status)',
             )
         })
     })
@@ -215,7 +218,7 @@ describe('buildFullQuery', () => {
                 value: 'subscribed',
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "eq(shopper.sms_state, 'subscribed')",
+                "eq(shopper.sms_consent_status, 'subscribed')",
             )
         })
 
@@ -312,7 +315,7 @@ describe('buildFullQuery', () => {
                 value: "Women's K1 Flux",
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "eq(shopper.sms_state, 'Women\\'s K1 Flux')",
+                "eq(shopper.sms_consent_status, 'Women\\'s K1 Flux')",
             )
         })
 
@@ -346,7 +349,7 @@ describe('buildFullQuery', () => {
                 value: 'Summer\\Fall',
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "eq(shopper.sms_state, 'Summer\\\\Fall')",
+                "eq(shopper.sms_consent_status, 'Summer\\\\Fall')",
             )
         })
 
@@ -374,13 +377,13 @@ describe('buildFullQuery', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
                 whereClause: {
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     operator: 'eq',
                     value: 'subscribed',
                 },
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "gt(shopper.orders(eq(sms_state, 'subscribed')), 5)",
+                "gt(shopper.orders(eq(sms_consent_status, 'subscribed')), 5)",
             )
         })
 
@@ -388,13 +391,13 @@ describe('buildFullQuery', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
                 whereClause: {
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     operator: 'isEmpty',
                     value: null,
                 },
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                'gt(shopper.orders(isEmpty(sms_state)), 5)',
+                'gt(shopper.orders(isEmpty(sms_consent_status)), 5)',
             )
         })
 
@@ -402,7 +405,7 @@ describe('buildFullQuery', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
                 whereClause: {
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     operator: 'eq',
                     value: null,
                 },
@@ -416,7 +419,7 @@ describe('buildFullQuery', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
                 whereClause: {
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     operator: 'eq',
                     value: '',
                 },
@@ -448,7 +451,7 @@ describe('buildFullQuery', () => {
                 operator: 'gt',
                 value: 3,
                 whereClause: {
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     operator: 'eq',
                     value: 'subscribed',
                 },
@@ -533,14 +536,14 @@ describe('buildFullQuery', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
                 whereClause: {
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     operator: 'eq',
                     value: 'subscribed',
                 },
                 purchaseDateClause: { operator: 'gt', value: '30d' },
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "gt(shopper.orders(eq(sms_state, 'subscribed') && gt(purchase_date, '30d')), 5)",
+                "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gt(purchase_date, '30d')), 5)",
             )
         })
 
@@ -565,7 +568,7 @@ describe('buildFullQuery', () => {
                 value: 3,
             }
             expect(buildFullQuery([c1, c2], schema)).toBe(
-                "eq(shopper.sms_state, 'subscribed') && gt(shopper.order_count, 3)",
+                "eq(shopper.sms_consent_status, 'subscribed') && gt(shopper.order_count, 3)",
             )
         })
 
@@ -576,7 +579,7 @@ describe('buildFullQuery', () => {
             }
             const invalid: ConditionState = { ...baseCondition, object: null }
             expect(buildFullQuery([valid, invalid], schema)).toBe(
-                "eq(shopper.sms_state, 'subscribed')",
+                "eq(shopper.sms_consent_status, 'subscribed')",
             )
         })
     })
@@ -593,11 +596,14 @@ describe('parseConditionsQuery', () => {
 
     it('parses a binary condition with a string value', () => {
         expect(
-            parseConditionsQuery("eq(shopper.sms_state, 'subscribed')", schema),
+            parseConditionsQuery(
+                "eq(shopper.sms_consent_status, 'subscribed')",
+                schema,
+            ),
         ).toEqual([
             {
                 object: 'shopper',
-                field: 'sms_state',
+                field: 'sms_consent_status',
                 isAggregate: false,
                 operator: 'eq',
                 value: 'subscribed',
@@ -681,11 +687,11 @@ describe('parseConditionsQuery', () => {
 
     it('parses a unary condition with no value', () => {
         expect(
-            parseConditionsQuery('isEmpty(shopper.sms_state)', schema),
+            parseConditionsQuery('isEmpty(shopper.sms_consent_status)', schema),
         ).toEqual([
             {
                 object: 'shopper',
-                field: 'sms_state',
+                field: 'sms_consent_status',
                 isAggregate: false,
                 operator: 'isEmpty',
                 value: null,
@@ -699,13 +705,13 @@ describe('parseConditionsQuery', () => {
     it('parses multiple conditions joined by &&', () => {
         expect(
             parseConditionsQuery(
-                "eq(shopper.sms_state, 'subscribed') && gt(shopper.order_count, 5)",
+                "eq(shopper.sms_consent_status, 'subscribed') && gt(shopper.order_count, 5)",
                 schema,
             ),
         ).toEqual([
             {
                 object: 'shopper',
-                field: 'sms_state',
+                field: 'sms_consent_status',
                 isAggregate: false,
                 operator: 'eq',
                 value: 'subscribed',
@@ -736,7 +742,7 @@ describe('parseConditionsQuery', () => {
                     operator: 'gt',
                     value: 5,
                     whereClause: {
-                        field: 'sms_state',
+                        field: 'sms_consent_status',
                         operator: 'eq',
                         value: null,
                     },
@@ -750,7 +756,7 @@ describe('parseConditionsQuery', () => {
     it('parses an aggregate condition with a binary where clause', () => {
         expect(
             parseConditionsQuery(
-                "gt(shopper.orders(eq(sms_state, 'subscribed')), 5)",
+                "gt(shopper.orders(eq(sms_consent_status, 'subscribed')), 5)",
                 schema,
             ),
         ).toEqual([
@@ -761,7 +767,7 @@ describe('parseConditionsQuery', () => {
                 operator: 'gt',
                 value: 5,
                 whereClause: {
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     operator: 'eq',
                     value: 'subscribed',
                 },
@@ -774,7 +780,7 @@ describe('parseConditionsQuery', () => {
     it('parses an aggregate condition with a unary where clause', () => {
         expect(
             parseConditionsQuery(
-                'gt(shopper.orders(isEmpty(sms_state)), 5)',
+                'gt(shopper.orders(isEmpty(sms_consent_status)), 5)',
                 schema,
             ),
         ).toEqual([
@@ -785,7 +791,7 @@ describe('parseConditionsQuery', () => {
                 operator: 'gt',
                 value: 5,
                 whereClause: {
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     operator: 'isEmpty',
                     value: null,
                 },
@@ -859,29 +865,32 @@ describe('parseConditionsQuery', () => {
     })
 
     it('parses a condition with an empty value argument as null', () => {
-        expect(parseConditionsQuery('eq(shopper.sms_state, )', schema)).toEqual(
-            [
-                {
-                    object: 'shopper',
-                    field: 'sms_state',
-                    isAggregate: false,
-                    operator: 'eq',
-                    value: null,
-                    whereClause: null,
-                    purchaseDateClause: null,
-                    isWhereVisible: false,
-                },
-            ],
-        )
+        expect(
+            parseConditionsQuery('eq(shopper.sms_consent_status, )', schema),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'sms_consent_status',
+                isAggregate: false,
+                operator: 'eq',
+                value: null,
+                whereClause: null,
+                purchaseDateClause: null,
+                isWhereVisible: false,
+            },
+        ])
     })
 
     it('parses a condition with an unrecognized value format as null', () => {
         expect(
-            parseConditionsQuery('eq(shopper.sms_state, unquoted)', schema),
+            parseConditionsQuery(
+                'eq(shopper.sms_consent_status, unquoted)',
+                schema,
+            ),
         ).toEqual([
             {
                 object: 'shopper',
-                field: 'sms_state',
+                field: 'sms_consent_status',
                 isAggregate: false,
                 operator: 'eq',
                 value: null,
@@ -895,13 +904,13 @@ describe('parseConditionsQuery', () => {
     it('unescapes an apostrophe in a string value', () => {
         expect(
             parseConditionsQuery(
-                "eq(shopper.sms_state, 'Women\\'s K1 Flux')",
+                "eq(shopper.sms_consent_status, 'Women\\'s K1 Flux')",
                 schema,
             ),
         ).toEqual([
             {
                 object: 'shopper',
-                field: 'sms_state',
+                field: 'sms_consent_status',
                 isAggregate: false,
                 operator: 'eq',
                 value: "Women's K1 Flux",
@@ -971,13 +980,13 @@ describe('parseConditionsQuery', () => {
     it('skips unparseable conditions and returns only valid ones', () => {
         expect(
             parseConditionsQuery(
-                "invalid && eq(shopper.sms_state, 'active')",
+                "invalid && eq(shopper.sms_consent_status, 'active')",
                 schema,
             ),
         ).toEqual([
             {
                 object: 'shopper',
-                field: 'sms_state',
+                field: 'sms_consent_status',
                 isAggregate: false,
                 operator: 'eq',
                 value: 'active',
@@ -991,7 +1000,7 @@ describe('parseConditionsQuery', () => {
     describe('isWhereVisible', () => {
         it('should be true when the aggregate has a parsed where clause', () => {
             const [condition] = parseConditionsQuery(
-                "gt(shopper.orders(eq(sms_state, 'subscribed')), 5)",
+                "gt(shopper.orders(eq(sms_consent_status, 'subscribed')), 5)",
                 schema,
             )
             expect(condition.isWhereVisible).toBe(true)
@@ -1023,7 +1032,7 @@ describe('parseConditionsQuery', () => {
 
         it('should be false for regular (non-aggregate) conditions', () => {
             const [condition] = parseConditionsQuery(
-                "eq(shopper.sms_state, 'subscribed')",
+                "eq(shopper.sms_consent_status, 'subscribed')",
                 schema,
             )
             expect(condition.isWhereVisible).toBe(false)
@@ -1053,7 +1062,7 @@ describe('parseConditionsQuery', () => {
                     operator: 'gt',
                     value: 5,
                     whereClause: {
-                        field: 'sms_state',
+                        field: 'sms_consent_status',
                         operator: 'eq',
                         value: null,
                     },
@@ -1077,7 +1086,7 @@ describe('parseConditionsQuery', () => {
                     operator: 'gt',
                     value: 5,
                     whereClause: {
-                        field: 'sms_state',
+                        field: 'sms_consent_status',
                         operator: 'eq',
                         value: null,
                     },
@@ -1090,7 +1099,7 @@ describe('parseConditionsQuery', () => {
         it('does not merge when the purchase_date object differs from the aggregate object', () => {
             expect(
                 parseConditionsQuery(
-                    "gt(shopper.orders(), 5) && gt(shopper.sms_state, 'subscribed')",
+                    "gt(shopper.orders(), 5) && gt(shopper.sms_consent_status, 'subscribed')",
                     schema,
                 ),
             ).toEqual([
@@ -1101,7 +1110,7 @@ describe('parseConditionsQuery', () => {
                     operator: 'gt',
                     value: 5,
                     whereClause: {
-                        field: 'sms_state',
+                        field: 'sms_consent_status',
                         operator: 'eq',
                         value: null,
                     },
@@ -1110,7 +1119,7 @@ describe('parseConditionsQuery', () => {
                 },
                 {
                     object: 'shopper',
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     isAggregate: false,
                     operator: 'gt',
                     value: 'subscribed',
@@ -1124,13 +1133,13 @@ describe('parseConditionsQuery', () => {
         it('does not merge a purchase_date term that is not immediately after an aggregate', () => {
             expect(
                 parseConditionsQuery(
-                    "eq(shopper.sms_state, 'subscribed') && gt(shopper.purchase_date, '30d')",
+                    "eq(shopper.sms_consent_status, 'subscribed') && gt(shopper.purchase_date, '30d')",
                     schema,
                 ),
             ).toEqual([
                 {
                     object: 'shopper',
-                    field: 'sms_state',
+                    field: 'sms_consent_status',
                     isAggregate: false,
                     operator: 'eq',
                     value: 'subscribed',
@@ -1174,7 +1183,7 @@ describe('parseConditionsQuery', () => {
         it('parses a where clause and purchase_date both inside the aggregate (new format)', () => {
             expect(
                 parseConditionsQuery(
-                    "gt(shopper.orders(eq(sms_state, 'subscribed') && gt(purchase_date, '30d')), 5)",
+                    "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gt(purchase_date, '30d')), 5)",
                     schema,
                 ),
             ).toEqual([
@@ -1185,7 +1194,7 @@ describe('parseConditionsQuery', () => {
                     operator: 'gt',
                     value: 5,
                     whereClause: {
-                        field: 'sms_state',
+                        field: 'sms_consent_status',
                         operator: 'eq',
                         value: 'subscribed',
                     },
@@ -1197,7 +1206,7 @@ describe('parseConditionsQuery', () => {
 
         it('round-trips an aggregate with a where clause and a purchase_date period', () => {
             const original =
-                "gt(shopper.orders(eq(sms_state, 'subscribed') && gt(purchase_date, '365d')), 5)"
+                "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gt(purchase_date, '365d')), 5)"
             const parsed = parseConditionsQuery(original, schema)
             expect(buildFullQuery(parsed, schema)).toBe(original)
         })

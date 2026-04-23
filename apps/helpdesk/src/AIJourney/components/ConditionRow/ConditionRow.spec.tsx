@@ -92,7 +92,10 @@ const mockSchema: ConditionsSchema = {
     objects: {
         shopper: {
             fields: {
-                sms_state: { type: 'string', operators: ['eq', 'neq'] },
+                sms_consent_status: {
+                    type: 'string',
+                    operators: ['eq', 'neq'],
+                },
                 name: { type: 'string', operators: ['eq'] },
                 address_state_code: {
                     type: 'string',
@@ -215,7 +218,7 @@ describe('<ConditionRow />', () => {
         it('should render operator and value inputs when a field is selected', () => {
             useWatchMock.mockReturnValue([
                 'shopper',
-                'sms_state',
+                'sms_consent_status',
                 false,
                 'eq',
                 null,
@@ -231,7 +234,7 @@ describe('<ConditionRow />', () => {
         it('should render with a field found in the allowlist sections', () => {
             useWatchMock.mockReturnValue([
                 'shopper',
-                'sms_state',
+                'sms_consent_status',
                 false,
                 'eq',
                 null,
@@ -289,7 +292,7 @@ describe('<ConditionRow />', () => {
             renderComponent()
 
             captured.fieldSelectOnChange?.({
-                id: 'shopper:field:sms_state',
+                id: 'shopper:field:sms_consent_status',
                 label: 'SMS subscription status',
             })
 
@@ -300,7 +303,7 @@ describe('<ConditionRow />', () => {
             )
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.field',
-                'sms_state',
+                'sms_consent_status',
             )
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.isAggregate',
@@ -440,7 +443,7 @@ describe('<ConditionRow />', () => {
         it('should not render the purchase date period selector for non-aggregate fields', () => {
             useWatchMock.mockReturnValue([
                 'shopper',
-                'sms_state',
+                'sms_consent_status',
                 false,
                 'eq',
                 null,
@@ -480,7 +483,7 @@ describe('<ConditionRow />', () => {
             renderComponent()
 
             captured.fieldSelectOnChange?.({
-                id: 'shopper:field:sms_state',
+                id: 'shopper:field:sms_consent_status',
                 label: 'SMS subscription status',
             })
 
@@ -495,7 +498,7 @@ describe('<ConditionRow />', () => {
         beforeEach(() => {
             useWatchMock.mockReturnValue([
                 'shopper',
-                'sms_state',
+                'sms_consent_status',
                 false,
                 'eq',
                 null,
@@ -610,7 +613,7 @@ describe('<ConditionRow />', () => {
     it('should not reset value when switching operators for a non-address_state_code field', () => {
         useWatchMock.mockReturnValue([
             'shopper',
-            'sms_state',
+            'sms_consent_status',
             false,
             'eq',
             'subscribed',
@@ -628,7 +631,7 @@ describe('<ConditionRow />', () => {
     it('should set value when ConditionValueInput onChange is called', () => {
         useWatchMock.mockReturnValue([
             'shopper',
-            'sms_state',
+            'sms_consent_status',
             false,
             'eq',
             null,

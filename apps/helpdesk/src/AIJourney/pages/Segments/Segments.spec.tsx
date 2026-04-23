@@ -143,7 +143,10 @@ const mockSchema: ConditionsSchema = {
     objects: {
         shopper: {
             fields: {
-                sms_state: { type: 'string', operators: ['eq', 'isEmpty'] },
+                sms_consent_status: {
+                    type: 'string',
+                    operators: ['eq', 'isEmpty'],
+                },
             },
         },
     },

@@ -93,8 +93,11 @@ const CONDITION_ALLOWLIST = [
         sectionId: 'shopper',
         sectionName: 'Shopper characteristics',
         items: [
-            { field: 'sms_state', label: 'SMS subscription status' },
-            { field: 'sms_state_date', label: 'SMS subscription date' },
+            { field: 'sms_consent_status', label: 'SMS subscription status' },
+            {
+                field: 'sms_consent_status_date',
+                label: 'SMS subscription date',
+            },
             { field: 'tags', label: 'Shopify customer tag' },
             { field: 'address_state_code', label: 'State' },
         ],
