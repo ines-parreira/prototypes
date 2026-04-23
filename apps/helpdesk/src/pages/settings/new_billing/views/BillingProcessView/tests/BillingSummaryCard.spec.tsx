@@ -80,11 +80,13 @@ jest.mock('../../../components/ConfirmChangesModal', () => ({
             onClose,
             onConfirm,
             pendingInvoiceError,
+            versionConflictError,
             isPaymentMethodMissing,
         }) => (
             <div>
                 <span>{isOpen ? 'open' : 'closed'}</span>
                 {pendingInvoiceError && <span>pending invoice error</span>}
+                {versionConflictError && <span>version conflict error</span>}
                 {isPaymentMethodMissing && <span>payment method missing</span>}
                 {isOpen && (
                     <>
@@ -497,7 +499,7 @@ describe('BillingSummaryCard', () => {
         })
     })
 
-    describe('pending invoice blocking state', () => {
+    describe('apply-time error handling', () => {
         function makeGorgiasApiError(msg: string) {
             const headers = new AxiosHeaders()
             const error = new AxiosError(
@@ -649,7 +651,55 @@ describe('BillingSummaryCard', () => {
             expect(
                 screen.queryByText('pending invoice error'),
             ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('version conflict error'),
+            ).not.toBeInTheDocument()
         })
+
+        it.each([
+            [
+                'SubscriptionVersionConflict',
+                'subscription has been modified since it was last retrieved, please refresh and try again',
+            ],
+            [
+                'SubscriptionRenewalRampVersionInconsistent',
+                'subscription scheduled changes at renewal has been updated',
+            ],
+            [
+                'SubscriptionChangesInconsistentWithRamps',
+                'subscription changes are inconsistent with existing scheduled changes',
+            ],
+        ])(
+            'passes versionConflictError=true when apply returns a %s error and does not dispatch a generic toast',
+            async (_label, msg) => {
+                const user = userEvent.setup()
+                updateSubscription.mockRejectedValueOnce(
+                    makeGorgiasApiError(
+                        `We couldn't update your subscription because ${msg}`,
+                    ),
+                )
+
+                renderComponent()
+
+                await user.click(
+                    screen.getByRole('button', { name: /open modal/i }),
+                )
+                await user.click(
+                    screen.getByRole('button', { name: /confirm modal/i }),
+                )
+
+                await waitFor(() => {
+                    expect(
+                        screen.getByText('version conflict error'),
+                    ).toBeInTheDocument()
+                })
+
+                expect(mockDispatch).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByText('pending invoice error'),
+                ).not.toBeInTheDocument()
+            },
+        )
     })
 
     describe('payment method gating', () => {

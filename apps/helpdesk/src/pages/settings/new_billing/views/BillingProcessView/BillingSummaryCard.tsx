@@ -36,6 +36,7 @@ import Card from '../../components/Card'
 import { ConfirmChangesModal } from '../../components/ConfirmChangesModal'
 import SummaryFooter from '../../components/SummaryFooter'
 import { isPendingInvoiceError } from '../../utils/isPendingInvoiceError'
+import { isVersionConflictError } from '../../utils/isVersionConflictError'
 
 import css from './BillingProcessView.less'
 
@@ -100,6 +101,8 @@ export function BillingSummaryCard({
     const history = useHistory()
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
     const [hasPendingInvoiceError, setHasPendingInvoiceError] = useState(false)
+    const [hasVersionConflictError, setHasVersionConflictError] =
+        useState(false)
     const isMidCycleUpgradeEnabled = useFlag(
         FeatureFlagKey.MidCycleUpgradeBillingLogic,
     )
@@ -119,12 +122,14 @@ export function BillingSummaryCard({
     const handleCloseConfirmModal = () => {
         setIsConfirmModalOpen(false)
         setHasPendingInvoiceError(false)
+        setHasVersionConflictError(false)
     }
 
     const handleUpdateSubscription = async () => {
         try {
             setUpdateProcessStarted(true)
             setHasPendingInvoiceError(false)
+            setHasVersionConflictError(false)
             await updateSubscription()
 
             if (
@@ -166,6 +171,8 @@ export function BillingSummaryCard({
         } catch (error) {
             if (isPendingInvoiceError(error)) {
                 setHasPendingInvoiceError(true)
+            } else if (isVersionConflictError(error)) {
+                setHasVersionConflictError(true)
             } else {
                 void dispatch(
                     notify({
@@ -262,6 +269,7 @@ export function BillingSummaryCard({
                         subscriptionRenewalRampResourceVersion
                     }
                     pendingInvoiceError={hasPendingInvoiceError}
+                    versionConflictError={hasVersionConflictError}
                     isPaymentMethodMissing={isPaymentMethodMissing}
                 />
             )}

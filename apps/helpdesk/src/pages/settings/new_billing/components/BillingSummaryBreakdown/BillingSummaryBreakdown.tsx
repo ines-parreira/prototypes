@@ -22,6 +22,8 @@ type BillingSummaryBreakdownProps = {
     cancellationDates?: CancellationDates
     balanceDue?: number | null
     isEstimateLoading?: boolean
+    estimateErrorMessage?: string
+    onRetryEstimate?: () => void
 }
 
 export function BillingSummaryBreakdown({
@@ -35,6 +37,8 @@ export function BillingSummaryBreakdown({
     cancellationDates = {},
     balanceDue,
     isEstimateLoading,
+    estimateErrorMessage,
+    onRetryEstimate,
 }: BillingSummaryBreakdownProps) {
     return (
         <>
@@ -70,6 +74,8 @@ export function BillingSummaryBreakdown({
                 currency={currency}
                 balanceDue={balanceDue}
                 isEstimateLoading={isEstimateLoading}
+                estimateErrorMessage={estimateErrorMessage}
+                onRetryEstimate={onRetryEstimate}
             />
         </>
     )

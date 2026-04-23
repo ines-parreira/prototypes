@@ -25,6 +25,7 @@ import { ProductType } from 'models/billing/types'
 import type { Cadence } from 'models/billing/types'
 
 import { isPendingInvoiceError } from '../../utils/isPendingInvoiceError'
+import { isVersionConflictError } from '../../utils/isVersionConflictError'
 import { BillingSummaryBreakdown } from '../BillingSummaryBreakdown'
 import { useConfirmChangesEstimate } from './useConfirmChangesEstimate'
 
@@ -45,6 +46,7 @@ export type ConfirmChangesModalProps = {
     subscriptionResourceVersion: number
     subscriptionRenewalRampResourceVersion?: number
     pendingInvoiceError?: boolean
+    versionConflictError?: boolean
     isPaymentMethodMissing?: boolean
 }
 
@@ -65,6 +67,7 @@ export function ConfirmChangesModal({
     subscriptionResourceVersion,
     subscriptionRenewalRampResourceVersion,
     pendingInvoiceError = false,
+    versionConflictError = false,
     isPaymentMethodMissing = false,
 }: ConfirmChangesModalProps) {
     const {
@@ -85,8 +88,14 @@ export function ConfirmChangesModal({
         isEstimateError && isPendingInvoiceError(estimateError)
     const showPendingInvoiceBanner =
         pendingInvoiceError || hasPendingInvoiceFromEstimate
+    const hasVersionConflictFromEstimate =
+        isEstimateError && isVersionConflictError(estimateError)
+    const showVersionConflictBanner =
+        versionConflictError || hasVersionConflictFromEstimate
     const showGenericEstimateError =
-        isEstimateError && !hasPendingInvoiceFromEstimate
+        isEstimateError &&
+        !hasPendingInvoiceFromEstimate &&
+        !showVersionConflictBanner
 
     const estimate = estimateResponse?.data
     const datetimeFormat = useGetDateAndTimeFormat(
@@ -173,31 +182,40 @@ export function ConfirmChangesModal({
                             icon="triangle-warning"
                         />
                     )}
-                    {isPaymentMethodMissing && !showPendingInvoiceBanner && (
+                    {showVersionConflictBanner && !showPendingInvoiceBanner && (
                         <Banner
-                            title="Add a payment method to continue"
+                            title="Refresh to continue"
                             variant="inline"
-                            description="You need an active payment method before confirming these changes."
+                            description={
+                                <Text wrap="wrap">
+                                    This subscription was modified since you
+                                    loaded this page. Refresh to load the latest
+                                    changes.
+                                </Text>
+                            }
                             isClosable={false}
                             intent="warning"
                             icon="triangle-warning"
                         />
                     )}
+                    {isPaymentMethodMissing &&
+                        !showPendingInvoiceBanner &&
+                        !showVersionConflictBanner && (
+                            <Banner
+                                title="Add a payment method to continue"
+                                variant="inline"
+                                description={
+                                    <Text wrap="wrap">
+                                        You need an active payment method before
+                                        confirming these changes.
+                                    </Text>
+                                }
+                                isClosable={false}
+                                intent="warning"
+                                icon="triangle-warning"
+                            />
+                        )}
                     <Text>{description}</Text>
-                    {showGenericEstimateError && (
-                        <Box alignItems="center" gap="xs">
-                            <Text color="content-error-default" size="sm">
-                                Failed to load estimate.
-                            </Text>
-                            <Button
-                                variant="tertiary"
-                                size="sm"
-                                onClick={() => void refetchEstimate()}
-                            >
-                                Retry
-                            </Button>
-                        </Box>
-                    )}
                     <Box flexDirection="column">
                         <BillingSummaryBreakdown
                             selectedPlans={selectedPlans}
@@ -210,6 +228,16 @@ export function ConfirmChangesModal({
                             cancellationDates={cancellationDates}
                             balanceDue={estimate?.balance_due}
                             isEstimateLoading={isEstimateLoading}
+                            estimateErrorMessage={
+                                showGenericEstimateError
+                                    ? 'Failed to load estimate.'
+                                    : undefined
+                            }
+                            onRetryEstimate={
+                                showGenericEstimateError
+                                    ? () => void refetchEstimate()
+                                    : undefined
+                            }
                         />
                     </Box>
                     <Separator direction="horizontal" variant="solid" />
@@ -229,7 +257,9 @@ export function ConfirmChangesModal({
                         onClick={onConfirm}
                         isLoading={isConfirming}
                         isDisabled={
-                            showPendingInvoiceBanner || isPaymentMethodMissing
+                            showPendingInvoiceBanner ||
+                            showVersionConflictBanner ||
+                            isPaymentMethodMissing
                         }
                     >
                         Confirm

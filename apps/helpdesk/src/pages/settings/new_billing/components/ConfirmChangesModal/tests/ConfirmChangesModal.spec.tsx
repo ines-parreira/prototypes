@@ -26,7 +26,25 @@ import { ConfirmChangesModal } from '../ConfirmChangesModal'
 jest.mock('hooks/useGetDateAndTimeFormat', () => jest.fn(() => 'MMMM D, YYYY'))
 
 jest.mock('../../BillingSummaryBreakdown', () => ({
-    BillingSummaryBreakdown: jest.fn(() => null),
+    BillingSummaryBreakdown: jest.fn(
+        ({
+            estimateErrorMessage,
+            onRetryEstimate,
+        }: {
+            estimateErrorMessage?: string
+            onRetryEstimate?: () => void
+        }) =>
+            estimateErrorMessage ? (
+                <div>
+                    <span>{estimateErrorMessage}</span>
+                    {onRetryEstimate && (
+                        <button type="button" onClick={onRetryEstimate}>
+                            Retry
+                        </button>
+                    )}
+                </div>
+            ) : null,
+    ),
 }))
 
 const mockUseFlag = jest.fn()
@@ -539,6 +557,78 @@ describe('ConfirmChangesModal', () => {
             expect(
                 screen.getByRole('button', { name: /confirm/i }),
             ).toBeDisabled()
+        })
+
+        it.each([
+            [
+                'SubscriptionVersionConflict',
+                "We couldn't get billing estimates because subscription has been modified since it was last retrieved, please refresh and try again",
+            ],
+            [
+                'SubscriptionRenewalRampVersionInconsistent',
+                "We couldn't get billing estimates because subscription scheduled changes at renewal has been updated",
+            ],
+            [
+                'SubscriptionChangesInconsistentWithRamps',
+                "We couldn't get billing estimates because subscription changes are inconsistent with existing scheduled changes",
+            ],
+        ])(
+            'surfaces the refresh banner and disables Confirm when the estimate endpoint returns a %s error',
+            async (_label, msg) => {
+                server.use(
+                    mockGetBillingEstimatesSubscriptionHandler(async () =>
+                        HttpResponse.json(
+                            {
+                                error: { msg, data: null },
+                            } as never,
+                            { status: 400 },
+                        ),
+                    ).handler,
+                )
+                renderModal()
+
+                expect(
+                    await screen.findByText(/refresh to continue/i),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        /this subscription was modified since you loaded this page/i,
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText(/failed to load estimate/i),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('button', { name: /retry/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', { name: /confirm/i }),
+                ).toBeDisabled()
+            },
+        )
+
+        it('hides the refresh banner when a pending invoice banner is also applicable', async () => {
+            server.use(
+                mockGetBillingEstimatesSubscriptionHandler(async () =>
+                    HttpResponse.json(
+                        {
+                            error: {
+                                msg: 'subscription has been modified since it was last retrieved, please refresh and try again',
+                                data: null,
+                            },
+                        } as never,
+                        { status: 400 },
+                    ),
+                ).handler,
+            )
+            renderModal({ pendingInvoiceError: true })
+
+            expect(
+                await screen.findByText(/pending invoice must be resolved/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(/refresh to continue/i),
+            ).not.toBeInTheDocument()
         })
     })
 })

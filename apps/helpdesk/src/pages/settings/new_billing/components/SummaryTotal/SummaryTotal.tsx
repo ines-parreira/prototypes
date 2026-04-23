@@ -9,7 +9,7 @@ import {
 import type { Plan, ProductType, SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { Box, Skeleton, Text } from '@gorgias/axiom'
+import { Box, Button, Skeleton, Text } from '@gorgias/axiom'
 
 import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
@@ -26,6 +26,8 @@ export type SummaryTotalProps = {
     cancelledProducts?: ProductType[]
     balanceDue?: number | null
     isEstimateLoading?: boolean
+    estimateErrorMessage?: string
+    onRetryEstimate?: () => void
 }
 
 const SummaryTotal = ({
@@ -38,6 +40,8 @@ const SummaryTotal = ({
     cancelledProducts = [],
     balanceDue,
     isEstimateLoading = false,
+    estimateErrorMessage,
+    onRetryEstimate,
 }: SummaryTotalProps) => {
     // Get the total amount of the selected plans
     const amountSelectedPlans = useMemo(() => {
@@ -102,6 +106,30 @@ const SummaryTotal = ({
             {isEstimateLoading ? (
                 <Box paddingTop="sm" flexDirection="column">
                     <Skeleton />
+                </Box>
+            ) : estimateErrorMessage ? (
+                <Box
+                    justifyContent="space-between"
+                    alignItems="center"
+                    gap="sm"
+                    pt="sm"
+                    px="sm"
+                >
+                    <Text variant="bold">Balance due today</Text>
+                    <Box alignItems="center" gap="xs">
+                        <Text color="content-error-default" size="sm">
+                            {estimateErrorMessage}
+                        </Text>
+                        {onRetryEstimate && (
+                            <Button
+                                variant="tertiary"
+                                size="sm"
+                                onClick={onRetryEstimate}
+                            >
+                                Retry
+                            </Button>
+                        )}
+                    </Box>
                 </Box>
             ) : (
                 balanceDue != null &&
