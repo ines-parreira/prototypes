@@ -2,7 +2,6 @@ import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
@@ -33,7 +32,6 @@ import type {
     AutoOpenSessionLocationState,
     FetchedMigrationSessionState,
     FetchedProvidersState,
-    HelpCenterMigrationConfig,
     ImportArticlesModalState,
     MigrationProviderType,
     MigrationStartPayload,
@@ -74,8 +72,11 @@ export const ImportSection: React.FC<Props> = ({
     const history = useHistory()
     const authServiceRef = useRef(new GorgiasAppAuthService())
 
-    const _migrationConfig = useFlag<HelpCenterMigrationConfig>(
-        FeatureFlagKey.HelpCenterMigrationConfig,
+    const _migrationConfig = useMemo(
+        () => ({
+            providers: ['Zendesk', 'ReAmaze', 'HelpDocs', 'Intercom', ''],
+        }),
+        [],
     )
 
     const migrationConfigProviders = useMemo(

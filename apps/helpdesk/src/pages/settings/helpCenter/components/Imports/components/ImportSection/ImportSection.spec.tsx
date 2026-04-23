@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
 
-import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -20,10 +19,7 @@ import { initialState as categoriesState } from 'state/entities/helpCenter/categ
 import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {
-    helpCenterMigrationConfig,
-    migrationProviders,
-} from './fixtures/migration-providers'
+import { migrationProviders } from './fixtures/migration-providers'
 import {
     failedMigrationStats,
     migrationSessions,
@@ -97,9 +93,6 @@ jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     })),
 }))
 
-jest.mock('@repo/feature-flags')
-const mockUseFlag = useFlag as jest.Mock
-
 const history = createMemoryHistory()
 
 const renderWithStore = (element: React.ReactElement) =>
@@ -166,8 +159,6 @@ describe('<ImportSection />', () => {
     })
     beforeEach(() => {
         mockAPI.reset()
-
-        mockUseFlag.mockReturnValue(helpCenterMigrationConfig)
     })
 
     it("displays import in progress and is able to open status modal if there's an active migration", async () => {
@@ -380,51 +371,5 @@ describe('<ImportSection />', () => {
         )
 
         expect(revertNotice).not.toBeNull()
-    })
-
-    it('should not display providers that are not included in the feature flag config', async () => {
-        mockAPI
-            .onGet('/api/help_center/providers')
-            .reply(200, migrationProviders)
-
-        mockAPI.onGet('/api/sessions').reply(200, [])
-
-        mockUseFlag.mockReturnValue({
-            providers: ['Zendesk', 'HelpDocs'],
-        })
-
-        renderWithStore(<ImportSection />)
-
-        const importArticlesButton = await waitFor(() =>
-            screen.getByRole('button', { name: /Import Articles/ }),
-        )
-        fireEvent.click(importArticlesButton)
-
-        const importFromAnotherProvider = await waitFor(() =>
-            screen.getByTestId('import-articles-modal-file-drop-area'),
-        )
-        fireEvent.click(importFromAnotherProvider)
-
-        // Choose provider
-        const HelpDocsProvider = await waitFor(() =>
-            screen.queryByText(/HelpDocs/),
-        )
-        const ZendeskProvider = await waitFor(() =>
-            screen.queryByText(/Zendesk/),
-        )
-        const IntercomProvider = await waitFor(() =>
-            screen.queryByText(/Intercom/),
-        )
-        const ReAmazeProvider = await waitFor(() =>
-            screen.queryByText(/Re:amaze/),
-        )
-
-        // Available providers should exist
-        expect(HelpDocsProvider).not.toBeNull()
-        expect(ZendeskProvider).not.toBeNull()
-
-        // Rest providers should not be rendered
-        expect(IntercomProvider).toBeNull()
-        expect(ReAmazeProvider).toBeNull()
     })
 })
