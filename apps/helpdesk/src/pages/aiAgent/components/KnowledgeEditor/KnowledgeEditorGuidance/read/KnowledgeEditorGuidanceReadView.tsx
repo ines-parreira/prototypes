@@ -14,6 +14,7 @@ import css from './KnowledgeEditorGuidanceReadView.less'
 type Props = {
     content: string
     title: string
+    shopName: string
     availableActions?: GuidanceAction[]
     availableVariables?: GuidanceVariableGroup[]
 }
@@ -21,6 +22,7 @@ type Props = {
 export const KnowledgeEditorGuidanceReadView = ({
     content,
     title,
+    shopName,
     availableActions,
     availableVariables,
 }: Props) => {
@@ -41,6 +43,7 @@ export const KnowledgeEditorGuidanceReadView = ({
                 canAddVideoPlayer={false}
                 guidanceVariables={availableVariables}
                 guidanceActions={availableActions}
+                shopName={shopName}
             >
                 <RichField
                     key={content}

@@ -169,6 +169,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                             <KnowledgeEditorGuidanceReadView
                                 content={content}
                                 title={title}
+                                shopName={shopName}
                                 availableActions={guidanceActions}
                                 availableVariables={guidanceVariables}
                             />

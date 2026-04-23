@@ -12,6 +12,7 @@ describe('KnowledgeEditorGuidanceReadView', () => {
                 <KnowledgeEditorGuidanceReadView
                     content="Test Content"
                     title="Test Title"
+                    shopName="test-shop"
                     availableActions={[
                         {
                             name: 'Test action',

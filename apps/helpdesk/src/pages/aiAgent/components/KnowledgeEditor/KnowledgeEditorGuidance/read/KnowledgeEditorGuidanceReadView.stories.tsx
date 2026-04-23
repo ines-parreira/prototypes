@@ -56,4 +56,5 @@ export const ReadView: Story = Template.bind({})
 ReadView.args = {
     content,
     title: 'Test Title',
+    shopName: 'test-shop',
 }

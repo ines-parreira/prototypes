@@ -41,6 +41,7 @@ describe('GuidanceActionTag', () => {
         // Mock useToolbarContext
         ;(useToolbarContext as jest.Mock).mockReturnValue({
             guidanceActions: mockGuidanceActions,
+            shopName: 'test-shop',
         })
 
         // Mock Element.prototype properties used in the component
@@ -69,7 +70,7 @@ describe('GuidanceActionTag', () => {
         fireEvent.click(container.querySelector('a') as HTMLElement)
 
         expect(window.open).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify//actions/edit/00AAAAA7AAA0AAA1A50AAAA00A',
+            '/app/ai-agent/shopify/test-shop/actions/edit/00AAAAA7AAA0AAA1A50AAAA00A',
             '_blank',
         )
     })
