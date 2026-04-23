@@ -1,5 +1,5 @@
 import type { DateTimeResultFormatType } from '@repo/utils'
-import { formatDatetime } from '@repo/utils'
+import { DurationInMs, formatDatetime } from '@repo/utils'
 
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
 import {
@@ -60,10 +60,18 @@ export function useMessageAvatarTooltip({
 }: Params): AvatarTooltipResult {
     const { format, timezone } = useTicketThreadDateTimeFormat()
     const { data: customerData } = useGetCustomer(sender.id, undefined, {
-        query: { enabled: !fromAgent && !!sender.id },
+        query: {
+            enabled: !fromAgent && !!sender.id,
+            staleTime: DurationInMs.OneDay,
+            cacheTime: DurationInMs.OneDay,
+        },
     })
     const { data: availabilityData } = useGetUserAvailability(sender.id, {
-        query: { enabled: fromAgent && !!sender.id },
+        query: {
+            enabled: fromAgent && !!sender.id,
+            staleTime: 2 * DurationInMs.FiveMinutes,
+            cacheTime: 2 * DurationInMs.FiveMinutes,
+        },
     })
 
     if (fromAgent) {
