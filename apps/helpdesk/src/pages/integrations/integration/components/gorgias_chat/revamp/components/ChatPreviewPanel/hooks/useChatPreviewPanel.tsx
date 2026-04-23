@@ -24,6 +24,7 @@ import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { ChatPreviewPanel } from '../ChatPreviewPanel'
 import type {
     ChatPreviewPage,
+    ChatPreviewPageOptions,
     ChatPreviewPanelHandle,
     SimulateConversationMessage,
 } from '../ChatPreviewPanel'
@@ -124,7 +125,7 @@ export const useChatPreviewPanel = ({
     }, [])
 
     const displayPage = useCallback(
-        (page: ChatPreviewPage, options?: { orderName?: string }) => {
+        (page: ChatPreviewPage, options?: ChatPreviewPageOptions) => {
             chatPreviewPanelRef.current?.displayPage(page, options)
         },
         [],
@@ -182,6 +183,10 @@ export const useChatPreviewPanel = ({
 
     const updateTexts = useCallback((texts: Record<string, string>) => {
         chatPreviewPanelRef.current?.updateTexts(texts)
+    }, [])
+
+    const updateSSPTexts = useCallback((texts: Record<string, string>) => {
+        chatPreviewPanelRef.current?.updateSSPTexts(texts)
     }, [])
 
     const updateLauncher = useCallback(
@@ -277,6 +282,7 @@ export const useChatPreviewPanel = ({
         updateHeaderAlternativePictureUrl,
         updateLauncher,
         updateTexts,
+        updateSSPTexts,
         updateLegalDisclaimer,
         updateLegalDisclaimerEnabled,
         updateWorkflowEntryPoints,

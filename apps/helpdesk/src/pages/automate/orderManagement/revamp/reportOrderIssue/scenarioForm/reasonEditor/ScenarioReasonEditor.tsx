@@ -21,14 +21,24 @@ import { ScenarioReasonItem } from './ScenarioReasonItem'
 type Props = {
     value: ReportIssueCaseReason[]
     onChange: (nextValue: ReportIssueCaseReason[]) => void
+    onExpandedReasonChange?: (reasonKey: string | null) => void
 }
 
-export const ScenarioReasonEditor = ({ value, onChange }: Props) => {
+export const ScenarioReasonEditor = ({
+    value,
+    onChange,
+    onExpandedReasonChange,
+}: Props) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [expandedReasonKey, setExpandedReasonKey] = useState<string | null>(
         null,
     )
     const buttonContainerRef = useRef<HTMLDivElement>(null)
+
+    const handleExpandedChange = (nextKey: string | null) => {
+        setExpandedReasonKey(nextKey)
+        onExpandedReasonChange?.(nextKey)
+    }
 
     const hasError = !value.length
     usePropagateError('reasons', hasError)
@@ -76,7 +86,7 @@ export const ScenarioReasonEditor = ({ value, onChange }: Props) => {
                 <SortableAccordion
                     onReorder={handleReorder}
                     expandedItem={expandedReasonKey}
-                    onChange={setExpandedReasonKey}
+                    onChange={handleExpandedChange}
                 >
                     {value.map((item) => (
                         <SortableAccordionItem

@@ -169,6 +169,32 @@ describe('useChatPreviewPanel', () => {
         ).not.toThrow()
     })
 
+    it('updateSSPTexts does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateSSPTexts({ reasonOther: 'Other' }),
+        ).not.toThrow()
+    })
+
+    it('updateSSPTexts calls updateSSPTexts on the ref when attached', () => {
+        const mockUpdateSSPTexts = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                updateSSPTexts: mockUpdateSSPTexts,
+            }
+        }
+
+        const texts = { reasonOther: 'Other', reasonLate: 'Late' }
+        result.current.updateSSPTexts(texts)
+
+        expect(mockUpdateSSPTexts).toHaveBeenCalledWith(texts)
+    })
+
     it('updateLauncher does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -469,6 +495,7 @@ describe('useChatPreviewPanelContext', () => {
             displayPage: jest.fn(),
             updateLauncher: jest.fn(),
             updateTexts: jest.fn(),
+            updateSSPTexts: jest.fn(),
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
             updateWorkflowEntryPoints: jest.fn(),

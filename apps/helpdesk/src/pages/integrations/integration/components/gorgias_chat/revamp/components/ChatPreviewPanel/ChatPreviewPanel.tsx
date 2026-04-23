@@ -18,6 +18,10 @@ import {
     TextVariant,
 } from '@gorgias/axiom'
 
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+} from 'config/integrations/gorgias_chat'
 import type { LANGUAGE } from 'constants/languages'
 import type {
     GorgiasChatPosition,
@@ -33,7 +37,20 @@ import type { ChatPreviewHandle } from './components/ChatPreview/ChatPreview'
 
 import css from './ChatPreviewPanel.less'
 
-export type ChatPreviewPage = 'homepage' | 'conversation' | 'orders' | 'track'
+export type ChatPreviewPage =
+    | 'homepage'
+    | 'conversation'
+    | 'orders'
+    | 'track'
+    | 'report'
+    | 'reported-issue'
+
+export type ChatPreviewPageOptions = {
+    orderName?: string
+    reasonKey?: string
+    responseText?: string
+    showHelpfulPrompt?: boolean
+}
 
 export type SimulateConversationMessage = {
     text: string
@@ -44,11 +61,12 @@ export type SimulateConversationMessage = {
 export type ChatPreviewPanelHandle = {
     displayPage: (
         page: ChatPreviewPage,
-        options?: { orderName?: string },
+        options?: ChatPreviewPageOptions,
     ) => void
     updatePosition: (position: GorgiasChatPosition) => void
     updateSettings: (settings: GorgiasChatPreviewApplicationSettings) => void
     updateTexts: (texts: Record<string, string>) => void
+    updateSSPTexts: (texts: Record<string, string>) => void
     closeChat: () => void
     openChat: () => void
     updateWorkflowEntryPoints: (
@@ -108,7 +126,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
         }
 
         const displayPage = useCallback(
-            (page: ChatPreviewPage, options?: { orderName?: string }) => {
+            (page: ChatPreviewPage, options?: ChatPreviewPageOptions) => {
                 withGorgiasChat((gorgiasChat) => {
                     const isTabPage =
                         page === 'homepage' || page === 'conversation'
@@ -142,21 +160,37 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             )
         }
 
-        const updateTexts = (texts: Record<string, string>) => {
-            withGorgiasChat(() => {
+        /**
+         * The iframe runs in a separate JS realm, so plain objects created in this
+         * realm fail the `instanceof Object` check inside the chat widget. We build
+         * the target using the iframe's own Object constructor so it belongs to the
+         * correct realm. `Object` isn't declared on the typed Window surface exposed
+         * via `contentWindow`, so we narrow the cast to this helper.
+         */
+        const createIframeObject = useCallback(
+            <T extends Record<string, string>>(source: T): T | undefined => {
                 const iframeWindow = chatPreviewRef.current?.iframeRef.current
-                    ?.contentWindow as any
-                /**
-                 * The iframe runs in a separate JS realm, so plain objects created here fail
-                 * the `instanceof Object` check inside the chat widget. We use the iframe's
-                 * own Object constructor to create the target, ensuring it belongs to the correct realm.
-                 */
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const iframeTexts = iframeWindow.Object.assign(
-                    new iframeWindow.Object(),
-                    texts,
-                )
-                iframeWindow.GorgiasChat?.updateTexts(iframeTexts)
+                    ?.contentWindow as
+                    | (Window & { Object: ObjectConstructor })
+                    | null
+                    | undefined
+                if (!iframeWindow) return undefined
+                return Object.assign(new iframeWindow.Object(), source) as T
+            },
+            [],
+        )
+
+        const updateTexts = (texts: Record<string, string>) => {
+            withGorgiasChat((gorgiasChat) => {
+                const iframeTexts = createIframeObject(texts)
+                if (iframeTexts) gorgiasChat.updateTexts(iframeTexts)
+            })
+        }
+
+        const updateSSPTexts = (texts: Record<string, string>) => {
+            withGorgiasChat((gorgiasChat) => {
+                const iframeTexts = createIframeObject(texts)
+                if (iframeTexts) gorgiasChat.updateSSPTexts(iframeTexts)
             })
         }
 
@@ -213,10 +247,20 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
 
         const onLoaded = useCallback(
             (gorgiasChat: NonNullable<Window['GorgiasChat']>) => {
+                const sspTexts =
+                    GORGIAS_CHAT_SSP_TEXTS[
+                        locale ?? GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
+                    ] ??
+                    GORGIAS_CHAT_SSP_TEXTS[GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
+                if (sspTexts) {
+                    const iframeTexts = createIframeObject(sspTexts)
+                    if (iframeTexts) gorgiasChat.updateSSPTexts(iframeTexts)
+                }
+
                 gorgiasChat.setPage(selectedPage)
                 onPreviewLoaded?.()
             },
-            [selectedPage, onPreviewLoaded],
+            [selectedPage, onPreviewLoaded, locale, createIframeObject],
         )
 
         useImperativeHandle(ref, () => ({
@@ -224,6 +268,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             updatePosition,
             updateSettings,
             updateTexts,
+            updateSSPTexts,
             closeChat,
             openChat,
             updateWorkflowEntryPoints,

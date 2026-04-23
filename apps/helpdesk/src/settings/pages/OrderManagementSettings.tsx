@@ -2,6 +2,10 @@ import { useEffect, useMemo } from 'react'
 
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom'
 
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+} from 'config/integrations/gorgias_chat'
 import type { LANGUAGE } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'
 import { isSelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
@@ -133,6 +137,8 @@ export function OrderManagementSettings() {
         locale: selectedChannelLanguage,
     })
 
+    const { onChatPreviewLoaded, updateSSPTexts } = chatPreviewPanelControls
+
     useEffect(() => {
         if (
             (shouldShowFlowsScreensRevamp && !!isChannelsRoute) ||
@@ -152,6 +158,17 @@ export function OrderManagementSettings() {
         isChannelsRoute,
         shouldShowOrderManagementScreensRevamp,
     ])
+
+    useEffect(() => {
+        const sspTexts =
+            GORGIAS_CHAT_SSP_TEXTS[
+                selectedChannelLanguage ?? GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
+            ] ?? GORGIAS_CHAT_SSP_TEXTS[GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
+
+        return onChatPreviewLoaded(() => {
+            updateSSPTexts(sspTexts)
+        }, true)
+    }, [selectedChannelLanguage, onChatPreviewLoaded, updateSSPTexts])
 
     return (
         <ChatPreviewChannelsContext.Provider

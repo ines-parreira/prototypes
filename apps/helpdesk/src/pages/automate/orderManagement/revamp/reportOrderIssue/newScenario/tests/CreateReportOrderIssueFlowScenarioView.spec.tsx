@@ -1,6 +1,8 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+
 import { CreateReportOrderIssueScenarioView } from '../CreateReportOrderIssueFlowScenarioView'
 import { useCreateReportOrderIssueScenario } from '../hooks/useCreateReportOrderIssueScenario'
 
@@ -15,6 +17,9 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('../hooks/useCreateReportOrderIssueScenario')
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+)
 
 jest.mock(
     '../../../components/OrderManagementFlowHeader/OrderManagementFlowHeader',
@@ -72,29 +77,57 @@ jest.mock(
 )
 
 jest.mock('../../scenarioForm/reasonEditor/ScenarioReasonEditor', () => ({
-    ScenarioReasonEditor: ({ onChange }: { onChange: (v: any) => void }) => (
-        <button
-            onClick={() =>
-                onChange([
-                    {
-                        reasonKey: 'reasonOther',
-                        action: {
-                            type: 'automated_response',
-                            responseMessageContent: { html: '', text: '' },
-                            showHelpfulPrompt: false,
+    ScenarioReasonEditor: ({
+        onChange,
+        onExpandedReasonChange,
+    }: {
+        onChange: (v: any) => void
+        onExpandedReasonChange?: (reasonKey: string | null) => void
+    }) => (
+        <>
+            <button
+                onClick={() =>
+                    onChange([
+                        {
+                            reasonKey: 'reasonOther',
+                            action: {
+                                type: 'automated_response',
+                                responseMessageContent: {
+                                    html: '<p>Response</p>',
+                                    text: 'Response',
+                                },
+                                showHelpfulPrompt: true,
+                            },
                         },
-                    },
-                ])
-            }
-        >
-            ScenarioReasonEditor
-        </button>
+                    ])
+                }
+            >
+                ScenarioReasonEditor
+            </button>
+            <button onClick={() => onChange([{ reasonKey: 'reasonOther' }])}>
+                ScenarioReasonEditor without action
+            </button>
+            <button onClick={() => onExpandedReasonChange?.('reasonOther')}>
+                Expand reason
+            </button>
+            <button onClick={() => onExpandedReasonChange?.(null)}>
+                Collapse reason
+            </button>
+        </>
     ),
 }))
 
 const mockUseCreateReportOrderIssueScenario =
     useCreateReportOrderIssueScenario as jest.MockedFunction<
         typeof useCreateReportOrderIssueScenario
+    >
+
+const mockUpdatePreviewOrders = jest.fn()
+const mockDisplayPage = jest.fn()
+const mockOnChatPreviewLoaded = jest.fn()
+const mockUseChatPreviewPanelContext =
+    useChatPreviewPanelContext as jest.MockedFunction<
+        typeof useChatPreviewPanelContext
     >
 
 const defaultCreateReturn = {
@@ -108,6 +141,19 @@ describe('CreateReportOrderIssueScenarioView', () => {
         mockUseCreateReportOrderIssueScenario.mockReturnValue(
             defaultCreateReturn,
         )
+        mockOnChatPreviewLoaded.mockImplementation(
+            (callback, fireIfAlreadyLoaded) => {
+                if (fireIfAlreadyLoaded) {
+                    callback()
+                }
+                return jest.fn()
+            },
+        )
+        mockUseChatPreviewPanelContext.mockReturnValue({
+            updatePreviewOrders: mockUpdatePreviewOrders,
+            displayPage: mockDisplayPage,
+            onChatPreviewLoaded: mockOnChatPreviewLoaded,
+        } as any)
     })
 
     it('should render the header with correct title', () => {
@@ -265,5 +311,119 @@ describe('CreateReportOrderIssueScenarioView', () => {
 
         expect(screen.getByText('Order conditions')).toBeInTheDocument()
         expect(screen.getByText('Issue options')).toBeInTheDocument()
+    })
+
+    it('should navigate the chat preview to the report page on mount', () => {
+        render(<CreateReportOrderIssueScenarioView />)
+
+        expect(mockDisplayPage).toHaveBeenCalledWith(
+            'report',
+            expect.objectContaining({ orderName: expect.any(String) }),
+        )
+    })
+
+    it('should sync the chat preview when reasons change', () => {
+        render(<CreateReportOrderIssueScenarioView />)
+
+        mockUpdatePreviewOrders.mockClear()
+
+        act(() => {
+            screen.getByRole('button', { name: 'ScenarioReasonEditor' }).click()
+        })
+
+        expect(mockUpdatePreviewOrders).toHaveBeenCalledWith(
+            expect.objectContaining({
+                orders: expect.objectContaining({
+                    '#1001': expect.objectContaining({
+                        fulfillments: expect.arrayContaining([
+                            expect.objectContaining({
+                                flows: expect.objectContaining({
+                                    report_issue_reasons: [
+                                        expect.objectContaining({
+                                            reasonKey: 'reasonOther',
+                                        }),
+                                    ],
+                                }),
+                            }),
+                        ]),
+                    }),
+                }),
+            }),
+        )
+    })
+
+    it('should navigate the chat preview to the reported-issue page when a reason is expanded', async () => {
+        const user = userEvent.setup()
+        render(<CreateReportOrderIssueScenarioView />)
+
+        act(() => {
+            screen.getByRole('button', { name: 'ScenarioReasonEditor' }).click()
+        })
+
+        mockDisplayPage.mockClear()
+
+        await user.click(screen.getByRole('button', { name: 'Expand reason' }))
+
+        expect(mockDisplayPage).toHaveBeenCalledWith('reported-issue', {
+            orderName: '#1001',
+            reasonKey: 'reasonOther',
+            responseText: 'Response',
+            showHelpfulPrompt: true,
+        })
+    })
+
+    it('should fall back to empty response text and false helpful prompt when the expanded reason has no action', async () => {
+        const user = userEvent.setup()
+        render(<CreateReportOrderIssueScenarioView />)
+
+        act(() => {
+            screen
+                .getByRole('button', {
+                    name: 'ScenarioReasonEditor without action',
+                })
+                .click()
+        })
+
+        mockDisplayPage.mockClear()
+
+        await user.click(screen.getByRole('button', { name: 'Expand reason' }))
+
+        expect(mockDisplayPage).toHaveBeenCalledWith('reported-issue', {
+            orderName: '#1001',
+            reasonKey: 'reasonOther',
+            responseText: '',
+            showHelpfulPrompt: false,
+        })
+    })
+
+    it('should navigate the chat preview back to the report page when the reason is collapsed', async () => {
+        const user = userEvent.setup()
+        render(<CreateReportOrderIssueScenarioView />)
+
+        act(() => {
+            screen.getByRole('button', { name: 'ScenarioReasonEditor' }).click()
+        })
+
+        await user.click(screen.getByRole('button', { name: 'Expand reason' }))
+
+        mockDisplayPage.mockClear()
+
+        await user.click(
+            screen.getByRole('button', { name: 'Collapse reason' }),
+        )
+
+        expect(mockDisplayPage).toHaveBeenCalledWith('report', {
+            orderName: '#1001',
+        })
+    })
+
+    it('should reset the chat preview to the homepage on unmount', () => {
+        const { unmount } = render(<CreateReportOrderIssueScenarioView />)
+
+        mockDisplayPage.mockClear()
+
+        unmount()
+
+        expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
     })
 })

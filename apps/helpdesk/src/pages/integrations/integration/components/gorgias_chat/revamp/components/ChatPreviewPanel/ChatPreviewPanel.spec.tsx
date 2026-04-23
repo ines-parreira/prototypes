@@ -49,6 +49,7 @@ jest.mock(
             setPosition: jest.fn(),
             updateSettings: jest.fn(),
             updateTexts: jest.fn(),
+            updateSSPTexts: jest.fn(),
             setLanguage: jest.fn().mockResolvedValue(undefined),
             updateSelfServiceConfiguration: jest.fn(),
             setOrders: jest.fn(),
@@ -105,7 +106,7 @@ jest.mock(
     },
 )
 
-const { mockGorgiasChat } = jest.requireMock(
+const { mockGorgiasChat, triggerOnLoaded } = jest.requireMock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreview',
 )
 
@@ -232,6 +233,7 @@ describe('ChatPreviewPanel', () => {
             expect(ref.current?.updatePosition).toBeDefined()
             expect(ref.current?.updateSettings).toBeDefined()
             expect(ref.current?.updateTexts).toBeDefined()
+            expect(ref.current?.updateSSPTexts).toBeDefined()
             expect(ref.current?.closeChat).toBeDefined()
             expect(ref.current?.openChat).toBeDefined()
             expect(ref.current?.updateWorkflowEntryPoints).toBeDefined()
@@ -245,6 +247,29 @@ describe('ChatPreviewPanel', () => {
 
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith(
                 'conversation',
+                undefined,
+            )
+        })
+
+        it('displayPage("homepage") still fires after a non-tab page transition', () => {
+            const { ref } = renderComponent()
+
+            act(() => {
+                ref.current?.displayPage('reported-issue', {
+                    orderName: '#1001',
+                    reasonKey: 'reasonOther',
+                })
+            })
+            act(() => {
+                ref.current?.displayPage('homepage')
+            })
+
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith(
+                'reported-issue',
+                { orderName: '#1001', reasonKey: 'reasonOther' },
+            )
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith(
+                'homepage',
                 undefined,
             )
         })
@@ -299,6 +324,17 @@ describe('ChatPreviewPanel', () => {
             ref.current?.updateTexts(texts)
 
             expect(mockGorgiasChat.updateTexts).toHaveBeenCalledWith(
+                expect.objectContaining(texts),
+            )
+        })
+
+        it('updateSSPTexts calls GorgiasChat.updateSSPTexts with the provided texts', () => {
+            const { ref } = renderComponent()
+            const texts = { reasonOther: 'Other', reasonLate: 'Late' }
+
+            ref.current?.updateSSPTexts(texts)
+
+            expect(mockGorgiasChat.updateSSPTexts).toHaveBeenCalledWith(
                 expect.objectContaining(texts),
             )
         })
@@ -456,6 +492,23 @@ describe('ChatPreviewPanel', () => {
             ref.current?.displayPage('orders')
 
             expect(mockGorgiasChat.open).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('onLoaded', () => {
+        it('seeds SSP texts and sets the current page on load', () => {
+            const onPreviewLoaded = jest.fn()
+            renderComponent('test-app-id', { onPreviewLoaded })
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(mockGorgiasChat.updateSSPTexts).toHaveBeenCalledWith(
+                expect.any(Object),
+            )
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('homepage')
+            expect(onPreviewLoaded).toHaveBeenCalled()
         })
     })
 })

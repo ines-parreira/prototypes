@@ -18,9 +18,16 @@ import type {
     ReportIssueCaseReason,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
+import type { ChatPreviewPageOptions } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/ChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt'
 
 import { OrderManagementFlowHeader } from '../../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
+import {
+    REPORT_ISSUE_PREVIEW_ORDER,
+    REPORT_ISSUE_PREVIEW_ORDER_NAME,
+    REPORT_ISSUE_PREVIEW_ORDERS,
+} from '../../utils/previewOrdersData'
 import { ScenarioConditionBuilder } from '../scenarioForm/conditionBuilder/ScenarioConditionBuilder'
 import {
     SCENARIO_DESCRIPTION_MAX_LENGTH,
@@ -55,6 +62,9 @@ export const EditReportOrderIssueScenarioView = () => {
     } = useEditReportOrderIssueScenario()
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [expandedReasonKey, setExpandedReasonKey] = useState<string | null>(
+        null,
+    )
 
     const {
         handleSubmit,
@@ -88,6 +98,77 @@ export const EditReportOrderIssueScenarioView = () => {
     const newReasons = watch('newReasons')
 
     const isTitleEmpty = !title.trim()
+
+    const { updatePreviewOrders, displayPage, onChatPreviewLoaded } =
+        useChatPreviewPanelContext()
+
+    const computedPreviewOrders = useMemo(
+        () => ({
+            ...REPORT_ISSUE_PREVIEW_ORDERS,
+            orders: {
+                [REPORT_ISSUE_PREVIEW_ORDER_NAME]: {
+                    ...REPORT_ISSUE_PREVIEW_ORDER,
+                    fulfillments: [
+                        {
+                            ...REPORT_ISSUE_PREVIEW_ORDER.fulfillments[0],
+                            flows: {
+                                ...REPORT_ISSUE_PREVIEW_ORDER.fulfillments[0]
+                                    .flows,
+                                report_issue_reasons: newReasons,
+                            },
+                        },
+                    ],
+                },
+            },
+        }),
+        [newReasons],
+    )
+
+    const expandedReason = useMemo(
+        () =>
+            newReasons.find((reason) => reason.reasonKey === expandedReasonKey),
+        [newReasons, expandedReasonKey],
+    )
+
+    const chatPreviewPage: 'report' | 'reported-issue' = expandedReason
+        ? 'reported-issue'
+        : 'report'
+
+    const chatPreviewPageOptions: ChatPreviewPageOptions = useMemo(
+        () =>
+            expandedReason
+                ? {
+                      orderName: REPORT_ISSUE_PREVIEW_ORDER_NAME,
+                      reasonKey: expandedReason.reasonKey,
+                      responseText:
+                          expandedReason.action?.responseMessageContent.text ??
+                          '',
+                      showHelpfulPrompt:
+                          expandedReason.action?.showHelpfulPrompt ?? false,
+                  }
+                : { orderName: REPORT_ISSUE_PREVIEW_ORDER_NAME },
+        [expandedReason],
+    )
+
+    useEffect(() => {
+        return onChatPreviewLoaded(() => {
+            updatePreviewOrders(computedPreviewOrders)
+            displayPage(chatPreviewPage, chatPreviewPageOptions)
+        }, true)
+    }, [
+        onChatPreviewLoaded,
+        updatePreviewOrders,
+        displayPage,
+        computedPreviewOrders,
+        chatPreviewPage,
+        chatPreviewPageOptions,
+    ])
+
+    useEffect(() => {
+        return () => {
+            displayPage('homepage')
+        }
+    }, [displayPage])
 
     const [formErrors, setFormErrors] = useState<Record<string, true>>({})
     const hasFormError = Object.keys(formErrors).length > 0 || isTitleEmpty
@@ -235,6 +316,7 @@ export const EditReportOrderIssueScenarioView = () => {
                                     shouldDirty: true,
                                 })
                             }
+                            onExpandedReasonChange={setExpandedReasonKey}
                         />
                     </Box>
 

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { UserRole } from '@repo/permissions'
 import { assumeMock } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { Route, StaticRouter } from 'react-router-dom'
@@ -127,6 +127,9 @@ describe('OrderManagementSettings', () => {
             chatPreviewPortal: null,
             showPreviewPanel: jest.fn(),
             hidePreviewPanel: jest.fn(),
+            onChatPreviewLoaded: jest.fn(() => jest.fn()),
+            updateTexts: jest.fn(),
+            updateSSPTexts: jest.fn(),
         })
     })
 
@@ -287,6 +290,46 @@ describe('OrderManagementSettings', () => {
             )
             expect(screen.getByText('Configuration')).toBeInTheDocument()
             expect(screen.getByText('Channels')).toBeInTheDocument()
+        })
+    })
+
+    describe('chat preview SSP texts', () => {
+        it('should seed SSP texts when the chat preview has loaded', () => {
+            const updateSSPTexts = jest.fn()
+            const onChatPreviewLoaded = jest.fn(
+                (callback, fireIfAlreadyLoaded) => {
+                    if (fireIfAlreadyLoaded) {
+                        callback()
+                    }
+                    return jest.fn()
+                },
+            )
+            mockUseChatPreviewPanel.mockReturnValue({
+                chatPreviewPortal: null,
+                showPreviewPanel: jest.fn(),
+                hidePreviewPanel: jest.fn(),
+                onChatPreviewLoaded,
+                updateTexts: jest.fn(),
+                updateSSPTexts,
+            })
+
+            act(() => {
+                renderWithQueryClientProvider(
+                    <Provider store={mockStore(initialState)}>
+                        <StaticRouter location={BASE_PATH}>
+                            <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
+                                <OrderManagementSettings />
+                            </Route>
+                        </StaticRouter>
+                    </Provider>,
+                )
+            })
+
+            expect(onChatPreviewLoaded).toHaveBeenCalledWith(
+                expect.any(Function),
+                true,
+            )
+            expect(updateSSPTexts).toHaveBeenCalledWith(expect.any(Object))
         })
     })
 })

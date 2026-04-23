@@ -2,6 +2,7 @@
 import type { Language } from '@gorgias/helpdesk-types'
 
 import type { LanguageItem } from 'config/integrations/gorgias_chat'
+import type { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
 
 import { IntegrationType } from '../constants'
 import type { Integration } from './'
@@ -184,7 +185,7 @@ export type GorgiasChatPreviewOrderFulfillment = {
         track_order?: boolean
         cancel_order?: boolean
         return_order?: boolean
-        report_issue_reasons?: string[]
+        report_issue_reasons?: ReportIssueCaseReason[]
         track_order_unfulfilled_message?: { html: string; text: string }
     }
 }

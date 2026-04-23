@@ -11,9 +11,11 @@ jest.mock('pages/common/components/accordion/SortableAccordion', () => ({
     default: ({
         children,
         onReorder,
+        onChange,
     }: {
         children: React.ReactNode
         onReorder: (keys: string[]) => void
+        onChange?: (nextKey: string | null) => void
     }) => (
         <div>
             {children}
@@ -22,6 +24,10 @@ jest.mock('pages/common/components/accordion/SortableAccordion', () => ({
             >
                 Reorder
             </button>
+            <button onClick={() => onChange?.('reasonCancelOrder')}>
+                Expand reasonCancelOrder
+            </button>
+            <button onClick={() => onChange?.(null)}>Collapse</button>
         </div>
     ),
 }))
@@ -112,10 +118,18 @@ jest.mock('pages/common/components/dropdown/DropdownItem', () => ({
 
 const noopContext = { setError: jest.fn() }
 
-const renderEditor = (value: ReportIssueCaseReason[], onChange = jest.fn()) =>
+const renderEditor = (
+    value: ReportIssueCaseReason[],
+    onChange = jest.fn(),
+    onExpandedReasonChange?: (reasonKey: string | null) => void,
+) =>
     render(
         <ScenarioFormContext.Provider value={noopContext}>
-            <ScenarioReasonEditor value={value} onChange={onChange} />
+            <ScenarioReasonEditor
+                value={value}
+                onChange={onChange}
+                onExpandedReasonChange={onExpandedReasonChange}
+            />
         </ScenarioFormContext.Provider>,
     )
 
@@ -255,6 +269,33 @@ describe('ScenarioReasonEditor', () => {
             expect.objectContaining({ reasonKey: 'reasonOther' }),
             expect.objectContaining({ reasonKey: 'reasonCancelOrder' }),
         ])
+    })
+
+    it('should call onExpandedReasonChange when a reason is expanded and collapsed', async () => {
+        const user = userEvent.setup()
+        const onExpandedReasonChange = jest.fn()
+        const reasons: ReportIssueCaseReason[] = [
+            {
+                reasonKey: 'reasonCancelOrder',
+                action: {
+                    type: 'automated_response',
+                    responseMessageContent: { html: '', text: '' },
+                    showHelpfulPrompt: false,
+                },
+            },
+        ]
+
+        renderEditor(reasons, jest.fn(), onExpandedReasonChange)
+
+        await user.click(
+            screen.getByRole('button', { name: 'Expand reasonCancelOrder' }),
+        )
+        expect(onExpandedReasonChange).toHaveBeenLastCalledWith(
+            'reasonCancelOrder',
+        )
+
+        await user.click(screen.getByRole('button', { name: 'Collapse' }))
+        expect(onExpandedReasonChange).toHaveBeenLastCalledWith(null)
     })
 
     it('should call onChange with updated reason when item changes', async () => {
