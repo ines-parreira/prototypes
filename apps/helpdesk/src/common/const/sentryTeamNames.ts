@@ -4,5 +4,5 @@ export enum SentryTeam {
     ACTIONS_AND_CHANNELS = 'automate-engine', // legacy team for Actions & Channels
     CRM_GROWTH = 'crm-growth',
     MARKETING = 'marketing',
-    CRM_REPORTING = 'crm-reporting',
+    CPLT_ANALYTICS_FRONTEND = 'cplt-analytics-frontend',
 }

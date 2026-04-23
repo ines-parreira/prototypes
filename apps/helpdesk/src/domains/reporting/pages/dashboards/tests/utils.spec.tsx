@@ -227,7 +227,7 @@ describe('dashboardFromApi', () => {
         expect(reportErrorMock).toHaveBeenCalledWith(
             expect.any(Error),
             expect.objectContaining({
-                tags: { team: SentryTeam.CRM_REPORTING },
+                tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                 extra: { validationErrors: expect.any(Array) },
             }),
         )

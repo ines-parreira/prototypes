@@ -1,4 +1,4 @@
-# CRM Reporting scope @gorgias/crm-reporting
+# Conv Platform Analytics scope @gorgias/cplt-analytics-frontend
 
 apps/helpdesk/src/domains/reporting @gorgias/cplt-analytics-frontend
 apps/helpdesk/src/assets/img/paywalls/screens/chat_stats.png @gorgias/cplt-analytics-frontend

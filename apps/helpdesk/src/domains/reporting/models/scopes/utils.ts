@@ -952,7 +952,7 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
                     `New Stats API and Legacy API queries are different for metric ${metricName}`,
                 ),
                 {
-                    tags: { team: SentryTeam.CRM_REPORTING },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                     extra: {
                         differences,
                         summary: `Found ${differences.length} difference(s)`,
@@ -992,7 +992,7 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
         return true
     } catch (error: Error | unknown) {
         reportError(error, {
-            tags: { team: SentryTeam.CRM_REPORTING },
+            tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
             extra: {
                 message: 'Error comparing reporting queries in New Stats API',
             },

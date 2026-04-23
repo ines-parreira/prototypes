@@ -81,7 +81,7 @@ export default function WorkflowAnalyticsContainer() {
         <ErrorBoundary
             sentryTags={{
                 section: 'workflow-analytics',
-                team: SentryTeam.CRM_REPORTING,
+                team: SentryTeam.CPLT_ANALYTICS_FRONTEND,
             }}
         >
             <WorkflowAnalyticsFilters

@@ -83,7 +83,7 @@ describe('useDownloadPerformanceBreakdownV2Data', () => {
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
         expect(mockReportError).toHaveBeenCalledWith(error, {
-            tags: { team: SentryTeam.CRM_REPORTING },
+            tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
         })
     })
 

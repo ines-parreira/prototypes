@@ -125,7 +125,7 @@ export const dashboardFromApi = (
     const validation = validateAnalyticsCustomReport(maybeReport)
     if (!validation.isValid) {
         reportError(new Error('Invalid dashboard'), {
-            tags: { team: SentryTeam.CRM_REPORTING },
+            tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
             extra: { validationErrors: validation.errors },
         })
 

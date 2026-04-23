@@ -229,7 +229,7 @@ describe('metricExecutionHandler', () => {
                         reason: '{}',
                         payload: JSON.stringify(mockNewPayload),
                     },
-                    tags: { team: 'crm-reporting' },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                 },
                 ['next_failed_shadow', 'test-metric', 'New API failed'],
             )
@@ -266,7 +266,7 @@ describe('metricExecutionHandler', () => {
                         reason: JSON.stringify({ error: 'invalid dimension' }),
                         payload: JSON.stringify(mockNewPayload),
                     },
-                    tags: { team: 'crm-reporting' },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                 },
                 ['next_failed_shadow', 'test-metric', 'New API failed'],
             )
@@ -549,7 +549,7 @@ describe('metricExecutionHandler', () => {
                     extra: expect.objectContaining({
                         metricName: 'test-metric',
                     }),
-                    tags: { team: 'crm-reporting' },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                 }),
                 expect.any(Array),
             )
@@ -585,7 +585,7 @@ describe('metricExecutionHandler', () => {
                     extra: expect.objectContaining({
                         metricName: 'test-metric',
                     }),
-                    tags: { team: 'crm-reporting' },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                 }),
                 expect.any(Array),
             )
@@ -752,7 +752,7 @@ describe('metricExecutionHandler', () => {
                         'Backend returned unexpected cursor pagination for metric test-metric',
                 }),
                 expect.objectContaining({
-                    tags: { team: SentryTeam.CRM_REPORTING },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                     extra: expect.objectContaining({
                         metricName: 'test-metric',
                         cursor: 'cursor_abc123',
@@ -789,7 +789,7 @@ describe('metricExecutionHandler', () => {
                         'Backend returned unexpected cursor pagination for metric voice-call-count',
                 }),
                 expect.objectContaining({
-                    tags: { team: SentryTeam.CRM_REPORTING },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                     extra: expect.objectContaining({
                         metricName: METRIC_NAMES.VOICE_CALL_COUNT,
                         cursor: 'cursor_xyz789',

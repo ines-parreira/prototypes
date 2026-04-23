@@ -72,7 +72,7 @@ export async function metricExecutionHandler<
                 `Missing required functions for metric ${config.metricName} in ${stage} mode: newPayload`,
             ),
             {
-                tags: { team: SentryTeam.CRM_REPORTING },
+                tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                 extra: { metricName: config.metricName },
             },
         )
@@ -112,7 +112,7 @@ export async function metricExecutionHandler<
                             `Backend returned unexpected cursor pagination for metric ${metricName}`,
                         ),
                         {
-                            tags: { team: SentryTeam.CRM_REPORTING },
+                            tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                             extra: {
                                 metricName,
                                 cursor: nextCursor,
@@ -158,7 +158,7 @@ export async function metricExecutionHandler<
                     `Next function failed in ${stage} mode for ${config.metricName}: ${errorMessage}`,
                 ),
                 {
-                    tags: { team: SentryTeam.CRM_REPORTING },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                     extra: {
                         metricName: config.metricName,
                         reason: JSON.stringify(reason),

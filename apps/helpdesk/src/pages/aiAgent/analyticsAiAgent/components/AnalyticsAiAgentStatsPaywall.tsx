@@ -24,7 +24,7 @@ const AnalyticsAiAgentStatsPaywall: React.FC = () => {
         <ErrorBoundary
             sentryTags={{
                 section: 'automate-stats',
-                team: SentryTeam.CRM_REPORTING,
+                team: SentryTeam.CPLT_ANALYTICS_FRONTEND,
             }}
         >
             {hasAccess ? (

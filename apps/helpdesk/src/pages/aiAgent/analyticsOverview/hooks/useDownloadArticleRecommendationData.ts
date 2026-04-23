@@ -26,7 +26,7 @@ export const useDownloadArticleRecommendationData = () => {
             })
             .catch((error) => {
                 reportError(error, {
-                    tags: { team: SentryTeam.CRM_REPORTING },
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
                 })
                 setIsLoading(false)
             })

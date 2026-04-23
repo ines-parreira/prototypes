@@ -1,6 +1,7 @@
 import { reportError } from '@repo/logging'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
 import { fetchShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
@@ -102,7 +103,7 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
         })
 
         expect(mockReportError).toHaveBeenCalledWith(error, {
-            tags: { team: 'crm-reporting' },
+            tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
         })
     })
 

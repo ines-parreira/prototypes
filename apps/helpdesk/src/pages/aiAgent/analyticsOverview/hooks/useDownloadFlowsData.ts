@@ -32,7 +32,9 @@ export const useDownloadFlowsData = () => {
                 setIsLoading(false)
             })
             .catch((error) => {
-                reportError(error, { tags: { team: SentryTeam.CRM_REPORTING } })
+                reportError(error, {
+                    tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
+                })
                 setIsLoading(false)
             })
     }, [cleanStatsFilters, userTimezone, costSavedPerInteraction])
