@@ -660,9 +660,7 @@ export const KnowledgeHubTable = ({
                               {
                                   key: 'metricsDateRange',
                                   content: (
-                                      <MetricsDateRangeDisplay
-                                          dateRange={metricsDateRange}
-                                      />
+                                      <MetricsDateRangeDisplay days={28} />
                                   ),
                               },
                           ]
