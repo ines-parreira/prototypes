@@ -3,7 +3,7 @@ import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { OrderDirection } from 'models/api/types'
 
-const knowledgeStatisticsScope = defineScope({
+export const knowledgeStatisticsScope = defineScope({
     scope: MetricScope.KnowledgeInsights,
     measures: ['ticketCount', 'averageSurveyScore'],
     dimensions: [
@@ -12,6 +12,7 @@ const knowledgeStatisticsScope = defineScope({
         'resourceType',
         'resourceSourceId',
         'resourceSourceSetId',
+        'resourceVersion',
         'customFieldTop2LevelsValue',
     ],
     timeDimensions: ['createdDatetime', 'closedDatetime'],
@@ -20,16 +21,20 @@ const knowledgeStatisticsScope = defineScope({
         'periodEnd',
         'customFields',
         'customFieldId',
+        'customFieldValueString',
         'resourceSourceId',
         'resourceSourceSetId',
+        'resourceVersion',
         'storeId',
         'ticketId',
     ],
     order: [
         'createdDatetime',
         'ticketCount',
+        'ticketId',
         'resourceSourceId',
         'resourceSourceSetId',
+        'resourceVersion',
         'customFieldTop2LevelsValue',
     ],
 })

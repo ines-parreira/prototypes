@@ -70,6 +70,8 @@ export enum APIOnlyFilterKey {
     EngagementType = 'engagementType',
     Currency = 'currency',
     OrderId = 'orderId',
+    CustomFieldValueString = 'customFieldValueString',
+    ResourceVersion = 'resourceVersion',
     TicketId = 'ticketId',
     CustomField = 'customField',
 }
@@ -344,6 +346,8 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.EngagementType]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.Currency]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.OrderId]?: WithLogicalOperator<number>
+    [APIOnlyFilterKey.CustomFieldValueString]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.ResourceVersion]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.TicketId]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.CustomField]?: WithLogicalOperator<string>
 }

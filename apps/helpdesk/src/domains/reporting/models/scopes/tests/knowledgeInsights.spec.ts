@@ -5,12 +5,15 @@ import {
     knowledgeHandoverTicketsCountQueryV2Factory,
     knowledgeIntents,
     knowledgeIntentsQueryV2Factory,
+    knowledgeStatisticsScope,
     knowledgeTicketsCount,
     knowledgeTicketsCountQueryV2Factory,
     knowledgeTicketsResourceCount,
     knowledgeTicketsResourceCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/knowledgeInsights'
 import type { Context } from 'domains/reporting/models/scopes/scope'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { OrderDirection } from 'models/api/types'
 
 describe('knowledgeTicketsResourceCount', () => {
@@ -338,5 +341,96 @@ describe('knowledgeIntentsQueryV2Factory', () => {
             'resourceSourceSetId',
         ])
         expect(query.timezone).toBe('America/New_York')
+    })
+})
+
+describe('knowledgeStatisticsScope filters', () => {
+    const baseFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    it('includes period filters', () => {
+        const result = createScopeFilters(
+            baseFilters,
+            knowledgeStatisticsScope.config,
+        )
+
+        expect(result).toContainEqual(
+            expect.objectContaining({
+                member: 'periodStart',
+                operator: 'afterDate',
+            }),
+        )
+        expect(result).toContainEqual(
+            expect.objectContaining({
+                member: 'periodEnd',
+                operator: 'beforeDate',
+            }),
+        )
+    })
+
+    it('includes customFieldValueString filter when provided', () => {
+        const result = createScopeFilters(
+            {
+                ...baseFilters,
+                customFieldValueString: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['foo'],
+                },
+            },
+            knowledgeStatisticsScope.config,
+        )
+
+        expect(result).toContainEqual(
+            expect.objectContaining({
+                member: 'customFieldValueString',
+                operator: LogicalOperatorEnum.ONE_OF,
+            }),
+        )
+    })
+
+    it('omits customFieldValueString filter when not provided', () => {
+        const result = createScopeFilters(
+            baseFilters,
+            knowledgeStatisticsScope.config,
+        )
+
+        expect(result).not.toContainEqual(
+            expect.objectContaining({ member: 'customFieldValueString' }),
+        )
+    })
+
+    it('includes resourceVersion filter when provided', () => {
+        const result = createScopeFilters(
+            {
+                ...baseFilters,
+                resourceVersion: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['v1'],
+                },
+            },
+            knowledgeStatisticsScope.config,
+        )
+
+        expect(result).toContainEqual(
+            expect.objectContaining({
+                member: 'resourceVersion',
+                operator: LogicalOperatorEnum.ONE_OF,
+            }),
+        )
+    })
+
+    it('omits resourceVersion filter when not provided', () => {
+        const result = createScopeFilters(
+            baseFilters,
+            knowledgeStatisticsScope.config,
+        )
+
+        expect(result).not.toContainEqual(
+            expect.objectContaining({ member: 'resourceVersion' }),
+        )
     })
 })

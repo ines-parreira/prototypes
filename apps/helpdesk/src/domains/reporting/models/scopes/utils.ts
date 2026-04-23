@@ -298,6 +298,8 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'automationFeatureType':
             case 'engagementType':
             case 'currency':
+            case 'customFieldValueString':
+            case 'resourceVersion':
             case 'orderId':
             case 'ticketId':
             case 'customField':
