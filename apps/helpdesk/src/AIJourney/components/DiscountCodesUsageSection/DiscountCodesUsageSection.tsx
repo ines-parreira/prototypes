@@ -60,7 +60,7 @@ export const DiscountCodesUsageSection = ({
     return (
         <Box flexDirection="column" gap="md">
             <Heading size="md">Discount codes usage</Heading>
-            <Box gap="md" className={css.trendCardGrid}>
+            <Box gap="md" flexWrap="wrap" className={css.trendCardGrid}>
                 {discountCodeUsageMetrics.map((metric) => (
                     <TrendCard
                         key={`key-metric-${metric.trend.data?.label}`}

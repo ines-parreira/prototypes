@@ -581,7 +581,12 @@ export const Analytics = () => {
                     />
                 </Box>
 
-                <Box flexDirection="row" gap="md" className={css.keyMetricsBox}>
+                <Box
+                    flexDirection="row"
+                    gap="md"
+                    flexWrap="wrap"
+                    className={css.keyMetricsBox}
+                >
                     {keyKpisConfig
                         .filter((config) => config.visibility)
                         .map((config) => {
