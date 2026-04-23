@@ -15,6 +15,10 @@ export type MetricColumnConfig = {
     loadingStateKeys: (keyof MetricLoadingStates)[]
     skeletonWidth?: string
     showNotAvailable?: boolean
+    renderCell?: (
+        value: number | null,
+        row: Record<string, unknown>,
+    ) => ReactNode | null
 }
 
 export type NameColumnConfig = {

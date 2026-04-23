@@ -36,7 +36,7 @@ beforeEach(() => {
 describe('useAiAgentTrendCardDrillDown', () => {
     it('should return drillDown when feature flag is enabled and value is non-zero', () => {
         const { result } = renderHook(() =>
-            useAiAgentTrendCardDrillDown(mockParams, 653),
+            useAiAgentTrendCardDrillDown(mockParams),
         )
 
         expect(result.current).toBe(mockDrillDown)
@@ -49,7 +49,7 @@ describe('useAiAgentTrendCardDrillDown', () => {
         })
 
         const { result } = renderHook(() =>
-            useAiAgentTrendCardDrillDown(mockParams, 653),
+            useAiAgentTrendCardDrillDown(mockParams),
         )
 
         expect(result.current).toBeUndefined()
@@ -59,52 +59,22 @@ describe('useAiAgentTrendCardDrillDown', () => {
         mockUseFlagWithLoading.mockReturnValue({ value: true, isLoading: true })
 
         const { result } = renderHook(() =>
-            useAiAgentTrendCardDrillDown(mockParams, 653),
+            useAiAgentTrendCardDrillDown(mockParams),
         )
 
         expect(result.current).toBeUndefined()
     })
 
-    it('should return undefined when metricName is undefined', () => {
+    it('should return undefined when metricName is absent', () => {
         const { result } = renderHook(() =>
-            useAiAgentTrendCardDrillDown(
-                {
-                    ...mockParams,
-                    metricName: undefined,
-                },
-                653,
-            ),
-        )
-
-        expect(result.current).toBeUndefined()
-    })
-
-    it('should return undefined when value is 0', () => {
-        const { result } = renderHook(() =>
-            useAiAgentTrendCardDrillDown(mockParams, 0),
-        )
-
-        expect(result.current).toBeUndefined()
-    })
-
-    it('should return undefined when value is null', () => {
-        const { result } = renderHook(() =>
-            useAiAgentTrendCardDrillDown(mockParams, null),
-        )
-
-        expect(result.current).toBeUndefined()
-    })
-
-    it('should return undefined when value is undefined', () => {
-        const { result } = renderHook(() =>
-            useAiAgentTrendCardDrillDown(mockParams, undefined),
+            useAiAgentTrendCardDrillDown({ title: 'Some title' }),
         )
 
         expect(result.current).toBeUndefined()
     })
 
     it('should call useDrillDownModalTrigger with the provided params', () => {
-        renderHook(() => useAiAgentTrendCardDrillDown(mockParams, 653))
+        renderHook(() => useAiAgentTrendCardDrillDown(mockParams))
 
         expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith({
             ...mockParams,

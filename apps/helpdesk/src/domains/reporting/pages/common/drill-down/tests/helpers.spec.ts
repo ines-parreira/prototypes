@@ -19,6 +19,7 @@ import {
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
     discountCodesOfferedDrillDownQueryFactory,
+    shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory,
     successRateV2DrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
@@ -281,6 +282,8 @@ const totalNumberOfOrderDrillDownQueryFactoryMock = assumeMock(
 const totalNumberProductRecommendationsDrillDownQueryFactoryMock = assumeMock(
     totalNumberProductRecommendationsDrillDownQueryFactory,
 )
+const shoppingAssistantTimesRecommendedColumnDrillDownQueryFactoryMock =
+    assumeMock(shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory)
 const allAgentsClosedTicketsDrillDownQueryFactoryMock = assumeMock(
     allAgentsClosedTicketsDrillDownQueryFactory,
 )
@@ -1728,6 +1731,29 @@ describe('getDrillDownQuery', () => {
         expect(
             totalNumberProductRecommendationsDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(statsFilters, timezone, undefined, undefined)
+    })
+
+    it('should be populated with ShoppingAssistantTimesRecommendedColumn with productId', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn,
+            productId: '456',
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            shoppingAssistantTimesRecommendedColumnDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone, undefined, '456')
     })
 
     it('should be populated with AiSalesAgentTotalProductRecommendations with productId', () => {

@@ -1,3 +1,4 @@
+import { AiSalesAgentActivityFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
 import { AiSalesAgentConversationsFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AiSalesAgentOrdersFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { AiSalesAgentOrderCustomersFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
@@ -33,6 +34,12 @@ export const aiSalesAgentConversationsDefaultFiltersMembers: StatsFiltersMembers
         channels: AiSalesAgentConversationsFilterMember.Channel,
         handover: AiSalesAgentConversationsFilterMember.Outcome,
     }
+
+export const aiSalesAgentActivityDefaultFiltersMembers: StatsFiltersMembers = {
+    periodStart: AiSalesAgentActivityFilterMember.PeriodStart,
+    periodEnd: AiSalesAgentActivityFilterMember.PeriodEnd,
+    storeIntegrations: AiSalesAgentActivityFilterMember.StoreIntegrationId,
+}
 
 export const clicksDefaultFilters = (
     filters: StatsFilters,

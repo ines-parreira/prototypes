@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
@@ -17,7 +18,6 @@ const mockUseStatsFilters = assumeMock(useStatsFilters)
 const mockUseShoppingAssistantTopProductsMetrics = assumeMock(
     useShoppingAssistantTopProductsMetricsLegacy,
 )
-
 const createWrapper = () => {
     const queryClient = new QueryClient({
         defaultOptions: {
@@ -119,6 +119,73 @@ describe('ShoppingAssistantTopProductsTable', () => {
         expect(screen.getByText('15%')).toBeInTheDocument()
         expect(screen.getByText('10%')).toBeInTheDocument()
         expect(screen.getByText('5%')).toBeInTheDocument()
+    })
+
+    it('should render times recommended as plain text', async () => {
+        const user = userEvent.setup()
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue({
+            isError: false,
+            isFetching: false,
+            data: [
+                {
+                    product: {
+                        id: 1,
+                        title: 'Test Product',
+                        created_at: new Date().toISOString(),
+                        image: null,
+                        images: [],
+                        options: [],
+                        variants: [],
+                    },
+                    metrics: {
+                        [ProductTableKeys.NumberOfRecommendations]: 100,
+                        [ProductTableKeys.CTR]: 25,
+                        [ProductTableKeys.BTR]: 10,
+                    },
+                },
+            ],
+        })
+
+        render(<ShoppingAssistantTopProductsTable />, {
+            wrapper: createWrapper(),
+        })
+
+        const value = await screen.findByText('100')
+        expect(value).toBeInTheDocument()
+        await user.click(value)
+    })
+
+    it('should render zero recommendation values without drilldown', async () => {
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue({
+            isError: false,
+            isFetching: false,
+            data: [
+                {
+                    product: {
+                        id: 7,
+                        title: 'Zero Product',
+                        created_at: new Date().toISOString(),
+                        image: null,
+                        images: [],
+                        options: [],
+                        variants: [],
+                    },
+                    metrics: {
+                        [ProductTableKeys.NumberOfRecommendations]: 0,
+                        [ProductTableKeys.CTR]: 0,
+                        [ProductTableKeys.BTR]: 1,
+                    },
+                },
+            ],
+        })
+
+        render(<ShoppingAssistantTopProductsTable />, {
+            wrapper: createWrapper(),
+        })
+
+        expect(await screen.findByText('Zero Product')).toBeInTheDocument()
+        const zeroValues = screen.getAllByText('0')
+        expect(zeroValues.length).toBeGreaterThan(0)
     })
 
     it('should render table headers correctly', async () => {

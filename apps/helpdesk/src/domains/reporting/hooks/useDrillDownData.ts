@@ -15,6 +15,7 @@ import { TicketSLADimension } from 'domains/reporting/models/cubes/sla/TicketSLA
 import type { BuiltQuery, Context } from 'domains/reporting/models/scopes/scope'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import type {
     BaseDrillDownRowData,
@@ -78,6 +79,12 @@ export const extraEnrichmentFieldsPerMetric: Record<
     [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: [
         ...defaultEnrichmentFields,
         EnrichmentFields.ProductsTitles,
+        EnrichmentFields.ProductsVariants,
+    ],
+    [AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn]: [
+        ...defaultEnrichmentFields,
+        EnrichmentFields.ProductsTitles,
+        EnrichmentFields.ProductsHandles,
         EnrichmentFields.ProductsVariants,
     ],
     [AIJourneyMetric.TotalOrders]: [

@@ -165,4 +165,14 @@ describe('useDrillDownModalTrigger', () => {
             } as any),
         )
     })
+
+    it('should return empty string as tooltipText when metricName and title are both absent', () => {
+        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            useDrillDownModalTrigger({
+                metricName: undefined as any,
+            }),
+        )
+
+        expect(result.current.tooltipText).toBe('')
+    })
 })

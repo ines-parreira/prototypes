@@ -1,4 +1,10 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AiSalesAgentActivityCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
+import {
+    AiSalesAgentActivityDimension,
+    AiSalesAgentActivityFilterMember,
+    AiSalesAgentActivityMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
 import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
     AiSalesAgentConversationsDimension,
@@ -26,6 +32,7 @@ import {
 } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
 import { SourceFilter } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import {
+    aiSalesAgentActivityDefaultFiltersMembers,
     aiSalesAgentConversationsDefaultFiltersMembers,
     aiSalesAgentOrderCustomersDefaultFiltersMembers,
     aiSalesAgentOrdersDefaultFiltersMembers,
@@ -405,6 +412,43 @@ export const totalNumberProductRecommendationsQueryFactory = (
     ],
     timezone,
     metricName: METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS,
+})
+
+export const shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    productId?: string,
+): ReportingQuery<AiSalesAgentActivityCube> => ({
+    measures: [AiSalesAgentActivityMeasure.ProductRecommendations],
+    dimensions: [
+        AiSalesAgentActivityDimension.TicketId,
+        AiSalesAgentActivityDimension.ProductRecommended,
+        AiSalesAgentActivityDimension.ProductVariantIds,
+        AiSalesAgentActivityDimension.StoreIntegrationId,
+    ],
+    filters: [
+        ...(productId
+            ? [
+                  {
+                      member: AiSalesAgentActivityFilterMember.ProductRecommended,
+                      operator: ReportingFilterOperator.Contains,
+                      values: [productId],
+                  },
+              ]
+            : []),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentActivityDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+    metricName:
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED_DRILLDOWN,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting
+        ? [[AiSalesAgentActivityDimension.ProductRecommended, sorting]]
+        : [],
 })
 
 export const totalNumberProductRecommendationsDrillDownQueryFactory = (

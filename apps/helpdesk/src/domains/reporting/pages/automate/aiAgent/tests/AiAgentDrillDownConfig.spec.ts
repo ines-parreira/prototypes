@@ -12,6 +12,7 @@ import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
 jest.mock('domains/reporting/hooks/useDrillDownData', () => ({
+    ...jest.requireActual('domains/reporting/hooks/useDrillDownData'),
     useEnrichedDrillDownData: jest.fn(),
 }))
 
@@ -115,6 +116,40 @@ describe('AiAgentDrillDownConfig', () => {
                 EnrichmentFields.AssigneeId,
                 EnrichmentFields.CreatedDatetime,
                 EnrichmentFields.CustomFields,
+            ],
+            formatTicketDrillDownRowData,
+            EnrichmentFields.TicketId,
+        )
+    })
+
+    it('should use product enrichment fields for ShoppingAssistantTimesRecommendedColumn', () => {
+        const mockQueryFactory = jest.fn()
+        mockGetDrillDownQuery.mockReturnValue(mockQueryFactory)
+
+        const metricData = {
+            metricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn,
+            title: 'Product recommendations',
+        } as DrillDownMetric
+
+        renderHook(() => AiAgentDrillDownConfig.drillDownHook(metricData))
+
+        expect(useEnrichedDrillDownData).toHaveBeenCalledWith(
+            mockQueryFactory,
+            metricData,
+            [
+                EnrichmentFields.TicketName,
+                EnrichmentFields.Status,
+                EnrichmentFields.Description,
+                EnrichmentFields.Channel,
+                EnrichmentFields.AssigneeId,
+                EnrichmentFields.CreatedDatetime,
+                EnrichmentFields.ContactReason,
+                EnrichmentFields.IsUnread,
+                EnrichmentFields.CustomFields,
+                EnrichmentFields.ProductsTitles,
+                EnrichmentFields.ProductsHandles,
+                EnrichmentFields.ProductsVariants,
             ],
             formatTicketDrillDownRowData,
             EnrichmentFields.TicketId,

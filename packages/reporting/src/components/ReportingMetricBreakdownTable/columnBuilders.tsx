@@ -132,6 +132,19 @@ export function buildMetricColumnDefs<TData>(
                             </DataTableBaseCell>
                         )
                     }
+                    if (config.renderCell) {
+                        const customCell = config.renderCell(
+                            value,
+                            info.row.original as Record<string, unknown>,
+                        )
+                        if (customCell !== null && customCell !== undefined) {
+                            return (
+                                <DataTableBaseCell>
+                                    {customCell}
+                                </DataTableBaseCell>
+                            )
+                        }
+                    }
                     return (
                         <DataTableBaseCell>
                             {config.showNotAvailable &&

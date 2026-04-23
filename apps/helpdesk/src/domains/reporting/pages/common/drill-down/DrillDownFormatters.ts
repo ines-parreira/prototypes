@@ -234,7 +234,11 @@ const formatTicketDrillDownRowDataInternal = (
                 ? Object.values(row[EnrichmentFields.ProductsTitles])
                 : [],
             variants: row[EnrichmentFields.ProductsVariants]
-                ? Object.values(row[EnrichmentFields.ProductsVariants])
+                ? (
+                      Object.values(
+                          row[EnrichmentFields.ProductsVariants],
+                      ) as string[]
+                  ).filter(Boolean)
                 : [],
         },
     }

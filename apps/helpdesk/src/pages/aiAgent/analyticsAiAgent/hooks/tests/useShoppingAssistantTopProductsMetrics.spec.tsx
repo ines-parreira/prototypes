@@ -518,4 +518,20 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         expect(mockUseProductClicksPerProduct).toHaveBeenCalledTimes(1)
         expect(mockUseBuyThroughRatePerProduct).toHaveBeenCalledTimes(1)
     })
+
+    it('returns empty flat data when recommendations data is undefined (loading state)', () => {
+        mockUseTimesRecommendedPerProduct.mockReturnValue({
+            data: undefined,
+            isFetching: true,
+            isError: false,
+        } as any)
+
+        const { result } = renderHook(
+            () => useShoppingAssistantTopProductsMetrics(),
+            { wrapper: createWrapper() },
+        )
+
+        expect(result.current.flatData).toEqual([])
+        expect(result.current.isFetching).toBe(true)
+    })
 })

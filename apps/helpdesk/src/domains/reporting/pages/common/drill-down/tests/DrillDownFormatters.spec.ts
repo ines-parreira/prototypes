@@ -631,6 +631,38 @@ describe('DrillDownFormatters', () => {
             )
         })
 
+        it('should filter out empty variant values', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'TicketEnriched.ticketId': '1',
+                'Products.titles': {
+                    product1: 'Product One',
+                },
+                'Products.variants': {
+                    variant1: 'Variant One',
+                    variant2: '',
+                    variant3: null,
+                },
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {},
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    product: {
+                        titles: ['Product One'],
+                        variants: ['Variant One'],
+                    },
+                }),
+            )
+        })
+
         it('should handle product data with titles and variants missing', () => {
             const row = {
                 'Ticket.assignee_user_id': null,

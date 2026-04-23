@@ -1,4 +1,7 @@
-import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
+import {
+    defaultEnrichmentFields,
+    useEnrichedDrillDownData,
+} from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
@@ -20,11 +23,21 @@ const aiAgentDrillDownEnrichmentFields: EnrichmentFields[] = [
     EnrichmentFields.CustomFields,
 ]
 
+const aiAgentTimesRecommendedDrillDownEnrichmentFields: EnrichmentFields[] = [
+    ...defaultEnrichmentFields,
+    EnrichmentFields.ProductsTitles,
+    EnrichmentFields.ProductsHandles,
+    EnrichmentFields.ProductsVariants,
+]
+
 const useAiAgentTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
         metricData,
-        aiAgentDrillDownEnrichmentFields,
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn
+            ? aiAgentTimesRecommendedDrillDownEnrichmentFields
+            : aiAgentDrillDownEnrichmentFields,
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
     )
@@ -50,6 +63,10 @@ export const AiAgentDrillDownConfig: DomainConfig<AiAgentDrillDownMetrics> = {
             domain: Domain.AiAgent,
         },
         [AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard]: {
+            showMetric: false,
+            domain: Domain.AiAgent,
+        },
+        [AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn]: {
             showMetric: false,
             domain: Domain.AiAgent,
         },

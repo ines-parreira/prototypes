@@ -173,7 +173,7 @@ export const useShoppingAssistantTopProductsMetrics =
         )
 
         const {
-            data: timesRecommended2,
+            data: timesRecommended,
             isFetching: isRecommendationsFetching,
             isError: isRecommendationsError,
         } = useTimesRecommendedPerProduct(periodFilters, userTimezone)
@@ -198,9 +198,9 @@ export const useShoppingAssistantTopProductsMetrics =
             useMemo(
                 () =>
                     buildProductsFromRecommendations(
-                        timesRecommended2?.allData ?? [],
+                        timesRecommended?.allData ?? [],
                     ),
-                [timesRecommended2],
+                [timesRecommended],
             )
 
         const shopDomainByIntegrationId = useMemo(

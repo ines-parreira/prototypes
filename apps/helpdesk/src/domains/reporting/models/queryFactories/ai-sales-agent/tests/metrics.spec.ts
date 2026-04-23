@@ -1,4 +1,9 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import {
+    AiSalesAgentActivityDimension,
+    AiSalesAgentActivityFilterMember,
+    AiSalesAgentActivityMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
     AiSalesAgentOrdersDimension,
@@ -10,12 +15,14 @@ import {
     SuccessRateFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
 import {
+    aiSalesAgentActivityDefaultFiltersMembers,
     aiSalesAgentConversationsDefaultFiltersMembers,
     aiSalesAgentOrdersDefaultFiltersMembers,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
 import {
     discountCodesOfferedDrillDownQueryFactory,
     gmvInfluencedQueryFactory,
+    shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory,
     successRateV2DrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
@@ -611,6 +618,129 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
             limit: DRILLDOWN_QUERY_LIMIT,
             order: [],
             timezone: 'UTC',
+        })
+    })
+})
+
+describe('shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory', () => {
+    const filters = {
+        period: {
+            start_datetime: '2026-02-01T00:00:00.000',
+            end_datetime: '2026-03-31T23:59:59.000',
+        },
+    }
+    const timezone = 'UTC'
+
+    const baseDimensions = [
+        AiSalesAgentActivityDimension.TicketId,
+        AiSalesAgentActivityDimension.ProductRecommended,
+        AiSalesAgentActivityDimension.ProductVariantIds,
+        AiSalesAgentActivityDimension.StoreIntegrationId,
+    ]
+
+    const basePeriodFilters = statsFiltersToReportingFilters(
+        aiSalesAgentActivityDefaultFiltersMembers,
+        filters,
+    )
+
+    it('should build a query without productId or sorting', () => {
+        expect(
+            shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED_DRILLDOWN,
+            measures: [AiSalesAgentActivityMeasure.ProductRecommendations],
+            dimensions: baseDimensions,
+            filters: basePeriodFilters,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+            timezone,
+        })
+    })
+
+    it('should build a query with productId', () => {
+        expect(
+            shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory(
+                filters,
+                timezone,
+                undefined,
+                '7365892407390',
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED_DRILLDOWN,
+            measures: [AiSalesAgentActivityMeasure.ProductRecommendations],
+            dimensions: baseDimensions,
+            filters: [
+                {
+                    member: AiSalesAgentActivityFilterMember.ProductRecommended,
+                    operator: ReportingFilterOperator.Contains,
+                    values: ['7365892407390'],
+                },
+                ...basePeriodFilters,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+            timezone,
+        })
+    })
+
+    it('should build a query with sorting', () => {
+        expect(
+            shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Desc,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED_DRILLDOWN,
+            measures: [AiSalesAgentActivityMeasure.ProductRecommendations],
+            dimensions: baseDimensions,
+            filters: basePeriodFilters,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [
+                [
+                    AiSalesAgentActivityDimension.ProductRecommended,
+                    OrderDirection.Desc,
+                ],
+            ],
+            timezone,
+        })
+    })
+
+    it('should build a query with productId and sorting', () => {
+        expect(
+            shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Asc,
+                '7365892407390',
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED_DRILLDOWN,
+            measures: [AiSalesAgentActivityMeasure.ProductRecommendations],
+            dimensions: baseDimensions,
+            filters: [
+                {
+                    member: AiSalesAgentActivityFilterMember.ProductRecommended,
+                    operator: ReportingFilterOperator.Contains,
+                    values: ['7365892407390'],
+                },
+                ...basePeriodFilters,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [
+                [
+                    AiSalesAgentActivityDimension.ProductRecommended,
+                    OrderDirection.Asc,
+                ],
+            ],
+            timezone,
         })
     })
 })

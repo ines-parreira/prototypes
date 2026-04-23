@@ -324,4 +324,75 @@ describe('buildMetricColumnDefs', () => {
             true,
         )
     })
+
+    describe('renderCell', () => {
+        it('renders the custom cell when renderCell returns a non-null value', () => {
+            const [col] = buildMetricColumnDefs(
+                [
+                    {
+                        ...baseConfig,
+                        renderCell: () => <span>custom content</span>,
+                    },
+                ],
+                defaultLoadingStates,
+            )
+            const cellFn = col.cell as any
+            render(<>{cellFn(makeInfo(42))}</>)
+            expect(screen.getByText('custom content')).toBeInTheDocument()
+        })
+
+        it('does not call formatMetricValue when renderCell returns a non-null value', () => {
+            const [col] = buildMetricColumnDefs(
+                [{ ...baseConfig, renderCell: () => <span>custom</span> }],
+                defaultLoadingStates,
+            )
+            const cellFn = col.cell as any
+            cellFn(makeInfo(42))
+            expect(vi.mocked(formatMetricValue)).not.toHaveBeenCalled()
+        })
+
+        it('falls through to default formatting when renderCell returns null', () => {
+            const [col] = buildMetricColumnDefs(
+                [{ ...baseConfig, renderCell: () => null }],
+                defaultLoadingStates,
+            )
+            const cellFn = col.cell as any
+            cellFn(makeInfo(42))
+            expect(vi.mocked(formatMetricValue)).toHaveBeenCalledWith(
+                42,
+                baseConfig.metricFormat,
+                'USD',
+                true,
+            )
+        })
+
+        it('passes the correct value and row to renderCell', () => {
+            const renderCell = vi.fn(() => null)
+            const [col] = buildMetricColumnDefs(
+                [{ ...baseConfig, renderCell }],
+                defaultLoadingStates,
+            )
+            const cellFn = col.cell as any
+            cellFn({
+                getValue: () => 99,
+                row: { original: { entity: 'product-1', costSaved: 99 } },
+            })
+            expect(renderCell).toHaveBeenCalledWith(99, {
+                entity: 'product-1',
+                costSaved: 99,
+            })
+        })
+
+        it('shows the skeleton and skips renderCell when loading and value is null', () => {
+            const renderCell = vi.fn(() => <span>custom</span>)
+            const [col] = buildMetricColumnDefs(
+                [{ ...baseConfig, renderCell }],
+                { ...defaultLoadingStates, costSaved: true },
+            )
+            const cellFn = col.cell as any
+            render(<>{cellFn(makeInfo(null))}</>)
+            expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+            expect(renderCell).not.toHaveBeenCalled()
+        })
+    })
 })

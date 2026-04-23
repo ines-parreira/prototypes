@@ -63,6 +63,7 @@ export const aiSalesRecommendedProductCountPerProduct =
 export const aiSalesRecommendedProductCountPerProductQueryFactoryV2 = (
     ctx: AiSalesAgentActivityContext,
 ) => aiSalesRecommendedProductCountPerProduct.build(ctx)
+
 export const timesRecommended = aiSalesAgentActivityScope
     .defineMetricName(
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TIMES_RECOMMENDED,

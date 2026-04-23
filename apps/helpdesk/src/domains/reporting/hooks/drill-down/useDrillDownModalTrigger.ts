@@ -11,6 +11,16 @@ import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDown
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 
+export type DrillDownModalTigerParams = {
+    metricName: DrillDownMetric['metricName']
+    title?: string
+    integrationId?: string
+    journeyIds?: string[] | []
+    productId?: string
+    segmentEventName?: SegmentEvent
+    provider?: AttributionModelComparison
+}
+
 const useCreateDrillDownModalHandler = ({
     metricData,
     segmentEventName,
@@ -69,15 +79,9 @@ export const useDrillDownModalTrigger = ({
     integrationId,
     journeyIds,
     provider,
-}: {
-    metricName: DrillDownMetric['metricName']
-    title?: string
-    integrationId?: string
-    journeyIds?: string[] | []
-    segmentEventName?: SegmentEvent
-    provider?: AttributionModelComparison
-}) => {
-    const tooltipText = title || getTooltipText(metricName)
+    productId,
+}: DrillDownModalTigerParams) => {
+    const tooltipText = title || (metricName ? getTooltipText(metricName) : '')
 
     const metricData = {
         title: tooltipText,
@@ -85,6 +89,7 @@ export const useDrillDownModalTrigger = ({
         integrationId,
         journeyIds,
         provider,
+        productId,
     } as DrillDownMetric
 
     const openDrillDownModal = useCreateDrillDownModalHandler({

@@ -185,7 +185,9 @@ export const LegacyTicketDrillDownTableContent = ({
 
     const isAiSalesAgentTotalProductRecommendationsMetric =
         metricData.metricName ===
-        AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
+            AiSalesAgentChart.AiSalesAgentTotalProductRecommendations ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn
 
     const isAiAgentAutomatedInteractionsMetric =
         metricData.metricName ===

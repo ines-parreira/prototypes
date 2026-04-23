@@ -51,10 +51,10 @@ export const useReportingTrendCardProps = ({
 
     const trendData = useTrend(filters, userTimezone)
 
-    const drillDown = useAiAgentTrendCardDrillDown(
-        { metricName: drillDownMetricName, title: chartConfig.label },
-        trendData.data?.value,
-    )
+    const drillDown = useAiAgentTrendCardDrillDown({
+        metricName: drillDownMetricName,
+        title: chartConfig.label,
+    })
 
     const { value: isTimeSeriesFFEnabled, isLoading: isFFLoading } =
         useFlagWithLoading(

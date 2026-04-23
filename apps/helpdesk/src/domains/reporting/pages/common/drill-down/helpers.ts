@@ -18,6 +18,7 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import {
+    shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory,
     successRateV2DrillDownQueryFactory,
     totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
@@ -491,6 +492,18 @@ export const getDrillDownQuery = (
                     sorting,
                     metricData.productId,
                 )
+        case AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    metricData.productId,
+                ) as any
         case AiAgentDrillDownMetricName.AutomatedInteractionsCard:
             return allAgentsAutomatedInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.ResolvedInteractionsCard:

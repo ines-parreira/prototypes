@@ -27,6 +27,7 @@ jest.mock('jobs')
 const useRunningJobsMock = assumeMock(useRunningJobs)
 
 jest.mock('domains/reporting/hooks/useDrillDownData', () => ({
+    ...jest.requireActual('domains/reporting/hooks/useDrillDownData'),
     useDrillDownQueryWithoutLimit: jest.fn(() => ({})),
 }))
 
