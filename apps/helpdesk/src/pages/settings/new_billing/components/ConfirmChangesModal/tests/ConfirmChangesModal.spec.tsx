@@ -452,4 +452,93 @@ describe('ConfirmChangesModal', () => {
             screen.queryByRole('dialog', { name: /confirm changes/i }),
         ).not.toBeInTheDocument()
     })
+
+    describe('blocking states', () => {
+        it('renders pending invoice banner and disables Confirm when pendingInvoiceError is true', async () => {
+            renderModal({ pendingInvoiceError: true })
+
+            expect(
+                await screen.findByText(/pending invoice must be resolved/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /proration cannot be performed until all pending invoices are resolved/i,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /confirm/i }),
+            ).toBeDisabled()
+        })
+
+        it('renders payment-method banner and disables Confirm when isPaymentMethodMissing is true', async () => {
+            renderModal({ isPaymentMethodMissing: true })
+
+            expect(
+                await screen.findByText(/add a payment method to continue/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /confirm/i }),
+            ).toBeDisabled()
+        })
+
+        it('shows the pending invoice banner and hides the payment-method banner when both are set', async () => {
+            renderModal({
+                pendingInvoiceError: true,
+                isPaymentMethodMissing: true,
+            })
+
+            expect(
+                await screen.findByText(/pending invoice must be resolved/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(/add a payment method to continue/i),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /confirm/i }),
+            ).toBeDisabled()
+        })
+
+        it('keeps Confirm enabled when neither blocking state is set', async () => {
+            renderModal()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /confirm/i }),
+                ).toBeEnabled()
+            })
+            expect(
+                screen.queryByText(/pending invoice must be resolved/i),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/add a payment method to continue/i),
+            ).not.toBeInTheDocument()
+        })
+
+        it('surfaces the pending invoice banner when the estimate endpoint returns the typed error', async () => {
+            server.use(
+                mockGetBillingEstimatesSubscriptionHandler(async () =>
+                    HttpResponse.json(
+                        {
+                            error: {
+                                msg: "We couldn't get billing estimates because Proration cannot be performed until all pending invoices are resolved.",
+                                data: null,
+                            },
+                        } as never,
+                        { status: 400 },
+                    ),
+                ).handler,
+            )
+            renderModal()
+
+            expect(
+                await screen.findByText(/pending invoice must be resolved/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(/failed to load estimate/i),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /confirm/i }),
+            ).toBeDisabled()
+        })
+    })
 })

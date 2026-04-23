@@ -8,6 +8,7 @@ import { useFlag } from '@repo/feature-flags'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { AxiosError, AxiosHeaders } from 'axios'
 
 import {
     basicMonthlyHelpdeskPlan,
@@ -73,16 +74,31 @@ jest.mock('../../../components/SummaryFooter', () =>
 )
 
 jest.mock('../../../components/ConfirmChangesModal', () => ({
-    ConfirmChangesModal: jest.fn(({ isOpen, onConfirm }) => (
-        <div>
-            <span>{isOpen ? 'open' : 'closed'}</span>
-            {isOpen && (
-                <button onClick={onConfirm} type="button">
-                    confirm modal
-                </button>
-            )}
-        </div>
-    )),
+    ConfirmChangesModal: jest.fn(
+        ({
+            isOpen,
+            onClose,
+            onConfirm,
+            pendingInvoiceError,
+            isPaymentMethodMissing,
+        }) => (
+            <div>
+                <span>{isOpen ? 'open' : 'closed'}</span>
+                {pendingInvoiceError && <span>pending invoice error</span>}
+                {isPaymentMethodMissing && <span>payment method missing</span>}
+                {isOpen && (
+                    <>
+                        <button onClick={onConfirm} type="button">
+                            confirm modal
+                        </button>
+                        <button onClick={onClose} type="button">
+                            close modal
+                        </button>
+                    </>
+                )}
+            </div>
+        ),
+    ),
 }))
 
 jest.mock(
@@ -347,6 +363,61 @@ describe('BillingSummaryCard', () => {
         })
     })
 
+    it('calls startSubscription for canceled sub with ACH mandate instead of redirecting to card setup', async () => {
+        const user = userEvent.setup()
+        const startSubscription = jest.fn().mockResolvedValue(undefined)
+
+        render(
+            <BillingSummaryCard
+                selectedPlans={{
+                    [ProductType.Helpdesk]: {
+                        plan: basicMonthlyHelpdeskPlan,
+                        isSelected: true,
+                    },
+                    [ProductType.Automation]: { isSelected: false },
+                    [ProductType.Voice]: { isSelected: false },
+                    [ProductType.SMS]: { isSelected: false },
+                    [ProductType.Convert]: { isSelected: false },
+                }}
+                cadence={Cadence.Month}
+                plansByProduct={plansByProduct}
+                totalProductAmount={basicMonthlyHelpdeskPlan.amount}
+                anyProductChanged={true}
+                anyNewProductSelected={false}
+                anyDowngradedPlanSelected={false}
+                updateSubscription={updateSubscription}
+                startSubscription={startSubscription}
+                isSubscriptionUpdating={false}
+                autoUpgradeChanged={false}
+                cancellationDates={{}}
+                totalCancelledAmount={0}
+                cancelledProducts={[]}
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={true}
+                periodEnd="2026-12-31"
+                ctaText="Subscribe now"
+                hasCreditCard={false}
+                hasAchPaymentMethod={true}
+                isPaymentEnabled={true}
+                setUpdateProcessStarted={mockSetUpdateProcessStarted}
+                setSessionSelectedPlans={jest.fn()}
+                subscriptionResourceVersion={12345}
+            />,
+        )
+
+        await user.click(screen.getByRole('button', { name: /open modal/i }))
+        await user.click(screen.getByRole('button', { name: /confirm modal/i }))
+
+        await waitFor(() => {
+            expect(startSubscription).toHaveBeenCalledTimes(1)
+        })
+
+        expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+        expect(mockHistoryPush).not.toHaveBeenCalledWith(
+            BILLING_PAYMENT_CARD_PATH,
+        )
+    })
+
     it('redirects to payment card page when trialing', async () => {
         const user = userEvent.setup()
 
@@ -423,6 +494,310 @@ describe('BillingSummaryCard', () => {
             expect(mockHistoryPush).toHaveBeenCalledWith(
                 ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
             )
+        })
+    })
+
+    describe('pending invoice blocking state', () => {
+        function makeGorgiasApiError(msg: string) {
+            const headers = new AxiosHeaders()
+            const error = new AxiosError(
+                'Request failed with status code 400',
+                'ERR_BAD_REQUEST',
+            )
+            error.response = {
+                data: { error: { msg, data: null } },
+                status: 400,
+                statusText: 'Bad Request',
+                headers: headers.toJSON() as never,
+                config: { headers } as never,
+            }
+            return error
+        }
+
+        it('passes pendingInvoiceError=true when API returns the typed pending-invoice error', async () => {
+            const user = userEvent.setup()
+            updateSubscription.mockRejectedValueOnce(
+                makeGorgiasApiError(
+                    'Proration cannot be performed until all pending invoices are resolved.',
+                ),
+            )
+
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /confirm modal/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('pending invoice error'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('does not dispatch generic error toast or report to Sentry for the pending-invoice error', async () => {
+            const user = userEvent.setup()
+            updateSubscription.mockRejectedValueOnce(
+                makeGorgiasApiError(
+                    'Proration cannot be performed until all pending invoices are resolved.',
+                ),
+            )
+
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /confirm modal/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('pending invoice error'),
+                ).toBeInTheDocument()
+            })
+
+            expect(mockDispatch).not.toHaveBeenCalled()
+            expect(mockReportError).not.toHaveBeenCalled()
+        })
+
+        it('matches the typed error when the message is wrapped by InvalidRequestAppError prefix', async () => {
+            const user = userEvent.setup()
+            updateSubscription.mockRejectedValueOnce(
+                makeGorgiasApiError(
+                    "We couldn't update your subscription because Proration cannot be performed until all pending invoices are resolved.",
+                ),
+            )
+
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /confirm modal/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('pending invoice error'),
+                ).toBeInTheDocument()
+            })
+
+            expect(mockDispatch).not.toHaveBeenCalled()
+        })
+
+        it('clears pending-invoice banner when modal is closed and reopened', async () => {
+            const user = userEvent.setup()
+            updateSubscription.mockRejectedValueOnce(
+                makeGorgiasApiError(
+                    'Proration cannot be performed until all pending invoices are resolved.',
+                ),
+            )
+
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /confirm modal/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('pending invoice error'),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /close modal/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+
+            expect(
+                screen.queryByText('pending invoice error'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('still dispatches generic error toast and reports to Sentry for unrelated API errors', async () => {
+            const user = userEvent.setup()
+            updateSubscription.mockRejectedValueOnce(
+                makeGorgiasApiError('Something else broke'),
+            )
+
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /confirm modal/i }),
+            )
+
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalled()
+            })
+
+            expect(mockReportError).toHaveBeenCalledWith(expect.any(Error))
+            expect(
+                screen.queryByText('pending invoice error'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('payment method gating', () => {
+        function renderWithProps(
+            overrides: Partial<Parameters<typeof BillingSummaryCard>[0]> = {},
+        ) {
+            return render(
+                <BillingSummaryCard
+                    selectedPlans={{
+                        [ProductType.Helpdesk]: {
+                            plan: basicMonthlyHelpdeskPlan,
+                            isSelected: true,
+                        },
+                        [ProductType.Automation]: { isSelected: false },
+                        [ProductType.Voice]: { isSelected: false },
+                        [ProductType.SMS]: { isSelected: false },
+                        [ProductType.Convert]: { isSelected: false },
+                    }}
+                    cadence={Cadence.Month}
+                    plansByProduct={plansByProduct}
+                    totalProductAmount={basicMonthlyHelpdeskPlan.amount}
+                    anyProductChanged={true}
+                    anyNewProductSelected={false}
+                    anyDowngradedPlanSelected={false}
+                    updateSubscription={updateSubscription}
+                    startSubscription={jest.fn()}
+                    isSubscriptionUpdating={false}
+                    autoUpgradeChanged={false}
+                    cancellationDates={{}}
+                    totalCancelledAmount={0}
+                    cancelledProducts={[]}
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                    periodEnd="2026-12-31"
+                    ctaText="Update subscription"
+                    hasCreditCard={true}
+                    isPaymentEnabled={true}
+                    setUpdateProcessStarted={mockSetUpdateProcessStarted}
+                    setSessionSelectedPlans={jest.fn()}
+                    subscriptionResourceVersion={12345}
+                    {...overrides}
+                />,
+            )
+        }
+
+        it('flags payment method missing for active stripe subscription without card', async () => {
+            const user = userEvent.setup()
+            renderWithProps({ hasCreditCard: false })
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+
+            expect(
+                screen.getByText('payment method missing'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not flag payment method missing when active subscription has a card', async () => {
+            const user = userEvent.setup()
+            renderWithProps({ hasCreditCard: true })
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+
+            expect(
+                screen.queryByText('payment method missing'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not flag payment method missing when active stripe subscription has an ACH payment method (no card)', async () => {
+            const user = userEvent.setup()
+            renderWithProps({
+                hasCreditCard: false,
+                hasAchPaymentMethod: true,
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+
+            expect(
+                screen.queryByText('payment method missing'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('flags payment method missing for active stripe subscription with neither card nor ACH', async () => {
+            const user = userEvent.setup()
+            renderWithProps({
+                hasCreditCard: false,
+                hasAchPaymentMethod: false,
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+
+            expect(
+                screen.getByText('payment method missing'),
+            ).toBeInTheDocument()
+        })
+
+        it('flags payment method missing for active shopify sub when shopify billing is inactive', async () => {
+            const user = userEvent.setup()
+            mockShouldPayWithShopify.mockReturnValue(true)
+            mockGetShopifyBillingStatus.mockReturnValue(
+                ShopifyBillingStatus.Inactive,
+            )
+
+            renderWithProps({ hasCreditCard: false })
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+
+            expect(
+                screen.getByText('payment method missing'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not flag payment method missing while trialing (post-success redirect handles it)', async () => {
+            const user = userEvent.setup()
+            renderWithProps({ isTrialing: true, hasCreditCard: false })
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+
+            expect(
+                screen.queryByText('payment method missing'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not flag payment method missing when subscription is canceled (post-success redirect handles it)', async () => {
+            const user = userEvent.setup()
+            renderWithProps({
+                isCurrentSubscriptionCanceled: true,
+                hasCreditCard: false,
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /open modal/i }),
+            )
+
+            expect(
+                screen.queryByText('payment method missing'),
+            ).not.toBeInTheDocument()
         })
     })
 

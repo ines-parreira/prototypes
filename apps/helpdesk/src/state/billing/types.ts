@@ -127,6 +127,8 @@ export type BillingContactUpdatePayload = {
 
 export type Subscription = {
     prices: string[]
+    subscription_resource_version?: number
+    subscription_renewal_ramp_resource_version?: number
 }
 
 export type BillingImmutableState = Map<any, any>

@@ -86,6 +86,11 @@ const BillingFrequencyView = ({
         isSubscriptionUpdating,
     } = useBillingPlans({
         dispatchBillingError,
+        subscriptionResourceVersion:
+            billingState.data?.subscription.resource_version,
+        subscriptionRenewalRampResourceVersion:
+            billingState.data?.subscription.schedule_resource_version ??
+            undefined,
     })
 
     const productCancellationsQuery = useProductCancellations()

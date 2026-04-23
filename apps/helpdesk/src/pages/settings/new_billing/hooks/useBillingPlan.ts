@@ -76,12 +76,16 @@ export type BillingPlansProps = {
     dispatchBillingError: (error: unknown) => void
     selectedProduct?: ProductType
     filterByCadence?: boolean
+    subscriptionResourceVersion?: number
+    subscriptionRenewalRampResourceVersion?: number
 }
 
 export const useBillingPlans = ({
     dispatchBillingError,
     selectedProduct,
     filterByCadence = false,
+    subscriptionResourceVersion,
+    subscriptionRenewalRampResourceVersion,
 }: BillingPlansProps) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
@@ -634,6 +638,12 @@ export const useBillingPlans = ({
                         updateSubscriptionsForPlans(
                             plansToBeUpdated,
                             notifications,
+                            {
+                                subscription_resource_version:
+                                    subscriptionResourceVersion,
+                                subscription_renewal_ramp_resource_version:
+                                    subscriptionRenewalRampResourceVersion,
+                            },
                         ),
                     )
                     // Invalidate subscription to refresh "Active until" badges and derived data
@@ -667,6 +677,8 @@ export const useBillingPlans = ({
         dispatch,
         dispatchBillingError,
         queryClient,
+        subscriptionResourceVersion,
+        subscriptionRenewalRampResourceVersion,
     ])
 
     const updateSubscription = useCallback(() => {

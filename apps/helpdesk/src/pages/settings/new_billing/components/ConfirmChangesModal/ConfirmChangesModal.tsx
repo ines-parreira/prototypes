@@ -8,6 +8,7 @@ import type {
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import {
+    Banner,
     Box,
     Button,
     Modal,
@@ -23,6 +24,7 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { ProductType } from 'models/billing/types'
 import type { Cadence } from 'models/billing/types'
 
+import { isPendingInvoiceError } from '../../utils/isPendingInvoiceError'
 import { BillingSummaryBreakdown } from '../BillingSummaryBreakdown'
 import { useConfirmChangesEstimate } from './useConfirmChangesEstimate'
 
@@ -42,6 +44,8 @@ export type ConfirmChangesModalProps = {
     cancellationDates?: CancellationDates
     subscriptionResourceVersion: number
     subscriptionRenewalRampResourceVersion?: number
+    pendingInvoiceError?: boolean
+    isPaymentMethodMissing?: boolean
 }
 
 export function ConfirmChangesModal({
@@ -60,11 +64,14 @@ export function ConfirmChangesModal({
     cancellationDates,
     subscriptionResourceVersion,
     subscriptionRenewalRampResourceVersion,
+    pendingInvoiceError = false,
+    isPaymentMethodMissing = false,
 }: ConfirmChangesModalProps) {
     const {
         data: estimateResponse,
         isLoading: isEstimateLoading,
         isError: isEstimateError,
+        error: estimateError,
         refetch: refetchEstimate,
     } = useConfirmChangesEstimate(
         isOpen,
@@ -73,6 +80,13 @@ export function ConfirmChangesModal({
         subscriptionResourceVersion,
         subscriptionRenewalRampResourceVersion,
     )
+
+    const hasPendingInvoiceFromEstimate =
+        isEstimateError && isPendingInvoiceError(estimateError)
+    const showPendingInvoiceBanner =
+        pendingInvoiceError || hasPendingInvoiceFromEstimate
+    const showGenericEstimateError =
+        isEstimateError && !hasPendingInvoiceFromEstimate
 
     const estimate = estimateResponse?.data
     const datetimeFormat = useGetDateAndTimeFormat(
@@ -149,8 +163,28 @@ export function ConfirmChangesModal({
             <OverlayHeader title="Confirm changes" />
             <OverlayContent>
                 <Box flexDirection="column" width="100%" gap="md">
+                    {showPendingInvoiceBanner && (
+                        <Banner
+                            title="Pending invoice must be resolved"
+                            variant="inline"
+                            description="Proration cannot be performed until all pending invoices are resolved."
+                            isClosable={false}
+                            intent="destructive"
+                            icon="triangle-warning"
+                        />
+                    )}
+                    {isPaymentMethodMissing && !showPendingInvoiceBanner && (
+                        <Banner
+                            title="Add a payment method to continue"
+                            variant="inline"
+                            description="You need an active payment method before confirming these changes."
+                            isClosable={false}
+                            intent="warning"
+                            icon="triangle-warning"
+                        />
+                    )}
                     <Text>{description}</Text>
-                    {isEstimateError && (
+                    {showGenericEstimateError && (
                         <Box alignItems="center" gap="xs">
                             <Text color="content-error-default" size="sm">
                                 Failed to load estimate.
@@ -194,6 +228,9 @@ export function ConfirmChangesModal({
                         variant="primary"
                         onClick={onConfirm}
                         isLoading={isConfirming}
+                        isDisabled={
+                            showPendingInvoiceBanner || isPaymentMethodMissing
+                        }
                     >
                         Confirm
                     </Button>

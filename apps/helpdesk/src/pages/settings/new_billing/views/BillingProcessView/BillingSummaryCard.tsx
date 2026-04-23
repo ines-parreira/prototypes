@@ -35,6 +35,7 @@ import { BillingSummaryBreakdown } from '../../components/BillingSummaryBreakdow
 import Card from '../../components/Card'
 import { ConfirmChangesModal } from '../../components/ConfirmChangesModal'
 import SummaryFooter from '../../components/SummaryFooter'
+import { isPendingInvoiceError } from '../../utils/isPendingInvoiceError'
 
 import css from './BillingProcessView.less'
 
@@ -58,6 +59,7 @@ type BillingSummaryCardProps = {
     periodEnd: string
     ctaText: string
     hasCreditCard?: boolean
+    hasAchPaymentMethod?: boolean
     isPaymentEnabled: boolean
     setUpdateProcessStarted: (isStarted: boolean) => void
     setSessionSelectedPlans?: React.Dispatch<SelectedPlans>
@@ -85,6 +87,7 @@ export function BillingSummaryCard({
     periodEnd,
     ctaText,
     hasCreditCard,
+    hasAchPaymentMethod,
     isPaymentEnabled,
     setUpdateProcessStarted,
     setSessionSelectedPlans,
@@ -96,22 +99,37 @@ export function BillingSummaryCard({
     const dispatch = useAppDispatch()
     const history = useHistory()
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
+    const [hasPendingInvoiceError, setHasPendingInvoiceError] = useState(false)
     const isMidCycleUpgradeEnabled = useFlag(
         FeatureFlagKey.MidCycleUpgradeBillingLogic,
     )
 
     const currency =
         plansByProduct[ProductType.Helpdesk].available[0]?.currency ?? 'usd'
-    const hasPaymentMethod = hasCreditCard ?? true
+    const hasStripePaymentMethod =
+        (hasCreditCard ?? true) || !!hasAchPaymentMethod
+
+    const isActiveSubscription = !isTrialing && !isCurrentSubscriptionCanceled
+    const isPaymentMethodMissing =
+        isActiveSubscription &&
+        (shouldPayWithShopify
+            ? shopifyBillingStatus !== ShopifyBillingStatus.Active
+            : !hasStripePaymentMethod)
+
+    const handleCloseConfirmModal = () => {
+        setIsConfirmModalOpen(false)
+        setHasPendingInvoiceError(false)
+    }
 
     const handleUpdateSubscription = async () => {
         try {
             setUpdateProcessStarted(true)
+            setHasPendingInvoiceError(false)
             await updateSubscription()
 
             if (
                 isCurrentSubscriptionCanceled &&
-                (hasPaymentMethod ||
+                (hasStripePaymentMethod ||
                     (shouldPayWithShopify &&
                         shopifyBillingStatus === ShopifyBillingStatus.Active))
             ) {
@@ -130,9 +148,11 @@ export function BillingSummaryCard({
 
             setSessionSelectedPlans?.(selectedPlans)
 
+            // Trialing always redirects to payment setup (card or ACH) — trial activation
+            // requires an explicit payment-method confirmation step, unlike canceled reactivation.
             if (
                 isTrialing ||
-                (isCurrentSubscriptionCanceled && !hasPaymentMethod)
+                (isCurrentSubscriptionCanceled && !hasStripePaymentMethod)
             ) {
                 history.push(BILLING_PAYMENT_CARD_PATH)
             } else if (
@@ -144,16 +164,20 @@ export function BillingSummaryCard({
                 history.push(BILLING_BASE_PATH)
             }
         } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    message:
-                        "Sorry, we couldn't update your subscription. Please try again.",
-                }),
-            )
-            reportError(error as Error)
+            if (isPendingInvoiceError(error)) {
+                setHasPendingInvoiceError(true)
+            } else {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        style: NotificationStyle.Alert,
+                        showDismissButton: true,
+                        message:
+                            "Sorry, we couldn't update your subscription. Please try again.",
+                    }),
+                )
+                reportError(error as Error)
+            }
             setUpdateProcessStarted(false)
             return false
         }
@@ -221,7 +245,7 @@ export function BillingSummaryCard({
             {isMidCycleUpgradeEnabled && (
                 <ConfirmChangesModal
                     isOpen={isConfirmModalOpen}
-                    onClose={() => setIsConfirmModalOpen(false)}
+                    onClose={handleCloseConfirmModal}
                     onConfirm={handleConfirmAndUpdate}
                     isConfirming={isSubscriptionUpdating}
                     selectedPlans={selectedPlans}
@@ -237,6 +261,8 @@ export function BillingSummaryCard({
                     subscriptionRenewalRampResourceVersion={
                         subscriptionRenewalRampResourceVersion
                     }
+                    pendingInvoiceError={hasPendingInvoiceError}
+                    isPaymentMethodMissing={isPaymentMethodMissing}
                 />
             )}
         </Card>

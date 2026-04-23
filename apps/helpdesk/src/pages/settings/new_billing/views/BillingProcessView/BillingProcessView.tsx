@@ -23,6 +23,7 @@ import { getProductInfo, isYearlyContractPlan } from 'models/billing/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
+import { useHasAchPaymentMethod } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasAchPaymentMethod'
 import { useHasCreditCard } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import type { CurrentProductsUsages } from 'state/billing/types'
@@ -72,6 +73,7 @@ export const BillingProcessView = ({
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
     const hasCreditCard = useHasCreditCard()
+    const hasAchPaymentMethod = useHasAchPaymentMethod()
     const isPaymentEnabled = !!useIsPaymentEnabled()
     const isMidCycleUpgradeEnabled = useFlag(
         FeatureFlagKey.MidCycleUpgradeBillingLogic,
@@ -124,6 +126,11 @@ export const BillingProcessView = ({
         dispatchBillingError,
         selectedProduct,
         filterByCadence: true,
+        subscriptionResourceVersion:
+            billingState.data?.subscription.resource_version,
+        subscriptionRenewalRampResourceVersion:
+            billingState.data?.subscription.schedule_resource_version ??
+            undefined,
     })
     const isBillingPaused = !!billingState.data?.subscription.is_paused
 
@@ -323,6 +330,7 @@ export const BillingProcessView = ({
                 periodEnd={periodEnd}
                 ctaText={ctaText}
                 hasCreditCard={hasCreditCard.data}
+                hasAchPaymentMethod={hasAchPaymentMethod.data}
                 isPaymentEnabled={isPaymentEnabled}
                 setUpdateProcessStarted={setUpdateProcessStarted}
                 setSessionSelectedPlans={setSessionSelectedPlans}

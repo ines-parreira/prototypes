@@ -315,15 +315,22 @@ export function updateSubscription(subscription: Subscription) {
     }
 }
 
+export type SubscriptionResourceVersions = {
+    subscription_resource_version?: number
+    subscription_renewal_ramp_resource_version?: number
+}
+
 export function updateSubscriptionsForPlans(
     products: ProductToPlanId,
     notifications: Notification[],
+    resourceVersions: SubscriptionResourceVersions = {},
 ) {
     return async (dispatch: StoreDispatch): Promise<void> => {
         const response = await client.put<SubscriptionUpdateResponse>(
             '/api/billing/subscription/',
             {
                 prices: Object.values(products),
+                ...resourceVersions,
             },
         )
 

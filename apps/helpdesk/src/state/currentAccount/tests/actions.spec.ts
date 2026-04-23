@@ -201,6 +201,48 @@ describe('current account actions', () => {
                 )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
+
+        it('sends subscription_resource_version and subscription_renewal_ramp_resource_version on PUT when provided', async () => {
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(202, { products: {} })
+
+            await store.dispatch(
+                actions.updateSubscriptionsForPlans(
+                    { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
+                    [],
+                    {
+                        subscription_resource_version: 12345,
+                        subscription_renewal_ramp_resource_version: 67890,
+                    },
+                ),
+            )
+
+            expect(mockServer.history.put).toHaveLength(1)
+            expect(JSON.parse(mockServer.history.put[0].data)).toEqual({
+                prices: [basicMonthlyHelpdeskPlan.plan_id],
+                subscription_resource_version: 12345,
+                subscription_renewal_ramp_resource_version: 67890,
+            })
+        })
+
+        it('omits version fields from PUT body when resourceVersions argument is not provided', async () => {
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(202, { products: {} })
+
+            await store.dispatch(
+                actions.updateSubscriptionsForPlans(
+                    { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
+                    [],
+                ),
+            )
+
+            expect(mockServer.history.put).toHaveLength(1)
+            expect(JSON.parse(mockServer.history.put[0].data)).toEqual({
+                prices: [basicMonthlyHelpdeskPlan.plan_id],
+            })
+        })
     })
 
     describe('setCurrentSubscription()', () => {
