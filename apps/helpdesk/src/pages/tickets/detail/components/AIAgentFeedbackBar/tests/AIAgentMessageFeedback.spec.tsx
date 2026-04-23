@@ -1,4 +1,4 @@
-import { ldClientMock } from '@repo/feature-flags/testing'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -90,7 +90,7 @@ describe('AIAgentMessageFeedback', () => {
             mockSetCookie,
         ])
         ;(useHasAgentPrivileges as jest.Mock).mockReturnValue(true)
-        ldClientMock.allFlags.mockReturnValue({})
+        featureFlagsClientMock.allFlags.mockReturnValue({})
     })
 
     afterEach(() => {

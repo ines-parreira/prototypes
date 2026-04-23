@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { ldClientMock } from '@repo/feature-flags/testing'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -96,7 +96,7 @@ describe('ConversationLauncherSettings', () => {
     }
 
     beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({})
+        featureFlagsClientMock.allFlags.mockReturnValue({})
 
         // Default mock - shows setup button (no floatingChatInputConfiguration)
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({

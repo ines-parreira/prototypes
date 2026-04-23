@@ -17,7 +17,7 @@ import moment from 'moment-timezone'
 import './polyfills'
 
 import { initializeNewReleaseHandler } from '@repo/api-resources'
-import { initLaunchDarkly } from '@repo/feature-flags'
+import { initFeatureFlagsClient } from '@repo/feature-flags'
 import {
     initDatadogLogger,
     initDatadogRum,
@@ -130,7 +130,7 @@ export function initApp() {
         ? getCurrentAutomatePlan(state)
         : undefined
 
-    initLaunchDarkly(
+    initFeatureFlagsClient(
         state.currentUser.toJS(),
         state.currentAccount.toJS(),
         currentHelpdeskPlan?.plan_id,

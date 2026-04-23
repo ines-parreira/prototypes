@@ -1,119 +1,41 @@
 import { fn } from 'jest-mock'
 import type { Mock } from 'jest-mock'
 
-type LDFlags = Record<string, unknown>
+type FlagValues = Record<string, unknown>
 type MockFunction<TFunction extends (...args: any[]) => any> = Mock<TFunction>
 
-function hasFlag(flags: LDFlags, flag: string) {
+function hasFlag(flags: FlagValues, flag: string) {
     return Object.prototype.hasOwnProperty.call(flags, flag)
 }
 
-export type MockLDClient = {
-    track: MockFunction<(...args: unknown[]) => void>
-    identify: MockFunction<(...args: unknown[]) => void>
-    allFlags: MockFunction<() => LDFlags>
-    close: MockFunction<() => void>
-    flush: MockFunction<() => Promise<void>>
-    getContext: MockFunction<() => unknown>
-    off: MockFunction<
-        (event: string, listener?: (...args: unknown[]) => void) => void
-    >
-    on: MockFunction<
-        (event: string, listener: (...args: unknown[]) => void) => void
-    >
-    setStreaming: MockFunction<(isEnabled: boolean) => void>
+export type MockFeatureFlagsClient = {
+    allFlags: MockFunction<() => FlagValues>
     variation: MockFunction<(flag: string, defaultValue?: unknown) => unknown>
-    variationDetail: MockFunction<(...args: unknown[]) => unknown>
-    waitForInitialization: MockFunction<(timeout?: number) => Promise<void>>
-    waitUntilGoalsReady: MockFunction<() => Promise<void>>
-    waitUntilReady: MockFunction<() => Promise<void>>
 }
 
-function createLDClientMock(): MockLDClient {
+function createFeatureFlagsClientMock(): MockFeatureFlagsClient {
     return {
-        track: fn<(...args: unknown[]) => void>(),
-        identify: fn<(...args: unknown[]) => void>(),
-        allFlags: fn<() => LDFlags>(),
-        close: fn<() => void>(),
-        flush: fn<() => Promise<void>>().mockResolvedValue(undefined),
-        getContext: fn<() => unknown>(),
-        off: fn<
-            (event: string, listener?: (...args: unknown[]) => void) => void
-        >(),
-        on: fn<
-            (event: string, listener: (...args: unknown[]) => void) => void
-        >(),
-        setStreaming: fn<(isEnabled: boolean) => void>(),
+        allFlags: fn<() => FlagValues>(),
         variation: fn<(flag: string, defaultValue?: unknown) => unknown>(),
-        variationDetail: fn<(...args: unknown[]) => unknown>(),
-        waitForInitialization:
-            fn<(timeout?: number) => Promise<void>>().mockResolvedValue(
-                undefined,
-            ),
-        waitUntilGoalsReady:
-            fn<() => Promise<void>>().mockResolvedValue(undefined),
-        waitUntilReady: fn<() => Promise<void>>().mockResolvedValue(undefined),
     }
 }
 
-export const ldClientMock = createLDClientMock()
+export const featureFlagsClientMock = createFeatureFlagsClientMock()
 
-export function mockLaunchDarklyFlags(flags: LDFlags = {}) {
-    ldClientMock.allFlags.mockReturnValue(flags)
-    ldClientMock.variation.mockImplementation(
+export function mockFeatureFlagsValues(flags: FlagValues = {}) {
+    featureFlagsClientMock.allFlags.mockReturnValue(flags)
+    featureFlagsClientMock.variation.mockImplementation(
         (flag: string, defaultValue?: unknown) =>
             hasFlag(flags, flag) ? flags[flag] : defaultValue,
     )
 }
 
-export function resetLDMocks() {
-    Object.values(ldClientMock).forEach((mock) => {
+export function resetFeatureFlagsMocks() {
+    Object.values(featureFlagsClientMock).forEach((mock) => {
         mock.mockReset()
     })
 
-    ldClientMock.flush.mockResolvedValue(undefined)
-    ldClientMock.waitForInitialization.mockResolvedValue(undefined)
-    ldClientMock.waitUntilGoalsReady.mockResolvedValue(undefined)
-    ldClientMock.waitUntilReady.mockResolvedValue(undefined)
-    mockLaunchDarklyFlags({})
+    mockFeatureFlagsValues({})
 }
 
-resetLDMocks()
-
-// Mock engine utilities for dual evaluation testing
-export type MockEngine = {
-    initialize: MockFunction<(...args: unknown[]) => void>
-    evaluate: MockFunction<(flag: string, defaultValue?: unknown) => unknown>
-    evaluateAsync: MockFunction<
-        (flag: string, defaultValue?: unknown) => Promise<unknown>
-    >
-    subscribe: MockFunction<
-        (flag: string, callback: (value: unknown) => void) => () => void
-    >
-    isReady: MockFunction<() => boolean>
-    ensureInitialization: MockFunction<() => Promise<void>>
-}
-
-export function createMockEngine(): MockEngine {
-    const unsubscribe = fn<() => void>()
-    return {
-        initialize: fn<(...args: unknown[]) => void>(),
-        evaluate: fn<
-            (flag: string, defaultValue?: unknown) => unknown
-        >().mockImplementation(
-            (_flag: string, defaultValue?: unknown) => defaultValue,
-        ),
-        evaluateAsync: fn<
-            (flag: string, defaultValue?: unknown) => Promise<unknown>
-        >().mockImplementation(
-            async (_flag: string, defaultValue?: unknown) => defaultValue,
-        ),
-        subscribe:
-            fn<
-                (flag: string, callback: (value: unknown) => void) => () => void
-            >().mockReturnValue(unsubscribe),
-        isReady: fn<() => boolean>().mockReturnValue(true),
-        ensureInitialization:
-            fn<() => Promise<void>>().mockResolvedValue(undefined),
-    }
-}
+resetFeatureFlagsMocks()

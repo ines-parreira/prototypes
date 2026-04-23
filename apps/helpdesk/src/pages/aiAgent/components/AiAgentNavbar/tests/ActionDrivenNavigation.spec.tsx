@@ -15,13 +15,6 @@ jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => ({})),
     useHelpdeskV2WayfindingMS1Flag: jest.fn(() => false),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
-    })),
 }))
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseHelpdeskV2WayfindingMS1Flag = jest.requireMock(

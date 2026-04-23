@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { ensureInitialization } from './engines/launchdarkly'
+import { ensureInitialization } from './engines/harness'
 
 /**
  * Hook that returns whether feature flags are ready to be used.

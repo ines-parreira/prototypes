@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { resetLDMocks } from '@repo/feature-flags/testing'
+import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
 import { fromJS } from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 import { Provider } from 'react-redux'
@@ -88,7 +88,7 @@ describe('<FeaturePaywall />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        resetLDMocks()
+        resetFeatureFlagsMocks()
     })
 
     it.each<

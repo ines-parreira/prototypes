@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { ldClientMock } from '@repo/feature-flags/testing'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { MemoryRouter } from 'react-router-dom'
@@ -40,7 +40,7 @@ const Wrapper = ({
 
 describe('TriggerOnSearchSettings', () => {
     beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({})
+        featureFlagsClientMock.allFlags.mockReturnValue({})
     })
 
     it('renders the toggle with correct label and unchecked by default', () => {

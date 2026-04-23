@@ -1,7 +1,10 @@
 import { useEffect } from 'react'
 import type { PropsWithChildren } from 'react'
 
-import { FeatureFlagsProvider, initLaunchDarkly } from '@repo/feature-flags'
+import {
+    FeatureFlagsProvider,
+    initFeatureFlagsClient,
+} from '@repo/feature-flags'
 import {
     ArcElement,
     BarController,
@@ -26,7 +29,6 @@ import {
     useSetTheme,
 } from '../src/core/theme/index.ts'
 import type { HelpdeskThemeName } from '../src/core/theme/index.ts'
-import { decorator as launchDarklyDecorator } from './launchdarkly-js-client-sdk.tsx'
 
 import '../src/assets/css/main.less'
 import './style.less'
@@ -37,9 +39,7 @@ const STORYBOOK_ACCOUNT = {
     domain: 'storybook.local',
 }
 
-window.GORGIAS_LAUNCHDARKLY_CLIENT_ID ??= 'storybook-client-id'
-
-void initLaunchDarkly(STORYBOOK_USER, STORYBOOK_ACCOUNT)
+initFeatureFlagsClient(STORYBOOK_USER, STORYBOOK_ACCOUNT)
 
 const backgroundOptions = {
     light: {
@@ -183,7 +183,7 @@ const preview: Preview = {
             },
         },
     },
-    decorators: [withTheme, launchDarklyDecorator],
+    decorators: [withTheme],
     tags: ['autodocs'],
 }
 

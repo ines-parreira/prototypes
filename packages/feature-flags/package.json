@@ -23,8 +23,6 @@
         "@repo/hooks": "workspace:*",
         "@repo/utils": "workspace:*",
         "@splitsoftware/splitio-browserjs": "catalog:feature-flags",
-        "launchdarkly-js-client-sdk": "catalog:feature-flags",
-        "launchdarkly-react-client-sdk": "catalog:feature-flags",
         "react": "catalog:react",
         "react-dom": "catalog:react"
     },
@@ -44,8 +42,6 @@
         "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
         "jest-mock": "catalog:test",
-        "launchdarkly-js-client-sdk": "catalog:feature-flags",
-        "launchdarkly-react-client-sdk": "catalog:feature-flags",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",

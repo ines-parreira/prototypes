@@ -1,5 +1,4 @@
 import client from '@repo/api-resources'
-import { getLDClient } from '@repo/feature-flags'
 import MockAdapter from 'axios-mock-adapter'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
@@ -15,10 +14,6 @@ import { mergeTickets, searchTickets } from '../actions'
 jest.mock('models/ticket/resources', () => ({
     searchTickets: jest.fn(),
 }))
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    getLDClient: jest.fn(),
-}))
 
 type MockedRootState = Record<string, unknown>
 const middlewares = [thunk]
@@ -26,7 +21,6 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares,
 )
 
-const mockGetLDClient = getLDClient as jest.Mock
 const mockModelSearchTickets = modelSearchTickets as jest.Mock
 
 // mock Math.random used for `reapop` notifications
@@ -35,23 +29,15 @@ global.Math.random = jest.fn(() => 0.123456789)
 describe('mergeTickets actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
     let mockServer: MockAdapter
-    let variation: jest.Mock
 
     beforeEach(() => {
         store = mockStore({})
         mockServer = new MockAdapter(client)
-
-        variation = jest.fn(() => false)
-        mockGetLDClient.mockReturnValue({
-            variation,
-            waitForInitialization: jest.fn(() => Promise.resolve()),
-        })
     })
 
     describe('search', () => {
-        it('should use the elasticsearch function when the feature flag is enabled', () => {
+        it('should use the elasticsearch function when searching with a customer id', () => {
             mockModelSearchTickets.mockReturnValue({})
-            variation.mockReturnValue(true)
             return store.dispatch(searchTickets('', 1, 118)).then(() => {
                 expect(mockModelSearchTickets).toHaveBeenCalledWith({
                     filters: 'neq(ticket.id, 1) && eq(ticket.customer.id, 118)',

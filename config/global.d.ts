@@ -32,7 +32,6 @@ declare global {
         USER_IMPERSONATED: true | null
         SEGMENT_ANALYTICS_USER_ID: string
         GORGIAS_CLUSTER: string
-        GORGIAS_LAUNCHDARKLY_CLIENT_ID: string
         HARNESS_CLIENT_SDK_KEY?: string
     }
 }

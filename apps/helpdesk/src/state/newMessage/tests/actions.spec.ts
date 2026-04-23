@@ -1,7 +1,6 @@
 import * as activityTracker from '@repo/activity-tracker'
 import { ActivityEvents } from '@repo/activity-tracker'
 import client, { appQueryClient } from '@repo/api-resources'
-import * as LDUtils from '@repo/feature-flags'
 import * as segmentTracker from '@repo/logging'
 import MockAdapter from 'axios-mock-adapter'
 import { ContentState } from 'draft-js'
@@ -69,7 +68,6 @@ import { convertFromHTML } from 'utils/editor'
 
 import { getReplyAreaStateSnapshot } from './testUtils'
 
-const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
 type MockedRootState = {
     integrations?: Map<any, any>
     ticket?: Map<any, any>
@@ -1370,10 +1368,6 @@ describe('actions', () => {
             })
 
             it('should not add include_thread to source.extra when emailThreadSizeFF is false', async () => {
-                getLDClientSpy.mockReturnValueOnce({
-                    variation: () => false,
-                } as any)
-
                 store = mockStore({
                     ...defaultState,
                     ticket: emailTicket.set('id', 12),
@@ -1398,10 +1392,6 @@ describe('actions', () => {
             })
 
             it('should add include_thread=false when emailThreadSizeFF is true and email extra was added (thread visible in composer)', async () => {
-                getLDClientSpy.mockReturnValueOnce({
-                    variation: () => true,
-                } as any)
-
                 const contentState = ContentState.createFromText('My reply')
 
                 store = mockStore({
@@ -1428,10 +1418,6 @@ describe('actions', () => {
             })
 
             it('should add include_thread=true when emailThreadSizeFF is true and email extra was NOT initially visible', async () => {
-                getLDClientSpy.mockReturnValueOnce({
-                    variation: () => true,
-                } as any)
-
                 const contentState = ContentState.createFromText('My reply')
 
                 store = mockStore({
@@ -1460,10 +1446,6 @@ describe('actions', () => {
             })
 
             it('should add include_thread=false when emailThreadSizeFF is false (legacy behavior)', async () => {
-                getLDClientSpy.mockReturnValueOnce({
-                    variation: () => false,
-                } as any)
-
                 const contentState = ContentState.createFromText('My reply')
 
                 store = mockStore({

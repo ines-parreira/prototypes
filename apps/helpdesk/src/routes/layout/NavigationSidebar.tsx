@@ -1,5 +1,4 @@
 import { DebugMenu, DebugMenuItem } from '@repo/debug'
-import { EvaluationsDebugPanel } from '@repo/feature-flags'
 import { useIsMobileResolution } from '@repo/hooks'
 import {
     SidebarContent,
@@ -133,13 +132,6 @@ export function NavigationSidebar() {
                     flexDirection={isCollapsed ? 'column' : 'row'}
                 >
                     <DebugMenu>
-                        <DebugMenuItem
-                            id="evaluations"
-                            icon="nav-flag"
-                            label="Flag evaluations"
-                        >
-                            <EvaluationsDebugPanel />
-                        </DebugMenuItem>
                         <DebugMenuItem
                             id="view-counts"
                             icon="list-ordered"

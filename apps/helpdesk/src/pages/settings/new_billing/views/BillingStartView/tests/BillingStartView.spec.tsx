@@ -12,7 +12,7 @@ import {
     storeWithNewlyActiveSubscriptionWithPhone,
 } from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { resetLDMocks } from '@repo/feature-flags/testing'
+import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
@@ -304,7 +304,7 @@ describe('BillingStartView', () => {
 
     describe('PaymentInformation phone self-serve cadence change ', () => {
         beforeEach(() => {
-            resetLDMocks()
+            resetFeatureFlagsMocks()
         })
 
         it('should allow phone user to change billing frequency', () => {

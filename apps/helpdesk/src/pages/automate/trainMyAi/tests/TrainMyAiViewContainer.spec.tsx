@@ -15,7 +15,6 @@ import TrainMyAiViewContainer from '../TrainMyAiViewContainer'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('../TrainMyAiView', () => () => <div>TrainMyAiView</div>)
-jest.mock('launchdarkly-react-client-sdk')
 
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -49,9 +48,6 @@ const renderComponent = () =>
 describe('TrainMyAiViewContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        jest.requireMock(
-            'launchdarkly-react-client-sdk',
-        ).useFlags.mockReturnValue({})
     })
 
     it('should render TrainMyAiView when user has access', () => {

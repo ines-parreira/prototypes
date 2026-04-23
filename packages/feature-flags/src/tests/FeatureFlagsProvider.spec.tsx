@@ -1,40 +1,24 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import { LDProvider } from 'launchdarkly-react-client-sdk'
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { SplitFactoryProvider } from '@splitsoftware/splitio-react'
+import { render, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import * as harness from '../engines/harness'
 import { FeatureFlagsProvider } from '../FeatureFlagsProvider'
-import * as launchDarkly from '../launchdarkly'
 
-vi.mock('launchdarkly-react-client-sdk', () => ({
-    LDProvider: vi.fn(({ children }) => (
-        <div data-testid="ld-provider">{children}</div>
+vi.mock('@splitsoftware/splitio-react', () => ({
+    SplitFactoryProvider: vi.fn(({ children }) => (
+        <div data-testid="split-provider">{children}</div>
     )),
 }))
-const mockLDProvider = vi.mocked(LDProvider)
 
-vi.mock('@repo/hooks', () => ({
-    useEffectOnce: vi.fn((callback: () => void) => callback()),
-}))
-
-const mockWaitUntilGoalsReady = vi.fn()
-const mockLDClient = {
-    waitUntilGoalsReady: mockWaitUntilGoalsReady,
-}
-
-vi.spyOn(launchDarkly, 'getLDClient').mockReturnValue(mockLDClient as any)
+const mockSplitFactoryProvider = vi.mocked(SplitFactoryProvider)
 
 describe('FeatureFlagsProvider', () => {
-    beforeAll(() => {
-        window.GORGIAS_LAUNCHDARKLY_CLIENT_ID = 'test-client-id'
-    })
-
     beforeEach(() => {
         vi.clearAllMocks()
-        mockWaitUntilGoalsReady.mockResolvedValue(undefined)
-        launchDarkly._setLDContext({})
     })
 
-    it('renders children correctly', async () => {
+    it('renders children correctly', () => {
         render(
             <FeatureFlagsProvider>
                 <div>Test Child</div>
@@ -44,9 +28,9 @@ describe('FeatureFlagsProvider', () => {
         expect(screen.getByText('Test Child')).toBeInTheDocument()
     })
 
-    it('passes correct props to LDProvider', async () => {
-        const testContext = { kind: 'user', key: 'test-key' }
-        launchDarkly._setLDContext(testContext)
+    it('passes the harness factory to SplitFactoryProvider', () => {
+        const fakeFactory = { client: vi.fn() } as any
+        vi.spyOn(harness, 'getFactory').mockReturnValue(fakeFactory)
 
         render(
             <FeatureFlagsProvider>
@@ -54,43 +38,24 @@ describe('FeatureFlagsProvider', () => {
             </FeatureFlagsProvider>,
         )
 
-        await waitFor(() => {
-            expect(mockLDProvider).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    clientSideID: 'test-client-id',
-                    reactOptions: { useCamelCaseFlagKeys: false },
-                    context: testContext,
-                }),
-                expect.anything(),
-            )
-        })
+        expect(mockSplitFactoryProvider).toHaveBeenCalledWith(
+            expect.objectContaining({ factory: fakeFactory }),
+            expect.anything(),
+        )
     })
 
-    it('calls getLDClient and waits for goals ready', async () => {
+    it('passes undefined factory when harness has none', () => {
+        vi.spyOn(harness, 'getFactory').mockReturnValue(null)
+
         render(
             <FeatureFlagsProvider>
                 <div>Test Child</div>
             </FeatureFlagsProvider>,
         )
 
-        expect(launchDarkly.getLDClient).toHaveBeenCalled()
-        expect(mockWaitUntilGoalsReady).toHaveBeenCalled()
-    })
-
-    it('sets ldClient after waitUntilGoalsReady resolves', async () => {
-        render(
-            <FeatureFlagsProvider>
-                <div>Test Child</div>
-            </FeatureFlagsProvider>,
+        expect(mockSplitFactoryProvider).toHaveBeenCalledWith(
+            expect.objectContaining({ factory: undefined }),
+            expect.anything(),
         )
-
-        await waitFor(() => {
-            expect(mockLDProvider).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ldClient: mockLDClient,
-                }),
-                expect.anything(),
-            )
-        })
     })
 })

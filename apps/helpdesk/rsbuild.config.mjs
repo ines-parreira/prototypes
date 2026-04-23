@@ -22,12 +22,6 @@ const config = defineConfig({
     resolve: {
         alias: {
             css: `${srcDir}/assets/css/`,
-            'launchdarkly-react-client-sdk': require.resolve(
-                './.storybook/launchdarkly-js-client-sdk.tsx',
-            ),
-            'launchdarkly-js-client-sdk': require.resolve(
-                './.storybook/launchdarkly-js-client-sdk.tsx',
-            ),
         },
         extensions: ['.ts', '.tsx', '.js'],
     },

@@ -29,14 +29,6 @@ export default defineConfig({
             },
             deprecatedPackages: [
                 {
-                    name: 'launchdarkly-react-client-sdk',
-                    // Use the useFlag hook (@repo/feature-flags) instead
-                    // More context: https://www.notion.so/gorgias/How-to-use-Feature-flags-54fb0f6329b04d21970f42f295d1ef02?pvs=4#1921ae2178f580c99babe154b7116151
-                    imports: ['useFlags', 'LD', 'LDProvider'],
-                    type: 'feature-flag cleanup initiative',
-                    date: '2025-02-10',
-                },
-                {
                     name: 'reactstrap',
                     imports: [
                         'Alert',

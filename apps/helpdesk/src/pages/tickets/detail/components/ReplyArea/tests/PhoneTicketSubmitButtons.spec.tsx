@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { resetLDMocks } from '@repo/feature-flags/testing'
+import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
 import { assumeMock } from '@repo/testing'
 import { isDeviceReady } from '@repo/voice'
 import { render } from '@testing-library/react'
@@ -70,7 +70,7 @@ describe('<PhoneTicketSubmitButtons/>', () => {
     beforeEach(() => {
         isDeviceReadyMock.mockReturnValue(true)
         jest.resetAllMocks()
-        resetLDMocks()
+        resetFeatureFlagsMocks()
     })
 
     it('should render', () => {

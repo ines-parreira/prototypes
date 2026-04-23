@@ -80,13 +80,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
-    })),
 }))
 
 const queryClient = new QueryClient({
@@ -155,15 +148,6 @@ describe('useGetResourceData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        const getLDClientMock = require('@repo/feature-flags')
-            .getLDClient as jest.Mock
-        getLDClientMock.mockReturnValue({
-            allFlags: jest.fn().mockReturnValue({}),
-            variation: jest.fn((flag, defaultValue) => defaultValue),
-            waitForInitialization: jest.fn(() => Promise.resolve()),
-            on: jest.fn(),
-            off: jest.fn(),
-        })
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
             isLoading: false,
@@ -506,20 +490,10 @@ describe('useEnrichFeedbackData', () => {
             {children}
         </QueryClientProvider>
     )
-    const mockFlags = {}
 
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        const getLDClientMock = require('@repo/feature-flags')
-            .getLDClient as jest.Mock
-        getLDClientMock.mockReturnValue({
-            allFlags: jest.fn().mockReturnValue(mockFlags),
-            variation: jest.fn((flag, defaultValue) => defaultValue),
-            waitForInitialization: jest.fn(() => Promise.resolve()),
-            on: jest.fn(),
-            off: jest.fn(),
-        })
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
             isLoading: false,

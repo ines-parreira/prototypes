@@ -1,4 +1,4 @@
-import { ldClientMock } from '@repo/feature-flags/testing'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
@@ -36,7 +36,7 @@ describe('GuidanceActionTag', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        ldClientMock.allFlags.mockReturnValue({})
+        featureFlagsClientMock.allFlags.mockReturnValue({})
 
         // Mock useToolbarContext
         ;(useToolbarContext as jest.Mock).mockReturnValue({

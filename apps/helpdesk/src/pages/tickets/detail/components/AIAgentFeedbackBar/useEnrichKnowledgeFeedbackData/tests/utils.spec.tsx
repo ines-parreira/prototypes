@@ -1,4 +1,3 @@
-import { getLDClient } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -30,7 +29,6 @@ jest.mock('models/workflows/queries', () => ({
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
-    getLDClient: jest.fn(),
     useFlag: jest.fn(() => false),
 }))
 
@@ -128,9 +126,6 @@ describe('utils', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        ;(getLDClient as jest.Mock).mockReturnValue({
-            allFlags: jest.fn().mockReturnValue({}),
-        })
     })
 
     describe('useExtractDistinctHelpCenterFromResources', () => {

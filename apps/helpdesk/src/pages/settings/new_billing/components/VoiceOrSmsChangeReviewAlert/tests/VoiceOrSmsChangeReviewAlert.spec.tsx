@@ -1,7 +1,7 @@
 import React from 'react'
 
 import type { SelectedPlans } from '@repo/billing'
-import { resetLDMocks } from '@repo/feature-flags/testing'
+import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -52,7 +52,7 @@ const mockedBilling = {
 describe('VoiceOrSmsChangeReviewAlert', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        resetLDMocks()
+        resetFeatureFlagsMocks()
     })
 
     describe('alert for users vetted for phone', () => {

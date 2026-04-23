@@ -26,11 +26,6 @@ import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionH
 
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    getLDClient: jest.fn(),
-}))
-
 const getNewStatsFeatureFlagMigrationMock = assumeMock(
     getNewStatsFeatureFlagMigration,
 )

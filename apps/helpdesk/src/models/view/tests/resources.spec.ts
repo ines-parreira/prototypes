@@ -21,21 +21,11 @@ const draftView: ViewDraft = {
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
-    })),
 }))
-const variationMock = require('@repo/feature-flags').getLDClient()
-    .variation as jest.Mock
 
 describe('view resources', () => {
     beforeEach(() => {
         mockedServer.reset()
-        variationMock.mockImplementation(() => false)
     })
 
     describe('fetchViewsPaginated', () => {

@@ -180,13 +180,6 @@ const getResourceMetadataMock = assumeMock(getResourceMetadata)
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
-    })),
 }))
 
 jest.mock('hooks/useAppSelector')
@@ -242,11 +235,6 @@ describe('MissingKnowledgeSelect', () => {
         const { useFeedbackTracking } = jest.requireMock('@repo/ai-agent')
         useFeedbackTracking.mockReturnValue({
             onFeedbackGiven: jest.fn(),
-        })
-
-        const { getLDClient } = jest.requireMock('@repo/feature-flags')
-        getLDClient.mockReturnValue({
-            allFlags: jest.fn().mockReturnValue({}),
         })
     })
     it('renders correctly and handles selection and submission', () => {

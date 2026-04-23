@@ -9,7 +9,10 @@ import { TextDecoder, TextEncoder } from 'util'
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 
-import { ldClientMock, resetLDMocks } from '@repo/feature-flags/testing'
+import {
+    featureFlagsClientMock,
+    resetFeatureFlagsMocks,
+} from '@repo/feature-flags/testing'
 import { history } from '@repo/routing'
 import { envVars } from '@repo/utils'
 
@@ -312,13 +315,13 @@ global.fetch = jest.fn(() =>
 )
 
 function getMockedFlagValue<T>(flag: string, defaultValue: T): T {
-    const flags = ldClientMock.allFlags() ?? {}
+    const flags = featureFlagsClientMock.allFlags() ?? {}
 
     if (Object.prototype.hasOwnProperty.call(flags, flag)) {
         return flags[flag] as T
     }
 
-    return ldClientMock.variation(flag, defaultValue) as T
+    return featureFlagsClientMock.variation(flag, defaultValue) as T
 }
 
 jest.mock('core/theme/useTheme.ts', () =>
@@ -334,7 +337,6 @@ jest.mock('core/theme/useActualTheme.ts', () =>
 )
 
 jest.mock('@repo/feature-flags', () => {
-    const React = jest.requireActual('react') as typeof import('react')
     const actual = jest.requireActual(
         '@repo/feature-flags',
     ) as typeof import('@repo/feature-flags')
@@ -354,22 +356,6 @@ jest.mock('@repo/feature-flags', () => {
             value: getMockedFlagValue(flag, defaultValue),
             isLoading: false,
         }
-    })
-
-    const withFeatureFlags = jest.fn(function withFeatureFlagsImpl(
-        Component: React.ComponentType<Record<string, unknown>>,
-    ) {
-        const WrappedComponent = (props: Record<string, unknown>) =>
-            React.createElement(Component, {
-                ...props,
-                flags: ldClientMock.allFlags(),
-            })
-
-        WrappedComponent.displayName = `WithFeatureFlags(${
-            Component.displayName || Component.name || 'Component'
-        })`
-
-        return WrappedComponent
     })
 
     const fetchFlag = jest.fn(async function fetchFlagImpl(
@@ -418,12 +404,9 @@ jest.mock('@repo/feature-flags', () => {
 
     return {
         ...actual,
-        FeatureFlagsProvider: ({ children }: { children: React.ReactNode }) =>
-            children,
+        FeatureFlagsProvider: ({ children }: { children: unknown }) => children,
         FeatureFlagKey: actual.FeatureFlagKey,
-        getLDClient: jest.fn(() => ldClientMock),
-        initLaunchDarkly: jest.fn(() => ldClientMock),
-        withFeatureFlags,
+        initFeatureFlagsClient: jest.fn(),
         useFlag,
         fetchFlag,
         useAreFlagsLoading: jest.fn(() => false),
@@ -435,7 +418,7 @@ jest.mock('@repo/feature-flags', () => {
 })
 
 beforeEach(() => {
-    resetLDMocks()
+    resetFeatureFlagsMocks()
 })
 
 const SocketManagerMock = () => ({

@@ -197,11 +197,9 @@ export enum FeatureFlagKey {
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyOrderNotes = 'shopify-order-notes',
     ShoppingAssistantEnforceDeactivation = 'ai-shopping-assistant-enforce-deactivation',
-    /** @deprecated Full evaluated to `true`
-     https://app.launchdarkly.com/projects/default/flags/ai-shopping-assistant-enforce-deactivation/targeting?env=test&env=production */
+    /** @deprecated Full evaluated to `true` */
     ShoppingAssistantTrialImprovement = 'linear.project_post-ga-shopping-assistant-trial-improvement',
-    /** @deprecated Full evaluated to `milestone-1`
-     https://app.launchdarkly.com/projects/default/flags/shopping-assistant-trial-revamp-milestone/targeting?env=production&env=staging&selected-env=production */
+    /** @deprecated Full evaluated to `milestone-1` */
     ShoppingAssistantTrialRevampMilestone = 'shopping-assistant-trial-revamp-milestone',
     ShowAiReasoningInTicket = 'linear.project_surface-ai-reasoning-in-ticket-and-in-playground.show_ai_reasoning_in_ticket',
     ShowAiReasoningInPlayground = 'linear.project_playground.show_ai_reasoning_in_playground',

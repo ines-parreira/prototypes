@@ -1,4 +1,4 @@
-import { ldClientMock } from '@repo/feature-flags/testing'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -104,7 +104,7 @@ describe('EngagementStep', () => {
     beforeEach(() => {
         testQueryClient.clear()
 
-        ldClientMock.allFlags.mockReturnValue({})
+        featureFlagsClientMock.allFlags.mockReturnValue({})
 
         mockUseGmvUsdOver30Days.mockReturnValue({
             data: mockGmvData,

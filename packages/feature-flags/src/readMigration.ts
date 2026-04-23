@@ -8,10 +8,7 @@
 export type MigrationStage = 'off' | 'shadow' | 'live' | 'complete'
 
 /**
- * Custom implementation of LaunchDarkly migration flags as their current JS SDK does not support them.
- * Does not send analytics events to LaunchDarkly and as such does not have nice graphs in their interface.
- *
- * @see https://launchdarkly.com/docs/home/flags/migration
+ * Helper for running dual-write/dual-read style migrations behind a feature flag.
  *
  * @param migrationMode - The migration stage to read from
  * @param v1 - The "old" branch of the code, called in off/shadow/live and returned in off/shadow modes

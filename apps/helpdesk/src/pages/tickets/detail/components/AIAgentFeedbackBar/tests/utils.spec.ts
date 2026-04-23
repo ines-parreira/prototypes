@@ -1,4 +1,4 @@
-import { ldClientMock } from '@repo/feature-flags/testing'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { Knowledge } from 'models/aiAgentFeedback/types'
@@ -18,7 +18,7 @@ import {
 
 describe('getKnowledgeUrl', () => {
     beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({})
+        featureFlagsClientMock.allFlags.mockReturnValue({})
     })
 
     const shopType = 'shopify'

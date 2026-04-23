@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { resetLDMocks } from '@repo/feature-flags/testing'
+import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
 import { assumeMock } from '@repo/testing'
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -54,7 +54,7 @@ describe('<PhoneNumberCreateForm/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         assumeMock(fetchPhoneCapabilities).mockResolvedValue(capabilities)
-        resetLDMocks()
+        resetFeatureFlagsMocks()
     })
 
     afterEach(cleanup)

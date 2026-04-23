@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { ldClientMock } from '@repo/feature-flags/testing'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
@@ -56,7 +56,7 @@ const Wrapper = ({
 
 describe('ConversationStartersSettings', () => {
     beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({})
+        featureFlagsClientMock.allFlags.mockReturnValue({})
     })
 
     it('renders the toggle with correct label and unchecked by default', () => {
