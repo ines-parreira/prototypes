@@ -236,20 +236,16 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                                 )
                             }
                         />
-                        {!isAiAgentEnabled && (
-                            <ChatWaitTimeCard
-                                autoResponderEnabled={
-                                    values.autoResponderEnabled
-                                }
-                                autoResponderReply={values.autoResponderReply}
-                                onAutoResponderEnabledChange={(value) =>
-                                    setFieldValue('autoResponderEnabled', value)
-                                }
-                                onAutoResponderReplyChange={(value) =>
-                                    setFieldValue('autoResponderReply', value)
-                                }
-                            />
-                        )}
+                        <ChatWaitTimeCard
+                            autoResponderEnabled={values.autoResponderEnabled}
+                            autoResponderReply={values.autoResponderReply}
+                            onAutoResponderEnabledChange={(value) =>
+                                setFieldValue('autoResponderEnabled', value)
+                            }
+                            onAutoResponderReplyChange={(value) =>
+                                setFieldValue('autoResponderReply', value)
+                            }
+                        />
                         {!isAiAgentEnabled && (
                             <ChatAutomationCard
                                 controlTicketVolume={values.controlTicketVolume}

@@ -619,11 +619,10 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
     })
 
     describe('AI Agent conditional rendering', () => {
-        it('should not render availability, wait time, and automation cards when isAiAgentEnabled is true', () => {
+        it('should not render availability and automation cards when isAiAgentEnabled is true', () => {
             renderComponent({ isAiAgentEnabled: true })
 
             expect(mockChatAvailabilityCard).not.toHaveBeenCalled()
-            expect(mockChatWaitTimeCard).not.toHaveBeenCalled()
             expect(mockChatAutomationCard).not.toHaveBeenCalled()
         })
 
@@ -633,6 +632,12 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             expect(mockChatAvailabilityCard).toHaveBeenCalled()
             expect(mockChatWaitTimeCard).toHaveBeenCalled()
             expect(mockChatAutomationCard).toHaveBeenCalled()
+        })
+
+        it('should always render wait time card regardless of isAiAgentEnabled', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(mockChatWaitTimeCard).toHaveBeenCalled()
         })
 
         it('should always render non-AI Agent cards regardless of isAiAgentEnabled', () => {
