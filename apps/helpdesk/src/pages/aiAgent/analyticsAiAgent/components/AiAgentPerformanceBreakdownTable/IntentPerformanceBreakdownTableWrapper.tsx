@@ -5,7 +5,11 @@ import { Box, Skeleton } from '@gorgias/axiom'
 import { IntentPerformanceBreakdownTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTable'
 import { AllAgentsPerformanceByIntentTable } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByIntentTable/AllAgentsPerformanceByIntentTable'
 
-export const IntentPerformanceBreakdownTableWrapper = () => {
+type Props = {
+    chartId?: string
+}
+
+export const IntentPerformanceBreakdownTableWrapper = ({ chartId }: Props) => {
     const { value: isNewTableEnabled, isLoading } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
@@ -25,7 +29,7 @@ export const IntentPerformanceBreakdownTableWrapper = () => {
     }
 
     if (isNewTableEnabled) {
-        return <AllAgentsPerformanceByIntentTable />
+        return <AllAgentsPerformanceByIntentTable chartId={chartId} />
     }
 
     return <IntentPerformanceBreakdownTable />

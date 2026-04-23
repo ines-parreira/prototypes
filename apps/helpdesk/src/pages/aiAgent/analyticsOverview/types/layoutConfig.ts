@@ -22,6 +22,8 @@ export type LayoutItem<TChart extends AnalyticsChartType = AnalyticsChartType> =
         // Configurable graphs
         dimensions?: string[] | null
         measures?: string[] | null
+        // Table column visibility
+        visibleColumns?: string[] | null
     }
 
 export type LayoutSection<

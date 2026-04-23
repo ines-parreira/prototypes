@@ -5,7 +5,11 @@ import { Box, Skeleton } from '@gorgias/axiom'
 import { ChannelPerformanceBreakdownTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTable'
 import { AllAgentsPerformanceByChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/AllAgentsPerformanceByChannelTable'
 
-export const ChannelPerformanceBreakdownTableWrapper = () => {
+type Props = {
+    chartId?: string
+}
+
+export const ChannelPerformanceBreakdownTableWrapper = ({ chartId }: Props) => {
     const { value: isNewTableEnabled, isLoading } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
@@ -25,7 +29,7 @@ export const ChannelPerformanceBreakdownTableWrapper = () => {
     }
 
     if (isNewTableEnabled) {
-        return <AllAgentsPerformanceByChannelTable />
+        return <AllAgentsPerformanceByChannelTable chartId={chartId} />
     }
 
     return <ChannelPerformanceBreakdownTable />

@@ -6,7 +6,13 @@ import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgen
 
 import { ShoppingAssistantTopProductsTable as LegacyShoppingAssistantTopProductsTable } from './ShoppingAssistantTopProductsTable'
 
-export const ShoppingAssistantTopProductsTableWrapper = () => {
+type Props = {
+    chartId?: string
+}
+
+export const ShoppingAssistantTopProductsTableWrapper = ({
+    chartId,
+}: Props) => {
     const { value: isNewTableEnabled, isLoading } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
@@ -26,7 +32,7 @@ export const ShoppingAssistantTopProductsTableWrapper = () => {
     }
 
     if (isNewTableEnabled) {
-        return <ShoppingAssistantTopProductsTable />
+        return <ShoppingAssistantTopProductsTable chartId={chartId} />
     }
 
     return <LegacyShoppingAssistantTopProductsTable />

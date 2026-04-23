@@ -1,4 +1,9 @@
-import type { MetricColumnConfig } from '@repo/reporting'
+import type { MetricColumnConfig, NameColumnConfig } from '@repo/reporting'
+
+import { formatChannelName } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+
+export const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS: NameColumnConfig[] =
+    [{ accessor: 'entity', label: 'Channel', formatName: formatChannelName }]
 
 export const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_TABLE = {
     title: 'All Agents Performance By Channel',

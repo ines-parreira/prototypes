@@ -1,4 +1,8 @@
-import type { MetricColumnConfig } from '@repo/reporting'
+import type { MetricColumnConfig, NameColumnConfig } from '@repo/reporting'
+
+export const PERFORMANCE_BREAKDOWN_NAME_COLUMNS: NameColumnConfig[] = [
+    { accessor: 'feature', label: 'Feature' },
+]
 
 export const PERFORMANCE_BREAKDOWN_TABLE = {
     title: 'All features',

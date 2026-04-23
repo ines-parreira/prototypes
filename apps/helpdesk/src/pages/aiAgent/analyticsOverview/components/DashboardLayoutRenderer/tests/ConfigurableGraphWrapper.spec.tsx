@@ -2,14 +2,13 @@ import type { ComponentType, ReactNode } from 'react'
 
 import { useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
-import { ConfigurableGraphType } from '@repo/reporting'
+import { ConfigurableGraphType, useDashboardContext } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
-import { useDashboardContext } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext'
 import {
     ManagedDashboardId,
     ManagedDashboardsTabId,
@@ -23,13 +22,6 @@ jest.mock(
     }),
 )
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext',
-    () => ({
-        useDashboardContext: jest.fn(),
-    }),
-)
-const useDashboardContextMock = assumeMock(useDashboardContext)
-jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
     () => ({
         ChartsActionMenu: () => (
@@ -39,6 +31,7 @@ jest.mock(
 )
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
+    useDashboardContext: jest.fn(),
     ConfigurableGraph: ({
         metrics,
         initialDimension,
@@ -63,6 +56,7 @@ jest.mock('@repo/reporting', () => ({
 }))
 
 const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
+const useDashboardContextMock = assumeMock(useDashboardContext)
 
 const defaultDimension = {
     id: 'overall',
@@ -186,8 +180,6 @@ describe('ConfigurableGraphWrapper', () => {
                                 {
                                     chartId:
                                         AnalyticsOverviewChart.ConfigurableLineGraph,
-                                    gridSize: 6,
-                                    visibility: true,
                                     measures: ['automationRate'],
                                     dimensions: ['channel'],
                                 },
@@ -217,8 +209,6 @@ describe('ConfigurableGraphWrapper', () => {
                                 {
                                     chartId:
                                         AnalyticsOverviewChart.ConfigurableLineGraph,
-                                    gridSize: 6,
-                                    visibility: true,
                                     measures: ['automatedInteractionsCount'],
                                     dimensions: ['overall'],
                                 },

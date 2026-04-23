@@ -1,4 +1,15 @@
-import type { MetricColumnConfig } from '@repo/reporting'
+import type { MetricColumnConfig, NameColumnConfig } from '@repo/reporting'
+
+import { MAP_ENGAGEMENT_TYPE_NAME } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+
+export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS: NameColumnConfig[] =
+    [
+        {
+            accessor: 'entity',
+            label: 'Engagement feature',
+            displayNames: MAP_ENGAGEMENT_TYPE_NAME,
+        },
+    ]
 
 export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_TABLE = {
     title: 'Shopping Assistant Performance By Engagement Feature',

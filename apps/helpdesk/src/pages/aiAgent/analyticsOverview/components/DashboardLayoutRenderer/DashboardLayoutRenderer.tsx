@@ -1,11 +1,13 @@
+import { DashboardContext } from '@repo/reporting'
+
 import { Box } from '@gorgias/axiom'
 
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
+import { useSaveTableColumnVisibility } from 'domains/reporting/hooks/managed-dashboards/useSaveTableColumnVisibility'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { CardsSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/CardsSection'
-import { DashboardContext } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext'
 import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer.less'
 import { TablesSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/TablesSection'
 import type {
@@ -107,6 +109,13 @@ export const DashboardLayoutRenderer = ({
         tabId,
     })
 
+    const { saveVisibleColumns } = useSaveTableColumnVisibility({
+        dashboardId,
+        tabId,
+        tabName,
+        layoutConfig,
+    })
+
     return (
         <DashboardContext.Provider
             value={{
@@ -115,6 +124,7 @@ export const DashboardLayoutRenderer = ({
                 tabName,
                 layoutConfig,
                 isLoaded: !isLoading,
+                saveVisibleColumns,
             }}
         >
             <Box

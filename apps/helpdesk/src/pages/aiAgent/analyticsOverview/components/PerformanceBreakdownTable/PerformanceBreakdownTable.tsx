@@ -1,10 +1,17 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
-import { PERFORMANCE_BREAKDOWN_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
+import {
+    PERFORMANCE_BREAKDOWN_COLUMNS,
+    PERFORMANCE_BREAKDOWN_NAME_COLUMNS,
+} from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { DownloadPerformanceBreakdownButton } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/DownloadPerformanceBreakdownButton'
 import { usePerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
 
-export const PerformanceBreakdownTable = () => {
+type Props = {
+    chartId?: string
+}
+
+export const PerformanceBreakdownTable = ({ chartId }: Props) => {
     const { data = [], loadingStates } = usePerformanceMetricsPerFeature()
 
     return (
@@ -13,12 +20,8 @@ export const PerformanceBreakdownTable = () => {
             metricColumns={PERFORMANCE_BREAKDOWN_COLUMNS}
             loadingStates={loadingStates}
             DownloadButton={<DownloadPerformanceBreakdownButton />}
-            nameColumns={[
-                {
-                    accessor: 'feature',
-                    label: 'Feature',
-                },
-            ]}
+            nameColumns={PERFORMANCE_BREAKDOWN_NAME_COLUMNS}
+            chartId={chartId}
         />
     )
 }

@@ -82,3 +82,9 @@ export {
     type MetricColumnConfig,
     type MetricLoadingStates,
 } from './components/ReportingMetricBreakdownTable/ReportingMetricBreakdownTable'
+export {
+    DashboardContext,
+    useDashboardContext,
+    type DashboardContextValue,
+    type DashboardLayoutConfig,
+} from './contexts/DashboardContext'

@@ -31,6 +31,11 @@ function layoutConfigToTabSections(
                         grid_size: item.gridSize,
                         measures: item.measures,
                         dimensions: item.dimensions,
+                        columns:
+                            item.visibleColumns?.map((id) => ({
+                                column_id: id,
+                                visible: true,
+                            })) ?? undefined,
                     },
                 }),
             ),
@@ -115,6 +120,10 @@ export function backendConfigToLayoutConfig(
                     visibility: item.metadata?.visible ?? true,
                     measures: item.metadata?.measures,
                     dimensions: item.metadata?.dimensions,
+                    visibleColumns:
+                        item.metadata?.columns
+                            ?.filter((c) => c.visible)
+                            .map((c) => c.column_id) ?? undefined,
                     requiresFeatureFlag: defaultItemMap.get(
                         item.chart_id as AnalyticsChartType,
                     )?.requiresFeatureFlag,

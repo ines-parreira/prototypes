@@ -33,7 +33,7 @@ export function buildNameColDef<TData>(
     config: NameColumnConfig,
 ): DataTableColumnDef<TData> {
     return anyColumnHelper.accessor(config.accessor, {
-        id: config.label,
+        id: config.accessor,
         header: config.label,
         enableHiding: false,
         minSize: 200,
@@ -96,7 +96,8 @@ export function buildMetricColumnDefs<TData>(
     return metricColumns.map(
         (config) =>
             anyColumnHelper.accessor(config.accessorKey, {
-                id: config.label,
+                id: config.accessorKey,
+                label: config.label,
                 enableHiding: true,
                 header: () => (
                     <Box display="flex" alignItems="center" gap="xxxs">

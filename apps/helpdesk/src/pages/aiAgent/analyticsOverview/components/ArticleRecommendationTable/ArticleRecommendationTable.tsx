@@ -1,15 +1,33 @@
+import { useMemo } from 'react'
+
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ARTICLE_RECOMMENDATION_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/columns'
 import { DownloadArticleRecommendationButton } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/DownloadArticleRecommendationButton'
 import { useArticleRecommendationMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
 
-export const ArticleRecommendationTable = () => {
+type Props = {
+    chartId?: string
+}
+
+export const ArticleRecommendationTable = ({ chartId }: Props) => {
     const {
         data = [],
         loadingStates,
         displayNames,
     } = useArticleRecommendationMetrics()
+
+    const nameColumns = useMemo(
+        () => [
+            {
+                accessor: 'entity',
+                label: 'Article name',
+                displayNames,
+                getHref: (entity: string) => entity,
+            },
+        ],
+        [displayNames],
+    )
 
     return (
         <ReportingMetricBreakdownTable
@@ -17,14 +35,8 @@ export const ArticleRecommendationTable = () => {
             metricColumns={ARTICLE_RECOMMENDATION_COLUMNS}
             loadingStates={loadingStates}
             DownloadButton={<DownloadArticleRecommendationButton />}
-            nameColumns={[
-                {
-                    accessor: 'entity',
-                    label: 'Article name',
-                    displayNames,
-                    getHref: (entity) => entity,
-                },
-            ]}
+            nameColumns={nameColumns}
+            chartId={chartId}
         />
     )
 }

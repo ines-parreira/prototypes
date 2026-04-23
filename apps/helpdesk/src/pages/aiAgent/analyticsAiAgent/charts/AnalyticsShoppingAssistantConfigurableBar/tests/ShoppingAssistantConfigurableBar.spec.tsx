@@ -20,12 +20,10 @@ jest.mock(
         useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
     }),
 )
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext',
-    () => ({
-        useDashboardContext: jest.fn().mockReturnValue(null),
-    }),
-)
+jest.mock('@repo/reporting', () => ({
+    ...jest.requireActual('@repo/reporting'),
+    useDashboardContext: jest.fn().mockReturnValue(null),
+}))
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/charts/AnalyticsShoppingAssistantConfigurableBar/DEPRECATED_TotalSalesByProductComboChart',
     () => ({

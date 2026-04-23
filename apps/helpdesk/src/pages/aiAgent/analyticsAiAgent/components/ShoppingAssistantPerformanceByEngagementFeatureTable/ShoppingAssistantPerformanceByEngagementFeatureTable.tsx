@@ -1,11 +1,19 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
-import { SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/columns'
+import {
+    SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS,
+    SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS,
+} from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/columns'
 import { DownloadShoppingAssistantPerformanceByEngagementFeatureButton } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/DownloadShoppingAssistantPerformanceByEngagementFeatureButton'
 import { useShoppingAssistantPerformanceByEngagementFeatureMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
-import { MAP_ENGAGEMENT_TYPE_NAME } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-export const ShoppingAssistantPerformanceByEngagementFeatureTable = () => {
+type Props = {
+    chartId?: string
+}
+
+export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
+    chartId,
+}: Props) => {
     const { data = [], loadingStates } =
         useShoppingAssistantPerformanceByEngagementFeatureMetrics()
 
@@ -19,13 +27,10 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = () => {
             DownloadButton={
                 <DownloadShoppingAssistantPerformanceByEngagementFeatureButton />
             }
-            nameColumns={[
-                {
-                    accessor: 'entity',
-                    label: 'Engagement feature',
-                    displayNames: MAP_ENGAGEMENT_TYPE_NAME,
-                },
-            ]}
+            nameColumns={
+                SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS
+            }
+            chartId={chartId}
         />
     )
 }

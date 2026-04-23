@@ -172,6 +172,42 @@ describe('managedDashboardMappers', () => {
             expect(result.tabs[0].sections[2].type).toBe(ChartType.Table)
         })
 
+        it('should include columns metadata when item.visibleColumns is defined', () => {
+            const layoutConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                                visibleColumns: ['col_a', 'col_b'],
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = layoutConfigToBackendConfig(
+                dashboardId,
+                layoutConfig,
+                tabId,
+                'tabName',
+            )
+
+            expect(result.tabs[0].sections[0].items[0].metadata).toEqual({
+                visible: true,
+                grid_size: 12,
+                columns: [
+                    { column_id: 'col_a', visible: true },
+                    { column_id: 'col_b', visible: true },
+                ],
+            })
+        })
+
         it('should use provided tabId and tabName when given', () => {
             const layoutConfig: DashboardLayoutConfig = { sections: [] }
 
@@ -373,6 +409,58 @@ describe('managedDashboardMappers', () => {
                     },
                 ],
             })
+        })
+
+        it('should map columns metadata into visibleColumns, keeping only visible ones', () => {
+            const backendConfig: AnalyticsManagedDashboardConfig = {
+                id: 'ai-agent-overview',
+                tabs: [
+                    {
+                        id: ManagedDashboardsTabId.AllAgents,
+                        name: 'Main',
+                        sections: [
+                            {
+                                section_id: 'breakdown',
+                                type: ChartType.Table,
+                                items: [
+                                    {
+                                        chart_id: 'chart_1',
+                                        metadata: {
+                                            visible: true,
+                                            grid_size: 12,
+                                            columns: [
+                                                {
+                                                    column_id: 'col_a',
+                                                    visible: true,
+                                                },
+                                                {
+                                                    column_id: 'col_b',
+                                                    visible: false,
+                                                },
+                                                {
+                                                    column_id: 'col_c',
+                                                    visible: true,
+                                                },
+                                            ],
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = backendConfigToLayoutConfig(
+                backendConfig,
+                { sections: [] },
+                ManagedDashboardsTabId.AllAgents,
+            )
+
+            expect(result.sections[0].items[0].visibleColumns).toEqual([
+                'col_a',
+                'col_c',
+            ])
         })
 
         it('should map backend section types to frontend types', () => {

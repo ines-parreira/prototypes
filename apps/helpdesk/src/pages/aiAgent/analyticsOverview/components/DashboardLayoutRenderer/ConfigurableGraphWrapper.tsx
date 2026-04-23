@@ -10,8 +10,7 @@ import type {
     ChartConfig,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
-
-import { useDashboardContext } from './DashboardContext'
+import { useManagedDashboardContext } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/useManagedDashboardContext'
 
 type Props = {
     metrics: ConfigurableGraphMetricConfig[]
@@ -33,7 +32,7 @@ export const ConfigurableGraphWrapper = ({
     const { value: isAnalyticsDashboardsNewChartsEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
     )
-    const dashboardContext = useDashboardContext()
+    const dashboardContext = useManagedDashboardContext()
     const { onSelect } = useSaveConfigurableGraphSelection({
         chartId: analyticsChartId,
         dashboardId: dashboardContext?.dashboardId,

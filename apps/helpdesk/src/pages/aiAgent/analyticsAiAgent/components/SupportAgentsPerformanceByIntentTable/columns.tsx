@@ -1,4 +1,10 @@
-import type { MetricColumnConfig } from '@repo/reporting'
+import type { MetricColumnConfig, NameColumnConfig } from '@repo/reporting'
+
+export const SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS: NameColumnConfig[] =
+    [
+        { accessor: 'intentL1', label: 'Intent L1' },
+        { accessor: 'intentL2', label: 'Intent L2' },
+    ]
 
 export const SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_TABLE = {
     title: 'Support Agents Performance By Intent',

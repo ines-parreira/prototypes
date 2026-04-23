@@ -1,11 +1,17 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
-import { ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/columns'
+import {
+    ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS,
+    ALL_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS,
+} from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/columns'
 import { DownloadAllAgentsPerformanceByChannelButton } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/DownloadAllAgentsPerformanceByChannelButton'
 import { useAllAgentsPerformanceByChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByChannelMetrics'
-import { formatChannelName } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-export const AllAgentsPerformanceByChannelTable = () => {
+type Props = {
+    chartId?: string
+}
+
+export const AllAgentsPerformanceByChannelTable = ({ chartId }: Props) => {
     const { data = [], loadingStates } =
         useAllAgentsPerformanceByChannelMetrics()
 
@@ -15,13 +21,8 @@ export const AllAgentsPerformanceByChannelTable = () => {
             metricColumns={ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS}
             loadingStates={loadingStates}
             DownloadButton={<DownloadAllAgentsPerformanceByChannelButton />}
-            nameColumns={[
-                {
-                    accessor: 'entity',
-                    label: 'Channel',
-                    formatName: formatChannelName,
-                },
-            ]}
+            nameColumns={ALL_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS}
+            chartId={chartId}
         />
     )
 }

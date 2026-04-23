@@ -1,6 +1,10 @@
-import type { MetricColumnConfig } from '@repo/reporting'
+import type { MetricColumnConfig, NameColumnConfig } from '@repo/reporting'
 
+import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import type { OrderManagementEntityName } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
+
+import { ReturnOrdersDrillDown } from './drillDowns/ReturnOrdersDrillDown'
+import { TopReportedIssuesDrillDown } from './drillDowns/TopReportedIssuesDrillDown'
 
 export const ENTITY_DISPLAY_NAMES: Record<OrderManagementEntityName, string> = {
     cancel_order: 'Cancel order',
@@ -8,6 +12,23 @@ export const ENTITY_DISPLAY_NAMES: Record<OrderManagementEntityName, string> = {
     loop_returns_started: 'Return orders',
     automated_response_started: 'Report order issue',
 }
+
+const renderDrilldown = (value: string) => {
+    if (value === AutomateEventType.LOOP_RETURNS_STARTED)
+        return <ReturnOrdersDrillDown />
+    if (value === AutomateEventType.AUTOMATED_RESPONSE_STARTED)
+        return <TopReportedIssuesDrillDown />
+    return null
+}
+
+export const ORDER_MANAGEMENT_NAME_COLUMNS: NameColumnConfig[] = [
+    {
+        accessor: 'entity',
+        label: 'Feature name',
+        displayNames: ENTITY_DISPLAY_NAMES,
+        renderDrilldown,
+    },
+]
 
 export const ORDER_MANAGEMENT_TABLE = {
     title: 'Order Management',

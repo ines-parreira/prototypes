@@ -5,7 +5,11 @@ import { Box, Skeleton } from '@gorgias/axiom'
 import { ShoppingAssistantChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable'
 import { AiAgentSalesPerformanceByChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentSalesPerformanceByChannelTable/AiAgentSalesPerformanceByChannelTable'
 
-export const ShoppingAssistantChannelTableWrapper = () => {
+type Props = {
+    chartId?: string
+}
+
+export const ShoppingAssistantChannelTableWrapper = ({ chartId }: Props) => {
     const { value: isNewTableEnabled, isLoading } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
@@ -25,7 +29,7 @@ export const ShoppingAssistantChannelTableWrapper = () => {
     }
 
     if (isNewTableEnabled) {
-        return <AiAgentSalesPerformanceByChannelTable />
+        return <AiAgentSalesPerformanceByChannelTable chartId={chartId} />
     }
 
     return <ShoppingAssistantChannelTable />

@@ -31,6 +31,15 @@ const mockedUseFlag = jest.mocked(useFlag)
 const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock(
+    'domains/reporting/hooks/managed-dashboards/useSaveTableColumnVisibility',
+    () => ({
+        useSaveTableColumnVisibility: jest.fn(() => ({
+            saveVisibleColumns: jest.fn(),
+        })),
+    }),
+)
+
+jest.mock(
     'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
     () => ({
         useGetManagedDashboardsLayoutConfig: jest.fn(

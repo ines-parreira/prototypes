@@ -1,10 +1,17 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
-import { SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByIntentTable/columns'
+import {
+    SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS,
+    SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS,
+} from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByIntentTable/columns'
 import { DownloadSupportAgentsPerformanceByIntentButton } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByIntentTable/DownloadSupportAgentsPerformanceByIntentButton'
 import { useSupportAgentsPerformanceByIntentMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByIntentMetrics'
 
-export const SupportAgentsPerformanceByIntentTable = () => {
+type Props = {
+    chartId?: string
+}
+
+export const SupportAgentsPerformanceByIntentTable = ({ chartId }: Props) => {
     const { data = [], loadingStates } =
         useSupportAgentsPerformanceByIntentMetrics()
 
@@ -14,10 +21,8 @@ export const SupportAgentsPerformanceByIntentTable = () => {
             metricColumns={SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS}
             loadingStates={loadingStates}
             DownloadButton={<DownloadSupportAgentsPerformanceByIntentButton />}
-            nameColumns={[
-                { accessor: 'intentL1', label: 'Intent L1' },
-                { accessor: 'intentL2', label: 'Intent L2' },
-            ]}
+            nameColumns={SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS}
+            chartId={chartId}
         />
     )
 }

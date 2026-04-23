@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
@@ -6,7 +8,11 @@ import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsA
 import { SHOPPING_ASSISTANT_TOP_PRODUCTS_COLUMNS } from './columns'
 import { DownloadShoppingAssistantTopProductsButton } from './DownloadShoppingAssistantTopProductsButton'
 
-export const ShoppingAssistantTopProductsTable = () => {
+type Props = {
+    chartId?: string
+}
+
+export const ShoppingAssistantTopProductsTable = ({ chartId }: Props) => {
     const {
         flatData,
         productNameMap,
@@ -14,6 +20,22 @@ export const ShoppingAssistantTopProductsTable = () => {
         productImageMap,
         isFetching,
     } = useShoppingAssistantTopProductsMetrics()
+
+    const nameColumns = useMemo(
+        () => [
+            {
+                accessor: 'entity',
+                label: 'Product name',
+                formatName: (id: string) => productNameMap[id] ?? id,
+                getHref: (id: string) => productUrlMap[id],
+                getAvatarProps: (id: string) => ({
+                    name: productNameMap[id] ?? id,
+                    url: productImageMap[id],
+                }),
+            },
+        ],
+        [productNameMap, productUrlMap, productImageMap],
+    )
 
     return (
         <ReportingMetricBreakdownTable
@@ -25,18 +47,8 @@ export const ShoppingAssistantTopProductsTable = () => {
                 [ProductTableKeys.BTR]: isFetching,
             }}
             DownloadButton={<DownloadShoppingAssistantTopProductsButton />}
-            nameColumns={[
-                {
-                    accessor: 'entity',
-                    label: 'Product name',
-                    formatName: (id) => productNameMap[id] ?? id,
-                    getHref: (id) => productUrlMap[id],
-                    getAvatarProps: (id) => ({
-                        name: productNameMap[id] ?? id,
-                        url: productImageMap[id],
-                    }),
-                },
-            ]}
+            chartId={chartId}
+            nameColumns={nameColumns}
         />
     )
 }
