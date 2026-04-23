@@ -7,6 +7,7 @@ import {
     Box,
     Button,
     Heading,
+    PageHeader,
     SidePanel,
     SidePanelSize,
     Size,
@@ -26,6 +27,7 @@ import type {
     ConditionState,
 } from 'AIJourney/types/conditionField'
 import { DEFAULT_CONDITION } from 'AIJourney/types/conditionField'
+import { isExistenceCondition } from 'AIJourney/utils/conditionField/conditionField'
 import {
     buildFullQuery,
     parseConditionsQuery,
@@ -41,11 +43,13 @@ export const SegmentsSidePanel = ({
     onClose,
     segment,
     schema,
+    onSegmentCreated,
 }: {
     isOpen: boolean
     onClose: () => void
     segment?: Segment
     schema: ConditionsSchema
+    onSegmentCreated?: (segment: { id: string; name: string }) => void
 }) => {
     const { currentIntegration } = useJourneyContext()
     const { mutateAsync: createSegment, isLoading: isCreatingSegment } =
@@ -87,28 +91,34 @@ export const SegmentsSidePanel = ({
         }
     }, [isOpen, segment, form])
 
-    useEffect(() => {
-        buildFullQuery(conditions, schema)
-    }, [conditions, schema])
-    const conditionsQuery = useMemo(
-        () => buildFullQuery(conditions, schema),
-        [conditions, schema],
-    )
-    const debouncedConditionsQuery = useDebouncedValue(conditionsQuery, 500)
-
-    const { data: audienceCountData, isFetching: isAudienceCountFetching } =
-        useAudienceCount(
-            {
-                integration_id: currentIntegration?.id,
-                conditions: debouncedConditionsQuery,
-            },
-            { enabled: !!debouncedConditionsQuery },
-        )
-
     const hasNoConditions = buildFullQuery(conditions, schema) === ''
 
     const hasConditionWithoutValue = conditions.some((c) => {
         if (!c.object || !c.field || !c.operator) return false
+        if (isExistenceCondition(c.object, c.field)) {
+            if (!c.whereClause) return true
+            const wc = c.whereClause
+            if (!schema.operators.unary.includes(wc.operator)) {
+                const whereVal = wc.value
+                if (
+                    whereVal === null ||
+                    whereVal === undefined ||
+                    whereVal === ''
+                )
+                    return true
+                if (Array.isArray(whereVal) && whereVal.length === 0)
+                    return true
+                if (typeof whereVal === 'string') {
+                    return (
+                        whereVal
+                            .split(',')
+                            .map((v) => v.trim())
+                            .filter((v) => v !== '').length === 0
+                    )
+                }
+            }
+            return false
+        }
         if (schema.operators.unary.includes(c.operator)) return false
         const val = c.value
         if (val === null || val === undefined || val === '') return true
@@ -144,6 +154,24 @@ export const SegmentsSidePanel = ({
         return false
     })
 
+    const conditionsQuery = useMemo(
+        () => buildFullQuery(conditions, schema),
+        [conditions, schema],
+    )
+    const debouncedConditionsQuery = useDebouncedValue(conditionsQuery, 500)
+
+    const { data: audienceCountData, isFetching: isAudienceCountFetching } =
+        useAudienceCount(
+            {
+                integration_id: currentIntegration?.id,
+                conditions: debouncedConditionsQuery,
+            },
+            {
+                enabled:
+                    !!debouncedConditionsQuery && !hasConditionWithoutValue,
+            },
+        )
+
     const shouldDisableSaveButton =
         !name.trim() ||
         hasNoConditions ||
@@ -163,16 +191,20 @@ export const SegmentsSidePanel = ({
 
     const isEditing = segment !== undefined
 
+    const shouldRenderCountPreview =
+        !hasNoConditions && !hasConditionWithoutValue
+
     const handleSave = form.handleSubmit(async ({ name }) => {
         if (!schema || !currentIntegration?.id) return
         const conditions = buildFullQuery(form.getValues('conditions'), schema)
 
         try {
-            await createSegment({
+            const createdSegment = await createSegment({
                 name,
                 conditions,
                 integration_id: currentIntegration.id,
             })
+            onSegmentCreated?.(createdSegment)
             onClose()
         } catch {
             // keep modal open on error
@@ -187,23 +219,17 @@ export const SegmentsSidePanel = ({
             withoutPadding
         >
             <FormProvider {...form}>
+                <PageHeader
+                    title={isEditing ? 'Edit segment' : 'Create new segment'}
+                />
                 <Box
                     flexDirection="column"
                     padding={Size.Lg}
-                    paddingTop={Size.Md}
                     overflow="scroll"
+                    height="100%"
+                    gap={Size.Md}
                 >
-                    <Heading size="xl">
-                        {isEditing ? 'Edit segment' : 'Create new segment'}
-                    </Heading>
-
-                    <Box
-                        marginTop={Size.Md}
-                        flexDirection="column"
-                        gap={Size.Lg}
-                        height="100%"
-                        overflow="scroll"
-                    >
+                    <Box flexDirection="column" gap={Size.Lg}>
                         <Controller
                             name="name"
                             control={form.control}
@@ -217,44 +243,48 @@ export const SegmentsSidePanel = ({
                             )}
                         />
                         <AudienceConditionField schema={schema} />
-                        <SegmentCountPreview
-                            count={audienceCountData?.count}
-                            isLoading={isAudienceCountFetching}
-                        />
+                    </Box>
+                    <Box flexDirection="column" gap={Size.Lg}>
+                        {shouldRenderCountPreview && (
+                            <SegmentCountPreview
+                                count={audienceCountData?.count}
+                                isLoading={isAudienceCountFetching}
+                            />
+                        )}
                         {isEditing && segment && (
                             <Box gap="md" flexDirection="column">
                                 <Heading size="md">Used in</Heading>
                                 <SegmentUsageTable segmentId={segment.id} />
                             </Box>
                         )}
-                        <Box gap={Size.Xs} justifyContent="flex-end">
-                            <Button
-                                variant="tertiary"
-                                onClick={() => handleCancel()}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                isDisabled={shouldDisableSaveButton}
-                                onClick={form.handleSubmit(async ({ name }) => {
-                                    if (isEditing) {
-                                        await updateSegment({
-                                            segmentId: segment.id,
-                                            updateSegmentRequest: {
-                                                name,
-                                                conditions: buildFullQuery(
-                                                    conditions,
-                                                    schema,
-                                                ),
-                                            },
-                                        })
-                                        onClose()
-                                    } else await handleSave()
-                                })}
-                            >
-                                Save segment
-                            </Button>
-                        </Box>
+                    </Box>
+                    <Box gap={Size.Xs} justifyContent="flex-end">
+                        <Button
+                            variant="tertiary"
+                            onClick={() => handleCancel()}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            isDisabled={shouldDisableSaveButton}
+                            onClick={form.handleSubmit(async ({ name }) => {
+                                if (isEditing) {
+                                    await updateSegment({
+                                        segmentId: segment.id,
+                                        updateSegmentRequest: {
+                                            name,
+                                            conditions: buildFullQuery(
+                                                conditions,
+                                                schema,
+                                            ),
+                                        },
+                                    })
+                                    onClose()
+                                } else await handleSave()
+                            })}
+                        >
+                            Save segment
+                        </Button>
                     </Box>
                 </Box>
             </FormProvider>

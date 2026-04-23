@@ -237,7 +237,7 @@ const TagsMultiSelect = ({
     )
 }
 
-const ProductVariantNamesMultiSelect = ({
+const ProductVariantIdsMultiSelect = ({
     value,
     onChange,
 }: {
@@ -254,10 +254,17 @@ const ProductVariantNamesMultiSelect = ({
         () =>
             (data?.pages ?? [])
                 .flatMap((page) => page.data.data)
-                .map((item) => ({
-                    id: item.data.title,
-                    label: item.data.title,
-                })),
+                .flatMap((item) =>
+                    item.data.variants.map(
+                        (variant: { id: number; title: string }) => ({
+                            id: String(variant.id),
+                            label:
+                                variant.title === 'Default Title'
+                                    ? item.data.title
+                                    : `${item.data.title} / ${variant.title}`,
+                        }),
+                    ),
+                ),
         [data],
     )
 
@@ -432,12 +439,9 @@ export const ConditionValueInput = ({
         return <ProductTagsMultiSelect value={value} onChange={onChange} />
     }
 
-    if (
-        field === 'product_variant_names' &&
-        MULTI_OPERATORS.includes(operator)
-    ) {
+    if (field === 'product_variant_ids' && MULTI_OPERATORS.includes(operator)) {
         return (
-            <ProductVariantNamesMultiSelect value={value} onChange={onChange} />
+            <ProductVariantIdsMultiSelect value={value} onChange={onChange} />
         )
     }
 

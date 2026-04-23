@@ -232,6 +232,112 @@ jest.mock(
                         >
                             Set hidden whereClause with null value
                         </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'last_cart',
+                                        field: 'last_cart',
+                                        isAggregate: false,
+                                        operator: 'isNotEmpty',
+                                        value: null,
+                                        whereClause: null,
+                                        purchaseDateClause: null,
+                                        isWhereVisible: true,
+                                    },
+                                ])
+                            }
+                        >
+                            Set last_cart with no whereClause
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'last_cart',
+                                        field: 'last_cart',
+                                        isAggregate: false,
+                                        operator: 'isNotEmpty',
+                                        value: null,
+                                        whereClause: {
+                                            field: 'product_variant_ids',
+                                            operator: 'containsAll',
+                                            value: null,
+                                        },
+                                        purchaseDateClause: null,
+                                        isWhereVisible: true,
+                                    },
+                                ])
+                            }
+                        >
+                            Set last_cart with null whereClause value
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'last_cart',
+                                        field: 'last_cart',
+                                        isAggregate: false,
+                                        operator: 'isNotEmpty',
+                                        value: null,
+                                        whereClause: {
+                                            field: 'product_variant_ids',
+                                            operator: 'containsAll',
+                                            value: [],
+                                        },
+                                        purchaseDateClause: null,
+                                        isWhereVisible: true,
+                                    },
+                                ])
+                            }
+                        >
+                            Set last_cart with empty array whereClause value
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'last_cart',
+                                        field: 'last_cart',
+                                        isAggregate: false,
+                                        operator: 'isNotEmpty',
+                                        value: null,
+                                        whereClause: {
+                                            field: 'product_variant_ids',
+                                            operator: 'isEmpty',
+                                            value: null,
+                                        },
+                                        purchaseDateClause: null,
+                                        isWhereVisible: true,
+                                    },
+                                ])
+                            }
+                        >
+                            Set last_cart with unary whereClause operator
+                        </button>
+                        <button
+                            onClick={() =>
+                                setValue('conditions', [
+                                    {
+                                        object: 'last_cart',
+                                        field: 'last_cart',
+                                        isAggregate: false,
+                                        operator: 'isNotEmpty',
+                                        value: null,
+                                        whereClause: {
+                                            field: 'product_variant_ids',
+                                            operator: 'containsAll',
+                                            value: ['Blue Shirt'],
+                                        },
+                                        purchaseDateClause: null,
+                                        isWhereVisible: true,
+                                    },
+                                ])
+                            }
+                        >
+                            Set last_cart with valid whereClause value
+                        </button>
                     </div>
                 )
             },
@@ -260,6 +366,29 @@ const mockSchema: ConditionsSchema = {
         },
     },
 }
+const mockSchemaWithExistence: ConditionsSchema = {
+    operators: {
+        comparison: ['eq', 'neq'],
+        set: ['containsAll', 'containsAny'],
+        unary: ['isEmpty', 'isNotEmpty'],
+    },
+    objects: {
+        shopper: {
+            fields: {
+                lifetime_value: { type: 'number', operators: ['gt'] },
+            },
+        },
+        last_cart: {
+            fields: {
+                product_variant_ids: {
+                    type: 'string',
+                    operators: ['containsAll', 'containsAny', 'isEmpty'],
+                },
+            },
+        },
+    },
+}
+
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
 }))
@@ -833,6 +962,44 @@ describe('<SegmentsSidePanel />', () => {
                 expect.any(Object),
             )
         })
+
+        describe('existence conditions (last_cart / last_order)', () => {
+            it('should call useAudienceCount with enabled=false when last_cart has no whereClause', async () => {
+                const user = userEvent.setup()
+                renderComponent()
+
+                await act(async () => {
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: /set last_cart with no whereClause/i,
+                        }),
+                    )
+                })
+
+                expect(mockUseAudienceCount).toHaveBeenLastCalledWith(
+                    expect.any(Object),
+                    expect.objectContaining({ enabled: false }),
+                )
+            })
+
+            it('should call useAudienceCount with enabled=false when last_cart whereClause value is null', async () => {
+                const user = userEvent.setup()
+                renderComponent()
+
+                await act(async () => {
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: /set last_cart with null whereClause value/i,
+                        }),
+                    )
+                })
+
+                expect(mockUseAudienceCount).toHaveBeenLastCalledWith(
+                    expect.any(Object),
+                    expect.objectContaining({ enabled: false }),
+                )
+            })
+        })
     })
 
     describe('whereClause validation', () => {
@@ -947,6 +1114,78 @@ describe('<SegmentsSidePanel />', () => {
             expect(
                 screen.getByRole('button', { name: /save segment/i }),
             ).not.toBeDisabled()
+        })
+
+        describe('existence conditions (last_cart / last_order)', () => {
+            it('should disable Save when last_cart has no whereClause', async () => {
+                const user = userEvent.setup()
+                renderComponent()
+
+                await setupWithConditionAndName(
+                    user,
+                    /set last_cart with no whereClause/i,
+                )
+
+                expect(
+                    screen.getByRole('button', { name: /save segment/i }),
+                ).toBeDisabled()
+            })
+
+            it('should disable Save when last_cart whereClause value is null', async () => {
+                const user = userEvent.setup()
+                renderComponent()
+
+                await setupWithConditionAndName(
+                    user,
+                    /set last_cart with null whereClause value/i,
+                )
+
+                expect(
+                    screen.getByRole('button', { name: /save segment/i }),
+                ).toBeDisabled()
+            })
+
+            it('should disable Save when last_cart whereClause value is an empty array', async () => {
+                const user = userEvent.setup()
+                renderComponent()
+
+                await setupWithConditionAndName(
+                    user,
+                    /set last_cart with empty array whereClause value/i,
+                )
+
+                expect(
+                    screen.getByRole('button', { name: /save segment/i }),
+                ).toBeDisabled()
+            })
+
+            it('should enable Save when last_cart whereClause has a valid value', async () => {
+                const user = userEvent.setup()
+                renderComponent({ schema: mockSchemaWithExistence })
+
+                await setupWithConditionAndName(
+                    user,
+                    /set last_cart with valid whereClause value/i,
+                )
+
+                expect(
+                    screen.getByRole('button', { name: /save segment/i }),
+                ).not.toBeDisabled()
+            })
+
+            it('should enable Save when last_cart whereClause uses a unary operator', async () => {
+                const user = userEvent.setup()
+                renderComponent({ schema: mockSchemaWithExistence })
+
+                await setupWithConditionAndName(
+                    user,
+                    /set last_cart with unary whereClause operator/i,
+                )
+
+                expect(
+                    screen.getByRole('button', { name: /save segment/i }),
+                ).not.toBeDisabled()
+            })
         })
     })
 })

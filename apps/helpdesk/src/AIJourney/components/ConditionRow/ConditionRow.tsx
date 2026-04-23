@@ -14,6 +14,7 @@ import {
 import {
     buildSections,
     buildSelectId,
+    defaultValueForField,
     defaultValueForType,
     getFieldDef,
     getOperatorOptions,
@@ -152,7 +153,10 @@ export const ConditionRow = ({
         }
 
         const defaultOperator = newFieldDef.operators[0] ?? ''
-        const defaultValue = defaultValueForType(newFieldDef.type)
+        const defaultValue = defaultValueForField(
+            parsed.field,
+            newFieldDef.type,
+        )
 
         let newWhereClause: WhereClause | null = null
         if (

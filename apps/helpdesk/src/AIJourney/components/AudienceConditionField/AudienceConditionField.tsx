@@ -4,11 +4,11 @@ import {
     Box,
     Button,
     Card,
+    Heading,
     Size,
     StatusButton,
     StatusButtonColor,
     Text,
-    TextVariant,
 } from '@gorgias/axiom'
 
 import type { ConditionsSchema } from '../../types/conditionField'
@@ -25,10 +25,10 @@ export const AudienceConditionField = ({
     const { fields, append, remove } = useFieldArray({ name: 'conditions' })
 
     return (
-        <Box flexDirection="column" gap={Size.Lg}>
+        <Box flexDirection="column" gap={Size.Md}>
             <Box flexDirection="column">
                 <Box>
-                    <Text variant={TextVariant.Medium}>Conditions</Text>
+                    <Heading size="md">Conditions</Heading>
                     <Text color="content-error-default">*</Text>
                 </Box>
                 <Text color="content-neutral-secondary">

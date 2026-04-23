@@ -87,7 +87,9 @@ export const SegmentsTable = ({
                     columnCount={segmentColumns.length + actionColumns.length}
                     table={table}
                     renderEmptyStateComponent={() => (
-                        <span>No segments found</span>
+                        <Box justifyContent="center">
+                            <span>No segments found</span>
+                        </Box>
                     )}
                 />
             </TableV1Root>

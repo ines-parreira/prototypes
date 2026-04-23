@@ -34,10 +34,27 @@ jest.mock('AIJourney/components/SegmentsSidePanel/SegmentsSidePanel', () => ({
     SegmentsSidePanel: ({
         isOpen,
         onClose,
+        onSegmentCreated,
     }: {
         isOpen: boolean
         onClose: () => void
-    }) => (isOpen ? <button onClick={onClose}>Close side panel</button> : null),
+        onSegmentCreated?: (segment: { id: string; name: string }) => void
+    }) =>
+        isOpen ? (
+            <>
+                <button onClick={onClose}>Close side panel</button>
+                <button
+                    onClick={() =>
+                        onSegmentCreated?.({
+                            id: 'new-seg',
+                            name: 'New Segment',
+                        })
+                    }
+                >
+                    Simulate segment created
+                </button>
+            </>
+        ) : null,
 }))
 
 jest.mock('AIJourney/queries', () => ({
@@ -582,8 +599,8 @@ describe('<AudienceSelect />', () => {
     })
 
     describe('useConditionsMetadata', () => {
-        it('is enabled when feature flag is disabled', async () => {
-            mockUseFlag.mockReturnValue(false)
+        it('is enabled when feature flag is enabled', async () => {
+            mockUseFlag.mockReturnValue(true)
             await renderComponent('include')
 
             expect(mockUseConditionsMetadata).toHaveBeenCalledWith({
@@ -591,8 +608,8 @@ describe('<AudienceSelect />', () => {
             })
         })
 
-        it('is disabled when feature flag is enabled', async () => {
-            mockUseFlag.mockReturnValue(true)
+        it('is disabled when feature flag is disabled', async () => {
+            mockUseFlag.mockReturnValue(false)
             await renderComponent('include')
 
             expect(mockUseConditionsMetadata).toHaveBeenCalledWith({
@@ -647,6 +664,56 @@ describe('<AudienceSelect />', () => {
                 expect(
                     screen.getByRole('button', { name: /Close side panel/i }),
                 ).toBeInTheDocument()
+            })
+        })
+
+        it('auto-selects the created segment in the form field', async () => {
+            const onSubmit = jest.fn()
+            const user = userEvent.setup()
+            await renderComponent('include', {}, onSubmit)
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+            await waitFor(() =>
+                expect(
+                    screen.getByText('Create new segment'),
+                ).toBeInTheDocument(),
+            )
+            await act(async () => {
+                await user.click(screen.getByText('Create new segment'))
+            })
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('button', {
+                        name: /Simulate segment created/i,
+                    }),
+                ).toBeInTheDocument(),
+            )
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', {
+                        name: /Simulate segment created/i,
+                    }),
+                )
+            })
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /submit/i }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        included_audience_list_ids: ['new-seg'],
+                    }),
+                    expect.anything(),
+                )
             })
         })
 

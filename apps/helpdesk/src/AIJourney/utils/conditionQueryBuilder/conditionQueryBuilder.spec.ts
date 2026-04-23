@@ -49,7 +49,7 @@ const schema: ConditionsSchema = {
         },
         last_order: {
             fields: {
-                product_variant_names: {
+                product_variant_ids: {
                     type: 'array_string',
                     operators: ['eq', 'containsAny'],
                 },
@@ -66,7 +66,7 @@ const schema: ConditionsSchema = {
         },
         last_cart: {
             fields: {
-                product_variant_names: {
+                product_variant_ids: {
                     type: 'array_string',
                     operators: ['eq', 'containsAny'],
                 },
@@ -1224,7 +1224,7 @@ describe('existence conditions', () => {
                     operator: 'isNotEmpty',
                     value: null,
                     whereClause: {
-                        field: 'product_variant_names',
+                        field: 'product_variant_ids',
                         operator: 'eq',
                         value: ["Women's K1 Flux"],
                     },
@@ -1233,11 +1233,11 @@ describe('existence conditions', () => {
                 },
             ]
             expect(buildFullQuery(conditions, schema)).toBe(
-                "eq(last_order.product_variant_names, ['Women\\'s K1 Flux'])",
+                "eq(last_order.product_variant_ids, ['Women\\'s K1 Flux'])",
             )
         })
 
-        it('should fall back to isNotEmpty(object) when whereClause is null', () => {
+        it('should produce empty string when whereClause is null', () => {
             const conditions: ConditionState[] = [
                 {
                     object: 'last_order',
@@ -1250,12 +1250,10 @@ describe('existence conditions', () => {
                     isWhereVisible: true,
                 },
             ]
-            expect(buildFullQuery(conditions, schema)).toBe(
-                'isNotEmpty(last_order)',
-            )
+            expect(buildFullQuery(conditions, schema)).toBe('')
         })
 
-        it('should fall back to isNotEmpty(object) when whereClause value is null', () => {
+        it('should produce empty string when whereClause value is null', () => {
             const conditions: ConditionState[] = [
                 {
                     object: 'last_order',
@@ -1264,7 +1262,7 @@ describe('existence conditions', () => {
                     operator: 'isNotEmpty',
                     value: null,
                     whereClause: {
-                        field: 'product_variant_names',
+                        field: 'product_variant_ids',
                         operator: 'eq',
                         value: null,
                     },
@@ -1272,12 +1270,10 @@ describe('existence conditions', () => {
                     isWhereVisible: true,
                 },
             ]
-            expect(buildFullQuery(conditions, schema)).toBe(
-                'isNotEmpty(last_order)',
-            )
+            expect(buildFullQuery(conditions, schema)).toBe('')
         })
 
-        it('should fall back to isNotEmpty(object) when whereClause value is an empty array', () => {
+        it('should produce empty string when whereClause value is an empty array', () => {
             const conditions: ConditionState[] = [
                 {
                     object: 'last_order',
@@ -1286,7 +1282,7 @@ describe('existence conditions', () => {
                     operator: 'isNotEmpty',
                     value: null,
                     whereClause: {
-                        field: 'product_variant_names',
+                        field: 'product_variant_ids',
                         operator: 'eq',
                         value: [],
                     },
@@ -1294,12 +1290,10 @@ describe('existence conditions', () => {
                     isWhereVisible: true,
                 },
             ]
-            expect(buildFullQuery(conditions, schema)).toBe(
-                'isNotEmpty(last_order)',
-            )
+            expect(buildFullQuery(conditions, schema)).toBe('')
         })
 
-        it('should fall back to isNotEmpty(object) when whereClause field is not in schema', () => {
+        it('should produce empty string when whereClause field is not in schema', () => {
             const conditions: ConditionState[] = [
                 {
                     object: 'last_order',
@@ -1316,9 +1310,7 @@ describe('existence conditions', () => {
                     isWhereVisible: true,
                 },
             ]
-            expect(buildFullQuery(conditions, schema)).toBe(
-                'isNotEmpty(last_order)',
-            )
+            expect(buildFullQuery(conditions, schema)).toBe('')
         })
 
         it('should produce operator(object.field) for a unary where operator', () => {
@@ -1330,7 +1322,7 @@ describe('existence conditions', () => {
                     operator: 'isNotEmpty',
                     value: null,
                     whereClause: {
-                        field: 'product_variant_names',
+                        field: 'product_variant_ids',
                         operator: 'isEmpty',
                         value: null,
                     },
@@ -1339,7 +1331,7 @@ describe('existence conditions', () => {
                 },
             ]
             expect(buildFullQuery(conditions, schema)).toBe(
-                'isEmpty(last_order.product_variant_names)',
+                'isEmpty(last_order.product_variant_ids)',
             )
         })
 
@@ -1374,7 +1366,7 @@ describe('existence conditions', () => {
                     operator: 'isNotEmpty',
                     value: null,
                     whereClause: {
-                        field: 'product_variant_names',
+                        field: 'product_variant_ids',
                         operator: 'eq',
                         value: ['Blue Shirt'],
                     },
@@ -1383,7 +1375,7 @@ describe('existence conditions', () => {
                 },
             ]
             expect(buildFullQuery(conditions, schema)).toBe(
-                "eq(last_cart.product_variant_names, ['Blue Shirt'])",
+                "eq(last_cart.product_variant_ids, ['Blue Shirt'])",
             )
         })
     })
@@ -1391,7 +1383,7 @@ describe('existence conditions', () => {
     describe('parseConditionsQuery', () => {
         it('should reconstruct an existence ConditionState from eq(last_order.field, [value])', () => {
             const result = parseConditionsQuery(
-                "eq(last_order.product_variant_names, ['Women\\'s K1 Flux'])",
+                "eq(last_order.product_variant_ids, ['Women\\'s K1 Flux'])",
                 schema,
             )
             expect(result).toEqual([
@@ -1402,7 +1394,7 @@ describe('existence conditions', () => {
                     operator: 'isNotEmpty',
                     value: null,
                     whereClause: {
-                        field: 'product_variant_names',
+                        field: 'product_variant_ids',
                         operator: 'eq',
                         // parseValue normalises single-element arrays to a bare string
                         value: "Women's K1 Flux",
@@ -1415,7 +1407,7 @@ describe('existence conditions', () => {
 
         it('should set field equal to object (existence sentinel) when parsing last_order condition', () => {
             const result = parseConditionsQuery(
-                "eq(last_order.product_variant_names, ['T-Shirt'])",
+                "eq(last_order.product_variant_ids, ['T-Shirt'])",
                 schema,
             )
             expect(result[0].field).toBe('last_order')
@@ -1424,7 +1416,7 @@ describe('existence conditions', () => {
 
         it('should set isWhereVisible to true for existence conditions', () => {
             const result = parseConditionsQuery(
-                "eq(last_order.product_variant_names, ['T-Shirt'])",
+                "eq(last_order.product_variant_ids, ['T-Shirt'])",
                 schema,
             )
             expect(result[0].isWhereVisible).toBe(true)
@@ -1444,7 +1436,7 @@ describe('existence conditions', () => {
 
         it('should reconstruct an existence ConditionState for last_cart', () => {
             const result = parseConditionsQuery(
-                "eq(last_cart.product_variant_names, ['Blue Shirt'])",
+                "eq(last_cart.product_variant_ids, ['Blue Shirt'])",
                 schema,
             )
             expect(result[0]).toEqual({
@@ -1454,7 +1446,7 @@ describe('existence conditions', () => {
                 operator: 'isNotEmpty',
                 value: null,
                 whereClause: {
-                    field: 'product_variant_names',
+                    field: 'product_variant_ids',
                     operator: 'eq',
                     value: 'Blue Shirt',
                 },
@@ -1467,7 +1459,7 @@ describe('existence conditions', () => {
             // Single-element array DSL normalises to a bare quoted string after
             // parsing, so the round-trip uses the non-array form.
             const original =
-                "eq(last_order.product_variant_names, 'Women\\'s K1 Flux')"
+                "eq(last_order.product_variant_ids, 'Women\\'s K1 Flux')"
             const parsed = parseConditionsQuery(original, schema)
             expect(buildFullQuery(parsed, schema)).toBe(original)
         })

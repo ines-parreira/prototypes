@@ -121,7 +121,7 @@ const mockSchema: ConditionsSchema = {
         },
         last_order: {
             fields: {
-                product_variant_names: {
+                product_variant_ids: {
                     type: 'array_string',
                     operators: ['eq', 'containsAny'],
                 },
@@ -138,7 +138,7 @@ const mockSchema: ConditionsSchema = {
         },
         last_cart: {
             fields: {
-                product_variant_names: {
+                product_variant_ids: {
                     type: 'array_string',
                     operators: ['eq', 'containsAny'],
                 },
@@ -315,7 +315,7 @@ describe('<ConditionRow />', () => {
             )
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.value',
-                null,
+                'subscribed',
             )
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.whereClause',
@@ -376,7 +376,7 @@ describe('<ConditionRow />', () => {
                 objects: {
                     orders: {
                         fields: {
-                            product_variant_names: {
+                            product_variant_ids: {
                                 type: 'string',
                                 operators: ['containsAny'],
                             },
@@ -411,7 +411,7 @@ describe('<ConditionRow />', () => {
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.whereClause',
                 {
-                    field: 'product_variant_names',
+                    field: 'product_variant_ids',
                     operator: 'containsAny',
                     value: null,
                 },
@@ -726,7 +726,7 @@ describe('<ConditionRow />', () => {
                 objects: {
                     orders: {
                         fields: {
-                            product_variant_names: {
+                            product_variant_ids: {
                                 type: 'string',
                                 operators: ['containsAny'],
                             },
@@ -742,7 +742,7 @@ describe('<ConditionRow />', () => {
                 },
             }
             const modifiedWhereClause = {
-                field: 'product_variant_names',
+                field: 'product_variant_ids',
                 operator: 'containsAny',
                 value: ['Old T-Shirt'],
             }
@@ -772,7 +772,7 @@ describe('<ConditionRow />', () => {
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.whereClause',
                 {
-                    field: 'product_variant_names',
+                    field: 'product_variant_ids',
                     operator: 'containsAny',
                     value: null,
                 },
@@ -831,7 +831,7 @@ describe('<ConditionRow />', () => {
                 orders: {
                     fields: {
                         status: { type: 'string', operators: ['eq'] },
-                        product_variant_names: {
+                        product_variant_ids: {
                             type: 'string',
                             operators: ['containsAny'],
                         },
@@ -856,7 +856,7 @@ describe('<ConditionRow />', () => {
             objects: {
                 orders: {
                     fields: {
-                        product_variant_names: {
+                        product_variant_ids: {
                             type: 'string',
                             operators: ['containsAny'],
                         },
@@ -881,7 +881,7 @@ describe('<ConditionRow />', () => {
         }
 
         const whereClauseFixtureForAllowlist = {
-            field: 'product_variant_names',
+            field: 'product_variant_ids',
             operator: 'containsAny',
             value: null,
         } as const
@@ -910,7 +910,7 @@ describe('<ConditionRow />', () => {
             )
 
             expect(captured.whereFieldItems).toEqual([
-                { id: 'product_variant_names', label: 'Product name' },
+                { id: 'product_variant_ids', label: 'Product name' },
                 { id: 'product_tags', label: 'Product tag' },
             ])
         })
@@ -954,7 +954,7 @@ describe('<ConditionRow />', () => {
                 captured.whereFieldItems?.map((item) => item.label) ?? []
             expect(labels).toContain('Product name')
             expect(labels).toContain('Product tag')
-            expect(labels).not.toContain('Product Variant Names')
+            expect(labels).not.toContain('Product Variant Ids')
             expect(labels).not.toContain('Product Tags')
         })
 
@@ -968,7 +968,7 @@ describe('<ConditionRow />', () => {
             )
 
             expect(captured.whereFieldItems).toEqual([
-                { id: 'product_variant_names', label: 'Product name' },
+                { id: 'product_variant_ids', label: 'Product name' },
                 { id: 'product_tags', label: 'Product tag' },
                 { id: 'product_collection_ids', label: 'Collection' },
             ])
@@ -977,7 +977,7 @@ describe('<ConditionRow />', () => {
 
     describe('existence mode (last_order / last_cart)', () => {
         const existenceWhereClause = {
-            field: 'product_variant_names',
+            field: 'product_variant_ids',
             operator: 'eq',
             value: null,
         } as const
@@ -1074,7 +1074,7 @@ describe('<ConditionRow />', () => {
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.whereClause',
                 {
-                    field: 'product_variant_names',
+                    field: 'product_variant_ids',
                     operator: 'eq',
                     value: null,
                 },

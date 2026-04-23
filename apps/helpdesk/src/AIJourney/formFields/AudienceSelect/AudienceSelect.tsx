@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Controller, useFormContext, useWatch } from 'react-hook-form'
@@ -29,7 +29,7 @@ const fieldProps = {
 }
 
 export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
-    const { control } = useFormContext()
+    const { control, getValues, setValue } = useFormContext()
     const { currentIntegration } = useJourneyContext()
 
     const isAiJourneySegmentsEnabled = useFlag(
@@ -40,6 +40,14 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false)
 
     const { fieldName, excludeFieldName, label } = fieldProps[type]
+
+    const handleSegmentCreated = useCallback(
+        (segment: { id: string }) => {
+            const current: string[] = getValues(fieldName) ?? []
+            setValue(fieldName, [...current, segment.id])
+        },
+        [fieldName, getValues, setValue],
+    )
 
     const excludedValues: string[] =
         useWatch({ control, name: excludeFieldName }) ?? []
@@ -60,7 +68,7 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     } = useAudienceSegments(currentIntegration?.id, AudienceListSource.Klaviyo)
 
     const { data: schema } = useConditionsMetadata({
-        enabled: !isAiJourneySegmentsEnabled,
+        enabled: isAiJourneySegmentsEnabled,
     })
 
     const sections = useMemo(() => {
@@ -114,7 +122,6 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                 render={({ field }) => (
                     <MultiSelectField
                         isSearchable
-                        shouldFlip={false}
                         items={sections}
                         isOpen={isMultiSelectOpen}
                         onOpenChange={setIsMultiSelectOpen}
@@ -161,6 +168,7 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                 <SegmentsSidePanel
                     isOpen={isSidePanelOpen}
                     onClose={() => setIsSidePanelOpen(false)}
+                    onSegmentCreated={handleSegmentCreated}
                     schema={schema}
                 />
             )}

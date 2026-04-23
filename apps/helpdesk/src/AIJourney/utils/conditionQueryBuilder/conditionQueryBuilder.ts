@@ -66,9 +66,9 @@ function buildConditionQuery(
 
     if (isExistenceCondition(condition.object, condition.field)) {
         const wc = condition.whereClause
-        if (!wc?.field || !wc.operator) return `isNotEmpty(${condition.object})`
+        if (!wc?.field || !wc.operator) return null
         const whereFieldDef = schema.objects[condition.object]?.fields[wc.field]
-        if (!whereFieldDef) return `isNotEmpty(${condition.object})`
+        if (!whereFieldDef) return null
         const isWcUnary = schema.operators.unary.includes(wc.operator)
         if (isWcUnary) {
             return `${wc.operator}(${condition.object}.${wc.field})`
@@ -79,7 +79,7 @@ function buildConditionQuery(
             wc.value === '' ||
             (Array.isArray(wc.value) && wc.value.length === 0)
         ) {
-            return `isNotEmpty(${condition.object})`
+            return null
         }
         return `${wc.operator}(${condition.object}.${wc.field}, ${formatFieldValue(wc.value, whereFieldDef.type, wc.operator)})`
     }
@@ -293,7 +293,7 @@ function parseConditionStr(
 
     if (fieldMatch) {
         const [, object, field] = fieldMatch
-        // eq(last_order.product_variant_names, [...]) — existence with where clause
+        // eq(last_order.product_variant_ids, [...]) — existence with where clause
         if (isExistenceObject(object)) {
             return {
                 object,

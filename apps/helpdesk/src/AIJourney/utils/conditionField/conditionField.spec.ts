@@ -6,6 +6,7 @@ import type {
 import {
     buildSections,
     buildSelectId,
+    defaultValueForField,
     defaultValueForType,
     EXISTENCE_OBJECTS,
     getFieldDef,
@@ -48,10 +49,10 @@ describe('OPERATOR_LABELS', () => {
     it('should map all expected operator keys to labels', () => {
         expect(OPERATOR_LABELS['eq']).toBe('is')
         expect(OPERATOR_LABELS['neq']).toBe('is not')
-        expect(OPERATOR_LABELS['gt']).toBe('greater than')
-        expect(OPERATOR_LABELS['gte']).toBe('at least')
-        expect(OPERATOR_LABELS['lt']).toBe('less than')
-        expect(OPERATOR_LABELS['lte']).toBe('at most')
+        expect(OPERATOR_LABELS['gt']).toBe('is greater than')
+        expect(OPERATOR_LABELS['gte']).toBe('is at least')
+        expect(OPERATOR_LABELS['lt']).toBe('is less than')
+        expect(OPERATOR_LABELS['lte']).toBe('is at most')
         expect(OPERATOR_LABELS['contains']).toBe('contains')
         expect(OPERATOR_LABELS['containsAny']).toBe('contains any of')
         expect(OPERATOR_LABELS['containsAll']).toBe('contains all of')
@@ -245,6 +246,24 @@ describe('defaultValueForType', () => {
     })
 })
 
+describe('defaultValueForField', () => {
+    it('should return "subscribed" for sms_state regardless of type', () => {
+        expect(defaultValueForField('sms_state', 'string')).toBe('subscribed')
+    })
+
+    it('should fall back to "30d" for unknown datetime fields', () => {
+        expect(defaultValueForField('some_date', 'datetime')).toBe('30d')
+    })
+
+    it('should fall back to null for unknown string fields', () => {
+        expect(defaultValueForField('name', 'string')).toBeNull()
+    })
+
+    it('should fall back to null for unknown number fields', () => {
+        expect(defaultValueForField('order_count', 'number')).toBeNull()
+    })
+})
+
 describe('EXISTENCE_OBJECTS', () => {
     it('should contain last_cart and last_order', () => {
         expect(EXISTENCE_OBJECTS).toContain('last_cart')
@@ -257,11 +276,10 @@ describe('EXISTENCE_OBJECTS', () => {
 })
 
 describe('WHERE_FIELD_ALLOWLIST', () => {
-    it('should contain product_variant_names with label Product name', () => {
+    it('should contain product_variant_ids with label Product name', () => {
         expect(
-            WHERE_FIELD_ALLOWLIST.find(
-                (e) => e.field === 'product_variant_names',
-            )?.label,
+            WHERE_FIELD_ALLOWLIST.find((e) => e.field === 'product_variant_ids')
+                ?.label,
         ).toBe('Product name')
     })
 
@@ -340,7 +358,7 @@ const schemaWithExistenceObjects: ConditionsSchema = {
         },
         last_order: {
             fields: {
-                product_variant_names: {
+                product_variant_ids: {
                     type: 'array_string',
                     operators: ['eq'],
                 },
@@ -349,7 +367,7 @@ const schemaWithExistenceObjects: ConditionsSchema = {
         },
         last_cart: {
             fields: {
-                product_variant_names: {
+                product_variant_ids: {
                     type: 'array_string',
                     operators: ['eq'],
                 },
@@ -397,7 +415,7 @@ describe('getFieldDef (existence conditions)', () => {
             getFieldDef(
                 schemaWithExistenceObjects,
                 'last_order',
-                'product_variant_names',
+                'product_variant_ids',
                 false,
             ),
         ).toEqual({ type: 'array_string', operators: ['eq'] })

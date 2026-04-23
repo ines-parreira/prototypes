@@ -22,6 +22,9 @@ export const useCreateSegment = () => {
             queryClient.invalidateQueries({
                 queryKey: [...aiJourneyKeys.all(), 'segments', integration_id],
             })
+            queryClient.invalidateQueries({
+                queryKey: ['audience-segments', integration_id],
+            })
             void dispatch(
                 notify({
                     message: 'Segment created',

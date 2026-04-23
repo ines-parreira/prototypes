@@ -133,9 +133,30 @@ jest.mock('models/integration/queries', () => ({
                 {
                     data: {
                         data: [
-                            { data: { title: 'Classic T-Shirt' } },
-                            { data: { title: 'Running Shoes' } },
-                            { data: { title: 'Winter Jacket' } },
+                            {
+                                data: {
+                                    title: 'Classic T-Shirt',
+                                    variants: [
+                                        { id: 1001, title: 'Default Title' },
+                                    ],
+                                },
+                            },
+                            {
+                                data: {
+                                    title: 'Running Shoes',
+                                    variants: [
+                                        { id: 2001, title: 'Default Title' },
+                                    ],
+                                },
+                            },
+                            {
+                                data: {
+                                    title: 'Winter Jacket',
+                                    variants: [
+                                        { id: 3001, title: 'Default Title' },
+                                    ],
+                                },
+                            },
                         ],
                     },
                 },
@@ -1174,12 +1195,12 @@ describe('<ConditionValueInput />', () => {
         })
     })
 
-    describe('product_variant_names field (ProductVariantNamesMultiSelect)', () => {
+    describe('product_variant_ids field (ProductVariantIdsMultiSelect)', () => {
         it('should render a text input for non-contains operators', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="product_variant_names"
+                    field="product_variant_ids"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}
@@ -1198,7 +1219,7 @@ describe('<ConditionValueInput />', () => {
                 render(
                     <ConditionValueInput
                         fieldDef={stringFieldDef}
-                        field="product_variant_names"
+                        field="product_variant_ids"
                         value={null}
                         onChange={mockOnChange}
                         isUnary={false}
@@ -1214,7 +1235,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="product_variant_names"
+                    field="product_variant_ids"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}
@@ -1227,12 +1248,12 @@ describe('<ConditionValueInput />', () => {
             expect(screen.getByText('Winter Jacket')).toBeInTheDocument()
         })
 
-        it('should display selected product labels when value is an array', () => {
+        it('should display selected product labels when value is an array of variant ids', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="product_variant_names"
-                    value={['Classic T-Shirt', 'Running Shoes']}
+                    field="product_variant_ids"
+                    value={['1001', '2001']}
                     onChange={mockOnChange}
                     isUnary={false}
                     operator="containsAny"
@@ -1250,12 +1271,12 @@ describe('<ConditionValueInput />', () => {
             )
         })
 
-        it('should display a single string value as a selected item', () => {
+        it('should display a single string variant id as a selected item', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="product_variant_names"
-                    value="Classic T-Shirt"
+                    field="product_variant_ids"
+                    value="1001"
                     onChange={mockOnChange}
                     isUnary={false}
                     operator="containsAny"
@@ -1270,11 +1291,11 @@ describe('<ConditionValueInput />', () => {
             ).toBeGreaterThan(0)
         })
 
-        it('should call onChange with an array of product titles when products are selected', () => {
+        it('should call onChange with an array of variant ids when products are selected', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="product_variant_names"
+                    field="product_variant_ids"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}
@@ -1284,23 +1305,20 @@ describe('<ConditionValueInput />', () => {
 
             act(() => {
                 capturedMultiSelectField.onChange!([
-                    { id: 'Classic T-Shirt', label: 'Classic T-Shirt' },
-                    { id: 'Winter Jacket', label: 'Winter Jacket' },
+                    { id: '1001', label: 'Classic T-Shirt' },
+                    { id: '3001', label: 'Winter Jacket' },
                 ])
             })
 
-            expect(mockOnChange).toHaveBeenCalledWith([
-                'Classic T-Shirt',
-                'Winter Jacket',
-            ])
+            expect(mockOnChange).toHaveBeenCalledWith(['1001', '3001'])
         })
 
         it('should call onChange with null when all products are deselected', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="product_variant_names"
-                    value={['Classic T-Shirt']}
+                    field="product_variant_ids"
+                    value={['1001']}
                     onChange={mockOnChange}
                     isUnary={false}
                     operator="containsAny"
@@ -1322,7 +1340,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="product_variant_names"
+                    field="product_variant_ids"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}
@@ -1347,7 +1365,7 @@ describe('<ConditionValueInput />', () => {
             render(
                 <ConditionValueInput
                     fieldDef={stringFieldDef}
-                    field="product_variant_names"
+                    field="product_variant_ids"
                     value={null}
                     onChange={mockOnChange}
                     isUnary={false}

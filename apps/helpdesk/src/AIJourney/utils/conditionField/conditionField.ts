@@ -10,10 +10,10 @@ import type {
 export const OPERATOR_LABELS: Record<string, string> = {
     eq: 'is',
     neq: 'is not',
-    gt: 'greater than',
-    gte: 'at least',
-    lt: 'less than',
-    lte: 'at most',
+    gt: 'is greater than',
+    gte: 'is at least',
+    lt: 'is less than',
+    lte: 'is at most',
     contains: 'contains',
     containsAny: 'contains any of',
     containsAll: 'contains all of',
@@ -33,7 +33,7 @@ export type ExistenceObject = (typeof EXISTENCE_OBJECTS)[number]
 
 // Fields used in the where clause for both regular aggregates and existence conditions
 export const WHERE_FIELD_ALLOWLIST = [
-    { field: 'product_variant_names', label: 'Product name' },
+    { field: 'product_variant_ids', label: 'Product name' },
     { field: 'product_tags', label: 'Product tag' },
     { field: 'product_collection_ids', label: 'Collection' },
 ] as const
@@ -149,4 +149,15 @@ export function getOperatorOptions(
 
 export function defaultValueForType(type: FieldType): string | number | null {
     return type === 'datetime' ? '30d' : null
+}
+
+const FIELD_DEFAULT_VALUES: Partial<Record<string, string | number>> = {
+    sms_state: 'subscribed',
+}
+
+export function defaultValueForField(
+    field: string,
+    type: FieldType,
+): string | number | null {
+    return FIELD_DEFAULT_VALUES[field] ?? defaultValueForType(type)
 }

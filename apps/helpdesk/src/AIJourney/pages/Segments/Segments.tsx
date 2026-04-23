@@ -133,8 +133,6 @@ export const Segments = () => {
                 <Box alignItems="center" justifyContent="space-between">
                     <Heading size="xl">Segments</Heading>
                     <Button
-                        variant="secondary"
-                        leadingSlot="cloud"
                         isDisabled={isSchemaLoading || isSchemaError}
                         onClick={() => {
                             selectedSegmentRef.current = undefined
