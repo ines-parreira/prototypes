@@ -76,6 +76,7 @@ export const dynamicOverallAutomatedInteractionsTimeseries =
                 },
             ],
             dimensions: ctx.dimensions,
+            limit: 10000,
         }))
 
 export const dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2 = (

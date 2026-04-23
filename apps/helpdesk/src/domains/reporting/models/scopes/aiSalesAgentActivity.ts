@@ -112,6 +112,7 @@ export const dynamicRevenuePerInteractionTimeseries = aiSalesAgentActivityScope
             },
         ],
         dimensions: ctx.dimensions,
+        limit: 10000,
     }))
 
 export const dynamicRevenuePerInteractionTimeseriesQueryFactoryV2 = (

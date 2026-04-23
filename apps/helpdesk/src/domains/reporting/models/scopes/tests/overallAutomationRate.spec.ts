@@ -281,6 +281,7 @@ describe('overallAutomationRateScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)
@@ -317,6 +318,7 @@ describe('overallAutomationRateScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)
@@ -593,6 +595,7 @@ describe('overallAutomationRateScope', () => {
                 dimensions: [],
                 timezone: 'utc',
                 filters: [...periodFilters, aiAgentFilter],
+                limit: 10000,
             })
         })
 
@@ -614,6 +617,7 @@ describe('overallAutomationRateScope', () => {
                 dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [...periodFilters, aiAgentFilter],
+                limit: 10000,
             })
         })
 

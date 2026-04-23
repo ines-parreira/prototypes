@@ -925,6 +925,7 @@ describe('dynamicTotalSalesAmountTimeseries', () => {
             dimensions: [],
             timezone: 'utc',
             filters: periodFilters,
+            limit: 10000,
         })
     })
 
@@ -946,6 +947,7 @@ describe('dynamicTotalSalesAmountTimeseries', () => {
             dimensions: ['channel'],
             timezone: 'utc',
             filters: periodFilters,
+            limit: 10000,
         })
     })
 })

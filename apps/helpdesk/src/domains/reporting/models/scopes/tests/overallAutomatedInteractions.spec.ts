@@ -234,6 +234,7 @@ describe('overallAutomatedInteractionsScope', () => {
                 dimensions: [],
                 timezone: 'utc',
                 filters: periodFilters,
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)
@@ -260,6 +261,7 @@ describe('overallAutomatedInteractionsScope', () => {
                 dimensions: ['automationFeatureType'],
                 timezone: 'utc',
                 filters: periodFilters,
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)

@@ -145,6 +145,7 @@ export const dynamic<MetricName>Timeseries = <scope>
             },
         ],
         dimensions: ctx.dimensions,
+        limit: 10000,
     }))
 
 export const dynamic<MetricName>TimeseriesQueryFactoryV2 = (ctx: Context) =>
@@ -795,6 +796,7 @@ describe('dynamic<MetricName>Timeseries', () => {
             dimensions: [],
             timezone: 'utc',
             filters: periodFilters,
+            limit: 10000,
         })
     })
     it('creates query with the provided dimensions', () => { ... })

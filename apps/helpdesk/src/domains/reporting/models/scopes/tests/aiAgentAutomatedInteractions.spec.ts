@@ -313,6 +313,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
                 dimensions: [],
                 timezone: 'utc',
                 filters: [...periodFilters, salesSkillFilter],
+                limit: 10000,
             })
         })
 
@@ -334,6 +335,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
                 dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [...periodFilters, salesSkillFilter],
+                limit: 10000,
             })
         })
     })
@@ -781,6 +783,7 @@ describe('aiSupportAgentAutomatedInteractionsPerChannel', () => {
                 dimensions: [],
                 timezone: 'utc',
                 filters: periodFilters,
+                limit: 10000,
             })
         })
 
@@ -802,6 +805,7 @@ describe('aiSupportAgentAutomatedInteractionsPerChannel', () => {
                 dimensions: ['channel'],
                 timezone: 'utc',
                 filters: periodFilters,
+                limit: 10000,
             })
         })
 
@@ -957,6 +961,7 @@ describe('dynamicSupportAgentAutomatedInteractions', () => {
                 dimensions: [],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
+                limit: 10000,
             })
         })
 
@@ -974,6 +979,7 @@ describe('dynamicSupportAgentAutomatedInteractions', () => {
                 dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
+                limit: 10000,
             })
         })
     })
@@ -994,6 +1000,7 @@ describe('dynamicSupportAgentAutomatedInteractions', () => {
                 dimensions: [],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
+                limit: 10000,
             })
         })
 
@@ -1012,6 +1019,7 @@ describe('dynamicSupportAgentAutomatedInteractions', () => {
                 dimensions: ['storeIntegrationId'],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
+                limit: 10000,
             })
         })
 
@@ -1043,6 +1051,7 @@ describe('dynamicSupportAgentAutomatedInteractions', () => {
                 time_dimensions: [
                     { dimension: 'eventDatetime', granularity: 'day' },
                 ],
+                limit: 10000,
             })
         })
 
@@ -1064,6 +1073,7 @@ describe('dynamicSupportAgentAutomatedInteractions', () => {
                 time_dimensions: [
                     { dimension: 'eventDatetime', granularity: 'day' },
                 ],
+                limit: 10000,
             })
         })
     })

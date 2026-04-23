@@ -130,6 +130,7 @@ export const dynamicOverallAutomationRateTimeseries = overallAutomationRateScope
             },
         ],
         dimensions: ctx.dimensions,
+        limit: 10000,
     }))
 
 export const dynamicOverallAutomationRateTimeseriesQueryFactoryV2 = (
@@ -177,6 +178,7 @@ export const dynamicAllAgentsAutomationRateTimeseries =
                 },
             ],
             dimensions: ctx.dimensions,
+            limit: 10000,
         }))
 
 export const dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2 = (

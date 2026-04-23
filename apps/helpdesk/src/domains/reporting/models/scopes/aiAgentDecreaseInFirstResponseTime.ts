@@ -154,6 +154,7 @@ export const dynamicSupportAgentDecreaseInFRTTimeseries =
                 },
             ],
             dimensions: ctx.dimensions,
+            limit: 10000,
         }))
 
 export const dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2 = (

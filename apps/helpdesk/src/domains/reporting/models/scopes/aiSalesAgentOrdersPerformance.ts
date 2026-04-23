@@ -200,6 +200,7 @@ export const dynamicTotalSalesAmountTimeseries =
                 },
             ],
             dimensions: ctx.dimensions,
+            limit: 10000,
         }))
 
 export const dynamicTotalSalesAmountTimeseriesQueryFactoryV2 = (ctx: Context) =>

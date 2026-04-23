@@ -491,6 +491,7 @@ describe('dynamicRevenuePerInteractionTimeseries', () => {
             dimensions: [],
             timezone: 'utc',
             filters: periodFilters,
+            limit: 10000,
         })
     })
 
@@ -512,6 +513,7 @@ describe('dynamicRevenuePerInteractionTimeseries', () => {
             dimensions: ['channel'],
             timezone: 'utc',
             filters: periodFilters,
+            limit: 10000,
         })
     })
 })

@@ -491,6 +491,7 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
                 time_dimensions: [
                     { dimension: 'eventDatetime', granularity: 'day' },
                 ],
+                limit: 10000,
             })
         })
 
@@ -512,6 +513,7 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
                 time_dimensions: [
                     { dimension: 'eventDatetime', granularity: 'day' },
                 ],
+                limit: 10000,
             })
         })
     })

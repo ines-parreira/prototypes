@@ -198,6 +198,7 @@ export const dynamicAiShoppingAgentAutomatedInteractionsTimeseries =
                 },
             ],
             dimensions: ctx.dimensions,
+            limit: 10000,
         }))
 
 export const dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2 =
@@ -232,6 +233,7 @@ export const dynamicAllAgentsAutomatedInteractionsTimeseries =
                 },
             ],
             dimensions: ctx.dimensions,
+            limit: 10000,
         }))
 
 export const dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2 = (
@@ -255,6 +257,7 @@ export const dynamicSupportAgentAutomatedInteractions =
                 config,
             ),
             dimensions: ctx.dimensions,
+            limit: 10000,
         }))
 
 export const dynamicSupportAgentAutomatedInteractionsQueryFactoryV2 = (
@@ -284,6 +287,7 @@ export const dynamicSupportAgentAutomatedInteractionsTimeseries =
                 },
             ],
             dimensions: ctx.dimensions,
+            limit: 10000,
         }))
 
 export const dynamicSupportAgentAutomatedInteractionsTimeseriesQueryFactoryV2 =
