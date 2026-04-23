@@ -152,7 +152,7 @@ export function defaultValueForType(type: FieldType): string | number | null {
 }
 
 const FIELD_DEFAULT_VALUES: Partial<Record<string, string | number>> = {
-    sms_state: 'subscribed',
+    sms_consent_status: 'subscribed',
 }
 
 export function defaultValueForField(

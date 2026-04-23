@@ -247,8 +247,10 @@ describe('defaultValueForType', () => {
 })
 
 describe('defaultValueForField', () => {
-    it('should return "subscribed" for sms_state regardless of type', () => {
-        expect(defaultValueForField('sms_state', 'string')).toBe('subscribed')
+    it('should return "subscribed" for sms_consent_status regardless of type', () => {
+        expect(defaultValueForField('sms_consent_status', 'string')).toBe(
+            'subscribed',
+        )
     })
 
     it('should fall back to "30d" for unknown datetime fields', () => {
