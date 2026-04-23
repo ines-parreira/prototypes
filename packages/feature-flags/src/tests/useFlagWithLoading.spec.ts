@@ -91,4 +91,46 @@ describe('useFlagWithLoading', () => {
 
         expect(result.current.value).toBe(true)
     })
+
+    it('returns a referentially stable JSON value across re-renders when the upstream config is unchanged', () => {
+        mockHook({
+            treatment: 'on',
+            config: '{"foo":"bar"}',
+            isReady: true,
+        })
+
+        const { result, rerender } = renderHook(() =>
+            useFlagWithLoading<{ foo: string }>(testFlag, { foo: 'default' }),
+        )
+
+        const first = result.current.value
+        rerender()
+        const second = result.current.value
+
+        expect(second).toBe(first)
+    })
+
+    it('returns a new reference when the upstream config changes', () => {
+        mockHook({
+            treatment: 'on',
+            config: '{"foo":"bar"}',
+            isReady: true,
+        })
+
+        const { result, rerender } = renderHook(() =>
+            useFlagWithLoading<{ foo: string }>(testFlag, { foo: 'default' }),
+        )
+
+        const first = result.current.value
+
+        mockHook({
+            treatment: 'on',
+            config: '{"foo":"baz"}',
+            isReady: true,
+        })
+        rerender()
+
+        expect(result.current.value).not.toBe(first)
+        expect(result.current.value).toEqual({ foo: 'baz' })
+    })
 })

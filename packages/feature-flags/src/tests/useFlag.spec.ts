@@ -77,4 +77,48 @@ describe('useFlag', () => {
             name: 'linear-project-feature',
         })
     })
+
+    it('returns a referentially stable JSON value across re-renders when the upstream config is unchanged', () => {
+        mockTreatment('on', '{"foo":"bar"}')
+
+        const { result, rerender } = renderHook(() =>
+            useFlag<{ foo: string }>(testFlag, { foo: 'default' }),
+        )
+
+        const first = result.current
+        rerender()
+        const second = result.current
+
+        expect(second).toBe(first)
+    })
+
+    it('returns a new reference when the upstream config changes', () => {
+        mockTreatment('on', '{"foo":"bar"}')
+
+        const { result, rerender } = renderHook(() =>
+            useFlag<{ foo: string }>(testFlag, { foo: 'default' }),
+        )
+
+        const first = result.current
+
+        mockTreatment('on', '{"foo":"baz"}')
+        rerender()
+
+        expect(result.current).not.toBe(first)
+        expect(result.current).toEqual({ foo: 'baz' })
+    })
+
+    it('returns a stable defaultValue reference across re-renders while on control', () => {
+        mockTreatment('control')
+
+        const { result, rerender } = renderHook(() =>
+            useFlag<{ foo: string }>(testFlag, { foo: 'default' }),
+        )
+
+        const first = result.current
+        rerender()
+
+        expect(result.current).toBe(first)
+        expect(result.current).toEqual({ foo: 'default' })
+    })
 })
