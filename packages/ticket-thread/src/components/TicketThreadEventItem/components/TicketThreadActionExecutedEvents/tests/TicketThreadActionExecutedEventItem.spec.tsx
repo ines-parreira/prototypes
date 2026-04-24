@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 
 import {
@@ -37,6 +38,17 @@ vi.mock('@gorgias/axiom', async (importOriginal) => {
             </>
         ),
         TooltipContent: ({ children }: { children: ReactNode }) => (
+            <>{children}</>
+        ),
+        Modal: ({
+            isOpen,
+            children,
+        }: {
+            isOpen: boolean
+            children: ReactNode
+        }) => (isOpen ? <>{children}</> : null),
+        OverlayHeader: ({ title }: { title: string }) => <div>{title}</div>,
+        OverlayContent: ({ children }: { children: ReactNode }) => (
             <>{children}</>
         ),
     }
@@ -180,6 +192,8 @@ describe('TicketThreadActionExecutedEventItem', () => {
             ]).handler,
         )
 
+        const user = userEvent.setup()
+
         const { container } = render(
             <TicketThreadActionExecutedEventItemComponent
                 item={buildItem({
@@ -198,6 +212,10 @@ describe('TicketThreadActionExecutedEventItem', () => {
             />,
         )
 
+        await user.click(
+            screen.getByRole('button', { name: 'Show action details' }),
+        )
+
         expect(screen.getByText('Action request failed')).toBeInTheDocument()
         expect(screen.getByText('Order Id:')).toBeInTheDocument()
         expect(screen.getByText('360037000')).toBeInTheDocument()
@@ -206,6 +224,59 @@ describe('TicketThreadActionExecutedEventItem', () => {
         expect(screen.getByText('Metadata:')).toBeInTheDocument()
         expect(screen.getByText('{"channel":"api"}')).toBeInTheDocument()
         expect(getIconUseElement(container, 'info')).toBeTruthy()
+    })
+
+    it('renders custom HTTP action modal with structured request sections', async () => {
+        server.use(
+            getIntegrationsHandler([]).handler,
+            getUsersHandler([mockUser({ id: 42, name: 'Alex Agent' })]).handler,
+        )
+
+        const user = userEvent.setup()
+
+        render(
+            <TicketThreadActionExecutedEventItemComponent
+                item={buildItem({
+                    dataOverrides: {
+                        action_name: 'customHttpAction',
+                        status: 'success',
+                        payload: {
+                            url: 'https://api.example.com/orders',
+                            headers: { Authorization: 'Bearer token123' },
+                            params: { limit: '10' },
+                            json: { order_id: 42 },
+                            content_type: 'application/json',
+                            response: {
+                                status_code: 200,
+                                body: '{"status":"ok"}',
+                            },
+                        },
+                    },
+                })}
+            />,
+        )
+
+        await user.click(
+            screen.getByRole('button', { name: 'Show action details' }),
+        )
+
+        expect(screen.getByText('Request')).toBeInTheDocument()
+        expect(screen.getByText('Url:')).toBeInTheDocument()
+        expect(
+            screen.getByText('https://api.example.com/orders'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Headers')).toBeInTheDocument()
+        expect(screen.getByText('Authorization:')).toBeInTheDocument()
+        expect(screen.getByText('Bearer token123')).toBeInTheDocument()
+        expect(screen.getByText('URL Parameters')).toBeInTheDocument()
+        expect(screen.getByText('limit:')).toBeInTheDocument()
+        expect(screen.getByText('10')).toBeInTheDocument()
+        expect(screen.getByText('JSON Data')).toBeInTheDocument()
+        expect(screen.getByText('Response')).toBeInTheDocument()
+        expect(screen.getByText('Status code:')).toBeInTheDocument()
+        expect(screen.getByText('200')).toBeInTheDocument()
+        expect(screen.getByText('Body:')).toBeInTheDocument()
+        expect(screen.getByText('{"status":"ok"}')).toBeInTheDocument()
     })
 
     it('falls back when integration cannot be resolved', async () => {

@@ -338,7 +338,20 @@ const bigCommerceActionExecutedPayloadSchema = z
     })
     .passthrough()
 
-const customHttpActionExecutedPayloadSchema = z.object({}).passthrough()
+const customHttpActionExecutedPayloadSchema = z.object({
+    url: z.string().optional(),
+    headers: z.record(z.unknown()).optional(),
+    params: z.record(z.unknown()).optional(),
+    form: z.record(z.unknown()).optional(),
+    json: z.record(z.unknown()).optional(),
+    content_type: z.string().optional(),
+    response: z
+        .object({
+            status_code: z.number().optional(),
+            body: z.string().optional(),
+        })
+        .optional(),
+})
 
 const actionExecutedEventDataBaseSchema = z
     .object({

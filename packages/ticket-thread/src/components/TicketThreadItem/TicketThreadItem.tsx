@@ -47,10 +47,11 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage:
         case TicketThreadItemTag.Messages.GroupedMessages:
             return <TicketThreadMessageItem item={item} />
+        case TicketThreadItemTag.Events.ActionExecutedEvent:
+            return <TicketThreadSingleEventItem item={item} />
         case TicketThreadItemTag.Events.TicketEvent:
         case TicketThreadItemTag.Events.PhoneEvent:
         case TicketThreadItemTag.Events.AuditLogEvent:
-        case TicketThreadItemTag.Events.ActionExecutedEvent:
         case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:
         case TicketThreadItemTag.Events.PrivateReplyEvent: {
             if (showTicketEvents) {
@@ -62,7 +63,18 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
             if (showTicketEvents) {
                 return <TicketThreadGroupedEventsItem item={item} />
             }
-            return <div />
+            const actionExecutedItems = item.data.filter(
+                (e) =>
+                    e._tag === TicketThreadItemTag.Events.ActionExecutedEvent,
+            )
+            if (actionExecutedItems.length === 0) {
+                return <div />
+            }
+            return (
+                <TicketThreadGroupedEventsItem
+                    item={{ ...item, data: actionExecutedItems }}
+                />
+            )
         }
         case TicketThreadItemTag.VoiceCalls.VoiceCall:
         case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:

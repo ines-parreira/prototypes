@@ -88,12 +88,12 @@ export function groupConsecutiveEvents(
 ): TicketThreadItem[] {
     const groupedItems: TicketThreadItem[] = []
 
+    const isGroupable = (i: TicketThreadItem) =>
+        isSingleEventItem(i) &&
+        i._tag !== TicketThreadItemTag.Events.ActionExecutedEvent
+
     for (const [item, previousItem] of slidingWindow(items)) {
-        if (
-            previousItem &&
-            isSingleEventItem(previousItem) &&
-            isSingleEventItem(item)
-        ) {
+        if (previousItem && isGroupable(previousItem) && isGroupable(item)) {
             const previousGroupedItem = groupedItems[groupedItems.length - 1]
 
             if (

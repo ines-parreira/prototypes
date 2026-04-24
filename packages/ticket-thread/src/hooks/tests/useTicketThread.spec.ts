@@ -7,6 +7,7 @@ import {
     mockListTicketTagsResponse,
     mockTicket,
     mockTicketMessage,
+    mockTicketMessageUserOrCustomer,
 } from '@gorgias/helpdesk-mocks'
 import { TicketStatus } from '@gorgias/helpdesk-queries'
 
@@ -14,8 +15,13 @@ import { renderHook } from '../../tests/render.utils'
 import { server } from '../../tests/server'
 import { TicketThreadAiAgentPseudoEventAction } from '../ai-agent-pseudo-events/types'
 import { useContactReasonPrediction } from '../contact-reason-prediction/useContactReasonPrediction'
+import type { TicketThreadActionExecutedEventItem } from '../events/types'
 import { useTicketThreadEvents } from '../events/useTicketThreadEvents'
 import { AI_AGENT_BOT_EMAILS } from '../messages/constants'
+import type {
+    TicketThreadMessageData,
+    TicketThreadRegularMessageItem,
+} from '../messages/types'
 import { useTicketThreadMessages } from '../messages/useTicketThreadMessages'
 import { useRuleSuggestion } from '../rules-suggestions/useRuleSuggestion'
 import { useTicketThreadSatisfactionSurveys } from '../satisfaction-survey/useTicketThreadSatisfactionSurveys'
@@ -63,6 +69,28 @@ const mockUseContactReasonPrediction = vi.mocked(useContactReasonPrediction)
 
 function getTicketIdFromRequest(request: Request): number {
     return Number(new URL(request.url).pathname.split('/').at(-2))
+}
+
+function createMessageWithHttpAction(
+    datetime: string,
+    httpAction: Record<string, unknown> = {},
+): TicketThreadRegularMessageItem {
+    const base = mockTicketMessage({
+        id: 1,
+        created_datetime: datetime,
+        integration_id: null,
+    })
+    const data: TicketThreadMessageData = {
+        ...base,
+        channel: 'email' as const,
+        sender: mockTicketMessageUserOrCustomer({ ...base.sender, id: 42 }),
+        actions: [{ name: 'http', ...httpAction }],
+    }
+    return {
+        _tag: TicketThreadItemTag.Messages.Message,
+        datetime,
+        data,
+    }
 }
 
 function createAiAgentMessageItem(
@@ -366,6 +394,135 @@ describe('useTicketThread', () => {
                 datetime: firstEvent.datetime,
             },
         ])
+    })
+
+    it('deduplicates customHttpAction events against message-extracted HTTP actions', () => {
+        const datetime = '2024-03-21T11:00:00Z'
+
+        mockUseTicketThreadMessages.mockReturnValue({
+            messages: [
+                createMessageWithHttpAction(datetime, {
+                    title: 'From Message',
+                    status: 'success',
+                    arguments: { url: 'https://example.com' },
+                }),
+            ],
+            activePendingMessages: [],
+        })
+
+        const matchingApiEvent: TicketThreadActionExecutedEventItem = {
+            _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
+            datetime,
+            data: {
+                object_type: 'Ticket',
+                type: 'action-executed' as const,
+                created_datetime: datetime,
+                user_id: 42,
+                data: { action_name: 'customHttpAction' as const, payload: {} },
+            },
+        }
+
+        mockUseTicketThreadEvents.mockReturnValue({
+            events: [matchingApiEvent],
+            hasSatisfactionSurveyRespondedEvent: false,
+        })
+
+        const { result } = renderHook(() =>
+            useTicketThread({ ticketId: 7, showTicketEvents: true }),
+        )
+
+        const actionItems = result.current.ticketThreadItems.filter(
+            (item): item is TicketThreadActionExecutedEventItem =>
+                item._tag === TicketThreadItemTag.Events.ActionExecutedEvent,
+        )
+        expect(actionItems).toHaveLength(1)
+        expect(actionItems[0].data.data.action_label).toBe('From Message')
+    })
+
+    it('preserves customHttpAction events with no matching message-extracted item', () => {
+        const datetime = '2024-03-21T11:00:00Z'
+        const automationDatetime = '2024-03-21T11:05:00Z'
+
+        mockUseTicketThreadMessages.mockReturnValue({
+            messages: [createMessageWithHttpAction(datetime)],
+            activePendingMessages: [],
+        })
+
+        const automationEvent: TicketThreadActionExecutedEventItem = {
+            _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
+            datetime: automationDatetime,
+            data: {
+                object_type: 'Ticket',
+                type: 'action-executed' as const,
+                created_datetime: automationDatetime,
+                user_id: 42,
+                data: { action_name: 'customHttpAction' as const, payload: {} },
+            },
+        }
+
+        mockUseTicketThreadEvents.mockReturnValue({
+            events: [automationEvent],
+            hasSatisfactionSurveyRespondedEvent: false,
+        })
+
+        const { result } = renderHook(() =>
+            useTicketThread({ ticketId: 7, showTicketEvents: true }),
+        )
+
+        const actionItems = result.current.ticketThreadItems.filter(
+            (item): item is TicketThreadActionExecutedEventItem =>
+                item._tag === TicketThreadItemTag.Events.ActionExecutedEvent,
+        )
+        expect(actionItems).toHaveLength(2)
+    })
+
+    it('preserves non-customHttpAction ActionExecutedEvents regardless of matching key', () => {
+        const datetime = '2024-03-21T11:00:00Z'
+
+        mockUseTicketThreadMessages.mockReturnValue({
+            messages: [createMessageWithHttpAction(datetime)],
+            activePendingMessages: [],
+        })
+
+        const shopifyEvent: TicketThreadActionExecutedEventItem = {
+            _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
+            datetime,
+            data: {
+                object_type: 'Ticket',
+                type: 'action-executed' as const,
+                created_datetime: datetime,
+                user_id: 42,
+                data: {
+                    action_name: 'shopifyRefundOrder' as const,
+                    payload: {},
+                },
+            },
+        }
+
+        mockUseTicketThreadEvents.mockReturnValue({
+            events: [shopifyEvent],
+            hasSatisfactionSurveyRespondedEvent: false,
+        })
+
+        const { result } = renderHook(() =>
+            useTicketThread({ ticketId: 7, showTicketEvents: true }),
+        )
+
+        const actionItems = result.current.ticketThreadItems.filter(
+            (item): item is TicketThreadActionExecutedEventItem =>
+                item._tag === TicketThreadItemTag.Events.ActionExecutedEvent,
+        )
+        expect(actionItems).toHaveLength(2)
+        expect(
+            actionItems.some(
+                (item) => item.data.data.action_name === 'shopifyRefundOrder',
+            ),
+        ).toBe(true)
+        expect(
+            actionItems.some(
+                (item) => item.data.data.action_name === 'customHttpAction',
+            ),
+        ).toBe(true)
     })
 
     it('does not merge events separated by insertion items', () => {

@@ -3,6 +3,7 @@ import type { BaseIntegration } from '@gorgias/helpdesk-types'
 import {
     getActionExecutedErrorMessage,
     getActionExecutedPayloadEntries,
+    getHttpActionModalSections,
 } from '../transforms/details'
 import { resolveActionExecutedIntegration } from '../transforms/integration'
 import { getActionExecutedLabel } from '../transforms/labels'
@@ -502,5 +503,145 @@ describe('getActionExecutedOrderToken', () => {
                 integration: null,
             }),
         ).toBeNull()
+    })
+})
+
+describe('getHttpActionModalSections', () => {
+    it('returns empty array for empty payload', () => {
+        expect(getHttpActionModalSections({})).toEqual([])
+    })
+
+    it('includes URL section when url is present', () => {
+        expect(
+            getHttpActionModalSections({ url: 'https://example.com' }),
+        ).toEqual([
+            {
+                title: '',
+                entries: [{ key: 'Url', value: 'https://example.com' }],
+            },
+        ])
+    })
+
+    it('omits Headers section when empty object is provided', () => {
+        expect(getHttpActionModalSections({ headers: {} })).toEqual([])
+    })
+
+    it('omits URL Parameters section when empty object is provided', () => {
+        expect(getHttpActionModalSections({ params: {} })).toEqual([])
+    })
+
+    it('includes Headers and URL Parameters when non-empty', () => {
+        expect(
+            getHttpActionModalSections({
+                headers: { Authorization: 'Bearer token' },
+                params: { limit: '10' },
+            }),
+        ).toEqual([
+            {
+                title: 'Headers',
+                entries: [{ key: 'Authorization', value: 'Bearer token' }],
+            },
+            {
+                title: 'URL Parameters',
+                entries: [{ key: 'limit', value: '10' }],
+            },
+        ])
+    })
+
+    it('includes Form Data section when content_type is not json and form is non-empty', () => {
+        expect(
+            getHttpActionModalSections({
+                form: { field: 'value' },
+                content_type: 'application/x-www-form-urlencoded',
+            }),
+        ).toEqual([
+            {
+                title: 'Form Data',
+                entries: [{ key: 'field', value: 'value' }],
+            },
+        ])
+    })
+
+    it('omits Form Data section when form is empty', () => {
+        expect(
+            getHttpActionModalSections({
+                form: {},
+                content_type: 'application/x-www-form-urlencoded',
+            }),
+        ).toEqual([])
+    })
+
+    it('includes JSON Data section when content_type includes json', () => {
+        expect(
+            getHttpActionModalSections({
+                json: { key: 'value' },
+                content_type: 'application/json',
+            }),
+        ).toEqual([
+            {
+                title: 'JSON Data',
+                entries: [{ key: '', value: '{\n  "key": "value"\n}' }],
+            },
+        ])
+    })
+
+    it('infers JSON Data when json is present and form is absent, even without content_type', () => {
+        expect(getHttpActionModalSections({ json: { key: 'value' } })).toEqual([
+            {
+                title: 'JSON Data',
+                entries: [{ key: '', value: '{\n  "key": "value"\n}' }],
+            },
+        ])
+    })
+
+    it('omits JSON Data section when json object is empty', () => {
+        expect(
+            getHttpActionModalSections({
+                json: {},
+                content_type: 'application/json',
+            }),
+        ).toEqual([])
+    })
+
+    it('includes Response section with both status_code and body', () => {
+        expect(
+            getHttpActionModalSections({
+                response: { status_code: 200, body: '{"ok":true}' },
+            }),
+        ).toEqual([
+            {
+                title: 'Response',
+                entries: [
+                    { key: 'Status code', value: '200' },
+                    { key: 'Body', value: '{"ok":true}' },
+                ],
+            },
+        ])
+    })
+
+    it('includes Response section with only status_code', () => {
+        expect(
+            getHttpActionModalSections({ response: { status_code: 404 } }),
+        ).toEqual([
+            {
+                title: 'Response',
+                entries: [{ key: 'Status code', value: '404' }],
+            },
+        ])
+    })
+
+    it('includes Response section with only body', () => {
+        expect(
+            getHttpActionModalSections({ response: { body: 'Not found' } }),
+        ).toEqual([
+            {
+                title: 'Response',
+                entries: [{ key: 'Body', value: 'Not found' }],
+            },
+        ])
+    })
+
+    it('omits Response section when both status_code and body are absent', () => {
+        expect(getHttpActionModalSections({ response: {} })).toEqual([])
     })
 })
