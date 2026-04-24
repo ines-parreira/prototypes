@@ -72,6 +72,7 @@ export const ToneOfVoicePreviewSection = ({
                 <ChatPreviewPanel
                     withHeader={false}
                     supportDefaultChatPreview
+                    forceChatRedesign
                     ref={panelRef}
                     appId={appId ?? null}
                     onPreviewLoaded={runSimulation}

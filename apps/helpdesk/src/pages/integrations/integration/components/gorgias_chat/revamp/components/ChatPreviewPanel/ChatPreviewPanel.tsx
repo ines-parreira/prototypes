@@ -87,6 +87,7 @@ type Props = {
     onPreviewLoaded?: () => void
     withHeader?: boolean
     supportDefaultChatPreview?: boolean
+    forceChatRedesign?: boolean
 }
 
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
@@ -98,6 +99,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             onPreviewLoaded,
             withHeader = true,
             supportDefaultChatPreview = false,
+            forceChatRedesign = false,
         }: Props,
         ref,
     ) => {
@@ -260,6 +262,18 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
 
         const onLoaded = useCallback(
             (gorgiasChat: NonNullable<Window['GorgiasChat']>) => {
+                if (forceChatRedesign) {
+                    const iframeWindow =
+                        chatPreviewRef.current?.iframeRef.current?.contentWindow
+                    if (iframeWindow?.gorgiasChatConfiguration) {
+                        iframeWindow.gorgiasChatConfiguration.featureFlags = {
+                            ...iframeWindow.gorgiasChatConfiguration
+                                .featureFlags,
+                            'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent': true,
+                        }
+                    }
+                }
+
                 const sspTexts =
                     GORGIAS_CHAT_SSP_TEXTS[
                         locale ?? GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
@@ -273,7 +287,13 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 gorgiasChat.setPage(selectedPage)
                 onPreviewLoaded?.()
             },
-            [selectedPage, onPreviewLoaded, locale, createIframeObject],
+            [
+                selectedPage,
+                onPreviewLoaded,
+                locale,
+                createIframeObject,
+                forceChatRedesign,
+            ],
         )
 
         const renderPreviewContent = () => {

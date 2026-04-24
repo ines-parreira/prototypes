@@ -52,6 +52,9 @@ declare global {
         noticeableWidgetId: string
         PHRASE_PREDICTION_URL: string
         PHRASE_FEEDBACK_URL: string
+        gorgiasChatConfiguration?: {
+            featureFlags?: Record<string, unknown>
+        }
         GorgiasChat?: {
             open: () => void
             close: () => void

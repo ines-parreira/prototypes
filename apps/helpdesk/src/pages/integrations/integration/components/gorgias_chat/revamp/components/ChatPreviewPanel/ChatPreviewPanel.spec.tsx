@@ -57,6 +57,10 @@ jest.mock(
             simulateConversation: jest.fn(),
         }
 
+        const mockGorgiasChatConfiguration = {
+            featureFlags: {} as Record<string, unknown>,
+        }
+
         let capturedOnLoaded:
             | ((gorgiasChat: NonNullable<Window['GorgiasChat']>) => void)
             | undefined
@@ -83,10 +87,12 @@ jest.mock(
                             ? {
                                   contentWindow: {
                                       GorgiasChat: mockGorgiasChat,
+                                      gorgiasChatConfiguration:
+                                          mockGorgiasChatConfiguration,
                                       Object,
                                   },
                               }
-                            : { contentWindow: {} },
+                            : { contentWindow: null },
                     },
                     isLoaded: mockIsLoaded,
                     hasError: mockHasError,
@@ -102,7 +108,12 @@ jest.mock(
                 >,
             )
 
-        return { ChatPreview, mockGorgiasChat, triggerOnLoaded }
+        return {
+            ChatPreview,
+            mockGorgiasChat,
+            mockGorgiasChatConfiguration,
+            triggerOnLoaded,
+        }
     },
 )
 
@@ -133,9 +144,10 @@ jest.mock(
     },
 )
 
-const { mockGorgiasChat, triggerOnLoaded } = jest.requireMock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreview',
-)
+const { mockGorgiasChat, mockGorgiasChatConfiguration, triggerOnLoaded } =
+    jest.requireMock(
+        'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreview',
+    )
 
 describe('ChatPreviewPanel', () => {
     beforeEach(() => {
@@ -144,6 +156,7 @@ describe('ChatPreviewPanel', () => {
         mockHasError = false
         mockHasGorgiasChat = true
         mockMountCount = 0
+        mockGorgiasChatConfiguration.featureFlags = {}
     })
 
     const renderComponent = (
@@ -587,6 +600,74 @@ describe('ChatPreviewPanel', () => {
             )
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('homepage')
             expect(onPreviewLoaded).toHaveBeenCalled()
+        })
+
+        it('sets chat redesign feature flag when forceChatRedesign is true', () => {
+            renderComponent('test-app-id', { forceChatRedesign: true })
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(
+                mockGorgiasChatConfiguration.featureFlags[
+                    'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent'
+                ],
+            ).toBe(true)
+        })
+
+        it('does not set chat redesign feature flag when forceChatRedesign is false', () => {
+            renderComponent('test-app-id', { forceChatRedesign: false })
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(
+                mockGorgiasChatConfiguration.featureFlags[
+                    'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent'
+                ],
+            ).toBeUndefined()
+        })
+
+        it('does not set chat redesign feature flag by default', () => {
+            renderComponent('test-app-id')
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(
+                mockGorgiasChatConfiguration.featureFlags[
+                    'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent'
+                ],
+            ).toBeUndefined()
+        })
+
+        it('skips feature flag when iframeWindow is unavailable', () => {
+            mockHasGorgiasChat = false
+            renderComponent('test-app-id', { forceChatRedesign: true })
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(
+                mockGorgiasChatConfiguration.featureFlags[
+                    'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent'
+                ],
+            ).toBeUndefined()
+        })
+
+        it('skips updateSSPTexts when iframe window is unavailable', () => {
+            mockHasGorgiasChat = false
+            renderComponent('test-app-id')
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(mockGorgiasChat.updateSSPTexts).not.toHaveBeenCalled()
         })
     })
 })
