@@ -17,6 +17,15 @@ let mockOnConnectionStateChange:
       }) => void)
     | undefined
 
+const mockHookOnRealtimeConnectionStateChange = jest.fn()
+
+jest.mock('../hooks/useRealtimeConnectionStateChanges', () => ({
+    useRealtimeConnectionStateChanges: () => ({
+        onRealtimeConnectionStateChange:
+            mockHookOnRealtimeConnectionStateChange,
+    }),
+}))
+
 jest.mock('@gorgias/realtime', () => ({
     RealtimeProvider: ({
         children,
@@ -67,6 +76,7 @@ describe('AblyRealtimeProviders', () => {
         mockUseFlag.mockReturnValue(false)
         mockLogHandler = undefined
         mockOnConnectionStateChange = undefined
+        mockHookOnRealtimeConnectionStateChange.mockClear()
         mockReportError.mockClear()
     })
 
@@ -78,6 +88,7 @@ describe('AblyRealtimeProviders', () => {
         const { getByTestId, getByText } = render(
             <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
         )
+
         expect(getByTestId('realtime-provider')).toBeInTheDocument()
         expect(getByTestId('agent-activity-provider')).toBeInTheDocument()
         expect(getByTestId('agent-online-status-provider')).toBeInTheDocument()
@@ -88,9 +99,11 @@ describe('AblyRealtimeProviders', () => {
         mockUseFlag.mockImplementation((flag) => {
             return flag === FeatureFlagKey.AblyRealtimeLogging
         })
+
         const { getByTestId } = render(
             <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
         )
+
         expect(getByTestId('enable-logging')).toBeInTheDocument()
     })
 
@@ -115,8 +128,6 @@ describe('AblyRealtimeProviders', () => {
         })
 
         it('should not call reportError when error reporting is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
             render(<AblyRealtimeProviders>foo</AblyRealtimeProviders>)
 
             mockLogHandler?.('Test error message')
@@ -126,6 +137,22 @@ describe('AblyRealtimeProviders', () => {
     })
 
     describe('onConnectionStateChange', () => {
+        it('should delegate state changes to the realtime connection hook', () => {
+            render(<AblyRealtimeProviders>foo</AblyRealtimeProviders>)
+
+            mockOnConnectionStateChange?.({
+                current: 'connected',
+                previous: 'connecting',
+            })
+
+            expect(
+                mockHookOnRealtimeConnectionStateChange,
+            ).toHaveBeenCalledWith({
+                current: 'connected',
+                previous: 'connecting',
+            })
+        })
+
         it('should call reportError when the connection fails and error reporting is enabled', () => {
             mockUseFlag.mockImplementation((flag) => {
                 return flag === FeatureFlagKey.AblyErrorReporting

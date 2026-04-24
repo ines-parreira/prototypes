@@ -11,6 +11,8 @@ import {
 } from '@gorgias/realtime'
 import type { RealtimeConnectionStateChange } from '@gorgias/realtime'
 
+import { useRealtimeConnectionStateChanges } from './hooks/useRealtimeConnectionStateChanges'
+
 type Props = {
     children: ReactNode
 }
@@ -39,8 +41,13 @@ const AblyRealtimeProviders = ({ children }: Props) => {
         }
     }, [])
 
+    const { onRealtimeConnectionStateChange } =
+        useRealtimeConnectionStateChanges()
+
     const onConnectionStateChange = useCallback(
         (stateChange: RealtimeConnectionStateChange) => {
+            onRealtimeConnectionStateChange(stateChange)
+
             if (
                 isErrorReportingEnabled.current &&
                 stateChange.current === 'failed'
@@ -56,7 +63,7 @@ const AblyRealtimeProviders = ({ children }: Props) => {
                 })
             }
         },
-        [],
+        [onRealtimeConnectionStateChange],
     )
 
     return (
