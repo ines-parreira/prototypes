@@ -194,10 +194,12 @@ describe('current account actions', () => {
 
             return store
                 .dispatch(
-                    actions.updateSubscriptionsForPlans(
-                        { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
-                        [],
-                    ),
+                    actions.updateSubscriptionsForPlans({
+                        products: {
+                            helpdesk: basicMonthlyHelpdeskPlan.plan_id,
+                        },
+                        notifications: [],
+                    }),
                 )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
@@ -208,14 +210,12 @@ describe('current account actions', () => {
                 .reply(202, { products: {} })
 
             await store.dispatch(
-                actions.updateSubscriptionsForPlans(
-                    { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
-                    [],
-                    {
-                        subscription_resource_version: 12345,
-                        subscription_renewal_ramp_resource_version: 67890,
-                    },
-                ),
+                actions.updateSubscriptionsForPlans({
+                    products: { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
+                    notifications: [],
+                    subscriptionResourceVersion: 12345,
+                    subscriptionRenewalRampResourceVersion: 67890,
+                }),
             )
 
             expect(mockServer.history.put).toHaveLength(1)
@@ -226,16 +226,16 @@ describe('current account actions', () => {
             })
         })
 
-        it('omits version fields from PUT body when resourceVersions argument is not provided', async () => {
+        it('omits version fields from PUT body when resource versions are not provided', async () => {
             mockServer
                 .onPut('/api/billing/subscription/')
                 .reply(202, { products: {} })
 
             await store.dispatch(
-                actions.updateSubscriptionsForPlans(
-                    { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
-                    [],
-                ),
+                actions.updateSubscriptionsForPlans({
+                    products: { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
+                    notifications: [],
+                }),
             )
 
             expect(mockServer.history.put).toHaveLength(1)

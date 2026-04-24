@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import type { SelectedPlans } from '@repo/billing'
+import type { PlansByProduct, SelectedPlans } from '@repo/billing'
 import {
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_PATH,
     getCorrespondingPlanAtCadence,
     PRICING_DETAILS_URL,
@@ -9,10 +11,13 @@ import {
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
+
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
+import useAppSelector from 'hooks/useAppSelector'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { isOtherCadenceUpgrade } from 'models/billing/utils'
@@ -22,14 +27,22 @@ import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import type { TicketPurpose } from 'state/billing/types'
+import {
+    getShopifyBillingStatus,
+    shouldPayWithShopify as getShouldPayWithShopify,
+} from 'state/currentAccount/selectors'
+import { ShopifyBillingStatus } from 'state/currentAccount/types'
 
 import BackLink from '../../components/BackLink/BackLink'
 import BillingFrequency from '../../components/BillingFrequency/BillingFrequency'
 import Card from '../../components/Card/Card'
+import { ConfirmChangesModal } from '../../components/ConfirmChangesModal'
 import SummaryFooter from '../../components/SummaryFooter/SummaryFooter'
 import { SummaryItem } from '../../components/SummaryItem/SummaryItem'
 import SummaryTotal from '../../components/SummaryTotal/SummaryTotal'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
+import { isPendingInvoiceError } from '../../utils/isPendingInvoiceError'
+import { isVersionConflictError } from '../../utils/isVersionConflictError'
 
 import css from './BillingFrequencyView.less'
 
@@ -66,6 +79,10 @@ const BillingFrequencyView = ({
         )
     })
 
+    const isMidCycleUpgradeEnabled = useFlag(
+        FeatureFlagKey.MidCycleUpgradeBillingLogic,
+    )
+
     const {
         currentHelpdeskPlan,
         currentAutomatePlan,
@@ -85,7 +102,11 @@ const BillingFrequencyView = ({
         updateSubscription,
         isSubscriptionUpdating,
     } = useBillingPlans({
-        dispatchBillingError,
+        // Flag-on: handleSubmit owns error surfacing (banner for typed errors,
+        // dispatchBillingError for the rest). No-op here avoids double-dispatch.
+        dispatchBillingError: isMidCycleUpgradeEnabled
+            ? () => {}
+            : dispatchBillingError,
         subscriptionResourceVersion:
             billingState.data?.subscription.resource_version,
         subscriptionRenewalRampResourceVersion:
@@ -95,6 +116,10 @@ const BillingFrequencyView = ({
 
     const productCancellationsQuery = useProductCancellations()
     const cancellationsByPlanId = productCancellationsQuery.data ?? new Map()
+    // scheduled_changes is the canonical source — scheduled cancellations
+    // also land here. Blocks the frequency view while another change is in flight.
+    const hasScheduledChanges =
+        (billingState.data?.subscription?.scheduled_changes?.length ?? 0) > 0
 
     const {
         currentPlans,
@@ -179,6 +204,63 @@ const BillingFrequencyView = ({
 
     const [showAlert, setShowAlert] = useState(true)
     const [selectedCadence, setSelectedCadence] = useState<Cadence>(cadence)
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
+    const [hasPendingInvoiceError, setHasPendingInvoiceError] = useState(false)
+    const [hasVersionConflictError, setHasVersionConflictError] =
+        useState(false)
+
+    const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
+    const shopifyBillingStatus = useAppSelector(getShopifyBillingStatus)
+
+    const customer = billingState.data?.customer
+    const hasStripePaymentMethod =
+        !!customer?.credit_card ||
+        !!customer?.ach_debit_bank_account ||
+        !!customer?.ach_credit_bank_account
+
+    const isActiveSubscription = !isTrialing && !isCurrentSubscriptionCanceled
+    const isPaymentMethodMissing =
+        isActiveSubscription &&
+        (shouldPayWithShopify
+            ? shopifyBillingStatus !== ShopifyBillingStatus.Active
+            : !hasStripePaymentMethod)
+
+    const plansByProduct = useMemo(
+        (): PlansByProduct => ({
+            [ProductType.Helpdesk]: {
+                current: currentHelpdeskPlan,
+                available: helpdeskAvailablePlans,
+            },
+            [ProductType.Automation]: {
+                current: currentAutomatePlan,
+                available: automateAvailablePlans,
+            },
+            [ProductType.Voice]: {
+                current: currentVoicePlan,
+                available: voiceAvailablePlans,
+            },
+            [ProductType.SMS]: {
+                current: currentSmsPlan,
+                available: smsAvailablePlans,
+            },
+            [ProductType.Convert]: {
+                current: currentConvertPlan,
+                available: convertAvailablePlans,
+            },
+        }),
+        [
+            currentHelpdeskPlan,
+            currentAutomatePlan,
+            currentVoicePlan,
+            currentSmsPlan,
+            currentConvertPlan,
+            helpdeskAvailablePlans,
+            automateAvailablePlans,
+            voiceAvailablePlans,
+            smsAvailablePlans,
+            convertAvailablePlans,
+        ],
+    )
 
     const onFrequencySelect = useCallback(
         (selectedCadence: Cadence) => {
@@ -231,7 +313,9 @@ const BillingFrequencyView = ({
         if (
             !cadenceUpgradeIsPossible ||
             isCurrentSubscriptionCanceled ||
-            cancellationsByPlanId.size > 0 ||
+            (isMidCycleUpgradeEnabled
+                ? hasScheduledChanges
+                : cancellationsByPlanId.size > 0) ||
             isBillingPaused
         ) {
             history.push(BILLING_PAYMENT_PATH)
@@ -241,11 +325,89 @@ const BillingFrequencyView = ({
         canUseQuarterlyBilling,
         isCurrentSubscriptionCanceled,
         cancellationsByPlanId.size,
+        hasScheduledChanges,
         isBillingPaused,
         history,
+        isMidCycleUpgradeEnabled,
+    ])
+
+    function resetModalErrors() {
+        setHasPendingInvoiceError(false)
+        setHasVersionConflictError(false)
+    }
+
+    async function handleSubmit(): Promise<boolean> {
+        logEvent(
+            SegmentEvent.BillingPaymentInformationSubscriptionFrequencyUpdated,
+        )
+        try {
+            resetModalErrors()
+            await updateSubscription()
+            toast.success('Your subscription has successfully been updated.', {
+                duration: 5000,
+            })
+            history.push(
+                isTrialing ? BILLING_PAYMENT_CARD_PATH : BILLING_BASE_PATH,
+            )
+            return true
+        } catch (error) {
+            if (isPendingInvoiceError(error)) {
+                setHasPendingInvoiceError(true)
+            } else if (isVersionConflictError(error)) {
+                setHasVersionConflictError(true)
+            } else {
+                reportError(
+                    error instanceof Error ? error : new Error(String(error)),
+                )
+                dispatchBillingError(error)
+            }
+            return false
+        }
+    }
+
+    async function handleConfirm() {
+        const success = await handleSubmit()
+        if (success) {
+            setIsConfirmModalOpen(false)
+        }
+    }
+
+    function handleCloseConfirmModal() {
+        setIsConfirmModalOpen(false)
+        resetModalErrors()
+    }
+
+    const subscription = billingState.data?.subscription
+
+    // Gated on the mid-cycle flag: pairs with the `!subscription` loader guard
+    // below so a failed billing-state load surfaces the Contact Billing toast
+    // instead of hanging. Flag-off preserves main's silent behavior.
+    // Ref-guard dedupes in case `dispatchBillingError` isn't memoized upstream
+    // or React Query retries produce additional renders with the same error.
+    const dispatchedErrorRef = useRef<unknown>(null)
+    useEffect(() => {
+        if (!isMidCycleUpgradeEnabled) return
+        if (!billingState.isError || !billingState.error) {
+            dispatchedErrorRef.current = null
+            return
+        }
+        if (dispatchedErrorRef.current === billingState.error) return
+        dispatchedErrorRef.current = billingState.error
+        dispatchBillingError(billingState.error)
+    }, [
+        isMidCycleUpgradeEnabled,
+        billingState.isError,
+        billingState.error,
+        dispatchBillingError,
     ])
 
     if (billingState.isLoading) {
+        return <Loader />
+    }
+    // Mid-cycle flow requires resource versions from subscription. If
+    // unavailable (fetch error), keep blocking the submit surface — the
+    // error has already been surfaced via dispatchBillingError.
+    if (isMidCycleUpgradeEnabled && !subscription) {
         return <Loader />
     }
 
@@ -310,16 +472,56 @@ const BillingFrequencyView = ({
                         anyProductChanged={anyProductChanged}
                         anyNewProductSelected={false}
                         anyDowngradedPlanSelected={false}
-                        updateSubscription={() => {
-                            logEvent(
-                                SegmentEvent.BillingPaymentInformationSubscriptionFrequencyUpdated,
-                            )
-                            return updateSubscription()
-                        }}
+                        onOpenConfirmationModal={
+                            isMidCycleUpgradeEnabled
+                                ? () => setIsConfirmModalOpen(true)
+                                : undefined
+                        }
+                        updateSubscription={
+                            isMidCycleUpgradeEnabled
+                                ? undefined
+                                : () => {
+                                      logEvent(
+                                          SegmentEvent.BillingPaymentInformationSubscriptionFrequencyUpdated,
+                                      )
+                                      return updateSubscription()
+                                  }
+                        }
                         periodEnd={periodEnd}
                         ctaText="Update Subscription"
                         isSubscriptionUpdating={isSubscriptionUpdating}
                     />
+                    {isMidCycleUpgradeEnabled && subscription && (
+                        <ConfirmChangesModal
+                            isOpen={isConfirmModalOpen}
+                            onClose={handleCloseConfirmModal}
+                            onConfirm={() => {
+                                void handleConfirm()
+                            }}
+                            isConfirming={isSubscriptionUpdating}
+                            selectedPlans={selectedPlans}
+                            cadence={selectedCadence}
+                            periodEnd={periodEnd}
+                            plansByProduct={plansByProduct}
+                            totalProductAmount={totalProductAmount}
+                            // Cadence-only flow: no cancellations possible here.
+                            totalCancelledAmount={0}
+                            cancelledProducts={[]}
+                            currency={
+                                helpdeskAvailablePlans?.[0]?.currency ?? 'usd'
+                            }
+                            subscriptionResourceVersion={
+                                subscription.resource_version
+                            }
+                            subscriptionRenewalRampResourceVersion={
+                                subscription.schedule_resource_version ??
+                                undefined
+                            }
+                            pendingInvoiceError={hasPendingInvoiceError}
+                            versionConflictError={hasVersionConflictError}
+                            isPaymentMethodMissing={isPaymentMethodMissing}
+                        />
+                    )}
                 </Card>
             </div>
         </div>

@@ -8,7 +8,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -45,11 +45,25 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
+import { ConfirmChangesModal } from '../../../components/ConfirmChangesModal'
 import type {
     PlanByProductType,
     PlansByProductType,
 } from '../BillingFrequencyView'
 import BillingFrequencyView from '../BillingFrequencyView'
+
+jest.mock('../../../components/ConfirmChangesModal', () => ({
+    ConfirmChangesModal: jest
+        .requireActual(
+            '../../../components/ConfirmChangesModal/tests/mockConfirmChangesModal',
+        )
+        .mockConfirmChangesModalComponent(),
+}))
+
+// useIsPaymentEnabled calls useBanners which requires a provider the test doesn't set up.
+jest.mock('../../../hooks/useIsPaymentEnabled', () => ({
+    useIsPaymentEnabled: jest.fn(() => true),
+}))
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -132,26 +146,56 @@ const getRadioButton = (cadence: Cadence) => {
     return components.find((el) => el.getAttribute('type') === 'radio')
 }
 
+const setFeatureFlags = (flags: Partial<Record<FeatureFlagKey, boolean>>) => {
+    useFlagMock.mockImplementation(
+        (flag: FeatureFlagKey) => flags[flag] ?? false,
+    )
+}
+
+const buildPlansForCadence = (
+    availablePlans: PlansByProductType,
+    cadence: Cadence,
+): PlanByProductType =>
+    ObjectFromEnum<typeof ProductType, PlanByProductType>(
+        ProductType,
+        (productType: ProductType) =>
+            availablePlans[productType].find(
+                (plan: Plan) => plan.cadence === cadence,
+            ),
+    )
+
+const buildCorrespondingPlansForCadence = (
+    availablePlans: PlansByProductType,
+    currentPlans: PlanByProductType,
+    cadence: Cadence,
+): PlanByProductType =>
+    ObjectFromEnum<typeof ProductType, PlanByProductType>(
+        ProductType,
+        (productType: ProductType) =>
+            getCorrespondingPlanAtCadence({
+                availablePlans: availablePlans[productType],
+                currentPlan: currentPlans[productType],
+                cadence,
+            }),
+    )
+
 describe('BillingFrequencyView', () => {
     const cadenceValues = Object.values(Cadence)
     const productTypeValues = Object.values(ProductType)
 
     beforeEach(() => {
         jest.clearAllMocks()
+        queryClient.clear()
         logEventMock.mockClear()
         mockUseBillingState.mockReturnValue({
             isLoading: false,
             data: undefined,
         } as any)
 
-        // Default to testing with all features enabled
-        let mockFeatureFlags = {
+        setFeatureFlags({
             [FeatureFlagKey.BillingQuarterlyFrequency]: true,
-        } as Record<FeatureFlagKey, boolean>
-
-        useFlagMock.mockImplementation(
-            (flag: FeatureFlagKey) => mockFeatureFlags[flag],
-        )
+            [FeatureFlagKey.MidCycleUpgradeBillingLogic]: false,
+        })
     })
 
     it('assumes correctly the order of product type enum', () => {
@@ -227,15 +271,12 @@ describe('BillingFrequencyView', () => {
     it.each(cadenceBooleanCartesianProduct)(
         'should redirect users if there are no cadence upgrades possible [cadence: %s, enabled: %s]',
         (cadence: Cadence, enabled: boolean) => {
-            let mockFeatureFlags = {
-                [FeatureFlagKey.BillingQuarterlyFrequency]: enabled,
-            } as Record<FeatureFlagKey, boolean>
-
             // Reset to override the default in beforeEach
             useFlagMock.mockClear()
-            useFlagMock.mockImplementation(
-                (flag: FeatureFlagKey) => mockFeatureFlags[flag],
-            )
+            setFeatureFlags({
+                [FeatureFlagKey.BillingQuarterlyFrequency]: enabled,
+                [FeatureFlagKey.MidCycleUpgradeBillingLogic]: false,
+            })
 
             const plan = helpdeskProduct.prices.find(
                 (plan: HelpdeskPlan) => plan.cadence === cadence,
@@ -340,13 +381,139 @@ describe('BillingFrequencyView', () => {
         expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
     })
 
+    it('should not redirect users for scheduled changes when the mid-cycle upgrade flag is off', () => {
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: {
+                subscription: {
+                    is_paused: false,
+                    scheduled_changes: [
+                        {
+                            current_plan_id: basicMonthlyAutomationPlan.plan_id,
+                            scheduled_plan: basicMonthlyAutomationPlan,
+                            scheduled_change_types: ['UPGRADE'],
+                        },
+                    ],
+                },
+            },
+        } as any)
+
+        renderBillingFrequencyView()
+
+        expect(mockedHistoryPush).not.toHaveBeenCalled()
+    })
+
+    it('should redirect users when hasScheduledChanges is true and the mid-cycle upgrade flag is on', () => {
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: {
+                subscription: {
+                    is_paused: false,
+                    scheduled_changes: [
+                        {
+                            current_plan_id: basicMonthlyAutomationPlan.plan_id,
+                            scheduled_plan: basicMonthlyAutomationPlan,
+                            scheduled_change_types: ['UPGRADE'],
+                        },
+                    ],
+                    resource_version: 12345,
+                },
+            },
+        } as any)
+
+        setFeatureFlags({
+            [FeatureFlagKey.BillingQuarterlyFrequency]: true,
+            [FeatureFlagKey.MidCycleUpgradeBillingLogic]: true,
+        })
+
+        renderBillingFrequencyView()
+
+        expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
+    })
+
+    it('should open confirm changes modal from Update Subscription when the mid-cycle upgrade flag is on', async () => {
+        const user = userEvent.setup()
+
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: {
+                subscription: {
+                    is_paused: false,
+                    scheduled_changes: [],
+                    downgrades: [],
+                    resource_version: 12345,
+                    schedule_resource_version: 67890,
+                },
+            },
+        } as any)
+
+        setFeatureFlags({
+            [FeatureFlagKey.BillingQuarterlyFrequency]: true,
+            [FeatureFlagKey.MidCycleUpgradeBillingLogic]: true,
+        })
+
+        renderBillingFrequencyView()
+
+        expect(screen.getByText('confirm modal closed')).toBeInTheDocument()
+
+        const yearlyRadioButton = getRadioButton(Cadence.Year)
+        expect(yearlyRadioButton).toBeInTheDocument()
+        if (!yearlyRadioButton) return
+
+        await act(() => user.click(yearlyRadioButton))
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: 'Update Subscription' }),
+            ).toBeEnabled()
+        })
+
+        await act(() =>
+            user.click(
+                screen.getByRole('button', { name: 'Update Subscription' }),
+            ),
+        )
+
+        expect(screen.getByText('confirm modal open')).toBeInTheDocument()
+        expect(ConfirmChangesModal).toHaveBeenCalledWith(
+            expect.objectContaining({
+                subscriptionResourceVersion: 12345,
+                subscriptionRenewalRampResourceVersion: 67890,
+                totalCancelledAmount: 0,
+                cancelledProducts: [],
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('should block the submit surface entirely when subscription data is not yet loaded and the mid-cycle upgrade flag is on', () => {
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: undefined,
+        } as any)
+
+        setFeatureFlags({
+            [FeatureFlagKey.BillingQuarterlyFrequency]: true,
+            [FeatureFlagKey.MidCycleUpgradeBillingLogic]: true,
+        })
+
+        renderBillingFrequencyView()
+
+        expect(
+            screen.queryByRole('button', { name: 'Update Subscription' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('confirm modal closed'),
+        ).not.toBeInTheDocument()
+    })
+
     const cadenceCartesianProduct = cadenceValues.flatMap((a) =>
         cadenceValues.map((b) => [a, b]),
     )
     it.each(cadenceCartesianProduct)(
         'clicking on billing frequency radio button should modify the total price appropriately [originalCadence=%s, newCadence=%s]',
         async (originalCadence: Cadence, newCadence: Cadence) => {
-            const availablePlans: { [key in ProductType]: Plan[] } = {
+            const availablePlans: PlansByProductType = {
                 [ProductType.Helpdesk]: helpdeskProduct.prices,
                 [ProductType.Automation]: automationProduct.prices,
                 [ProductType.Voice]: voiceProduct.prices,
@@ -354,24 +521,15 @@ describe('BillingFrequencyView', () => {
                 [ProductType.Convert]: convertProduct.prices,
             }
 
-            const originalPlans: PlanByProductType = ObjectFromEnum<
-                typeof ProductType,
-                PlanByProductType
-            >(ProductType, (productType: ProductType) =>
-                availablePlans[productType].find(
-                    (plan: Plan) => plan.cadence === originalCadence,
-                ),
+            const originalPlans = buildPlansForCadence(
+                availablePlans,
+                originalCadence,
             )
 
-            const newPlans: PlanByProductType = ObjectFromEnum<
-                typeof ProductType,
-                PlanByProductType
-            >(ProductType, (productType: ProductType) =>
-                getCorrespondingPlanAtCadence({
-                    availablePlans: availablePlans[productType],
-                    currentPlan: originalPlans[productType],
-                    cadence: newCadence,
-                }),
+            const newPlans = buildCorrespondingPlansForCadence(
+                availablePlans,
+                originalPlans,
+                newCadence,
             )
 
             // If any of these are undefined, the test is misconfigured
@@ -472,13 +630,9 @@ describe('BillingFrequencyView', () => {
                 [ProductType.Convert]: convertProduct.prices,
             }
 
-            const originalPlans: PlanByProductType = ObjectFromEnum<
-                typeof ProductType,
-                PlanByProductType
-            >(ProductType, (productType: ProductType) =>
-                availablePlans[productType].find(
-                    (plan: Plan) => plan.cadence === originalCadence,
-                ),
+            const originalPlans = buildPlansForCadence(
+                availablePlans,
+                originalCadence,
             )
 
             // If any of these are undefined, the test is misconfigured

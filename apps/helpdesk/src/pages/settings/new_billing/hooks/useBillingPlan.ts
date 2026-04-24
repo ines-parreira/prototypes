@@ -635,16 +635,12 @@ export const useBillingPlans = ({
                 if (anyProductChanged) {
                     setIsSubscriptionUpdating(true)
                     await dispatch(
-                        updateSubscriptionsForPlans(
-                            plansToBeUpdated,
+                        updateSubscriptionsForPlans({
+                            products: plansToBeUpdated,
                             notifications,
-                            {
-                                subscription_resource_version:
-                                    subscriptionResourceVersion,
-                                subscription_renewal_ramp_resource_version:
-                                    subscriptionRenewalRampResourceVersion,
-                            },
-                        ),
+                            subscriptionResourceVersion,
+                            subscriptionRenewalRampResourceVersion,
+                        }),
                     )
                     // Invalidate subscription to refresh "Active until" badges and derived data
                     void queryClient.invalidateQueries({
