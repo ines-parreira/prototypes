@@ -297,4 +297,27 @@ describe('TicketThread audit-log rendering', () => {
             '/app/ticket/999',
         )
     })
+
+    it('renders SLA policy assigned event with a link to the policy settings', () => {
+        renderAuditEvent('ticket-sla-policy-assigned', {
+            sla_policy_uuid: 'abc-123',
+            sla_policy_name: 'Standard SLA',
+        })
+
+        expect(
+            screen.getByRole('link', { name: 'Standard SLA' }),
+        ).toHaveAttribute('href', '/app/settings/sla/abc-123')
+        expect(screen.getByText(/" assigned/)).toBeInTheDocument()
+    })
+
+    it('renders SLA policy assigned event name as plain text when uuid is missing', () => {
+        renderAuditEvent('ticket-sla-policy-assigned', {
+            sla_policy_name: 'Standard SLA',
+        })
+
+        expect(screen.getByText(/Standard SLA/)).toBeInTheDocument()
+        expect(
+            screen.queryByRole('link', { name: 'Standard SLA' }),
+        ).not.toBeInTheDocument()
+    })
 })

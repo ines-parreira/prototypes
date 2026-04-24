@@ -18,6 +18,7 @@ import { TicketThreadAuditLogTicketReopenedEvent } from './components/TicketThre
 import { TicketThreadAuditLogTicketSatisfactionSurveySkippedDetails } from './components/TicketThreadAuditLogTicketSatisfactionSurveySkippedDetails'
 import { TicketThreadAuditLogTicketSatisfactionSurveySkippedEvent } from './components/TicketThreadAuditLogTicketSatisfactionSurveySkippedEvent'
 import { TicketThreadAuditLogTicketSelfUnsnoozedEvent } from './components/TicketThreadAuditLogTicketSelfUnsnoozedEvent'
+import { TicketThreadAuditLogTicketSlaPolicyAssignedEvent } from './components/TicketThreadAuditLogTicketSlaPolicyAssignedEvent'
 import { TicketThreadAuditLogTicketSnoozedEvent } from './components/TicketThreadAuditLogTicketSnoozedEvent'
 import { TicketThreadAuditLogTicketSplitEvent } from './components/TicketThreadAuditLogTicketSplitEvent'
 import { TicketThreadAuditLogTicketSubjectUpdatedEvent } from './components/TicketThreadAuditLogTicketSubjectUpdatedEvent'
@@ -111,6 +112,10 @@ export function TicketThreadAuditLogEventItem({
         case 'satisfaction-survey-sent':
             return (
                 <TicketThreadAuditLogSatisfactionSurveySentEvent item={item} />
+            )
+        case 'ticket-sla-policy-assigned':
+            return (
+                <TicketThreadAuditLogTicketSlaPolicyAssignedEvent item={item} />
             )
         default:
             return assertNever(item)

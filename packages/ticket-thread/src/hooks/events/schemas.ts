@@ -293,6 +293,15 @@ export const auditLogEventSchema = z.discriminatedUnion('type', [
             .nullish(),
     ),
     createAuditLogEventSchemaWithOptionalData('satisfaction-survey-sent'),
+    createAuditLogEventSchema(
+        'ticket-sla-policy-assigned',
+        auditLogEventDataSchema
+            .extend({
+                sla_policy_uuid: z.string().optional(),
+                sla_policy_name: z.string().optional(),
+            })
+            .nullish(),
+    ),
 ])
 export type AuditLogEventSchema = z.infer<typeof auditLogEventSchema>
 

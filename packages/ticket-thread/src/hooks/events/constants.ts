@@ -33,6 +33,7 @@ export const AUDIT_LOG_EVENT_TYPES = [
     'ticket-untrashed',
     'rule-executed',
     'satisfaction-survey-sent',
+    'ticket-sla-policy-assigned',
 ] as const
 
 export const SYSTEM_RULE_TYPE = 'system' as const
