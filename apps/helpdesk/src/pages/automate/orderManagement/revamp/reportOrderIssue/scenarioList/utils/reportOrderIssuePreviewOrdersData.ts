@@ -69,7 +69,10 @@ export const REPORT_ORDER_ISSUE_PREVIEW_ORDERS: GorgiasChatPreviewOrdersOptions 
                             track_order: true,
                             cancel_order: false,
                             return_order: false,
-                            report_issue_reasons: ['damaged', 'wrong_item'],
+                            report_issue_reasons: [
+                                { reasonKey: 'damaged' },
+                                { reasonKey: 'wrong_item' },
+                            ],
                         },
                     },
                 ],
