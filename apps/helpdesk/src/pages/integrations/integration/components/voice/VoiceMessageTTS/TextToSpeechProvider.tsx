@@ -63,8 +63,10 @@ export default function TextToSpeechProvider({
                 const currentValues = watch(property_url)
                 if (
                     currentValues.text_to_speech_content !== text ||
-                    currentValues.language !== language_code ||
-                    currentValues.gender !== voice_gender
+                    (currentValues.language ?? DEFAULT_TTS_LANGUAGE) !==
+                        language_code ||
+                    (currentValues.gender ?? DEFAULT_TTS_GENDER) !==
+                        voice_gender
                 ) {
                     // The text has changed since the request was made; ignore this result
                     return

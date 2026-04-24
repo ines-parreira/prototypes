@@ -393,6 +393,144 @@ describe('TextToSpeechProvider', () => {
             expect(currentValue.text_to_speech_recording_file_path).toBeNull()
         })
 
+        it('should update form when language and gender are null but event uses defaults', async () => {
+            const customFormValues = {
+                testField: {
+                    text_to_speech_content: 'Hello world',
+                    text_to_speech_recording_file_path: null,
+                    language: null,
+                    gender: null,
+                },
+            }
+
+            const { result } = renderHook(
+                () => ({
+                    form: useFormContext(),
+                    context: useTextToSpeechContext(),
+                }),
+                {
+                    wrapper: createWrapper(customFormValues),
+                },
+            )
+
+            const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
+
+            const event = createDomainEvent({
+                dataschema:
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
+                data: {
+                    tts_url: 'https://example.com/tts-audio.mp3',
+                    text: 'Hello world',
+                    property_url: 'testField',
+                    language_code: DEFAULT_TTS_LANGUAGE,
+                    voice_gender: DEFAULT_TTS_GENDER,
+                },
+            })
+
+            act(() => {
+                onEventCallback(event)
+            })
+
+            await waitFor(() => {
+                const currentValue = result.current.form.getValues('testField')
+                expect(currentValue.text_to_speech_recording_file_path).toBe(
+                    'https://example.com/tts-audio.mp3',
+                )
+            })
+        })
+
+        it('should update form when language is null but event uses default language', async () => {
+            const customFormValues = {
+                testField: {
+                    text_to_speech_content: 'Hello world',
+                    text_to_speech_recording_file_path: null,
+                    language: null,
+                    gender: VoiceGender.Female,
+                },
+            }
+
+            const { result } = renderHook(
+                () => ({
+                    form: useFormContext(),
+                    context: useTextToSpeechContext(),
+                }),
+                {
+                    wrapper: createWrapper(customFormValues),
+                },
+            )
+
+            const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
+
+            const event = createDomainEvent({
+                dataschema:
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
+                data: {
+                    tts_url: 'https://example.com/tts-audio.mp3',
+                    text: 'Hello world',
+                    property_url: 'testField',
+                    language_code: DEFAULT_TTS_LANGUAGE,
+                    voice_gender: VoiceGender.Female,
+                },
+            })
+
+            act(() => {
+                onEventCallback(event)
+            })
+
+            await waitFor(() => {
+                const currentValue = result.current.form.getValues('testField')
+                expect(currentValue.text_to_speech_recording_file_path).toBe(
+                    'https://example.com/tts-audio.mp3',
+                )
+            })
+        })
+
+        it('should update form when gender is null but event uses default gender', async () => {
+            const customFormValues = {
+                testField: {
+                    text_to_speech_content: 'Hello world',
+                    text_to_speech_recording_file_path: null,
+                    language: VoiceLanguage.EnUs,
+                    gender: null,
+                },
+            }
+
+            const { result } = renderHook(
+                () => ({
+                    form: useFormContext(),
+                    context: useTextToSpeechContext(),
+                }),
+                {
+                    wrapper: createWrapper(customFormValues),
+                },
+            )
+
+            const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
+
+            const event = createDomainEvent({
+                dataschema:
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
+                data: {
+                    tts_url: 'https://example.com/tts-audio.mp3',
+                    text: 'Hello world',
+                    property_url: 'testField',
+                    language_code: VoiceLanguage.EnUs,
+                    voice_gender: DEFAULT_TTS_GENDER,
+                },
+            })
+
+            act(() => {
+                onEventCallback(event)
+            })
+
+            await waitFor(() => {
+                const currentValue = result.current.form.getValues('testField')
+                expect(currentValue.text_to_speech_recording_file_path).toBe(
+                    'https://example.com/tts-audio.mp3',
+                )
+            })
+        })
+
         it('should ignore events with unrelated dataschema', () => {
             const { result } = renderHook(
                 () => ({
