@@ -1,15 +1,13 @@
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
+import { ChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 
 import { ConnectedChannelsViewContainer } from '../ConnectedChannelsViewContainer'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
-jest.mock(
-    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
-)
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 )
@@ -29,10 +27,6 @@ jest.mock('../revamp/ConnectedChannelsViewContainer', () => ({
 const mockUseStoreIntegrations = useStoreIntegrations as jest.MockedFunction<
     typeof useStoreIntegrations
 >
-const mockUseChatPreviewChannelsContext =
-    useChatPreviewChannelsContext as jest.MockedFunction<
-        typeof useChatPreviewChannelsContext
-    >
 const mockUseShouldShowChatSettingsRevamp =
     useShouldShowChatSettingsRevamp as jest.MockedFunction<
         typeof useShouldShowChatSettingsRevamp
@@ -52,15 +46,38 @@ const defaultMockFlags = {
     isLoading: false,
 }
 
+const renderWithContext = ({
+    withProvider = true,
+}: { withProvider?: boolean } = {}) => {
+    const content = (
+        <MemoryRouter initialEntries={['/shopify/my-store']}>
+            <Route path="/:shopType/:shopName">
+                <ConnectedChannelsViewContainer />
+            </Route>
+        </MemoryRouter>
+    )
+
+    if (!withProvider) {
+        return render(content)
+    }
+
+    return render(
+        <ChatPreviewChannelsContext.Provider
+            value={{
+                shopName: 'my-store',
+                selectedChannelId: undefined,
+                setSelectedChannelId: jest.fn(),
+            }}
+        >
+            {content}
+        </ChatPreviewChannelsContext.Provider>,
+    )
+}
+
 describe('ConnectedChannelsViewContainer', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseStoreIntegrations.mockReturnValue([])
-        mockUseChatPreviewChannelsContext.mockReturnValue({
-            shopName: 'my-store',
-            selectedChannelId: undefined,
-            setSelectedChannelId: jest.fn(),
-        })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue(defaultMockFlags)
     })
 
@@ -70,7 +87,7 @@ describe('ConnectedChannelsViewContainer', () => {
             shouldShowFlowsScreensRevamp: true,
         })
 
-        render(<ConnectedChannelsViewContainer />)
+        renderWithContext()
 
         expect(
             screen.getByText('RevampConnectedChannelsViewContainer'),
@@ -81,7 +98,7 @@ describe('ConnectedChannelsViewContainer', () => {
     })
 
     it('should render the legacy container when shouldShowFlowsScreensRevamp is false', () => {
-        render(<ConnectedChannelsViewContainer />)
+        renderWithContext()
 
         expect(
             screen.getByText('LegacyConnectedChannelsViewContainer'),
@@ -89,5 +106,13 @@ describe('ConnectedChannelsViewContainer', () => {
         expect(
             screen.queryByText('RevampConnectedChannelsViewContainer'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should render without crashing when ChatPreviewChannelsContext provider is absent', () => {
+        renderWithContext({ withProvider: false })
+
+        expect(
+            screen.getByText('LegacyConnectedChannelsViewContainer'),
+        ).toBeInTheDocument()
     })
 })

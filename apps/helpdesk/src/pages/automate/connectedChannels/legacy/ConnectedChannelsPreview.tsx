@@ -61,12 +61,16 @@ const ConnectedChannelsPreview = ({
         | undefined
 
     if (channel?.type === TicketChannel.Chat) {
-        const { articleRecommendation, orderManagement, workflows } =
+        const appAutomationSettings =
             applicationsAutomationSettings[channel.value.meta.app_id!]
 
-        isArticleRecommendationEnabled = articleRecommendation.enabled
-        isOrderManagementEnabled = orderManagement.enabled
-        workflowsEntrypoints = workflows.entrypoints
+        if (appAutomationSettings) {
+            isArticleRecommendationEnabled =
+                appAutomationSettings.articleRecommendation.enabled
+            isOrderManagementEnabled =
+                appAutomationSettings.orderManagement.enabled
+            workflowsEntrypoints = appAutomationSettings.workflows.entrypoints
+        }
     } else if (channel?.type === TicketChannel.HelpCenter) {
         isOrderManagementEnabled =
             !channel.value.self_service_deactivated_datetime
