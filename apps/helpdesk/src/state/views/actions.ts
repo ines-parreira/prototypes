@@ -72,6 +72,11 @@ export const setViewActive =
         })
     }
 
+export const syncActiveViewSharing = (view: View) => ({
+    type: types.SYNC_ACTIVE_VIEW_SHARING,
+    view: fromJS(view),
+})
+
 export const updateView = (view?: Maybe<ViewImmutable>, edit = true) => ({
     type: types.UPDATE_VIEW,
     view,

@@ -1,5 +1,5 @@
 import { userEvent } from '@repo/testing'
-import { render, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,6 +10,7 @@ import { view as mockViewFixture } from 'fixtures/views'
 import { ViewVisibility } from 'models/view/types'
 import GorgiasApi from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
+import * as viewTypes from 'state/views/constants'
 
 import ViewSharingModal from '../ViewSharingModal'
 
@@ -36,6 +37,13 @@ describe('<ViewSharingModal/>', () => {
     })
 
     beforeEach(() => {
+        store.clearActions()
+        minProps.toggle.mockClear()
+        jest.mocked(viewUpdated).mockClear()
+        jest.mocked(viewUpdated).mockImplementation((updatedView) => ({
+            type: 'VIEW_UPDATED',
+            payload: updatedView,
+        }))
         GorgiasApiMock.mockImplementation(
             () =>
                 ({
@@ -48,7 +56,7 @@ describe('<ViewSharingModal/>', () => {
     })
 
     it('should render as public', async () => {
-        const { queryByText } = render(
+        render(
             <Provider store={store}>
                 <ViewSharingModal
                     {...minProps}
@@ -62,16 +70,16 @@ describe('<ViewSharingModal/>', () => {
 
         await waitFor(() =>
             expect(
-                queryByText(/Everyone can access this view/),
+                screen.getByText(/Everyone can access this view/),
             ).toBeInTheDocument(),
         )
         expect(
-            queryByText('Public')?.classList.contains('selected'),
+            screen.getByText('Public').classList.contains('selected'),
         ).toBeTruthy()
     })
 
     it('should render as shared', async () => {
-        const { queryByText } = render(
+        render(
             <Provider store={store}>
                 <ViewSharingModal
                     {...minProps}
@@ -85,17 +93,21 @@ describe('<ViewSharingModal/>', () => {
 
         await waitFor(() =>
             expect(
-                queryByText(/Lead agents and admins see all the shared views/),
-            ),
+                screen.getByText(
+                    /Lead agents and admins see all the shared views/,
+                ),
+            ).toBeInTheDocument(),
         )
-        expect(queryByText(/Sharing restricted to specific people or teams/))
         expect(
-            queryByText('Shared')?.classList.contains('selected'),
+            screen.getByText(/Sharing restricted to specific people or teams/),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Shared').classList.contains('selected'),
         ).toBeTruthy()
     })
 
     it('should render as private', async () => {
-        const { queryByText } = render(
+        render(
             <Provider store={store}>
                 <ViewSharingModal
                     {...minProps}
@@ -106,16 +118,19 @@ describe('<ViewSharingModal/>', () => {
                 />
             </Provider>,
         )
+
         await waitFor(() =>
-            expect(queryByText(/Only you can access this view/)),
+            expect(
+                screen.getByText(/Only you can access this view/),
+            ).toBeInTheDocument(),
         )
         expect(
-            queryByText('Private')?.classList.contains('selected'),
+            screen.getByText('Private').classList.contains('selected'),
         ).toBeTruthy()
     })
 
     it('should update the view on save', async () => {
-        const { getByRole, queryByText } = render(
+        render(
             <Provider store={store}>
                 <ViewSharingModal
                     {...minProps}
@@ -126,14 +141,34 @@ describe('<ViewSharingModal/>', () => {
                 />
             </Provider>,
         )
+
+        await waitFor(() =>
+            expect(
+                screen.getByText(/Only you can access this view/),
+            ).toBeInTheDocument(),
+        )
+
+        const updateButton = screen.getByRole('button', {
+            name: /Update view sharing/i,
+        })
+
         await waitFor(() => {
-            expect(queryByText(/Only you can access this view/))
-            userEvent.click(
-                getByRole('button', {
-                    name: /Update view sharing/i,
-                }),
-            )
+            expect(updateButton).toBeEnabled()
+        })
+
+        await userEvent.click(updateButton)
+
+        await waitFor(() => {
             expect(viewUpdated).toHaveBeenNthCalledWith(1, mockViewFixture)
+            expect(
+                store
+                    .getActions()
+                    .some(
+                        (action: { type?: string }) =>
+                            action.type === viewTypes.SYNC_ACTIVE_VIEW_SHARING,
+                    ),
+            ).toBe(true)
+            expect(minProps.toggle).toHaveBeenCalled()
         })
     })
 })

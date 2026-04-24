@@ -22,6 +22,7 @@ import GorgiasApi from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { syncActiveViewSharing } from 'state/views/actions'
 
 import ViewSharingModalBody from './ViewSharingModalBody'
 
@@ -67,6 +68,7 @@ function ViewSharingModal({ view, isOpen, toggle }: Props) {
             }),
         )
         dispatch(viewUpdated(data))
+        dispatch(syncActiveViewSharing(data))
 
         toggle()
     }

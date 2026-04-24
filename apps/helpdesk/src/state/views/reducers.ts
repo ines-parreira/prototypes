@@ -107,6 +107,30 @@ export default function reducer(
             return state
         }
 
+        case constants.SYNC_ACTIVE_VIEW_SHARING: {
+            if (
+                !action.view ||
+                activeView.get('id') == null ||
+                activeView.get('id') !== action.view.get('id')
+            ) {
+                return state
+            }
+
+            return state.set(
+                'active',
+                activeView
+                    .set('visibility', action.view.get('visibility'))
+                    .set(
+                        'shared_with_users',
+                        action.view.get('shared_with_users', fromJS([])),
+                    )
+                    .set(
+                        'shared_with_teams',
+                        action.view.get('shared_with_teams', fromJS([])),
+                    ),
+            )
+        }
+
         case constants.UPDATE_VIEW: {
             const view = action.view || activeView
             return state.set(

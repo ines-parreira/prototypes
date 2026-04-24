@@ -251,6 +251,98 @@ describe('reducers', () => {
             )
         })
 
+        it('should sync only sharing fields on the active view', () => {
+            const state = fromJS({
+                active: {
+                    id: 7,
+                    name: 'Inbox',
+                    dirty: true,
+                    editMode: true,
+                    filters: "eq(ticket.status, 'open')",
+                    visibility: 'public',
+                    shared_with_users: [],
+                    shared_with_teams: [],
+                },
+            })
+
+            expect(
+                reducers(state, {
+                    type: types.SYNC_ACTIVE_VIEW_SHARING,
+                    view: fromJS({
+                        id: 7,
+                        visibility: 'shared',
+                        shared_with_users: [
+                            { id: 1, meta: {}, name: 'User 1' },
+                        ],
+                        shared_with_teams: [{ id: 2, name: 'Team 2' }],
+                    }),
+                }).toJS(),
+            ).toStrictEqual({
+                active: {
+                    id: 7,
+                    name: 'Inbox',
+                    dirty: true,
+                    editMode: true,
+                    filters: "eq(ticket.status, 'open')",
+                    visibility: 'shared',
+                    shared_with_users: [{ id: 1, meta: {}, name: 'User 1' }],
+                    shared_with_teams: [{ id: 2, name: 'Team 2' }],
+                },
+            })
+        })
+
+        it('should keep state when syncing sharing without a view payload', () => {
+            const state = fromJS({
+                active: {
+                    id: 7,
+                    visibility: 'public',
+                },
+            })
+
+            expect(
+                reducers(state, {
+                    type: types.SYNC_ACTIVE_VIEW_SHARING,
+                }),
+            ).toEqual(state)
+        })
+
+        it('should keep state when the active view has no id', () => {
+            const state = fromJS({
+                active: {
+                    visibility: 'public',
+                },
+            })
+
+            expect(
+                reducers(state, {
+                    type: types.SYNC_ACTIVE_VIEW_SHARING,
+                    view: fromJS({
+                        id: 7,
+                        visibility: 'shared',
+                    }),
+                }),
+            ).toEqual(state)
+        })
+
+        it('should keep state when syncing sharing for a different view', () => {
+            const state = fromJS({
+                active: {
+                    id: 7,
+                    visibility: 'public',
+                },
+            })
+
+            expect(
+                reducers(state, {
+                    type: types.SYNC_ACTIVE_VIEW_SHARING,
+                    view: fromJS({
+                        id: 8,
+                        visibility: 'shared',
+                    }),
+                }),
+            ).toEqual(state)
+        })
+
         it('should create a view', () => {
             expect(
                 reducers(initialState, {
