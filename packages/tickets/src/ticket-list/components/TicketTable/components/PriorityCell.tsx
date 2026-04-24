@@ -3,6 +3,8 @@ import type { Color } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { PRIORITY_ICON_MAP } from '../../../../components/TicketPriority/components/PrioritySelect'
+import type { TicketTableCellLinkProps } from './TicketTableCellLink'
+import { TicketTableCellLink } from './TicketTableCellLink'
 
 const PRIORITY_LABEL: Record<string, string> = {
     low: 'Low',
@@ -13,22 +15,27 @@ const PRIORITY_LABEL: Record<string, string> = {
 
 type Props = {
     ticket: TicketCompact
+    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
 }
 
-export function PriorityCell({ ticket }: Props) {
+export function PriorityCell({ ticket, linkProps }: Props) {
     const priority = ticket.priority ?? 'normal'
     const { icon, color } =
         PRIORITY_ICON_MAP[priority as keyof typeof PRIORITY_ICON_MAP]
 
-    return (
-        <DataTableBaseCell>
-            <Tag
-                leadingSlot={
-                    <Icon name={icon} size="sm" color={color as Color} />
-                }
-            >
-                {PRIORITY_LABEL[priority] ?? priority}
-            </Tag>
-        </DataTableBaseCell>
+    const content = (
+        <Tag
+            leadingSlot={<Icon name={icon} size="sm" color={color as Color} />}
+        >
+            {PRIORITY_LABEL[priority] ?? priority}
+        </Tag>
     )
+
+    if (linkProps) {
+        return (
+            <TicketTableCellLink {...linkProps}>{content}</TicketTableCellLink>
+        )
+    }
+
+    return <DataTableBaseCell>{content}</DataTableBaseCell>
 }

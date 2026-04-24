@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react'
+
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, within } from '@testing-library/react'
 
@@ -13,8 +15,16 @@ import { useAgentActivity as useAgentActivityMock } from '@gorgias/realtime'
 import { render } from '../../../../tests/render.utils'
 import type { SearchTicket } from '../../../types/search'
 import { getTicketTableDisplayRow } from '../../../utils/getTicketTableDisplayRow'
+import { ChannelCell } from '../components/ChannelCell'
+import { DateTimeCell } from '../components/DateTimeCell'
+import { PriorityCell } from '../components/PriorityCell'
+import { SingleLineTextCell } from '../components/SingleLineTextCell'
+import { SubjectOnlyCell } from '../components/SubjectOnlyCell'
+import { TicketCell } from '../components/TicketCell'
 import type { TicketTableColumnsParams } from '../TicketTableColumns'
 import { createTicketTableColumns } from '../TicketTableColumns'
+
+import css from '../components/TicketTableCellLink.module.less'
 
 vi.mock('@gorgias/realtime', () => ({
     useAgentActivity: vi.fn(),
@@ -99,6 +109,24 @@ const renderColumn = (
     )
 }
 
+function expectLinkedCell(name: string | RegExp, href: string) {
+    const link = screen.getByRole('link', { name })
+
+    expect(link).toHaveAttribute('href', href)
+    expect(link).toHaveClass(css.link)
+
+    return link
+}
+
+const renderStandaloneCell = (cell: ReactElement) =>
+    render(
+        <table>
+            <tbody>
+                <tr>{cell}</tr>
+            </tbody>
+        </table>,
+    )
+
 describe('createTicketTableColumns', () => {
     it('keeps the Ticket column visible and outside column editing', () => {
         const columns = createTicketTableColumns({
@@ -179,6 +207,7 @@ describe('createTicketTableColumns', () => {
             expect(
                 screen.getByText('I need help with my order'),
             ).toBeInTheDocument()
+            expectLinkedCell(/Help with order/i, '/app/ticket/1')
         })
 
         it('renders the failed message tag instead of the excerpt', () => {
@@ -215,6 +244,7 @@ describe('createTicketTableColumns', () => {
             })
 
             expect(screen.getByText('Translated subject')).toBeInTheDocument()
+            expectLinkedCell(/Translated subject/i, '/app/ticket/1')
         })
 
         it('renders "No subject" when the subject is empty', () => {
@@ -439,6 +469,7 @@ describe('createTicketTableColumns', () => {
             renderColumn('customer', ticket)
 
             expect(screen.getByText('Customer Name')).toBeInTheDocument()
+            expectLinkedCell(/Customer Name/i, `/app/ticket/${ticket.id}`)
         })
     })
 
@@ -482,12 +513,15 @@ describe('createTicketTableColumns', () => {
 
     describe('status column', () => {
         it('renders "Open" for an open ticket', () => {
-            renderColumn(
-                'status',
-                mockTicketCompact({ status: 'open', snooze_datetime: null }),
-            )
+            const ticket = mockTicketCompact({
+                status: 'open',
+                snooze_datetime: null,
+            })
+
+            renderColumn('status', ticket)
 
             expect(screen.getByText('Open')).toBeInTheDocument()
+            expectLinkedCell(/Open/i, `/app/ticket/${ticket.id}`)
         })
 
         it('renders "Closed" for a closed ticket', () => {
@@ -549,13 +583,15 @@ describe('createTicketTableColumns', () => {
 
     describe('assignee_team column', () => {
         it('renders nothing when there is no team', () => {
-            const { container } = renderColumn(
-                'assignee_team',
-                mockTicketCompact({ assignee_team: null }),
-            )
+            const ticket = mockTicketCompact({ assignee_team: null })
+            const { container } = renderColumn('assignee_team', ticket)
 
             expect(container.querySelector('tbody')?.textContent?.trim()).toBe(
                 '',
+            )
+            expect(screen.getByRole('link')).toHaveAttribute(
+                'href',
+                `/app/ticket/${ticket.id}`,
             )
         })
 
@@ -612,12 +648,14 @@ describe('createTicketTableColumns', () => {
 
     describe('channel column (ChannelCell)', () => {
         it('renders nothing when ticket has no channel', () => {
-            const { container } = renderColumn(
-                'channel',
-                mockTicketCompact({ channel: undefined }),
-            )
+            const ticket = mockTicketCompact({ channel: undefined })
+            const { container } = renderColumn('channel', ticket)
 
             expect(container.querySelector('svg')).not.toBeInTheDocument()
+            expect(screen.getByRole('link')).toHaveAttribute(
+                'href',
+                `/app/ticket/${ticket.id}`,
+            )
         })
 
         it('renders the channel icon', () => {
@@ -630,16 +668,20 @@ describe('createTicketTableColumns', () => {
         })
 
         it('wraps the channel icon in a tooltip trigger', () => {
-            const { container } = renderColumn(
-                'channel',
-                mockTicketCompact({ channel: TicketMessageSourceType.Email }),
-            )
+            const ticket = mockTicketCompact({
+                channel: TicketMessageSourceType.Email,
+            })
+            const { container } = renderColumn('channel', ticket)
 
             const trigger = container.querySelector(
                 '[data-name="tooltip-trigger"]',
             )
 
             expect(trigger).toBeInTheDocument()
+            expect(trigger?.closest('a')).toHaveAttribute(
+                'href',
+                `/app/ticket/${ticket.id}`,
+            )
         })
     })
 
@@ -693,6 +735,193 @@ describe('createTicketTableColumns', () => {
             expect(container.querySelector('tbody')?.textContent?.trim()).toBe(
                 '',
             )
+            expect(screen.getByRole('link')).toHaveAttribute(
+                'href',
+                `/app/ticket/${ticket.id}`,
+            )
+        })
+    })
+
+    describe('ChannelCell', () => {
+        it.each([
+            {
+                name: 'renders an empty non-link cell when channel is missing',
+                ticket: mockTicketCompact({ channel: undefined }),
+                expectsIcon: false,
+            },
+            {
+                name: 'renders the channel icon without a link wrapper',
+                ticket: mockTicketCompact({
+                    channel: TicketMessageSourceType.Email,
+                }),
+                expectsIcon: true,
+            },
+        ])('$name', ({ ticket, expectsIcon }) => {
+            const { container } = renderStandaloneCell(
+                <ChannelCell ticket={ticket} />,
+            )
+
+            expect(screen.queryByRole('link')).not.toBeInTheDocument()
+
+            if (expectsIcon) {
+                expect(container.querySelector('svg')).toBeInTheDocument()
+            } else {
+                expect(container.querySelector('svg')).not.toBeInTheDocument()
+                expect(
+                    container.querySelector('tbody')?.textContent?.trim(),
+                ).toBe('')
+            }
+        })
+    })
+
+    describe('PriorityCell', () => {
+        it.each([
+            {
+                name: 'renders the provided priority without a link wrapper',
+                ticket: mockTicketCompact({ priority: 'high' }),
+                expectedLabel: 'High',
+            },
+            {
+                name: 'falls back to normal priority without a link wrapper',
+                ticket: mockTicketCompact({}),
+                expectedLabel: 'Normal',
+            },
+        ])('$name', ({ ticket, expectedLabel }) => {
+            renderStandaloneCell(<PriorityCell ticket={ticket} />)
+
+            expect(screen.getByText(expectedLabel)).toBeInTheDocument()
+            expect(screen.queryByRole('link')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('SubjectOnlyCell', () => {
+        it.each([
+            {
+                name: 'renders the subject without a link wrapper',
+                value: { text: 'Standalone subject' },
+                isUnread: false,
+            },
+            {
+                name: 'renders the unread subject without a link wrapper',
+                value: { text: 'Unread subject' },
+                isUnread: true,
+            },
+        ])('$name', ({ value, isUnread }) => {
+            renderStandaloneCell(
+                <SubjectOnlyCell value={value} isUnread={isUnread} />,
+            )
+
+            expect(screen.getByText(value.text)).toBeInTheDocument()
+            expect(screen.queryByRole('link')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('DateTimeCell', () => {
+        it.each([
+            {
+                name: 'renders a formatted datetime without a link wrapper',
+                datetime: '2026-03-15T09:30:00Z',
+                expectedText: 'Yesterday at 9:30am',
+            },
+            {
+                name: 'renders an empty non-link cell when datetime is null',
+                datetime: null,
+                expectedText: null,
+            },
+        ])('$name', ({ datetime, expectedText }) => {
+            const { container } = renderStandaloneCell(
+                <DateTimeCell
+                    datetime={datetime}
+                    preferences={dateTimePreferences}
+                />,
+            )
+
+            expect(screen.queryByRole('link')).not.toBeInTheDocument()
+
+            if (expectedText) {
+                expect(screen.getByText(expectedText)).toBeInTheDocument()
+            } else {
+                expect(
+                    container.querySelector('tbody')?.textContent?.trim(),
+                ).toBe('')
+            }
+        })
+    })
+
+    describe('SingleLineTextCell', () => {
+        it.each([
+            {
+                name: 'renders text without a link wrapper',
+                value: { text: 'Standalone text' },
+                expectedText: 'Standalone text',
+            },
+            {
+                name: 'renders an empty non-link cell when value is null',
+                value: null,
+                expectedText: null,
+            },
+        ])('$name', ({ value, expectedText }) => {
+            const { container } = renderStandaloneCell(
+                <SingleLineTextCell value={value} />,
+            )
+
+            expect(screen.queryByRole('link')).not.toBeInTheDocument()
+
+            if (expectedText) {
+                expect(screen.getByText(expectedText)).toBeInTheDocument()
+            } else {
+                expect(
+                    container.querySelector('tbody')?.textContent?.trim(),
+                ).toBe('')
+            }
+        })
+    })
+
+    describe('TicketCell', () => {
+        it.each([
+            {
+                name: 'renders the subject and excerpt without a link wrapper',
+                props: {
+                    ticketId: 77,
+                    subject: { text: 'Standalone ticket subject' },
+                    excerpt: { text: 'Standalone ticket excerpt' },
+                    hasFailedMessageTag: false,
+                },
+                expectedText: [
+                    'Standalone ticket subject',
+                    'Standalone ticket excerpt',
+                ],
+            },
+            {
+                name: 'renders only the subject when the excerpt is empty',
+                props: {
+                    ticketId: 78,
+                    subject: { text: 'Subject without excerpt' },
+                    excerpt: { text: '' },
+                    hasFailedMessageTag: false,
+                },
+                expectedText: ['Subject without excerpt'],
+            },
+            {
+                name: 'renders the failed message tag without a link wrapper',
+                props: {
+                    ticketId: 79,
+                    subject: { text: 'Failed ticket subject' },
+                    excerpt: { text: 'Ignored excerpt' },
+                    hasFailedMessageTag: true,
+                },
+                expectedText: [
+                    'Failed ticket subject',
+                    'Last message not delivered',
+                ],
+            },
+        ])('$name', ({ props, expectedText }) => {
+            renderStandaloneCell(<TicketCell {...props} />)
+
+            expectedText.forEach((text) => {
+                expect(screen.getByText(text)).toBeInTheDocument()
+            })
+            expect(screen.queryByRole('link')).not.toBeInTheDocument()
         })
     })
 })

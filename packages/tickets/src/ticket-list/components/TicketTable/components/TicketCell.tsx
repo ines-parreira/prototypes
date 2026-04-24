@@ -11,6 +11,8 @@ import { useTicketOtherAgentsViewing } from '../../../hooks/useTicketDisplayData
 import type { DisplayTextValue } from '../../../types/display'
 import { TicketListItemAgentsViewing } from '../../TicketListItem/components/TicketListItemAgentsViewing'
 import { DisplayText } from './DisplayText'
+import type { TicketTableCellLinkProps } from './TicketTableCellLink'
+import { TicketTableCellLink } from './TicketTableCellLink'
 
 export type TicketCellProps = {
     ticketId: TicketCompact['id']
@@ -19,6 +21,7 @@ export type TicketCellProps = {
     excerpt: DisplayTextValue
     hasFailedMessageTag?: boolean
     currentUserId?: number
+    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
 }
 
 export function TicketCell({
@@ -28,14 +31,15 @@ export function TicketCell({
     excerpt,
     hasFailedMessageTag = false,
     currentUserId,
+    linkProps,
 }: TicketCellProps) {
     const otherAgentsViewing = useTicketOtherAgentsViewing(
         ticketId,
         currentUserId,
     )
 
-    return (
-        <DataTableBaseCell gap="xs">
+    const content = (
+        <>
             <Box
                 flex={1}
                 minWidth={0}
@@ -75,6 +79,16 @@ export function TicketCell({
             <Box flexShrink={0}>
                 <TicketListItemAgentsViewing agents={otherAgentsViewing} />
             </Box>
-        </DataTableBaseCell>
+        </>
     )
+
+    if (linkProps) {
+        return (
+            <TicketTableCellLink {...linkProps} gap="xs">
+                {content}
+            </TicketTableCellLink>
+        )
+    }
+
+    return <DataTableBaseCell gap="xs">{content}</DataTableBaseCell>
 }

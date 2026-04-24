@@ -1,12 +1,13 @@
 import type { ComponentProps } from 'react'
 
 import { UserRole } from '@repo/permissions'
-import { clearViewsCount, setViewsCount } from '@repo/views'
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { Link } from 'react-router-dom'
 
 import type * as AxiomModule from '@gorgias/axiom'
+import { DataTableBaseCell } from '@gorgias/axiom'
 import {
     mockGetCurrentUserHandler,
     mockGetViewHandler,
@@ -20,28 +21,26 @@ import { TicketTable } from './TicketTable'
 
 const {
     createTicketTableColumnsMock,
-    pushMock,
     getItemMock,
     setItemMock,
     removeItemMock,
     clearMock,
     readyMock,
     observeTableMock,
+    clearViewsCountMock,
+    setViewsCountMock,
+    useViewCountMock,
 } = vi.hoisted(() => ({
-    createTicketTableColumnsMock: vi.fn(() => [
-        {
-            id: 'ticket',
-            accessorKey: 'subject',
-            header: 'Ticket',
-        },
-    ]),
-    pushMock: vi.fn(),
+    createTicketTableColumnsMock: vi.fn(),
     getItemMock: vi.fn(),
     setItemMock: vi.fn(),
     removeItemMock: vi.fn(),
     clearMock: vi.fn().mockResolvedValue(undefined),
     readyMock: vi.fn().mockResolvedValue(undefined),
     observeTableMock: vi.fn(() => ({ unsubscribe: vi.fn() })),
+    clearViewsCountMock: vi.fn(),
+    setViewsCountMock: vi.fn(),
+    useViewCountMock: vi.fn(),
 }))
 
 const server = setupServer()
@@ -55,14 +54,6 @@ const mockState = {
     refetchSpy: vi.fn(),
     setSortOrder: vi.fn(),
 }
-
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom')
-    return {
-        ...actual,
-        useHistory: () => ({ push: pushMock }),
-    }
-})
 
 vi.mock('@gorgias/axiom', async () => {
     const actual = await vi.importActual<typeof AxiomModule>('@gorgias/axiom')
@@ -83,6 +74,12 @@ vi.mock('@repo/preferences', () => ({
         timeFormat: '12h',
         timezone: 'UTC',
     }),
+}))
+
+vi.mock('@repo/views', () => ({
+    useViewCount: useViewCountMock,
+    clearViewsCount: clearViewsCountMock,
+    setViewsCount: setViewsCountMock,
 }))
 
 vi.mock('@repo/browser-storage', () => ({
@@ -212,7 +209,7 @@ beforeAll(() => {
 })
 
 afterEach(() => {
-    clearViewsCount()
+    clearViewsCountMock()
     server.resetHandlers()
 })
 
@@ -222,8 +219,59 @@ afterAll(() => {
 
 describe('TicketTable', () => {
     beforeEach(() => {
-        createTicketTableColumnsMock.mockClear()
-        setViewsCount({ 123: 7 })
+        createTicketTableColumnsMock.mockReset()
+        clearViewsCountMock.mockReset()
+        setViewsCountMock.mockReset()
+        useViewCountMock.mockReset()
+        createTicketTableColumnsMock.mockImplementation(
+            ({
+                onNavigateToTicket,
+            }: {
+                onNavigateToTicket?: (ticket: {
+                    id: number
+                    subject: string
+                    is_unread?: boolean
+                }) => void
+            }) => [
+                {
+                    id: 'ticket',
+                    accessorKey: 'subject',
+                    header: 'Ticket',
+                    cell: (cell: {
+                        row: {
+                            original: {
+                                id: number
+                                subject: string
+                                is_unread?: boolean
+                            }
+                        }
+                    }) => (
+                        <DataTableBaseCell {...cell} p={0}>
+                            <Link
+                                to={`/app/ticket/${cell.row.original.id}`}
+                                onClick={(event) => {
+                                    if (
+                                        event.button !== 0 ||
+                                        event.metaKey ||
+                                        event.ctrlKey ||
+                                        event.shiftKey ||
+                                        event.altKey
+                                    ) {
+                                        return
+                                    }
+
+                                    onNavigateToTicket?.(cell.row.original)
+                                }}
+                            >
+                                {cell.row.original.subject}
+                            </Link>
+                        </DataTableBaseCell>
+                    ),
+                },
+            ],
+        )
+        setViewsCountMock({ 123: 7 })
+        useViewCountMock.mockReturnValue(7)
         server.use(
             mockGetCurrentUserHandler(async () => HttpResponse.json(agentUser))
                 .handler,
@@ -244,7 +292,6 @@ describe('TicketTable', () => {
             { id: 2, subject: 'Second ticket' },
         ]
         mockState.error = null
-        pushMock.mockReset()
         mockState.markAsRead.mockReset()
         mockState.refetchSpy.mockReset()
         mockState.setSortOrder.mockReset()
@@ -263,7 +310,17 @@ describe('TicketTable', () => {
         expect(screen.queryByText('Network error')).not.toBeInTheDocument()
     })
 
-    it('marks unread tickets as read and navigates when a row is clicked', async () => {
+    it('renders ticket cells as links', async () => {
+        renderTicketTable()
+
+        await waitForTicketTableToBeReady()
+
+        expect(
+            screen.getByRole('link', { name: 'First ticket' }),
+        ).toHaveAttribute('href', '/app/ticket/1')
+    })
+
+    it('marks unread tickets as read and navigates when a ticket link is clicked', async () => {
         mockState.tickets = [
             { id: 1, subject: 'First ticket', is_unread: true },
             { id: 2, subject: 'Second ticket', is_unread: false },
@@ -272,14 +329,13 @@ describe('TicketTable', () => {
         const { user } = renderTicketTable({ onNavigateToTicket })
         await waitForTicketTableToBeReady()
 
-        await user.click(screen.getByText('First ticket'))
+        await user.click(screen.getByRole('link', { name: 'First ticket' }))
 
         expect(mockState.markAsRead).toHaveBeenCalledWith(1)
         expect(onNavigateToTicket).toHaveBeenCalledTimes(1)
-        expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
     })
 
-    it('does not mark already read tickets as read when a row is clicked', async () => {
+    it('does not mark already read tickets as read when a ticket link is clicked', async () => {
         mockState.tickets = [
             { id: 1, subject: 'First ticket', is_unread: false },
             { id: 2, subject: 'Second ticket', is_unread: false },
@@ -287,10 +343,38 @@ describe('TicketTable', () => {
         const { user } = renderTicketTable()
         await waitForTicketTableToBeReady()
 
-        await user.click(screen.getByText('First ticket'))
+        await user.click(screen.getByRole('link', { name: 'First ticket' }))
 
         expect(mockState.markAsRead).not.toHaveBeenCalled()
-        expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
+    })
+
+    it('does not trigger navigation side effects on modified clicks', async () => {
+        mockState.tickets = [
+            { id: 1, subject: 'First ticket', is_unread: true },
+        ]
+        const onNavigateToTicket = vi.fn()
+        renderTicketTable({ onNavigateToTicket })
+
+        await waitForTicketTableToBeReady()
+
+        fireEvent.click(screen.getByRole('link', { name: 'First ticket' }), {
+            metaKey: true,
+        })
+
+        expect(mockState.markAsRead).not.toHaveBeenCalled()
+        expect(onNavigateToTicket).not.toHaveBeenCalled()
+    })
+
+    it('does not navigate when the row checkbox is clicked', async () => {
+        const onNavigateToTicket = vi.fn()
+        const { user } = renderTicketTable({ onNavigateToTicket })
+
+        await waitForTicketTableToBeReady()
+
+        await user.click(getRowSelectionCheckbox())
+
+        expect(onNavigateToTicket).not.toHaveBeenCalled()
+        expect(mockState.markAsRead).not.toHaveBeenCalled()
     })
 
     it('pauses updates while a row is selected and resumes after clearing the selection', async () => {

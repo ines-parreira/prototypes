@@ -2,8 +2,10 @@ import type { UserDateTimePreferences } from '@repo/preferences'
 
 import {
     createColumnHelper,
-    DataTableBaseCell,
-    DataTableOverflowListCell,
+    OverflowList,
+    OverflowListItem,
+    OverflowListShowLess,
+    OverflowListShowMore,
     Tag,
 } from '@gorgias/axiom'
 import type { DataTableColumnDef } from '@gorgias/axiom'
@@ -17,6 +19,7 @@ import { PriorityCell } from './components/PriorityCell'
 import { SingleLineTextCell } from './components/SingleLineTextCell'
 import { SubjectOnlyCell } from './components/SubjectOnlyCell'
 import { TicketCell } from './components/TicketCell'
+import { TicketTableCellLink } from './components/TicketTableCellLink'
 
 const STATUS_TAG_COLOR = {
     open: 'purple',
@@ -46,12 +49,29 @@ const columnHelper = createColumnHelper<TicketTableRow>()
 export type TicketTableColumnsParams = {
     currentUserId?: number
     dateTimePreferences: UserDateTimePreferences
+    onNavigateToTicket?: (ticket: TicketTableRow) => void
 }
 
 export function createTicketTableColumns({
     currentUserId,
     dateTimePreferences,
+    onNavigateToTicket,
 }: TicketTableColumnsParams): DataTableColumnDef<TicketTableRow>[] {
+    const getLinkProps = (cell: {
+        column: unknown
+        table: unknown
+        row: { original: TicketTableRow }
+    }) => {
+        const ticket = cell.row.original
+
+        return {
+            column: cell.column as never,
+            table: cell.table as never,
+            to: `/app/ticket/${ticket.id}`,
+            onNavigateToTicket: () => onNavigateToTicket?.(ticket),
+        }
+    }
+
     return [
         columnHelper.display({
             id: 'ticket',
@@ -74,6 +94,7 @@ export function createTicketTableColumns({
                             !!ticket.last_sent_message_not_delivered
                         }
                         currentUserId={currentUserId}
+                        linkProps={getLinkProps(cell)}
                     />
                 )
             },
@@ -91,6 +112,7 @@ export function createTicketTableColumns({
                     <SubjectOnlyCell
                         value={ticket.displaySubject}
                         isUnread={ticket.is_unread}
+                        linkProps={getLinkProps(cell)}
                     />
                 )
             },
@@ -102,7 +124,10 @@ export function createTicketTableColumns({
             minSize: 180,
             maxSize: 220,
             cell: (cell) => (
-                <CustomerCell value={cell.row.original.displayCustomer} />
+                <CustomerCell
+                    value={cell.row.original.displayCustomer}
+                    linkProps={getLinkProps(cell)}
+                />
             ),
         }),
         columnHelper.accessor(
@@ -118,7 +143,10 @@ export function createTicketTableColumns({
                 minSize: 180,
                 maxSize: 250,
                 cell: (cell) => (
-                    <SingleLineTextCell value={{ text: cell.getValue() }} />
+                    <SingleLineTextCell
+                        value={{ text: cell.getValue() }}
+                        linkProps={getLinkProps(cell)}
+                    />
                 ),
             },
         ),
@@ -134,11 +162,11 @@ export function createTicketTableColumns({
                     : ((ticket.status ??
                           'open') as keyof typeof STATUS_TAG_COLOR)
                 return (
-                    <DataTableBaseCell>
+                    <TicketTableCellLink {...getLinkProps(cell)}>
                         <Tag color={STATUS_TAG_COLOR[status]}>
                             {STATUS_LABEL[status]}
                         </Tag>
-                    </DataTableBaseCell>
+                    </TicketTableCellLink>
                 )
             },
         }),
@@ -154,6 +182,7 @@ export function createTicketTableColumns({
                     <DateTimeCell
                         datetime={cell.getValue()}
                         preferences={dateTimePreferences}
+                        linkProps={getLinkProps(cell)}
                     />
                 ),
             },
@@ -165,15 +194,17 @@ export function createTicketTableColumns({
             minSize: 240,
             maxSize: 350,
             cell: (cell) => (
-                <DataTableOverflowListCell<
-                    TicketTableRow,
-                    TicketTableRow['tags'][number]
-                >
-                    {...cell}
-                    items={cell.row.original.tags}
-                >
-                    {(tag) => <Tag>{tag.name}</Tag>}
-                </DataTableOverflowListCell>
+                <TicketTableCellLink {...getLinkProps(cell)} overflow="hidden">
+                    <OverflowList gap="xxxs" w="100%">
+                        {cell.row.original.tags.map((tag, index) => (
+                            <OverflowListItem key={index}>
+                                <Tag>{tag.name}</Tag>
+                            </OverflowListItem>
+                        ))}
+                        <OverflowListShowMore />
+                        <OverflowListShowLess />
+                    </OverflowList>
+                </TicketTableCellLink>
             ),
         }),
         columnHelper.accessor((ticket) => ticket.priority ?? 'normal', {
@@ -181,7 +212,12 @@ export function createTicketTableColumns({
             header: 'Priority',
             enableSorting: true,
             hug: true,
-            cell: (cell) => <PriorityCell ticket={cell.row.original} />,
+            cell: (cell) => (
+                <PriorityCell
+                    ticket={cell.row.original}
+                    linkProps={getLinkProps(cell)}
+                />
+            ),
         }),
         columnHelper.accessor((ticket) => ticket.assignee_team?.name ?? null, {
             id: 'assignee_team',
@@ -190,9 +226,15 @@ export function createTicketTableColumns({
             hug: true,
             cell: (cell) =>
                 cell.getValue() ? (
-                    <SingleLineTextCell value={{ text: cell.getValue() }} />
+                    <SingleLineTextCell
+                        value={{ text: cell.getValue() }}
+                        linkProps={getLinkProps(cell)}
+                    />
                 ) : (
-                    <SingleLineTextCell value={null} />
+                    <SingleLineTextCell
+                        value={null}
+                        linkProps={getLinkProps(cell)}
+                    />
                 ),
         }),
         columnHelper.accessor(
@@ -206,9 +248,15 @@ export function createTicketTableColumns({
                 maxSize: 250,
                 cell: (cell) =>
                     cell.getValue() ? (
-                        <SingleLineTextCell value={{ text: cell.getValue() }} />
+                        <SingleLineTextCell
+                            value={{ text: cell.getValue() }}
+                            linkProps={getLinkProps(cell)}
+                        />
                     ) : (
-                        <SingleLineTextCell value={null} />
+                        <SingleLineTextCell
+                            value={null}
+                            linkProps={getLinkProps(cell)}
+                        />
                     ),
             },
         ),
@@ -218,7 +266,10 @@ export function createTicketTableColumns({
             enableSorting: false,
             hug: true,
             cell: (cell) => (
-                <SingleLineTextCell value={cell.row.original.displayTicketId} />
+                <SingleLineTextCell
+                    value={cell.row.original.displayTicketId}
+                    linkProps={getLinkProps(cell)}
+                />
             ),
         }),
         columnHelper.accessor(
@@ -234,9 +285,15 @@ export function createTicketTableColumns({
                 hug: true,
                 cell: (cell) =>
                     cell.getValue() ? (
-                        <SingleLineTextCell value={{ text: cell.getValue() }} />
+                        <SingleLineTextCell
+                            value={{ text: cell.getValue() }}
+                            linkProps={getLinkProps(cell)}
+                        />
                     ) : (
-                        <SingleLineTextCell value={null} />
+                        <SingleLineTextCell
+                            value={null}
+                            linkProps={getLinkProps(cell)}
+                        />
                     ),
             },
         ),
@@ -245,7 +302,12 @@ export function createTicketTableColumns({
             header: 'Channel',
             enableSorting: false,
             hug: true,
-            cell: (cell) => <ChannelCell ticket={cell.row.original} />,
+            cell: (cell) => (
+                <ChannelCell
+                    ticket={cell.row.original}
+                    linkProps={getLinkProps(cell)}
+                />
+            ),
         }),
         columnHelper.accessor((ticket) => ticket.created_datetime, {
             id: 'created_datetime',
@@ -257,6 +319,7 @@ export function createTicketTableColumns({
                 <DateTimeCell
                     datetime={cell.getValue()}
                     preferences={dateTimePreferences}
+                    linkProps={getLinkProps(cell)}
                 />
             ),
         }),
@@ -270,6 +333,7 @@ export function createTicketTableColumns({
                 <DateTimeCell
                     datetime={cell.getValue()}
                     preferences={dateTimePreferences}
+                    linkProps={getLinkProps(cell)}
                 />
             ),
         }),
@@ -285,6 +349,7 @@ export function createTicketTableColumns({
                     <DateTimeCell
                         datetime={cell.getValue()}
                         preferences={dateTimePreferences}
+                        linkProps={getLinkProps(cell)}
                     />
                 ),
             },
@@ -299,6 +364,7 @@ export function createTicketTableColumns({
                 <DateTimeCell
                     datetime={cell.getValue()}
                     preferences={dateTimePreferences}
+                    linkProps={getLinkProps(cell)}
                 />
             ),
         }),
@@ -312,6 +378,7 @@ export function createTicketTableColumns({
                 <DateTimeCell
                     datetime={cell.getValue()}
                     preferences={dateTimePreferences}
+                    linkProps={getLinkProps(cell)}
                 />
             ),
         }),

@@ -3,7 +3,6 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { usePrevious } from '@repo/hooks'
 import { useUserDateTimePreferences } from '@repo/preferences'
 import { useViewCount } from '@repo/views'
-import { useHistory } from 'react-router-dom'
 
 import {
     createLocalStoragePersistence,
@@ -96,7 +95,6 @@ function TicketTableComponent({
     onDraftFieldsChange,
     searchTracking,
 }: Props) {
-    const history = useHistory()
     const { currentUserId } = useCurrentUserId()
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
     const [isAllSelected, setIsAllSelected] = useState(false)
@@ -236,7 +234,7 @@ function TicketTableComponent({
 
     const { markAsRead } = useMarkTicketAsRead()
 
-    const handleRowClick = useCallback(
+    const handleNavigateToTicket = useCallback(
         (ticket: TicketCompact) => {
             const selectedIndex = items.findIndex(
                 (item) => item.id === ticket.id,
@@ -249,9 +247,8 @@ function TicketTableComponent({
             }
             if (ticket.is_unread) markAsRead(ticket.id)
             onNavigateToTicket?.()
-            history.push(`/app/ticket/${ticket.id}`)
         },
-        [history, items, markAsRead, onNavigateToTicket, searchTracking],
+        [items, markAsRead, onNavigateToTicket, searchTracking],
     )
 
     const { field: currentSortField, direction: currentSortDirection } =
@@ -280,8 +277,9 @@ function TicketTableComponent({
             createTicketTableColumns({
                 currentUserId,
                 dateTimePreferences,
+                onNavigateToTicket: handleNavigateToTicket,
             }),
-        [currentUserId, dateTimePreferences],
+        [currentUserId, dateTimePreferences, handleNavigateToTicket],
     )
 
     const selectedTicketIds = useMemo(
@@ -456,7 +454,6 @@ function TicketTableComponent({
                 data={tableItems}
                 columns={columns}
                 isLoading={isLoading}
-                onRowClick={handleRowClick}
                 overflow="scroll"
                 selection={{
                     enable: true,
