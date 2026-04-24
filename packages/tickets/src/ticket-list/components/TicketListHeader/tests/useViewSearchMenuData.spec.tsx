@@ -226,6 +226,20 @@ describe('useViewSearchMenuData', () => {
         expect(breadcrumbsByViewId[hiddenDefaultView.id]).toBeUndefined()
     })
 
+    it('returns shared matches before private matches in search results', () => {
+        const { result } = renderHook(() =>
+            useViewSearchMenuData({ viewId: 1, searchValue: 'section' }),
+        )
+
+        expect(result.current.searchResults.map(({ view }) => view.id)).toEqual(
+            [
+                sharedSectionView.id,
+                privateSectionView.id,
+                privateSecondSectionView.id,
+            ],
+        )
+    })
+
     it('only exposes visible default views in the menu and search results', () => {
         const { result } = renderHook(() =>
             useViewSearchMenuData({ viewId: 1, searchValue: 'clo' }),

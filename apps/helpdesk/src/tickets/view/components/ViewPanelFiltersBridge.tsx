@@ -744,27 +744,22 @@ export function ViewPanelFiltersBridge({
                             >
                                 {isExistingView && (
                                     <>
-                                        <Tooltip
-                                            trigger={
-                                                <Button
-                                                    variant="secondary"
-                                                    aria-label="Export tickets"
-                                                    icon="comm-share-i-os-export"
-                                                    onClick={() => {
-                                                        void handleExportTickets()
-                                                    }}
-                                                    isDisabled={
-                                                        isLaunchingExport ||
-                                                        !canExportTickets
-                                                    }
-                                                    isLoading={
-                                                        isLaunchingExport
-                                                    }
-                                                />
+                                        <Button
+                                            variant="secondary"
+                                            leadingSlot={
+                                                <Icon name="comm-share-i-os-export" />
                                             }
+                                            onClick={() => {
+                                                void handleExportTickets()
+                                            }}
+                                            isDisabled={
+                                                isLaunchingExport ||
+                                                !canExportTickets
+                                            }
+                                            isLoading={isLaunchingExport}
                                         >
-                                            <TooltipContent title="Export tickets" />
-                                        </Tooltip>
+                                            Export tickets
+                                        </Button>
                                         <ViewSharingButton view={activeView} />
                                     </>
                                 )}

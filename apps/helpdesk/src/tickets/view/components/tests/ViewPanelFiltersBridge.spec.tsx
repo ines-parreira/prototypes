@@ -1057,9 +1057,12 @@ describe('ViewPanelFiltersBridge', () => {
     it('renders export and sharing actions for existing views', () => {
         renderComponent()
 
-        expect(
-            screen.getByRole('button', { name: /export tickets/i }),
-        ).toBeInTheDocument()
+        const exportButton = screen.getByRole('button', {
+            name: /export tickets/i,
+        })
+
+        expect(exportButton).toBeInTheDocument()
+        expect(exportButton).toHaveTextContent('Export tickets')
         expect(
             screen.getByRole('button', { name: /share view/i }),
         ).toBeInTheDocument()

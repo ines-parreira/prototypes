@@ -2,16 +2,18 @@ import type { UserDateTimePreferences } from '@repo/preferences'
 
 import {
     createColumnHelper,
+    Dot,
     OverflowList,
     OverflowListItem,
     OverflowListShowLess,
     OverflowListShowMore,
     Tag,
 } from '@gorgias/axiom'
-import type { DataTableColumnDef } from '@gorgias/axiom'
+import type { ColorValue, DataTableColumnDef } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
 import type { DisplayTextValue } from '../../types/display'
+import { AssigneeCell } from './components/AssigneeCell'
 import { ChannelCell } from './components/ChannelCell'
 import { CustomerCell } from './components/CustomerCell'
 import { DateTimeCell } from './components/DateTimeCell'
@@ -130,26 +132,19 @@ export function createTicketTableColumns({
                 />
             ),
         }),
-        columnHelper.accessor(
-            (ticket) => {
-                const user = ticket.assignee_user
-                if (!user) return 'Unassigned'
-                return `${user.firstname} ${user.lastname}`.trim() || user.email
-            },
-            {
-                id: 'assignee',
-                header: 'Assignee',
-                enableSorting: false,
-                minSize: 180,
-                maxSize: 250,
-                cell: (cell) => (
-                    <SingleLineTextCell
-                        value={{ text: cell.getValue() }}
-                        linkProps={getLinkProps(cell)}
-                    />
-                ),
-            },
-        ),
+        columnHelper.display({
+            id: 'assignee',
+            header: 'Assignee',
+            enableSorting: false,
+            minSize: 180,
+            maxSize: 250,
+            cell: (cell) => (
+                <AssigneeCell
+                    assignee={cell.row.original.assignee_user}
+                    linkProps={getLinkProps(cell)}
+                />
+            ),
+        }),
         columnHelper.display({
             id: 'status',
             header: 'Status',
@@ -182,6 +177,7 @@ export function createTicketTableColumns({
                     <DateTimeCell
                         datetime={cell.getValue()}
                         preferences={dateTimePreferences}
+                        isUnread={cell.row.original.is_unread}
                         linkProps={getLinkProps(cell)}
                     />
                 ),
@@ -198,7 +194,20 @@ export function createTicketTableColumns({
                     <OverflowList gap="xxxs" w="100%">
                         {cell.row.original.tags.map((tag, index) => (
                             <OverflowListItem key={index}>
-                                <Tag>{tag.name}</Tag>
+                                <Tag
+                                    {...(tag.decoration?.color && {
+                                        leadingSlot: (
+                                            <Dot
+                                                color={
+                                                    tag.decoration
+                                                        .color as ColorValue
+                                                }
+                                            />
+                                        ),
+                                    })}
+                                >
+                                    {tag.name}
+                                </Tag>
                             </OverflowListItem>
                         ))}
                         <OverflowListShowMore />

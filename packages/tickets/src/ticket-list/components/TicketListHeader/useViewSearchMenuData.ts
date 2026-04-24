@@ -109,10 +109,10 @@ export function useViewSearchMenuData({
 
         const searchResults = [
             ...systemViews.map((view) => createSearchResult(view, sectionById)),
+            ...publicViews.map((view) => createSearchResult(view, sectionById)),
             ...privateViews.map((view) =>
                 createSearchResult(view, sectionById),
             ),
-            ...publicViews.map((view) => createSearchResult(view, sectionById)),
         ].filter((result) =>
             result.searchText.includes(searchValue.toLowerCase()),
         )

@@ -14,17 +14,28 @@ import { TicketTableCellLink } from './TicketTableCellLink'
 type Props = {
     datetime: string | null | undefined
     preferences: UserDateTimePreferences
+    isUnread?: boolean
     linkProps?: Omit<TicketTableCellLinkProps, 'children'>
 }
 
-export function DateTimeCell({ datetime, preferences, linkProps }: Props) {
+export function DateTimeCell({
+    datetime,
+    preferences,
+    isUnread = false,
+    linkProps,
+}: Props) {
     const formattedDatetime = formatTicketTableDateTime(datetime, preferences)
 
     const content = !formattedDatetime ? null : (
         <Tooltip
             placement="right"
             trigger={() => (
-                <Text overflow="ellipsis">{formattedDatetime.cellLabel}</Text>
+                <Text
+                    overflow="ellipsis"
+                    variant={isUnread ? 'bold' : 'regular'}
+                >
+                    {formattedDatetime.cellLabel}
+                </Text>
             )}
         >
             <TooltipContent title={formattedDatetime.tooltipLabel} />

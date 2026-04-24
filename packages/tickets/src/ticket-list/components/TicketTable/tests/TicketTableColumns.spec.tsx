@@ -475,30 +475,46 @@ describe('createTicketTableColumns', () => {
 
     describe('assignee column', () => {
         it('renders "Unassigned" when there is no assignee', () => {
-            renderColumn('assignee', mockTicketCompact({ assignee_user: null }))
+            const { container } = renderColumn(
+                'assignee',
+                mockTicketCompact({ assignee_user: null }),
+            )
 
-            expect(screen.getByText('Unassigned')).toBeInTheDocument()
+            const unassignedLabel = screen.getByText('Unassigned')
+
+            expect(unassignedLabel).toBeInTheDocument()
+            expect(
+                container.querySelector('[data-name="avatar"]'),
+            ).not.toBeInTheDocument()
         })
 
-        it('renders the assignee full name', () => {
+        it('renders the assignee avatar next to the full name', () => {
             const ticket = mockTicketCompact({
                 assignee_user: {
                     id: 5,
+                    name: '',
                     firstname: 'Jane',
                     lastname: 'Doe',
                     email: 'jane@example.com',
+                    meta: {
+                        profile_picture_url: 'https://example.com/avatar.jpg',
+                    },
                 } as any,
             })
 
-            renderColumn('assignee', ticket)
+            const { container } = renderColumn('assignee', ticket)
 
             expect(screen.getByText('Jane Doe')).toBeInTheDocument()
+            expect(
+                container.querySelector('[data-name="image"]'),
+            ).toBeInTheDocument()
         })
 
         it('falls back to email when the assignee has no name', () => {
             const ticket = mockTicketCompact({
                 assignee_user: {
                     id: 5,
+                    name: '',
                     firstname: '',
                     lastname: '',
                     email: 'jane@example.com',
@@ -567,6 +583,26 @@ describe('createTicketTableColumns', () => {
 
             expect(screen.getByText('billing')).toBeInTheDocument()
             expect(screen.getByText('urgent')).toBeInTheDocument()
+        })
+
+        it('renders tag decoration dots when a tag has a decoration color', () => {
+            renderColumn(
+                'tags',
+                mockTicketCompact({
+                    tags: [
+                        {
+                            id: 1,
+                            name: 'billing',
+                            decoration: { color: 'red' },
+                        },
+                    ] as any,
+                }),
+            )
+
+            const tag = screen.getByText('billing').closest('[data-name="tag"]')
+
+            expect(tag).toBeInTheDocument()
+            expect(tag?.querySelector('[data-name="dot"]')).toBeInTheDocument()
         })
     })
 
@@ -708,6 +744,23 @@ describe('createTicketTableColumns', () => {
             expect(screen.getByText('Yesterday at 9:30am')).toBeInTheDocument()
         })
 
+        it('renders unread last message text in bold', () => {
+            renderColumn(
+                'last_message_datetime',
+                mockTicketCompact({
+                    is_unread: true,
+                    last_message_datetime: '2026-03-15T09:30:00Z',
+                }),
+            )
+
+            const text = screen
+                .getByText('Yesterday at 9:30am')
+                .closest('[data-name="text"]')
+
+            expect(text).toBeInTheDocument()
+            expect(text?.querySelector('strong')).toBeInTheDocument()
+        })
+
         it.each([
             {
                 id: 'last_message_datetime',
@@ -822,24 +875,47 @@ describe('createTicketTableColumns', () => {
                 name: 'renders a formatted datetime without a link wrapper',
                 datetime: '2026-03-15T09:30:00Z',
                 expectedText: 'Yesterday at 9:30am',
+                isUnread: false,
+                expectsBold: false,
+            },
+            {
+                name: 'renders unread formatted datetime in bold without a link wrapper',
+                datetime: '2026-03-15T09:30:00Z',
+                expectedText: 'Yesterday at 9:30am',
+                isUnread: true,
+                expectsBold: true,
             },
             {
                 name: 'renders an empty non-link cell when datetime is null',
                 datetime: null,
                 expectedText: null,
+                isUnread: false,
+                expectsBold: false,
             },
-        ])('$name', ({ datetime, expectedText }) => {
+        ])('$name', ({ datetime, expectedText, isUnread, expectsBold }) => {
             const { container } = renderStandaloneCell(
                 <DateTimeCell
                     datetime={datetime}
                     preferences={dateTimePreferences}
+                    isUnread={isUnread}
                 />,
             )
 
             expect(screen.queryByRole('link')).not.toBeInTheDocument()
 
             if (expectedText) {
-                expect(screen.getByText(expectedText)).toBeInTheDocument()
+                const text = screen
+                    .getByText(expectedText)
+                    .closest('[data-name="text"]')
+
+                expect(text).toBeInTheDocument()
+                if (expectsBold) {
+                    expect(text?.querySelector('strong')).toBeInTheDocument()
+                } else {
+                    expect(
+                        text?.querySelector('strong'),
+                    ).not.toBeInTheDocument()
+                }
             } else {
                 expect(
                     container.querySelector('tbody')?.textContent?.trim(),

@@ -13,7 +13,7 @@ type Props = {
 export function SingleLineTextCell({ value, linkProps }: Props) {
     const content =
         !value?.text && !value?.highlightedHtml ? null : (
-            <OverflowTooltip>
+            <OverflowTooltip placement="right">
                 <DisplayText value={value} overflow="ellipsis" />
             </OverflowTooltip>
         )
