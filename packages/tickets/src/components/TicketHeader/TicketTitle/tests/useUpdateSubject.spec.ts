@@ -36,9 +36,11 @@ describe('useUpdateSubject', () => {
         await result.current.updateSubject(123, 'new subject')
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to update subject')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update subject',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

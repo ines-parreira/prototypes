@@ -19,13 +19,18 @@ exports[`<AutomateSubscriptionModal /> should display loader 1`] = `
 exports[`<AutomateSubscriptionModal /> should not render the modal 1`] = `
 <body>
   <div />
-  <section
-    aria-atomic="false"
-    aria-label="Notifications alt+T"
-    aria-live="polite"
-    aria-relevant="additions text"
-    tabindex="-1"
-  />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -362,13 +367,18 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
   class="modal-open"
 >
   <div />
-  <section
-    aria-atomic="false"
-    aria-label="Notifications alt+T"
-    aria-live="polite"
-    aria-relevant="additions text"
-    tabindex="-1"
-  />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"

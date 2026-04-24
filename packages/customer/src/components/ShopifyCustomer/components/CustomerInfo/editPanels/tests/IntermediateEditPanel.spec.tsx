@@ -379,9 +379,11 @@ describe('IntermediateEditPanel', () => {
         await user.click(screen.getByRole('button', { name: /save/i }))
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to save field preferences')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to save field preferences',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
 
         expect(defaultProps.onClose).not.toHaveBeenCalled()

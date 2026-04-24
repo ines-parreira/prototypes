@@ -71,9 +71,11 @@ describe('BillingAddressSection', () => {
             'Jane Doe\n100 Main St,\nSuite 200,\nBoston, MA,\nUS 02101',
         )
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Address copied to clipboard')
-            expect(toast).toHaveAttribute('data-intent', 'success')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Address copied to clipboard',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 

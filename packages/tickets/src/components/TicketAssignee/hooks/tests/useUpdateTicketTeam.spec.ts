@@ -36,9 +36,11 @@ describe('useUpdateTicketTeam', () => {
         await result.current.updateTicketTeam({ id: 1 } as any)
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to update team assignment')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update team assignment',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

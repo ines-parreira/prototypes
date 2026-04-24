@@ -387,9 +387,11 @@ describe('TagsMultiSelect', () => {
             )
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Failed to create new tag')
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to create new tag',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
 
             await waitForTriggerReady()

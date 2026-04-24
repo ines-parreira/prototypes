@@ -115,11 +115,11 @@ describe('DeleteStatusConfirmationModal', () => {
             await act(() => user.click(deleteButton))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
-                    'Status "Lunch Break" has been deleted',
-                )
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Status "Lunch Break" has been deleted',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
             expect(mockOnOpenChange).toHaveBeenCalled()
         })
@@ -138,11 +138,11 @@ describe('DeleteStatusConfirmationModal', () => {
 
             expect(mockMutateAsync).toHaveBeenCalled()
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
-                    'Failed to delete status. Please try again.',
-                )
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to delete status. Please try again.',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
             expect(mockOnOpenChange).not.toHaveBeenCalled()
         })
@@ -175,11 +175,11 @@ describe('DeleteStatusConfirmationModal', () => {
             await act(() => user.click(deleteButton))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
-                    'Status "Coffee Break" has been deleted',
-                )
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Status "Coffee Break" has been deleted',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
     })

@@ -67,9 +67,11 @@ describe('useMergeCustomers', () => {
             queryKey: queryKeys.customers.getCustomer(2),
         })
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Customers successfully merged.')
-            expect(toast).toHaveAttribute('data-intent', 'success')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Customers successfully merged.',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -94,9 +96,11 @@ describe('useMergeCustomers', () => {
         ).rejects.toThrow('merge failed')
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Could not merge customers')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Could not merge customers',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

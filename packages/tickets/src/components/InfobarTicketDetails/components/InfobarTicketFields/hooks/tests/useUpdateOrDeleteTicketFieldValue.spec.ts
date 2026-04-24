@@ -50,9 +50,11 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
         })
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to update ticket field')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update ticket field',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

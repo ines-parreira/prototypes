@@ -44,9 +44,11 @@ describe('useTrashTicket', () => {
         })
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Ticket has been moved to trash')
-            expect(toast).toHaveAttribute('data-intent', 'success')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Ticket has been moved to trash',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -63,9 +65,11 @@ describe('useTrashTicket', () => {
         })
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to move to trash')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to move to trash',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

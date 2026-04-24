@@ -54,9 +54,11 @@ describe('useUpdateOrDeleteCustomCustomerFieldValue', () => {
         })
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to update customer field')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update customer field',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

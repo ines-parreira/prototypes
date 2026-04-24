@@ -36,9 +36,11 @@ describe('useUpdateTicketUser', () => {
         await result.current.updateTicketUser({ id: 1 } as any)
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to update user assignment')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update user assignment',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

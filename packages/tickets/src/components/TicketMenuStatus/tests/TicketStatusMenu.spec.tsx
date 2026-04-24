@@ -218,9 +218,11 @@ describe('TicketStatus', () => {
             await act(() => user.click(nextWeekButton))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Ticket has been snoozed')
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Ticket has been snoozed',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
                 expect(legacyGoToNextTicket).toHaveBeenCalled()
             })
         })
@@ -322,9 +324,7 @@ describe('TicketStatus', () => {
                     status: TicketStatus.Closed,
                 })
                 expect(screen.queryByRole('grid')).not.toBeInTheDocument()
-                expect(
-                    screen.queryByRole('status', { hidden: true }),
-                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
 
                 resolveSnooze!()
                 await snoozePromise
@@ -351,9 +351,11 @@ describe('TicketStatus', () => {
             await act(() => user.click(nextWeekButton))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Failed to snooze ticket')
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to snooze ticket',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -432,9 +434,11 @@ describe('TicketStatus', () => {
             await act(() => user.click(nextWeekButton))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Ticket has been snoozed')
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Ticket has been snoozed',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
                 expect(legacyGoToNextTicket).toHaveBeenCalled()
             })
         })
@@ -455,9 +459,11 @@ describe('TicketStatus', () => {
             await act(() => user.click(reopenOption))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Failed to open ticket')
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to open ticket',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })
@@ -596,9 +602,11 @@ describe('TicketStatus', () => {
             await act(() => user.click(nextWeekButton))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Ticket has been snoozed')
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Ticket has been snoozed',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
                 expect(legacyGoToNextTicket).toHaveBeenCalled()
             })
         })
@@ -763,9 +771,11 @@ describe('TicketStatus', () => {
             })
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Failed to close ticket')
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to close ticket',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -785,9 +795,11 @@ describe('TicketStatus', () => {
             })
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Failed to open ticket')
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to open ticket',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })

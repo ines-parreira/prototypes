@@ -332,11 +332,11 @@ describe('TicketActions', () => {
             await act(() => user.click(markAsSpamItem))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
-                    'Ticket has been marked as spam',
-                )
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Ticket has been marked as spam',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
                 expect(
                     screen.getByRole('button', { name: 'Undo' }),
                 ).toBeInTheDocument()
@@ -362,9 +362,7 @@ describe('TicketActions', () => {
             await act(() => user.click(unmarkAsSpamItem))
 
             await waitFor(() => {
-                expect(
-                    screen.queryByRole('status', { hidden: true }),
-                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             })
         })
 
@@ -386,9 +384,11 @@ describe('TicketActions', () => {
             await act(() => user.click(markAsSpamItem))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Failed to mark as spam')
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to mark as spam',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })
@@ -432,11 +432,11 @@ describe('TicketActions', () => {
             await act(() => user.click(markAsUnreadItem))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
-                    'Ticket has been marked as unread',
-                )
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Ticket has been marked as unread',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
                 expect(onToggleUnread).toHaveBeenCalledWith(123, true)
             })
         })
@@ -459,9 +459,11 @@ describe('TicketActions', () => {
             await act(() => user.click(markAsUnreadItem))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Failed to mark as unread')
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to mark as unread',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })
@@ -498,11 +500,11 @@ describe('TicketActions', () => {
             await act(() => user.click(deleteButton))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent(
-                    'Ticket has been moved to trash',
-                )
-                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Ticket has been moved to trash',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
                 expect(
                     screen.getByRole('button', { name: 'Undo' }),
                 ).toBeInTheDocument()
@@ -562,9 +564,7 @@ describe('TicketActions', () => {
             await act(() => user.click(restoreMenuItem))
 
             await waitFor(() => {
-                expect(
-                    screen.queryByRole('status', { hidden: true }),
-                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             })
         })
 
@@ -591,9 +591,11 @@ describe('TicketActions', () => {
             await act(() => user.click(deleteButton))
 
             await waitFor(() => {
-                const toast = screen.getByRole('status', { hidden: true })
-                expect(toast).toHaveTextContent('Failed to move to trash')
-                expect(toast).toHaveAttribute('data-intent', 'destructive')
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to move to trash',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 

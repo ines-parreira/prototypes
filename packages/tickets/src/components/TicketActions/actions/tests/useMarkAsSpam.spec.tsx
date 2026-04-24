@@ -42,9 +42,11 @@ describe('useMarkAsSpam', () => {
         await result.current.markAsSpam(1, { spam: true })
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Ticket has been marked as spam')
-            expect(toast).toHaveAttribute('data-intent', 'success')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Ticket has been marked as spam',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -59,9 +61,11 @@ describe('useMarkAsSpam', () => {
         await result.current.markAsSpam(1, { spam: true })
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to mark as spam')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to mark as spam',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

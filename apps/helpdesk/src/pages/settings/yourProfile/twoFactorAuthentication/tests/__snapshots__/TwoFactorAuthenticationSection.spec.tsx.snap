@@ -53,13 +53,18 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       </button>
     </div>
   </div>
-  <section
-    aria-atomic="false"
-    aria-label="Notifications alt+T"
-    aria-live="polite"
-    aria-relevant="additions text"
-    tabindex="-1"
-  />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -105,13 +110,18 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       </button>
     </div>
   </div>
-  <section
-    aria-atomic="false"
-    aria-label="Notifications alt+T"
-    aria-live="polite"
-    aria-relevant="additions text"
-    tabindex="-1"
-  />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -160,13 +170,18 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       </span>
     </button>
   </div>
-  <section
-    aria-atomic="false"
-    aria-label="Notifications alt+T"
-    aria-live="polite"
-    aria-relevant="additions text"
-    tabindex="-1"
-  />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -204,12 +219,17 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       </span>
     </button>
   </div>
-  <section
-    aria-atomic="false"
-    aria-label="Notifications alt+T"
-    aria-live="polite"
-    aria-relevant="additions text"
-    tabindex="-1"
-  />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;

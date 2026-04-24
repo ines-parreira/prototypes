@@ -344,9 +344,7 @@ describe('TicketHeader', () => {
                     })
                 })
 
-                expect(
-                    screen.queryByRole('status', { hidden: true }),
-                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             })
 
             it('should show an error toast when the ticket subject update fails', async () => {
@@ -370,11 +368,11 @@ describe('TicketHeader', () => {
                 await act(() => user.tab())
 
                 await waitFor(() => {
-                    const toast = screen.getByRole('status', {
-                        hidden: true,
-                    })
-                    expect(toast).toHaveTextContent('Failed to update subject')
-                    expect(toast).toHaveAttribute('data-intent', 'destructive')
+                    expect(
+                        screen.getByRole('status', {
+                            name: 'Failed to update subject',
+                        }),
+                    ).toHaveAttribute('data-intent', 'destructive')
                 })
             })
 

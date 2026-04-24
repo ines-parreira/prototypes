@@ -45,9 +45,11 @@ describe('useMergeTickets', () => {
         )
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Tickets merged successfully')
-            expect(toast).toHaveAttribute('data-intent', 'success')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Tickets merged successfully',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -65,9 +67,11 @@ describe('useMergeTickets', () => {
         )
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Could not merge tickets')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Could not merge tickets',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

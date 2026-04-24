@@ -36,9 +36,11 @@ describe('useUpdateTicketPriority', () => {
         await result.current.updateTicketPriority('high' as any)
 
         await waitFor(() => {
-            const toast = screen.getByRole('status', { hidden: true })
-            expect(toast).toHaveTextContent('Failed to update ticket priority')
-            expect(toast).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update ticket priority',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })
