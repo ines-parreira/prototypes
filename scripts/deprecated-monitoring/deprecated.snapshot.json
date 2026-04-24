@@ -1,6 +1,6 @@
 {
-  "date": "2026-04-21T12:07:43.799Z",
-  "total": 4947,
+  "date": "2026-04-24T10:22:44.126Z",
+  "total": 4950,
   "deprecated": [
     {
       "nodeType": "VariableDeclaration",
@@ -1693,7 +1693,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "Avatar",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Avatar />` from @gorgias/axiom instead.\n * @date 2025-04-08\n * @type ui-kit-migration\n ",
-      "count": 30,
+      "count": 31,
       "filePath": "apps/helpdesk/src/pages/common/components/Avatar/Avatar.tsx",
       "usages": [
         {
@@ -1727,6 +1727,7 @@
             "apps/helpdesk/src/pages/tickets/detail/components/RuleSuggestion/InTicketSuggestionContainer.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Container.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallContainer.tsx",
+            "apps/helpdesk/src/routes/layout/userMenu/UserMenuTrigger.tsx",
             "apps/helpdesk/src/ticket-list-view/components/bulk-actions/TeamDropdownItem.tsx",
             "apps/helpdesk/src/ticket-list-view/components/bulk-actions/UserDropdownItem.tsx"
           ]
@@ -3973,6 +3974,23 @@
       ]
     },
     {
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "UserMenu",
+      "comment": "*\n * @deprecated use UserMenu from routes/layout/userMenu instead\n * @date 2026-04-22\n * @type wayfinding-ms1\n ",
+      "count": 3,
+      "filePath": "apps/helpdesk/src/common/navigation/components/UserMenu.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/common/navigation/components/tests/UserMenu.spec.tsx",
+            "apps/helpdesk/src/common/navigation/components/UserItem.tsx",
+            "apps/helpdesk/src/common/navigation/components/UserMenuWithToggle.tsx"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "BASIC_AGENT_ROLE",
       "comment": "*\n * @deprecated Use UserRole enum instead from @repo/utils package\n * @date 2025-11-18\n * @type permissions-migration\n ",
@@ -4871,7 +4889,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1449,
+      "count": 1448,
       "usages": [
         {
           "name": "LegacyButton",

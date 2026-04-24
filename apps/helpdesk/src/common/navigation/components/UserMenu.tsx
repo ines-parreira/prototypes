@@ -48,6 +48,11 @@ type Props = {
     onClose: () => void
 }
 
+/**
+ * @deprecated use UserMenu from routes/layout/userMenu instead
+ * @date 2026-04-22
+ * @type wayfinding-ms1
+ */
 export default function UserMenu({ onClose }: Props) {
     const { hasUIVisionBetaBaselineFlag } = useHelpdeskV2BaselineFlag()
     const theme = useTheme()

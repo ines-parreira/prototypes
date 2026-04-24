@@ -59,3 +59,5 @@ export { AgentAvatar } from './components'
 export { LiveAgentsRealtimeListener } from './components'
 
 export { AVAILABLE_STATUS } from './constants'
+
+export { formatDuration } from './utils'

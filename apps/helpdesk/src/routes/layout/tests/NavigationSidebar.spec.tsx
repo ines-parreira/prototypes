@@ -27,9 +27,8 @@ const usePreviousProductNavigationMock = assumeMock(
     usePreviousProductNavigation,
 )
 
-jest.mock('common/navigation/components/UserItem', () => ({
-    __esModule: true,
-    default: () => <div>UserItem</div>,
+jest.mock('routes/layout/UserMenu', () => ({
+    UserMenu: () => <div>UserMenu</div>,
 }))
 
 jest.mock('@repo/hooks', () => ({
@@ -116,19 +115,19 @@ describe('NavigationSidebar', () => {
             expect(screen.getByText('InboxSidebar')).toBeInTheDocument()
         })
 
-        it('should render footer with UserItem and buttons - expanded state', () => {
+        it('should render footer with UserMenu and buttons - expanded state', () => {
             renderWithQueryClientProvider(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
             )
-            expect(screen.getByText('UserItem')).toBeInTheDocument()
+            expect(screen.getByText('UserMenu')).toBeInTheDocument()
             expect(screen.getByText('NotificationsButton')).toBeInTheDocument()
             const buttons = screen.getAllByRole('button')
             expect(buttons.length).toBeGreaterThanOrEqual(1)
         })
 
-        it('should render footer with UserItem and buttons - collapsed state', () => {
+        it('should render footer with UserMenu and buttons - collapsed state', () => {
             renderWithQueryClientProvider(
                 <MockSidebarProvider
                     isCollapsed={true}
@@ -137,7 +136,7 @@ describe('NavigationSidebar', () => {
                     <NavigationSidebar />
                 </MockSidebarProvider>,
             )
-            expect(screen.getByText('UserItem')).toBeInTheDocument()
+            expect(screen.getByText('UserMenu')).toBeInTheDocument()
             expect(screen.getByText('NotificationsButton')).toBeInTheDocument()
             const buttons = screen.getAllByRole('button')
             expect(buttons.length).toBeGreaterThanOrEqual(1)

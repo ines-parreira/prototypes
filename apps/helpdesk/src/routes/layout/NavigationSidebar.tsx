@@ -13,7 +13,6 @@ import { ViewCountDebugPanel } from '@repo/views'
 
 import { Box, Button, Separator, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import UserItem from 'common/navigation/components/UserItem'
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
 import { usePreviousProductNavigation } from 'routes/hooks/usePreviousProductNavigation'
@@ -25,6 +24,7 @@ import {
     SidebarContentType,
 } from 'routes/layout/productConfig'
 import { SidebarProductHeader } from 'routes/layout/SidebarProductHeader'
+import { UserMenu } from 'routes/layout/UserMenu'
 import { toggleChat } from 'utils'
 
 export function NavigationSidebar() {
@@ -125,7 +125,7 @@ export function NavigationSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <UserItem />
+                <UserMenu />
                 <Box
                     gap="xxxxs"
                     alignItems="center"
