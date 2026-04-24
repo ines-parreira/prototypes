@@ -3,7 +3,7 @@ import type {
     GorgiasChatPreviewOrdersOptions,
 } from 'models/integration/types/gorgiasChat'
 
-const PREVIEW_ORDER_CREATED_AT = new Date(
+export const PREVIEW_ORDER_CREATED_AT = new Date(
     Date.now() - 7 * 24 * 60 * 60 * 1000,
 ).toISOString()
 

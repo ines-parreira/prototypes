@@ -165,16 +165,24 @@ export type GorgiasChatPreviewSelfServiceConfiguration = {
     workflowsEntrypoints?: GorgiasChatWorkflowEntrypoint[]
 }
 
-type GorgiasChatPreviewPriceSet = {
+export type GorgiasChatPreviewPriceSet = {
     shop_money: { amount: string; currency_code: string }
     presentment_money: { amount: string; currency_code: string }
+}
+
+export type GorgiasChatPreviewLineItem = {
+    title: string
+    variant_title: string | null
+    quantity: number
+    price_set: GorgiasChatPreviewPriceSet
+    product_image_url: string | null
 }
 
 export type GorgiasChatPreviewOrderFulfillment = {
     id: number
     name: string
     shipment_status: string | null
-    line_items: unknown[]
+    line_items: GorgiasChatPreviewLineItem[]
     tracking_urls: string[]
     tracking_numbers: string[]
     tracking_company: string | null
@@ -220,7 +228,7 @@ export type GorgiasChatPreviewOrder = {
         province_code?: string | null
     } | null
     billing_address: unknown | null
-    line_items: unknown[]
+    line_items: GorgiasChatPreviewLineItem[]
     fulfillments: GorgiasChatPreviewOrderFulfillment[]
     subtotal_price_set: GorgiasChatPreviewPriceSet
     total_price_set: GorgiasChatPreviewPriceSet

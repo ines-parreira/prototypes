@@ -1,6 +1,9 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import type { ChatPreviewPanelContextValue } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+
 import { useReportOrderIssueFlow } from '../hooks/useReportOrderIssueFlow'
 import { ReportOrderIssueFlowView } from '../ReportOrderIssueFlowView'
 
@@ -18,10 +21,9 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../hooks/useReportOrderIssueFlow')
 
-jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
-    __esModule: true,
-    default: jest.fn(() => []),
-}))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+)
 
 jest.mock(
     '../../../components/OrderManagementFlowHeader/OrderManagementFlowHeader',
@@ -81,6 +83,14 @@ const mockUseReportOrderIssueFlow =
         typeof useReportOrderIssueFlow
     >
 
+const mockUpdatePreviewOrders = jest.fn()
+const mockDisplayPage = jest.fn()
+const mockOnChatPreviewLoaded = jest.fn()
+const mockUseChatPreviewPanelContext =
+    useChatPreviewPanelContext as jest.MockedFunction<
+        typeof useChatPreviewPanelContext
+    >
+
 const mockScenario = {
     title: 'Wrong item',
     description: 'Received wrong item',
@@ -100,6 +110,12 @@ describe('ReportOrderIssueFlowView', () => {
         jest.clearAllMocks()
         listOnReorder.current = undefined
         mockUseReportOrderIssueFlow.mockReturnValue(defaultFlowReturn)
+        mockOnChatPreviewLoaded.mockReturnValue(jest.fn())
+        mockUseChatPreviewPanelContext.mockReturnValue({
+            updatePreviewOrders: mockUpdatePreviewOrders,
+            displayPage: mockDisplayPage,
+            onChatPreviewLoaded: mockOnChatPreviewLoaded,
+        } as Partial<ChatPreviewPanelContextValue> as ChatPreviewPanelContextValue)
     })
 
     it('should render the header with correct title', () => {
@@ -227,5 +243,46 @@ describe('ReportOrderIssueFlowView', () => {
             'data-when',
             'true',
         )
+    })
+
+    describe('chat preview panel', () => {
+        it('should register a callback with onChatPreviewLoaded that fires immediately if already loaded', () => {
+            render(<ReportOrderIssueFlowView />)
+
+            expect(mockOnChatPreviewLoaded).toHaveBeenCalledWith(
+                expect.any(Function),
+                true,
+            )
+        })
+
+        it('should call updatePreviewOrders and displayPage when onChatPreviewLoaded callback fires', () => {
+            let capturedCallback!: () => void
+            mockOnChatPreviewLoaded.mockImplementation((callback) => {
+                capturedCallback = callback
+                return jest.fn()
+            })
+
+            render(<ReportOrderIssueFlowView />)
+            capturedCallback()
+
+            expect(mockUpdatePreviewOrders).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    orders: expect.objectContaining({
+                        '#3089': expect.objectContaining({ name: '#3089' }),
+                    }),
+                }),
+            )
+            expect(mockDisplayPage).toHaveBeenCalledWith('orders')
+        })
+
+        it('should clean up the onChatPreviewLoaded subscription on unmount', () => {
+            const mockCleanup = jest.fn()
+            mockOnChatPreviewLoaded.mockReturnValue(mockCleanup)
+
+            const { unmount } = render(<ReportOrderIssueFlowView />)
+            unmount()
+
+            expect(mockCleanup).toHaveBeenCalled()
+        })
     })
 })

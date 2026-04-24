@@ -6,11 +6,13 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { Box, Button, Icon, Skeleton, Text } from '@gorgias/axiom'
 
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt'
 
 import { OrderManagementFlowHeader } from '../../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
 import { useReportOrderIssueFlow } from './hooks/useReportOrderIssueFlow'
 import { ReportOrderIssueScenarioList } from './ReportOrderIssueScenarioList'
+import { REPORT_ORDER_ISSUE_PREVIEW_ORDERS } from './utils/reportOrderIssuePreviewOrdersData'
 
 type FormValues = {
     scenarios: SelfServiceReportIssueCase[]
@@ -24,6 +26,16 @@ export const ReportOrderIssueFlowView = () => {
     // Data hooks
     const { isLoading, isUpdatePending, scenarios, handleScenariosUpdate } =
         useReportOrderIssueFlow()
+
+    const { updatePreviewOrders, displayPage, onChatPreviewLoaded } =
+        useChatPreviewPanelContext()
+
+    useEffect(() => {
+        return onChatPreviewLoaded(() => {
+            updatePreviewOrders(REPORT_ORDER_ISSUE_PREVIEW_ORDERS)
+            displayPage('orders')
+        }, true)
+    }, [onChatPreviewLoaded, updatePreviewOrders, displayPage])
 
     // Form
     const {
