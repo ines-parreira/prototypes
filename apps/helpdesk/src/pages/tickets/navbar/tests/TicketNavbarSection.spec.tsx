@@ -31,18 +31,30 @@ const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
     useHelpdeskV2WayfindingMS1Flag,
 )
 
+// Captures the onDrop prop from the inner section-level View DropTarget (identified by
+// accept='view' + bottomIndicatorClassName) so we can call it directly in tests.
+let capturedSectionViewOnDrop:
+    | ((item: any, monitor: any, direction: any) => any)
+    | null = null
+
 // Mock TicketNavbarDropTarget for this test
 jest.mock('../TicketNavbarDropTarget', () => ({
     __esModule: true,
-    default: ({ children, className, ...props }: any) => (
-        <div
-            className={className}
-            data-testid="ticket-navbar-drop-target"
-            {...props}
-        >
-            {children}
-        </div>
-    ),
+    default: ({ children, className, onDrop, accept, ...props }: any) => {
+        if (accept === 'view' && props.bottomIndicatorClassName) {
+            capturedSectionViewOnDrop = onDrop
+        }
+        return (
+            <div
+                className={className}
+                data-testid="ticket-navbar-drop-target"
+                accept={accept}
+                {...props}
+            >
+                {children}
+            </div>
+        )
+    },
 }))
 
 const minProps = {
@@ -363,6 +375,7 @@ describe('<TicketNavbarSection/>', () => {
             )
 
         beforeEach(() => {
+            capturedSectionViewOnDrop = null
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
         })
 
@@ -447,6 +460,52 @@ describe('<TicketNavbarSection/>', () => {
             expect(onSectionDeleteClick).toHaveBeenCalledWith(
                 minProps.sectionElement.data.id,
             )
+        })
+
+        describe('handleViewDrop', () => {
+            it('should not override the result when a child drop target already handled the drop', () => {
+                renderSection()
+
+                const result = capturedSectionViewOnDrop?.(
+                    { id: view.id, type: 'view' },
+                    { didDrop: () => true },
+                    'down',
+                )
+
+                expect(result).toBeUndefined()
+            })
+
+            it('should return the section drop result when no child target has handled the drop', () => {
+                renderSection()
+
+                const result = capturedSectionViewOnDrop?.(
+                    { id: view.id, type: 'view' },
+                    { didDrop: () => false },
+                    'down',
+                )
+
+                expect(result).toEqual({
+                    viewId: null,
+                    sectionId: section.id,
+                    direction: 'down',
+                })
+            })
+
+            it('should preserve the drop direction when returning section drop result', () => {
+                renderSection()
+
+                const result = capturedSectionViewOnDrop?.(
+                    { id: view.id, type: 'view' },
+                    { didDrop: () => false },
+                    'up',
+                )
+
+                expect(result).toEqual({
+                    viewId: null,
+                    sectionId: section.id,
+                    direction: 'up',
+                })
+            })
         })
     })
 })

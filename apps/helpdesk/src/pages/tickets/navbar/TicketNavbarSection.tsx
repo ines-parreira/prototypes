@@ -81,6 +81,23 @@ export function TicketNavbarSectionContainer({
         }),
         [section.id],
     )
+    // NavigationSection renders children inside its own DisclosurePanel, so the
+    // View DropTarget here accidentally wraps child views too. Without this guard,
+    // dropping a view onto a specific child would override that child's drop result
+    // (which carries the correct viewId and direction) with a section-level result
+    // (viewId: null, direction: null), causing getNextSettings to always prepend
+    // the item to the top of the section.
+    const handleViewDrop = useCallback(
+        (
+            item: TicketNavbarDragObject,
+            monitor: DropTargetMonitor,
+            direction: TicketNavbarDropDirection | null,
+        ) => {
+            if (monitor.didDrop()) return
+            return handleDrop(item, monitor, direction)
+        },
+        [handleDrop],
+    )
     const canduId = addCanduLinkForValidViewOrSection('section', section)
 
     drag(nameRef)
@@ -101,7 +118,7 @@ export function TicketNavbarSectionContainer({
                 <TicketNavbarDropTarget
                     accept={TicketNavbarElementType.View}
                     bottomIndicatorClassName={css.viewIntoSectionIndicator}
-                    onDrop={handleDrop}
+                    onDrop={handleViewDrop}
                     canDrop={(item) =>
                         section.private
                             ? views[item.id].visibility ===
