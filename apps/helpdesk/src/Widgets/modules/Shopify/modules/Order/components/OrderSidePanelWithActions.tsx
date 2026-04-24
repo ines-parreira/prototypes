@@ -8,6 +8,7 @@ import type {
 } from '@repo/customer'
 import { OrderSidePanelPreview } from '@repo/customer'
 import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
 
 import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
@@ -72,6 +73,9 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
     const duplicateOrder = useDuplicateOrder()
     const cancelOrder = useCancelOrder()
     const refundOrder = useRefundOrder()
+    const hideActionsForCustomer = useFlag(
+        FeatureFlagKey.ShopifyHideActionButtons,
+    )
 
     const handleEdit = useCallback(
         (order: T) => {
@@ -129,10 +133,12 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
                 onOpenChange={onOpenChange}
                 productsMap={productsMap}
                 isDraftOrder={isDraftOrder}
-                onEdit={handleEdit}
-                onDuplicate={handleDuplicate}
-                onRefund={handleRefund}
-                onCancel={handleCancel}
+                onEdit={hideActionsForCustomer ? undefined : handleEdit}
+                onDuplicate={
+                    hideActionsForCustomer ? undefined : handleDuplicate
+                }
+                onRefund={hideActionsForCustomer ? undefined : handleRefund}
+                onCancel={hideActionsForCustomer ? undefined : handleCancel}
                 storeName={storeName}
                 integrationId={integrationId}
                 ticketId={ticketId}

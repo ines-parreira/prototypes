@@ -20,7 +20,7 @@ import type { OrderRefund, OrderReturn } from '../../../../types'
 import type { OrderShippingLine } from '../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderActions } from '../OrderActions'
-import { isRefundedStatus } from '../orderStatusUtils'
+import { isFulfilledStatus, isRefundedStatus } from '../orderStatusUtils'
 import { BillingAddressSection } from '../sections/BillingAddressSection'
 import { OrderDetailsSection } from '../sections/OrderDetailsSection'
 import { OrderLineItemsSection } from '../sections/OrderLineItemsSection'
@@ -148,6 +148,7 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
 
     const isRefunded = isRefundedStatus(order.financial_status)
     const isCancelled = !!order.cancelled_at
+    const isFulfilled = isFulfilledStatus(order.fulfillment_status)
     const lineItemsVisible =
         preferences.sections.lineItems?.sectionVisible !== false
     const canEdit = useCanEditOrder(order)
@@ -179,7 +180,9 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
                             isRefunded || !onRefund ? undefined : handleRefund
                         }
                         onCancel={
-                            isCancelled || !onCancel ? undefined : handleCancel
+                            isCancelled || isFulfilled || !onCancel
+                                ? undefined
+                                : handleCancel
                         }
                     />
                 )}

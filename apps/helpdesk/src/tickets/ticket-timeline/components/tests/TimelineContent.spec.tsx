@@ -1405,7 +1405,18 @@ describe('TimelineContent', () => {
 
         it('should display action buttons in order side panel', async () => {
             const user = userEvent.setup()
-            setupWithOrders()
+            const { order1 } = setupWithOrders()
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    {
+                        kind: TimelineItemKind.Order,
+                        order: { ...order1, fulfillment_status: null },
+                    },
+                ],
+                enrichedTickets: [],
+                totalNumber: 1,
+            } as unknown as ReturnType<typeof useTimelineData>)
 
             renderComponent()
 
@@ -1561,7 +1572,18 @@ describe('TimelineContent', () => {
             const consoleWarnSpy = jest
                 .spyOn(console, 'warn')
                 .mockImplementation()
-            setupWithOrders()
+            const { order1 } = setupWithOrders()
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    {
+                        kind: TimelineItemKind.Order,
+                        order: { ...order1, fulfillment_status: null },
+                    },
+                ],
+                enrichedTickets: [],
+                totalNumber: 1,
+            } as unknown as ReturnType<typeof useTimelineData>)
 
             renderComponent()
 

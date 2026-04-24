@@ -1,4 +1,4 @@
-import { isRefundedStatus } from '../orderStatusUtils'
+import { isFulfilledStatus, isRefundedStatus } from '../orderStatusUtils'
 
 describe('isRefundedStatus', () => {
     it('returns true for refunded', () => {
@@ -43,5 +43,43 @@ describe('isRefundedStatus', () => {
 
     it('returns false for null', () => {
         expect(isRefundedStatus(null)).toBe(false)
+    })
+})
+
+describe('isFulfilledStatus', () => {
+    it('returns true for fulfilled', () => {
+        expect(isFulfilledStatus('fulfilled')).toBe(true)
+    })
+
+    it('returns true for partial', () => {
+        expect(isFulfilledStatus('partial')).toBe(true)
+    })
+
+    it('returns false for unfulfilled', () => {
+        expect(isFulfilledStatus('unfulfilled')).toBe(false)
+    })
+
+    it('returns false for partially_fulfilled (legacy parity)', () => {
+        expect(isFulfilledStatus('partially_fulfilled')).toBe(false)
+    })
+
+    it('returns false for restocked', () => {
+        expect(isFulfilledStatus('restocked')).toBe(false)
+    })
+
+    it('handles GraphQL uppercase FULFILLED', () => {
+        expect(isFulfilledStatus('FULFILLED')).toBe(true)
+    })
+
+    it('handles GraphQL uppercase PARTIAL', () => {
+        expect(isFulfilledStatus('PARTIAL')).toBe(true)
+    })
+
+    it('returns false for undefined', () => {
+        expect(isFulfilledStatus(undefined)).toBe(false)
+    })
+
+    it('returns false for null', () => {
+        expect(isFulfilledStatus(null)).toBe(false)
     })
 })

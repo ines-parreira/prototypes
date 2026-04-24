@@ -1,4 +1,6 @@
 import type { OrderData, ShopperData } from '@repo/customer'
+import { useFlag } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 
@@ -8,6 +10,10 @@ import { useEditOrder } from 'pages/tickets/detail/hooks/useEditOrder'
 import { useRefundOrder } from 'pages/tickets/detail/hooks/useRefundOrder'
 
 import { OrderSidePanelWithActions } from '../OrderSidePanelWithActions'
+
+jest.mock('@repo/feature-flags')
+
+const useFlagMock = assumeMock(useFlag)
 
 let capturedOnEdit: ((order: any) => void) | undefined
 let capturedOnDuplicate: ((order: any) => void) | undefined
@@ -155,6 +161,7 @@ const testOrderWithCustomer = {
 describe('OrderSidePanelWithActions', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useFlagMock.mockReturnValue(false)
         capturedOnEdit = undefined
         capturedOnDuplicate = undefined
         capturedOnRefund = undefined
@@ -249,6 +256,26 @@ describe('OrderSidePanelWithActions', () => {
             const { container } = renderComponent(undefined, null)
             const el = container.querySelector('[data-customerid]')
             expect(el).toHaveAttribute('data-customerid', 'null')
+        })
+    })
+
+    describe('ShopifyHideActionButtons flag', () => {
+        it('passes all four callbacks when flag is off', () => {
+            useFlagMock.mockReturnValue(false)
+            renderComponent(42)
+            expect(capturedOnEdit).toBeDefined()
+            expect(capturedOnDuplicate).toBeDefined()
+            expect(capturedOnRefund).toBeDefined()
+            expect(capturedOnCancel).toBeDefined()
+        })
+
+        it('suppresses all four callbacks when flag is on', () => {
+            useFlagMock.mockReturnValue(true)
+            renderComponent(42)
+            expect(capturedOnEdit).toBeUndefined()
+            expect(capturedOnDuplicate).toBeUndefined()
+            expect(capturedOnRefund).toBeUndefined()
+            expect(capturedOnCancel).toBeUndefined()
         })
     })
 })

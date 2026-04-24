@@ -61,6 +61,11 @@ const mockOrder = {
     fulfillment_status: 'fulfilled' as const,
 }
 
+const mockUnfulfilledOrder = {
+    ...mockOrder,
+    fulfillment_status: null,
+}
+
 const mockPendingOrder = {
     id: 3520,
     name: '#3520',
@@ -181,7 +186,7 @@ describe('OrderSidePanelPreview', () => {
     it('should render action buttons for non-draft orders', async () => {
         render(
             <OrderSidePanelPreview
-                order={mockOrder}
+                order={mockUnfulfilledOrder}
                 isOpen={true}
                 onOpenChange={vi.fn()}
                 onDuplicate={vi.fn()}
@@ -292,7 +297,7 @@ describe('OrderSidePanelPreview', () => {
 
         const { user } = render(
             <OrderSidePanelPreview
-                order={mockOrder}
+                order={mockUnfulfilledOrder}
                 isOpen={true}
                 onOpenChange={vi.fn()}
                 onCancel={onCancel}
@@ -304,7 +309,45 @@ describe('OrderSidePanelPreview', () => {
         })
         await user.click(cancelButton)
 
-        expect(onCancel).toHaveBeenCalledWith(mockOrder)
+        expect(onCancel).toHaveBeenCalledWith(mockUnfulfilledOrder)
+    })
+
+    it('does not render Cancel button when order is fulfilled', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={{ ...mockOrder, fulfillment_status: 'fulfilled' }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                onCancel={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText(/Order #3519/i)).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('button', { name: /cancel/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('does not render Cancel button when order is partially fulfilled', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={{ ...mockOrder, fulfillment_status: 'partial' }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                onCancel={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText(/Order #3519/i)).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('button', { name: /cancel/i }),
+        ).not.toBeInTheDocument()
     })
 })
 

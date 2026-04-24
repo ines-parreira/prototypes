@@ -6,3 +6,10 @@ export function isRefundedStatus(
         financialStatus.toLowerCase(),
     )
 }
+
+export function isFulfilledStatus(
+    fulfillmentStatus: string | null | undefined,
+): boolean {
+    if (!fulfillmentStatus) return false
+    return ['fulfilled', 'partial'].includes(fulfillmentStatus.toLowerCase())
+}
