@@ -1,3 +1,4 @@
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import { Link } from 'react-router-dom'
@@ -16,8 +17,24 @@ export function UserMenuLinksSection({
     userEmail,
     userRole,
 }: UserMenuLinksSectionProps) {
+    const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
+
     return (
         <MenuSection id="links">
+            {!isAgentUnavailabilityEnabled && (
+                <MenuItem
+                    as={Link}
+                    to="/app/settings/profile"
+                    onAction={() => {
+                        logEvent(SegmentEvent.MenuUserLinkClicked, {
+                            link: 'your-profile',
+                            user_email: userEmail,
+                            user_role: userRole,
+                        })
+                    }}
+                    label="Your profile"
+                />
+            )}
             <SubMenu id="updates" label="Gorgias updates">
                 <MenuItem
                     id="latest-updates"

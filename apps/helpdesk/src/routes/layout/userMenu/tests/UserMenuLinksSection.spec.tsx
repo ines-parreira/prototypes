@@ -1,3 +1,4 @@
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
@@ -8,6 +9,11 @@ import { StaticRouter } from 'react-router-dom'
 import { Button, Menu } from '@gorgias/axiom'
 
 import { UserMenuLinksSection } from '../UserMenuLinksSection'
+
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
+}))
 
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
@@ -23,6 +29,10 @@ jest.mock('../useNoticeableWidget', () => ({
     openNoticeableWidget: jest.fn(),
     useNoticeableUnreadCount: jest.fn(() => 0),
 }))
+
+const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
+    useCustomAgentUnavailableStatusesFlag,
+)
 
 const { openNoticeableWidget } = jest.requireMock('../useNoticeableWidget')
 const openNoticeableWidgetMock = openNoticeableWidget as jest.Mock
@@ -60,6 +70,10 @@ const openSubMenu = async (
 }
 
 describe('UserMenuLinksSection', () => {
+    beforeEach(() => {
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
+    })
+
     it('renders the Gorgias updates and Learn submenus plus direct menu items', () => {
         renderInMenu()
 
@@ -190,6 +204,37 @@ describe('UserMenuLinksSection', () => {
                 user_email: undefined,
                 user_role: undefined,
             },
+        )
+    })
+
+    it('does not render Your profile when the agent unavailability flag is enabled', () => {
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
+        renderInMenu()
+
+        expect(
+            screen.queryByRole('menuitem', { name: /Your profile/ }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders Your profile as a link to /app/settings/profile and logs the event when clicked', async () => {
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
+        const user = userEvent.setup()
+        renderInMenu()
+
+        const profileItem = screen.getByRole('menuitem', {
+            name: /Your profile/,
+        })
+        const anchor =
+            profileItem.tagName === 'A'
+                ? profileItem
+                : profileItem.querySelector('a')
+        expect(anchor).toHaveAttribute('href', '/app/settings/profile')
+
+        await user.click(profileItem)
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.MenuUserLinkClicked,
+            expectedLogPayload('your-profile'),
         )
     })
 })
