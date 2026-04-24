@@ -13,11 +13,19 @@ import type {
     LayoutSection,
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: { AiAgentAnalyticsDashboardsTables: 'tables-flag' },
     useFlagWithLoading: jest.fn(),
 }))
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    () => ({
+        useIsArticleRecommendationsEnabledWhileSunset: jest.fn(),
+    }),
+)
 
 jest.mock(
     'domains/reporting/hooks/managed-dashboards/useSaveSelectedTable',
@@ -36,6 +44,9 @@ jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
 
 const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
 const mockUseSaveSelectedTable = assumeMock(useSaveSelectedTable)
+const mockUseIsArticleRecommendationsEnabledWhileSunset = assumeMock(
+    useIsArticleRecommendationsEnabledWhileSunset,
+)
 const mockSaveSelectedTable = jest.fn()
 let saveSelectedTableImpl = (chartId: string) => {
     mockSaveSelectedTable(chartId)
@@ -95,11 +106,17 @@ jest.mock('@gorgias/axiom', () => ({
     },
 }))
 
+const ARTICLE_RECOMMENDATION_TABLE_CHART_ID = 'article_recommendation_table'
+
 const reportConfigMock = {
     charts: {
         table1: { chartComponent: () => null, label: 'Table One' },
         table2: { chartComponent: () => null, label: 'Table Two' },
         table3: { chartComponent: () => null, label: 'Table Three' },
+        [ARTICLE_RECOMMENDATION_TABLE_CHART_ID]: {
+            chartComponent: () => null,
+            label: 'Article Recommendation',
+        },
     },
 } as any
 
@@ -163,6 +180,10 @@ describe('TablesSection', () => {
         }
         mockUseSaveSelectedTable.mockReturnValue({
             onSelect: (chartId: string) => saveSelectedTableImpl(chartId),
+        })
+        mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+            enabledInStatistics: true,
+            enabledInSettings: true,
         })
     })
     describe('title', () => {
@@ -621,6 +642,85 @@ describe('TablesSection', () => {
             )
 
             expect(container).toBeEmptyDOMElement()
+        })
+    })
+
+    describe('article recommendations sunset', () => {
+        it('should show ArticleRecommendationTable when article recommendations are enabled in statistics', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+                enabledInStatistics: true,
+                enabledInSettings: true,
+            })
+
+            render(
+                <TablesSection
+                    section={makeSection([
+                        {
+                            chartId: ARTICLE_RECOMMENDATION_TABLE_CHART_ID,
+                            requiresFeatureFlag: true,
+                        },
+                    ])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.getByText(
+                    `DashboardComponent: ${ARTICLE_RECOMMENDATION_TABLE_CHART_ID}`,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide ArticleRecommendationTable when article recommendations are disabled in statistics', () => {
+            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+                enabledInStatistics: false,
+                enabledInSettings: false,
+            })
+
+            const { container } = render(
+                <TablesSection
+                    section={makeSection([
+                        {
+                            chartId: ARTICLE_RECOMMENDATION_TABLE_CHART_ID,
+                            requiresFeatureFlag: true,
+                        },
+                    ])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(container).toBeEmptyDOMElement()
+        })
+
+        it('should hide ArticleRecommendationTable tab when shown alongside other tables and article recommendations are disabled', () => {
+            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+                enabledInStatistics: false,
+                enabledInSettings: false,
+            })
+
+            render(
+                <TablesSection
+                    section={makeSection([
+                        { chartId: 'table1' },
+                        {
+                            chartId: ARTICLE_RECOMMENDATION_TABLE_CHART_ID,
+                            requiresFeatureFlag: true,
+                        },
+                    ])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.queryByRole('radio', { name: 'Article Recommendation' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByText('DashboardComponent: table1'),
+            ).toBeInTheDocument()
         })
     })
 })

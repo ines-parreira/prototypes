@@ -7,6 +7,7 @@ import { Box, ButtonGroup, ButtonGroupItem, Heading } from '@gorgias/axiom'
 import { useSaveSelectedTable } from 'domains/reporting/hooks/managed-dashboards/useSaveSelectedTable'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
@@ -14,6 +15,7 @@ import type {
     ManagedDashboardId,
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 
 import css from './TablesSection.less'
 
@@ -70,10 +72,18 @@ export const TablesSection = ({
     const { value: isAnalyticsDashboardsTablesEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
+    // Article recommendations sunset:
+    // We still want to show the stats if the feature is enabled
+    const { enabledInStatistics: isArticleRecommendationsEnabledWhileSunset } =
+        useIsArticleRecommendationsEnabledWhileSunset()
 
     const availableItems = section.items.filter(
         (item) =>
-            !item.requiresFeatureFlag || isAnalyticsDashboardsTablesEnabled,
+            (!item.requiresFeatureFlag || isAnalyticsDashboardsTablesEnabled) &&
+            // Specifically for the Article Recommendation Table, we want to check the sunset flag instead of the main feature flag, as we want to keep showing the stats while the feature is sunsetted, but hide it when it's fully disabled
+            (item.chartId !==
+                AnalyticsOverviewChart.ArticleRecommendationTable ||
+                isArticleRecommendationsEnabledWhileSunset),
     )
 
     const selectedTableId = useMemo(

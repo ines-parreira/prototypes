@@ -31,6 +31,16 @@ const mockedUseFlag = jest.mocked(useFlag)
 const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    () => ({
+        useIsArticleRecommendationsEnabledWhileSunset: jest.fn(() => ({
+            enabledInStatistics: true,
+            enabledInSettings: true,
+        })),
+    }),
+)
+
+jest.mock(
     'domains/reporting/hooks/managed-dashboards/useSaveTableColumnVisibility',
     () => ({
         useSaveTableColumnVisibility: jest.fn(() => ({
@@ -295,6 +305,14 @@ const reportConfigMock = {
         [AnalyticsOverviewChart.PerformanceTable]: {
             chartComponent: () => null,
             label: 'Performance Table',
+        },
+        [AnalyticsOverviewChart.ArticleRecommendationTable]: {
+            chartComponent: () => null,
+            label: 'Article Recommendation Table',
+        },
+        [AnalyticsOverviewChart.FlowsTable]: {
+            chartComponent: () => null,
+            label: 'Flows Table',
         },
         [AnalyticsOverviewChart.OrderManagementTable]: {
             chartComponent: () => null,
