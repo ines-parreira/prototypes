@@ -19,6 +19,7 @@ type Props = {
     hasNextPage: boolean
     hasPrevPage: boolean
     pageSize: number
+    integrationId?: number | null
     onNextPage: () => void
     onPrevPage: () => void
     onPageSizeChange: (size: number) => void
@@ -34,6 +35,7 @@ export const SegmentsTable = ({
     hasNextPage,
     hasPrevPage,
     pageSize,
+    integrationId,
     onNextPage,
     onPrevPage,
     onPageSizeChange,
@@ -59,6 +61,7 @@ export const SegmentsTable = ({
         },
         additionalOptions: {
             meta: {
+                integrationId,
                 onSegmentClick,
                 onEditClick,
                 onDuplicateClick,

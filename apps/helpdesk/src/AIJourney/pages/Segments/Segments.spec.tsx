@@ -236,7 +236,7 @@ describe('<Segments />', () => {
         it('should render estimated sizes for segments', () => {
             render(<Segments />)
 
-            expect(screen.getByText('±0')).toBeInTheDocument()
+            expect(screen.getByText('0')).toBeInTheDocument()
             expect(screen.getByText('±98,762')).toBeInTheDocument()
         })
 

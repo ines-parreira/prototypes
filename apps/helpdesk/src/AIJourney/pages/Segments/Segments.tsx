@@ -149,6 +149,7 @@ export const Segments = () => {
                 hasNextPage={hasNextPage}
                 hasPrevPage={hasPrevPage}
                 pageSize={pageSize}
+                integrationId={currentIntegration?.id}
                 onNextPage={() =>
                     setCursor(segmentsData?.metadata.next_cursor ?? undefined)
                 }

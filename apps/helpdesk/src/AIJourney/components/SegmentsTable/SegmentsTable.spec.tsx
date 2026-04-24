@@ -3,8 +3,15 @@ import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
+import { useAudienceCount } from 'AIJourney/queries/useAudienceCount/useAudienceCount'
 
 import { SegmentsTable } from './SegmentsTable'
+
+jest.mock('AIJourney/queries/useAudienceCount/useAudienceCount', () => ({
+    useAudienceCount: jest.fn(),
+}))
+
+const mockUseAudienceCount = useAudienceCount as jest.Mock
 
 const mockSegments: Segment[] = [
     {
@@ -30,6 +37,7 @@ const defaultProps = {
     hasNextPage: false,
     hasPrevPage: false,
     pageSize: 10,
+    integrationId: 123,
     onNextPage: jest.fn(),
     onPrevPage: jest.fn(),
     onPageSizeChange: jest.fn(),
@@ -45,6 +53,10 @@ const renderComponent = (props = {}) =>
 describe('<SegmentsTable />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseAudienceCount.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
     })
 
     describe('column headers', () => {
@@ -69,11 +81,45 @@ describe('<SegmentsTable />', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render estimated sizes formatted with ± prefix', () => {
+        it('should render estimated sizes from segment fallback when API data is undefined', () => {
             renderComponent()
 
-            expect(screen.getByText('±0')).toBeInTheDocument()
+            expect(screen.getByText('0')).toBeInTheDocument()
             expect(screen.getByText('±98,762')).toBeInTheDocument()
+        })
+
+        it('should render estimated sizes from API response when available', () => {
+            mockUseAudienceCount.mockReturnValue({
+                data: { count: 50000 },
+                isFetching: false,
+            })
+            renderComponent()
+
+            expect(screen.getAllByText('±50,000')).toHaveLength(2)
+        })
+
+        it('should not render count text while audience data is loading', () => {
+            mockUseAudienceCount.mockReturnValue({
+                data: undefined,
+                isFetching: true,
+            })
+            renderComponent()
+
+            expect(screen.queryByText('0')).not.toBeInTheDocument()
+            expect(screen.queryByText('±98,762')).not.toBeInTheDocument()
+        })
+
+        it('should call useAudienceCount with integrationId for each row', () => {
+            renderComponent()
+
+            expect(mockUseAudienceCount).toHaveBeenCalledWith({
+                integration_id: 123,
+                conditions: mockSegments[0].conditions,
+            })
+            expect(mockUseAudienceCount).toHaveBeenCalledWith({
+                integration_id: 123,
+                conditions: mockSegments[1].conditions,
+            })
         })
     })
 
