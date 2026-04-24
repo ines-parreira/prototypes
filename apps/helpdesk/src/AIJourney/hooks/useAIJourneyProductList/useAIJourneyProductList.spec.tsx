@@ -1,9 +1,9 @@
 import { assumeMock } from '@repo/testing'
 import { renderHook } from '@testing-library/react'
 
+import { ProductStatus } from 'constants/integrations/types/shopify'
 import {
     shopifyProductResult,
-    shopifyProductWithInactiveStatus,
     shopifyProductWithoutImageAndTitle,
 } from 'fixtures/shopify'
 import { useListProducts } from 'models/integration/queries'
@@ -17,7 +17,6 @@ const productMockedData = [
     ...shopifyProductResult(),
     ...shopifyProductResult(),
     ...shopifyProductResult(), // 6 active products with image and title to test the limit of 5
-    shopifyProductWithInactiveStatus, // 1 inactive product
     shopifyProductWithoutImageAndTitle, // 1 product without image and title
 ]
 
@@ -43,7 +42,7 @@ describe('useAIJourneyProductList', () => {
             } as any)
         })
 
-        it('should apply filter products without image, title or inactive and limit array to 5 items', () => {
+        it('should filter products without image or title and limit array to 5 items', () => {
             const { result } = renderHook(() =>
                 useAIJourneyProductList({ integrationId: 1 }),
             )
@@ -104,7 +103,7 @@ describe('useAIJourneyProductList', () => {
             } as any)
         })
 
-        it('should pass filter param to useListProducts', () => {
+        it('should pass filter and status params to useListProducts', () => {
             renderHook(() =>
                 useAIJourneyProductList({
                     integrationId: 1,
@@ -115,7 +114,11 @@ describe('useAIJourneyProductList', () => {
             expect(useListProductsMock).toHaveBeenCalledWith(
                 1,
                 true,
-                { limit: 100, filter: 'sneakers' },
+                {
+                    limit: 10,
+                    status: [ProductStatus.Active],
+                    filter: 'sneakers',
+                },
                 expect.objectContaining({
                     keepPreviousData: true,
                     queryKey: [
@@ -124,6 +127,7 @@ describe('useAIJourneyProductList', () => {
                         1,
                         'products',
                         'list',
+                        'active',
                         'sneakers',
                     ],
                 }),
@@ -136,7 +140,10 @@ describe('useAIJourneyProductList', () => {
             expect(useListProductsMock).toHaveBeenCalledWith(
                 1,
                 true,
-                { limit: 100 },
+                {
+                    limit: 10,
+                    status: [ProductStatus.Active],
+                },
                 expect.objectContaining({
                     keepPreviousData: false,
                     queryKey: [
@@ -145,6 +152,7 @@ describe('useAIJourneyProductList', () => {
                         1,
                         'products',
                         'list',
+                        'active',
                         '',
                     ],
                 }),
@@ -209,7 +217,7 @@ describe('useAIJourneyProductList', () => {
             expect(fetchNextPageMock).not.toHaveBeenCalled()
         })
 
-        it('should still filter out inactive and imageless products when searching', () => {
+        it('should still filter out imageless products when searching', () => {
             useListProductsMock.mockReturnValue({
                 data: {
                     pages: [
@@ -217,7 +225,6 @@ describe('useAIJourneyProductList', () => {
                             data: {
                                 data: [
                                     shopifyProductResult()[0],
-                                    shopifyProductWithInactiveStatus,
                                     shopifyProductWithoutImageAndTitle,
                                 ],
                             },

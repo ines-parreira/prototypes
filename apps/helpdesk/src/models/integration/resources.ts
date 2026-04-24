@@ -1,6 +1,9 @@
 import client from '@repo/api-resources'
 
-import type { Product } from 'constants/integrations/types/shopify'
+import type {
+    Product,
+    ProductStatus,
+} from 'constants/integrations/types/shopify'
 import type {
     ApiListResponse,
     ApiListResponseCursorPagination,
@@ -23,6 +26,10 @@ import type {
     DisconnectResponse,
 } from './types/app'
 import { Category } from './types/app'
+
+export type FetchIntegrationProductsParams = ApiPaginationParamsWithFilter & {
+    status?: ProductStatus[]
+}
 
 export const appListDataToAppListMapper = (data: AppListData): AppListItem => {
     const categories = data.categories || []
@@ -121,8 +128,11 @@ export const requestNewIntegration = async (payload: IntegrationRequest) => {
 
 export const fetchIntegrationProducts = async (
     integrationId: number,
-    params: ApiPaginationParamsWithFilter = {},
+    params: FetchIntegrationProductsParams = {},
 ) =>
     await client.get<
         ApiListResponseCursorPagination<IntegrationDataItem<Product>[]>
-    >(`/api/integrations/${integrationId}/product`, { params })
+    >(`/api/integrations/${integrationId}/product`, {
+        params,
+        paramsSerializer: { indexes: null },
+    })

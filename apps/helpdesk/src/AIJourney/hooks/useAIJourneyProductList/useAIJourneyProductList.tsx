@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
 import type { Product } from 'constants/integrations/types/shopify'
+import { ProductStatus } from 'constants/integrations/types/shopify'
 import { useListProducts } from 'models/integration/queries'
 import type { IntegrationDataItem } from 'models/integration/types'
 
@@ -10,6 +11,7 @@ type useAIJourneyProductListParams = {
 }
 
 const MINIMUM_PRODUCT_COUNT = 5
+const PICKER_STATUSES: ProductStatus[] = [ProductStatus.Active]
 
 export const useAIJourneyProductList = ({
     integrationId,
@@ -26,7 +28,11 @@ export const useAIJourneyProductList = ({
     } = useListProducts(
         integrationId ?? 0,
         !!integrationId,
-        { limit: 100, ...(filter ? { filter } : {}) },
+        {
+            limit: 10,
+            status: PICKER_STATUSES,
+            ...(filter ? { filter } : {}),
+        },
         {
             refetchOnWindowFocus: false,
             refetchOnMount: false,
@@ -37,6 +43,7 @@ export const useAIJourneyProductList = ({
                 integrationId ?? 0,
                 'products',
                 'list',
+                PICKER_STATUSES.join(','),
                 filter ?? '',
             ],
         },
@@ -48,11 +55,7 @@ export const useAIJourneyProductList = ({
 
     const productList = useMemo<Product[]>(() => {
         const filtered = (productItemsData ?? [])
-            .filter(
-                (item) =>
-                    item.data.status === 'active' &&
-                    item.data.published_at !== null,
-            )
+            .filter((item) => item.data.published_at !== null)
             .filter((item) => !!item.data.image && !!item.data.title)
             .map((item) => item.data)
 

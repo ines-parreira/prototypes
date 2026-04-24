@@ -1,6 +1,8 @@
 import client from '@repo/api-resources'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
+import { ProductStatus } from 'constants/integrations/types/shopify'
 import { dummyErrorLogList } from 'fixtures/appErrors'
 import { dummyAppData, dummyAppListData } from 'fixtures/apps'
 import { integrationsState } from 'fixtures/integrations'
@@ -239,6 +241,31 @@ describe('integration resource', () => {
             return expect(
                 fetchIntegrationProducts(integrationId),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+
+        // The backend (gorgias/gorgias#25499) expects `status` as repeated query
+        // params (e.g. ?status=active&status=draft). Axios' default bracket
+        // serialization (status[]=...) and comma serialization would both be
+        // rejected by the marshmallow schema, so the `paramsSerializer`
+        // config is load-bearing.
+        it('should serialize status array as repeated query params without brackets', async () => {
+            mockedServer
+                .onGet(`/api/integrations/${integrationId}/product`)
+                .reply(200, [])
+
+            await fetchIntegrationProducts(integrationId, {
+                status: [ProductStatus.Active, ProductStatus.Draft],
+            })
+
+            const request = mockedServer.history.get[0]
+            expect(request.paramsSerializer).toEqual({ indexes: null })
+
+            const serializedUrl = axios.getUri({
+                url: request.url,
+                params: request.params,
+                paramsSerializer: request.paramsSerializer,
+            })
+            expect(serializedUrl).toContain('status=active&status=draft')
         })
     })
 })
