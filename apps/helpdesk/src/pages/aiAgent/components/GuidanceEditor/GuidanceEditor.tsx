@@ -26,6 +26,7 @@ type GuidanceEditorProps = {
     onBlur?: () => void
     label?: string
     showDefaultToolbarActions?: boolean
+    editorContextName?: string
 }
 
 const defaultToolbarActions = [
@@ -52,6 +53,7 @@ export function GuidanceEditor({
     onBlur,
     label,
     showDefaultToolbarActions = true,
+    editorContextName = 'Guidance',
 }: GuidanceEditorProps) {
     const toolbarActions = useMemo(() => {
         let actions = showDefaultToolbarActions
@@ -136,6 +138,7 @@ export function GuidanceEditor({
                     guidanceVariables={guidanceVariables}
                     guidanceActions={availableActions}
                     shopName={shopName}
+                    guidanceActionEditorName={editorContextName}
                 >
                     <RichField
                         minHeight={320}

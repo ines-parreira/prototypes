@@ -1,14 +1,17 @@
 import { useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router-dom'
 
 import { Tag } from '@gorgias/axiom'
 
 import { useUpdateArticle } from 'models/helpCenter/mutations'
+import { helpCenterKeys } from 'models/helpCenter/queries'
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 import { KnowledgeEditorSidePanelConvertToSkill } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelConvertToSkill'
 import { KnowledgeEditorSidePanelSectionConvertToSkillModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/modals/KnowledgeEditorSidePanelSectionConvertToSkillModal'
+import { useSkillNotify } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillNotify'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import {
@@ -58,16 +61,34 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
     const { mutateAsync: updateArticle } = useUpdateArticle(
         guidanceHelpCenterId ?? 0,
     )
+    const { success: notifySuccess, error: notifyError } = useSkillNotify()
+    const queryClient = useQueryClient()
     const history = useHistory()
     const { routes } = useAiAgentNavigation({ shopName })
 
     const handleConvertToSkill = async () => {
         if (guidanceId && guidanceHelpCenterId) {
-            await updateArticle({
-                articleId: guidanceId,
-                data: { origin: 'skill' },
-            })
-            history.push(routes.skillDetail(guidanceId))
+            try {
+                await updateArticle({
+                    articleId: guidanceId,
+                    data: { origin: 'skill' },
+                })
+                await queryClient.invalidateQueries({
+                    queryKey: [
+                        ...helpCenterKeys.all(),
+                        'knowledge-hub-articles',
+                    ],
+                })
+                notifySuccess(
+                    'Guidance successfully converted into skill',
+                    'Link intents to enable it',
+                )
+                history.push(routes.skillDetail(guidanceId))
+            } catch {
+                notifyError(
+                    'Failed to convert guidance to skill. Please try again.',
+                )
+            }
         } else {
             history.push(routes.newSkill)
         }

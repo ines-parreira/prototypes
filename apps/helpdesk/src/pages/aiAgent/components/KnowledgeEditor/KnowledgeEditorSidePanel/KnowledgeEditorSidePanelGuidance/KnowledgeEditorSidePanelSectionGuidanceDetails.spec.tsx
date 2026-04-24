@@ -1,18 +1,38 @@
 import { useFlag } from '@repo/feature-flags'
+import { useQueryClient } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useHistory } from 'react-router-dom'
 
 import { useUpdateArticle } from 'models/helpCenter/mutations'
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
+import { useSkillNotify } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillNotify'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
 
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
+
 jest.mock('models/helpCenter/mutations', () => ({
     useUpdateArticle: jest.fn(),
 }))
+
+jest.mock('models/helpCenter/queries', () => ({
+    helpCenterKeys: {
+        all: () => ['help-centers'],
+    },
+}))
+
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillNotify',
+    () => ({
+        useSkillNotify: jest.fn(),
+    }),
+)
 
 jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn().mockReturnValue(false),
@@ -37,10 +57,16 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(),
 }))
 
+const mockUseQueryClient = useQueryClient as jest.Mock
 const mockUseUpdateArticle = useUpdateArticle as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
 const mockUseHistory = useHistory as jest.Mock
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
+const mockUseSkillNotify = useSkillNotify as jest.Mock
+
+const mockNotifySuccess = jest.fn()
+const mockNotifyError = jest.fn()
+const mockInvalidateQueries = jest.fn().mockResolvedValue(undefined)
 
 jest.mock('../KnowledgeEditorSidePanelCommonFields', () => ({
     KnowledgeEditorSidePanelFieldAIAgentStatus: ({
@@ -102,8 +128,15 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
     const mockPush = jest.fn()
 
     beforeEach(() => {
+        mockUseQueryClient.mockReturnValue({
+            invalidateQueries: mockInvalidateQueries,
+        })
         mockUseUpdateArticle.mockReturnValue({
             mutateAsync: mockMutateAsync,
+        })
+        mockUseSkillNotify.mockReturnValue({
+            success: mockNotifySuccess,
+            error: mockNotifyError,
         })
         mockUseGuidanceDetailsFromContext.mockReturnValue(baseDetailsData)
         mockUseHistory.mockReturnValue({ push: mockPush })
@@ -307,6 +340,81 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
         it('closes the modal after confirming conversion', async () => {
             const user = userEvent.setup()
             mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(
+                screen.queryByRole('heading', {
+                    name: 'Convert guidance into a skill?',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('invalidates knowledge hub queries after conversion', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(mockInvalidateQueries).toHaveBeenCalledWith({
+                queryKey: ['help-centers', 'knowledge-hub-articles'],
+            })
+        })
+
+        it('shows success notification with caption after conversion', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(mockNotifySuccess).toHaveBeenCalledWith(
+                'Guidance successfully converted into skill',
+                'Link intents to enable it',
+            )
+        })
+
+        it('shows error notification when conversion fails', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            mockMutateAsync.mockRejectedValueOnce(new Error('API error'))
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'Failed to convert guidance to skill. Please try again.',
+            )
+            expect(mockNotifySuccess).not.toHaveBeenCalled()
+            expect(mockPush).not.toHaveBeenCalled()
+        })
+
+        it('closes the modal after a failed conversion', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            mockMutateAsync.mockRejectedValueOnce(new Error('API error'))
             renderComponent()
 
             await user.click(

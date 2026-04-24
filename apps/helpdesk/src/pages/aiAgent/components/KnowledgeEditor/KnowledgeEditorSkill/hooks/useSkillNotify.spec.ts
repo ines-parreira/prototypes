@@ -1,19 +1,14 @@
 import { renderHook } from '@testing-library/react'
-import { POSITIONS } from 'reapop'
 
-import { NotificationStatus } from 'state/notifications/types'
+import { toast } from '@gorgias/axiom'
 
 import { useSkillNotify } from './useSkillNotify'
 
-const mockDispatch = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: () => mockDispatch,
-}))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: (payload: unknown) => payload,
+jest.mock('@gorgias/axiom', () => ({
+    toast: {
+        success: jest.fn(),
+        error: jest.fn(),
+    },
 }))
 
 describe('useSkillNotify', () => {
@@ -21,28 +16,32 @@ describe('useSkillNotify', () => {
         jest.clearAllMocks()
     })
 
-    it('dispatches a success notification with bottomRight position', () => {
+    it('calls toast.success with message', () => {
         const { result } = renderHook(() => useSkillNotify())
 
         result.current.success('Operation completed')
 
-        expect(mockDispatch).toHaveBeenCalledWith({
-            message: 'Operation completed',
-            status: NotificationStatus.Success,
-            position: POSITIONS.bottomRight,
+        expect(toast.success).toHaveBeenCalledWith('Operation completed', {
+            caption: undefined,
         })
     })
 
-    it('dispatches an error notification with bottomRight position', () => {
+    it('calls toast.success with message and caption', () => {
+        const { result } = renderHook(() => useSkillNotify())
+
+        result.current.success('Operation completed', 'Some details')
+
+        expect(toast.success).toHaveBeenCalledWith('Operation completed', {
+            caption: 'Some details',
+        })
+    })
+
+    it('calls toast.error with message', () => {
         const { result } = renderHook(() => useSkillNotify())
 
         result.current.error('Something went wrong')
 
-        expect(mockDispatch).toHaveBeenCalledWith({
-            message: 'Something went wrong',
-            status: NotificationStatus.Error,
-            position: POSITIONS.bottomRight,
-        })
+        expect(toast.error).toHaveBeenCalledWith('Something went wrong')
     })
 
     it('returns stable references across renders', () => {

@@ -30,6 +30,7 @@ export const KnowledgeEditorSkillEditView = ({
             availableActions={availableActions || []}
             showActionsButton={true}
             showVariablesButton={!!availableVariables?.length}
+            editorContextName="Skill"
         />
     </div>
 )

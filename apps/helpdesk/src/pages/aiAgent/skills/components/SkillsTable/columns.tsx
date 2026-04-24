@@ -63,34 +63,39 @@ export const getColumns = ({
 
             return (
                 <Box flexDirection="row" alignItems="center" gap="xs">
-                    <TruncatedTextWithTooltip tooltipContent={article.title}>
-                        <Text size="md" variant="bold">
-                            {article.title}
-                        </Text>
-                    </TruncatedTextWithTooltip>
+                    <div className={css.titleWrapper}>
+                        <TruncatedTextWithTooltip
+                            tooltipContent={article.title}
+                        >
+                            <Text size="md" variant="bold">
+                                {article.title}
+                            </Text>
+                        </TruncatedTextWithTooltip>
+                    </div>
                     {hasDraft && (
-                        <Tooltip
-                            trigger={
-                                <Box
-                                    flexDirection="row"
-                                    gap="xxxxs"
-                                    className={css.draftCTA}
-                                >
+                        <Box
+                            flexDirection="row"
+                            gap="xxxxs"
+                            className={css.draftCTA}
+                        >
+                            <Tooltip
+                                trigger={
                                     <Icon
                                         color="content-neutral-tertiary"
                                         name="note-edit"
                                     />
-                                    <Text
-                                        size="md"
-                                        color="content-neutral-tertiary"
-                                    >
-                                        Continue editing
-                                    </Text>
-                                </Box>
-                            }
-                        >
-                            <TooltipContent caption="Draft" />
-                        </Tooltip>
+                                }
+                            >
+                                <TooltipContent caption="Draft" />
+                            </Tooltip>
+                            <Text
+                                size="md"
+                                color="content-neutral-tertiary"
+                                wrap="nowrap"
+                            >
+                                Continue editing
+                            </Text>
+                        </Box>
                     )}
                 </Box>
             )

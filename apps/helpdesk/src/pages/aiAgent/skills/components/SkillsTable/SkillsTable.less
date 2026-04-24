@@ -15,11 +15,59 @@
         cursor: pointer;
     }
 
+    .titleWrapper {
+        min-width: 0;
+        overflow: hidden;
+    }
+
     .tableRoot {
         width: 100%;
         overflow-x: auto;
         border: 1px solid var(--border-neutral-default);
         border-radius: var(--spacing-xs);
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+            min-width: 1144px;
+        }
+
+        // Name column — takes remaining width
+        table th:first-child,
+        table td:first-child {
+            width: auto;
+            min-width: 378px;
+        }
+
+        // Intents column
+        table th:nth-child(2),
+        table td:nth-child(2) {
+            width: 288px;
+        }
+
+        // Ticket Volume column
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 132px;
+        }
+
+        // Handover column
+        table th:nth-child(4),
+        table td:nth-child(4) {
+            width: 132px;
+        }
+
+        // Average CSAT column
+        table th:nth-child(5),
+        table td:nth-child(5) {
+            width: 119px;
+        }
+
+        // Status column
+        table th:last-child,
+        table td:last-child {
+            width: 95px;
+        }
     }
 
     .pagination {

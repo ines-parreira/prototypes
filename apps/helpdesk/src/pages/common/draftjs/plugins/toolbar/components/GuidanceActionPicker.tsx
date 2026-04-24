@@ -25,7 +25,11 @@ const GuidanceActionPicker = ({
     onSelect,
     actionDropdownProps,
 }: GuidanceActionPickerProps) => {
-    const { guidanceActions = [], shopName } = useToolbarContext()
+    const {
+        guidanceActions = [],
+        shopName,
+        guidanceActionEditorName = 'Guidance',
+    } = useToolbarContext()
     const { routes } = useAiAgentNavigation({ shopName: shopName || '' })
 
     const anchorEl = useRef<HTMLButtonElement>(null)
@@ -56,8 +60,9 @@ const GuidanceActionPicker = ({
                 >
                     <TooltipContent>
                         <div className={css.tooltipDisabled}>
-                            To use <Link to={routes.actions}>Actions</Link> in
-                            Guidance, enable at least one Action for AI Agent.
+                            To use <Link to={routes.actions}>Actions</Link> in{' '}
+                            {guidanceActionEditorName}, enable at least one
+                            Action for AI Agent.
                         </div>
                     </TooltipContent>
                 </Tooltip>

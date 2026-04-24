@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import {
     Box,
     Button,
+    Card,
     Skeleton,
     Tag,
     Text,
@@ -84,9 +85,12 @@ export const SkillsTemplateCard: React.FC<Props> = ({
             : '--'
 
     return (
-        <Box
+        <Card
             className={classNames(css.card, className)}
             onClick={!hasCTA ? onCreateSkillsFromTemplate : undefined}
+            withHoverEffect={!hasCTA}
+            gap="sm"
+            color="content-neutral-default"
         >
             <Box
                 display="flex"
@@ -105,23 +109,25 @@ export const SkillsTemplateCard: React.FC<Props> = ({
                         </Tag>
                     ))}
                     {remainingCount > 0 && (
-                        <Tooltip
-                            trigger={
-                                <div className={css.remainingCount}>
-                                    <Text variant="bold" size="sm">
-                                        +{remainingCount}
-                                    </Text>
-                                </div>
-                            }
-                        >
-                            <TooltipContent>
-                                {hiddenIntents.map((intent) => (
-                                    <Text key={intent.name} size="sm">
-                                        {formatIntentName(intent.name)}
-                                    </Text>
-                                ))}
-                            </TooltipContent>
-                        </Tooltip>
+                        <Box className={css.tooltipWrapper}>
+                            <Tooltip
+                                trigger={
+                                    <div className={css.remainingCount}>
+                                        <Text variant="bold" size="sm">
+                                            +{remainingCount}
+                                        </Text>
+                                    </div>
+                                }
+                            >
+                                <TooltipContent>
+                                    {hiddenIntents.map((intent) => (
+                                        <Text key={intent.name} size="sm">
+                                            {formatIntentName(intent.name)}
+                                        </Text>
+                                    ))}
+                                </TooltipContent>
+                            </Tooltip>
+                        </Box>
                     )}
                 </Box>
             </Box>
@@ -189,6 +195,6 @@ export const SkillsTemplateCard: React.FC<Props> = ({
                     </Button>
                 </Box>
             )}
-        </Box>
+        </Card>
     )
 }

@@ -1,33 +1,14 @@
 import { useMemo } from 'react'
 
-import { POSITIONS } from 'reapop'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { toast } from '@gorgias/axiom'
 
 export const useSkillNotify = () => {
-    const dispatch = useAppDispatch()
-
     return useMemo(() => {
-        const success = (message: string) =>
-            dispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Success,
-                    position: POSITIONS.bottomRight,
-                }),
-            )
+        const success = (message: string, caption?: string) =>
+            toast.success(message, { caption })
 
-        const error = (message: string) =>
-            dispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Error,
-                    position: POSITIONS.bottomRight,
-                }),
-            )
+        const error = (message: string) => toast.error(message)
 
         return { success, error }
-    }, [dispatch])
+    }, [])
 }

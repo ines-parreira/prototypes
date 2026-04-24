@@ -65,6 +65,7 @@ export type ToolbarContextType = {
     onContactFormOpenChange?: (value: boolean) => void
     contactFormButtonEnabled?: boolean
     shopName?: string
+    guidanceActionEditorName?: string
 }
 
 export const ToolbarContext = createContext<ToolbarContextType>({

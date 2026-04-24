@@ -37,7 +37,6 @@ export const SkillsTemplateModal: React.FC<Props> = ({
                         onCreateSkillsFromTemplate={() =>
                             onCreateSkillsFromTemplate(template.id)
                         }
-                        className={css.templateCard}
                     />
                 ))}
             </Box>

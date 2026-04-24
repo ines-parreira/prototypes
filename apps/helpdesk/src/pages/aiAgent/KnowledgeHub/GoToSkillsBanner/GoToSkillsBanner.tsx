@@ -30,7 +30,6 @@ export const GoToSkillsBanner: React.FC<Props> = ({ shopName }) => {
     }
 
     const handleGoToSkills = () => {
-        handleOnClose()
         history.push(routes.skills)
     }
 

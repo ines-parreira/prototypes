@@ -227,6 +227,13 @@ jest.mock('models/api/types', () => ({
     isGorgiasApiError: jest.fn(),
 }))
 
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(() => ({
+        invalidateQueries: jest.fn().mockResolvedValue(undefined),
+    })),
+}))
+
 jest.mock('models/helpCenter/mutations', () => ({
     ...jest.requireActual('models/helpCenter/mutations'),
     useUpdateArticle: () => ({ mutateAsync: jest.fn() }),

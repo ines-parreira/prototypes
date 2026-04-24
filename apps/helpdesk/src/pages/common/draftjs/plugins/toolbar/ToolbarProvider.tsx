@@ -42,6 +42,7 @@ const ToolbarProvider = ({
     onAddUniqueDiscountOfferAttachment = _noop,
     placementType = undefined,
     shopName,
+    guidanceActionEditorName,
 }: Props) => {
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -74,6 +75,7 @@ const ToolbarProvider = ({
             onAddUniqueDiscountOfferAttachment,
             placementType,
             shopName,
+            guidanceActionEditorName,
         }),
         [
             canAddVideoPlayer,
@@ -105,6 +107,7 @@ const ToolbarProvider = ({
             onAddUniqueDiscountOfferAttachment,
             placementType,
             shopName,
+            guidanceActionEditorName,
         ],
     )
 
