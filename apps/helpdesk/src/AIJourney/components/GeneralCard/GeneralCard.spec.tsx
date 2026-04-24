@@ -167,11 +167,7 @@ describe('<GeneralCard />', () => {
         })
 
         describe('ImageUpload', () => {
-            it('renders when journey type is CAMPAIGN and campaignImageEnabled flag is true', () => {
-                mockUseFlag.mockImplementation(
-                    (key: string) =>
-                        key === 'ai_journey_campaign_image_enabled',
-                )
+            it('renders when journey type is CAMPAIGN', () => {
                 mockUseJourneyContext.mockReturnValue({
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
                 })
@@ -179,31 +175,6 @@ describe('<GeneralCard />', () => {
                 render(<GeneralCard isFormReady={true} />)
 
                 expect(screen.getByText('ImageUpload')).toBeInTheDocument()
-            })
-
-            it('does not render when campaignImageEnabled flag is false', () => {
-                mockUseJourneyContext.mockReturnValue({
-                    journeyType: JOURNEY_TYPES.CAMPAIGN,
-                })
-
-                render(<GeneralCard isFormReady={true} />)
-
-                expect(
-                    screen.queryByText('ImageUpload'),
-                ).not.toBeInTheDocument()
-            })
-
-            it('does not render when journey type is not CAMPAIGN even if campaignImageEnabled is true', () => {
-                mockUseFlag.mockImplementation(
-                    (key: string) =>
-                        key === 'ai_journey_campaign_image_enabled',
-                )
-
-                render(<GeneralCard isFormReady={true} />)
-
-                expect(
-                    screen.queryByText('ImageUpload'),
-                ).not.toBeInTheDocument()
             })
         })
     })

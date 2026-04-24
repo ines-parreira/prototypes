@@ -17,15 +17,11 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
     const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
-    const campaignImageEnabled = useFlag(
-        FeatureFlagKey.AiJourneyCampaignImageEnabled,
-    )
     const storeSettingsEnabled = useFlag(
         FeatureFlagKey.AiJourneyStoreSettingsEnabled,
     )
 
     const shouldRenderIncludeImage = !isCampaign && !isWelcome
-    const shouldRenderImageUpload = isCampaign && campaignImageEnabled
 
     if (!isFormReady) {
         return (
@@ -47,7 +43,7 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
                 {shouldRenderIncludeImage && (
                     <IncludeImage journeyType={journeyType} />
                 )}
-                {shouldRenderImageUpload && <ImageUpload />}
+                {isCampaign && <ImageUpload />}
             </Box>
         </Card>
     )

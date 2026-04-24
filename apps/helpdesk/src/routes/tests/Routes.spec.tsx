@@ -1766,15 +1766,6 @@ describe('<Routes/>', () => {
         })
 
         it('should render analytics page', async () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyAnalyticsEnabled) {
-                    return true
-                }
-                if (key === FeatureFlagKey.AiJourneyEnabled) {
-                    return true
-                }
-                return false
-            })
             const history = createMemoryHistory({
                 initialEntries: ['/app/ai-journey/shopify-store/analytics'],
             })

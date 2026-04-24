@@ -217,9 +217,6 @@ describe('<AiJourneyNavbar />', () => {
     describe('Analytics section', () => {
         beforeEach(() => {
             mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyAnalyticsEnabled) {
-                    return true
-                }
                 if (key === FeatureFlagKey.AiJourneyEnabled) {
                     return true
                 }
@@ -235,90 +232,32 @@ describe('<AiJourneyNavbar />', () => {
             )
             expect(screen.queryByText('Analytics')).toBeInTheDocument()
         })
-
-        it('should not render analytics section when feature flag is disabled', async () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyAnalyticsEnabled) {
-                    return false
-                }
-                if (key === FeatureFlagKey.AiJourneyEnabled) {
-                    return true
-                }
-                return false
-            })
-
-            renderNavbar('/app/ai-journey')
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
-        })
     })
 
     describe('Playground section', () => {
         beforeEach(() => {
             mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
-                    return true
-                }
                 if (key === FeatureFlagKey.AiJourneyEnabled) {
                     return true
                 }
                 return false
             })
         })
+        it('should render playground section when journey exists', async () => {
+            renderNavbar()
 
-        it('should not render playground section when feature flag is disabled', async () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
-                    return false
-                }
-                if (key === FeatureFlagKey.AiJourneyEnabled) {
-                    return true
-                }
-                return false
-            })
-
-            renderNavbar('/app/ai-journey')
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
+            expect(screen.queryByText('Playground')).toBeInTheDocument()
         })
     })
 
     describe('Campaigns section', () => {
         beforeEach(() => {
             mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyCampaignsEnabled) {
-                    return true
-                }
                 if (key === FeatureFlagKey.AiJourneyEnabled) {
                     return true
                 }
                 return false
             })
-        })
-
-        it('should not render campaigns section when feature flag is disabled', async () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyCampaignsEnabled) {
-                    return false
-                }
-                if (key === FeatureFlagKey.AiJourneyEnabled) {
-                    return true
-                }
-                return false
-            })
-
-            renderNavbar('/app/ai-journey')
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Campaigns')).not.toBeInTheDocument()
         })
 
         it('should render campaigns section when journey exists', async () => {

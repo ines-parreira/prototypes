@@ -39,18 +39,6 @@ export const AiJourneyNavbar = () => {
 
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
-    const isAiJourneyAnalyticsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyAnalyticsEnabled,
-    )
-
-    const isAiJourneyPlaygroundEnabled = useFlag(
-        FeatureFlagKey.AiJourneyPlaygroundEnabled,
-    )
-
-    const isAiJourneyCampaignsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyCampaignsEnabled,
-    )
-
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
@@ -113,24 +101,19 @@ export const AiJourneyNavbar = () => {
             isActive?: (match: any, location: any) => boolean
         }> = []
 
-        if (isAiJourneyAnalyticsEnabled) {
-            items.push({
-                icon: 'chart-line-alt',
-                to: `/app/ai-journey/${shopName}/analytics`,
-                label: 'Analytics',
-                exact: true,
-            })
-        }
+        items.push({
+            icon: 'chart-line-alt',
+            to: `/app/ai-journey/${shopName}/analytics`,
+            label: 'Analytics',
+            exact: true,
+        })
 
-        if (isAiJourneyCampaignsEnabled) {
-            items.push({
-                icon: 'nav-flag',
-                to: `/app/ai-journey/${shopName}/campaigns`,
-                label: 'Campaigns',
-                isActive: (_, location) =>
-                    location.pathname.includes('campaign'),
-            })
-        }
+        items.push({
+            icon: 'nav-flag',
+            to: `/app/ai-journey/${shopName}/campaigns`,
+            label: 'Campaigns',
+            isActive: (_, location) => location.pathname.includes('campaign'),
+        })
 
         items.push({
             icon: 'flows',
@@ -139,14 +122,12 @@ export const AiJourneyNavbar = () => {
             exact: true,
         })
 
-        if (isAiJourneyPlaygroundEnabled) {
-            items.push({
-                icon: 'media-play-circle',
-                to: `/app/ai-journey/${shopName}/playground`,
-                label: 'Playground',
-                exact: true,
-            })
-        }
+        items.push({
+            icon: 'media-play-circle',
+            to: `/app/ai-journey/${shopName}/playground`,
+            label: 'Playground',
+            exact: true,
+        })
         if (isAiJourneySegmentsEnabled) {
             items.push({
                 icon: IconName.Target,
@@ -166,14 +147,7 @@ export const AiJourneyNavbar = () => {
         }
 
         return items
-    }, [
-        shopName,
-        isAiJourneyCampaignsEnabled,
-        isAiJourneyPlaygroundEnabled,
-        isAiJourneyAnalyticsEnabled,
-        isAiJourneySegmentsEnabled,
-        isAiJourneyStoreSettingsEnabled,
-    ])
+    }, [shopName, isAiJourneySegmentsEnabled, isAiJourneyStoreSettingsEnabled])
 
     if (hasWayfindingMS1Flag) {
         return isCollapsed && navigationItems.length > 0 ? (
@@ -222,26 +196,22 @@ export const AiJourneyNavbar = () => {
                     />
                 </div>
                 <div className={css.navigationSections}>
-                    {isAiJourneyAnalyticsEnabled && (
-                        <Navigation.SectionItem
-                            as={NavLink}
-                            exact
-                            to={`/app/ai-journey/${shopName}/analytics`}
-                        >
-                            Analytics
-                        </Navigation.SectionItem>
-                    )}
-                    {isAiJourneyCampaignsEnabled && (
-                        <Navigation.SectionItem
-                            as={NavLink}
-                            isActive={(_, location) => {
-                                return location.pathname.includes('campaign')
-                            }}
-                            to={`/app/ai-journey/${shopName}/campaigns`}
-                        >
-                            Campaigns
-                        </Navigation.SectionItem>
-                    )}
+                    <Navigation.SectionItem
+                        as={NavLink}
+                        exact
+                        to={`/app/ai-journey/${shopName}/analytics`}
+                    >
+                        Analytics
+                    </Navigation.SectionItem>
+                    <Navigation.SectionItem
+                        as={NavLink}
+                        isActive={(_, location) => {
+                            return location.pathname.includes('campaign')
+                        }}
+                        to={`/app/ai-journey/${shopName}/campaigns`}
+                    >
+                        Campaigns
+                    </Navigation.SectionItem>
                     <Navigation.SectionItem
                         as={NavLink}
                         to={`/app/ai-journey/${shopName}/flows`}
@@ -249,15 +219,13 @@ export const AiJourneyNavbar = () => {
                     >
                         Flows
                     </Navigation.SectionItem>
-                    {isAiJourneyPlaygroundEnabled && (
-                        <Navigation.SectionItem
-                            as={NavLink}
-                            exact
-                            to={`/app/ai-journey/${shopName}/playground`}
-                        >
-                            Playground
-                        </Navigation.SectionItem>
-                    )}
+                    <Navigation.SectionItem
+                        as={NavLink}
+                        exact
+                        to={`/app/ai-journey/${shopName}/playground`}
+                    >
+                        Playground
+                    </Navigation.SectionItem>
                     {isAiJourneySegmentsEnabled && (
                         <Navigation.SectionItem
                             as={NavLink}
