@@ -1,6 +1,8 @@
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
+import { Text } from '@gorgias/axiom'
+
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderDetailsSection } from '../sections/OrderDetailsSection'
 
@@ -60,9 +62,10 @@ describe('OrderDetailsSection', () => {
                 },
                 {
                     id: 'note',
-                    type: 'readonly' as const,
+                    type: 'component' as const,
                     label: 'Note',
                     getValue: () => 'Handle with care',
+                    render: () => <Text size="md">Handle with care</Text>,
                 },
             ],
             savePreferences: vi.fn(),

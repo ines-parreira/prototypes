@@ -3,6 +3,7 @@ import { formatOrderDate } from '@repo/ecommerce/shopify/utils'
 
 import { Text } from '@gorgias/axiom'
 
+import { OrderNote } from '../orders/OrderNote'
 import { OrderTags } from '../orders/OrderTags'
 import type { OrderFieldConfig } from '../types'
 
@@ -70,10 +71,21 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
     },
     note: {
         id: 'note',
-        type: 'readonly',
+        type: 'component',
         label: 'Note',
-        copyable: true,
         getValue: (ctx) => ctx.order.note,
+        render: (ctx) => {
+            if (!ctx.integrationId || ctx.order.id === undefined) return null
+            return (
+                <OrderNote
+                    note={ctx.order.note}
+                    integrationId={ctx.integrationId}
+                    orderId={ctx.order.id}
+                    ticketId={ctx.ticketId}
+                    readOnly={ctx.isDraftOrder}
+                />
+            )
+        },
     },
     invoice_url: {
         id: 'invoice_url',

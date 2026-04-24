@@ -4,6 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
 import {
+    mockExecuteActionHandler,
     mockGetCurrentUserHandler,
     mockListWidgetsHandler,
 } from '@gorgias/helpdesk-mocks'
@@ -29,6 +30,7 @@ vi.mock('@repo/feature-flags', () => ({
 
 const mockGetCurrentUser = mockGetCurrentUserHandler()
 const mockListWidgets = mockListWidgetsHandler()
+const mockExecuteAction = mockExecuteActionHandler()
 const usersHandler = http.get('/api/users/:id', () => HttpResponse.json({}))
 
 beforeEach(() => {
@@ -36,6 +38,7 @@ beforeEach(() => {
         mockGetCurrentUser.handler,
         usersHandler,
         mockListWidgets.handler,
+        mockExecuteAction.handler,
     )
 })
 
@@ -603,11 +606,14 @@ describe('OrderSidePanelPreview — Order Details section', () => {
                 order={mockOrderWithDetails}
                 isOpen={true}
                 onOpenChange={vi.fn()}
+                integrationId={1}
             />,
         )
 
         await waitFor(() => {
-            expect(screen.getByText('Handle with care')).toBeInTheDocument()
+            expect(
+                screen.getByRole('textbox', { name: /order note/i }),
+            ).toHaveValue('Handle with care')
         })
     })
 
@@ -645,7 +651,7 @@ describe('OrderSidePanelPreview — Order Details section', () => {
         expect(screen.queryByText('Checkout URL')).not.toBeInTheDocument()
     })
 
-    it('does not render note section when note is absent', async () => {
+    it('does not render note section when note is absent and no integrationId', async () => {
         const orderWithoutNote = { ...mockOrderWithDetails, note: undefined }
 
         render(
@@ -658,7 +664,7 @@ describe('OrderSidePanelPreview — Order Details section', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText('Handle with care'),
+                screen.queryByRole('textbox', { name: /order note/i }),
             ).not.toBeInTheDocument()
         })
     })
