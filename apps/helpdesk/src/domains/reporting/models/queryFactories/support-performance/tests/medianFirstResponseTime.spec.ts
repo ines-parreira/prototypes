@@ -39,14 +39,6 @@ describe('medianFirstAgentResponseTime', () => {
                     values: ['0'],
                 },
                 {
-                    member: 'TicketFirstAgentResponseTime.firstAgentMessageDatetime',
-                    operator: 'inDateRange',
-                    values: [
-                        '2025-09-09T00:00:00.000',
-                        '2025-09-09T23:59:59.000',
-                    ],
-                },
-                {
                     member: 'TicketEnriched.periodStart',
                     operator: 'afterDate',
                     values: ['2025-09-09T00:00:00.000'],
@@ -114,14 +106,6 @@ describe('medianFirstAgentResponseTime', () => {
                     values: ['0'],
                 },
                 {
-                    member: 'TicketFirstAgentResponseTime.firstAgentMessageDatetime',
-                    operator: 'inDateRange',
-                    values: [
-                        '2025-09-09T00:00:00.000',
-                        '2025-09-09T23:59:59.000',
-                    ],
-                },
-                {
                     member: 'TicketEnriched.periodStart',
                     operator: 'afterDate',
                     values: ['2025-09-09T00:00:00.000'],
@@ -185,14 +169,6 @@ describe('medianFirstAgentResponseTime', () => {
                     member: 'TicketEnriched.isSpam',
                     operator: 'equals',
                     values: ['0'],
-                },
-                {
-                    member: 'TicketFirstAgentResponseTime.firstAgentMessageDatetime',
-                    operator: 'inDateRange',
-                    values: [
-                        '2025-09-09T00:00:00.000',
-                        '2025-09-09T23:59:59.000',
-                    ],
                 },
                 {
                     member: 'TicketEnriched.periodStart',
@@ -260,14 +236,6 @@ describe('medianFirstAgentResponseTime', () => {
                     member: 'TicketEnriched.isSpam',
                     operator: 'equals',
                     values: ['0'],
-                },
-                {
-                    member: 'TicketFirstAgentResponseTime.firstAgentMessageDatetime',
-                    operator: 'inDateRange',
-                    values: [
-                        '2025-09-09T00:00:00.000',
-                        '2025-09-09T23:59:59.000',
-                    ],
                 },
                 {
                     member: 'TicketEnriched.periodStart',

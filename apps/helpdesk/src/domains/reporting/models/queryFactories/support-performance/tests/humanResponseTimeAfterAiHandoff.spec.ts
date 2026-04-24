@@ -52,14 +52,6 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                         values: ['0'],
                     },
                     {
-                        member: 'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageDatetime',
-                        operator: 'inDateRange',
-                        values: [
-                            '2025-01-01T00:00:00.000',
-                            '2025-01-07T23:59:59.000',
-                        ],
-                    },
-                    {
                         member: 'TicketEnriched.periodStart',
                         operator: 'afterDate',
                         values: ['2025-01-01T00:00:00.000'],
@@ -122,14 +114,6 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                         values: ['0'],
                     },
                     {
-                        member: 'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageDatetime',
-                        operator: 'inDateRange',
-                        values: [
-                            '2025-01-01T00:00:00.000',
-                            '2025-01-07T23:59:59.000',
-                        ],
-                    },
-                    {
                         member: 'TicketEnriched.periodStart',
                         operator: 'afterDate',
                         values: ['2025-01-01T00:00:00.000'],
@@ -189,14 +173,6 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                         member: 'TicketEnriched.isSpam',
                         operator: 'equals',
                         values: ['0'],
-                    },
-                    {
-                        member: 'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageDatetime',
-                        operator: 'inDateRange',
-                        values: [
-                            '2025-01-01T00:00:00.000',
-                            '2025-01-07T23:59:59.000',
-                        ],
                     },
                     {
                         member: 'TicketEnriched.periodStart',
@@ -261,14 +237,6 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                         member: 'TicketEnriched.isSpam',
                         operator: 'equals',
                         values: ['0'],
-                    },
-                    {
-                        member: 'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageDatetime',
-                        operator: 'inDateRange',
-                        values: [
-                            '2025-01-01T00:00:00.000',
-                            '2025-01-07T23:59:59.000',
-                        ],
                     },
                     {
                         member: 'TicketEnriched.periodStart',

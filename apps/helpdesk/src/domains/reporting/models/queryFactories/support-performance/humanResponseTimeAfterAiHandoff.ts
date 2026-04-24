@@ -4,14 +4,11 @@ import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketFirstHumanAgentResponseTimeDimension,
     TicketFirstHumanAgentResponseTimeMeasure,
-    TicketFirstHumanAgentResponseTimeMember,
 } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
-    getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketFirstHumanAgentResponseTimeMembers,
@@ -33,11 +30,6 @@ export function humanResponseTimeAfterAiHandoffQueryFactory(
         timezone,
         filters: [
             ...NotSpamNorTrashedTicketsFilter,
-            {
-                member: TicketFirstHumanAgentResponseTimeMember.FirstHumanAgentMessageDatetime,
-                operator: ReportingFilterOperator.InDateRange,
-                values: getFilterDateRange(statsFilters.period),
-            },
             ...statsFiltersToReportingFilters(
                 TicketFirstHumanAgentResponseTimeMembers,
                 statsFilters,

@@ -8,10 +8,8 @@ import {
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
-    getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketsFirstAgentResponseTimeMembers,
@@ -31,11 +29,6 @@ export const medianFirstAgentResponseTimeQueryFactory = (
     timezone,
     filters: [
         ...NotSpamNorTrashedTicketsFilter,
-        {
-            member: TicketsFirstAgentResponseTimeDimension.FirstAgentMessageDatetime,
-            operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(statsFilters.period),
-        },
         ...statsFiltersToReportingFilters(
             TicketsFirstAgentResponseTimeMembers,
             statsFilters,
