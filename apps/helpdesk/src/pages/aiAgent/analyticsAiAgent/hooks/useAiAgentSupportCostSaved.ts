@@ -4,7 +4,6 @@ import {
     fetchFilteredAutomatedInteractions,
     useFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { formatCostSavedData } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
@@ -16,11 +15,12 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 export const useAiAgentSupportCostSaved = (): MetricTrend => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
     )

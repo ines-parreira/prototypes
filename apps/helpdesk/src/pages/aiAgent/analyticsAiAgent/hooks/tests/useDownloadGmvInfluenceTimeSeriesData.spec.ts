@@ -1,15 +1,16 @@
 import { renderHook } from '@testing-library/react'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries',
 )
 
-const mockedUseStatsFilters = jest.mocked(useStatsFilters)
+const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockedUseGmvInfluenceOverTimeSeries = jest.mocked(
     useGmvInfluenceOverTimeSeries,
 )
@@ -23,13 +24,13 @@ describe('useDownloadGmvInfluenceTimeSeriesData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockedUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: mockPeriod,
             },
             userTimezone: 'UTC',
-            granularity: 'day',
-        } as any)
+            granularity: ReportingGranularity.Day,
+        })
     })
 
     it('should return isLoading as true when data is fetching', () => {

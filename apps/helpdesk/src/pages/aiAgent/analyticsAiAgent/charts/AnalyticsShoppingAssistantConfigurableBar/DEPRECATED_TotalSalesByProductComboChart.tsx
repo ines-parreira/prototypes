@@ -7,10 +7,10 @@ import {
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import moment from 'moment'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ChartTypeToggle } from 'pages/aiAgent/analyticsOverview/components/ChartTypeToggle/ChartTypeToggle'
 import { useChartTypeToggle } from 'pages/aiAgent/analyticsOverview/hooks/useChartTypeToggle'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { useTotalSalesByProduct } from '../../hooks/useTotalSalesByProduct'
 
@@ -21,7 +21,7 @@ const DATE_FORMAT = DateTimeFormatMapper[
 ] as string
 
 export const DEPRECATED_TotalSalesByProductComboChart = () => {
-    const { cleanStatsFilters } = useStatsFilters()
+    const { statsFilters } = useAiAgentStatsFilters()
     const { chartType, setChartType } = useChartTypeToggle()
 
     const { data, isFetching } = useTotalSalesByProduct()
@@ -30,7 +30,7 @@ export const DEPRECATED_TotalSalesByProductComboChart = () => {
 
     const filteredChartData = chartData.filter((item) => item.value !== 0)
 
-    const tooltipPeriod = formatPreviousPeriod(cleanStatsFilters?.period)
+    const tooltipPeriod = formatPreviousPeriod(statsFilters?.period)
 
     const isLoading = isFetching
 
@@ -44,14 +44,14 @@ export const DEPRECATED_TotalSalesByProductComboChart = () => {
     const valueFormatter = (value: number) =>
         formatMetricValue(value, 'currency', currency)
 
-    const period = cleanStatsFilters?.period
+    const period = statsFilters?.period
         ? {
               start_datetime: moment(
-                  cleanStatsFilters?.period?.start_datetime,
+                  statsFilters?.period?.start_datetime,
               ).format(DATE_FORMAT),
-              end_datetime: moment(
-                  cleanStatsFilters?.period?.end_datetime,
-              ).format(DATE_FORMAT),
+              end_datetime: moment(statsFilters?.period?.end_datetime).format(
+                  DATE_FORMAT,
+              ),
           }
         : undefined
 

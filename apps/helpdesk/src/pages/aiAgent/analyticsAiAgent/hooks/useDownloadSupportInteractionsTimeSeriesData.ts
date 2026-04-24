@@ -5,18 +5,18 @@ import moment from 'moment'
 
 import { useAiAgentSupportInteractionsTimeSeriesData } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTimeSeriesData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { createCsv } from 'utils/file'
 
 const FILE_NAME = 'support-interactions-timeseries'
 
 export const useDownloadSupportInteractionsTimeSeriesData = () => {
-    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+    const { statsFilters, userTimezone, granularity } = useAiAgentStatsFilters()
 
     const { data: timeSeriesData, isFetching } =
         useAiAgentSupportInteractionsTimeSeriesData(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
             granularity,
         )
@@ -49,10 +49,7 @@ export const useDownloadSupportInteractionsTimeSeriesData = () => {
         return createCsv(rows)
     }, [timeSeriesData])
 
-    const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
-        FILE_NAME,
-    )
+    const fileName = getCsvFileNameWithDates(statsFilters.period, FILE_NAME)
 
     const files = useMemo(() => {
         if (!csvData) {

@@ -1,13 +1,14 @@
 import { renderHook } from '@testing-library/react'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useDownloadSupportInteractionsByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData'
 import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent')
 
-const mockedUseStatsFilters = jest.mocked(useStatsFilters)
+const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockedUseSupportInteractionsByIntent = jest.mocked(
     useSupportInteractionsByIntent,
 )
@@ -21,13 +22,13 @@ describe('useDownloadSupportInteractionsByIntentData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockedUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: mockPeriod,
             },
             userTimezone: 'UTC',
-            granularity: 'day',
-        } as any)
+            granularity: ReportingGranularity.Day,
+        })
     })
 
     it('should return isLoading as true when data is loading', () => {

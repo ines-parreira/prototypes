@@ -5,7 +5,6 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
@@ -17,6 +16,7 @@ import {
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { saveZippedFiles } from 'utils/file'
 
 const REPORT_NAME = 'ai-agent-shopping-assistant'
@@ -31,7 +31,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
-    const { cleanStatsFilters } = useStatsFilters()
+    const { statsFilters } = useAiAgentStatsFilters()
 
     const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
         dashboardId: ManagedDashboardId.AiAgentAnalytics,
@@ -106,11 +106,11 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
 
     const triggerDownload = useCallback(async () => {
         const fileName = getCsvFileNameWithDates(
-            cleanStatsFilters.period,
+            statsFilters.period,
             REPORT_NAME,
         ).replace('.csv', '')
         await saveZippedFiles(files, fileName)
-    }, [files, cleanStatsFilters.period])
+    }, [files, statsFilters.period])
 
     return {
         triggerDownload,

@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type {
@@ -39,6 +38,7 @@ import {
     fetchHandoverInteractionsPerAllAgentsIntent,
     useHandoverInteractionsPerAllAgentsIntent,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useHandoverInteractionsPerAllAgentsIntent'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
 
@@ -109,7 +109,7 @@ const deriveEntities = (
 }
 
 export const useAllAgentsPerformanceByIntentMetrics = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const metricsConfig: Record<
         AllAgentsPerformanceByIntentMetricKeys,

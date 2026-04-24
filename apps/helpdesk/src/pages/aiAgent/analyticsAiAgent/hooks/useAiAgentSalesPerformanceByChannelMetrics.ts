@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
@@ -36,6 +35,7 @@ import {
     fetchTotalSalesPerSalesAgentChannel,
     useTotalSalesPerSalesAgentChannel,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesPerSalesAgentChannel'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { formatChannelName } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { createCsv } from 'utils/file'
 
@@ -131,7 +131,7 @@ const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_METRICS_CONFIG: Record<
 
 export const useAiAgentSalesPerformanceByChannelMetrics =
     (): AiAgentSalesPerformanceByChannelMetricsData => {
-        const { statsFilters, userTimezone } = useAutomateFilters()
+        const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
         const {
             data: entityData,

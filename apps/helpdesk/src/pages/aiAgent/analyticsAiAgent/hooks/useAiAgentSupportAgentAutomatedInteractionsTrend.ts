@@ -2,7 +2,6 @@ import {
     fetchAiAgentSupportInteractionsTrend,
     useAiAgentSupportInteractionsTrend,
 } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
@@ -12,9 +11,10 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 export const useAiAgentSupportAgentAutomatedInteractionsTrend = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS,

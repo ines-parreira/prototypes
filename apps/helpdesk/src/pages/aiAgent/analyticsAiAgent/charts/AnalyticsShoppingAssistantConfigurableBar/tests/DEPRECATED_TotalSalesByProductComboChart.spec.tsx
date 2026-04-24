@@ -1,14 +1,17 @@
+import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import * as totalSalesByProductHook from '../../../hooks/useTotalSalesByProduct'
 import { DEPRECATED_TotalSalesByProductComboChart } from '../DEPRECATED_TotalSalesByProductComboChart'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('../../../hooks/useTotalSalesByProduct')
+
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 
 describe('TotalSalesByProductComboChart', () => {
     const mockChartData = [
@@ -31,8 +34,8 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     beforeEach(() => {
-        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
-            cleanStatsFilters: {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: {
                     start_datetime: '2024-01-01',
                     end_datetime: '2024-01-31',
@@ -349,8 +352,8 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should render correctly when period is undefined', () => {
-        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
-            cleanStatsFilters: {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: undefined as any,
             },
             userTimezone: 'UTC',
@@ -362,9 +365,9 @@ describe('TotalSalesByProductComboChart', () => {
         expect(screen.getByText('Total sales')).toBeInTheDocument()
     })
 
-    it('should render correctly when cleanStatsFilters is undefined', () => {
-        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
-            cleanStatsFilters: undefined as any,
+    it('should render correctly when statsFilters is undefined', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: undefined as any,
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
         })
@@ -395,8 +398,8 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should pass correct period to DonutChart when period is defined', () => {
-        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
-            cleanStatsFilters: {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: {
                     start_datetime: '2024-01-01T00:00:00.000',
                     end_datetime: '2024-01-31T23:59:59.999',

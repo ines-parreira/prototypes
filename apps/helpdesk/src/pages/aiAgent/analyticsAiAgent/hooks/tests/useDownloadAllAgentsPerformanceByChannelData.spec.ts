@@ -1,6 +1,9 @@
-import { renderHook, waitFor } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { useDownloadAllAgentsPerformanceByChannelData } from '../useDownloadAllAgentsPerformanceByChannelData'
 
@@ -10,18 +13,7 @@ jest.mock('../useAllAgentsPerformanceByChannelMetrics', () => ({
     fetchAllAgentsPerformanceByChannelMetrics: jest.fn(),
 }))
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters', () => {
-    const stableReturn = {
-        cleanStatsFilters: {
-            period: {
-                start_datetime: '2024-01-01T00:00:00Z',
-                end_datetime: '2024-01-31T23:59:59Z',
-            },
-        },
-        userTimezone: 'UTC',
-    }
-    return { useStatsFilters: jest.fn(() => stableReturn) }
-})
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 
 jest.mock(
     'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate',
@@ -30,6 +22,7 @@ jest.mock(
 
 const mockFetch = jest.requireMock('../useAllAgentsPerformanceByChannelMetrics')
 const mockReportError = jest.requireMock('@repo/logging').reportError
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 
 const MOCK_FILE_NAME =
     'all-agents-channel-performance-2024-01-01_2024-01-31.csv'
@@ -39,6 +32,16 @@ const MOCK_CSV =
 describe('useDownloadAllAgentsPerformanceByChannelData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
+            },
+            userTimezone: 'UTC',
+            granularity: ReportingGranularity.Day,
+        })
         mockFetch.fetchAllAgentsPerformanceByChannelMetrics.mockResolvedValue({
             fileName: MOCK_FILE_NAME,
             files: { [MOCK_FILE_NAME]: MOCK_CSV },

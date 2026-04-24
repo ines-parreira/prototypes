@@ -4,15 +4,15 @@ import { formatMetricValue } from '@repo/reporting'
 
 import { useAutomatedInteractionsBySkill } from 'domains/reporting/hooks/automate/useAutomatedInteractionsBySkill'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { createCsv } from 'utils/file'
 
 const FILENAME = 'automated-interactions-by-skill'
 
 export const useDownloadAutomatedInteractionsBySkillData = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const { data, isLoading } = useAutomatedInteractionsBySkill(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 
@@ -30,7 +30,7 @@ export const useDownloadAutomatedInteractionsBySkillData = () => {
         ]
     }, [data])
 
-    const fileName = getCsvFileNameWithDates(cleanStatsFilters.period, FILENAME)
+    const fileName = getCsvFileNameWithDates(statsFilters.period, FILENAME)
 
     return {
         files: {

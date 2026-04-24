@@ -19,10 +19,10 @@ import {
     useTableV1,
 } from '@gorgias/axiom'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
 import type { IntentMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
 import { useIntentPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { DownloadTableButton } from './DownloadTableButton'
 
@@ -60,7 +60,7 @@ const PLACEHOLDER_DATA: IntentMetrics[] = [
 ]
 
 export const IntentPerformanceBreakdownTable = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const { data, loadingStates } = useIntentPerformanceMetrics(
         statsFilters,
         userTimezone,

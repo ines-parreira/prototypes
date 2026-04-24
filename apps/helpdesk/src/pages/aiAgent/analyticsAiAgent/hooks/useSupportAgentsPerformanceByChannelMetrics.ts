@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
@@ -36,6 +35,7 @@ import {
     fetchTimeSavedByAgentPerChannel,
     useTimeSavedByAgentPerChannel,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useTimeSavedByAgentPerChannel'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { formatChannelName } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
@@ -132,7 +132,7 @@ const SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_METRICS_CONFIG: Record<
 
 export const useSupportAgentsPerformanceByChannelMetrics =
     (): SupportAgentsPerformanceByChannelMetricsData => {
-        const { statsFilters, userTimezone } = useAutomateFilters()
+        const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
         const {
             data: entityData,

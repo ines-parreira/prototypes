@@ -1,13 +1,14 @@
-import { renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useChannelPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useChannelPerformanceMetrics'
 import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useChannelPerformanceMetrics')
 
-const mockedUseStatsFilters = jest.mocked(useStatsFilters)
+const mockedUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockedUseChannelPerformanceMetrics = jest.mocked(
     useChannelPerformanceMetrics,
 )
@@ -21,13 +22,13 @@ describe('useDownloadChannelPerformanceData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockedUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: mockPeriod,
             },
             userTimezone: 'UTC',
-            granularity: 'day',
-        } as any)
+            granularity: ReportingGranularity.Day,
+        })
     })
 
     it('should return isLoading as true when data is loading', () => {

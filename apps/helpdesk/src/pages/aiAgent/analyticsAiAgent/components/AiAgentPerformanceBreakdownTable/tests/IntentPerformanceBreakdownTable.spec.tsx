@@ -1,17 +1,17 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import * as useIntentPerformanceMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { IntentPerformanceBreakdownTable } from '../IntentPerformanceBreakdownTable'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics')
 
-const mockUseStatsFilters = useStatsFilters as jest.MockedFunction<
-    typeof useStatsFilters
->
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockUseIntentPerformanceMetrics =
     useIntentPerformanceMetricsModule.useIntentPerformanceMetrics as jest.MockedFunction<
         typeof useIntentPerformanceMetricsModule.useIntentPerformanceMetrics
@@ -34,15 +34,16 @@ describe('IntentPerformanceBreakdownTable', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: {
                     start_datetime: '2024-01-01T00:00:00Z',
                     end_datetime: '2024-01-31T23:59:59Z',
                 },
             },
             userTimezone: 'UTC',
-        } as any)
+            granularity: ReportingGranularity.Day,
+        })
     })
 
     it('should render loading skeletons when data is loading', async () => {

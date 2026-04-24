@@ -1,14 +1,14 @@
 import { ChartCard, HorizontalBarChart } from '@repo/reporting'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAiAgentSupportAgentAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentAutomatedInteractionsTrend'
 import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 const METRIC_TITLE = 'Automated interactions'
 
 export const DEPRECATED_SupportInteractionsComboChart = () => {
-    const { cleanStatsFilters } = useStatsFilters()
+    const { statsFilters } = useAiAgentStatsFilters()
 
     const supportInteractionsTrend =
         useAiAgentSupportAgentAutomatedInteractionsTrend()
@@ -22,7 +22,7 @@ export const DEPRECATED_SupportInteractionsComboChart = () => {
         ?.filter((item) => item.value !== 0)
         .map((item) => ({ ...item, name: item.name.replace('::', '/') }))
 
-    const tooltipPeriod = formatPreviousPeriod(cleanStatsFilters?.period)
+    const tooltipPeriod = formatPreviousPeriod(statsFilters?.period)
     const isLoading = supportInteractionsTrend.isFetching || isChartDataLoading
 
     const value = supportInteractionsTrend.data?.value ?? undefined

@@ -9,7 +9,7 @@ import {
     useShoppingAssistantPerformanceByEngagementFeatureMetrics,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     assembleEntityRows: jest.requireActual(
         'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -27,9 +27,9 @@ jest.mock('utils/file', () => ({
     createCsv: jest.fn(() => 'csv-content'),
 }))
 
-const mockUseAutomateFilters = jest.requireMock(
-    'domains/reporting/hooks/automate/useAutomateFilters',
-).useAutomateFilters as jest.Mock
+const mockUseAiAgentStatsFilters = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentStatsFilters',
+).useAiAgentStatsFilters as jest.Mock
 
 const mockUseEntityMetrics = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -47,7 +47,7 @@ describe('useShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: {
                 period: {
                     start_datetime: '2024-01-01T00:00:00Z',
@@ -55,6 +55,7 @@ describe('useShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
                 },
             },
             userTimezone: 'UTC',
+            granularity: ReportingGranularity.Day,
         })
 
         mockUseEntityMetrics.mockReturnValue({

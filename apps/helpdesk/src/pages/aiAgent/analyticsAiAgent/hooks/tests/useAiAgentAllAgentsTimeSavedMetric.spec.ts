@@ -4,7 +4,6 @@ import {
     fetchAiAgentTimeSavedByAgentsTrend,
     useAiAgentTimeSavedByAgentsTrend,
 } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
@@ -19,9 +18,10 @@ import {
     fetchAiAgentAllAgentsTimeSavedTrend,
     useAiAgentAllAgentsTimeSavedMetric,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTimeSavedMetric'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 jest.mock('domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend')
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
@@ -32,7 +32,7 @@ const mockUseAiAgentTimeSavedByAgentsTrend = assumeMock(
 const mockFetchAiAgentTimeSavedByAgentsTrend = assumeMock(
     fetchAiAgentTimeSavedByAgentsTrend,
 )
-const mockUseAutomateFilters = assumeMock(useAutomateFilters)
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)
 const mockFetchStatsMetricTrend = assumeMock(fetchStatsMetricTrend)
 const mockGetNewStatsFeatureFlagMigration = assumeMock(
@@ -65,7 +65,7 @@ const mockV2Trend = {
 describe('useAiAgentAllAgentsTimeSavedMetric', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,

@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { fetchAiAgentSalesPerformanceByChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSalesPerformanceByChannelMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 export const useDownloadAiAgentSalesPerformanceByChannelData = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const [result, setResult] = useState<{
         fileName: string
@@ -17,10 +17,7 @@ export const useDownloadAiAgentSalesPerformanceByChannelData = () => {
 
     useEffect(() => {
         setIsLoading(true)
-        fetchAiAgentSalesPerformanceByChannelMetrics(
-            { period: cleanStatsFilters.period },
-            userTimezone,
-        )
+        fetchAiAgentSalesPerformanceByChannelMetrics(statsFilters, userTimezone)
             .then(({ fileName, files }) => {
                 setResult({ fileName, files })
                 setIsLoading(false)
@@ -31,7 +28,7 @@ export const useDownloadAiAgentSalesPerformanceByChannelData = () => {
                 })
                 setIsLoading(false)
             })
-    }, [cleanStatsFilters, userTimezone])
+    }, [statsFilters, userTimezone])
 
     return {
         files: result?.files ?? {},

@@ -3,21 +3,26 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import { useDownloadShoppingAssistantTopProductsDataLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy'
 import { useShoppingAssistantTopProductsMetricsLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetricsLegacy'
 
 import { ShoppingAssistantTopProductsTable } from '../ShoppingAssistantTopProductsTable'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetricsLegacy',
 )
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy',
+)
 
-const mockUseStatsFilters = assumeMock(useStatsFilters)
 const mockUseShoppingAssistantTopProductsMetrics = assumeMock(
     useShoppingAssistantTopProductsMetricsLegacy,
 )
+const mockUseDownloadShoppingAssistantTopProductsDataLegacy = assumeMock(
+    useDownloadShoppingAssistantTopProductsDataLegacy,
+)
+
 const createWrapper = () => {
     const queryClient = new QueryClient({
         defaultOptions: {
@@ -36,15 +41,11 @@ describe('ShoppingAssistantTopProductsTable', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
-                period: {
-                    start_datetime: '2024-01-01T00:00:00Z',
-                    end_datetime: '2024-01-31T23:59:59Z',
-                },
-            },
-            userTimezone: 'UTC',
-        } as any)
+        mockUseDownloadShoppingAssistantTopProductsDataLegacy.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: false,
+        })
     })
 
     it('should render loading skeletons when data is loading', async () => {

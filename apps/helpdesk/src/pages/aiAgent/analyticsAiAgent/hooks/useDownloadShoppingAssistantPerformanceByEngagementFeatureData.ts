@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { fetchShoppingAssistantPerformanceByEngagementFeatureMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 export const useDownloadShoppingAssistantPerformanceByEngagementFeatureData =
     () => {
-        const { cleanStatsFilters, userTimezone } = useStatsFilters()
+        const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
         const [result, setResult] = useState<{
             fileName: string
@@ -19,7 +19,7 @@ export const useDownloadShoppingAssistantPerformanceByEngagementFeatureData =
         useEffect(() => {
             setIsLoading(true)
             fetchShoppingAssistantPerformanceByEngagementFeatureMetrics(
-                { period: cleanStatsFilters.period },
+                { period: statsFilters.period },
                 userTimezone,
             )
                 .then(({ fileName, files }) => {
@@ -32,7 +32,7 @@ export const useDownloadShoppingAssistantPerformanceByEngagementFeatureData =
                     })
                     setIsLoading(false)
                 })
-        }, [cleanStatsFilters, userTimezone])
+        }, [statsFilters, userTimezone])
 
         return {
             files: result?.files ?? {},

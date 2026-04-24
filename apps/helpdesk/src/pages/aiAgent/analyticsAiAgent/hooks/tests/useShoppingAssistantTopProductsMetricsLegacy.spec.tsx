@@ -5,7 +5,6 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     useMetricPerDimension,
     useMetricPerDimensionV2,
@@ -22,14 +21,15 @@ import {
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useShoppingAssistantTopProductsMetricsLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetricsLegacy'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 jest.mock('state/integrations/helpers')
 jest.mock('@repo/logging')
 
-const useStatsFiltersMock = assumeMock(useStatsFilters)
+const useAiAgentStatsFiltersMock = assumeMock(useAiAgentStatsFilters)
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 const fetchIntegrationProductsMock = assumeMock(fetchIntegrationProducts)
@@ -53,7 +53,7 @@ const createWrapper = () => {
 
 describe('useShoppingAssistantTopProductsMetrics', () => {
     const defaultStatsFilters = {
-        cleanStatsFilters: {
+        statsFilters: {
             period: {
                 start_datetime: '2024-01-01T00:00:00.000',
                 end_datetime: '2024-01-31T23:59:59.999',
@@ -72,7 +72,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        useStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        useAiAgentStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         useMetricPerDimensionMock.mockReturnValue(defaultMetricPerDimension)
         useMetricPerDimensionV2Mock.mockReturnValue(defaultMetricPerDimension)
         fetchIntegrationProductsMock.mockResolvedValue([])
@@ -718,7 +718,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             wrapper: createWrapper(),
         })
 
-        expect(useStatsFiltersMock).toHaveBeenCalled()
+        expect(useAiAgentStatsFiltersMock).toHaveBeenCalled()
     })
 
     it('should call useMetricPerDimension three times for recommendations, clicks, and bought', () => {

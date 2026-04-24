@@ -4,18 +4,18 @@ import { formatMetricValue } from '@repo/reporting'
 import moment from 'moment'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { createCsv } from 'utils/file'
 
 const FILE_NAME = 'total-sales-timeseries'
 
 export const useDownloadGmvInfluenceTimeSeriesData = () => {
-    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+    const { statsFilters, userTimezone, granularity } = useAiAgentStatsFilters()
 
     const { data: timeSeriesData, isFetching } = useGmvInfluenceOverTimeSeries(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         granularity,
     )
@@ -48,10 +48,7 @@ export const useDownloadGmvInfluenceTimeSeriesData = () => {
         return createCsv(rows)
     }, [timeSeriesData])
 
-    const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
-        FILE_NAME,
-    )
+    const fileName = getCsvFileNameWithDates(statsFilters.period, FILE_NAME)
 
     const files = useMemo(() => {
         if (!csvData) {

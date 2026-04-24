@@ -4,16 +4,17 @@ import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBuyThroughRatePerProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useBuyThroughRatePerProduct'
 import { useProductClicksPerProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useProductClicksPerProduct'
 import { useTimesRecommendedPerProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useRecommendedProductCountPerProduct'
 import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useRecommendedProductCountPerProduct',
 )
@@ -25,7 +26,7 @@ jest.mock('hooks/useAppSelector', () => ({
     default: jest.fn(),
 }))
 
-const mockUseStatsFilters = assumeMock(useStatsFilters)
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockUseTimesRecommendedPerProduct = assumeMock(
     useTimesRecommendedPerProduct,
 )
@@ -123,10 +124,11 @@ const createWrapper = () => {
 describe('useShoppingAssistantTopProductsMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: { period: mockPeriod },
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: { period: mockPeriod },
             userTimezone: 'UTC',
-        } as any)
+            granularity: ReportingGranularity.Day,
+        })
         mockUseTimesRecommendedPerProduct.mockReturnValue(emptyMetric as any)
         mockUseProductClicksPerProduct.mockReturnValue(emptyMetric as any)
         mockUseBuyThroughRatePerProduct.mockReturnValue(emptyMetric as any)

@@ -6,6 +6,7 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
 import {
     TICKET_FIELD_ID_NOT_AVAILABLE,
@@ -42,8 +43,8 @@ describe('useSupportInteractionsByIntent', () => {
         mockUseStatsFilters.mockReturnValue({
             cleanStatsFilters: mockFilters,
             userTimezone: 'UTC',
-            granularity: 'day',
-        } as any)
+            granularity: ReportingGranularity.Day,
+        })
 
         mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
             outcomeCustomFieldId: 123,

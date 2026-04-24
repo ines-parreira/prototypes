@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
@@ -33,6 +32,7 @@ import {
     fetchTotalSalesPerShoppingAssistantEngagementFeature,
     useTotalSalesPerShoppingAssistantEngagementFeature,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesPerShoppingAssistantEngagementFeature'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { MAP_ENGAGEMENT_TYPE_NAME } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { createCsv } from 'utils/file'
 
@@ -132,7 +132,7 @@ const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_FILENAME =
     'shopping_assistant_performance_by_engagement_feature_table'
 
 export const useShoppingAssistantPerformanceByEngagementFeatureMetrics = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const {
         data: rawEntityData,

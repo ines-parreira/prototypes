@@ -4,7 +4,6 @@ import {
     fetchFilteredAutomatedInteractions,
     useFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { formatCostSavedData } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
@@ -20,11 +19,12 @@ import {
     fetchAiAgentSupportCostSaved,
     useAiAgentSupportCostSaved,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportCostSaved'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock(
     'domains/reporting/hooks/automate/useAutomationCostSavedTrend',
     () => ({
@@ -42,7 +42,7 @@ const mockUseFilteredAutomatedInteractions = assumeMock(
 const mockFetchFilteredAutomatedInteractions = assumeMock(
     fetchFilteredAutomatedInteractions,
 )
-const mockUseAutomateFilters = assumeMock(useAutomateFilters)
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockFormatCostSavedData = assumeMock(formatCostSavedData)
 const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)
 const mockFetchStatsMetricTrend = assumeMock(fetchStatsMetricTrend)
@@ -80,7 +80,7 @@ describe('useAiAgentSupportCostSaved', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,

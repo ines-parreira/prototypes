@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type {
@@ -39,6 +38,7 @@ import {
     fetchSuccessRatePerSupportAgentIntent,
     useSuccessRatePerSupportAgentIntent,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useSuccessRatePerSupportAgentIntent'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 // import {
 //     fetchTimeSavedByAgentPerSupportAgentIntent,
 //     useTimeSavedByAgentPerSupportAgentIntent,
@@ -122,7 +122,7 @@ const deriveEntities = (
 }
 
 export const useSupportAgentsPerformanceByIntentMetrics = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const metricsConfig: Record<
         SupportAgentsPerformanceByIntentMetricKeys,

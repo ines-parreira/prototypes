@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { fetchAllAgentsPerformanceByChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByChannelMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 export const useDownloadAllAgentsPerformanceByChannelData = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
     )
@@ -23,7 +23,7 @@ export const useDownloadAllAgentsPerformanceByChannelData = () => {
     useEffect(() => {
         setIsLoading(true)
         fetchAllAgentsPerformanceByChannelMetrics(
-            { period: cleanStatsFilters.period },
+            statsFilters,
             userTimezone,
             costSavedPerInteraction,
         )
@@ -37,7 +37,7 @@ export const useDownloadAllAgentsPerformanceByChannelData = () => {
                 })
                 setIsLoading(false)
             })
-    }, [cleanStatsFilters, userTimezone, costSavedPerInteraction])
+    }, [statsFilters, userTimezone, costSavedPerInteraction])
 
     return {
         files: result?.files ?? {},

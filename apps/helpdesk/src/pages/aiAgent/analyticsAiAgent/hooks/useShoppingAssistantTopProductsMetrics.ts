@@ -7,7 +7,6 @@ import { useQueries } from '@tanstack/react-query'
 import type { Product } from 'constants/integrations/types/shopify'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
@@ -26,6 +25,7 @@ import {
     fetchTimesRecommendedPerProduct,
     useTimesRecommendedPerProduct,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useRecommendedProductCountPerProduct'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { createCsv } from 'utils/file'
@@ -166,29 +166,25 @@ type UseShoppingAssistantTopProductsMetricsResult =
 
 export const useShoppingAssistantTopProductsMetrics =
     (): UseShoppingAssistantTopProductsMetricsResult => {
-        const { cleanStatsFilters, userTimezone } = useStatsFilters()
-        const periodFilters = useMemo(
-            () => ({ period: cleanStatsFilters.period }),
-            [cleanStatsFilters],
-        )
+        const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
         const {
             data: timesRecommended,
             isFetching: isRecommendationsFetching,
             isError: isRecommendationsError,
-        } = useTimesRecommendedPerProduct(periodFilters, userTimezone)
+        } = useTimesRecommendedPerProduct(statsFilters, userTimezone)
 
         const {
             data: clicksData,
             isFetching: isClicksFetching,
             isError: isClicksError,
-        } = useProductClicksPerProduct(periodFilters, userTimezone)
+        } = useProductClicksPerProduct(statsFilters, userTimezone)
 
         const {
             data: btrData,
             isFetching: isBtrFetching,
             isError: isBtrError,
-        } = useBuyThroughRatePerProduct(periodFilters, userTimezone)
+        } = useBuyThroughRatePerProduct(statsFilters, userTimezone)
 
         const shopifyIntegrations = useAppSelector(
             getShopifyIntegrationsSortedByName,

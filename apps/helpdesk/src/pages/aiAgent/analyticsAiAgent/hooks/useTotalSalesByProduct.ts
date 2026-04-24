@@ -5,7 +5,6 @@ import type { ChartDataItem } from '@repo/reporting'
 import { useQueries } from '@tanstack/react-query'
 
 import type { Product } from 'constants/integrations/types/shopify'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/types'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -14,6 +13,7 @@ import {
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { gmvByInfluencedProductQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { useGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 
 type TotalSalesByProductData = {
@@ -35,7 +35,7 @@ type ProductsByIntegration = {
 }
 
 export const useTotalSalesByProduct = (): UseTotalSalesByProductResult => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const totalSalesTrend = useGmvInfluencedTrend(statsFilters, userTimezone)
 

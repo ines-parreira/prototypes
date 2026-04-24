@@ -4,7 +4,6 @@ import { reportError } from '@repo/logging'
 import { useQueries } from '@tanstack/react-query'
 
 import type { Product } from 'constants/integrations/types/shopify'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/types'
 import {
     useMetricPerDimension,
@@ -33,6 +32,7 @@ import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/
 import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import { mapMetrics } from 'domains/reporting/utils/reporting'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 
 type ProductsByIntegration = {
@@ -48,28 +48,28 @@ type UseShoppingAssistantTopProductsMetricsResult = {
 
 export const useShoppingAssistantTopProductsMetricsLegacy =
     (): UseShoppingAssistantTopProductsMetricsResult => {
-        const { cleanStatsFilters, userTimezone } = useStatsFilters()
+        const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
         const recommendationsTotalData =
             useMetricPerDimension<StringWhichShouldBeNumber>(
                 shoppingAssistantTopProductsQueryFactory(
-                    cleanStatsFilters,
+                    statsFilters,
                     userTimezone,
                 ),
             )
 
         const clickTotalData = useMetricPerDimensionV2(
-            productClicksQueryFactory(cleanStatsFilters, userTimezone),
+            productClicksQueryFactory(statsFilters, userTimezone),
             aiSalesAgentProductClicksQueryFactoryV2({
-                filters: cleanStatsFilters,
+                filters: statsFilters,
                 timezone: userTimezone,
             }),
         )
 
         const boughtTotalData = useMetricPerDimensionV2(
-            productBoughtQueryFactory(cleanStatsFilters, userTimezone),
+            productBoughtQueryFactory(statsFilters, userTimezone),
             AISalesAgentProductBoughtQueryFactoryV2({
-                filters: cleanStatsFilters,
+                filters: statsFilters,
                 timezone: userTimezone,
             }),
         )

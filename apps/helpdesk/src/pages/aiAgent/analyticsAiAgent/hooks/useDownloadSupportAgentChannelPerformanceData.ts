@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { createCsv } from 'utils/file'
 
 import { useSupportAgentChannelPerformanceMetrics } from './useSupportAgentChannelPerformanceMetrics'
@@ -24,7 +24,7 @@ const formatChannelName = (channel: string): string => {
 }
 
 export const useDownloadSupportAgentChannelPerformanceData = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const { data, loadingStates } = useSupportAgentChannelPerformanceMetrics(
         statsFilters,
         userTimezone,

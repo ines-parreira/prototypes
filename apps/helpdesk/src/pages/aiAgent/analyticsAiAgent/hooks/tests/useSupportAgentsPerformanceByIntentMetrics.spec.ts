@@ -10,8 +10,8 @@ import {
     useSupportAgentsPerformanceByIntentMetrics,
 } from '../useSupportAgentsPerformanceByIntentMetrics'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters', () => ({
-    useAutomateFilters: jest.fn(),
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => ({
+    useAiAgentStatsFilters: jest.fn(),
 }))
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useEntityMetrics: jest.fn(),
@@ -63,9 +63,9 @@ jest.mock(
     }),
 )
 
-const mockUseAutomateFilters = jest.requireMock(
-    'domains/reporting/hooks/automate/useAutomateFilters',
-).useAutomateFilters as jest.Mock
+const mockUseAiAgentStatsFilters = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentStatsFilters',
+).useAiAgentStatsFilters as jest.Mock
 
 const mockUseEntityMetrics = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -138,9 +138,10 @@ const defaultRows = [
 describe('useSupportAgentsPerformanceByIntentMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: MOCK_STATS_FILTERS,
             userTimezone: MOCK_TIMEZONE,
+            granularity: ReportingGranularity.Day,
         })
         mockUseEntityMetrics.mockReturnValue({
             data: defaultEntityData,

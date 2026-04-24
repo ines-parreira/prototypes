@@ -1,6 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
@@ -27,8 +26,9 @@ import {
     fetchRevenuePerInteractionMetric,
     useRevenuePerInteractionMetric,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useGenericTrend',
@@ -42,7 +42,7 @@ jest.mock(
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
 
-const mockUseAutomateFilters = assumeMock(useAutomateFilters)
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)
 const mockFetchStatsMetricTrend = assumeMock(fetchStatsMetricTrend)
 const mockUseGenericTrend = assumeMock(useGenericTrend)
@@ -80,7 +80,7 @@ describe('useRevenuePerInteractionMetric', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
@@ -140,7 +140,7 @@ describe('useRevenuePerInteractionMetric', () => {
             )
         })
 
-        it('should call v1 hooks with useAutomateFilters period-only filters', () => {
+        it('should call v1 hooks with useAiAgentStatsFilters period-only filters', () => {
             renderHook(() => useRevenuePerInteractionMetric())
 
             expect(mockUseGmvInfluencedTrend).toHaveBeenCalledWith(

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { formatMetricValue } from '@repo/reporting'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { createCsv } from 'utils/file'
 
 import { useSupportInteractionsByIntent } from './useSupportInteractionsByIntent'
@@ -11,7 +11,7 @@ import { useSupportInteractionsByIntent } from './useSupportInteractionsByIntent
 const FILE_NAME = 'support-interactions-by-intent'
 
 export const useDownloadSupportInteractionsByIntentData = () => {
-    const { cleanStatsFilters } = useStatsFilters()
+    const { statsFilters } = useAiAgentStatsFilters()
     const { data, isLoading } = useSupportInteractionsByIntent()
 
     const csvData = useMemo(() => {
@@ -32,10 +32,7 @@ export const useDownloadSupportInteractionsByIntentData = () => {
         return createCsv(rows)
     }, [data])
 
-    const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
-        FILE_NAME,
-    )
+    const fileName = getCsvFileNameWithDates(statsFilters.period, FILE_NAME)
 
     const files = useMemo(() => {
         if (!csvData) {

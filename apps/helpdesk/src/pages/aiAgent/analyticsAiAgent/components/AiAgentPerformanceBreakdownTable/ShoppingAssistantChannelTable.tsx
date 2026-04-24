@@ -19,10 +19,10 @@ import {
     useTableV1,
 } from '@gorgias/axiom'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useDownloadShoppingAssistantChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelData'
 import type { ShoppingAssistantChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
 import { useShoppingAssistantChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { DownloadTableButton } from './DownloadTableButton'
 
@@ -86,7 +86,7 @@ const PLACEHOLDER_DATA: ShoppingAssistantChannelMetrics[] = [
 ]
 
 export const ShoppingAssistantChannelTable = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const { data, loadingStates } = useShoppingAssistantChannelMetrics(
         statsFilters,
         userTimezone,

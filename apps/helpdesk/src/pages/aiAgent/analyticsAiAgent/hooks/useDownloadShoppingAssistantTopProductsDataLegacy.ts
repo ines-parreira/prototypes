@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { formatPercentage } from 'pages/common/utils/numbers'
 import { createCsv } from 'utils/file'
 
@@ -12,7 +12,7 @@ const SHOPPING_ASSISTANT_TOP_PRODUCTS_FILENAME =
     'shopping-assistant-top-products'
 
 export const useDownloadShoppingAssistantTopProductsDataLegacy = () => {
-    const { cleanStatsFilters } = useStatsFilters()
+    const { statsFilters } = useAiAgentStatsFilters()
     const { data, isFetching } = useShoppingAssistantTopProductsMetricsLegacy()
 
     const csvData = useMemo(() => {
@@ -49,7 +49,7 @@ export const useDownloadShoppingAssistantTopProductsDataLegacy = () => {
     }, [data])
 
     const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
+        statsFilters.period,
         SHOPPING_ASSISTANT_TOP_PRODUCTS_FILENAME,
     )
 

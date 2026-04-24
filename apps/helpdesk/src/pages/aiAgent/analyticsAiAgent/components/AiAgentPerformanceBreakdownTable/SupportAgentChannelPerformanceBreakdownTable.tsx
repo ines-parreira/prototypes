@@ -19,10 +19,10 @@ import {
     useTableV1,
 } from '@gorgias/axiom'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useDownloadSupportAgentChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData'
 import type { SupportAgentChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics'
 import { useSupportAgentChannelPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { DownloadTableButton } from './DownloadTableButton'
 
@@ -64,7 +64,7 @@ const PLACEHOLDER_DATA: SupportAgentChannelMetrics[] = [
 ]
 
 export const SupportAgentChannelPerformanceBreakdownTable = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const { data, loadingStates } = useSupportAgentChannelPerformanceMetrics(
         statsFilters,
         userTimezone,

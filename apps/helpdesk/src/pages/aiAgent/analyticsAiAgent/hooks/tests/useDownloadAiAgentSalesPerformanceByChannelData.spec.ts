@@ -1,6 +1,9 @@
-import { renderHook, waitFor } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { useDownloadAiAgentSalesPerformanceByChannelData } from '../useDownloadAiAgentSalesPerformanceByChannelData'
 
@@ -10,23 +13,13 @@ jest.mock('../useAiAgentSalesPerformanceByChannelMetrics', () => ({
     fetchAiAgentSalesPerformanceByChannelMetrics: jest.fn(),
 }))
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters', () => {
-    const stableReturn = {
-        cleanStatsFilters: {
-            period: {
-                start_datetime: '2024-01-01T00:00:00Z',
-                end_datetime: '2024-01-31T23:59:59Z',
-            },
-        },
-        userTimezone: 'UTC',
-    }
-    return { useStatsFilters: jest.fn(() => stableReturn) }
-})
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 
 const mockFetch = jest.requireMock(
     '../useAiAgentSalesPerformanceByChannelMetrics',
 )
 const mockReportError = jest.requireMock('@repo/logging').reportError
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 
 const MOCK_FILE_NAME =
     '2024-01-01_2024-01-31-ai_agent_sales_performance_by_channel_table.csv'
@@ -35,6 +28,16 @@ const MOCK_CSV = '"AI Agent Sales Performance By Channel"\r\n"email"'
 describe('useDownloadAiAgentSalesPerformanceByChannelData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
+            },
+            userTimezone: 'UTC',
+            granularity: ReportingGranularity.Day,
+        })
         mockFetch.fetchAiAgentSalesPerformanceByChannelMetrics.mockResolvedValue(
             {
                 fileName: MOCK_FILE_NAME,

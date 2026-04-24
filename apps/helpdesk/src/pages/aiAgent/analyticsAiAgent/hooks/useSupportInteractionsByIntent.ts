@@ -1,11 +1,11 @@
 import type { ChartDataItem } from '@repo/reporting'
 
 import { useSupportInteractionsPerIntent } from 'domains/reporting/hooks/ai-agent-insights/supportInteractionsMetrics'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import {
     TICKET_FIELD_ID_NOT_AVAILABLE,
     useGetCustomTicketsFieldsDefinitionData,
@@ -17,7 +17,7 @@ export const useSupportInteractionsByIntent = (): {
     isError: boolean
     isFieldsAvailable: boolean
 } => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
@@ -30,7 +30,7 @@ export const useSupportInteractionsByIntent = (): {
         isFetching,
         isError,
     } = useSupportInteractionsPerIntent(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         outcomeCustomFieldId,
         intentCustomFieldId,

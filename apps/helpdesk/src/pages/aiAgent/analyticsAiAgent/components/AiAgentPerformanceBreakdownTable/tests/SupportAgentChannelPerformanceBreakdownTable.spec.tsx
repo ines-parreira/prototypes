@@ -1,13 +1,15 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useDownloadSupportAgentChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData'
 import * as useSupportAgentChannelPerformanceMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { SupportAgentChannelPerformanceBreakdownTable } from '../SupportAgentChannelPerformanceBreakdownTable'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics',
 )
@@ -15,17 +17,14 @@ jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData',
 )
 
-const mockUseAutomateFilters = useAutomateFilters as jest.MockedFunction<
-    typeof useAutomateFilters
->
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockUseSupportAgentChannelPerformanceMetrics =
     useSupportAgentChannelPerformanceMetricsModule.useSupportAgentChannelPerformanceMetrics as jest.MockedFunction<
         typeof useSupportAgentChannelPerformanceMetricsModule.useSupportAgentChannelPerformanceMetrics
     >
-const mockUseDownloadSupportAgentChannelPerformanceData =
-    useDownloadSupportAgentChannelPerformanceData as jest.MockedFunction<
-        typeof useDownloadSupportAgentChannelPerformanceData
-    >
+const mockUseDownloadSupportAgentChannelPerformanceData = assumeMock(
+    useDownloadSupportAgentChannelPerformanceData,
+)
 
 const createWrapper = () => {
     const queryClient = new QueryClient({
@@ -44,7 +43,7 @@ describe('SupportAgentChannelPerformanceBreakdownTable', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: {
                 period: {
                     start_datetime: '2024-01-01T00:00:00Z',
@@ -52,13 +51,14 @@ describe('SupportAgentChannelPerformanceBreakdownTable', () => {
                 },
             },
             userTimezone: 'UTC',
-        } as any)
+            granularity: ReportingGranularity.Day,
+        })
 
         mockUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
-            files: [],
+            files: {},
             fileName: 'support-agent-channel-performance.csv',
             isLoading: false,
-        } as any)
+        })
     })
 
     it('should render loading skeletons when data is loading', async () => {

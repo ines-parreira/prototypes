@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { formatMetricValue } from '@repo/reporting'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { createCsv } from 'utils/file'
 
 import { useShoppingAssistantChannelMetrics } from './useShoppingAssistantChannelMetrics'
@@ -24,9 +24,9 @@ const formatChannelName = (channel: string): string => {
 }
 
 export const useDownloadShoppingAssistantChannelPerformanceData = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const { data, isLoading } = useShoppingAssistantChannelMetrics(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 
@@ -69,10 +69,7 @@ export const useDownloadShoppingAssistantChannelPerformanceData = () => {
         return createCsv(rows)
     }, [data])
 
-    const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
-        FILE_NAME,
-    )
+    const fileName = getCsvFileNameWithDates(statsFilters.period, FILE_NAME)
 
     const files = useMemo(() => {
         if (!csvData) {

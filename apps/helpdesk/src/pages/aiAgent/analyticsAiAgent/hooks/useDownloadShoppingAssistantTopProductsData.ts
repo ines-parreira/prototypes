@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { fetchShoppingAssistantTopProductsData } from './useShoppingAssistantTopProductsMetrics'
 
 export const useDownloadShoppingAssistantTopProductsData = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const [result, setResult] = useState<{
         fileName: string

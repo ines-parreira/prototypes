@@ -1,24 +1,24 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import * as useShoppingAssistantChannelMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import { ShoppingAssistantChannelTable } from '../ShoppingAssistantChannelTable'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics',
 )
 
-const mockUseStatsFilters = useStatsFilters as jest.MockedFunction<
-    typeof useStatsFilters
->
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockUseShoppingAssistantChannelMetrics =
     useShoppingAssistantChannelMetricsModule.useShoppingAssistantChannelMetrics as jest.MockedFunction<
         typeof useShoppingAssistantChannelMetricsModule.useShoppingAssistantChannelMetrics
@@ -55,15 +55,16 @@ describe('ShoppingAssistantChannelTable', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: {
                     start_datetime: '2024-01-01T00:00:00Z',
                     end_datetime: '2024-01-31T23:59:59Z',
                 },
             },
             userTimezone: 'UTC',
-        } as any)
+            granularity: ReportingGranularity.Day,
+        })
     })
 
     it('should render loading skeletons when data is loading', async () => {

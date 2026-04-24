@@ -1,6 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
@@ -19,8 +18,9 @@ import {
     fetchAiAgentShoppingAssistantAutomatedInteractionsTrend,
     useAiAgentShoppingAssistantAutomatedInteractionsTrend,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentShoppingAssistantAutomatedInteractionsTrend'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useAutomatedSalesConversationsTrend',
 )
@@ -28,7 +28,7 @@ jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
 
-const mockUseAutomateFilters = assumeMock(useAutomateFilters)
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockUseAutomatedSalesConversationsTrend = assumeMock(
     useAutomatedSalesConversationsTrend,
 )
@@ -68,7 +68,7 @@ describe('useAiAgentShoppingAssistantAutomatedInteractionsTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters,
             userTimezone,
             granularity: ReportingGranularity.Day,

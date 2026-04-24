@@ -2,11 +2,12 @@ import { reportError } from '@repo/logging'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
 import { fetchShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics',
     () => ({
@@ -18,7 +19,7 @@ jest.mock(
 )
 jest.mock('@repo/logging')
 
-const mockUseAutomateFilters = jest.mocked(useAutomateFilters)
+const mockUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockFetchShoppingAssistantTopProductsData = jest.mocked(
     fetchShoppingAssistantTopProductsData,
 )
@@ -32,13 +33,13 @@ const mockPeriod = {
 const defaultFilters = {
     statsFilters: { period: mockPeriod },
     userTimezone: 'UTC',
-    granularity: 'day' as any,
+    granularity: ReportingGranularity.Day,
 }
 
 describe('useDownloadShoppingAssistantTopProductsData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAutomateFilters.mockReturnValue(defaultFilters)
+        mockUseAiAgentStatsFilters.mockReturnValue(defaultFilters)
     })
 
     it('starts with isLoading true', () => {
@@ -124,7 +125,7 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
         expect(result.current.fileName).toBe('')
     })
 
-    it('passes statsFilters and userTimezone from useAutomateFilters to fetch', async () => {
+    it('passes statsFilters and userTimezone from useAiAgentStatsFilters to fetch', async () => {
         mockFetchShoppingAssistantTopProductsData.mockResolvedValue({
             fileName: 'test.csv',
             files: {},
@@ -156,7 +157,7 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
         })
 
         act(() => {
-            mockUseAutomateFilters.mockReturnValue({
+            mockUseAiAgentStatsFilters.mockReturnValue({
                 ...defaultFilters,
                 statsFilters: {
                     period: {
