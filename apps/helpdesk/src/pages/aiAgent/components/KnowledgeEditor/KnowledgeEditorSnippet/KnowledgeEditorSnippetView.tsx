@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import { Card } from '@gorgias/axiom'
 
-import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
@@ -195,7 +194,6 @@ export const KnowledgeEditorSnippetView = ({
                 </div>
                 {isDetailsView && renderSidePanel()}
             </div>
-            <DrillDownModal isLegacy={false} />
         </Card>
     )
 }

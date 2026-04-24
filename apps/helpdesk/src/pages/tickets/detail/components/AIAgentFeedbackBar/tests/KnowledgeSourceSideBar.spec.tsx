@@ -19,6 +19,10 @@ jest.mock('@repo/feature-flags', () => ({
     },
 }))
 
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: () => null,
+}))
+
 jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
     KnowledgeEditor: (props: any) => {
         if (props.variant === 'skill') {

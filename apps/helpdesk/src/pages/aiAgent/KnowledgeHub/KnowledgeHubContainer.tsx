@@ -10,6 +10,7 @@ import {
     getLast28DaysDateRange,
     useAllResourcesMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import useAppSelector from 'hooks/useAppSelector'
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import {
@@ -814,6 +815,7 @@ export const KnowledgeHubContainer = () => {
                 handleVisibilityUpdate={snippetEditor.handleVisibilityUpdate}
                 snippetHelpCenterId={snippetHelpCenterId || 0}
             />
+            <DrillDownModal isLegacy={false} />
         </div>
     )
 }

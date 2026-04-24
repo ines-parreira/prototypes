@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -266,7 +267,12 @@ const KnowledgeSourceSideBar = ({
         return null
     }
 
-    return <KnowledgeEditor {...editorProps} />
+    return (
+        <>
+            <KnowledgeEditor {...editorProps} />
+            <DrillDownModal isLegacy={false} />
+        </>
+    )
 }
 
 export default KnowledgeSourceSideBar
