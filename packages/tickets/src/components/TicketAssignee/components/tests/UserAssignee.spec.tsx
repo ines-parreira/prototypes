@@ -1,6 +1,5 @@
 import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockGetCurrentUserHandler,
@@ -12,6 +11,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { render } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 import { UserAssignee } from '../UserAssignee'
 
 let capturedActions: Record<string, { action: (event: Event) => void }> = {}
@@ -77,8 +77,6 @@ const mockUpdateTicket = mockUpdateTicketHandler(async () => {
         }),
     )
 })
-
-const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -152,22 +150,15 @@ describe('UserAssignee', () => {
     })
 
     it('should show "Unassigned" section when user is already assigned', async () => {
+        const assignedUser = mockTicketUser(user2)
         const { user } = render(
-            <UserAssignee
-                ticketId={ticketId}
-                currentAssignee={currentTicketAssignee}
-            />,
+            <UserAssignee ticketId={ticketId} currentAssignee={assignedUser} />,
         )
 
-        const select = await waitUntilLoaded()
-        await act(async () => {
-            await user.click(select)
-        })
+        await user.click(await waitUntilLoaded())
 
-        await waitFor(() => {
-            const options = screen.getAllByRole('option')
-            expect(options[0]).toHaveTextContent('Unassigned')
-        })
+        const options = await screen.findAllByRole('option')
+        expect(options[0]).toHaveTextContent('Unassigned')
     })
 
     it('should render and include current assignee in options when not in loaded users list', async () => {
@@ -343,28 +334,19 @@ describe('UserAssignee', () => {
             <UserAssignee ticketId={ticketId} currentAssignee={null} />,
         )
 
-        const select = await waitUntilLoaded()
-        await act(async () => {
-            await user.click(select)
-        })
+        await user.click(await waitUntilLoaded())
 
         const searchInput = await screen.findByRole('searchbox')
-        await act(async () => {
-            await user.type(searchInput, 'test search')
-        })
+        await user.type(searchInput, 'test search')
 
         expect(searchInput).toHaveValue('test search')
 
-        await act(async () => {
-            await user.click(select)
-        })
+        await user.keyboard('{Escape}{Escape}')
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })
 
-        await act(async () => {
-            await user.click(select)
-        })
+        await user.click(await waitUntilLoaded())
         const searchInputAfterReopen = await screen.findByRole('searchbox')
 
         expect(searchInputAfterReopen).toHaveValue('')

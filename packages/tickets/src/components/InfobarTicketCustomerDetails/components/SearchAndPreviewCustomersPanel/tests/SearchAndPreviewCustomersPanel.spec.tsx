@@ -1,6 +1,5 @@
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockCustomer,
@@ -19,6 +18,7 @@ import type { TicketCustomerChannel } from '@gorgias/helpdesk-queries'
 import type { CustomerHighlightDataItem } from '@gorgias/helpdesk-types'
 
 import { render } from '../../../../../tests/render.utils'
+import { server } from '../../../../../tests/server'
 import { SearchAndPreviewCustomersPanel } from '../SearchAndPreviewCustomersPanel'
 
 const mockOnClose = vi.fn()
@@ -77,21 +77,20 @@ const mockListCustomerFieldsValues = mockListCustomerCustomFieldsValuesHandler(
         ),
 )
 
-const server = setupServer(
-    mockSearchCustomers.handler,
-    mockGetCurrentUser.handler,
-    mockListCustomFields.handler,
-    mockListCustomerFieldsValues.handler,
-    mockListIntegrationsHandler().handler,
-    mockListPhoneNumbersHandler().handler,
-)
-
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
 beforeEach(() => {
     vi.clearAllMocks()
+    server.use(
+        mockSearchCustomers.handler,
+        mockGetCurrentUser.handler,
+        mockListCustomFields.handler,
+        mockListCustomerFieldsValues.handler,
+        mockListIntegrationsHandler().handler,
+        mockListPhoneNumbersHandler().handler,
+    )
 })
 
 afterEach(() => {

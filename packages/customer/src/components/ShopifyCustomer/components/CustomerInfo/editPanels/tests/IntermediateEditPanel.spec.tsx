@@ -100,27 +100,37 @@ describe('IntermediateEditPanel', () => {
     async function openShopifyMetricsPanel(
         user: ReturnType<typeof render>['user'],
     ) {
-        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
+        await user.click(
+            await screen.findByRole('button', { name: /edit metrics/i }),
+        )
 
-        return await screen.findByRole('dialog', {
+        const dialog = await screen.findByRole('dialog', {
             name: /shopify metrics/i,
         })
+        await within(dialog).findByText('Note')
+
+        return dialog
     }
 
     async function openOrderDetailsPanel(
         user: ReturnType<typeof render>['user'],
     ) {
         await user.click(
-            screen.getByRole('button', { name: /edit order details/i }),
+            await screen.findByRole('button', {
+                name: /edit order details/i,
+            }),
         )
 
-        return await screen.findByRole('dialog', {
+        const dialog = await screen.findByRole('dialog', {
             name: /order details/i,
         })
+        await within(dialog).findByText('Tags')
+
+        return dialog
     }
 
-    function getFieldToggle(dialog: HTMLElement, label: string) {
-        const row = within(dialog).getByText(label).closest('tr')
+    async function getFieldToggle(dialog: HTMLElement, label: string) {
+        const row = (await within(dialog).findByText(label)).closest('tr')
 
         expect(row).not.toBeNull()
 
@@ -135,7 +145,7 @@ describe('IntermediateEditPanel', () => {
             name: /confirm/i,
         })
 
-        await user.click(getFieldToggle(dialog, 'Note'))
+        await user.click(await getFieldToggle(dialog, 'Note'))
 
         await waitFor(() => {
             expect(confirmButton).toBeEnabled()
@@ -160,7 +170,7 @@ describe('IntermediateEditPanel', () => {
             name: /confirm/i,
         })
 
-        await user.click(getFieldToggle(dialog, 'Tags'))
+        await user.click(await getFieldToggle(dialog, 'Tags'))
 
         await waitFor(() => {
             expect(confirmButton).toBeEnabled()
@@ -243,7 +253,7 @@ describe('IntermediateEditPanel', () => {
         const { user } = render(<IntermediateEditPanel {...defaultProps} />)
 
         const dialog = await openShopifyMetricsPanel(user)
-        const toggles = within(dialog).getAllByRole('switch')
+        const toggles = await within(dialog).findAllByRole('switch')
         expect(toggles.length).toBeGreaterThan(0)
     })
 

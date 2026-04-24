@@ -1,7 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
 import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import type { DomainEventWithType } from '@gorgias/events'
 import {
@@ -15,6 +14,7 @@ import {
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { renderHook } from '../../tests/render.utils'
+import { server } from '../../tests/server'
 import type { CurrentUser } from '../hooks/useCurrentUserLanguagePreferences'
 import { useTicketMessageTranslationCompleteEventHandler } from '../hooks/useLiveTicketTranslationsUpdates/useTicketMessageTranslationCompleteEventHandler'
 import { useTicketMessageTranslations } from '../hooks/useTicketMessageTranslations'
@@ -30,7 +30,6 @@ vi.mock('@repo/feature-flags', () => ({
 }))
 
 const mockUseFlag = vi.mocked(useFlag)
-const server = setupServer()
 const routeOptions = {
     initialEntries: ['/tickets/123'],
     path: '/tickets/:ticketId',
@@ -100,6 +99,13 @@ const mockListTicketTranslations = mockListTicketTranslationsHandler(
         }),
 )
 
+const localHandlers = [
+    mockGetCurrentUserFrench.handler,
+    mockGetTicket.handler,
+    mockListTicketMessageTranslations.handler,
+    mockListTicketTranslations.handler,
+]
+
 function useTicketMessageTranslationHarness(ticketId = 123) {
     const ticketMessageTranslations = useTicketMessageTranslations({
         ticket_id: ticketId,
@@ -149,12 +155,7 @@ beforeEach(() => {
         ticketMessagesTranslationDisplayMap: {},
         allMessageDisplayState: DisplayedContent.Translated,
     })
-    server.use(
-        mockGetCurrentUserFrench.handler,
-        mockGetTicket.handler,
-        mockListTicketMessageTranslations.handler,
-        mockListTicketTranslations.handler,
-    )
+    server.use(...localHandlers)
 })
 
 afterEach(() => {
@@ -164,6 +165,23 @@ afterEach(() => {
 afterAll(() => {
     server.close()
 })
+
+async function waitForTicketMessageTranslationsMap(
+    result: {
+        current: ReturnType<typeof useTicketMessageTranslationHarness>
+    },
+    expectedMap: Record<number, unknown>,
+) {
+    await waitFor(
+        () => {
+            expect(
+                result.current.ticketMessageTranslations
+                    .ticketMessagesTranslationMap,
+            ).toEqual(expectedMap)
+        },
+        { timeout: 5000 },
+    )
+}
 
 describe('useTicketMessageTranslationCompleteEventHandler', () => {
     it('returns the ticket message translation completion handler', () => {
@@ -200,13 +218,8 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
             routeOptions,
         )
 
-        await waitFor(() => {
-            expect(
-                result.current.ticketMessageTranslations
-                    .ticketMessagesTranslationMap,
-            ).toEqual({
-                789: existingTranslation,
-            })
+        await waitForTicketMessageTranslationsMap(result, {
+            789: existingTranslation,
         })
 
         act(() => {
@@ -269,14 +282,9 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
             routeOptions,
         )
 
-        await waitFor(() => {
-            expect(
-                result.current.ticketMessageTranslations
-                    .ticketMessagesTranslationMap,
-            ).toEqual({
-                456: existingTranslation,
-                789: otherTranslation,
-            })
+        await waitForTicketMessageTranslationsMap(result, {
+            456: existingTranslation,
+            789: otherTranslation,
         })
 
         act(() => {

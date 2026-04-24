@@ -1,6 +1,5 @@
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockCustomer,
@@ -22,6 +21,7 @@ import {
 import type { CustomerHighlightDataItem } from '@gorgias/helpdesk-types'
 
 import { render } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
 import { InfobarTicketCustomerDetails } from '../InfobarTicketCustomerDetails'
 
 const ticketId = '123'
@@ -71,26 +71,25 @@ const mockUpdateTicket = mockUpdateTicketHandler(async () =>
 
 const mockSearchCustomers = mockSearchCustomersHandler()
 
-const server = setupServer(
-    mockGetTicket.handler,
-    mockGetCurrentUser.handler,
-    mockListCustomFields.handler,
-    mockListCustomerFieldsValues.handler,
-    mockListIntegrationsHandler().handler,
-    mockListPhoneNumbersHandler().handler,
-    mockUpdateTicket.handler,
-    mockSearchCustomers.handler,
-    http.get(`/api/customers/${customerId}/similar/`, () => {
-        return new HttpResponse(null, { status: 404 })
-    }),
-)
-
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
 beforeEach(() => {
     vi.clearAllMocks()
+    server.use(
+        mockGetTicket.handler,
+        mockGetCurrentUser.handler,
+        mockListCustomFields.handler,
+        mockListCustomerFieldsValues.handler,
+        mockListIntegrationsHandler().handler,
+        mockListPhoneNumbersHandler().handler,
+        mockUpdateTicket.handler,
+        mockSearchCustomers.handler,
+        http.get(`/api/customers/${customerId}/similar/`, () => {
+            return new HttpResponse(null, { status: 404 })
+        }),
+    )
 })
 
 afterEach(() => {

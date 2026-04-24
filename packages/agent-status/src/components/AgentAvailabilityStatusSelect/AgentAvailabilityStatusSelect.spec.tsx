@@ -152,10 +152,7 @@ describe('AgentAvailabilityStatusSelect', () => {
             const trigger = screen.getByRole('button', { name: /Available/i })
             await user.click(trigger)
 
-            await waitFor(() => {
-                const options = screen.getAllByRole('option')
-                expect(options.length).toBe(4)
-            })
+            expect(await screen.findAllByRole('option')).toHaveLength(4)
         })
 
         it('should call onSelect with selected status when option is clicked', async () => {
@@ -170,13 +167,7 @@ describe('AgentAvailabilityStatusSelect', () => {
             const trigger = screen.getByRole('button', { name: /Available/i })
             await user.click(trigger)
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('option', { name: /Lunch break/i }),
-                ).toBeInTheDocument()
-            })
-
-            const lunchBreakOption = screen.getByRole('option', {
+            const lunchBreakOption = await screen.findByRole('option', {
                 name: /Lunch break/i,
             })
             await user.click(lunchBreakOption)
@@ -202,13 +193,7 @@ describe('AgentAvailabilityStatusSelect', () => {
             const trigger = screen.getByRole('button', { name: /Available/i })
             await user.click(trigger)
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('option', { name: /Unavailable/i }),
-                ).toBeInTheDocument()
-            })
-
-            const unavailableOption = screen.getByRole('option', {
+            const unavailableOption = await screen.findByRole('option', {
                 name: /Unavailable/i,
             })
             await user.click(unavailableOption)

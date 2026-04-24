@@ -198,9 +198,29 @@ echo "    repeat:   $REPEAT"
 echo "    cpus:     $CPUS"
 echo "    memory:   $MEMORY"
 
+prepare_iteration_artifacts() {
+    mkdir -p /workspace/.nx/cache/terminalOutputs
+
+    IFS=, read -r -a constrained_projects <<< "$PROJECTS"
+
+    for project in "${constrained_projects[@]}"; do
+        if [[ "$project" == @repo/* ]]; then
+            project_dir="/workspace/packages/${project#@repo/}"
+
+            if [[ -d "$project_dir" ]]; then
+                rm -rf "$project_dir/coverage"
+                mkdir -p "$project_dir/coverage/.tmp"
+            fi
+        fi
+    done
+
+    npx nx reset >/dev/null 2>&1 || true
+}
+
 for run_index in $(seq 1 "$REPEAT"); do
     echo
     echo "==> Iteration ${run_index}/${REPEAT}"
+    prepare_iteration_artifacts
     npx nx run-many \
       --target="$TARGET" \
       --projects="$PROJECTS" \

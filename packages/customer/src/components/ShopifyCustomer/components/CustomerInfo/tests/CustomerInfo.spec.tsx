@@ -174,6 +174,16 @@ const metafieldDefinitionsHandler = http.get(
 const mockListWidgets = mockListWidgetsHandler()
 const mockGetTicket = mockGetTicketHandler()
 
+function getStorePickerInput() {
+    return screen.getByRole('textbox', { name: /select a store/i })
+}
+
+async function waitForSelectedStore(name = mockShopifyIntegration.name) {
+    await waitFor(() => {
+        expect(getStorePickerInput()).toHaveValue(name)
+    })
+}
+
 beforeEach(() => {
     mockUseTicketInfobarNavigation.mockReturnValue({
         shopifyIntegrationId: undefined,
@@ -223,16 +233,7 @@ describe('CustomerInfo', () => {
             />,
         )
 
-        await waitFor(
-            () => {
-                expect(
-                    screen.getByRole('textbox', {
-                        name: /select a store/i,
-                    }),
-                ).toHaveValue(mockShopifyIntegration.name)
-            },
-            { timeout: 5000 },
-        )
+        await waitForSelectedStore()
     })
 
     it('calls onStoreChange when an integration is loaded', async () => {
@@ -304,15 +305,18 @@ describe('CustomerInfo', () => {
 
         onStoreChange.mockClear()
 
-        await user.click(
-            screen.getByRole('button', { name: /test shopify store/i }),
-        )
+        await waitForSelectedStore()
+        await user.click(getStorePickerInput())
 
         await user.click(
-            screen.getByRole('option', { name: /second shopify store/i }),
+            await screen.findByRole('option', {
+                name: /second shopify store/i,
+            }),
         )
 
-        expect(onStoreChange).toHaveBeenCalledWith(secondIntegration.id)
+        await waitFor(() => {
+            expect(onStoreChange).toHaveBeenCalledWith(secondIntegration.id)
+        })
     })
 
     it('only shows integrations that are in the ticket', async () => {
@@ -347,15 +351,15 @@ describe('CustomerInfo', () => {
             />,
         )
 
-        await waitFor(() => {
-            expect(screen.getByRole('textbox')).toHaveValue(
-                mockShopifyIntegration.name,
-            )
-        })
+        await waitForSelectedStore()
 
-        await user.click(
-            screen.getByRole('button', { name: /test shopify store/i }),
-        )
+        await user.click(getStorePickerInput())
+
+        expect(
+            await screen.findByRole('option', {
+                name: /test shopify store/i,
+            }),
+        ).toBeInTheDocument()
 
         expect(
             screen.queryByRole('option', { name: /second shopify store/i }),
@@ -372,13 +376,11 @@ describe('CustomerInfo', () => {
             />,
         )
 
-        await waitFor(() => {
-            const link = screen.getByRole('link', { name: /john doe/i })
-            expect(link).toHaveAttribute(
-                'href',
-                'https://admin.shopify.com/store/test-store/customers/12345',
-            )
-        })
+        const link = await screen.findByRole('link', { name: /john doe/i })
+        expect(link).toHaveAttribute(
+            'href',
+            'https://admin.shopify.com/store/test-store/customers/12345',
+        )
     })
 
     it('renders empty state when no integrations match', async () => {
@@ -441,21 +443,15 @@ describe('CustomerInfo', () => {
             />,
         )
 
-        await waitFor(() => {
-            expect(screen.getByRole('textbox')).toHaveValue(
-                mockShopifyIntegration.name,
-            )
-        })
+        await waitForSelectedStore()
 
-        await user.click(
-            screen.getByRole('button', { name: /test shopify store/i }),
-        )
+        await user.click(getStorePickerInput())
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: /sync to other stores/i }),
-            ).toBeInTheDocument()
-        })
+        expect(
+            await screen.findByRole('button', {
+                name: /sync to other stores/i,
+            }),
+        ).toBeInTheDocument()
     })
 
     it('selects the integration matching shopifyIntegrationId from navigation context', async () => {
@@ -519,11 +515,7 @@ describe('CustomerInfo', () => {
             />,
         )
 
-        await waitFor(() => {
-            expect(screen.getByRole('textbox')).toHaveValue(
-                'Second Shopify Store',
-            )
-        })
+        await waitForSelectedStore('Second Shopify Store')
     })
 
     it('calls onSyncProfile when clicking sync action in store picker', async () => {
@@ -538,24 +530,14 @@ describe('CustomerInfo', () => {
             />,
         )
 
-        await waitFor(() => {
-            expect(screen.getByRole('textbox')).toHaveValue(
-                mockShopifyIntegration.name,
-            )
-        })
+        await waitForSelectedStore()
+
+        await user.click(getStorePickerInput())
 
         await user.click(
-            screen.getByRole('button', { name: /test shopify store/i }),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: /sync to other stores/i }),
-            ).toBeInTheDocument()
-        })
-
-        await user.click(
-            screen.getByRole('button', { name: /sync to other stores/i }),
+            await screen.findByRole('button', {
+                name: /sync to other stores/i,
+            }),
         )
 
         expect(onSyncProfile).toHaveBeenCalledTimes(1)

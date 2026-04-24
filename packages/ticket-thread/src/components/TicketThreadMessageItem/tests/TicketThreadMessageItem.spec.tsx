@@ -845,10 +845,10 @@ describe('TicketThreadMessageItem', () => {
         },
     ]
 
-    it.each(messageItems)('renders $label item', ({ item }) => {
+    it.each(messageItems)('renders $label item', async ({ item }) => {
         renderItem(item)
 
-        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
+        expect(await screen.findByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
     })
 
     it('renders AI agent message item', () => {

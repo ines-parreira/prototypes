@@ -178,7 +178,12 @@ describe('MergeCustomersModal', () => {
             name: /I understand that this action is irreversible/i,
         })
         await user.click(confirmationCheckbox)
-        await user.click(screen.getByRole('button', { name: /merge/i }))
+
+        const mergeButton = screen.getByRole('button', { name: /merge/i })
+        await waitFor(() => {
+            expect(mergeButton).toBeEnabled()
+        })
+        await user.click(mergeButton)
 
         await waitFor(() => {
             expect(mockMergeCustomers).toHaveBeenCalled()
@@ -245,13 +250,22 @@ describe('MergeCustomersModal', () => {
             name: /name/i,
         })
         await user.click(nameRadios[1])
+        await waitFor(() => {
+            expect(nameRadios[1]).toBeChecked()
+        })
 
         const checkbox = await screen.findByRole('checkbox', {
             name: /I understand that this action is irreversible/i,
         })
         await user.click(checkbox)
 
-        await user.click(await screen.findByRole('button', { name: /merge/i }))
+        const mergeButton = await screen.findByRole('button', {
+            name: /merge/i,
+        })
+        await waitFor(() => {
+            expect(mergeButton).toBeEnabled()
+        })
+        await user.click(mergeButton)
 
         await waitFor(() => {
             expect(mockMergeCustomers).toHaveBeenCalledWith(

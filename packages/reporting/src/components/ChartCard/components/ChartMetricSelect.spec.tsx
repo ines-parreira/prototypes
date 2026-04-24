@@ -54,8 +54,8 @@ describe('DonutChartMetricSelect', () => {
 
         await user.click(trigger)
 
-        const allMetric2s = screen.getAllByText('Metric 2')
-        const allMetric3s = screen.getAllByText('Metric 3')
+        const allMetric2s = await screen.findAllByText('Metric 2')
+        const allMetric3s = await screen.findAllByText('Metric 3')
         expect(allMetric2s.length).toBeGreaterThan(0)
         expect(allMetric3s.length).toBeGreaterThan(0)
     })
@@ -74,7 +74,7 @@ describe('DonutChartMetricSelect', () => {
         const trigger = screen.getByRole('button', { name: /metric 1/i })
         await user.click(trigger)
 
-        const options = screen.getAllByRole('option')
+        const options = await screen.findAllByRole('option')
         await user.click(options[1])
 
         expect(mockOnMetricChange).toHaveBeenCalled()
@@ -112,8 +112,10 @@ describe('DonutChartMetricSelect', () => {
         const trigger = screen.getByRole('button', { name: /metric 1/i })
         await user.click(trigger)
 
-        mockMetrics.forEach((metric) => {
-            expect(screen.getAllByText(metric.label).length).toBeGreaterThan(0)
-        })
+        for (const metric of mockMetrics) {
+            expect(
+                (await screen.findAllByText(metric.label)).length,
+            ).toBeGreaterThan(0)
+        }
     })
 })

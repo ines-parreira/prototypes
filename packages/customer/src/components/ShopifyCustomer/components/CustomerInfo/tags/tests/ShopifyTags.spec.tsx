@@ -30,6 +30,12 @@ const shopTagsHandler = http.get(
 
 const mockExecuteAction = mockExecuteActionHandler()
 
+async function openTagsDropdown(user: ReturnType<typeof render>['user']) {
+    await user.click(screen.getByRole('button', { name: /add-plus/ }))
+
+    return await screen.findByRole('searchbox')
+}
+
 describe('ShopifyTags', () => {
     beforeEach(() => {
         server.use(shopTagsHandler, mockExecuteAction.handler)
@@ -219,30 +225,22 @@ describe('ShopifyTags', () => {
             expect(screen.getByText('VIP')).toBeInTheDocument()
         })
 
-        const triggerButton = screen.getByRole('button', {
-            name: /add-plus/,
-        })
-        await user.click(triggerButton)
-
-        const searchbox = screen.getByRole('searchbox')
+        const searchbox = await openTagsDropdown(user)
         await user.type(searchbox, 'Wholesale')
 
         await waitFor(() => {
             expect(searchbox).toHaveValue('Wholesale')
         })
 
-        await user.keyboard('{Escape}')
-        await user.keyboard('{Escape}')
+        await user.click(document.body)
 
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })
 
-        await user.click(triggerButton)
+        const reopenedSearchbox = await openTagsDropdown(user)
 
-        await waitFor(() => {
-            expect(screen.getByRole('searchbox')).toHaveValue('')
-        })
+        expect(reopenedSearchbox).toHaveValue('')
     })
 
     it('sends correct payload when selecting a tag from dropdown', async () => {

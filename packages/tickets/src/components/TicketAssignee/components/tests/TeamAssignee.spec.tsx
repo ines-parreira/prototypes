@@ -258,20 +258,19 @@ describe('TeamAssignee', () => {
             <TeamAssignee ticketId={ticketId} currentTeam={null} />,
         )
 
-        const select = await waitUntilLoaded()
-        await act(() => user.click(select))
+        await user.click(await waitUntilLoaded())
 
         const searchInput = await screen.findByRole('searchbox')
-        await act(() => user.type(searchInput, 'test search'))
+        await user.type(searchInput, 'test search')
 
         expect(searchInput).toHaveValue('test search')
 
-        await act(() => user.click(select))
+        await user.keyboard('{Escape}{Escape}')
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })
 
-        await act(() => user.click(select))
+        await user.click(await waitUntilLoaded())
         const searchInputAfterReopen = await screen.findByRole('searchbox')
 
         expect(searchInputAfterReopen).toHaveValue('')

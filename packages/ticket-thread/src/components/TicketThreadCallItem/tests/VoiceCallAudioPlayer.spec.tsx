@@ -83,22 +83,21 @@ describe('VoiceCallAudioPlayer', () => {
             )
 
             await user.click(
-                screen.getByRole('button', { name: /more options/i }),
+                await screen.findByRole('button', { name: /more options/i }),
             )
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('menuitem', { name: /delete/i }),
-                ).toBeInTheDocument()
-            })
-            await user.click(screen.getByRole('menuitem', { name: /delete/i }))
-            await user.click(screen.getByRole('button', { name: /^delete$/i }))
+            await user.click(
+                await screen.findByRole('menuitem', { name: /delete/i }),
+            )
+            await user.click(
+                await screen.findByRole('button', { name: /^delete$/i }),
+            )
 
             await waitFor(() => {
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
                     queryKey: queryKeys.voiceCallRecordings.all(),
                 })
             })
-        })
+        }, 10000)
     })
 
     it('shows "Call recording manually deleted" when recording is deleted (Recording type)', () => {

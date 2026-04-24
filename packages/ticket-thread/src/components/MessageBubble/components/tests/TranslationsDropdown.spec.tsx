@@ -109,6 +109,30 @@ afterEach(() => {
 })
 
 describe('TranslationsDropdown', () => {
+    async function findTranslatedButton() {
+        return screen.findByRole(
+            'button',
+            {
+                name: /translated/i,
+            },
+            {
+                timeout: 10000,
+            },
+        )
+    }
+
+    async function findTranslatedFromSpanishButton() {
+        return screen.findByRole(
+            'button',
+            {
+                name: /translated from spanish/i,
+            },
+            {
+                timeout: 10000,
+            },
+        )
+    }
+
     describe('Original content display', () => {
         it('should render "See translation" button', async () => {
             renderComponent()
@@ -156,29 +180,19 @@ describe('TranslationsDropdown', () => {
         it('should show dropdown with language name', async () => {
             renderComponent()
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', {
-                        name: /translated from spanish/i,
-                    }),
-                ).toBeInTheDocument()
-            })
+            expect(await findTranslatedFromSpanishButton()).toBeInTheDocument()
         })
 
         it('should show dropdown menu options when opened', async () => {
             const { user } = renderComponent()
 
-            await user.click(
-                await screen.findByRole('button', {
-                    name: /translated from spanish/i,
-                }),
-            )
+            await user.click(await findTranslatedFromSpanishButton())
 
             expect(
-                screen.getByRole('menuitem', { name: /show original/i }),
+                await screen.findByRole('menuitem', { name: /show original/i }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('menuitem', {
+                await screen.findByRole('menuitem', {
                     name: /regenerate translation/i,
                 }),
             ).toBeInTheDocument()
@@ -187,13 +201,9 @@ describe('TranslationsDropdown', () => {
         it('should switch to original when "Show original" is clicked', async () => {
             const { user } = renderComponent()
 
+            await user.click(await findTranslatedFromSpanishButton())
             await user.click(
-                await screen.findByRole('button', {
-                    name: /translated from spanish/i,
-                }),
-            )
-            await user.click(
-                screen.getByRole('menuitem', { name: /show original/i }),
+                await screen.findByRole('menuitem', { name: /show original/i }),
             )
 
             const state = useTicketMessageTranslationDisplay.getState()
@@ -267,13 +277,9 @@ describe('TranslationsDropdown', () => {
         it('should call regenerate with correct messageId and close dropdown', async () => {
             const { user } = renderComponent()
 
+            await user.click(await findTranslatedButton())
             await user.click(
-                await screen.findByRole('button', {
-                    name: /translated from spanish/i,
-                }),
-            )
-            await user.click(
-                screen.getByRole('menuitem', {
+                await screen.findByRole('menuitem', {
                     name: /regenerate translation/i,
                 }),
             )
@@ -297,14 +303,10 @@ describe('TranslationsDropdown', () => {
 
             const { user } = renderComponent()
 
-            await user.click(
-                await screen.findByRole('button', {
-                    name: /translated from spanish/i,
-                }),
-            )
+            await user.click(await findTranslatedButton())
 
             expect(
-                screen.getByRole('menuitem', {
+                await screen.findByRole('menuitem', {
                     name: /regenerate translation/i,
                 }),
             ).toHaveAttribute('aria-disabled', 'true')

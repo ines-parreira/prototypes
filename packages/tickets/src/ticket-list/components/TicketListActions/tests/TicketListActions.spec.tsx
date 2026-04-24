@@ -1,6 +1,5 @@
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockCreateJobHandler,
@@ -14,6 +13,7 @@ import { useListTagsSearch } from '../../../../components/InfobarTicketDetails/c
 import { useTeamOptions } from '../../../../components/TicketAssignee/hooks/useTeamOptions'
 import { useUserOptions } from '../../../../components/TicketAssignee/hooks/useUserOptions'
 import { render } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 import { TicketListActions } from '../TicketListActions'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
@@ -71,8 +71,6 @@ const mockUseTeamOptions = vi.mocked(useTeamOptions)
 const mockUseUserOptions = vi.mocked(useUserOptions)
 const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
 const mockUseCreateTicketTag = vi.mocked(useCreateTicketTag)
-
-const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })

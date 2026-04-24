@@ -2,7 +2,6 @@ import { shortcutManager } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockCreateTagHandler,
@@ -12,6 +11,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { render } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 import type { TagsMultiSelectProps } from './TagsMultiSelect'
 import { TagsMultiSelect } from './TagsMultiSelect'
 
@@ -70,8 +70,6 @@ const mockListTagsSearchAware = mockListTagsHandler(
 const mockCreateTag = mockCreateTagHandler()
 
 const localHandlers = [mockListTags.handler, mockCreateTag.handler]
-
-const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })

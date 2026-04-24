@@ -10,6 +10,18 @@ global.ResizeObserver = vi.fn().mockImplementation(function ResizeObserver() {
     }
 })
 
+Object.defineProperty(document, 'execCommand', {
+    configurable: true,
+    writable: true,
+    value: vi.fn(() => true),
+})
+
+Object.defineProperty(window, 'prompt', {
+    configurable: true,
+    writable: true,
+    value: vi.fn(() => null),
+})
+
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })

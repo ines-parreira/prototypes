@@ -1,6 +1,5 @@
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockCreateTagHandler,
@@ -14,6 +13,7 @@ import {
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
 import { render as renderPrimitive } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
 import { TicketInfobarTicketDetailsTags } from '../components/InfobarTicketTags'
 
 const render = (...args: Parameters<typeof renderPrimitive>) =>
@@ -96,8 +96,6 @@ const localHandlers = [
     mockCreateTag.handler,
 ]
 
-const server = setupServer()
-
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
@@ -132,6 +130,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
         await waitFor(
             () => {
                 expect(getAddButton()).toHaveAttribute('aria-expanded', 'true')
+                expect(screen.getByRole('searchbox')).toBeInTheDocument()
             },
             { timeout: 2000 },
         )

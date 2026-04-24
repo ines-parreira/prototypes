@@ -1,10 +1,10 @@
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import { mockListTeamsHandler, mockTeam } from '@gorgias/helpdesk-mocks'
 
 import { render } from '../../../../../../../tests/render.utils'
+import { server } from '../../../../../../../tests/server'
 import { BulkTeamAssignSelect } from '../BulkTeamAssignSelect'
 
 const team1 = mockTeam({ id: 1, name: 'Support' })
@@ -17,8 +17,6 @@ const mockListTeams = mockListTeamsHandler(async ({ data }) =>
         meta: { prev_cursor: null, next_cursor: null },
     }),
 )
-
-const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -37,20 +35,15 @@ afterAll(() => {
 })
 
 const waitUntilLoaded = async () => {
-    let trigger: HTMLElement = {} as HTMLElement
     await waitFor(() => {
         const elements = screen.getAllByLabelText('Assign team')
         expect(elements[0]).not.toBeDisabled()
-        trigger = elements[0]
     })
-    return trigger
+    return screen.getAllByLabelText('Assign team')[0]
 }
 
-const openMenu = async (
-    user: ReturnType<typeof render>['user'],
-    trigger: HTMLElement,
-) => {
-    await user.click(trigger)
+const openMenu = async (user: ReturnType<typeof render>['user']) => {
+    await user.click(await waitUntilLoaded())
 }
 
 describe('BulkTeamAssignSelect', () => {
@@ -58,8 +51,7 @@ describe('BulkTeamAssignSelect', () => {
         const onChange = vi.fn()
         const { user } = render(<BulkTeamAssignSelect onChange={onChange} />)
 
-        const trigger = await waitUntilLoaded()
-        await openMenu(user, trigger)
+        await openMenu(user)
 
         const supportOptions = await screen.findAllByText('Support')
         await user.click(supportOptions[supportOptions.length - 1])
@@ -73,8 +65,7 @@ describe('BulkTeamAssignSelect', () => {
         const onChange = vi.fn()
         const { user } = render(<BulkTeamAssignSelect onChange={onChange} />)
 
-        const trigger = await waitUntilLoaded()
-        await openMenu(user, trigger)
+        await openMenu(user)
 
         const noTeamOptions = await screen.findAllByText('No team')
         await user.click(noTeamOptions[noTeamOptions.length - 1])
@@ -85,19 +76,18 @@ describe('BulkTeamAssignSelect', () => {
     it('clears search when dropdown is closed', async () => {
         const { user } = render(<BulkTeamAssignSelect onChange={vi.fn()} />)
 
-        const trigger = await waitUntilLoaded()
-        await openMenu(user, trigger)
+        await openMenu(user)
 
         const searchInput = await screen.findByRole('searchbox')
         await user.type(searchInput, 'Sup')
         expect(searchInput).toHaveValue('Sup')
 
-        await user.click(trigger)
+        await user.click(await waitUntilLoaded())
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })
 
-        await openMenu(user, trigger)
+        await openMenu(user)
         expect(await screen.findByRole('searchbox')).toHaveValue('')
     })
 })

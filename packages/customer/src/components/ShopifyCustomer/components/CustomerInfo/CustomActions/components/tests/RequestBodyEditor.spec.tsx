@@ -88,9 +88,9 @@ describe('RequestBodyEditor', () => {
         const { user } = renderEditor()
 
         await user.click(screen.getByRole('textbox', { name: /content type/i }))
-        await user.click(screen.getByRole('option', { name: /form/i }))
+        await user.click(await screen.findByRole('option', { name: /form/i }))
 
-        expect(screen.getByText('Body (Form)')).toBeInTheDocument()
+        expect(await screen.findByText('Body (Form)')).toBeInTheDocument()
     })
 
     it('adds a parameter in form mode', async () => {

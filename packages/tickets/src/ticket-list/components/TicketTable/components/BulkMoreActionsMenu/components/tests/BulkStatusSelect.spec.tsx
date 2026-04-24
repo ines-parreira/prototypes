@@ -15,7 +15,7 @@ describe('BulkStatusSelect', () => {
             const { user } = render(<BulkStatusSelect onChange={onChange} />)
 
             await user.click(screen.getByLabelText('Status selection'))
-            await user.click(screen.getByRole('option', { name: label }))
+            await user.click(await screen.findByRole('option', { name: label }))
 
             expect(onChange).toHaveBeenCalledWith(expected)
         },

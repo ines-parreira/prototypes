@@ -41,6 +41,14 @@ const systemViews: SystemView[] = [
 describe('DefaultViewsMenu', () => {
     const mockUpdateVisibility = vi.fn()
 
+    async function openDefaultViewsMenu(
+        user: ReturnType<typeof render>['user'],
+    ) {
+        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
+
+        await screen.findByRole('option', { name: /assigned to me/i })
+    }
+
     beforeEach(() => {
         mockUseDefaultViews.mockReturnValue({
             defaultSystemViews: systemViews,
@@ -65,19 +73,15 @@ describe('DefaultViewsMenu', () => {
     it('should show system view labels in the menu after opening', async () => {
         const { user } = render(<DefaultViewsMenu />)
 
-        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
+        await openDefaultViewsMenu(user)
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('option', { name: /assigned to me/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('option', { name: /unassigned/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('option', { name: /all/i }),
-            ).toBeInTheDocument()
-        })
+        expect(
+            screen.getByRole('option', { name: /assigned to me/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', { name: /unassigned/i }),
+        ).toBeInTheDocument()
+        expect(screen.getByRole('option', { name: /all/i })).toBeInTheDocument()
     })
 
     it('should show view name as label if the label was not found', async () => {
@@ -98,22 +102,18 @@ describe('DefaultViewsMenu', () => {
 
         const { user } = render(<DefaultViewsMenu />)
 
-        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
+        await openDefaultViewsMenu(user)
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('option', { name: /assigned to me/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('option', { name: /unassigned/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('option', { name: /all/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('option', { name: /custom/i }),
-            ).toBeInTheDocument()
-        })
+        expect(
+            screen.getByRole('option', { name: /assigned to me/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', { name: /unassigned/i }),
+        ).toBeInTheDocument()
+        expect(screen.getByRole('option', { name: /all/i })).toBeInTheDocument()
+        expect(
+            await screen.findByRole('option', { name: /custom/i }),
+        ).toBeInTheDocument()
     })
 
     it('should disable the filter button when there is an error', () => {
@@ -159,13 +159,7 @@ describe('DefaultViewsMenu', () => {
 
         const { user } = render(<DefaultViewsMenu />)
 
-        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('option', { name: /assigned to me/i }),
-            ).toBeInTheDocument()
-        })
+        await openDefaultViewsMenu(user)
 
         await user.click(
             screen.getByRole('option', { name: /assigned to me/i }),
@@ -185,13 +179,7 @@ describe('DefaultViewsMenu', () => {
     it('should call updateVisibility with correct hidden views when a view is deselected', async () => {
         const { user } = render(<DefaultViewsMenu />)
 
-        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('option', { name: /assigned to me/i }),
-            ).toBeInTheDocument()
-        })
+        await openDefaultViewsMenu(user)
 
         await user.click(
             screen.getByRole('option', { name: /assigned to me/i }),

@@ -19,6 +19,7 @@ export function createConfig(overrides?: Config): Config {
                 outputFile: process.env['CI'] ? './junit.xml' : undefined,
                 coverage: {
                     reporter: ['clover', 'lcov', 'text'],
+                    reportOnFailure: true,
                     exclude: [
                         'vitest.config.ts',
                         '.prettierrc.mjs',

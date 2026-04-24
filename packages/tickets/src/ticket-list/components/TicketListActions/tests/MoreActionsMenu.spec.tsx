@@ -3,7 +3,6 @@ import * as React from 'react'
 import { UserRole } from '@repo/permissions'
 import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 
 import {
     mockGetCurrentUserHandler,
@@ -16,6 +15,7 @@ import { useCreateTicketTag } from '../../../../components/InfobarTicketDetails/
 import { useListTagsSearch } from '../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
 import { useTeamOptions } from '../../../../components/TicketAssignee/hooks/useTeamOptions'
 import { render as renderPrimitive } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 import { useIsTrashLikeView } from '../../../hooks/useIsTrashLikeView'
 import { MoreActionsMenu } from '../MoreActionsMenu'
 
@@ -99,7 +99,6 @@ const mockAgentCurrentUser = mockGetCurrentUserHandler(async () =>
     HttpResponse.json(agentUser),
 )
 
-const server = setupServer()
 const mockUseTeamOptions = vi.mocked(useTeamOptions)
 const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
 const mockUseCreateTicketTag = vi.mocked(useCreateTicketTag)
@@ -167,7 +166,7 @@ beforeEach(() => {
     mockUseIsTrashLikeView.mockReturnValue(false)
 })
 
-afterEach(async () => {
+afterEach(() => {
     server.resetHandlers()
 })
 
@@ -200,22 +199,64 @@ async function openMenu(
     user: ReturnType<typeof render>['user'],
     { readyItemName = /mark as unread/i }: { readyItemName?: RegExp } = {},
 ) {
-    await user.click(screen.getByRole('button', { name: /more actions/i }))
-    const menu = (await screen.findAllByRole('menu')).at(-1)!
-    await within(menu).findByRole('menuitem', { name: readyItemName })
+    const trigger = screen.getByRole('button', { name: /more actions/i })
+
+    if (trigger.getAttribute('aria-expanded') !== 'true') {
+        await user.click(trigger)
+    }
+
+    const findReadyMenu = async () => {
+        const menu = (await screen.findAllByRole('menu')).at(-1)!
+        await within(menu).findByRole('menuitem', { name: readyItemName })
+        return menu
+    }
+
+    let menu: HTMLElement
+    try {
+        menu = await findReadyMenu()
+    } catch {
+        await user.click(trigger)
+        menu = await findReadyMenu()
+    }
 
     return menu
 }
 
 async function openAddTagSubMenu(user: ReturnType<typeof render>['user']) {
     const menu = await openMenu(user)
-    await user.click(within(menu).getByRole('menuitem', { name: /add tag/i }))
+    await user.click(
+        await within(menu).findByRole('menuitem', { name: /add tag/i }),
+    )
 
     await waitFor(() => {
         expect(screen.getAllByRole('menu').length).toBeGreaterThan(1)
     })
 
-    return screen.getAllByRole('menu').at(-1)!
+    const subMenu = screen.getAllByRole('menu').at(-1)!
+    await within(subMenu).findAllByRole('menuitem')
+
+    return subMenu
+}
+
+async function openAssignTeamSubMenu(
+    user: ReturnType<typeof render>['user'],
+    { readyTeamName = /support/i }: { readyTeamName?: RegExp } = {},
+) {
+    const menu = await openMenu(user, {
+        readyItemName: /assign to team/i,
+    })
+    await user.click(
+        await within(menu).findByRole('menuitem', { name: /assign to team/i }),
+    )
+
+    await waitFor(() => {
+        expect(screen.getAllByRole('menu').length).toBeGreaterThan(1)
+    })
+
+    const subMenu = screen.getAllByRole('menu').at(-1)!
+    await within(subMenu).findByRole('menuitem', { name: readyTeamName })
+
+    return subMenu
 }
 
 describe('MoreActionsMenu', () => {
@@ -619,23 +660,18 @@ describe('MoreActionsMenu', () => {
             })
 
             const { user } = render(<MoreActionsMenu {...defaultProps} />)
-            await openMenu(user)
-            await user.click(
-                screen.getByRole('menuitem', { name: /assign to team/i }),
-            )
+            const assignTeamMenu = await openAssignTeamSubMenu(user)
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('menuitem', {
-                        name: new RegExp(supportTeamName, 'i'),
-                    }),
-                ).toBeInTheDocument()
-                expect(
-                    screen.queryByRole('menuitem', {
-                        name: new RegExp(salesTeamName, 'i'),
-                    }),
-                ).not.toBeInTheDocument()
-            })
+            expect(
+                within(assignTeamMenu).getByRole('menuitem', {
+                    name: new RegExp(supportTeamName, 'i'),
+                }),
+            ).toBeInTheDocument()
+            expect(
+                within(assignTeamMenu).queryByRole('menuitem', {
+                    name: new RegExp(salesTeamName, 'i'),
+                }),
+            ).not.toBeInTheDocument()
         })
 
         it('calls onAssignTeam when a team option is activated', async () => {
@@ -646,23 +682,21 @@ describe('MoreActionsMenu', () => {
                     onAssignTeam={onAssignTeam}
                 />,
             )
-            await openMenu(user)
+            const assignTeamMenu = await openAssignTeamSubMenu(user)
             await user.click(
-                screen.getByRole('menuitem', { name: /assign to team/i }),
+                within(assignTeamMenu).getByRole('menuitem', {
+                    name: /support/i,
+                }),
             )
-            await user.click(screen.getByRole('menuitem', { name: /support/i }))
 
             expect(onAssignTeam).toHaveBeenCalledWith(supportTeam)
         })
 
         it('shows team emoji in the assign team submenu when available', async () => {
             const { user } = render(<MoreActionsMenu {...defaultProps} />)
-            await openMenu(user)
-            await user.click(
-                screen.getByRole('menuitem', { name: /assign to team/i }),
-            )
+            const assignTeamMenu = await openAssignTeamSubMenu(user)
 
-            const supportOption = screen.getByRole('menuitem', {
+            const supportOption = within(assignTeamMenu).getByRole('menuitem', {
                 name: /support/i,
             })
 

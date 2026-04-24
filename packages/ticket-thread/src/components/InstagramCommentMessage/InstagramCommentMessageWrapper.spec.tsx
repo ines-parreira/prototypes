@@ -1,4 +1,4 @@
-import { act, screen, waitFor, within } from '@testing-library/react'
+import { act, screen, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import {
@@ -257,7 +257,7 @@ describe('InstagramCommentMessageWrapper', () => {
             )
 
             await user.click(
-                screen.getByRole('radio', { name: 'More actions' }),
+                await screen.findByRole('radio', { name: 'More actions' }),
             )
             const menu = (await screen.findAllByRole('menu')).at(-1)!
             const intentsItem = await within(menu).findByRole('menuitem', {
@@ -265,10 +265,10 @@ describe('InstagramCommentMessageWrapper', () => {
             })
             await user.click(intentsItem)
 
-            await waitFor(() => {
-                expect(screen.getByText('Message intents')).toBeInTheDocument()
-            })
-        })
+            expect(
+                await screen.findByText('Message intents'),
+            ).toBeInTheDocument()
+        }, 10000)
     })
 
     describe('outbound comment (from_agent: true)', () => {
