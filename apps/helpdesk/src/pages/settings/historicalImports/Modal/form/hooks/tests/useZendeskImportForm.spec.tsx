@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 
 import { useCreateIntegration } from '@gorgias/helpdesk-queries'
 

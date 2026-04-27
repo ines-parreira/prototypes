@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { UserRole } from 'config/types/user'
 import { ORDERED_ROLES_META_BY_USER_ROLE } from 'config/user'

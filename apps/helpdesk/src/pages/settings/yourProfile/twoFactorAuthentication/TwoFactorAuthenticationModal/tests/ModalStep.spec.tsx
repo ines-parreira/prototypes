@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { authenticatorData } from '../../../../../../fixtures/authenticatorData'
 import { recoveryCodes as recoveryCodesFixture } from '../../../../../../fixtures/recoveryCodes'

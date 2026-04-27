@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { configureStore } from '@reduxjs/toolkit'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'

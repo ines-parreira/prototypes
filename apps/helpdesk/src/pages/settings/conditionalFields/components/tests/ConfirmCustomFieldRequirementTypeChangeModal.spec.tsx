@@ -1,7 +1,7 @@
 import type React from 'react'
 
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
 import { RequirementType } from '@gorgias/helpdesk-types'

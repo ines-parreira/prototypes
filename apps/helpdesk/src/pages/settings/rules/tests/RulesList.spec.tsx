@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'

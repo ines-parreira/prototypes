@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

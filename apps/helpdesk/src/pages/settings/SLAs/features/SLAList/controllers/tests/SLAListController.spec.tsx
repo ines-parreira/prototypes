@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
 
 import { useUpdateSlaPolicy } from '@gorgias/helpdesk-queries'
 

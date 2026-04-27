@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'

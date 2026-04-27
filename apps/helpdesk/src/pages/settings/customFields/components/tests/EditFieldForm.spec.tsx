@@ -1,6 +1,5 @@
 import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import { ticketNumberFieldDefinition } from 'fixtures/customField'

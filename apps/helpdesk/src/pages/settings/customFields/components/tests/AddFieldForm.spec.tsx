@@ -1,6 +1,5 @@
 import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCreateCustomFieldDefinition } from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'

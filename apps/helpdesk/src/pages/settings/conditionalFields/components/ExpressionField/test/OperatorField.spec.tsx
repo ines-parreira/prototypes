@@ -1,8 +1,7 @@
 import React from 'react'
 
 import { useFormContext } from '@repo/forms'
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
 
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
 import { ExpressionOperator } from '@gorgias/helpdesk-types'

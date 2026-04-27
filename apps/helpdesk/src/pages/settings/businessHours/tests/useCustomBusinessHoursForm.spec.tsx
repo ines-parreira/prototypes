@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import type { CustomBusinessHoursContextState } from '../CustomBusinessHoursContext'
 import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'

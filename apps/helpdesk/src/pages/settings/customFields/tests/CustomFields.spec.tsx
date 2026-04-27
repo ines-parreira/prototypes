@@ -2,8 +2,8 @@ import type React from 'react'
 
 import { useDebouncedValue } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { Link, useParams } from 'react-router-dom'
 
 import {

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { CONTACT_FORM_EMBED_FORM_TEXTS } from 'pages/settings/contactForm/constants'
 import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'

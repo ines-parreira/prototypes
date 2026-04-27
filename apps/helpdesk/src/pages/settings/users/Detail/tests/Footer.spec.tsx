@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { mockIntegration } from '@gorgias/helpdesk-mocks'
 import type { Integration } from '@gorgias/helpdesk-types'

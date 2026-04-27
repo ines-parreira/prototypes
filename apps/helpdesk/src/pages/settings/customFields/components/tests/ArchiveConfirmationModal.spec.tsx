@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import noop from 'lodash/noop'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'

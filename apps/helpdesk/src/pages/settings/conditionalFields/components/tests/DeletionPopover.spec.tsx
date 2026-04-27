@@ -1,8 +1,8 @@
 import type React from 'react'
 
 import { history } from '@repo/routing'
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'

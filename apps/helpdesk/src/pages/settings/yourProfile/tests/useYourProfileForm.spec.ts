@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 
 import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 

@@ -3,8 +3,8 @@ import React from 'react'
 
 import { Form, FormField, FormSubmitButton } from '@repo/forms'
 import { history } from '@repo/routing'
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 

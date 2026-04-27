@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 

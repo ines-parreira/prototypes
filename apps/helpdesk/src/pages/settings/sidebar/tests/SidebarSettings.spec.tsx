@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
-import { render, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

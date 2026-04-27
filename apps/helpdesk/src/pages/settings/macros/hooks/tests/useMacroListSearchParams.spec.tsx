@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 import { act } from 'react-dom/test-utils'
 import { MemoryRouter, Route, Switch } from 'react-router-dom'
 

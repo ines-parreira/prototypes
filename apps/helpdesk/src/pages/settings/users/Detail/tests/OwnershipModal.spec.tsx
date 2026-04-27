@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { updateAccountOwner } from 'state/currentAccount/actions'
 

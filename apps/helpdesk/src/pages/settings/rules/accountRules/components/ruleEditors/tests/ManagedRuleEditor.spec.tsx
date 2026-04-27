@@ -1,8 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 // oxlint-disable-next-line no-named-as-default
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'

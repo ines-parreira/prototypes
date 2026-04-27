@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useController, useFieldArray, useFormContext } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import MetricsFieldArray from '../DEPRECATED_MetricsFieldArray'
 

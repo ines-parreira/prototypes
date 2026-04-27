@@ -6,6 +6,18 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -400,6 +412,18 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -635,6 +659,18 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -867,6 +903,18 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
 exports[`<TwoFactorAuthenticationModal /> render() should not render the modal 1`] = `
 <body>
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -875,6 +923,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
   class="modal-open"
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
@@ -1083,6 +1143,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
   class="modal-open"
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
@@ -1315,6 +1387,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -1523,6 +1607,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -1730,6 +1826,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
   class="modal-open"
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
@@ -1945,6 +2053,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -2158,6 +2278,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
   class="modal-open"
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
@@ -2387,6 +2519,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -2558,6 +2702,18 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
   class="modal-open"
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"

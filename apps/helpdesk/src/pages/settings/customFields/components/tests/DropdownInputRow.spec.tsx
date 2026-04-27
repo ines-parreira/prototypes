@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'

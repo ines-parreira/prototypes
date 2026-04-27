@@ -6,6 +6,18 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -137,6 +149,18 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -227,6 +251,18 @@ exports[`<TwoFactorAuthenticationDisableModal /> should not render the modal whe
   class=""
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -235,6 +271,18 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
   class="modal-open"
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
@@ -367,6 +415,18 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 2`] = `
 >
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
   >
@@ -457,6 +517,18 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
   class="modal-open"
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"
@@ -609,6 +681,18 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
   class="modal-open"
 >
   <div />
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"

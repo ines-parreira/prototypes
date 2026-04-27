@@ -1,12 +1,7 @@
 import type React from 'react'
 
-import {
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-    within,
-} from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

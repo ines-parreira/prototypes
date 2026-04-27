@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { useParams } from 'react-router-dom'
 

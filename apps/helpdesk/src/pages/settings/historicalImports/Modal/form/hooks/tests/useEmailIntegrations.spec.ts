@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 

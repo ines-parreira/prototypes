@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 
+import { render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter, useParams } from 'react-router-dom'

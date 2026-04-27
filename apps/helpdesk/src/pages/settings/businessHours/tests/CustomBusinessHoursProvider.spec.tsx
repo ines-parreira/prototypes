@@ -1,4 +1,5 @@
-import { act, render, renderHook, waitFor } from '@testing-library/react'
+import { render, renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
 import type { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-types'
 

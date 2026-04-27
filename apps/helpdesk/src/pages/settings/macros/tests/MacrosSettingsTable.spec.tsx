@@ -2,10 +2,10 @@ import type { ComponentProps } from 'react'
 import type React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { useLocation, useRouteMatch } from 'react-router-dom'
 
 import { macros } from 'fixtures/macro'

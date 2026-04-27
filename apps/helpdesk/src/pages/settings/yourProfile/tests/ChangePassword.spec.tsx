@@ -1,7 +1,8 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import type { Matcher } from '@testing-library/react'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { ChangePasswordContainer } from '../ChangePassword'

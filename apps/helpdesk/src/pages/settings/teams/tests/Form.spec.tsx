@@ -1,7 +1,7 @@
 import type React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
 import { useDeleteTeam, useFetchTeam, useUpdateTeam } from 'teams/queries'

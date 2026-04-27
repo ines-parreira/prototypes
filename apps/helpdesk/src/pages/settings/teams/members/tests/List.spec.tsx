@@ -1,12 +1,7 @@
 import React from 'react'
 
-import {
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-    within,
-} from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { Set } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route } from 'react-router-dom'

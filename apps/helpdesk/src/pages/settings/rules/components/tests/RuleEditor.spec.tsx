@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import type { List, Map } from 'immutable'
 import _getIn from 'lodash/get'
 import _noop from 'lodash/noop'

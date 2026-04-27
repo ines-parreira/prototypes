@@ -1,7 +1,7 @@
 // Helper function to render component with required props
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import type { ZendeskIntegrationMeta } from 'models/integration/types'
 import ImportStatusAlert from 'pages/settings/importZendesk/zendesk/ImportStatusAlert'
