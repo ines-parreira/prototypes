@@ -128,7 +128,7 @@ describe('useListShopifyOrders', () => {
         expect(result.current.orders?.[1].external_id).toBe('order-3')
     })
 
-    it('passes shopper_identity_ids parameter to API', async () => {
+    it('passes shopper_identity_ids, integration_id, and limit to API', async () => {
         const mockHandler = mockListEcommerceDataHandler(async () =>
             HttpResponse.json(
                 mockPaginatedDataEcommerceData({
@@ -153,6 +153,8 @@ describe('useListShopifyOrders', () => {
             expect(url.searchParams.get('shopper_identity_ids')).toBe(
                 SHOPPER_IDENTITY_ID,
             )
+            expect(url.searchParams.get('integration_id')).toBe('1')
+            expect(url.searchParams.get('limit')).toBe('10')
         })
     })
 

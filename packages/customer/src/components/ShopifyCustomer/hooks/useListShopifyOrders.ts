@@ -26,18 +26,15 @@ export function useListShopifyOrders({
     } = useListEcommerceData(
         objectType,
         SourceType.Shopify,
-        {
-            params: {
-                integration_id: integrationId,
-                limit: 10,
-            },
-        },
+        { params: {} },
         {
             query: {
                 enabled: isEnabled,
             },
             http: {
                 params: {
+                    integration_id: integrationId,
+                    limit: 10,
                     shopper_identity_ids: shopperIdentityId,
                 },
             },
