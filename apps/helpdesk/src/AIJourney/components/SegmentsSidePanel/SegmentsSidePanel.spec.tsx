@@ -5,6 +5,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 
+import { useSegmentsUsage } from 'AIJourney/hooks/useSegmentsUsage/useSegmentsUsage'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateSegment } from 'AIJourney/queries'
@@ -17,6 +18,10 @@ import { SegmentsSidePanel } from './SegmentsSidePanel'
 
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
+}))
+
+jest.mock('AIJourney/hooks/useSegmentsUsage/useSegmentsUsage', () => ({
+    useSegmentsUsage: jest.fn(),
 }))
 
 jest.mock('AIJourney/queries/useAudienceCount/useAudienceCount', () => ({
@@ -38,10 +43,8 @@ jest.mock('AIJourney/queries/useUpdateSegment/useUpdateSegment', () => ({
     useUpdateSegment: jest.fn(),
 }))
 
-jest.mock('AIJourney/components/SegmentsSidePanel/SegmentUsageTable', () => ({
-    SegmentUsageTable: ({ segmentId }: { segmentId: string }) => (
-        <div data-segment-id={segmentId}>segment-usage-table</div>
-    ),
+jest.mock('AIJourney/components/SegmentUsageTable/SegmentUsageTable', () => ({
+    SegmentUsageTable: () => <div>segment-usage-table</div>,
 }))
 
 jest.mock(
@@ -431,6 +434,7 @@ const mockMutateAsync = jest.fn()
 const mockUseConditionsMetadata = useConditionsMetadata as jest.Mock
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseCreateSegment = useCreateSegment as jest.Mock
+const mockUseSegmentsUsage = useSegmentsUsage as jest.Mock
 
 const renderComponent = (
     props: Partial<Parameters<typeof SegmentsSidePanel>[0]> = {},
@@ -463,6 +467,10 @@ describe('<SegmentsSidePanel />', () => {
             isFetching: false,
         } as unknown as ReturnType<typeof useAudienceCount>)
 
+        mockUseSegmentsUsage.mockReturnValue({
+            segmentUsage: [],
+            isLoading: false,
+        })
         mockMutateAsync.mockResolvedValue(undefined)
         mockUseUpdateSegment.mockReturnValue({
             mutateAsync: mockMutateAsync,
@@ -520,7 +528,19 @@ describe('<SegmentsSidePanel />', () => {
             )
         })
 
-        it('should render "Used in" heading', () => {
+        it('should render "Used in" heading when segmentUsage has items', () => {
+            mockUseSegmentsUsage.mockReturnValue({
+                segmentUsage: [
+                    {
+                        id: 'j1',
+                        name: 'Cart Abandoned',
+                        type: 'cart_abandoned',
+                        state: 'active',
+                        isCampaign: false,
+                    },
+                ],
+                isLoading: false,
+            })
             renderComponent({ segment: mockSegment })
 
             expect(
@@ -528,10 +548,38 @@ describe('<SegmentsSidePanel />', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render SegmentUsageTable with the segment id', () => {
+        it('should not render "Used in" heading when segmentUsage is empty', () => {
+            renderComponent({ segment: mockSegment })
+
+            expect(
+                screen.queryByRole('heading', { name: 'Used in' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render SegmentUsageTable when segmentUsage has items', () => {
+            mockUseSegmentsUsage.mockReturnValue({
+                segmentUsage: [
+                    {
+                        id: 'j1',
+                        name: 'Cart Abandoned',
+                        type: 'cart_abandoned',
+                        state: 'active',
+                        isCampaign: false,
+                    },
+                ],
+                isLoading: false,
+            })
             renderComponent({ segment: mockSegment })
 
             expect(screen.getByText('segment-usage-table')).toBeInTheDocument()
+        })
+
+        it('should not render SegmentUsageTable when segmentUsage is empty', () => {
+            renderComponent({ segment: mockSegment })
+
+            expect(
+                screen.queryByText('segment-usage-table'),
+            ).not.toBeInTheDocument()
         })
     })
 

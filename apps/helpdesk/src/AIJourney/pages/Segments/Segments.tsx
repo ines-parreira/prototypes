@@ -14,8 +14,11 @@ import {
     SegmentsTable,
 } from 'AIJourney/components'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useDeleteSegment, useSegments } from 'AIJourney/queries'
-import { useAudiencesUsage } from 'AIJourney/queries/UseAudiencesUsage/UseAudiencesUsage'
+import {
+    useAudiencesUsage,
+    useDeleteSegment,
+    useSegments,
+} from 'AIJourney/queries'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'

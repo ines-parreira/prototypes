@@ -16,7 +16,8 @@ import {
 
 import { AudienceConditionField } from 'AIJourney/components/AudienceConditionField/AudienceConditionField'
 import { SegmentCountPreview } from 'AIJourney/components/SegmentCountPreview/SegmentCountPreview'
-import { SegmentUsageTable } from 'AIJourney/components/SegmentsSidePanel/SegmentUsageTable'
+import { SegmentUsageTable } from 'AIJourney/components/SegmentUsageTable/SegmentUsageTable'
+import { useSegmentsUsage } from 'AIJourney/hooks/useSegmentsUsage/useSegmentsUsage'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateSegment } from 'AIJourney/queries'
@@ -64,6 +65,10 @@ export const SegmentsSidePanel = ({
 
     const { mutateAsync: updateSegment, isLoading: isUpdatingSegment } =
         useUpdateSegment()
+
+    const { segmentUsage, isLoading: isLoadingUsage } = useSegmentsUsage(
+        segment?.id,
+    )
 
     useEffect(() => {
         if (isOpen) {
@@ -194,6 +199,9 @@ export const SegmentsSidePanel = ({
     const shouldRenderCountPreview =
         !hasNoConditions && !hasConditionWithoutValue
 
+    const shouldRenderUsageTable =
+        isEditing && segment && segmentUsage.length > 0
+
     const handleSave = form.handleSubmit(async ({ name }) => {
         if (!schema || !currentIntegration?.id) return
         const conditions = buildFullQuery(form.getValues('conditions'), schema)
@@ -222,43 +230,55 @@ export const SegmentsSidePanel = ({
                 <PanelHeader
                     title={isEditing ? 'Edit segment' : 'Create new segment'}
                 />
-                <Box
-                    flexDirection="column"
-                    padding={Size.Lg}
-                    overflow="scroll"
-                    height="100%"
-                    gap={Size.Md}
-                >
-                    <Box flexDirection="column" gap={Size.Lg}>
-                        <Controller
-                            name="name"
-                            control={form.control}
-                            render={({ field }) => (
-                                <TextField
-                                    label="Segment name"
-                                    isRequired
-                                    value={field.value ?? undefined}
-                                    onChange={field.onChange}
+                <Box flexDirection="column" height="100%" overflow="hidden">
+                    <Box
+                        flexDirection="column"
+                        padding={Size.Lg}
+                        overflow="scroll"
+                        flex={1}
+                        gap={Size.Md}
+                    >
+                        <Box flexDirection="column" gap={Size.Lg}>
+                            <Controller
+                                name="name"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <TextField
+                                        label="Segment name"
+                                        isRequired
+                                        value={field.value ?? undefined}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
+                            <AudienceConditionField schema={schema} />
+                        </Box>
+                        <Box flexDirection="column" gap={Size.Lg}>
+                            {shouldRenderCountPreview && (
+                                <SegmentCountPreview
+                                    count={audienceCountData?.count}
+                                    isLoading={isAudienceCountFetching}
                                 />
                             )}
-                        />
-                        <AudienceConditionField schema={schema} />
+                            {shouldRenderUsageTable && (
+                                <Box gap="md" flexDirection="column">
+                                    <Heading size="md">Used in</Heading>
+                                    <SegmentUsageTable
+                                        segmentUsage={segmentUsage}
+                                        isLoading={isLoadingUsage}
+                                    />
+                                </Box>
+                            )}
+                        </Box>
                     </Box>
-                    <Box flexDirection="column" gap={Size.Lg}>
-                        {shouldRenderCountPreview && (
-                            <SegmentCountPreview
-                                count={audienceCountData?.count}
-                                isLoading={isAudienceCountFetching}
-                            />
-                        )}
-                        {isEditing && segment && (
-                            <Box gap="md" flexDirection="column">
-                                <Heading size="md">Used in</Heading>
-                                <SegmentUsageTable segmentId={segment.id} />
-                            </Box>
-                        )}
-                    </Box>
-                    <Box gap={Size.Xs} justifyContent="flex-end">
+                    <Box
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            gap: 'var(--spacing-xs)',
+                            padding: 'var(--spacing-lg)',
+                        }}
+                    >
                         <Button
                             variant="tertiary"
                             onClick={() => handleCancel()}

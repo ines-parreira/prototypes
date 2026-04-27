@@ -11,8 +11,11 @@ import {
 } from '@gorgias/convert-client'
 
 import { useJourneyContext } from 'AIJourney/providers'
-import { useDeleteSegment, useSegments } from 'AIJourney/queries'
-import { useAudiencesUsage } from 'AIJourney/queries/UseAudiencesUsage/UseAudiencesUsage'
+import {
+    useAudiencesUsage,
+    useDeleteSegment,
+    useSegments,
+} from 'AIJourney/queries'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -65,6 +68,10 @@ jest.mock('AIJourney/queries', () => ({
         mutateAsync: jest.fn(),
         isLoading: false,
     }),
+    useAudiencesUsage: jest.fn().mockReturnValue({
+        data: undefined,
+        isLoading: false,
+    }),
 }))
 
 jest.mock(
@@ -84,13 +91,6 @@ jest.mock('AIJourney/queries/useAudienceCount/useAudienceCount', () => ({
     useAudienceCount: jest.fn().mockReturnValue({
         data: undefined,
         isFetching: false,
-    }),
-}))
-
-jest.mock('AIJourney/queries/UseAudiencesUsage/UseAudiencesUsage', () => ({
-    useAudiencesUsage: jest.fn().mockReturnValue({
-        data: undefined,
-        isLoading: false,
     }),
 }))
 

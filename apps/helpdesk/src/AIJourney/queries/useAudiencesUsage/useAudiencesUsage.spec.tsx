@@ -4,7 +4,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { AudienceListSource, getAudiencesUsage } from '@gorgias/convert-client'
 import type { AudienceUsageResponse } from '@gorgias/convert-client'
 
-import { useAudiencesUsage } from './UseAudiencesUsage'
+import { useAudiencesUsage } from './useAudiencesUsage'
 
 jest.mock('@gorgias/convert-client', () => ({
     ...jest.requireActual('@gorgias/convert-client'),
