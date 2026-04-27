@@ -1,12 +1,10 @@
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router'
 
 import { useStatsNavbarConfig } from 'routes/layout/products/analytics'
 import { AnalyticsSidebar } from 'routes/layout/sidebars/AnalyticsSidebar/AnalyticsSidebar'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock(
     'routes/layout/sidebars/AnalyticsSidebar/CollapsedAnalyticsSidebar',
@@ -60,9 +58,7 @@ const mockSections = [
 ]
 
 const wrapper = ({ children }: any) => (
-    <MemoryRouter>
-        <MockSidebarProvider>{children}</MockSidebarProvider>
-    </MemoryRouter>
+    <MockSidebarProvider>{children}</MockSidebarProvider>
 )
 
 describe('AnalyticsSidebar', () => {
@@ -85,11 +81,7 @@ describe('AnalyticsSidebar', () => {
         })
 
         it('renders upgrade icon only for items with requiresUpgrade', async () => {
-            renderWithRouter(
-                <MockSidebarProvider>
-                    <AnalyticsSidebar />
-                </MockSidebarProvider>,
-            )
+            render(<AnalyticsSidebar />, { wrapper })
 
             expect(
                 screen.getAllByRole('img', { name: 'arrow-circle-up' }),
@@ -164,11 +156,7 @@ describe('AnalyticsSidebar', () => {
                 ] as any,
             })
 
-            renderWithRouter(
-                <MockSidebarProvider>
-                    <AnalyticsSidebar />
-                </MockSidebarProvider>,
-            )
+            render(<AnalyticsSidebar />, { wrapper })
 
             await user.click(screen.getByText('Automate'))
 

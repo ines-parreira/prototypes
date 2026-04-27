@@ -1,9 +1,9 @@
 import { history } from '@repo/routing'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { SettingsNavbarSection } from 'routes/layout/sidebars/SettingsSidebar/useSettingsNavigation'
-import { renderWithRouter } from 'utils/testing'
 
 import { CollapsedSettingsSidebar } from '../CollapsedSettingsSidebar'
 
@@ -68,7 +68,7 @@ describe('CollapsedSettingsSidebar', () => {
     })
 
     it('renders all sections', () => {
-        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />)
+        render(<CollapsedSettingsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         expect(buttons).toHaveLength(mockSections.length)
@@ -76,7 +76,7 @@ describe('CollapsedSettingsSidebar', () => {
 
     it('navigates to first item route when clicking a section', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />)
+        render(<CollapsedSettingsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         await user.click(buttons[0])
@@ -88,7 +88,7 @@ describe('CollapsedSettingsSidebar', () => {
 
     it('navigates to correct first item for different sections', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />)
+        render(<CollapsedSettingsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         await user.click(buttons[1])
@@ -109,9 +109,7 @@ describe('CollapsedSettingsSidebar', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedSettingsSidebar sections={sectionsWithoutItems} />,
-        )
+        render(<CollapsedSettingsSidebar sections={sectionsWithoutItems} />)
 
         const buttons = screen.getAllByRole('radio')
         await user.click(buttons[0])
@@ -129,7 +127,7 @@ describe('CollapsedSettingsSidebar', () => {
             },
         ]
 
-        renderWithRouter(
+        render(
             <CollapsedSettingsSidebar
                 sections={sectionsWithUndefinedItems as any}
             />,
@@ -142,8 +140,8 @@ describe('CollapsedSettingsSidebar', () => {
     })
 
     it('marks the active section as selected when URL matches a section item', () => {
-        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />, {
-            route: '/app/settings/account/profile',
+        render(<CollapsedSettingsSidebar sections={mockSections} />, {
+            initialEntries: ['/app/settings/account/profile'],
         })
 
         const buttons = screen.getAllByRole('radio')
@@ -153,7 +151,7 @@ describe('CollapsedSettingsSidebar', () => {
 
     it('renders all section items as menu items', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />)
+        render(<CollapsedSettingsSidebar sections={mockSections} />)
 
         await user.click(screen.getAllByRole('radio')[0])
 
@@ -167,7 +165,7 @@ describe('CollapsedSettingsSidebar', () => {
 
     it('navigates to a specific item when clicking a menu item', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />)
+        render(<CollapsedSettingsSidebar sections={mockSections} />)
 
         await user.click(screen.getAllByRole('radio')[0])
         jest.clearAllMocks()
@@ -199,9 +197,7 @@ describe('CollapsedSettingsSidebar', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedSettingsSidebar sections={sectionsWithOnClick} />,
-        )
+        render(<CollapsedSettingsSidebar sections={sectionsWithOnClick} />)
 
         await user.click(screen.getAllByRole('radio')[0])
         jest.clearAllMocks()

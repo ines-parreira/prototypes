@@ -1,9 +1,9 @@
 import { history } from '@repo/routing'
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { StatsNavbarSection } from 'routes/layout/products/analytics'
-import { renderWithRouter } from 'utils/testing'
 
 import { CollapsedAnalyticsSidebar } from '../CollapsedAnalyticsSidebar'
 
@@ -68,7 +68,7 @@ describe('CollapsedAnalyticsSidebar', () => {
     })
 
     it('renders all sections', () => {
-        renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
+        render(<CollapsedAnalyticsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         expect(buttons).toHaveLength(mockSections.length)
@@ -76,7 +76,7 @@ describe('CollapsedAnalyticsSidebar', () => {
 
     it('navigates to first item route when clicking a section', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
+        render(<CollapsedAnalyticsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         await act(() => user.click(buttons[0]))
@@ -86,7 +86,7 @@ describe('CollapsedAnalyticsSidebar', () => {
 
     it('navigates to correct first item for different sections', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
+        render(<CollapsedAnalyticsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         await user.click(buttons[1])
@@ -107,9 +107,7 @@ describe('CollapsedAnalyticsSidebar', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedAnalyticsSidebar sections={sectionsWithoutItems} />,
-        )
+        render(<CollapsedAnalyticsSidebar sections={sectionsWithoutItems} />)
 
         const buttons = screen.getAllByRole('radio')
         await act(() => user.click(buttons[0]))
@@ -127,7 +125,7 @@ describe('CollapsedAnalyticsSidebar', () => {
             },
         ]
 
-        renderWithRouter(
+        render(
             <CollapsedAnalyticsSidebar sections={sectionsWithUndefinedItems} />,
         )
 
@@ -139,7 +137,7 @@ describe('CollapsedAnalyticsSidebar', () => {
 
     it('navigates to a specific item when clicking a menu item', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
+        render(<CollapsedAnalyticsSidebar sections={mockSections} />)
 
         await act(() => user.click(screen.getAllByRole('radio')[0]))
         jest.clearAllMocks()
@@ -152,7 +150,7 @@ describe('CollapsedAnalyticsSidebar', () => {
 
     it('navigates directly when clicking a single-item section without opening a menu', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
+        render(<CollapsedAnalyticsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         await act(() => user.click(buttons[2]))

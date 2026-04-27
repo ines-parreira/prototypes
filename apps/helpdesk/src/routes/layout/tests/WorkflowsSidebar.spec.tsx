@@ -1,5 +1,8 @@
+import type { ReactNode } from 'react'
+
+import { NavigationProvider } from '@repo/navigation'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
@@ -11,8 +14,6 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { WorkflowsSidebar } from 'routes/layout/sidebars'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import type { RenderWithRouterParams } from 'utils/testing'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
@@ -50,6 +51,10 @@ const mockCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
     HttpResponse.json({ ...data, role: { name: 'admin' } }),
 )
 
+const TestingNavigationProvider = ({ children }: { children?: ReactNode }) => (
+    <NavigationProvider>{children}</NavigationProvider>
+)
+
 const server = setupServer()
 
 describe('WorkflowsSidebar', () => {
@@ -66,14 +71,17 @@ describe('WorkflowsSidebar', () => {
     const renderWorkflowsSidebar = (
         state = defaultState,
         isCollapsed = false,
-        routing?: RenderWithRouterParams,
+        initialEntries = ['/'],
     ) => {
-        return renderWithStoreAndQueryClientAndRouter(
+        return render(
             <MockSidebarProvider isCollapsed={isCollapsed}>
                 <WorkflowsSidebar />
             </MockSidebarProvider>,
-            state,
-            routing,
+            {
+                initialEntries,
+                storeState: state,
+                wrapper: TestingNavigationProvider,
+            },
         )
     }
 
@@ -230,9 +238,7 @@ describe('WorkflowsSidebar', () => {
     })
 
     it('should mark a sidebar item as active when on its corresponding settings path', async () => {
-        renderWorkflowsSidebar(defaultState, false, {
-            route: '/app/settings/macros',
-        })
+        renderWorkflowsSidebar(defaultState, false, ['/app/settings/macros'])
 
         await screen.findByText('Macros')
 
@@ -242,9 +248,7 @@ describe('WorkflowsSidebar', () => {
     })
 
     it('should not mark an unrelated sidebar item as active when on the settings path', async () => {
-        renderWorkflowsSidebar(defaultState, false, {
-            route: '/app/settings/macros',
-        })
+        renderWorkflowsSidebar(defaultState, false, ['/app/settings/macros'])
 
         await screen.findByText('Rules')
 

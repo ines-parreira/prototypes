@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { Product, productConfig } from 'routes/layout/productConfig'
-import { renderHookWithRouter } from 'tests/renderHookWithRouter'
 
 import { useCurrentRouteProduct } from '../useCurrentRouteProduct'
 
@@ -68,12 +69,9 @@ describe('useCurrentRouteProduct', () => {
     ])(
         'should return $expectedProduct product when on $description',
         ({ path, expectedProduct }) => {
-            const { result } = renderHookWithRouter(
-                () => useCurrentRouteProduct(),
-                {
-                    initialEntries: [path],
-                },
-            )
+            const { result } = renderHook(() => useCurrentRouteProduct(), {
+                initialEntries: [path],
+            })
 
             expect(result.current).toEqual(productConfig[expectedProduct])
         },

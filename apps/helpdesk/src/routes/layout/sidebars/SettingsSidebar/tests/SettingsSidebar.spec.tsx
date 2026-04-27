@@ -1,6 +1,9 @@
+import type { ReactNode } from 'react'
+
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
+import { NavigationProvider } from '@repo/navigation'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
@@ -13,7 +16,6 @@ import {
 
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { SettingsSidebar } from '../SettingsSidebar'
 
@@ -51,6 +53,10 @@ const mockCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
 
 const mockAccount = mockGetAccountHandler()
 
+const TestingNavigationProvider = ({ children }: { children?: ReactNode }) => (
+    <NavigationProvider>{children}</NavigationProvider>
+)
+
 const server = setupServer()
 
 describe('SettingsSidebar', () => {
@@ -68,11 +74,14 @@ describe('SettingsSidebar', () => {
         state = defaultState,
         isCollapsed = false,
     ) => {
-        return renderWithStoreAndQueryClientAndRouter(
+        return render(
             <MockSidebarProvider isCollapsed={isCollapsed}>
                 <SettingsSidebar />
             </MockSidebarProvider>,
-            state,
+            {
+                storeState: state,
+                wrapper: TestingNavigationProvider,
+            },
         )
     }
 

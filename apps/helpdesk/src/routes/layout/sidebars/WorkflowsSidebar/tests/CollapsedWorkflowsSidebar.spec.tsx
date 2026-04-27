@@ -1,9 +1,9 @@
 import { history } from '@repo/routing'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { WorkflowsNavbarSection } from 'routes/layout/sidebars/WorkflowsSidebar/useWorkflowsNavigation'
-import { renderWithRouter } from 'utils/testing'
 
 import { CollapsedWorkflowsSidebar } from '../CollapsedWorkflowsSidebar'
 
@@ -68,7 +68,7 @@ describe('CollapsedWorkflowsSidebar', () => {
     })
 
     it('renders all sections', () => {
-        renderWithRouter(<CollapsedWorkflowsSidebar sections={mockSections} />)
+        render(<CollapsedWorkflowsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         expect(buttons).toHaveLength(mockSections.length)
@@ -76,7 +76,7 @@ describe('CollapsedWorkflowsSidebar', () => {
 
     it('navigates to first item path when clicking a section', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedWorkflowsSidebar sections={mockSections} />)
+        render(<CollapsedWorkflowsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         await user.click(buttons[0])
@@ -86,7 +86,7 @@ describe('CollapsedWorkflowsSidebar', () => {
 
     it('navigates to correct first item for different sections', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedWorkflowsSidebar sections={mockSections} />)
+        render(<CollapsedWorkflowsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
         await user.click(buttons[1])
@@ -105,9 +105,7 @@ describe('CollapsedWorkflowsSidebar', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedWorkflowsSidebar sections={sectionsWithoutItems} />,
-        )
+        render(<CollapsedWorkflowsSidebar sections={sectionsWithoutItems} />)
 
         const buttons = screen.getAllByRole('radio')
         await user.click(buttons[0])
@@ -125,7 +123,7 @@ describe('CollapsedWorkflowsSidebar', () => {
             },
         ]
 
-        renderWithRouter(
+        render(
             <CollapsedWorkflowsSidebar
                 sections={sectionsWithUndefinedItems as any}
             />,
@@ -138,12 +136,9 @@ describe('CollapsedWorkflowsSidebar', () => {
     })
 
     it('marks the active section as selected when URL matches a section item', () => {
-        renderWithRouter(
-            <CollapsedWorkflowsSidebar sections={mockSections} />,
-            {
-                route: '/app/workflows/rules',
-            },
-        )
+        render(<CollapsedWorkflowsSidebar sections={mockSections} />, {
+            initialEntries: ['/app/workflows/rules'],
+        })
 
         const buttons = screen.getAllByRole('radio')
         expect(buttons[0]).toHaveAttribute('aria-checked', 'true')
@@ -152,7 +147,7 @@ describe('CollapsedWorkflowsSidebar', () => {
 
     it('renders all section items as menu items', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedWorkflowsSidebar sections={mockSections} />)
+        render(<CollapsedWorkflowsSidebar sections={mockSections} />)
 
         await user.click(screen.getAllByRole('radio')[0])
 
@@ -166,7 +161,7 @@ describe('CollapsedWorkflowsSidebar', () => {
 
     it('navigates to a specific item when clicking a menu item', async () => {
         const user = userEvent.setup()
-        renderWithRouter(<CollapsedWorkflowsSidebar sections={mockSections} />)
+        render(<CollapsedWorkflowsSidebar sections={mockSections} />)
 
         await user.click(screen.getAllByRole('radio')[0])
         jest.clearAllMocks()

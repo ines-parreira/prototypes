@@ -1,40 +1,41 @@
 import React from 'react'
 
-import { renderHook, screen } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Link, MemoryRouter } from 'react-router-dom'
-
-import { renderHookWithRouter } from 'tests/renderHookWithRouter'
+import { Link } from 'react-router-dom'
 
 import { usePreviousProductNavigation } from '../usePreviousProductNavigation'
 
-const createWrapper =
-    (initialEntries: string[]) =>
-    ({ children }: { children?: React.ReactNode }) => (
-        <MemoryRouter initialEntries={initialEntries}>
-            <Link to="/app/tickets/123">Ticket123</Link>
-            <Link to="/app/customers">Customers</Link>
-            <Link to="/app/settings/">SettingsOverview</Link>
-            <Link to="/app/settings/specific">SettingsSpecific</Link>
-            <div>{children}</div>
-        </MemoryRouter>
-    )
+const Wrapper = ({ children }: { children?: React.ReactNode }) => (
+    <>
+        <Link to="/app/tickets/123">Ticket123</Link>
+        <Link to="/app/customers">Customers</Link>
+        <Link to="/app/settings/">SettingsOverview</Link>
+        <Link to="/app/settings/specific">SettingsSpecific</Link>
+        <div>{children}</div>
+    </>
+)
 
 describe('usePreviousProductNavigation', () => {
     describe('initial state', () => {
         it('returns current pathname when starting on a non-sticky product', () => {
-            const { result } = renderHookWithRouter(
+            const { result } = renderHook(
                 () => usePreviousProductNavigation(),
-                { initialEntries: ['/app/tickets'] },
+                {
+                    initialEntries: ['/app/tickets'],
+                },
             )
 
             expect(result.current).toBe('/app/tickets')
         })
 
         it('returns null when starting on a sticky product', () => {
-            const { result } = renderHookWithRouter(
+            const { result } = renderHook(
                 () => usePreviousProductNavigation(),
-                { initialEntries: ['/app/settings'] },
+                {
+                    initialEntries: ['/app/settings'],
+                },
             )
 
             expect(result.current).toBeNull()
@@ -45,7 +46,8 @@ describe('usePreviousProductNavigation', () => {
         it('preserves last non-sticky path when navigating to or between a sticky product', async () => {
             const user = userEvent.setup()
             const { result } = renderHook(usePreviousProductNavigation, {
-                wrapper: createWrapper(['/app/tickets']),
+                initialEntries: ['/app/tickets'],
+                wrapper: Wrapper,
             })
 
             await user.click(screen.getByRole('link', { name: 'Ticket123' }))
@@ -64,7 +66,8 @@ describe('usePreviousProductNavigation', () => {
             const { result, rerender } = renderHook(
                 usePreviousProductNavigation,
                 {
-                    wrapper: createWrapper(['/app/tickets']),
+                    initialEntries: ['/app/tickets'],
+                    wrapper: Wrapper,
                 },
             )
 

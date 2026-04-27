@@ -3,14 +3,14 @@ import type React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render as renderWithProviders } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { createBrowserHistory, createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { MemoryRouter, Router } from 'react-router-dom'
+import { MemoryRouter, Router, useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -39,9 +39,12 @@ import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { initialState } from 'state/billing/reducers'
 import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    PanelHeader: ({ title }: { title: string }) => <div>{title}</div>,
+}))
 jest.mock('@repo/logging')
 const logPageMock = assumeMock(logPageChange)
 
@@ -242,12 +245,42 @@ jest.mock('@gorgias/helpdesk-client', () => ({
     }),
 }))
 
+jest.mock('models/aiAgent/queries', () => ({
+    ...jest.requireActual('models/aiAgent/queries'),
+    useGetTrials: jest.fn(() => ({
+        data: [],
+        isLoading: false,
+        isFetching: false,
+    })),
+}))
+
+jest.mock('AIJourney/queries/useAudienceLists/useAudienceLists', () => ({
+    useAudienceLists: jest.fn(() => ({
+        data: { data: [] },
+        isLoading: false,
+    })),
+}))
+
+jest.mock('AIJourney/queries/useAudienceSegments/useAudienceSegments', () => ({
+    ...jest.requireActual(
+        'AIJourney/queries/useAudienceSegments/useAudienceSegments',
+    ),
+    useAudienceSegments: jest.fn(() => ({
+        data: { data: [] },
+        isLoading: false,
+    })),
+}))
+
 jest.mock('domains/reporting/state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone,
 )
 jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
+    useConditionsMetadata: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
     useJourneys: jest.fn(),
     useCreateNewJourney: jest.fn(),
     useJourneyData: jest.fn(),
@@ -285,6 +318,35 @@ jest.mock('domains/reporting/pages/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
 
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
+
+const renderRoutes = (
+    storeState: Partial<RootState> = {},
+    options: { initialEntries?: string[] } = {},
+) => {
+    let history: ReturnType<typeof useHistory>
+
+    const CaptureHistory = ({ children }: PropsWithChildren) => {
+        history = useHistory()
+
+        return <>{children}</>
+    }
+
+    const result = renderWithProviders(
+        <SplitTicketViewProvider>
+            <Routes />
+        </SplitTicketViewProvider>,
+        {
+            ...options,
+            storeState,
+            wrapper: CaptureHistory,
+        },
+    )
+
+    return {
+        ...result,
+        history: history!,
+    }
+}
 
 ;(useAllIntegrations as jest.Mock).mockReturnValue({
     integrations: [
@@ -383,30 +445,14 @@ describe('<Routes/>', () => {
     })
 
     it('should not log page change via segment on initial render', () => {
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <SplitTicketViewProvider>
-                    <Routes />
-                </SplitTicketViewProvider>
-            </Provider>,
-            { history: mockHistory },
-        )
+        renderRoutes()
         expect(logPageMock).not.toHaveBeenCalled()
     })
 
     it('should not log page change after location change', () => {
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SplitTicketViewProvider>
-                    <Routes />
-                </SplitTicketViewProvider>
-            </Provider>,
-            {
-                history: mockHistory,
-            },
-        )
+        const { history } = renderRoutes(defaultState)
 
-        act(() => mockHistory.push('/app/settings/profile'))
+        act(() => history.push('/app/settings/profile'))
 
         expect(logPageMock).not.toHaveBeenCalled()
     })
@@ -414,18 +460,9 @@ describe('<Routes/>', () => {
     it('should call window.loadGorgiasChat with the param set to false for non-AI Agent routes', () => {
         mockUseFlag.mockReturnValue(true)
 
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <SplitTicketViewProvider>
-                    <Routes />
-                </SplitTicketViewProvider>
-            </Provider>,
-            {
-                history: mockHistory,
-            },
-        )
+        const { history } = renderRoutes()
 
-        act(() => mockHistory.push('/app/settings/profile'))
+        act(() => history.push('/app/settings/profile'))
 
         expect(window.loadGorgiasChat).toHaveBeenCalledWith(false)
     })
@@ -433,20 +470,9 @@ describe('<Routes/>', () => {
     it('should call window.loadGorgiasChat for AI Agent routes if the flag is on', () => {
         mockUseFlag.mockReturnValue(true)
 
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <SplitTicketViewProvider>
-                    <Routes />
-                </SplitTicketViewProvider>
-            </Provider>,
-            {
-                history: mockHistory,
-            },
-        )
+        const { history } = renderRoutes()
 
-        act(() =>
-            mockHistory.push('app/automation/shopify/dummystore/ai-agent'),
-        )
+        act(() => history.push('app/automation/shopify/dummystore/ai-agent'))
 
         expect(window.loadGorgiasChat).toHaveBeenCalledWith(true)
     })
@@ -454,39 +480,19 @@ describe('<Routes/>', () => {
     it('should not call window.loadGorgiasChat if the flag is off', () => {
         mockUseFlag.mockReturnValue(false)
 
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <SplitTicketViewProvider>
-                    <Routes />
-                </SplitTicketViewProvider>
-            </Provider>,
-            {
-                history: mockHistory,
-            },
-        )
+        const { history } = renderRoutes()
 
-        act(() => mockHistory.push('/app/settings/profile'))
+        act(() => history.push('/app/settings/profile'))
         expect(window.loadGorgiasChat).not.toHaveBeenCalled()
 
-        act(() =>
-            mockHistory.push('app/automation/shopify/dummystore/ai-agent'),
-        )
+        act(() => history.push('app/automation/shopify/dummystore/ai-agent'))
         expect(window.loadGorgiasChat).not.toHaveBeenCalled()
     })
 
     it('should log page change after location change to a tracked page', () => {
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SplitTicketViewProvider>
-                    <Routes />
-                </SplitTicketViewProvider>
-            </Provider>,
-            {
-                history: mockHistory,
-            },
-        )
+        const { history } = renderRoutes(defaultState)
 
-        act(() => mockHistory.push('/app/convert/setup'))
+        act(() => history.push('/app/convert/setup'))
 
         expect(logPageMock).toHaveBeenCalledTimes(1)
     })
@@ -500,18 +506,9 @@ describe('<Routes/>', () => {
         { route: 'remove-shopify-billing', title: 'Remove Shopify Billing' },
     ])('The route $route', ({ route, title }) => {
         const renderRoute = () => {
-            renderWithRouter(
-                <Provider store={mockStore({ currentUser: fromJS(user) })}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                {
-                    history: mockHistory,
-                },
-            )
+            const { history } = renderRoutes({ currentUser: fromJS(user) })
 
-            act(() => mockHistory.push(`/app/admin/tasks/${route}`))
+            act(() => history.push(`/app/admin/tasks/${route}`))
         }
 
         it('should be available for impersonated admin users', () => {
@@ -533,19 +530,10 @@ describe('<Routes/>', () => {
         it('should render actions platform steps page if feature flag is toggled on', () => {
             mockUseFlag.mockReturnValue(true)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                {
-                    history: mockHistory,
-                },
-            )
+            const { history } = renderRoutes()
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform/steps')
+                history.push('/app/ai-agent/actions-platform/steps')
             })
 
             expect(
@@ -556,19 +544,10 @@ describe('<Routes/>', () => {
         it('should render actions platform apps page if feature flag is toggled on', () => {
             mockUseFlag.mockReturnValue(true)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                {
-                    history: mockHistory,
-                },
-            )
+            const { history } = renderRoutes()
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform/apps')
+                history.push('/app/ai-agent/actions-platform/apps')
             })
 
             expect(
@@ -579,17 +558,10 @@ describe('<Routes/>', () => {
         it('should not render actions platform steps page if feature flag is toggled off', () => {
             mockUseFlag.mockReturnValue(false)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                { history: mockHistory },
-            )
+            const { history } = renderRoutes()
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform/steps')
+                history.push('/app/ai-agent/actions-platform/steps')
             })
 
             expect(
@@ -600,19 +572,10 @@ describe('<Routes/>', () => {
         it('should render actions platform create app page if feature flag is toggled on', () => {
             mockUseFlag.mockReturnValue(true)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                {
-                    history: mockHistory,
-                },
-            )
+            const { history } = renderRoutes()
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform/apps/new')
+                history.push('/app/ai-agent/actions-platform/apps/new')
             })
 
             expect(
@@ -623,19 +586,10 @@ describe('<Routes/>', () => {
         it('should not render actions platform create app page if feature flag is toggled off', () => {
             mockUseFlag.mockReturnValue(false)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                {
-                    history: mockHistory,
-                },
-            )
+            const { history } = renderRoutes()
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform/apps/new')
+                history.push('/app/ai-agent/actions-platform/apps/new')
             })
 
             expect(
@@ -646,19 +600,10 @@ describe('<Routes/>', () => {
         it('should render actions platform edit app page if feature flag is toggled on', () => {
             mockUseFlag.mockReturnValue(true)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                {
-                    history: mockHistory,
-                },
-            )
+            const { history } = renderRoutes()
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform/apps/edit/1')
+                history.push('/app/ai-agent/actions-platform/apps/edit/1')
             })
 
             expect(
@@ -669,19 +614,10 @@ describe('<Routes/>', () => {
         it('should not render actions platform edit app page if feature flag is toggled off', () => {
             mockUseFlag.mockReturnValue(false)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                {
-                    history: mockHistory,
-                },
-            )
+            const { history } = renderRoutes()
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform/apps/edit/1')
+                history.push('/app/ai-agent/actions-platform/apps/edit/1')
             })
 
             expect(
@@ -697,13 +633,9 @@ describe('<Routes/>', () => {
             '/app/automation/shopify/test-shop/article-recommendation',
         ]
         it.each(pathsNotToRedirect)('should render Loader for %s', (path) => {
-            const { history } = renderWithRouter(
-                <Provider store={mockStore({ currentUser: fromJS(user) })}>
-                    <SplitTicketViewProvider>
-                        <Routes />
-                    </SplitTicketViewProvider>
-                </Provider>,
-                { route: path },
+            const { history } = renderRoutes(
+                { currentUser: fromJS(user) },
+                { initialEntries: [path] },
             )
 
             expect(history.location.pathname).toBe(path)
@@ -731,13 +663,9 @@ describe('<Routes/>', () => {
         it.each(pathsToRedirect)(
             'should redirect $from to $to',
             ({ from, to }) => {
-                const { history } = renderWithRouter(
-                    <Provider store={mockStore({ currentUser: fromJS(user) })}>
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </Provider>,
-                    { route: from },
+                const { history } = renderRoutes(
+                    { currentUser: fromJS(user) },
+                    { initialEntries: [from] },
                 )
 
                 expect(history.location.pathname).toBe(to)
@@ -747,13 +675,9 @@ describe('<Routes/>', () => {
         it.each(['/app/automation', '/app/automation/some/other/path'])(
             'should redirect $path to AiAgentRedirect',
             (path) => {
-                renderWithRouter(
-                    <Provider store={mockStore({ currentUser: fromJS(user) })}>
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </Provider>,
-                    { route: path },
+                renderRoutes(
+                    { currentUser: fromJS(user) },
+                    { initialEntries: [path] },
                 )
 
                 expect(screen.getByText('AiAgentRedirect')).toBeInTheDocument()
