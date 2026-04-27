@@ -14,6 +14,13 @@ import type {
 } from './types'
 import { VoiceCallSubjectType } from './types'
 
+export const formatSlaStatus = (
+    slaStatus: string | null | undefined,
+): string => {
+    if (slaStatus === null || slaStatus === undefined) return '-'
+    return slaStatus === '0' ? 'Achieved' : 'Breached'
+}
+
 export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
     const finalStatuses: VoiceCallStatus[] = [
         VoiceCallStatus.Busy,

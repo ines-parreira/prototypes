@@ -56,6 +56,7 @@ import {
     fetchVoiceCallCountOutboundTrend,
     fetchVoiceCallCountTrend,
 } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'
+import { fetchVoiceCallTableCsvData } from 'domains/reporting/pages/voice/hooks/useVoiceCallList'
 import { fetchVoiceCallSlaAchievementRateTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallSlaAchievementRateTrend'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -311,7 +312,12 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
             label: CALL_LIST_TITLE,
             description: CALL_LIST_HINT,
             chartType: ChartType.Table,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchVoiceCallTableCsvData,
+                },
+            ],
         },
     },
     reportFilters: {

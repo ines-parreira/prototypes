@@ -46,3 +46,5 @@ export const DOWNLOAD_BUTTON_TITLE =
 export const VOICE_OVERVIEW_REPORT_FILE_NAME = 'voice-call-overview-metrics'
 
 export const MAX_VOICE_CALLS_PAGE_NUMBER = 500
+
+export const VOICE_CALL_LIST_FILE_NAME = 'voice-call-list'

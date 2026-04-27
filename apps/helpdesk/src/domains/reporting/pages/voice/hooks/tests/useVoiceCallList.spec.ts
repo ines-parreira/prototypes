@@ -9,12 +9,20 @@ import {
     VoiceCallSegment,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
 import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
-import { usePostReportingV2 } from 'domains/reporting/models/queries'
+import {
+    fetchPostReportingV2,
+    usePostReportingV2,
+} from 'domains/reporting/models/queries'
 import { voiceCallListQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import { voiceCallsCountAllDimensionsQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import {
+    CALL_LIST_PAGE_SIZE,
+    MAX_VOICE_CALLS_PAGE_NUMBER,
+} from 'domains/reporting/pages/voice/constants/voiceOverview'
+import {
+    fetchVoiceCallList,
+    fetchVoiceCallTableCsvData,
     selectVoiceCallData,
     useVoiceCallList,
 } from 'domains/reporting/pages/voice/hooks/useVoiceCallList'
@@ -25,6 +33,7 @@ import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
+const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 
 describe('useVoiceCallList', () => {
     const statsFilters: StatsFilters = {
@@ -45,6 +54,8 @@ describe('useVoiceCallList', () => {
                     undefined,
                     CALL_LIST_PAGE_SIZE,
                     0,
+                    VoiceCallDimension.CreatedAt,
+                    OrderDirection.Desc,
                 ),
             ],
             voiceCallsCountAllDimensionsQueryFactoryV2(
@@ -54,7 +65,8 @@ describe('useVoiceCallList', () => {
                     offset: 0,
                     limit: CALL_LIST_PAGE_SIZE,
                     total: false,
-                    sortDirection: undefined,
+                    sortDirection: OrderDirection.Desc,
+                    sortBy: 'createdDatetime',
                 },
                 undefined,
             ),
@@ -111,7 +123,17 @@ describe('useVoiceCallList', () => {
         renderHook(() => useVoiceCallList(statsFilters, 'UTC', 3, 5))
 
         expect(usePostReportingV2Mock.mock.calls[0]).toEqual([
-            [voiceCallListQueryFactory(statsFilters, 'UTC', undefined, 5, 10)],
+            [
+                voiceCallListQueryFactory(
+                    statsFilters,
+                    'UTC',
+                    undefined,
+                    5,
+                    10,
+                    VoiceCallDimension.CreatedAt,
+                    OrderDirection.Desc,
+                ),
+            ],
             voiceCallsCountAllDimensionsQueryFactoryV2(
                 {
                     filters: statsFilters,
@@ -119,7 +141,8 @@ describe('useVoiceCallList', () => {
                     offset: 10,
                     limit: 5,
                     total: false,
-                    sortDirection: undefined,
+                    sortDirection: OrderDirection.Desc,
+                    sortBy: 'createdDatetime',
                 },
                 undefined,
             ),
@@ -444,6 +467,8 @@ describe('useVoiceCallList with additional parameters', () => {
                 segment,
                 CALL_LIST_PAGE_SIZE,
                 0,
+                VoiceCallDimension.CreatedAt,
+                OrderDirection.Desc,
             ),
         )
         expect(v2Query).toEqual(
@@ -454,7 +479,8 @@ describe('useVoiceCallList with additional parameters', () => {
                     offset: 0,
                     limit: CALL_LIST_PAGE_SIZE,
                     total: false,
-                    sortDirection: undefined,
+                    sortDirection: OrderDirection.Desc,
+                    sortBy: 'createdDatetime',
                 },
                 segment,
             ),
@@ -672,5 +698,354 @@ describe('useVoiceCallList with additional parameters', () => {
             operator: 'one-of',
             values: ['inbound'],
         })
+    })
+})
+
+describe('fetchVoiceCallList', () => {
+    const FULL_LIST_LIMIT = MAX_VOICE_CALLS_PAGE_NUMBER * CALL_LIST_PAGE_SIZE
+
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: formatReportingQueryDate(moment()),
+            start_datetime: formatReportingQueryDate(moment()),
+        },
+    }
+
+    beforeEach(() => {
+        fetchPostReportingV2Mock.mockResolvedValue({
+            data: { data: [] },
+        } as unknown as UsePostReportingQueryData<VoiceCallStatListItem[]>)
+    })
+
+    afterEach(() => {
+        fetchPostReportingV2Mock.mockClear()
+    })
+
+    it('should call fetchPostReportingV2 with the full limit and offset 0', async () => {
+        await fetchVoiceCallList(statsFilters, 'UTC')
+
+        expect(fetchPostReportingV2Mock.mock.calls[0]).toEqual([
+            [
+                voiceCallListQueryFactory(
+                    statsFilters,
+                    'UTC',
+                    undefined,
+                    FULL_LIST_LIMIT,
+                    0,
+                    undefined,
+                    undefined,
+                    undefined,
+                ),
+            ],
+            voiceCallsCountAllDimensionsQueryFactoryV2(
+                {
+                    filters: statsFilters,
+                    timezone: 'UTC',
+                    offset: 0,
+                    limit: FULL_LIST_LIMIT,
+                    total: false,
+                },
+                undefined,
+            ),
+        ])
+    })
+
+    it('should pass segment to both queries', async () => {
+        await fetchVoiceCallList(
+            statsFilters,
+            'UTC',
+            VoiceCallSegment.inboundCalls,
+        )
+
+        const [v1Queries, v2Query] = fetchPostReportingV2Mock.mock.calls[0]
+
+        expect(v1Queries![0]).toEqual(
+            voiceCallListQueryFactory(
+                statsFilters,
+                'UTC',
+                VoiceCallSegment.inboundCalls,
+                FULL_LIST_LIMIT,
+                0,
+            ),
+        )
+        expect(v2Query!.filters).toContainEqual({
+            member: 'callDirection',
+            operator: 'one-of',
+            values: ['inbound'],
+        })
+    })
+
+    it('should pass statusFilter to both queries', async () => {
+        const statusFilter = [VoiceCallDisplayStatus.Missed]
+
+        await fetchVoiceCallList(statsFilters, 'UTC', undefined, statusFilter)
+
+        const [v1Queries, v2Query] = fetchPostReportingV2Mock.mock.calls[0]
+
+        expect(v1Queries![0]).toEqual(
+            voiceCallListQueryFactory(
+                statsFilters,
+                'UTC',
+                undefined,
+                FULL_LIST_LIMIT,
+                0,
+                undefined,
+                undefined,
+                statusFilter,
+            ),
+        )
+        expect(v2Query!.filters).toContainEqual({
+            member: 'displayStatus',
+            operator: 'one-of',
+            values: statusFilter,
+        })
+    })
+
+    it('should return transformed VoiceCallSummary rows', async () => {
+        fetchPostReportingV2Mock.mockResolvedValue({
+            data: {
+                data: [
+                    {
+                        [VoiceCallDimension.AgentId]: '7',
+                        [VoiceCallDimension.CustomerId]: '42',
+                        [VoiceCallDimension.Direction]: 'inbound',
+                        [VoiceCallDimension.IntegrationId]: '3',
+                        [VoiceCallDimension.CreatedAt]: '2025-01-15T10:00:00Z',
+                        [VoiceCallDimension.Status]: VoiceCallStatus.Answered,
+                        [VoiceCallDimension.Duration]: '90',
+                        [VoiceCallDimension.TicketId]: '555',
+                        [VoiceCallDimension.PhoneNumberDestination]:
+                            '+10001112222',
+                        [VoiceCallDimension.PhoneNumberSource]: '+19998887777',
+                        [VoiceCallMeasure.VoiceCallCount]: '1',
+                        [VoiceCallDimension.TalkTime]: '75',
+                        [VoiceCallDimension.WaitTime]: '15',
+                        [VoiceCallDimension.VoicemailAvailable]: false,
+                        [VoiceCallDimension.VoicemailUrl]: null,
+                        [VoiceCallDimension.CallRecordingAvailable]: true,
+                        [VoiceCallDimension.CallRecordingUrl]: 'rec-url',
+                        [VoiceCallDimension.DisplayStatus]:
+                            VoiceCallDisplayStatus.Answered,
+                        [VoiceCallDimension.QueueId]: '2',
+                        [VoiceCallDimension.QueueName]: 'Support',
+                        [VoiceCallDimension.CallSlaStatus]: '0',
+                    },
+                ],
+            },
+        } as unknown as UsePostReportingQueryData<VoiceCallStatListItem[]>)
+
+        const result = await fetchVoiceCallList(statsFilters, 'UTC')
+
+        expect(result).toHaveLength(1)
+        expect(result[0]).toMatchObject({
+            agentId: 7,
+            integrationId: 3,
+            duration: 90,
+            ticketId: 555,
+            callSlaStatus: '0',
+        })
+    })
+})
+
+describe('fetchVoiceCallTableCsvData', () => {
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: '2025-01-15T23:59:59',
+            start_datetime: '2025-01-01T00:00:00',
+        },
+    }
+
+    const mockIntegrations = [
+        { id: 1, name: 'Support Phone' },
+        { id: 2, name: 'Sales Phone' },
+    ]
+
+    const context = {
+        integrations: mockIntegrations as any,
+    }
+
+    const mockRow = {
+        [VoiceCallDimension.AgentId]: '1',
+        [VoiceCallDimension.CustomerId]: '10',
+        [VoiceCallDimension.Direction]: 'inbound',
+        [VoiceCallDimension.IntegrationId]: '1',
+        [VoiceCallDimension.CreatedAt]: '2025-01-10T14:30:00.000',
+        [VoiceCallDimension.Status]: VoiceCallStatus.Answered,
+        [VoiceCallDimension.Duration]: '125',
+        [VoiceCallDimension.TicketId]: '999',
+        [VoiceCallDimension.PhoneNumberDestination]: '+10001112222',
+        [VoiceCallDimension.PhoneNumberSource]: '+33612345678',
+        [VoiceCallMeasure.VoiceCallCount]: '1',
+        [VoiceCallDimension.TalkTime]: '110',
+        [VoiceCallDimension.WaitTime]: '15',
+        [VoiceCallDimension.VoicemailAvailable]: false,
+        [VoiceCallDimension.VoicemailUrl]: null,
+        [VoiceCallDimension.CallRecordingAvailable]: false,
+        [VoiceCallDimension.CallRecordingUrl]: null,
+        [VoiceCallDimension.DisplayStatus]: VoiceCallDisplayStatus.Answered,
+        [VoiceCallDimension.QueueId]: '5',
+        [VoiceCallDimension.QueueName]: 'Test Queue',
+        [VoiceCallDimension.CallSlaStatus]: '0',
+    }
+
+    beforeEach(() => {
+        fetchPostReportingV2Mock.mockResolvedValue({
+            data: { data: [mockRow] },
+        } as unknown as UsePostReportingQueryData<VoiceCallStatListItem[]>)
+    })
+
+    afterEach(() => {
+        fetchPostReportingV2Mock.mockClear()
+    })
+
+    it('should return CSV with correct headers', async () => {
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        const firstLine = Object.values(result.files)[0]!.split('\r\n')[0]
+        expect(firstLine).toBe(
+            '"Phone number source","Phone number destination","Agent ID","Customer ID","Direction","Integration","Queue","Date","SLA status","State","Duration","Wait time","Ticket ID"',
+        )
+    })
+
+    it('should format the date column as YYYY-MM-DD HH:mm:ss', async () => {
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        expect(Object.values(result.files)[0]!).toContain(
+            '"2025-01-10 14:30:00"',
+        )
+    })
+
+    it('should resolve integration name from context', async () => {
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        const csv = Object.values(result.files)[0]!
+        expect(csv).toContain('"Support Phone"')
+    })
+
+    it('should use empty string when integration is not found', async () => {
+        fetchPostReportingV2Mock.mockResolvedValue({
+            data: {
+                data: [
+                    { ...mockRow, [VoiceCallDimension.IntegrationId]: '99' },
+                ],
+            },
+        } as unknown as UsePostReportingQueryData<VoiceCallStatListItem[]>)
+
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        expect(Object.values(result.files)[0]!).toContain('""')
+    })
+
+    it('should format SLA status 0 as Achieved', async () => {
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        const csv = Object.values(result.files)[0]!
+        expect(csv).toContain('"Achieved"')
+    })
+
+    it('should format SLA status 1 as Breached', async () => {
+        fetchPostReportingV2Mock.mockResolvedValue({
+            data: {
+                data: [{ ...mockRow, [VoiceCallDimension.CallSlaStatus]: '1' }],
+            },
+        } as unknown as UsePostReportingQueryData<VoiceCallStatListItem[]>)
+
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        const csv = Object.values(result.files)[0]!
+        expect(csv).toContain('"Breached"')
+    })
+
+    it('should format null SLA status as -', async () => {
+        fetchPostReportingV2Mock.mockResolvedValue({
+            data: {
+                data: [
+                    { ...mockRow, [VoiceCallDimension.CallSlaStatus]: null },
+                ],
+            },
+        } as unknown as UsePostReportingQueryData<VoiceCallStatListItem[]>)
+
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        const csv = Object.values(result.files)[0]!
+        expect(csv).toContain('"-"')
+    })
+
+    it('should format duration in seconds', async () => {
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        const csv = Object.values(result.files)[0]!
+        expect(csv).toContain('"2m 5s"')
+    })
+
+    it('should format null duration as -', async () => {
+        fetchPostReportingV2Mock.mockResolvedValue({
+            data: {
+                data: [{ ...mockRow, [VoiceCallDimension.Duration]: null }],
+            },
+        } as unknown as UsePostReportingQueryData<VoiceCallStatListItem[]>)
+
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        expect(Object.values(result.files)[0]!).toContain('"-"')
+    })
+
+    it('should return empty files on fetch error', async () => {
+        fetchPostReportingV2Mock.mockRejectedValue(new Error('network error'))
+
+        const result = await fetchVoiceCallTableCsvData(
+            statsFilters,
+            'UTC',
+            'day' as any,
+            context,
+        )
+
+        expect(result.files).toEqual({})
+        expect(result.isLoading).toBe(false)
     })
 })

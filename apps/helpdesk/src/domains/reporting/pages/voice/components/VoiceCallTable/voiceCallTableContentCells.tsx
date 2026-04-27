@@ -17,7 +17,10 @@ import css from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCa
 import VoiceCallTransferActivity from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { isInboundVoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
-import { getFormattedDurationEndedCall } from 'models/voiceCall/utils'
+import {
+    formatSlaStatus,
+    getFormattedDurationEndedCall,
+} from 'models/voiceCall/utils'
 import type BodyCell from 'pages/common/components/table/cells/BodyCell'
 import type HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
@@ -363,13 +366,7 @@ export const getOrderedCells = ({
         [VoiceCallTableColumn.SlaStatus]: {
             props: {
                 className: css.smallCell,
-                children:
-                    item.callSlaStatus !== null &&
-                    item.callSlaStatus !== undefined
-                        ? item.callSlaStatus === '0'
-                            ? 'Achieved'
-                            : 'Breached'
-                        : '-',
+                children: formatSlaStatus(item.callSlaStatus),
             },
         },
         [VoiceCallTableColumn.Monitor]: {

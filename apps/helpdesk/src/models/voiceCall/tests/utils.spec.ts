@@ -9,6 +9,7 @@ import type { VoiceCall, VoiceCallEvent } from '../types'
 import { VoiceCallSubjectType } from '../types'
 import {
     DEPRECATED_processEvents,
+    formatSlaStatus,
     getAnsweringVoiceSubject,
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
@@ -27,6 +28,24 @@ import {
 const getMomentSpy = jest.spyOn(momentUtils, 'getMoment')
 
 describe('voice call utils', () => {
+    describe('formatSlaStatus', () => {
+        it('should return Achieved for value 0', () => {
+            expect(formatSlaStatus('0')).toBe('Achieved')
+        })
+
+        it('should return Breached for value 1', () => {
+            expect(formatSlaStatus('1')).toBe('Breached')
+        })
+
+        it('should return - for null', () => {
+            expect(formatSlaStatus(null)).toBe('-')
+        })
+
+        it('should return - for undefined', () => {
+            expect(formatSlaStatus(undefined)).toBe('-')
+        })
+    })
+
     describe('isFinalVoiceCallStatus', () => {
         it('should return true for final voice call statuses', () => {
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Busy)).toBe(true)
@@ -83,6 +102,13 @@ describe('voice call utils', () => {
             expect(getFormattedDurationOngoingCall('2023-01-01 09:09:09')).toBe(
                 '01:01:01',
             )
+        })
+    })
+
+    describe('getFormattedDurationTranscriptionStart', () => {
+        it('should return formatted duration for transcription start', () => {
+            expect(getFormattedDurationTranscriptionStart(10)).toBe('00:10')
+            expect(getFormattedDurationTranscriptionStart(65)).toBe('01:05')
         })
     })
 
@@ -392,60 +418,50 @@ describe('voice call utils', () => {
                 },
             ])
         })
-
-        describe('isMissedInboundVoiceCall', () => {
-            it('should return true for missed inbound calls', () => {
-                expect(
-                    isMissedInboundVoiceCall({
-                        direction: 'inbound',
-                        status: VoiceCallStatus.Completed,
-                    } as VoiceCall),
-                ).toBe(true)
-                expect(
-                    isMissedInboundVoiceCall({
-                        direction: 'inbound',
-                        status: VoiceCallStatus.Ending,
-                    } as VoiceCall),
-                ).toBe(true)
-            })
-
-            it.each([
-                VoiceCallStatus.Ringing,
-                VoiceCallStatus.Queued,
-                VoiceCallStatus.Answered,
-                VoiceCallStatus.Connected,
-                VoiceCallStatus.InProgress,
-            ])(
-                'should return false for inbound calls with status %s',
-                (status) => {
-                    expect(
-                        isMissedInboundVoiceCall({
-                            direction: 'inbound',
-                            status,
-                        } as VoiceCall),
-                    ).toBe(false)
-                },
-            )
-
-            it.each([VoiceCallStatus.Completed, VoiceCallStatus.Ending])(
-                'should return false for outbound calls with status %s',
-                (status) => {
-                    expect(
-                        isMissedInboundVoiceCall({
-                            direction: 'outbound',
-                            status,
-                        } as VoiceCall),
-                    ).toBe(false)
-                },
-            )
-        })
     })
 
-    describe('getFormattedDurationTranscriptionStart', () => {
-        it('should return formatted duration for transcription start', () => {
-            expect(getFormattedDurationTranscriptionStart(10)).toBe('00:10')
-            expect(getFormattedDurationTranscriptionStart(65)).toBe('01:05')
+    describe('isMissedInboundVoiceCall', () => {
+        it('should return true for missed inbound calls', () => {
+            expect(
+                isMissedInboundVoiceCall({
+                    direction: 'inbound',
+                    status: VoiceCallStatus.Completed,
+                } as VoiceCall),
+            ).toBe(true)
+            expect(
+                isMissedInboundVoiceCall({
+                    direction: 'inbound',
+                    status: VoiceCallStatus.Ending,
+                } as VoiceCall),
+            ).toBe(true)
         })
+
+        it.each([
+            VoiceCallStatus.Ringing,
+            VoiceCallStatus.Queued,
+            VoiceCallStatus.Answered,
+            VoiceCallStatus.Connected,
+            VoiceCallStatus.InProgress,
+        ])('should return false for inbound calls with status %s', (status) => {
+            expect(
+                isMissedInboundVoiceCall({
+                    direction: 'inbound',
+                    status,
+                } as VoiceCall),
+            ).toBe(false)
+        })
+
+        it.each([VoiceCallStatus.Completed, VoiceCallStatus.Ending])(
+            'should return false for outbound calls with status %s',
+            (status) => {
+                expect(
+                    isMissedInboundVoiceCall({
+                        direction: 'outbound',
+                        status,
+                    } as VoiceCall),
+                ).toBe(false)
+            },
+        )
     })
 
     describe('getAnsweringVoiceSubject', () => {
