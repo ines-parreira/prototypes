@@ -6,10 +6,9 @@ import type { AxiosError } from 'axios'
 import { parse as parseQueryString } from 'qs'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import type { CsvColumnPreview } from '../../../../models/helpCenter/types'
-import { notify } from '../../../../state/notifications/actions'
-import { NotificationStatus } from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import { HELP_CENTER_BASE_PATH } from '../constants'
@@ -49,7 +48,6 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
         null,
     )
     const history = useHistory()
-    const dispatch = useAppDispatch()
     const [importInProgress, setImportInProgress] = useState(false)
     const authServiceRef = useRef(new GorgiasAppAuthService())
 
@@ -62,16 +60,12 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
         if (typeof rawFileUrl === 'string' && rawFileUrl.length > 0) {
             setFileUrl(rawFileUrl)
         } else {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Could not load CSV file: missing URL parameter file_url',
-                    noAutoDismiss: true,
-                }),
+            toast.error(
+                'Could not load CSV file: missing URL parameter file_url',
+                { duration: Infinity },
             )
         }
-    }, [dispatch, location.search])
+    }, [location.search])
 
     useEffect(() => {
         if (!migrationClient || !fileUrl || !helpCenter) return
@@ -96,13 +90,9 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                                 'the file contains more than 400 articles, please split it into several smaller files.'
                     }
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: `Could not analyse CSV file: ${error}`,
-                            noAutoDismiss: true,
-                        }),
-                    )
+                    toast.error(`Could not analyse CSV file: ${error}`, {
+                        duration: Infinity,
+                    })
 
                     history.push(
                         urlToArticles(helpCenter.id, location.pathname),
@@ -113,29 +103,22 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
             } catch (e) {
                 const error = e as AxiosError
                 if (error.response?.status === 408) {
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message:
-                                'The CSV analysis took too long, your file may be too big. Try to split it into several smaller files.',
-                            noAutoDismiss: true,
-                        }),
+                    toast.error(
+                        'The CSV analysis took too long, your file may be too big. Try to split it into several smaller files.',
+                        { duration: Infinity },
                     )
+                    return
                 }
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Could not load CSV file from url ${fileUrl}, please check that the URL is valid`,
-                        noAutoDismiss: true,
-                    }),
+                toast.error(
+                    `Could not load CSV file from url ${fileUrl}, please check that the URL is valid`,
+                    { duration: Infinity },
                 )
             }
         })()
     }, [
         migrationClient,
         csvColumns,
-        dispatch,
         history,
         location.pathname,
         fileUrl,
@@ -188,7 +171,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
             const errorMessage = getErrorMessage(error)
             if (errorMessage) message += ': ' + errorMessage
 
-            void dispatch(notify({ status: NotificationStatus.Error, message }))
+            toast.error(message)
         } finally {
             setImportInProgress(false)
         }

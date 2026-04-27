@@ -10,17 +10,16 @@ import { ParamType } from 'openapi-client-axios'
 import { useHistory } from 'react-router-dom'
 
 import {
-    LegacyButton as Button,
+    Button,
+    LegacyButton,
     LegacyLoadingSpinner as LoadingSpinner,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import settingsCss from 'pages/settings/settings.less'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { CSV_MIGRATION_PROVIDER_TYPE } from '../CsvColumnMatching/utils'
 import ImportArticlesModal from './components/ImportArticlesModal'
@@ -41,8 +40,6 @@ import { MigrationSessionStatus, MigrationStatus } from './types'
 import {
     getErrorMessage,
     getSessionCreateData,
-    longNotificationOptions,
-    notificationRefreshButton,
     parseSessionStats,
     responseIsSession,
     responseIsSessionsList,
@@ -60,13 +57,22 @@ type Props = {
 
 export const ACTIVE_MIGRATION_UPDATE_TIMEOUT = 3 * 1000
 
+const refreshButton = (
+    <Button
+        size="sm"
+        variant="tertiary"
+        onClick={() => window.location.reload()}
+    >
+        Refresh
+    </Button>
+)
+
 export const ImportSection: React.FC<Props> = ({
     className,
     isDisabled,
     isButton,
     buttonLabel,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const migrationClient = useMigrationApi()
     const currentHelpCenter = useCurrentHelpCenter()
     const history = useHistory()
@@ -169,9 +175,7 @@ export const ImportSection: React.FC<Props> = ({
                     const errorMessage = getErrorMessage(error)
                     if (errorMessage) message += ': ' + errorMessage
 
-                    void dispatch(
-                        notify({ message, status: NotificationStatus.Error }),
-                    )
+                    toast.error(message)
                 }
             },
             [migrationClient, selectedProviderType],
@@ -209,9 +213,7 @@ export const ImportSection: React.FC<Props> = ({
                 const errorMessage = getErrorMessage(error)
                 if (errorMessage) message += ': ' + errorMessage
 
-                void dispatch(
-                    notify({ message, status: NotificationStatus.Error }),
-                )
+                toast.error(message)
             }
         }, [migrationClient, migrationStartPayload])
 
@@ -238,9 +240,7 @@ export const ImportSection: React.FC<Props> = ({
                 const errorMessage = getErrorMessage(error)
                 if (errorMessage) message += ': ' + errorMessage
 
-                void dispatch(
-                    notify({ message, status: NotificationStatus.Error }),
-                )
+                toast.error(message)
             }
         }, [migrationClient, migrationStartPayload, currentMigrationSession])
 
@@ -265,7 +265,7 @@ export const ImportSection: React.FC<Props> = ({
             const errorMessage = getErrorMessage(error)
             if (errorMessage) message += ': ' + errorMessage
 
-            void dispatch(notify({ message, status: NotificationStatus.Error }))
+            toast.error(message)
         }
     }, [migrationClient, migrationStartPayload, currentMigrationSession])
 
@@ -308,11 +308,8 @@ export const ImportSection: React.FC<Props> = ({
                         isFirstTimeLoading: false,
                         data: activeSession,
                     })
-                    void dispatch(
-                        notify({
-                            message:
-                                'There is an ongoing migration in the background, you can start a new one once it is finished',
-                        }),
+                    toast.info(
+                        'There is an ongoing migration in the background, you can start a new one once it is finished',
                     )
                 } else {
                     setCurrentMigrationSession({
@@ -331,18 +328,11 @@ export const ImportSection: React.FC<Props> = ({
                     isFirstTimeLoading: false,
                     data: null,
                 })
-                void dispatch(
-                    notify({
-                        message: message,
-                        status: NotificationStatus.Error,
-                        ...longNotificationOptions,
-                    }),
-                )
+                toast.error(message, { duration: 20000 })
             }
         })()
     }, [
         currentHelpCenter.id,
-        dispatch,
         history.location.state,
         isMigrationAvailable,
         migrationClient,
@@ -371,13 +361,9 @@ export const ImportSection: React.FC<Props> = ({
             if (session.status === MigrationSessionStatus.Success) {
                 // Show notification only if state modal is not open
                 if (!migrationStateModalOpenRef.current) {
-                    void dispatch(
-                        notify({
-                            message:
-                                'The migration finished successfully, to see the results refresh the page',
-                            buttons: [notificationRefreshButton],
-                            status: NotificationStatus.Success,
-                        }),
+                    toast.success(
+                        'The migration finished successfully, to see the results refresh the page',
+                        { inlineActions: refreshButton },
                     )
                     setCurrentMigrationSession({
                         data: null,
@@ -398,14 +384,9 @@ export const ImportSection: React.FC<Props> = ({
         }
 
         if (migrationFailed) {
-            void dispatch(
-                notify({
-                    message:
-                        'The migration failed to finish importing all articles, some of them might be missing, to see the results refresh the page',
-                    status: NotificationStatus.Error,
-                    buttons: [notificationRefreshButton],
-                    ...longNotificationOptions,
-                }),
+            toast.error(
+                'The migration failed to finish importing all articles, some of them might be missing, to see the results refresh the page',
+                { inlineActions: refreshButton, duration: 20000 },
             )
             setCurrentMigrationSession({
                 data: null,
@@ -413,7 +394,6 @@ export const ImportSection: React.FC<Props> = ({
             })
         }
     }, [
-        dispatch,
         currentMigrationSession.data,
         migrationClient,
         setCurrentMigrationSession,
@@ -521,11 +501,8 @@ export const ImportSection: React.FC<Props> = ({
         if (migrationStartPayload) setMigrationStartPayload(undefined)
 
         if (migrationStateModalState.status === MigrationStatus.InProgress) {
-            void dispatch(
-                notify({
-                    message:
-                        'The migration has started, you’ll get notified on this page once it is finished',
-                }),
+            toast.info(
+                "The migration has started, you'll get notified on this page once it is finished",
             )
         }
 
@@ -575,17 +552,10 @@ export const ImportSection: React.FC<Props> = ({
                     isLoading: false,
                     isError: true,
                 })
-                void dispatch(
-                    notify({
-                        message: message,
-                        status: NotificationStatus.Error,
-                        ...longNotificationOptions,
-                    }),
-                )
+                toast.error(message, { duration: 20000 })
             }
         })()
     }, [
-        dispatch,
         isMigrationAvailable,
         migrationClient,
         setFetchedProviders,
@@ -630,7 +600,7 @@ export const ImportSection: React.FC<Props> = ({
         <>
             {isButton ? (
                 <>
-                    <Button
+                    <LegacyButton
                         id="import-button"
                         isDisabled={
                             isImportInProgress ||
@@ -644,7 +614,7 @@ export const ImportSection: React.FC<Props> = ({
                         {buttonLabel || (
                             <i className="material-icons">cloud_upload</i>
                         )}
-                    </Button>
+                    </LegacyButton>
                     <Tooltip
                         target="import-button"
                         placement="top"
@@ -689,7 +659,7 @@ export const ImportSection: React.FC<Props> = ({
                     )}
 
                     {!isImportInProgress && (
-                        <Button
+                        <LegacyButton
                             isDisabled={
                                 // Don't allow to open import modal while checking if there's an active migration session
                                 isDisabled ||
@@ -713,7 +683,7 @@ export const ImportSection: React.FC<Props> = ({
                             {currentMigrationSession.isFirstTimeLoading
                                 ? 'Checking for migrations'
                                 : 'Import Articles'}
-                        </Button>
+                        </LegacyButton>
                     )}
                 </section>
             )}

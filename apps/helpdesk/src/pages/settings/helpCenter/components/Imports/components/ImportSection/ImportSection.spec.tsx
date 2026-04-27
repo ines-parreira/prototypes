@@ -1,14 +1,10 @@
 import type { ReactNode } from 'react'
-import type React from 'react'
 
 import { render, userEvent } from '@repo/testing'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import { createMemoryHistory } from 'history'
-import { Provider as ReduxProvider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+
+import { toast } from '@gorgias/axiom'
 
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -16,7 +12,7 @@ import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi
 import { getMigrationClient } from 'rest_api/migration_api'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
-import type { RootState, StoreDispatch } from 'state/types'
+import type { RootState } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { migrationProviders } from './fixtures/migration-providers'
@@ -53,9 +49,7 @@ jest.mock(
         },
 )
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
-const defaultState: Partial<RootState> = {
+const storeState: Partial<RootState> = {
     entities: {
         helpCenter: {
             helpCenters: {
@@ -92,19 +86,6 @@ jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
         getAccessToken: jest.fn().mockResolvedValue('Bearer mock-token'),
     })),
 }))
-
-const history = createMemoryHistory()
-
-const renderWithStore = (element: React.ReactElement) =>
-    render(element, {
-        wrapper: ({ children }: any) => (
-            <Router history={history}>
-                <ReduxProvider store={mockStore(defaultState)}>
-                    {children}
-                </ReduxProvider>
-            </Router>
-        ),
-    })
 
 const activeMigration = migrationSessions.find((session) =>
     sessionHasProgressStatus(session),
@@ -160,6 +141,11 @@ describe('<ImportSection />', () => {
     beforeEach(() => {
         mockAPI.reset()
     })
+    afterEach(() => {
+        act(() => {
+            toast.dismiss()
+        })
+    })
 
     it("displays import in progress and is able to open status modal if there's an active migration", async () => {
         mockAPI
@@ -170,7 +156,7 @@ describe('<ImportSection />', () => {
             .onGet('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26')
             .reply(200, activeMigration)
 
-        renderWithStore(<ImportSection />)
+        render(<ImportSection />, { storeState })
 
         const importInProgress = await waitFor(() =>
             screen.getByTestId('import-in-progress-info'),
@@ -209,7 +195,7 @@ describe('<ImportSection />', () => {
             .onGet('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26')
             .reply(200, succeededMigration)
 
-        renderWithStore(<ImportSection />)
+        render(<ImportSection />, { storeState })
 
         const importArticlesButton = await waitFor(() =>
             screen.getByRole('button', { name: /Import Articles/ }),
@@ -260,6 +246,269 @@ describe('<ImportSection />', () => {
         fireEvent.click(finishButton)
     })
 
+    it('shows an error toast when the sessions list fetch fails', async () => {
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+        mockAPI.onGet('/api/sessions').reply(500, {})
+
+        render(<ImportSection />, { storeState })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /facing some problems retrieving active migrations/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows an error toast when the providers fetch fails', async () => {
+        mockAPI.onGet('/api/help_center/providers').reply(500, {})
+        mockAPI.onGet('/api/sessions').reply(200, [])
+
+        render(<ImportSection />, { storeState })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /facing some issues with migration providers/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows an info toast when there is an ongoing migration in the background', async () => {
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+        mockAPI.onGet('/api/sessions').reply(200, migrationSessions)
+        mockAPI
+            .onGet('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26')
+            .reply(200, activeMigration)
+
+        render(<ImportSection />, { storeState })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /ongoing migration in the background/i,
+                }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('shows a success toast with a refresh button when the active migration finishes while the modal is closed', async () => {
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+        mockAPI.onGet('/api/sessions').reply(200, migrationSessions)
+        mockAPI
+            .onGet('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26')
+            .reply(200, succeededMigration)
+
+        render(<ImportSection />, { storeState })
+
+        await waitFor(() => screen.getByTestId('import-in-progress-info'))
+
+        jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
+
+        await waitFor(() => {
+            const successToasts = screen.getAllByRole('status', {
+                name: /migration finished successfully/i,
+            })
+            expect(successToasts.length).toBeGreaterThan(0)
+            expect(successToasts[0]).toHaveAttribute('data-intent', 'success')
+        })
+
+        expect(
+            screen.getAllByRole('button', { name: /refresh/i }).length,
+        ).toBeGreaterThan(0)
+    })
+
+    it('shows an error toast with a refresh button when the active migration retrieval fails while the modal is closed', async () => {
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+        mockAPI.onGet('/api/sessions').reply(200, migrationSessions)
+        mockAPI
+            .onGet('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26')
+            .reply(500)
+
+        render(<ImportSection />, { storeState })
+
+        await waitFor(() => screen.getByTestId('import-in-progress-info'))
+
+        jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /migration failed to finish importing all articles/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+
+        expect(
+            screen.getByRole('button', { name: /refresh/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('shows an error toast when the migration credentials check fails', async () => {
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+        mockAPI.onGet('/api/sessions').reply(200, [])
+        mockAPI.onPost('/api/sessions?check=true').reply(400, {})
+        mockAPI.onPost('/api/sessions').reply(400, {})
+
+        render(<ImportSection />, { storeState })
+
+        const importArticlesButton = await waitFor(() =>
+            screen.getByRole('button', { name: /Import Articles/ }),
+        )
+        fireEvent.click(importArticlesButton)
+
+        const importFromAnotherProvider = await waitFor(() =>
+            screen.getByTestId('import-articles-modal-file-drop-area'),
+        )
+        fireEvent.click(importFromAnotherProvider)
+
+        const provider = await waitFor(() => screen.getByText(/Zendesk/))
+        fireEvent.click(provider)
+
+        const emailInput = await waitFor(() => screen.getByLabelText(/Email/))
+        const apiKeyInput = screen.getByLabelText(/API Key/)
+        const submitButton = screen.getByText('Connect')
+
+        await userEvent.type(emailInput, 'email@email.com')
+        await userEvent.type(apiKeyInput, 'api-key')
+        fireEvent.click(submitButton)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /Couldn't connect to provider/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows an error toast when the migration start fails', async () => {
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+        mockAPI.onGet('/api/sessions').reply(200, [])
+        // The credentials check POST resolves successfully, but the start POST
+        // (which hits the same URL after the modal opens) is rejected.
+        mockAPI.onPost('/api/sessions').replyOnce(200)
+        mockAPI.onPost('/api/sessions').reply(500, {})
+
+        render(<ImportSection />, { storeState })
+
+        const importArticlesButton = await waitFor(() =>
+            screen.getByRole('button', { name: /Import Articles/ }),
+        )
+        fireEvent.click(importArticlesButton)
+
+        const importFromAnotherProvider = await waitFor(() =>
+            screen.getByTestId('import-articles-modal-file-drop-area'),
+        )
+        fireEvent.click(importFromAnotherProvider)
+
+        const provider = await waitFor(() => screen.getByText(/Zendesk/))
+        fireEvent.click(provider)
+
+        const emailInput = await waitFor(() => screen.getByLabelText(/Email/))
+        const apiKeyInput = screen.getByLabelText(/API Key/)
+        const submitButton = screen.getByText('Connect')
+
+        await userEvent.type(emailInput, 'email@email.com')
+        await userEvent.type(apiKeyInput, 'api-key')
+        fireEvent.click(submitButton)
+
+        const startMigrationButton = await waitFor(() =>
+            screen.getByRole('button', { name: 'Start migrating' }),
+        )
+        fireEvent.click(startMigrationButton)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /Failed to start migration/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows an error toast when the retry call fails', async () => {
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+        mockAPI.onGet('/api/sessions').reply(200, [])
+        mockAPI
+            .onPost('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26/retry')
+            .reply(500, {})
+
+        render(<ImportSection />, {
+            storeState,
+            initialEntries: [
+                {
+                    pathname: '/',
+                    state: { autoOpenSession: failedMigration },
+                },
+            ] as unknown as string[],
+        })
+
+        const retryButton = await waitFor(() =>
+            screen.getByRole('button', { name: /Retry/ }),
+        )
+        fireEvent.click(retryButton)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /Failed to retry migration/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows an error toast when the revert call fails', async () => {
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+        mockAPI.onGet('/api/sessions').reply(200, [])
+        mockAPI
+            .onPost(
+                '/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26/rollback',
+            )
+            .reply(500, {})
+
+        render(<ImportSection />, {
+            storeState,
+            initialEntries: [
+                {
+                    pathname: '/',
+                    state: { autoOpenSession: partiallySucceededMigration },
+                },
+            ] as unknown as string[],
+        })
+
+        const revertButton = await waitFor(() =>
+            screen.getByRole('button', { name: /Revert/ }),
+        )
+        fireEvent.click(revertButton)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /Failed to revert migration/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
     test('Retry and revert for migration', async () => {
         /**
          * To test all of them in one go we'll do this:
@@ -278,7 +527,7 @@ describe('<ImportSection />', () => {
 
         mockAPI.onPost('/api/sessions').reply(200, activeMigration)
 
-        renderWithStore(<ImportSection />)
+        render(<ImportSection />, { storeState })
 
         const importArticlesButton = await waitFor(() =>
             screen.getByRole('button', {
