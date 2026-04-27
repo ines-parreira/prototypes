@@ -93,7 +93,7 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                             <Box mr="xs">
                                 <Button
                                     as="a"
-                                    href={`https://admin.shopify.com/store/${storeName}/orders/${order.id}`}
+                                    href={`https://admin.shopify.com/store/${storeName}/${isDraftOrder ? 'draft_orders' : 'orders'}/${order.id}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     variant="secondary"

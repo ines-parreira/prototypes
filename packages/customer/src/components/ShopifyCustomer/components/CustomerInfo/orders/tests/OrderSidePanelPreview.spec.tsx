@@ -502,6 +502,24 @@ describe('OrderSidePanelPreview — footer View Order link', () => {
             screen.queryByRole('link', { name: /view order/i }),
         ).not.toBeInTheDocument()
     })
+
+    it('renders View Order link pointing to Shopify draft_orders admin URL when isDraftOrder is true', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                storeName="my-shop"
+                isDraftOrder
+            />,
+        )
+
+        const link = await screen.findByRole('link', { name: /view order/i })
+        expect(link).toHaveAttribute(
+            'href',
+            `https://admin.shopify.com/store/my-shop/draft_orders/${mockOrder.id}`,
+        )
+    })
 })
 
 describe('OrderSidePanelPreview — Order Details section', () => {
