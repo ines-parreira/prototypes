@@ -6,12 +6,18 @@ import { EmptyViewsState } from '../../../utils/views'
 import { getPlaceholderKind } from '../getPlaceholderKind'
 
 describe('getPlaceholderKind', () => {
+    const notFoundError = {
+        response: {
+            status: 404,
+        },
+    }
+
     it.each([
         {
             description: 'returns invalidFilters for deactivated views',
             params: {
                 view: { deactivated_datetime: '2026-03-19T10:00:00Z' } as View,
-                hasError: true,
+                error: new Error('Request failed'),
                 isEmpty: true,
             },
             expected: EmptyViewsState.InvalidFilters,
@@ -20,7 +26,16 @@ describe('getPlaceholderKind', () => {
             description: 'returns inaccessible for null views',
             params: {
                 view: null,
-                hasError: true,
+                error: new Error('Request failed'),
+                isEmpty: true,
+            },
+            expected: EmptyViewsState.Inaccessible,
+        },
+        {
+            description: 'returns inaccessible for not found errors',
+            params: {
+                view: {} as View,
+                error: notFoundError,
                 isEmpty: true,
             },
             expected: EmptyViewsState.Inaccessible,
@@ -30,7 +45,7 @@ describe('getPlaceholderKind', () => {
                 'returns error when the view is accessible and the request failed',
             params: {
                 view: {} as View,
-                hasError: true,
+                error: new Error('Request failed'),
                 isEmpty: true,
             },
             expected: EmptyViewsState.Error,
@@ -40,7 +55,7 @@ describe('getPlaceholderKind', () => {
                 'returns empty when the view is accessible and has no tickets',
             params: {
                 view: {} as View,
-                hasError: false,
+                error: null,
                 isEmpty: true,
             },
             expected: EmptyViewsState.Empty,
@@ -50,7 +65,7 @@ describe('getPlaceholderKind', () => {
                 'returns null when the view is accessible and tickets exist',
             params: {
                 view: {} as View,
-                hasError: false,
+                error: null,
                 isEmpty: false,
             },
             expected: null,

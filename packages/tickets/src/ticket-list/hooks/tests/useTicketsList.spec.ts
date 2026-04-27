@@ -257,4 +257,38 @@ describe('useTicketsList', () => {
             }),
         )
     })
+
+    it('should disable stale updates polling when the initial items request returns 404', async () => {
+        const refreshSpy = vi.spyOn(
+            useRefreshStaleTicketsModule,
+            'useRefreshStaleTickets',
+        )
+
+        server.use(
+            mockListViewItemsHandler(async () =>
+                HttpResponse.json(
+                    {
+                        error: {
+                            msg: `The view #${viewId} does not exist`,
+                        },
+                    } as any,
+                    { status: 404 },
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(() => useTicketsList(viewId))
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(result.current.error).toBeTruthy()
+        expect(refreshSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+                viewId,
+                enabled: false,
+            }),
+        )
+    })
 })

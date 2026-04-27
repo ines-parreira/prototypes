@@ -12,6 +12,9 @@ import {
     mockGetCurrentUserHandler,
     mockGetViewHandler,
     mockGetViewResponse,
+    mockListViewItemsHandler,
+    mockListViewItemsUpdatesHandler,
+    mockListViewItemsUpdatesResponse,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
@@ -49,7 +52,7 @@ const mockState = {
     sortOrder: 'last_message_datetime:desc',
     viewFilters: '',
     tickets: [] as Array<{ id: number; subject: string; is_unread?: boolean }>,
-    error: null as Error | null,
+    error: null as unknown,
     markAsRead: vi.fn(),
     refetchSpy: vi.fn(),
     setSortOrder: vi.fn(),
@@ -198,6 +201,28 @@ const agentUser = mockUser({
     role: { name: UserRole.Agent },
 })
 
+function createListViewItemsErrorHandler(status: number, message: string) {
+    return mockListViewItemsHandler(async () =>
+        HttpResponse.json(
+            {
+                error: {
+                    msg: message,
+                },
+            } as any,
+            { status },
+        ),
+    ).handler
+}
+
+const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(async () =>
+    HttpResponse.json(
+        mockListViewItemsUpdatesResponse({
+            data: [],
+            meta: {},
+        }),
+    ),
+)
+
 beforeAll(() => {
     server.listen({
         onUnhandledRequest({ method, url }) {
@@ -295,7 +320,19 @@ describe('TicketTable', () => {
         mockState.markAsRead.mockReset()
         mockState.refetchSpy.mockReset()
         mockState.setSortOrder.mockReset()
-        vi.mocked(useTicketsListModule.useTicketsList).mockClear()
+        vi.mocked(useTicketsListModule.useTicketsList).mockImplementation(
+            () => ({
+                tickets: mockState.tickets as any,
+                fetchNextPage: vi.fn(),
+                hasNextPage: false,
+                isLoading: false,
+                isFetching: false,
+                isFetchingNextPage: false,
+                error: mockState.error,
+                data: undefined,
+                refetch: mockState.refetchSpy,
+            }),
+        )
     })
 
     it('keeps rendering loaded rows when a refresh fails', async () => {
@@ -479,6 +516,46 @@ describe('TicketTable', () => {
         await user.click(screen.getByRole('button', { name: 'Refresh' }))
 
         expect(mockState.refetchSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders the inaccessible placeholder when loading tickets returns 404', async () => {
+        const { useTicketsList: actualUseTicketsList } = await vi.importActual<
+            typeof useTicketsListModule
+        >('../../hooks/useTicketsList')
+
+        vi.mocked(useTicketsListModule.useTicketsList).mockImplementation(
+            (...args) => actualUseTicketsList(...args),
+        )
+        server.use(
+            createListViewItemsErrorHandler(
+                404,
+                'The view #123 does not exist',
+            ),
+            mockListViewItemsUpdatesNoOp.handler,
+        )
+
+        renderTicketTable()
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: "Can't access view" }),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByText(
+                'This view does not exist or you do not have the correct permissions',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('heading', { name: 'Network error' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: 'Refresh' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Request failed with status code 404'),
+        ).not.toBeInTheDocument()
     })
 
     it('renders loading placeholders while the view is still loading', () => {

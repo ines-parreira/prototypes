@@ -155,7 +155,7 @@ function TicketTableComponent({
 
     const placeholderKind = getPlaceholderKind({
         view,
-        hasError: !!error,
+        error,
         isEmpty: items.length === 0,
     })
     const errorMessage = getTicketTableErrorMessage(error)

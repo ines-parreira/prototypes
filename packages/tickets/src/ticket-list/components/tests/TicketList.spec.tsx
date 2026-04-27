@@ -34,7 +34,7 @@ import * as useSortOrderModule from '../../hooks/useSortOrder'
 import * as useTicketSelectionModule from '../../hooks/useTicketSelection'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
 import * as useViewVisibleTicketsModule from '../../hooks/useViewVisibleTickets'
-import { getTicketListErrorMessage, TicketList } from '../TicketList'
+import { TicketList } from '../TicketList'
 
 const mockViewTickets = vi.fn()
 const mockGetTicketActivity = vi.fn(() => ({
@@ -89,6 +89,46 @@ const mockListViewItems = mockListViewItemsHandler(async () =>
         }),
     ),
 )
+
+function createListViewItemsResponseHandler(tickets: TicketCompact[]) {
+    return mockListViewItemsHandler(async () =>
+        HttpResponse.json(
+            mockListViewItemsResponse({
+                data: tickets.map(toListViewItem),
+                meta: {
+                    current_cursor: undefined,
+                    next_items: undefined,
+                    prev_items: undefined,
+                },
+            }),
+        ),
+    ).handler
+}
+
+function createListViewItemsErrorHandler(status: number, message: string) {
+    return mockListViewItemsHandler(async () =>
+        HttpResponse.json(
+            {
+                error: {
+                    msg: message,
+                },
+            } as any,
+            { status },
+        ),
+    ).handler
+}
+
+function createGetViewResponseHandler() {
+    return mockGetViewHandler(async () =>
+        HttpResponse.json(
+            mockGetViewResponse({
+                id: viewId,
+                filters: '',
+                deactivated_datetime: undefined,
+            }),
+        ),
+    ).handler
+}
 
 const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(async () =>
     HttpResponse.json(
@@ -155,18 +195,6 @@ afterAll(() => {
 })
 
 describe('TicketList', () => {
-    it('returns an error message for Error instances', () => {
-        expect(getTicketListErrorMessage(new Error('Not found'))).toBe(
-            'Not found',
-        )
-    })
-
-    it('returns undefined for non-Error values', () => {
-        expect(getTicketListErrorMessage(undefined)).toBeUndefined()
-        expect(getTicketListErrorMessage(null)).toBeUndefined()
-        expect(getTicketListErrorMessage('Not found')).toBeUndefined()
-    })
-
     it('should render loading state', () => {
         renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
@@ -199,17 +227,7 @@ describe('TicketList', () => {
             'useTicketsTranslatedProperties',
         )
 
-        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
-            tickets: manyTickets,
-            fetchNextPage: vi.fn(),
-            hasNextPage: false,
-            isLoading: false,
-            isFetching: false,
-            isFetchingNextPage: false,
-            error: null,
-            data: undefined,
-            refetch: vi.fn(),
-        })
+        server.use(createListViewItemsResponseHandler(manyTickets))
 
         renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
@@ -233,17 +251,13 @@ describe('TicketList', () => {
     })
 
     it('should render network error state when the tickets request fails', async () => {
-        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
-            tickets: [],
-            fetchNextPage: vi.fn(),
-            hasNextPage: false,
-            isLoading: false,
-            isFetching: false,
-            isFetchingNextPage: false,
-            error: new Error('Not found'),
-            data: undefined,
-            refetch: vi.fn(),
-        })
+        server.use(
+            createGetViewResponseHandler(),
+            createListViewItemsErrorHandler(
+                500,
+                'Unable to load tickets for this view',
+            ),
+        )
 
         renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
@@ -259,21 +273,50 @@ describe('TicketList', () => {
         expect(
             screen.getByRole('button', { name: 'Refresh' }),
         ).toBeInTheDocument()
-        expect(screen.getByText('Not found')).toBeInTheDocument()
+        expect(screen.queryByText('Not found')).not.toBeInTheDocument()
     })
 
-    it('should not render an error message when the tickets request error is not an Error instance', async () => {
-        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
-            tickets: [],
-            fetchNextPage: vi.fn(),
-            hasNextPage: false,
-            isLoading: false,
-            isFetching: false,
-            isFetchingNextPage: false,
-            error: 'Not found',
-            data: undefined,
-            refetch: vi.fn(),
+    it('should render inaccessible state when the tickets request returns 404', async () => {
+        server.use(
+            createGetViewResponseHandler(),
+            createListViewItemsErrorHandler(
+                404,
+                `The view #${viewId} does not exist`,
+            ),
+        )
+
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: "Can't access view" }),
+            ).toBeInTheDocument()
         })
+
+        expect(
+            screen.getByText(
+                'This view does not exist or you do not have the correct permissions',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('heading', { name: 'Network error' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: 'Refresh' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Request failed with status code 404'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render a raw error message when the tickets request fails', async () => {
+        server.use(
+            createGetViewResponseHandler(),
+            createListViewItemsErrorHandler(
+                500,
+                'Unable to load tickets for this view',
+            ),
+        )
 
         renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
@@ -290,7 +333,7 @@ describe('TicketList', () => {
     })
 
     describe('view-based empty states', () => {
-        const mockUseTicketsList = (error: Error | null = null) => {
+        const mockUseTicketsList = (error: unknown = null) => {
             vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
                 tickets: [],
                 fetchNextPage: vi.fn(),
@@ -344,11 +387,6 @@ describe('TicketList', () => {
 
         it('should call onFixFilters when the Fix filters button is clicked', async () => {
             const onFixFilters = vi.fn()
-            mockUseTicketsList(
-                new Error(
-                    "We couldn't list ticket updates for a given view because View is deactivated.",
-                ),
-            )
 
             server.use(
                 mockGetViewHandler(async () =>
@@ -359,6 +397,7 @@ describe('TicketList', () => {
                         }),
                     ),
                 ).handler,
+                createListViewItemsResponseHandler([]),
             )
 
             const { user } = renderWithVirtuoso(
@@ -844,17 +883,13 @@ describe('Select all checkbox', () => {
     })
 
     it('is disabled when there is a network error', async () => {
-        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
-            tickets: [],
-            fetchNextPage: vi.fn(),
-            hasNextPage: false,
-            isLoading: false,
-            isFetching: false,
-            isFetchingNextPage: false,
-            error: new Error('Not found'),
-            data: undefined,
-            refetch: vi.fn(),
-        })
+        server.use(
+            createGetViewResponseHandler(),
+            createListViewItemsErrorHandler(
+                500,
+                'Unable to load tickets for this view',
+            ),
+        )
 
         renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 

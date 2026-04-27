@@ -11,6 +11,7 @@ import type {
 } from '@gorgias/helpdesk-types'
 
 import { getNextCursorFromMeta } from '../utils/cursors'
+import { isInaccessibleViewItemsError } from '../utils/isInaccessibleViewItemsError'
 import { useRefreshStaleTickets } from './useRefreshStaleTickets'
 
 export type UseTicketsListParams = {
@@ -93,7 +94,11 @@ export function useTicketsList(
         params,
         upToCursor,
         enabled:
-            enabled && enableStaleUpdates && !query.isLoading && !pauseUpdates,
+            enabled &&
+            enableStaleUpdates &&
+            !query.isLoading &&
+            !pauseUpdates &&
+            !isInaccessibleViewItemsError(query.error),
     })
 
     return {
