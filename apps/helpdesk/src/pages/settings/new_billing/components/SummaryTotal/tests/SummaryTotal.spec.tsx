@@ -1,7 +1,8 @@
 import type { SelectedPlans } from '@repo/billing'
 import { Cadence, ProductType, useBillingState } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     basicMonthlyAutomationPlan,
@@ -44,6 +45,85 @@ const totalProductAmount =
 const totalProductAmountDifferent = totalProductAmount + 10000
 const cadence = Cadence.Month
 const currency = 'USD'
+
+describe('SummaryTotal balance due', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+        mockUseBillingState.mockReturnValue({ data: undefined })
+    })
+
+    it('renders the "Balance due today" label with a skeleton (no amount) while estimate is loading', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                isEstimateLoading
+            />,
+        )
+
+        expect(screen.getByText('Balance due today')).toBeInTheDocument()
+        expect(screen.queryByText(/^\$.* due today$/)).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /retry/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders the error message and Retry button when the estimate fails', async () => {
+        const onRetryEstimate = jest.fn()
+        const user = userEvent.setup()
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                estimateErrorMessage="Failed to load estimate."
+                onRetryEstimate={onRetryEstimate}
+            />,
+        )
+
+        expect(screen.getByText('Balance due today')).toBeInTheDocument()
+        expect(screen.getByText('Failed to load estimate.')).toBeInTheDocument()
+
+        await act(() =>
+            user.click(screen.getByRole('button', { name: /retry/i })),
+        )
+
+        expect(onRetryEstimate).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders the formatted balance due amount when the estimate is positive', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                balanceDue={2550}
+            />,
+        )
+
+        expect(screen.getByText('Balance due today')).toBeInTheDocument()
+        expect(screen.getByText('$25.50 due today')).toBeInTheDocument()
+    })
+
+    it('does not render the balance due row when the estimate resolves to 0', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                balanceDue={0}
+            />,
+        )
+
+        expect(screen.queryByText('Balance due today')).not.toBeInTheDocument()
+    })
+})
 
 describe('SummaryTotal without coupons', () => {
     beforeEach(() => {

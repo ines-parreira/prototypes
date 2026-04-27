@@ -9,8 +9,9 @@ import {
 import type { Plan, ProductType, SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { Box, Button, Skeleton, Text } from '@gorgias/axiom'
+import { Box } from '@gorgias/axiom'
 
+import { BalanceDueRow } from '../BalanceDueRow'
 import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
 import css from './SummaryTotal.less'
@@ -67,6 +68,15 @@ const SummaryTotal = ({
         showDiscountedPrice,
     } = usePriceSummary(selectedPlans, totalCancelledAmount, cancelledProducts)
 
+    const shouldShowBalanceDue =
+        isEstimateLoading ||
+        Boolean(estimateErrorMessage) ||
+        (balanceDue != null && balanceDue > 0)
+    const balanceDueText =
+        balanceDue == null
+            ? null
+            : `${formatAmount(balanceDue / 100, currency)} due today`
+
     return (
         <div className={css.container}>
             {showDiscountedPrice ? (
@@ -103,44 +113,16 @@ const SummaryTotal = ({
                     </div>
                 </div>
             )}
-            {isEstimateLoading ? (
-                <Box paddingTop="sm" flexDirection="column">
-                    <Skeleton />
+            {shouldShowBalanceDue && (
+                <Box pt="sm" px="sm" flexDirection="column">
+                    <BalanceDueRow
+                        isLoading={isEstimateLoading}
+                        errorMessage={estimateErrorMessage}
+                        onRetry={onRetryEstimate}
+                    >
+                        {balanceDueText}
+                    </BalanceDueRow>
                 </Box>
-            ) : estimateErrorMessage ? (
-                <Box
-                    justifyContent="space-between"
-                    alignItems="center"
-                    gap="sm"
-                    pt="sm"
-                    px="sm"
-                >
-                    <Text variant="bold">Balance due today</Text>
-                    <Box alignItems="center" gap="xs">
-                        <Text color="content-error-default" size="sm">
-                            {estimateErrorMessage}
-                        </Text>
-                        {onRetryEstimate && (
-                            <Button
-                                variant="tertiary"
-                                size="sm"
-                                onClick={onRetryEstimate}
-                            >
-                                Retry
-                            </Button>
-                        )}
-                    </Box>
-                </Box>
-            ) : (
-                balanceDue != null &&
-                balanceDue > 0 && (
-                    <Box justifyContent="space-between" pt="sm" px="sm">
-                        <Text variant="bold">Balance due today</Text>
-                        <Text variant="bold">
-                            {formatAmount(balanceDue / 100, currency)} due today
-                        </Text>
-                    </Box>
-                )
             )}
             <div className={css.disclaimer}>Prices exclusive of sales tax</div>
         </div>
