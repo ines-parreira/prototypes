@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

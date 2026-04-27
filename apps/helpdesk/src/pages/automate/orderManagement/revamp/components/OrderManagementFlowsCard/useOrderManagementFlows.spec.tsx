@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'

@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { act, fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent } from '@testing-library/react'
 
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'

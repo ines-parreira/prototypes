@@ -1,5 +1,6 @@
+import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 

@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { MemoryRouter, Route, useRouteMatch } from 'react-router-dom'
 
 import { AutomateFeatures } from 'pages/automate/common/types'

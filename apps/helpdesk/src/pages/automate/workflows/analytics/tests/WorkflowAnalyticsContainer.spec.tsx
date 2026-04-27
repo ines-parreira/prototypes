@@ -1,7 +1,8 @@
 import type React from 'react'
 
 import * as segment from '@repo/logging'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'

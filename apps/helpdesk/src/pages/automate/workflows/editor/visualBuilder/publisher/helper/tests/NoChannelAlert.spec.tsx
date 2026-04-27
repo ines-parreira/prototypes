@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
 import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'

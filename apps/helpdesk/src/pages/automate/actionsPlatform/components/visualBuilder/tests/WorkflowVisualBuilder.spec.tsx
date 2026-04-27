@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { useReactFlow, useViewport } from '@xyflow/react'
 
 import { THEME_NAME } from '@gorgias/design-tokens'

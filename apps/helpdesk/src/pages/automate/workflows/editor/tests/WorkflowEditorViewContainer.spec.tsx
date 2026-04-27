@@ -1,7 +1,8 @@
 import React from 'react'
 
 import * as segment from '@repo/logging'
-import { act, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'

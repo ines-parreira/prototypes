@@ -1,4 +1,5 @@
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'

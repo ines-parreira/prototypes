@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
 
 import FormUrlencoded from '../FormUrlencoded'
 

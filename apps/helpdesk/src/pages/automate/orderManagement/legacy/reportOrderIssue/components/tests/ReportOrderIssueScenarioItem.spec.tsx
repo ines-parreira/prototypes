@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'

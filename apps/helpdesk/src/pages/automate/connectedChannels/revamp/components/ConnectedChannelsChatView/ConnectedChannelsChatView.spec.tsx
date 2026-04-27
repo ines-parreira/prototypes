@@ -1,5 +1,6 @@
+import { render } from '@repo/testing'
 import type { QueryObserverResult } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import type { Dictionary } from 'lodash'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'

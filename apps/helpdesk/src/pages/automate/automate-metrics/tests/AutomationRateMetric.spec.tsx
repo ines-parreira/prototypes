@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/dom'
-import { render } from '@testing-library/react'
 
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { AutomationRateMetric } from 'pages/automate/automate-metrics/AutomationRateMetric'
