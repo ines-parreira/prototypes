@@ -43,7 +43,7 @@ export const TopReportedIssuesDrillDown = () => {
                     sorting={{ enable: true }}
                     pagination={{
                         enable: count > PAGE_SIZE,
-                        value: { pageIndex: 0, pageSize: PAGE_SIZE },
+                        defaultValue: { pageIndex: 0, pageSize: PAGE_SIZE },
                     }}
                     withBorder
                 >
