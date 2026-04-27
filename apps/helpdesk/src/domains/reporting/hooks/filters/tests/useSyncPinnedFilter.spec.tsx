@@ -1,7 +1,4 @@
 import { act, assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { useSyncPinnedFilter } from 'domains/reporting/hooks/filters/useSyncPinnedFilter'
 import type { SavedFilter } from 'domains/reporting/models/stat/types'
@@ -10,20 +7,15 @@ import {
     initialState as uiFiltersInitialState,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import type { RootState, StoreDispatch } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('hooks/useAppDispatch')
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
 const renderHookWithStore = (state: Partial<RootState>) => {
-    const store = mockStore(state)
     return renderHook(() => useSyncPinnedFilter(), {
-        wrapper: ({ children }) => (
-            <Provider store={store}>{children}</Provider>
-        ),
+        storeState: state,
     })
 }
 
