@@ -17,6 +17,9 @@ type Options = {
 
 type PanelDelta = [string, number]
 
+const hasSavedSize = (savedSizes: Sizes, name: string) =>
+    savedSizes[name] !== undefined
+
 export function calculateSizes({
     availableSize,
     configs,
@@ -58,12 +61,37 @@ export function calculateSizes({
         previousOrder.length > 0
             ? order.filter((name) => previousOrder.includes(name))
             : []
+    const addedPanels =
+        previousOrder.length > 0
+            ? order.filter((name) => !previousOrder.includes(name))
+            : order
+    const getExistingPanelSize = (name: string) => {
+        if (configs[name].prioritise && hasSavedSize(savedSizes, name)) {
+            return savedSizes[name]
+        }
+
+        return previousSizes[name]
+    }
+    const hasSavedPrioritisedSize = (name: string) =>
+        !!configs[name].prioritise && hasSavedSize(savedSizes, name)
+
+    const existingPrioritisedPanels = existingPanels.filter(
+        hasSavedPrioritisedSize,
+    )
+    if (existingPrioritisedPanels.length) {
+        orderedApplyDeltas(
+            existingPrioritisedPanels.map<PanelDelta>((name) => [
+                name,
+                savedSizes[name] - sizes[name],
+            ]),
+        )
+    }
 
     const prioritisedPanels = order.filter(
         (name) =>
             !!configs[name].prioritise &&
             !existingPanels.includes(name) &&
-            !!savedSizes[name],
+            hasSavedSize(savedSizes, name),
     )
     if (prioritisedPanels.length) {
         orderedApplyDeltas(
@@ -74,13 +102,31 @@ export function calculateSizes({
         )
     }
 
+    const savedAddedPanels = addedPanels.filter(
+        (name) =>
+            !prioritisedPanels.includes(name) && hasSavedSize(savedSizes, name),
+    )
+    if (savedAddedPanels.length) {
+        orderedApplyDeltas(
+            savedAddedPanels
+                .map<PanelDelta>((name) => [
+                    name,
+                    savedSizes[name] - sizes[name],
+                ])
+                .sort((a, b) => a[1] - b[1]),
+        )
+    }
+
     if (existingPanels.length) {
         orderedApplyDeltas(
             existingPanels
+                .filter((name) => !existingPrioritisedPanels.includes(name))
                 .map<PanelDelta>((name) => [
                     name,
-                    Math.min(previousSizes[name], configs[name].maxSize) -
-                        sizes[name],
+                    Math.min(
+                        getExistingPanelSize(name),
+                        configs[name].maxSize,
+                    ) - sizes[name],
                 ])
                 .sort((a, b) => a[1] - b[1]),
         )
@@ -88,27 +134,10 @@ export function calculateSizes({
 
     if (remainingSize <= 0) return sizes
 
-    const addedPanels =
-        previousOrder.length > 0
-            ? order.filter((name) => !previousOrder.includes(name))
-            : order
-
     if (addedPanels.length) {
-        orderedApplyDeltas(
-            addedPanels
-                .filter((name) => !!savedSizes[name])
-                .map<PanelDelta>((name) => [
-                    name,
-                    savedSizes[name] - sizes[name],
-                ])
-                .sort((a, b) => a[1] - b[1]),
-        )
-
-        if (remainingSize <= 0) return sizes
-
         evenApplyDeltas(
             addedPanels
-                .filter((name) => !savedSizes[name])
+                .filter((name) => !hasSavedSize(savedSizes, name))
                 .filter((name) => configs[name].defaultSize !== Infinity)
                 .map<PanelDelta>((name) => [
                     name,
@@ -121,7 +150,7 @@ export function calculateSizes({
 
         evenApplyDeltas(
             addedPanels
-                .filter((name) => !savedSizes[name])
+                .filter((name) => !hasSavedSize(savedSizes, name))
                 .filter((name) => configs[name].defaultSize === Infinity)
                 .map<PanelDelta>((name) => [
                     name,
@@ -142,28 +171,25 @@ export function calculateSizes({
         const panelIndex = Math.max(
             ...removedPanels.map((name) => previousOrder.indexOf(name)),
         )
-        orderedApplyDeltas([
-            ...order
-                .slice(panelIndex)
+        const growablePanels = [
+            ...order.slice(panelIndex),
+            ...order.slice(0, panelIndex),
+        ].filter((name) => !hasSavedPrioritisedSize(name))
+        orderedApplyDeltas(
+            growablePanels
                 .map<PanelDelta>((name) => [
                     name,
                     configs[name].maxSize - sizes[name],
                 ])
                 .sort((a, b) => b[1] - a[1]),
-            ...order
-                .slice(0, panelIndex)
-                .map<PanelDelta>((name) => [
-                    name,
-                    configs[name].maxSize - sizes[name],
-                ])
-                .sort((a, b) => b[1] - a[1]),
-        ])
+        )
     }
 
     if (remainingSize <= 0) return sizes
 
     evenApplyDeltas(
         order
+            .filter((name) => !hasSavedPrioritisedSize(name))
             .map<PanelDelta>((name) => [
                 name,
                 configs[name].maxSize - sizes[name],

@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 import { vi } from 'vitest'
 import type { MockInstance } from 'vitest'
 
@@ -11,6 +11,11 @@ describe('useSavedSizes', () => {
     beforeEach(() => {
         getItem = vi.spyOn(Storage.prototype, 'getItem')
         setItem = vi.spyOn(Storage.prototype, 'setItem')
+    })
+
+    afterEach(() => {
+        vi.restoreAllMocks()
+        localStorage.clear()
     })
 
     it('should return an empty object if there are no saved saves', () => {
@@ -56,17 +61,56 @@ describe('useSavedSizes', () => {
     it('should override existing sizes', () => {
         getItem.mockReturnValue('{"panel1":100}')
         const { result } = renderHook(() => useSavedSizes())
-        result.current[1]({ panel1: 200 })
+        act(() => {
+            result.current[1]({ panel1: 200 })
+        })
         expect(setItem).toHaveBeenCalledWith('panel-sizes', '{"panel1":200}')
     })
 
     it('should augment existing sizes', () => {
         getItem.mockReturnValue('{"panel1":100}')
         const { result } = renderHook(() => useSavedSizes())
-        result.current[1]({ panel2: 200 })
+        act(() => {
+            result.current[1]({ panel2: 200 })
+        })
         expect(setItem).toHaveBeenCalledWith(
             'panel-sizes',
             '{"panel1":100,"panel2":200}',
         )
+    })
+
+    it('should augment the latest observed sizes when persisting', () => {
+        getItem.mockReturnValue('{"panel1":100}')
+        const { result } = renderHook(() => useSavedSizes())
+
+        getItem.mockReturnValue('{"panel1":100,"panel2":200}')
+        act(() => {
+            window.dispatchEvent(
+                new StorageEvent('storage', { key: 'panel-sizes' }),
+            )
+        })
+
+        act(() => {
+            result.current[1]({ panel1: 150 })
+        })
+
+        expect(setItem).toHaveBeenCalledWith(
+            'panel-sizes',
+            '{"panel1":150,"panel2":200}',
+        )
+    })
+
+    it('should update saved sizes when local storage changes', () => {
+        getItem.mockReturnValue('{"panel1":100}')
+        const { result } = renderHook(() => useSavedSizes())
+
+        getItem.mockReturnValue('{"panel1":200}')
+        act(() => {
+            window.dispatchEvent(
+                new StorageEvent('storage', { key: 'panel-sizes' }),
+            )
+        })
+
+        expect(result.current[0].current).toEqual({ panel1: 200 })
     })
 })

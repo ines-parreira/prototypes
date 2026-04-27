@@ -22,6 +22,11 @@ describe('calculateSizes', () => {
             maxSize: Infinity,
         },
         'ticket-list': { defaultSize: 300, minSize: 300, maxSize: 450 },
+        'main-panel': {
+            defaultSize: Infinity,
+            minSize: 300,
+            maxSize: Infinity,
+        },
         view: { defaultSize: Infinity, minSize: 300, maxSize: Infinity },
     }
     const savedSizes = {}
@@ -132,6 +137,105 @@ describe('calculateSizes', () => {
             'global-navigation': 48,
             navigation: 300,
             view: 652,
+        })
+    })
+
+    it('should restore an existing prioritised panel from saved size when sibling panel changes', () => {
+        const result = calculateSizes({
+            availableSize,
+            configs: configs,
+            order: ['navigation', 'view'],
+            previousOrder: ['navigation', 'main-panel'],
+            previousSizes: {
+                navigation: 350,
+                'main-panel': 650,
+            },
+            savedSizes: { navigation: 260 },
+        })
+
+        expect(result).toEqual({
+            navigation: 260,
+            view: 740,
+        })
+    })
+
+    it('should not grow a prioritised panel with saved size when a sibling panel is temporarily removed', () => {
+        const result = calculateSizes({
+            availableSize,
+            configs: configs,
+            order: ['navigation'],
+            previousOrder: ['navigation', 'view'],
+            previousSizes: {
+                navigation: 350,
+                view: 650,
+            },
+            savedSizes: { navigation: 260 },
+        })
+
+        expect(result).toEqual({
+            navigation: 260,
+        })
+    })
+
+    it('should restore an existing prioritised panel before a re-added sibling with saved size', () => {
+        const result = calculateSizes({
+            availableSize,
+            configs: configs,
+            order: ['navigation', 'main-panel'],
+            previousOrder: ['navigation', 'view'],
+            previousSizes: {
+                navigation: 260,
+                view: 740,
+            },
+            savedSizes: {
+                navigation: 350,
+                'main-panel': 740,
+            },
+        })
+
+        expect(result).toEqual({
+            navigation: 350,
+            'main-panel': 650,
+        })
+    })
+
+    it('should restore a re-added ticket list panel from saved size before expanding existing panels', () => {
+        const result = calculateSizes({
+            availableSize: 1400,
+            configs: configs,
+            order: ['navigation', 'ticket-list', 'ticket-detail'],
+            previousOrder: ['navigation', 'ticket-detail'],
+            previousSizes: {
+                navigation: 238,
+                'ticket-detail': 1162,
+            },
+            savedSizes: { 'ticket-list': 420 },
+        })
+
+        expect(result).toEqual({
+            navigation: 238,
+            'ticket-list': 420,
+            'ticket-detail': 742,
+        })
+    })
+
+    it('should restore a re-added infobar panel from saved size before expanding existing panels', () => {
+        const result = calculateSizes({
+            availableSize: 1400,
+            configs: configs,
+            order: ['navigation', 'ticket-detail', 'infobar'],
+            previousOrder: ['navigation', 'ticket-detail'],
+            previousSizes: {
+                navigation: 238,
+                'ticket-detail': 1162,
+            },
+            savedSizes: { infobar: 480 },
+        })
+
+        expect(result).toEqual({
+            navigation: 238,
+            infobar: 480,
+            'ticket-detail': 682,
         })
     })
 
