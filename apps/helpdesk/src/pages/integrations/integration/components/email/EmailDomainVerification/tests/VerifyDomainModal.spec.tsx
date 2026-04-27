@@ -1,8 +1,7 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import { renderWithRouter } from 'utils/testing'
 
 import VerifyDomainModal from '../VerifyDomainModal'
 
@@ -11,7 +10,7 @@ jest.mock('hooks/useSearchParam')
 const useSearchParamMock = assumeMock(useSearchParam)
 
 describe('VerifyDomainModal', () => {
-    const renderComponent = () => renderWithRouter(<VerifyDomainModal />)
+    const renderComponent = () => render(<VerifyDomainModal />)
 
     it('should be closed when is_redirect is not "true"', () => {
         useSearchParamMock.mockReturnValue([null] as any)

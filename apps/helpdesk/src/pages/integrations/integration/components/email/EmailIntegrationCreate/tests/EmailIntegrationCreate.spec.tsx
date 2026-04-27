@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { renderWithRouter } from 'utils/testing'
 
 import EmailIntegrationCreate from '../EmailIntegrationCreate'
 
@@ -14,10 +14,10 @@ describe('<EmailIntegrationCreate/>', () => {
     beforeEach(() => {
         window.open = jest.fn()
 
-        renderWithRouter(<EmailIntegrationCreate />)
         useAppSelectorMock
             .mockReturnValueOnce('testGmail')
             .mockReturnValueOnce('testOutlook')
+        render(<EmailIntegrationCreate />)
     })
 
     it('should have correct link for email forwarding when email forwarding card is clicked', () => {

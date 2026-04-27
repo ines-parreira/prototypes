@@ -1,9 +1,7 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
-
-import { renderWithRouter } from 'utils/testing'
 
 import useDeleteEmailIntegration from '../../useDeleteEmailIntegration'
 import EmailDomainVerificationActionButtons from '../EmailDomainVerificationActionButtons'
@@ -17,7 +15,7 @@ const useDeleteEmailIntegrationMock = assumeMock(useDeleteEmailIntegration)
 
 describe('EmailDomainVerificationActionButtons', () => {
     const renderComponent = () =>
-        renderWithRouter(
+        render(
             <EmailDomainVerificationActionButtons
                 integration={
                     {
