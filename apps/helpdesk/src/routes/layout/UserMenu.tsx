@@ -34,6 +34,7 @@ function UserMenuLoaded({
                     profilePictureUrl={currentUser.meta?.profile_picture_url}
                 />
             }
+            maxWidth={240}
         >
             <UserMenuUserHeader
                 userId={currentUser.id}

@@ -47,14 +47,22 @@ export function UserInfoHeader({
                         size="sm"
                     />
                 </Box>
-                <Box flexDirection="column" gap="xxxxs">
-                    <Text>{userName}</Text>
+                <Box flexDirection="column" gap="xxxxs" minWidth={0}>
+                    <Text overflow="ellipsis">{userName}</Text>
                     {statusText && (
-                        <Text className={css.statusText} size="sm">
+                        <Text
+                            className={css.statusText}
+                            overflow="ellipsis"
+                            size="sm"
+                        >
                             {statusText}
                         </Text>
                     )}
-                    <Text className={css.viewProfile} size="sm">
+                    <Text
+                        className={css.viewProfile}
+                        overflow="ellipsis"
+                        size="sm"
+                    >
                         View profile
                     </Text>
                 </Box>

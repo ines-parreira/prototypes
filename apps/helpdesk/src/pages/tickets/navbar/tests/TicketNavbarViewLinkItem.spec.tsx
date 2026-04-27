@@ -189,6 +189,23 @@ describe('TicketNavbarViewLinkItem', () => {
         expect(screen.getByRole('link')).toHaveClass('active')
     })
 
+    it('should be active when the current path is /app and it is in additionalActivePaths', () => {
+        renderWithRouter(
+            <TicketNavbarViewLinkItem
+                icon="user-arrow"
+                view={{ ...defaultView, id: 999 }}
+                label="Assigned to me"
+                additionalActivePaths={['/app/views', '/app']}
+            />,
+            {
+                route: '/app',
+                path: '/app',
+            },
+        )
+
+        expect(screen.getByRole('link')).toHaveClass('active')
+    })
+
     it('should not be active when additionalActivePaths does not match the current path', () => {
         renderWithRouter(
             <TicketNavbarViewLinkItem

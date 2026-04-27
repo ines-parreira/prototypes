@@ -80,7 +80,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         productType: 'primary',
         sidebar: MarketingSidebar,
         urlPatterns: ['ai-journey'],
-        icon: 'ai',
+        icon: 'comm-send',
         defaultPath: '/app/ai-journey',
     },
     [Product.Analytics]: {
