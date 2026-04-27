@@ -1,8 +1,7 @@
 import type { ComponentType } from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
-import { createBrowserHistory } from 'history'
+import { assumeMock, render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 import { Route, Switch } from 'react-router-dom'
 
 import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
@@ -11,7 +10,8 @@ import { VoiceOfCustomerNavbarContainer } from 'domains/reporting/pages/voice-of
 import { ProductInsightsPage } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
 import { VoiceOfCustomerRoutes } from 'domains/reporting/routes/VoiceOfCustomerRoutes'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
-import { renderWithRouter } from 'utils/testing'
+
+const routePrefix = '/voice-of-customer'
 
 jest.mock(
     'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer',
@@ -43,8 +43,6 @@ jest.mock(
             </>
         ),
 )
-const mockHistory = createBrowserHistory()
-
 describe('VoiceOfCustomerRoutes', () => {
     beforeEach(() => {
         ProtectedRouteMock.mockImplementation(({ children }) => (
@@ -62,40 +60,40 @@ describe('VoiceOfCustomerRoutes', () => {
             route: `${VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS}`,
             mock: ProductInsightsPageMock,
         },
-    ])('should render %p page', ({ route, mock }) => {
-        renderWithRouter(
+    ])('should render %p page', async ({ route, mock }) => {
+        render(
             <Switch>
-                <Route path={'/'}>
+                <Route path={routePrefix}>
                     <VoiceOfCustomerRoutes />
                 </Route>
             </Switch>,
+            { initialEntries: [`${routePrefix}/${route}`] },
         )
 
-        act(() => mockHistory.push(`/${route}`))
-
-        waitFor(() => {
+        await waitFor(() => {
             expect(mock).toHaveBeenCalled()
             expect(ProtectedRouteMock).toHaveBeenCalledWith(
-                expect.objectContaining({ path: route }),
+                expect.objectContaining({ path: `${routePrefix}/${route}` }),
                 {},
             )
         })
     })
 
-    it('should render fallback', () => {
+    it('should render fallback', async () => {
         DefaultStatsFiltersMock.mockImplementation(({ notReadyFallback }) => (
             <div>{notReadyFallback}</div>
         ))
 
-        renderWithRouter(
+        render(
             <Switch>
-                <Route path={'/'}>
+                <Route path={routePrefix}>
                     <VoiceOfCustomerRoutes />
                 </Route>
             </Switch>,
+            { initialEntries: [routePrefix] },
         )
 
-        waitFor(() => {
+        await waitFor(() => {
             expect(VoiceOfCustomerNavbarContainerMock).toHaveBeenCalled()
         })
     })
