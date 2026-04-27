@@ -1,7 +1,7 @@
 import type React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { isProduction } from '@repo/utils'
-import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'

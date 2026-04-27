@@ -1,9 +1,9 @@
 import type React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
+import { renderHook } from '@repo/testing'
 import { DurationInMs } from '@repo/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react'
 
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 import type { FindOpportunitiesByTicketIdOpportunity200Item } from '@gorgias/knowledge-service-types'

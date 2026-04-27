@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import { reportError } from '@repo/logging'
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'

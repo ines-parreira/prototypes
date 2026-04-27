@@ -1,7 +1,8 @@
 import 'tests/mockGorgiasAppsAuth'
 
 import { reportError } from '@repo/logging'
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 import { isAxiosError } from 'axios'
 
 import { notify } from 'state/notifications/actions'

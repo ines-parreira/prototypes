@@ -1,5 +1,6 @@
 import { reportError } from '@repo/logging'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { ReportingGranularity } from 'domains/reporting/models/types'

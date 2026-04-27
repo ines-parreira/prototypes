@@ -1,5 +1,6 @@
 import { reportError } from '@repo/logging'
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { createJob } from 'models/job/resources'
 import { JobType } from 'models/job/types'

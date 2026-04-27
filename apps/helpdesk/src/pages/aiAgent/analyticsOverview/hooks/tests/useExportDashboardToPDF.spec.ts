@@ -1,4 +1,5 @@
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
 import moment from 'moment'

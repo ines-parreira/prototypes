@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import type { History } from 'history'
 import { Router } from 'react-router-dom'

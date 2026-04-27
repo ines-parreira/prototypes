@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { aggregateIntentMetrics } from 'domains/reporting/models/queryFactories/intents/intentInsightsMetrics'

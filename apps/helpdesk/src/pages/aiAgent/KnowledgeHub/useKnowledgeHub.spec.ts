@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { useDomainSyncStatus } from './hooks/useDomainSyncStatus'
 import { useFileIngestionStatus } from './hooks/useFileIngestionStatus'

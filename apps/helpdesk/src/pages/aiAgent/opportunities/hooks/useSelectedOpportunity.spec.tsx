@@ -1,7 +1,8 @@
 import type React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity, OpportunityListItem } from '../types'

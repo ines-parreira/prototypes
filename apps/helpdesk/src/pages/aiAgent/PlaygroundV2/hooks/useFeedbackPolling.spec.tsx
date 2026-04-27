@@ -2,8 +2,9 @@ import type React from 'react'
 
 import { storeWithActiveSubscriptionWithConvert } from '@repo/billing/fixtures'
 import { reportError } from '@repo/logging'
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 

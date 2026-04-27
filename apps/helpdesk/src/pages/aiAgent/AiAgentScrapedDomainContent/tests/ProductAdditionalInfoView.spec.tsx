@@ -1,4 +1,5 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 import { MemoryRouter } from 'react-router-dom'
 

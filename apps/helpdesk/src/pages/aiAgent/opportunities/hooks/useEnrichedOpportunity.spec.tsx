@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 import type { Components } from 'rest_api/help_center_api/client.generated'

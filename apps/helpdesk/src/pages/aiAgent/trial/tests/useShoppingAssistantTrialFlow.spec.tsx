@@ -2,9 +2,9 @@ import type * as React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
@@ -100,7 +100,7 @@ describe('useShoppingAssistantTrialFlow', () => {
     let queryClient: QueryClient
     let mockMutateAsync: jest.Mock
     let mockAiAgentMutateAsync: jest.Mock
-    let wrapper: React.FC<{ children: React.ReactNode }>
+    let wrapper: React.FC<{ children?: React.ReactNode }>
     let mockModalManager: useModalManagerApi
 
     beforeEach(() => {
@@ -1219,7 +1219,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 const customWrapper = ({
                     children,
                 }: {
-                    children: React.ReactNode
+                    children?: React.ReactNode
                 }) => (
                     <Router history={history}>
                         <QueryClientProvider client={queryClient}>
@@ -1261,7 +1261,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 const customWrapper = ({
                     children,
                 }: {
-                    children: React.ReactNode
+                    children?: React.ReactNode
                 }) => (
                     <Router history={history}>
                         <QueryClientProvider client={queryClient}>
@@ -1291,7 +1291,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 const customWrapper = ({
                     children,
                 }: {
-                    children: React.ReactNode
+                    children?: React.ReactNode
                 }) => (
                     <Router history={history}>
                         <QueryClientProvider client={queryClient}>
@@ -1321,7 +1321,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 const customWrapper = ({
                     children,
                 }: {
-                    children: React.ReactNode
+                    children?: React.ReactNode
                 }) => (
                     <Router history={history}>
                         <QueryClientProvider client={queryClient}>
@@ -1462,7 +1462,7 @@ describe('useShoppingAssistantTrialFlow', () => {
             const customWrapper = ({
                 children,
             }: {
-                children: React.ReactNode
+                children?: React.ReactNode
             }) => (
                 <Router history={history}>
                     <QueryClientProvider client={queryClient}>

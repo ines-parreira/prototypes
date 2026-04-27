@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { AiAgentChannel, DEFAULT_WIZARD_FORM_VALUES } from '../../constants'
 import type { WizardFormValues } from '../../types'

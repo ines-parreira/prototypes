@@ -1,6 +1,5 @@
 import client from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
-import { renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { account } from 'fixtures/account'

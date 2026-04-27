@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, createContextConsumer } from '@repo/testing'
-import { act, render } from '@testing-library/react'
+import { assumeMock, createContextConsumer, render } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'

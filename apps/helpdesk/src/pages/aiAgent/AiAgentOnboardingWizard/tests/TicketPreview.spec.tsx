@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
 import { ToneOfVoice } from 'pages/aiAgent/constants'

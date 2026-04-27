@@ -1,8 +1,8 @@
 import type * as React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
@@ -40,7 +40,7 @@ describe('useAiAgentTrialOnboarding', () => {
         '/ai-agent/shopify/test-shop/onboarding/tone of voice'
 
     let queryClient: QueryClient
-    let wrapper: React.FC<{ children: React.ReactNode }>
+    let wrapper: React.FC<{ children?: React.ReactNode }>
 
     beforeEach(() => {
         jest.clearAllMocks()

@@ -1,9 +1,8 @@
 import * as React from 'react'
 
 import { trial } from '@repo/billing/fixtures'
-import { assumeMock, renderHook } from '@repo/testing'
+import { assumeMock, render, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Route, Router } from 'react-router-dom'

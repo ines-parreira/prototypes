@@ -1,6 +1,7 @@
 import { reportError } from '@repo/logging'
+import { render, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, renderHook, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
 import {
     useGetIngestionLogs,

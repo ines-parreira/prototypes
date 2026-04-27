@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 import { useParams } from 'react-router-dom'
 
 import type { FormValues } from 'pages/aiAgent/types'

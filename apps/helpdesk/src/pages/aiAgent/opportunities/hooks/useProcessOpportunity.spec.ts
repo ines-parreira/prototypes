@@ -1,7 +1,8 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 
 import type { ProcessOpportunityOneOfSeven } from '@gorgias/knowledge-service-types'
 import {
@@ -376,7 +377,7 @@ describe('useProcessOpportunity', () => {
         const { isAxiosError } = jest.requireMock('axios')
 
         let queryClient: QueryClient
-        let wrapper: React.FC<{ children: React.ReactNode }>
+        let wrapper: React.FC<{ children?: React.ReactNode }>
 
         beforeEach(() => {
             jest.clearAllMocks()

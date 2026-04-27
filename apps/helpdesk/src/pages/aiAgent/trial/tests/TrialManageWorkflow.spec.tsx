@@ -1,6 +1,7 @@
 // Import mocked modules
 import { logEvent } from '@repo/logging'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { useHistory, useLocation } from 'react-router-dom'
 

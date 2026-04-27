@@ -1,5 +1,6 @@
+import { render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { fireEvent, isInaccessible, render } from '@testing-library/react'
+import { fireEvent, isInaccessible } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import type { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'

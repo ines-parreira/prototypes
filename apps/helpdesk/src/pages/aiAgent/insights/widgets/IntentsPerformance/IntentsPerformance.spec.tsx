@@ -1,6 +1,6 @@
 import { useGridSize, useLocalStorage } from '@repo/hooks'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'

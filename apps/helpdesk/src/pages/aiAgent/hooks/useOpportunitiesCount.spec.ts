@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { MIN_TOTAL_OPPORTUNITIES_THRESHOLD } from 'pages/aiAgent/opportunities/constants'
 

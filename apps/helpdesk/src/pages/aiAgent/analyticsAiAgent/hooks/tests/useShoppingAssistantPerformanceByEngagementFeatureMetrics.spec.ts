@@ -1,5 +1,5 @@
 import { formatMetricValue } from '@repo/reporting'
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {

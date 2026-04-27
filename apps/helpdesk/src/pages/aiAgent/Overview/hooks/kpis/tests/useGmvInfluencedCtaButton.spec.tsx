@@ -1,6 +1,6 @@
-import { assumeMock, renderHook, userEvent } from '@repo/testing'
+import { assumeMock, render, renderHook, userEvent } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'

@@ -1,5 +1,5 @@
 import { reportError } from '@repo/logging'
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import type { HelpCenter } from 'models/helpCenter/types'

@@ -1,7 +1,7 @@
 import type React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react'
 
 import {
     getLast28DaysDateRange,

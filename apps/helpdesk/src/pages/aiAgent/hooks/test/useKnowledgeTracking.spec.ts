@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { useKnowledgeTracking } from '../useKnowledgeTracking'
 

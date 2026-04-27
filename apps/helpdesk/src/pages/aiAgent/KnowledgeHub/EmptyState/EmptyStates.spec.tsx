@@ -1,5 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { EMPTY_HELP_CENTER_ID } from '../../../automate/common/components/HelpCenterSelect'
