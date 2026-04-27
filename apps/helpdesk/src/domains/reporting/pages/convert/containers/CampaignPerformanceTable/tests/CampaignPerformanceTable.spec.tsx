@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import type routerDom from 'react-router-dom'
 import { useParams } from 'react-router-dom'
@@ -16,7 +16,6 @@ import { campaign } from 'fixtures/campaign'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
@@ -78,13 +77,15 @@ describe('CampaignPerformanceTable', () => {
     })
 
     it('should render and call stats', () => {
-        renderWithStore(<CampaignPerformanceTable />, {
-            integrations: fromJS({
-                integrations: [
-                    ...integrationsState.integrations,
-                    shopifyIntegration,
-                ],
-            }),
+        render(<CampaignPerformanceTable />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            },
         })
 
         expect(useGetTableStatMock).toHaveBeenCalledTimes(2)
@@ -96,13 +97,15 @@ describe('CampaignPerformanceTable', () => {
             'useIsConvertPerformanceViewEnabled',
         ).mockImplementation(() => true)
 
-        renderWithStore(<CampaignPerformanceTable />, {
-            integrations: fromJS({
-                integrations: [
-                    ...integrationsState.integrations,
-                    shopifyIntegration,
-                ],
-            }),
+        render(<CampaignPerformanceTable />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            },
         })
 
         expect(CampaignPerformanceEditColumnsMock).toHaveBeenCalled()

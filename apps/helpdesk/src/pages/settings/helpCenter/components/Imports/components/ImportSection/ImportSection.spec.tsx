@@ -32,7 +32,7 @@ import { sessionHasProgressStatus } from './utils'
 jest.mock(
     'pages/common/components/modal/Modal',
     () =>
-        ({ children }: { children: ReactNode }) => {
+        ({ children }: { children?: ReactNode }) => {
             return <div>{children}</div>
         },
 )
@@ -40,7 +40,7 @@ jest.mock(
 jest.mock(
     'pages/common/components/modal/ModalBody',
     () =>
-        ({ children }: { children: ReactNode }) => {
+        ({ children }: { children?: ReactNode }) => {
             return <div>{children}</div>
         },
 )
@@ -48,7 +48,7 @@ jest.mock(
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({ children }: { children: ReactNode }) => {
+        ({ children }: { children?: ReactNode }) => {
             return <div>{children}</div>
         },
 )

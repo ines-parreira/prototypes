@@ -98,9 +98,11 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 }))
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
-    SupportedLocalesProvider: ({ children }: { children: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
+    SupportedLocalesProvider: ({
+        children,
+    }: {
+        children?: React.ReactNode
+    }) => <div>{children}</div>,
 }))
 
 jest.mock('models/aiAgentFeedback/queries')

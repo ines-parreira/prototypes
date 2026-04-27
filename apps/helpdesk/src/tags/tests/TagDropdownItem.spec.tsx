@@ -8,7 +8,7 @@ import { tags } from 'fixtures/tag'
 import TagDropdownItem from '../TagDropdownItem'
 
 jest.mock('@gorgias/axiom', () => ({
-    LegacyTooltip: ({ children }: { children: ReactNode }) => (
+    LegacyTooltip: ({ children }: { children?: ReactNode }) => (
         <div>Tooltip{children}</div>
     ),
 }))

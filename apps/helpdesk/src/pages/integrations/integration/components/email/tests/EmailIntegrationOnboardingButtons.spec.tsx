@@ -14,7 +14,7 @@ import {
     useEmailOnboarding,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 
-const FormContext = ({ children }: { children: React.ReactNode }) => {
+const FormContext = ({ children }: { children?: React.ReactNode }) => {
     const methods = useForm<{ test: string }>()
     return <FormProvider {...methods}>{children}</FormProvider>
 }

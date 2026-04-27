@@ -10,7 +10,7 @@ describe('NavbarLink', () => {
         const { getByText } = render(
             <NavbarLink to="/app/tickets">Tickets</NavbarLink>,
             {
-                wrapper: ({ children }: { children: React.ReactNode }) => (
+                wrapper: ({ children }: { children?: React.ReactNode }) => (
                     <StaticRouter location="/app">{children}</StaticRouter>
                 ),
             },
@@ -24,7 +24,7 @@ describe('NavbarLink', () => {
         const { getByText } = render(
             <NavbarLink to="/app/tickets">Tickets</NavbarLink>,
             {
-                wrapper: ({ children }: { children: React.ReactNode }) => (
+                wrapper: ({ children }: { children?: React.ReactNode }) => (
                     <StaticRouter location="/app/tickets">
                         {children}
                     </StaticRouter>
@@ -40,7 +40,7 @@ describe('NavbarLink', () => {
         const { getByText } = render(
             <NavbarLink to="/app/tickets">Tickets</NavbarLink>,
             {
-                wrapper: ({ children }: { children: React.ReactNode }) => (
+                wrapper: ({ children }: { children?: React.ReactNode }) => (
                     <StaticRouter location="/app/tickets/1234">
                         {children}
                     </StaticRouter>
@@ -56,7 +56,7 @@ describe('NavbarLink', () => {
         const { getByText } = render(
             <NavbarLink to="/app/ticket">Tickets</NavbarLink>,
             {
-                wrapper: ({ children }: { children: React.ReactNode }) => (
+                wrapper: ({ children }: { children?: React.ReactNode }) => (
                     <StaticRouter location="/app/tickets">
                         {children}
                     </StaticRouter>

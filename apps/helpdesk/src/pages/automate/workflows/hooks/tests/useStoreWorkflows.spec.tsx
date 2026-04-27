@@ -34,7 +34,7 @@ const defaultState = {
 } as RootState
 
 const renderHookOptions = {
-    wrapper: (({ children }: { children: React.ReactNode }) => (
+    wrapper: (({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider
             client={mockQueryClient({
                 cachedData: [

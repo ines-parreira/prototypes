@@ -46,7 +46,7 @@ jest.mock(
     'pages/automate/orderManagement/legacy/OrderManagementPreviewProvider',
     () => ({
         __esModule: true,
-        default: ({ children }: { children: ReactNode }) => <>{children}</>,
+        default: ({ children }: { children?: ReactNode }) => <>{children}</>,
     }),
 )
 

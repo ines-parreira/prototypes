@@ -11,7 +11,7 @@ import { Form } from '../Form'
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
-    NavLink: ({ children }: { children: React.ReactNode }) => (
+    NavLink: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

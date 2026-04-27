@@ -19,7 +19,7 @@ describe('useReturnOrderFlowViewContext', () => {
         const mockSetError = jest.fn()
         const mockStoreIntegration = { id: 1, name: 'test-store' }
 
-        const wrapper = ({ children }: { children: ReactNode }) => (
+        const wrapper = ({ children }: { children?: ReactNode }) => (
             <ReturnOrderFlowViewContext.Provider
                 value={{
                     storeIntegration: mockStoreIntegration as any,
@@ -43,7 +43,7 @@ describe('usePropagateError', () => {
     it('should call setError with true when hasError is true', () => {
         const mockSetError = jest.fn()
 
-        const wrapper = ({ children }: { children: ReactNode }) => (
+        const wrapper = ({ children }: { children?: ReactNode }) => (
             <ReturnOrderFlowViewContext.Provider
                 value={{
                     storeIntegration: undefined,
@@ -62,7 +62,7 @@ describe('usePropagateError', () => {
     it('should not call setError when hasError is false and hadError is false', () => {
         const mockSetError = jest.fn()
 
-        const wrapper = ({ children }: { children: ReactNode }) => (
+        const wrapper = ({ children }: { children?: ReactNode }) => (
             <ReturnOrderFlowViewContext.Provider
                 value={{
                     storeIntegration: undefined,
@@ -81,7 +81,7 @@ describe('usePropagateError', () => {
     it('should call setError with false when error is cleared', () => {
         const mockSetError = jest.fn()
 
-        const wrapper = ({ children }: { children: ReactNode }) => (
+        const wrapper = ({ children }: { children?: ReactNode }) => (
             <ReturnOrderFlowViewContext.Provider
                 value={{
                     storeIntegration: undefined,
@@ -108,7 +108,7 @@ describe('usePropagateError', () => {
     it('should clean up error on unmount when hadError is true', () => {
         const mockSetError = jest.fn()
 
-        const wrapper = ({ children }: { children: ReactNode }) => (
+        const wrapper = ({ children }: { children?: ReactNode }) => (
             <ReturnOrderFlowViewContext.Provider
                 value={{
                     storeIntegration: undefined,

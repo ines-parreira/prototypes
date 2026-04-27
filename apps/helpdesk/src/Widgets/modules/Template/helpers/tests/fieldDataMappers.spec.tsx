@@ -21,7 +21,7 @@ jest.mock('@gorgias/axiom', () => {
         __esModule: true,
         ...jest.requireActual('@gorgias/axiom'),
         LegacyBadge: jest.fn(
-            ({ children }: { children: ReactNode }) => children,
+            ({ children }: { children?: ReactNode }) => children,
         ),
     } as Record<string, unknown>
 })

@@ -1,18 +1,19 @@
 import { renderHook } from '@repo/testing'
-import { MemoryRouter } from 'react-router-dom'
 
 import { useScrollToHash } from '../hooks/useScrollToHash'
 
 describe('useScrollToHash', () => {
+    let element: HTMLDivElement
+
     beforeEach(() => {
-        const element = document.createElement('div')
+        element = document.createElement('div')
         element.id = 'test-section'
         element.scrollIntoView = jest.fn()
         document.body.appendChild(element)
     })
 
     afterEach(() => {
-        document.body.innerHTML = ''
+        element.remove()
         jest.clearAllMocks()
     })
 
@@ -20,11 +21,7 @@ describe('useScrollToHash', () => {
         const element = document.getElementById('test-section')
 
         renderHook(() => useScrollToHash(), {
-            wrapper: ({ children }) => (
-                <MemoryRouter initialEntries={['/page#test-section']}>
-                    {children}
-                </MemoryRouter>
-            ),
+            initialEntries: ['/page#test-section'],
         })
 
         expect(element?.scrollIntoView).toHaveBeenCalledWith({
@@ -36,11 +33,7 @@ describe('useScrollToHash', () => {
         const element = document.getElementById('test-section')
 
         renderHook(() => useScrollToHash(), {
-            wrapper: ({ children }) => (
-                <MemoryRouter initialEntries={['/page']}>
-                    {children}
-                </MemoryRouter>
-            ),
+            initialEntries: ['/page'],
         })
 
         expect(element?.scrollIntoView).not.toHaveBeenCalled()
@@ -49,11 +42,7 @@ describe('useScrollToHash', () => {
     it('should not throw when element does not exist', () => {
         expect(() => {
             renderHook(() => useScrollToHash(), {
-                wrapper: ({ children }) => (
-                    <MemoryRouter initialEntries={['/page#nonexistent']}>
-                        {children}
-                    </MemoryRouter>
-                ),
+                initialEntries: ['/page#nonexistent'],
             })
         }).not.toThrow()
     })

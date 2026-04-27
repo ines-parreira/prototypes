@@ -19,7 +19,7 @@ const defaultState = {
 } as RootState
 const store = createStore((state) => state as RootState, defaultState)
 const hookOptions = {
-    wrapper: (({ children }: { children: ReactNode }) => (
+    wrapper: (({ children }: { children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
     )) as ComponentType,
 }

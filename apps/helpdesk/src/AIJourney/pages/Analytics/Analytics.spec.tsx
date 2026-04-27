@@ -18,7 +18,7 @@ import { FiltersPanelComponent } from '../../../domains/reporting/pages/common/f
 import { Analytics } from './Analytics'
 
 jest.mock('react-dnd', () => ({
-    DndProvider: ({ children }: { children: React.ReactNode }) => (
+    DndProvider: ({ children }: { children?: React.ReactNode }) => (
         <>{children}</>
     ),
     useDrag: () => [{ isDragging: false }, jest.fn(), jest.fn()],

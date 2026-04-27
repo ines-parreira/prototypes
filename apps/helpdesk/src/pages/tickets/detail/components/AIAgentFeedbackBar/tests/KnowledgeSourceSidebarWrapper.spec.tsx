@@ -55,9 +55,11 @@ const useGetAllRelatedResourceDataMock =
     useGetAllRelatedResourceData as jest.Mock
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
-    SupportedLocalesProvider: ({ children }: { children: React.ReactNode }) => (
-        <div data-testid="supported-locales-provider">{children}</div>
-    ),
+    SupportedLocalesProvider: ({
+        children,
+    }: {
+        children?: React.ReactNode
+    }) => <div data-testid="supported-locales-provider">{children}</div>,
 }))
 
 jest.mock(

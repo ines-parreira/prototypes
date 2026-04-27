@@ -12,7 +12,7 @@ import type { GorgiasInitialState } from 'types'
 import Root from '../Root'
 
 jest.mock('@repo/api-resources', () => ({
-    QueryClientProvider: ({ children }: { children: ReactNode }) => (
+    QueryClientProvider: ({ children }: { children?: ReactNode }) => (
         <div>
             <p>QueryClientProvider</p>
             {children}
@@ -20,7 +20,7 @@ jest.mock('@repo/api-resources', () => ({
     ),
 }))
 jest.mock('react-dnd', () => ({
-    DndProvider: ({ children }: { children: ReactNode }) => (
+    DndProvider: ({ children }: { children?: ReactNode }) => (
         <div>
             <p>DndProvider</p>
             {children}
@@ -28,7 +28,7 @@ jest.mock('react-dnd', () => ({
     ),
 }))
 jest.mock('react-redux', () => ({
-    Provider: ({ children }: { children: ReactNode }) => (
+    Provider: ({ children }: { children?: ReactNode }) => (
         <div>
             <p>ReduxProvider</p>
             {children}
@@ -37,7 +37,7 @@ jest.mock('react-redux', () => ({
 }))
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    Router: ({ children }: { children: ReactNode }) => (
+    Router: ({ children }: { children?: ReactNode }) => (
         <div>
             <p>Router</p>
             {children}
@@ -45,7 +45,7 @@ jest.mock('react-router-dom', () => ({
     ),
 }))
 jest.mock('react-router-dom-v5-compat', () => ({
-    CompatRouter: ({ children }: { children: ReactNode }) => (
+    CompatRouter: ({ children }: { children?: ReactNode }) => (
         <div>
             <p>CompatRouter</p>
             {children}
@@ -54,7 +54,7 @@ jest.mock('react-router-dom-v5-compat', () => ({
 }))
 
 jest.mock('main/app', () => ({
-    Main: ({ children }: { children: ReactNode }) => (
+    Main: ({ children }: { children?: ReactNode }) => (
         <div>
             <p>Main</p>
             {children}
@@ -72,7 +72,7 @@ jest.mock(
     }),
 )
 jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagsProvider: ({ children }: { children: ReactNode }) => (
+    FeatureFlagsProvider: ({ children }: { children?: ReactNode }) => (
         <div>
             <p>FeatureFlagsProvider</p>
             {children}

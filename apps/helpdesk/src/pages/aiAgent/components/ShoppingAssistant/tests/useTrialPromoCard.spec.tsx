@@ -63,7 +63,7 @@ jest.mock('react-router-dom', () => ({
         hash: '',
         state: null,
     }),
-    MemoryRouter: ({ children }: { children: React.ReactNode }) => children,
+    MemoryRouter: ({ children }: { children?: React.ReactNode }) => children,
 }))
 
 describe('useTrialPromoCard', () => {
@@ -81,7 +81,7 @@ describe('useTrialPromoCard', () => {
 
         const store = mockStore({})
 
-        return ({ children }: { children: React.ReactNode }) => (
+        return ({ children }: { children?: React.ReactNode }) => (
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     {children}

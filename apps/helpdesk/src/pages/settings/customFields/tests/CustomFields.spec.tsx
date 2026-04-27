@@ -36,9 +36,9 @@ jest.mock(
             ...jest.requireActual('react-router-dom'),
             useParams: jest.fn(),
             Link: jest.fn(
-                ({ children }: { children: React.ReactNode }) => children,
+                ({ children }: { children?: React.ReactNode }) => children,
             ),
-            NavLink: ({ children }: { children: React.ReactNode }) => children,
+            NavLink: ({ children }: { children?: React.ReactNode }) => children,
         }) as Record<string, unknown>,
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')

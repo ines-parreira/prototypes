@@ -37,7 +37,7 @@ describe('useAiAgentAccess', () => {
         }),
     })
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <Provider store={mockStore}>
             <MemoryRouter>{children}</MemoryRouter>
         </Provider>

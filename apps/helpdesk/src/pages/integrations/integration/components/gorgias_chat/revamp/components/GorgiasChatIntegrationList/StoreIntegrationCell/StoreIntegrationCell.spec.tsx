@@ -18,8 +18,8 @@ jest.mock('state/integrations/helpers', () => ({
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    TooltipContent: ({ children }: { children: React.ReactNode }) => (
+    Tooltip: ({ children }: { children?: React.ReactNode }) => <>{children}</>,
+    TooltipContent: ({ children }: { children?: React.ReactNode }) => (
         <>{children}</>
     ),
 }))

@@ -62,7 +62,7 @@ describe('HelpCenterApiClientProvider', () => {
 
 describe('useAbilityChecker', () => {
     function createWrapper(agentAbility?: ReturnType<typeof createAbility>) {
-        return ({ children }: { children: ReactNode }) => (
+        return ({ children }: { children?: ReactNode }) => (
             <HelpCenterApiClientContext.Provider
                 value={{
                     isReady: true,

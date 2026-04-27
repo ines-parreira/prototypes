@@ -45,7 +45,7 @@ const defaultState = {
 describe('useTicketDraft hook', () => {
     it('should not save draft when ticket is not new', () => {
         renderHook(() => useTicketDraft(false), {
-            wrapper: (({ children }: { children: React.ReactNode }) => (
+            wrapper: (({ children }: { children?: React.ReactNode }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
@@ -58,7 +58,7 @@ describe('useTicketDraft hook', () => {
         )
 
         renderHook(() => useTicketDraft(true), {
-            wrapper: (({ children }: { children: React.ReactNode }) => (
+            wrapper: (({ children }: { children?: React.ReactNode }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
@@ -75,7 +75,7 @@ describe('useTicketDraft hook', () => {
         )
 
         renderHook(() => useTicketDraft(true), {
-            wrapper: (({ children }: { children: React.ReactNode }) => (
+            wrapper: (({ children }: { children?: React.ReactNode }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
@@ -104,7 +104,7 @@ describe('useTicketDraft hook', () => {
 
         let currentTicket = filledTicket
 
-        const wrapper = ({ children }: { children: React.ReactNode }) => {
+        const wrapper = ({ children }: { children?: React.ReactNode }) => {
             const store = mockStore({
                 ...defaultState,
                 ticket: currentTicket,
@@ -154,7 +154,7 @@ describe('useTicketDraft hook', () => {
         } as RootState
 
         renderHook(() => useTicketDraft(true), {
-            wrapper: (({ children }: { children: React.ReactNode }) => (
+            wrapper: (({ children }: { children?: React.ReactNode }) => (
                 <Provider store={mockStore(stateWithTranslation)}>
                     {children}
                 </Provider>

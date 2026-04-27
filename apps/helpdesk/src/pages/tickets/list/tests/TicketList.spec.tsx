@@ -49,7 +49,7 @@ const updateSelectedItemsIdsMock = assumeMock(updateSelectedItemsIds)
 jest.mock(
     'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider',
     () =>
-        ({ children }: { children: ReactNode }) => (
+        ({ children }: { children?: ReactNode }) => (
             <div data-testid="search-rank-scenario-provider">{children}</div>
         ),
 )

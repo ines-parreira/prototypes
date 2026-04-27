@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Switch } from 'react-router-dom'
 import { useMacroListSearchParams } from '../useMacroListSearchParams'
 
 function createWrapper(initialPath = '/') {
-    return function Wrapper({ children }: { children: React.ReactNode }) {
+    return function Wrapper({ children }: { children?: React.ReactNode }) {
         return (
             <MemoryRouter initialEntries={[initialPath]}>
                 <Switch>

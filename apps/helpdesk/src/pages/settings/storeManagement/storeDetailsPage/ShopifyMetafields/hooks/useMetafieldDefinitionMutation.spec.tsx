@@ -84,7 +84,7 @@ afterAll(() => server.close())
 describe('useMetafieldDefinitionMutation', () => {
     let queryClient: QueryClient
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <MemoryRouter initialEntries={[`/integrations/${INTEGRATION_ID}`]}>
             <Route path="/integrations/:id">
                 <QueryClientProvider client={queryClient}>

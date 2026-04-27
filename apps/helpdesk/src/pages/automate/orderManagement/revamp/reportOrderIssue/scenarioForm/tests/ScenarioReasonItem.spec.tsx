@@ -11,14 +11,14 @@ import { ScenarioFormContext } from '../ScenarioFormContext'
 
 jest.mock('pages/common/components/accordion/AccordionBody', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))
 
 jest.mock('pages/common/components/accordion/SortableAccordionHeader', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

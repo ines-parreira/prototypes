@@ -25,7 +25,7 @@ type ShopifyIntegrationStub = { name: string }
 
 const makeWrapper =
     (integrations: ShopifyIntegrationStub[] = []) =>
-    ({ children }: { children: ReactNode }) => (
+    ({ children }: { children?: ReactNode }) => (
         <StaticRouter location="/app/ai-journey">
             <QueryClientProvider client={appQueryClient}>
                 <Provider

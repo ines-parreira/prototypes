@@ -154,8 +154,8 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
         const onSuccess = jest.fn()
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
         const { rerender } = renderHook<
-            ReturnType<typeof useUpdateOrDeleteTicketFieldValue>,
-            { onSuccess?: jest.Mock }
+            { onSuccess?: jest.Mock },
+            ReturnType<typeof useUpdateOrDeleteTicketFieldValue>
         >((props) => useUpdateOrDeleteTicketFieldValue(props, {}), {
             wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>

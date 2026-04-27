@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
-import { renderWithDnD } from 'utils/testing'
 
 import type { StepListItemProps } from '../StepListItem'
 import { StepListItem } from '../StepListItem'
@@ -67,7 +67,7 @@ describe('<StepListItem />', () => {
             isClickable: true,
         }
 
-        renderWithDnD(<StepListItem {...props} />)
+        render(<StepListItem {...props} />)
 
         act(() => {
             fireEvent.click(screen.getByRole('button'))
@@ -82,7 +82,7 @@ describe('<StepListItem />', () => {
             isClickable: false,
         }
 
-        renderWithDnD(<StepListItem {...props} />)
+        render(<StepListItem {...props} />)
 
         act(() => {
             fireEvent.click(screen.getByRole('button'))

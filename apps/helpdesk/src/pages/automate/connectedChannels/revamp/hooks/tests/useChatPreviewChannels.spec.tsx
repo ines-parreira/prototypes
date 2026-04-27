@@ -30,7 +30,7 @@ describe('useChatPreviewChannelsContext', () => {
             shopName: 'my-shop',
         }
 
-        const wrapper = ({ children }: { children: React.ReactNode }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <ChatPreviewChannelsContext.Provider value={contextValue}>
                 {children}
             </ChatPreviewChannelsContext.Provider>

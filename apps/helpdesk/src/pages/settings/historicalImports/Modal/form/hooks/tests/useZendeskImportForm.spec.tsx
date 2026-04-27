@@ -22,7 +22,7 @@ describe('useZendeskImportForm', () => {
     const mockOnSuccess = jest.fn()
     const mockOnError = jest.fn()
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={mockQueryClient()}>
             {children}
         </QueryClientProvider>

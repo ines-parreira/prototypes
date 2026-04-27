@@ -23,7 +23,7 @@ jest.mock('pages/common/components/modal/ModalHeader', () => {
 })
 
 jest.mock('pages/common/components/modal/ModalBody', () => {
-    return ({ children }: { children: ReactNode }) => <div>{children}</div>
+    return ({ children }: { children?: ReactNode }) => <div>{children}</div>
 })
 
 describe('<NavigatedSuccessModal />', () => {

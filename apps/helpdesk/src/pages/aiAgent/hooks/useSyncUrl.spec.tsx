@@ -457,7 +457,7 @@ describe('useSyncUrl', () => {
             })
             queryClient.invalidateQueries = mockInvalidateQueries
 
-            return ({ children }: { children: React.ReactNode }) => (
+            return ({ children }: { children?: React.ReactNode }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>

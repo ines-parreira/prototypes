@@ -122,7 +122,7 @@ describe('useMetafieldRuleSelection', () => {
     let queryClient: QueryClient
     let mockActions: RuleItemActions
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
                 {children}

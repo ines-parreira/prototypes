@@ -10,7 +10,7 @@ import { usePreviousProductNavigation } from '../usePreviousProductNavigation'
 
 const createWrapper =
     (initialEntries: string[]) =>
-    ({ children }: { children: React.ReactNode }) => (
+    ({ children }: { children?: React.ReactNode }) => (
         <MemoryRouter initialEntries={initialEntries}>
             <Link to="/app/tickets/123">Ticket123</Link>
             <Link to="/app/customers">Customers</Link>

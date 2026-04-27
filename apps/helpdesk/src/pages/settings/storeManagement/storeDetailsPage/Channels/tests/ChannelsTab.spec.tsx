@@ -139,7 +139,7 @@ jest.mock('../../../StoreManagementProvider', () => ({
         unassignedChannels: [],
         refetchMapping: mockRefetchMapping,
     }),
-    StoreManagementProvider: ({ children }: { children: ReactNode }) => (
+    StoreManagementProvider: ({ children }: { children?: ReactNode }) => (
         <div>{children}</div>
     ),
 }))

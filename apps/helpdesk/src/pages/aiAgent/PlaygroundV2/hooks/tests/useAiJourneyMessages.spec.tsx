@@ -43,7 +43,7 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({
         emit: jest.fn(),
     })),
     useSubscribeToEvent: jest.fn(),
-    EventsProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
+    EventsProvider: ({ children }: { children?: ReactNode }) => <>{children}</>,
 }))
 
 jest.mock('@repo/feature-flags', () => ({
@@ -120,7 +120,7 @@ describe('useAiJourneyMessages', () => {
         const mockStoreCreator = configureMockStore([thunk])
         const mockStore = mockStoreCreator({})
 
-        return ({ children }: { children: ReactNode }) => (
+        return ({ children }: { children?: ReactNode }) => (
             <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <AIJourneyProvider shopName="test-shop">

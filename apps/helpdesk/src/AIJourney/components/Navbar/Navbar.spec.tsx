@@ -68,7 +68,7 @@ const renderNavbar = (
             </Provider>
         </QueryClientProvider>,
         {
-            wrapper: ({ children }: { children: ReactNode }) => (
+            wrapper: ({ children }: { children?: ReactNode }) => (
                 <StaticRouter location={location}>
                     <NavBarProvider>{children}</NavBarProvider>
                 </StaticRouter>
@@ -280,7 +280,7 @@ describe('<AiJourneyNavbar />', () => {
                     </Provider>
                 </QueryClientProvider>,
                 {
-                    wrapper: ({ children }: { children: ReactNode }) => (
+                    wrapper: ({ children }: { children?: ReactNode }) => (
                         <StaticRouter location="/app/ai-journey/teststore1/campaigns">
                             <NavBarProvider>{children}</NavBarProvider>
                         </StaticRouter>
@@ -308,7 +308,7 @@ describe('<AiJourneyNavbar />', () => {
                     </Provider>
                 </QueryClientProvider>,
                 {
-                    wrapper: ({ children }: { children: ReactNode }) => (
+                    wrapper: ({ children }: { children?: ReactNode }) => (
                         <StaticRouter location="/app/ai-journey/teststore1/campaign/123">
                             <NavBarProvider>{children}</NavBarProvider>
                         </StaticRouter>

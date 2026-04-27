@@ -35,7 +35,7 @@ jest.mock('../SidePanelTicketDetail', () => ({
 }))
 
 jest.mock('timeline/ticket-modal/components/TicketModalProvider', () => ({
-    TicketModalProvider: ({ children }: { children: React.ReactNode }) => (
+    TicketModalProvider: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

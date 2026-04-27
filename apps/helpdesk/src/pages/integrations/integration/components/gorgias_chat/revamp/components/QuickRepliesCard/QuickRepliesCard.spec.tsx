@@ -12,11 +12,11 @@ import { QuickRepliesCard } from './QuickRepliesCard'
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
     Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children: ReactNode }) => <p>{children}</p>,
-    Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
+    Text: ({ children }: { children?: ReactNode }) => <p>{children}</p>,
+    Box: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
     Icon: () => null,
     ToggleField: ({
         value,

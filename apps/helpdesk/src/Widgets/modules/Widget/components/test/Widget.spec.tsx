@@ -23,7 +23,7 @@ jest.mock(
         ({
             ...jest.requireActual('Widgets/contexts/WidgetContext'),
             WidgetContextProvider: jest.fn(
-                ({ children }: { children: ReactNode }) => children,
+                ({ children }: { children?: ReactNode }) => children,
             ),
         }) as Record<string, unknown>,
 )

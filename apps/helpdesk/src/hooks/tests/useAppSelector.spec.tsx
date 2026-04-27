@@ -1,18 +1,11 @@
-import type { ComponentType } from 'react'
-import type React from 'react'
-
-import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, renderHook } from '@repo/testing'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import configureMockStore from 'redux-mock-store'
 
 import { tags } from 'fixtures/tag'
 import useAppSelector from 'hooks/useAppSelector'
-import type { RootState, StoreDispatch } from 'state/types'
-
-const mockStore = configureMockStore<RootState, StoreDispatch>()
+import type { RootState } from 'state/types'
 
 describe('useAppSelector', () => {
     const defaultState = {
@@ -25,11 +18,7 @@ describe('useAppSelector', () => {
         const { result } = renderHook(
             () => useAppSelector((state) => state.entities.tags['1']),
             {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                )) as ComponentType,
+                storeState: defaultState,
             },
         )
 
@@ -42,9 +31,9 @@ describe('useAppSelector', () => {
         const selector = (state: RootState) => state.entities.tags['1']
 
         renderHook(() => useAppSelector(selector, equalityFn), {
-            wrapper: (({ children }: { children: React.ReactNode }) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
-            )) as ComponentType,
+            ),
         })
 
         equalityFn.mockReset()

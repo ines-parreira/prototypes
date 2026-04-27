@@ -35,7 +35,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('settings/automate', () => ({
-    AutomatePaywall: ({ children }: { children: ReactNode }) => (
+    AutomatePaywall: ({ children }: { children?: ReactNode }) => (
         <>
             <div>AutomatePaywall</div>
             {children}

@@ -43,7 +43,7 @@ describe('useUrlSyncStatus', () => {
     let queryClient: QueryClient
 
     const createWrapper = () => {
-        return ({ children }: { children: ReactNode }) => (
+        return ({ children }: { children?: ReactNode }) => (
             <QueryClientProvider client={queryClient}>
                 {children}
             </QueryClientProvider>

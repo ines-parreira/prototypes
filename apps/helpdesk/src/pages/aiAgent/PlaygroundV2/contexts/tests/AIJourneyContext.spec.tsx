@@ -105,7 +105,7 @@ describe('AIJourneyContext', () => {
         })
         const mockStore = mockStoreCreator({})
 
-        return ({ children }: { children: React.ReactNode }) => (
+        return ({ children }: { children?: React.ReactNode }) => (
             <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <AIJourneyProvider shopName={shopName}>

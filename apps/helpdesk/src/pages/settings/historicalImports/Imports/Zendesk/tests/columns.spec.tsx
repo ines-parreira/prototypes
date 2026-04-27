@@ -43,7 +43,7 @@ describe('Zendesk Import Table Columns', () => {
             typeof column.cell === 'function' ? column.cell(mockInfo) : null
 
         const queryClient = mockQueryClient()
-        const wrapper = ({ children }: { children: React.ReactNode }) => (
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <QueryClientProvider client={queryClient}>
                 {children}
             </QueryClientProvider>

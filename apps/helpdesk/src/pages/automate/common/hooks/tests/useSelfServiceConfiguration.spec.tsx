@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -9,7 +9,6 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import type { AlertNotification } from 'state/notifications/types'
-import { renderHookWithToaster } from 'tests/renderHookWithToaster'
 
 import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
 import { useSelfServiceConfigurationUpdate } from '../useSelfServiceConfigurationUpdate'
@@ -92,7 +91,7 @@ describe('useSelfServiceConfiguration', () => {
             isLoading: true,
         })
 
-        const { result } = renderHookWithToaster(() =>
+        const { result } = renderHook(() =>
             useSelfServiceConfiguration(shopType, shopName),
         )
 
@@ -101,7 +100,7 @@ describe('useSelfServiceConfiguration', () => {
     })
 
     it('should set selfServiceConfiguration when data is fetched', () => {
-        const { result } = renderHookWithToaster(() =>
+        const { result } = renderHook(() =>
             useSelfServiceConfiguration(shopType, shopName),
         )
 
@@ -121,9 +120,7 @@ describe('useSelfServiceConfiguration', () => {
         })
 
         act(() => {
-            renderHookWithToaster(() =>
-                useSelfServiceConfiguration(shopType, shopName),
-            )
+            renderHook(() => useSelfServiceConfiguration(shopType, shopName))
         })
 
         expect(updateSelfServiceConfigurationSSPMock).toHaveBeenCalledWith(
@@ -144,30 +141,29 @@ describe('useSelfServiceConfiguration', () => {
             isLoading: false,
         })
 
-        renderHookWithToaster(() =>
-            useSelfServiceConfiguration(shopType, shopName),
-        )
+        renderHook(() => useSelfServiceConfiguration(shopType, shopName))
 
         expect(updateSelfServiceConfigurationSSPMock).not.toHaveBeenCalled()
     })
 
     it('should show an error toast when storeIntegrationId is not available', async () => {
         useSelfServiceStoreIntegrationMock.mockReturnValue(undefined)
+        const toastErrorSpy = jest.spyOn(toast, 'error')
 
-        renderHookWithToaster(() =>
-            useSelfServiceConfiguration(shopType, shopName),
-        )
+        renderHook(() => useSelfServiceConfiguration(shopType, shopName))
 
-        const toastEl = await findToast()
-        expect(toastEl).toHaveTextContent('Failed to fetch store integration')
-        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+        await waitFor(() => {
+            expect(toastErrorSpy).toHaveBeenCalledWith(
+                'Failed to fetch store integration',
+            )
+        })
     })
 
     it('should route notifications through a custom notificationHandler when provided', async () => {
         useSelfServiceStoreIntegrationMock.mockReturnValue(undefined)
         const notificationHandler = jest.fn()
 
-        renderHookWithToaster(() =>
+        renderHook(() =>
             useSelfServiceConfiguration(
                 shopType,
                 shopName,
@@ -190,7 +186,7 @@ describe('useSelfServiceConfiguration', () => {
             handleSelfServiceConfigurationUpdate: jest.fn(),
         })
 
-        const { result } = renderHookWithToaster(() =>
+        const { result } = renderHook(() =>
             useSelfServiceConfiguration(shopType, shopName),
         )
 
@@ -198,7 +194,7 @@ describe('useSelfServiceConfiguration', () => {
     })
 
     it('delegates to handleConfigurationUpdate when storeIntegrationId is present', async () => {
-        const { result } = renderHookWithToaster(() =>
+        const { result } = renderHook(() =>
             useSelfServiceConfiguration(shopType, shopName),
         )
 
@@ -219,7 +215,7 @@ describe('useSelfServiceConfiguration', () => {
     it('skips handleConfigurationUpdate when storeIntegrationId is missing', async () => {
         useSelfServiceStoreIntegrationMock.mockReturnValue(undefined)
 
-        const { result } = renderHookWithToaster(() =>
+        const { result } = renderHook(() =>
             useSelfServiceConfiguration(shopType, shopName),
         )
 
@@ -235,9 +231,7 @@ describe('useSelfServiceConfiguration', () => {
             message?: string
             status: AlertNotification['status']
         }) => {
-            renderHookWithToaster(() =>
-                useSelfServiceConfiguration(shopType, shopName),
-            )
+            renderHook(() => useSelfServiceConfiguration(shopType, shopName))
             const [{ handleNotify }] =
                 useSelfServiceConfigurationUpdateMock.mock.calls.at(-1) ?? []
             act(() => {
@@ -312,7 +306,7 @@ describe('useSelfServiceConfiguration', () => {
 
         it('defers to a custom notificationHandler when provided', async () => {
             const notificationHandler = jest.fn()
-            renderHookWithToaster(() =>
+            renderHook(() =>
                 useSelfServiceConfiguration(
                     shopType,
                     shopName,

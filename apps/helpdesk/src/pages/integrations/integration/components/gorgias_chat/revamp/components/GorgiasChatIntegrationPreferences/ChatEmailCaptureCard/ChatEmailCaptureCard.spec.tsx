@@ -12,10 +12,10 @@ import { ChatEmailCaptureCard } from './ChatEmailCaptureCard'
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
     Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children: ReactNode }) => <p>{children}</p>,
+    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
+    Text: ({ children }: { children?: ReactNode }) => <p>{children}</p>,
     ToggleField: ({
         value,
         onChange,

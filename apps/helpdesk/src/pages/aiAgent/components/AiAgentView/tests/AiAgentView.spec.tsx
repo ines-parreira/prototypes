@@ -15,7 +15,7 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
 jest.mock(
     'pages/common/components/SecondaryNavbar/SecondaryNavbar',
     () =>
-        ({ children }: { children: ReactNode }) => <div>{children}</div>,
+        ({ children }: { children?: ReactNode }) => <div>{children}</div>,
 )
 
 describe('AiAgentView', () => {

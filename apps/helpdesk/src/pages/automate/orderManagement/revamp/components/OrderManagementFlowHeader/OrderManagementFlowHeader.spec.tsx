@@ -10,7 +10,7 @@ const mockUseStoreSelector = jest.fn()
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Breadcrumb: ({ children }: { children: React.ReactNode }) => (
+    Breadcrumb: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
     Breadcrumbs: ({
@@ -64,10 +64,10 @@ jest.mock('@gorgias/axiom', () => ({
             {children}
         </button>
     ),
-    Heading: ({ children }: { children: React.ReactNode }) => (
+    Heading: ({ children }: { children?: React.ReactNode }) => (
         <h1>{children}</h1>
     ),
-    Text: ({ children }: { children: React.ReactNode }) => (
+    Text: ({ children }: { children?: React.ReactNode }) => (
         <span>{children}</span>
     ),
     Icon: ({ name }: { name: string }) => <span data-icon={name} />,
@@ -100,7 +100,7 @@ jest.mock('settings/automate', () => ({
 jest.mock(
     'pages/common/components/SecondaryNavbar/SecondaryNavbar',
     () =>
-        ({ children }: { children: React.ReactNode }) => (
+        ({ children }: { children?: React.ReactNode }) => (
             <nav aria-label="secondary">{children}</nav>
         ),
 )

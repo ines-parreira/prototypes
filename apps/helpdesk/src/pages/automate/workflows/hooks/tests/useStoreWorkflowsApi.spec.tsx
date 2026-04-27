@@ -51,7 +51,7 @@ const queryClient = mockQueryClient()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const renderHookOptions = {
-    wrapper: (({ children }: { children: React.ReactNode }) => (
+    wrapper: (({ children }: { children?: React.ReactNode }) => (
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
                 {children}

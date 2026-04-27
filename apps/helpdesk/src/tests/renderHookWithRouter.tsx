@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import type { RenderHookOptions } from '@repo/testing'
+import type { RenderHookOptions } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 type RenderHookWithRouterOptions<TProps> = {
@@ -8,10 +8,7 @@ type RenderHookWithRouterOptions<TProps> = {
 }
 
 /**
- * Utility function to render a hook with React Router
- * @param callback The hook to test
- * @param options Configuration options
- * @returns The result of renderHook with a router wrapper
+ * @deprecated Use `renderHook` from `@repo/testing` instead.
  */
 export function renderHookWithRouter<TProps, TResult>(
     callback: (props: TProps) => TResult,

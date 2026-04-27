@@ -54,7 +54,7 @@ const createWrapper = () => {
         },
     })
 
-    return ({ children }: { children: ReactNode }) => (
+    return ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -400,7 +400,7 @@ describe('usePostStoreInstallationStepsMutation', () => {
                         shopName,
                     }),
                 {
-                    wrapper: ({ children }: { children: ReactNode }) => (
+                    wrapper: ({ children }: { children?: ReactNode }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>

@@ -23,7 +23,7 @@ jest.mock('../VoiceIntegrationOnboardingCancelButton', () => ({
 }))
 jest.mock('../../VoiceFormSubmitButton', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <button type="submit">{children}</button>
     ),
 }))

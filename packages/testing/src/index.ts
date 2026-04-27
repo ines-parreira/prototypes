@@ -8,7 +8,7 @@ export {
     mockProductionEnvironment,
 } from './mockEnvironments'
 export { mockRequestAnimationFrame } from './mockRequestAnimationFrame'
+export { render } from './render'
 export { renderHook, act } from './renderHook'
-export type { RenderHookOptions, RenderHookResult } from './renderHook'
 export { triggerWidthResize } from './triggerWidthResize'
 export { userEvent } from './userEvent'

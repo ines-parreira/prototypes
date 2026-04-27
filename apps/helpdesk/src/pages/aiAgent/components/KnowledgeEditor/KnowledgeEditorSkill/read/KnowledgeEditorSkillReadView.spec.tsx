@@ -4,7 +4,7 @@ import { KnowledgeEditorSkillReadView } from './KnowledgeEditorSkillReadView'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

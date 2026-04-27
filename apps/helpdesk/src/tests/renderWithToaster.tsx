@@ -7,6 +7,9 @@ import { Toaster } from '@gorgias/axiom'
 
 const toaster = createPortal(<Toaster />, document.body)
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export const renderWithToaster = (element: ReactElement) => {
     return render(element, {
         wrapper: ({ children }: any) => (

@@ -13,11 +13,11 @@ jest.mock('@gorgias/axiom', () => {
     const actual = jest.requireActual('@gorgias/axiom')
     return {
         ...actual,
-        Stepper: jest.fn(({ children }: { children: React.ReactNode }) => (
+        Stepper: jest.fn(({ children }: { children?: React.ReactNode }) => (
             <div>{children}</div>
         )),
         StepperTabList: jest.fn(
-            ({ children }: { children: React.ReactNode }) => (
+            ({ children }: { children?: React.ReactNode }) => (
                 <div>{children}</div>
             ),
         ),

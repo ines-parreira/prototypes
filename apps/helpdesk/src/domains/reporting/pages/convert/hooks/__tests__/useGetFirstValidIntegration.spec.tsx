@@ -48,7 +48,7 @@ describe('useGetFirstValidIntegration', () => {
     describe('customer has several integrations', () => {
         const store = createStore((state) => state as RootState, defaultState)
         const hookOptions = {
-            wrapper: (({ children }: { children: React.ReactNode }) => (
+            wrapper: (({ children }: { children?: React.ReactNode }) => (
                 <Provider store={store}>{children}</Provider>
             )) as ComponentType,
         }
@@ -84,7 +84,7 @@ describe('useGetFirstValidIntegration', () => {
                 }),
             })
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }

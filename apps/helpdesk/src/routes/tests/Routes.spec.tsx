@@ -308,7 +308,7 @@ jest.mock('AIJourney/providers', () => {
 })
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
-    JourneyProvider: ({ children }: { children: React.ReactNode }) => children,
+    JourneyProvider: ({ children }: { children?: React.ReactNode }) => children,
     useJourneyContext: jest.fn(),
 }))
 

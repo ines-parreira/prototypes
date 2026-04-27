@@ -28,7 +28,7 @@ jest.mock('moment-timezone', () => () => {
 jest.mock(
     'pages/common/forms/DatePicker',
     () =>
-        ({ children }: { children: ReactNode }) => {
+        ({ children }: { children?: ReactNode }) => {
             return <>{children}</>
         },
 )

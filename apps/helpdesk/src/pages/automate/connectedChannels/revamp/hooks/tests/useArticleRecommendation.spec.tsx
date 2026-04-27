@@ -68,7 +68,7 @@ const mockChatChannel = {
 describe('useArticleRecommendation', () => {
     const store = mockStore({})
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <Provider store={store}>{children}</Provider>
     )
 

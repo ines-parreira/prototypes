@@ -1,9 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { renderHook } from '@repo/testing'
 import { act, screen, waitFor, within } from '@testing-library/react'
 
 import { toast } from '@gorgias/axiom'
-
-import { renderHookWithToaster } from 'tests/renderHookWithToaster'
 
 import {
     REALTIME_DISCONNECTED_TOAST_DELAY_MS,
@@ -55,9 +54,7 @@ describe('useRealtimeConnectionStateChanges', () => {
     it('should show a persistent toast when disconnected lasts 8 seconds', async () => {
         jest.useFakeTimers()
 
-        const { result } = renderHookWithToaster(() =>
-            useRealtimeConnectionStateChanges(),
-        )
+        const { result } = renderHook(() => useRealtimeConnectionStateChanges())
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({
@@ -88,9 +85,7 @@ describe('useRealtimeConnectionStateChanges', () => {
     it('should cancel the delayed disconnected toast when realtime reconnects before 8 seconds', () => {
         jest.useFakeTimers()
 
-        const { result } = renderHookWithToaster(() =>
-            useRealtimeConnectionStateChanges(),
-        )
+        const { result } = renderHook(() => useRealtimeConnectionStateChanges())
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({
@@ -119,9 +114,7 @@ describe('useRealtimeConnectionStateChanges', () => {
     })
 
     it('should dismiss the connection toast when realtime reconnects', async () => {
-        const { result } = renderHookWithToaster(() =>
-            useRealtimeConnectionStateChanges(),
-        )
+        const { result } = renderHook(() => useRealtimeConnectionStateChanges())
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({
@@ -149,7 +142,7 @@ describe('useRealtimeConnectionStateChanges', () => {
     it.each(['suspended', 'failed'])(
         'should show the toast immediately when the connection is %s',
         async (currentState) => {
-            const { result } = renderHookWithToaster(() =>
+            const { result } = renderHook(() =>
                 useRealtimeConnectionStateChanges(),
             )
 
@@ -185,9 +178,7 @@ describe('useRealtimeConnectionStateChanges', () => {
     it('should show the toast immediately for a listed state even if a disconnected toast is pending', async () => {
         jest.useFakeTimers()
 
-        const { result } = renderHookWithToaster(() =>
-            useRealtimeConnectionStateChanges(),
-        )
+        const { result } = renderHook(() => useRealtimeConnectionStateChanges())
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({
@@ -226,9 +217,7 @@ describe('useRealtimeConnectionStateChanges', () => {
     })
 
     it('should not show a toast when the connection is still transient', () => {
-        const { result } = renderHookWithToaster(() =>
-            useRealtimeConnectionStateChanges(),
-        )
+        const { result } = renderHook(() => useRealtimeConnectionStateChanges())
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({
@@ -241,9 +230,7 @@ describe('useRealtimeConnectionStateChanges', () => {
     })
 
     it('should reload the page when clicking the toast CTA', async () => {
-        const { result } = renderHookWithToaster(() =>
-            useRealtimeConnectionStateChanges(),
-        )
+        const { result } = renderHook(() => useRealtimeConnectionStateChanges())
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({

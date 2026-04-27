@@ -25,7 +25,7 @@ jest.mock(
         ({
             ...jest.requireActual('react-router-dom'),
             Link: jest.fn(
-                ({ children }: { children: React.ReactNode }) => children,
+                ({ children }: { children?: React.ReactNode }) => children,
             ),
         }) as Record<string, unknown>,
 )

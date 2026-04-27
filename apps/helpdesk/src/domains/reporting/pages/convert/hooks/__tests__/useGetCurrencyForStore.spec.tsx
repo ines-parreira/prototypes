@@ -39,7 +39,7 @@ describe('useGetCurrencyForStore', () => {
                 defaultState,
             )
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
@@ -57,7 +57,7 @@ describe('useGetCurrencyForStore', () => {
                 defaultState,
             )
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
@@ -75,7 +75,7 @@ describe('useGetCurrencyForStore', () => {
                 defaultState,
             )
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
@@ -93,7 +93,7 @@ describe('useGetCurrencyForStore', () => {
                 defaultState,
             )
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
@@ -115,7 +115,7 @@ describe('useGetCurrencyForStore', () => {
                 }),
             })
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }

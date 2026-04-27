@@ -108,7 +108,7 @@ jest.mock('pages/tickets/detail/components/TicketThread/TicketThread', () => ({
 jest.mock(
     'pages/tickets/detail/components/TicketThread/TicketThreadLegacyBridge',
     () => ({
-        TicketThreadLegacyBridge: ({ children }: { children: ReactNode }) => (
+        TicketThreadLegacyBridge: ({ children }: { children?: ReactNode }) => (
             <div>{children}</div>
         ),
     }),

@@ -27,7 +27,7 @@ const createMockStore = (accountId: number, userId: number) => {
 }
 
 const createWrapper = (store: any) => {
-    return ({ children }: { children: React.ReactNode }) =>
+    return ({ children }: { children?: React.ReactNode }) =>
         React.createElement(Provider, { store }, children)
 }
 

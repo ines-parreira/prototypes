@@ -53,7 +53,7 @@ jest.mock(
 
 jest.mock('../../providers/StoreAppsProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    default: ({ children }: { children?: React.ReactNode }) => <>{children}</>,
 }))
 
 const mockUseApps = useApps as jest.MockedFunction<typeof useApps>

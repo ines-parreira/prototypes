@@ -19,10 +19,10 @@ jest.mock(
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
     Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children: ReactNode }) => <span>{children}</span>,
+    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
+    Text: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
     CheckBoxField: ({
         label,
         value,

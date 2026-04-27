@@ -7,7 +7,7 @@ import { useCollapsibleColumn } from '../common/hooks/useCollapsibleColumn'
 
 jest.unmock('../AppContext')
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <AppContextProvider>{children}</AppContextProvider>
 )
 
@@ -142,14 +142,18 @@ describe('useCollapsibleColumn', () => {
     it('should share state between multiple hook instances within same provider', () => {
         let hookResults: any[] = []
 
-        const MultiHookWrapper = ({ children }: { children: ReactNode }) => {
+        const MultiHookWrapper = ({ children }: { children?: ReactNode }) => {
             const hook1 = useCollapsibleColumn()
             const hook2 = useCollapsibleColumn()
             hookResults = [hook1, hook2]
             return <>{children}</>
         }
 
-        const WrapperWithProvider = ({ children }: { children: ReactNode }) => (
+        const WrapperWithProvider = ({
+            children,
+        }: {
+            children?: ReactNode
+        }) => (
             <AppContextProvider>
                 <MultiHookWrapper>{children}</MultiHookWrapper>
             </AppContextProvider>

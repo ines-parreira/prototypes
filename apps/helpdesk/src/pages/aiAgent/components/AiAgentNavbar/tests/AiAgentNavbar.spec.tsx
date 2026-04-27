@@ -83,7 +83,7 @@ const mockedOnboardingHook = jest.requireMock(
 const mockActionDrivenNavigation = jest.requireMock('../ActionDrivenNavigation')
     .ActionDrivenNavigation as jest.Mock
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>

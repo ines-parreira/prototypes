@@ -32,9 +32,11 @@ jest.mock(
 jest.mock(
     'domains/reporting/pages/convert/providers/CampaignStatsFilters',
     () => ({
-        CampaignStatsFilters: ({ children }: { children: React.ReactNode }) => (
-            <div>{children}</div>
-        ),
+        CampaignStatsFilters: ({
+            children,
+        }: {
+            children?: React.ReactNode
+        }) => <div>{children}</div>,
     }),
 )
 

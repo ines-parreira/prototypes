@@ -76,7 +76,7 @@ const createWrapper = () => {
         },
     })
 
-    return ({ children }: { children: ReactNode }) => (
+    return ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -218,7 +218,7 @@ describe('useBulkDeleteArticles', () => {
         jest.clearAllMocks()
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -371,7 +371,7 @@ describe('useBulkUpdateArticleTranslationVisibility', () => {
         jest.clearAllMocks()
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -607,7 +607,7 @@ describe('useBulkCopyArticles', () => {
         jest.clearAllMocks()
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -859,7 +859,7 @@ describe('useGetHelpCenterStatistics', () => {
         jest.clearAllMocks()
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -1332,7 +1332,7 @@ describe('useGetArticleTranslationVersions', () => {
         jest.clearAllMocks()
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -1515,7 +1515,7 @@ describe('useInfiniteGetArticleTranslationVersions', () => {
         jest.clearAllMocks()
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -1671,7 +1671,7 @@ describe('useGetArticleTranslationVersion', () => {
         jest.clearAllMocks()
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -1799,7 +1799,7 @@ describe('useDeleteArticleTranslationDraft', () => {
         jest.clearAllMocks()
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

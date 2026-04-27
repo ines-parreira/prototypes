@@ -5,37 +5,37 @@ import { render, screen } from '@testing-library/react'
 import Main from '../Main'
 
 jest.mock('common/notifications', () => ({
-    NotificationsProvider: ({ children }: { children: React.ReactNode }) => (
+    NotificationsProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="notifications-provider">{children}</div>
     ),
 }))
 
 jest.mock('AlertBanners', () => ({
-    BannersContextProvider: ({ children }: { children: React.ReactNode }) => (
+    BannersContextProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="banner-provider">{children}</div>
     ),
 }))
 
 jest.mock('pages/ErrorBoundary', () => ({
-    ErrorBoundary: ({ children }: { children: React.ReactNode }) => (
+    ErrorBoundary: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="error-boundary">{children}</div>
     ),
 }))
 
 jest.mock('providers/ui/SpotlightProvider', () => ({
-    SpotlightProvider: ({ children }: { children: React.ReactNode }) => (
+    SpotlightProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="spotlight-provider">{children}</div>
     ),
 }))
 
 jest.mock('split-ticket-view-toggle', () => ({
-    SplitTicketViewProvider: ({ children }: { children: React.ReactNode }) => (
+    SplitTicketViewProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="split-ticket-view-provider">{children}</div>
     ),
 }))
 
 jest.mock('core/theme', () => ({
-    ThemeProvider: ({ children }: { children: React.ReactNode }) => (
+    ThemeProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="theme-provider">{children}</div>
     ),
 }))
@@ -44,14 +44,14 @@ jest.mock(
     'pages/integrations/integration/components/voice/VoiceDeviceProvider',
     () => ({
         __esModule: true,
-        default: ({ children }: { children: React.ReactNode }) => (
+        default: ({ children }: { children?: React.ReactNode }) => (
             <div data-testid="voice-device-provider">{children}</div>
         ),
     }),
 )
 
 jest.mock('react-cookie', () => ({
-    CookiesProvider: ({ children }: { children: React.ReactNode }) => (
+    CookiesProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="cookies-provider">{children}</div>
     ),
 }))
@@ -59,38 +59,38 @@ jest.mock('react-cookie', () => ({
 jest.mock(
     'providers/realtime-ably/AblyRealtimeProviders',
     () =>
-        ({ children }: { children: React.ReactNode }) => (
+        ({ children }: { children?: React.ReactNode }) => (
             <div data-testid="ably-realtime-app-provider">{children}</div>
         ),
 )
 
 jest.mock('providers/standalone-ai/StandaloneAiProvider', () => ({
-    StandaloneAiProvider: ({ children }: { children: React.ReactNode }) => (
+    StandaloneAiProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="standalone-ai-provider">{children}</div>
     ),
 }))
 
 jest.mock('@repo/navigation', () => ({
-    NavigationProvider: ({ children }: { children: React.ReactNode }) => (
+    NavigationProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="navigation-provider">{children}</div>
     ),
 }))
 
 jest.mock('@repo/tickets/ticket-list', () => ({
-    ViewedTicketsProvider: ({ children }: { children: React.ReactNode }) => (
+    ViewedTicketsProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="viewed-tickets-provider">{children}</div>
     ),
 }))
 
 jest.mock('common/navigation/components/NavBarProvider', () => ({
-    NavBarProvider: ({ children }: { children: React.ReactNode }) => (
+    NavBarProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="navbar-provider">{children}</div>
     ),
 }))
 
 jest.mock('../App', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="app">{children}</div>
     ),
 }))

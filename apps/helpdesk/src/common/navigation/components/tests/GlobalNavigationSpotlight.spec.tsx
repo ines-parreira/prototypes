@@ -7,7 +7,7 @@ import { SpotlightContext } from 'providers/ui/SpotlightContext'
 
 jest.mock('@repo/logging')
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <SpotlightContext.Provider value={{ isOpen: false, setIsOpen: jest.fn() }}>
         {children}
     </SpotlightContext.Provider>

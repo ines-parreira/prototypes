@@ -69,7 +69,7 @@ jest.mock('@gorgias/axiom', () => ({
         label: string
         onAction: () => void
     }) => <button onClick={onAction}>{label}</button>,
-    MenuSection: ({ children }: { children: React.ReactNode }) => (
+    MenuSection: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
     Modal: ({
@@ -81,19 +81,19 @@ jest.mock('@gorgias/axiom', () => ({
         onOpenChange: (isOpen: boolean) => void
     }) => (isOpen ? <div role="dialog">{children}</div> : null),
     ModalSize: { Md: 'md' },
-    OverlayContent: ({ children }: { children: React.ReactNode }) => (
+    OverlayContent: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
-    OverlayFooter: ({ children }: { children: React.ReactNode }) => (
+    OverlayFooter: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
     OverlayHeader: ({ title }: { title: string }) => <div>{title}</div>,
-    Tag: ({ children }: { children: React.ReactNode }) => (
+    Tag: ({ children }: { children?: React.ReactNode }) => (
         <span>{children}</span>
     ),
     TagColor: { Purple: 'purple' },
     TagSize: { Sm: 'sm' },
-    Text: ({ children }: { children: React.ReactNode }) => (
+    Text: ({ children }: { children?: React.ReactNode }) => (
         <span>{children}</span>
     ),
     TextSize: { Md: 'md', Sm: 'sm' },

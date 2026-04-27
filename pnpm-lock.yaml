@@ -183,6 +183,9 @@ catalogs:
       specifier: 18.2.0
       version: 18.2.0
   react-dnd:
+    dnd-core:
+      specifier: 16.0.1
+      version: 16.0.1
     react-dnd:
       specifier: 16.0.1
       version: 16.0.1
@@ -231,6 +234,28 @@ catalogs:
     recharts:
       specifier: 3.6.0
       version: 3.6.0
+  redux:
+    '@types/react-redux':
+      specifier: ^7.1.34
+      version: 7.1.34
+    '@types/redux-mock-store':
+      specifier: 1.0.2
+      version: 1.0.2
+    '@types/redux-thunk':
+      specifier: 2.1.0
+      version: 2.1.0
+    react-redux:
+      specifier: 7.2.3
+      version: 7.2.3
+    redux:
+      specifier: 4.0.5
+      version: 4.0.5
+    redux-mock-store:
+      specifier: 1.5.3
+      version: 1.5.3
+    redux-thunk:
+      specifier: 2.3.0
+      version: 2.3.0
   rest-api-sdk:
     '@gorgias/convert-client':
       specifier: ^0.3.50
@@ -822,7 +847,7 @@ importers:
         specifier: ^8.0.3
         version: 8.0.3
       dnd-core:
-        specifier: 16.0.1
+        specifier: catalog:react-dnd
         version: 16.0.1
       draft-convert:
         specifier: 2.1.4
@@ -1062,7 +1087,7 @@ importers:
         specifier: 2.2.0
         version: 2.2.0
       react-redux:
-        specifier: 7.2.3
+        specifier: catalog:redux
         version: 7.2.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)(redux@4.0.5)
       react-router:
         specifier: catalog:react-router
@@ -1098,10 +1123,10 @@ importers:
         specifier: catalog:recharts
         version: 3.6.0(@types/react@18.2.67)(react-dom@18.2.0(react@18.2.0))(react-is@18.3.1)(react@18.2.0)(redux@4.0.5)
       redux:
-        specifier: 4.0.5
+        specifier: catalog:redux
         version: 4.0.5
       redux-thunk:
-        specifier: 2.3.0
+        specifier: catalog:redux
         version: 2.3.0(redux@4.0.5)
       rehype-raw:
         specifier: ^7.0.0
@@ -1360,7 +1385,7 @@ importers:
         specifier: 6.2.1
         version: 6.2.1
       '@types/react-redux':
-        specifier: ^7.1.34
+        specifier: catalog:redux
         version: 7.1.34
       '@types/react-router':
         specifier: catalog:react-router
@@ -1384,10 +1409,10 @@ importers:
         specifier: 2.10.0
         version: 2.10.0
       '@types/redux-mock-store':
-        specifier: 1.0.2
+        specifier: catalog:redux
         version: 1.0.2
       '@types/redux-thunk':
-        specifier: 2.1.0
+        specifier: catalog:redux
         version: 2.1.0(redux@4.0.5)
       '@types/resize-observer-browser':
         specifier: ^0.1.11
@@ -1555,7 +1580,7 @@ importers:
         specifier: catalog:react
         version: 18.2.0(react@18.2.0)
       redux-mock-store:
-        specifier: 1.5.3
+        specifier: catalog:redux
         version: 1.5.3
       regenerator-runtime:
         specifier: ^0.14.1
@@ -3226,12 +3251,24 @@ importers:
       '@types/react-dom':
         specifier: catalog:react
         version: 18.2.22
+      '@types/react-redux':
+        specifier: catalog:redux
+        version: 7.1.34
       '@types/react-router-dom':
         specifier: catalog:react-router
         version: 5.3.3
+      '@types/redux-mock-store':
+        specifier: catalog:redux
+        version: 1.0.2
+      '@types/redux-thunk':
+        specifier: catalog:redux
+        version: 2.1.0(redux@4.0.5)
       '@vitest/coverage-v8':
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
+      dnd-core:
+        specifier: catalog:react-dnd
+        version: 16.0.1
       jest:
         specifier: catalog:test
         version: 29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.12.1(@swc/helpers@0.5.19))(@types/node@22.13.13)(typescript@5.9.3))
@@ -3244,12 +3281,30 @@ importers:
       react:
         specifier: catalog:react
         version: 18.2.0
+      react-dnd:
+        specifier: catalog:react-dnd
+        version: 16.0.1(@types/hoist-non-react-statics@3.3.5)(@types/node@22.13.13)(@types/react@18.2.67)(react@18.2.0)
+      react-dnd-html5-backend:
+        specifier: catalog:react-dnd
+        version: 16.0.1
       react-dom:
         specifier: catalog:react
         version: 18.2.0(react@18.2.0)
+      react-redux:
+        specifier: catalog:redux
+        version: 7.2.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)(redux@4.0.5)
       react-router-dom:
         specifier: catalog:react-router
         version: 5.2.0(react@18.2.0)
+      redux:
+        specifier: catalog:redux
+        version: 4.0.5
+      redux-mock-store:
+        specifier: catalog:redux
+        version: 1.5.3
+      redux-thunk:
+        specifier: catalog:redux
+        version: 2.3.0(redux@4.0.5)
       swc_mut_cjs_exports:
         specifier: catalog:test
         version: 10.7.0(@swc/core@1.12.1(@swc/helpers@0.5.19))(@swc/jest@0.2.38(@swc/core@1.12.1(@swc/helpers@0.5.19)))
@@ -22225,7 +22280,7 @@ snapshots:
       '@types/hoist-non-react-statics': 3.3.5
       '@types/react': 18.2.67
       hoist-non-react-statics: 3.3.2
-      redux: 4.0.5
+      redux: 4.2.1
 
   '@types/react-router-dom@5.3.3':
     dependencies:
@@ -22267,11 +22322,11 @@ snapshots:
 
   '@types/redux-mock-store@1.0.2':
     dependencies:
-      redux: 4.0.5
+      redux: 4.2.1
 
   '@types/redux-thunk@2.1.0(redux@4.0.5)':
     dependencies:
-      redux-thunk: 2.3.0(redux@4.0.5)
+      redux-thunk: 2.4.2(redux@4.0.5)
     transitivePeerDependencies:
       - redux
 
@@ -29118,7 +29173,7 @@ snapshots:
 
   react-redux@7.2.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)(redux@4.0.5):
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.6
       '@types/react-redux': 7.1.34
       hoist-non-react-statics: 3.3.2
       loose-envify: 1.4.0
@@ -29470,6 +29525,10 @@ snapshots:
       lodash.isplainobject: 4.0.6
 
   redux-thunk@2.3.0(redux@4.0.5):
+    dependencies:
+      redux: 4.0.5
+
+  redux-thunk@2.4.2(redux@4.0.5):
     dependencies:
       redux: 4.0.5
 

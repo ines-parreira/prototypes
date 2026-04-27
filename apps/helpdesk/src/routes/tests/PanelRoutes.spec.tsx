@@ -1,7 +1,10 @@
+import type { ReactElement } from 'react'
+
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { Panels } from '@repo/layout'
-import { assumeMock } from '@repo/testing'
+import { NavigationProvider } from '@repo/navigation'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -13,7 +16,6 @@ import { user } from 'fixtures/users'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import PanelRoutes from '../PanelRoutes'
 
@@ -74,6 +76,27 @@ jest.mock('../MobileRoutes', () => ({
     MobileRoutes: () => <div>MobileRoutes</div>,
 }))
 
+const renderPanelRoutes = (
+    element: ReactElement,
+    {
+        initialEntry = '/app',
+        path = '*',
+        storeState = {},
+    }: {
+        initialEntry?: string
+        path?: string
+        storeState?: object
+    } = {},
+) =>
+    render(element, {
+        initialEntries: [initialEntry],
+        path,
+        storeState,
+        wrapper: ({ children }) => (
+            <NavigationProvider>{children}</NavigationProvider>
+        ),
+    })
+
 describe('PanelRoutes', () => {
     beforeEach(() => {
         useVoiceDeviceMock.mockReturnValue({
@@ -96,111 +119,81 @@ describe('PanelRoutes', () => {
 
     it('should render the mobile routes for mobile resolutions', () => {
         useIsMobileResolutionMock.mockReturnValue(true)
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />)
         expect(screen.getByText('MobileRoutes')).toBeInTheDocument()
     })
 
     it('should render the global navigation', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />)
         expect(screen.getByText('GlobalNavigationPanel')).toBeInTheDocument()
     })
 
     it('should render the tickets navbar', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />)
         expect(screen.getByText('TicketsNavbarPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />)
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app/tickets', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />, { initialEntry: '/app/tickets' })
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/new/:visibility?', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app/tickets/new/private', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />, {
+            initialEntry: '/app/tickets/new/private',
+        })
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/search', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app/tickets/search', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />, {
+            initialEntry: '/app/tickets/search',
+        })
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/:viewId/:viewSlug?', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app/tickets/123456/boop', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />, {
+            initialEntry: '/app/tickets/123456/boop',
+        })
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/ticket/:ticketId', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {
+        renderPanelRoutes(<PanelRoutes />, {
+            initialEntry: '/app/ticket/123456',
+            storeState: {
                 currentUser: fromJS(user),
                 currentAccount: fromJS(account),
                 ticket: fromJS(ticket),
             },
-            { route: '/app/ticket/123456', path: '*' },
-        )
+        })
         expect(screen.getByText('TicketDetailPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketInfobarPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/views/:viewId?', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {},
-            { route: '/app/views/123456', path: '*' },
-        )
+        renderPanelRoutes(<PanelRoutes />, {
+            initialEntry: '/app/views/123456',
+        })
         expect(screen.getByText('TicketsListPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketEmptyPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/views/:viewId/:ticketId', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <PanelRoutes />,
-            {
+        renderPanelRoutes(<PanelRoutes />, {
+            initialEntry: '/app/views/123456/789987',
+            storeState: {
                 currentUser: fromJS(user),
                 currentAccount: fromJS(account),
                 ticket: fromJS(ticket),
             },
-            { route: '/app/views/123456/789987', path: '*' },
-        )
+        })
         expect(screen.getByText('TicketsListPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketDetailPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketInfobarPanel')).toBeInTheDocument()
@@ -212,12 +205,10 @@ describe('PanelRoutes', () => {
         })
 
         it('should not render GlobalNavigationPanel or TicketsNavbarPanel when wayfinding flag is enabled', () => {
-            renderWithStoreAndQueryClientAndRouter(
+            renderPanelRoutes(
                 <Panels size={100}>
                     <PanelRoutes />
                 </Panels>,
-                {},
-                { route: '/app', path: '*' },
             )
             expect(
                 screen.queryByText('GlobalNavigationPanel'),

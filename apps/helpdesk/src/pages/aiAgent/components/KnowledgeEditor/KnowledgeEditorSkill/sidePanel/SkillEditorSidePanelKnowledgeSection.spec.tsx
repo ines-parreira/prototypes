@@ -37,7 +37,7 @@ jest.mock(
 )
 
 jest.mock('pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip', () => ({
-    TruncatedTextWithTooltip: ({ children }: { children: React.ReactNode }) =>
+    TruncatedTextWithTooltip: ({ children }: { children?: React.ReactNode }) =>
         children,
 }))
 

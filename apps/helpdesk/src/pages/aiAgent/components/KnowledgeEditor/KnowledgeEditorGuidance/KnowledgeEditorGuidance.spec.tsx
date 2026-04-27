@@ -259,7 +259,7 @@ const defaultState = {
 }
 const store = mockStore(defaultState)
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => (
+const Wrapper = ({ children }: { children?: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
         <Provider store={store}>{children}</Provider>
     </QueryClientProvider>

@@ -31,7 +31,7 @@ jest.mock(
     }),
 )
 jest.mock('./SkillEditorHeader', () => ({
-    SkillEditorHeader: ({ children }: { children: React.ReactNode }) => (
+    SkillEditorHeader: ({ children }: { children?: React.ReactNode }) => (
         <div>Header{children}</div>
     ),
 }))

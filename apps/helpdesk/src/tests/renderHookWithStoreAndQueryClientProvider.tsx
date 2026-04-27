@@ -6,6 +6,9 @@ import { mockStore } from 'utils/testing'
 
 import { mockQueryClientProvider } from './reactQueryTestingUtils'
 
+/**
+ * @deprecated Use `renderHook` from `@repo/testing` instead.
+ */
 export const renderHookWithStoreAndQueryClientProvider = <TProps, TResult>(
     callback: (props: TProps) => TResult,
     initialStoreState: Partial<RootState> = {},

@@ -67,7 +67,7 @@ const mockWorkflowEntrypoints = [{ id: 'flow-1' }] as any
 describe('useFlows', () => {
     const store = mockStore({})
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <Provider store={store}>{children}</Provider>
     )
 

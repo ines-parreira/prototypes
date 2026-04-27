@@ -27,7 +27,7 @@ describe('useIntentsTable', () => {
         },
     })
 
-    const wrapper = ({ children }: { children: React.ReactNode }) =>
+    const wrapper = ({ children }: { children?: React.ReactNode }) =>
         QueryClientProvider({ client: queryClient, children })
 
     beforeEach(() => {

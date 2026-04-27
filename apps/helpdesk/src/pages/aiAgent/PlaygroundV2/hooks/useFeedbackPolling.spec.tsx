@@ -24,7 +24,7 @@ const mockReportError = jest.mocked(reportError)
 const mockStore = configureMockStore()
 const queryClient = mockQueryClient()
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={mockStore(storeWithActiveSubscriptionWithConvert)}>
         <QueryClientProvider client={queryClient}>
             {children}

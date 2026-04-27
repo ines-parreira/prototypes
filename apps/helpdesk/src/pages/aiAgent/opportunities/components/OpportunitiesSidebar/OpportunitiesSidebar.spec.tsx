@@ -55,7 +55,7 @@ describe('OpportunitiesSidebar', () => {
     const mockOnSelectOpportunity = jest.fn()
 
     const renderWithProvider = (ui: ReactElement) => {
-        const Wrapper = ({ children }: { children: ReactNode }) => {
+        const Wrapper = ({ children }: { children?: ReactNode }) => {
             const [isSidebarVisible, setIsSidebarVisible] = useState(true)
             return (
                 <OpportunitiesSidebarContext.Provider

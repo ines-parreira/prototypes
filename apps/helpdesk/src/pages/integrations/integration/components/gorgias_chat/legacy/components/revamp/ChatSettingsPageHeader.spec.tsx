@@ -7,7 +7,7 @@ import ChatSettingsPageHeader from './ChatSettingsPageHeader'
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Breadcrumb: ({ children }: { children: React.ReactNode }) => (
+    Breadcrumb: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
     Breadcrumbs: ({
@@ -40,10 +40,10 @@ jest.mock('@gorgias/axiom', () => ({
             {children}
         </button>
     ),
-    Heading: ({ children }: { children: React.ReactNode }) => (
+    Heading: ({ children }: { children?: React.ReactNode }) => (
         <h1>{children}</h1>
     ),
-    Text: ({ children }: { children: React.ReactNode }) => (
+    Text: ({ children }: { children?: React.ReactNode }) => (
         <span>{children}</span>
     ),
     TextSize: { Sm: 'sm' },

@@ -46,7 +46,7 @@ describe('useMetafields', () => {
     let queryClient: QueryClient
     const mockIntegrationId = '123'
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <MemoryRouter
             initialEntries={[
                 `/app/settings/store-management/${mockIntegrationId}/metafields`,

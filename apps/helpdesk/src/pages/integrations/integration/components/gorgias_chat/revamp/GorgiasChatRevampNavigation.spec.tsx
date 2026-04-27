@@ -23,7 +23,7 @@ jest.mock(
 jest.mock(
     'pages/common/components/SecondaryNavbar/SecondaryNavbar',
     () =>
-        ({ children }: { children: React.ReactNode }) => <nav>{children}</nav>,
+        ({ children }: { children?: React.ReactNode }) => <nav>{children}</nav>,
 )
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>

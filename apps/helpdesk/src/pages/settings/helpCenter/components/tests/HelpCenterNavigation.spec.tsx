@@ -16,7 +16,7 @@ import { HelpCenterNavigation } from '../HelpCenterNavigation'
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => {
-    return ({ children }: { children: React.ReactNode }) => (
+    return ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     )
 })
@@ -39,7 +39,7 @@ jest.mock('react-router-dom', () => {
             push: jest.fn(),
         }),
         Link: () => 'Link',
-        NavLink: ({ children }: { children: React.ReactNode }) => (
+        NavLink: ({ children }: { children?: React.ReactNode }) => (
             <div>{children}</div>
         ),
     }

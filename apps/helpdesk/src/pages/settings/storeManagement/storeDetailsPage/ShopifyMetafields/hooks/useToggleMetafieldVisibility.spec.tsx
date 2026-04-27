@@ -84,7 +84,7 @@ describe('useToggleMetafieldVisibility', () => {
         },
     ]
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <MemoryRouter initialEntries={[`/integrations/${INTEGRATION_ID}`]}>
             <Route path="/integrations/:id">
                 <QueryClientProvider client={queryClient}>

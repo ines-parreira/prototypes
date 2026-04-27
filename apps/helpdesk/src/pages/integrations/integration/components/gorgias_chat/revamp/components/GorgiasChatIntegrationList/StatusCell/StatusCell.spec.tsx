@@ -26,7 +26,7 @@ jest.mock('@gorgias/axiom', () => ({
             {children}
         </>
     ),
-    TooltipContent: ({ children }: { children: React.ReactNode }) => (
+    TooltipContent: ({ children }: { children?: React.ReactNode }) => (
         <>{children}</>
     ),
 }))

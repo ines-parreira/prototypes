@@ -52,15 +52,15 @@ jest.mock('@gorgias/axiom', () => ({
         label: string
         onAction: () => void
     }) => <button onClick={onAction}>{label}</button>,
-    MenuSection: ({ children }: { children: React.ReactNode }) => (
+    MenuSection: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
-    Tag: ({ children }: { children: React.ReactNode }) => (
+    Tag: ({ children }: { children?: React.ReactNode }) => (
         <span>{children}</span>
     ),
     TagColor: { Purple: 'purple' },
     TagSize: { Sm: 'sm' },
-    Text: ({ children }: { children: React.ReactNode }) => (
+    Text: ({ children }: { children?: React.ReactNode }) => (
         <span>{children}</span>
     ),
     TextSize: { Md: 'md' },

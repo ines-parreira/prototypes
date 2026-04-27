@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react'
 import { PerformanceBreakdownTableWrapper } from '../PerformanceBreakdownTableWrapper'
 
 jest.mock('@gorgias/axiom', () => ({
-    Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Box: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
     Skeleton: () => <div aria-label="Loading" />,
 }))
 

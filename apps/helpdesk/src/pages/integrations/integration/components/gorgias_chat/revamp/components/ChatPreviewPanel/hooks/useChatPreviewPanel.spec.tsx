@@ -507,7 +507,7 @@ describe('useChatPreviewPanelContext', () => {
             onChatPreviewLoaded: jest.fn(),
         }
 
-        const wrapper = ({ children }: { children: ReactNode }) => (
+        const wrapper = ({ children }: { children?: ReactNode }) => (
             <ChatPreviewPanelContext.Provider value={mockContextValue}>
                 {children}
             </ChatPreviewPanelContext.Provider>

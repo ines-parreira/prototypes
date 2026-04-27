@@ -43,7 +43,7 @@ jest.mock(
 jest.mock('./legacy/hooks/useSelfServiceConfiguration')
 
 jest.mock('pages/ErrorBoundary', () => ({
-    ErrorBoundary: ({ children }: { children: React.ReactNode }) => (
+    ErrorBoundary: ({ children }: { children?: React.ReactNode }) => (
         <>{children}</>
     ),
 }))

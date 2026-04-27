@@ -2,8 +2,9 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { DefaultOptions } from '@tanstack/react-query'
-import type { RenderHookOptions } from '@testing-library/react'
-import { act, renderHook as renderHookPrimitive } from '@testing-library/react'
+import type { RenderOptions } from '@testing-library/react'
+import { render as renderPrimitive } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import type { BackendFactory } from 'dnd-core'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -16,12 +17,12 @@ import thunk from 'redux-thunk'
 
 import { Toaster } from '@gorgias/axiom'
 
-type SharedRenderHookOptions<TProps, TStoreState extends object> = Omit<
-    RenderHookOptions<TProps>,
+type SharedRenderOptions<TStoreState extends object> = Omit<
+    RenderOptions,
     'wrapper'
 > & {
-    dndBackend?: BackendFactory
     initialEntries?: string[]
+    dndBackend?: BackendFactory
     path?: string
     queryClientOptions?: DefaultOptions
     reduxMiddlewares?: Middleware[]
@@ -31,19 +32,19 @@ type SharedRenderHookOptions<TProps, TStoreState extends object> = Omit<
 
 const defaultReduxMiddlewares: Middleware[] = [thunk as Middleware]
 
-const renderHook = <TProps, TResult, TStoreState extends object = object>(
-    hook: (props: TProps) => TResult,
-    options?: SharedRenderHookOptions<TProps, TStoreState>,
+export const render = <TStoreState extends object = object>(
+    ui: React.ReactElement,
+    options?: SharedRenderOptions<TStoreState>,
 ) => {
     const {
-        dndBackend = HTML5Backend,
         initialEntries = ['/'],
+        dndBackend = HTML5Backend,
         path = '/',
         queryClientOptions,
         reduxMiddlewares = defaultReduxMiddlewares,
         storeState = {} as TStoreState,
         wrapper: ExtraWrapper,
-        ...renderHookOptions
+        ...renderOptions
     } = options ?? {}
 
     const queryClient = new QueryClient({
@@ -59,9 +60,10 @@ const renderHook = <TProps, TResult, TStoreState extends object = object>(
         },
     })
     const store = configureMockStore<TStoreState>(reduxMiddlewares)(storeState)
+    const user = userEvent.setup()
 
-    const result = renderHookPrimitive(hook, {
-        ...renderHookOptions,
+    const result = renderPrimitive(ui, {
+        ...renderOptions,
         wrapper: ({ children }) => (
             <>
                 <Provider store={store}>
@@ -85,9 +87,8 @@ const renderHook = <TProps, TResult, TStoreState extends object = object>(
     })
 
     return {
+        user,
         store,
         ...result,
     }
 }
-
-export { act, renderHook }

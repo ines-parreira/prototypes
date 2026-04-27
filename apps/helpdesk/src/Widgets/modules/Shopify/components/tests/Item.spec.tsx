@@ -12,7 +12,7 @@ jest.mock('@gorgias/axiom', () => ({
     ColorType: {
         Warning: 'warning',
     },
-    LegacyBadge: ({ children }: { children: React.ReactNode }) => (
+    LegacyBadge: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="badge">{children}</div>
     ),
 }))

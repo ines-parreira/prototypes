@@ -21,7 +21,7 @@ const mockFetchIntegrationProductsByIds =
 describe('usePaginatedProductsByIds', () => {
     let queryClient: QueryClient
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

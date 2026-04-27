@@ -35,7 +35,7 @@ describe('useCreateSegment', () => {
             },
             logger: { log: () => {}, warn: () => {}, error: () => {} },
         })
-        return ({ children }: { children: React.ReactNode }) => (
+        return ({ children }: { children?: React.ReactNode }) => (
             <QueryClientProvider client={queryClient}>
                 {children}
             </QueryClientProvider>

@@ -9,7 +9,7 @@ import { SHOPPING_ASSISTANT_TOP_PRODUCTS_COLUMNS } from '../columns'
 
 jest.mock('@repo/reporting', () => ({
     DrillDownModalTrigger: jest.fn(
-        ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+        ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
     ),
 }))
 

@@ -34,7 +34,7 @@ jest.mock('pages/common/components/accordion/SortableAccordion', () => ({
 
 jest.mock('pages/common/components/accordion/SortableAccordionItem', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))
@@ -88,7 +88,7 @@ jest.mock('pages/common/components/dropdown/Dropdown', () => ({
 
 jest.mock('pages/common/components/dropdown/DropdownBody', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))
@@ -100,7 +100,7 @@ jest.mock('pages/common/components/dropdown/DropdownSearch', () => ({
 
 jest.mock('pages/common/components/dropdown/DropdownSection', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

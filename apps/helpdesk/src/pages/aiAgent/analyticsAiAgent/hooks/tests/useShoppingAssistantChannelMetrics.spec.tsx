@@ -29,7 +29,7 @@ const createWrapper = () => {
             queries: { retry: false },
         },
     })
-    return ({ children }: { children: ReactNode }) => (
+    return ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

@@ -22,7 +22,7 @@ jest.mock('@gorgias/axiom', () => ({
             {children}
         </>
     ),
-    TooltipContent: ({ children }: { children: ReactNode }) => <>{children}</>,
+    TooltipContent: ({ children }: { children?: ReactNode }) => <>{children}</>,
 }))
 
 const mockUpdateGuidanceArticle = jest.fn()

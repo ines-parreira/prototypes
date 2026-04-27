@@ -139,7 +139,7 @@ describe('useShoppingAssistantTrialFlow', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] })
 
         // Create wrapper with QueryClientProvider
-        wrapper = ({ children }: { children: React.ReactNode }) => (
+        wrapper = ({ children }: { children?: React.ReactNode }) => (
             <Router history={history}>
                 <QueryClientProvider client={queryClient}>
                     {children}

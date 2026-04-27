@@ -50,7 +50,7 @@ jest.mock('@gorgias/axiom', () => ({
             {children}
         </div>
     ),
-    Card: ({ children }: { children: React.ReactNode }) => (
+    Card: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="axiom-card">{children}</div>
     ),
     Skeleton: () => <div data-testid="axiom-skeleton" />,

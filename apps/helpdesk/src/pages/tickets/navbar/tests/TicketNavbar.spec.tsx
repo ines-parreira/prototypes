@@ -48,7 +48,7 @@ const mockUseHelpdeskV2WayfindingMS1Flag = jest.requireMock(
 
 jest.mock('common/navigation', () => ({
     ActiveContent: { Tickets: 'tickets' },
-    Navbar: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Navbar: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
 }))
 
 jest.mock('../RecentChats', () => ({

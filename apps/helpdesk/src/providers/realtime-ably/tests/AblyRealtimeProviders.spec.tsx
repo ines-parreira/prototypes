@@ -55,7 +55,7 @@ jest.mock('@gorgias/realtime', () => ({
             </div>
         )
     },
-    AgentActivityProvider: ({ children }: { children: React.ReactNode }) => (
+    AgentActivityProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="agent-activity-provider">{children}</div>
     ),
     AgentOnlineStatusProvider: ({

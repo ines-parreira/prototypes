@@ -27,7 +27,7 @@ const getLayoutedElementsSpy = jest.spyOn(layoutUtils, 'getLayoutedElements')
 const onNodesChange = jest.fn()
 const onEdgesChange = jest.fn()
 
-function Wrapper({ children }: { children: React.ReactNode }) {
+function Wrapper({ children }: { children?: React.ReactNode }) {
     return (
         <FlowProvider>
             <Form defaultValues={formValues} onValidSubmit={jest.fn()}>

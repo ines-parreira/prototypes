@@ -25,7 +25,7 @@ jest.mock('@gorgias/axiom', () => ({
             ))}
         </div>
     ),
-    SelectTrigger: ({ children }: { children: ReactNode }) => <>{children}</>,
+    SelectTrigger: ({ children }: { children?: ReactNode }) => <>{children}</>,
     ListItem: ({ label }: { label: string }) => <div>{label}</div>,
 }))
 

@@ -37,7 +37,9 @@ const DisclosureContext = React.createContext<{
 })
 
 jest.mock('@gorgias/axiom', () => ({
-    Box: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    Box: ({ children }: { children?: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
     Button: ({
         children,
         isDisabled,
@@ -105,7 +107,7 @@ jest.mock('@gorgias/axiom', () => ({
             </button>
         )
     },
-    DisclosurePanel: ({ children }: { children: React.ReactNode }) => {
+    DisclosurePanel: ({ children }: { children?: React.ReactNode }) => {
         const { isExpanded } = React.useContext(DisclosureContext)
 
         return isExpanded ? (
@@ -117,7 +119,7 @@ jest.mock('@gorgias/axiom', () => ({
     ),
     Icon: ({ name }: { name: string }) => <span>{name}</span>,
     Loader: () => <span aria-hidden="true">loader</span>,
-    Text: ({ children }: { children: React.ReactNode }) => (
+    Text: ({ children }: { children?: React.ReactNode }) => (
         <span>{children}</span>
     ),
 }))

@@ -72,7 +72,7 @@ describe('useAiAgentTrialOnboarding', () => {
         })
         const history = createMemoryHistory({ initialEntries: ['/'] })
 
-        wrapper = ({ children }: { children: React.ReactNode }) => (
+        wrapper = ({ children }: { children?: React.ReactNode }) => (
             <Router history={history}>
                 <QueryClientProvider client={queryClient}>
                     {children}

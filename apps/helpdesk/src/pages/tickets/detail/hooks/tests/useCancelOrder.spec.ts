@@ -193,7 +193,7 @@ describe('useCancelOrder', () => {
             const { QueryClientProvider: TestProvider, queryClient } =
                 mockQueryClientProvider()
             const { result } = renderHook(() => useCancelOrder(), {
-                wrapper: ({ children }: { children: React.ReactNode }) =>
+                wrapper: ({ children }: { children?: React.ReactNode }) =>
                     createElement(TestProvider, null, children),
             })
             return { result, queryClient }

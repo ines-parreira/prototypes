@@ -8,7 +8,9 @@ import { LANGUAGE } from 'constants/languages'
 import { DeleteLanguageModal } from './DeleteLanguageModal'
 
 jest.mock('@gorgias/axiom', () => ({
-    Box: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    Box: ({ children }: { children?: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
     Button: ({
         children,
         onClick,
@@ -43,14 +45,14 @@ jest.mock('@gorgias/axiom', () => ({
             </div>
         ) : null,
     ModalSize: { Md: 'md' },
-    OverlayContent: ({ children }: { children: React.ReactNode }) => (
+    OverlayContent: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
-    OverlayFooter: ({ children }: { children: React.ReactNode }) => (
+    OverlayFooter: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
     OverlayHeader: ({ title }: { title: string }) => <div>{title}</div>,
-    Text: ({ children }: { children: React.ReactNode }) => (
+    Text: ({ children }: { children?: React.ReactNode }) => (
         <span>{children}</span>
     ),
 }))

@@ -46,7 +46,7 @@ describe('useUpdateSegment', () => {
             },
         })
 
-        return ({ children }: { children: React.ReactNode }) => (
+        return ({ children }: { children?: React.ReactNode }) => (
             <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     {children}

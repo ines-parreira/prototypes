@@ -50,7 +50,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
     () => ({
         __esModule: true,
-        default: ({ children }: { children: React.ReactNode }) => (
+        default: ({ children }: { children?: React.ReactNode }) => (
             <div>{children}</div>
         ),
     }),

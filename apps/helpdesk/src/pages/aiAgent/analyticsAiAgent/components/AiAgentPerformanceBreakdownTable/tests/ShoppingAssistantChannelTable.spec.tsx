@@ -44,7 +44,7 @@ const createWrapper = () => {
         },
     } as RootState
 
-    return ({ children }: { children: React.ReactNode }) => (
+    return ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore(defaultState)}>{children}</Provider>
         </QueryClientProvider>

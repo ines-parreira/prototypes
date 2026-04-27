@@ -10,10 +10,10 @@ jest.mock('@gorgias/axiom', () => {
     const actual = jest.requireActual('@gorgias/axiom')
     return {
         ...actual,
-        Box: ({ children }: { children: React.ReactNode }) => (
+        Box: ({ children }: { children?: React.ReactNode }) => (
             <div>{children}</div>
         ),
-        Text: ({ children }: { children: React.ReactNode }) => (
+        Text: ({ children }: { children?: React.ReactNode }) => (
             <span>{children}</span>
         ),
         TextAreaField: ({

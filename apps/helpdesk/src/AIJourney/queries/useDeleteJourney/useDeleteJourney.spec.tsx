@@ -15,7 +15,7 @@ const mockDeleteJourney = deleteJourney as jest.Mock
 describe('useDeleteJourney', () => {
     let queryClient: QueryClient
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

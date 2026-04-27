@@ -36,7 +36,7 @@ describe('useJourneyUpdateHandler', () => {
     const mockInvalidateQueries = jest.fn()
     const mockStore = configureMockStore([thunk])()
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <Provider store={mockStore}>{children}</Provider>
     )
 

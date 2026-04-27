@@ -39,7 +39,7 @@ const createWrapper = () => {
         },
     })
 
-    return ({ children }: { children: ReactNode }) => (
+    return ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -542,7 +542,7 @@ describe('useTotalSalesByProduct', () => {
         })
 
         renderHook(() => useTotalSalesByProduct(), {
-            wrapper: ({ children }: { children: ReactNode }) => (
+            wrapper: ({ children }: { children?: ReactNode }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -589,7 +589,7 @@ describe('useTotalSalesByProduct', () => {
         })
 
         const { result } = renderHook(() => useTotalSalesByProduct(), {
-            wrapper: ({ children }: { children: ReactNode }) => (
+            wrapper: ({ children }: { children?: ReactNode }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>

@@ -182,7 +182,7 @@ afterAll(() => {
 })
 
 // Test component wrapper with providers
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={mockStore as any}>
         <QueryClientProvider client={appQueryClient}>
             {children}

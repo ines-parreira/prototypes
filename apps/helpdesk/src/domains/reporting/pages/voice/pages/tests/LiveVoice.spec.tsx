@@ -37,7 +37,7 @@ jest.mock(
 jest.mock(
     'domains/reporting/pages/common/layout/StatsPage',
     () =>
-        ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+        ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
 )
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 

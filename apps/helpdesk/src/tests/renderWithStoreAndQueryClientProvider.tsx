@@ -13,6 +13,9 @@ import { mockStore } from 'utils/testing'
 
 const toaster = createPortal(<Toaster />, document.body)
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export const renderWithStoreAndQueryClientProvider = (
     element: ReactElement,
     state: Partial<RootState> = {},

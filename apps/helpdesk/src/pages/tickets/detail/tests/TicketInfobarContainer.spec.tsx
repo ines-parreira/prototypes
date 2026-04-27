@@ -105,10 +105,10 @@ jest.mock('@repo/customer', () => ({
         mockCapturedOnSyncProfile = onSyncProfile
         return <div>ShopifyCustomer Component</div>
     },
-    ShopifyCustomerProvider: ({ children }: { children: ReactNode }) => (
+    ShopifyCustomerProvider: ({ children }: { children?: ReactNode }) => (
         <>{children}</>
     ),
-    TemplateResolverProvider: ({ children }: { children: ReactNode }) => (
+    TemplateResolverProvider: ({ children }: { children?: ReactNode }) => (
         <>{children}</>
     ),
 }))

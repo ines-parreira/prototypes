@@ -51,7 +51,7 @@ jest.mock('pages/aiAgent/components/StoreConfigForm/StoreConfigForm', () => ({
 }))
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

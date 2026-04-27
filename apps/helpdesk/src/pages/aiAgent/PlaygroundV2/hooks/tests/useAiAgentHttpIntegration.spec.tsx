@@ -34,7 +34,7 @@ jest.mock('@repo/utils', () => {
 
 describe('useAiAgentHttpIntegration', () => {
     const createWrapper = (store: any) => {
-        return ({ children }: { children: React.ReactNode }) => (
+        return ({ children }: { children?: React.ReactNode }) => (
             <Provider store={store}>{children}</Provider>
         )
     }

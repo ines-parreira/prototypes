@@ -5,11 +5,11 @@ import { render, screen } from '@testing-library/react'
 import { TranslateSection } from './TranslateSection'
 
 jest.mock('@gorgias/axiom', () => ({
-    Card: ({ children }: { children: React.ReactNode }) => (
+    Card: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
     Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children: React.ReactNode }) => (
+    Heading: ({ children }: { children?: React.ReactNode }) => (
         <h2>{children}</h2>
     ),
     HeadingSize: { Sm: 'sm' },

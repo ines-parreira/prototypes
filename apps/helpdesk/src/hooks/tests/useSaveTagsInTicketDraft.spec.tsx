@@ -41,7 +41,7 @@ const renderWithWrapper = (
     orderId?: number | null,
 ) => {
     const store = mockStore(createMockState())
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <MemoryRouter initialEntries={[path]}>
             <Provider store={store}>
                 <Route path="/tickets/:ticketId">{children}</Route>

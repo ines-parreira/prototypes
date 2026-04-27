@@ -44,7 +44,7 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
 
 // Mock other components
 jest.mock('../KnowledgeEditorTopBar/KnowledgeEditorTopBar', () => ({
-    KnowledgeEditorTopBar: ({ children }: { children: React.ReactNode }) => (
+    KnowledgeEditorTopBar: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="top-bar">{children}</div>
     ),
 }))
@@ -155,7 +155,7 @@ const defaultState = {
 
 const store = mockStore(defaultState)
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => (
+const Wrapper = ({ children }: { children?: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
         <Provider store={store}>{children}</Provider>
     </QueryClientProvider>

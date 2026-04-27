@@ -447,7 +447,7 @@ describe('ConversationLauncherSettings', () => {
             isPendingCreateOrUpdate: false,
         })
 
-        const MockFormWrapper = ({ children }: { children: ReactNode }) => {
+        const MockFormWrapper = ({ children }: { children?: ReactNode }) => {
             const methods = useForm<FormValues>({
                 defaultValues: {
                     isAskAnythingInputEnabled: true,

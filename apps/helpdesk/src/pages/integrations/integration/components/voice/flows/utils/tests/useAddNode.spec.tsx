@@ -102,7 +102,7 @@ describe('useAddNode', () => {
         lastSelectedGender: VoiceGender.Male,
     } as TextToSpeechContextType
 
-    const Wrapper = ({ children }: { children: ReactNode }) => {
+    const Wrapper = ({ children }: { children?: ReactNode }) => {
         const methods = useForm<VoiceFlowFormValues>({
             defaultValues: defaultFormValues,
         })
@@ -246,7 +246,7 @@ describe('useAddNode', () => {
 
     describe('addNewStepInForm', () => {
         const mockSetValue = jest.fn()
-        const Wrapper = ({ children }: { children: ReactNode }) => {
+        const Wrapper = ({ children }: { children?: ReactNode }) => {
             const methods = useForm<VoiceFlowFormValues>({
                 defaultValues: defaultFormValues,
             })
@@ -270,7 +270,7 @@ describe('useAddNode', () => {
         it('should add new step as first step when source is IncomingCall', () => {
             const mockSetValue = jest.fn()
 
-            const FormWrapper = ({ children }: { children: ReactNode }) => {
+            const FormWrapper = ({ children }: { children?: ReactNode }) => {
                 const methods = useForm({
                     defaultValues: {
                         first_step_id: null,

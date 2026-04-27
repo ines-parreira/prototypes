@@ -80,7 +80,7 @@ describe('useGetCampaignsForStore', () => {
                 defaultState,
             )
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
@@ -103,7 +103,7 @@ describe('useGetCampaignsForStore', () => {
                 defaultState,
             )
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
@@ -130,7 +130,7 @@ describe('useGetCampaignsForStore', () => {
                 defaultState,
             )
             const hookOptions = {
-                wrapper: (({ children }: { children: React.ReactNode }) => (
+                wrapper: (({ children }: { children?: React.ReactNode }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }

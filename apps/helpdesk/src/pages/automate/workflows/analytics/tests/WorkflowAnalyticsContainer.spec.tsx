@@ -25,7 +25,7 @@ jest.mock('@gorgias/axiom', () => ({
 
 jest.mock('../WorkflowAnalyticsFilters', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="workflow-analytics-filters">{children}</div>
     ),
 }))

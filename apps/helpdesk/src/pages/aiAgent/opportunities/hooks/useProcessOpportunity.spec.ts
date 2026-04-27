@@ -385,7 +385,7 @@ describe('useProcessOpportunity', () => {
                     queries: { retry: false },
                 },
             })
-            wrapper = ({ children }: { children: React.ReactNode }) =>
+            wrapper = ({ children }: { children?: React.ReactNode }) =>
                 React.createElement(
                     QueryClientProvider,
                     { client: queryClient },

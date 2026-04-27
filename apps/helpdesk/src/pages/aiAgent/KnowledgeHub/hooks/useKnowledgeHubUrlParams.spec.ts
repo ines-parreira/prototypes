@@ -53,7 +53,7 @@ describe('useKnowledgeHubUrlParams', () => {
     ]
 
     const createRouterWrapper = (routerHistory: History) => {
-        const wrapper = ({ children }: { children: React.ReactNode }) =>
+        const wrapper = ({ children }: { children?: React.ReactNode }) =>
             React.createElement(Router, { history: routerHistory }, children)
         return wrapper
     }

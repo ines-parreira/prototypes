@@ -15,7 +15,7 @@ jest.mock('@repo/hooks', () => ({
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    SidePanel: ({ children }: { children: React.ReactNode }) => (
+    SidePanel: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

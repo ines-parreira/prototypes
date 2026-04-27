@@ -120,7 +120,7 @@ describe('useTrialModalProps', () => {
                 mutations: { retry: false },
             },
         })
-        const wrapper = ({ children }: { children: React.ReactNode }) =>
+        const wrapper = ({ children }: { children?: React.ReactNode }) =>
             React.createElement(
                 QueryClientProvider,
                 { client: queryClient },

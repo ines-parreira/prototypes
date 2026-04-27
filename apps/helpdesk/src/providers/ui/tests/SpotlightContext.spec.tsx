@@ -20,7 +20,7 @@ describe('useSpotlightContext', () => {
             setIsOpen: mockSetIsOpen,
         }
 
-        const wrapper = ({ children }: { children: ReactNode }) => (
+        const wrapper = ({ children }: { children?: ReactNode }) => (
             <SpotlightContext.Provider value={contextValue}>
                 {children}
             </SpotlightContext.Provider>

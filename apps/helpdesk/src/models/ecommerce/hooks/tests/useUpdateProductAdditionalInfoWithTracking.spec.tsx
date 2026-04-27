@@ -58,7 +58,7 @@ describe('useUpdateProductAdditionalInfoWithTracking', () => {
         })
     })
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

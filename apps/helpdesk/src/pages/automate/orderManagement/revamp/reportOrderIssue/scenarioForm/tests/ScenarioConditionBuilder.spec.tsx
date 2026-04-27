@@ -22,14 +22,14 @@ jest.mock('pages/common/components/dropdown/Dropdown', () => ({
 
 jest.mock('pages/common/components/dropdown/DropdownHeader', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownBody', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

@@ -77,7 +77,7 @@ function createTranslationFailedEvent(data: { id: string }): DomainEvent {
 }
 
 describe('OutboundTranslationProvider', () => {
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <OutboundTranslationProvider ticketId="123">
             {children}
         </OutboundTranslationProvider>

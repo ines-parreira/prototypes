@@ -11,6 +11,9 @@ import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 const toaster = createPortal(<Toaster />, document.body)
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export const renderWithQueryClientAndRouter = (
     element: ReactElement,
     route: string = '/',

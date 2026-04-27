@@ -38,7 +38,7 @@ describe('useFileIngestionStatus', () => {
     let fileUploadEventCallback: (event?: Event) => void
 
     const createWrapper = () => {
-        return ({ children }: { children: ReactNode }) => (
+        return ({ children }: { children?: ReactNode }) => (
             <QueryClientProvider client={queryClient}>
                 {children}
             </QueryClientProvider>

@@ -147,7 +147,7 @@ const defaultMessageQuoteContext = {
 // Test component wrapper
 const createWrapper =
     (messageQuoteContextValue = defaultMessageQuoteContext) =>
-    ({ children }: { children: React.ReactNode }) => (
+    ({ children }: { children?: React.ReactNode }) => (
         <Provider store={mockStore as any}>
             <QueryClientProvider client={appQueryClient}>
                 <MessageQuoteContext.Provider value={messageQuoteContextValue}>

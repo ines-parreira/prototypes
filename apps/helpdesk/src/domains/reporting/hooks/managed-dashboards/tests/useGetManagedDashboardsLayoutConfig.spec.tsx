@@ -50,7 +50,7 @@ afterAll(() => {
 
 function makeWrapper() {
     const queryClient = mockQueryClient()
-    return ({ children }: { children: ReactNode }) => (
+    return ({ children }: { children?: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

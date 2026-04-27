@@ -81,7 +81,7 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <CoreProvider>
         <SettingsProvider>{children}</SettingsProvider>
     </CoreProvider>
@@ -250,7 +250,7 @@ describe('SettingsContext', () => {
         it('should initialize mode based on supportedModes prop', () => {
             const createWrapper =
                 (modes: any) =>
-                ({ children }: { children: ReactNode }) => (
+                ({ children }: { children?: ReactNode }) => (
                     <CoreProvider>
                         <SettingsProvider supportedModes={modes}>
                             {children}

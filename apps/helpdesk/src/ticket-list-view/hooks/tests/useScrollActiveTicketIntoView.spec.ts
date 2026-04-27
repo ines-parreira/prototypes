@@ -30,7 +30,7 @@ describe('useScrollActiveTicketIntoView', () => {
     }
 
     it('should pre-scroll the active ticket into view', async () => {
-        const { rerender } = renderHook<void, HookParams>(
+        const { rerender } = renderHook<HookParams, void>(
             ({ ticketId, tickets, ticketIds, virtuosoRef }) =>
                 useScrollActiveTicketIntoView(
                     ticketId,
@@ -63,7 +63,7 @@ describe('useScrollActiveTicketIntoView', () => {
     })
 
     it('should scroll the new active ticket into view', () => {
-        const { rerender } = renderHook<void, HookParams>(
+        const { rerender } = renderHook<HookParams, void>(
             ({ ticketId, tickets, ticketIds, virtuosoRef }) =>
                 useScrollActiveTicketIntoView(
                     ticketId,

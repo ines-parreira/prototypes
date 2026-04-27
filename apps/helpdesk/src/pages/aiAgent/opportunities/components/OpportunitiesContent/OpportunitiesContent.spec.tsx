@@ -210,7 +210,7 @@ describe('OpportunitiesContent', () => {
             notifications: [],
         })
 
-        const Wrapper = ({ children }: { children: ReactNode }) => {
+        const Wrapper = ({ children }: { children?: ReactNode }) => {
             const [isSidebarVisible, setIsSidebarVisible] = useState(true)
             return (
                 <MemoryRouter>

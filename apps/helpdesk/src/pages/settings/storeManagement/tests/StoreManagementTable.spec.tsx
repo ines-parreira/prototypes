@@ -12,7 +12,7 @@ import { StoreManagementTable } from '../storeManagementTable/storeManagementTab
 
 jest.mock('../StoreManagementProvider', () => ({
     useStoreManagementState: jest.fn(),
-    StoreManagementProvider: ({ children }: { children: React.ReactNode }) => (
+    StoreManagementProvider: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))

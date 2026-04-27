@@ -9,7 +9,7 @@ import type { TopSupportingKnowledge } from '../hooks/useSkillTopKnowledges'
 import { SkillEditorSidePanelTopKnowledgeSection } from './SkillEditorSidePanelTopKnowledgeSection'
 
 jest.mock('pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip', () => ({
-    TruncatedTextWithTooltip: ({ children }: { children: React.ReactNode }) =>
+    TruncatedTextWithTooltip: ({ children }: { children?: React.ReactNode }) =>
         children,
 }))
 

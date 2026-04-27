@@ -60,7 +60,7 @@ const useAuthenticationMock = useAuthentication as jest.Mock
 jest.mock(
     '../ClientProvider',
     () =>
-        ({ children }: { children: ReactNode }) => (
+        ({ children }: { children?: ReactNode }) => (
             <div>
                 <p>ClientProvider</p>
                 {children}

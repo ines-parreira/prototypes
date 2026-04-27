@@ -36,7 +36,7 @@ describe('useJourneyCreateHandler', () => {
         journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
     }
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>

@@ -13,7 +13,7 @@ jest.mock('@gorgias/axiom', () => {
     const actual = jest.requireActual('@gorgias/axiom')
     return {
         ...actual,
-        LegacyTooltip: ({ children }: { children: ReactNode }) => (
+        LegacyTooltip: ({ children }: { children?: ReactNode }) => (
             <span data-testid="tooltip">{children}</span>
         ),
     }

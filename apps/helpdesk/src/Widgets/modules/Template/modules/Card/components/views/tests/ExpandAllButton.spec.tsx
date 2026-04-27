@@ -12,7 +12,7 @@ import ExpandAllButton, { EXPAND_TITLE, FOLD_TITLE } from '../ExpandAllButton'
 
 const onClickMock = jest.fn()
 
-const ContainerMock = ({ children }: { children: React.ReactNode }) => (
+const ContainerMock = ({ children }: { children?: React.ReactNode }) => (
     <div {...{ [EXPAND_CONTAINER_MARKER]: true }}>{children}</div>
 )
 

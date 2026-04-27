@@ -38,7 +38,7 @@ const queryClient = mockQueryClient()
 
 const createWrapper =
     (isCollapsed = false) =>
-    ({ children }: { children: ReactNode }) => (
+    ({ children }: { children?: ReactNode }) => (
         <MemoryRouter>
             <QueryClientProvider client={queryClient}>
                 <MockSidebarProvider

@@ -114,7 +114,7 @@ jest.mock('state/ui/editor/actions', () => ({ editorFocused: jest.fn() }))
 jest.mock(
     'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider',
     () =>
-        jest.fn(({ children }: { children: ReactNode }) => (
+        jest.fn(({ children }: { children?: ReactNode }) => (
             <div>{children}</div>
         )),
 )

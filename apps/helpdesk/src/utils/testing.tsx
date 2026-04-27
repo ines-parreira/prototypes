@@ -29,6 +29,9 @@ const toaster = createPortal(<Toaster />, document.body)
 export const mockStore = <T extends object>(store: T) =>
     configureMockStore(middlewares)(store)
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export type RenderWithRouterParams = {
     options?: Omit<RenderOptions, 'wrapper'>
     path?: string
@@ -36,6 +39,9 @@ export type RenderWithRouterParams = {
     history?: History
 }
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export const renderWithStore = (
     ui: ReactElement,
     state: Partial<RootState>,
@@ -65,6 +71,9 @@ export const renderWithStore = (
     }
 }
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export const renderWithRouter = (
     ui: ReactElement,
     {
@@ -97,11 +106,17 @@ export const renderWithRouter = (
     }
 }
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export type RenderWithDnDParams = {
     options?: Omit<RenderOptions, 'wrapper'>
     backend?: BackendFactory
 }
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export const renderWithDnD = (
     ui: ReactElement,
     { options, backend = HTML5Backend }: RenderWithDnDParams = {},
@@ -117,9 +132,15 @@ export const renderWithDnD = (
     })
 }
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export type RenderWithRouterAndDnDParams = RenderWithRouterParams &
     RenderWithDnDParams
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export const renderWithRouterAndDnD = (
     ui: ReactElement,
     {

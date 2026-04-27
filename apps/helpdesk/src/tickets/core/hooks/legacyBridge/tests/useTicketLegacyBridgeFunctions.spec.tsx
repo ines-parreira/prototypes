@@ -47,7 +47,7 @@ const useIsTicketNavigationAvailableMock = jest.mocked(
 )
 const useSplitTicketViewMock = jest.mocked(useSplitTicketView)
 
-const wrapper = ({ children }: { children: ReactNode }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
     <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>
 )
 

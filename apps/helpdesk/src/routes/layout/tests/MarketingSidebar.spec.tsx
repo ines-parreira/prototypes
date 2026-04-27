@@ -7,10 +7,10 @@ jest.mock('AIJourney/components', () => ({
 }))
 
 jest.mock('AIJourney/providers', () => ({
-    IntegrationsProvider: ({ children }: { children: React.ReactNode }) => (
+    IntegrationsProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="integrations-provider">{children}</div>
     ),
-    JourneyProvider: ({ children }: { children: React.ReactNode }) => (
+    JourneyProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="journey-provider">{children}</div>
     ),
 }))

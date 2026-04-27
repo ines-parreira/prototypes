@@ -20,7 +20,7 @@ describe('PanelLayout', () => {
     beforeEach(() => {
         PanelMock.mockReturnValue(<div>Panel</div>)
         PanelsMock.mockImplementation(
-            ({ children }: { children: ReactNode }) => (
+            ({ children }: { children?: ReactNode }) => (
                 <div>
                     <p>Panels</p>
                     {children}

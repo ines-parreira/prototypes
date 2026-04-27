@@ -79,9 +79,11 @@ describe('SelectedNodeProvider', () => {
     })
 
     it('shares state between multiple consumers in the same provider', () => {
-        const TestComponent = ({ children }: { children: React.ReactNode }) => (
-            <VoiceFlowProvider>{children}</VoiceFlowProvider>
-        )
+        const TestComponent = ({
+            children,
+        }: {
+            children?: React.ReactNode
+        }) => <VoiceFlowProvider>{children}</VoiceFlowProvider>
 
         const { result: result1 } = renderHook(() => useVoiceFlowContext(), {
             wrapper: TestComponent,

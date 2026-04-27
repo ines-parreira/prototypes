@@ -54,6 +54,9 @@ export function mockQueryClientProvider() {
     return { QueryClientProvider: TestQueryClientProvider, queryClient }
 }
 
+/**
+ * @deprecated Use `render` from `@repo/testing` instead.
+ */
 export const renderWithQueryClientProvider = (ui: ReactElement) => {
     const queryClient = mockQueryClient()
 
@@ -66,6 +69,9 @@ export const renderWithQueryClientProvider = (ui: ReactElement) => {
     })
 }
 
+/**
+ * @deprecated Use `renderHook` from `@repo/testing` instead.
+ */
 export const renderHookWithQueryClientProvider = <TProps, TResult>(
     callback: (props: TProps) => TResult,
 ) => {

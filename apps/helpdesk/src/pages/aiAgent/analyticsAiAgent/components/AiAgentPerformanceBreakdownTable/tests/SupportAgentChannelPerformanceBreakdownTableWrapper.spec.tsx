@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react'
 import { SupportAgentChannelPerformanceBreakdownTableWrapper } from '../SupportAgentChannelPerformanceBreakdownTableWrapper'
 
 jest.mock('@gorgias/axiom', () => ({
-    Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Box: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
     Skeleton: () => <div aria-label="Loading" />,
 }))
 

@@ -197,7 +197,7 @@ describe('useRefundOrder', () => {
             const { QueryClientProvider: TestProvider, queryClient } =
                 mockQueryClientProvider()
             const { result } = renderHook(() => useRefundOrder(), {
-                wrapper: ({ children }: { children: React.ReactNode }) =>
+                wrapper: ({ children }: { children?: React.ReactNode }) =>
                     createElement(TestProvider, null, children),
             })
             return { result, queryClient }

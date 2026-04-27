@@ -41,7 +41,7 @@ describe('useGuidanceCount', () => {
         store = mockStore({})
     })
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
                 {children}

@@ -64,7 +64,7 @@ describe('TextToSpeechProvider', () => {
     }
 
     const createWrapper = (formValues: any = defaultFormValues) => {
-        return ({ children }: { children: React.ReactNode }) => (
+        return ({ children }: { children?: React.ReactNode }) => (
             <Form defaultValues={formValues} onValidSubmit={jest.fn()}>
                 <TextToSpeechProvider integrationId={mockIntegrationId}>
                     {children}
