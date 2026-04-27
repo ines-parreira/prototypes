@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import HtmlDiff from 'htmldiff-js'
 
 import { KnowledgeEditorHelpCenterArticleDiffView } from './KnowledgeEditorHelpCenterArticleDiffView'

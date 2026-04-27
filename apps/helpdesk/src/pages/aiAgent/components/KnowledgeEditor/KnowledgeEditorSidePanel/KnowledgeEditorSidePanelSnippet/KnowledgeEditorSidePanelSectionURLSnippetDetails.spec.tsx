@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { Accordion } from 'components/Accordion/Accordion'
 import { KnowledgeEditorSidePanelSectionURLSnippetDetails } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelSectionURLSnippetDetails'

@@ -1,4 +1,5 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { GetArticleVersionStatus } from '@gorgias/help-center-types'

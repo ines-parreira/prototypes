@@ -1,6 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { useQueryClient } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useHistory } from 'react-router-dom'
 

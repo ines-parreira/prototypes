@@ -1,5 +1,6 @@
 import { useDebouncedEffect } from '@repo/hooks'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'

@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { Provider } from 'react-redux'
 
 import { mockStore } from 'utils/testing'

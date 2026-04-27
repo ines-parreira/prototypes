@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { NEW_GUIDANCE_ARTICLE_LIMIT } from 'pages/aiAgent/constants'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'

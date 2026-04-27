@@ -1,5 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'

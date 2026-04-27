@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { PromoCardContent } from '../../types/ShoppingAssistant'

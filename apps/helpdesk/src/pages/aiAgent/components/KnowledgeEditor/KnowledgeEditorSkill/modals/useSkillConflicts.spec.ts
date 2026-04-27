@@ -1,4 +1,5 @@
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import type { ConflictingSkill } from '../hooks/useSkillIntentConflicts'
 import { useSkillConflicts } from './useSkillConflicts'

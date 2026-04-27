@@ -1,5 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import {
     CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,

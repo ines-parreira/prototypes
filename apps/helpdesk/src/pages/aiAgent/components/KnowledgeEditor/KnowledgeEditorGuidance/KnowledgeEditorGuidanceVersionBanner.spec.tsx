@@ -1,7 +1,8 @@
 import { appQueryClient } from '@repo/api-resources'
+import { render } from '@repo/testing'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {

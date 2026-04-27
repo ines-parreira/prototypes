@@ -1,4 +1,5 @@
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
 import { useNotify } from 'hooks/useNotify'
 import { useDeleteArticle } from 'models/helpCenter/mutations'

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { render, screen, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 import { FormProvider, useForm } from 'react-hook-form'

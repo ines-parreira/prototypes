@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { usePromoCardVideoContent } from '../hooks/usePromoCardVideoContent'
 import { TrialType } from '../types/ShoppingAssistant'

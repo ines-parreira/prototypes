@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'

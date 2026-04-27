@@ -1,7 +1,8 @@
 import { createContext, useContext, useMemo, useReducer } from 'react'
 import type { MutableRefObject } from 'react'
 
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'

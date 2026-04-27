@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
 import { featureFlagsClientMock } from '@repo/feature-flags/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { MemoryRouter } from 'react-router-dom'

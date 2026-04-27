@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
 import { featureFlagsClientMock } from '@repo/feature-flags/testing'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
