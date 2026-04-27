@@ -8,6 +8,8 @@ import type { GetBillingEstimatesSubscriptionParams } from '@gorgias/helpdesk-ty
 
 import { ProductType } from 'models/billing/types'
 
+const ESTIMATE_FRESHNESS_MS = 5 * 60 * 1000
+
 function getEffectivePlanId(
     productType: ProductType,
     selectedPlans: SelectedPlans,
@@ -89,7 +91,8 @@ export function useConfirmChangesEstimate(
     return useGetBillingEstimatesSubscription(params, {
         query: {
             enabled,
-            staleTime: 0,
+            staleTime: ESTIMATE_FRESHNESS_MS,
+            refetchInterval: ESTIMATE_FRESHNESS_MS,
             retry: false,
         },
     })

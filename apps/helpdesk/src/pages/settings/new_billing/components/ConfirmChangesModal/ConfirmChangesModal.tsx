@@ -73,6 +73,7 @@ export function ConfirmChangesModal({
     const {
         data: estimateResponse,
         isLoading: isEstimateLoading,
+        isFetching: isEstimateFetching,
         isError: isEstimateError,
         error: estimateError,
         refetch: refetchEstimate,
@@ -227,7 +228,9 @@ export function ConfirmChangesModal({
                             currency={currency}
                             cancellationDates={cancellationDates}
                             balanceDue={estimate?.balance_due}
-                            isEstimateLoading={isEstimateLoading}
+                            isEstimateLoading={
+                                isEstimateLoading || isEstimateFetching
+                            }
                             estimateErrorMessage={
                                 showGenericEstimateError
                                     ? 'Failed to load estimate.'

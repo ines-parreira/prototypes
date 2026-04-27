@@ -7,6 +7,8 @@ import { ProductType } from 'models/billing/types'
 
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
+const ESTIMATE_FRESHNESS_MS = 5 * 60 * 1000
+
 function getEffectivePlanId(
     resolvedPlan: ResolvedPlan | undefined,
 ): string | undefined {
@@ -65,7 +67,8 @@ export function useInternalConfirmChangesEstimate(
     return useGetBillingInternalEstimatesSubscription(params, {
         query: {
             enabled,
-            staleTime: 0,
+            staleTime: ESTIMATE_FRESHNESS_MS,
+            refetchInterval: ESTIMATE_FRESHNESS_MS,
             retry: false,
             select: (response) => ({
                 ...response.data,
