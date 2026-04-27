@@ -1,7 +1,7 @@
-import { useMemo, useSyncExternalStore } from 'react'
+import { useMemo } from 'react'
 
 import type { InfiniteData } from '@tanstack/react-query'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
@@ -13,33 +13,65 @@ type TicketViewNavigation = ReturnType<
     typeof useTicketsLegacyBridge
 >['ticketViewNavigation']
 
+type CachedTicketsList = InfiniteData<{ data?: Array<{ id?: number }> }>
+
+const disabledQueryKey = ['cachedTicketViewNavigation', 'disabled'] as const
+
+function* getCachedTicketIds(cachedList: CachedTicketsList) {
+    for (const page of cachedList.pages) {
+        for (const ticket of page.data ?? []) {
+            if (typeof ticket.id === 'number') {
+                yield ticket.id
+            }
+        }
+    }
+}
+
+function getAdjacentTicketIds(cachedList: CachedTicketsList, ticketId: number) {
+    let previousTicketId: number | undefined
+    let hasFoundTicket = false
+
+    for (const currentTicketId of getCachedTicketIds(cachedList)) {
+        if (hasFoundTicket) {
+            return {
+                previousTicketId,
+                nextTicketId: currentTicketId,
+            }
+        }
+
+        if (currentTicketId === ticketId) {
+            hasFoundTicket = true
+            continue
+        }
+
+        previousTicketId = currentTicketId
+    }
+
+    return hasFoundTicket
+        ? {
+              previousTicketId,
+              nextTicketId: undefined,
+          }
+        : undefined
+}
+
 function getCachedTicketViewNavigation({
     cachedList,
     ticketId,
 }: {
-    cachedList?: InfiniteData<{ data?: Array<{ id?: number }> }>
+    cachedList?: CachedTicketsList
     ticketId?: number
 }): TicketViewNavigation | undefined {
     if (!cachedList || ticketId == null) {
         return undefined
     }
 
-    const navigableTickets = cachedList.pages.flatMap((page) =>
-        (page.data ?? []).filter(
-            (ticket): ticket is { id: number } => typeof ticket.id === 'number',
-        ),
-    )
-
-    const ticketIndex = navigableTickets.findIndex(
-        (ticket) => ticket.id === ticketId,
-    )
-
-    if (ticketIndex === -1) {
+    const adjacentTicketIds = getAdjacentTicketIds(cachedList, ticketId)
+    if (!adjacentTicketIds) {
         return undefined
     }
 
-    const previousTicketId = navigableTickets[ticketIndex - 1]?.id
-    const nextTicketId = navigableTickets[ticketIndex + 1]?.id
+    const { previousTicketId, nextTicketId } = adjacentTicketIds
     const isPreviousEnabled = previousTicketId !== undefined
     const isNextEnabled = nextTicketId !== undefined
 
@@ -63,7 +95,6 @@ export function useCachedTicketViewNavigation({
     viewId?: number
     ticketId?: number
 }) {
-    const queryClient = useQueryClient()
     const [sortOrder] = useSortOrder(viewId ?? 0, {
         isDraftView: viewId == null,
     })
@@ -76,23 +107,19 @@ export function useCachedTicketViewNavigation({
     const queryKey =
         viewId != null ? queryKeys.views.listViewItems(viewId, params) : null
 
-    const cachedList = useSyncExternalStore(
-        (onStoreChange) => queryClient.getQueryCache().subscribe(onStoreChange),
-        () =>
-            queryKey == null
-                ? undefined
-                : queryClient.getQueryData<
-                      InfiniteData<{ data?: Array<{ id?: number }> }>
-                  >(queryKey),
-        () => undefined,
-    )
+    const { data: cachedList } = useQuery<CachedTicketsList | undefined>({
+        queryKey: queryKey ?? disabledQueryKey,
+        queryFn: () => Promise.resolve(undefined),
+        enabled: false,
+        notifyOnChangeProps: ['data'],
+    })
 
     return useMemo(
         () =>
             getCachedTicketViewNavigation({
-                cachedList,
+                cachedList: viewId == null ? undefined : cachedList,
                 ticketId,
             }),
-        [cachedList, ticketId],
+        [cachedList, ticketId, viewId],
     )
 }

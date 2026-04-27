@@ -1,3 +1,7 @@
+import { useRef } from 'react'
+
+import type { InfiniteData } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -6,6 +10,7 @@ import {
     mockListViewItemsHandler,
     mockTicketCompact,
 } from '@gorgias/helpdesk-mocks'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 import type {
     ListViewItemsUpdatesOrderBy as ListViewItemsUpdatesOrderByType,
@@ -109,6 +114,25 @@ function useHooks({
     })
 
     return { list, navigation }
+}
+
+function useNavigationRenderCount({
+    ticketId,
+    viewId,
+}: {
+    ticketId?: number
+    viewId?: number
+}) {
+    const queryClient = useQueryClient()
+    const renderCount = useRef(0)
+    renderCount.current += 1
+
+    const navigation = useCachedTicketViewNavigation({
+        viewId,
+        ticketId,
+    })
+
+    return { queryClient, navigation, renderCount: renderCount.current }
 }
 
 describe('useCachedTicketViewNavigation', () => {
@@ -240,5 +264,52 @@ describe('useCachedTicketViewNavigation', () => {
                 isNextEnabled: true,
             })
         })
+    })
+
+    it('does not update when unrelated query cache entries change', async () => {
+        const { result } = renderHook(() =>
+            useNavigationRenderCount({
+                viewId: VIEW_ID,
+                ticketId: 123,
+            }),
+        )
+
+        act(() => {
+            result.current.queryClient.setQueryData<
+                InfiniteData<{ data?: Array<{ id?: number }> }>
+            >(
+                queryKeys.views.listViewItems(VIEW_ID, {
+                    order_by:
+                        ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
+                }),
+                {
+                    pages: [
+                        {
+                            data: [{ id: 122 }, { id: 123 }, { id: 124 }],
+                        },
+                    ],
+                    pageParams: [undefined],
+                },
+            )
+        })
+
+        await waitFor(() => {
+            expect(result.current.navigation).toMatchObject({
+                previousTicketId: 122,
+                nextTicketId: 124,
+            })
+        })
+
+        const renderCountAfterRelevantCacheUpdate = result.current.renderCount
+
+        act(() => {
+            result.current.queryClient.setQueryData(['unrelated-query'], {
+                value: 'updated',
+            })
+        })
+
+        expect(result.current.renderCount).toBe(
+            renderCountAfterRelevantCacheUpdate,
+        )
     })
 })
