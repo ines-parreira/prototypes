@@ -51,6 +51,8 @@ const isDuplicate = (
  *
  * set dismissAfter = 0 to make the notification not leave until the user clicks on it
  * set closeOnNext = true to make the notification close on next notification addition
+ *
+ * @deprecated Use the axiom `toast` API from `@gorgias/axiom` instead.
  */
 export const notify =
     (message?: Notification) =>

@@ -87,6 +87,25 @@ export default defineConfig({
                 //
                 //  axiom related Legacy component deprecations
                 {
+                    name: 'reapop',
+                    imports: [
+                        'default',
+                        'NotificationsSystem',
+                        'Notification',
+                        'Position',
+                        'Status',
+                        'Theme',
+                        'POSITIONS',
+                        'STATUSES',
+                        'wyboTheme',
+                        'notify',
+                        'dismissNotification',
+                        'reducer',
+                    ],
+                    type: 'ui-kit-migration',
+                    date: '2026-04-27',
+                },
+                {
                     name: '@gorgias/axiom',
                     imports: [
                         'TableV1Root',
