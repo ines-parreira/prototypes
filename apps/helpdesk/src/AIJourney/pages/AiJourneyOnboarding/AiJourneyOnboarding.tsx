@@ -6,7 +6,7 @@ import type { SubmitHandler } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
-import { Box, Button, PageHeader } from '@gorgias/axiom'
+import { Box, Button, PanelHeader } from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import {
@@ -241,7 +241,7 @@ export const AiJourneyOnboarding = ({
     return (
         <FormProvider {...methods}>
             <Box flexDirection="column">
-                <PageHeader title={titleMapping[journeyType]} padding="lg" />
+                <PanelHeader title={titleMapping[journeyType]} padding="lg" />
                 <Box
                     flexDirection="column"
                     padding="lg"

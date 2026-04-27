@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import {
     Box,
     Button,
-    PageHeader,
+    PanelHeader,
     TabItem,
     TabList,
     TabPanel,
@@ -166,7 +166,7 @@ export const Settings = () => {
     if (error && isFetched) {
         return (
             <Box flexDirection="column" width="100%">
-                <PageHeader title="Settings" />
+                <PanelHeader title="Settings" />
             </Box>
         )
     }
@@ -176,15 +176,18 @@ export const Settings = () => {
     return (
         <FormProvider {...methods}>
             <Box flexDirection="column" width="100%">
-                <PageHeader title="Settings">
-                    <Button
-                        isDisabled={isSaveDisabled}
-                        isLoading={formState.isSubmitting}
-                        onClick={handleSubmit(onSubmit)}
-                    >
-                        Save
-                    </Button>
-                </PageHeader>
+                <PanelHeader
+                    title="Settings"
+                    trailingSlot={
+                        <Button
+                            isDisabled={isSaveDisabled}
+                            isLoading={formState.isSubmitting}
+                            onClick={handleSubmit(onSubmit)}
+                        >
+                            Save
+                        </Button>
+                    }
+                />
                 <FormUnsavedChangesPrompt
                     onSave={onSubmit}
                     shouldRedirectAfterSave

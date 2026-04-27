@@ -7,7 +7,7 @@ import {
     Box,
     Button,
     Heading,
-    PageHeader,
+    PanelHeader,
     SidePanel,
     SidePanelSize,
     Size,
@@ -219,7 +219,7 @@ export const SegmentsSidePanel = ({
             withoutPadding
         >
             <FormProvider {...form}>
-                <PageHeader
+                <PanelHeader
                     title={isEditing ? 'Edit segment' : 'Create new segment'}
                 />
                 <Box

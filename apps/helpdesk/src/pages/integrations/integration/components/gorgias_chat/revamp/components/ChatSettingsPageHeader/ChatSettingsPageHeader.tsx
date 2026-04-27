@@ -6,17 +6,8 @@ import {
     Breadcrumb,
     Breadcrumbs,
     Button,
-    ButtonAs,
-    ButtonIntent,
-    ButtonSize,
-    ButtonVariant,
-    Heading,
-    HeadingSize,
-    IconName,
-    PageHeader,
+    PanelHeader,
     Text,
-    TextSize,
-    TextVariant,
 } from '@gorgias/axiom'
 
 import css from './ChatSettingsPageHeader.less'
@@ -68,7 +59,7 @@ export const ChatSettingsPageHeader = ({
                 {(item) => (
                     <Breadcrumb>
                         {item.link ? (
-                            <Text size={TextSize.Sm}>
+                            <Text size="sm">
                                 <Link
                                     className={css.breadcrumbLink}
                                     to={item.link}
@@ -77,48 +68,39 @@ export const ChatSettingsPageHeader = ({
                                 </Link>
                             </Text>
                         ) : (
-                            <Text
-                                size={TextSize.Sm}
-                                variant={TextVariant.Medium}
-                            >
+                            <Text size="sm" variant="medium">
                                 {item.label}
                             </Text>
                         )}
                     </Breadcrumb>
                 )}
             </Breadcrumbs>
-            <PageHeader
-                title={
-                    <>
-                        {showBackButton && _backButtonlink && (
-                            <Button
-                                icon={IconName.ArrowLeft}
-                                size={ButtonSize.Sm}
-                                variant={ButtonVariant.Secondary}
-                                intent={ButtonIntent.Regular}
-                                aria-label="Go back"
-                                onClick={() => history.push(_backButtonlink)}
-                            />
-                        )}
-                        <Heading size={HeadingSize.Xl}>{title}</Heading>
-                    </>
+            <PanelHeader
+                leadingSlot={
+                    showBackButton && _backButtonlink ? (
+                        <Button
+                            icon="arrow-left"
+                            size="sm"
+                            variant="secondary"
+                            aria-label="Go back"
+                            onClick={() => history.push(_backButtonlink)}
+                        />
+                    ) : undefined
                 }
+                title={title}
                 p={0}
-            >
-                {onSave && (
-                    <Button
-                        intent={ButtonIntent.Regular}
-                        variant={ButtonVariant.Primary}
-                        as={ButtonAs.Button}
-                        size={ButtonSize.Md}
-                        onClick={onSave}
-                        isDisabled={isSaveDisabled}
-                        isLoading={isSaveLoading}
-                    >
-                        Save
-                    </Button>
-                )}
-            </PageHeader>
+                trailingSlot={
+                    onSave ? (
+                        <Button
+                            onClick={onSave}
+                            isDisabled={isSaveDisabled}
+                            isLoading={isSaveLoading}
+                        >
+                            Save
+                        </Button>
+                    ) : undefined
+                }
+            />
         </div>
     )
 }

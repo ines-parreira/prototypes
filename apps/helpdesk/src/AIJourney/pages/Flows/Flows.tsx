@@ -6,7 +6,7 @@ import type { MetricConfigItem } from '@repo/reporting'
 import { ConfigureMetricsModal } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, Button, PageHeader } from '@gorgias/axiom'
+import { Box, Button, PanelHeader } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -148,11 +148,14 @@ export const Flows = () => {
 
     return (
         <Box width="100%" flexDirection="column">
-            <PageHeader title="Flows">
-                {isAiJourneyCustomFlowEnabled && (
-                    <Button>Add Custom Flow</Button>
-                )}
-            </PageHeader>
+            <PanelHeader
+                title="Flows"
+                trailingSlot={
+                    isAiJourneyCustomFlowEnabled ? (
+                        <Button>Add Custom Flow</Button>
+                    ) : undefined
+                }
+            />
             <Box className={css.filtersPanel}>
                 <FiltersPanelWrapper
                     persistentFilters={[FilterKey.Period]}

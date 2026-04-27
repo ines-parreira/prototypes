@@ -5,7 +5,7 @@ import { ConfigureMetricsModal } from '@repo/reporting'
 import type { MetricConfigItem } from '@repo/reporting'
 import { useHistory } from 'react-router-dom'
 
-import { Box, Button, PageHeader } from '@gorgias/axiom'
+import { Box, Button, PanelHeader } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
@@ -128,17 +128,20 @@ export const Campaigns = () => {
 
     return (
         <Box width="100%" flexDirection="column">
-            <PageHeader title="Campaigns">
-                <Button
-                    onClick={() =>
-                        history.push(
-                            `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
-                        )
-                    }
-                >
-                    Create campaign
-                </Button>
-            </PageHeader>
+            <PanelHeader
+                title="Campaigns"
+                trailingSlot={
+                    <Button
+                        onClick={() =>
+                            history.push(
+                                `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
+                            )
+                        }
+                    >
+                        Create campaign
+                    </Button>
+                }
+            />
 
             <Box className={css.filtersPanel}>
                 <FiltersPanelWrapper

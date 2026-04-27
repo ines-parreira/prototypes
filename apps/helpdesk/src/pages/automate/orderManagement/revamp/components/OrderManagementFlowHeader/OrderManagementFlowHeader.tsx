@@ -6,18 +6,9 @@ import {
     Breadcrumb,
     Breadcrumbs,
     Button,
-    ButtonAs,
-    ButtonIntent,
-    ButtonSize,
-    ButtonVariant,
-    Heading,
-    HeadingSize,
     Icon,
-    IconName,
-    PageHeader,
+    PanelHeader,
     Text,
-    TextSize,
-    TextVariant,
 } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
@@ -76,7 +67,7 @@ export const OrderManagementFlowHeader = ({
                     {(item) => (
                         <Breadcrumb>
                             {item.link ? (
-                                <Text size={TextSize.Sm}>
+                                <Text size="sm">
                                     <Link
                                         className={css.breadcrumbLink}
                                         to={item.link}
@@ -85,64 +76,55 @@ export const OrderManagementFlowHeader = ({
                                     </Link>
                                 </Text>
                             ) : (
-                                <Text
-                                    size={TextSize.Sm}
-                                    variant={TextVariant.Medium}
-                                >
+                                <Text size="sm" variant="medium">
                                     {item.label}
                                 </Text>
                             )}
                         </Breadcrumb>
                     )}
                 </Breadcrumbs>
-                <PageHeader
-                    title={
+                <PanelHeader
+                    leadingSlot={
+                        <Button
+                            icon="arrow-left"
+                            size="sm"
+                            variant="secondary"
+                            aria-label="Go back"
+                            onClick={() => history.push(backPath ?? storePath)}
+                        />
+                    }
+                    title={title}
+                    p={0}
+                    trailingSlot={
                         <>
-                            <Button
-                                icon={IconName.ArrowLeft}
-                                size={ButtonSize.Sm}
-                                variant={ButtonVariant.Secondary}
-                                intent={ButtonIntent.Regular}
-                                aria-label="Go back"
-                                onClick={() =>
-                                    history.push(backPath ?? storePath)
-                                }
+                            <Text>
+                                <a
+                                    href={HELP_URL}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className={css.helpLink}
+                                >
+                                    Learn more about order statuses{' '}
+                                    <Icon name="external-link" />
+                                </a>
+                            </Text>
+                            <StoreSelector
+                                integrations={integrations}
+                                selected={selected}
+                                onChange={onChange}
                             />
-                            <Heading size={HeadingSize.Xl}>{title}</Heading>
+                            {onSave && (
+                                <Button
+                                    onClick={onSave}
+                                    isDisabled={isSaveDisabled}
+                                    isLoading={isSaveLoading}
+                                >
+                                    Save
+                                </Button>
+                            )}
                         </>
                     }
-                    p={0}
-                >
-                    <Text>
-                        <a
-                            href={HELP_URL}
-                            target="_blank"
-                            rel="noreferrer"
-                            className={css.helpLink}
-                        >
-                            Learn more about order statuses{' '}
-                            <Icon name="external-link" />
-                        </a>
-                    </Text>
-                    <StoreSelector
-                        integrations={integrations}
-                        selected={selected}
-                        onChange={onChange}
-                    />
-                    {onSave && (
-                        <Button
-                            intent={ButtonIntent.Regular}
-                            variant={ButtonVariant.Primary}
-                            as={ButtonAs.Button}
-                            size={ButtonSize.Md}
-                            onClick={onSave}
-                            isDisabled={isSaveDisabled}
-                            isLoading={isSaveLoading}
-                        >
-                            Save
-                        </Button>
-                    )}
-                </PageHeader>
+                />
             </div>
             <SecondaryNavbar>
                 <NavLink exact to={storePath}>
