@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router-dom'
@@ -89,7 +89,16 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
     const { updateGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({ guidanceHelpCenterId: helpCenterId })
 
+    // inputValue updates on every keystroke to keep the field responsive.
+    // searchTerm is debounced so the expensive filtering/expansion only runs
+    // 300ms after the user stops typing.
+    const [inputValue, setInputValue] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
+
+    useEffect(() => {
+        const timer = setTimeout(() => setSearchTerm(inputValue), 300)
+        return () => clearTimeout(timer)
+    }, [inputValue])
     const [statsDisplayMode, setStatsDisplayMode] =
         useState<StatsDisplayMode>('percentage')
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
@@ -103,25 +112,49 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         if (!searchTerm.trim()) return intents
 
         const lowerSearchTerm = searchTerm.toLowerCase()
-        return intents.filter((intent) => {
-            const matchesParent = intent.formattedName
-                .toLowerCase()
-                .includes(lowerSearchTerm)
-            const matchesChild = intent.children?.some((child) =>
-                child.formattedName.toLowerCase().includes(lowerSearchTerm),
-            )
-            return matchesParent || matchesChild
-        })
+        return intents
+            .filter((intent) => {
+                const matchesParent = intent.formattedName
+                    .toLowerCase()
+                    .includes(lowerSearchTerm)
+                const matchesChild = intent.children?.some((child) =>
+                    child.formattedName.toLowerCase().includes(lowerSearchTerm),
+                )
+                return matchesParent || matchesChild
+            })
+            .map((intent) => {
+                const matchesParent = intent.formattedName
+                    .toLowerCase()
+                    .includes(lowerSearchTerm)
+                if (matchesParent || !intent.children) return intent
+                return {
+                    ...intent,
+                    children: intent.children.filter((child) =>
+                        child.formattedName
+                            .toLowerCase()
+                            .includes(lowerSearchTerm),
+                    ),
+                }
+            })
     }, [intents, searchTerm])
+
+    // When a search is active, expand all intents so children are always
+    // visible. Otherwise use the user's manual accordion state.
+    const effectiveExpandedRows = useMemo(() => {
+        if (searchTerm.trim()) {
+            return new Set(intents.map((intent) => intent.id))
+        }
+        return expandedRows
+    }, [searchTerm, intents, expandedRows])
 
     const flattenedIntents = useMemo(
         () =>
             filteredIntents.flatMap((intent) =>
-                expandedRows.has(intent.id) && intent.children
+                effectiveExpandedRows.has(intent.id) && intent.children
                     ? [intent, ...intent.children]
                     : [intent],
             ),
-        [filteredIntents, expandedRows],
+        [filteredIntents, effectiveExpandedRows],
     )
 
     const totalCount = intents.length
@@ -271,7 +304,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                 onCreateNewSkill: handleCreateNewSkill,
                 onOpenSkill: handleOpenSkill,
                 hasExistingSkills,
-                expandedRows,
+                expandedRows: effectiveExpandedRows,
                 onToggleExpanded: handleToggleExpanded,
                 outcomeCustomFieldId,
                 intentCustomFieldId,
@@ -286,7 +319,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
             handleCreateNewSkill,
             handleOpenSkill,
             hasExistingSkills,
-            expandedRows,
+            effectiveExpandedRows,
             handleToggleExpanded,
             outcomeCustomFieldId,
             intentCustomFieldId,
@@ -346,8 +379,8 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                         <Box width="220px">
                             <SearchField
                                 placeholder="Search..."
-                                value={searchTerm}
-                                onChange={setSearchTerm}
+                                value={inputValue}
+                                onChange={setInputValue}
                             />
                         </Box>
 
@@ -389,13 +422,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                         </Text>
                     </Box>
 
-                    <div
-                        className={
-                            expandedRows.size > 0
-                                ? css.tableWithExpandedRows
-                                : css.tableWithoutExpandedRows
-                        }
-                    >
+                    <div className={css.tableWithExpandedRows}>
                         <TableV1Root withBorder>
                             <TableHeader>
                                 <TableV1HeaderRowGroup

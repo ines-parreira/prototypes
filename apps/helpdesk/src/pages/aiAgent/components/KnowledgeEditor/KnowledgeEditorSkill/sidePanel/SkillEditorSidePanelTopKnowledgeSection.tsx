@@ -12,7 +12,7 @@ import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/Trunc
 import { typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 import { useKnowledgeDrillDownTrigger } from 'pages/aiAgent/skills/hooks/useKnowledgeDrillDownTrigger'
 
-import css from './SkillEditorSidePanel.less'
+import css from './SkillEditorSidePanelTopKnowledgeSection.less'
 
 type Props = {
     topKnowledges: TopSupportingKnowledge[]
@@ -118,7 +118,7 @@ const TopKnowledgeCard = ({
                 className={css.knowledgeTitle}
                 onClick={handleOnClick}
             >
-                <Icon name={icon} size="xs" color="content-neutral-secondary" />
+                <Icon name={icon} size="sm" color="content-neutral-secondary" />
                 <TruncatedTextWithTooltip tooltipContent={title}>
                     <Text size="sm">{title}</Text>
                 </TruncatedTextWithTooltip>
@@ -126,7 +126,7 @@ const TopKnowledgeCard = ({
             <Box gap="xxxxs" alignItems="center">
                 <Icon
                     name="comm-chat"
-                    size="xs"
+                    size="sm"
                     color="content-neutral-secondary"
                 />
                 <DrillDownModalTrigger

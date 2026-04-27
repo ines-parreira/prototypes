@@ -6,7 +6,7 @@ import { formatDateRangeSubtitle } from 'pages/aiAgent/components/KnowledgeEdito
 
 import { SkillEditorSidePanelPerformanceMetricCards } from './SkillEditorSidePanelPerformanceMetricCards'
 
-import css from './SkillEditorSidePanel.less'
+import css from './SkillEditorSidePanelPerformanceTab.less'
 
 export const SkillEditorSidePanelPerformanceTab = () => {
     const { skillMetrics, recentTickets, historicalVersionDateRange } =

@@ -103,9 +103,25 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
                                 intent="warning"
                                 size="sm"
                                 isClosable={false}
-                                title="Some intents below are used in other skills"
-                                description="Publish this skill to reassign them to this one"
-                            />
+                                icon={false}
+                            >
+                                {/* margin: -8px is to remove the empty gap from
+                                Axiom component */}
+                                <Box
+                                    marginTop={-8}
+                                    display="flex"
+                                    flexDirection="column"
+                                >
+                                    <Text variant="bold" size="sm">
+                                        Some intents below are used in other
+                                        skills
+                                    </Text>
+                                    <Text size="sm">
+                                        Publish this skill to reassign them to
+                                        this one
+                                    </Text>
+                                </Box>
+                            </Banner>
                         </div>
                     )}
                     {items.length > 0 && (

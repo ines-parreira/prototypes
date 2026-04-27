@@ -13,6 +13,7 @@
             th:nth-child(1),
             td:nth-child(1) {
                 width: 40px;
+                height: 46px;
             }
 
             // Intent column
@@ -37,55 +38,6 @@
             th:nth-child(5),
             td:nth-child(5) {
                 width: 212px;
-            }
-
-            // Enabled column
-            th:nth-child(6),
-            td:nth-child(6) {
-                width: 80px;
-            }
-
-            // Child row padding
-            tr[data-child-row='true'] td {
-                padding: var(--spacing-xxxs) var(--spacing-md);
-            }
-        }
-    }
-
-    .tableWithoutExpandedRows {
-        :global {
-            table {
-                table-layout: fixed;
-            }
-
-            // Expand column
-            th:nth-child(1),
-            td:nth-child(1) {
-                width: 40px;
-            }
-
-            // Intent column (wider when no link column)
-            th:nth-child(2),
-            td:nth-child(2) {
-                width: 342px;
-            }
-
-            // Ticket volume column
-            th:nth-child(3),
-            td:nth-child(3) {
-                width: 144px;
-            }
-
-            // Handover column
-            th:nth-child(4),
-            td:nth-child(4) {
-                width: 144px;
-            }
-
-            // Link column (empty for parent rows)
-            th:nth-child(5),
-            td:nth-child(5) {
-                width: 91px;
             }
 
             // Enabled column

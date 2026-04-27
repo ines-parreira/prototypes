@@ -4,7 +4,7 @@ import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
 import { MetricCell } from 'pages/aiAgent/skills/components/SharedTableComponents/MetricCells'
 import type { SkillMetrics } from 'pages/aiAgent/skills/types'
 
-import css from './SkillEditorSidePanel.less'
+import css from './SkillEditorSidePanelPerformanceMetricCards.less'
 
 type Props = {
     metrics?: SkillMetrics | null

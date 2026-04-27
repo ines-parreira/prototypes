@@ -389,6 +389,81 @@ describe('IntentsTable', () => {
                 ).toBeInTheDocument()
             })
         })
+
+        it('should auto-expand children of a matching L1 intent without needing to click expand', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            expect(screen.queryByText('Status')).not.toBeInTheDocument()
+            expect(screen.queryByText('Cancel')).not.toBeInTheDocument()
+
+            const searchInput = screen.getByPlaceholderText('Search...')
+            await user.type(searchInput, 'order')
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+                expect(screen.getByText('Cancel')).toBeInTheDocument()
+            })
+        })
+
+        it('should auto-expand children when searching by L2 name and only show matching children', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            expect(screen.queryByText('Delay')).not.toBeInTheDocument()
+
+            const searchInput = screen.getByPlaceholderText('Search...')
+            await user.type(searchInput, 'delay')
+
+            await waitFor(() => {
+                expect(screen.getByText('Shipping')).toBeInTheDocument()
+                expect(screen.getByText('Delay')).toBeInTheDocument()
+            })
+        })
+
+        it('should only show matching L2 children and hide non-matching siblings when L2 name is searched', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByPlaceholderText('Search...')
+            await user.type(searchInput, 'status')
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+                expect(screen.queryByText('Cancel')).not.toBeInTheDocument()
+            })
+        })
+
+        it('should show all L2 children when the L1 name matches the search', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByPlaceholderText('Search...')
+            await user.type(searchInput, 'order')
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+                expect(screen.getByText('Cancel')).toBeInTheDocument()
+            })
+        })
+
+        it('should collapse children again when search is cleared', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByPlaceholderText('Search...')
+            await user.type(searchInput, 'order')
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+            })
+
+            await user.clear(searchInput)
+
+            await waitFor(() => {
+                expect(screen.queryByText('Status')).not.toBeInTheDocument()
+            })
+        })
     })
 
     describe('Display mode toggle', () => {

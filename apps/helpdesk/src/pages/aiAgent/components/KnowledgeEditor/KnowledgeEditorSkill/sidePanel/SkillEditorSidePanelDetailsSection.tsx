@@ -6,7 +6,7 @@ import { KnowledgeEditorSidePanelTwoColumnsContent } from 'pages/aiAgent/compone
 
 import { useSkillDetailsFromContext } from '../hooks/useSkillDetailsFromContext'
 
-import css from './SkillEditorSidePanel.less'
+import css from './SkillEditorSidePanelDetailsSection.less'
 
 type Props = {
     sectionId: string

@@ -1,4 +1,5 @@
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+import classNames from 'classnames'
 
 import {
     Box,
@@ -61,7 +62,12 @@ export const SkillEditorHeader = ({
                         onClick={onBack}
                     />
                 )}
-                <div className={css.titleArea}>
+                <Box
+                    className={classNames(
+                        css.titleArea,
+                        isPreview && css.previewHeader,
+                    )}
+                >
                     <KnowledgeEditorTopBarTitle
                         onChangeTitle={onChangeTitle}
                         title={title}
@@ -109,7 +115,7 @@ export const SkillEditorHeader = ({
                                 </Tooltip>
                             </span>
                         )}
-                </div>
+                </Box>
             </Box>
             <Box gap="xs" alignItems="center">
                 {children}

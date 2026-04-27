@@ -23,7 +23,7 @@ import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/Knowled
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 import RelativeTime from 'pages/common/components/RelativeTime'
 
-import css from './SkillEditorSidePanel.less'
+import css from './SkillEditorSidePanelRecentTicketsSection.less'
 
 type Ticket = {
     id: number

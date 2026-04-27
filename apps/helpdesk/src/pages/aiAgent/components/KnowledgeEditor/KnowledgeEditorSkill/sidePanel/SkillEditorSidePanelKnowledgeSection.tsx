@@ -8,6 +8,8 @@ import { useSkillTopKnowledges } from 'pages/aiAgent/components/KnowledgeEditor/
 import { SkillDisableKnowledgeModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/sidePanel/modals/SkillDisableKnowledgeModal'
 import { SkillEditorSidePanelTopKnowledgeSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/sidePanel/SkillEditorSidePanelTopKnowledgeSection'
 
+import css from './SkillEditorSidePanelKnowledgeSection.less'
+
 const TOOLTIP_MESSAGES = {
     KNOWLEDGE_PUBLISHED_WITH_DRAFT_TOOLTIP:
         'A draft of this skill exists. Switch to the draft to change knowledge settings.',
@@ -134,7 +136,7 @@ export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
                 {!!skillId &&
                     !!useSupportingKnowledge &&
                     !!hasPublishedVersion && (
-                        <Box>
+                        <Box paddingTop="sm">
                             {isLoading || !!topSupportingKnowledges.length ? (
                                 <SkillEditorSidePanelTopKnowledgeSection
                                     topKnowledges={topSupportingKnowledges}
@@ -145,13 +147,21 @@ export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
                                     }
                                 />
                             ) : (
-                                <Text
-                                    size="sm"
-                                    color="content-neutral-secondary"
-                                    align="center"
+                                <Box
+                                    width="100%"
+                                    justifyContent="center"
+                                    alignItems="center"
                                 >
-                                    Knowledge has not been used by AI Agent yet.
-                                </Text>
+                                    <Text
+                                        size="sm"
+                                        color="content-neutral-secondary"
+                                        align="center"
+                                        className={css.knowledgeContent}
+                                    >
+                                        Knowledge has not been used by AI Agent
+                                        yet.
+                                    </Text>
+                                </Box>
                             )}
                         </Box>
                     )}
