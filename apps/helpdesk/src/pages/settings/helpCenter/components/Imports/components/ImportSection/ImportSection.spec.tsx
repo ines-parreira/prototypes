@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history'
 import { Provider as ReduxProvider } from 'react-redux'

@@ -1,4 +1,5 @@
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import { basicMonthlyAutomationPlan, convertPlan0 } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'

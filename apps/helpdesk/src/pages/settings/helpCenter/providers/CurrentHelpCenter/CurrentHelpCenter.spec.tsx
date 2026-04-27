@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'

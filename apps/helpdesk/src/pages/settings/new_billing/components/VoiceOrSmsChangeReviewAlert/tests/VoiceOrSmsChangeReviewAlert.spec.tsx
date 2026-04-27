@@ -2,7 +2,7 @@ import React from 'react'
 
 import type { SelectedPlans } from '@repo/billing'
 import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

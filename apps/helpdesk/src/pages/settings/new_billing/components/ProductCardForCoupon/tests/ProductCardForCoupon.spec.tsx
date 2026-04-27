@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { advancedMonthlyHelpdeskPlan } from 'fixtures/plans'
 import type { CouponSummary } from 'models/billing/types'

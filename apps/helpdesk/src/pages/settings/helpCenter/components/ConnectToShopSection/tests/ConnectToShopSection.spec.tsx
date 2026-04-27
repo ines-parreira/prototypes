@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

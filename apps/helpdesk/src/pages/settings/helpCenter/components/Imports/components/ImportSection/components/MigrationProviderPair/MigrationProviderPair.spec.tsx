@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { migrationProviders } from '../../fixtures/migration-providers'
 import MigrationProviderPair from './MigrationProviderPair'

@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { Form } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { AddressElement } from '@stripe/react-stripe-js'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import { VATCountries } from 'state/billing/types'

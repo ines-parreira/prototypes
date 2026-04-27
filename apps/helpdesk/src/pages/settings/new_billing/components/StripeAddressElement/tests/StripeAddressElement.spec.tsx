@@ -1,7 +1,8 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { AddressElement } from '@stripe/react-stripe-js'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { StripeAddressElement } from '../StripeAddressElement'
 

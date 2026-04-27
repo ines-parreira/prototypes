@@ -6,7 +6,8 @@ import {
 } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AxiosError, AxiosHeaders } from 'axios'
 

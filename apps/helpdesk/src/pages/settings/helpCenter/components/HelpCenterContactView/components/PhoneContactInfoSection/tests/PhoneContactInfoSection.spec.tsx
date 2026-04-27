@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

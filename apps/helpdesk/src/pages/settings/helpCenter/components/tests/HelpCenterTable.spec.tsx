@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 
 import type { Locale } from 'models/helpCenter/types'

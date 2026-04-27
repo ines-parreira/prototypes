@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { act, fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent } from '@testing-library/react'
 
 import type { Props } from '../LinkItem'
 import { LinkItem } from '../LinkItem'

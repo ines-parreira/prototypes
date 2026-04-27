@@ -1,6 +1,7 @@
 import React, { createRef } from 'react'
 
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 
 import type { AIArticle } from 'models/helpCenter/types'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'

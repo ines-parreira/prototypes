@@ -1,6 +1,7 @@
 import type { SelectedPlans } from '@repo/billing'
 import { BILLING_BASE_PATH } from '@repo/billing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

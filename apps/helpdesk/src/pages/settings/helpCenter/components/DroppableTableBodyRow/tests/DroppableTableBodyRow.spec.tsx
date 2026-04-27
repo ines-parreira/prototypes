@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { getSingleCategoryEnglish } from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 

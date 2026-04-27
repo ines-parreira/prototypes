@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, within } from '@testing-library/react'
 
 import { CancellationPrimaryReasonLabel } from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import { DEFAULT_STATE } from 'pages/settings/new_billing/components/CancelProductModal/reducers'

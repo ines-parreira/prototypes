@@ -2,8 +2,7 @@ import 'tests/__mocks__/editionManagerContextMock'
 
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

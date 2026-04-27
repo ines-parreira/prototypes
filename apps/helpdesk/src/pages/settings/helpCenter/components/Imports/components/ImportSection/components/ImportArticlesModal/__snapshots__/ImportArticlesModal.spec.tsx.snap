@@ -127,6 +127,18 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -197,6 +209,18 @@ exports[`<ImportArticlesModal /> snapshots import in progress 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
 </body>
 `;
@@ -349,6 +373,18 @@ exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -452,6 +488,18 @@ exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
 </body>
 `;
@@ -595,6 +643,18 @@ exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -698,6 +758,18 @@ exports[`<ImportArticlesModal /> snapshots providers fetching error 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
 </body>
 `;

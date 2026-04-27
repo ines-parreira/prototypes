@@ -1,5 +1,5 @@
 import type { PlansByProduct, SelectedPlans } from '@repo/billing'
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import {
     basicMonthlyAutomationPlan,

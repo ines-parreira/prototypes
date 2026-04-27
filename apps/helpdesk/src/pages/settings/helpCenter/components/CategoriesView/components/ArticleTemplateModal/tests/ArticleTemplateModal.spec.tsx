@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { ArticleTemplatesListFixture } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 

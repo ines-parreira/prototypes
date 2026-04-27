@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import type { Magento2Integration } from 'models/integration/types'

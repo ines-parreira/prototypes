@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import type { Field } from '../../../MetafieldsTable/types'
 import { useFilteredMetafields } from '../useFilteredMetafields'

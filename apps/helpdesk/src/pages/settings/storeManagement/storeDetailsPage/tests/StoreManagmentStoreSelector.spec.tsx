@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { act, render, screen, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { mockStoresWithAssignedChannels } from '../../fixtures'

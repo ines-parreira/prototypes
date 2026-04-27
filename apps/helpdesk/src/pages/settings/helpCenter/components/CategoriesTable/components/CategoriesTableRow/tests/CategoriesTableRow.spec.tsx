@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider as ReduxProvider } from 'react-redux'
 import type { DeepPartial } from 'redux'

@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
 
 import AddArticleCard from '../AddArticleCard'
 

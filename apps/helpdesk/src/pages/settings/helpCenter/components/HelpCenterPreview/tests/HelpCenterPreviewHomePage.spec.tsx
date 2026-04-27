@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 

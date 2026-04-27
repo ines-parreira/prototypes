@@ -1,6 +1,6 @@
 import { payingWithCreditCard } from '@repo/billing/fixtures'
-import { assumeMock } from '@repo/testing'
-import { act, renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import {
     basicMonthlyHelpdeskPlan,

@@ -560,6 +560,18 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -700,6 +712,18 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
 </body>
 `;
@@ -1149,6 +1173,18 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -1404,6 +1440,18 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -1556,6 +1604,18 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
 </body>
 `;
@@ -1976,6 +2036,18 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -2217,6 +2289,18 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
 </body>
 `;

@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
