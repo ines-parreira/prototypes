@@ -29,9 +29,9 @@ vi.mock('@repo/utils', async (importOriginal) => ({
 
 describe('TicketListItemTrailingSlot', () => {
     describe('status', () => {
-        it('shows "Open" tooltip label for open status', () => {
+        it('renders no status label for open status', () => {
             render(<TicketListItemTrailingSlot status="open" datetime={null} />)
-            expect(screen.getByText('Open')).toBeInTheDocument()
+            expect(screen.queryByText('Open')).not.toBeInTheDocument()
         })
 
         it('shows "Closed" tooltip label for closed status', () => {

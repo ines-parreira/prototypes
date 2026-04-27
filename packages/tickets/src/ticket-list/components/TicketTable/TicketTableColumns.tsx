@@ -89,6 +89,7 @@ export function createTicketTableColumns({
                 return (
                     <TicketCell
                         ticketId={ticket.id}
+                        messagesCount={ticket.messages_count}
                         isUnread={ticket.is_unread}
                         subject={ticket.displaySubject}
                         excerpt={ticket.displayExcerpt}

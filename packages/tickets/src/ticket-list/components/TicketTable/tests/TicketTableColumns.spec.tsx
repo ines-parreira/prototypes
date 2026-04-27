@@ -203,11 +203,39 @@ describe('createTicketTableColumns', () => {
 
             renderColumn('ticket', ticket)
 
-            expect(screen.getByText('Help with order')).toBeInTheDocument()
+            expect(screen.getByText('(4) Help with order')).toBeInTheDocument()
             expect(
                 screen.getByText('I need help with my order'),
             ).toBeInTheDocument()
-            expectLinkedCell(/Help with order/i, '/app/ticket/1')
+            expectLinkedCell(/\(4\) Help with order/i, '/app/ticket/1')
+        })
+
+        it('renders the message count before the subject when the ticket has more than one message', () => {
+            const ticket = mockTicketCompact({
+                id: 1,
+                subject: 'Help with order',
+                messages_count: 11,
+            })
+
+            renderColumn('ticket', ticket)
+
+            expect(screen.getByText('(11) Help with order')).toBeInTheDocument()
+            expectLinkedCell(/\(11\) Help with order/i, '/app/ticket/1')
+        })
+
+        it('does not render the message count when the ticket has one message', () => {
+            const ticket = mockTicketCompact({
+                id: 1,
+                subject: 'Help with order',
+                messages_count: 1,
+            })
+
+            renderColumn('ticket', ticket)
+
+            expect(screen.getByText('Help with order')).toBeInTheDocument()
+            expect(
+                screen.queryByText('(1) Help with order'),
+            ).not.toBeInTheDocument()
         })
 
         it('renders the failed message tag instead of the excerpt', () => {
@@ -243,8 +271,10 @@ describe('createTicketTableColumns', () => {
                 shouldShowTranslatedContent: () => true,
             })
 
-            expect(screen.getByText('Translated subject')).toBeInTheDocument()
-            expectLinkedCell(/Translated subject/i, '/app/ticket/1')
+            expect(
+                screen.getByText('(4) Translated subject'),
+            ).toBeInTheDocument()
+            expectLinkedCell(/\(4\) Translated subject/i, '/app/ticket/1')
         })
 
         it('renders "No subject" when the subject is empty', () => {
@@ -256,7 +286,7 @@ describe('createTicketTableColumns', () => {
                 }),
             )
 
-            expect(screen.getByText('No subject')).toBeInTheDocument()
+            expect(screen.getByText('(4) No subject')).toBeInTheDocument()
         })
 
         it('renders agents viewing', () => {
@@ -279,6 +309,7 @@ describe('createTicketTableColumns', () => {
                     id: 1,
                     subject: 'Original subject',
                     excerpt: 'Original excerpt',
+                    messages_count: 11,
                     last_sent_message_not_delivered: false,
                     customer: mockTicketCompactCustomer({
                         name: 'Original customer',
@@ -304,7 +335,7 @@ describe('createTicketTableColumns', () => {
                 within(ticketCell).getByText(
                     (_, node) =>
                         node?.getAttribute('data-name') === 'text' &&
-                        node.textContent === 'Highlighted subject',
+                        node.textContent === '(11) Highlighted subject',
                 ),
             ).toBeInTheDocument()
             expect(
@@ -335,6 +366,7 @@ describe('createTicketTableColumns', () => {
                     id: 1,
                     subject: 'Original subject',
                     excerpt: 'Original excerpt',
+                    messages_count: 11,
                     last_sent_message_not_delivered: false,
                 }),
                 highlights: {
@@ -355,7 +387,9 @@ describe('createTicketTableColumns', () => {
                 shouldShowTranslatedContent: () => true,
             })
 
-            expect(screen.getByText('Translated subject')).toBeInTheDocument()
+            expect(
+                screen.getByText('(11) Translated subject'),
+            ).toBeInTheDocument()
             expect(screen.getByText('Translated excerpt')).toBeInTheDocument()
             expect(
                 screen.queryByText('Highlighted subject'),
@@ -369,6 +403,7 @@ describe('createTicketTableColumns', () => {
                     id: 1,
                     subject: 'Original subject',
                     excerpt: 'Original excerpt',
+                    messages_count: 11,
                     last_sent_message_not_delivered: false,
                 }),
                 highlights: {
@@ -393,7 +428,7 @@ describe('createTicketTableColumns', () => {
                 screen.getByText(
                     (_, node) =>
                         node?.getAttribute('data-name') === 'text' &&
-                        node.textContent === 'Highlighted subject',
+                        node.textContent === '(11) Highlighted subject',
                 ),
             ).toBeInTheDocument()
             expect(
@@ -474,15 +509,14 @@ describe('createTicketTableColumns', () => {
     })
 
     describe('assignee column', () => {
-        it('renders "Unassigned" when there is no assignee', () => {
+        it('renders nothing when there is no assignee', () => {
             const { container } = renderColumn(
                 'assignee',
                 mockTicketCompact({ assignee_user: null }),
             )
 
-            const unassignedLabel = screen.getByText('Unassigned')
-
-            expect(unassignedLabel).toBeInTheDocument()
+            expect(screen.queryByText('Unassigned')).not.toBeInTheDocument()
+            expect(screen.getByRole('cell')).toHaveTextContent('')
             expect(
                 container.querySelector('[data-name="avatar"]'),
             ).not.toBeInTheDocument()

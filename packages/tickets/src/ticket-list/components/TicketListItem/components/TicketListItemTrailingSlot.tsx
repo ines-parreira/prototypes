@@ -66,7 +66,7 @@ export function TicketListItemTrailingSlot({
     return (
         <Box flexDirection="row" alignItems="center" gap="xxs">
             <Box flexDirection="row" alignItems="center" gap="xxxxs">
-                {status && (
+                {status && status !== 'open' && (
                     <Tooltip
                         trigger={
                             <Tag size="sm">

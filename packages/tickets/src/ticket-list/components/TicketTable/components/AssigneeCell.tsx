@@ -40,21 +40,13 @@ function getAssigneeLabel(assignee: NonNullable<Props['assignee']>) {
 
 export function AssigneeCell({ assignee, linkProps }: Props) {
     if (!assignee) {
-        const content = (
-            <Text size="sm" color="content-neutral-secondary">
-                Unassigned
-            </Text>
-        )
-
         if (linkProps) {
             return (
-                <TicketTableCellLink {...linkProps}>
-                    {content}
-                </TicketTableCellLink>
+                <TicketTableCellLink {...linkProps}>{null}</TicketTableCellLink>
             )
         }
 
-        return <DataTableBaseCell>{content}</DataTableBaseCell>
+        return <DataTableBaseCell>{null}</DataTableBaseCell>
     }
 
     const profilePictureUrl = getProfilePictureUrl(assignee)

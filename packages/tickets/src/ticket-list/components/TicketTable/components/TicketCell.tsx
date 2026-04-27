@@ -16,6 +16,7 @@ import { TicketTableCellLink } from './TicketTableCellLink'
 
 export type TicketCellProps = {
     ticketId: TicketCompact['id']
+    messagesCount?: TicketCompact['messages_count']
     isUnread?: boolean
     subject: DisplayTextValue
     excerpt: DisplayTextValue
@@ -26,6 +27,7 @@ export type TicketCellProps = {
 
 export function TicketCell({
     ticketId,
+    messagesCount = 0,
     isUnread = false,
     subject,
     excerpt,
@@ -37,6 +39,15 @@ export function TicketCell({
         ticketId,
         currentUserId,
     )
+    const subjectWithMessageCount =
+        messagesCount > 1
+            ? {
+                  text: `(${messagesCount}) ${subject.text}`,
+                  highlightedHtml: subject.highlightedHtml
+                      ? `(${messagesCount}) ${subject.highlightedHtml}`
+                      : subject.highlightedHtml,
+              }
+            : subject
 
     const content = (
         <>
@@ -49,7 +60,7 @@ export function TicketCell({
             >
                 <OverflowTooltip placement="right">
                     <DisplayText
-                        value={subject}
+                        value={subjectWithMessageCount}
                         variant={isUnread ? 'bold' : 'regular'}
                         overflow="ellipsis"
                     />
@@ -76,7 +87,7 @@ export function TicketCell({
                     </OverflowTooltip>
                 )}
             </Box>
-            <Box flexShrink={0}>
+            <Box flexShrink={0} paddingLeft="xs">
                 <TicketListItemAgentsViewing agents={otherAgentsViewing} />
             </Box>
         </>
