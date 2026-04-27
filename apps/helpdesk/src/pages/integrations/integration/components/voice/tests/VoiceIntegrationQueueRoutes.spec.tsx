@@ -1,6 +1,5 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from '../constants'
 import VoiceIntegrationQueueRoutes from '../VoiceIntegrationQueueRoutes'
@@ -22,7 +21,7 @@ jest.mock(
 
 describe('VoiceIntegrationQueueRoutes', () => {
     const renderComponent = (route: string = '') =>
-        renderWithRouter(<VoiceIntegrationQueueRoutes />, { route })
+        render(<VoiceIntegrationQueueRoutes />, { initialEntries: [route] })
 
     it('should render QUEUE LIST at /queues', () => {
         renderComponent(baseURL + '/queues')

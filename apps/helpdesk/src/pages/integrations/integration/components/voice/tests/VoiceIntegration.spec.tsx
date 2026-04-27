@@ -1,8 +1,7 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { renderWithRouter } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceIntegration from '../VoiceIntegration'
@@ -60,7 +59,7 @@ jest.mock('../VoiceIntegrationFlowPage', () => () => (
 
 describe('VoiceIntegration', () => {
     const renderComponent = (route: string = '') =>
-        renderWithRouter(<VoiceIntegration />, { route })
+        render(<VoiceIntegration />, { initialEntries: [route] })
 
     describe('routes outside of integration context', () => {
         beforeEach(() => {

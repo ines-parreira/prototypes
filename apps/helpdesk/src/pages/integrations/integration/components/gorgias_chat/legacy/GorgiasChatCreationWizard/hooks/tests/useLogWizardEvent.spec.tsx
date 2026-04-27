@@ -1,19 +1,14 @@
 import React from 'react'
 
 import * as SegmentTracker from '@repo/logging'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { IntegrationType } from 'models/integration/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
-import { renderWithRouter } from 'utils/testing'
 
 import useLogWizardEvent from '../useLogWizardEvent'
-
-const mockStore = configureMockStore([thunk])
 
 const defaultState = {
     currentAccount: fromJS({
@@ -45,17 +40,16 @@ describe('useLogWizardEvent()', () => {
     it('should log the event', () => {
         const spy = jest.spyOn(SegmentTracker, 'logEvent')
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <Wizard steps={['step1']} startAt="step1">
-                    <WizardStep name="step1">
-                        <TestComponent />
-                    </WizardStep>
-                </Wizard>
-            </Provider>,
+        render(
+            <Wizard steps={['step1']} startAt="step1">
+                <WizardStep name="step1">
+                    <TestComponent />
+                </WizardStep>
+            </Wizard>,
             {
+                initialEntries: ['/1'],
                 path: '/:integrationId',
-                route: '/1',
+                storeState: defaultState,
             },
         )
 
