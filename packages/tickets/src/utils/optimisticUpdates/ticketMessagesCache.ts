@@ -1,5 +1,4 @@
-import { appQueryClient } from '@repo/api-resources'
-import type { InfiniteData } from '@tanstack/react-query'
+import type { InfiniteData, QueryClient } from '@tanstack/react-query'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
@@ -44,8 +43,8 @@ function sortMessagesByDateDesc<TMessage extends PersistedTicketMessage>(
 
 function upsertTicketMessageInListAllMessagesCache<
     TMessage extends PersistedTicketMessage,
->(message: TMessage, ticketId: number): void {
-    appQueryClient.setQueryData<InfiniteData<TicketMessagesPage<TMessage>>>(
+>(queryClient: QueryClient, message: TMessage, ticketId: number): void {
+    queryClient.setQueryData<InfiniteData<TicketMessagesPage<TMessage>>>(
         queryKeys.ticketMessages.listAllMessages({
             ticket_id: ticketId,
             limit: TICKET_THREAD_MESSAGES_PAGE_LIMIT,
@@ -115,16 +114,16 @@ function upsertTicketMessageInListAllMessagesCache<
 
 export function upsertTicketMessageInListMessagesCache<
     TMessage extends PersistedTicketMessage,
->(message: TMessage): void {
+>(queryClient: QueryClient, message: TMessage): void {
     const ticketId = Number(message.ticket_id)
 
     if (!ticketId) {
         return
     }
 
-    upsertTicketMessageInListAllMessagesCache(message, ticketId)
+    upsertTicketMessageInListAllMessagesCache(queryClient, message, ticketId)
 
-    appQueryClient.setQueryData(
+    queryClient.setQueryData(
         queryKeys.ticketMessages.listMessages({
             ticket_id: ticketId,
         }),

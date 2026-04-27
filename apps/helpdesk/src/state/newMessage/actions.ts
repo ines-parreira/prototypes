@@ -3,6 +3,7 @@ import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import client, { appQueryClient } from '@repo/api-resources'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
+import { upsertTicketMessageInListMessagesCache } from '@repo/tickets'
 import * as Sentry from '@sentry/react'
 import type { AxiosError, CancelToken } from 'axios'
 import { isCancel } from 'axios'
@@ -43,7 +44,6 @@ import { search } from 'models/search/resources'
 import type { UserSearchResult } from 'models/search/types'
 import { SearchType } from 'models/search/types'
 import { mapNormalizedToArray } from 'models/ticket/mappers'
-import { upsertTicketMessageInListMessagesCache } from 'models/ticket/queryCache'
 import type {
     Attachment,
     TicketAssignee,
@@ -1313,7 +1313,10 @@ export function sendTicketMessage(
                         )
 
                         if (sentTicketId) {
-                            upsertTicketMessageInListMessagesCache(resp)
+                            upsertTicketMessageInListMessagesCache(
+                                appQueryClient,
+                                resp,
+                            )
                             void appQueryClient.invalidateQueries({
                                 queryKey: queryKeys.ticketMessages.listMessages(
                                     {

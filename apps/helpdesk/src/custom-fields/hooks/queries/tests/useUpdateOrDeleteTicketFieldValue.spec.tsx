@@ -20,7 +20,11 @@ import { useUpdateOrDeleteTicketFieldValue } from '../useUpdateOrDeleteTicketFie
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/helpdesk-queries')
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useUpdateTicketCustomField: jest.fn(),
+    useDeleteTicketCustomField: jest.fn(),
+}))
 const useUpdateTicketCustomFieldMock = assumeMock(useUpdateTicketCustomField)
 const useDeleteTicketCustomFieldMock = assumeMock(useDeleteTicketCustomField)
 

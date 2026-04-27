@@ -1,6 +1,7 @@
 import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
 import { history } from '@repo/routing'
+import { upsertTicketMessageInListMessagesCache } from '@repo/tickets'
 import { logViewEvent, setViewsCount } from '@repo/views'
 import * as Sentry from '@sentry/react'
 import type { List, Map } from 'immutable'
@@ -18,7 +19,6 @@ import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import { throttledUpdateCustomFieldsCache } from 'main/init/socketEvents/helpers'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { isTicketMessage } from 'models/ticket/predicates'
-import { upsertTicketMessageInListMessagesCache } from 'models/ticket/queryCache'
 import type { UseListVoiceCalls } from 'models/voiceCall/queries'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import { isVoiceCall } from 'models/voiceCall/types'
@@ -166,7 +166,10 @@ const receivedEvents: ReceivedEvent[] = [
                 )
 
             if (createdMessage) {
-                upsertTicketMessageInListMessagesCache(createdMessage)
+                upsertTicketMessageInListMessagesCache(
+                    appQueryClient,
+                    createdMessage,
+                )
             }
 
             void appQueryClient.invalidateQueries({

@@ -5,4 +5,5 @@ export { TicketThreadContainer } from './layout/TicketThreadContainer/TicketThre
 export { getThreadItemKey } from './layout/TicketThreadContainer/utils'
 export { TicketThreadItem } from './components/TicketThreadItem/TicketThreadItem'
 export type { TicketThreadItem as TicketThreadItemType } from './hooks/types'
+export { useRealtimeTicketUpdates } from './hooks/realtime/useRealtimeTicketUpdates'
 export { useTicketThread } from './hooks/useTicketThread'

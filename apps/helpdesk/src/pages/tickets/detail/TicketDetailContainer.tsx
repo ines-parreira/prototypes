@@ -10,6 +10,7 @@ import {
     usePrevious,
 } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useRealtimeTicketUpdates } from '@repo/ticket-thread'
 import {
     getMacroTicketFieldValues,
     useLiveTicketTranslationsUpdates,
@@ -176,6 +177,9 @@ export const TicketDetailContainer = ({
             ticketLanguage: ticket.get('language'),
             ticketMessages: ticket.get('messages')?.toJS() ?? [],
         })
+    const { handleTicketUpdateEvents } = useRealtimeTicketUpdates({
+        ticketId: ticket.get('id'),
+    })
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
@@ -698,8 +702,15 @@ export const TicketDetailContainer = ({
     const handleAblyEvent = useCallback(
         (event: DomainEvent) => {
             handleTicketMessageTranslationEvents(event)
+            if (hasUIVisionMS3) {
+                handleTicketUpdateEvents(event)
+            }
         },
-        [handleTicketMessageTranslationEvents],
+        [
+            handleTicketMessageTranslationEvents,
+            handleTicketUpdateEvents,
+            hasUIVisionMS3,
+        ],
     )
 
     const handleAblyEventRef = useRef(handleAblyEvent)

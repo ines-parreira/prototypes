@@ -5,6 +5,7 @@ import { useFlag } from '@repo/feature-flags'
 import { useIsMobileResolution } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, flushPromises, userEvent } from '@repo/testing'
+import { useRealtimeTicketUpdates } from '@repo/ticket-thread'
 import { useLiveTicketTranslationsUpdates } from '@repo/tickets'
 import { shortcutManager } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -257,6 +258,10 @@ jest.mock('@repo/tickets', () => ({
         isValidating: false,
     }),
 }))
+jest.mock('@repo/ticket-thread', () => ({
+    ...jest.requireActual('@repo/ticket-thread'),
+    useRealtimeTicketUpdates: jest.fn(),
+}))
 
 jest.mock('@repo/tickets/feature-flags', () => ({
     ...jest.requireActual('@repo/tickets/feature-flags'),
@@ -266,6 +271,7 @@ jest.mock('@repo/tickets/feature-flags', () => ({
 
 const mockUseLiveTicketTranslationsUpdates =
     useLiveTicketTranslationsUpdates as jest.Mock
+const mockUseRealtimeTicketUpdates = useRealtimeTicketUpdates as jest.Mock
 
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
@@ -405,6 +411,9 @@ describe('TicketDetailContainer component', () => {
         })
         mockUseLiveTicketTranslationsUpdates.mockReturnValue({
             handleTicketMessageTranslationEvents: jest.fn(),
+        })
+        mockUseRealtimeTicketUpdates.mockReturnValue({
+            handleTicketUpdateEvents: jest.fn(),
         })
         mockJoinTicket.mockClear()
         mockUseFlag.mockReturnValue(false)
@@ -2069,11 +2078,16 @@ describe('TicketDetailContainer component', () => {
         expect(mockLeaveTicket).toHaveBeenCalled()
     })
 
-    it('should process realtime events', () => {
+    it('should process translation and realtime ticket updates', () => {
         const mockHandleTicketMessageTranslationEvents = jest.fn()
+        const mockHandleTicketUpdateEvents = jest.fn()
+        mockUseHelpdeskV2MS3Flag.mockReturnValue(true)
         mockUseLiveTicketTranslationsUpdates.mockReturnValue({
             handleTicketMessageTranslationEvents:
                 mockHandleTicketMessageTranslationEvents,
+        })
+        mockUseRealtimeTicketUpdates.mockReturnValue({
+            handleTicketUpdateEvents: mockHandleTicketUpdateEvents,
         })
 
         renderWithRouter(
@@ -2088,10 +2102,6 @@ describe('TicketDetailContainer component', () => {
             },
         )
 
-        expect(mockJoinTicket).toHaveBeenCalledWith(1, {
-            onEvent: expect.any(Function),
-        })
-
         const onEventCall = mockJoinTicket.mock.calls[0][1].onEvent
         const mockDomainEvent = { type: 'test-event', data: {} }
 
@@ -2100,6 +2110,36 @@ describe('TicketDetailContainer component', () => {
         expect(mockHandleTicketMessageTranslationEvents).toHaveBeenCalledWith(
             mockDomainEvent,
         )
+        expect(mockHandleTicketUpdateEvents).toHaveBeenCalledWith(
+            mockDomainEvent,
+        )
+    })
+
+    it('should not process realtime updates when MS3 is disabled', () => {
+        const mockHandleTicketUpdateEvents = jest.fn()
+        mockUseHelpdeskV2MS3Flag.mockReturnValue(false)
+        mockUseRealtimeTicketUpdates.mockReturnValue({
+            handleTicketUpdateEvents: mockHandleTicketUpdateEvents,
+        })
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            },
+        )
+
+        const onEventCall = mockJoinTicket.mock.calls[0][1].onEvent
+        const mockDomainEvent = { type: 'test-event', data: {} }
+
+        onEventCall(mockDomainEvent)
+
+        expect(mockHandleTicketUpdateEvents).not.toHaveBeenCalled()
     })
 
     describe('TicketThread rendering', () => {

@@ -5,13 +5,15 @@ type UseListTicketMessagesParams = {
     ticketId: number
 }
 
+export const TICKET_THREAD_MESSAGES_PAGE_LIMIT = 100
+
 export function useListTicketMessages({
     ticketId,
 }: UseListTicketMessagesParams): TicketMessage[] {
     const { items: messages } = useListAllMessages(
         {
             ticket_id: ticketId,
-            limit: 100,
+            limit: TICKET_THREAD_MESSAGES_PAGE_LIMIT,
         },
         {
             exhaustPages: true,
