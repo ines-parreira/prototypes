@@ -6,11 +6,12 @@ import { useParams } from 'react-router-dom'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
+import useAppSelector from 'hooks/useAppSelector'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import useHasCustomIntegrations from 'pages/tickets/detail/hooks/useHasCustomIntegrations'
-import useHasIntegration from 'pages/tickets/detail/hooks/useHasIntegration'
 import useIsIntegrationDisplayable from 'pages/tickets/detail/hooks/useIsIntegrationDisplayable'
 import useIsWooCommerceDisplayable from 'pages/tickets/detail/hooks/useIsWooCommerceDisplayable'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
 const panelConfig = {
     defaultSize: 49,
@@ -33,7 +34,10 @@ export function InfobarNavigationPanel() {
     const shopperId = currentTicketData?.data?.customer?.id
 
     const hasCustomIntegrations = useHasCustomIntegrations()
-    const hasShopify = useHasIntegration(IntegrationType.Shopify)
+    const shopifyIntegrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.Shopify),
+    )
+    const hasShopify = shopifyIntegrations.length > 0
     const hasRecharge = useIsIntegrationDisplayable(IntegrationType.Recharge)
     const hasBigCommerce = useIsIntegrationDisplayable(
         IntegrationType.Bigcommerce,
