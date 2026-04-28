@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
 
+import type {
+    CalendarDateTime,
+    Time,
+    ZonedDateTime,
+} from '@internationalized/date'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useFormContext } from 'react-hook-form'
 
@@ -43,6 +48,9 @@ export type SetupFormValues = {
     excluded_audience_list_ids?: string[]
     campaignTitle?: string
     rcs_enabled?: boolean
+    scheduleType?: 'immediate' | 'later'
+    scheduledDate?: ZonedDateTime | null
+    scheduledTime?: Time | CalendarDateTime | ZonedDateTime | null
 }
 
 export const Setup = () => {
@@ -70,12 +78,13 @@ export const Setup = () => {
         : isAiJourneySegmentsEnabled
 
     useEffect(() => {
-        if (!isLoadingJourneyData) {
+        if (!isLoadingJourneyData && !isFormReady) {
             if (journeyParams) {
                 const hasCustomImage =
                     'media_urls' in journeyParams &&
                     journeyParams.media_urls &&
                     journeyParams.media_urls.length > 0
+
                 reset({
                     sms_sender_integration_id: {
                         id: journeyParams.sms_sender_integration_id,
@@ -128,7 +137,7 @@ export const Setup = () => {
             }
             setIsFormReady(true)
         }
-    }, [isLoadingJourneyData, journeyData, journeyParams, reset])
+    }, [isLoadingJourneyData, isFormReady, journeyData, journeyParams, reset])
 
     return (
         <Box flexDirection="column" gap="lg">

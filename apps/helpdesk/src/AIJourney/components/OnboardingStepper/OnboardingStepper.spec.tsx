@@ -130,6 +130,64 @@ describe('<OnboardingStepper />', () => {
         expect(calls[2][0].id).toBe(STEPS_NAMES.ACTIVATE)
     })
 
+    describe('custom steps prop', () => {
+        it('renders custom steps when steps prop is provided', () => {
+            const customSteps = [
+                { name: STEPS_NAMES.SETUP, label: 'Setup', stepNumber: 1 },
+                { name: STEPS_NAMES.PREVIEW, label: 'Preview', stepNumber: 2 },
+                { name: STEPS_NAMES.ACTIVATE, label: 'Test', stepNumber: 3 },
+                {
+                    name: STEPS_NAMES.SCHEDULE,
+                    label: 'Schedule or send',
+                    stepNumber: 4,
+                },
+            ]
+
+            render(
+                <OnboardingStepper
+                    step={STEPS_NAMES.SETUP}
+                    currentStepIndex={0}
+                    onStepClick={jest.fn()}
+                    steps={customSteps}
+                />,
+            )
+
+            expect(screen.getByText('Setup')).toBeInTheDocument()
+            expect(screen.getByText('Preview')).toBeInTheDocument()
+            expect(screen.getByText('Test')).toBeInTheDocument()
+            expect(screen.getByText('Schedule or send')).toBeInTheDocument()
+        })
+
+        it('renders 4 stepper items when 4 steps are provided', () => {
+            const customSteps = [
+                { name: STEPS_NAMES.SETUP, label: 'Setup', stepNumber: 1 },
+                { name: STEPS_NAMES.PREVIEW, label: 'Preview', stepNumber: 2 },
+                { name: STEPS_NAMES.ACTIVATE, label: 'Test', stepNumber: 3 },
+                {
+                    name: STEPS_NAMES.SCHEDULE,
+                    label: 'Schedule or send',
+                    stepNumber: 4,
+                },
+            ]
+
+            render(
+                <OnboardingStepper
+                    step={STEPS_NAMES.SCHEDULE}
+                    currentStepIndex={3}
+                    onStepClick={jest.fn()}
+                    steps={customSteps}
+                />,
+            )
+
+            const calls = mockStepperTabItem.mock.calls
+            expect(calls).toHaveLength(4)
+            expect(calls[0][0].state).toBe(StepperItemState.Done)
+            expect(calls[1][0].state).toBe(StepperItemState.Done)
+            expect(calls[2][0].state).toBe(StepperItemState.Done)
+            expect(calls[3][0].state).toBe(StepperItemState.Current)
+        })
+    })
+
     describe('onStepClick', () => {
         it('passes onClick to all steps', () => {
             const onStepClick = jest.fn()

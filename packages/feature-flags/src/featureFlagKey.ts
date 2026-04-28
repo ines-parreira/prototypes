@@ -57,6 +57,7 @@ export enum FeatureFlagKey {
     AiJourneyRcsEnable = 'linear.task_AIJOU-1526.enable-rcs-messages',
     AiJourneyAttributionModelComparison = 'linear.AIJOU-1796-show-custom-attribution-model',
     AiJourneyCustomFlowEnabled = 'ai-journey-custom-flow-enabled',
+    AiJourneyCampaignSchedulingEnabled = 'ai-journey-campaign-scheduling-enabled',
     AiJourneyCampaignSendingEnabled = 'campaign-sending-enabled',
     AiJourneySegmentsUiEnabled = 'ai-journey-segments-ui-enabled',
     AiJourneyStoreSettingsEnabled = 'ai-journey-store-settings-enabled',

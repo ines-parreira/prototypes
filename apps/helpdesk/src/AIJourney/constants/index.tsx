@@ -6,6 +6,7 @@ export const STEPS_NAMES = {
     SETUP: 'setup',
     PREVIEW: 'preview',
     ACTIVATE: 'activate',
+    SCHEDULE: 'schedule',
 }
 
 export type STEPS_NAMES = (typeof STEPS_NAMES)[keyof typeof STEPS_NAMES]
@@ -63,6 +64,7 @@ export type UpdatableJourneyCampaignState =
 export const UpdatableJourneyCampaignState = {
     Draft: 'draft',
     Scheduled: 'scheduled',
+    Active: 'active',
     Canceled: 'canceled',
     Paused: 'paused',
 }
@@ -84,6 +86,29 @@ export const JOURNEY_ONBOARDING_STEPS = [
         name: STEPS_NAMES.ACTIVATE,
         label: 'Test and activate',
         stepNumber: 3,
+    },
+]
+
+export const CAMPAIGN_ONBOARDING_STEPS = [
+    {
+        name: STEPS_NAMES.SETUP,
+        label: 'Setup',
+        stepNumber: 1,
+    },
+    {
+        name: STEPS_NAMES.PREVIEW,
+        label: 'Preview',
+        stepNumber: 2,
+    },
+    {
+        name: STEPS_NAMES.ACTIVATE,
+        label: 'Test',
+        stepNumber: 3,
+    },
+    {
+        name: STEPS_NAMES.SCHEDULE,
+        label: 'Schedule or send',
+        stepNumber: 4,
     },
 ]
 

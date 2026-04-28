@@ -35,7 +35,11 @@ export const CAMPAIGN_STATE_TO_FIELDS: Record<
         Options.Duplicate,
         Options.Delete,
     ],
-    [JourneyCampaignStateEnum.Scheduled]: [Options.Duplicate, Options.Cancel],
+    [JourneyCampaignStateEnum.Scheduled]: [
+        Options.Edit,
+        Options.Duplicate,
+        Options.Cancel,
+    ],
     [JourneyCampaignStateEnum.Active]: [
         Options.Duplicate,
         Options.Pause,
@@ -84,7 +88,7 @@ export const MoreOptions = ({
                     handleChangeStatus(UpdatableJourneyCampaignState.Paused)
                     break
                 case Options.Resume:
-                    handleChangeStatus(UpdatableJourneyCampaignState.Scheduled)
+                    handleChangeStatus(UpdatableJourneyCampaignState.Active)
                     break
                 case Options.Cancel:
                     handleCancelClick()
@@ -130,7 +134,7 @@ export const MoreOptions = ({
                             return {
                                 icon: 'comm-send',
                                 id: option,
-                                name: 'Send',
+                                name: 'Send now',
                             }
                         }
                         return null

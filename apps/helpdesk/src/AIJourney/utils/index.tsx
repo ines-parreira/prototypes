@@ -65,7 +65,7 @@ export const getCampaignStateLabelAndColor = (
     let label: string
     switch (state) {
         case JourneyCampaignStateEnum.Draft:
-            color = 'yellow'
+            color = 'grey'
             label = 'Draft'
             break
         case JourneyCampaignStateEnum.Scheduled:

@@ -54,7 +54,7 @@ describe('<MoreOptions />', () => {
     })
 
     describe('Campaign state options', () => {
-        it('should show Edit, Send, Duplicate, and Delete options for Draft state', async () => {
+        it('should show Edit, Send now, Duplicate, and Delete options for Draft state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
                 <MoreOptions
@@ -67,12 +67,12 @@ describe('<MoreOptions />', () => {
             await user.click(trigger)
 
             expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Send').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Delete').length).toBeGreaterThan(0)
         })
 
-        it('should show Duplicate and Cancel options for Scheduled state', async () => {
+        it('should show Edit, Duplicate and Cancel options for Scheduled state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
                 <MoreOptions
@@ -84,6 +84,7 @@ describe('<MoreOptions />', () => {
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
 
+            expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Cancel').length).toBeGreaterThan(0)
         })
@@ -135,7 +136,7 @@ describe('<MoreOptions />', () => {
 
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
             expect(screen.queryByText('Edit')).not.toBeInTheDocument()
-            expect(screen.queryByText('Send')).not.toBeInTheDocument()
+            expect(screen.queryByText('Send now')).not.toBeInTheDocument()
             expect(screen.queryByText('Delete')).not.toBeInTheDocument()
         })
 
@@ -153,13 +154,13 @@ describe('<MoreOptions />', () => {
 
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
             expect(screen.queryByText('Edit')).not.toBeInTheDocument()
-            expect(screen.queryByText('Send')).not.toBeInTheDocument()
+            expect(screen.queryByText('Send now')).not.toBeInTheDocument()
             expect(screen.queryByText('Delete')).not.toBeInTheDocument()
         })
     })
 
     describe('Action handlers', () => {
-        it('should call handleSendClick when Send option is clicked', async () => {
+        it('should call handleSendClick when Send now option is clicked', async () => {
             const user = userEvent.setup()
             const handleSendClick = jest.fn()
             renderWithRouter(
@@ -172,14 +173,14 @@ describe('<MoreOptions />', () => {
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
 
-            const sendOptions = screen.getAllByText('Send')
-            const sendListItem = sendOptions.find(
+            const sendOptions = screen.getAllByText('Send now')
+            const sendOption = sendOptions.find(
                 (el) =>
                     el.closest('[role="option"]') ||
                     el.closest('.ui-text-text-d239'),
             )
-            if (sendListItem) {
-                await user.click(sendListItem)
+            if (sendOption) {
+                await user.click(sendOption)
             }
 
             expect(handleSendClick).toHaveBeenCalledTimes(1)
@@ -313,7 +314,7 @@ describe('<MoreOptions />', () => {
             expect(handleChangeStatus).toHaveBeenCalledWith('paused')
         })
 
-        it('should call handleChangeStatus with Scheduled when Resume option is clicked', async () => {
+        it('should call handleChangeStatus with Active when Resume option is clicked', async () => {
             const user = userEvent.setup()
             const handleChangeStatus = jest.fn()
             renderWithRouter(
@@ -337,12 +338,12 @@ describe('<MoreOptions />', () => {
                 await user.click(resumeListItem)
             }
 
-            expect(handleChangeStatus).toHaveBeenCalledWith('scheduled')
+            expect(handleChangeStatus).toHaveBeenCalledWith('active')
         })
     })
 
-    describe('Send option feature flag', () => {
-        it('should show Send option when feature flag is enabled', async () => {
+    describe('Send now option feature flag', () => {
+        it('should show Send now option when feature flag is enabled', async () => {
             mockUseFlag.mockImplementation(() => true)
 
             const user = userEvent.setup()
@@ -356,10 +357,10 @@ describe('<MoreOptions />', () => {
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
 
-            expect(screen.getAllByText('Send').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
         })
 
-        it('should not show Send option when feature flag is disabled and user is not impersonated', async () => {
+        it('should not show Send now option when feature flag is disabled and user is not impersonated', async () => {
             mockUseFlag.mockImplementation(() => false)
 
             const user = userEvent.setup()
@@ -373,13 +374,13 @@ describe('<MoreOptions />', () => {
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
 
-            expect(screen.queryByText('Send')).not.toBeInTheDocument()
+            expect(screen.queryByText('Send now')).not.toBeInTheDocument()
             expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Delete').length).toBeGreaterThan(0)
         })
 
-        it('should show Send option when user is impersonated even if feature flag is disabled', async () => {
+        it('should show Send now option when user is impersonated even if feature flag is disabled', async () => {
             mockUseFlag.mockImplementation(() => false)
             ;(window as any).USER_IMPERSONATED = true
 
@@ -394,10 +395,10 @@ describe('<MoreOptions />', () => {
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
 
-            expect(screen.getAllByText('Send').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
         })
 
-        it('should not show Send option when campaign has no included audiences', async () => {
+        it('should not show Send now option when campaign has no included audiences', async () => {
             const user = userEvent.setup()
             renderWithRouter(
                 <MoreOptions
@@ -410,13 +411,13 @@ describe('<MoreOptions />', () => {
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
 
-            expect(screen.queryByText('Send')).not.toBeInTheDocument()
+            expect(screen.queryByText('Send now')).not.toBeInTheDocument()
             expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Delete').length).toBeGreaterThan(0)
         })
 
-        it('should show Send option when campaign has included audiences', async () => {
+        it('should show Send now option when campaign has included audiences', async () => {
             const user = userEvent.setup()
             renderWithRouter(
                 <MoreOptions
@@ -429,7 +430,7 @@ describe('<MoreOptions />', () => {
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
 
-            expect(screen.getAllByText('Send').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
         })
     })
 })

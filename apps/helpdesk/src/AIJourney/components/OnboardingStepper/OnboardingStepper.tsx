@@ -8,14 +8,18 @@ import {
 import type { STEPS_NAMES } from 'AIJourney/constants'
 import { JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants'
 
+type StepDefinition = (typeof JOURNEY_ONBOARDING_STEPS)[number]
+
 export const OnboardingStepper = ({
     step,
     currentStepIndex,
     onStepClick,
+    steps = JOURNEY_ONBOARDING_STEPS,
 }: {
     step: STEPS_NAMES
     currentStepIndex: number
     onStepClick: (stepName: STEPS_NAMES) => void
+    steps?: StepDefinition[]
 }) => {
     const getStepState = (index: number) => {
         if (index < currentStepIndex) return StepperItemState.Done
@@ -25,7 +29,7 @@ export const OnboardingStepper = ({
     return (
         <AxiomStepper selectedItem={step}>
             <StepperTabList>
-                {JOURNEY_ONBOARDING_STEPS.map((s, index) => {
+                {steps.map((s, index) => {
                     const state = getStepState(index)
                     return (
                         <StepperTabItem

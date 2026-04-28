@@ -10,9 +10,13 @@ import CampaignStateBadge from './CampaignStateBadge'
 describe('CampaignStateBadge', () => {
     describe('Badge styling', () => {
         const testCases = [
-            { state: JourneyCampaignStateEnum.Draft, expectedColor: 'yellow' },
+            { state: JourneyCampaignStateEnum.Draft, expectedColor: 'grey' },
             {
                 state: JourneyCampaignStateEnum.Scheduled,
+                expectedColor: 'yellow',
+            },
+            {
+                state: JourneyCampaignStateEnum.Paused,
                 expectedColor: 'yellow',
             },
             { state: JourneyCampaignStateEnum.Active, expectedColor: 'blue' },

@@ -47,6 +47,7 @@ type HandleUpdateParams = {
     postPurchaseWaitMinutes?: number
     uploadedImageAttachment?: UploadedImageAttachment[]
     rcsEnabled?: boolean
+    scheduledDatetime?: string | null
 }
 
 export const useJourneyUpdateHandler = ({
@@ -133,10 +134,13 @@ export const useJourneyUpdateHandler = ({
                             updateParams.excludedAudienceListIds,
                         campaign:
                             updateParams.campaignTitle ||
-                            updateParams.campaignState
+                            updateParams.campaignState ||
+                            updateParams.scheduledDatetime !== undefined
                                 ? ({
                                       title: updateParams.campaignTitle,
                                       state: updateParams.campaignState,
+                                      scheduled_datetime:
+                                          updateParams.scheduledDatetime,
                                   } as PatchJourneyBody)
                                 : undefined,
                     },

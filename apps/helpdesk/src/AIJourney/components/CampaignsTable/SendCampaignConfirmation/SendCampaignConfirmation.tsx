@@ -48,23 +48,26 @@ const SendCampaignConfirmation = ({
 
     return (
         <Modal size="sm" isOpen={isOpen} isDismissable={false}>
-            <OverlayHeader title="Send Campaign?" />
+            <OverlayHeader title="Send campaign now?" />
             <OverlayContent>
                 <Box gap="xs">
-                    <Text>You’re about to send this campaign.</Text>
+                    <Text>
+                        This campaign will be sent to your audience immediately.
+                        Are you sure you want to proceed?
+                    </Text>
                 </Box>
             </OverlayContent>
             <OverlayFooter>
                 <Box gap="xs">
                     <Button variant="secondary" onClick={onClose}>
-                        Cancel
+                        Go back
                     </Button>
                     <Button
                         variant="primary"
                         onClick={onConfirm}
                         intent="regular"
                     >
-                        Send
+                        Send now
                     </Button>
                 </Box>
             </OverlayFooter>

@@ -35,6 +35,7 @@ type HandleCreateParams = {
     postPurchaseWaitMinutes?: number
     uploadedImageAttachment?: UploadedImageAttachment[]
     rcsEnabled?: boolean
+    scheduledDatetime?: string | null
 }
 
 export const useJourneyCreateHandler = ({
@@ -65,6 +66,7 @@ export const useJourneyCreateHandler = ({
             postPurchaseWaitMinutes,
             uploadedImageAttachment,
             rcsEnabled,
+            scheduledDatetime,
         }: HandleCreateParams) => {
             try {
                 if (!integrationId || !integrationName) {
@@ -109,7 +111,7 @@ export const useJourneyCreateHandler = ({
                     media_urls: uploadedImageAttachment,
                 }
 
-                const result = await createNewJourney.mutateAsync({
+                const createBody = {
                     params: {
                         store_integration_id: integrationId,
                         store_name: integrationName,
@@ -117,6 +119,9 @@ export const useJourneyCreateHandler = ({
                         campaign: campaignTitle
                             ? {
                                   title: campaignTitle,
+                                  ...(scheduledDatetime !== undefined && {
+                                      scheduled_datetime: scheduledDatetime,
+                                  }),
                               }
                             : undefined,
                         included_audience_list_ids: includedAudienceListIds,
@@ -126,7 +131,8 @@ export const useJourneyCreateHandler = ({
                         ...baseJourneyConfigs,
                         ...optionalConfigs,
                     },
-                })
+                }
+                const result = await createNewJourney.mutateAsync(createBody)
 
                 await queryClient.invalidateQueries({
                     queryKey: aiJourneyKeys.all(),

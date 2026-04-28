@@ -127,6 +127,7 @@ export default function CampaignsTable<TData, TValue>({
             handleUpdate({
                 id: selectedCampaignId,
                 campaignState: JourneyCampaignStateEnum.Scheduled,
+                scheduledDatetime: null,
             })
         }
         handleCloseSendModal()

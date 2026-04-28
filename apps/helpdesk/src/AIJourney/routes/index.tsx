@@ -4,6 +4,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
+import { STEPS_NAMES } from 'AIJourney/constants'
 import { AI_JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants/journeyTypes'
 import {
     AiJourneyOnboarding,
@@ -26,6 +27,18 @@ function AiJourneyBaseRoutes() {
     const isAiJourneyStoreSettingsEnabled = useFlag(
         FeatureFlagKey.AiJourneyStoreSettingsEnabled,
     )
+    const isCampaignSchedulingEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCampaignSchedulingEnabled,
+    )
+
+    const onboardingSteps = isCampaignSchedulingEnabled
+        ? AI_JOURNEY_ONBOARDING_STEPS
+        : AI_JOURNEY_ONBOARDING_STEPS.map((entry) => ({
+              ...entry,
+              steps: entry.steps.filter(
+                  (s) => s.stepName !== STEPS_NAMES.SCHEDULE,
+              ),
+          }))
 
     return (
         <Switch>
@@ -45,33 +58,28 @@ function AiJourneyBaseRoutes() {
                                     <Redirect to={`${match.url}/analytics`} />
                                 )}
                             />
-                            {AI_JOURNEY_ONBOARDING_STEPS.map(
-                                ({ journeyType, steps }) =>
-                                    steps.map(
-                                        ({
-                                            stepName,
-                                            component,
-                                        }: {
-                                            stepName: string
-                                            component: React.ComponentType<StepComponentProps>
-                                        }) => (
-                                            <Route
-                                                path={`${path}/:shopName/${journeyType}/${stepName}`}
-                                                render={() => (
-                                                    <AiJourneyOnboarding
-                                                        journeyType={
-                                                            journeyType
-                                                        }
-                                                        step={stepName}
-                                                        stepComponent={
-                                                            component
-                                                        }
-                                                    />
-                                                )}
-                                                key={`${journeyType}-journey-${stepName}`}
-                                            />
-                                        ),
+                            {onboardingSteps.map(({ journeyType, steps }) =>
+                                steps.map(
+                                    ({
+                                        stepName,
+                                        component,
+                                    }: {
+                                        stepName: string
+                                        component: React.ComponentType<StepComponentProps>
+                                    }) => (
+                                        <Route
+                                            path={`${path}/:shopName/${journeyType}/${stepName}`}
+                                            render={() => (
+                                                <AiJourneyOnboarding
+                                                    journeyType={journeyType}
+                                                    step={stepName}
+                                                    stepComponent={component}
+                                                />
+                                            )}
+                                            key={`${journeyType}-journey-${stepName}`}
+                                        />
                                     ),
+                                ),
                             )}
                             <Route
                                 path={`${path}/:shopName/flows`}

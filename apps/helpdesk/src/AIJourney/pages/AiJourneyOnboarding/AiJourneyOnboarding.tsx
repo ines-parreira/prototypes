@@ -1,12 +1,28 @@
 import type React from 'react'
-import { useMemo } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
+import {
+    CalendarDate,
+    getLocalTimeZone,
+    Time,
+    toCalendarDateTime,
+    toZoned,
+} from '@internationalized/date'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { SubmitHandler } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
-import { Box, Button, PanelHeader } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Modal,
+    OverlayContent,
+    OverlayFooter,
+    OverlayHeader,
+    PanelHeader,
+    Text,
+} from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import {
@@ -14,6 +30,7 @@ import {
     SmsSenderRequiredBanner,
 } from 'AIJourney/components'
 import {
+    CAMPAIGN_ONBOARDING_STEPS,
     JOURNEY_ONBOARDING_STEPS,
     JOURNEY_TYPES,
     STEPS_NAMES,
@@ -38,6 +55,30 @@ type AiJourneyOnboardingProps = {
     stepComponent: React.ComponentType<StepComponentProps>
 }
 
+export function buildScheduledDatetime(
+    getValues: () => SetupFormValues,
+): string | null {
+    const { scheduleType, scheduledDate, scheduledTime } = getValues()
+    if (scheduleType === 'later' && scheduledDate && scheduledTime) {
+        const calDate = new CalendarDate(
+            scheduledDate.year,
+            scheduledDate.month,
+            scheduledDate.day,
+        )
+        const time = new Time(
+            scheduledTime.hour,
+            scheduledTime.minute,
+            scheduledTime.second,
+            scheduledTime.millisecond,
+        )
+        const calDateTime = toCalendarDateTime(calDate, time)
+        return toZoned(calDateTime, getLocalTimeZone())
+            .toString()
+            .replace(/\[.*\]$/, '')
+    }
+    return null
+}
+
 export const AiJourneyOnboarding = ({
     journeyType,
     step,
@@ -47,6 +88,15 @@ export const AiJourneyOnboarding = ({
     const storeSettingsEnabled = useFlag(
         FeatureFlagKey.AiJourneyStoreSettingsEnabled,
     )
+    const isCampaignSchedulingEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCampaignSchedulingEnabled,
+    )
+
+    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const onboardingSteps =
+        isCampaign && isCampaignSchedulingEnabled
+            ? CAMPAIGN_ONBOARDING_STEPS
+            : JOURNEY_ONBOARDING_STEPS
 
     const methods = useForm<SetupFormValues>({
         defaultValues: {
@@ -58,9 +108,15 @@ export const AiJourneyOnboarding = ({
                 cooldown_days: 30,
                 inactive_days: 30,
             }),
+            ...(isCampaign &&
+                isCampaignSchedulingEnabled && {
+                    scheduleType: 'immediate' as const,
+                    scheduledDate: null,
+                    scheduledTime: null,
+                }),
         },
     })
-    const { handleSubmit } = methods
+    const { handleSubmit, getValues, watch } = methods
 
     const { currentIntegration, journeyData, shopName } = useJourneyContext()
     const journeyId = journeyData?.id
@@ -86,8 +142,8 @@ export const AiJourneyOnboarding = ({
     }
 
     const currentStepIndex = useMemo(
-        () => JOURNEY_ONBOARDING_STEPS.findIndex((s) => s.name === step),
-        [step],
+        () => onboardingSteps.findIndex((s) => s.name === step),
+        [onboardingSteps, step],
     )
 
     const handleStepClick = (stepName: STEPS_NAMES) => {
@@ -99,13 +155,13 @@ export const AiJourneyOnboarding = ({
     }
 
     const nextStep = useMemo(
-        () => JOURNEY_ONBOARDING_STEPS[currentStepIndex + 1]?.name,
-        [currentStepIndex],
+        () => onboardingSteps[currentStepIndex + 1]?.name,
+        [onboardingSteps, currentStepIndex],
     )
 
     const previousStep = useMemo(
-        () => JOURNEY_ONBOARDING_STEPS[currentStepIndex - 1]?.name,
-        [currentStepIndex],
+        () => onboardingSteps[currentStepIndex - 1]?.name,
+        [onboardingSteps, currentStepIndex],
     )
 
     const { handleCreate, isLoading: isLoadingHandleCreate } =
@@ -121,16 +177,90 @@ export const AiJourneyOnboarding = ({
             journeyId: journeyData?.id,
         })
 
+    const campaignState = journeyData?.campaign?.state
+    const isScheduledCampaign = campaignState === 'scheduled'
+    const isReadOnlyCampaign =
+        campaignState === 'canceled' ||
+        campaignState === 'sent' ||
+        campaignState === 'active' ||
+        campaignState === 'paused'
+    const isScheduleStep =
+        isCampaignSchedulingEnabled && step === STEPS_NAMES.SCHEDULE
+
+    const [isSendNowConfirmOpen, setIsSendNowConfirmOpen] = useState(false)
+    const pendingSubmitData = useRef<SetupFormValues | null>(null)
+
+    const navigateToCampaignList = useCallback(
+        () => history.push(`/app/ai-journey/${shopName}/campaigns`),
+        [history, shopName],
+    )
+
+    const handleMiddleButtonClick = async () => {
+        if (!isScheduleStep) return
+
+        if (isScheduledCampaign) {
+            await handleUpdate({
+                campaignState: UpdatableJourneyCampaignState.Draft,
+                scheduledDatetime: null,
+            })
+        } else {
+            const scheduledDatetime = buildScheduledDatetime(getValues)
+            await handleUpdate({
+                scheduledDatetime: scheduledDatetime ?? null,
+            })
+        }
+        navigateToCampaignList()
+    }
+
+    const executeSendNow = useCallback(async () => {
+        await handleUpdate({
+            campaignState: UpdatableJourneyCampaignState.Scheduled,
+            scheduledDatetime: null,
+        })
+        navigateToCampaignList()
+    }, [handleUpdate, navigateToCampaignList])
+
+    const handleSendNowConfirm = async () => {
+        setIsSendNowConfirmOpen(false)
+        pendingSubmitData.current = null
+        await executeSendNow()
+    }
+
     const handleContinue: SubmitHandler<SetupFormValues> = async (data) => {
+        if (isScheduleStep) {
+            const scheduleType = getValues().scheduleType
+            const scheduledDatetime = buildScheduledDatetime(getValues)
+
+            if (scheduleType === 'later' && scheduledDatetime) {
+                await handleUpdate({
+                    campaignState: UpdatableJourneyCampaignState.Scheduled,
+                    scheduledDatetime,
+                })
+            } else {
+                pendingSubmitData.current = data
+                setIsSendNowConfirmOpen(true)
+                return
+            }
+            navigateToCampaignList()
+            return
+        }
+
         if (step === STEPS_NAMES.ACTIVATE) {
-            const updateParams = isCampaign
-                ? { campaignState: UpdatableJourneyCampaignState.Draft }
-                : { journeyState: JourneyStatusEnum.Active }
-            await handleUpdate(updateParams).then(() =>
+            if (isCampaign && isCampaignSchedulingEnabled) {
                 history.push(
-                    `/app/ai-journey/${shopName}/${isCampaign ? 'campaigns' : 'flows'}`,
-                ),
-            )
+                    `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${journeyData?.id}`,
+                )
+            } else if (isCampaign) {
+                await handleUpdate({
+                    campaignState: UpdatableJourneyCampaignState.Draft,
+                }).then(() =>
+                    history.push(`/app/ai-journey/${shopName}/campaigns`),
+                )
+            } else {
+                await handleUpdate({
+                    journeyState: JourneyStatusEnum.Active,
+                }).then(() => history.push(`/app/ai-journey/${shopName}/flows`))
+            }
             return
         }
 
@@ -206,8 +336,6 @@ export const AiJourneyOnboarding = ({
     }
 
     const handleCancel = () => {
-        const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
-
         if (step === STEPS_NAMES.PREVIEW) {
             setIsCollapsibleColumnOpen(false)
         }
@@ -221,22 +349,54 @@ export const AiJourneyOnboarding = ({
         )
     }
 
-    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
     const isPreviewStep = step === STEPS_NAMES.PREVIEW
+
+    const isMissingAudience =
+        isScheduleStep &&
+        (!journeyData?.included_audience_list_ids ||
+            journeyData.included_audience_list_ids.length === 0)
+    const isMissingMessageInstructions =
+        isScheduleStep && !journeyData?.message_instructions
+
+    const scheduleStepBlockers: string[] = []
+    if (isMissingAudience) scheduleStepBlockers.push('Add an audience')
+    if (isMissingMessageInstructions)
+        scheduleStepBlockers.push('Add message guidance')
 
     const shouldDisableContinueButton =
         isLoadingHandleCreate ||
         isLoadingHandleUpdate ||
+        isReadOnlyCampaign ||
+        scheduleStepBlockers.length > 0 ||
         (!isPreviewStep &&
+            !isScheduleStep &&
             storeSettingsEnabled &&
             (isLoadingStoreConfig || isMissingSmsSender))
 
-    const primaryButtonLabel =
-        step === STEPS_NAMES.ACTIVATE
-            ? `Activate ${isCampaign ? 'campaign' : 'flow'}`
-            : 'Continue'
+    const scheduleType = watch('scheduleType')
 
+    let primaryButtonLabel = 'Continue'
+    let middleButtonLabel: string | null = null
     const secondaryButtonLabel = step === STEPS_NAMES.SETUP ? 'Cancel' : 'Back'
+
+    if (isScheduleStep) {
+        if (isScheduledCampaign) {
+            middleButtonLabel = 'Move to draft'
+            primaryButtonLabel =
+                scheduleType === 'later' ? 'Save changes' : 'Send'
+        } else {
+            middleButtonLabel = 'Save as draft'
+            primaryButtonLabel = scheduleType === 'later' ? 'Schedule' : 'Send'
+        }
+    } else if (step === STEPS_NAMES.ACTIVATE) {
+        if (isCampaign && isCampaignSchedulingEnabled) {
+            primaryButtonLabel = 'Continue'
+        } else {
+            primaryButtonLabel = isCampaign
+                ? 'Activate campaign'
+                : 'Activate flow'
+        }
+    }
 
     return (
         <FormProvider {...methods}>
@@ -253,6 +413,7 @@ export const AiJourneyOnboarding = ({
                         step={step}
                         currentStepIndex={currentStepIndex}
                         onStepClick={handleStepClick}
+                        steps={onboardingSteps}
                     />
                     {storeSettingsEnabled && (
                         <>
@@ -275,6 +436,18 @@ export const AiJourneyOnboarding = ({
                                 >
                                     {secondaryButtonLabel}
                                 </Button>
+                                {middleButtonLabel && (
+                                    <Button
+                                        variant="secondary"
+                                        onClick={handleMiddleButtonClick}
+                                        isDisabled={
+                                            isLoadingHandleUpdate ||
+                                            isReadOnlyCampaign
+                                        }
+                                    >
+                                        {middleButtonLabel}
+                                    </Button>
+                                )}
                                 <Button
                                     isDisabled={shouldDisableContinueButton}
                                     type="submit"
@@ -286,6 +459,35 @@ export const AiJourneyOnboarding = ({
                     </form>
                 </Box>
             </Box>
+            <Modal
+                size="sm"
+                isOpen={isSendNowConfirmOpen}
+                isDismissable={false}
+            >
+                <OverlayHeader title="Send campaign now?" />
+                <OverlayContent>
+                    <Text>
+                        This campaign will be sent to your audience immediately.
+                        Are you sure you want to proceed?
+                    </Text>
+                </OverlayContent>
+                <OverlayFooter>
+                    <Box gap="xs">
+                        <Button
+                            variant="secondary"
+                            onClick={() => setIsSendNowConfirmOpen(false)}
+                        >
+                            Go back
+                        </Button>
+                        <Button
+                            variant="primary"
+                            onClick={handleSendNowConfirm}
+                        >
+                            Send now
+                        </Button>
+                    </Box>
+                </OverlayFooter>
+            </Modal>
         </FormProvider>
     )
 }

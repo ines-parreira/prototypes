@@ -16,7 +16,7 @@ describe('JourneyStateBadge', () => {
             const testCases = [
                 {
                     state: JourneyCampaignStateEnum.Draft,
-                    expectedColor: 'yellow',
+                    expectedColor: 'grey',
                 },
                 {
                     state: JourneyCampaignStateEnum.Scheduled,

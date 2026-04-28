@@ -1,5 +1,6 @@
 import { Activation } from 'AIJourney/pages/Activation/Activation'
 import { Preview } from 'AIJourney/pages/Preview/Preview'
+import { ScheduleOrSend } from 'AIJourney/pages/ScheduleOrSend/ScheduleOrSend'
 import { Setup } from 'AIJourney/pages/Setup/Setup'
 
 import { JOURNEY_TYPES, STEPS_NAMES } from '.'
@@ -19,6 +20,14 @@ const DEFAULT_STEPS = [
     },
 ]
 
+const CAMPAIGN_SPECIFIC_STEPS = [
+    ...DEFAULT_STEPS,
+    {
+        stepName: STEPS_NAMES.SCHEDULE,
+        component: ScheduleOrSend,
+    },
+]
+
 export const CART_ABANDONMENT_STEPS = {
     journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
     steps: DEFAULT_STEPS,
@@ -31,7 +40,7 @@ export const SESSION_ABANDONMENT_STEPS = {
 
 export const CAMPAIGN_STEPS = {
     journeyType: JOURNEY_TYPES.CAMPAIGN,
-    steps: DEFAULT_STEPS,
+    steps: CAMPAIGN_SPECIFIC_STEPS,
 }
 
 export const WIN_BACK_STEPS = {

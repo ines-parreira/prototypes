@@ -1,3 +1,4 @@
+import { CalendarDate, Time } from '@internationalized/date'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -21,12 +22,17 @@ import { useJourneyContext } from 'AIJourney/providers'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { renderWithRouter } from 'utils/testing'
 
-import { AiJourneyOnboarding } from './AiJourneyOnboarding'
+import {
+    AiJourneyOnboarding,
+    buildScheduledDatetime,
+} from './AiJourneyOnboarding'
 import type { StepComponentProps } from './AiJourneyOnboarding'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
+        AiJourneyCampaignSchedulingEnabled:
+            'ai-journey-campaign-scheduling-enabled',
     },
     useFlag: jest.fn(),
 }))
@@ -343,7 +349,7 @@ describe('<AiJourneyOnboarding />', () => {
             ).toBeInTheDocument()
         })
 
-        it('shows "Activate campaign" on activate step for a campaign journey', () => {
+        it('shows "Activate campaign" on activate step for a campaign journey when scheduling is disabled', () => {
             renderComponent({
                 step: STEPS_NAMES.ACTIVATE,
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
@@ -351,6 +357,18 @@ describe('<AiJourneyOnboarding />', () => {
 
             expect(
                 screen.getByRole('button', { name: 'Activate campaign' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Continue" on activate step for a campaign journey when scheduling is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'Continue' }),
             ).toBeInTheDocument()
         })
     })
@@ -781,7 +799,8 @@ describe('<AiJourneyOnboarding />', () => {
             })
         })
 
-        it('calls handleUpdate with campaignState draft for a campaign', async () => {
+        it('navigates to schedule step for a campaign', async () => {
+            mockUseFlag.mockReturnValue(true)
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {
@@ -799,15 +818,15 @@ describe('<AiJourneyOnboarding />', () => {
                 async () =>
                     await user.click(
                         screen.getByRole('button', {
-                            name: /activate campaign/i,
+                            name: /continue/i,
                         }),
                     ),
             )
 
             await waitFor(() => {
-                expect(mockHandleUpdate).toHaveBeenCalledWith({
-                    campaignState: UpdatableJourneyCampaignState.Draft,
-                })
+                expect(mockPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/test-shop/campaign/schedule/journey-123',
+                )
             })
         })
 
@@ -836,7 +855,8 @@ describe('<AiJourneyOnboarding />', () => {
             })
         })
 
-        it('navigates to campaigns page after activating a campaign', async () => {
+        it('navigates to schedule step after activating a campaign', async () => {
+            mockUseFlag.mockReturnValue(true)
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {
@@ -854,14 +874,14 @@ describe('<AiJourneyOnboarding />', () => {
                 async () =>
                     await user.click(
                         screen.getByRole('button', {
-                            name: /activate campaign/i,
+                            name: /continue/i,
                         }),
                     ),
             )
 
             await waitFor(() => {
                 expect(mockPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/test-shop/campaigns',
+                    '/app/ai-journey/test-shop/campaign/schedule/journey-123',
                 )
             })
         })
@@ -1223,6 +1243,332 @@ describe('<AiJourneyOnboarding />', () => {
         })
     })
 
+    describe('form submission - activate step for campaign with scheduling disabled', () => {
+        it('calls handleUpdate with campaignState Draft and navigates to campaigns', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: { title: 'Summer Sale' },
+                },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: /activate campaign/i,
+                        }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    campaignState: UpdatableJourneyCampaignState.Draft,
+                })
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/campaigns',
+            )
+        })
+    })
+
+    describe('form submission - schedule step', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: { title: 'Test Campaign', state: 'draft' },
+                    included_audience_list_ids: ['list-1'],
+                    message_instructions: 'Some guidance',
+                },
+            } as any)
+        })
+
+        it('shows "Send" and "Save as draft" buttons on schedule step for a new campaign', () => {
+            renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'Send' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Save as draft' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Send" and "Move to draft" buttons on schedule step for a scheduled campaign', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: {
+                        title: 'Test Campaign',
+                        state: 'scheduled',
+                    },
+                    included_audience_list_ids: ['list-1'],
+                    message_instructions: 'Some guidance',
+                },
+            } as any)
+
+            renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'Send' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Move to draft' }),
+            ).toBeInTheDocument()
+        })
+
+        it('opens confirmation modal when submitting with immediate schedule type', async () => {
+            const { user } = renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: 'Send' }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Send campaign now?'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('sends campaign immediately when confirming send now modal', async () => {
+            const { user } = renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: 'Send' }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Send campaign now?'),
+                ).toBeInTheDocument()
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: 'Send now' }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    campaignState: UpdatableJourneyCampaignState.Scheduled,
+                    scheduledDatetime: null,
+                })
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/campaigns',
+            )
+        })
+
+        it('closes modal when clicking Go back in send now confirmation', async () => {
+            const { user } = renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: 'Send' }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Send campaign now?'),
+                ).toBeInTheDocument()
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: 'Go back' }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Send campaign now?'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('saves as draft and navigates to campaigns list when clicking Save as draft', async () => {
+            const { user } = renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: 'Save as draft',
+                        }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    scheduledDatetime: null,
+                })
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/campaigns',
+            )
+        })
+
+        it('moves scheduled campaign to draft when clicking Move to draft', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: {
+                        title: 'Test Campaign',
+                        state: 'scheduled',
+                    },
+                    included_audience_list_ids: ['list-1'],
+                    message_instructions: 'Some guidance',
+                },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: 'Move to draft',
+                        }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    campaignState: UpdatableJourneyCampaignState.Draft,
+                    scheduledDatetime: null,
+                })
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/campaigns',
+            )
+        })
+
+        it('disables continue button when campaign is read-only (canceled)', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: {
+                        title: 'Test Campaign',
+                        state: 'canceled',
+                    },
+                    included_audience_list_ids: ['list-1'],
+                    message_instructions: 'Some guidance',
+                },
+            } as any)
+
+            renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled()
+        })
+
+        it('disables continue button on schedule step when audience is missing', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: {
+                        title: 'Test Campaign',
+                        state: 'draft',
+                    },
+                    included_audience_list_ids: [],
+                    message_instructions: 'Some guidance',
+                },
+            } as any)
+
+            renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled()
+        })
+
+        it('shows "Schedule" button label when scheduleType is later', () => {
+            renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'Send' }),
+            ).toBeInTheDocument()
+        })
+
+        it('disables continue button on schedule step when message instructions are missing', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: {
+                        title: 'Test Campaign',
+                        state: 'draft',
+                    },
+                    included_audience_list_ids: ['list-1'],
+                    message_instructions: null,
+                },
+            } as any)
+
+            renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled()
+        })
+    })
+
     describe('form submission - phone number fields optional', () => {
         it('submits with undefined phone params on create when sms_sender_integration_id is not set', async () => {
             const { user } = renderComponent({
@@ -1274,5 +1620,75 @@ describe('<AiJourneyOnboarding />', () => {
                 )
             })
         })
+    })
+})
+
+describe('buildScheduledDatetime', () => {
+    it('returns an ISO datetime string when scheduleType is later with date and time', () => {
+        const getValues = () =>
+            ({
+                scheduleType: 'later',
+                scheduledDate: new CalendarDate(2026, 7, 15),
+                scheduledTime: new Time(14, 30, 0, 0),
+            }) as unknown as SetupFormValues
+
+        const result = buildScheduledDatetime(getValues)
+
+        expect(result).not.toBeNull()
+        expect(result).toContain('2026-07-15')
+        expect(result).toContain('14:30')
+    })
+
+    it('returns null when scheduleType is immediate', () => {
+        const getValues = () =>
+            ({
+                scheduleType: 'immediate',
+                scheduledDate: null,
+                scheduledTime: null,
+            }) as unknown as SetupFormValues
+
+        const result = buildScheduledDatetime(getValues)
+
+        expect(result).toBeNull()
+    })
+
+    it('returns null when scheduleType is later but date is missing', () => {
+        const getValues = () =>
+            ({
+                scheduleType: 'later',
+                scheduledDate: null,
+                scheduledTime: new Time(14, 30),
+            }) as unknown as SetupFormValues
+
+        const result = buildScheduledDatetime(getValues)
+
+        expect(result).toBeNull()
+    })
+
+    it('returns null when scheduleType is later but time is missing', () => {
+        const getValues = () =>
+            ({
+                scheduleType: 'later',
+                scheduledDate: new CalendarDate(2026, 7, 15),
+                scheduledTime: null,
+            }) as unknown as SetupFormValues
+
+        const result = buildScheduledDatetime(getValues)
+
+        expect(result).toBeNull()
+    })
+
+    it('strips timezone bracket from result', () => {
+        const getValues = () =>
+            ({
+                scheduleType: 'later',
+                scheduledDate: new CalendarDate(2026, 7, 15),
+                scheduledTime: new Time(10, 0, 0, 0),
+            }) as unknown as SetupFormValues
+
+        const result = buildScheduledDatetime(getValues)
+
+        expect(result).not.toBeNull()
+        expect(result).not.toMatch(/\[.*\]/)
     })
 })

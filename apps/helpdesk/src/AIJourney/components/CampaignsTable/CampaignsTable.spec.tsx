@@ -397,7 +397,7 @@ describe('CampaignsTable', () => {
         await act(() => user.click(moreOptionsButton))
 
         const sendOption = screen
-            .getAllByText('Send')
+            .getAllByText('Send now')
             .find((el) => el.closest('[role="option"]'))
 
         if (sendOption) {
@@ -405,16 +405,17 @@ describe('CampaignsTable', () => {
         }
 
         await waitFor(() => {
-            expect(screen.getByText('Send Campaign?')).toBeInTheDocument()
+            expect(screen.getByText('Send campaign now?')).toBeInTheDocument()
         })
 
-        const confirmButton = screen.getByRole('button', { name: 'Send' })
+        const confirmButton = screen.getByRole('button', { name: 'Send now' })
         await act(() => user.click(confirmButton))
 
         await waitFor(() => {
             expect(mockHandleUpdate).toHaveBeenCalledWith({
                 id: '1',
                 campaignState: 'scheduled',
+                scheduledDatetime: null,
             })
         })
     })
@@ -436,7 +437,7 @@ describe('CampaignsTable', () => {
         await act(() => user.click(moreOptionsButton))
 
         const sendOption = screen
-            .getAllByText('Send')
+            .getAllByText('Send now')
             .find((el) => el.closest('[role="option"]'))
 
         if (sendOption) {
@@ -449,7 +450,7 @@ describe('CampaignsTable', () => {
             ).toBeInTheDocument()
         })
 
-        expect(screen.queryByText('Send Campaign?')).not.toBeInTheDocument()
+        expect(screen.queryByText('Send campaign now?')).not.toBeInTheDocument()
     })
 
     it('should open send modal normally when sender is missing but USER_IMPERSONATED is true', async () => {
@@ -470,7 +471,7 @@ describe('CampaignsTable', () => {
         await act(() => user.click(moreOptionsButton))
 
         const sendOption = screen
-            .getAllByText('Send')
+            .getAllByText('Send now')
             .find((el) => el.closest('[role="option"]'))
 
         if (sendOption) {
@@ -501,7 +502,7 @@ describe('CampaignsTable', () => {
         await act(() => user.click(moreOptionsButton))
 
         const sendOption = screen
-            .getAllByText('Send')
+            .getAllByText('Send now')
             .find((el) => el.closest('[role="option"]'))
 
         if (sendOption) {
