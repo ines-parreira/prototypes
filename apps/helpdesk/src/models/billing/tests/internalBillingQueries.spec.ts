@@ -1,3 +1,7 @@
+import { createElement } from 'react'
+
+import { renderHook } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
 import {
@@ -12,9 +16,37 @@ import type {
     InternalSubscriptionUpdateResponse,
 } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('models/billing/resources')
+
+type RenderHookOptions = NonNullable<Parameters<typeof renderHook>[1]>
+
+const renderHookWithQueryClient = <TResult>(
+    hook: () => TResult,
+    options?: RenderHookOptions,
+) => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+            mutations: { retry: false },
+        },
+    })
+    const { wrapper: ExtraWrapper, ...renderHookOptions } = options ?? {}
+
+    const result = renderHook(hook, {
+        ...renderHookOptions,
+        wrapper: ({ children }) =>
+            createElement(
+                QueryClientProvider,
+                { client: queryClient },
+                ExtraWrapper
+                    ? createElement(ExtraWrapper, undefined, children)
+                    : children,
+            ),
+    })
+
+    return { ...result, queryClient }
+}
 
 describe('internal billing queries', () => {
     let mockGetInternalProductCatalogPlans: jest.MockedFunction<
@@ -61,7 +93,7 @@ describe('internal billing queries', () => {
             }
             mockGetInternalProductCatalogPlans.mockResolvedValue(mockCatalog)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useInternalProductCatalogPlans(),
             )
 
@@ -88,10 +120,9 @@ describe('internal billing queries', () => {
         it('should invalidate billing and subscription queries on success', async () => {
             mockUpdateInternalSubscription.mockResolvedValue(mockResponse)
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(() =>
-                    useUpdateInternalSubscription(),
-                )
+            const { result, queryClient } = renderHookWithQueryClient(() =>
+                useUpdateInternalSubscription(),
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
@@ -125,9 +156,7 @@ describe('internal billing queries', () => {
             }
             mockUpdateInternalSubscription.mockRejectedValue(beError)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-                useUpdateInternalSubscription(),
-            )
+            const { result } = renderHook(() => useUpdateInternalSubscription())
 
             await expect(
                 result.current.mutateAsync(mockPayload),
@@ -144,10 +173,9 @@ describe('internal billing queries', () => {
             const mockError = new Error('API error')
             mockUpdateInternalSubscription.mockRejectedValue(mockError)
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(() =>
-                    useUpdateInternalSubscription(),
-                )
+            const { result, queryClient } = renderHookWithQueryClient(() =>
+                useUpdateInternalSubscription(),
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,

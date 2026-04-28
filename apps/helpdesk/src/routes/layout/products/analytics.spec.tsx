@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
@@ -20,7 +20,6 @@ import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { STATS_ROUTES } from 'routes/constants'
 import type { RootState } from 'state/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useStatsNavbarConfig } from './analytics'
 
@@ -53,10 +52,9 @@ const defaultState: Partial<RootState> = {
 describe('useStatsNavbarConfig', () => {
     describe('sections structure', () => {
         it('should always return the core sections', () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const sectionIds = result.current.sections.map((s) => s.id)
 
             expect(sectionIds).toContain(StatsNavbarViewSections.Live)
@@ -73,10 +71,9 @@ describe('useStatsNavbarConfig', () => {
         it('should not include QualityManagement when NewSatisfactionReport flag is disabled', () => {
             useFlagMock.mockReturnValue({ value: false, isLoading: false })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const sectionIds = result.current.sections.map((s) => s.id)
 
             expect(sectionIds).not.toContain(
@@ -90,10 +87,9 @@ describe('useStatsNavbarConfig', () => {
                 isLoading: false,
             }))
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const sectionIds = result.current.sections.map((s) => s.id)
 
             expect(sectionIds).toContain(
@@ -106,10 +102,9 @@ describe('useStatsNavbarConfig', () => {
         it('should include satisfaction when NewSatisfactionReport flag is disabled', () => {
             useFlagMock.mockReturnValue({ value: false, isLoading: false })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const supportPerfSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.SupportPerformance,
             )
@@ -129,10 +124,9 @@ describe('useStatsNavbarConfig', () => {
                 isLoading: false,
             }))
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const supportPerfSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.SupportPerformance,
             )
@@ -151,10 +145,9 @@ describe('useStatsNavbarConfig', () => {
                 isLoading: false,
             }))
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const supportPerfSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.SupportPerformance,
             )
@@ -171,10 +164,9 @@ describe('useStatsNavbarConfig', () => {
         it('should not include help-center when HelpCenterAnalytics flag is disabled', () => {
             useFlagMock.mockReturnValue({ value: false, isLoading: false })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const supportPerfSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.SupportPerformance,
             )
@@ -188,10 +180,9 @@ describe('useStatsNavbarConfig', () => {
 
     describe('voice feature', () => {
         it('should mark voice items as requiresUpgrade when account lacks voice feature', () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const voiceSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Voice,
             )
@@ -213,10 +204,9 @@ describe('useStatsNavbarConfig', () => {
                 }),
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                stateWithVoice,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithVoice,
+            })
             const voiceSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Voice,
             )
@@ -249,10 +239,9 @@ describe('useStatsNavbarConfig', () => {
                     }),
                 }
 
-                const { result } = renderHookWithStoreAndQueryClientProvider(
-                    () => useStatsNavbarConfig(),
-                    stateWithAdminAndAutomation,
-                )
+                const { result } = renderHook(() => useStatsNavbarConfig(), {
+                    storeState: stateWithAdminAndAutomation,
+                })
                 const supportPerfSection = result.current.sections.find(
                     (s) => s.id === StatsNavbarViewSections.SupportPerformance,
                 )
@@ -267,10 +256,9 @@ describe('useStatsNavbarConfig', () => {
             })
 
             it('should not include Auto QA under SupportPerformance when user lacks access', () => {
-                const { result } = renderHookWithStoreAndQueryClientProvider(
-                    () => useStatsNavbarConfig(),
-                    defaultState,
-                )
+                const { result } = renderHook(() => useStatsNavbarConfig(), {
+                    storeState: defaultState,
+                })
                 const supportPerfSection = result.current.sections.find(
                     (s) => s.id === StatsNavbarViewSections.SupportPerformance,
                 )
@@ -291,10 +279,9 @@ describe('useStatsNavbarConfig', () => {
             })
 
             it('should not include Auto QA under SupportPerformance', () => {
-                const { result } = renderHookWithStoreAndQueryClientProvider(
-                    () => useStatsNavbarConfig(),
-                    defaultState,
-                )
+                const { result } = renderHook(() => useStatsNavbarConfig(), {
+                    storeState: defaultState,
+                })
                 const supportPerfSection = result.current.sections.find(
                     (s) => s.id === StatsNavbarViewSections.SupportPerformance,
                 )
@@ -321,10 +308,9 @@ describe('useStatsNavbarConfig', () => {
                     }),
                 }
 
-                const { result } = renderHookWithStoreAndQueryClientProvider(
-                    () => useStatsNavbarConfig(),
-                    stateWithAdminAndAutomation,
-                )
+                const { result } = renderHook(() => useStatsNavbarConfig(), {
+                    storeState: stateWithAdminAndAutomation,
+                })
                 const qmSection = result.current.sections.find(
                     (s) => s.id === StatsNavbarViewSections.QualityManagement,
                 )
@@ -339,10 +325,9 @@ describe('useStatsNavbarConfig', () => {
             })
 
             it('should not include Auto QA in QualityManagement when user is not an admin', () => {
-                const { result } = renderHookWithStoreAndQueryClientProvider(
-                    () => useStatsNavbarConfig(),
-                    defaultState,
-                )
+                const { result } = renderHook(() => useStatsNavbarConfig(), {
+                    storeState: defaultState,
+                })
                 const qmSection = result.current.sections.find(
                     (s) => s.id === StatsNavbarViewSections.QualityManagement,
                 )
@@ -361,10 +346,9 @@ describe('useStatsNavbarConfig', () => {
                     }) as Map<any, any>,
                 }
 
-                const { result } = renderHookWithStoreAndQueryClientProvider(
-                    () => useStatsNavbarConfig(),
-                    stateWithAdminNoAutomation,
-                )
+                const { result } = renderHook(() => useStatsNavbarConfig(), {
+                    storeState: stateWithAdminNoAutomation,
+                })
                 const qmSection = result.current.sections.find(
                     (s) => s.id === StatsNavbarViewSections.QualityManagement,
                 )
@@ -376,10 +360,9 @@ describe('useStatsNavbarConfig', () => {
             })
 
             it('should always include Satisfaction in QualityManagement', () => {
-                const { result } = renderHookWithStoreAndQueryClientProvider(
-                    () => useStatsNavbarConfig(),
-                    defaultState,
-                )
+                const { result } = renderHook(() => useStatsNavbarConfig(), {
+                    storeState: defaultState,
+                })
                 const qmSection = result.current.sections.find(
                     (s) => s.id === StatsNavbarViewSections.QualityManagement,
                 )
@@ -397,10 +380,9 @@ describe('useStatsNavbarConfig', () => {
 
     describe('Convert section', () => {
         it('should include a Campaigns item with the correct route', () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const convertSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Convert,
             )
@@ -416,10 +398,9 @@ describe('useStatsNavbarConfig', () => {
         it('should mark Campaigns as requiresUpgrade when account is not a convert subscriber', () => {
             useFlagMock.mockReturnValue({ value: false, isLoading: false })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const convertSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Convert,
             )
@@ -433,10 +414,9 @@ describe('useStatsNavbarConfig', () => {
         it('should not mark Campaigns as requiresUpgrade when account is a convert subscriber', () => {
             useIsConvertSubscriberMock.mockReturnValue(true)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const convertSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Convert,
             )
@@ -450,10 +430,9 @@ describe('useStatsNavbarConfig', () => {
 
     describe('Automate section', () => {
         it('should include only the upgrade overview item when user has no AI agent access', () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const automateSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Automate,
             )
@@ -476,10 +455,9 @@ describe('useStatsNavbarConfig', () => {
                 }),
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                stateWithAutomation,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
             const automateSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Automate,
             )
@@ -513,10 +491,9 @@ describe('useStatsNavbarConfig', () => {
                 }),
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                stateWithAutomation,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
             const automateSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Automate,
             )
@@ -541,10 +518,9 @@ describe('useStatsNavbarConfig', () => {
                 }),
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                stateWithAutomation,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
             const automateSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Automate,
             )
@@ -574,10 +550,9 @@ describe('useStatsNavbarConfig', () => {
                 }),
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                stateWithAutomation,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
             const automateSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Automate,
             )
@@ -608,10 +583,9 @@ describe('useStatsNavbarConfig', () => {
                 }),
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                stateWithAutomation,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
             const automateSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Automate,
             )
@@ -636,10 +610,9 @@ describe('useStatsNavbarConfig', () => {
                 ]),
             } as any)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const dashboardsSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Dashboards,
             )
@@ -661,10 +634,9 @@ describe('useStatsNavbarConfig', () => {
                     ]),
             } as any)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const dashboardsSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Dashboards,
             )
@@ -673,10 +645,9 @@ describe('useStatsNavbarConfig', () => {
         })
 
         it('should include actionsSlot', () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const dashboardsSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Dashboards,
             )
@@ -689,10 +660,9 @@ describe('useStatsNavbarConfig', () => {
                 getDashboardsHandler: jest.fn().mockReturnValue([]),
             } as any)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStatsNavbarConfig(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
             const dashboardsSection = result.current.sections.find(
                 (s) => s.id === StatsNavbarViewSections.Dashboards,
             )

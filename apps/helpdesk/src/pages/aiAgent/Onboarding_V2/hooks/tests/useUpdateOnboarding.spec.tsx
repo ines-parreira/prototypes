@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -12,7 +12,6 @@ import {
 } from 'pages/aiAgent/Onboarding_V2/types'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useUpdateOnboarding } from '../useUpdateOnboarding'
 
@@ -53,8 +52,7 @@ describe('useUpdateOnboarding', () => {
     it('should update the onboarding successfully', async () => {
         updateOnboardingDataMock.mockResolvedValue(defaultOnboarding)
 
-        const { result } =
-            renderHookWithStoreAndQueryClientProvider(useUpdateOnboarding)
+        const { result } = renderHook(useUpdateOnboarding)
 
         result.current.mutate({
             id: '1',
@@ -71,8 +69,7 @@ describe('useUpdateOnboarding', () => {
             message: 'test',
         })
 
-        const { result } =
-            renderHookWithStoreAndQueryClientProvider(useUpdateOnboarding)
+        const { result } = renderHook(useUpdateOnboarding)
 
         result.current.mutate({
             id: '1',

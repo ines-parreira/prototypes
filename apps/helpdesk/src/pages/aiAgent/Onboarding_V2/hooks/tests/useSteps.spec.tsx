@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { products } from 'fixtures/plans'
@@ -10,7 +10,6 @@ import {
 } from 'pages/aiAgent/Onboarding_V2/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import type { RootState } from 'state/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useSteps } from '../useSteps'
 
@@ -59,9 +58,9 @@ describe('useSteps', () => {
             needScopeUpdate: false,
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () => useSteps({ shopName: 'test-shop' }),
-            initialState,
+            { storeState: initialState },
         )
 
         expect(result.current.validSteps).toEqual([
@@ -74,9 +73,9 @@ describe('useSteps', () => {
     })
 
     it('should exclude SHOPIFY_INTEGRATION step when integration exists', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () => useSteps({ shopName: 'test-shop' }),
-            initialState,
+            { storeState: initialState },
         )
 
         expect(result.current.validSteps).toEqual([
@@ -96,12 +95,12 @@ describe('useSteps', () => {
             AiAgentScopes.SUPPORT,
             AiAgentScopes.SALES,
         ])
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useSteps({
                     shopName: 'test-shop',
                 }),
-            initialState,
+            { storeState: initialState },
         )
 
         expect(result.current.validSteps).toContainEqual({
@@ -114,12 +113,12 @@ describe('useSteps', () => {
         useAiAgentScopesForAutomationPlanMock.mockReturnValue([
             AiAgentScopes.SUPPORT,
         ])
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useSteps({
                     shopName: 'test-shop',
                 }),
-            initialState,
+            { storeState: initialState },
         )
 
         expect(result.current.validSteps).not.toContainEqual({

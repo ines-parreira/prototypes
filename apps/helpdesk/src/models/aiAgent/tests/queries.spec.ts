@@ -1,3 +1,7 @@
+import { createElement } from 'react'
+
+import { renderHook } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { AxiosError } from 'axios'
 import { fromJS } from 'immutable'
@@ -15,10 +19,38 @@ import {
 import * as configurationResources from 'models/aiAgent/resources/configuration'
 import { initialState } from 'state/currentAccount/reducers'
 import * as notificationActions from 'state/notifications/actions'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('models/aiAgent/resources/configuration')
 jest.mock('state/notifications/actions')
+
+type RenderHookOptions = NonNullable<Parameters<typeof renderHook>[1]>
+
+const renderHookWithQueryClient = <TResult>(
+    hook: () => TResult,
+    options?: RenderHookOptions,
+) => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+            mutations: { retry: false },
+        },
+    })
+    const { wrapper: ExtraWrapper, ...renderHookOptions } = options ?? {}
+
+    const result = renderHook(hook, {
+        ...renderHookOptions,
+        wrapper: ({ children }) =>
+            createElement(
+                QueryClientProvider,
+                { client: queryClient },
+                ExtraWrapper
+                    ? createElement(ExtraWrapper, undefined, children)
+                    : children,
+            ),
+    })
+
+    return { ...result, queryClient }
+}
 
 const defaultState = {
     currentAccount: initialState.mergeDeep(
@@ -66,10 +98,9 @@ describe('aiAgent queries', () => {
         it('should call startSalesTrial with correct parameters', async () => {
             mockStartSalesTrial.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartSalesTrialMutation(),
-                defaultState,
-            )
+            const { result } = renderHook(() => useStartSalesTrialMutation(), {
+                storeState: defaultState,
+            })
 
             await result.current.mutateAsync(['test-store'])
 
@@ -83,11 +114,10 @@ describe('aiAgent queries', () => {
         it('should invalidate store configuration queries on success', async () => {
             mockStartSalesTrial.mockResolvedValue({ success: true })
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(
-                    () => useStartSalesTrialMutation(),
-                    defaultState,
-                )
+            const { result, queryClient } = renderHookWithQueryClient(
+                () => useStartSalesTrialMutation(),
+                { storeState: defaultState },
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
@@ -105,12 +135,12 @@ describe('aiAgent queries', () => {
             const onSuccessMock = jest.fn()
             mockStartSalesTrial.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useStartSalesTrialMutation({
                         onSuccess: onSuccessMock,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync(['test-store'])
@@ -123,9 +153,9 @@ describe('aiAgent queries', () => {
         it('should call optOutSalesTrialUpgrade with correct parameters', async () => {
             mockOptOutSalesTrialUpgrade.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useOptOutSalesTrialUpgradeMutation(),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync([])
@@ -138,11 +168,10 @@ describe('aiAgent queries', () => {
         it('should invalidate store configuration queries on success', async () => {
             mockOptOutSalesTrialUpgrade.mockResolvedValue({ success: true })
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(
-                    () => useOptOutSalesTrialUpgradeMutation(),
-                    defaultState,
-                )
+            const { result, queryClient } = renderHookWithQueryClient(
+                () => useOptOutSalesTrialUpgradeMutation(),
+                { storeState: defaultState },
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
@@ -160,12 +189,12 @@ describe('aiAgent queries', () => {
             const onSuccessMock = jest.fn()
             mockOptOutSalesTrialUpgrade.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useOptOutSalesTrialUpgradeMutation({
                         onSuccess: onSuccessMock,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync([])
@@ -180,9 +209,9 @@ describe('aiAgent queries', () => {
 
             mockOptOutSalesTrialUpgrade.mockRejectedValue(mockError)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useOptOutSalesTrialUpgradeMutation(),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await expect(result.current.mutateAsync([])).rejects.toThrow(
@@ -200,12 +229,12 @@ describe('aiAgent queries', () => {
             const onErrorMock = jest.fn()
             mockOptOutSalesTrialUpgrade.mockRejectedValue(mockError)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useOptOutSalesTrialUpgradeMutation({
                         onError: onErrorMock,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             try {
@@ -222,9 +251,9 @@ describe('aiAgent queries', () => {
         it('should call startAiAgentTrial with correct parameters', async () => {
             mockStartAiAgentTrial.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartAiAgentTrialMutation(),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync(['shopify', 'test-store', true])
@@ -240,11 +269,10 @@ describe('aiAgent queries', () => {
         it('should invalidate store configuration queries on success', async () => {
             mockStartAiAgentTrial.mockResolvedValue({ success: true })
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(
-                    () => useStartAiAgentTrialMutation(),
-                    defaultState,
-                )
+            const { result, queryClient } = renderHookWithQueryClient(
+                () => useStartAiAgentTrialMutation(),
+                { storeState: defaultState },
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
@@ -262,12 +290,12 @@ describe('aiAgent queries', () => {
             const onSuccessMock = jest.fn()
             mockStartAiAgentTrial.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useStartAiAgentTrialMutation({
                         onSuccess: onSuccessMock,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync(['shopify', 'test-store', true])
@@ -280,12 +308,12 @@ describe('aiAgent queries', () => {
             const onErrorMock = jest.fn()
             mockStartAiAgentTrial.mockRejectedValue(mockError)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useStartAiAgentTrialMutation({
                         onError: onErrorMock,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             try {
@@ -310,9 +338,9 @@ describe('aiAgent queries', () => {
         it('should call optOutAiAgentTrialUpgrade with correct parameters', async () => {
             mockOptOutAiAgentTrialUpgrade.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useOptOutAiAgentTrialUpgradeMutation(),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync([])
@@ -325,11 +353,10 @@ describe('aiAgent queries', () => {
         it('should invalidate store configuration queries on success', async () => {
             mockOptOutAiAgentTrialUpgrade.mockResolvedValue({ success: true })
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(
-                    () => useOptOutAiAgentTrialUpgradeMutation(),
-                    defaultState,
-                )
+            const { result, queryClient } = renderHookWithQueryClient(
+                () => useOptOutAiAgentTrialUpgradeMutation(),
+                { storeState: defaultState },
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
@@ -347,12 +374,12 @@ describe('aiAgent queries', () => {
             const onSuccessMock = jest.fn()
             mockOptOutAiAgentTrialUpgrade.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useOptOutAiAgentTrialUpgradeMutation({
                         onSuccess: onSuccessMock,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync([])
@@ -365,12 +392,12 @@ describe('aiAgent queries', () => {
             const onErrorMock = jest.fn()
             mockOptOutAiAgentTrialUpgrade.mockRejectedValue(mockError)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useOptOutAiAgentTrialUpgradeMutation({
                         onError: onErrorMock,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             try {
@@ -421,10 +448,9 @@ describe('aiAgent queries', () => {
             ]
             mockGetTrials.mockResolvedValue(mockTrialsData)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useGetTrials('test-domain'),
-                defaultState,
-            )
+            const { result } = renderHook(() => useGetTrials('test-domain'), {
+                storeState: defaultState,
+            })
 
             await result.current.refetch()
 
@@ -468,9 +494,9 @@ describe('aiAgent queries', () => {
             ]
             mockGetTrials.mockResolvedValue(mockTrialsData)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useGetTrials('test-domain', { enabled: true }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await waitFor(() => {
@@ -520,19 +546,17 @@ describe('aiAgent queries', () => {
         })
 
         it('should be enabled when gorgiasDomain is provided', () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useGetTrials('test-domain'),
-                defaultState,
-            )
+            const { result } = renderHook(() => useGetTrials('test-domain'), {
+                storeState: defaultState,
+            })
 
             expect(result.current.isStale).toBe(true)
         })
 
         it('should be disabled when gorgiasDomain is empty', () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useGetTrials(''),
-                defaultState,
-            )
+            const { result } = renderHook(() => useGetTrials(''), {
+                storeState: defaultState,
+            })
 
             expect(result.current.fetchStatus).toBe('idle')
         })
@@ -559,13 +583,13 @@ describe('aiAgent queries', () => {
             ]
             mockGetTrials.mockResolvedValue(mockTrialsData)
 
-            renderHookWithStoreAndQueryClientProvider(
+            renderHook(
                 () =>
                     useGetTrials('test-domain', {
                         onSuccess: onSuccessMock,
                         enabled: true,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await waitFor(() => {
@@ -597,14 +621,14 @@ describe('aiAgent queries', () => {
             const onErrorMock = jest.fn()
             mockGetTrials.mockRejectedValue(mockError)
 
-            renderHookWithStoreAndQueryClientProvider(
+            renderHook(
                 () =>
                     useGetTrials('test-domain', {
                         onError: onErrorMock,
                         enabled: true,
                         retry: false,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await waitFor(() => {
@@ -627,13 +651,13 @@ describe('aiAgent queries', () => {
             }
             mockGetTrials.mockRejectedValue(axiosError)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useGetTrials('test-domain', {
                         enabled: true,
                         retry: false,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await waitFor(() => {
@@ -644,12 +668,12 @@ describe('aiAgent queries', () => {
             expect(result.current.data).toEqual([])
         })
         it('should respect enabled override', () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () =>
                     useGetTrials('test-domain', {
                         enabled: false,
                     }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             expect(result.current.fetchStatus).toBe('idle')

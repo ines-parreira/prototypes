@@ -1,3 +1,7 @@
+import { createElement } from 'react'
+
+import { renderHook } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { AxiosHeaders } from 'axios'
 import { z } from 'zod'
@@ -12,9 +16,37 @@ import {
 } from 'models/billing/queries'
 import * as billingResources from 'models/billing/resources'
 import type { BillingContactDetailResponse } from 'state/billing/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('models/billing/resources')
+
+type RenderHookOptions = NonNullable<Parameters<typeof renderHook>[1]>
+
+const renderHookWithQueryClient = <TResult>(
+    hook: () => TResult,
+    options?: RenderHookOptions,
+) => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+            mutations: { retry: false },
+        },
+    })
+    const { wrapper: ExtraWrapper, ...renderHookOptions } = options ?? {}
+
+    const result = renderHook(hook, {
+        ...renderHookOptions,
+        wrapper: ({ children }) =>
+            createElement(
+                QueryClientProvider,
+                { client: queryClient },
+                ExtraWrapper
+                    ? createElement(ExtraWrapper, undefined, children)
+                    : children,
+            ),
+    })
+
+    return { ...result, queryClient }
+}
 
 describe('billing queries', () => {
     let mockUpgradeAiAgentSubscriptionGeneration6Plan: jest.MockedFunction<
@@ -55,9 +87,7 @@ describe('billing queries', () => {
             const response = buildResponse(billingContact)
             mockGetBillingContact.mockResolvedValue(response)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-                useBillingContact(),
-            )
+            const { result } = renderHook(() => useBillingContact())
 
             await waitFor(() => expect(result.current.isLoading).toBe(false))
 
@@ -73,9 +103,7 @@ describe('billing queries', () => {
                 return buildResponse(billingContact)
             })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-                useBillingContact(),
-            )
+            const { result } = renderHook(() => useBillingContact())
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -94,7 +122,7 @@ describe('billing queries', () => {
                 mockResponse,
             )
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useUpgradeAiAgentSubscriptionGeneration6Plan(),
             )
 
@@ -111,10 +139,9 @@ describe('billing queries', () => {
                 mockResponse,
             )
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(() =>
-                    useUpgradeAiAgentSubscriptionGeneration6Plan(),
-                )
+            const { result, queryClient } = renderHookWithQueryClient(() =>
+                useUpgradeAiAgentSubscriptionGeneration6Plan(),
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
@@ -134,10 +161,9 @@ describe('billing queries', () => {
                 mockResponse,
             )
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(() =>
-                    useUpgradeAiAgentSubscriptionGeneration6Plan(),
-                )
+            const { result, queryClient } = renderHookWithQueryClient(() =>
+                useUpgradeAiAgentSubscriptionGeneration6Plan(),
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
@@ -158,7 +184,7 @@ describe('billing queries', () => {
                 mockResponse,
             )
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useUpgradeAiAgentSubscriptionGeneration6Plan({
                     onSuccess: onSuccessMock,
                 }),
@@ -176,7 +202,7 @@ describe('billing queries', () => {
                 mockError,
             )
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useUpgradeAiAgentSubscriptionGeneration6Plan({
                     onError: onErrorMock,
                 }),
@@ -197,7 +223,7 @@ describe('billing queries', () => {
                 mockError,
             )
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useUpgradeAiAgentSubscriptionGeneration6Plan(),
             )
 
@@ -212,10 +238,9 @@ describe('billing queries', () => {
                 mockError,
             )
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(() =>
-                    useUpgradeAiAgentSubscriptionGeneration6Plan(),
-                )
+            const { result, queryClient } = renderHookWithQueryClient(() =>
+                useUpgradeAiAgentSubscriptionGeneration6Plan(),
+            )
 
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
@@ -238,7 +263,7 @@ describe('billing queries', () => {
                 mockResponse,
             )
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useUpgradeAiAgentSubscriptionGeneration6Plan({
                     onSuccess: onSuccessMock,
                 }),
@@ -275,9 +300,7 @@ describe('billing queries', () => {
             }
             mockGetProductsUsage.mockResolvedValue(mockUsage)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-                useProductsUsage(),
-            )
+            const { result } = renderHook(() => useProductsUsage())
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
@@ -288,9 +311,7 @@ describe('billing queries', () => {
             const mockError = new Error('Failed to fetch')
             mockGetProductsUsage.mockRejectedValue(mockError)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-                useProductsUsage(),
-            )
+            const { result } = renderHook(() => useProductsUsage())
 
             await waitFor(() => expect(result.current.isError).toBe(true))
 

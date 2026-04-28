@@ -1,8 +1,8 @@
 import { reportError } from '@repo/logging'
+import { renderHook } from '@repo/testing'
 
 import type { CanduRouter } from 'routes/hooks/useCanduRouter'
 import { parseCanduRoute, useCanduRouter } from 'routes/hooks/useCanduRouter'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('@repo/logging')
 
@@ -94,9 +94,7 @@ describe('useCanduRouter', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-            useCanduRouter(),
-        )
+        const { result } = renderHook(() => useCanduRouter())
 
         router = result.current
     })

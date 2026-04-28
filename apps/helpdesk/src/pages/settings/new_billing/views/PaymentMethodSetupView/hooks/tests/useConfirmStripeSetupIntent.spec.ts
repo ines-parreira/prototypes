@@ -1,12 +1,11 @@
 import client from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useElements, useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import { billingContact } from 'fixtures/resources'
 import * as queries from 'models/billing/queries'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useConfirmStripeSetupIntent } from '../useConfirmStripeSetupIntent'
 
@@ -41,9 +40,7 @@ describe('useConfirmStripeSetupIntent', () => {
             isLoading: false,
         } as any)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent,
-        )
+        const { result } = renderHook(useConfirmStripeSetupIntent)
 
         act(() => {
             result.current.mutate([])
@@ -68,9 +65,7 @@ describe('useConfirmStripeSetupIntent', () => {
     it('should reject if stripe is not initialized', async () => {
         assumeMock(useStripe).mockReturnValue(null)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent,
-        )
+        const { result } = renderHook(useConfirmStripeSetupIntent)
 
         try {
             await act(async () => {
@@ -84,9 +79,7 @@ describe('useConfirmStripeSetupIntent', () => {
     it('should reject if elements is not initialized', async () => {
         assumeMock(useElements).mockReturnValue(null)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent,
-        )
+        const { result } = renderHook(useConfirmStripeSetupIntent)
 
         try {
             await act(async () => {
@@ -106,9 +99,7 @@ describe('useConfirmStripeSetupIntent', () => {
             },
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent,
-        )
+        const { result } = renderHook(useConfirmStripeSetupIntent)
 
         try {
             await act(async () => {
@@ -126,9 +117,7 @@ describe('useConfirmStripeSetupIntent', () => {
             code: 'some_error',
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent,
-        )
+        const { result } = renderHook(useConfirmStripeSetupIntent)
 
         try {
             await act(async () => {
@@ -147,9 +136,7 @@ describe('useConfirmStripeSetupIntent', () => {
             message: 'Card error message',
         })
 
-        const { result, store } = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent,
-        )
+        const { result, store } = renderHook(useConfirmStripeSetupIntent)
 
         try {
             await act(async () => {
@@ -176,9 +163,7 @@ describe('useConfirmStripeSetupIntent', () => {
             message: 'Invalid request error message',
         })
 
-        const { result, store } = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent,
-        )
+        const { result, store } = renderHook(useConfirmStripeSetupIntent)
 
         try {
             await act(async () => {
@@ -208,9 +193,7 @@ describe('useConfirmStripeSetupIntent', () => {
             },
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent,
-        )
+        const { result } = renderHook(useConfirmStripeSetupIntent)
 
         act(() => {
             result.current.mutate([])

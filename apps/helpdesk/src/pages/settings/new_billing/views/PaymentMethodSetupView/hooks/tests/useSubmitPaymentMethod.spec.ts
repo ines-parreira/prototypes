@@ -1,10 +1,8 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 
 import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
-
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useSubmitPaymentMethod } from '../useSubmitPaymentMethod'
 
@@ -33,9 +31,7 @@ describe('useSubmitPaymentMethod hook', () => {
     })
 
     it('should call confirmBillingPaymentMethodSetup on submit', async () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod,
-        )
+        const { result } = renderHook(useSubmitPaymentMethod)
 
         await act(async () => {
             await result.current.submitPaymentMethod()
@@ -55,9 +51,7 @@ describe('useSubmitPaymentMethod hook', () => {
             confirmSetup: jest.fn().mockRejectedValue(error),
         } as any)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod,
-        )
+        const { result } = renderHook(useSubmitPaymentMethod)
 
         await expect(result.current.submitPaymentMethod()).rejects.toThrow(
             'Stripe setup intent failed',
@@ -69,9 +63,7 @@ describe('useSubmitPaymentMethod hook', () => {
 
         assumeMock(confirmBillingPaymentMethodSetup).mockRejectedValue(error)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod,
-        )
+        const { result } = renderHook(useSubmitPaymentMethod)
 
         await expect(result.current.submitPaymentMethod()).rejects.toThrow(
             'Billing payment method setup failed',
@@ -87,9 +79,7 @@ describe('useSubmitPaymentMethod hook', () => {
             ),
         } as any)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod,
-        )
+        const { result } = renderHook(useSubmitPaymentMethod)
 
         expect(result.current.isLoading).toBe(false)
 
@@ -113,9 +103,7 @@ describe('useSubmitPaymentMethod hook', () => {
                 }),
         )
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod,
-        )
+        const { result } = renderHook(useSubmitPaymentMethod)
 
         expect(result.current.isLoading).toBe(false)
 

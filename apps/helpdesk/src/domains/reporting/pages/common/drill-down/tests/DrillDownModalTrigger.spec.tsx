@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, renderHook, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import {
@@ -13,7 +13,6 @@ import {
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging')
@@ -110,16 +109,14 @@ describe('useOpenDrillDownModal', () => {
     }
 
     it('returns a function', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-            useOpenDrillDownModal(metricData),
-        )
+        const { result } = renderHook(() => useOpenDrillDownModal(metricData))
 
         expect(typeof result.current).toBe('function')
     })
 
     it('sets metric data', async () => {
-        const { result, store } = renderHookWithStoreAndQueryClientProvider(
-            () => useOpenDrillDownModal(metricData),
+        const { result, store } = renderHook(() =>
+            useOpenDrillDownModal(metricData),
         )
 
         result.current()
@@ -130,9 +127,7 @@ describe('useOpenDrillDownModal', () => {
     })
 
     it('logs segment event', async () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-            useOpenDrillDownModal(metricData),
-        )
+        const { result } = renderHook(() => useOpenDrillDownModal(metricData))
 
         result.current()
 

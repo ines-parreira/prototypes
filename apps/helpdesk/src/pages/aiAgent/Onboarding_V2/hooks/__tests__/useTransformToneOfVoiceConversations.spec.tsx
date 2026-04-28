@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -10,7 +10,6 @@ import useTopProducts from 'pages/aiAgent/Onboarding_V2/components/TopProductsCa
 import { conversationExamples } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
 import { PRODUCT_RECOMMENDATION_MESSAGE_ID } from 'pages/aiAgent/Onboarding_V2/constants/previewConstants'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useTransformToneOfVoiceConversations } from '../useTransformToneOfVoiceConversations'
 
@@ -68,7 +67,7 @@ describe('useTransformToneOfVoiceConversations', () => {
     })
 
     it('should call transformToneOfVoice with correct params', async () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useTransformToneOfVoiceConversations(
                     1,
@@ -76,7 +75,9 @@ describe('useTransformToneOfVoiceConversations', () => {
                     'productRecommendations',
                 ),
             {
-                currentAccount: fromJS(account),
+                storeState: {
+                    currentAccount: fromJS(account),
+                },
             },
         )
 
@@ -146,7 +147,7 @@ describe('useTransformToneOfVoiceConversations', () => {
             isLoading: false,
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useTransformToneOfVoiceConversations(
                     1,
@@ -154,7 +155,9 @@ describe('useTransformToneOfVoiceConversations', () => {
                     'default',
                 ),
             {
-                currentAccount: fromJS(account),
+                storeState: {
+                    currentAccount: fromJS(account),
+                },
             },
         )
 
@@ -188,7 +191,7 @@ describe('useTransformToneOfVoiceConversations', () => {
             isLoading: false,
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useTransformToneOfVoiceConversations(
                     1,
@@ -196,7 +199,9 @@ describe('useTransformToneOfVoiceConversations', () => {
                     'productRecommendations',
                 ),
             {
-                currentAccount: fromJS(account),
+                storeState: {
+                    currentAccount: fromJS(account),
+                },
             },
         )
 
@@ -251,7 +256,7 @@ describe('useTransformToneOfVoiceConversations', () => {
             isLoading: false,
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useTransformToneOfVoiceConversations(
                     1,
@@ -259,7 +264,9 @@ describe('useTransformToneOfVoiceConversations', () => {
                     'productRecommendations',
                 ),
             {
-                currentAccount: fromJS(account),
+                storeState: {
+                    currentAccount: fromJS(account),
+                },
             },
         )
 
@@ -311,7 +318,7 @@ describe('useTransformToneOfVoiceConversations', () => {
     it('should return hardcoded when FF is deactivated', async () => {
         mockUseFlag.mockReturnValue(false)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useTransformToneOfVoiceConversations(
                     1,
@@ -319,7 +326,9 @@ describe('useTransformToneOfVoiceConversations', () => {
                     'default',
                 ),
             {
-                currentAccount: fromJS(account),
+                storeState: {
+                    currentAccount: fromJS(account),
+                },
             },
         )
 
@@ -335,7 +344,7 @@ describe('useTransformToneOfVoiceConversations', () => {
     })
 
     it('should return hardcoded when account domain is undefined', async () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useTransformToneOfVoiceConversations(1, 'test-store', 'default'),
         )
 
@@ -351,7 +360,7 @@ describe('useTransformToneOfVoiceConversations', () => {
     })
 
     it('should only send title and description to transformToneOfVoice, excluding id and other fields', async () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useTransformToneOfVoiceConversations(
                     1,
@@ -359,7 +368,9 @@ describe('useTransformToneOfVoiceConversations', () => {
                     'productRecommendations',
                 ),
             {
-                currentAccount: fromJS(account),
+                storeState: {
+                    currentAccount: fromJS(account),
+                },
             },
         )
 
@@ -389,7 +400,7 @@ describe('useTransformToneOfVoiceConversations', () => {
             isLoading: false,
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useTransformToneOfVoiceConversations(
                     1,
@@ -397,7 +408,9 @@ describe('useTransformToneOfVoiceConversations', () => {
                     'productRecommendations',
                 ),
             {
-                currentAccount: fromJS(account),
+                storeState: {
+                    currentAccount: fromJS(account),
+                },
             },
         )
 

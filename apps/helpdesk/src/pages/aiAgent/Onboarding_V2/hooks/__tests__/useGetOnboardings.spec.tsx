@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -9,7 +9,6 @@ import {
     AiAgentScopes,
     WizardStepEnum,
 } from 'pages/aiAgent/Onboarding_V2/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useGetOnboardings } from '../useGetOnboardings'
 
@@ -30,8 +29,7 @@ describe('useGetOnboardings', () => {
     it('should return the onboardings', async () => {
         getOnboardingDataMock.mockResolvedValue([defaultOnboarding])
 
-        const { result } =
-            renderHookWithStoreAndQueryClientProvider(useGetOnboardings)
+        const { result } = renderHook(useGetOnboardings)
 
         await waitFor(() => {
             expect(result.current.isLoading).toEqual(false)

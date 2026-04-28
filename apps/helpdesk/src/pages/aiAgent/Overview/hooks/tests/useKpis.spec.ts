@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { IntegrationType } from 'models/integration/types'
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced', () => ({
     useGmvInfluenced: jest.fn(() => 'mockGmvInfluenced'),
@@ -67,7 +67,7 @@ describe('useKpis', () => {
     })
 
     it('should return metrics from individual hooks', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useKpis({
                     automationRateFilters: filters,
@@ -79,7 +79,7 @@ describe('useKpis', () => {
                     showEarlyAccessModal: () => {},
                     isOnNewPlan: true,
                 }),
-            mockStoreState,
+            { storeState: mockStoreState },
         )
 
         expect(result.current.metrics).toHaveLength(3)
@@ -92,7 +92,7 @@ describe('useKpis', () => {
     })
 
     it('should return metrics', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useKpis({
                     automationRateFilters: filters,
@@ -105,7 +105,7 @@ describe('useKpis', () => {
                     isOnNewPlan: true,
                     shopName: 'test-shop',
                 }),
-            mockStoreState,
+            { storeState: mockStoreState },
         )
 
         expect(result.current.metrics).toHaveLength(3)
@@ -118,7 +118,7 @@ describe('useKpis', () => {
     })
 
     it('should handle undefined aiAgentType', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             () =>
                 useKpis({
                     automationRateFilters: filters,
@@ -129,7 +129,7 @@ describe('useKpis', () => {
                     showEarlyAccessModal: () => {},
                     isOnNewPlan: false,
                 }),
-            mockStoreState,
+            { storeState: mockStoreState },
         )
 
         expect(result.current.metrics).toHaveLength(3)
@@ -164,7 +164,7 @@ describe('useKpis', () => {
             },
         }
 
-        renderHookWithStoreAndQueryClientProvider(
+        renderHook(
             () =>
                 useKpis({
                     automationRateFilters: customFilters,
@@ -177,7 +177,7 @@ describe('useKpis', () => {
                     isOnNewPlan: true,
                     shopName: 'my-shop',
                 }),
-            mockStoreState,
+            { storeState: mockStoreState },
         )
 
         expect(useGetTicketChannelsStoreIntegrations).toHaveBeenCalledWith(

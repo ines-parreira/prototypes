@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -12,7 +12,6 @@ import {
 } from 'pages/aiAgent/Onboarding_V2/types'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useCreateOnboarding } from '../useCreateOnboarding'
 
@@ -53,8 +52,7 @@ describe('useCreateOnboarding', () => {
     it('should create the onboarding successfully', async () => {
         createOnboardingDataMock.mockResolvedValue(defaultOnboarding)
 
-        const { result } =
-            renderHookWithStoreAndQueryClientProvider(useCreateOnboarding)
+        const { result } = renderHook(useCreateOnboarding)
 
         result.current.mutate({
             currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
@@ -70,8 +68,7 @@ describe('useCreateOnboarding', () => {
             message: 'test',
         })
 
-        const { result } =
-            renderHookWithStoreAndQueryClientProvider(useCreateOnboarding)
+        const { result } = renderHook(useCreateOnboarding)
 
         result.current.mutate({
             currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,

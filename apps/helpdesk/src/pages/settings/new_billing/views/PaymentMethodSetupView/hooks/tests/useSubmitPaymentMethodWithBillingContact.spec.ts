@@ -1,6 +1,6 @@
 import client from '@repo/api-resources'
 import { reportError } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -8,7 +8,6 @@ import MockAdapter from 'axios-mock-adapter'
 import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useSubmitPaymentMethodWithBillingContact } from '../useSubmitPaymentMethodWithBillingContact'
 
@@ -33,9 +32,7 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
     it('should call updateBillingContact and submitPaymentMethod on submit', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethodWithBillingContact,
-        )
+        const { result } = renderHook(useSubmitPaymentMethodWithBillingContact)
 
         await act(async () => {
             await result.current.submitPaymentMethodWithBillingContact({
@@ -63,9 +60,7 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
             throw error
         })
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethodWithBillingContact,
-        )
+        const { result } = renderHook(useSubmitPaymentMethodWithBillingContact)
 
         await act(async () => {
             await expect(
@@ -98,9 +93,7 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
                 }),
         )
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethodWithBillingContact,
-        )
+        const { result } = renderHook(useSubmitPaymentMethodWithBillingContact)
 
         expect(result.current.isLoading).toBe(false)
 
@@ -122,9 +115,7 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
             confirmSetup: jest.fn().mockResolvedValue(new Promise(() => {})),
         } as any)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethodWithBillingContact,
-        )
+        const { result } = renderHook(useSubmitPaymentMethodWithBillingContact)
 
         expect(result.current.isLoading).toBe(false)
 

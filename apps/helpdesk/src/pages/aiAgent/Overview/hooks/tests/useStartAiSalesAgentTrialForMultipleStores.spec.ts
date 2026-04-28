@@ -1,9 +1,8 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { upsertStoreConfiguration } from 'models/aiAgent/resources/configuration'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useStartAiSalesAgentTrialForMultipleStores } from '../useStartAiSalesAgentTrialForMultipleStores'
 
@@ -39,7 +38,7 @@ describe('useStartAiSalesAgentTrialForMultipleStores', () => {
             data: {},
         } as any)
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             useStartAiSalesAgentTrialForMultipleStores,
         )
 
@@ -76,7 +75,7 @@ describe('useStartAiSalesAgentTrialForMultipleStores', () => {
             },
         } as unknown as Record<string, StoreActivation>
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             useStartAiSalesAgentTrialForMultipleStores,
         )
 
@@ -93,7 +92,7 @@ describe('useStartAiSalesAgentTrialForMultipleStores', () => {
     it('should handle mutation failure', async () => {
         upsertStoreConfigurationMock.mockRejectedValue(new Error('test-error'))
 
-        const { result } = renderHookWithStoreAndQueryClientProvider(
+        const { result } = renderHook(
             useStartAiSalesAgentTrialForMultipleStores,
         )
 

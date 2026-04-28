@@ -1,3 +1,7 @@
+import { createElement } from 'react'
+
+import { renderHook } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useHistory } from 'react-router'
@@ -13,7 +17,6 @@ import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/Pe
 import { initialState } from 'state/currentAccount/reducers'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilestone'
 import { useStartShoppingAssistantTrial } from '../hooks/useStartShoppingAssistantTrial'
@@ -64,6 +67,35 @@ const { upsertStoreConfiguration } = jest.requireMock(
 const { useStartSalesTrialMutation } = jest.requireMock(
     'models/aiAgent/queries',
 )
+
+type RenderHookOptions = NonNullable<Parameters<typeof renderHook>[1]>
+
+const renderHookWithQueryClient = <TResult,>(
+    hook: () => TResult,
+    options?: RenderHookOptions,
+) => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+            mutations: { retry: false },
+        },
+    })
+    const { wrapper: ExtraWrapper, ...renderHookOptions } = options ?? {}
+
+    const result = renderHook(hook, {
+        ...renderHookOptions,
+        wrapper: ({ children }) =>
+            createElement(
+                QueryClientProvider,
+                { client: queryClient },
+                ExtraWrapper
+                    ? createElement(ExtraWrapper, undefined, children)
+                    : children,
+            ),
+    })
+
+    return { ...result, queryClient }
+}
 
 const defaultState = {
     currentAccount: initialState.mergeDeep(
@@ -189,9 +221,9 @@ describe('useStartShoppingAssistantTrial', () => {
 
     describe('mutation execution', () => {
         it('should start trial for single store with valid chat integration (milestone-0)', async () => {
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync(mockParams)
@@ -214,9 +246,9 @@ describe('useStartShoppingAssistantTrial', () => {
             const mockDate = new Date('2023-01-01T00:00:00Z')
             jest.spyOn(Date, 'now').mockReturnValue(mockDate.getTime())
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync(mockParams)
@@ -237,9 +269,9 @@ describe('useStartShoppingAssistantTrial', () => {
             useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
             mockStartSalesTrialMutateAsync.mockResolvedValue({ success: true })
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await result.current.mutateAsync(mockParams)
@@ -267,9 +299,9 @@ describe('useStartShoppingAssistantTrial', () => {
                 },
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await expect(
@@ -306,9 +338,9 @@ describe('useStartShoppingAssistantTrial', () => {
                 },
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await expect(
@@ -353,9 +385,9 @@ describe('useStartShoppingAssistantTrial', () => {
                 },
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await expect(result.current.mutateAsync(params)).rejects.toThrow()
@@ -374,9 +406,9 @@ describe('useStartShoppingAssistantTrial', () => {
                 },
             }
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await expect(
@@ -400,9 +432,9 @@ describe('useStartShoppingAssistantTrial', () => {
             const error = new Error('API Error')
             upsertStoreConfiguration.mockRejectedValue(error)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             await expect(
@@ -415,12 +447,10 @@ describe('useStartShoppingAssistantTrial', () => {
         it('should invalidate queries for non-milestone-1', async () => {
             useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(
-                    () =>
-                        useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                    defaultState,
-                )
+            const { result, queryClient } = renderHookWithQueryClient(
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
+                { storeState: defaultState },
+            )
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
                 'invalidateQueries',
@@ -439,12 +469,10 @@ describe('useStartShoppingAssistantTrial', () => {
             useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
             mockStartSalesTrialMutateAsync.mockResolvedValue({ success: true })
 
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(
-                    () =>
-                        useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                    defaultState,
-                )
+            const { result, queryClient } = renderHookWithQueryClient(
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
+                { storeState: defaultState },
+            )
             const invalidateQueriesSpy = jest.spyOn(
                 queryClient,
                 'invalidateQueries',
@@ -462,9 +490,9 @@ describe('useStartShoppingAssistantTrial', () => {
             const error = new Error('Network error')
             upsertStoreConfiguration.mockRejectedValue(error)
 
-            const { result } = renderHookWithStoreAndQueryClientProvider(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
-                defaultState,
+                { storeState: defaultState },
             )
 
             try {

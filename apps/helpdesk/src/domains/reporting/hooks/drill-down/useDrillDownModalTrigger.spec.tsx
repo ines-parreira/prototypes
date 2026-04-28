@@ -1,10 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
@@ -20,7 +19,7 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should return openDrillDownModal function and tooltipText', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDrillDownModalTrigger({ metricName }),
         )
 
@@ -29,7 +28,7 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should use custom title when provided', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDrillDownModalTrigger({ metricName, title: customTitle }),
         )
 
@@ -37,7 +36,7 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should use config tooltip text when title not provided', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDrillDownModalTrigger({ metricName }),
         )
 
@@ -45,8 +44,8 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should dispatch setMetricData when openDrillDownModal is called', () => {
-        const { result, store } = renderHookWithStoreAndQueryClientProvider(
-            () => useDrillDownModalTrigger({ metricName, title: customTitle }),
+        const { result, store } = renderHook(() =>
+            useDrillDownModalTrigger({ metricName, title: customTitle }),
         )
 
         result.current.openDrillDownModal()
@@ -62,7 +61,7 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should log segment event with correct parameters when openDrillDownModal is called', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDrillDownModalTrigger({ metricName }),
         )
 
@@ -74,7 +73,7 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should use default segment event name', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDrillDownModalTrigger({ metricName }),
         )
 
@@ -87,7 +86,7 @@ describe('useDrillDownModalTrigger', () => {
 
     it('should use custom segment event name when provided', () => {
         const customSegmentEvent = SegmentEvent.AiAgentEnabled
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDrillDownModalTrigger({
                 metricName,
                 segmentEventName: customSegmentEvent,
@@ -102,12 +101,11 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should include integrationId in metricData when provided', () => {
-        const { result, store } = renderHookWithStoreAndQueryClientProvider(
-            () =>
-                useDrillDownModalTrigger({
-                    metricName,
-                    integrationId,
-                }),
+        const { result, store } = renderHook(() =>
+            useDrillDownModalTrigger({
+                metricName,
+                integrationId,
+            }),
         )
 
         result.current.openDrillDownModal()
@@ -123,12 +121,11 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should include journeyIds in metricData when provided', () => {
-        const { result, store } = renderHookWithStoreAndQueryClientProvider(
-            () =>
-                useDrillDownModalTrigger({
-                    metricName,
-                    journeyIds,
-                }),
+        const { result, store } = renderHook(() =>
+            useDrillDownModalTrigger({
+                metricName,
+                journeyIds,
+            }),
         )
 
         result.current.openDrillDownModal()
@@ -144,14 +141,13 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should include all optional parameters in metricData when provided', () => {
-        const { result, store } = renderHookWithStoreAndQueryClientProvider(
-            () =>
-                useDrillDownModalTrigger({
-                    metricName,
-                    title: customTitle,
-                    integrationId,
-                    journeyIds,
-                }),
+        const { result, store } = renderHook(() =>
+            useDrillDownModalTrigger({
+                metricName,
+                title: customTitle,
+                integrationId,
+                journeyIds,
+            }),
         )
 
         result.current.openDrillDownModal()
@@ -167,7 +163,7 @@ describe('useDrillDownModalTrigger', () => {
     })
 
     it('should return empty string as tooltipText when metricName and title are both absent', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDrillDownModalTrigger({
                 metricName: undefined as any,
             }),
