@@ -11,7 +11,10 @@ import {
     createColumnHelper,
     DataTable,
     DataTableBaseCell,
+    DataTablePagination,
+    DataTableSearch,
     DataTableTextCell,
+    DataTableToolbar,
     Disclosure,
     DisclosureHeader,
     DisclosurePanel,
@@ -137,7 +140,12 @@ export function ViewCountDebugPanel({
                                     }}
                                     elevation="high"
                                     withBorder
-                                />
+                                >
+                                    <DataTableToolbar>
+                                        <DataTableSearch placeholder="Search views..." />
+                                    </DataTableToolbar>
+                                    <DataTablePagination />
+                                </DataTable>
                             </Box>
                         </>
                     ) : (
@@ -171,7 +179,9 @@ export function ViewCountDebugPanel({
                                     }}
                                     elevation="high"
                                     withBorder
-                                />
+                                >
+                                    <DataTablePagination />
+                                </DataTable>
                             </Box>
                         </DisclosurePanel>
                     </Disclosure>

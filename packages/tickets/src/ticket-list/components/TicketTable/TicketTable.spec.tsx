@@ -271,12 +271,7 @@ describe('TicketTable', () => {
                             }
                         }
                     }) => (
-                        <DataTableBaseCell
-                            {...(cell as Parameters<
-                                typeof DataTableBaseCell
-                            >[0])}
-                            p={0}
-                        >
+                        <DataTableBaseCell {...cell} p={0}>
                             <Link
                                 to={`/app/ticket/${cell.row.original.id}`}
                                 onClick={(event) => {

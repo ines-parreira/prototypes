@@ -574,7 +574,6 @@ function TicketTableComponent({
                         )
                     }}
                 />
-
                 <DataTablePagination />
             </DataTable>
         </div>

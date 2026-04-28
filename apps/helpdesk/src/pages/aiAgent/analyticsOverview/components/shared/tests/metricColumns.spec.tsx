@@ -5,8 +5,6 @@ import {
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render, screen } from '@testing-library/react'
 
-import { DataTable } from '@gorgias/axiom'
-
 import { STANDARD_METRIC_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
 
 const defaultLoadingStates: MetricLoadingStates = {
@@ -79,17 +77,6 @@ describe('STANDARD_METRIC_COLUMNS', () => {
     })
 })
 
-type CellFn = (info: ReturnType<typeof makeInfo>) => React.ReactNode
-
-const renderCell = (cellFn: CellFn, value: number | null) =>
-    render(
-        <DataTable
-            data={[]}
-            columns={[]}
-            renderEmptyState={() => cellFn(makeInfo(value))}
-        />,
-    )
-
 describe('buildMetricColumnDefs', () => {
     describe('cell renderer', () => {
         it('shows not available placeholder when showNotAvailable is true and value is NaN', () => {
@@ -97,7 +84,10 @@ describe('buildMetricColumnDefs', () => {
                 [{ ...baseConfig, showNotAvailable: true }],
                 defaultLoadingStates,
             )
-            renderCell(column.cell as CellFn, NaN)
+            const cellFn = column.cell as (
+                info: ReturnType<typeof makeInfo>,
+            ) => React.ReactNode
+            render(<>{cellFn(makeInfo(NaN))}</>)
             expect(
                 screen.getByText(NOT_AVAILABLE_PLACEHOLDER),
             ).toBeInTheDocument()
@@ -108,7 +98,10 @@ describe('buildMetricColumnDefs', () => {
                 [{ ...baseConfig, showNotAvailable: false }],
                 defaultLoadingStates,
             )
-            renderCell(column.cell as CellFn, NaN)
+            const cellFn = column.cell as (
+                info: ReturnType<typeof makeInfo>,
+            ) => React.ReactNode
+            render(<>{cellFn(makeInfo(NaN))}</>)
             expect(
                 screen.queryByText(NOT_AVAILABLE_PLACEHOLDER),
             ).not.toBeInTheDocument()
@@ -119,7 +112,10 @@ describe('buildMetricColumnDefs', () => {
                 ...defaultLoadingStates,
                 costSaved: true,
             })
-            renderCell(column.cell as CellFn, null)
+            const cellFn = column.cell as (
+                info: ReturnType<typeof makeInfo>,
+            ) => React.ReactNode
+            render(<>{cellFn(makeInfo(null))}</>)
             expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         })
 
@@ -128,7 +124,10 @@ describe('buildMetricColumnDefs', () => {
                 [{ ...baseConfig, showNotAvailable: true }],
                 defaultLoadingStates,
             )
-            renderCell(column.cell as CellFn, 42)
+            const cellFn = column.cell as (
+                info: ReturnType<typeof makeInfo>,
+            ) => React.ReactNode
+            render(<>{cellFn(makeInfo(42))}</>)
             expect(
                 screen.queryByText(NOT_AVAILABLE_PLACEHOLDER),
             ).not.toBeInTheDocument()

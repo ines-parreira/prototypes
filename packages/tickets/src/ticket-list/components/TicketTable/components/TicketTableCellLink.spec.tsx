@@ -1,8 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { fireEvent, screen } from '@testing-library/react'
-
-import { DataTable } from '@gorgias/axiom'
+import { fireEvent, screen, within } from '@testing-library/react'
 
 import { render } from '../../../../tests/render.utils'
 import { TicketTableCellLink } from './TicketTableCellLink'
@@ -13,26 +11,15 @@ function renderTicketTableCellLink(
     props?: Partial<ComponentProps<typeof TicketTableCellLink>>,
 ) {
     return render(
-        <div onClick={(event) => event.preventDefault()}>
-            <DataTable
-                data={[]}
-                columns={[]}
-                renderEmptyState={() => (
-                    <table>
-                        <tbody>
-                            <tr>
-                                <TicketTableCellLink
-                                    to="/app/ticket/42"
-                                    {...props}
-                                >
-                                    {props?.children ?? 'Ticket 42'}
-                                </TicketTableCellLink>
-                            </tr>
-                        </tbody>
-                    </table>
-                )}
-            />
-        </div>,
+        <table>
+            <tbody>
+                <tr>
+                    <TicketTableCellLink to="/app/ticket/42" {...props}>
+                        {props?.children ?? 'Ticket 42'}
+                    </TicketTableCellLink>
+                </tr>
+            </tbody>
+        </table>,
     )
 }
 
@@ -42,9 +29,8 @@ describe('TicketTableCellLink', () => {
             className: 'custom-cell',
         })
 
-        const link = screen.getByRole('link', { name: 'Ticket 42' })
-        const cell = link.closest('td')
-        expect(cell).not.toBeNull()
+        const cell = screen.getByRole('cell')
+        const link = within(cell).getByRole('link', { name: 'Ticket 42' })
         const baseCellContent = container.querySelector(
             '[data-name="data-table-cell"]',
         )

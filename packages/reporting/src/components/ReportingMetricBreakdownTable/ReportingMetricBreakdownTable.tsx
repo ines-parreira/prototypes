@@ -7,6 +7,7 @@ import {
     DataTable,
     DataTableActions,
     DataTableColumnEditing,
+    DataTableToolbar,
 } from '@gorgias/axiom'
 
 import { useSaveTableColumnVisibility } from '../../hooks/useSaveTableColumnVisibility'
@@ -130,11 +131,13 @@ export function ReportingMetricBreakdownTable<TData>({
                     <NoDataPlaceholder height={100} marginBottom={0} />
                 )}
             >
-                <DataTableActions>{DownloadButton}</DataTableActions>
-                <DataTableColumnEditing
-                    label="Edit metrics"
-                    footer={renderFooter}
-                />
+                <DataTableToolbar>
+                    <DataTableActions>{DownloadButton}</DataTableActions>
+                    <DataTableColumnEditing
+                        label="Edit metrics"
+                        footer={renderFooter}
+                    />
+                </DataTableToolbar>
             </DataTable>
         </Box>
     )

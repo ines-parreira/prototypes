@@ -1,8 +1,5 @@
-import { render } from '@repo/testing/vitest'
-import { screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import { DataTable } from '@gorgias/axiom'
 
 import { formatMetricValue } from '../../utils/helpers'
 import { buildMetricColumnDefs, buildNameColDef } from './columnBuilders'
@@ -70,16 +67,9 @@ describe('buildNameColDef', () => {
         })
         const cellFn = col.cell as any
         render(
-            <DataTable
-                data={[]}
-                columns={[]}
-                renderEmptyState={() =>
-                    cellFn({
-                        getValue: () => 'AI Agent',
-                        row: { original: {} },
-                    })
-                }
-            />,
+            <>
+                {cellFn({ getValue: () => 'AI Agent', row: { original: {} } })}
+            </>,
         )
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
     })
@@ -92,16 +82,12 @@ describe('buildNameColDef', () => {
         })
         const cellFn = col.cell as any
         render(
-            <DataTable
-                data={[]}
-                columns={[]}
-                renderEmptyState={() =>
-                    cellFn({
-                        getValue: () => 'cancel_order',
-                        row: { original: {} },
-                    })
-                }
-            />,
+            <>
+                {cellFn({
+                    getValue: () => 'cancel_order',
+                    row: { original: {} },
+                })}
+            </>,
         )
         expect(screen.getByText('Cancel order')).toBeInTheDocument()
     })
@@ -117,16 +103,12 @@ describe('buildNameColDef', () => {
         })
         const cellFn = col.cell as any
         render(
-            <DataTable
-                data={[]}
-                columns={[]}
-                renderEmptyState={() =>
-                    cellFn({
-                        getValue: () => 'https://example.com/article-1',
-                        row: { original: {} },
-                    })
-                }
-            />,
+            <>
+                {cellFn({
+                    getValue: () => 'https://example.com/article-1',
+                    row: { original: {} },
+                })}
+            </>,
         )
         expect(screen.getByText('How to return')).toBeInTheDocument()
         const link = screen.getByRole('link', { name: 'Open How to return' })
@@ -144,16 +126,12 @@ describe('buildNameColDef', () => {
         })
         const cellFn = col.cell as any
         render(
-            <DataTable
-                data={[]}
-                columns={[]}
-                renderEmptyState={() =>
-                    cellFn({
-                        getValue: () => 'https://example.com/article-1',
-                        row: { original: {} },
-                    })
-                }
-            />,
+            <>
+                {cellFn({
+                    getValue: () => 'https://example.com/article-1',
+                    row: { original: {} },
+                })}
+            </>,
         )
         const link = screen.getByRole('link', {
             name: 'Open https://example.com/article-1',
@@ -169,19 +147,47 @@ describe('buildNameColDef', () => {
         })
         const cellFn = col.cell as any
         render(
-            <DataTable
-                data={[]}
-                columns={[]}
-                renderEmptyState={() =>
-                    cellFn({
-                        getValue: () => 'skill_a',
-                        row: { original: {} },
-                    })
-                }
-            />,
+            <>{cellFn({ getValue: () => 'skill_a', row: { original: {} } })}</>,
         )
         expect(screen.getByText('skill_a')).toBeInTheDocument()
         expect(screen.queryByRole('link')).not.toBeInTheDocument()
+    })
+
+    it('cell renders an avatar when getAvatarProps is provided', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Product name',
+            getAvatarProps: (value) => ({
+                name: `Product ${value}`,
+                url: `https://example.com/img/${value}.jpg`,
+            }),
+        })
+        const cellFn = col.cell as any
+        render(<>{cellFn({ getValue: () => '42', row: { original: {} } })}</>)
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+    })
+
+    it('cell renders an avatar without image src when url is undefined', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Product name',
+            getAvatarProps: (value) => ({ name: `Product ${value}` }),
+        })
+        const cellFn = col.cell as any
+        render(<>{cellFn({ getValue: () => '7', row: { original: {} } })}</>)
+        expect(screen.getByText('P7')).toBeInTheDocument()
+    })
+
+    it('cell does not render an avatar when getAvatarProps is not provided', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Feature name',
+        })
+        const cellFn = col.cell as any
+        render(
+            <>{cellFn({ getValue: () => 'skill_a', row: { original: {} } })}</>,
+        )
+        expect(screen.queryByRole('img')).not.toBeInTheDocument()
     })
 
     describe('sortingFn', () => {
@@ -277,19 +283,23 @@ describe('buildMetricColumnDefs', () => {
         expect(cols[0].enableHiding).toBe(true)
     })
 
+    it('cell shows a skeleton when loading state is active and value is null', () => {
+        const [col] = buildMetricColumnDefs([baseConfig], {
+            ...defaultLoadingStates,
+            costSaved: true,
+        })
+        const cellFn = col.cell as any
+        render(<>{cellFn(makeInfo(null))}</>)
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+    })
+
     it('cell shows not available placeholder when showNotAvailable is true and value is NaN', () => {
         const [col] = buildMetricColumnDefs(
             [{ ...baseConfig, showNotAvailable: true }],
             defaultLoadingStates,
         )
         const cellFn = col.cell as any
-        render(
-            <DataTable
-                data={[]}
-                columns={[]}
-                renderEmptyState={() => cellFn(makeInfo(NaN))}
-            />,
-        )
+        render(<>{cellFn(makeInfo(NaN))}</>)
         expect(screen.getByText('-')).toBeInTheDocument()
     })
 
@@ -299,13 +309,7 @@ describe('buildMetricColumnDefs', () => {
             defaultLoadingStates,
         )
         const cellFn = col.cell as any
-        render(
-            <DataTable
-                data={[]}
-                columns={[]}
-                renderEmptyState={() => cellFn(makeInfo(NaN))}
-            />,
-        )
+        render(<>{cellFn(makeInfo(NaN))}</>)
         expect(screen.queryByText('-')).not.toBeInTheDocument()
     })
 
@@ -333,13 +337,7 @@ describe('buildMetricColumnDefs', () => {
                 defaultLoadingStates,
             )
             const cellFn = col.cell as any
-            render(
-                <DataTable
-                    data={[]}
-                    columns={[]}
-                    renderEmptyState={() => cellFn(makeInfo(42))}
-                />,
-            )
+            render(<>{cellFn(makeInfo(42))}</>)
             expect(screen.getByText('custom content')).toBeInTheDocument()
         })
 
@@ -385,14 +383,15 @@ describe('buildMetricColumnDefs', () => {
             })
         })
 
-        it('skips renderCell when loading and value is null', () => {
+        it('shows the skeleton and skips renderCell when loading and value is null', () => {
             const renderCell = vi.fn(() => <span>custom</span>)
             const [col] = buildMetricColumnDefs(
                 [{ ...baseConfig, renderCell }],
                 { ...defaultLoadingStates, costSaved: true },
             )
             const cellFn = col.cell as any
-            cellFn(makeInfo(null))
+            render(<>{cellFn(makeInfo(null))}</>)
+            expect(screen.getByLabelText('Loading')).toBeInTheDocument()
             expect(renderCell).not.toHaveBeenCalled()
         })
     })
