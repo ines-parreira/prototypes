@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -134,6 +134,9 @@ export const ManageRedirects = () => {
                         }
                         if (isStaging()) {
                             return `https://${helpCenter.subdomain}.gorgias.xyz${from}`
+                        }
+                        if (isLocalDev()) {
+                            return `https://${helpCenter.subdomain}.gorgias-help.localhost${from}`
                         }
                         return `http://acme.gorgias.docker:4000${from}`
                     }

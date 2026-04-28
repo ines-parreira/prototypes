@@ -35,7 +35,7 @@ export function isLocalDev(): boolean {
 export function getHelpCenterAuthApiBaseUrl(): string {
     if (isDevelopment()) {
         if (isLocalDev()) {
-            return ''
+            return 'https://help-center.gorgias.localhost'
         }
         return 'http://acme.gorgias.docker:4001'
     }

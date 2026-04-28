@@ -1,5 +1,5 @@
 import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 import memoize from 'memoize-one'
 import type { Document } from 'openapi-client-axios'
 import OpenAPIClientAxios from 'openapi-client-axios'
@@ -13,6 +13,9 @@ function getMigrationApiBaseUrl() {
     }
     if (isProduction()) {
         return 'https://migration.gorgias.com'
+    }
+    if (isLocalDev()) {
+        return 'https://migration.gorgias.localhost'
     }
 
     return 'http://acme.gorgias.docker:8001'

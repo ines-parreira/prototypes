@@ -1,4 +1,4 @@
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 
 import { LANGUAGE } from 'constants/languages'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
@@ -41,7 +41,9 @@ export const HELP_CENTER_DOMAIN = isProduction()
     ? '.gorgias.help'
     : isStaging()
       ? '.gorgias.rehab'
-      : '.gorgias.docker:4000'
+      : isLocalDev()
+        ? '.gorgias-help.localhost'
+        : '.gorgias.docker:4000'
 
 export const HELP_CENTER_MAX_ARTICLES = 1500
 

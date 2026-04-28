@@ -93,7 +93,7 @@ jobs:
           PREVIEW_PATH: ${{ needs.workspace-setup.outputs.preview-path }}
         run: |
           mkdir -p compressed
-          for f in build/helpdesk.app.js build/helpdesk.app.css; do
+          for f in build/helpdesk.app.js build/helpdesk.app.css build/manifest.json; do
             if [ -f "$f" ]; then
               gzip -9 -c "$f" > "compressed/$(basename "$f")"
             fi
@@ -195,6 +195,7 @@ jobs:
             const baseUrl = `https://gorgias-assets.gorgi.us/${previewPath}/web-app/build`;
             const jsUrl = `${baseUrl}/helpdesk.app.js`;
             const cssUrl = `${baseUrl}/helpdesk.app.css`;
+            const manifestUrl = `${baseUrl}/manifest.json`;
             const regex = '/helpdesk\\.app\\.[a-zA-Z0-9]+\\.(js|css)$/';
             const destinationTemplate = `${baseUrl}/helpdesk.app.$1`;
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
@@ -216,6 +217,7 @@ jobs:
               '',
               `- JS: \`${jsUrl}\``,
               `- CSS: \`${cssUrl}\``,
+              `- Manifest: \`${manifestUrl}\``,
               `- Requestly JSON: [preview-requestly-rule](${artifactUrl})`,
               '- Quick start: [Helpdesk PR Preview - Simple & Quick Guide](https://www.notion.so/gorgias/Helpdesk-PR-Preview-Simple-Quick-Guide-30a1ae2178f580acbf91e05b1310189f) (refer here for an easy start)',
               '',
