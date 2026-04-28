@@ -1532,6 +1532,54 @@ describe('SavedFiltersPanel', () => {
         })
     })
 
+    it('should invalidate savedFilters queries on mutation success', () => {
+        const savedFilterDraft: SavedFilterDraft = {
+            name: 'Some Name draft',
+            filter_group: [
+                {
+                    member: FilterKey.Agents,
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['1'],
+                },
+            ],
+        }
+        const state = {
+            stats: statsSlice.initialState,
+            integrations: fromJS({ integration: { id: 1 } }),
+            ui: {
+                stats: {
+                    filters: { ...initialState, savedFilterDraft },
+                },
+            },
+            currentUser: defaultState.currentUser,
+        } as RootState
+
+        let capturedConfig: any
+        useCreateAnalyticsFilterMock.mockImplementation((config: any) => {
+            capturedConfig = config
+            return { mutateAsync: jest.fn(), error: undefined } as any
+        })
+
+        renderWithStore(
+            <MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <SavedFiltersPanel optionalFilters={[]} />
+                </QueryClientProvider>
+            </MemoryRouter>,
+            state,
+        )
+
+        const invalidateQueriesSpy = jest.spyOn(
+            queryClient,
+            'invalidateQueries',
+        )
+        capturedConfig.mutation.onSuccess()
+
+        expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+            queryKey: ['savedFilters'],
+        })
+    })
+
     describe('isSavedFiltersError', () => {
         it('should return true', () => {
             const savedFilterError1 = {

@@ -174,7 +174,9 @@ export const SavedFiltersPanel = ({
     const savedFilters = useListAnalyticsFilters()
     const originalSavedFilter =
         savedFilter !== null
-            ? savedFilters.data?.data.data.find((f) => f.id === savedFilter.id)
+            ? savedFilters.data?.data?.data?.find(
+                  (f) => f.id === savedFilter.id,
+              )
             : null
 
     const createMutation = useCreateAnalyticsFilter(mutationConfig)
