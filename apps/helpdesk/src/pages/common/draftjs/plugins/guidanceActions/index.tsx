@@ -67,13 +67,16 @@ export default function createGuidanceActionsPlugin() {
                     newContentState,
                     'apply-entity',
                 )
-                // Always preserve selection to prevent cursor jumping
-                // Only set hasFocus if editor currently has focus
+                // Preserve selection to prevent cursor jumping. Use forceSelection
+                // only when the editor was focused — it always sets hasFocus to
+                // true, which would otherwise steal focus on initial mount.
                 const hadFocus = editorState.getSelection().getHasFocus()
                 const selection = newEditorState
                     .getSelection()
                     .merge({ hasFocus: hadFocus })
-                return EditorState.forceSelection(newEditorState, selection)
+                return hadFocus
+                    ? EditorState.forceSelection(newEditorState, selection)
+                    : EditorState.acceptSelection(newEditorState, selection)
             }
 
             return editorState

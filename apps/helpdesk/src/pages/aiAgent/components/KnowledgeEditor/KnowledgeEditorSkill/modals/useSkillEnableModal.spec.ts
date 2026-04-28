@@ -231,16 +231,37 @@ describe('useSkillEnableModal', () => {
         expect(mockUpdateGuidanceArticle).not.toHaveBeenCalled()
     })
 
-    it('auto-enables when activeModal is enable and hasConflicts is false', async () => {
-        mockHasConflicts = false
-        mockStoreState = createStoreState({ activeModal: 'enable' })
+    it('requestEnable opens the modal when there are conflicts', () => {
+        mockHasConflicts = true
+        mockStoreState = createStoreState()
 
-        renderHook(() => useSkillEnableModal())
+        const { result } = renderHook(() => useSkillEnableModal())
 
-        await act(async () => {
-            await Promise.resolve()
+        act(() => {
+            result.current.requestEnable()
         })
 
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'SET_MODAL',
+            payload: 'enable',
+        })
+        expect(mockUpdateGuidanceArticle).not.toHaveBeenCalled()
+    })
+
+    it('requestEnable enables directly without opening the modal when there are no conflicts', async () => {
+        mockHasConflicts = false
+        mockStoreState = createStoreState()
+
+        const { result } = renderHook(() => useSkillEnableModal())
+
+        await act(async () => {
+            await result.current.requestEnable()
+        })
+
+        expect(mockDispatch).not.toHaveBeenCalledWith({
+            type: 'SET_MODAL',
+            payload: 'enable',
+        })
         expect(mockResolveAllConflicts).toHaveBeenCalled()
         expect(mockUpdateGuidanceArticle).toHaveBeenCalled()
     })
@@ -251,5 +272,33 @@ describe('useSkillEnableModal', () => {
         result.current.onClose()
 
         expect(mockDispatch).toHaveBeenCalledWith({ type: 'CLOSE_MODAL' })
+    })
+
+    it('returns isFirstTimeEnable true when skill has no publishedVersionId', () => {
+        mockStoreState = createStoreState({
+            skill: { id: 42, publishedVersionId: null },
+        })
+
+        const { result } = renderHook(() => useSkillEnableModal())
+
+        expect(result.current.isFirstTimeEnable).toBe(true)
+    })
+
+    it('returns isFirstTimeEnable true when skill is undefined', () => {
+        mockStoreState = createStoreState({ skill: undefined })
+
+        const { result } = renderHook(() => useSkillEnableModal())
+
+        expect(result.current.isFirstTimeEnable).toBe(true)
+    })
+
+    it('returns isFirstTimeEnable false when skill has a publishedVersionId', () => {
+        mockStoreState = createStoreState({
+            skill: { id: 42, publishedVersionId: 7 },
+        })
+
+        const { result } = renderHook(() => useSkillEnableModal())
+
+        expect(result.current.isFirstTimeEnable).toBe(false)
     })
 })

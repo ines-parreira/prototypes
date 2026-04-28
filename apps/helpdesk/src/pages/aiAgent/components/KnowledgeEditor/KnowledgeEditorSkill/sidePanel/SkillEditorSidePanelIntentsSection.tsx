@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import {
     Banner,
     Box,
@@ -14,9 +16,10 @@ import {
 
 import { KnowledgeEditorSidePanelSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection'
 
+import { useSkillEditorStore } from '../context/KnowledgeEditorSkillContext'
 import { useLinkedIntentsSidebarSkill } from './hooks/useLinkedIntentsSidebarSkill'
+import { usePersistLinkedIntentsSkill } from './hooks/usePersistLinkedIntentsSkill'
 import { SkillLinkedIntentsModal } from './modals/SkillLinkedIntentsModal'
-import { SkillUnlinkIntentModal } from './modals/SkillUnlinkIntentModal'
 import { SkillIntentTag } from './SkillIntentTag'
 
 import css from './SkillEditorSidePanelIntentsSection.less'
@@ -36,9 +39,21 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
     } = useLinkedIntentsSidebarSkill()
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [intentPendingUnlink, setIntentPendingUnlink] = useState<
-        string | null
-    >(null)
+    const [unlinkingIntentId, setUnlinkingIntentId] = useState<string | null>(
+        null,
+    )
+
+    const skillIntentIds = useSkillEditorStore(
+        useShallow((storeState) => storeState.state.intents),
+    )
+    const { unlinkIntent } = usePersistLinkedIntentsSkill()
+
+    const handleUnlinkIntent = (intentId: string) => {
+        setUnlinkingIntentId(intentId)
+        void unlinkIntent(intentId, skillIntentIds, () =>
+            setUnlinkingIntentId(null),
+        )
+    }
 
     const linkIntentsButton = (
         <Button
@@ -47,7 +62,7 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
             leadingSlot={<Icon name="add-plus" />}
             onClick={() => setIsModalOpen(true)}
             isDisabled={linkButton.isDisabled}
-            isLoading={intentPendingUnlink !== null && linkButton.isUpdating}
+            isLoading={unlinkingIntentId !== null && linkButton.isUpdating}
         >
             Link intents
         </Button>
@@ -133,7 +148,7 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
                                     onClose={
                                         showLinkButton && linkButton.canUnlink
                                             ? () =>
-                                                  setIntentPendingUnlink(
+                                                  handleUnlinkIntent(
                                                       item.intentId,
                                                   )
                                             : undefined
@@ -150,12 +165,6 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
                 <SkillLinkedIntentsModal
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
-                />
-            )}
-            {intentPendingUnlink !== null && (
-                <SkillUnlinkIntentModal
-                    intentId={intentPendingUnlink}
-                    onClose={() => setIntentPendingUnlink(null)}
                 />
             )}
         </>

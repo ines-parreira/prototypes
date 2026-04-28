@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
@@ -14,6 +14,7 @@ import { useSkillConflicts } from './useSkillConflicts'
 export const useSkillEnableModal = () => {
     const {
         skillId,
+        isFirstTimeEnable,
         activeModal,
         isUpdating,
         helpCenterId,
@@ -23,6 +24,8 @@ export const useSkillEnableModal = () => {
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             skillId: storeState.state.skill?.id,
+            isFirstTimeEnable:
+                storeState.state.skill?.publishedVersionId == null,
             activeModal: storeState.state.activeModal,
             isUpdating: storeState.state.isUpdating,
             helpCenterId: storeState.config.helpCenter.id ?? 0,
@@ -113,19 +116,22 @@ export const useSkillEnableModal = () => {
         handleVisibilityUpdate,
     ])
 
-    // No conflicts: auto-enable without showing modal
-    useEffect(() => {
-        if (activeModal === 'enable' && !hasConflicts) {
-            enableSkill()
+    const requestEnable = useCallback(() => {
+        if (hasConflicts) {
+            dispatch({ type: 'SET_MODAL', payload: 'enable' })
+            return
         }
-    }, [activeModal, hasConflicts, enableSkill])
+        enableSkill()
+    }, [hasConflicts, dispatch, enableSkill])
 
     return {
         isOpen: activeModal === 'enable' && hasConflicts,
         isEnabling: isUpdating,
         bannerType,
         skillsToDisableInfo,
+        isFirstTimeEnable,
         onClose: () => dispatch({ type: 'CLOSE_MODAL' }),
         onEnable: enableSkill,
+        requestEnable,
     }
 }

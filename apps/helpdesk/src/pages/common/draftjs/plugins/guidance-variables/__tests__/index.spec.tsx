@@ -42,6 +42,7 @@ jest.mock('../utils', () => ({
 describe('createGuidanceVariablesPlugin', () => {
     let mockEditorStatePush: jest.SpyInstance
     let mockEditorStateForceSelection: jest.SpyInstance
+    let mockEditorStateAcceptSelection: jest.SpyInstance
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -51,11 +52,15 @@ describe('createGuidanceVariablesPlugin', () => {
         mockEditorStateForceSelection = jest
             .spyOn(EditorState, 'forceSelection')
             .mockImplementation(() => ({}) as EditorState)
+        mockEditorStateAcceptSelection = jest
+            .spyOn(EditorState, 'acceptSelection')
+            .mockImplementation(() => ({}) as EditorState)
     })
 
     afterEach(() => {
         mockEditorStatePush.mockRestore()
         mockEditorStateForceSelection.mockRestore()
+        mockEditorStateAcceptSelection.mockRestore()
     })
 
     it('creates a plugin with decorators', () => {
@@ -294,7 +299,7 @@ describe('createGuidanceVariablesPlugin', () => {
         } as unknown as EditorState
 
         mockEditorStatePush.mockReturnValue(mockNewEditorState)
-        mockEditorStateForceSelection.mockReturnValue(mockNewEditorState)
+        mockEditorStateAcceptSelection.mockReturnValue(mockNewEditorState)
 
         // Call the onChange function
         const result = plugin.onChange(mockEditorState)
@@ -306,11 +311,13 @@ describe('createGuidanceVariablesPlugin', () => {
             mockContentState,
             'apply-entity',
         )
-        // Verify unfocused state is preserved
+        // Verify unfocused state is preserved via acceptSelection (forceSelection
+        // would override hasFocus to true and steal focus on initial mount).
         expect(mockSelection.merge).toHaveBeenCalledWith({ hasFocus: false })
-        expect(mockEditorStateForceSelection).toHaveBeenCalledWith(
+        expect(mockEditorStateAcceptSelection).toHaveBeenCalledWith(
             mockNewEditorState,
             mockSelection,
         )
+        expect(mockEditorStateForceSelection).not.toHaveBeenCalled()
     })
 })

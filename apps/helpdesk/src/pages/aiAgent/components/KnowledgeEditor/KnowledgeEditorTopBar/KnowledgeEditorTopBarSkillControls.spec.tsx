@@ -74,6 +74,12 @@ jest.mock('../KnowledgeEditorSkill/hooks/useSkillVersionHistory', () => ({
     }),
 }))
 
+const mockRequestEnable = jest.fn()
+
+jest.mock('../KnowledgeEditorSkill/modals/useSkillEnableModal', () => ({
+    useSkillEnableModal: () => ({ requestEnable: mockRequestEnable }),
+}))
+
 const mockUseSkillEditorStore = jest.fn()
 const mockDispatch = jest.fn()
 const mockOnTest = jest.fn()
@@ -255,16 +261,13 @@ describe('SkillToolbarControls', () => {
             ).toBeDisabled()
         })
 
-        it('dispatches enable modal on click', async () => {
+        it('triggers requestEnable on click', async () => {
             const user = userEvent.setup()
             render(<SkillToolbarControls />)
 
             await user.click(screen.getByRole('button', { name: /enable/i }))
 
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SET_MODAL',
-                payload: 'enable',
-            })
+            expect(mockRequestEnable).toHaveBeenCalledTimes(1)
         })
     })
 

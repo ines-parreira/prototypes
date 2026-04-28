@@ -10,6 +10,7 @@ import {
 } from '../KnowledgeEditorSkill/context'
 import type { SkillModeType } from '../KnowledgeEditorSkill/context/types'
 import { useSkillVersionHistory } from '../KnowledgeEditorSkill/hooks/useSkillVersionHistory'
+import { useSkillEnableModal } from '../KnowledgeEditorSkill/modals/useSkillEnableModal'
 import { VersionHistoryButton } from '../shared/VersionHistoryButton'
 import {
     DeleteButton,
@@ -151,9 +152,7 @@ export const SkillToolbarControls = () => {
     const publishValidationTooltip = getValidationTooltip('publish')
     const enableValidationTooltip = getValidationTooltip('enable')
 
-    const onOpenEnableModal = useCallback(() => {
-        dispatch({ type: 'SET_MODAL', payload: 'enable' })
-    }, [dispatch])
+    const { requestEnable } = useSkillEnableModal()
 
     const onOpenDisableModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'disable' })
@@ -232,7 +231,7 @@ export const SkillToolbarControls = () => {
     const enableButton = wrapWithValidationTooltip(
         <Button
             variant="primary"
-            onClick={onOpenEnableModal}
+            onClick={requestEnable}
             isDisabled={isBusy || !formValid}
         >
             Enable

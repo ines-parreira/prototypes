@@ -6,9 +6,11 @@ import userEvent from '@testing-library/user-event'
 import { useHistory } from 'react-router-dom'
 
 import { useUpdateArticle } from 'models/helpCenter/mutations'
+import { useGuidanceStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 import { useSkillNotify } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillNotify'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
@@ -58,12 +60,25 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(),
 }))
 
+jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
+    useGuidanceArticleMutation: jest.fn(),
+}))
+
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',
+    () => ({
+        useGuidanceStore: jest.fn(),
+    }),
+)
+
 const mockUseQueryClient = useQueryClient as jest.Mock
 const mockUseUpdateArticle = useUpdateArticle as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
 const mockUseHistory = useHistory as jest.Mock
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
 const mockUseSkillNotify = useSkillNotify as jest.Mock
+const mockUseGuidanceArticleMutation = useGuidanceArticleMutation as jest.Mock
+const mockUseGuidanceStore = useGuidanceStore as jest.Mock
 
 const mockNotifySuccess = jest.fn()
 const mockNotifyError = jest.fn()
@@ -95,6 +110,7 @@ const mockUseGuidanceDetailsFromContext =
     useGuidanceDetailsFromContext as jest.Mock
 
 const mockMutateAsync = jest.fn().mockResolvedValue(undefined)
+const mockUpdateGuidanceArticle = jest.fn().mockResolvedValue(undefined)
 
 const baseDetailsData = {
     guidanceId: 123,
@@ -147,6 +163,16 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
                 newSkill: '/ai-agent/skills/new',
             },
         })
+        mockUseGuidanceArticleMutation.mockReturnValue({
+            updateGuidanceArticle: mockUpdateGuidanceArticle,
+        })
+        mockUseGuidanceStore.mockImplementation((selector) =>
+            selector({
+                config: {
+                    guidanceHelpCenter: { default_locale: 'en-US' },
+                },
+            }),
+        )
     })
 
     afterEach(() => {
@@ -430,6 +456,84 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
                     name: 'Convert guidance into a skill?',
                 }),
             ).not.toBeInTheDocument()
+        })
+
+        it('disables visibility on convert', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(mockUpdateGuidanceArticle).toHaveBeenCalledWith(
+                { visibility: 'UNLISTED', isCurrent: false },
+                { articleId: 123, locale: 'en-US' },
+            )
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                articleId: 123,
+                data: { origin: 'skill' },
+            })
+        })
+
+        it('disables visibility on convert even when guidance is a draft', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            mockUseGuidanceDetailsFromContext.mockReturnValue({
+                ...baseDetailsData,
+                isDraft: true,
+                aiAgentStatus: {
+                    value: false,
+                    onChange: jest.fn().mockResolvedValue(undefined),
+                },
+            })
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(mockUpdateGuidanceArticle).toHaveBeenCalledWith(
+                { visibility: 'UNLISTED', isCurrent: false },
+                { articleId: 123, locale: 'en-US' },
+            )
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                articleId: 123,
+                data: { origin: 'skill' },
+            })
+        })
+
+        it('skips the visibility update when no locale is available', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            mockUseGuidanceStore.mockImplementation((selector) =>
+                selector({
+                    config: {
+                        guidanceHelpCenter: { default_locale: undefined },
+                    },
+                }),
+            )
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(mockUpdateGuidanceArticle).not.toHaveBeenCalled()
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                articleId: 123,
+                data: { origin: 'skill' },
+            })
         })
     })
 })

@@ -3,16 +3,20 @@ import { useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router-dom'
+import { useShallow } from 'zustand/react/shallow'
 
 import { Tag } from '@gorgias/axiom'
 
 import { useUpdateArticle } from 'models/helpCenter/mutations'
 import { helpCenterKeys } from 'models/helpCenter/queries'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
+import { useGuidanceStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 import { KnowledgeEditorSidePanelConvertToSkill } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelConvertToSkill'
 import { KnowledgeEditorSidePanelSectionConvertToSkillModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/modals/KnowledgeEditorSidePanelSectionConvertToSkillModal'
 import { useSkillNotify } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillNotify'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
@@ -49,10 +53,22 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         rebaseAndEnableVisibility,
     } = useGuidanceDetailsFromContext()
 
+    const guidanceHelpCenterLocale = useGuidanceStore(
+        useShallow(
+            (storeState) =>
+                storeState.config.guidanceHelpCenter?.default_locale,
+        ),
+    )
+
+    const { updateGuidanceArticle } = useGuidanceArticleMutation({
+        guidanceHelpCenterId: guidanceHelpCenterId ?? 0,
+    })
+
     const [isTogglingAIAgentStatus, setIsTogglingAIAgentStatus] =
         useState(false)
     const [isConvertToSkillModalOpen, setIsConvertToSkillModalOpen] =
         useState(false)
+    const [isConvertingToSkill, setIsConvertingToSkill] = useState(false)
 
     const isKnowledgeIntentManagementSystemEnabled = useFlag(
         FeatureFlagKey.KnowledgeIntentManagementSystem,
@@ -68,7 +84,20 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
 
     const handleConvertToSkill = async () => {
         if (guidanceId && guidanceHelpCenterId) {
+            setIsConvertingToSkill(true)
             try {
+                if (guidanceHelpCenterLocale) {
+                    await updateGuidanceArticle(
+                        {
+                            visibility: VisibilityStatusEnum.UNLISTED,
+                            isCurrent: false,
+                        },
+                        {
+                            articleId: guidanceId,
+                            locale: guidanceHelpCenterLocale,
+                        },
+                    )
+                }
                 await updateArticle({
                     articleId: guidanceId,
                     data: { origin: 'skill' },
@@ -88,6 +117,8 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
                 notifyError(
                     'Failed to convert guidance to skill. Please try again.',
                 )
+            } finally {
+                setIsConvertingToSkill(false)
             }
         } else {
             history.push(routes.newSkill)
@@ -188,6 +219,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
 
             <KnowledgeEditorSidePanelSectionConvertToSkillModal
                 isOpen={isConvertToSkillModalOpen}
+                isLoading={isConvertingToSkill}
                 onClose={() => setIsConvertToSkillModalOpen(false)}
                 onConvertToSkill={handleConvertToSkill}
             />

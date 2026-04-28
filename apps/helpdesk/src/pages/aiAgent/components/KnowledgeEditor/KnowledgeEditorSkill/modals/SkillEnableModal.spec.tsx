@@ -19,6 +19,7 @@ const defaultMockState = {
     isEnabling: false,
     bannerType: 'none' as const,
     skillsToDisableInfo: [],
+    isFirstTimeEnable: false,
     onClose: mockOnClose,
     onEnable: mockOnEnable,
 }
@@ -44,10 +45,11 @@ describe('SkillEnableModal', () => {
         ).toBeInTheDocument()
     })
 
-    it('shows conflict message when bannerType is intents-affected', () => {
+    it('shows conflict message when bannerType is intents-affected and skill was previously published', () => {
         mockUseSkillEnableModal.mockReturnValue({
             ...defaultMockState,
             bannerType: 'intents-affected',
+            isFirstTimeEnable: false,
         })
 
         renderComponent()
@@ -55,6 +57,22 @@ describe('SkillEnableModal', () => {
         expect(
             screen.getByText(
                 /Updates to this skill's intents will affect how AI Agent handles those conversations/,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('shows first-time enable message when bannerType is intents-affected and skill has never been published', () => {
+        mockUseSkillEnableModal.mockReturnValue({
+            ...defaultMockState,
+            bannerType: 'intents-affected',
+            isFirstTimeEnable: true,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                /This skill contains intents used in other skills\. Enabling this skill will affect how an agent handles those conversations\./,
             ),
         ).toBeInTheDocument()
     })

@@ -16,9 +16,11 @@ import { useSkillEnableModal } from './useSkillEnableModal'
 const EnableConflictMessage = ({
     bannerType,
     skillsToDisableInfo,
+    isFirstTimeEnable,
 }: {
     bannerType: ConflictBannerType
     skillsToDisableInfo: SkillDisableInfo[]
+    isFirstTimeEnable: boolean
 }) => {
     if (bannerType === 'skills-disabled') {
         return (
@@ -41,6 +43,15 @@ const EnableConflictMessage = ({
         )
     }
 
+    if (isFirstTimeEnable) {
+        return (
+            <Text size="md">
+                This skill contains intents used in other skills. Enabling this
+                skill will affect how an agent handles those conversations.
+            </Text>
+        )
+    }
+
     return (
         <Text size="md">
             Updates to this skill&apos;s intents will affect how AI Agent
@@ -55,6 +66,7 @@ export const SkillEnableModal = () => {
         isEnabling,
         bannerType,
         skillsToDisableInfo,
+        isFirstTimeEnable,
         onClose,
         onEnable,
     } = useSkillEnableModal()
@@ -67,6 +79,7 @@ export const SkillEnableModal = () => {
                     <EnableConflictMessage
                         bannerType={bannerType}
                         skillsToDisableInfo={skillsToDisableInfo}
+                        isFirstTimeEnable={isFirstTimeEnable}
                     />
                 </Box>
             </OverlayContent>

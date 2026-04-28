@@ -10,12 +10,14 @@ import {
 
 type Props = {
     isOpen: boolean
+    isLoading: boolean
     onClose: () => void
     onConvertToSkill: () => void
 }
 
 export const KnowledgeEditorSidePanelSectionConvertToSkillModal = ({
     isOpen,
+    isLoading,
     onClose,
     onConvertToSkill,
 }: Props) => {
@@ -40,10 +42,18 @@ export const KnowledgeEditorSidePanelSectionConvertToSkillModal = ({
             </OverlayContent>
             <OverlayFooter hideCancelButton>
                 <Box gap="sm" justifyContent="flex-end">
-                    <Button variant="tertiary" onClick={onClose}>
+                    <Button
+                        variant="tertiary"
+                        onClick={onClose}
+                        isDisabled={isLoading}
+                    >
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={onConvertToSkill}>
+                    <Button
+                        variant="primary"
+                        onClick={onConvertToSkill}
+                        isLoading={isLoading}
+                    >
                         Convert to skill
                     </Button>
                 </Box>

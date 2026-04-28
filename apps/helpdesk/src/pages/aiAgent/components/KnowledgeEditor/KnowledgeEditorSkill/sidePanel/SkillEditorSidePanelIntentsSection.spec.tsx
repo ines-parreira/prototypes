@@ -34,11 +34,40 @@ jest.mock('./modals/SkillLinkedIntentsModal', () => ({
         isOpen ? <div data-testid="link-modal">Link Modal</div> : null,
 }))
 
-jest.mock('./modals/SkillUnlinkIntentModal', () => ({
-    SkillUnlinkIntentModal: ({ intentId }: { intentId: string | null }) =>
-        intentId ? (
-            <div data-testid="unlink-modal">Unlink Modal: {intentId}</div>
-        ) : null,
+jest.mock('./SkillIntentTag', () => ({
+    SkillIntentTag: ({
+        label,
+        onClose,
+    }: {
+        label: string
+        onClose?: () => void
+    }) => (
+        <span>
+            {label}
+            {onClose && (
+                <button
+                    type="button"
+                    aria-label={`Unlink ${label}`}
+                    onClick={onClose}
+                >
+                    x
+                </button>
+            )}
+        </span>
+    ),
+}))
+
+const mockUnlinkIntent = jest.fn()
+
+jest.mock('./hooks/usePersistLinkedIntentsSkill', () => ({
+    usePersistLinkedIntentsSkill: () => ({
+        unlinkIntent: mockUnlinkIntent,
+    }),
+}))
+
+jest.mock('../context/KnowledgeEditorSkillContext', () => ({
+    useSkillEditorStore: (selector: Function) =>
+        selector({ state: { intents: ['order::status', 'order::cancel'] } }),
 }))
 
 const defaultHookReturn = {
@@ -165,5 +194,29 @@ describe('SkillEditorSidePanelIntentsSection', () => {
         expect(
             screen.queryByText('Some intents below are used in other skills'),
         ).not.toBeInTheDocument()
+    })
+
+    it('unlinks the intent directly when its tag close button is clicked', async () => {
+        const user = userEvent.setup()
+        setup({
+            items: [
+                {
+                    intentId: 'order::status',
+                    label: 'Order / Status',
+                    showLeadingDot: false,
+                },
+            ],
+            intentsCount: 1,
+        })
+
+        await user.click(
+            screen.getByRole('button', { name: 'Unlink Order / Status' }),
+        )
+
+        expect(mockUnlinkIntent).toHaveBeenCalledWith(
+            'order::status',
+            ['order::status', 'order::cancel'],
+            expect.any(Function),
+        )
     })
 })
