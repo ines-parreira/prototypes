@@ -224,20 +224,20 @@ describe('SkillToolbarControls', () => {
             })
         })
 
-        it('renders Enable button', () => {
+        it('renders delete button and Enable button', () => {
             render(<SkillToolbarControls />)
 
+            expect(
+                screen.getByRole('button', { name: /delete/i }),
+            ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /enable/i }),
             ).toBeInTheDocument()
         })
 
-        it('does not render delete button or version history', () => {
+        it('does not render version history', () => {
             render(<SkillToolbarControls />)
 
-            expect(
-                screen.queryByRole('button', { name: /delete/i }),
-            ).not.toBeInTheDocument()
             expect(
                 screen.queryByTestId('version-history'),
             ).not.toBeInTheDocument()

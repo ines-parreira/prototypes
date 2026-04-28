@@ -1,4 +1,6 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useContext, useMemo, useRef, useState } from 'react'
+
+import { SidebarContext } from '@repo/navigation'
 
 import type { SizeValue } from '@gorgias/axiom'
 
@@ -24,11 +26,18 @@ const FULLSCREEN_BUTTON_HIDE_THRESHOLD = 1400
  */
 export const usePlaygroundPanelInKnowledgeEditor = (isFullscreen: boolean) => {
     const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false)
+    const isPlaygroundOpenRef = useRef(isPlaygroundOpen)
+    isPlaygroundOpenRef.current = isPlaygroundOpen
     const [windowWidth] = useScreenSize()
+    const sidebar = useContext(SidebarContext)
 
     const onTest = useCallback(() => {
-        setIsPlaygroundOpen((prev) => !prev)
-    }, [])
+        const nextIsOpen = !isPlaygroundOpenRef.current
+        setIsPlaygroundOpen(nextIsOpen)
+        if (nextIsOpen && sidebar && !sidebar.isCollapsed) {
+            sidebar.toggleCollapse()
+        }
+    }, [sidebar])
 
     const onClosePlayground = useCallback(() => {
         setIsPlaygroundOpen(false)

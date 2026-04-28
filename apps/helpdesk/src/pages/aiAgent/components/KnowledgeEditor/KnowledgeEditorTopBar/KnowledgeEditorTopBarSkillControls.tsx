@@ -336,6 +336,7 @@ export const SkillToolbarControls = () => {
         case 'new-skill':
             return (
                 <>
+                    {deleteButton}
                     {enableButton}
                     {testButton}
                 </>

@@ -79,31 +79,39 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
         <Panels size={width}>
             <SidebarProvider>
                 {({ isCollapsed }) => (
-                    <Panel
-                        {...(isCollapsed
-                            ? {
-                                  name: 'sidebar-collapsed',
-                                  config: collapsedSidebarPanelConfig,
-                              }
-                            : {
-                                  name: 'sidebar-expanded',
-                                  config: expandedSidebarPanelConfig,
-                              })}
-                    >
-                        <NavigationSidebar />
-                    </Panel>
+                    <>
+                        <Panel
+                            {...(isCollapsed
+                                ? {
+                                      name: 'sidebar-collapsed',
+                                      config: collapsedSidebarPanelConfig,
+                                  }
+                                : {
+                                      name: 'sidebar-expanded',
+                                      config: expandedSidebarPanelConfig,
+                                  })}
+                        >
+                            <NavigationSidebar />
+                        </Panel>
+                        <Handle className={css.handle} />
+                        <PanelGroup
+                            subtractSize={10}
+                            className={css.panelGroup}
+                        >
+                            {hasPanel ? (
+                                children
+                            ) : (
+                                <Panel
+                                    name="main-panel"
+                                    config={mainPanelConfig}
+                                >
+                                    {children}
+                                </Panel>
+                            )}
+                        </PanelGroup>
+                    </>
                 )}
             </SidebarProvider>
-            <Handle className={css.handle} />
-            <PanelGroup subtractSize={10} className={css.panelGroup}>
-                {hasPanel ? (
-                    children
-                ) : (
-                    <Panel name="main-panel" config={mainPanelConfig}>
-                        {children}
-                    </Panel>
-                )}
-            </PanelGroup>
         </Panels>
     )
 }

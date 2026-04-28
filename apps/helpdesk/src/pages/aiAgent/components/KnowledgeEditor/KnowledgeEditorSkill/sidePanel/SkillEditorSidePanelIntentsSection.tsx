@@ -127,10 +127,12 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
                                     display="flex"
                                     flexDirection="column"
                                 >
-                                    <Text variant="bold" size="sm">
-                                        Some intents below are used in other
-                                        skills
-                                    </Text>
+                                    <Box height="lg" alignItems="center">
+                                        <Text variant="bold" size="sm">
+                                            Some intents below are used in other
+                                            skills
+                                        </Text>
+                                    </Box>
                                     <Text size="sm">
                                         Publish this skill to reassign them to
                                         this one

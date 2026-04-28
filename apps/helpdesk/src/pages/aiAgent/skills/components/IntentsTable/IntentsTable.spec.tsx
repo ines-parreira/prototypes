@@ -302,6 +302,148 @@ describe('IntentsTable', () => {
         })
     })
 
+    describe('Sorting', () => {
+        const intentsWithMetrics: TransformedIntent[] = [
+            {
+                id: 'shipping',
+                name: 'shipping',
+                formattedName: 'Shipping',
+                toggleState: 'enabled',
+                status: IntentStatus.NotLinked,
+                metrics: {
+                    ticketVolume: 50,
+                    ticketVolumePercent: 25,
+                    handoverCount: 5,
+                    handoverPercent: 10,
+                },
+                children: [
+                    {
+                        id: 'shipping::delay',
+                        name: 'shipping::delay',
+                        formattedName: 'Delay',
+                        toggleState: 'enabled',
+                        status: IntentStatus.NotLinked,
+                        parentId: 'shipping',
+                        articles: [],
+                        metrics: {
+                            ticketVolume: 30,
+                            ticketVolumePercent: 15,
+                            handoverCount: 3,
+                            handoverPercent: 10,
+                        },
+                    },
+                    {
+                        id: 'shipping::address',
+                        name: 'shipping::address',
+                        formattedName: 'Address',
+                        toggleState: 'enabled',
+                        status: IntentStatus.NotLinked,
+                        parentId: 'shipping',
+                        articles: [],
+                        metrics: {
+                            ticketVolume: 80,
+                            ticketVolumePercent: 40,
+                            handoverCount: 8,
+                            handoverPercent: 10,
+                        },
+                    },
+                ],
+            },
+            {
+                id: 'order',
+                name: 'order',
+                formattedName: 'Order',
+                toggleState: 'enabled',
+                status: IntentStatus.NotLinked,
+                metrics: {
+                    ticketVolume: 200,
+                    ticketVolumePercent: 60,
+                    handoverCount: 20,
+                    handoverPercent: 10,
+                },
+                children: [],
+            },
+            {
+                id: 'other',
+                name: 'other',
+                formattedName: 'Other',
+                toggleState: 'enabled',
+                status: IntentStatus.NotLinked,
+                metrics: {
+                    ticketVolume: 10,
+                    ticketVolumePercent: 5,
+                    handoverCount: 1,
+                    handoverPercent: 10,
+                },
+                children: [],
+            },
+        ]
+
+        it('should sort L1 intents by ticket volume descending when metrics are available', () => {
+            mockUseIntentsTable.mockReturnValue({
+                intents: intentsWithMetrics,
+                findIntent: createFindIntent(intentsWithMetrics),
+                isLoading: false,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const rows = screen.getAllByRole('row')
+            const rowTexts = rows.map((r) => r.textContent ?? '')
+            const orderIdx = rowTexts.findIndex((t) => t.includes('Order'))
+            const shippingIdx = rowTexts.findIndex((t) =>
+                t.includes('Shipping'),
+            )
+            const otherIdx = rowTexts.findIndex((t) => t.includes('Other'))
+
+            expect(orderIdx).toBeLessThan(shippingIdx)
+            expect(shippingIdx).toBeLessThan(otherIdx)
+        })
+
+        it('should sort L2 children by ticket volume descending when metrics are available', async () => {
+            const user = userEvent.setup()
+            mockUseIntentsTable.mockReturnValue({
+                intents: intentsWithMetrics,
+                findIntent: createFindIntent(intentsWithMetrics),
+                isLoading: false,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                const rows = screen.getAllByRole('row')
+                const rowTexts = rows.map((r) => r.textContent ?? '')
+                const addressIdx = rowTexts.findIndex((t) =>
+                    t.includes('Address'),
+                )
+                const delayIdx = rowTexts.findIndex((t) => t.includes('Delay'))
+                expect(addressIdx).toBeLessThan(delayIdx)
+            })
+        })
+
+        it('should sort L1 intents alphabetically when no metrics are available', () => {
+            renderComponent()
+
+            const rows = screen.getAllByRole('row')
+            const rowTexts = rows.map((r) => r.textContent ?? '')
+            const orderIdx = rowTexts.findIndex((t) => t.includes('Order'))
+            const otherIdx = rowTexts.findIndex((t) => t.includes('Other'))
+            const shippingIdx = rowTexts.findIndex((t) =>
+                t.includes('Shipping'),
+            )
+
+            expect(orderIdx).toBeLessThan(otherIdx)
+            expect(otherIdx).toBeLessThan(shippingIdx)
+        })
+    })
+
     describe('Expand/Collapse', () => {
         it('should not show L2 children by default', () => {
             renderComponent()
@@ -553,7 +695,7 @@ describe('IntentsTable', () => {
 
             const expandButton = screen.getAllByRole('button', {
                 name: /expand/i,
-            })[1]
+            })[2]
             await user.click(expandButton)
 
             await waitFor(() => {
@@ -606,7 +748,7 @@ describe('IntentsTable', () => {
 
             const expandButton = screen.getAllByRole('button', {
                 name: /expand/i,
-            })[1]
+            })[2]
             await user.click(expandButton)
 
             await waitFor(() => {
@@ -631,7 +773,7 @@ describe('IntentsTable', () => {
 
             const expandButton = screen.getAllByRole('button', {
                 name: /expand/i,
-            })[2]
+            })[1]
             await user.click(expandButton)
 
             await waitFor(() => {
@@ -653,7 +795,7 @@ describe('IntentsTable', () => {
 
             const expandButton = screen.getAllByRole('button', {
                 name: /expand/i,
-            })[2]
+            })[1]
             await user.click(expandButton)
 
             await waitFor(async () => {
@@ -679,7 +821,7 @@ describe('IntentsTable', () => {
 
             const expandButton = screen.getAllByRole('button', {
                 name: /expand/i,
-            })[2]
+            })[1]
             await user.click(expandButton)
 
             await waitFor(() => {
@@ -1209,7 +1351,7 @@ describe('IntentsTable', () => {
 
             const expandButton = screen.getAllByRole('button', {
                 name: /expand/i,
-            })[1]
+            })[2]
             await user.click(expandButton)
 
             await waitFor(() => {
@@ -1254,8 +1396,8 @@ describe('IntentsTable', () => {
             expect(mockPush).toHaveBeenCalledWith(
                 '/app/ai-agent/shopify/test-shop/skills/new',
                 {
-                    title: 'Questions about order status or tracking information',
-                    intents: ['order::status'],
+                    title: 'Requests to cancel an order',
+                    intents: ['order::cancel'],
                 },
             )
         })

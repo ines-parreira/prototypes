@@ -1,3 +1,4 @@
+import { SidebarContext } from '@repo/navigation'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
@@ -316,6 +317,91 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onClosePlayground()
                 result.current.onTest()
             })
+
+            expect(result.current.isPlaygroundOpen).toBe(true)
+        })
+    })
+
+    describe('sidebar collapse behavior', () => {
+        const mockToggleCollapse = jest.fn()
+
+        const makeSidebarWrapper =
+            (isCollapsed: boolean) =>
+            ({ children }: { children: React.ReactNode }) => (
+                <SidebarContext.Provider
+                    value={{
+                        isCollapsed,
+                        toggleCollapse: mockToggleCollapse,
+                        onSidebarShortcutToggle: jest.fn(),
+                    }}
+                >
+                    {children}
+                </SidebarContext.Provider>
+            )
+
+        beforeEach(() => {
+            mockToggleCollapse.mockClear()
+        })
+
+        it('should collapse sidebar when playground opens and sidebar is expanded', () => {
+            const { result } = renderHook(
+                () => usePlaygroundPanelInKnowledgeEditor(false),
+                { wrapper: makeSidebarWrapper(false) },
+            )
+
+            act(() => {
+                result.current.onTest()
+            })
+
+            expect(result.current.isPlaygroundOpen).toBe(true)
+            expect(mockToggleCollapse).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not collapse sidebar when sidebar is already collapsed', () => {
+            const { result } = renderHook(
+                () => usePlaygroundPanelInKnowledgeEditor(false),
+                { wrapper: makeSidebarWrapper(true) },
+            )
+
+            act(() => {
+                result.current.onTest()
+            })
+
+            expect(result.current.isPlaygroundOpen).toBe(true)
+            expect(mockToggleCollapse).not.toHaveBeenCalled()
+        })
+
+        it('should not collapse sidebar when closing the playground', () => {
+            const { result } = renderHook(
+                () => usePlaygroundPanelInKnowledgeEditor(false),
+                { wrapper: makeSidebarWrapper(false) },
+            )
+
+            act(() => {
+                result.current.onTest()
+            })
+
+            expect(mockToggleCollapse).toHaveBeenCalledTimes(1)
+            mockToggleCollapse.mockClear()
+
+            act(() => {
+                result.current.onTest()
+            })
+
+            expect(result.current.isPlaygroundOpen).toBe(false)
+            expect(mockToggleCollapse).not.toHaveBeenCalled()
+        })
+
+        it('should work without a sidebar context', () => {
+            const { result } = renderHook(() =>
+                usePlaygroundPanelInKnowledgeEditor(false),
+            )
+
+            expect(() => {
+                act(() => {
+                    result.current.onTest()
+                })
+            }).not.toThrow()
 
             expect(result.current.isPlaygroundOpen).toBe(true)
         })

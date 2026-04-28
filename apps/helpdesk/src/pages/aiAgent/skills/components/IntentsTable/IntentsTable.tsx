@@ -51,6 +51,28 @@ import { LinkToSkillModal } from './LinkToSkillModal'
 
 import css from './IntentsTable.less'
 
+interface SearchInputProps {
+    onChange: (value: string) => void
+}
+
+// Isolated so that typing only re-renders this component, not the full table.
+const SearchInput = ({ onChange }: SearchInputProps) => {
+    const [inputValue, setInputValue] = useState('')
+
+    useEffect(() => {
+        const timer = setTimeout(() => onChange(inputValue), 300)
+        return () => clearTimeout(timer)
+    }, [inputValue, onChange])
+
+    return (
+        <SearchField
+            placeholder="Search..."
+            value={inputValue}
+            onChange={setInputValue}
+        />
+    )
+}
+
 interface IntentsTableProps {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
@@ -89,16 +111,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
     const { updateGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({ guidanceHelpCenterId: helpCenterId })
 
-    // inputValue updates on every keystroke to keep the field responsive.
-    // searchTerm is debounced so the expensive filtering/expansion only runs
-    // 300ms after the user stops typing.
-    const [inputValue, setInputValue] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
-
-    useEffect(() => {
-        const timer = setTimeout(() => setSearchTerm(inputValue), 300)
-        return () => clearTimeout(timer)
-    }, [inputValue])
     const [statsDisplayMode, setStatsDisplayMode] =
         useState<StatsDisplayMode>('percentage')
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
@@ -109,7 +122,23 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
     >(null)
 
     const filteredIntents = useMemo(() => {
-        if (!searchTerm.trim()) return intents
+        const hasMetrics = intents.some(
+            (intent) => intent.metrics?.ticketVolume != null,
+        )
+        const sortFn = (a: TransformedIntent, b: TransformedIntent) =>
+            hasMetrics
+                ? (b.metrics?.ticketVolume ?? 0) -
+                  (a.metrics?.ticketVolume ?? 0)
+                : a.formattedName.localeCompare(b.formattedName)
+
+        const sortChildren = (intent: TransformedIntent): TransformedIntent =>
+            intent.children
+                ? { ...intent, children: [...intent.children].sort(sortFn) }
+                : intent
+
+        if (!searchTerm.trim()) {
+            return [...intents].map(sortChildren).sort(sortFn)
+        }
 
         const lowerSearchTerm = searchTerm.toLowerCase()
         return intents
@@ -126,16 +155,21 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                 const matchesParent = intent.formattedName
                     .toLowerCase()
                     .includes(lowerSearchTerm)
-                if (matchesParent || !intent.children) return intent
-                return {
-                    ...intent,
-                    children: intent.children.filter((child) =>
-                        child.formattedName
-                            .toLowerCase()
-                            .includes(lowerSearchTerm),
-                    ),
+                if (!matchesParent && intent.children) {
+                    return {
+                        ...intent,
+                        children: [...intent.children]
+                            .filter((child) =>
+                                child.formattedName
+                                    .toLowerCase()
+                                    .includes(lowerSearchTerm),
+                            )
+                            .sort(sortFn),
+                    }
                 }
+                return sortChildren(intent)
             })
+            .sort(sortFn)
     }, [intents, searchTerm])
 
     // When a search is active, expand all intents so children are always
@@ -377,11 +411,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                         mb="xxxs"
                     >
                         <Box width="220px">
-                            <SearchField
-                                placeholder="Search..."
-                                value={inputValue}
-                                onChange={setInputValue}
-                            />
+                            <SearchInput onChange={setSearchTerm} />
                         </Box>
 
                         <ButtonGroup
