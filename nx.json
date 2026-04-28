@@ -11,48 +11,32 @@
     },
     "targetDefaults": {
         "build": {
-            "dependsOn": [
-                "^build"
-            ],
-            "inputs": [
-                "production"
-            ],
+            "dependsOn": ["^build"],
+            "inputs": ["production"],
             "cache": true
         },
         "test": {
-            "inputs": [
-                "default"
-            ],
+            "inputs": ["default"],
             "cache": true
         },
         "lint": {
-            "inputs": [
-                "default"
-            ],
+            "inputs": ["default"],
             "cache": true
         },
         "typecheck": {
-            "inputs": [
-                "default"
-            ],
+            "inputs": ["default"],
             "cache": true
         },
         "format:check": {
-            "inputs": [
-                "default"
-            ],
+            "inputs": ["default"],
             "cache": true
         },
         "format:fix": {
-            "inputs": [
-                "default"
-            ],
+            "inputs": ["default"],
             "cache": false
         },
         "lint:unused": {
-            "inputs": [
-                "default"
-            ],
+            "inputs": ["default"],
             "cache": true
         }
     },

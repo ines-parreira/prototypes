@@ -14,7 +14,7 @@ type PackageInfo = {
 }
 const incompatiblePackages: Omit<PackageInfo, 'path'>[] = []
 
-const TARGET_VERSION = '22.0.0'
+const TARGET_VERSION = '24.15.0'
 // Get all package directories and convert to package names
 const packageDirs = getAllPackageDirs(nodeModulesPath)
 

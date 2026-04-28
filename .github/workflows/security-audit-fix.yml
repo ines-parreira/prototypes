@@ -31,7 +31,7 @@ jobs:
       min-severity: ${{ inputs.severity || 'high' }}
       dry-run: ${{ inputs.dry_run || false }}
       base-branch: main
-      node-version: '22'
+      node-version: '24.15.0'
       max-open-prs: 5
       reviewers: Ahmedgrissa
     secrets: inherit

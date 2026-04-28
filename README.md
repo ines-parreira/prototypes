@@ -60,7 +60,7 @@ Please `cat ~/.npmrc` and ensure that `@gorgias:registry=https://npm.pkg.github.
 
 ## Prerequisites
 
-- [Node.js (`22.22.0`, uses nvm to install)](https://nodejs.org/en/download/package-manager)
+- [Node.js (`24.15.0`, uses nvm to install)](https://nodejs.org/en/download/package-manager)
 - [pnpm (`10.18.3`)](https://pnpm.io/installation)
 - [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
 
@@ -452,7 +452,7 @@ This script will give you the list of dependencies which are incompatible with a
 Update the target version in the [dependencies-engines.ts](scripts/dependencies-management/dependencies-engines.ts) file
 
 ```typescript
-const TARGET_VERSION = '22.0.0'
+const TARGET_VERSION = '24.15.0'
 ```
 
 And run:

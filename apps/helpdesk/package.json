@@ -323,7 +323,7 @@
         "@types/lz-string": "1.3.34",
         "@types/md5": "2.2.0",
         "@types/mousetrap": "catalog:mousetrap",
-        "@types/node": "22.13.13",
+        "@types/node": "24.12.2",
         "@types/object-hash": "1.3.3",
         "@types/pluralize": "^0.0.33",
         "@types/promise-polyfill": "^6.0.6",

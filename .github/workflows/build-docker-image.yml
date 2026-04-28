@@ -4,7 +4,7 @@ on: [push]
 
 env:
   GH_TOKEN: ${{ github.token }}
-  NODE_VERSION: "22.22.0"
+  NODE_VERSION: "24.15.0"
 
 permissions:
   actions: read
@@ -39,7 +39,7 @@ jobs:
     secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
-      node-version: "22.22.0"
+      node-version: "24.15.0"
       assets-url: ""
       release: ""
       build-dir: apps/helpdesk/build

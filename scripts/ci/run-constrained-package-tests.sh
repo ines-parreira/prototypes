@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
-DEFAULT_NODE_VERSION="22.22.0"
+DEFAULT_NODE_VERSION="24.15.0"
 DEFAULT_CPUS="2"
 DEFAULT_MEMORY="4g"
 DEFAULT_PARALLEL="1"
@@ -41,7 +41,7 @@ Options:
   --target <target>   Nx target to run. Default: test:ci:cover
                       Use test to trade off some CI fidelity for faster local loops.
   --repeat <n>        Repeat the same run N times. Default: 1
-  --node-version <v>  Node version tag for the Docker image. Default: 22.22.0
+  --node-version <v>  Node version tag for the Docker image. Default: 24.15.0
   --clean-cache       Delete the cached Docker volumes before running
   -h, --help          Show this help message
 
