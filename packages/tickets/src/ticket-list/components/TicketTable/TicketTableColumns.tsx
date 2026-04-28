@@ -211,8 +211,28 @@ export function createTicketTableColumns({
                                 </Tag>
                             </OverflowListItem>
                         ))}
-                        <OverflowListShowMore />
-                        <OverflowListShowLess />
+                        <OverflowListShowMore>
+                            {({ hiddenCount }) => (
+                                <span
+                                    role="button"
+                                    onClick={(event) => {
+                                        event.preventDefault()
+                                    }}
+                                >
+                                    +{hiddenCount}
+                                </span>
+                            )}
+                        </OverflowListShowMore>
+                        <OverflowListShowLess>
+                            <span
+                                role="button"
+                                onClick={(event) => {
+                                    event.preventDefault()
+                                }}
+                            >
+                                Show less
+                            </span>
+                        </OverflowListShowLess>
                     </OverflowList>
                 </TicketTableCellLink>
             ),

@@ -1,8 +1,9 @@
 import type { ReactElement } from 'react'
 
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { screen, within } from '@testing-library/react'
+import { fireEvent, screen, within } from '@testing-library/react'
 
+import type * as Axiom from '@gorgias/axiom'
 import { DataTable } from '@gorgias/axiom'
 import {
     mockTicketCompact,
@@ -25,6 +26,20 @@ import type { TicketTableColumnsParams } from '../TicketTableColumns'
 import { createTicketTableColumns } from '../TicketTableColumns'
 
 import css from '../components/TicketTableCellLink.module.less'
+
+vi.mock('@gorgias/axiom', async () => {
+    const actual = await vi.importActual<typeof Axiom>('@gorgias/axiom')
+
+    return {
+        ...actual,
+        OverflowListShowMore: ({ children }: { children?: unknown }) =>
+            typeof children === 'function'
+                ? children({ hiddenCount: 2 })
+                : children,
+        OverflowListShowLess: ({ children }: { children?: unknown }) =>
+            children,
+    }
+})
 
 vi.mock('@gorgias/realtime', () => ({
     useAgentActivity: vi.fn(),
@@ -637,6 +652,26 @@ describe('createTicketTableColumns', () => {
 
             expect(tag).toBeInTheDocument()
             expect(tag?.querySelector('[data-name="dot"]')).toBeInTheDocument()
+        })
+
+        it('does not navigate when the overflow controls are clicked', () => {
+            const onNavigateToTicket = vi.fn()
+
+            renderColumn(
+                'tags',
+                mockTicketCompact({
+                    tags: [
+                        { id: 1, name: 'billing' },
+                        { id: 2, name: 'urgent' },
+                    ] as any,
+                }),
+                { onNavigateToTicket },
+            )
+
+            fireEvent.click(screen.getByRole('button', { name: '+2' }))
+            fireEvent.click(screen.getByRole('button', { name: 'Show less' }))
+
+            expect(onNavigateToTicket).not.toHaveBeenCalled()
         })
     })
 

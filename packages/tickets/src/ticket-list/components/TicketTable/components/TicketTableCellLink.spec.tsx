@@ -11,17 +11,15 @@ function renderTicketTableCellLink(
     props?: Partial<ComponentProps<typeof TicketTableCellLink>>,
 ) {
     return render(
-        <div onClickCapture={(event) => event.preventDefault()}>
-            <table>
-                <tbody>
-                    <tr>
-                        <TicketTableCellLink to="/app/ticket/42" {...props}>
-                            {props?.children ?? 'Ticket 42'}
-                        </TicketTableCellLink>
-                    </tr>
-                </tbody>
-            </table>
-        </div>,
+        <table>
+            <tbody>
+                <tr>
+                    <TicketTableCellLink to="/app/ticket/42" {...props}>
+                        {props?.children ?? 'Ticket 42'}
+                    </TicketTableCellLink>
+                </tr>
+            </tbody>
+        </table>,
     )
 }
 
@@ -80,6 +78,28 @@ describe('TicketTableCellLink', () => {
             screen.getByRole('link', { name: 'Ticket 42' }),
             eventInit,
         )
+
+        expect(onNavigateToTicket).not.toHaveBeenCalled()
+    })
+
+    it('does not trigger the navigation side effect when the click is already prevented', () => {
+        const onNavigateToTicket = vi.fn()
+
+        renderTicketTableCellLink({
+            onNavigateToTicket,
+            children: (
+                <button
+                    type="button"
+                    onClick={(event) => {
+                        event.preventDefault()
+                    }}
+                >
+                    Show more tags
+                </button>
+            ),
+        })
+
+        fireEvent.click(screen.getByRole('button', { name: 'Show more tags' }))
 
         expect(onNavigateToTicket).not.toHaveBeenCalled()
     })

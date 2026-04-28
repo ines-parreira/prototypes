@@ -46,6 +46,10 @@ export function TicketTableCellLink({
                 to={to}
                 className={css.link}
                 onClick={(event) => {
+                    if (event.defaultPrevented) {
+                        return
+                    }
+
                     if (!isPlainLeftClick(event)) {
                         // Don't run side effects for special clicks
                         return
