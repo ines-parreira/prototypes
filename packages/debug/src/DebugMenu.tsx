@@ -13,7 +13,8 @@ type DebugMenuProps = {
 }
 
 export function DebugMenu({ children }: DebugMenuProps) {
-    const isEnabled = useFlag(FeatureFlagKey.DebugMenu, false)
+    const isFlagEnabled = useFlag(FeatureFlagKey.DebugMenu, false)
+    const isEnabled = isFlagEnabled || !!window.USER_IMPERSONATED
     const [openPanel, setOpenPanel] = useState<string | null>(null)
 
     if (!isEnabled) return null
