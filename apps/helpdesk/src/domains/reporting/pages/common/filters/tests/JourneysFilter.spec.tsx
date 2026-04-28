@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -11,7 +12,6 @@ import {
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -32,9 +32,9 @@ describe('JourneysFilter', () => {
     })
 
     const renderComponent = (value = emptyFilter as any) =>
-        renderWithStore(
+        render(
             <JourneyTypeFilter value={value} dispatchUpdate={dispatchUpdate} />,
-            defaultState,
+            { storeState: defaultState },
         )
 
     it('should render available journey options when dropdown is opened', () => {
@@ -108,7 +108,7 @@ describe('JourneysFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<JourneysFilterWithState />, defaultState)
+            render(<JourneysFilterWithState />, { storeState: defaultState })
 
             expect(screen.getByText(JOURNEYS_FILTER_NAME)).toBeInTheDocument()
 
@@ -136,7 +136,9 @@ describe('JourneysFilter', () => {
                 },
             } as RootState
 
-            renderWithStore(<JourneysFilterWithState />, stateWithJourneys)
+            render(<JourneysFilterWithState />, {
+                storeState: stateWithJourneys,
+            })
 
             expect(screen.getByText('Campaigns')).toBeInTheDocument()
         })

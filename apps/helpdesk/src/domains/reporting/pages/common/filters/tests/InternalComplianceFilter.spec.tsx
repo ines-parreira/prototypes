@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -28,7 +28,6 @@ import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const mockedRemove = jest.fn()
 
@@ -56,7 +55,7 @@ describe('InternalCompliance', () => {
     const dispatchStatFiltersDirty = jest.fn()
     const dispatchStatFiltersClean = jest.fn()
     const renderComponent = () =>
-        renderWithStore(
+        render(
             <InternalComplianceFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([])}
@@ -65,11 +64,11 @@ describe('InternalCompliance', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
     it('should render InternalComplianceFilter component just fine if value is undefined', () => {
-        renderWithStore(
+        render(
             <InternalComplianceFilter
                 onRemove={mockedRemove}
                 value={undefined}
@@ -78,7 +77,7 @@ describe('InternalCompliance', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -131,7 +130,7 @@ describe('InternalCompliance', () => {
     it('should dispatch the right actions on options deselection', () => {
         const numberOfStars = 5
 
-        renderComponent().rerenderComponent(
+        renderComponent().rerender(
             <InternalComplianceFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`${numberOfStars}`])}
@@ -140,7 +139,6 @@ describe('InternalCompliance', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         fireEvent.click(
@@ -156,7 +154,7 @@ describe('InternalCompliance', () => {
     })
 
     it('should dispatch the right action on select/deselect all', () => {
-        const { rerenderComponent } = renderComponent()
+        const { rerender } = renderComponent()
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         fireEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
@@ -168,7 +166,7 @@ describe('InternalCompliance', () => {
             ),
         )
 
-        rerenderComponent(
+        rerender(
             <InternalComplianceFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator(['5', '4', '3'])}
@@ -177,7 +175,6 @@ describe('InternalCompliance', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         fireEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
@@ -226,7 +223,7 @@ describe('InternalCompliance', () => {
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
         const numberOfStars = 5
-        const { rerenderComponent } = renderComponent()
+        const { rerender } = renderComponent()
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(
@@ -236,7 +233,7 @@ describe('InternalCompliance', () => {
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
-        rerenderComponent(
+        rerender(
             <InternalComplianceFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`${numberOfStars}`])}
@@ -245,7 +242,6 @@ describe('InternalCompliance', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalledWith()
@@ -265,7 +261,9 @@ describe('InternalCompliance', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<InternalComplianceFilterWithState />, defaultState)
+            render(<InternalComplianceFilterWithState />, {
+                storeState: defaultState,
+            })
 
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
@@ -290,10 +288,9 @@ describe('InternalCompliance', () => {
                 'removeFilterFromSavedFilterDraft',
             )
 
-            renderWithStore(
-                <InternalComplianceFilterWithSavedState />,
-                defaultState,
-            )
+            render(<InternalComplianceFilterWithSavedState />, {
+                storeState: defaultState,
+            })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 

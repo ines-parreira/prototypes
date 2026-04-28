@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -23,7 +23,6 @@ import {
 } from 'pages/common/forms/FilterInput/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -71,12 +70,12 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
 const dispatchUpdate = jest.fn()
 
 const renderComponent = () =>
-    renderWithStore(
+    render(
         <HelpCenterLanguageFilter
             value={emptyFilter}
             dispatchUpdate={dispatchUpdate}
         />,
-        defaultState,
+        { storeState: defaultState },
     )
 
 describe('HelpCenterLanguageFilter', () => {
@@ -99,12 +98,12 @@ describe('HelpCenterLanguageFilter', () => {
     })
 
     it('should render with empty filter', () => {
-        renderWithStore(
+        render(
             <HelpCenterLanguageFilter
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -122,12 +121,12 @@ describe('HelpCenterLanguageFilter', () => {
             },
         } as RootState
 
-        renderWithStore(
+        render(
             <HelpCenterLanguageFilter
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
             />,
-            state,
+            { storeState: state },
         )
 
         expect(
@@ -164,7 +163,7 @@ describe('HelpCenterLanguageFilter', () => {
     })
 
     it('should dispatch mergeStatsFilters action on deselecting an language', () => {
-        renderWithStore(
+        render(
             <HelpCenterLanguageFilter
                 value={withDefaultLogicalOperator([
                     getLocaleByName('English').code,
@@ -172,7 +171,7 @@ describe('HelpCenterLanguageFilter', () => {
                 ])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
@@ -188,14 +187,14 @@ describe('HelpCenterLanguageFilter', () => {
     })
 
     it('should not dispatch mergeStatsFilters action on deselecting a single selected language', () => {
-        renderWithStore(
+        render(
             <HelpCenterLanguageFilter
                 value={withDefaultLogicalOperator([
                     getLocaleByName('English').code,
                 ])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
@@ -252,10 +251,9 @@ describe('HelpCenterLanguageFilter', () => {
                 },
             },
         }
-        renderWithStore(
-            <HelpCenterLanguageFilterWithState />,
-            stateWithHelpCenterLanguageValues,
-        )
+        render(<HelpCenterLanguageFilterWithState />, {
+            storeState: stateWithHelpCenterLanguageValues,
+        })
 
         expect(
             screen.getByText(HELP_CENTER_LANG_FILTER_NAME),
@@ -270,14 +268,14 @@ describe('HelpCenterLanguageFilter', () => {
     })
 
     it('should call segment analytics log event on filter dropdown close', () => {
-        renderWithStore(
+        render(
             <HelpCenterLanguageFilter
                 value={withDefaultLogicalOperator([
                     getLocaleByName('English').code,
                 ])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -299,7 +297,9 @@ describe('HelpCenterLanguageFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<HelpCenterLanguageFilterWithState />, defaultState)
+            render(<HelpCenterLanguageFilterWithState />, {
+                storeState: defaultState,
+            })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(
                 screen.getByRole('option', {

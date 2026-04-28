@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -15,7 +15,6 @@ import {
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/tests/helpers.spec'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('@gorgias/helpdesk-queries')
@@ -72,7 +71,7 @@ describe('FiltersPanelWrapper with mocked children', () => {
     })
 
     it('should show the buttons', () => {
-        renderWithStore(<FiltersPanelWrapper />, {})
+        render(<FiltersPanelWrapper />, { storeState: {} })
 
         expect(screen.getByText(new RegExp('FiltersPanelMock'))).toBeTruthy()
         expect(
@@ -81,12 +80,12 @@ describe('FiltersPanelWrapper with mocked children', () => {
     })
 
     it('should not show the buttons when withSavedFilters prop is false', () => {
-        renderWithStore(
+        render(
             <FiltersPanelWrapper
                 optionalFilters={filterKeysMock}
                 withSavedFilters={false}
             />,
-            {},
+            { storeState: {} },
         )
 
         expect(screen.getByText(new RegExp('FiltersPanelMock'))).toBeTruthy()
@@ -96,7 +95,9 @@ describe('FiltersPanelWrapper with mocked children', () => {
     })
 
     it('should render with normal wrapper styles when compact is false', () => {
-        const { container } = renderWithStore(<FiltersPanelWrapper />, {})
+        const { container } = render(<FiltersPanelWrapper />, {
+            storeState: {},
+        })
 
         const wrapper = container.querySelector('[class*="wrapper"]')
         expect(wrapper).toBeInTheDocument()
@@ -105,10 +106,9 @@ describe('FiltersPanelWrapper with mocked children', () => {
     })
 
     it('should render with compact wrapper styles when compact is true', () => {
-        const { container } = renderWithStore(
-            <FiltersPanelWrapper compact />,
-            {},
-        )
+        const { container } = render(<FiltersPanelWrapper compact />, {
+            storeState: {},
+        })
 
         const wrapper = container.querySelector('[class*="wrapperCompact"]')
         expect(wrapper).toBeInTheDocument()
@@ -116,7 +116,7 @@ describe('FiltersPanelWrapper with mocked children', () => {
     })
 
     it('should pass compact prop to FiltersPanel when true', () => {
-        renderWithStore(<FiltersPanelWrapper compact />, {})
+        render(<FiltersPanelWrapper compact />, { storeState: {} })
 
         expect(MockFiltersPanel).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -126,7 +126,7 @@ describe('FiltersPanelWrapper with mocked children', () => {
     })
 
     it('should pass compact prop as false to FiltersPanel when not provided', () => {
-        renderWithStore(<FiltersPanelWrapper />, {})
+        render(<FiltersPanelWrapper />, { storeState: {} })
 
         expect(MockFiltersPanel).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -140,10 +140,9 @@ describe('FiltersPanelWrapper with mocked children', () => {
             FilterKey.Period,
             FilterKey.AggregationWindow,
         ]
-        renderWithStore(
-            <FiltersPanelWrapper persistentFilters={persistentFilters} />,
-            {},
-        )
+        render(<FiltersPanelWrapper persistentFilters={persistentFilters} />, {
+            storeState: {},
+        })
 
         expect(MockFiltersPanel).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -154,10 +153,9 @@ describe('FiltersPanelWrapper with mocked children', () => {
 
     it('should pass optionalFilters to FiltersPanel', () => {
         const optionalFilters = [FilterKey.Channels, FilterKey.Tags]
-        renderWithStore(
-            <FiltersPanelWrapper optionalFilters={optionalFilters} />,
-            {},
-        )
+        render(<FiltersPanelWrapper optionalFilters={optionalFilters} />, {
+            storeState: {},
+        })
 
         expect(MockFiltersPanel).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -172,11 +170,11 @@ describe('FiltersPanelWrapper with mocked children', () => {
                 initialSettings: { maxSpan: 365 },
             },
         }
-        renderWithStore(
+        render(
             <FiltersPanelWrapper
                 filterSettingsOverrides={filterSettingsOverrides}
             />,
-            {},
+            { storeState: {} },
         )
 
         expect(MockFiltersPanel).toHaveBeenCalledWith(

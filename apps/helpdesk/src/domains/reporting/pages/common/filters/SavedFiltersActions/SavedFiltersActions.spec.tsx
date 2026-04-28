@@ -1,4 +1,4 @@
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
 import { useListAnalyticsFilters } from '@gorgias/helpdesk-queries'
@@ -17,7 +17,6 @@ import {
 import { initialiseSavedFilterDraftFromFilters } from 'domains/reporting/state/ui/stats/filtersSlice'
 import useAppSelector from 'hooks/useAppSelector'
 import { isTeamLead } from 'utils'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
@@ -48,9 +47,9 @@ describe('SavedFiltersActions for an Agent', () => {
     })
 
     it('should only render ApplySavedFilters', () => {
-        const { queryByText, getByText } = renderWithStore(
+        const { queryByText, getByText } = render(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {},
+            { storeState: {} },
         )
 
         expect(queryByText(SAVE_FILTERS)).toBeFalsy()
@@ -59,9 +58,9 @@ describe('SavedFiltersActions for an Agent', () => {
     })
 
     it('should render ApplySavedFilters and SaveFilters', () => {
-        const { queryByText, getByText } = renderWithStore(
+        const { queryByText, getByText } = render(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {},
+            { storeState: {} },
         )
 
         expect(queryByText(SAVE_FILTERS)).toBeFalsy()
@@ -92,9 +91,9 @@ describe('SavedFiltersActions for an Admin or Team Lead', () => {
             },
         } as any)
 
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {},
+            { storeState: {} },
         )
 
         expect(getByText(SAVE_FILTERS)).toBeTruthy()
@@ -112,9 +111,9 @@ describe('SavedFiltersActions for an Admin or Team Lead', () => {
             },
         } as any)
 
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {},
+            { storeState: {} },
         )
 
         fireEvent.mouseEnter(getByText(SAVE_FILTERS))
@@ -134,9 +133,9 @@ describe('SavedFiltersActions for an Admin or Team Lead', () => {
             },
         } as any)
 
-        const { getByText, store } = renderWithStore(
+        const { getByText, store } = render(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {},
+            { storeState: {} },
         )
 
         expect(getByText(SAVE_FILTERS)).toBeTruthy()

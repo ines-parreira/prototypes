@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -19,7 +19,6 @@ import {
 } from 'pages/common/forms/FilterInput/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const mockedHelpCenterData = getHelpCentersResponseFixture.data
 const HELP_CENTER_FILTER_NAME = FilterLabels[FilterKey.HelpCenters]
@@ -54,34 +53,34 @@ describe('HelpCenterFilter', () => {
     const dispatchUpdate = jest.fn()
 
     it('should render HelpCenterFilter component', () => {
-        renderWithStore(
+        render(
             <HelpCenterFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
     })
 
     it('should render HelpCenterFilter component as usual with no value provided', () => {
-        renderWithStore(
+        render(
             <HelpCenterFilter
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
     })
 
     it('should render HelpCenterFilter component without selected help center', () => {
-        renderWithStore(
+        render(
             <HelpCenterFilter
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
@@ -91,12 +90,12 @@ describe('HelpCenterFilter', () => {
     })
 
     it('should check if HelpCenterFilter component is calling dispatch mergeStatsFilters with correct params', () => {
-        renderWithStore(
+        render(
             <HelpCenterFilter
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(
@@ -127,10 +126,9 @@ describe('HelpCenterFilter', () => {
             },
         }
 
-        renderWithStore(
-            <HelpCenterFilterWithState />,
-            mockedStoreWithHelpCenterFilters,
-        )
+        render(<HelpCenterFilterWithState />, {
+            storeState: mockedStoreWithHelpCenterFilters,
+        })
 
         expect(
             screen.getByText(getHelpCentersResponseFixture.data[0].name),
@@ -138,12 +136,12 @@ describe('HelpCenterFilter', () => {
     })
 
     it('should call segment analytics log event on filter dropdown close', () => {
-        renderWithStore(
+        render(
             <HelpCenterFilter
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -162,7 +160,7 @@ describe('HelpCenterFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<HelpCenterFilterWithState />, defaultState)
+            render(<HelpCenterFilterWithState />, { storeState: defaultState })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(mockedHelpCenterData[0].name))
 

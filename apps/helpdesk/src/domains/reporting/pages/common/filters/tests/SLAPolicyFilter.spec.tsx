@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 
 import type { SLAPolicy } from '@gorgias/helpdesk-queries'
@@ -31,7 +31,6 @@ import {
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@gorgias/helpdesk-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
@@ -123,14 +122,14 @@ describe('SLAPolicyFilter', () => {
             isLoading: false,
         } as any)
 
-        renderWithStore(
+        render(
             <SLAPolicyFilter
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -150,14 +149,14 @@ describe('SLAPolicyFilter', () => {
                 isLoading: false,
             } as any)
 
-            renderWithStore(
+            render(
                 <SLAPolicyFilter
                     value={undefined}
                     dispatchUpdate={dispatchUpdate}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -173,14 +172,14 @@ describe('SLAPolicyFilter', () => {
 
     it('should render selected options', () => {
         const selectedPolicies = withDefaultLogicalOperator([aPolicy.uuid])
-        renderWithStore(
+        render(
             <SLAPolicyFilter
                 value={selectedPolicies}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -191,14 +190,14 @@ describe('SLAPolicyFilter', () => {
     })
 
     it('should dispatch selected policy', () => {
-        renderWithStore(
+        render(
             <SLAPolicyFilter
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -216,14 +215,14 @@ describe('SLAPolicyFilter', () => {
             aPolicy.uuid,
             anotherPolicy.uuid,
         ])
-        renderWithStore(
+        render(
             <SLAPolicyFilter
                 value={selectedPolicies}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -236,14 +235,14 @@ describe('SLAPolicyFilter', () => {
 
     it('should add selected policy to already selected', () => {
         const alreadySelectedPolicies = [aPolicy.uuid]
-        renderWithStore(
+        render(
             <SLAPolicyFilter
                 value={withDefaultLogicalOperator(alreadySelectedPolicies)}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -255,14 +254,14 @@ describe('SLAPolicyFilter', () => {
     })
 
     it('should dispatch all selected policies on selectAll', () => {
-        renderWithStore(
+        render(
             <SLAPolicyFilter
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -275,14 +274,14 @@ describe('SLAPolicyFilter', () => {
 
     it('should dispatch all selected policies on deselectAll', () => {
         const selected = withDefaultLogicalOperator(policies.map((p) => p.uuid))
-        renderWithStore(
+        render(
             <SLAPolicyFilter
                 value={selected}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -296,28 +295,27 @@ describe('SLAPolicyFilter', () => {
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
         const selectedPolicy = policies[0]
         const anotherSelectedPolicy = policies[1]
-        const { rerenderComponent, store } = renderWithStore(
+        const { rerender } = render(
             <SLAPolicyFilter
                 value={withDefaultLogicalOperator([selectedPolicy.uuid])}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(selectedPolicy.name))
         userEvent.click(screen.getByText(anotherSelectedPolicy.name))
         userEvent.click(screen.getAllByText(selectedPolicy.name)[0])
 
-        rerenderComponent(
+        rerender(
             <SLAPolicyFilter
                 value={withDefaultLogicalOperator([selectedPolicy.uuid])}
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            store as any,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalled()
@@ -337,7 +335,7 @@ describe('SLAPolicyFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<SLAPolicyFilterWithState />, defaultState)
+            render(<SLAPolicyFilterWithState />, { storeState: defaultState })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 

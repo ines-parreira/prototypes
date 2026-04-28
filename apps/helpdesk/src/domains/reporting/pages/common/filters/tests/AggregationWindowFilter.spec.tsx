@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -18,7 +18,6 @@ import {
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -46,12 +45,12 @@ describe('AggregationWindowFilter', () => {
 
     describe('Normal mode', () => {
         it('should render available aggregations', () => {
-            renderWithStore(
+            render(
                 <AggregationWindowFilter
                     period={period}
                     dispatchUpdate={dispatchUpdate}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -75,12 +74,12 @@ describe('AggregationWindowFilter', () => {
         it('should update selectedMetric in state on selection', () => {
             const aggregation = ReportingGranularity.Week
 
-            renderWithStore(
+            render(
                 <AggregationWindowFilter
                     period={period}
                     dispatchUpdate={dispatchUpdate}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -92,12 +91,12 @@ describe('AggregationWindowFilter', () => {
         })
 
         it('should call segment analytics log event on filter dropdown close', () => {
-            renderWithStore(
+            render(
                 <AggregationWindowFilter
                     period={statsSlice.defaultStatsFilters.period}
                     dispatchUpdate={dispatchUpdate}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -116,14 +115,14 @@ describe('AggregationWindowFilter', () => {
     describe('Compact mode', () => {
         it('should render in compact mode with correct labels', () => {
             const value = ReportingGranularity.Week
-            const { container } = renderWithStore(
+            const { container } = render(
                 <AggregationWindowFilter
                     period={period}
                     dispatchUpdate={dispatchUpdate}
                     value={value}
                     compact
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const compactTrigger = container.querySelector('.compactTrigger')
@@ -136,14 +135,14 @@ describe('AggregationWindowFilter', () => {
 
         it('should open Select dropdown and show available aggregations in compact mode', async () => {
             const value = ReportingGranularity.Week
-            const { container } = renderWithStore(
+            const { container } = render(
                 <AggregationWindowFilter
                     period={period}
                     dispatchUpdate={dispatchUpdate}
                     value={value}
                     compact
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const trigger = container.querySelector(
@@ -174,14 +173,14 @@ describe('AggregationWindowFilter', () => {
             const initialValue = ReportingGranularity.Week
             const newAggregation = ReportingGranularity.Day
 
-            const { container } = renderWithStore(
+            const { container } = render(
                 <AggregationWindowFilter
                     period={period}
                     dispatchUpdate={dispatchUpdate}
                     value={initialValue}
                     compact
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const trigger = container.querySelector(
@@ -208,14 +207,14 @@ describe('AggregationWindowFilter', () => {
             const initialValue = ReportingGranularity.Week
             const newAggregation = ReportingGranularity.Month
 
-            const { container } = renderWithStore(
+            const { container } = render(
                 <AggregationWindowFilter
                     period={period}
                     dispatchUpdate={dispatchUpdate}
                     value={initialValue}
                     compact
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const trigger = container.querySelector(
@@ -246,14 +245,14 @@ describe('AggregationWindowFilter', () => {
 
         it('should display selected value in compact mode', () => {
             const value = ReportingGranularity.Month
-            const { container } = renderWithStore(
+            const { container } = render(
                 <AggregationWindowFilter
                     period={period}
                     dispatchUpdate={dispatchUpdate}
                     value={value}
                     compact
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const compactValue = container.querySelector('.compactValue')
@@ -264,14 +263,14 @@ describe('AggregationWindowFilter', () => {
         })
 
         it('should handle null selectedItem gracefully in compact mode', () => {
-            renderWithStore(
+            render(
                 <AggregationWindowFilter
                     period={period}
                     dispatchUpdate={dispatchUpdate}
                     value={undefined}
                     compact
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             expect(screen.getByText('Aggregation')).toBeInTheDocument()
@@ -285,7 +284,9 @@ describe('AggregationWindowFilter', () => {
                 statsSlice,
                 'mergeStatsFiltersWithLogicalOperator',
             )
-            renderWithStore(<AggregationWindowFilterWithState />, defaultState)
+            render(<AggregationWindowFilterWithState />, {
+                storeState: defaultState,
+            })
 
             userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
             userEvent.click(
@@ -316,9 +317,9 @@ describe('AggregationWindowFilter', () => {
                 },
             } as unknown as RootState
 
-            const { container } = renderWithStore(
+            const { container } = render(
                 <AggregationWindowFilterWithState compact />,
-                stateWithCompactValue,
+                { storeState: stateWithCompactValue },
             )
 
             const trigger = container.querySelector(

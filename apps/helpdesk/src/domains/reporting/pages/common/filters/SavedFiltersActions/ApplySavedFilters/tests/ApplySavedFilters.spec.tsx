@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
 import type { SavedFilter } from 'domains/reporting/models/stat/types'
@@ -12,7 +12,6 @@ import ApplySavedFilers, {
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import { initialiseSavedFilterDraft } from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const savedFilters: SavedFilter[] = [
     { id: 1, name: 'Temp Filter 1', filter_group: [] },
@@ -28,9 +27,9 @@ const defaultState = {
 
 describe('ApplySavedFilers', () => {
     it('should render the component for an admin', () => {
-        const { getByText, queryByText } = renderWithStore(
+        const { getByText, queryByText } = render(
             <ApplySavedFilers canEdit savedFilters={[]} />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(queryByText(NO_FILTERS_CONTENT)).toBeFalsy()
@@ -40,9 +39,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should render a different content for a normal user', () => {
-        const { getByText, queryByText } = renderWithStore(
+        const { getByText, queryByText } = render(
             <ApplySavedFilers canEdit={false} savedFilters={[]} />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(queryByText(NOT_ADMIN_CONTENT)).toBeFalsy()
@@ -52,9 +51,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should have a descriptive tooltip', async () => {
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <ApplySavedFilers canEdit={false} savedFilters={[]} />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         fireEvent.mouseEnter(getByText(APPLY_SAVED_FILTERS))
@@ -65,9 +64,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should show the saved filters for a normal user', () => {
-        const { getByText, queryByText } = renderWithStore(
+        const { getByText, queryByText } = render(
             <ApplySavedFilers canEdit={false} savedFilters={savedFilters} />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(queryByText(NOT_ADMIN_CONTENT)).toBeFalsy()
         fireEvent.click(getByText(APPLY_SAVED_FILTERS))
@@ -77,9 +76,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should allow admin to create the Saved Filter Draft', () => {
-        const { getByText, store } = renderWithStore(
+        const { getByText, store } = render(
             <ApplySavedFilers canEdit={true} savedFilters={savedFilters} />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         fireEvent.click(getByText('arrow_drop_down'))
@@ -90,9 +89,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should render a dropdown items for Admins', () => {
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(getByText(APPLY_SAVED_FILTERS)).toBeTruthy()
@@ -103,9 +102,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should log segment event on filter click', () => {
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         fireEvent.click(getByText(APPLY_SAVED_FILTERS))
@@ -121,11 +120,13 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should render the component for an admin', () => {
-        const { getByText, queryByText } = renderWithStore(
+        const { getByText, queryByText } = render(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
-                ui: { stats: { filters: { appliedSavedFilterId: 1 } } },
-            } as RootState,
+                storeState: {
+                    ui: { stats: { filters: { appliedSavedFilterId: 1 } } },
+                } as RootState,
+            },
         )
 
         expect(queryByText(APPLY_SAVED_FILTERS)).toBeFalsy()
@@ -133,18 +134,20 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should render draft filter name instead of applied filter name', () => {
-        const { getByText, queryByText } = renderWithStore(
+        const { getByText, queryByText } = render(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
-                ui: {
-                    stats: {
-                        filters: {
-                            appliedSavedFilterId: 1,
-                            savedFilterDraft: savedFilters[1],
+                storeState: {
+                    ui: {
+                        stats: {
+                            filters: {
+                                appliedSavedFilterId: 1,
+                                savedFilterDraft: savedFilters[1],
+                            },
                         },
                     },
-                },
-            } as RootState,
+                } as RootState,
+            },
         )
 
         expect(queryByText(APPLY_SAVED_FILTERS)).toBeFalsy()
@@ -152,21 +155,23 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should show default value if the saved filters name is empty', () => {
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
-                ui: {
-                    stats: {
-                        filters: {
-                            appliedSavedFilterId: 1,
-                            savedFilterDraft: {
-                                ...savedFilters[1],
-                                name: '',
+                storeState: {
+                    ui: {
+                        stats: {
+                            filters: {
+                                appliedSavedFilterId: 1,
+                                savedFilterDraft: {
+                                    ...savedFilters[1],
+                                    name: '',
+                                },
                             },
                         },
                     },
-                },
-            } as RootState,
+                } as RootState,
+            },
         )
 
         expect(getByText(APPLY_SAVED_FILTERS)).toBeTruthy()
@@ -174,18 +179,20 @@ describe('ApplySavedFilers', () => {
 
     describe('Apply filters button content', () => {
         it('renders default message', () => {
-            const { queryByText } = renderWithStore(
+            const { queryByText } = render(
                 <ApplySavedFilers canEdit savedFilters={savedFilters} />,
                 {
-                    ui: {
-                        stats: {
-                            filters: {
-                                appliedSavedFilterId: null,
-                                savedFilterDraft: null,
+                    storeState: {
+                        ui: {
+                            stats: {
+                                filters: {
+                                    appliedSavedFilterId: null,
+                                    savedFilterDraft: null,
+                                },
                             },
                         },
-                    },
-                } as RootState,
+                    } as RootState,
+                },
             )
 
             expect(queryByText(APPLY_SAVED_FILTERS)).toBeInTheDocument()
@@ -194,36 +201,40 @@ describe('ApplySavedFilers', () => {
         it('renders filter name if selected', () => {
             const selectedFilter = savedFilters[1]
 
-            const { queryByText } = renderWithStore(
+            const { queryByText } = render(
                 <ApplySavedFilers canEdit savedFilters={savedFilters} />,
                 {
-                    ui: {
-                        stats: {
-                            filters: {
-                                appliedSavedFilterId: selectedFilter.id,
-                                savedFilterDraft: null,
+                    storeState: {
+                        ui: {
+                            stats: {
+                                filters: {
+                                    appliedSavedFilterId: selectedFilter.id,
+                                    savedFilterDraft: null,
+                                },
                             },
                         },
-                    },
-                } as RootState,
+                    } as RootState,
+                },
             )
 
             expect(queryByText(selectedFilter.name)).toBeInTheDocument()
         })
 
         it('renders default message if filter is not found', () => {
-            const { queryByText } = renderWithStore(
+            const { queryByText } = render(
                 <ApplySavedFilers canEdit savedFilters={savedFilters} />,
                 {
-                    ui: {
-                        stats: {
-                            filters: {
-                                appliedSavedFilterId: 999,
-                                savedFilterDraft: null,
+                    storeState: {
+                        ui: {
+                            stats: {
+                                filters: {
+                                    appliedSavedFilterId: 999,
+                                    savedFilterDraft: null,
+                                },
                             },
                         },
-                    },
-                } as RootState,
+                    } as RootState,
+                },
             )
 
             expect(queryByText(APPLY_SAVED_FILTERS)).toBeInTheDocument()
@@ -233,21 +244,23 @@ describe('ApplySavedFilers', () => {
             const selectedFilter = savedFilters[1]
             const draftName = 'slim shady'
 
-            const { queryByText } = renderWithStore(
+            const { queryByText } = render(
                 <ApplySavedFilers canEdit savedFilters={savedFilters} />,
                 {
-                    ui: {
-                        stats: {
-                            filters: {
-                                appliedSavedFilterId: selectedFilter.id,
-                                savedFilterDraft: {
-                                    ...selectedFilter,
-                                    name: draftName,
+                    storeState: {
+                        ui: {
+                            stats: {
+                                filters: {
+                                    appliedSavedFilterId: selectedFilter.id,
+                                    savedFilterDraft: {
+                                        ...selectedFilter,
+                                        name: draftName,
+                                    },
                                 },
                             },
                         },
-                    },
-                } as RootState,
+                    } as RootState,
+                },
             )
 
             expect(queryByText(draftName)).toBeInTheDocument()
@@ -258,21 +271,23 @@ describe('ApplySavedFilers', () => {
             const draftName =
                 'hi! my name is what? my name is who? my name is chka-chka slim shady'
 
-            const { queryByText } = renderWithStore(
+            const { queryByText } = render(
                 <ApplySavedFilers canEdit savedFilters={savedFilters} />,
                 {
-                    ui: {
-                        stats: {
-                            filters: {
-                                appliedSavedFilterId: selectedFilter.id,
-                                savedFilterDraft: {
-                                    ...selectedFilter,
-                                    name: draftName,
+                    storeState: {
+                        ui: {
+                            stats: {
+                                filters: {
+                                    appliedSavedFilterId: selectedFilter.id,
+                                    savedFilterDraft: {
+                                        ...selectedFilter,
+                                        name: draftName,
+                                    },
                                 },
                             },
                         },
-                    },
-                } as RootState,
+                    } as RootState,
+                },
             )
 
             expect(queryByText(/^hi!.*\.\.\.$/)).toBeInTheDocument()
@@ -286,13 +301,13 @@ describe('ApplySavedFilers', () => {
                 pin: jest.fn(),
             }
 
-            const { container } = renderWithStore(
+            const { container } = render(
                 <ApplySavedFilers
                     canEdit={true}
                     savedFilters={savedFilters}
                     pinnedFilter={pinnedFilter}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const toggleButton = container.querySelector(
@@ -307,13 +322,13 @@ describe('ApplySavedFilers', () => {
                 pin: jest.fn(),
             }
 
-            const { container } = renderWithStore(
+            const { container } = render(
                 <ApplySavedFilers
                     canEdit={false}
                     savedFilters={savedFilters}
                     pinnedFilter={pinnedFilter}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const toggleButton = container.querySelector(
@@ -323,13 +338,13 @@ describe('ApplySavedFilers', () => {
         })
 
         it('should not set data-candu-id when pinnedFilter is undefined', () => {
-            const { container } = renderWithStore(
+            const { container } = render(
                 <ApplySavedFilers
                     canEdit={true}
                     savedFilters={savedFilters}
                     pinnedFilter={undefined}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const toggleButton = container.querySelector(
@@ -339,13 +354,13 @@ describe('ApplySavedFilers', () => {
         })
 
         it('should not set data-candu-id when both canEdit is false and pinnedFilter is undefined', () => {
-            const { container } = renderWithStore(
+            const { container } = render(
                 <ApplySavedFilers
                     canEdit={false}
                     savedFilters={savedFilters}
                     pinnedFilter={undefined}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             const toggleButton = container.querySelector(

@@ -1,10 +1,9 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { StatsNavbarView } from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavbarView'
 import StatsNavbarContainer from 'domains/reporting/pages/common/StatsNavbarContainer'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
@@ -22,11 +21,11 @@ describe('StatsNavbarContainer', () => {
     it('should render StatsNavbarView', () => {
         useFlagMock.mockReturnValue(true)
 
-        renderWithStore(
+        render(
             <NavBarProvider>
                 <StatsNavbarContainer />
             </NavBarProvider>,
-            {},
+            { storeState: {} },
         )
 
         expect(StatsNavbarViewMock).toHaveBeenCalled()

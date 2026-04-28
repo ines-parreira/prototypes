@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -23,7 +23,6 @@ import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const mockedRemove = jest.fn()
 
@@ -48,7 +47,7 @@ describe('ResolutionCompletenessFilter', () => {
     const dispatchStatFiltersClean = jest.fn()
 
     const renderComponent = () =>
-        renderWithStore(
+        render(
             <ResolutionCompletenessFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([])}
@@ -57,11 +56,11 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
     it('should render ResolutionCompletenessFilter component just fine if value is undefined', () => {
-        renderWithStore(
+        render(
             <ResolutionCompletenessFilter
                 onRemove={mockedRemove}
                 value={undefined}
@@ -70,7 +69,7 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -155,7 +154,7 @@ describe('ResolutionCompletenessFilter', () => {
     })
 
     it('should deselect all options when "Deselect all" is clicked', () => {
-        renderWithStore(
+        render(
             <ResolutionCompletenessFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator(['0', '1'])}
@@ -164,7 +163,7 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         fireEvent.click(
@@ -179,9 +178,9 @@ describe('ResolutionCompletenessFilter', () => {
     })
 
     it('should dispatch the right actions on options deselection', () => {
-        const { rerenderComponent } = renderComponent()
+        const { rerender } = renderComponent()
 
-        rerenderComponent(
+        rerender(
             <ResolutionCompletenessFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator(['1'])}
@@ -190,7 +189,6 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         fireEvent.click(
@@ -208,10 +206,9 @@ describe('ResolutionCompletenessFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(
-                <ResolutionCompletenessFilterWithState />,
-                defaultState,
-            )
+            render(<ResolutionCompletenessFilterWithState />, {
+                storeState: defaultState,
+            })
 
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText('Complete'))
@@ -238,10 +235,9 @@ describe('ResolutionCompletenessFilter', () => {
                 'removeFilterFromSavedFilterDraft',
             )
 
-            renderWithStore(
-                <ResolutionCompletenessFilterWithSavedState />,
-                defaultState,
-            )
+            render(<ResolutionCompletenessFilterWithSavedState />, {
+                storeState: defaultState,
+            })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 

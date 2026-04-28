@@ -1,5 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
@@ -20,7 +21,6 @@ import { emptyFilter } from 'domains/reporting/pages/common/filters/helpers'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -160,9 +160,9 @@ describe('<DuringBusinessHoursFilter />', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            const { getByText } = renderWithStore(
+            const { getByText } = render(
                 <DuringBusinessHoursFilterWithState />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             fireEvent.click(getByText(ANYTIME_OPTION_LABEL))
@@ -188,10 +188,9 @@ describe('<DuringBusinessHoursFilter />', () => {
                 'removeFilterFromSavedFilterDraft',
             )
 
-            renderWithStore(
-                <DuringBusinessHoursFilterWithSavedState />,
-                defaultState,
-            )
+            render(<DuringBusinessHoursFilterWithSavedState />, {
+                storeState: defaultState,
+            })
             fireEvent.click(screen.getByText(ANYTIME_OPTION_LABEL))
             fireEvent.click(
                 screen.getByText(OUTSIDE_BUSINESS_HOURS_OPTION_LABEL),

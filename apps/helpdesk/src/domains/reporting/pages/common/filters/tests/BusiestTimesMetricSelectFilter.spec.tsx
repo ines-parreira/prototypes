@@ -1,6 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { FilterComponentKey } from 'domains/reporting/models/stat/types'
@@ -14,7 +14,6 @@ import {
 } from 'domains/reporting/state/ui/stats/busiestTimesSlice'
 import { FILTER_DROPDOWN_ICON } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -35,7 +34,7 @@ describe('BusiestTimesMetricSelectFilter', () => {
     })
 
     it('should render available metrics', () => {
-        renderWithStore(<BusiestTimesMetricSelectFilter />, defaultState)
+        render(<BusiestTimesMetricSelectFilter />, { storeState: defaultState })
 
         expect(
             screen.getByText(metricLabels[initialState.selectedMetric]),
@@ -45,7 +44,7 @@ describe('BusiestTimesMetricSelectFilter', () => {
     it('should render Messages Received metric when the flag is on', () => {
         useFlagMock.mockReturnValue(true)
 
-        renderWithStore(<BusiestTimesMetricSelectFilter />, defaultState)
+        render(<BusiestTimesMetricSelectFilter />, { storeState: defaultState })
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
 
         expect(
@@ -57,10 +56,9 @@ describe('BusiestTimesMetricSelectFilter', () => {
 
     it('should update selectedMetric in state on selection', () => {
         const metric = BusiestTimeOfDaysMetrics.TicketsClosed
-        const { store } = renderWithStore(
-            <BusiestTimesMetricSelectFilter />,
-            defaultState,
-        )
+        const { store } = render(<BusiestTimesMetricSelectFilter />, {
+            storeState: defaultState,
+        })
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
         userEvent.click(screen.getByText(metricLabels[metric]))
@@ -69,7 +67,7 @@ describe('BusiestTimesMetricSelectFilter', () => {
     })
 
     it('should call segment analytics log event on filter dropdown close', () => {
-        renderWithStore(<BusiestTimesMetricSelectFilter />, defaultState)
+        render(<BusiestTimesMetricSelectFilter />, { storeState: defaultState })
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -30,7 +30,6 @@ import { integrationsState } from 'fixtures/integrations'
 import type { Integration } from 'models/integration/types'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -56,7 +55,7 @@ const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
 
 const renderComponent = () =>
-    renderWithStore(
+    render(
         <IntegrationsFilter
             value={emptyFilter}
             integrations={integrations}
@@ -65,15 +64,10 @@ const renderComponent = () =>
             dispatchStatFiltersDirty={dispatchStatFiltersDirty}
             dispatchStatFiltersClean={dispatchStatFiltersClean}
         />,
-        defaultState,
+        { storeState: defaultState },
     )
 
 describe('IntegrationsFilter', () => {
-    const isOneOfRegex = new RegExp(
-        `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
-        'i',
-    )
-
     it('should render IntegrationsFilter component', () => {
         renderComponent()
 
@@ -83,7 +77,7 @@ describe('IntegrationsFilter', () => {
     })
 
     it('should render with empty filter', () => {
-        renderWithStore(
+        render(
             <IntegrationsFilter
                 value={undefined}
                 integrations={integrations}
@@ -92,7 +86,7 @@ describe('IntegrationsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -125,7 +119,7 @@ describe('IntegrationsFilter', () => {
     })
 
     it('should dispatch mergeStatsFilters action on deselecting an integration', () => {
-        renderWithStore(
+        render(
             <IntegrationsFilter
                 value={withDefaultLogicalOperator([integrations[0].id])}
                 integrations={integrations}
@@ -134,7 +128,7 @@ describe('IntegrationsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(
@@ -175,7 +169,6 @@ describe('IntegrationsFilter', () => {
             />,
         )
 
-        userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
@@ -201,7 +194,7 @@ describe('IntegrationsFilter', () => {
             />,
         )
 
-        userEvent.click(screen.getByText(isOneOfRegex))
+        userEvent.click(screen.getByTestId('logical-operator'))
         userEvent.click(screen.getByText(integrations[0].name))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
@@ -267,13 +260,13 @@ describe('IntegrationsFilter', () => {
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
-        const { rerenderComponent } = renderComponent()
+        const { rerender } = renderComponent()
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(integrations[0].name))
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
-        rerenderComponent(
+        rerender(
             <IntegrationsFilter
                 value={withDefaultLogicalOperator([])}
                 integrations={integrations}
@@ -282,7 +275,6 @@ describe('IntegrationsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalledWith()
@@ -309,10 +301,9 @@ describe('IntegrationsFilter', () => {
                 }),
             }
 
-            renderWithStore(
-                <IntegrationsFilterWithState />,
-                stateWithIntegrations,
-            )
+            render(<IntegrationsFilterWithState />, {
+                storeState: stateWithIntegrations,
+            })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
@@ -341,10 +332,9 @@ describe('IntegrationsFilter', () => {
                     integrations: integrations,
                 }),
             }
-            renderWithStore(
-                <IntegrationsFilterWithSavedState />,
-                stateWithIntegrations,
-            )
+            render(<IntegrationsFilterWithSavedState />, {
+                storeState: stateWithIntegrations,
+            })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
@@ -374,10 +364,9 @@ describe('IntegrationsFilter', () => {
                 }),
             }
 
-            renderWithStore(
-                <PhoneIntegrationsFilterWithState />,
-                stateWithIntegrations,
-            )
+            render(<PhoneIntegrationsFilterWithState />, {
+                storeState: stateWithIntegrations,
+            })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 

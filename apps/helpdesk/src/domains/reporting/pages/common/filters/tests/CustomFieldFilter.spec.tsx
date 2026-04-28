@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -18,7 +18,6 @@ import {
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
@@ -43,7 +42,7 @@ describe('CustomFieldFilter', () => {
     })
 
     it('should render CustomFieldFilter component', () => {
-        renderWithStore(<CustomFieldFilter />, defaultState)
+        render(<CustomFieldFilter />, { storeState: defaultState })
 
         expect(screen.getByText(CUSTOM_FIELD_FILTER_NAME)).toBeInTheDocument()
     })
@@ -54,7 +53,7 @@ describe('CustomFieldFilter', () => {
             isLoading: true as false,
         } as ReturnType<typeof useCustomFieldDefinitions>)
 
-        renderWithStore(<CustomFieldFilter />, defaultState)
+        render(<CustomFieldFilter />, { storeState: defaultState })
 
         expect(screen.getByText(CUSTOM_FIELD_FILTER_NAME)).toBeInTheDocument()
     })
@@ -65,13 +64,13 @@ describe('CustomFieldFilter', () => {
             isLoading: false,
         } as ReturnType<typeof useCustomFieldDefinitions>)
 
-        renderWithStore(<CustomFieldFilter />, defaultState)
+        render(<CustomFieldFilter />, { storeState: defaultState })
 
         expect(screen.getByText(CUSTOM_FIELD_FILTER_NAME)).toBeInTheDocument()
     })
 
     it('should render CustomFieldFilter options - Dropdown Custom Fields', () => {
-        renderWithStore(<CustomFieldFilter />, defaultState)
+        render(<CustomFieldFilter />, { storeState: defaultState })
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -96,7 +95,7 @@ describe('CustomFieldFilter', () => {
             },
         } as RootState
 
-        renderWithStore(<CustomFieldFilter />, state)
+        render(<CustomFieldFilter />, { storeState: state })
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
         const option = screen.getByRole('option', {
@@ -109,7 +108,9 @@ describe('CustomFieldFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting channel', () => {
-        const { store } = renderWithStore(<CustomFieldFilter />, defaultState)
+        const { store } = render(<CustomFieldFilter />, {
+            storeState: defaultState,
+        })
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(ticketFieldDefinitions[1].label))
@@ -124,15 +125,14 @@ describe('CustomFieldFilter', () => {
     })
 
     it('should call segment analytics log event on filter dropdown close', () => {
-        const { rerenderComponent } = renderWithStore(
-            <CustomFieldFilter />,
-            defaultState,
-        )
+        const { rerender } = render(<CustomFieldFilter />, {
+            storeState: defaultState,
+        })
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
-        rerenderComponent(<CustomFieldFilter />, defaultState)
+        rerender(<CustomFieldFilter />)
 
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: `tf_${CUSTOM_FIELD_FILTER_NAME}`,

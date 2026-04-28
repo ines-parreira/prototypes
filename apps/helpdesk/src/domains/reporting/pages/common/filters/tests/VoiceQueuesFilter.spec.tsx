@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 
@@ -22,7 +22,6 @@ import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/common/useVoiceQueueSearch')
 const useVoiceQueueSearchMock = assumeMock(useVoiceQueueSearch)
@@ -253,10 +252,9 @@ describe('<VoiceQueuesFilter />', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            const { getByText } = renderWithStore(
-                <VoiceQueuesFilterWithState />,
-                defaultState,
-            )
+            const { getByText } = render(<VoiceQueuesFilterWithState />, {
+                storeState: defaultState,
+            })
 
             userEvent.click(getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(getByText(FILTER_SELECT_ALL_LABEL))
@@ -284,7 +282,9 @@ describe('<VoiceQueuesFilter />', () => {
                 'removeFilterFromSavedFilterDraft',
             )
 
-            renderWithStore(<VoiceQueuesFilterWithSavedState />, defaultState)
+            render(<VoiceQueuesFilterWithSavedState />, {
+                storeState: defaultState,
+            })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 

@@ -1,12 +1,9 @@
 import type { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import {
     stats as statsConfig,
@@ -19,11 +16,8 @@ import type { Integration } from 'models/integration/types'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import * as channelsService from 'services/channels'
 import { initialState } from 'state/tags/reducers'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
-
 // Mock the AgentAvailabilityCell component
 jest.mock(
     'domains/reporting/pages/common/components/charts/TableStat/cells/AgentAvailabilityCell',
@@ -35,9 +29,6 @@ jest.mock(
         ),
     }),
 )
-
-const mockStore = configureMockStore()
-
 const tableStatData = fromJS({
     data: {
         axes: {
@@ -285,7 +276,6 @@ const tableStatNoData = fromJS({
     },
     meta: {},
 }) as Map<any, any>
-
 const integrationsData = [
     {
         id: 1,
@@ -296,54 +286,52 @@ const integrationsData = [
         },
     } as Integration,
 ]
-
 const selfServiceConfigurationsData = [
     {
         shopName: 'test-shop',
         type: 'shopify',
     } as SelfServiceConfiguration,
 ]
-
 describe('TableStat', () => {
     const defaultState = { entities: { tags: initialState } }
     it('should render a table chart', () => {
         const config = statsConfig.find(
             (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <TableStat
-                    {...(tableStatData.toObject() as ComponentProps<
-                        typeof TableStat
-                    >)}
-                    context={{ tagColors: null }}
-                    config={config}
-                    integrations={integrationsData}
-                    selfServiceConfigurations={selfServiceConfigurationsData}
-                />
-            </Provider>,
+        const { container } = render(
+            <TableStat
+                {...(tableStatData.toObject() as ComponentProps<
+                    typeof TableStat
+                >)}
+                context={{ tagColors: null }}
+                config={config}
+                integrations={integrationsData}
+                selfServiceConfigurations={selfServiceConfigurationsData}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it('should render a table chart with "no data" message', () => {
         const config = statsConfig.find(
             (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <TableStat
-                    {...(tableStatNoData.toObject() as ComponentProps<
-                        typeof TableStat
-                    >)}
-                    context={{ tagColors: null }}
-                    config={config}
-                />
-            </Provider>,
+        const { container } = render(
+            <TableStat
+                {...(tableStatNoData.toObject() as ComponentProps<
+                    typeof TableStat
+                >)}
+                context={{ tagColors: null }}
+                config={config}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it('should render a table with the expand button and one line visible', () => {
         const config = {
             ...statsConfig
@@ -351,29 +339,28 @@ describe('TableStat', () => {
                 .toJS(),
             tableOptions: { showLines: 1 },
         }
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <TableStat
-                    {...(tableStatData
-                        .setIn(
-                            ['data', 'lines'],
-                            fromJS([
-                                tableStatData.getIn(['data', 'lines', 0]),
-                                tableStatData.getIn(['data', 'lines', 0]),
-                            ]),
-                        )
-                        .toObject() as ComponentProps<typeof TableStat>)}
-                    context={{ tagColors: null }}
-                    config={fromJS(config)}
-                    integrations={integrationsData}
-                    selfServiceConfigurations={selfServiceConfigurationsData}
-                />
-            </Provider>,
+        const { container } = render(
+            <TableStat
+                {...(tableStatData
+                    .setIn(
+                        ['data', 'lines'],
+                        fromJS([
+                            tableStatData.getIn(['data', 'lines', 0]),
+                            tableStatData.getIn(['data', 'lines', 0]),
+                        ]),
+                    )
+                    .toObject() as ComponentProps<typeof TableStat>)}
+                context={{ tagColors: null }}
+                config={fromJS(config)}
+                integrations={integrationsData}
+                selfServiceConfigurations={selfServiceConfigurationsData}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it('should extend the table to show all the elements', () => {
         const config = {
             ...statsConfig
@@ -381,55 +368,52 @@ describe('TableStat', () => {
                 .toJS(),
             tableOptions: { showLines: 1 },
         }
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <TableStat
-                    {...(tableStatData
-                        .setIn(
-                            ['data', 'lines'],
-                            fromJS([
-                                tableStatData.getIn(['data', 'lines', 0]),
-                                tableStatData.getIn(['data', 'lines', 0]),
-                            ]),
-                        )
-                        .toObject() as ComponentProps<typeof TableStat>)}
-                    context={{ tagColors: null }}
-                    config={fromJS(config)}
-                    integrations={integrationsData}
-                    selfServiceConfigurations={selfServiceConfigurationsData}
-                />
-            </Provider>,
+        const { container } = render(
+            <TableStat
+                {...(tableStatData
+                    .setIn(
+                        ['data', 'lines'],
+                        fromJS([
+                            tableStatData.getIn(['data', 'lines', 0]),
+                            tableStatData.getIn(['data', 'lines', 0]),
+                        ]),
+                    )
+                    .toObject() as ComponentProps<typeof TableStat>)}
+                context={{ tagColors: null }}
+                config={fromJS(config)}
+                integrations={integrationsData}
+                selfServiceConfigurations={selfServiceConfigurationsData}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
-
         act(() => {
             userEvent.click(screen.getByRole('button'))
         })
-
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it('should render a table with online status disabled badge', () => {
         const config = statsConfig.find(
             (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <TableStat
-                    {...(tableStatDataOnlyWithOnlineState.toObject() as ComponentProps<
-                        typeof TableStat
-                    >)}
-                    context={{ tagColors: null }}
-                    config={config}
-                    integrations={integrationsData}
-                    selfServiceConfigurations={selfServiceConfigurationsData}
-                />
-            </Provider>,
+        const { container } = render(
+            <TableStat
+                {...(tableStatDataOnlyWithOnlineState.toObject() as ComponentProps<
+                    typeof TableStat
+                >)}
+                context={{ tagColors: null }}
+                config={config}
+                integrations={integrationsData}
+                selfServiceConfigurations={selfServiceConfigurationsData}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it('should render AgentAvailabilityCell when type is AgentAvailability with valid userId', () => {
-        const queryClient = mockQueryClient()
         const tableStatDataWithAgentAvailability = fromJS({
             data: {
                 axes: {
@@ -453,25 +437,21 @@ describe('TableStat', () => {
             label: 'Agent Availability',
             meta: {},
         }) as Map<any, any>
-
         const config = statsConfig.find(
             (__config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <QueryClientProvider client={queryClient}>
-                    <TableStat
-                        {...(tableStatDataWithAgentAvailability.toObject() as ComponentProps<
-                            typeof TableStat
-                        >)}
-                        context={{ tagColors: null }}
-                        config={config}
-                    />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <TableStat
+                {...(tableStatDataWithAgentAvailability.toObject() as ComponentProps<
+                    typeof TableStat
+                >)}
+                context={{ tagColors: null }}
+                config={config}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(
             screen.getByTestId('agent-availability-cell'),
         ).toBeInTheDocument()
@@ -479,9 +459,7 @@ describe('TableStat', () => {
             screen.getByText('Agent Availability Cell - User 123'),
         ).toBeInTheDocument()
     })
-
     it('should return null when AgentAvailability userId is null', () => {
-        const queryClient = mockQueryClient()
         const tableStatDataWithNullUserId = fromJS({
             data: {
                 axes: {
@@ -505,25 +483,21 @@ describe('TableStat', () => {
             label: 'Agent Availability',
             meta: {},
         }) as Map<any, any>
-
         const config = statsConfig.find(
             (__config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <QueryClientProvider client={queryClient}>
-                    <TableStat
-                        {...(tableStatDataWithNullUserId.toObject() as ComponentProps<
-                            typeof TableStat
-                        >)}
-                        context={{ tagColors: null }}
-                        config={config}
-                    />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <TableStat
+                {...(tableStatDataWithNullUserId.toObject() as ComponentProps<
+                    typeof TableStat
+                >)}
+                context={{ tagColors: null }}
+                config={config}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(
             screen.queryByTestId('agent-availability-cell'),
         ).not.toBeInTheDocument()

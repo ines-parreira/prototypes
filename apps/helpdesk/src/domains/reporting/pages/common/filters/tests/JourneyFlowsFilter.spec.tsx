@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -21,7 +22,6 @@ import {
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -79,13 +79,13 @@ describe('JourneyFlowsFilter', () => {
         value = withLogicalOperator(mockJourneys.map((j) => j.id)),
         journeys = mockJourneys,
     ) =>
-        renderWithStore(
+        render(
             <JourneyFlowsFilter
                 value={value}
                 journeys={journeys}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
     describe('trigger label', () => {
@@ -151,13 +151,13 @@ describe('JourneyFlowsFilter', () => {
         })
 
         it('should default to all selected when value is undefined', () => {
-            renderWithStore(
+            render(
                 <JourneyFlowsFilter
                     value={undefined}
                     journeys={mockJourneys}
                     dispatchUpdate={dispatchUpdate}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             expect(screen.getByText('All Flows')).toBeInTheDocument()
@@ -329,7 +329,9 @@ describe('JourneyFlowsFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<JourneyFlowsFilterFromContext />, defaultState)
+            render(<JourneyFlowsFilterFromContext />, {
+                storeState: defaultState,
+            })
 
             expect(screen.getByText(FLOWS_FILTER_NAME)).toBeInTheDocument()
 
@@ -355,10 +357,9 @@ describe('JourneyFlowsFilter', () => {
                 journeys: [],
             })
 
-            const { container } = renderWithStore(
-                <JourneyFlowsFilterFromContext />,
-                defaultState,
-            )
+            const { container } = render(<JourneyFlowsFilterFromContext />, {
+                storeState: defaultState,
+            })
 
             expect(container).toBeEmptyDOMElement()
         })
@@ -368,10 +369,9 @@ describe('JourneyFlowsFilter', () => {
                 journeys: undefined,
             })
 
-            const { container } = renderWithStore(
-                <JourneyFlowsFilterFromContext />,
-                defaultState,
-            )
+            const { container } = render(<JourneyFlowsFilterFromContext />, {
+                storeState: defaultState,
+            })
 
             expect(container).toBeEmptyDOMElement()
         })
@@ -379,9 +379,9 @@ describe('JourneyFlowsFilter', () => {
 
     describe('JourneyFlowsFilterFromSavedContext', () => {
         it('should return null', () => {
-            const { container } = renderWithStore(
+            const { container } = render(
                 <JourneyFlowsFilterFromSavedContext />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             expect(container).toBeEmptyDOMElement()

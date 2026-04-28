@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, renderHook, userEvent } from '@repo/testing'
+import { assumeMock, render, renderHook, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import {
@@ -13,7 +13,6 @@ import {
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
@@ -26,11 +25,11 @@ describe('<DrillDownModalTrigger />', () => {
             metricName: OverviewMetric.OpenTickets,
         }
 
-        const { store } = renderWithStore(
+        const { store } = render(
             <DrillDownModalTrigger metricData={metricData}>
                 {trigger}
             </DrillDownModalTrigger>,
-            {},
+            { storeState: {} },
         )
 
         fireEvent.click(screen.getByText(trigger))
@@ -49,11 +48,11 @@ describe('<DrillDownModalTrigger />', () => {
             metricName: OverviewMetric.OpenTickets,
         }
 
-        const { store } = renderWithStore(
+        const { store } = render(
             <DrillDownModalTrigger metricData={metricData}>
                 {trigger}
             </DrillDownModalTrigger>,
-            {},
+            { storeState: {} },
         )
 
         fireEvent.click(screen.getByText(trigger))
@@ -85,11 +84,11 @@ describe('<DrillDownModalTrigger />', () => {
                 metricName,
             } as any
 
-            renderWithStore(
+            render(
                 <DrillDownModalTrigger metricData={metricData}>
                     {trigger}
                 </DrillDownModalTrigger>,
-                {},
+                { storeState: {} },
             )
 
             userEvent.hover(screen.getByText(trigger))

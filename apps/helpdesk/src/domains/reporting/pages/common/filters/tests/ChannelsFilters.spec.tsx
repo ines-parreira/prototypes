@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { TicketMessageSourceType } from 'business/types/ticket'
@@ -28,7 +28,6 @@ import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constan
 import { getChannels, toChannel } from 'services/channels'
 import type { RootState } from 'state/types'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
-import { renderWithStore } from 'utils/testing'
 
 const mockedChannels = channels
 const clearFilterIcon = 'close'
@@ -55,10 +54,6 @@ describe('ChannelsFilter', () => {
     const dispatchRemove = jest.fn()
     const dispatchStatFiltersDirty = jest.fn()
     const dispatchStatFiltersClean = jest.fn()
-    const isOneOfRegex = new RegExp(
-        `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
-        'i',
-    )
 
     const defaultState = {
         stats: statsSlice.initialState,
@@ -77,7 +72,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should render ChannelsStatsFilter even if the value is undefined', () => {
-        renderWithStore(
+        render(
             <ChannelsFilter
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
@@ -85,7 +80,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(
             screen.getByText(FilterLabels[FilterKey.Channels]),
@@ -93,7 +88,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should render ChannelsStatsFilter component', () => {
-        renderWithStore(
+        render(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -101,7 +96,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(
             screen.getByText(FilterLabels[FilterKey.Channels]),
@@ -109,7 +104,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should render ChannelsStatsFilter options', () => {
-        renderWithStore(
+        render(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -117,7 +112,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -126,7 +121,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting channel', () => {
-        renderWithStore(
+        render(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -134,7 +129,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(mockedChannels[0].name))
@@ -150,7 +145,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting channels except internal note and deselecting all channels', () => {
-        const { rerender } = renderWithStore(
+        const { rerender } = render(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -158,7 +153,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
@@ -184,7 +179,6 @@ describe('ChannelsFilter', () => {
             />,
         )
 
-        userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
         expect(dispatchUpdate).toHaveBeenCalledWith({
@@ -194,7 +188,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting one of the channels', () => {
-        const { rerender } = renderWithStore(
+        const { rerender } = render(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -202,7 +196,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         const allAvailableChannelsSlugs = mockedChannels.map((channel) =>
@@ -222,7 +216,7 @@ describe('ChannelsFilter', () => {
             />,
         )
 
-        userEvent.click(screen.getByText(isOneOfRegex))
+        userEvent.click(screen.getByTestId('logical-operator'))
         userEvent.click(screen.getByText(mockedChannels[0].name))
 
         expect(dispatchUpdate).toHaveBeenCalledWith({
@@ -234,7 +228,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting all channels when filters dropdown is closed', () => {
-        const { rerender } = renderWithStore(
+        const { rerender } = render(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -242,7 +236,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         const allAvailableChannelsSlugs = mockedChannels.map((channel) =>
@@ -268,7 +262,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
-        renderWithStore(
+        render(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -276,7 +270,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -306,7 +300,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
-        const { rerenderComponent } = renderWithStore(
+        const { rerender } = render(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -314,14 +308,14 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(mockedChannels[0].name))
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
-        rerenderComponent(
+        rerender(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -329,7 +323,6 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalled()
@@ -349,7 +342,7 @@ describe('ChannelsFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<ChannelsFilterWithState />, defaultState)
+            render(<ChannelsFilterWithState />, { storeState: defaultState })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
@@ -373,7 +366,9 @@ describe('ChannelsFilter', () => {
                 'removeFilterFromSavedFilterDraft',
             )
 
-            renderWithStore(<ChannelsFilterWithSavedState />, defaultState)
+            render(<ChannelsFilterWithSavedState />, {
+                storeState: defaultState,
+            })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 

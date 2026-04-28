@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -12,7 +13,6 @@ import {
 } from 'domains/reporting/pages/common/filters/JourneyCampaignsFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -91,13 +91,13 @@ describe('JourneyCampaignsFilter', () => {
         value = withLogicalOperator(mockCampaigns.map((c) => c.id)),
         campaigns = mockCampaigns,
     ) =>
-        renderWithStore(
+        render(
             <JourneyCampaignsFilter
                 value={value}
                 campaigns={campaigns}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
     describe('trigger label', () => {
@@ -152,13 +152,13 @@ describe('JourneyCampaignsFilter', () => {
         })
 
         it('should default to all selected when value is undefined', () => {
-            renderWithStore(
+            render(
                 <JourneyCampaignsFilter
                     value={undefined}
                     campaigns={mockCampaigns}
                     dispatchUpdate={dispatchUpdate}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             expect(screen.getByText('All Campaigns')).toBeInTheDocument()
@@ -220,13 +220,13 @@ describe('JourneyCampaignsFilter', () => {
                 store_type: 'shopify',
             }
 
-            renderWithStore(
+            render(
                 <JourneyCampaignsFilter
                     value={withLogicalOperator([untitledCampaign.id])}
                     campaigns={[untitledCampaign]}
                     dispatchUpdate={dispatchUpdate}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
             await act(async () => {
                 await user.click(
@@ -323,7 +323,9 @@ describe('JourneyCampaignsFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<JourneyCampaignsFilterFromContext />, defaultState)
+            render(<JourneyCampaignsFilterFromContext />, {
+                storeState: defaultState,
+            })
 
             expect(screen.getByText('Campaigns')).toBeInTheDocument()
 
@@ -348,7 +350,9 @@ describe('JourneyCampaignsFilter', () => {
                 campaigns: [...mockCampaigns, draftCampaign],
             })
 
-            renderWithStore(<JourneyCampaignsFilterFromContext />, defaultState)
+            render(<JourneyCampaignsFilterFromContext />, {
+                storeState: defaultState,
+            })
 
             await act(async () => {
                 await user.click(screen.getByText('All Campaigns'))
@@ -370,9 +374,9 @@ describe('JourneyCampaignsFilter', () => {
                 campaigns: [draftCampaign],
             })
 
-            const { container } = renderWithStore(
+            const { container } = render(
                 <JourneyCampaignsFilterFromContext />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             expect(container).toBeEmptyDOMElement()
@@ -383,9 +387,9 @@ describe('JourneyCampaignsFilter', () => {
                 campaigns: undefined,
             })
 
-            const { container } = renderWithStore(
+            const { container } = render(
                 <JourneyCampaignsFilterFromContext />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             expect(container).toBeEmptyDOMElement()

@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -27,7 +27,6 @@ import {
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()
@@ -78,10 +77,9 @@ describe('StoreFilter', () => {
         } as any)
     })
     const renderComponent = () =>
-        renderWithStore(
-            <StoreFilterWithState onRemove={mockedRemove} />,
-            defaultState,
-        )
+        render(<StoreFilterWithState onRemove={mockedRemove} />, {
+            storeState: defaultState,
+        })
 
     it('should render the component correctly', () => {
         renderComponent()
@@ -106,7 +104,7 @@ describe('StoreFilter', () => {
     })
 
     it('should select an option when from context', () => {
-        renderWithStore(<StoreFilterFromContext />, defaultState)
+        render(<StoreFilterFromContext />, { storeState: defaultState })
 
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         fireEvent.click(screen.getByText(thirdStoreName))
@@ -128,15 +126,17 @@ describe('StoreFilter', () => {
     })
 
     it('should have a default selected option and should not be able to deselect it', () => {
-        const { store } = renderWithStore(
+        const { store } = render(
             <StoreFilterWithState onRemove={mockedRemove} />,
             {
-                ...defaultState,
-                stats: {
-                    ...initialState,
-                    filters: {
-                        ...initialState.filters,
-                        storeIntegrations: withLogicalOperator([firstId]),
+                storeState: {
+                    ...defaultState,
+                    stats: {
+                        ...initialState,
+                        filters: {
+                            ...initialState.filters,
+                            storeIntegrations: withLogicalOperator([firstId]),
+                        },
                     },
                 },
             },

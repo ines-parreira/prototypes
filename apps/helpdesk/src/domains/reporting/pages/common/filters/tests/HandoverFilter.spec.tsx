@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -12,7 +13,6 @@ import {
 } from 'domains/reporting/pages/common/filters/HandoverFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -33,9 +33,9 @@ describe('HandoverFilter', () => {
     })
 
     const renderComponent = (value = withLogicalOperator(['yes', 'no'])) =>
-        renderWithStore(
+        render(
             <HandoverFilter value={value} dispatchUpdate={dispatchUpdate} />,
-            defaultState,
+            { storeState: defaultState },
         )
 
     describe('trigger label', () => {
@@ -74,12 +74,12 @@ describe('HandoverFilter', () => {
         })
 
         it('should default to all selected when value is undefined', () => {
-            renderWithStore(
+            render(
                 <HandoverFilter
                     value={undefined}
                     dispatchUpdate={dispatchUpdate}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
 
             expect(screen.getByText('All')).toBeInTheDocument()
@@ -145,7 +145,7 @@ describe('HandoverFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<HandoverFilterFromContext />, defaultState)
+            render(<HandoverFilterFromContext />, { storeState: defaultState })
 
             expect(screen.getByText(HANDOVER_FILTER_NAME)).toBeInTheDocument()
 
@@ -165,10 +165,9 @@ describe('HandoverFilter', () => {
 
     describe('HandoverFilterFromSavedContext', () => {
         it('should return null', () => {
-            const { container } = renderWithStore(
-                <HandoverFilterFromSavedContext />,
-                defaultState,
-            )
+            const { container } = render(<HandoverFilterFromSavedContext />, {
+                storeState: defaultState,
+            })
 
             expect(container).toBeEmptyDOMElement()
         })

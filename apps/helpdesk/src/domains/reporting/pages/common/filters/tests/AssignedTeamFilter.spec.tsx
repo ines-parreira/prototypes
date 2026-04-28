@@ -1,4 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -24,7 +25,6 @@ import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { teams } from 'fixtures/teams'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -75,7 +75,7 @@ describe('AssignedTeamFilter', () => {
         value = withDefaultLogicalOperator([]),
         overrides = {},
     ) =>
-        renderWithStore(
+        render(
             <AssignedTeamFilter
                 value={value}
                 dispatchUpdate={dispatchUpdate}
@@ -84,7 +84,7 @@ describe('AssignedTeamFilter', () => {
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
                 {...overrides}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
     afterEach(() => {
@@ -135,7 +135,7 @@ describe('AssignedTeamFilter', () => {
 
     it('should dispatch update action on selecting all teams and deselecting all teams', async () => {
         const user = setupUserEvent()
-        const { rerenderComponent } = renderFilter()
+        const { rerender } = renderFilter()
         await openDropdown(user)
         await act(() => user.click(screen.getByText(FILTER_SELECT_ALL_LABEL)))
 
@@ -144,7 +144,7 @@ describe('AssignedTeamFilter', () => {
             withDefaultLogicalOperator([]),
         )
 
-        rerenderComponent(
+        rerender(
             <AssignedTeamFilter
                 value={allAvailableTeamIds}
                 dispatchUpdate={dispatchUpdate}
@@ -152,7 +152,6 @@ describe('AssignedTeamFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         await act(() => user.click(screen.getByText(FILTER_DESELECT_ALL_LABEL)))
@@ -163,9 +162,9 @@ describe('AssignedTeamFilter', () => {
 
     it('should dispatch update action on deselecting one of the team', async () => {
         const user = setupUserEvent()
-        const { rerenderComponent } = renderFilter()
+        const { rerender } = renderFilter()
 
-        rerenderComponent(
+        rerender(
             <AssignedTeamFilter
                 value={allAvailableTeamIds}
                 dispatchUpdate={dispatchUpdate}
@@ -173,7 +172,6 @@ describe('AssignedTeamFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         await act(() => user.click(screen.getByText(isOneOfRegex)))
@@ -188,9 +186,9 @@ describe('AssignedTeamFilter', () => {
 
     it('should dispatch remove action when filters dropdown is closed', async () => {
         const user = setupUserEvent()
-        const { rerenderComponent } = renderFilter()
+        const { rerender } = renderFilter()
 
-        rerenderComponent(
+        rerender(
             <AssignedTeamFilter
                 value={allAvailableTeamIds}
                 dispatchUpdate={dispatchUpdate}
@@ -198,7 +196,6 @@ describe('AssignedTeamFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         await act(() =>
@@ -244,13 +241,13 @@ describe('AssignedTeamFilter', () => {
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', async () => {
         const user = setupUserEvent()
-        const { rerenderComponent } = renderFilter()
+        const { rerender } = renderFilter()
 
         await openDropdown(user)
         await clickTeam(user, teams[0].name)
         await openDropdown(user)
 
-        rerenderComponent(
+        rerender(
             <AssignedTeamFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -258,7 +255,6 @@ describe('AssignedTeamFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalled()
@@ -279,7 +275,9 @@ describe('AssignedTeamFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<AssignedTeamFilterWithState />, defaultState)
+            render(<AssignedTeamFilterWithState />, {
+                storeState: defaultState,
+            })
             await openDropdown(user)
             await act(() =>
                 user.click(screen.getByText(FILTER_SELECT_ALL_LABEL)),
@@ -306,7 +304,9 @@ describe('AssignedTeamFilter', () => {
                 'removeFilterFromSavedFilterDraft',
             )
 
-            renderWithStore(<AssignedTeamFilterWithSavedState />, defaultState)
+            render(<AssignedTeamFilterWithSavedState />, {
+                storeState: defaultState,
+            })
             await openDropdown(user)
             await act(() =>
                 user.click(screen.getByText(FILTER_SELECT_ALL_LABEL)),

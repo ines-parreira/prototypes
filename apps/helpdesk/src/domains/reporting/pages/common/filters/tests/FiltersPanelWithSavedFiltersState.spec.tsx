@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -19,7 +19,6 @@ import {
 } from 'fixtures/plans'
 import { getHasAutomate } from 'state/billing/selectors'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
@@ -67,7 +66,9 @@ describe('SavedFiltersPanel', () => {
             }
         })
 
-        renderWithStore(<FiltersPanelWithSavedFiltersState />, defaultState)
+        render(<FiltersPanelWithSavedFiltersState />, {
+            storeState: defaultState,
+        })
 
         expect(FiltersPanelComponentMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -85,7 +86,9 @@ describe('SavedFiltersPanel', () => {
             }
         })
 
-        renderWithStore(<FiltersPanelWithSavedFiltersState />, defaultState)
+        render(<FiltersPanelWithSavedFiltersState />, {
+            storeState: defaultState,
+        })
 
         expect(FiltersPanelComponentMock).toHaveBeenCalledWith(
             expect.objectContaining({

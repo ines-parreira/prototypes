@@ -1,7 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
@@ -26,29 +25,24 @@ import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const customFieldId = 123
 const filterName = 'Some Custom Field Name'
 const defaultState = {
     stats: statsSlice.initialState,
 } as RootState
-
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
-
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
-
 const dispatchUpdate = jest.fn()
 const dispatchRemove = jest.fn()
 const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
-
 const renderComponent = () =>
-    renderWithStore(
+    render(
         <CustomFieldsFilter
             customFieldId={customFieldId}
             filterName={filterName}
@@ -57,11 +51,9 @@ const renderComponent = () =>
             dispatchStatFiltersDirty={dispatchStatFiltersDirty}
             dispatchStatFiltersClean={dispatchStatFiltersClean}
         />,
-        defaultState,
+        { storeState: defaultState },
     )
-
 const customFieldOptions = ['Custom::Field Name', 'Another::Custom Field Name']
-
 const dropdownCustomFieldDefinition = {
     ...ticketDropdownFieldDefinition,
     id: customFieldId,
@@ -73,9 +65,7 @@ const dropdownCustomFieldDefinition = {
         },
     },
 }
-
 const clearFilterIcon = 'close'
-
 describe('CustomFieldsFilter', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
@@ -84,36 +74,28 @@ describe('CustomFieldsFilter', () => {
             ]),
         } as any)
     })
-
     it('Should render CustomFieldsFilter', () => {
         renderComponent()
-
         expect(screen.getByText(filterName)).toBeInTheDocument()
     })
-
     it('should open and close Custom Field component', () => {
         renderComponent()
-
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         expect(dispatchStatFiltersDirty).toHaveBeenCalled()
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         expect(dispatchStatFiltersClean).toHaveBeenCalled()
     })
-
     it('should render Custom Field options', () => {
         renderComponent()
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-
         expect(screen.getByText(customFieldOptions[0])).toBeInTheDocument()
         expect(screen.getByText(customFieldOptions[1])).toBeInTheDocument()
     })
-
     it('should dispatch mergeCustomFieldsFilter action on selecting a custom field', () => {
         renderComponent()
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(customFieldOptions[0]))
         userEvent.click(screen.getByText(customFieldOptions[1]))
-
         expect(dispatchUpdate).toHaveBeenCalledWith({
             customFieldId,
             values: [
@@ -133,9 +115,8 @@ describe('CustomFieldsFilter', () => {
             operator: LogicalOperatorEnum.ONE_OF,
         })
     })
-
     it('should dispatch mergeCustomFieldsFilter action on deselecting a custom field', () => {
-        renderWithStore(
+        render(
             <CustomFieldsFilter
                 filterName={filterName}
                 customFieldId={customFieldId}
@@ -153,72 +134,61 @@ describe('CustomFieldsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
-
         userEvent.click(
             screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]),
         )
         userEvent.click(
             screen.getByRole('option', { name: customFieldOptions[0] }),
         )
-
         expect(dispatchUpdate).toHaveBeenCalledWith({
             customFieldId,
             values: [],
             operator: LogicalOperatorEnum.ONE_OF,
         })
     })
-
     it('should dispatch mergeCustomFieldsFilter action on selecting all integrations and deselecting all integrations', () => {
-        const { rerender, store } = renderComponent()
+        const { rerender } = renderComponent()
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
-
         const allAvailableCustomFields = customFieldOptions.map(
             (customFieldOption) =>
                 getCustomFieldValueSerializer(customFieldId)(customFieldOption),
         )
-
         expect(dispatchUpdate).toHaveBeenCalledWith({
             customFieldId,
             values: allAvailableCustomFields,
             operator: LogicalOperatorEnum.ONE_OF,
         })
-
         rerender(
-            <Provider store={store}>
-                <CustomFieldsFilter
-                    filterName={filterName}
-                    customFieldId={customFieldId}
-                    value={{
-                        values: allAvailableCustomFields,
-                        customFieldId,
-                        operator: LogicalOperatorEnum.ONE_OF,
-                    }}
-                    dispatchUpdate={dispatchUpdate}
-                    dispatchRemove={dispatchRemove}
-                    dispatchStatFiltersDirty={dispatchStatFiltersDirty}
-                    dispatchStatFiltersClean={dispatchStatFiltersClean}
-                />
-            </Provider>,
+            <CustomFieldsFilter
+                filterName={filterName}
+                customFieldId={customFieldId}
+                value={{
+                    values: allAvailableCustomFields,
+                    customFieldId,
+                    operator: LogicalOperatorEnum.ONE_OF,
+                }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
         )
-
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
-
         expect(dispatchUpdate).toHaveBeenCalledWith({
             customFieldId,
             values: [],
             operator: LogicalOperatorEnum.ONE_OF,
         })
     })
-
     it('should dispatch mergeCustomFieldsFilter action on deselecting one of the custom fields', () => {
         const allAvailableCustomFields = customFieldOptions.map(
             (customFieldOption) =>
                 getCustomFieldValueSerializer(customFieldId)(customFieldOption),
         )
-        renderWithStore(
+        render(
             <CustomFieldsFilter
                 customFieldId={customFieldId}
                 filterName={filterName}
@@ -232,16 +202,14 @@ describe('CustomFieldsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
-
         userEvent.click(
             screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]),
         )
         userEvent.click(
             screen.getByRole('option', { name: customFieldOptions[0] }),
         )
-
         expect(dispatchUpdate).toHaveBeenCalledWith({
             customFieldId,
             values: allAvailableCustomFields.filter(
@@ -254,13 +222,12 @@ describe('CustomFieldsFilter', () => {
             operator: LogicalOperatorEnum.ONE_OF,
         })
     })
-
     it('should dispatch mergeStatsFilters action on deselecting all integrations when filters dropdown is closed', () => {
         const allAvailableCustomFields = customFieldOptions.map(
             (customFieldOption) =>
                 getCustomFieldValueSerializer(customFieldId)(customFieldOption),
         )
-        renderWithStore(
+        render(
             <CustomFieldsFilter
                 customFieldId={customFieldId}
                 filterName={filterName}
@@ -274,69 +241,57 @@ describe('CustomFieldsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
-
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
-
         expect(dispatchRemove).toHaveBeenCalledWith(customFieldId)
     })
-
     it('should change selection of logical operator when one of the options is clicked', () => {
-        const { store, rerender } = renderComponent()
-
+        const { rerender } = renderComponent()
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-
         userEvent.click(
             screen.getByLabelText(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
             ),
         )
-
         expect(dispatchUpdate).toHaveBeenCalledWith({
             customFieldId,
             values: [],
             operator: LogicalOperatorEnum.NOT_ONE_OF,
         })
-
         rerender(
-            <Provider store={store}>
-                <CustomFieldsFilter
-                    filterName={filterName}
-                    customFieldId={customFieldId}
-                    value={{
-                        values: [],
-                        customFieldId,
-                        operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    }}
-                    dispatchUpdate={dispatchUpdate}
-                    dispatchRemove={dispatchRemove}
-                    dispatchStatFiltersDirty={dispatchStatFiltersDirty}
-                    dispatchStatFiltersClean={dispatchStatFiltersClean}
-                />
-            </Provider>,
+            <CustomFieldsFilter
+                filterName={filterName}
+                customFieldId={customFieldId}
+                value={{
+                    values: [],
+                    customFieldId,
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
         )
-
         userEvent.click(
             screen.getByLabelText(
                 LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF],
             ),
         )
-
         expect(dispatchUpdate).toHaveBeenCalledWith({
             customFieldId,
             values: [],
             operator: LogicalOperatorEnum.ONE_OF,
         })
     })
-
     it('should not break if customfFieldId is not found', () => {
         const allAvailableCustomFields = customFieldOptions.map(
             (customFieldOption) =>
                 getCustomFieldValueSerializer(customFieldId)(customFieldOption),
         )
         const wrongId = 122
-        renderWithStore(
+        render(
             <CustomFieldsFilter
                 customFieldId={wrongId}
                 filterName={filterName}
@@ -349,20 +304,15 @@ describe('CustomFieldsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
-
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
-
         expect(dispatchRemove).toHaveBeenCalledWith(wrongId)
     })
-
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
         renderComponent()
-
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-
         expect(dispatchStatFiltersClean).toHaveBeenCalled()
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: `tf_${filterName}`,
@@ -373,7 +323,6 @@ describe('CustomFieldsFilter', () => {
         })
     })
 })
-
 describe('CustomFieldsFilterFilterWithState', () => {
     const customFieldOptionsFromState = ['123::Another::Custom Field Name']
     const customFieldsState = {
@@ -392,7 +341,6 @@ describe('CustomFieldsFilterFilterWithState', () => {
             },
         },
     } as RootState
-
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: apiListCursorPaginationResponse([
@@ -400,18 +348,15 @@ describe('CustomFieldsFilterFilterWithState', () => {
             ]),
         } as any)
     })
-
     it('should render CustomFieldsFilterWithState and select an option from redux state by default', () => {
         const spy = jest.spyOn(statsSlice, 'mergeCustomFieldsFilter')
-
-        renderWithStore(
+        render(
             <CustomFieldsFilterWithState
                 customFieldId={customFieldId}
                 filterName={filterName}
             />,
-            customFieldsState,
+            { storeState: customFieldsState },
         )
-
         expect(
             screen.queryByText(FILTER_VALUE_PLACEHOLDER),
         ).not.toBeInTheDocument()
@@ -422,12 +367,10 @@ describe('CustomFieldsFilterFilterWithState', () => {
             screen.queryByText(customFieldOptions[0]),
         ).not.toBeInTheDocument()
         expect(screen.getByText(customFieldOptions[1])).toBeInTheDocument()
-
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
         expect(spy).toHaveBeenCalledWith(emptyCustomFieldFilter(customFieldId))
     })
 })
-
 describe('CustomFieldsFilterWithSavedState', () => {
     const customFieldValue = 'Another::Custom Field Name'
     const customFieldOptionsFromState = [
@@ -471,7 +414,6 @@ describe('CustomFieldsFilterWithSavedState', () => {
             },
         },
     } as RootState
-
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: apiListCursorPaginationResponse([
@@ -479,7 +421,6 @@ describe('CustomFieldsFilterWithSavedState', () => {
             ]),
         } as any)
     })
-
     it('should render CustomFieldsFilterWithSavedState and select an option from redux state by default', () => {
         const spy = jest.spyOn(
             filtersSlice,
@@ -489,20 +430,16 @@ describe('CustomFieldsFilterWithSavedState', () => {
             filtersSlice,
             'removeFilterFromSavedFilterDraft',
         )
-
-        renderWithStore(
+        render(
             <CustomFieldsFilterWithSavedState
                 customFieldId={customFieldId}
                 filterName={filterName}
             />,
-            customFieldsState,
+            { storeState: customFieldsState },
         )
-
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
-
         expect(spy).toHaveBeenCalled()
-
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
         expect(removeSpy).toHaveBeenCalledWith({
             filterKey: FilterKey.CustomFields,

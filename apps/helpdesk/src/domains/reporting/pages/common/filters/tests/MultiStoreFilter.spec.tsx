@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -26,7 +26,6 @@ import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -65,7 +64,7 @@ export const tempMultiStoreMock = [
 ]
 
 const renderComponent = (props = {}) =>
-    renderWithStore(
+    render(
         <MultiStoreFilter
             value={emptyFilter}
             dispatchUpdate={dispatchUpdate}
@@ -74,7 +73,7 @@ const renderComponent = (props = {}) =>
             dispatchStatFiltersClean={dispatchStatFiltersClean}
             {...props}
         />,
-        defaultState,
+        { storeState: defaultState },
     )
 
 describe('MultiStoreFilter', () => {
@@ -169,7 +168,7 @@ describe('MultiStoreFilter', () => {
     })
 
     it('should dispatch mergeStatsFilters action on selecting all stores and deselecting all integrations', async () => {
-        const { rerender } = renderComponent()
+        const { unmount } = renderComponent()
 
         await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         await userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
@@ -183,7 +182,8 @@ describe('MultiStoreFilter', () => {
         )
 
         await userEvent.click(screen.getByText(isNotOneOfRegex))
-        rerender(
+        unmount()
+        render(
             <MultiStoreFilter
                 value={withDefaultLogicalOperator(allAvailableIds)}
                 dispatchUpdate={dispatchUpdate}
@@ -191,12 +191,9 @@ describe('MultiStoreFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
+            { storeState: defaultState },
         )
-        await userEvent.click(
-            screen.getByText(
-                `${tempMultiStoreMock[0].name}, ${tempMultiStoreMock[1].name}`,
-            ),
-        )
+        await userEvent.click(screen.getByTestId('logical-operator'))
         await userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
@@ -269,7 +266,7 @@ describe('MultiStoreFilter', () => {
                 'mergeStatsFiltersWithLogicalOperator',
             )
 
-            renderWithStore(<MultiStoreFilterWithState />, defaultState)
+            render(<MultiStoreFilterWithState />, { storeState: defaultState })
             await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             await userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
@@ -296,7 +293,9 @@ describe('MultiStoreFilter', () => {
                 'removeFilterFromSavedFilterDraft',
             )
 
-            renderWithStore(<MultiStoreFilterWithSavedState />, defaultState)
+            render(<MultiStoreFilterWithSavedState />, {
+                storeState: defaultState,
+            })
             await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             await userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
