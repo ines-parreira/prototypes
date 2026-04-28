@@ -2,8 +2,7 @@ import type { ComponentProps } from 'react'
 import React, { useContext } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import Template, { CustomizationContext } from 'Widgets/modules/Template'
 

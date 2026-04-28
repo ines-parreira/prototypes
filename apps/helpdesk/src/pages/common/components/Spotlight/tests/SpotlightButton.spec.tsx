@@ -1,6 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import * as platform from '@repo/utils'
-import { render, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { SpotlightContext } from 'providers/ui/SpotlightContext'

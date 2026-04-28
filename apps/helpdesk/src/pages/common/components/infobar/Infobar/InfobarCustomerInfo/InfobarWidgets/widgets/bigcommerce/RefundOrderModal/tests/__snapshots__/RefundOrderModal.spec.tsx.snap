@@ -221,6 +221,18 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
     </div>
   </div>
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     data-floating-ui-portal=""
     id=":r3:"
   />
@@ -606,6 +618,18 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
     </div>
   </div>
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     data-floating-ui-portal=""
     id=":r1:"
   />
@@ -831,6 +855,18 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
         </div>
       </div>
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
   <div
     data-floating-ui-portal=""

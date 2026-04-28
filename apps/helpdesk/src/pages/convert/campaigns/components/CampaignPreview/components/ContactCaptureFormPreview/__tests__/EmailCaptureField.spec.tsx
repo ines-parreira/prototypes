@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import type { ContactFormFieldName } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { ContactFormFieldType } from 'pages/convert/campaigns/types/CampaignAttachment'

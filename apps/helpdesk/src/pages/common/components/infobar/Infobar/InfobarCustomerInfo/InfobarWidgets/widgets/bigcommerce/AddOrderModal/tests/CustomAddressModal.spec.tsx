@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { CustomAddressModal } from '../CustomAddressModal'
 

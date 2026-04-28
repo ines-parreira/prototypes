@@ -1,7 +1,8 @@
 import type { ComponentProps, ContextType } from 'react'
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import { DropdownContext } from '../Dropdown'
 import DropdownQuickSelect from '../DropdownQuickSelect'

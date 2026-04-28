@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { reportError } from '@repo/logging'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'

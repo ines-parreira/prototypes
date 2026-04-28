@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import { useSearch } from 'hooks/useSearch'
 

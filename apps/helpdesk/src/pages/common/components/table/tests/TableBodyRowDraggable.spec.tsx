@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'

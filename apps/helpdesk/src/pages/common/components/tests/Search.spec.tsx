@@ -1,5 +1,5 @@
-import { userEvent } from '@repo/testing'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import Search from '../Search'
 

@@ -2,6 +2,18 @@
 
 exports[`<AddDiscountCode/> should not render when the popover is closed 1`] = `
 <body>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <button
     aria-disabled="false"
     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
@@ -23,6 +35,18 @@ exports[`<AddDiscountCode/> should not render when the popover is closed 1`] = `
 
 exports[`<AddDiscountCode/> should render the discount picker when the popover is clicked and only one integration 1`] = `
 <body>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <button
     aria-disabled="false"
     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
@@ -135,6 +159,18 @@ exports[`<AddDiscountCode/> should render the discount picker when the popover i
 
 exports[`<AddDiscountCode/> should render the discount picker when there is a current shopify integration 1`] = `
 <body>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <button
     aria-disabled="false"
     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
@@ -234,6 +270,18 @@ exports[`<AddDiscountCode/> should render the discount picker when there is a cu
 
 exports[`<AddDiscountCode/> should render the store picker because of multiple integrations 1`] = `
 <body>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
   <button
     aria-disabled="false"
     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"

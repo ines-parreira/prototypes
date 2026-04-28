@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { ProductStatus } from 'constants/integrations/types/shopify'
 import {

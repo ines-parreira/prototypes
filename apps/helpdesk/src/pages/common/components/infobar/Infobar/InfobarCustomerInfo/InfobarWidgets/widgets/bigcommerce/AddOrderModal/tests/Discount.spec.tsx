@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 
 import { bigCommerceCartFixture } from 'fixtures/bigcommerce'

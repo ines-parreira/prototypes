@@ -1,8 +1,7 @@
 import type { OrderData, ShopperData } from '@repo/customer'
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
 
 import { useCancelOrder } from 'pages/tickets/detail/hooks/useCancelOrder'
 import { useDuplicateOrder } from 'pages/tickets/detail/hooks/useDuplicateOrder'

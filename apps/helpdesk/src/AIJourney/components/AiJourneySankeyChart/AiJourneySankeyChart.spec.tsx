@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { ConversationFunnelCard } from 'AIJourney/components/ConversationFunnelCard/ConversationFunnelCard'
 import { useAIJourneySankeyMetrics } from 'AIJourney/hooks'

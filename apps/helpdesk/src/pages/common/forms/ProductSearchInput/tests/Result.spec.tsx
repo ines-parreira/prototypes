@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import type { Product, Variant } from 'constants/integrations/types/shopify'
 import { InventoryManagement } from 'constants/integrations/types/shopify'

@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import type { CustomField, TicketCompact } from '@gorgias/helpdesk-queries'
 

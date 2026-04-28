@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 import React, { useRef } from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { Button } from '@gorgias/axiom'
 

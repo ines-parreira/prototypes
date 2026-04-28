@@ -1,11 +1,5 @@
-import { assumeMock, userEvent } from '@repo/testing'
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import { Provider } from 'react-redux'
 

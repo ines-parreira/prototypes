@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import * as reactstrap from 'reactstrap'
 

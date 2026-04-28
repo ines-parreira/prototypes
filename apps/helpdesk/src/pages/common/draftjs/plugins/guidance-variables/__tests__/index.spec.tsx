@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import type { ContentBlock, ContentState } from 'draft-js'
 import { EditorState } from 'draft-js'
 

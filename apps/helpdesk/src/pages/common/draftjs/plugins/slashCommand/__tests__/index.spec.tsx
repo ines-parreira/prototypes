@@ -1,4 +1,5 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { EditorState, SelectionState } from 'draft-js'
 
 import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'

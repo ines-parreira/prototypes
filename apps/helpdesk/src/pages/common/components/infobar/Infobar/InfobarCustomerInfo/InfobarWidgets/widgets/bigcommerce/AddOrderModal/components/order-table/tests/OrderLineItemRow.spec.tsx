@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 
 import {

@@ -27,6 +27,18 @@ exports[`<TitleWrapper/> render() should render empty state cause no data is ava
         Yotpo
       </span>
     </div>
+    <div
+      data-name="toaster"
+      data-react-aria-top-layer="true"
+    >
+      <section
+        aria-atomic="false"
+        aria-label="Notifications alt+T"
+        aria-live="polite"
+        aria-relevant="additions text"
+        tabindex="-1"
+      />
+    </div>
   </body>,
   "container": <div>
     <span
@@ -101,7 +113,34 @@ exports[`<TitleWrapper/> render() should render empty state cause no data is ava
   "queryByText": [Function],
   "queryByTitle": [Function],
   "rerender": [Function],
+  "store": {
+    "clearActions": [Function],
+    "dispatch": [Function],
+    "getActions": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
   "unmount": [Function],
+  "user": {
+    "clear": [Function],
+    "click": [Function],
+    "copy": [Function],
+    "cut": [Function],
+    "dblClick": [Function],
+    "deselectOptions": [Function],
+    "hover": [Function],
+    "keyboard": [Function],
+    "paste": [Function],
+    "pointer": [Function],
+    "selectOptions": [Function],
+    "setup": [Function],
+    "tab": [Function],
+    "tripleClick": [Function],
+    "type": [Function],
+    "unhover": [Function],
+    "upload": [Function],
+  },
 }
 `;
 
@@ -119,6 +158,18 @@ exports[`<TitleWrapper/> render() should render empty state cause no data is ava
           No statistic data are available right now.
         </span>
       </div>
+    </div>
+    <div
+      data-name="toaster"
+      data-react-aria-top-layer="true"
+    >
+      <section
+        aria-atomic="false"
+        aria-label="Notifications alt+T"
+        aria-live="polite"
+        aria-relevant="additions text"
+        tabindex="-1"
+      />
     </div>
   </body>,
   "container": <div>
@@ -182,7 +233,34 @@ exports[`<TitleWrapper/> render() should render empty state cause no data is ava
   "queryByText": [Function],
   "queryByTitle": [Function],
   "rerender": [Function],
+  "store": {
+    "clearActions": [Function],
+    "dispatch": [Function],
+    "getActions": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
   "unmount": [Function],
+  "user": {
+    "clear": [Function],
+    "click": [Function],
+    "copy": [Function],
+    "cut": [Function],
+    "dblClick": [Function],
+    "deselectOptions": [Function],
+    "hover": [Function],
+    "keyboard": [Function],
+    "paste": [Function],
+    "pointer": [Function],
+    "selectOptions": [Function],
+    "setup": [Function],
+    "tab": [Function],
+    "tripleClick": [Function],
+    "type": [Function],
+    "unhover": [Function],
+    "upload": [Function],
+  },
 }
 `;
 
@@ -226,6 +304,18 @@ exports[`<TitleWrapper/> render() should render icon, points and not tier becaus
           </span>
         </span>
       </span>
+    </div>
+    <div
+      data-name="toaster"
+      data-react-aria-top-layer="true"
+    >
+      <section
+        aria-atomic="false"
+        aria-label="Notifications alt+T"
+        aria-live="polite"
+        aria-relevant="additions text"
+        tabindex="-1"
+      />
     </div>
   </body>,
   "container": <div>
@@ -315,7 +405,34 @@ exports[`<TitleWrapper/> render() should render icon, points and not tier becaus
   "queryByText": [Function],
   "queryByTitle": [Function],
   "rerender": [Function],
+  "store": {
+    "clearActions": [Function],
+    "dispatch": [Function],
+    "getActions": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
   "unmount": [Function],
+  "user": {
+    "clear": [Function],
+    "click": [Function],
+    "copy": [Function],
+    "cut": [Function],
+    "dblClick": [Function],
+    "deselectOptions": [Function],
+    "hover": [Function],
+    "keyboard": [Function],
+    "paste": [Function],
+    "pointer": [Function],
+    "selectOptions": [Function],
+    "setup": [Function],
+    "tab": [Function],
+    "tripleClick": [Function],
+    "type": [Function],
+    "unhover": [Function],
+    "upload": [Function],
+  },
 }
 `;
 
@@ -373,6 +490,18 @@ exports[`<TitleWrapper/> render() should render icon, points and tier because da
           </span>
         </span>
       </span>
+    </div>
+    <div
+      data-name="toaster"
+      data-react-aria-top-layer="true"
+    >
+      <section
+        aria-atomic="false"
+        aria-label="Notifications alt+T"
+        aria-live="polite"
+        aria-relevant="additions text"
+        tabindex="-1"
+      />
     </div>
   </body>,
   "container": <div>
@@ -476,7 +605,34 @@ exports[`<TitleWrapper/> render() should render icon, points and tier because da
   "queryByText": [Function],
   "queryByTitle": [Function],
   "rerender": [Function],
+  "store": {
+    "clearActions": [Function],
+    "dispatch": [Function],
+    "getActions": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
   "unmount": [Function],
+  "user": {
+    "clear": [Function],
+    "click": [Function],
+    "copy": [Function],
+    "cut": [Function],
+    "dblClick": [Function],
+    "deselectOptions": [Function],
+    "hover": [Function],
+    "keyboard": [Function],
+    "paste": [Function],
+    "pointer": [Function],
+    "selectOptions": [Function],
+    "setup": [Function],
+    "tab": [Function],
+    "tripleClick": [Function],
+    "type": [Function],
+    "unhover": [Function],
+    "upload": [Function],
+  },
 }
 `;
 
@@ -485,6 +641,18 @@ exports[`<TitleWrapper/> render() should render nothing cause data is available 
   "asFragment": [Function],
   "baseElement": <body>
     <div />
+    <div
+      data-name="toaster"
+      data-react-aria-top-layer="true"
+    >
+      <section
+        aria-atomic="false"
+        aria-label="Notifications alt+T"
+        aria-live="polite"
+        aria-relevant="additions text"
+        tabindex="-1"
+      />
+    </div>
   </body>,
   "container": <div />,
   "debug": [Function],
@@ -537,6 +705,33 @@ exports[`<TitleWrapper/> render() should render nothing cause data is available 
   "queryByText": [Function],
   "queryByTitle": [Function],
   "rerender": [Function],
+  "store": {
+    "clearActions": [Function],
+    "dispatch": [Function],
+    "getActions": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
   "unmount": [Function],
+  "user": {
+    "clear": [Function],
+    "click": [Function],
+    "copy": [Function],
+    "cut": [Function],
+    "dblClick": [Function],
+    "deselectOptions": [Function],
+    "hover": [Function],
+    "keyboard": [Function],
+    "paste": [Function],
+    "pointer": [Function],
+    "selectOptions": [Function],
+    "setup": [Function],
+    "tab": [Function],
+    "tripleClick": [Function],
+    "type": [Function],
+    "unhover": [Function],
+    "upload": [Function],
+  },
 }
 `;

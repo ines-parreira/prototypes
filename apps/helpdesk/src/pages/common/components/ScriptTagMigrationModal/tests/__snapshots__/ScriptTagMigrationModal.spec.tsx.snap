@@ -3,18 +3,54 @@
 exports[`<ScriptTagMigrationModal /> should hide modal if period is not over yet 1`] = `
 HTMLCollection [
   <div />,
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>,
 ]
 `;
 
 exports[`<ScriptTagMigrationModal /> should hide modal if period is over but no stores require permission updates 1`] = `
 HTMLCollection [
   <div />,
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>,
 ]
 `;
 
 exports[`<ScriptTagMigrationModal /> should show modal if period is over 1`] = `
 HTMLCollection [
   <div />,
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>,
   <div
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"

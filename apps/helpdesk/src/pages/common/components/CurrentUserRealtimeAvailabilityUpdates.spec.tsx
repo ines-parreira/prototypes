@@ -2,8 +2,7 @@ import {
     useCustomAgentUnavailableStatusesFlag,
     UserRealtimeAvailabilityUpdates,
 } from '@repo/agent-status'
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUserId } from 'state/currentUser/selectors'

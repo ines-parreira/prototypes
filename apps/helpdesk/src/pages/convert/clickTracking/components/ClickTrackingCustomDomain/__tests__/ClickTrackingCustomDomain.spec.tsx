@@ -1,8 +1,8 @@
 import type React from 'react'
 
+import { render } from '@repo/testing'
 import {
     fireEvent,
-    render,
     screen,
     waitFor,
     waitForElementToBeRemoved,

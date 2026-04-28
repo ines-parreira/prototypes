@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import Menu from 'pages/common/forms/MultiSelectOptionsField/Menu'

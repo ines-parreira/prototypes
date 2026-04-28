@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { LEAF_TYPES } from 'models/widget/constants'

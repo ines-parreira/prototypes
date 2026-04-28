@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { cleanup, render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { cleanup } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 

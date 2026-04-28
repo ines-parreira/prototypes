@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import type { SelectionState } from 'draft-js'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS } from 'immutable'

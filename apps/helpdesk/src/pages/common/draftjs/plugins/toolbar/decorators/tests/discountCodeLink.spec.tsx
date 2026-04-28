@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { ContentState } from 'draft-js'
 
 import { convertFromHTML } from 'utils/editor'

@@ -1,7 +1,8 @@
 import { createRef } from 'react'
 
 import { reportError } from '@repo/logging'
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { PhoneNumberInputHandle } from '../PhoneNumberInput'

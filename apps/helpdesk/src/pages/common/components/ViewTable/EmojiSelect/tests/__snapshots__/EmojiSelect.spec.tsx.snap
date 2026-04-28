@@ -13,6 +13,18 @@ exports[`<EmojiSelect/> .render() should show smiley when no emoji selected 1`] 
       </span>
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -28,6 +40,18 @@ exports[`<EmojiSelect/> .render() show emoji picker on icon click 1`] = `
         1
       </span>
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
   <div>
     <div

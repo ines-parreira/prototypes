@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { JOURNEY_COMPLETE_REASON } from 'AIJourney/constants'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'

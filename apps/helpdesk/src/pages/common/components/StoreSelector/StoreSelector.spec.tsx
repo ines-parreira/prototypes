@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { THEME_NAME } from '@gorgias/design-tokens'

@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'

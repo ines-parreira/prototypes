@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { getByText, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { getByText } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import Tag from '../Tag'

@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { createEvent, fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { createEvent, fireEvent, screen } from '@testing-library/react'
 
 import { DropText } from '../../DropText'
 import { DropZone } from '../DropZone'

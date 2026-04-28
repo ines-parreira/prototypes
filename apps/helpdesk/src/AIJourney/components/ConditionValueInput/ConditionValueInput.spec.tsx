@@ -1,4 +1,5 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
 
 import type { FieldDef } from '../../types/conditionField'
 import { ConditionValueInput } from './ConditionValueInput'

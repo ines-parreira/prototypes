@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { history } from '@repo/routing'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import type { Location } from 'history'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'

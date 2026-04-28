@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import CampaignCustomSchedule from '../CampaignCustomSchedule'

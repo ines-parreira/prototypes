@@ -1,7 +1,7 @@
 import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
 import type { TicketCompact } from '@gorgias/helpdesk-types'

@@ -1,6 +1,7 @@
 import { appQueryClient } from '@repo/api-resources'
+import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import type { Location } from 'history'
 import { useLocation, useParams } from 'react-router-dom'
 

@@ -1,8 +1,9 @@
 import type { ComponentProps, ReactNode } from 'react'
 
 import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
+import { render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { testimonial as testimonialFixture } from 'fixtures/paywall'

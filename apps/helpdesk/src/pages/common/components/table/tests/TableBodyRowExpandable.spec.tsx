@@ -1,9 +1,10 @@
 import {
     mockRequestAnimationFrame,
+    render,
     triggerWidthResize,
     userEvent,
 } from '@repo/testing'
-import { act, render, screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'

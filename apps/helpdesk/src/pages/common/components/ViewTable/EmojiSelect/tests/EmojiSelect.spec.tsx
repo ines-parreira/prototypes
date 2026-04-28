@@ -1,8 +1,7 @@
 import type { ComponentProps, MouseEvent } from 'react'
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
 import type { EmojiData } from 'emoji-mart'
 import _noop from 'lodash/noop'
 

@@ -1,5 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'

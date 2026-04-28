@@ -1,5 +1,6 @@
 import { Form, FormField } from '@repo/forms'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import InputField from 'pages/common/forms/input/InputField'

@@ -1,5 +1,5 @@
-import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 

@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'react'
 import React, { useContext } from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import type { LeafTemplate } from 'models/widget/types'
 import Template, { CustomizationContext } from 'Widgets/modules/Template'

@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import type React from 'react'
 
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 
 import Card from '../Card'
 import CardHeader from '../CardHeader'

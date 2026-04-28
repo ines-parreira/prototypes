@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import Wizard from '../../Wizard'
 import WizardStep from '../../WizardStep'

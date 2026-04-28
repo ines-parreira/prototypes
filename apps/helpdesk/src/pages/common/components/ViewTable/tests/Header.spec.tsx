@@ -1,8 +1,9 @@
 import type React from 'react'
 
+import { render } from '@repo/testing'
 import { systemViewIcons } from '@repo/tickets/utils/views'
 import { screen } from '@testing-library/dom'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'

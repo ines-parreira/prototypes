@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import * as hooksUtils from '@repo/hooks'
-import { userEvent } from '@repo/testing'
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 
 import { CampaignFooter } from '../CampaignFooter'
 

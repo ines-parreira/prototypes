@@ -1,4 +1,5 @@
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 import { useParams } from 'react-router-dom'
 

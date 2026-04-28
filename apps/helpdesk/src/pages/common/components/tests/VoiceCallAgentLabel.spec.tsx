@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { cleanup, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, screen } from '@testing-library/react'
 
 import type { AgentLabel } from 'pages/common/utils/labels'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'

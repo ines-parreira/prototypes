@@ -2,7 +2,8 @@ import type { ComponentProps, ReactNode } from 'react'
 import React from 'react'
 
 import { history } from '@repo/routing'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 
 import type Modal from 'pages/common/components/modal/Modal'

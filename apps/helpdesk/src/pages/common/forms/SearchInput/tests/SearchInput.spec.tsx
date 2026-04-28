@@ -2,8 +2,8 @@ import type { FunctionComponent } from 'react'
 import React from 'react'
 
 import client from '@repo/api-resources'
-import { userEvent } from '@repo/testing'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import SearchInput from 'pages/common/forms/SearchInput/SearchInput'

@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import { CONVERT_PRODUCT_LINK } from 'pages/convert/common/constants'

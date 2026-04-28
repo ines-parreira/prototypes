@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 

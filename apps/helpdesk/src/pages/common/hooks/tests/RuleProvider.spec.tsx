@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import type { ExpressionProps, StatementProps } from '../rule/RuleProvider'
 import { RuleContext } from '../rule/RuleProvider'

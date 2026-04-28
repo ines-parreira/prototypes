@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { MAX_TICKET_COUNT_PER_VIEW } from 'config/views'
 

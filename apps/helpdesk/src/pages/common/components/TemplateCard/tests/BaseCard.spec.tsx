@@ -1,4 +1,5 @@
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { THEME_NAME, useTheme } from 'core/theme'

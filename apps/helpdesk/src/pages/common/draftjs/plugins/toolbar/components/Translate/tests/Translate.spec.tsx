@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import { EditorState } from 'draft-js'
 
 import { useLanguageDropdown } from '../hooks/useLanguageDropdown'

@@ -1,8 +1,9 @@
 import type { ComponentProps } from 'react'
 import { createRef } from 'react'
 
+import { render } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Call } from '@twilio/voice-sdk'
 import { HttpResponse } from 'msw'

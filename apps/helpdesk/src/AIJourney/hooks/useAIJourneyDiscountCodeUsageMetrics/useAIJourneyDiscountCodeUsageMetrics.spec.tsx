@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'

@@ -2,8 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
 
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { createContextConsumer } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { createContextConsumer, render } from '@repo/testing'
 
 import useSearchRankScenario, {
     SearchRankSource,

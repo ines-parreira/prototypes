@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { assumeMock, flushPromises } from '@repo/testing'
+import { assumeMock, flushPromises, render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Router } from 'react-router-dom'

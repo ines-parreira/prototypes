@@ -2,7 +2,8 @@ import type { ContextType, ReactNode } from 'react'
 import type React from 'react'
 import { useRef } from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import { DropdownContext } from '../Dropdown'
 import type { Props as DropdownItemProps } from '../DropdownItem'

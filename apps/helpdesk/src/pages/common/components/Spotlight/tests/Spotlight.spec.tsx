@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import type { SpotlightContextType } from 'providers/ui/SpotlightContext'

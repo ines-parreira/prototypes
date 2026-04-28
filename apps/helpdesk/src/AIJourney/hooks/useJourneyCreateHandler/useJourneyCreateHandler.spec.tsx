@@ -1,7 +1,8 @@
 import type React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useCreateNewJourney } from 'AIJourney/queries'

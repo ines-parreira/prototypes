@@ -1,7 +1,8 @@
 import type { ComponentProps, PropsWithChildren } from 'react'
 import React, { useRef } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { PopoverContainer } from './PopoverContainer'
 

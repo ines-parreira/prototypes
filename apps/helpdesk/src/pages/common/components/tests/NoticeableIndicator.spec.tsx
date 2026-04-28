@@ -1,9 +1,9 @@
-// import { userEvent } from '@repo/testing'
 import React from 'react'
 
 import { reportError } from '@repo/logging'
+import { render } from '@repo/testing'
 import { addBreadcrumb } from '@sentry/react'
-import { act, render, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
 // import {assumeMock} from 'utils/testing'
 

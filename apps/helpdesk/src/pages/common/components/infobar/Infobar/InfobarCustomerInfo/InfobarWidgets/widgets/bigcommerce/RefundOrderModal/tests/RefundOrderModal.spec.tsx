@@ -2,15 +2,8 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import client from '@repo/api-resources'
-import { userEvent } from '@repo/testing'
-import {
-    act,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-    within,
-} from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map as ImmutableMap } from 'immutable'
 import { Provider } from 'react-redux'

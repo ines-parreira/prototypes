@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import JsonField from '../JsonField'

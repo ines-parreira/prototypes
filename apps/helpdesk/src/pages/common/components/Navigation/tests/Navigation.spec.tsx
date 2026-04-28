@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
 
 import Navigation from 'pages/common/components/Navigation/Navigation'
 

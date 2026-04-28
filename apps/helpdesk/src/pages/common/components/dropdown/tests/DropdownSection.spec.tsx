@@ -1,7 +1,7 @@
 import type { ComponentProps, ContextType } from 'react'
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { DropdownContext } from '../Dropdown'
 import DropdownSection from '../DropdownSection'

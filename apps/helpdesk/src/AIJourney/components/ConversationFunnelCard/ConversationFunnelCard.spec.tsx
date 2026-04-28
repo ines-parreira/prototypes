@@ -1,6 +1,6 @@
 import { SankeyChart } from '@repo/reporting'
 import type { SankeyChartData } from '@repo/reporting'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { ConversationFunnelCard } from './ConversationFunnelCard'
 

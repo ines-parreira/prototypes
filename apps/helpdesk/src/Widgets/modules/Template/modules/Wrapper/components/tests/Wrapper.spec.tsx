@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import { assumeMock, getLastMockCall, renderHook } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render, renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import type { Action } from 'redux'

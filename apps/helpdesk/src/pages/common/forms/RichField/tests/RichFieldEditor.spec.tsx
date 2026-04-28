@@ -1,8 +1,9 @@
 import type { ComponentProps, LegacyRef } from 'react'
 import type React from 'react'
 
+import { render } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
-import { act, fireEvent, render } from '@testing-library/react'
+import { act, fireEvent } from '@testing-library/react'
 import { convertToHTML } from 'draft-convert'
 import type { ContentState } from 'draft-js'
 import {

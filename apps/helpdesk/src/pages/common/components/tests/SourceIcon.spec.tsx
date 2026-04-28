@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { appQueryClient } from '@repo/api-resources'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { channels as mockChannels } from 'fixtures/channels'

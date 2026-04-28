@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { userEvent } from '@testing-library/user-event'
 
 import type { Customer } from 'models/customer/types'

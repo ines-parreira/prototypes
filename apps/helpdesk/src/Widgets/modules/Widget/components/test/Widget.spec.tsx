@@ -1,8 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react'
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'

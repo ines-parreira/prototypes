@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import type { FormData } from '../WrapperEditForm'
 import WrapperEditForm, { CANCEL_TEXT, SUBMIT_TEXT } from '../WrapperEditForm'

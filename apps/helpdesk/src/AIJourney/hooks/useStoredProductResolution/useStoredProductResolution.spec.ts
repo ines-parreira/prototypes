@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { useLastSelectedProduct } from 'AIJourney/hooks/useLastSelectedProduct/useLastSelectedProduct'
 import type { Product } from 'constants/integrations/types/shopify'

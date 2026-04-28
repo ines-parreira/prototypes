@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { renderHook } from '@repo/testing'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, renderHook } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

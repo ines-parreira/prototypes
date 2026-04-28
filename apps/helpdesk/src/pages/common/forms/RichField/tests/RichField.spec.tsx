@@ -1,6 +1,6 @@
 import type { ComponentProps, LegacyRef } from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { ContentState, EditorState } from 'draft-js'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'

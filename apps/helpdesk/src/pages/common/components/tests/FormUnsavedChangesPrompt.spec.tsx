@@ -1,5 +1,4 @@
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { useFormContext } from 'react-hook-form'
 
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'

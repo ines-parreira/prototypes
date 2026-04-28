@@ -1,6 +1,7 @@
 import { createRef } from 'react'
 
-import { act, cleanup, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, cleanup, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { UserSearchResult } from 'models/search/types'

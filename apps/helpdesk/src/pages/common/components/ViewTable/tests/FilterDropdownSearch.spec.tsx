@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { flushPromises } from '@repo/testing'
-import { act, fireEvent, render } from '@testing-library/react'
+import { flushPromises, render } from '@repo/testing'
+import { act, fireEvent } from '@testing-library/react'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
 

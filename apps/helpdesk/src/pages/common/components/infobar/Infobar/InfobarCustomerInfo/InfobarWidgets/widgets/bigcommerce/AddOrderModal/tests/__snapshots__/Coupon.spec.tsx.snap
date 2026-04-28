@@ -23,6 +23,18 @@ exports[`<Coupon /> renders empty as expected: initial 1`] = `
     </dd>
   </div>
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     data-floating-ui-portal=""
     id=":r1:"
   />

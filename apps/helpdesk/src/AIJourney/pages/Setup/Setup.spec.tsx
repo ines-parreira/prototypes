@@ -1,5 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import { OrderStatusEnum } from '@gorgias/convert-client'
 

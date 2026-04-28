@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import { utmConfiguration } from 'fixtures/utmConfiguration'

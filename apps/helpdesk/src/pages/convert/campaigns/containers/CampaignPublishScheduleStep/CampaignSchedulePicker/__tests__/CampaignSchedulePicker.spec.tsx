@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { act, fireEvent, render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { act, fireEvent } from '@testing-library/react'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

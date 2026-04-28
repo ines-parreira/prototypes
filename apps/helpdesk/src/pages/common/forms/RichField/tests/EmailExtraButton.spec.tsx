@@ -1,8 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 

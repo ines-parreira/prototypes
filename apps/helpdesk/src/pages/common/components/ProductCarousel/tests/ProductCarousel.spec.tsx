@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { storeWithActiveSubscriptionWithConvert } from '@repo/billing/fixtures'
-import { userEvent } from '@repo/testing'
-import { render, screen, within } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen, within } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 

@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, within } from '@testing-library/react'
 
 import CountryInput from '../CountryInput'
 

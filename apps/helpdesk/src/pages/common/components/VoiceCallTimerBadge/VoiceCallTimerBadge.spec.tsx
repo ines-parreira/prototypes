@@ -1,6 +1,6 @@
 import { useInterval } from '@repo/hooks'
-import { assumeMock } from '@repo/testing'
-import { act, render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 

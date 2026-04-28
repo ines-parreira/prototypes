@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { act, render, waitFor } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 import { List, Map } from 'immutable'
 import _noop from 'lodash/noop'
 

@@ -2,8 +2,8 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 

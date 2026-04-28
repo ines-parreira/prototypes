@@ -1,4 +1,5 @@
-import { act, fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'

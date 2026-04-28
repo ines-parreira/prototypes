@@ -1,7 +1,6 @@
 import * as React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 import { ContentState } from 'draft-js'
 
 import LinkPopover from 'pages/common/draftjs/plugins/toolbar/components/LinkPopover'

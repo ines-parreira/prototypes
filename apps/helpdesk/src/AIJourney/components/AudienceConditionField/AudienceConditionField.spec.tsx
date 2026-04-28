@@ -1,6 +1,6 @@
 import { useFieldArray } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { ConditionsSchema } from '../../types/conditionField'

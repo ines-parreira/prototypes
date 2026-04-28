@@ -1,5 +1,6 @@
 import * as Segment from '@repo/logging'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { List, Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'

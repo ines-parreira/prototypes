@@ -1,4 +1,5 @@
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { ParameterTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
@@ -23,9 +24,9 @@ describe('<Parameter/>', () => {
     }
 
     it('should not display any label if index is not 0', () => {
-        render(<Parameter {...{ ...props, index: 1 }} />)
+        const { container } = render(<Parameter {...{ ...props, index: 1 }} />)
 
-        expect(screen.queryAllByLabelText(/.+/)).toHaveLength(0)
+        expect(within(container).queryAllByLabelText(/.+/)).toHaveLength(0)
     })
 
     it('should call onChange when changing type', async () => {

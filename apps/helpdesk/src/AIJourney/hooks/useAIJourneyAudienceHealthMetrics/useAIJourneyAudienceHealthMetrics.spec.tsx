@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { useAIJourneyOptOutAfterReply } from 'AIJourney/hooks/useAIJourneyOptOutAfterReply/useAIJourneyOptOutAfterReply'
 import { useAIJourneyOptOutAfterReplyRate } from 'AIJourney/hooks/useAIJourneyOptOutAfterReplyRate/useAIJourneyOptOutAfterReplyRate'

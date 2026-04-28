@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { useSearch } from 'hooks/useSearch'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'

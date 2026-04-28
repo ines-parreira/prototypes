@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
