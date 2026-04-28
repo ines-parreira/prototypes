@@ -753,5 +753,199 @@ describe('<AudienceSelect />', () => {
                 ).not.toBeInTheDocument()
             })
         })
+
+        describe('segment identifier resolution', () => {
+            const openAndCreateSegment = async (
+                user: ReturnType<typeof userEvent.setup>,
+            ) => {
+                await act(async () => {
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: /Select audience/i,
+                        }),
+                    )
+                })
+                await waitFor(() => {
+                    const buttons = screen.getAllByText('Create new segment')
+                    expect(buttons.length).toBeGreaterThan(0)
+                })
+                await act(async () => {
+                    const buttons = screen.getAllByText('Create new segment')
+                    await user.click(buttons[buttons.length - 1])
+                })
+                await waitFor(() =>
+                    expect(
+                        screen.getByRole('button', {
+                            name: /Simulate segment created/i,
+                        }),
+                    ).toBeInTheDocument(),
+                )
+                await act(async () => {
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: /Simulate segment created/i,
+                        }),
+                    )
+                })
+            }
+
+            it('replaces the creation id with the actual id when gorgiasAudienceSegments refetches with a matching identifier', async () => {
+                const onSubmit = jest.fn()
+                const user = userEvent.setup()
+
+                const Wrapper = () => {
+                    const methods = useForm()
+                    return (
+                        <FormProvider {...methods}>
+                            <form onSubmit={methods.handleSubmit(onSubmit)}>
+                                <AudienceSelect type="include" />
+                                <button type="submit">Submit</button>
+                            </form>
+                        </FormProvider>
+                    )
+                }
+
+                const { rerender } = render(<Wrapper />)
+
+                await openAndCreateSegment(user)
+
+                mockUseAudienceSegments.mockImplementation((_, source) => {
+                    if (source === AudienceListSource.Gorgias) {
+                        return {
+                            data: {
+                                data: [
+                                    {
+                                        id: 'actual-id',
+                                        identifier: 'new-seg',
+                                        name: 'New Segment',
+                                    },
+                                ],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                })
+
+                await act(async () => {
+                    rerender(<Wrapper />)
+                })
+
+                await act(async () => {
+                    await user.click(
+                        screen.getByRole('button', { name: /submit/i }),
+                    )
+                })
+
+                await waitFor(() => {
+                    expect(onSubmit).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            included_audience_list_ids: ['actual-id'],
+                        }),
+                        expect.anything(),
+                    )
+                })
+            })
+
+            it('retains the creation id when gorgiasAudienceSegments refetches without a segment matching the creation identifier', async () => {
+                const onSubmit = jest.fn()
+                const user = userEvent.setup()
+
+                const Wrapper = () => {
+                    const methods = useForm()
+                    return (
+                        <FormProvider {...methods}>
+                            <form onSubmit={methods.handleSubmit(onSubmit)}>
+                                <AudienceSelect type="include" />
+                                <button type="submit">Submit</button>
+                            </form>
+                        </FormProvider>
+                    )
+                }
+
+                const { rerender } = render(<Wrapper />)
+
+                await openAndCreateSegment(user)
+
+                mockUseAudienceSegments.mockImplementation((_, source) => {
+                    if (source === AudienceListSource.Gorgias) {
+                        return {
+                            data: {
+                                data: [
+                                    {
+                                        id: 'other-id',
+                                        identifier: 'other-identifier',
+                                        name: 'Other Segment',
+                                    },
+                                ],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                })
+
+                await act(async () => {
+                    rerender(<Wrapper />)
+                })
+
+                await act(async () => {
+                    await user.click(
+                        screen.getByRole('button', { name: /submit/i }),
+                    )
+                })
+
+                await waitFor(() => {
+                    expect(onSubmit).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            included_audience_list_ids: ['new-seg'],
+                        }),
+                        expect.anything(),
+                    )
+                })
+            })
+
+            it('resolves to the actual id and does not duplicate the segment when gorgiasAudienceSegments already has it via identifier at creation time', async () => {
+                const onSubmit = jest.fn()
+                const user = userEvent.setup()
+
+                mockUseAudienceSegments.mockImplementation((_, source) => {
+                    if (source === AudienceListSource.Gorgias) {
+                        return {
+                            data: {
+                                data: [
+                                    {
+                                        id: 'actual-id',
+                                        identifier: 'new-seg',
+                                        name: 'New Segment',
+                                    },
+                                ],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                })
+
+                await renderComponent('include', {}, onSubmit)
+
+                await openAndCreateSegment(user)
+
+                await act(async () => {
+                    await user.click(
+                        screen.getByRole('button', { name: /submit/i }),
+                    )
+                })
+
+                await waitFor(() => {
+                    expect(onSubmit).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            included_audience_list_ids: ['actual-id'],
+                        }),
+                        expect.anything(),
+                    )
+                })
+            })
+        })
     })
 })

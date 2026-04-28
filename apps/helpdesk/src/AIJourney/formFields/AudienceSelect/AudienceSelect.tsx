@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Controller, useFormContext, useWatch } from 'react-hook-form'
@@ -38,16 +38,12 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
 
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
     const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false)
+    const [localSegments, setLocalSegments] = useState<
+        { id: string; name: string }[]
+    >([])
+    const [pendingIdentifiers, setPendingIdentifiers] = useState<string[]>([])
 
     const { fieldName, excludeFieldName, label } = fieldProps[type]
-
-    const handleSegmentCreated = useCallback(
-        (segment: { id: string }) => {
-            const current: string[] = getValues(fieldName) ?? []
-            setValue(fieldName, [...current, segment.id])
-        },
-        [fieldName, getValues, setValue],
-    )
 
     const excludedValues: string[] =
         useWatch({ control, name: excludeFieldName }) ?? []
@@ -71,9 +67,62 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
         enabled: isAiJourneySegmentsEnabled,
     })
 
+    const handleSegmentCreated = useCallback(
+        (segment: { id: string; name: string }) => {
+            const current: string[] = getValues(fieldName) ?? []
+            setValue(fieldName, [...current, segment.id])
+            setLocalSegments((prev) => [...prev, segment])
+            setPendingIdentifiers((prev) => [...prev, segment.id])
+        },
+        [fieldName, getValues, setValue],
+    )
+
+    useEffect(() => {
+        if (pendingIdentifiers.length === 0) return
+        const gorgiasItems = gorgiasAudienceSegments?.data ?? []
+
+        const resolved: { identifier: string; actualId: string }[] = []
+        for (const identifier of pendingIdentifiers) {
+            const match = gorgiasItems.find((e) => e.identifier === identifier)
+            if (match) resolved.push({ identifier, actualId: match.id })
+        }
+
+        if (resolved.length === 0) return
+
+        const currentValues: string[] = getValues(fieldName) ?? []
+        setValue(
+            fieldName,
+            currentValues.map((id) => {
+                const pair = resolved.find((p) => p.identifier === id)
+                return pair ? pair.actualId : id
+            }),
+        )
+
+        setLocalSegments((prev) =>
+            prev.map((s) => {
+                const pair = resolved.find((p) => p.identifier === s.id)
+                return pair ? { ...s, id: pair.actualId } : s
+            }),
+        )
+
+        setPendingIdentifiers((prev) =>
+            prev.filter((id) => !resolved.some((p) => p.identifier === id)),
+        )
+    }, [
+        gorgiasAudienceSegments,
+        pendingIdentifiers,
+        fieldName,
+        getValues,
+        setValue,
+    ])
+
     const sections = useMemo(() => {
         const excluded = excludedValuesRef.current
-        const currentSections = []
+        const currentSections: {
+            id: string
+            name: string
+            items: { id: string; name: string }[]
+        }[] = []
 
         if (audienceLists && audienceLists.data.length > 0) {
             currentSections.push({
@@ -85,16 +134,25 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
             })
         }
 
-        if (
-            gorgiasAudienceSegments &&
-            gorgiasAudienceSegments.data.length > 0
-        ) {
+        const gorgiasItems = gorgiasAudienceSegments?.data ?? []
+        const mergedGorgiasItems = [
+            ...gorgiasItems,
+            ...localSegments.filter(
+                (s) =>
+                    !gorgiasItems.some(
+                        (e) => e.id === s.id || e.identifier === s.id,
+                    ),
+            ),
+        ].filter((e) => !excluded.includes(e.id))
+
+        if (mergedGorgiasItems.length > 0) {
             currentSections.push({
                 id: 'gorgias-segment',
                 name: 'Gorgias segments',
-                items: gorgiasAudienceSegments.data
-                    .map((e) => ({ id: e.id, name: e.name }))
-                    .filter((e) => !excluded.includes(e.id)),
+                items: mergedGorgiasItems.map((e) => ({
+                    id: e.id,
+                    name: e.name,
+                })),
             })
         }
 
@@ -112,7 +170,12 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
         }
 
         return currentSections
-    }, [audienceLists, gorgiasAudienceSegments, klaviyoAudienceSegments])
+    }, [
+        audienceLists,
+        gorgiasAudienceSegments,
+        klaviyoAudienceSegments,
+        localSegments,
+    ])
 
     return (
         <>
