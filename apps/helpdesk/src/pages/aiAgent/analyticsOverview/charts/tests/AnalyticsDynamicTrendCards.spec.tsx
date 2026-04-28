@@ -283,6 +283,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 0.25,
                 prevValue: 0.2,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentClickThroughRateCard',

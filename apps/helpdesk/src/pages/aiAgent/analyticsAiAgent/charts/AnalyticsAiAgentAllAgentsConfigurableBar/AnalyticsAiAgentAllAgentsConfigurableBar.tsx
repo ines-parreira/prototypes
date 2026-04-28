@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { dynamicAllAgentsAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { dynamicAllAgentsTimeSavedQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
+import { dynamicConversionRateQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
 import { dynamicTotalSalesAmountQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
 import { dynamicAllAgentsAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type {
@@ -45,6 +46,14 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
             'aiAgentRole',
             'aiIntentCustomField',
         ],
+    },
+    {
+        measure: 'conversionRate',
+        name: 'Conversion rate',
+        metricFormat: 'decimal-to-percent' as const,
+        interpretAs: 'more-is-better' as const,
+        queryFactory: dynamicConversionRateQueryFactoryV2,
+        dimensions: ['channel', 'storeIntegrationId', 'engagementType'],
     },
     {
         measure: 'totalSalesAmount',

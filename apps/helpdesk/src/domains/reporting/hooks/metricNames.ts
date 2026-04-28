@@ -43,6 +43,10 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-shopping-assistant-revenue-per-interaction',
     AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION_TIMESERIES:
         'ai-agent-dynamic-shopping-assistant-revenue-per-interaction-timeseries',
+    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_CONVERSION_RATE:
+        'ai-agent-dynamic-shopping-assistant-conversion-rate',
+    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_CONVERSION_RATE_TIMESERIES:
+        'ai-agent-dynamic-shopping-assistant-conversion-rate-timeseries',
     AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES:
         'ai-agent-automated-interactions-time-series',
     AI_AGENT_AUTOMATED_INTERACTIONS_TICKETS:
@@ -1158,6 +1162,8 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.AiSalesAgentConversionRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CONVERSION_RATE,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_CONVERSION_RATE,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_CONVERSION_RATE_TIMESERIES,
     ],
     [MetricScope.AiSalesAgentBuyThroughRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE,

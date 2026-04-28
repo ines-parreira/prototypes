@@ -5,6 +5,10 @@ import {
     dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2,
 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import {
+    dynamicConversionRateQueryFactoryV2,
+    dynamicConversionRateTimeseriesQueryFactoryV2,
+} from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
+import {
     dynamicTotalSalesAmountQueryFactoryV2,
     dynamicTotalSalesAmountTimeseriesQueryFactoryV2,
 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
@@ -57,6 +61,20 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
             'storeIntegrationId',
             'aiAgentRole',
             'aiIntentCustomField',
+        ],
+    },
+    {
+        measure: 'conversionRate',
+        name: 'Conversion rate',
+        metricFormat: 'decimal-to-percent' as const,
+        interpretAs: 'more-is-better' as const,
+        trendQueryFactory: dynamicConversionRateQueryFactoryV2,
+        timeSeriesQueryFactory: dynamicConversionRateTimeseriesQueryFactoryV2,
+        dimensions: [
+            'overall',
+            'channel',
+            'storeIntegrationId',
+            'engagementType',
         ],
     },
     {

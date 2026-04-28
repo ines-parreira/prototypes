@@ -30,3 +30,34 @@ export const conversionRate = aiSalesAgentConversionRateScope
 export const conversionRateQueryV2Factory = (
     ctx: AiSalesAgentConversionRateContext,
 ) => conversionRate.build(ctx)
+
+export const dynamicConversionRate = aiSalesAgentConversionRateScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_CONVERSION_RATE,
+    )
+    .defineQuery(({ ctx }) => ({
+        measures: ['conversionRate'],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicConversionRateQueryFactoryV2 = (ctx: Context) =>
+    dynamicConversionRate.build(ctx)
+
+export const dynamicConversionRateTimeseries = aiSalesAgentConversionRateScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_CONVERSION_RATE_TIMESERIES,
+    )
+    .defineQuery(({ ctx }) => ({
+        measures: ['conversionRate'],
+        time_dimensions: [
+            {
+                dimension: 'eventDatetime',
+                granularity: ctx.granularity,
+            },
+        ],
+        dimensions: ctx.dimensions,
+        limit: 10000,
+    }))
+
+export const dynamicConversionRateTimeseriesQueryFactoryV2 = (ctx: Context) =>
+    dynamicConversionRateTimeseries.build(ctx)

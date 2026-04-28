@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { dynamicRevenuePerInteractionQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
+import { dynamicConversionRateQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
 import {
     dynamicOrdersInfluencedCountQueryFactoryV2,
     dynamicTotalSalesAmountQueryFactoryV2,
@@ -27,6 +28,14 @@ type Props = {
 }
 
 export const SHOPPING_ASSISTANT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
+    {
+        measure: 'conversionRate',
+        name: 'Conversion rate',
+        metricFormat: 'decimal-to-percent' as const,
+        interpretAs: 'more-is-better' as const,
+        queryFactory: dynamicConversionRateQueryFactoryV2,
+        dimensions: ['channel', 'storeIntegrationId', 'engagementType'],
+    },
     {
         measure: 'automatedInteractionsCount',
         name: 'Automated interactions',
