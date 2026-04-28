@@ -122,16 +122,14 @@ describe('<GeneralCard />', () => {
                 expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
             })
 
-            it('does not render when journey type is CAMPAIGN', () => {
+            it('renders when journey type is CAMPAIGN', () => {
                 mockUseJourneyContext.mockReturnValue({
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
                 })
 
                 render(<GeneralCard isFormReady={true} />)
 
-                expect(
-                    screen.queryByText('NumberOfMessages'),
-                ).not.toBeInTheDocument()
+                expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
             })
         })
 

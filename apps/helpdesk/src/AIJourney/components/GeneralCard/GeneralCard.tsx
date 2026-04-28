@@ -39,7 +39,7 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
                 {(!storeSettingsEnabled || window.USER_IMPERSONATED) && (
                     <SenderPhoneNumber />
                 )}
-                {!isCampaign && <NumberOfMessages />}
+                <NumberOfMessages />
                 {shouldRenderIncludeImage && (
                     <IncludeImage journeyType={journeyType} />
                 )}
