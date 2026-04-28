@@ -6,7 +6,7 @@ import type { MetricConfigItem } from '@repo/reporting'
 import { ConfigureMetricsModal } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, Button, PanelHeader } from '@gorgias/axiom'
+import { Box, Button, Pagination, PanelHeader, Text } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -25,9 +25,14 @@ import {
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import type { Metrics } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useJourneyContext } from 'AIJourney/providers'
+import {
+    CUSTOM_FLOWS_PAGE_SIZE,
+    useFlowsList,
+} from 'AIJourney/queries/useCustomFlows/useCustomFlows'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { useSearchParam } from 'hooks/useSearchParam'
 
 import css from './Flows.less'
 
@@ -41,7 +46,22 @@ type UnconfiguredFlow = {
 }
 type UnconfiguredFlowWithMetrics = UnconfiguredFlow & { metrics: FlowMetrics }
 type ConfiguredFlowWithMetrics = JourneyApiDTO & { metrics: FlowMetrics }
-export type TableRow = UnconfiguredFlowWithMetrics | ConfiguredFlowWithMetrics
+type CustomFlowWithMetrics = JourneyApiDTO & {
+    name: string
+    metrics: FlowMetrics
+}
+export type TableRow =
+    | UnconfiguredFlowWithMetrics
+    | ConfiguredFlowWithMetrics
+    | CustomFlowWithMetrics
+
+const availableFlows: JourneyTypeEnum[] = [
+    JourneyTypeEnum.SessionAbandoned,
+    JourneyTypeEnum.CartAbandoned,
+    JourneyTypeEnum.PostPurchase,
+    JourneyTypeEnum.Welcome,
+    JourneyTypeEnum.WinBack,
+]
 
 export const Flows = () => {
     const [isMetricsEditModalOpen, setIsMetricsEditModalOpen] = useState(false)
@@ -64,6 +84,23 @@ export const Flows = () => {
     const integrationId = useMemo(() => {
         return currentIntegration?.id || 0
     }, [currentIntegration])
+
+    const [pageParam, setPageParam] = useSearchParam('page')
+    const currentPage = pageParam ? parseInt(pageParam, 10) : 1
+
+    const { data: flowsListData } = useFlowsList(integrationId || undefined, {
+        enabled: !!integrationId,
+    })
+
+    const allCustomFlows = useMemo(
+        () => flowsListData?.custom ?? [],
+        [flowsListData],
+    )
+    const totalCustomFlows = allCustomFlows.length
+    const hasMultipleCustomPages = totalCustomFlows > CUSTOM_FLOWS_PAGE_SIZE
+    const totalCustomPages = Math.ceil(
+        totalCustomFlows / CUSTOM_FLOWS_PAGE_SIZE,
+    )
 
     const filters = useMemo(() => {
         return {
@@ -105,11 +142,6 @@ export const Flows = () => {
         ] as ColumnDef<TableRow>[]
     }, [flowsTableKpisConfig])
 
-    // The source of truth of existent journeys comes from the BE
-    const availableFlows: JourneyTypeEnum[] = Object.values(
-        JourneyTypeEnum,
-    ).filter((journeyType) => journeyType !== JourneyTypeEnum.Campaign)
-
     const configuredFlows: ConfiguredFlowWithMetrics[] | undefined =
         useMemo(() => {
             const filteredJourneys = journeys?.filter((journey) =>
@@ -122,7 +154,7 @@ export const Flows = () => {
                     ? LOADING_TABLE_METRICS
                     : tableMetrics[journey.id] || DEFAULT_TABLE_METRICS,
             }))
-        }, [journeys, availableFlows, tableMetrics, isMetricLoading])
+        }, [journeys, tableMetrics, isMetricLoading])
 
     // Flows that are available but hasn't been configured by an user (configured !== activated)
     const unconfiguredFlows: UnconfiguredFlowWithMetrics[] | undefined =
@@ -140,11 +172,34 @@ export const Flows = () => {
                     id: undefined,
                     campaign: undefined,
                 }))
-        }, [configuredFlows, availableFlows, shopName])
+        }, [configuredFlows, shopName])
+
+    const sortedCustomFlows: CustomFlowWithMetrics[] = useMemo(() => {
+        const items = allCustomFlows as Array<JourneyApiDTO & { name?: string }>
+        const sorted = [...items].sort((a, b) =>
+            (a.name ?? '')
+                .toLowerCase()
+                .localeCompare((b.name ?? '').toLowerCase()),
+        )
+        const offset = (currentPage - 1) * CUSTOM_FLOWS_PAGE_SIZE
+        const paged = sorted.slice(offset, offset + CUSTOM_FLOWS_PAGE_SIZE)
+        return paged.map((flow) => ({
+            ...flow,
+            name: flow.name ?? '',
+            metrics: EMPTY_TABLE_METRICS,
+        }))
+    }, [allCustomFlows, currentPage])
 
     const tableRows: TableRow[] = useMemo(() => {
-        return [...(configuredFlows || []), ...(unconfiguredFlows || [])]
-    }, [configuredFlows, unconfiguredFlows])
+        return [
+            ...(configuredFlows || []),
+            ...(unconfiguredFlows || []),
+            ...sortedCustomFlows,
+        ]
+    }, [configuredFlows, unconfiguredFlows, sortedCustomFlows])
+
+    const showCustomFlowEmptyState =
+        isAiJourneyCustomFlowEnabled && totalCustomFlows === 0
 
     return (
         <Box width="100%" flexDirection="column">
@@ -152,7 +207,7 @@ export const Flows = () => {
                 title="Flows"
                 trailingSlot={
                     isAiJourneyCustomFlowEnabled ? (
-                        <Button>Add Custom Flow</Button>
+                        <Button>Add custom flow</Button>
                     ) : undefined
                 }
             />
@@ -182,6 +237,28 @@ export const Flows = () => {
                     isLoading={isLoadingJourneys}
                     integrationId={integrationId}
                 />
+                {showCustomFlowEmptyState && (
+                    <Text>
+                        No custom flows yet. Add one to connect Klaviyo
+                        webhooks.
+                    </Text>
+                )}
+                {hasMultipleCustomPages && (
+                    <nav aria-label="pagination">
+                        <Pagination
+                            hasNextPage={currentPage < totalCustomPages}
+                            hasPreviousPage={currentPage > 1}
+                            hasLinesPerPage={false}
+                            onPageChange={(direction) => {
+                                const nextPage =
+                                    direction === 'next'
+                                        ? currentPage + 1
+                                        : currentPage - 1
+                                setPageParam(String(nextPage))
+                            }}
+                        />
+                    </nav>
+                )}
             </Box>
             <ConfigureMetricsModal
                 isOpen={isMetricsEditModalOpen}

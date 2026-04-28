@@ -20,7 +20,9 @@ export const journeysColumns: ColumnDef<TableRow>[] = [
     {
         id: 'title',
         accessorFn: (row) =>
-            row.campaign?.title || JOURNEY_TYPE_MAP_TO_STRING[row.type],
+            row.campaign?.title ||
+            ('name' in row && row.name) ||
+            JOURNEY_TYPE_MAP_TO_STRING[row.type],
         header: 'Title',
         cell: (info) => {
             const storeName = info.row.original.store_name

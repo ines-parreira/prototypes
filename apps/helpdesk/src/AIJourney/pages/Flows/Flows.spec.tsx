@@ -14,11 +14,17 @@ import { journeyTableDataMetrics } from 'AIJourney/components/JourneysTable/cons
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useAIJourneyTableKpis } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useJourneyContext } from 'AIJourney/providers'
+import type { FlowsListResponse } from 'AIJourney/queries/useCustomFlows/useCustomFlows'
+import {
+    CUSTOM_FLOWS_PAGE_SIZE,
+    useFlowsList,
+} from 'AIJourney/queries/useCustomFlows/useCustomFlows'
 import { ThemeProvider } from 'core/theme'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { initialState as drillDownInitialState } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { shopifyIntegration } from 'fixtures/integrations'
+import { useSearchParam } from 'hooks/useSearchParam'
 import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
@@ -63,6 +69,16 @@ jest.mock('@repo/reporting', () => ({
     }) => (isOpen ? <div>Configure Metrics Modal</div> : null),
 }))
 
+jest.mock('AIJourney/queries/useCustomFlows/useCustomFlows', () => ({
+    ...jest.requireActual('AIJourney/queries/useCustomFlows/useCustomFlows'),
+    useFlowsList: jest.fn(),
+}))
+const mockUseFlowsList = useFlowsList as jest.Mock
+
+jest.mock('hooks/useSearchParam')
+const mockSetPageParam = jest.fn()
+const mockUseSearchParam = useSearchParam as jest.Mock
+
 const mockJourneyContextDefaults = {
     campaigns: undefined,
     journeyData: undefined,
@@ -78,7 +94,12 @@ const mockJourneyContextDefaults = {
     attributionModelComparison: null,
 }
 
-const renderComponent = () => {
+const emptyFlowsList: FlowsListResponse = {
+    built_in: [],
+    custom: [],
+}
+
+const renderComponent = (initialSearch = '') => {
     const initialState: Partial<RootState> = {
         ui: {
             stats: {
@@ -88,7 +109,7 @@ const renderComponent = () => {
     }
 
     return render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[`/${initialSearch}`]}>
             <Provider store={mockStore(initialState)}>
                 <QueryClientProvider client={appQueryClient}>
                     <ThemeProvider>
@@ -104,6 +125,7 @@ describe('<Flows />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        mockUseSearchParam.mockReturnValue([null, mockSetPageParam])
         mockUseFlag.mockReturnValue(true)
         mockUseLocalStorage.mockReturnValue([[], jest.fn(), jest.fn()])
 
@@ -122,6 +144,11 @@ describe('<Flows />', () => {
 
         useAIJourneyTableKpisMock.mockReturnValue({
             metrics: {},
+            isLoading: false,
+        })
+
+        mockUseFlowsList.mockReturnValue({
+            data: emptyFlowsList,
             isLoading: false,
         })
 
@@ -170,6 +197,386 @@ describe('<Flows />', () => {
             expect(screen.getByText('Welcome')).toBeInTheDocument()
             expect(screen.getByText('Customer Win-back')).toBeInTheDocument()
             expect(screen.getByText('Post-purchase')).toBeInTheDocument()
+        })
+    })
+
+    describe('Built-in flow sort order', () => {
+        it('should render built-in flows in alphabetical order', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            renderComponent()
+
+            const table = screen.getByRole('table')
+            const rows = Array.from(table.querySelectorAll('tbody tr'))
+            const flowNames = rows
+                .map((row) => row.textContent?.trim())
+                .filter(Boolean)
+
+            const browseIdx = flowNames.findIndex((n) =>
+                n?.includes('Browse Abandoned'),
+            )
+            const cartIdx = flowNames.findIndex((n) =>
+                n?.includes('Cart Abandoned'),
+            )
+            const welcomeIdx = flowNames.findIndex((n) =>
+                n?.includes('Welcome'),
+            )
+            const winBackIdx = flowNames.findIndex((n) =>
+                n?.includes('Customer Win-back'),
+            )
+
+            expect(browseIdx).toBeGreaterThan(-1)
+            expect(cartIdx).toBeGreaterThan(-1)
+            expect(welcomeIdx).toBeGreaterThan(-1)
+            expect(winBackIdx).toBeGreaterThan(-1)
+            expect(browseIdx).toBeLessThan(cartIdx)
+            expect(cartIdx).toBeLessThan(welcomeIdx)
+            expect(welcomeIdx).toBeLessThan(winBackIdx)
+        })
+
+        it('should render Browse Abandoned first', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            renderComponent()
+
+            const table = screen.getByRole('table')
+            const rows = Array.from(table.querySelectorAll('tbody tr'))
+            expect(rows[0]?.textContent).toContain('Browse Abandoned')
+        })
+
+        it('should render Win Back last among built-ins', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            mockUseFlowsList.mockReturnValue({
+                data: emptyFlowsList,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            const table = screen.getByRole('table')
+            const rows = Array.from(table.querySelectorAll('tbody tr'))
+            const lastBuiltIn = rows[rows.length - 1]
+            expect(lastBuiltIn?.textContent).toContain('Customer Win-back')
+        })
+    })
+
+    describe('Custom flows', () => {
+        it('should render custom flows after built-in flows', () => {
+            const customFlow = {
+                id: 'custom-1',
+                // SDK's JourneyTypeEnum does not yet include 'custom'; cast to avoid never
+                type: 'custom' as unknown as JourneyTypeEnum,
+                name: 'My Custom Flow',
+                store_name: 'test-store',
+                store_type: 'shopify',
+                state: JourneyStatusEnum.Active,
+                store_integration_id: 1,
+                created_datetime: '2024-01-01T00:00:00Z',
+                account_id: 1,
+            }
+
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            mockUseFlowsList.mockReturnValue({
+                data: {
+                    built_in: [],
+                    custom: [customFlow],
+                } as FlowsListResponse,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            const table = screen.getByRole('table')
+            const rows = Array.from(table.querySelectorAll('tbody tr'))
+            const lastRow = rows[rows.length - 1]
+            expect(lastRow?.textContent).toContain('My Custom Flow')
+        })
+
+        it('should sort custom flows alphabetically by name', () => {
+            const customFlows = [
+                {
+                    id: 'custom-z',
+                    // SDK's JourneyTypeEnum does not yet include 'custom'; cast to avoid never
+                    type: 'custom' as unknown as JourneyTypeEnum,
+                    name: 'Zebra Flow',
+                    store_name: 'test-store',
+                    store_type: 'shopify',
+                    state: JourneyStatusEnum.Active,
+                    store_integration_id: 1,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                },
+                {
+                    id: 'custom-a',
+                    // SDK's JourneyTypeEnum does not yet include 'custom'; cast to avoid never
+                    type: 'custom' as unknown as JourneyTypeEnum,
+                    name: 'Alpha Flow',
+                    store_name: 'test-store',
+                    store_type: 'shopify',
+                    state: JourneyStatusEnum.Active,
+                    store_integration_id: 1,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                },
+            ]
+
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            mockUseFlowsList.mockReturnValue({
+                data: {
+                    built_in: [],
+                    custom: customFlows,
+                } as FlowsListResponse,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            const table = screen.getByRole('table')
+            const rows = Array.from(table.querySelectorAll('tbody tr'))
+            const alphaIdx = rows.findIndex((r) =>
+                r.textContent?.includes('Alpha Flow'),
+            )
+            const zebraIdx = rows.findIndex((r) =>
+                r.textContent?.includes('Zebra Flow'),
+            )
+
+            expect(alphaIdx).toBeGreaterThan(-1)
+            expect(zebraIdx).toBeGreaterThan(-1)
+            expect(alphaIdx).toBeLessThan(zebraIdx)
+        })
+    })
+
+    describe('Pagination', () => {
+        it('should not show pagination when custom flows do not exceed page size', () => {
+            mockUseFlowsList.mockReturnValue({
+                data: {
+                    built_in: [],
+                    custom: [],
+                } as FlowsListResponse,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('navigation', { name: /pagination/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show pagination controls when total custom flows exceed page size', () => {
+            const customFlows = Array.from(
+                { length: CUSTOM_FLOWS_PAGE_SIZE + 1 },
+                (_, i) => ({
+                    id: `custom-${i}`,
+                    type: 'custom' as unknown as JourneyTypeEnum,
+                    name: `Flow ${String(i).padStart(2, '0')}`,
+                    store_name: 'test-store',
+                    store_type: 'shopify',
+                    state: JourneyStatusEnum.Active,
+                    store_integration_id: 1,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                }),
+            )
+
+            mockUseFlowsList.mockReturnValue({
+                data: {
+                    built_in: [],
+                    custom: customFlows,
+                } as FlowsListResponse,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('navigation', { name: /pagination/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show flows beyond the first page by default', () => {
+            const customFlows = Array.from(
+                { length: CUSTOM_FLOWS_PAGE_SIZE + 5 },
+                (_, i) => ({
+                    id: `custom-${i}`,
+                    type: 'custom' as unknown as JourneyTypeEnum,
+                    name: `CustomFlow${String(i).padStart(2, '0')}`,
+                    store_name: 'test-store',
+                    store_type: 'shopify',
+                    state: JourneyStatusEnum.Active,
+                    store_integration_id: 1,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                }),
+            )
+
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            mockUseFlowsList.mockReturnValue({
+                data: {
+                    built_in: [],
+                    custom: customFlows,
+                } as FlowsListResponse,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(screen.queryByText('CustomFlow10')).not.toBeInTheDocument()
+            expect(screen.queryByText('CustomFlow14')).not.toBeInTheDocument()
+        })
+
+        it('should call setPageParam with next page when next button is clicked', async () => {
+            const user = userEvent.setup()
+            const customFlows = Array.from(
+                { length: CUSTOM_FLOWS_PAGE_SIZE + 5 },
+                (_, i) => ({
+                    id: `custom-${i}`,
+                    type: 'custom' as unknown as JourneyTypeEnum,
+                    name: `Flow ${String(i).padStart(2, '0')}`,
+                    store_name: 'test-store',
+                    store_type: 'shopify',
+                    state: JourneyStatusEnum.Active,
+                    store_integration_id: 1,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                }),
+            )
+
+            mockUseFlowsList.mockReturnValue({
+                data: {
+                    built_in: [],
+                    custom: customFlows,
+                } as FlowsListResponse,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            const nav = screen.getByRole('navigation', {
+                name: /pagination/i,
+            })
+            const buttons = Array.from(nav.querySelectorAll('button'))
+            const nextButton = buttons[buttons.length - 1]
+
+            await user.click(nextButton)
+
+            expect(mockSetPageParam).toHaveBeenCalledWith('2')
+        })
+
+        it('should call setPageParam with previous page when previous button is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseSearchParam.mockReturnValue(['2', mockSetPageParam])
+
+            const customFlows = Array.from(
+                { length: CUSTOM_FLOWS_PAGE_SIZE + 5 },
+                (_, i) => ({
+                    id: `custom-${i}`,
+                    type: 'custom' as unknown as JourneyTypeEnum,
+                    name: `Flow ${String(i).padStart(2, '0')}`,
+                    store_name: 'test-store',
+                    store_type: 'shopify',
+                    state: JourneyStatusEnum.Active,
+                    store_integration_id: 1,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                }),
+            )
+
+            mockUseFlowsList.mockReturnValue({
+                data: {
+                    built_in: [],
+                    custom: customFlows,
+                } as FlowsListResponse,
+                isLoading: false,
+            })
+
+            renderComponent('?page=2')
+
+            const nav = screen.getByRole('navigation', {
+                name: /pagination/i,
+            })
+            const buttons = Array.from(nav.querySelectorAll('button'))
+            const prevButton = buttons[0]
+
+            await user.click(prevButton)
+
+            expect(mockSetPageParam).toHaveBeenCalledWith('1')
+        })
+    })
+
+    describe('Empty state', () => {
+        it('should show empty state message for custom flows when flag is enabled and no custom flows exist', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
+                    return true
+                return true
+            })
+
+            mockUseFlowsList.mockReturnValue({
+                data: emptyFlowsList,
+                isLoading: false,
+            })
+
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText(
+                    'No custom flows yet. Add one to connect Klaviyo webhooks.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show empty state when custom flow flag is disabled', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
+                    return false
+                return true
+            })
+
+            mockUseFlowsList.mockReturnValue({
+                data: emptyFlowsList,
+                isLoading: false,
+            })
+
+            mockUseJourneyContext.mockReturnValue({
+                ...mockJourneyContextDefaults,
+                journeys: [],
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText(
+                    'No custom flows yet. Add one to connect Klaviyo webhooks.',
+                ),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -290,6 +697,36 @@ describe('<Flows />', () => {
 
     describe('"Add Custom Flow" button', () => {
         it('should show "Add Custom Flow" button when AiJourneyCustomFlowEnabled flag is on', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
+                    return true
+                return false
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /add custom flow/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide "Add Custom Flow" button when AiJourneyCustomFlowEnabled flag is off', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
+                    return false
+                return true
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: /add custom flow/i }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Feature flags', () => {
+        it('should show Win-back flow when feature flag is enabled', () => {
             mockUseFlag.mockImplementation((flag) => {
                 if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
                     return true

@@ -11,7 +11,7 @@ import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import type { TableRow } from '../../../pages/Flows/Flows'
-import { metricColumns } from './JourneysColumns'
+import { journeysColumns, metricColumns } from './JourneysColumns'
 
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
@@ -91,6 +91,47 @@ const renderComponent = (integrationId?: number) => {
         </ThemeProvider>,
     )
 }
+
+describe('journeysColumns - title accessor', () => {
+    const titleColumn = journeysColumns[0]
+    const accessorFn =
+        'accessorFn' in titleColumn ? titleColumn.accessorFn : undefined
+
+    it('should use campaign title when available', () => {
+        const row = {
+            ...mockTableData[0],
+            campaign: { title: 'Summer Campaign' },
+        } as unknown as TableRow
+
+        expect(accessorFn?.(row, 0)).toBe('Summer Campaign')
+    })
+
+    it('should use name for custom flows without a campaign', () => {
+        const row = {
+            id: 'custom-1',
+            type: 'custom' as unknown as JourneyTypeEnum,
+            name: 'My Custom Flow',
+            state: JourneyStatusEnum.Active,
+            store_name: 'Test Store',
+            store_integration_id: 1,
+            store_type: 'shopify',
+            created_datetime: '2024-01-01T00:00:00Z',
+            account_id: 1,
+            metrics: mockTableData[0].metrics,
+        } as unknown as TableRow
+
+        expect(accessorFn?.(row, 0)).toBe('My Custom Flow')
+    })
+
+    it('should fall back to journey type string when no campaign or name', () => {
+        const row = {
+            ...mockTableData[0],
+            campaign: undefined,
+        } as unknown as TableRow
+
+        expect(accessorFn?.(row, 0)).toBeTruthy()
+    })
+})
 
 describe('JourneysColumns - Response Rate Drilldown', () => {
     beforeEach(() => {
