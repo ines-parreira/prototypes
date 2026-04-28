@@ -6,14 +6,16 @@ import { Button, toast } from '@gorgias/axiom'
 import type { RealtimeConnectionStateChange } from '@gorgias/realtime'
 
 const REALTIME_CONNECTION_TOAST_ID = 'realtime-connection-error'
-const REALTIME_CONNECTION_TOAST_TITLE =
-    'Unable to connect to real-time updates.'
+const REALTIME_CONNECTION_TOAST_TITLE = 'Unable to connect to real-time updates'
 const REALTIME_CONNECTION_TOAST_CAPTION =
     'Please check your internet connection and refresh the browser.'
 export const REALTIME_DISCONNECTED_TOAST_DELAY_MS = 8000
 
 export const useRealtimeConnectionStateChanges = () => {
     const disconnectedToastTimeout = useRef<NodeJS.Timeout | null>(null)
+    const trackedRealtimeConnectionState = useRef<
+        RealtimeConnectionStateChange['current'] | null
+    >(null)
 
     const clearDisconnectedToastTimeout = useCallback(() => {
         if (disconnectedToastTimeout.current) {
@@ -25,6 +27,7 @@ export const useRealtimeConnectionStateChanges = () => {
     useEffect(() => {
         return () => {
             clearDisconnectedToastTimeout()
+            trackedRealtimeConnectionState.current = null
         }
     }, [clearDisconnectedToastTimeout])
 
@@ -33,15 +36,33 @@ export const useRealtimeConnectionStateChanges = () => {
             current: RealtimeConnectionStateChange['current'],
             previous: RealtimeConnectionStateChange['previous'],
         ) => {
-            logEvent(SegmentEvent.RealtimeConnectivityBannerDisplayed, {
-                currentState: current,
-                previousState: previous,
-            })
+            if (trackedRealtimeConnectionState.current !== current) {
+                logEvent(SegmentEvent.RealtimeConnectivityBannerDisplayed, {
+                    currentState: current,
+                    previousState: previous,
+                })
+
+                trackedRealtimeConnectionState.current = current
+            }
 
             toast.error(REALTIME_CONNECTION_TOAST_TITLE, {
                 caption: REALTIME_CONNECTION_TOAST_CAPTION,
                 id: REALTIME_CONNECTION_TOAST_ID,
                 duration: Infinity,
+                onDismiss: () => {
+                    // Manual dismiss logs hidden; auto-hide clears the tracked state first.
+                    if (trackedRealtimeConnectionState.current !== null) {
+                        logEvent(
+                            SegmentEvent.RealtimeConnectivityBannerHidden,
+                            {
+                                currentState: current,
+                                previousState: previous,
+                            },
+                        )
+                    }
+
+                    trackedRealtimeConnectionState.current = null
+                },
                 actions: ({ id }) => (
                     <Button
                         size="sm"
@@ -112,6 +133,16 @@ export const useRealtimeConnectionStateChanges = () => {
                 case 'connected':
                 case 'closed': {
                     clearDisconnectedToastTimeout()
+                    if (trackedRealtimeConnectionState.current !== null) {
+                        logEvent(
+                            SegmentEvent.RealtimeConnectivityBannerAutoHidden,
+                            {
+                                currentState: stateChange.current,
+                                previousState: stateChange.previous,
+                            },
+                        )
+                    }
+                    trackedRealtimeConnectionState.current = null
                     toast.dismiss(REALTIME_CONNECTION_TOAST_ID)
                     break
                 }

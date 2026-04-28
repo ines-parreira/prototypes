@@ -350,6 +350,8 @@ export enum SegmentEvent {
     PreviewModeClicked = 'preview-mode-clicked',
     PrintTicketClicked = 'print-ticket-clicked',
     RealtimeConnectivityBannerDisplayed = 'realtime/connectivity-banner-displayed',
+    RealtimeConnectivityBannerAutoHidden = 'realtime/connectivity-banner-auto-hidden',
+    RealtimeConnectivityBannerHidden = 'realtime/connectivity-banner-hidden',
     RealtimeConnectivityBannerRefreshClicked = 'realtime/connectivity-banner-refresh-clicked',
     RecentActivityClicked = 'recent-activity-clicked',
     RecentItemAccessed = 'recent-item-accessed',
