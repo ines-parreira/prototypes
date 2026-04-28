@@ -1,4 +1,5 @@
 import { appQueryClient } from '@repo/api-resources'
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -13,7 +14,6 @@ import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { VoiceFlowNodeType } from '../../constants'
 import type { VoiceFlowFormValues } from '../../types'
@@ -54,7 +54,7 @@ describe('useVoiceFlowForm', () => {
 
     describe('getDefaultValues', () => {
         it('getDefaultValues should return empty CallRoutingFlow values', () => {
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useVoiceFlowForm(mockIntegration),
             )
 
@@ -70,7 +70,7 @@ describe('useVoiceFlowForm', () => {
         })
 
         it('getDefaultValues should return default record_inbound_calls', () => {
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useVoiceFlowForm({
                     ...mockIntegration,
                     meta: {},
@@ -88,7 +88,7 @@ describe('useVoiceFlowForm', () => {
         })
 
         it('getDefaultValues should add defaults for enqueue step', () => {
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useVoiceFlowForm(mockIntegration),
             )
 
@@ -156,7 +156,7 @@ describe('useVoiceFlowForm', () => {
                 'refetchQueries',
             )
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useVoiceFlowForm(mockIntegration),
             )
 
@@ -185,7 +185,7 @@ describe('useVoiceFlowForm', () => {
                 )
             server.use(mockUpdateWithErrorHandler.handler)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useVoiceFlowForm(mockIntegration),
             )
 

@@ -1,5 +1,5 @@
 import { useInterval } from '@repo/hooks'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
@@ -13,7 +13,6 @@ import { useNotify } from 'hooks/useNotify'
 import type { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import useWrapUpTime from '../useWrapUpTime'
 
@@ -80,7 +79,7 @@ describe('useWrapUpTime', () => {
     })
 
     it('should register socket event on mount', () => {
-        renderHookWithQueryClientProvider(() => useWrapUpTime())
+        renderHook(() => useWrapUpTime())
 
         expect(socketManager.registerReceivedEvents).toHaveBeenCalledWith([
             {
@@ -91,9 +90,7 @@ describe('useWrapUpTime', () => {
     })
 
     it('should unregister socket event on unmount', () => {
-        const { unmount } = renderHookWithQueryClientProvider(() =>
-            useWrapUpTime(),
-        )
+        const { unmount } = renderHook(() => useWrapUpTime())
         unmount()
 
         expect(socketManager.unregisterReceivedEvents).toHaveBeenCalledWith([
@@ -105,9 +102,7 @@ describe('useWrapUpTime', () => {
     })
 
     it('should return default values when no wrap-up is in progress', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useWrapUpTime(),
-        )
+        const { result } = renderHook(() => useWrapUpTime())
 
         expect(result.current).toEqual({
             isWrappingUp: false,
@@ -119,9 +114,7 @@ describe('useWrapUpTime', () => {
     })
 
     it('should handle wrap-up time started event', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useWrapUpTime(),
-        )
+        const { result } = renderHook(() => useWrapUpTime())
 
         const registeredEvent =
             // @ts-ignore
@@ -151,9 +144,7 @@ describe('useWrapUpTime', () => {
             intervalCallback = callback
         })
 
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useWrapUpTime(),
-        )
+        const { result } = renderHook(() => useWrapUpTime())
 
         const registeredEvent =
             // @ts-ignore
@@ -186,9 +177,7 @@ describe('useWrapUpTime', () => {
             intervalCallback = callback
         })
 
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useWrapUpTime(),
-        )
+        const { result } = renderHook(() => useWrapUpTime())
 
         const registeredEvent =
             // @ts-ignore
@@ -225,9 +214,7 @@ describe('useWrapUpTime', () => {
             data: {},
         } as any)
 
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useWrapUpTime(),
-        )
+        const { result } = renderHook(() => useWrapUpTime())
 
         const registeredEvent =
             // @ts-ignore
@@ -264,9 +251,7 @@ describe('useWrapUpTime', () => {
     it('should show an error notification on endWrapUpTimeMutation error', async () => {
         endWrapUpTimeMock.mockRejectedValue('error')
 
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useWrapUpTime(),
-        )
+        const { result } = renderHook(() => useWrapUpTime())
 
         act(() => {
             result.current.endWrapUpTimeMutation.mutate({
@@ -294,9 +279,7 @@ describe('useWrapUpTime', () => {
             },
         } as any)
 
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useWrapUpTime(),
-        )
+        const { result } = renderHook(() => useWrapUpTime())
 
         await waitFor(() => {
             expect(result.current.isWrappingUp).toBe(true)
@@ -312,9 +295,7 @@ describe('useWrapUpTime', () => {
         it('should clear wrap up state when a new call starts', () => {
             const mockCall = { sid: 'CA123' } as any
 
-            const { result, rerender } = renderHookWithQueryClientProvider(() =>
-                useWrapUpTime(),
-            )
+            const { result, rerender } = renderHook(() => useWrapUpTime())
 
             const registeredEvent =
                 // @ts-ignore
@@ -350,9 +331,7 @@ describe('useWrapUpTime', () => {
         })
 
         it('should not clear wrap up state if no call is active', () => {
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWrapUpTime(),
-            )
+            const { result } = renderHook(() => useWrapUpTime())
 
             const registeredEvent =
                 // @ts-ignore
@@ -386,9 +365,7 @@ describe('useWrapUpTime', () => {
         it('should not affect state if wrap up is not active', () => {
             const mockCall = { sid: 'CA123' } as any
 
-            const { result, rerender } = renderHookWithQueryClientProvider(() =>
-                useWrapUpTime(),
-            )
+            const { result, rerender } = renderHook(() => useWrapUpTime())
 
             // No wrap up active initially
             expect(result.current.isWrappingUp).toBe(false)

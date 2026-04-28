@@ -1,11 +1,11 @@
 import 'tests/mockGorgiasAppsAuth'
 
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
 import type { Paths } from 'rest_api/workflows_api/client.generated'
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import type { TrackstarConnection } from '../../../pages/automate/workflows/types'
 import {
@@ -60,9 +60,7 @@ describe('queries', () => {
                 .onGet(/apps/)
                 .reply(200, actionsApps)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useListActionsApps(),
-            )
+            const { result } = renderHook(() => useListActionsApps())
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data).toEqual(actionsApps)
@@ -85,18 +83,14 @@ describe('queries', () => {
                 .onGet(/apps\/\w+/)
                 .reply(200, actionsApp)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useGetActionsApp(actionsApp.id),
-            )
+            const { result } = renderHook(() => useGetActionsApp(actionsApp.id))
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data).toEqual(actionsApp)
         })
 
         it('should not call API if id is missing', () => {
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useGetActionsApp(),
-            )
+            const { result } = renderHook(() => useGetActionsApp())
 
             expect(mockedServer.history.get.length).toEqual(0)
             expect(result.current.data).toBeUndefined()
@@ -119,9 +113,7 @@ describe('queries', () => {
                 .onPut(/apps\/\w+/)
                 .reply(200, actionsApp)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useUpsertActionsApp(),
-            )
+            const { result } = renderHook(() => useUpsertActionsApp())
 
             act(() => {
                 result.current.mutate([{ id: actionsApp.id }, actionsApp])
@@ -155,7 +147,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions/)
                 .reply(200, executionsResponse)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useGetConfigurationExecutions({
                     configurationInternalId: 'someid',
                     from: new Date(),
@@ -192,7 +184,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/[^/]+\/executions\/[^/]+$/)
                 .reply(200, executionsResponse)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useGetConfigurationExecution('configurationId', 'executionId'),
             )
 
@@ -221,7 +213,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/[^/]+\/executions\/[^/]+\/logs$/)
                 .reply(200, executionLogsResponse)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useGetConfigurationExecutionLogs(
                     'configurationId',
                     'executionId',
@@ -239,7 +231,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/[^/]+\/executions\/[^/]+\/logs$/)
                 .reply(404)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useGetConfigurationExecutionLogs(
                     'configurationId',
                     'executionId',
@@ -259,7 +251,7 @@ describe('queries', () => {
                 .onDelete(/configuration-templates\/\w+/)
                 .reply(204)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useDeleteWorkflowConfigurationTemplate(),
             )
 
@@ -289,7 +281,7 @@ describe('queries', () => {
                 .onGet(/configuration-templates/)
                 .reply(200, templatesResponse)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useGetWorkflowConfigurationTemplates({
                     triggers: ['llm-prompt', 'reusable-llm-prompt'],
                 }),
@@ -354,7 +346,7 @@ describe('queries', () => {
                 .onGet(/trackstar/)
                 .reply(200, trackstarConnections)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useListTrackstarConnections({
                     storeName: 'test-store',
                     storeType: 'shopify',
@@ -378,9 +370,7 @@ describe('queries', () => {
                 .onPost(/trackstar\/link/)
                 .reply(200, linkResponse)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useCreateTrackstarLink(),
-            )
+            const { result } = renderHook(() => useCreateTrackstarLink())
 
             act(() => {
                 result.current.mutate([
@@ -409,9 +399,7 @@ describe('queries', () => {
                 .onPost(/trackstar\/token/)
                 .reply(200, tokenResponse)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useCreateTrackstarToken(),
-            )
+            const { result } = renderHook(() => useCreateTrackstarToken())
 
             act(() => {
                 result.current.mutate([
@@ -441,7 +429,7 @@ describe('queries', () => {
                     return [200, mockResponse]
                 })
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useGetStoreWorkflowsConfigurations({
                     storeName: 'test-store',
                     storeType: 'shopify',
@@ -466,7 +454,7 @@ describe('queries', () => {
                     return [200, mockResponse]
                 })
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useGetStoreWorkflowsConfigurations({
                     storeName: 'test-store',
                     storeType: 'shopify',
@@ -491,7 +479,7 @@ describe('queries', () => {
                     return [200, mockResponse]
                 })
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useGetStoreWorkflowsConfigurations({
                     storeName: 'test-store',
                     storeType: 'shopify',

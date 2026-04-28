@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import _noop from 'lodash/noop'
-
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { visualBuilderGraphSimpleChoicesFixture } from '../../tests/visualBuilderGraph.fixtures'
 import {
@@ -11,7 +10,7 @@ import {
 describe('useVisualBuilder()', () => {
     describe('checkNewVisualBuilderNode()', () => {
         it('should return true if graph is new', () => {
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useVisualBuilder(
                     visualBuilderGraphSimpleChoicesFixture,
                     _noop,
@@ -25,7 +24,7 @@ describe('useVisualBuilder()', () => {
         })
 
         it('should return true if node is missing from original configuration', () => {
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useVisualBuilder(
                     visualBuilderGraphSimpleChoicesFixture,
                     _noop,
@@ -39,7 +38,7 @@ describe('useVisualBuilder()', () => {
         })
 
         it('should return false if node exists in original configuration', () => {
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useVisualBuilder(
                     visualBuilderGraphSimpleChoicesFixture,
                     _noop,

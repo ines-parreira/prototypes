@@ -1,8 +1,7 @@
-import { act } from '@repo/testing'
+import { act, renderHook } from '@repo/testing'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { executeAction } from 'state/infobar/actions'
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useDuplicateOrder } from '../useDuplicateOrder'
@@ -37,18 +36,14 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should start with modal closed and null data', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
 
         expect(result.current.isOpen).toBe(false)
         expect(result.current.data).toBeNull()
     })
 
     it('should open modal and populate data with immutable order and customer', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -69,9 +64,7 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should invoke onChange callback', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
         const callback = jest.fn()
 
         act(() => {
@@ -85,9 +78,7 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should invoke onBulkChange callback', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
         const callback = jest.fn()
 
         act(() => {
@@ -104,9 +95,7 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should not dispatch when data is null', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
 
         act(() => {
             result.current.onSubmit()
@@ -116,9 +105,7 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should dispatch executeAction with DuplicateOrder action on submit', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -137,9 +124,7 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should include order_id in submit payload', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -156,9 +141,7 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should accumulate onChange parameters in submit payload', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -178,9 +161,7 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should reset state after submit', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -194,9 +175,7 @@ describe('useDuplicateOrder', () => {
     })
 
     it('should reset state on close', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useDuplicateOrder(),
-        )
+        const { result } = renderHook(() => useDuplicateOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,8 +9,6 @@ import {
     mockListAccountSettingsHandler,
 } from '@gorgias/helpdesk-mocks'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
-
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { useIntegrationBusinessHours } from '../useIntegrationBusinessHours'
 
@@ -60,9 +59,7 @@ afterEach(() => {
 
 describe('useIntegrationBusinessHours', () => {
     it('should fetch business hours details with the provided ID', async () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useIntegrationBusinessHours(123),
-        )
+        const { result } = renderHook(() => useIntegrationBusinessHours(123))
 
         await waitFor(() => {
             expect(result.current.businessHours).toEqual(
@@ -73,9 +70,7 @@ describe('useIntegrationBusinessHours', () => {
     })
 
     it('should fetch account business hours without provided ID', async () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useIntegrationBusinessHours(null),
-        )
+        const { result } = renderHook(() => useIntegrationBusinessHours(null))
 
         await waitFor(() => {
             expect(result.current.name).toEqual('Default')

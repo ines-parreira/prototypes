@@ -1,8 +1,7 @@
-import { act } from '@repo/testing'
+import { act, renderHook } from '@repo/testing'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { executeAction } from 'state/infobar/actions'
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useEditOrder } from '../useEditOrder'
@@ -36,18 +35,14 @@ describe('useEditOrder', () => {
     })
 
     it('should start with modal closed and null data', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
 
         expect(result.current.isOpen).toBe(false)
         expect(result.current.data).toBeNull()
     })
 
     it('should open modal and populate data with immutable order and customer', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -68,9 +63,7 @@ describe('useEditOrder', () => {
     })
 
     it('should invoke onChange callback', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
         const callback = jest.fn()
 
         act(() => {
@@ -84,9 +77,7 @@ describe('useEditOrder', () => {
     })
 
     it('should invoke onBulkChange callback', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
         const callback = jest.fn()
 
         act(() => {
@@ -103,9 +94,7 @@ describe('useEditOrder', () => {
     })
 
     it('should not dispatch when data is null', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
 
         act(() => {
             result.current.onSubmit()
@@ -115,9 +104,7 @@ describe('useEditOrder', () => {
     })
 
     it('should dispatch executeAction with EditOrder action on submit', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -136,9 +123,7 @@ describe('useEditOrder', () => {
     })
 
     it('should include order_id in submit payload', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -155,9 +140,7 @@ describe('useEditOrder', () => {
     })
 
     it('should accumulate onChange parameters in submit payload', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -177,9 +160,7 @@ describe('useEditOrder', () => {
     })
 
     it('should reset state after submit', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -193,9 +174,7 @@ describe('useEditOrder', () => {
     })
 
     it('should reset state on close', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useEditOrder(),
-        )
+        const { result } = renderHook(() => useEditOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)

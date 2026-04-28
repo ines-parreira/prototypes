@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 import { getInstallationStatus } from 'state/integrations/actions'
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { useInstallationStatus } from './useInstallationStatus'
 
@@ -27,9 +27,7 @@ describe('useInstallationStatus', () => {
     })
 
     it('returns FALLBACK when appId is undefined and does not call getInstallationStatus', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useInstallationStatus(undefined),
-        )
+        const { result } = renderHook(() => useInstallationStatus(undefined))
 
         expect(result.current).toEqual(FALLBACK)
         expect(mockGetInstallationStatus).not.toHaveBeenCalled()
@@ -38,9 +36,7 @@ describe('useInstallationStatus', () => {
     it('returns FALLBACK while query is loading', () => {
         mockGetInstallationStatus.mockReturnValue(new Promise(() => {}))
 
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useInstallationStatus('app-123'),
-        )
+        const { result } = renderHook(() => useInstallationStatus('app-123'))
 
         expect(result.current).toEqual(FALLBACK)
     })
@@ -56,9 +52,7 @@ describe('useInstallationStatus', () => {
             isDuringBusinessHours: false,
         })
 
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useInstallationStatus('app-123'),
-        )
+        const { result } = renderHook(() => useInstallationStatus('app-123'))
 
         await waitFor(() => {
             expect(result.current.installed).toBe(false)
@@ -84,9 +78,7 @@ describe('useInstallationStatus', () => {
             isDuringBusinessHours: false,
         })
 
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useInstallationStatus('app-456'),
-        )
+        const { result } = renderHook(() => useInstallationStatus('app-456'))
 
         await waitFor(() => {
             expect(result.current.minimumSnippetVersion).toBeNull()
@@ -111,9 +103,7 @@ describe('useInstallationStatus', () => {
             isDuringBusinessHours: true,
         })
 
-        renderHookWithQueryClientProvider(() =>
-            useInstallationStatus('my-app-id'),
-        )
+        renderHook(() => useInstallationStatus('my-app-id'))
 
         await waitFor(() => {
             expect(mockGetInstallationStatus).toHaveBeenCalledWith('my-app-id')

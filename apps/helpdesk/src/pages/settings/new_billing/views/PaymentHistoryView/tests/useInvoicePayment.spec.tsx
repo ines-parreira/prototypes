@@ -1,10 +1,10 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import type { Invoice } from 'state/billing/types'
 import { PaymentIntentStatus, PaymentType } from 'state/billing/types'
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { useInvoicePayment } from '../hooks/useInvoicePayment'
 
@@ -94,29 +94,25 @@ afterAll(() => server.close())
 describe('useInvoicePayment', () => {
     describe('initial state', () => {
         it('returns isLoading=true before data is fetched', () => {
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             expect(result.current.isLoading).toBe(false)
         })
 
         it('returns empty invoices before data is fetched', () => {
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             expect(result.current.invoices).toEqual([])
         })
 
         it('returns hasPrevPage=false initially', () => {
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             expect(result.current.hasPrevPage).toBe(false)
         })
 
         it('returns invoiceBeingPaid=null initially', () => {
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             expect(result.current.invoiceBeingPaid).toBeNull()
         })
@@ -126,8 +122,7 @@ describe('useInvoicePayment', () => {
         it('returns isLoading=false after first page is fetched', async () => {
             setupSinglePageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -138,8 +133,7 @@ describe('useInvoicePayment', () => {
         it('returns invoices from the first page', async () => {
             setupSinglePageHandler([page1Invoice])
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -151,8 +145,7 @@ describe('useInvoicePayment', () => {
         it('returns hasNextPage=false when next_cursor is null', async () => {
             setupSinglePageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -164,8 +157,7 @@ describe('useInvoicePayment', () => {
         it('returns hasNextPage=true when next_cursor is present', async () => {
             setupMultiPageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -177,8 +169,7 @@ describe('useInvoicePayment', () => {
         it('returns hasPrevPage=false on first page', async () => {
             setupSinglePageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -192,8 +183,7 @@ describe('useInvoicePayment', () => {
         it('goToNextPage fetches next page and shows page 2 invoices', async () => {
             setupMultiPageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -212,8 +202,7 @@ describe('useInvoicePayment', () => {
         it('goToNextPage sets hasPrevPage=true after navigating to page 2', async () => {
             setupMultiPageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -230,8 +219,7 @@ describe('useInvoicePayment', () => {
         it('goToNextPage sets hasNextPage=false when on last page', async () => {
             setupMultiPageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -248,8 +236,7 @@ describe('useInvoicePayment', () => {
         it('goToPrevPage navigates back to page 1 from page 2', async () => {
             setupMultiPageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -276,8 +263,7 @@ describe('useInvoicePayment', () => {
         it('goToPrevPage sets hasPrevPage=false when back on page 1', async () => {
             setupMultiPageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -300,8 +286,7 @@ describe('useInvoicePayment', () => {
         it('goToPrevPage does nothing when already on the first page', async () => {
             setupSinglePageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -319,8 +304,7 @@ describe('useInvoicePayment', () => {
         it('goToNextPage does nothing when hasNextPage is false', async () => {
             setupSinglePageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -338,8 +322,7 @@ describe('useInvoicePayment', () => {
         it('resetPagination returns to page 1 after navigating to page 2', async () => {
             setupMultiPageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -367,8 +350,7 @@ describe('useInvoicePayment', () => {
         it('goToNextPage navigates to already-cached page without fetching again', async () => {
             setupMultiPageHandler()
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -413,8 +395,7 @@ describe('useInvoicePayment', () => {
                 }),
             )
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -443,8 +424,7 @@ describe('useInvoicePayment', () => {
             setupSinglePageHandler([invoice])
             mockPayInvoice.mockResolvedValue(undefined)
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -464,8 +444,7 @@ describe('useInvoicePayment', () => {
             mockPayInvoice.mockRejectedValue({ response: { status: 402 } })
             mockConfirmInvoicePayment.mockResolvedValue({ toJS: () => ({}) })
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -485,8 +464,7 @@ describe('useInvoicePayment', () => {
             const error = { response: { status: 500 } }
             mockPayInvoice.mockRejectedValue(error)
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -505,8 +483,7 @@ describe('useInvoicePayment', () => {
             setupSinglePageHandler([invoice])
             mockPayInvoice.mockRejectedValue({ response: { status: 500 } })
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => expect(result.current.isLoading).toBe(false))
 
@@ -530,8 +507,7 @@ describe('useInvoicePayment', () => {
                 }),
             )
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -568,8 +544,7 @@ describe('useInvoicePayment', () => {
             window.location = { href: originalLocation } as unknown as string &
                 Location
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -590,8 +565,7 @@ describe('useInvoicePayment', () => {
                 toJS: () => ({ payment_confirmation_url: null }),
             })
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -612,8 +586,7 @@ describe('useInvoicePayment', () => {
                 new Error('Payment failed'),
             )
 
-            const { result } =
-                renderHookWithQueryClientProvider(useInvoicePayment)
+            const { result } = renderHook(useInvoicePayment)
 
             await waitFor(() => expect(result.current.isLoading).toBe(false))
 

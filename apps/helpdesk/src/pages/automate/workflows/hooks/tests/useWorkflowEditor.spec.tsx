@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import type { AxiosError } from 'axios'
 import { produce } from 'immer'
@@ -16,10 +17,7 @@ import {
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import {
-    renderHookWithQueryClientProvider,
-    renderWithQueryClientProvider,
-} from 'tests/reactQueryTestingUtils'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import {
     createWorkflowEditorContextForPreview,
@@ -110,9 +108,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             expect(result.current.configuration.name).toEqual('')
         })
@@ -123,9 +119,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             expect(result.current.configuration.is_draft).toBe(true)
             expect(result.current.currentLanguage).toBe('en-US')
@@ -137,9 +131,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             expect(result.current.configuration.name).toEqual('')
             expect(result.current.configuration.is_draft).toBe(true)
@@ -159,7 +151,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor('existing-workflow', false),
             )
 
@@ -172,7 +164,7 @@ describe('useWorkflowEditor', () => {
                 data: null, // No remote configuration found
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(
+            const { result } = renderHook(
                 () => useWorkflowEditor('non-existent-id', false), // Not new, but no remote data
             )
 
@@ -244,7 +236,7 @@ describe('useWorkflowEditor', () => {
                     }),
             } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(configuration.id, false),
             )
 
@@ -316,7 +308,7 @@ describe('useWorkflowEditor', () => {
                 data: publishedConfiguration,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(publishedConfiguration.id, false),
             )
 
@@ -351,7 +343,7 @@ describe('useWorkflowEditor', () => {
                 data: publishedConfig,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(publishedConfig.id, false),
             )
 
@@ -425,7 +417,7 @@ describe('useWorkflowEditor', () => {
                     }),
             } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-            const { result, rerender } = renderHookWithQueryClientProvider(() =>
+            const { result, rerender } = renderHook(() =>
                 useWorkflowEditor(configuration.id, false),
             )
 
@@ -546,7 +538,7 @@ describe('useWorkflowEditor', () => {
                     }),
             } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(configuration.id, false),
             )
 
@@ -605,7 +597,7 @@ describe('useWorkflowEditor', () => {
                 data: configWithCustomLanguage,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(configWithCustomLanguage.id, false),
             )
 
@@ -637,7 +629,7 @@ describe('useWorkflowEditor', () => {
                 data: configWithCustomLanguage,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(configWithCustomLanguage.id, false),
             )
 
@@ -652,9 +644,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             act(() => {
                 result.current.switchLanguage('es-ES')
@@ -669,9 +659,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             expect(() => {
                 act(() => {
@@ -686,9 +674,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             await waitFor(() => {
                 expect(result.current.translateKey).toBeDefined()
@@ -707,9 +693,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             await waitFor(() => {
                 expect(result.current.translateGraph).toBeDefined()
@@ -830,7 +814,7 @@ describe('useWorkflowEditor', () => {
                     }),
             } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(configuration.id, false),
             )
 
@@ -1062,7 +1046,7 @@ describe('useWorkflowEditor', () => {
             // Mock mapServerErrorsToGraph to return null (non-validation error)
             mockMapServerErrorsToGraph.mockReturnValue(null)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(testConfig.id, false),
             )
 
@@ -1121,9 +1105,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             // Make the workflow dirty
             act(() => {
@@ -1216,9 +1198,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             expect(result.current.isTesting).toBe(false)
 
@@ -1241,9 +1221,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             act(() => {
                 result.current.setIsTesting(true)
@@ -1268,9 +1246,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             expect(result.current.isFlowPublishingInChannels).toBe(false)
 
@@ -1293,9 +1269,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             act(() => {
                 result.current.setFlowPublishingInChannels(true)
@@ -1324,9 +1298,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             expect(result.current.zoom).toBe(1)
 
@@ -1349,9 +1321,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             expect(result.current.workflowStepMetrics).toBeNull()
 
@@ -1397,9 +1367,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             act(() => {
                 result.current.handleDiscard()
@@ -1449,7 +1417,7 @@ describe('useWorkflowEditor', () => {
                 data: largeConfiguration,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(largeConfiguration.id, false),
             )
 
@@ -1501,7 +1469,7 @@ describe('useWorkflowEditor', () => {
                 data: smallConfiguration,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(smallConfiguration.id, false),
             )
 
@@ -1550,7 +1518,7 @@ describe('useWorkflowEditor', () => {
                 data: multiLangConfig,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(multiLangConfig.id, false),
             )
 
@@ -1570,9 +1538,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             await waitFor(() => {
                 expect(result.current.translationSizeToLimitRate).toBeDefined()
@@ -1592,9 +1558,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             await waitFor(() => {
                 expect(result.current.handleValidateSize).toBeDefined()
@@ -1615,9 +1579,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             await waitFor(() => {
                 expect(result.current.handleValidateSize).toBeDefined()
@@ -1676,7 +1638,7 @@ describe('useWorkflowEditor', () => {
                 shopifyIntegration,
             )
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(configurationWithoutShopify.id, false),
             )
 
@@ -1730,7 +1692,7 @@ describe('useWorkflowEditor', () => {
                 shopifyIntegration,
             )
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(configurationWithShopify.id, false),
             )
 
@@ -1783,7 +1745,7 @@ describe('useWorkflowEditor', () => {
                 data: multiLanguageConfiguration,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(multiLanguageConfiguration.id, false),
             )
 
@@ -1802,9 +1764,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             act(() => {
                 const isValid = result.current.handleValidate(true)
@@ -1818,9 +1778,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             const sizeError = result.current.handleValidateSize()
             expect(sizeError).toBeUndefined()
@@ -1862,7 +1820,7 @@ describe('useWorkflowEditor', () => {
                 data: multiLangConfig,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(multiLangConfig.id, false),
             )
 
@@ -1885,9 +1843,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             // Since it's not dirty, handleSave should return early
             const saveResult = await result.current.handleSave()
@@ -1900,9 +1856,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             const saveResult = await result.current.handleSave()
             expect(saveResult).toBeUndefined()
@@ -1922,9 +1876,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             // Make the workflow dirty by changing the name
             act(() => {
@@ -1961,9 +1913,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             // Make the workflow dirty by changing the name
             act(() => {
@@ -2014,9 +1964,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(ulid(), true),
-            )
+            const { result } = renderHook(() => useWorkflowEditor(ulid(), true))
 
             // Make the workflow dirty
             act(() => {
@@ -2075,7 +2023,7 @@ describe('useWorkflowEditor', () => {
                 data: undefined,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(
+            const { result } = renderHook(
                 () => useWorkflowEditor(ulid(), true), // New workflow
             )
 
@@ -2128,7 +2076,7 @@ describe('useWorkflowEditor', () => {
                 data: existingConfig,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(
+            const { result } = renderHook(
                 () => useWorkflowEditor(existingConfig.id, false), // Existing workflow
             )
 
@@ -2244,7 +2192,7 @@ describe('useWorkflowEditor', () => {
                 data: multiLangConfig,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(multiLangConfig.id, false),
             )
 
@@ -2296,7 +2244,7 @@ describe('useWorkflowEditor', () => {
                 data: multiLangConfig,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor(multiLangConfig.id, false),
             )
 
@@ -2319,7 +2267,7 @@ describe('useWorkflowEditor', () => {
                 data: null,
             } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-            const { result } = renderHookWithQueryClientProvider(() =>
+            const { result } = renderHook(() =>
                 useWorkflowEditor('non-existent-id', false),
             )
 

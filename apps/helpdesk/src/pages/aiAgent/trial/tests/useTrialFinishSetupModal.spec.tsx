@@ -1,5 +1,5 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { create } from 'react-test-renderer'
 
@@ -11,7 +11,6 @@ import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/
 import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialFinishSetupModal } from 'pages/aiAgent/trial/hooks/useTrialFinishSetupModal'
-import { renderHookWithRouter } from 'tests/renderHookWithRouter'
 
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
@@ -89,7 +88,7 @@ describe('useTrialFinishSetupModal', () => {
 
     describe('Shopping Assistant trial type', () => {
         it('should return correct modal props when AI agent is onboarded', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal(mockPropsShoppingAssistant),
             )
 
@@ -112,7 +111,7 @@ describe('useTrialFinishSetupModal', () => {
                 isTrialFinishSetupModalOpen: true,
             })
 
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal(mockPropsShoppingAssistant),
             )
 
@@ -125,7 +124,7 @@ describe('useTrialFinishSetupModal', () => {
                 closeTrialFinishSetupModal: mockCloseTrialFinishSetupModal,
             } as unknown as UseShoppingAssistantTrialFlowReturn)
 
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal(mockPropsShoppingAssistant),
             )
 
@@ -139,7 +138,7 @@ describe('useTrialFinishSetupModal', () => {
                 closeTrialFinishSetupModal: mockCloseTrialFinishSetupModal,
             } as unknown as UseShoppingAssistantTrialFlowReturn)
 
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal(mockPropsShoppingAssistant),
             )
 
@@ -148,7 +147,7 @@ describe('useTrialFinishSetupModal', () => {
         })
 
         it('should work without storeName', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal({
                     trialType: TrialType.ShoppingAssistant,
                     isOnboarded: true,
@@ -173,7 +172,7 @@ describe('useTrialFinishSetupModal', () => {
                     isOnboarded: false,
                 }
 
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHook(() =>
                     useTrialFinishSetupModal(mockPropsNotOnboarded),
                 )
 
@@ -220,7 +219,7 @@ describe('useTrialFinishSetupModal', () => {
                     isOnboarded: false,
                 }
 
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHook(() =>
                     useTrialFinishSetupModal(mockPropsNotOnboarded),
                 )
 
@@ -250,7 +249,7 @@ describe('useTrialFinishSetupModal', () => {
 
     describe('AI Agent trial type', () => {
         it('should return correct modal props', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal(mockPropsAiAgent),
             )
 
@@ -273,7 +272,7 @@ describe('useTrialFinishSetupModal', () => {
                 isTrialFinishSetupModalOpen: true,
             })
 
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal(mockPropsAiAgent),
             )
 
@@ -286,7 +285,7 @@ describe('useTrialFinishSetupModal', () => {
                 closeTrialFinishSetupModal: mockCloseTrialFinishSetupModal,
             } as unknown as UseShoppingAssistantTrialFlowReturn)
 
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal(mockPropsAiAgent),
             )
 
@@ -300,7 +299,7 @@ describe('useTrialFinishSetupModal', () => {
                 closeTrialFinishSetupModal: mockCloseTrialFinishSetupModal,
             } as unknown as UseShoppingAssistantTrialFlowReturn)
 
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal(mockPropsAiAgent),
             )
 
@@ -309,7 +308,7 @@ describe('useTrialFinishSetupModal', () => {
         })
 
         it('should work without storeName', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHook(() =>
                 useTrialFinishSetupModal({
                     trialType: TrialType.AiAgent,
                     isOnboarded: undefined,

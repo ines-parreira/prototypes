@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -6,8 +7,6 @@ import {
     mockBusinessHoursDetails,
     mockDeleteBusinessHoursHandler,
 } from '@gorgias/helpdesk-mocks'
-
-import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import useDeleteCustomBusinessHours from '../useDeleteCustomBusinessHours'
 
@@ -44,7 +43,7 @@ const businessHours = mockBusinessHoursDetails()
 describe('useDeleteCustomBusinessHours', () => {
     it('should handle success correctly', async () => {
         const onSuccess = jest.fn()
-        const { result } = renderHookWithQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDeleteCustomBusinessHours(businessHours, onSuccess),
         )
         await act(async () => {
@@ -66,7 +65,7 @@ describe('useDeleteCustomBusinessHours', () => {
         )
         server.use(mockDeleteBusinessHoursError.handler)
 
-        const { result } = renderHookWithQueryClientProvider(() =>
+        const { result } = renderHook(() =>
             useDeleteCustomBusinessHours(businessHours),
         )
 

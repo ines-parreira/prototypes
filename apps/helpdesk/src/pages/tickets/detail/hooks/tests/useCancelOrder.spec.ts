@@ -10,10 +10,7 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { executeAction } from 'state/infobar/actions'
-import {
-    mockQueryClientProvider,
-    renderHookWithQueryClientProvider,
-} from 'tests/reactQueryTestingUtils'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useCancelOrder } from '../useCancelOrder'
@@ -38,18 +35,14 @@ describe('useCancelOrder', () => {
     })
 
     it('should start with modal closed and null data', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
 
         expect(result.current.isOpen).toBe(false)
         expect(result.current.data).toBeNull()
     })
 
     it('should open modal and populate data', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -62,9 +55,7 @@ describe('useCancelOrder', () => {
     })
 
     it('should invoke onChange callback', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
         const callback = jest.fn()
 
         act(() => {
@@ -78,9 +69,7 @@ describe('useCancelOrder', () => {
     })
 
     it('should invoke onBulkChange callback', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
         const callback = jest.fn()
 
         act(() => {
@@ -97,9 +86,7 @@ describe('useCancelOrder', () => {
     })
 
     it('should not dispatch when data is null', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
 
         act(() => {
             result.current.onSubmit()
@@ -109,9 +96,7 @@ describe('useCancelOrder', () => {
     })
 
     it('should dispatch executeAction with CancelOrder action on submit', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -130,9 +115,7 @@ describe('useCancelOrder', () => {
     })
 
     it('should accumulate onChange parameters in submit payload', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -152,9 +135,7 @@ describe('useCancelOrder', () => {
     })
 
     it('should reset state after submit', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -168,9 +149,7 @@ describe('useCancelOrder', () => {
     })
 
     it('should reset state on close', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useCancelOrder(),
-        )
+        const { result } = renderHook(() => useCancelOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)

@@ -10,10 +10,7 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { executeAction } from 'state/infobar/actions'
-import {
-    mockQueryClientProvider,
-    renderHookWithQueryClientProvider,
-} from 'tests/reactQueryTestingUtils'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useRefundOrder } from '../useRefundOrder'
@@ -38,18 +35,14 @@ describe('useRefundOrder', () => {
     })
 
     it('should start with modal closed and null data', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
 
         expect(result.current.isOpen).toBe(false)
         expect(result.current.data).toBeNull()
     })
 
     it('should open modal and populate data', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -62,9 +55,7 @@ describe('useRefundOrder', () => {
     })
 
     it('should invoke onChange callback', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
         const callback = jest.fn()
 
         act(() => {
@@ -78,9 +69,7 @@ describe('useRefundOrder', () => {
     })
 
     it('should invoke onBulkChange callback', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
         const callback = jest.fn()
 
         act(() => {
@@ -97,9 +86,7 @@ describe('useRefundOrder', () => {
     })
 
     it('should not dispatch when data is null', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
 
         act(() => {
             result.current.onSubmit()
@@ -109,9 +96,7 @@ describe('useRefundOrder', () => {
     })
 
     it('should dispatch executeAction with RefundOrder action on submit', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -130,9 +115,7 @@ describe('useRefundOrder', () => {
     })
 
     it('should set financialStatus to "refunded" when refund amount covers the total', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -156,9 +139,7 @@ describe('useRefundOrder', () => {
     })
 
     it('should reset state after submit', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
@@ -172,9 +153,7 @@ describe('useRefundOrder', () => {
     })
 
     it('should reset state on close', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useRefundOrder(),
-        )
+        const { result } = renderHook(() => useRefundOrder())
 
         act(() => {
             result.current.open(testIntegrationId, testOrder)
