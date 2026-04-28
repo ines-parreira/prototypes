@@ -1,6 +1,7 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
     AblyErrorReporting = 'linear.project_migrate-pubnub-based-features-to-ably.enable-ably-error-reporting',
+    AblyFailedStateReporting = 'linear-project_migrate-real-time-features-to-ably-enable-ably-failed-state-reporting',
     AblyRealtimeLogging = 'linear.project_poc-migrate-activity-to-ably.enable-realtime-ably-logging',
     ActionEventsLogs = 'action-events-logs',
     Actions3plObjects = 'actions-3pl-objects',

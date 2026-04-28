@@ -24,12 +24,23 @@ const AblyRealtimeProviders = ({ children }: Props) => {
     const isAblyRealtimeErrorReportingEnabled = useFlag(
         FeatureFlagKey.AblyErrorReporting,
     )
+    const isAblyFailedStateReportingEnabled = useFlag(
+        FeatureFlagKey.AblyFailedStateReporting,
+    )
 
     const isErrorReportingEnabled = useRef(isAblyRealtimeErrorReportingEnabled)
+    const isFailedStateReportingEnabled = useRef(
+        isAblyFailedStateReportingEnabled,
+    )
 
     useEffect(() => {
         isErrorReportingEnabled.current = isAblyRealtimeErrorReportingEnabled
     }, [isAblyRealtimeErrorReportingEnabled])
+
+    useEffect(() => {
+        isFailedStateReportingEnabled.current =
+            isAblyFailedStateReportingEnabled
+    }, [isAblyFailedStateReportingEnabled])
 
     const logHandler = useCallback((message: string) => {
         if (isErrorReportingEnabled.current) {
@@ -49,7 +60,7 @@ const AblyRealtimeProviders = ({ children }: Props) => {
             onRealtimeConnectionStateChange(stateChange)
 
             if (
-                isErrorReportingEnabled.current &&
+                isFailedStateReportingEnabled.current &&
                 stateChange.current === 'failed'
             ) {
                 reportError(new Error('RealtimeFailedConnectionState'), {

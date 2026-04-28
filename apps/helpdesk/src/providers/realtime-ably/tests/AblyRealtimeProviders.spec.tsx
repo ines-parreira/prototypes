@@ -153,9 +153,9 @@ describe('AblyRealtimeProviders', () => {
             })
         })
 
-        it('should call reportError when the connection fails and error reporting is enabled', () => {
+        it('should call reportError when the connection fails and failed state reporting is enabled', () => {
             mockUseFlag.mockImplementation((flag) => {
-                return flag === FeatureFlagKey.AblyErrorReporting
+                return flag === FeatureFlagKey.AblyFailedStateReporting
             })
 
             render(<AblyRealtimeProviders>foo</AblyRealtimeProviders>)
@@ -186,7 +186,7 @@ describe('AblyRealtimeProviders', () => {
 
         it('should not call reportError when the connection does not fail', () => {
             mockUseFlag.mockImplementation((flag) => {
-                return flag === FeatureFlagKey.AblyErrorReporting
+                return flag === FeatureFlagKey.AblyFailedStateReporting
             })
 
             render(<AblyRealtimeProviders>foo</AblyRealtimeProviders>)
@@ -199,7 +199,7 @@ describe('AblyRealtimeProviders', () => {
             expect(mockReportError).not.toHaveBeenCalled()
         })
 
-        it('should not call reportError when error reporting is disabled', () => {
+        it('should not call reportError when failed state reporting is disabled', () => {
             mockUseFlag.mockReturnValue(false)
 
             render(<AblyRealtimeProviders>foo</AblyRealtimeProviders>)
