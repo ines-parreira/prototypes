@@ -1,5 +1,5 @@
 import { reportError } from '@repo/logging'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

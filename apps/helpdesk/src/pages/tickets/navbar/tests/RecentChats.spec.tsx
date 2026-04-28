@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 

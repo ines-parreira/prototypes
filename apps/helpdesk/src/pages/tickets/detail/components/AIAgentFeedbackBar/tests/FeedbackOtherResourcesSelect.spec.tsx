@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { UseAIAgentGetOtherResourcesProps } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'

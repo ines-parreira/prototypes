@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
 
+import { render } from '@repo/testing'
 import type {
     TicketThreadAiAgentDraftMessageParams,
     TicketThreadAiAgentTrialMessageParams,
 } from '@repo/ticket-thread/legacy-bridge'
 import { TicketThreadLegacyBridgeProvider } from '@repo/ticket-thread/legacy-bridge'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
 import useAppDispatch from 'hooks/useAppDispatch'

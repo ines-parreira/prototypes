@@ -1,7 +1,7 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { isDesktopDevice } from '@repo/utils'
 import { isDeviceReady } from '@repo/voice'
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useHasPhone from 'hooks/useHasPhone'

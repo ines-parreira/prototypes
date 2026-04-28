@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'

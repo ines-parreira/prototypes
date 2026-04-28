@@ -2,7 +2,8 @@ import type { ComponentProps } from 'react'
 import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 

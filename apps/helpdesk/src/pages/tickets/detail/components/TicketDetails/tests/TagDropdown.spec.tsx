@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { useConditionalShortcuts } from '@repo/utils'
-import { render, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import type { Tag, TicketTag } from '@gorgias/helpdesk-queries'

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import type { MacroAction } from '@gorgias/helpdesk-types'
 import { MacroActionType } from '@gorgias/helpdesk-types'

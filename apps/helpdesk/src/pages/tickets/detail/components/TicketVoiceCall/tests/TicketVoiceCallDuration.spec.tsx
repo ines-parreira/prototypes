@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, screen, waitFor } from '@testing-library/react'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 

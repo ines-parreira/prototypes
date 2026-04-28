@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { MemoryRouter } from 'react-router-dom'

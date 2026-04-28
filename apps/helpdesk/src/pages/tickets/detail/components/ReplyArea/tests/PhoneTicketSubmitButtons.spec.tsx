@@ -1,9 +1,8 @@
 import React from 'react'
 
 import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { isDeviceReady } from '@repo/voice'
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import type { MockStoreEnhanced } from 'redux-mock-store'

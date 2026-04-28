@@ -2,10 +2,9 @@ import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import { logEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import type { Map as ImmutableMap } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -158,23 +157,19 @@ describe('<TicketSubmitButtons />', () => {
             submit?: jest.Mock
         },
     ) => {
-        const user = userEvent.setup()
-        return {
-            user,
-            ...render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <TicketsLegacyBridgeProvider {...legacyBridgeTestProps}>
-                            <QueryClientProvider client={testQueryClient}>
-                                <TicketSubmitButtons
-                                    submit={props?.submit ?? mockSubmit}
-                                />
-                            </QueryClientProvider>
-                        </TicketsLegacyBridgeProvider>
-                    </Provider>
-                </MemoryRouter>,
-            ),
-        }
+        return render(
+            <MemoryRouter>
+                <Provider store={store}>
+                    <TicketsLegacyBridgeProvider {...legacyBridgeTestProps}>
+                        <QueryClientProvider client={testQueryClient}>
+                            <TicketSubmitButtons
+                                submit={props?.submit ?? mockSubmit}
+                            />
+                        </QueryClientProvider>
+                    </TicketsLegacyBridgeProvider>
+                </Provider>
+            </MemoryRouter>,
+        )
     }
 
     const state = {

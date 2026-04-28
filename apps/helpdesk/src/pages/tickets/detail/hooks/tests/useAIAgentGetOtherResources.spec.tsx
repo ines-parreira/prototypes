@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { useGetAICompatibleMacros } from 'models/macro/queries'

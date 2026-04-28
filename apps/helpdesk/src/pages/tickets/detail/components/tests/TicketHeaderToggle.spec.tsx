@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 import { MemoryRouter, Route, Switch } from 'react-router-dom'
 
 import { useSplitTicketView } from 'split-ticket-view-toggle'

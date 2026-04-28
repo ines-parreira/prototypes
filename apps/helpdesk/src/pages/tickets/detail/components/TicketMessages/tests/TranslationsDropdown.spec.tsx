@@ -1,9 +1,10 @@
+import { render } from '@repo/testing'
 import {
     DisplayedContent,
     FetchingState,
     useTicketMessageTranslationDisplay,
 } from '@repo/tickets'
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

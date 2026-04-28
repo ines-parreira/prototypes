@@ -29,6 +29,18 @@ exports[`<TicketSnoozePicker/> rendering should render a DatePicker and log erro
       children: undefined
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -47,6 +59,18 @@ exports[`<TicketSnoozePicker/> rendering should render the default datetime valu
       children: undefined
     </div>
   </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
 </body>
 `;
 
@@ -64,6 +88,18 @@ exports[`<TicketSnoozePicker/> rendering should render the provided value 1`] = 
       unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
       children: undefined
     </div>
+  </div>
+  <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
   </div>
 </body>
 `;

@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { Panels } from '@repo/layout'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { useHelpdeskV2MS4Flag } from '@repo/tickets/feature-flags'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 

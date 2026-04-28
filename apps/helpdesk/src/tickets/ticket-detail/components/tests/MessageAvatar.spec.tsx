@@ -1,6 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { LegacyAvatar as Avatar } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-types'

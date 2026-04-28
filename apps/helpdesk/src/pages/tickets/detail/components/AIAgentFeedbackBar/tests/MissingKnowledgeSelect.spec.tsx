@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

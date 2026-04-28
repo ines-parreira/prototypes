@@ -1,14 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { isDesktopDevice, useConditionalShortcuts } from '@repo/utils'
 import { isDeviceReady } from '@repo/voice'
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import {
     DEFAULT_ERROR_MESSAGE,

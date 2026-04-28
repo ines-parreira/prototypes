@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'

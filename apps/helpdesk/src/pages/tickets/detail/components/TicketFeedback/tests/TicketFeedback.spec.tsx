@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import useAppSelector from 'hooks/useAppSelector'

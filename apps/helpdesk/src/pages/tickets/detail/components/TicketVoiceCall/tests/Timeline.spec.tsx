@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import TimelineItem from 'pages/tickets/detail/components/TicketVoiceCall/TimelineItem'
 

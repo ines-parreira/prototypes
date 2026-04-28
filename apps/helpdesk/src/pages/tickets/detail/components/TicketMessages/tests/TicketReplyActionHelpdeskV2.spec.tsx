@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { render, screen, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, within } from '@testing-library/react'
 
 import { UserRole } from 'config/types/user'
 import { HttpMethod } from 'models/api/types'

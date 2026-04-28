@@ -1,8 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { sanitizeHtmlForFacebookMessenger } from '@repo/utils'
-import { createEvent, fireEvent, render } from '@testing-library/react'
+import { createEvent, fireEvent } from '@testing-library/react'
 import { ContentState } from 'draft-js'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'

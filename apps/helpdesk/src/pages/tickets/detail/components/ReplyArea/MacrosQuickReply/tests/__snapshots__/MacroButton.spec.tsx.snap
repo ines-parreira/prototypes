@@ -1,35 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MacroButton /> should open the popover on hover 1`] = `
-<div>
-  <div
-    class="fade"
-  >
-    <div
-      class="popover show previewPopover bs-popover-auto"
-      style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
-    >
-      <div
-        class="popover-inner"
-        role="tooltip"
-      >
-        <div
-          class="popoverBody popover-body"
-          style="max-height: fit-content; max-width: 0;"
-        >
-          <div
-            class="popoverText"
-            style="min-width: 0;"
-          >
-            Preview
-          </div>
-        </div>
-      </div>
-      <span
-        class="arrow"
-      />
-    </div>
-  </div>
+<div
+  data-name="toaster"
+  data-react-aria-top-layer="true"
+>
+  <section
+    aria-atomic="false"
+    aria-label="Notifications alt+T"
+    aria-live="polite"
+    aria-relevant="additions text"
+    tabindex="-1"
+  />
 </div>
 `;
 

@@ -1,7 +1,8 @@
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import type { TicketThreadAiAgentReasoningParams } from '@repo/ticket-thread/legacy-bridge'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { TicketVia } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'

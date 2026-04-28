@@ -1,5 +1,6 @@
+import { render } from '@repo/testing'
 import type { EnrichedTicket } from '@repo/tickets'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { TicketStatus } from '@gorgias/helpdesk-types'
 import type { TicketCompact } from '@gorgias/helpdesk-types'

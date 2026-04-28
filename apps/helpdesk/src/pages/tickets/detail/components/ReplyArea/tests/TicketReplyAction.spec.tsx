@@ -1,6 +1,7 @@
+import { render } from '@repo/testing'
 import type { QueryKey, UseQueryResult } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { createEvent, fireEvent, render, screen } from '@testing-library/react'
+import { createEvent, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

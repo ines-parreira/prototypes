@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, screen } from '@testing-library/react'
 
 import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import MetaLabel from 'pages/tickets/detail/components/TicketMessages/MetaLabel'
 

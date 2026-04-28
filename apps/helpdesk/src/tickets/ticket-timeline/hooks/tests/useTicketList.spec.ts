@@ -1,4 +1,5 @@
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import { TICKET_FETCH_STALE_TIME, TICKET_FETCHED_LIMIT } from '../../constants'
 import { useInfiniteListTickets } from '../useInfiniteListTickets'

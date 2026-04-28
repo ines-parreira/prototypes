@@ -1,8 +1,9 @@
 import { useFlag } from '@repo/feature-flags'
 import { Handle } from '@repo/layout'
 import { useTicketInfobarNavigation } from '@repo/navigation'
+import { render } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'

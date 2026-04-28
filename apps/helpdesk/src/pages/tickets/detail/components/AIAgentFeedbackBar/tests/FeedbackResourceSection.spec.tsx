@@ -1,6 +1,6 @@
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useCookies } from 'react-cookie'
 import { Provider } from 'react-redux'

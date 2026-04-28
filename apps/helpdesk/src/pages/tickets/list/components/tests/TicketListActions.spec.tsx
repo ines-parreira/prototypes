@@ -1,16 +1,9 @@
 import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import {
-    act,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-    within,
-} from '@testing-library/react'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'

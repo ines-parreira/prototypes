@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { fireEvent, getByTestId, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, getByTestId, waitFor } from '@testing-library/react'
 import { ContentState } from 'draft-js'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

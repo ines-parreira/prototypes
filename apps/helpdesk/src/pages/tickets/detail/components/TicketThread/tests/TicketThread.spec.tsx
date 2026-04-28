@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'

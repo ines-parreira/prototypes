@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import _noop from 'lodash/noop'
 

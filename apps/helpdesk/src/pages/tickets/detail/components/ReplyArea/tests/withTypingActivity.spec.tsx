@@ -1,6 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
-import { userEvent } from '@repo/testing'
-import { act, render, waitFor } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
 import type { TypingActivityProps } from '../withTypingActivity'
 import withTypingActivity from '../withTypingActivity'

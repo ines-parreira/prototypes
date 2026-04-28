@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import type { VoiceCall, VoiceCallRecording } from 'models/voiceCall/types'

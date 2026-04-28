@@ -1,7 +1,8 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

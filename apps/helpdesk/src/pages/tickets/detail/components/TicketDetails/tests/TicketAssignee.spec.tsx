@@ -1,8 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

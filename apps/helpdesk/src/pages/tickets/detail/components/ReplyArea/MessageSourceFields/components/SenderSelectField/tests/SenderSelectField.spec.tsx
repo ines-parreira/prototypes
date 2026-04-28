@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { createEvent, fireEvent, render, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { createEvent, fireEvent, waitFor } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'

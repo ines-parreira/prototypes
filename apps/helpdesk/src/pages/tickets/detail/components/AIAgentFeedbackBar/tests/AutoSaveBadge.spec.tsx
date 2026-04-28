@@ -1,4 +1,5 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'

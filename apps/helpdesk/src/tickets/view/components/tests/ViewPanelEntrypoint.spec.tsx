@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { Panels } from '@repo/layout'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { useHelpdeskV2MS4Dot5Flag } from '@repo/tickets/feature-flags'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { compressToEncodedURIComponent } from 'lz-string'

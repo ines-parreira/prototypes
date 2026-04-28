@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import type { VoiceCall } from 'models/voiceCall/types'
 import * as voiceCall from 'models/voiceCall/types'

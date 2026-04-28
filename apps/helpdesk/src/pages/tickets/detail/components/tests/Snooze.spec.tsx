@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import { useShortcuts } from '@repo/utils'
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _noop from 'lodash/noop'
 import type { Moment } from 'moment'

@@ -1,5 +1,6 @@
+import { render } from '@repo/testing'
 import { sanitizeHtmlDefault } from '@repo/utils'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { ActionTemplateExecution } from 'config'
 import { MacroActionName } from 'models/macroAction/types'

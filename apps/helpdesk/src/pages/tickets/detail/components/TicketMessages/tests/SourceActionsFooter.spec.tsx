@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import type { FacebookReactionType } from 'constants/integrations/facebook'

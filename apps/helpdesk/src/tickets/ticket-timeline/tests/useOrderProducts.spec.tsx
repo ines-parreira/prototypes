@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import type { Order, Product } from 'constants/integrations/types/shopify'

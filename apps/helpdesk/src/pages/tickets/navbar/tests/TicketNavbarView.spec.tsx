@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import type { RenderOptions } from '@testing-library/react'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useDrag } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -103,11 +102,12 @@ const nonAgentUser = fromJS({ ...agentUserFixture, role: 'viewer' })
 
 type TestProps = Partial<ComponentProps<typeof TicketNavbarView>>
 type TestState = Partial<typeof defaultState>
+type TestRenderOptions = Parameters<typeof render>[1]
 
 const renderComponent = (
     props: TestProps = {},
     initialState: TestState = {},
-    renderOptions?: RenderOptions,
+    renderOptions?: TestRenderOptions,
 ) => {
     const mergedProps = {
         view: defaultView,

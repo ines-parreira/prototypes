@@ -1,6 +1,7 @@
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import type { TicketThreadAiAgentTrialMessageParams } from '@repo/ticket-thread/legacy-bridge'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'

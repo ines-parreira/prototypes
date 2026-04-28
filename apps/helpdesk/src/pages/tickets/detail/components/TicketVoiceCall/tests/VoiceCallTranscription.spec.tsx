@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import type { VoiceCallRecording } from 'models/voiceCall/types'

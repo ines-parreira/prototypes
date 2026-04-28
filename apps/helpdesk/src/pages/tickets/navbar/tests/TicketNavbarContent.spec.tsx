@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'

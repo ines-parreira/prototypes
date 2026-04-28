@@ -1,5 +1,6 @@
 import { appQueryClient } from '@repo/api-resources'
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 

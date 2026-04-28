@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import _debounce from 'lodash/debounce'
 
 import type { ReceiverValue } from 'state/ticket/utils'

@@ -1,5 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { setTextAction } from 'fixtures/macro'
