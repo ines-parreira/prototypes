@@ -11,13 +11,14 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AxiosError, AxiosHeaders } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     basicMonthlyHelpdeskPlan,
     convertPlan1,
     smsPlan1,
     voicePlan1,
 } from 'fixtures/plans'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, ProductType } from 'models/billing/types'
 import {
@@ -42,11 +43,17 @@ jest.mock('@repo/logging', () => ({
             'billing-usage-and-plans-update-subscription-click',
     },
 }))
-jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('state/currentAccount/selectors', () => ({
     shouldPayWithShopify: jest.fn(),
     getShopifyBillingStatus: jest.fn(),
+}))
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    toast: {
+        error: jest.fn(),
+        success: jest.fn(),
+    },
 }))
 
 jest.mock('../../../components/Card', () =>
@@ -119,12 +126,13 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockUseAppSelector = jest.mocked(useAppSelector)
 const mockShouldPayWithShopify = jest.mocked(shouldPayWithShopify)
 const mockGetShopifyBillingStatus = jest.mocked(getShopifyBillingStatus)
 const mockReportError = jest.mocked(reportError)
 const mockUseFlag = jest.mocked(useFlag)
+const mockToastError = jest.mocked(toast.error)
+const mockToastSuccess = jest.mocked(toast.success)
 
 const plansByProduct: PlansByProduct = {
     [ProductType.Helpdesk]: {
@@ -138,13 +146,11 @@ const plansByProduct: PlansByProduct = {
 }
 
 describe('BillingSummaryCard', () => {
-    const mockDispatch = jest.fn()
     const updateSubscription = jest.fn()
     const mockSetUpdateProcessStarted = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseAppSelector.mockImplementation((selector: any) => selector({}))
         mockShouldPayWithShopify.mockReturnValue(false)
         mockGetShopifyBillingStatus.mockReturnValue(ShopifyBillingStatus.Active)
@@ -227,6 +233,10 @@ describe('BillingSummaryCard', () => {
         await waitFor(() => {
             expect(updateSubscription).toHaveBeenCalledTimes(1)
         })
+        expect(mockToastSuccess).toHaveBeenCalledWith(
+            'Your subscription has successfully been updated.',
+            { duration: 5000 },
+        )
 
         await waitFor(() => {
             expect(screen.getByText('closed')).toBeInTheDocument()
@@ -287,7 +297,7 @@ describe('BillingSummaryCard', () => {
         expect(screen.getByText('open')).toBeInTheDocument()
     })
 
-    it('dispatches error notification and resets updateProcessStarted on failure', async () => {
+    it('shows error toast and resets updateProcessStarted on failure', async () => {
         const user = userEvent.setup()
         updateSubscription.mockRejectedValueOnce(new Error('API error'))
 
@@ -301,9 +311,10 @@ describe('BillingSummaryCard', () => {
 
         await user.click(screen.getByRole('button', { name: /confirm modal/i }))
 
-        await waitFor(() => {
-            expect(mockDispatch).toHaveBeenCalled()
-        })
+        expect(mockToastError).toHaveBeenCalledWith(
+            "Sorry, we couldn't update your subscription. Please try again.",
+            { duration: 5000 },
+        )
 
         expect(mockSetUpdateProcessStarted).toHaveBeenCalledWith(false)
     })
@@ -541,7 +552,7 @@ describe('BillingSummaryCard', () => {
             })
         })
 
-        it('does not dispatch generic error toast or report to Sentry for the pending-invoice error', async () => {
+        it('does not show generic error toast or report to Sentry for the pending-invoice error', async () => {
             const user = userEvent.setup()
             updateSubscription.mockRejectedValueOnce(
                 makeGorgiasApiError(
@@ -564,7 +575,7 @@ describe('BillingSummaryCard', () => {
                 ).toBeInTheDocument()
             })
 
-            expect(mockDispatch).not.toHaveBeenCalled()
+            expect(mockToastError).not.toHaveBeenCalled()
             expect(mockReportError).not.toHaveBeenCalled()
         })
 
@@ -591,7 +602,7 @@ describe('BillingSummaryCard', () => {
                 ).toBeInTheDocument()
             })
 
-            expect(mockDispatch).not.toHaveBeenCalled()
+            expect(mockToastError).not.toHaveBeenCalled()
         })
 
         it('clears pending-invoice banner when modal is closed and reopened', async () => {
@@ -629,7 +640,7 @@ describe('BillingSummaryCard', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('still dispatches generic error toast and reports to Sentry for unrelated API errors', async () => {
+        it('still shows generic error toast and reports to Sentry for unrelated API errors', async () => {
             const user = userEvent.setup()
             updateSubscription.mockRejectedValueOnce(
                 makeGorgiasApiError('Something else broke'),
@@ -644,9 +655,10 @@ describe('BillingSummaryCard', () => {
                 screen.getByRole('button', { name: /confirm modal/i }),
             )
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalled()
-            })
+            expect(mockToastError).toHaveBeenCalledWith(
+                "Sorry, we couldn't update your subscription. Please try again.",
+                { duration: 5000 },
+            )
 
             expect(mockReportError).toHaveBeenCalledWith(expect.any(Error))
             expect(
@@ -671,7 +683,7 @@ describe('BillingSummaryCard', () => {
                 'subscription changes are inconsistent with existing scheduled changes',
             ],
         ])(
-            'passes versionConflictError=true when apply returns a %s error and does not dispatch a generic toast',
+            'passes versionConflictError=true when apply returns a %s error and does not show a generic toast',
             async (_label, msg) => {
                 const user = userEvent.setup()
                 updateSubscription.mockRejectedValueOnce(
@@ -695,7 +707,7 @@ describe('BillingSummaryCard', () => {
                     ).toBeInTheDocument()
                 })
 
-                expect(mockDispatch).not.toHaveBeenCalled()
+                expect(mockToastError).not.toHaveBeenCalled()
                 expect(
                     screen.queryByText('pending invoice error'),
                 ).not.toBeInTheDocument()

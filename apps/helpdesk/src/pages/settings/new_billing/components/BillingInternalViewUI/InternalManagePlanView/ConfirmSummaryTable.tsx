@@ -102,7 +102,9 @@ export function ConfirmSummaryTable({
                     errorMessage={estimateErrorMessage}
                     onRetry={onRetryEstimate}
                 >
-                    {balanceDueText}
+                    <Text className={css.highlighted} variant="bold">
+                        {balanceDueText}
+                    </Text>
                 </BalanceDueRow>
                 <Box marginTop="sm" marginBottom="sm" flexDirection="column">
                     <Text
@@ -112,7 +114,9 @@ export function ConfirmSummaryTable({
                     >
                         Prices exclusive of sales tax
                     </Text>
-                    <Separator />
+                    <Box marginTop="lg">
+                        <Separator />
+                    </Box>
                 </Box>
             </Box>
         </Box>

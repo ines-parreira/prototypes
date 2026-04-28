@@ -1,18 +1,26 @@
 import { BILLING_INTERNAL_PATH } from '@repo/billing'
 import { useHistory } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { Button, toast } from '@gorgias/axiom'
+
 import { isGorgiasApiError } from 'models/api/types'
 import { useUpdateInternalSubscription } from 'models/billing/queries'
 import type { BillingState, PlanId, ProductType } from 'models/billing/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
 const FALLBACK_MESSAGE = 'Failed to update subscription. Please try again.'
 const STALE_RESOURCE_MESSAGE =
     'This subscription was modified since you loaded this page.'
+const refreshSubscriptionButton = (
+    <Button
+        onClick={() => window.location.reload()}
+        size="sm"
+        variant="tertiary"
+    >
+        Refresh
+    </Button>
+)
 
 function buildNewPlans(
     resolvedPlans: ResolvedPlan[],
@@ -32,48 +40,26 @@ function isStaleResourceError(error: unknown): boolean {
     return typeof msg === 'string' && msg.includes('subscription got modified')
 }
 
-function dispatchApplyError(
-    error: unknown,
-    dispatch: ReturnType<typeof useAppDispatch>,
-) {
+function showApplyErrorToast(error: unknown) {
     const message = isGorgiasApiError(error)
         ? error.response.data.error.msg
         : FALLBACK_MESSAGE
 
     if (isStaleResourceError(error)) {
-        dispatch(
-            notify({
-                status: NotificationStatus.Error,
-                message: STALE_RESOURCE_MESSAGE,
-                noAutoDismiss: true,
-                showDismissButton: true,
-                buttons: [
-                    {
-                        primary: true,
-                        name: 'Refresh',
-                        onClick: () => window.location.reload(),
-                    },
-                ],
-            }),
-        )
+        toast.error(STALE_RESOURCE_MESSAGE, {
+            duration: Infinity,
+            inlineActions: refreshSubscriptionButton,
+        })
         return
     }
 
-    dispatch(
-        notify({
-            status: NotificationStatus.Error,
-            message,
-            noAutoDismiss: true,
-            showDismissButton: true,
-        }),
-    )
+    toast.error(message, { duration: Infinity })
 }
 
 export function useApplyInternalPlanChanges(
     billingState: BillingState | undefined,
     resolvedPlans: ResolvedPlan[],
 ) {
-    const dispatch = useAppDispatch()
     const history = useHistory()
     const { mutateAsync, isLoading } = useUpdateInternalSubscription()
 
@@ -87,15 +73,10 @@ export function useApplyInternalPlanChanges(
                 invoice: { generate: generateInvoice },
             })
 
-            dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Subscription updated',
-                }),
-            )
+            toast.success('Subscription updated')
             history.push(BILLING_INTERNAL_PATH)
         } catch (err) {
-            dispatchApplyError(err, dispatch)
+            showApplyErrorToast(err)
         }
     }
 

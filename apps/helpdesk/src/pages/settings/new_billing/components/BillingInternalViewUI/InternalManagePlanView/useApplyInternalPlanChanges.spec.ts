@@ -2,16 +2,15 @@ import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
+import { Button, toast } from '@gorgias/axiom'
+
 import {
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
     voicePlan0,
 } from 'fixtures/plans'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpdateInternalSubscription } from 'models/billing/queries'
 import { ProductType } from 'models/billing/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useApplyInternalPlanChanges } from './useApplyInternalPlanChanges'
 import type { ResolvedPlan } from './useInternalPlanEditor'
@@ -21,17 +20,20 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ push: mockPush }),
 }))
-jest.mock('hooks/useAppDispatch')
 jest.mock('models/billing/queries')
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn((payload) => ({ type: 'NOTIFY', payload })),
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    toast: {
+        dismiss: jest.fn(),
+        error: jest.fn(),
+        success: jest.fn(),
+    },
 }))
 
-const mockDispatch = jest.fn()
 const mockMutateAsync = jest.fn()
-const mockNotify = assumeMock(notify)
+const mockToastError = assumeMock(toast.error)
+const mockToastSuccess = assumeMock(toast.success)
 
-const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockUseUpdateInternalSubscription = assumeMock(
     useUpdateInternalSubscription,
 )
@@ -65,7 +67,6 @@ const resolvedPlans: ResolvedPlan[] = [
 
 beforeEach(() => {
     jest.clearAllMocks()
-    mockUseAppDispatch.mockReturnValue(mockDispatch)
     mockUseUpdateInternalSubscription.mockReturnValue({
         mutateAsync: mockMutateAsync,
         isLoading: false,
@@ -123,18 +124,13 @@ describe('useApplyInternalPlanChanges', () => {
 
         await act(() => result.current.apply(true))
 
-        expect(mockNotify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                status: NotificationStatus.Success,
-                message: 'Subscription updated',
-            }),
-        )
+        expect(mockToastSuccess).toHaveBeenCalledWith('Subscription updated')
         expect(mockPush).toHaveBeenCalledWith(
             expect.stringContaining('internal'),
         )
     })
 
-    it('dispatches stale-state toast with Refresh button when BE reports modified subscription', async () => {
+    it('shows stale-state toast with Refresh button when BE reports modified subscription', async () => {
         const staleError = {
             isAxiosError: true,
             response: {
@@ -153,24 +149,24 @@ describe('useApplyInternalPlanChanges', () => {
 
         await act(() => result.current.apply(true))
 
-        expect(mockNotify).toHaveBeenCalledWith(
+        expect(mockToastError).toHaveBeenCalledWith(
+            'This subscription was modified since you loaded this page.',
             expect.objectContaining({
-                status: NotificationStatus.Error,
-                message:
-                    'This subscription was modified since you loaded this page.',
-                noAutoDismiss: true,
-                showDismissButton: true,
-                buttons: [
-                    expect.objectContaining({
-                        name: 'Refresh',
+                duration: Infinity,
+                inlineActions: expect.objectContaining({
+                    props: expect.objectContaining({
+                        children: 'Refresh',
+                        size: 'sm',
+                        variant: 'tertiary',
                     }),
-                ],
+                    type: Button,
+                }),
             }),
         )
         expect(mockPush).not.toHaveBeenCalled()
     })
 
-    it('dispatches toast with BE error message on non-stale API failure', async () => {
+    it('shows toast with BE error message on non-stale API failure', async () => {
         const beError = {
             isAxiosError: true,
             response: {
@@ -187,16 +183,16 @@ describe('useApplyInternalPlanChanges', () => {
 
         await act(() => result.current.apply(true))
 
-        expect(mockNotify).toHaveBeenCalledWith(
+        expect(mockToastError).toHaveBeenCalledWith(
+            'Internal server error from BE',
             expect.objectContaining({
-                status: NotificationStatus.Error,
-                message: 'Internal server error from BE',
+                duration: Infinity,
             }),
         )
         expect(mockPush).not.toHaveBeenCalled()
     })
 
-    it('dispatches fallback toast for unknown errors', async () => {
+    it('shows fallback toast for unknown errors', async () => {
         mockMutateAsync.mockRejectedValue(new Error('unknown'))
         const { result } = renderHook(() =>
             useApplyInternalPlanChanges(payingWithCreditCard, resolvedPlans),
@@ -204,10 +200,10 @@ describe('useApplyInternalPlanChanges', () => {
 
         await act(() => result.current.apply(true))
 
-        expect(mockNotify).toHaveBeenCalledWith(
+        expect(mockToastError).toHaveBeenCalledWith(
+            'Failed to update subscription. Please try again.',
             expect.objectContaining({
-                status: NotificationStatus.Error,
-                message: 'Failed to update subscription. Please try again.',
+                duration: Infinity,
             }),
         )
         expect(mockPush).not.toHaveBeenCalled()

@@ -114,7 +114,7 @@ const SummaryTotal = ({
                 </div>
             )}
             {shouldShowBalanceDue && (
-                <Box pt="sm" px="sm" flexDirection="column">
+                <Box pt="sm" px="xs" flexDirection="column">
                     <BalanceDueRow
                         isLoading={isEstimateLoading}
                         errorMessage={estimateErrorMessage}

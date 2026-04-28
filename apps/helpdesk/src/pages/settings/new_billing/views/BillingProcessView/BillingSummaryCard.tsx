@@ -15,7 +15,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import type { Cadence } from 'models/billing/types'
@@ -25,11 +26,6 @@ import {
     shouldPayWithShopify as getShouldPayWithShopify,
 } from 'state/currentAccount/selectors'
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
-import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 
 import { BillingSummaryBreakdown } from '../../components/BillingSummaryBreakdown'
 import Card from '../../components/Card'
@@ -97,7 +93,6 @@ export function BillingSummaryCard({
 }: BillingSummaryCardProps) {
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
     const shopifyBillingStatus = useAppSelector(getShopifyBillingStatus)
-    const dispatch = useAppDispatch()
     const history = useHistory()
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
     const [hasPendingInvoiceError, setHasPendingInvoiceError] = useState(false)
@@ -141,15 +136,9 @@ export function BillingSummaryCard({
                 await startSubscription()
             }
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    dismissAfter: 5000,
-                    message: 'Your subscription has successfully been updated.',
-                }),
-            )
+            toast.success('Your subscription has successfully been updated.', {
+                duration: 5000,
+            })
 
             setSessionSelectedPlans?.(selectedPlans)
 
@@ -174,14 +163,11 @@ export function BillingSummaryCard({
             } else if (isVersionConflictError(error)) {
                 setHasVersionConflictError(true)
             } else {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                        message:
-                            "Sorry, we couldn't update your subscription. Please try again.",
-                    }),
+                toast.error(
+                    "Sorry, we couldn't update your subscription. Please try again.",
+                    {
+                        duration: 5000,
+                    },
                 )
                 reportError(error as Error)
             }
