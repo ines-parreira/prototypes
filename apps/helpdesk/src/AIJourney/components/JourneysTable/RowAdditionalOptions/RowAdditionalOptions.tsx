@@ -6,18 +6,21 @@ import { useHistory } from 'react-router-dom'
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { STEPS_NAMES } from 'AIJourney/constants'
+import { CUSTOM_JOURNEY_TYPE, STEPS_NAMES } from 'AIJourney/constants'
 import {
     useAiJourneyStoreConfiguration,
     useJourneyUpdateHandler,
 } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
+import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
 import { getSetupStepPath } from 'AIJourney/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { isGorgiasApiError } from 'models/api/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { SmsSenderRequiredModal } from '../../SmsSenderRequiredModal/SmsSenderRequiredModal'
+import { DeleteFlowConfirmation } from '../DeleteFlowConfirmation/DeleteFlowConfirmation'
 
 import css from './RowAdditionalOptions.less'
 
@@ -27,6 +30,7 @@ const Options = {
     Activation: 'activation',
     Pause: 'pause',
     Play: 'play',
+    Delete: 'delete',
 }
 
 type Options = (typeof Options)[keyof typeof Options]
@@ -47,6 +51,8 @@ export const CAMPAIGN_STATE_TO_FIELDS: Record<JourneyStatusEnum, Options[]> = {
     ],
 }
 
+const CUSTOM_FLOW_OPTIONS: Options[] = [Options.Edit, Options.Delete]
+
 type OptionEntry = { id: Options; name: string; icon: string }
 
 export const RowAdditionalOptions = ({
@@ -58,11 +64,13 @@ export const RowAdditionalOptions = ({
         message_instructions?: string | undefined | null
         store_name: string
         type: JourneyTypeEnum
+        name?: string | undefined | null
     }
 }) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
     const { currentIntegration } = useJourneyContext()
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
     const {
         id: journeyId,
@@ -70,7 +78,14 @@ export const RowAdditionalOptions = ({
         message_instructions: messageInstructions,
         store_name: shopName,
         type: journeyType,
+        name: journeyName,
     } = journeyRowData
+
+    // JourneyTypeEnum does not yet include Custom — compare as string until SDK is updated
+    const isCustomFlow = (journeyType as string) === CUSTOM_JOURNEY_TYPE
+    const isAiJourneyCustomFlowEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCustomFlowEnabled,
+    )
 
     const integrationId = useMemo(() => {
         return currentIntegration?.id || 0
@@ -93,6 +108,9 @@ export const RowAdditionalOptions = ({
         journeyId,
     })
 
+    const { mutateAsync: deleteJourney, isLoading: isDeletePending } =
+        useDeleteJourney()
+
     const handleUpdateJourneyState = useCallback(async () => {
         try {
             await handleUpdate({
@@ -111,6 +129,25 @@ export const RowAdditionalOptions = ({
             )
         }
     }, [dispatch, handleUpdate, journeyState, messageInstructions])
+
+    const handleDeleteConfirm = useCallback(async () => {
+        if (!journeyId) return
+        try {
+            await deleteJourney({ id: journeyId })
+            setIsDeleteDialogOpen(false)
+        } catch (error) {
+            setIsDeleteDialogOpen(false)
+            const message = isGorgiasApiError(error)
+                ? error.response.data.error.msg
+                : 'Failed to delete flow.'
+            void dispatch(
+                notify({
+                    message,
+                    status: NotificationStatus.Error,
+                }),
+            )
+        }
+    }, [deleteJourney, dispatch, journeyId])
 
     const handleAction = useCallback(
         (option: OptionEntry) => {
@@ -159,6 +196,9 @@ export const RowAdditionalOptions = ({
                     }
                     handleUpdateJourneyState()
                     break
+                case Options.Delete:
+                    setIsDeleteDialogOpen(true)
+                    break
                 default:
                     break
             }
@@ -174,7 +214,11 @@ export const RowAdditionalOptions = ({
     )
 
     const options = useMemo(() => {
-        const availableOptions = CAMPAIGN_STATE_TO_FIELDS[journeyState] || []
+        const availableOptions =
+            isCustomFlow && isAiJourneyCustomFlowEnabled
+                ? CUSTOM_FLOW_OPTIONS
+                : CAMPAIGN_STATE_TO_FIELDS[journeyState] || []
+
         return availableOptions
             .map((option) => {
                 switch (option) {
@@ -208,12 +252,18 @@ export const RowAdditionalOptions = ({
                             id: option,
                             name: 'Play',
                         }
+                    case Options.Delete:
+                        return {
+                            icon: 'delete',
+                            id: option,
+                            name: 'Delete',
+                        }
                     default:
                         return null
                 }
             })
             .filter((option): option is OptionEntry => option !== null)
-    }, [journeyState])
+    }, [journeyState, isCustomFlow, isAiJourneyCustomFlowEnabled])
 
     if (options.length === 0) {
         return null
@@ -253,6 +303,15 @@ export const RowAdditionalOptions = ({
                     />
                 )}
             </Select>
+            {isCustomFlow && isAiJourneyCustomFlowEnabled && (
+                <DeleteFlowConfirmation
+                    flowName={journeyName || 'this flow'}
+                    isOpen={isDeleteDialogOpen}
+                    isLoading={isDeletePending}
+                    onClose={() => setIsDeleteDialogOpen(false)}
+                    onConfirm={handleDeleteConfirm}
+                />
+            )}
         </div>
     )
 }

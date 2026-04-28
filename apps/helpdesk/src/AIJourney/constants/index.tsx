@@ -13,6 +13,8 @@ export type STEPS_NAMES = (typeof STEPS_NAMES)[keyof typeof STEPS_NAMES]
 
 export const CAMPAIGN_TYPE = 'campaign'
 
+export const CUSTOM_JOURNEY_TYPE = 'custom' as const
+
 export const FLOW_TYPES = {
     CART_ABANDONMENT: 'cart-abandoned',
     POST_PURCHASE: 'post-purchase',
