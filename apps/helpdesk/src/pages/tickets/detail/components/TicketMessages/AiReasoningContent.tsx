@@ -258,6 +258,11 @@ export const AiAgentReasoningContent = ({
                             <KnowledgeSourceRenderer
                                 id={`source-reasoning-${resource.resourceId}-${resource.resourceType}-${index}`}
                                 resourceType={resource.resourceType}
+                                origin={
+                                    'origin' in resourceData
+                                        ? resourceData.origin
+                                        : undefined
+                                }
                                 title={
                                     resource.resourceTitle ?? resourceData.title
                                 }

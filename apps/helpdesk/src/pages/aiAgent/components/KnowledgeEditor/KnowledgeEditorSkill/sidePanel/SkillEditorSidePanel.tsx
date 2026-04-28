@@ -7,12 +7,17 @@ import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { useSkillEditorStore } from '../context'
 import { SkillEditorSidePanelInfoTab } from './SkillEditorSidePanelInfoTab'
 import { SkillEditorSidePanelPerformanceTab } from './SkillEditorSidePanelPerformanceTab'
+import { SkillEditorSidePanelSkeleton } from './SkillEditorSidePanelSkeleton'
 
 import css from './SkillEditorSidePanel.less'
 
 type Tab = 'info' | 'performance'
 
-export const SkillEditorSidePanel = () => {
+type Props = {
+    isLoading?: boolean
+}
+
+export const SkillEditorSidePanel = ({ isLoading = false }: Props) => {
     const [activeTab, setActiveTab] = useState<Tab>('info')
     const { isDetailsView, dispatch } = useSkillEditorStore(
         useShallow((storeState) => ({
@@ -29,9 +34,17 @@ export const SkillEditorSidePanel = () => {
         <Box flexDirection="row" className={css.sidePanel}>
             {isDetailsView && (
                 <div className={css.contentArea}>
-                    {activeTab === 'info' && <SkillEditorSidePanelInfoTab />}
-                    {activeTab === 'performance' && (
-                        <SkillEditorSidePanelPerformanceTab />
+                    {isLoading ? (
+                        <SkillEditorSidePanelSkeleton tab={activeTab} />
+                    ) : (
+                        <>
+                            {activeTab === 'info' && (
+                                <SkillEditorSidePanelInfoTab />
+                            )}
+                            {activeTab === 'performance' && (
+                                <SkillEditorSidePanelPerformanceTab />
+                            )}
+                        </>
                     )}
                 </div>
             )}

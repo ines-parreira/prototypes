@@ -13,6 +13,11 @@ jest.mock('./SkillEditorSidePanelPerformanceTab', () => ({
         <div>Performance Tab Content</div>
     ),
 }))
+jest.mock('./SkillEditorSidePanelSkeleton', () => ({
+    SkillEditorSidePanelSkeleton: ({ tab }: { tab: string }) => (
+        <div>Skeleton for {tab}</div>
+    ),
+}))
 
 const mockDispatch = jest.fn()
 const mockUseSkillEditorStore = jest.requireMock('../context')
@@ -85,5 +90,55 @@ describe('SkillEditorSidePanel', () => {
         expect(
             screen.getByRole('button', { name: /performance/i }),
         ).toBeInTheDocument()
+    })
+
+    describe('when isLoading is true', () => {
+        it('renders the info skeleton instead of the info tab content', () => {
+            render(<SkillEditorSidePanel isLoading />)
+
+            expect(screen.getByText('Skeleton for info')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Info Tab Content'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders the performance skeleton when on performance tab', async () => {
+            const user = userEvent.setup()
+            const { rerender } = render(<SkillEditorSidePanel />)
+
+            await user.click(
+                screen.getByRole('button', { name: /performance/i }),
+            )
+
+            rerender(<SkillEditorSidePanel isLoading />)
+
+            expect(
+                screen.getByText('Skeleton for performance'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Performance Tab Content'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render the skeleton when the panel is collapsed', () => {
+            setStoreData(false)
+            render(<SkillEditorSidePanel isLoading />)
+
+            expect(
+                screen.queryByText('Skeleton for info'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('keeps the icon bar buttons interactive', () => {
+            render(<SkillEditorSidePanel isLoading />)
+
+            expect(
+                screen.getByRole('button', { name: /collapse/i }),
+            ).toBeEnabled()
+            expect(screen.getByRole('button', { name: /info/i })).toBeEnabled()
+            expect(
+                screen.getByRole('button', { name: /performance/i }),
+            ).toBeEnabled()
+        })
     })
 })

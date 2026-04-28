@@ -36,6 +36,7 @@ export const useGuidanceArticle = ({
     const {
         data,
         isLoading: isGuidanceArticleLoading,
+        isFetching: isGuidanceArticleFetching,
         refetch,
         isError,
         error,
@@ -75,6 +76,7 @@ export const useGuidanceArticle = ({
     return {
         guidanceArticle,
         isGuidanceArticleLoading,
+        isGuidanceArticleFetching,
         refetch,
         isError,
         error,

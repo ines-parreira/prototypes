@@ -46,6 +46,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         productsDetail: (id: number) => `/products/content/${id}`,
         knowledgeArticle: (type: string, id: number) =>
             `/knowledge/${type}/${id}`,
+        skillDetail: (id: number) => `/skills/${id}`,
     })),
 }))
 

@@ -26,7 +26,11 @@ import { SkillEditorHeader } from './SkillEditorHeader'
 
 import css from './KnowledgeEditorSkill.less'
 
-export const KnowledgeEditorSkillContent = () => {
+type Props = {
+    isSidePanelLoading?: boolean
+}
+
+export const KnowledgeEditorSkillContent = ({ isSidePanelLoading }: Props) => {
     const { shopName, shopType, onClose, isPreviewMode } = useSkillEditorStore(
         useShallow((storeState) => ({
             shopName: storeState.config.shopName,
@@ -181,7 +185,7 @@ export const KnowledgeEditorSkillContent = () => {
                 {isPreviewMode ? (
                     isDetailsView && <SkillPreviewSidePanel />
                 ) : (
-                    <SkillEditorSidePanel />
+                    <SkillEditorSidePanel isLoading={isSidePanelLoading} />
                 )}
             </Box>
 

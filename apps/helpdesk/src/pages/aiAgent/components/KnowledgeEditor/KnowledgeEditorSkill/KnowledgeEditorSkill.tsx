@@ -25,8 +25,10 @@ import css from './KnowledgeEditorSkill.less'
 
 const KnowledgeEditorSkillInner = ({
     onSharedPanelStateChange,
+    isSidePanelLoading,
 }: {
     onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
+    isSidePanelLoading?: boolean
 }) => {
     const { playground, onClose } = useSkillEditorStore(
         useShallow((storeState) => ({
@@ -65,7 +67,9 @@ const KnowledgeEditorSkillInner = ({
             playgroundBanner={<SkillEditorPlaygroundBanner />}
         >
             <Card elevation="mid" className={css.editor} padding={0}>
-                <KnowledgeEditorSkillContent />
+                <KnowledgeEditorSkillContent
+                    isSidePanelLoading={isSidePanelLoading}
+                />
             </Card>
         </EditorWithPlayground>
     )
@@ -111,6 +115,7 @@ export const KnowledgeEditorSkill = ({
         isHelpCenterLoading,
         article,
         isArticleLoading,
+        isArticleFetching,
         isError,
         error,
         skillTemplate,
@@ -207,6 +212,11 @@ export const KnowledgeEditorSkill = ({
         (!!skillId && skillId !== 'new' && isArticleLoading) ||
         isInitialVersionLoading
 
+    const isSidePanelLoading =
+        !!skillId &&
+        skillId !== 'new' &&
+        (isArticleFetching || article?.id !== Number(skillId))
+
     if (isHelpCenterLoading || !memoizedConfig || isLoading) {
         return (
             <KnowledgeEditorSkillLoadingShell
@@ -219,6 +229,7 @@ export const KnowledgeEditorSkill = ({
         <KnowledgeEditorSkillProvider config={memoizedConfig}>
             <KnowledgeEditorSkillInner
                 onSharedPanelStateChange={onSharedPanelStateChange}
+                isSidePanelLoading={isSidePanelLoading}
             />
         </KnowledgeEditorSkillProvider>
     )

@@ -371,6 +371,7 @@ describe('KnowledgeHubTable - Core', () => {
             mockUseGuidanceArticle.mockReturnValue({
                 guidanceArticle: undefined,
                 isGuidanceArticleLoading: false,
+                isGuidanceArticleFetching: false,
                 refetch: jest.fn(),
                 isError: false,
                 error: null,
@@ -386,6 +387,7 @@ describe('KnowledgeHubTable - Core', () => {
                     title: 'Return Policy',
                 } as any,
                 isGuidanceArticleLoading: false,
+                isGuidanceArticleFetching: false,
                 refetch: jest.fn(),
                 isError: false,
                 error: null,

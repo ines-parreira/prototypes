@@ -1,12 +1,14 @@
 :local {
-    .container {
-        width: 100%;
-    }
-
     .tableWithExpandedRows {
+        width: 100%;
+        overflow-x: auto;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-xs);
+
         :global {
             table {
                 table-layout: fixed;
+                width: 100%;
             }
 
             // Expand column

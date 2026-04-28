@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router-dom'
 import { POSITIONS } from 'reapop'
@@ -79,6 +80,10 @@ interface IntentsTableProps {
 }
 
 export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
+    const screenSize = useScreenSize()
+    const isSmallScreen =
+        screenSize === SCREEN_SIZE.SMALL || screenSize === SCREEN_SIZE.MEDIUM
+
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId || 0
     const shopName = storeConfiguration?.storeName || ''
@@ -391,7 +396,12 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
     })
 
     return (
-        <SidePanel isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+        <SidePanel
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            size={isSmallScreen ? undefined : 'xl'}
+            width={isSmallScreen ? '100vw' : undefined}
+        >
             <OverlayHeader
                 title={<Heading size="lg">Intents</Heading>}
                 description={
@@ -402,73 +412,71 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                     </Text>
                 }
             />
-            <OverlayContent>
-                <Box flexDirection="column" className={css.container}>
-                    <Box
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        mb="xxxs"
-                    >
-                        <Box width="220px">
-                            <SearchInput onChange={setSearchTerm} />
-                        </Box>
-
-                        <ButtonGroup
-                            defaultSelectedKey="percentage"
-                            onSelectionChange={(id) =>
-                                setStatsDisplayMode(id as StatsDisplayMode)
-                            }
-                        >
-                            <ButtonGroupItem icon="percent" id="percentage">
-                                Percentage
-                            </ButtonGroupItem>
-                            <ButtonGroupItem icon="hashtag" id="numeric">
-                                Numeric
-                            </ButtonGroupItem>
-                        </ButtonGroup>
+            <OverlayContent flexDirection="column">
+                <Box
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb="xxxs"
+                >
+                    <Box width="220px">
+                        <SearchInput onChange={setSearchTerm} />
                     </Box>
 
-                    <Box
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        mt="xs"
-                        mb="24px"
+                    <ButtonGroup
+                        defaultSelectedKey="percentage"
+                        onSelectionChange={(id) =>
+                            setStatsDisplayMode(id as StatsDisplayMode)
+                        }
                     >
-                        <Text
-                            size="sm"
-                            variant="medium"
-                            color="content-neutral-tertiary"
-                        >
-                            Showing {filteredCount} of {totalCount} items
-                        </Text>
-                        <Text
-                            size="sm"
-                            variant="medium"
-                            color="content-neutral-tertiary"
-                        >
-                            Metrics from last 28 days
-                        </Text>
-                    </Box>
-
-                    <div className={css.tableWithExpandedRows}>
-                        <TableV1Root withBorder>
-                            <TableHeader>
-                                <TableV1HeaderRowGroup
-                                    headerGroups={table.getHeaderGroups()}
-                                />
-                            </TableHeader>
-                            <TableV1BodyContent
-                                isLoading={isLoading}
-                                rows={table.getRowModel().rows}
-                                columnCount={table.getAllColumns().length}
-                                table={table}
-                                renderRows={renderRows}
-                            />
-                        </TableV1Root>
-                    </div>
+                        <ButtonGroupItem icon="percent" id="percentage">
+                            Percentage
+                        </ButtonGroupItem>
+                        <ButtonGroupItem icon="hashtag" id="numeric">
+                            Numeric
+                        </ButtonGroupItem>
+                    </ButtonGroup>
                 </Box>
+
+                <Box
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mt="xs"
+                    mb="24px"
+                >
+                    <Text
+                        size="sm"
+                        variant="medium"
+                        color="content-neutral-tertiary"
+                    >
+                        Showing {filteredCount} of {totalCount} items
+                    </Text>
+                    <Text
+                        size="sm"
+                        variant="medium"
+                        color="content-neutral-tertiary"
+                    >
+                        Metrics from last 28 days
+                    </Text>
+                </Box>
+
+                <div className={css.tableWithExpandedRows}>
+                    <TableV1Root>
+                        <TableHeader>
+                            <TableV1HeaderRowGroup
+                                headerGroups={table.getHeaderGroups()}
+                            />
+                        </TableHeader>
+                        <TableV1BodyContent
+                            isLoading={isLoading}
+                            rows={table.getRowModel().rows}
+                            columnCount={table.getAllColumns().length}
+                            table={table}
+                            renderRows={renderRows}
+                        />
+                    </TableV1Root>
+                </div>
             </OverlayContent>
             <DisableIntentModal
                 isOpen={!!pendingDisableIntent}

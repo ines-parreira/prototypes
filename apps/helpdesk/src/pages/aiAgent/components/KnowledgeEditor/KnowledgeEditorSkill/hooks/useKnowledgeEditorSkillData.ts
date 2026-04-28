@@ -36,6 +36,7 @@ export const useKnowledgeEditorSkillData = ({
     const {
         guidanceArticle: article,
         isGuidanceArticleLoading,
+        isGuidanceArticleFetching,
         isError,
         error,
     } = useGuidanceArticle({
@@ -81,6 +82,7 @@ export const useKnowledgeEditorSkillData = ({
         isHelpCenterLoading,
         article,
         isArticleLoading: isGuidanceArticleLoading,
+        isArticleFetching: isGuidanceArticleFetching,
         isError,
         error,
         skillTemplate,

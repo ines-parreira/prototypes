@@ -411,10 +411,13 @@ export const getResourceMetadata = (
                 ? {
                       title: guidance.title ?? '',
                       content: guidance.content ?? '',
-                      url: aiAgentRoutes?.knowledgeArticle(
-                          'guidance',
-                          idAsNumber,
-                      ),
+                      url:
+                          guidance.origin === 'skill'
+                              ? aiAgentRoutes?.skillDetail(idAsNumber)
+                              : aiAgentRoutes?.knowledgeArticle(
+                                    'guidance',
+                                    idAsNumber,
+                                ),
                       helpCenterId: guidance.helpCenterId,
                       origin: guidance.origin,
                   }

@@ -240,6 +240,10 @@ export const useGetResourcesReasoningMetadata = ({
                             ? fallbackMetadata.url
                             : undefined,
                     versionId: versionedData.versionId,
+                    origin:
+                        fallbackMetadata && 'origin' in fallbackMetadata
+                            ? fallbackMetadata.origin
+                            : undefined,
                 }
             }
 
