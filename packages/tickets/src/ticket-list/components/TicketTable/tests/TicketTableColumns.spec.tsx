@@ -135,11 +135,17 @@ function expectLinkedCell(name: string | RegExp, href: string) {
 
 const renderStandaloneCell = (cell: ReactElement) =>
     render(
-        <table>
-            <tbody>
-                <tr>{cell}</tr>
-            </tbody>
-        </table>,
+        <DataTable
+            data={[]}
+            columns={[]}
+            renderEmptyState={() => (
+                <table>
+                    <tbody>
+                        <tr>{cell}</tr>
+                    </tbody>
+                </table>
+            )}
+        />,
     )
 
 describe('createTicketTableColumns', () => {

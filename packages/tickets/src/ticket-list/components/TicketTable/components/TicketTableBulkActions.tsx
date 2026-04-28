@@ -6,7 +6,6 @@ import {
     DataTableBulkActions,
     DataTableColumnEditing,
     DataTableItemCount,
-    DataTableToolbar,
     Text,
 } from '@gorgias/axiom'
 import type {
@@ -109,7 +108,7 @@ export function TicketTableBulkActions({
     const viewLabel = viewName?.trim() || 'the view'
 
     return (
-        <DataTableToolbar>
+        <>
             <DataTableItemCountWithChildren>
                 {({ isAllSelected, text }: ItemCountRenderProps) =>
                     isAllSelected || hasSelectedAll ? (
@@ -178,6 +177,6 @@ export function TicketTableBulkActions({
                 )}
             </DataTableBulkActionsWithSelectAll>
             <DataTableColumnEditing footer={columnEditingFooter} />
-        </DataTableToolbar>
+        </>
     )
 }
