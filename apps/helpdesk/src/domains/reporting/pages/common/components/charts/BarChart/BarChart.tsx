@@ -115,7 +115,7 @@ export function BarChart({
     isStacked = false,
     withTooltipTotal = false,
 }: Props) {
-    const [chart, setChart] = useState<Chart>()
+    const [chart, setChart] = useState<Chart<'bar'>>()
     const { customTooltip, tooltipData, tooltipStyle } = useCustomTooltip()
 
     const statColors: string[] = useMemo(() => {

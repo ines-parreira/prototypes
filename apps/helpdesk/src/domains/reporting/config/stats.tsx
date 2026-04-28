@@ -1,6 +1,7 @@
 import type { ComponentType, ReactElement, ReactNode, ReactText } from 'react'
 import React from 'react'
 
+import { formatDuration } from '@repo/reporting'
 import type { ChartType, Scale, TooltipItem } from 'chart.js'
 import { defaults } from 'chart.js'
 import classNames from 'classnames'
@@ -14,10 +15,7 @@ import { toImmutable } from 'common/utils'
 import css from 'domains/reporting/config/stats.less'
 import StatCurrentDate from 'domains/reporting/pages/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from 'domains/reporting/pages/common/TicketsClosedPerAgentViewLink'
-import {
-    formatDuration,
-    formatNumber,
-} from 'domains/reporting/pages/common/utils'
+import { formatNumber } from 'domains/reporting/pages/common/utils'
 import { IntentName } from 'models/intent/types'
 import { REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
@@ -1205,8 +1203,8 @@ const formatTicketAxeCb = (val: any) => {
     return val % 1 === 0 ? (val as number) : ''
 }
 
-const formatDurationTooltipCb = (ctx: TooltipItem<ChartType>) => {
+export const formatDurationTooltipCb = (ctx: TooltipItem<ChartType>) => {
     return `${ctx.dataset.label || ''}: ${
-        formatDuration(ctx.parsed.y, 2) || '0'
+        formatDuration(ctx.parsed.y ?? 0, 2) || '0'
     } `
 }

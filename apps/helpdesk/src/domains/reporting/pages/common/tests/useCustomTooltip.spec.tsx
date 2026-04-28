@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import type { Chart, TooltipModel } from 'chart.js'
+import type { Chart, ChartType, TooltipModel } from 'chart.js'
 
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
 
@@ -16,7 +16,18 @@ describe('useCustomTooltip', () => {
         })
     })
 
-    it('should not update tooltip when opacity is 0', () => {
+    it('should not update tooltip when chart is null', () => {
+        const { result } = renderHook(() => useCustomTooltip())
+
+        act(() => {
+            result.current.customTooltip({ chart: null, tooltip: {} })
+        })
+
+        expect(result.current.tooltipData).toBeUndefined()
+        expect(result.current.tooltipStyle.opacity).toBe(0)
+    })
+
+    it('should not update tooltip style when opacity is already 0', () => {
         const { result } = renderHook(() => useCustomTooltip())
 
         act(() => {
@@ -26,7 +37,42 @@ describe('useCustomTooltip', () => {
                         getBoundingClientRect: () => ({ x: 100, y: 50 }),
                     },
                 } as Chart,
-                tooltip: { opacity: 0 } as TooltipModel,
+                tooltip: { opacity: 0 } as TooltipModel<ChartType>,
+            })
+        })
+
+        expect(result.current.tooltipStyle.opacity).toBe(0)
+    })
+
+    it('should reset opacity to 0 when tooltip hides after being shown', () => {
+        const { result } = renderHook(() => useCustomTooltip())
+
+        const mockChart = {
+            canvas: {
+                offsetLeft: 0,
+                offsetTop: 0,
+                getBoundingClientRect: () => ({ x: 100, y: 50 }),
+            },
+        } as Chart
+
+        act(() => {
+            result.current.customTooltip({
+                chart: mockChart,
+                tooltip: {
+                    opacity: 1,
+                    caretX: 50,
+                    caretY: 30,
+                    chart: mockChart,
+                } as TooltipModel<ChartType>,
+            })
+        })
+
+        expect(result.current.tooltipStyle.opacity).toBe(1)
+
+        act(() => {
+            result.current.customTooltip({
+                chart: mockChart,
+                tooltip: { opacity: 0 } as TooltipModel<ChartType>,
             })
         })
 
@@ -47,7 +93,7 @@ describe('useCustomTooltip', () => {
                     getBoundingClientRect: () => ({ x: 100, y: 50 }),
                 },
             },
-        } as TooltipModel
+        } as TooltipModel<ChartType>
 
         act(() => {
             result.current.customTooltip({
@@ -74,7 +120,7 @@ describe('useCustomTooltip', () => {
             chart: {
                 canvas: { getBoundingClientRect: () => ({ x: 100, y: 50 }) },
             },
-        } as TooltipModel
+        } as TooltipModel<ChartType>
 
         act(() => {
             result.current.customTooltip({

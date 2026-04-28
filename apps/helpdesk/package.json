@@ -142,7 +142,7 @@
         "bootstrap": "^4.6.2",
         "bootstrap-daterangepicker": "3.1.0",
         "bytes": "^3.1.2",
-        "chart.js": "4.1.1",
+        "chart.js": "4.5.1",
         "classnames": "catalog:styles",
         "clipboard": "2.0.8",
         "color2k": "^2.0.3",

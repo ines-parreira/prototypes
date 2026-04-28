@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 
-import type { TooltipModel } from 'chart.js'
+import type { ChartType, TooltipModel } from 'chart.js'
 
 import css from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChartTooltip.less'
 import { formatPercentage } from 'pages/common/utils/numbers'
 
 type Props = {
-    tooltip: TooltipModel
+    tooltip: TooltipModel<ChartType>
     total: number
 }
 

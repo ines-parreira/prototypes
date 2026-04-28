@@ -93,7 +93,7 @@ export function LineChart({
     skeletonHeight = 250,
     colorTokens = chartColorsFallbackTokens,
 }: Props) {
-    const [chart, setChart] = useState<Chart>()
+    const [chart, setChart] = useState<Chart<'line'>>()
     const [chartArea, setChartArea] = useState<ChartArea>()
     const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
     const { customTooltip, tooltipData, tooltipStyle } = useCustomTooltip()

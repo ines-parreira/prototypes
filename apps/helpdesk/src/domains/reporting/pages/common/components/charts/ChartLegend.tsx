@@ -11,7 +11,7 @@ type Props = {
     chartColors: (index: number) => string
     linesVisibility: LinesVisibility
     setLinesVisibility: React.Dispatch<React.SetStateAction<LinesVisibility>>
-    chart?: Chart
+    chart?: Pick<Chart, 'isDatasetVisible' | 'setDatasetVisibility' | 'update'>
     displayLegend?: boolean
     toggleLegend?: boolean
     legendOnLeft?: boolean

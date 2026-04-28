@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import type { TooltipModel } from 'chart.js'
+import type { ChartType, TooltipModel } from 'chart.js'
 
 import { DonutChartTooltip } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChartTooltip'
 
@@ -31,7 +31,7 @@ describe('DonutChartTooltip', () => {
                 formattedValue: '50',
             },
         ],
-    } as unknown as TooltipModel
+    } as unknown as TooltipModel<ChartType>
 
     test('renders the tooltip with correct text', () => {
         const { getByText } = render(
@@ -68,7 +68,7 @@ describe('DonutChartTooltip', () => {
                     formattedValue: '50',
                 },
             ],
-        } as unknown as TooltipModel
+        } as unknown as TooltipModel<ChartType>
 
         const { container } = render(
             <DonutChartTooltip tooltip={mockTooltip} total={100} />,

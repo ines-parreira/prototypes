@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import type { TooltipLabelStyle, TooltipModel } from 'chart.js'
+import type { ChartType, TooltipLabelStyle, TooltipModel } from 'chart.js'
 import classNames from 'classnames'
 
 import css from 'domains/reporting/pages/common/components/charts/ChartTooltipContent.less'
@@ -8,7 +8,7 @@ import { TruncateCellContent } from 'domains/reporting/pages/common/components/T
 import { NOT_AVAILABLE_TEXT } from 'domains/reporting/pages/common/utils'
 
 type Props = {
-    tooltip: TooltipModel
+    tooltip: TooltipModel<ChartType>
     showZeroAsNA?: boolean
     withTotal?: boolean
 }
