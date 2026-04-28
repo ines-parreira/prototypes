@@ -36,6 +36,7 @@ import {
 import { store } from 'common/store'
 import type { EditableUserProfile } from 'config/types/user'
 import GreyArea from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
+import { initClarity } from 'main/init/initClarity'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -136,6 +137,8 @@ export function initApp() {
         currentHelpdeskPlan?.plan_id,
         currentAutomatePlan?.plan_id,
     )
+
+    void initClarity()
 
     Chart.register(
         BarController,

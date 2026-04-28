@@ -1,5 +1,5 @@
 import * as logging from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, flushPromises } from '@repo/testing'
 import * as envUtils from '@repo/utils'
 import type { fromJS } from 'immutable'
 import { initApp } from 'init'
@@ -7,6 +7,7 @@ import { initApp } from 'init'
 import { store } from 'common/store'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
+import * as clarityInit from 'main/init/initClarity'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { GorgiasInitialState, InitialReactQueryState } from 'types'
@@ -53,7 +54,13 @@ jest.mock('state/billing/selectors', () => ({
 
 jest.mock('utils/sdk')
 jest.mock('@repo/logging')
-jest.mock('@repo/feature-flags')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    initFeatureFlagsClient: jest.fn(),
+}))
+jest.mock('main/init/initClarity', () => ({
+    initClarity: jest.fn(),
+}))
 jest.mock('state/notifications/actions')
 
 jest.mock('@repo/utils')
@@ -63,6 +70,7 @@ const identifyHotjarUserMock = assumeMock(envUtils.identifyUser)
 const isDevelopmentMock = assumeMock(envUtils.isDevelopment)
 const isStagingMock = assumeMock(envUtils.isStaging)
 const isProductionMock = assumeMock(envUtils.isProduction)
+const initClarityMock = assumeMock(clarityInit.initClarity)
 
 const logEventMock = assumeMock(logging.logEvent)
 
@@ -73,6 +81,7 @@ describe('init', () => {
         isDevelopmentMock.mockReturnValue(false)
         isStagingMock.mockReturnValue(false)
         isProductionMock.mockReturnValue(false)
+        initClarityMock.mockResolvedValue(undefined)
     })
 
     describe('initApp()', () => {
@@ -158,6 +167,22 @@ describe('init', () => {
 
             expect(logging.initDatadogRum).not.toHaveBeenCalled()
             expect(logging.initDatadogLogger).not.toHaveBeenCalled()
+        })
+
+        it('should delegate clarity initialization to the app-level helper', async () => {
+            initApp()
+            await flushPromises()
+
+            expect(initClarityMock).toHaveBeenCalled()
+        })
+
+        it('should delegate clarity initialization even when WEB_APP_RELEASE is empty', async () => {
+            envVarsMock.WEB_APP_RELEASE = ''
+
+            initApp()
+            await flushPromises()
+
+            expect(initClarityMock).toHaveBeenCalled()
         })
 
         it('should init error reporter when SENTRY_DSN is defined', () => {

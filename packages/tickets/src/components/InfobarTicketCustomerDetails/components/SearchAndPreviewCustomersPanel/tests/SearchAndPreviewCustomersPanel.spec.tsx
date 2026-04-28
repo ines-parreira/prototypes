@@ -128,6 +128,7 @@ describe('SearchAndPreviewCustomersPanel', () => {
     })
 
     it('should display loading state when searching', async () => {
+        const waitForSearchRequest = mockSearchCustomers.waitForRequest(server)
         const { user } = render(
             <SearchAndPreviewCustomersPanel {...defaultProps} />,
         )
@@ -142,6 +143,14 @@ describe('SearchAndPreviewCustomersPanel', () => {
             expect(
                 screen.getByText('Searching customers...'),
             ).toBeInTheDocument()
+        })
+
+        await waitForSearchRequest()
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Searching customers...'),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -271,16 +280,18 @@ describe('SearchAndPreviewCustomersPanel', () => {
             email: 'preview@example.com',
             channels: [],
         })
-
-        server.use(
-            mockSearchCustomersHandler(async () =>
+        const mockSearchCustomersWithoutResults = mockSearchCustomersHandler(
+            async () =>
                 HttpResponse.json(
                     mockSearchCustomersResponse({
                         data: [],
                     }),
                 ),
-            ).handler,
         )
+        const waitForSearchRequest =
+            mockSearchCustomersWithoutResults.waitForRequest(server)
+
+        server.use(mockSearchCustomersWithoutResults.handler)
 
         const { user } = render(
             <SearchAndPreviewCustomersPanel
@@ -301,6 +312,12 @@ describe('SearchAndPreviewCustomersPanel', () => {
             expect(
                 screen.queryByText('Preview Customer'),
             ).not.toBeInTheDocument()
+        })
+
+        await waitForSearchRequest()
+
+        await waitFor(() => {
+            expect(screen.getByText('No customers found.')).toBeInTheDocument()
         })
     })
 })

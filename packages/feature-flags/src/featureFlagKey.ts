@@ -157,6 +157,7 @@ export enum FeatureFlagKey {
     MacroArchives = 'macro-archives',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     MessagesTranslations = 'linear.introduce-native-translations-for-inbound-and-outbound-messages.fe-implementation',
+    HelpdeskMicrosoftClarity = 'helpdesk-microsoft-clarity',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     NewDomainVerification = 'new-domain-verification',
     NewSatisfactionReport = 'new-satisfaction-report',
