@@ -58,7 +58,6 @@ export const METRIC_NAMES = {
     AI_AGENT_TICKETS_WITH_INTENT: 'ai-agent-tickets-with-intent',
     AI_AGENT_TOUCHED_TICKET: 'ai-agent-touched-ticket',
     AI_AGENT_TOUCHED_TICKET_TOTAL_COUNT: 'ai-agent-touched-ticket-total-count',
-    AI_AGENT_AUTOMATION_RATE: 'ai-agent-automation-rate',
     AI_AGENT_OVERALL_AUTOMATION_RATE: 'ai-agent-overall-automation-rate',
     AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE:
         'ai-agent-dynamic-automation-rate',
@@ -183,6 +182,7 @@ export const METRIC_NAMES = {
         'ai-agent-support-agent-decrease-in-resolution-time',
     AI_AGENT_ALL_AGENTS_DECREASE_IN_RESOLUTION_TIME:
         'ai-agent-all-agents-decrease-in-resolution-time',
+    AI_AGENT_ALL_AGENTS_AUTOMATION_RATE: 'ai-agent-all-agents-automation-rate',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
@@ -1124,12 +1124,12 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     // P5
     [MetricScope.OverallAutomationRate]: [
         METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
-        METRIC_NAMES.AI_AGENT_AUTOMATION_RATE,
         METRIC_NAMES.AI_AGENT_AUTOMATION_RATE_PER_FEATURE,
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE,
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE_TIMESERIES,
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATION_RATE,
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATION_RATE_TIMESERIES,
+        METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATION_RATE,
     ],
     [MetricScope.OverallAutomatedInteractions]: [
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,

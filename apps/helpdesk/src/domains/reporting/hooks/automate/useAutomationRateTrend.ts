@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { useDeepEffect } from '@repo/hooks'
+import type { MetricTrend } from '@repo/reporting'
 
 import { getAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
@@ -10,30 +11,24 @@ import {
     fetchFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { fetchStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
-import {
-    overallAutomationRate,
-    overallAutomationRateQueryFactoryV2,
-} from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
-import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useAutomationRateTrend = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) => {
     const aiAgentUserId = useAIAgentUserId()
     const [data, setData] = useState<MetricTrend>({
-        isFetching: true,
+        isFetching: enabled,
         isError: false,
     })
 
     useDeepEffect(() => {
+        if (!enabled) return
         setData((prev) => ({ ...prev, isFetching: true }))
         fetchAutomationRateTrend(filters, timezone, aiAgentUserId).then(setData)
-    }, [filters, timezone, aiAgentUserId])
+    }, [filters, timezone, aiAgentUserId, enabled])
 
     return data
 }
@@ -44,25 +39,6 @@ export const fetchAutomationRateTrend = async (
     aiAgentUserId: number | undefined,
 ) => {
     // We don't support double-reads for this metric as the V1 implementation doesn't use a single Cube
-    const stage = await getNewStatsFeatureFlagMigration(
-        overallAutomationRate.name,
-    )
-    if (stage === 'live' || stage === 'complete') {
-        return fetchStatsMetricTrend(
-            overallAutomationRateQueryFactoryV2({
-                filters,
-                timezone,
-            }),
-            overallAutomationRateQueryFactoryV2({
-                filters: {
-                    ...filters,
-                    period: getPreviousPeriod(filters.period),
-                },
-                timezone,
-            }),
-        )
-    }
-
     return Promise.all([
         fetchFilteredAutomatedInteractions(filters, timezone),
         fetchAllAutomatedInteractionsByAutoResponders(filters, timezone),

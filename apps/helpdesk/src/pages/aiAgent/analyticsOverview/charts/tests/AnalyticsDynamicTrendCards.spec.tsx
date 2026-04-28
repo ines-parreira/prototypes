@@ -45,12 +45,12 @@ import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/a
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
 import { AnalyticsSupportAgentDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsSupportAgentDecreaseInResolutionTimeCard'
-import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts//AnalyticsOverviewAutomationRateCard'
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
+import { AnalyticsOverviewOverallAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewOverallAutomationRateCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 
 jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
@@ -584,8 +584,8 @@ describe('Analytics Dynamic Trend Cards', () => {
             },
         },
         {
-            name: 'AnalyticsOverviewAutomationRateCard',
-            Component: AnalyticsOverviewAutomationRateCard,
+            name: 'AnalyticsOverviewOverallAutomationRateCard',
+            Component: AnalyticsOverviewOverallAutomationRateCard,
             config: {
                 label: 'Automation rate',
                 description:

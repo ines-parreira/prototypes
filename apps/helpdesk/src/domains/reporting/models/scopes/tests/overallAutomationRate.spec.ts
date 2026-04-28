@@ -1,6 +1,4 @@
 import {
-    aiAgentAutomationRate,
-    aiAgentAutomationRateQueryFactoryV2,
     automationRatePerFeature,
     automationRatePerFeatureQueryFactoryV2,
     dynamicAllAgentsAutomationRate,
@@ -57,38 +55,6 @@ describe('overallAutomationRateScope', () => {
                         member: 'periodEnd',
                         operator: 'beforeDate',
                         values: ['2025-09-03T23:59:59.000'],
-                    },
-                ],
-            }
-
-            expect(actual).toEqual(expected)
-        })
-    })
-
-    describe('aiAgentAutomationRate', () => {
-        it('creates query', () => {
-            const actual = aiAgentAutomationRate.build(context)
-
-            const expected = {
-                metricName: 'ai-agent-automation-rate',
-                scope: 'overall-automation-rate',
-                measures: ['automationRate'],
-                timezone: 'utc',
-                filters: [
-                    {
-                        member: 'periodStart',
-                        operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00.000'],
-                    },
-                    {
-                        member: 'periodEnd',
-                        operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59.000'],
-                    },
-                    {
-                        member: 'automationFeatureType',
-                        operator: 'one-of',
-                        values: ['ai-agent'],
                     },
                 ],
             }
@@ -331,16 +297,6 @@ describe('overallAutomationRateScope', () => {
                 const factoryResult =
                     overallAutomationRateQueryFactoryV2(context)
                 const buildResult = overallAutomationRate.build(context)
-
-                expect(factoryResult).toEqual(buildResult)
-            })
-        })
-
-        describe('aiAgentAutomationRateQueryFactoryV2', () => {
-            it('returns the same result as calling build directly', () => {
-                const factoryResult =
-                    aiAgentAutomationRateQueryFactoryV2(context)
-                const buildResult = aiAgentAutomationRate.build(context)
 
                 expect(factoryResult).toEqual(buildResult)
             })

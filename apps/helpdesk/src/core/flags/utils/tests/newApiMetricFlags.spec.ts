@@ -65,7 +65,9 @@ describe('skipMetricComparison', () => {
         ).toBe(true)
 
         expect(
-            skipMetricComparison(METRIC_NAMES.AI_AGENT_AUTOMATION_RATE),
+            skipMetricComparison(
+                METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATION_RATE,
+            ),
         ).toBe(true)
     })
 

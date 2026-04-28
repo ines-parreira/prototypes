@@ -38,24 +38,6 @@ export const overallAutomationRate = overallAutomationRateScope
 export const overallAutomationRateQueryFactoryV2 = (ctx: Context) =>
     overallAutomationRate.build(ctx)
 
-export const aiAgentAutomationRate = overallAutomationRateScope
-    .defineMetricName(METRIC_NAMES.AI_AGENT_AUTOMATION_RATE)
-    .defineQuery(({ ctx, config }) => ({
-        measures: ['automationRate'],
-        filters: createScopeFilters(
-            {
-                ...ctx.filters,
-                automationFeatureType: withLogicalOperator([
-                    AutomationFeatureType.AiAgent,
-                ]),
-            },
-            config,
-        ),
-    }))
-
-export const aiAgentAutomationRateQueryFactoryV2 = (ctx: Context) =>
-    aiAgentAutomationRate.build(ctx)
-
 export const automationRatePerFeature = overallAutomationRateScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_AUTOMATION_RATE_PER_FEATURE)
     .defineQuery(() => ({

@@ -1,5 +1,4 @@
 import { fetchAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
-import { fetchAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -10,10 +9,10 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
-import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomationRateCard'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
+import { AnalyticsOverviewOverallAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewOverallAutomationRateCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 import {
     AnalyticsOverviewConfigurableBarGraph,
@@ -37,6 +36,7 @@ import { fetchArticleRecommendationAsConfigurableTable } from 'pages/aiAgent/ana
 import { fetchFlowsAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
 import { fetchOrderManagementAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 import { fetchOverallAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallAutomatedInteractionsTrend'
+import { fetchOverallAutomationRateTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallAutomationRateTrend'
 import { fetchOverallTimeSavedByAgentsTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallTimeSavedByAgentsTrend'
 import { fetchPerformanceMetricsPerFeatureV2AsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeatureV2'
 import {
@@ -68,12 +68,12 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
         reportPath: STATS_ROUTES.AI_AGENT_OVERVIEW,
         charts: {
             [AnalyticsOverviewChart.AutomationRateCard]: {
-                chartComponent: AnalyticsOverviewAutomationRateCard,
+                chartComponent: AnalyticsOverviewOverallAutomationRateCard,
                 label: 'Overall automation rate',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchAutomationRateTrend,
+                        fetch: fetchOverallAutomationRateTrend,
                         metricFormat: 'decimal-to-percent',
                     },
                 ],

@@ -1,20 +1,17 @@
 import { renderHook, waitFor } from '@testing-library/react'
 
-import { getAIAgentAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
+import { getAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
     fetchAllAutomatedInteractions,
     fetchAllAutomatedInteractionsByAutoResponders,
     fetchBillableTicketsExcludingAIAgent,
-    fetchTrendFromMultipleMetricsTrend,
+    fetchFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
-import {
-    fetchAIAgentAutomationRateTrend,
-    useAIAgentAutomationRateTrend,
-} from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
-import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
-import { aiAgentAutomatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
+import {
+    fetchAutomationRateTrend,
+    useAutomationRateTrend,
+} from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
@@ -30,7 +27,7 @@ const mockFilters: StatsFilters = {
 
 const mockTimezone = 'America/New_York'
 
-describe('useAIAgentAutomationRateTrend', () => {
+describe('useAutomationRateTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useAIAgentUserId as jest.Mock).mockReturnValue(12345)
@@ -43,7 +40,7 @@ describe('useAIAgentAutomationRateTrend', () => {
     }
 
     it('should call hooks with correct parameters', async () => {
-        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockResolvedValue(
+        ;(fetchFilteredAutomatedInteractions as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
@@ -56,28 +53,22 @@ describe('useAIAgentAutomationRateTrend', () => {
             mockTrendData,
         )
         ;(
-            getAIAgentAutomationRateUnfilteredDenominatorTrend as jest.Mock
+            getAutomationRateUnfilteredDenominatorTrend as jest.Mock
         ).mockReturnValue({
             data: { value: 0.5, prevValue: 0.4 },
             isFetching: false,
             isError: false,
         })
 
-        renderHook(() =>
-            useAIAgentAutomationRateTrend(mockFilters, mockTimezone),
-        )
+        renderHook(() => useAutomationRateTrend(mockFilters, mockTimezone))
 
         await waitFor(() => {
             expect(fetchAllAutomatedInteractions).toHaveBeenCalled()
         })
 
-        expect(fetchTrendFromMultipleMetricsTrend).toHaveBeenCalledWith(
+        expect(fetchFilteredAutomatedInteractions).toHaveBeenCalledWith(
             mockFilters,
             mockTimezone,
-            aiAgentAutomatedInteractionsQueryFactory,
-            AutomationDatasetMeasure.AutomatedInteractions,
-            aiAgentAutomatedInteractionsQueryV2Factory,
-            'automatedInteractions',
         )
         expect(
             fetchAllAutomatedInteractionsByAutoResponders,
@@ -94,7 +85,7 @@ describe('useAIAgentAutomationRateTrend', () => {
     })
 
     it('should use unfiltered denominator calculation', async () => {
-        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockResolvedValue(
+        ;(fetchFilteredAutomatedInteractions as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
@@ -107,27 +98,25 @@ describe('useAIAgentAutomationRateTrend', () => {
             mockTrendData,
         )
         ;(
-            getAIAgentAutomationRateUnfilteredDenominatorTrend as jest.Mock
+            getAutomationRateUnfilteredDenominatorTrend as jest.Mock
         ).mockReturnValue({
             data: { value: 0.6, prevValue: 0.5 },
             isFetching: false,
             isError: false,
         })
 
-        renderHook(() =>
-            useAIAgentAutomationRateTrend(mockFilters, mockTimezone),
-        )
+        renderHook(() => useAutomationRateTrend(mockFilters, mockTimezone))
 
         await waitFor(() => {
             expect(fetchAllAutomatedInteractions).toHaveBeenCalled()
         })
 
         expect(
-            getAIAgentAutomationRateUnfilteredDenominatorTrend,
+            getAutomationRateUnfilteredDenominatorTrend,
         ).toHaveBeenCalledWith({
             isFetching: false,
             isError: false,
-            aiAgentAutomatedInteractions: mockTrendData.data,
+            filteredAutomatedInteractions: mockTrendData.data,
             allAutomatedInteractions: mockTrendData.data,
             allAutomatedInteractionsByAutoResponders: mockTrendData.data,
             billableTicketsCount: mockTrendData.data,
@@ -135,9 +124,48 @@ describe('useAIAgentAutomationRateTrend', () => {
     })
 
     it('should handle loading state correctly', async () => {
-        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockReturnValue({
-            ...mockTrendData,
+        ;(fetchFilteredAutomatedInteractions as jest.Mock).mockReturnValue(
+            new Promise(() => {}),
+        )
+        ;(
+            fetchAllAutomatedInteractionsByAutoResponders as jest.Mock
+        ).mockResolvedValue(mockTrendData)
+        ;(fetchAllAutomatedInteractions as jest.Mock).mockResolvedValue(
+            mockTrendData,
+        )
+        ;(fetchBillableTicketsExcludingAIAgent as jest.Mock).mockResolvedValue(
+            mockTrendData,
+        )
+        ;(
+            getAutomationRateUnfilteredDenominatorTrend as jest.Mock
+        ).mockReturnValue({
+            data: { value: 0.5, prevValue: 0.4 },
             isFetching: true,
+            isError: false,
+        })
+
+        const { result } = renderHook(() =>
+            useAutomationRateTrend(mockFilters, mockTimezone),
+        )
+
+        expect(result.current.isFetching).toBe(true)
+    })
+
+    it('should not fetch and have isFetching=false when disabled', () => {
+        const { result } = renderHook(() =>
+            useAutomationRateTrend(mockFilters, mockTimezone, false),
+        )
+
+        expect(fetchFilteredAutomatedInteractions).not.toHaveBeenCalled()
+        expect(fetchAllAutomatedInteractions).not.toHaveBeenCalled()
+        expect(result.current.isFetching).toBe(false)
+        expect(result.current.isError).toBe(false)
+    })
+
+    it('should handle error state correctly', async () => {
+        ;(fetchFilteredAutomatedInteractions as jest.Mock).mockResolvedValue({
+            ...mockTrendData,
+            isError: true,
         })
         ;(
             fetchAllAutomatedInteractionsByAutoResponders as jest.Mock
@@ -149,51 +177,7 @@ describe('useAIAgentAutomationRateTrend', () => {
             mockTrendData,
         )
         ;(
-            getAIAgentAutomationRateUnfilteredDenominatorTrend as jest.Mock
-        ).mockReturnValue({
-            data: { value: 0.5, prevValue: 0.4 },
-            isFetching: true,
-            isError: false,
-        })
-
-        const { result } = renderHook(() =>
-            useAIAgentAutomationRateTrend(mockFilters, mockTimezone),
-        )
-
-        await waitFor(() => {
-            expect(fetchAllAutomatedInteractions).toHaveBeenCalled()
-        })
-
-        expect(result.current.isFetching).toBe(true)
-    })
-
-    it('should not fetch and have isFetching=false when disabled', () => {
-        const { result } = renderHook(() =>
-            useAIAgentAutomationRateTrend(mockFilters, mockTimezone, false),
-        )
-
-        expect(fetchTrendFromMultipleMetricsTrend).not.toHaveBeenCalled()
-        expect(fetchAllAutomatedInteractions).not.toHaveBeenCalled()
-        expect(result.current.isFetching).toBe(false)
-        expect(result.current.isError).toBe(false)
-    })
-
-    it('should handle error state correctly', async () => {
-        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockResolvedValue(
-            mockTrendData,
-        )
-        ;(
-            fetchAllAutomatedInteractionsByAutoResponders as jest.Mock
-        ).mockResolvedValue(mockTrendData)
-        ;(fetchAllAutomatedInteractions as jest.Mock).mockResolvedValue({
-            ...mockTrendData,
-            isError: true,
-        })
-        ;(fetchBillableTicketsExcludingAIAgent as jest.Mock).mockResolvedValue(
-            mockTrendData,
-        )
-        ;(
-            getAIAgentAutomationRateUnfilteredDenominatorTrend as jest.Mock
+            getAutomationRateUnfilteredDenominatorTrend as jest.Mock
         ).mockReturnValue({
             data: { value: 0.5, prevValue: 0.4 },
             isFetching: false,
@@ -201,18 +185,16 @@ describe('useAIAgentAutomationRateTrend', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIAgentAutomationRateTrend(mockFilters, mockTimezone),
+            useAutomationRateTrend(mockFilters, mockTimezone),
         )
 
         await waitFor(() => {
-            expect(fetchAllAutomatedInteractions).toHaveBeenCalled()
+            expect(result.current.isError).toBe(true)
         })
-
-        expect(result.current.isError).toBe(true)
     })
 })
 
-describe('fetchAIAgentAutomationRateTrend', () => {
+describe('fetchAutomationRateTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
@@ -224,7 +206,7 @@ describe('fetchAIAgentAutomationRateTrend', () => {
     }
 
     it('should fetch all required data and calculate result', async () => {
-        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockResolvedValue(
+        ;(fetchFilteredAutomatedInteractions as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
@@ -237,14 +219,14 @@ describe('fetchAIAgentAutomationRateTrend', () => {
             mockTrendData,
         )
         ;(
-            getAIAgentAutomationRateUnfilteredDenominatorTrend as jest.Mock
+            getAutomationRateUnfilteredDenominatorTrend as jest.Mock
         ).mockReturnValue({
             data: { value: 0.5, prevValue: 0.4 },
             isFetching: false,
             isError: false,
         })
 
-        const result = await fetchAIAgentAutomationRateTrend(
+        const result = await fetchAutomationRateTrend(
             mockFilters,
             mockTimezone,
             12345,
@@ -256,13 +238,9 @@ describe('fetchAIAgentAutomationRateTrend', () => {
             isError: false,
         })
 
-        expect(fetchTrendFromMultipleMetricsTrend).toHaveBeenCalledWith(
+        expect(fetchFilteredAutomatedInteractions).toHaveBeenCalledWith(
             mockFilters,
             mockTimezone,
-            aiAgentAutomatedInteractionsQueryFactory,
-            AutomationDatasetMeasure.AutomatedInteractions,
-            aiAgentAutomatedInteractionsQueryV2Factory,
-            'automatedInteractions',
         )
         expect(
             fetchAllAutomatedInteractionsByAutoResponders,
@@ -277,11 +255,11 @@ describe('fetchAIAgentAutomationRateTrend', () => {
             12345,
         )
         expect(
-            getAIAgentAutomationRateUnfilteredDenominatorTrend,
+            getAutomationRateUnfilteredDenominatorTrend,
         ).toHaveBeenCalledWith({
             isFetching: false,
             isError: false,
-            aiAgentAutomatedInteractions: mockTrendData.data,
+            filteredAutomatedInteractions: mockTrendData.data,
             allAutomatedInteractions: mockTrendData.data,
             allAutomatedInteractionsByAutoResponders: mockTrendData.data,
             billableTicketsCount: mockTrendData.data,

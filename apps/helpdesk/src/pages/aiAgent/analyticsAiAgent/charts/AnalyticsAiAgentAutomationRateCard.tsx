@@ -1,9 +1,9 @@
 import { TrendCard } from '@repo/reporting'
 
-import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { useAiAgentAllAgentsAutomationRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAutomationRateTrend'
 
 export const AnalyticsAiAgentAutomationRateCard = ({
     chartId,
@@ -11,7 +11,7 @@ export const AnalyticsAiAgentAutomationRateCard = ({
     chartConfig,
 }: DashboardChartProps) => {
     const trendCardProps = useReportingTrendCardProps({
-        useTrend: useAIAgentAutomationRateTrend,
+        useTrend: useAiAgentAllAgentsAutomationRateTrend,
         chartConfig: chartConfig!,
         chartId,
         isAiAgentTrendCard: true,
