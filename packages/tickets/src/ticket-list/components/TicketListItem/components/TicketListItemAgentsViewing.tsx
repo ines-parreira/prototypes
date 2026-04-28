@@ -11,9 +11,13 @@ import type { Agent } from '../../../hooks/useTicketDisplayData'
 
 type Props = {
     agents: Agent[]
+    avatarSize?: 'sm' | 'md'
 }
 
-export function TicketListItemAgentsViewing({ agents }: Props) {
+export function TicketListItemAgentsViewing({
+    agents,
+    avatarSize = 'sm',
+}: Props) {
     if (agents.length === 0) return null
 
     return (
@@ -30,7 +34,7 @@ export function TicketListItemAgentsViewing({ agents }: Props) {
                                         agent.meta?.profile_picture_url ??
                                         undefined
                                     }
-                                    size="sm"
+                                    size={avatarSize}
                                 />
                             ))}
                         </AvatarGroup>

@@ -76,6 +76,27 @@ describe('useTicketTableColumnVisibility', () => {
             'snooze',
             'priority',
         ])
+        expect(result.current.defaultColumnOrder).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'integrations',
+            'tags',
+            'customer',
+            'assignee_team',
+            'assignee',
+            'id',
+            'status',
+            'language',
+            'channel',
+            'created_datetime',
+            'updated_datetime',
+            'last_message_datetime',
+            'last_received_message_datetime',
+            'closed',
+            'snooze',
+            'priority',
+        ])
     })
 
     it('maps view fields to column ids and prepends the mandatory ticket column', () => {
@@ -101,6 +122,74 @@ describe('useTicketTableColumnVisibility', () => {
             'subject',
             'customer',
             'created_datetime',
+        ])
+        expect(result.current.defaultColumnOrder).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'customer',
+            'created_datetime',
+            'integrations',
+            'tags',
+            'assignee_team',
+            'assignee',
+            'id',
+            'status',
+            'language',
+            'channel',
+            'updated_datetime',
+            'last_message_datetime',
+            'last_received_message_datetime',
+            'closed',
+            'snooze',
+            'priority',
+        ])
+    })
+
+    it('keeps backend field order first and appends hidden columns in fallback order', () => {
+        useGetViewMock.mockReturnValue({
+            data: {
+                data: {
+                    fields: [
+                        ViewField.Subject,
+                        ViewField.Assignee,
+                        ViewField.Customer,
+                    ],
+                },
+            },
+        })
+
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        expect(result.current.defaultVisibleColumns).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'assignee',
+            'customer',
+        ])
+        expect(result.current.defaultColumnOrder).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'assignee',
+            'customer',
+            'integrations',
+            'tags',
+            'assignee_team',
+            'id',
+            'status',
+            'language',
+            'channel',
+            'created_datetime',
+            'updated_datetime',
+            'last_message_datetime',
+            'last_received_message_datetime',
+            'closed',
+            'snooze',
+            'priority',
         ])
     })
 
@@ -194,6 +283,27 @@ describe('useTicketTableColumnVisibility', () => {
             'customer',
             'created_datetime',
         ])
+        expect(result.current.defaultColumnOrder).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'customer',
+            'created_datetime',
+            'integrations',
+            'tags',
+            'assignee_team',
+            'assignee',
+            'id',
+            'status',
+            'language',
+            'channel',
+            'updated_datetime',
+            'last_message_datetime',
+            'last_received_message_datetime',
+            'closed',
+            'snooze',
+            'priority',
+        ])
 
         act(() => {
             result.current.onLocalChange(['select', 'ticket', 'subject'])
@@ -249,6 +359,39 @@ describe('useTicketTableColumnVisibility', () => {
         expect(invalidateQueriesSpy).not.toHaveBeenCalled()
     })
 
+    it('does not save for everyone for unauthorized users', async () => {
+        useGetCurrentUserMock.mockReturnValue({
+            data: {
+                data: {
+                    id: 2,
+                    role: { name: UserRole.BasicAgent },
+                },
+            },
+        })
+
+        const invalidateQueriesSpy = vi.spyOn(
+            QueryClient.prototype,
+            'invalidateQueries',
+        )
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        await expect(
+            result.current.saveForEveryone([
+                'select',
+                'ticket',
+                'subject',
+                'customer',
+            ]),
+        ).rejects.toThrow(
+            'User does not have permission to save columns for everyone',
+        )
+
+        expect(mutateAsyncUpdateViewMock).not.toHaveBeenCalled()
+        expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+    })
+
     it('does not throw when draft column changes have no draft callback', () => {
         const { result } = renderHook(() =>
             useTicketTableColumnVisibility(viewId, {
@@ -273,6 +416,27 @@ describe('useTicketTableColumnVisibility', () => {
         )
 
         expect(result.current.defaultVisibleColumns).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'integrations',
+            'tags',
+            'customer',
+            'assignee_team',
+            'assignee',
+            'id',
+            'status',
+            'language',
+            'channel',
+            'created_datetime',
+            'updated_datetime',
+            'last_message_datetime',
+            'last_received_message_datetime',
+            'closed',
+            'snooze',
+            'priority',
+        ])
+        expect(result.current.defaultColumnOrder).toEqual([
             'select',
             'ticket',
             'subject',

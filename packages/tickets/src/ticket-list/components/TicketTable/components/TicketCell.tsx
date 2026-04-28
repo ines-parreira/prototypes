@@ -55,7 +55,7 @@ export function TicketCell({
                 flex={1}
                 minWidth={0}
                 flexDirection="column"
-                gap="xs"
+                gap={hasFailedMessageTag ? 0 : 'xxs'}
                 alignItems="stretch"
             >
                 <OverflowTooltip placement="right">
@@ -88,7 +88,10 @@ export function TicketCell({
                 )}
             </Box>
             <Box flexShrink={0} paddingLeft="xs">
-                <TicketListItemAgentsViewing agents={otherAgentsViewing} />
+                <TicketListItemAgentsViewing
+                    agents={otherAgentsViewing}
+                    avatarSize="md"
+                />
             </Box>
         </>
     )

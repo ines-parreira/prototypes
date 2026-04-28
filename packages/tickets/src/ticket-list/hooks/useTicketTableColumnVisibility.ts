@@ -33,6 +33,11 @@ const TICKET_TABLE_COLUMNS_IN_ORDER = [
 
 const MANDATORY_COLUMN = 'ticket'
 const SELECTION_COLUMN = 'select'
+const ALL_TICKET_TABLE_COLUMNS_IN_ORDER = [
+    SELECTION_COLUMN,
+    MANDATORY_COLUMN,
+    ...TICKET_TABLE_COLUMNS_IN_ORDER,
+]
 
 const COLUMN_TO_FIELD: Record<string, ViewField> = {
     subject: ViewField.Subject,
@@ -94,6 +99,16 @@ function mapOrderedVisibleColumnsToViewFields(
     })
 }
 
+function mapViewFieldsToColumns(fields?: ViewField[] | null) {
+    if (!fields?.length) {
+        return []
+    }
+
+    return fields
+        .map((field) => FIELD_TO_COLUMN[field])
+        .filter(Boolean) as string[]
+}
+
 export function useTicketTableColumnVisibility(
     viewId: number,
     { isDraftView = false, draftFields, onDraftFieldsChange }: Options = {},
@@ -108,22 +123,37 @@ export function useTicketTableColumnVisibility(
     const { mutateAsync: updateView, isLoading: isSavingForEveryone } =
         useUpdateView()
 
+    const fields = isDraftView ? draftFields : viewResponse?.data?.fields
+
     const defaultVisibleColumns = useMemo(() => {
-        const fields = isDraftView ? draftFields : viewResponse?.data?.fields
-        if (!fields?.length) {
-            return [
-                SELECTION_COLUMN,
-                MANDATORY_COLUMN,
-                ...TICKET_TABLE_COLUMNS_IN_ORDER,
-            ]
+        const mappedColumns = mapViewFieldsToColumns(fields)
+
+        if (!mappedColumns.length) {
+            return ALL_TICKET_TABLE_COLUMNS_IN_ORDER
         }
 
-        const mapped = fields
-            .map((field) => FIELD_TO_COLUMN[field])
-            .filter(Boolean) as string[]
+        return [SELECTION_COLUMN, MANDATORY_COLUMN, ...mappedColumns]
+    }, [fields])
 
-        return [SELECTION_COLUMN, MANDATORY_COLUMN, ...mapped]
-    }, [draftFields, isDraftView, viewResponse])
+    const defaultColumnOrder = useMemo(() => {
+        const mappedColumns = mapViewFieldsToColumns(fields)
+
+        if (!mappedColumns.length) {
+            return ALL_TICKET_TABLE_COLUMNS_IN_ORDER
+        }
+
+        const mappedColumnsSet = new Set(mappedColumns)
+        const hiddenColumns = TICKET_TABLE_COLUMNS_IN_ORDER.filter(
+            (column) => !mappedColumnsSet.has(column),
+        )
+
+        return [
+            SELECTION_COLUMN,
+            MANDATORY_COLUMN,
+            ...mappedColumns,
+            ...hiddenColumns,
+        ]
+    }, [fields])
 
     const canSaveForEveryone = useMemo(
         () =>
@@ -172,6 +202,12 @@ export function useTicketTableColumnVisibility(
                 return
             }
 
+            if (!canSaveForEveryone) {
+                throw new Error(
+                    'User does not have permission to save columns for everyone',
+                )
+            }
+
             const fields = mapVisibleColumnsToViewFields(newVisibleColumns)
 
             await updateView({ id: viewId, data: { fields } })
@@ -179,10 +215,11 @@ export function useTicketTableColumnVisibility(
                 queryKey: queryKeys.views.getView(viewId),
             })
         },
-        [isDraftView, queryClient, updateView, viewId],
+        [canSaveForEveryone, isDraftView, queryClient, updateView, viewId],
     )
 
     return {
+        defaultColumnOrder,
         defaultVisibleColumns,
         onLocalChange,
         onColumnOrderChange,

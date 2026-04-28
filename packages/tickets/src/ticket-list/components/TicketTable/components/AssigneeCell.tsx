@@ -61,7 +61,7 @@ export function AssigneeCell({ assignee, linkProps }: Props) {
                 />
             </Box>
             <OverflowTooltip placement="right">
-                <Text size="sm" overflow="ellipsis">
+                <Text size="md" overflow="ellipsis">
                     {label}
                 </Text>
             </OverflowTooltip>

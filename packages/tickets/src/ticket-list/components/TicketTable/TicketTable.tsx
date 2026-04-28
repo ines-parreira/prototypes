@@ -82,6 +82,12 @@ function areColumnsEqual(left: string[], right: string[]) {
     )
 }
 
+function excludeDisplayOnlyColumns(columns: string[]) {
+    return columns.filter(
+        (column) => column !== 'select' && column !== 'ticket',
+    )
+}
+
 function TicketTableComponent({
     viewId,
     isSearchMode = false,
@@ -258,6 +264,7 @@ function TicketTableComponent({
         : []
 
     const {
+        defaultColumnOrder,
         defaultVisibleColumns,
         onLocalChange: onColumnVisibilityChange,
         onColumnOrderChange,
@@ -489,6 +496,7 @@ function TicketTableComponent({
                 }}
                 columnEditing={{
                     enable: true,
+                    defaultColumnOrder,
                     defaultVisibleColumns,
                     onVisibleColumnsChange: onColumnVisibilityChange,
                     onColumnOrderChange,
@@ -541,9 +549,13 @@ function TicketTableComponent({
                         const orderedVisibleColumns = orderedColumns.filter(
                             (column) => visibleColumns.includes(column),
                         )
+                        const comparableVisibleColumns =
+                            excludeDisplayOnlyColumns(orderedVisibleColumns)
+                        const comparableDefaultVisibleColumns =
+                            excludeDisplayOnlyColumns(defaultVisibleColumns)
                         const hasDivergedFromSavedView = !areColumnsEqual(
-                            orderedVisibleColumns,
-                            defaultVisibleColumns,
+                            comparableVisibleColumns,
+                            comparableDefaultVisibleColumns,
                         )
 
                         if (!hasDivergedFromSavedView) {

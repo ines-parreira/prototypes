@@ -16,6 +16,7 @@ const {
     toastErrorMock,
     setIsOpenMock,
     latestFooterProps,
+    latestDataTableProps,
     columnEditingConfig,
 } = vi.hoisted(() => ({
     createLocalStoragePersistenceMock: vi.fn(),
@@ -25,12 +26,21 @@ const {
     toastErrorMock: vi.fn(),
     setIsOpenMock: vi.fn(),
     columnEditingConfig: {
+        defaultColumnOrder: ['ticket', 'subject', 'customer'],
         defaultVisibleColumns: ['ticket', 'subject'],
         canSaveForEveryone: true,
         isSavingForEveryone: false,
         viewVisibility: 'public',
         orderedColumns: ['ticket', 'customer'],
         visibleColumns: ['ticket', 'customer'],
+    },
+    latestDataTableProps: {
+        current: null as {
+            columnEditing?: {
+                defaultColumnOrder?: string[]
+                defaultVisibleColumns?: string[]
+            }
+        } | null,
     },
     latestFooterProps: {
         current: null as {
@@ -50,18 +60,27 @@ vi.mock('@gorgias/axiom', async () => {
     return {
         ...actual,
         DataTable: ({
+            columnEditing,
             topContent,
             children,
         }: {
+            columnEditing?: {
+                defaultColumnOrder?: string[]
+                defaultVisibleColumns?: string[]
+            }
             topContent?: ReactNode
             children?: ReactNode
-        }) => (
-            <div>
-                <div role="table" />
-                {topContent}
-                {children}
-            </div>
-        ),
+        }) => {
+            latestDataTableProps.current = { columnEditing }
+
+            return (
+                <div>
+                    <div role="table" />
+                    {topContent}
+                    {children}
+                </div>
+            )
+        },
         DataTablePagination: () => <div />,
         createLocalStoragePersistence: createLocalStoragePersistenceMock,
         toast: {
@@ -167,6 +186,7 @@ vi.mock('../../hooks/useTicketTableBulkActionShortcuts', () => ({
 
 vi.mock('../../hooks/useTicketTableColumnVisibility', () => ({
     useTicketTableColumnVisibility: () => ({
+        defaultColumnOrder: columnEditingConfig.defaultColumnOrder,
         defaultVisibleColumns: columnEditingConfig.defaultVisibleColumns,
         onLocalChange: vi.fn(),
         onColumnOrderChange: vi.fn(),
@@ -255,7 +275,13 @@ describe('TicketTable column editing footer wiring', () => {
         toastSuccessMock.mockReset()
         toastErrorMock.mockReset()
         setIsOpenMock.mockReset()
+        latestDataTableProps.current = null
         latestFooterProps.current = null
+        columnEditingConfig.defaultColumnOrder = [
+            'ticket',
+            'subject',
+            'customer',
+        ]
         columnEditingConfig.defaultVisibleColumns = ['ticket', 'subject']
         columnEditingConfig.canSaveForEveryone = true
         columnEditingConfig.isSavingForEveryone = false
@@ -264,8 +290,33 @@ describe('TicketTable column editing footer wiring', () => {
         columnEditingConfig.visibleColumns = ['ticket', 'customer']
     })
 
-    it('does not render the footer when the current columns match the saved view', () => {
-        columnEditingConfig.defaultVisibleColumns = ['ticket', 'customer']
+    it('passes default visible columns and column order to column editing', () => {
+        columnEditingConfig.defaultColumnOrder = [
+            'ticket',
+            'assignee',
+            'customer',
+            'status',
+        ]
+        columnEditingConfig.defaultVisibleColumns = [
+            'ticket',
+            'assignee',
+            'customer',
+        ]
+
+        render(<TicketTable viewId={123} />)
+
+        expect(latestDataTableProps.current?.columnEditing).toMatchObject({
+            defaultColumnOrder: ['ticket', 'assignee', 'customer', 'status'],
+            defaultVisibleColumns: ['ticket', 'assignee', 'customer'],
+        })
+    })
+
+    it('does not render the footer when backend-managed columns match the saved view', () => {
+        columnEditingConfig.defaultVisibleColumns = [
+            'select',
+            'ticket',
+            'customer',
+        ]
 
         render(<TicketTable viewId={123} />)
 
