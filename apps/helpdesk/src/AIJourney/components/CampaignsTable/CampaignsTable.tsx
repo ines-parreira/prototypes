@@ -218,6 +218,7 @@ export default function CampaignsTable<TData, TValue>({
         sortingConfig: {
             enableSorting: true,
             enableMultiSort: true,
+            initialSorting: [{ id: 'campaign.title', desc: false }],
         },
         paginationConfig: {
             enablePagination: true,

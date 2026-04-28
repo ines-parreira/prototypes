@@ -1,7 +1,11 @@
 import { formatMetricValue } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, createTableV1SortableColumn } from '@gorgias/axiom'
+import {
+    Box,
+    createTableV1SortableColumn,
+    TableV1SortableColumnHeader,
+} from '@gorgias/axiom'
 
 import { MetricCell } from 'AIJourney/components'
 import { JourneyName } from 'AIJourney/components/JourneysTable/JourneyName/JourneyName'
@@ -23,7 +27,11 @@ export const journeysColumns: ColumnDef<TableRow>[] = [
             row.campaign?.title ||
             ('name' in row && row.name) ||
             JOURNEY_TYPE_MAP_TO_STRING[row.type],
-        header: 'Title',
+        header: ({ column }) => (
+            <TableV1SortableColumnHeader column={column}>
+                Title
+            </TableV1SortableColumnHeader>
+        ),
         cell: (info) => {
             const storeName = info.row.original.store_name
             const journeyType = info.row.original.type
