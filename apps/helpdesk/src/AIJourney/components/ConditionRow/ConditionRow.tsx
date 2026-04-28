@@ -400,7 +400,7 @@ export const ConditionRow = ({
                                                           value: null,
                                                       } satisfies PurchaseDateClause)
                                                     : ({
-                                                          operator: 'gt',
+                                                          operator: 'gte',
                                                           value: id,
                                                       } satisfies PurchaseDateClause),
                                             )

@@ -463,11 +463,47 @@ describe('buildFullQuery', () => {
             )
         })
 
-        it('builds a unary aggregate condition', () => {
+        it('builds a unary aggregate condition without purchaseDateClause', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
                 operator: 'isEmpty',
                 value: null,
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                'isEmpty(shopper.orders())',
+            )
+        })
+
+        it('includes purchase_date inside the aggregate for a unary aggregate condition', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                operator: 'isEmpty',
+                value: null,
+                purchaseDateClause: { operator: 'gte', value: '30d' },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "isEmpty(shopper.orders(gte(purchase_date, '30d')))",
+            )
+        })
+
+        it('includes purchase_date inside the aggregate for isNotEmpty unary aggregate', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                operator: 'isEmpty',
+                value: null,
+                purchaseDateClause: { operator: 'gte', value: '90d' },
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "isEmpty(shopper.orders(gte(purchase_date, '90d')))",
+            )
+        })
+
+        it('omits purchase_date from unary aggregate when purchaseDateClause is all-time', () => {
+            const condition: ConditionState = {
+                ...baseAggregateCondition,
+                operator: 'isEmpty',
+                value: null,
+                purchaseDateClause: { operator: 'isNotEmpty', value: null },
             }
             expect(buildFullQuery([condition], schema)).toBe(
                 'isEmpty(shopper.orders())',
@@ -479,30 +515,30 @@ describe('buildFullQuery', () => {
         it('puts the purchase_date term inside the aggregate for 30d period', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
-                purchaseDateClause: { operator: 'gt', value: '30d' },
+                purchaseDateClause: { operator: 'gte', value: '30d' },
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "gt(shopper.orders(gt(purchase_date, '30d')), 5)",
+                "gt(shopper.orders(gte(purchase_date, '30d')), 5)",
             )
         })
 
         it('puts the correct term inside the aggregate for 90d period', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
-                purchaseDateClause: { operator: 'gt', value: '90d' },
+                purchaseDateClause: { operator: 'gte', value: '90d' },
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "gt(shopper.orders(gt(purchase_date, '90d')), 5)",
+                "gt(shopper.orders(gte(purchase_date, '90d')), 5)",
             )
         })
 
         it('puts the correct term inside the aggregate for 365d period', () => {
             const condition: ConditionState = {
                 ...baseAggregateCondition,
-                purchaseDateClause: { operator: 'gt', value: '365d' },
+                purchaseDateClause: { operator: 'gte', value: '365d' },
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "gt(shopper.orders(gt(purchase_date, '365d')), 5)",
+                "gt(shopper.orders(gte(purchase_date, '365d')), 5)",
             )
         })
 
@@ -540,10 +576,10 @@ describe('buildFullQuery', () => {
                     operator: 'eq',
                     value: 'subscribed',
                 },
-                purchaseDateClause: { operator: 'gt', value: '30d' },
+                purchaseDateClause: { operator: 'gte', value: '30d' },
             }
             expect(buildFullQuery([condition], schema)).toBe(
-                "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gt(purchase_date, '30d')), 5)",
+                "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gte(purchase_date, '30d')), 5)",
             )
         })
 
@@ -1040,7 +1076,7 @@ describe('parseConditionsQuery', () => {
 
         it('should be false when only a purchase_date clause is inside the aggregate', () => {
             const [condition] = parseConditionsQuery(
-                "gt(shopper.orders(gt(purchase_date, '30d')), 5)",
+                "gt(shopper.orders(gte(purchase_date, '30d')), 5)",
                 schema,
             )
             expect(condition.isWhereVisible).toBe(false)
@@ -1163,7 +1199,7 @@ describe('parseConditionsQuery', () => {
         it('parses a purchase_date term inside the aggregate (new format)', () => {
             expect(
                 parseConditionsQuery(
-                    "gt(shopper.orders(gt(purchase_date, '30d')), 5)",
+                    "gt(shopper.orders(gte(purchase_date, '30d')), 5)",
                     schema,
                 ),
             ).toEqual([
@@ -1174,7 +1210,7 @@ describe('parseConditionsQuery', () => {
                     operator: 'gt',
                     value: 5,
                     whereClause: null,
-                    purchaseDateClause: { operator: 'gt', value: '30d' },
+                    purchaseDateClause: { operator: 'gte', value: '30d' },
                     isWhereVisible: false,
                 },
             ])
@@ -1183,7 +1219,7 @@ describe('parseConditionsQuery', () => {
         it('parses a where clause and purchase_date both inside the aggregate (new format)', () => {
             expect(
                 parseConditionsQuery(
-                    "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gt(purchase_date, '30d')), 5)",
+                    "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gte(purchase_date, '30d')), 5)",
                     schema,
                 ),
             ).toEqual([
@@ -1198,7 +1234,7 @@ describe('parseConditionsQuery', () => {
                         operator: 'eq',
                         value: 'subscribed',
                     },
-                    purchaseDateClause: { operator: 'gt', value: '30d' },
+                    purchaseDateClause: { operator: 'gte', value: '30d' },
                     isWhereVisible: true,
                 },
             ])
@@ -1206,7 +1242,7 @@ describe('parseConditionsQuery', () => {
 
         it('round-trips an aggregate with a where clause and a purchase_date period', () => {
             const original =
-                "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gt(purchase_date, '365d')), 5)"
+                "gt(shopper.orders(eq(sms_consent_status, 'subscribed') && gte(purchase_date, '365d')), 5)"
             const parsed = parseConditionsQuery(original, schema)
             expect(buildFullQuery(parsed, schema)).toBe(original)
         })

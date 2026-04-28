@@ -48,6 +48,22 @@ function formatFieldValue(
     return `'${escapeStr(String(value))}'`
 }
 
+function buildPurchaseDatePart(
+    purchaseDateClause: PurchaseDateClause | null,
+    schema: ConditionsSchema,
+): string {
+    if (!purchaseDateClause) return ''
+    const pdc = purchaseDateClause
+    const isUnaryPdc = schema.operators.unary.includes(pdc.operator)
+    if (isUnaryPdc && pdc.operator !== 'isNotEmpty') {
+        return `${pdc.operator}(purchase_date)`
+    }
+    if (!isUnaryPdc && pdc.value) {
+        return `${pdc.operator}(purchase_date, '${pdc.value}')`
+    }
+    return ''
+}
+
 function buildConditionQuery(
     condition: ConditionState,
     schema: ConditionsSchema,
@@ -88,9 +104,14 @@ function buildConditionQuery(
     const isUnary = schema.operators.unary.includes(operator)
 
     if (isUnary) {
-        return condition.isAggregate
-            ? `${operator}(${dslRef}())`
-            : `${operator}(${dslRef})`
+        if (condition.isAggregate) {
+            const purchaseDatePart = buildPurchaseDatePart(
+                condition.purchaseDateClause,
+                schema,
+            )
+            return `${operator}(${dslRef}(${purchaseDatePart}))`
+        }
+        return `${operator}(${dslRef})`
     }
 
     if (value === null || value === undefined || value === '') return null
@@ -128,16 +149,10 @@ function buildConditionQuery(
             }
         }
 
-        let purchaseDatePart = ''
-        if (condition.purchaseDateClause) {
-            const pdc = condition.purchaseDateClause
-            const isUnaryPdc = schema.operators.unary.includes(pdc.operator)
-            if (isUnaryPdc && pdc.operator !== 'isNotEmpty') {
-                purchaseDatePart = `${pdc.operator}(purchase_date)`
-            } else if (!isUnaryPdc && pdc.value) {
-                purchaseDatePart = `${pdc.operator}(purchase_date, '${pdc.value}')`
-            }
-        }
+        const purchaseDatePart = buildPurchaseDatePart(
+            condition.purchaseDateClause,
+            schema,
+        )
 
         const innerClause = [wherePart, purchaseDatePart]
             .filter(Boolean)

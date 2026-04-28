@@ -457,14 +457,14 @@ describe('<ConditionRow />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should set purchaseDateClause with gt operator when a period is selected', () => {
+        it('should set purchaseDateClause with gte operator when a period is selected', () => {
             renderComponent()
 
             captured.purchaseDateOnSelect?.('30d')
 
             expect(mockSetValue).toHaveBeenCalledWith(
                 'conditions.0.purchaseDateClause',
-                { operator: 'gt', value: '30d' },
+                { operator: 'gte', value: '30d' },
             )
         })
 
