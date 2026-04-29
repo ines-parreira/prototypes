@@ -1,8 +1,7 @@
 import { history } from '@repo/routing'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { renderWithRouter } from 'utils/testing'
 
 import type { NavigationItem } from '../CollapsedAiJourneyNavigation'
 import { CollapsedAiJourneyNavigation } from '../CollapsedAiJourneyNavigation'
@@ -38,7 +37,7 @@ describe('CollapsedAiJourneyNavigation', () => {
     })
 
     it('renders all navigation items', () => {
-        renderWithRouter(
+        render(
             <CollapsedAiJourneyNavigation
                 navigationItems={mockNavigationItems}
             />,
@@ -50,7 +49,7 @@ describe('CollapsedAiJourneyNavigation', () => {
 
     it('navigates to correct route when clicking an item', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
+        render(
             <CollapsedAiJourneyNavigation
                 navigationItems={mockNavigationItems}
             />,

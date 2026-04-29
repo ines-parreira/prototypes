@@ -1,4 +1,5 @@
 import * as dismissHook from '@repo/hooks'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -6,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import * as integrationsHelpers from 'state/integrations/helpers'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { CampaignChatHiddenWarning } from '../CampaignChatHiddenWarning'
 
@@ -48,7 +48,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
             dismiss: jest.fn(),
         })
 
-        const { container } = renderWithRouter(
+        const { container } = render(
             <Provider store={mockStore()}>
                 <CampaignChatHiddenWarning
                     integration={fromJS(mockedChatIntegration)}
@@ -69,7 +69,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                     dismiss: jest.fn(),
                 })
 
-                const { getByText } = renderWithRouter(
+                const { getByText } = render(
                     <Provider store={mockStore()}>
                         <CampaignChatHiddenWarning
                             integration={fromJS({
@@ -100,7 +100,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                     dismiss: jest.fn(),
                 })
 
-                const { getByText } = renderWithRouter(
+                const { getByText } = render(
                     <Provider store={mockStore()}>
                         <CampaignChatHiddenWarning
                             integration={fromJS({
@@ -133,7 +133,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                     dismiss: jest.fn(),
                 })
 
-                const { getByText } = renderWithRouter(
+                const { getByText } = render(
                     <Provider store={mockStore()}>
                         <CampaignChatHiddenWarning
                             integration={fromJS({
@@ -163,7 +163,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                     dismiss: jest.fn(),
                 })
 
-                const { container } = renderWithRouter(
+                const { container } = render(
                     <Provider store={mockStore()}>
                         <CampaignChatHiddenWarning
                             integration={fromJS({
@@ -193,7 +193,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                 dismiss: jest.fn(),
             })
 
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <Provider store={mockStore()}>
                     <CampaignChatHiddenWarning
                         integration={fromJS({
@@ -219,7 +219,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                 'useIsConvertSubscriber',
             ).mockImplementation(() => false)
 
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <Provider store={mockStore()}>
                     <CampaignChatHiddenWarning
                         integration={fromJS(mockedChatIntegration)}

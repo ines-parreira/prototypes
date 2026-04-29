@@ -1,11 +1,8 @@
-import { appQueryClient } from '@repo/api-resources'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import { renderWithRouter } from 'utils/testing'
 
 import { Activation } from './Activation'
 
@@ -36,17 +33,14 @@ describe('<Activation />', () => {
     const mockStore = configureMockStore([thunk])()
 
     const renderComponent = () =>
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <Activation />
-                </QueryClientProvider>
+                <Activation />
             </Provider>,
         )
 
     beforeEach(() => {
         jest.clearAllMocks()
-        appQueryClient.clear()
     })
 
     it('should render SendTestCard when journey data is available', () => {

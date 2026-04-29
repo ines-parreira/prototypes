@@ -1,14 +1,9 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import _omit from 'lodash/omit'
-import { Provider } from 'react-redux'
 import type * as ReactRouterDom from 'react-router-dom'
-import { useParams } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { Route, useParams } from 'react-router-dom'
 
 import { billingState } from 'fixtures/billing'
 import { campaign } from 'fixtures/campaign'
@@ -24,9 +19,7 @@ import {
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { CONVERT_ROUTE_PARAM_NAME } from '../../common/constants'
 import { useGetOrCreateChannelConnection } from '../../common/hooks/useGetOrCreateChannelConnection'
@@ -37,7 +30,6 @@ import { CampaignStatus } from '../types/enums/CampaignStatus.enum'
 jest.mock('@repo/feature-flags')
 
 jest.mock('hooks/useSearch')
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -71,10 +63,6 @@ const useListCampaignMock = assumeMock(useListCampaigns)
 const useCreateCampaignMock = assumeMock(useCreateCampaign)
 const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
 const useDeleteCampaignMock = assumeMock(useDeleteCampaign)
-
-const queryClient = mockQueryClient()
-
-const mockHistory = createBrowserHistory()
 
 describe('<CampaignsView/>', () => {
     const isConvertSubscriberSpy = jest.spyOn(
@@ -204,16 +192,18 @@ describe('<CampaignsView/>', () => {
         jest.useRealTimers()
     })
 
-    const renderComponent = (state: any) => {
-        return renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state)}>
-                    <CampaignsView />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                history: mockHistory,
-            },
+    const renderComponent = (
+        state: Partial<RootState>,
+        initialEntries: any[] = ['/'],
+    ) => {
+        return render(
+            <>
+                <CampaignsView />
+                <Route path="/app/convert/118/campaigns/new">
+                    Campaign creation route
+                </Route>
+            </>,
+            { initialEntries, storeState: state },
         )
     }
 
@@ -258,13 +248,14 @@ describe('<CampaignsView/>', () => {
             [CONVERT_ROUTE_PARAM_NAME]: '118',
         })
 
-        act(() =>
-            mockHistory.push('/', {
-                showModal: NavigatedSuccessModalName.ConvertOnboarding,
-            }),
-        )
-
-        const { getByText } = renderComponent(defaultState)
+        const { getByText } = renderComponent(defaultState, [
+            {
+                pathname: '/',
+                state: {
+                    showModal: NavigatedSuccessModalName.ConvertOnboarding,
+                },
+            } as any,
+        ])
 
         expect(getByText('All set!')).toBeInTheDocument()
         expect(
@@ -359,9 +350,9 @@ describe('<CampaignsView/>', () => {
                 exact: false,
             })
             tooltip.click()
-            expect(mockHistory.location.pathname).not.toContain(
-                '/campaigns/new',
-            )
+            expect(
+                screen.queryByText('Campaign creation route'),
+            ).not.toBeInTheDocument()
 
             await waitFor(() => {
                 const link = getByRole('link', { name: 'discover Convert' })

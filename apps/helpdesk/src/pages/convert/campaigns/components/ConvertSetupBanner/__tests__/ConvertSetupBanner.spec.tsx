@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
@@ -10,7 +10,6 @@ import { user } from 'fixtures/users'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import type { RootState } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { ConvertSetupBanner } from '../ConvertSetupBanner'
 
@@ -47,7 +46,7 @@ describe('ConvertSetupBanner', () => {
     it('should render correctly for everyone', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
 
-        const { queryByText } = renderWithRouter(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>,
@@ -60,7 +59,7 @@ describe('ConvertSetupBanner', () => {
     it('should not render because has bundle installed', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
-        const { queryByText } = renderWithRouter(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>,
@@ -82,7 +81,7 @@ describe('ConvertSetupBanner', () => {
             }),
         })
 
-        const { queryByText } = renderWithRouter(
+        const { queryByText } = render(
             <Provider store={agentStore}>
                 <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>,
@@ -98,7 +97,7 @@ describe('ConvertSetupBanner', () => {
             channelConnection: channelConnection,
         } as any)
 
-        const { queryByText } = renderWithRouter(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>,

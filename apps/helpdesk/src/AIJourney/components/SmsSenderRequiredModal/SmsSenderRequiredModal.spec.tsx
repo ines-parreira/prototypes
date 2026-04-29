@@ -1,7 +1,6 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { renderWithRouter } from 'utils/testing'
 
 import { SmsSenderRequiredModal } from './SmsSenderRequiredModal'
 
@@ -19,7 +18,7 @@ describe('<SmsSenderRequiredModal />', () => {
     })
 
     it('should not render modal content when isOpen is false', () => {
-        renderWithRouter(
+        render(
             <SmsSenderRequiredModal
                 isOpen={false}
                 onClose={mockOnClose}
@@ -33,7 +32,7 @@ describe('<SmsSenderRequiredModal />', () => {
     })
 
     it('should render modal content when isOpen is true', () => {
-        renderWithRouter(
+        render(
             <SmsSenderRequiredModal
                 isOpen={true}
                 onClose={mockOnClose}
@@ -45,7 +44,7 @@ describe('<SmsSenderRequiredModal />', () => {
     })
 
     it('should render flow description when isCampaign is false', () => {
-        renderWithRouter(
+        render(
             <SmsSenderRequiredModal
                 isOpen={true}
                 onClose={mockOnClose}
@@ -62,7 +61,7 @@ describe('<SmsSenderRequiredModal />', () => {
     })
 
     it('should render flow description by default when isCampaign is not provided', () => {
-        renderWithRouter(
+        render(
             <SmsSenderRequiredModal
                 isOpen={true}
                 onClose={mockOnClose}
@@ -78,7 +77,7 @@ describe('<SmsSenderRequiredModal />', () => {
     })
 
     it('should render campaign description when isCampaign is true', () => {
-        renderWithRouter(
+        render(
             <SmsSenderRequiredModal
                 isOpen={true}
                 onClose={mockOnClose}
@@ -96,7 +95,7 @@ describe('<SmsSenderRequiredModal />', () => {
 
     it('should call onClose when Cancel is clicked', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
+        render(
             <SmsSenderRequiredModal
                 isOpen={true}
                 onClose={mockOnClose}
@@ -112,7 +111,7 @@ describe('<SmsSenderRequiredModal />', () => {
 
     it('should call onClose when modal is dismissed via Escape key', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
+        render(
             <SmsSenderRequiredModal
                 isOpen={true}
                 onClose={mockOnClose}
@@ -127,7 +126,7 @@ describe('<SmsSenderRequiredModal />', () => {
 
     it('should call onClose and navigate when "Go to Settings" is clicked', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
+        render(
             <SmsSenderRequiredModal
                 isOpen={true}
                 onClose={mockOnClose}

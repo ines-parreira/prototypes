@@ -1,8 +1,8 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
-import { renderWithRouter } from 'utils/testing'
 
 import { Preview } from './Preview'
 
@@ -157,7 +157,7 @@ describe('<Preview />', () => {
                 isLoading: true,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(
                 screen.queryByText('MessageGuidanceCard'),
@@ -173,7 +173,7 @@ describe('<Preview />', () => {
                 isLoading: true,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(
                 screen.queryByText('MessageGuidanceCard'),
@@ -191,7 +191,7 @@ describe('<Preview />', () => {
                 journeyData: undefined,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(screen.getByText('Page not found.')).toBeInTheDocument()
         })
@@ -199,7 +199,7 @@ describe('<Preview />', () => {
 
     describe('conditional rendering by journey type', () => {
         it('should render TestingProductCard, MessageGuidanceCard, and PlaygroundPreview for non-welcome non-campaign journeys', () => {
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(screen.getByText('TestingProductCard')).toBeInTheDocument()
             expect(screen.getByText('MessageGuidanceCard')).toBeInTheDocument()
@@ -216,7 +216,7 @@ describe('<Preview />', () => {
                 journeyType: JOURNEY_TYPES.WELCOME,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(
                 screen.queryByText('TestingProductCard'),
@@ -239,7 +239,7 @@ describe('<Preview />', () => {
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(
                 screen.queryByText('TestingProductCard'),
@@ -251,13 +251,13 @@ describe('<Preview />', () => {
 
     describe('collapsible column', () => {
         it('should open the collapsible column on mount', () => {
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(true)
         })
 
         it('should close the collapsible column on unmount', () => {
-            const { unmount } = renderWithRouter(<Preview />)
+            const { unmount } = render(<Preview />)
 
             unmount()
 
@@ -265,7 +265,7 @@ describe('<Preview />', () => {
         })
 
         it('should wrap PlaygroundPreview using warpToCollapsibleColumn', () => {
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(mockWarpToCollapsibleColumn).toHaveBeenCalled()
             expect(screen.getByText('PlaygroundPreview')).toBeInTheDocument()
@@ -282,7 +282,7 @@ describe('<Preview />', () => {
                 },
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(mockSetValue).toHaveBeenCalledWith(
                 'message_instructions',
@@ -291,7 +291,7 @@ describe('<Preview />', () => {
         })
 
         it('should not call setValue when journey data has no message_instructions', () => {
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(mockSetValue).not.toHaveBeenCalled()
         })
@@ -313,7 +313,7 @@ describe('<Preview />', () => {
                 isLoading: false,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             await waitFor(() => {
                 expect(
@@ -347,7 +347,7 @@ describe('<Preview />', () => {
                 isLoading: false,
             })
 
-            const { rerenderComponent } = renderWithRouter(<Preview />)
+            const { rerender } = render(<Preview />)
 
             await waitFor(() => {
                 expect(
@@ -362,7 +362,7 @@ describe('<Preview />', () => {
                 isLoading: false,
             })
 
-            rerenderComponent(<Preview />)
+            rerender(<Preview />)
 
             await waitFor(() => {
                 expect(
@@ -379,7 +379,7 @@ describe('<Preview />', () => {
             mockHandleGenerateMessages.mockResolvedValue(undefined)
             const user = userEvent.setup()
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             await act(async () => {
                 await user.click(
@@ -409,7 +409,7 @@ describe('<Preview />', () => {
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(MockPlaygroundPreview).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -433,7 +433,7 @@ describe('<Preview />', () => {
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(MockPlaygroundPreview).toHaveBeenCalledWith(
                 expect.objectContaining({ campaignImage: undefined }),
@@ -451,7 +451,7 @@ describe('<Preview />', () => {
                 isLoading: false,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(MockPlaygroundPreview).toHaveBeenCalledWith(
                 expect.objectContaining({ isGenerateDisabled: true }),
@@ -469,7 +469,7 @@ describe('<Preview />', () => {
                 isLoading: false,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(MockPlaygroundPreview).toHaveBeenCalledWith(
                 expect.objectContaining({ isGenerateDisabled: false }),
@@ -487,7 +487,7 @@ describe('<Preview />', () => {
                 isLoading: false,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(MockPlaygroundPreview).toHaveBeenCalledWith(
                 expect.objectContaining({ isGenerateDisabled: false }),
@@ -505,7 +505,7 @@ describe('<Preview />', () => {
                 isLoading: false,
             })
 
-            renderWithRouter(<Preview />)
+            render(<Preview />)
 
             expect(MockPlaygroundPreview).toHaveBeenCalledWith(
                 expect.objectContaining({ isGenerateDisabled: true }),

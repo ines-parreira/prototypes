@@ -1,6 +1,4 @@
-import { appQueryClient } from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -11,20 +9,16 @@ import thunk from 'redux-thunk'
 
 import { JourneyProvider } from 'AIJourney/providers'
 import { account } from 'fixtures/account'
-import { renderWithRouter } from 'utils/testing'
 
 import { ReportingGranularity } from '../../../domains/reporting/models/types'
 import { FiltersPanelComponent } from '../../../domains/reporting/pages/common/filters/FiltersPanel'
 import { Analytics } from './Analytics'
 
 jest.mock('react-dnd', () => ({
-    DndProvider: ({ children }: { children?: React.ReactNode }) => (
-        <>{children}</>
-    ),
+    ...jest.requireActual('react-dnd'),
     useDrag: () => [{ isDragging: false }, jest.fn(), jest.fn()],
     useDrop: () => [{ isOver: false }, jest.fn()],
 }))
-jest.mock('react-dnd-html5-backend', () => ({ HTML5Backend: {} }))
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -407,13 +401,11 @@ describe('<Analytics />', () => {
             },
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -441,13 +433,11 @@ describe('<Analytics />', () => {
             isLoading: true,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -500,13 +490,11 @@ describe('<Analytics />', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -558,13 +546,11 @@ describe('<Analytics />', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -617,13 +603,11 @@ describe('<Analytics />', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -665,13 +649,11 @@ describe('<Analytics />', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -686,13 +668,11 @@ describe('<Analytics />', () => {
     it('should pass hints from metrics to ConfigureMetricsModal', async () => {
         const user = userEvent.setup()
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -706,13 +686,11 @@ describe('<Analytics />', () => {
     })
 
     it('should render DiscountCodesUsageSection with correct props', () => {
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -731,13 +709,11 @@ describe('<Analytics />', () => {
     })
 
     it('should render AudienceHealthSection with correct props', () => {
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -764,13 +740,11 @@ describe('<Analytics />', () => {
             ]),
         )
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -811,13 +785,11 @@ describe('<Analytics />', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -847,13 +819,11 @@ describe('<Analytics />', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -894,13 +864,11 @@ describe('<Analytics />', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -921,13 +889,11 @@ describe('<Analytics />', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -937,13 +903,11 @@ describe('<Analytics />', () => {
     })
 
     it('should render DrillDownModal', () => {
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -1003,13 +967,11 @@ describe('<Analytics />', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -1031,13 +993,11 @@ describe('<Analytics />', () => {
             ]),
         )
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
         await user.click(screen.getByRole('button', { name: /edit metrics/i }))
@@ -1049,13 +1009,11 @@ describe('<Analytics />', () => {
     })
 
     it('should call useDrillDownModalTrigger with correct args for Orders metric', () => {
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -1080,13 +1038,11 @@ describe('<Analytics />', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Analytics />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -1115,13 +1071,11 @@ describe('<Analytics />', () => {
                 attributionModelComparison: 'klaviyo',
             })
 
-            renderWithRouter(
+            render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </QueryClientProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </Provider>,
             )
 
@@ -1159,13 +1113,11 @@ describe('<Analytics />', () => {
                 attributionModelComparison: null,
             })
 
-            renderWithRouter(
+            render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </QueryClientProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </Provider>,
             )
 
@@ -1190,13 +1142,11 @@ describe('<Analytics />', () => {
                 attributionModelComparison: null,
             })
 
-            renderWithRouter(
+            render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </QueryClientProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </Provider>,
             )
 
@@ -1227,13 +1177,11 @@ describe('<Analytics />', () => {
                 attributionModelComparison: 'klaviyo',
             })
 
-            renderWithRouter(
+            render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </QueryClientProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </Provider>,
             )
 
@@ -1266,13 +1214,11 @@ describe('<Analytics />', () => {
                 attributionModelComparison: 'attentive',
             })
 
-            renderWithRouter(
+            render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </QueryClientProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </Provider>,
             )
 
@@ -1308,13 +1254,11 @@ describe('<Analytics />', () => {
                 attributionModelComparison: 'klaviyo',
             })
 
-            renderWithRouter(
+            render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </QueryClientProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </Provider>,
             )
 
@@ -1374,13 +1318,11 @@ describe('<Analytics />', () => {
                 ]),
             )
 
-            renderWithRouter(
+            render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </QueryClientProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </Provider>,
             )
 
@@ -1524,13 +1466,11 @@ describe('<Analytics />', () => {
                 })
                 FiltersPanelComponentMock.mockImplementation(() => <div />)
 
-                renderWithRouter(
+                render(
                     <Provider store={mockStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <JourneyProvider>
-                                <Analytics />
-                            </JourneyProvider>
-                        </QueryClientProvider>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
                     </Provider>,
                 )
 

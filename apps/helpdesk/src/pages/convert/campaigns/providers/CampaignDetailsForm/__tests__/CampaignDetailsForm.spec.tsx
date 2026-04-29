@@ -1,10 +1,8 @@
-import { assumeMock, flushPromises } from '@repo/testing'
+import { assumeMock, flushPromises, render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { AttachmentEnum } from 'common/types'
 import type { User } from 'config/types/user'
@@ -25,9 +23,8 @@ import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
 import { CampaignScheduleModeEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
-import type { RootState, StoreDispatch } from 'state/types'
+import type { RootState } from 'state/types'
 import { toJS } from 'utils'
-import { renderWithRouter } from 'utils/testing'
 
 import type { Campaign } from '../../../types/Campaign'
 import { CampaignDetailsForm } from '../CampaignDetailsForm'
@@ -59,7 +56,6 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
 
 const useUtmMock = assumeMock(useUtm)
 const useGetPreviewProductsMock = assumeMock(useGetPreviewProducts)
-const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = { integrations: fromJS(integrationsState) } as RootState
 const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
 const mockGenerateSuggestions = jest.fn()
@@ -165,11 +161,9 @@ describe('<CampaignDetailsForm />', () => {
     }
 
     const renderComponent = (props: any) => {
-        return renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <CampaignDetailsForm {...props} />
-            </Provider>,
-        )
+        return render(<CampaignDetailsForm {...props} />, {
+            storeState: defaultState,
+        })
     }
 
     describe('Create campaign', () => {
@@ -194,12 +188,10 @@ describe('<CampaignDetailsForm />', () => {
             ).toBeAriaDisabled()
 
             result.rerender(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm
-                        {...defaultProps}
-                        campaign={toJS(campaign)}
-                    />
-                </Provider>,
+                <CampaignDetailsForm
+                    {...defaultProps}
+                    campaign={toJS(campaign)}
+                />,
             )
 
             act(() => {
@@ -217,14 +209,12 @@ describe('<CampaignDetailsForm />', () => {
             const consoleErrorMock = jest.spyOn(console, 'error')
 
             result.rerender(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm
-                        {...defaultProps}
-                        campaign={toJS(campaign)}
-                        isEditMode={false}
-                        createCampaign={undefined}
-                    />
-                </Provider>,
+                <CampaignDetailsForm
+                    {...defaultProps}
+                    campaign={toJS(campaign)}
+                    isEditMode={false}
+                    createCampaign={undefined}
+                />,
             )
 
             act(() => {
@@ -279,11 +269,7 @@ describe('<CampaignDetailsForm />', () => {
                 displayScheduleSection: true,
             }
 
-            result.rerender(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm {...props} />
-                </Provider>,
-            )
+            result.rerender(<CampaignDetailsForm {...props} />)
 
             act(() => {
                 fireEvent.click(screen.getByText(/Publish your campaign/))
@@ -308,11 +294,7 @@ describe('<CampaignDetailsForm />', () => {
                 displayScheduleSection: true,
             }
 
-            result.rerender(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm {...props} />
-                </Provider>,
-            )
+            result.rerender(<CampaignDetailsForm {...props} />)
 
             act(() => {
                 fireEvent.click(screen.getByText(/Publish your campaign/))
@@ -355,11 +337,7 @@ describe('<CampaignDetailsForm />', () => {
                 isEditMode: true,
             }
 
-            result.rerender(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm {...props} />
-                </Provider>,
-            )
+            result.rerender(<CampaignDetailsForm {...props} />)
 
             await act(async () => {
                 fireEvent.click(screen.getByText(/Generate/))
@@ -400,11 +378,7 @@ describe('<CampaignDetailsForm />', () => {
                 campaign: campaignFixture as Campaign,
             }
 
-            result.rerender(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm {...props} />
-                </Provider>,
-            )
+            result.rerender(<CampaignDetailsForm {...props} />)
 
             await act(async () => {
                 fireEvent.click(screen.getByText(/Generate/))

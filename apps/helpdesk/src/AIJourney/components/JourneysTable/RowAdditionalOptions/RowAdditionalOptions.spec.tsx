@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -14,7 +15,6 @@ import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJo
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { RowAdditionalOptions } from './RowAdditionalOptions'
 
@@ -119,7 +119,7 @@ describe('<RowAdditionalOptions />', () => {
     describe('Options visibility based on journey state', () => {
         it('should show Edit option for Draft state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -137,7 +137,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should show Edit, Preview, Activation, and Pause options for Active state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -157,7 +157,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should show Edit, Preview, Activation, and Play options for Paused state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -179,7 +179,7 @@ describe('<RowAdditionalOptions />', () => {
     describe('Action handlers - Navigation', () => {
         it('should navigate to setup page when Edit option is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -208,7 +208,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should navigate to preview page when Preview option is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -237,7 +237,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should navigate to activation page when Activation option is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -268,7 +268,7 @@ describe('<RowAdditionalOptions />', () => {
     describe('Action handlers - Journey state updates', () => {
         it('should call handleUpdate with Paused state when Pause option is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -298,7 +298,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should call handleUpdate with Active state when Play option is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -333,7 +333,7 @@ describe('<RowAdditionalOptions />', () => {
             mockHandleUpdate.mockRejectedValue(error)
 
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -371,7 +371,7 @@ describe('<RowAdditionalOptions />', () => {
                 currentIntegration: { id: 200 },
             } as ReturnType<typeof useJourneyContext>)
 
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -404,7 +404,7 @@ describe('<RowAdditionalOptions />', () => {
                 currentIntegration: undefined,
             } as ReturnType<typeof useJourneyContext>)
 
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -424,7 +424,7 @@ describe('<RowAdditionalOptions />', () => {
     describe('Journey types', () => {
         it('should navigate with correct path for PostPurchase journey type', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -454,7 +454,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should navigate with correct path for Welcome journey type', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -484,7 +484,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should navigate with correct path for WinBack journey type', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -517,7 +517,7 @@ describe('<RowAdditionalOptions />', () => {
         it('should pass message instructions when updating journey state', async () => {
             const user = userEvent.setup()
             const customInstructions = 'Custom message instructions'
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -548,7 +548,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should handle null message instructions', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -593,7 +593,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should open modal instead of navigating when Activation clicked and sender is missing', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -625,7 +625,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should open modal instead of activating when Play clicked and sender is missing', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -658,7 +658,7 @@ describe('<RowAdditionalOptions />', () => {
         it('should navigate normally when Activation clicked, sender missing, but USER_IMPERSONATED is true', async () => {
             window.USER_IMPERSONATED = true
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -689,7 +689,7 @@ describe('<RowAdditionalOptions />', () => {
         it('should call handleUpdate normally when Play clicked, sender missing, but USER_IMPERSONATED is true', async () => {
             window.USER_IMPERSONATED = true
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -719,7 +719,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should show flow text in modal for non-campaign journey type', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -753,7 +753,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should close the modal when Cancel is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -793,7 +793,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should show campaign text in modal for campaign journey type', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -842,7 +842,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should show Edit and Delete options for custom flow', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
             )
 
@@ -855,7 +855,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should not show Pause or Play options for custom flow', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
             )
 
@@ -868,7 +868,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should not show Preview or Activation options for custom flow', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
             )
 
@@ -881,7 +881,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should show confirmation dialog when Delete option is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
             )
 
@@ -912,7 +912,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should call DELETE API when delete is confirmed', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
             )
 
@@ -949,7 +949,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should not call DELETE API when delete is cancelled', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
             )
 
@@ -990,7 +990,7 @@ describe('<RowAdditionalOptions />', () => {
             mockMutateAsync.mockRejectedValue(apiError)
 
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
             )
 
@@ -1033,7 +1033,7 @@ describe('<RowAdditionalOptions />', () => {
             mockMutateAsync.mockRejectedValue(genericError)
 
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
             )
 
@@ -1075,7 +1075,7 @@ describe('<RowAdditionalOptions />', () => {
     describe('Built-in flow rows', () => {
         it('should not render Delete for CartAbandoned flow', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -1093,7 +1093,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should not render Delete for SessionAbandoned flow', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
@@ -1111,7 +1111,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should not render Delete for WinBack flow', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,

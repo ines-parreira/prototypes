@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import {
     act,
     createEvent,
@@ -8,13 +7,9 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import type routerDom from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import {
     campaignWithABGroup,
@@ -34,9 +29,7 @@ import {
     abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
 import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { ABGroupView } from '../ABGroupPage'
 
@@ -59,30 +52,16 @@ jest.mock('react-router-dom', () => ({
 }))
 const useParamsMock = useParams as jest.Mock
 
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
-
 const defaultState = {
     entities: entitiesInitialState,
     integrations: fromJS(integrationsState),
 } as RootState
 
-const defaultStore = mockStore(defaultState)
-const queryClient = mockQueryClient()
-
 const renderComponent = (props: any, route?: string) => {
-    const history = createMemoryHistory({
+    return render(<ABGroupView {...props} />, {
         initialEntries: [route ?? '/'],
+        storeState: defaultState,
     })
-    return renderWithRouter(
-        <Provider store={defaultStore}>
-            <QueryClientProvider client={queryClient}>
-                <ABGroupView {...props} />
-            </QueryClientProvider>
-        </Provider>,
-        {
-            history,
-        },
-    )
 }
 
 describe('ABGroupView', () => {

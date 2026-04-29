@@ -1,11 +1,9 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import type { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
-import { mockStore } from 'utils/testing'
 
 import ClickTrackingPaywallView from '../ClickTrackingPaywallView'
 
@@ -22,11 +20,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('ClickTrackingPaywallView', () => {
     const renderWithStore = (state: Partial<RootState>) =>
-        render(
-            <Provider store={mockStore(state as any)}>
-                <ClickTrackingPaywallView />
-            </Provider>,
-        )
+        render(<ClickTrackingPaywallView />, { storeState: state })
 
     it('renders correctly', () => {
         const mockedState = getStateWithHelpdeskPlan()

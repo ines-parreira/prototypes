@@ -1,7 +1,6 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { renderWithRouter } from 'utils/testing'
 
 import { SmsSenderRequiredBanner } from './SmsSenderRequiredBanner'
 
@@ -17,7 +16,7 @@ describe('<SmsSenderRequiredBanner />', () => {
     })
 
     it('should render the banner title', () => {
-        renderWithRouter(<SmsSenderRequiredBanner settingsUrl="/settings" />)
+        render(<SmsSenderRequiredBanner settingsUrl="/settings" />)
 
         expect(
             screen.getByText('Add sender phone number to activate'),
@@ -25,7 +24,7 @@ describe('<SmsSenderRequiredBanner />', () => {
     })
 
     it('should render flow description when isCampaign is false', () => {
-        renderWithRouter(
+        render(
             <SmsSenderRequiredBanner
                 settingsUrl="/settings"
                 isCampaign={false}
@@ -40,7 +39,7 @@ describe('<SmsSenderRequiredBanner />', () => {
     })
 
     it('should render flow description by default when isCampaign is not provided', () => {
-        renderWithRouter(<SmsSenderRequiredBanner settingsUrl="/settings" />)
+        render(<SmsSenderRequiredBanner settingsUrl="/settings" />)
 
         expect(
             screen.getByText(
@@ -50,7 +49,7 @@ describe('<SmsSenderRequiredBanner />', () => {
     })
 
     it('should render campaign description when isCampaign is true', () => {
-        renderWithRouter(
+        render(
             <SmsSenderRequiredBanner
                 settingsUrl="/settings"
                 isCampaign={true}
@@ -66,7 +65,7 @@ describe('<SmsSenderRequiredBanner />', () => {
 
     it('should navigate to settingsUrl when "Go to Settings" is clicked', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
+        render(
             <SmsSenderRequiredBanner settingsUrl="/app/ai-journey/my-shop/settings" />,
         )
 

@@ -1,7 +1,6 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { renderWithRouter } from 'utils/testing'
 
 import { CountryCodeSelect } from './CountryCodeSelect'
 
@@ -15,7 +14,7 @@ describe('<CountryCodeSelect />', () => {
     const renderComponent = (
         props: Partial<React.ComponentProps<typeof CountryCodeSelect>> = {},
     ) =>
-        renderWithRouter(
+        render(
             <CountryCodeSelect onCountryChange={onCountryChange} {...props} />,
         )
 

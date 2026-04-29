@@ -1,5 +1,4 @@
-import { appQueryClient } from '@repo/api-resources'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -8,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { account } from 'fixtures/account'
-import { renderWithRouter } from 'utils/testing'
 
 import { Playground } from './Playground'
 
@@ -47,11 +45,9 @@ describe('<Playground />', () => {
     const mockSetIsCollapsibleColumnOpen = jest.fn()
 
     const renderWithProviders = () => {
-        return renderWithRouter(
+        return render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <Playground />
-                </QueryClientProvider>
+                <Playground />
             </Provider>,
         )
     }

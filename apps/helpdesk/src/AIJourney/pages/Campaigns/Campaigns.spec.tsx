@@ -1,6 +1,4 @@
-import { appQueryClient } from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -16,7 +14,6 @@ import { JourneyProvider } from 'AIJourney/providers'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { account } from 'fixtures/account'
-import { renderWithRouter } from 'utils/testing'
 
 import { Campaigns } from './Campaigns'
 
@@ -106,13 +103,11 @@ describe('<Campaigns />', () => {
     })
 
     it('should render the campaigns page', () => {
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Campaigns />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Campaigns />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -122,13 +117,11 @@ describe('<Campaigns />', () => {
     })
 
     it('should render the campaigns table with data', () => {
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Campaigns />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Campaigns />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -150,13 +143,11 @@ describe('<Campaigns />', () => {
             isLoading: true,
         }))
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Campaigns />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Campaigns />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -183,13 +174,11 @@ describe('<Campaigns />', () => {
             isLoading: false,
         }))
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Campaigns />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Campaigns />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -213,13 +202,11 @@ describe('<Campaigns />', () => {
             isLoading: false,
         }))
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Campaigns />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Campaigns />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -258,13 +245,11 @@ describe('<Campaigns />', () => {
             isLoading: false,
         }))
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Campaigns />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Campaigns />
+                </JourneyProvider>
             </Provider>,
         )
 
@@ -290,13 +275,11 @@ describe('<Campaigns />', () => {
             currentIntegration: { id: 1, name: 'Test Integration' },
         })
 
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <JourneyProvider>
-                        <Campaigns />
-                    </JourneyProvider>
-                </QueryClientProvider>
+                <JourneyProvider>
+                    <Campaigns />
+                </JourneyProvider>
             </Provider>,
         )
 

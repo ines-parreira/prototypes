@@ -1,4 +1,5 @@
 import { CalendarDate, Time } from '@internationalized/date'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -20,7 +21,6 @@ import {
 import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
-import { renderWithRouter } from 'utils/testing'
 
 import {
     AiJourneyOnboarding,
@@ -162,9 +162,7 @@ const renderComponent = (
         stepComponent: MockStepComponent,
     }
 
-    const result = renderWithRouter(
-        <AiJourneyOnboarding {...defaultProps} {...props} />,
-    )
+    const result = render(<AiJourneyOnboarding {...defaultProps} {...props} />)
 
     return { ...result, user }
 }

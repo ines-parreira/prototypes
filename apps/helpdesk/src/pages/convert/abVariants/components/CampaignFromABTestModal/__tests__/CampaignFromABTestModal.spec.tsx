@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { history } from '@repo/routing'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { campaign, campaignVariant } from 'fixtures/campaign'
@@ -9,7 +9,6 @@ import { channelConnection } from 'fixtures/channelConnection'
 import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { renderWithStore } from 'utils/testing'
 
 import CampaignFromABTestModal from '../CampaignFromABTestModal'
 
@@ -36,14 +35,13 @@ describe('<CampaignFromABTestModal />', () => {
     })
 
     it('renders', () => {
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <CampaignFromABTestModal
                 isOpen={true}
                 campaign={campaign as Campaign}
                 integrationId={1}
                 onClose={onClose}
             />,
-            {},
         )
 
         expect(getByText('Create new campaign')).toBeInTheDocument()
@@ -54,14 +52,13 @@ describe('<CampaignFromABTestModal />', () => {
     it('user selected `control variant`', async () => {
         const historySpy = jest.spyOn(history, 'push')
 
-        const { getByText, getByRole } = renderWithStore(
+        const { getByText, getByRole } = render(
             <CampaignFromABTestModal
                 isOpen={true}
                 campaign={campaign as Campaign}
                 integrationId={1}
                 onClose={onClose}
             />,
-            {},
         )
 
         act(() => {
@@ -87,14 +84,13 @@ describe('<CampaignFromABTestModal />', () => {
     it('user selected variant', async () => {
         const historySpy = jest.spyOn(history, 'push')
 
-        const { getByText, getByRole } = renderWithStore(
+        const { getByText, getByRole } = render(
             <CampaignFromABTestModal
                 isOpen={true}
                 campaign={campaign as Campaign}
                 integrationId={1}
                 onClose={onClose}
             />,
-            {},
         )
 
         act(() => {

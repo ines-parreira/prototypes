@@ -1,11 +1,9 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import type { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
-import { mockStore } from 'utils/testing'
 
 import { ConvertFeatures } from '../constants'
 import ConvertPaywallView from '../ConvertPaywallView'
@@ -13,14 +11,11 @@ import ConvertPaywallView from '../ConvertPaywallView'
 describe('ConvertPaywallView', () => {
     const renderWithStore = (state: Partial<RootState>) =>
         render(
-            <Provider store={mockStore(state as any)}>
-                <ConvertPaywallView
-                    convertFeature={ConvertFeatures.Default}
-                    onSubscribedRedirectPath={
-                        '/app/settings/convert/click-tracking'
-                    }
-                />
-            </Provider>,
+            <ConvertPaywallView
+                convertFeature={ConvertFeatures.Default}
+                onSubscribedRedirectPath="/app/settings/convert/click-tracking"
+            />,
+            { storeState: state },
         )
 
     it('renders correctly', () => {

@@ -1,12 +1,8 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { AttachmentEnum } from 'common/types'
 import { account } from 'fixtures/account'
@@ -27,9 +23,7 @@ import { CART_ABANDONMENT } from 'pages/convert/campaigns/templates/onboarding/c
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
@@ -52,7 +46,6 @@ const getNewMessageAttachmentsMock = assumeMock(getNewMessageAttachments)
 const mockUseFlag = useFlag as jest.Mock
 mockUseFlag.mockReturnValue(false)
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockGenerateSuggestions = jest.fn()
 
 const defaultState: Partial<RootState> = {
@@ -76,8 +69,6 @@ const campaign = {
     message_text: 'Lorem Ipsum',
     message_html: '<p>Lorem Ipsum</p>',
 } as Campaign
-
-const queryClient = mockQueryClient()
 
 describe('<ConvertSimplifiedEditorModal />', () => {
     const updateCampaignMock = jest.fn()
@@ -111,19 +102,16 @@ describe('<ConvertSimplifiedEditorModal />', () => {
     })
 
     it('renders a template', async () => {
-        const { getByText } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <ConvertSimplifiedEditorModal
-                        isOpen={true}
-                        integration={integration}
-                        template={CART_ABANDONMENT}
-                        estimatedRevenue={'estimated revenue'}
-                        onClose={jest.fn()}
-                        campaign={undefined}
-                    />
-                </Provider>
-            </QueryClientProvider>,
+        const { getByText } = render(
+            <ConvertSimplifiedEditorModal
+                isOpen={true}
+                integration={integration}
+                template={CART_ABANDONMENT}
+                estimatedRevenue={'estimated revenue'}
+                onClose={jest.fn()}
+                campaign={undefined}
+            />,
+            { storeState: defaultState },
         )
 
         await waitFor(() => {
@@ -133,19 +121,16 @@ describe('<ConvertSimplifiedEditorModal />', () => {
     })
 
     it('renders a existing campaign', async () => {
-        const { getByText } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <ConvertSimplifiedEditorModal
-                        isOpen={true}
-                        integration={integration}
-                        template={CART_ABANDONMENT}
-                        estimatedRevenue={'estimated revenue'}
-                        onClose={jest.fn()}
-                        campaign={campaign}
-                    />
-                </Provider>
-            </QueryClientProvider>,
+        const { getByText } = render(
+            <ConvertSimplifiedEditorModal
+                isOpen={true}
+                integration={integration}
+                template={CART_ABANDONMENT}
+                estimatedRevenue={'estimated revenue'}
+                onClose={jest.fn()}
+                campaign={campaign}
+            />,
+            { storeState: defaultState },
         )
 
         await waitFor(() => {
@@ -164,19 +149,16 @@ describe('<ConvertSimplifiedEditorModal />', () => {
             ]),
         )
 
-        const { queryByText } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <ConvertSimplifiedEditorModal
-                        isOpen={true}
-                        integration={integration}
-                        template={CART_ABANDONMENT}
-                        estimatedRevenue={'estimated revenue'}
-                        onClose={jest.fn()}
-                        campaign={campaign}
-                    />
-                </Provider>
-            </QueryClientProvider>,
+        const { queryByText } = render(
+            <ConvertSimplifiedEditorModal
+                isOpen={true}
+                integration={integration}
+                template={CART_ABANDONMENT}
+                estimatedRevenue={'estimated revenue'}
+                onClose={jest.fn()}
+                campaign={campaign}
+            />,
+            { storeState: defaultState },
         )
 
         await waitFor(() => {
@@ -196,19 +178,16 @@ describe('<ConvertSimplifiedEditorModal />', () => {
             data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
         })
 
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <ConvertSimplifiedEditorModal
-                        isOpen={true}
-                        integration={integration}
-                        template={CART_ABANDONMENT}
-                        estimatedRevenue={'estimated revenue'}
-                        onClose={jest.fn()}
-                        campaign={campaign}
-                    />
-                </Provider>
-            </QueryClientProvider>,
+        render(
+            <ConvertSimplifiedEditorModal
+                isOpen={true}
+                integration={integration}
+                template={CART_ABANDONMENT}
+                estimatedRevenue={'estimated revenue'}
+                onClose={jest.fn()}
+                campaign={campaign}
+            />,
+            { storeState: defaultState },
         )
 
         await act(async () => {

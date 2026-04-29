@@ -3,8 +3,6 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { renderWithStore } from 'utils/testing'
-
 import { reviewsCustomization } from '../Reviews'
 
 jest.mock('react-rating-stars-component', () => () => null)
@@ -41,10 +39,7 @@ describe('<AfterTitle/>', () => {
             { source: { created_at: created_at, score: 5 } },
         ])('should render with different score values', (props) => {
             const { source } = props
-            const { container } = renderWithStore(
-                <AfterTitle source={fromJS(source)} />,
-                {},
-            )
+            const { container } = render(<AfterTitle source={fromJS(source)} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })

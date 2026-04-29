@@ -1,11 +1,8 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import type * as ReactRouterDom from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
 
 import { campaign } from 'fixtures/campaign'
 import { channelConnection } from 'fixtures/channelConnection'
@@ -20,9 +17,7 @@ import {
 } from 'models/convert/campaign/queries'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import CampaignDetailsFactory from '../CampaignDetailsFactory'
 
@@ -39,10 +34,6 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
-const mockStore = configureMockStore<RootState, StoreDispatch>()
-
-const queryClient = mockQueryClient()
-
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection,
@@ -91,13 +82,7 @@ describe('<CampaignDetailsFactory />', () => {
     })
 
     const renderComponent = () => {
-        return renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsFactory />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        return render(<CampaignDetailsFactory />, { storeState: defaultState })
     }
 
     it('renders the "AdvancedCampaignDetails" component if merchant is not a revenue subscriber', () => {

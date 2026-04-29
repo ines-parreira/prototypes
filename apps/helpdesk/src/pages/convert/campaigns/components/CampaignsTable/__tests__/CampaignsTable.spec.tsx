@@ -1,4 +1,5 @@
 import * as hooksImports from '@repo/hooks'
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -10,7 +11,6 @@ import { ACTIVE_CAMPAIGNS_LIMIT } from 'pages/convert/campaigns/constants/lightC
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import { renderWithRouter } from 'utils/testing'
 
 import type { Campaign } from '../../../types/Campaign'
 import { CampaignTriggerType } from '../../../types/enums/CampaignTriggerType.enum'
@@ -106,9 +106,7 @@ describe('<CampaignsTable />', () => {
         })
 
         it('renders the `perPage` items', () => {
-            const { container } = renderWithRouter(
-                <CampaignsTable {...props} />,
-            )
+            const { container } = render(<CampaignsTable {...props} />)
 
             const rows = container.querySelectorAll('tr')
 
@@ -116,7 +114,7 @@ describe('<CampaignsTable />', () => {
         })
 
         it('renders the `perPage` items with offset', () => {
-            const { container, rerender } = renderWithRouter(
+            const { container, rerender } = render(
                 <CampaignsTable {...props} />,
             )
 
@@ -130,7 +128,7 @@ describe('<CampaignsTable />', () => {
         })
 
         it('shows the preview tooltip', async () => {
-            renderWithRouter(<CampaignsTable {...props} data={[data[0]]} />)
+            render(<CampaignsTable {...props} data={[data[0]]} />)
 
             fireEvent.mouseOver(screen.getByText('campaign 0'))
 
@@ -143,14 +141,14 @@ describe('<CampaignsTable />', () => {
         })
 
         it('does not show the pagination if there is only one page', () => {
-            renderWithRouter(<CampaignsTable {...props} perPage={25} />)
+            render(<CampaignsTable {...props} perPage={25} />)
 
             expect(() => screen.getByLabelText(/next/)).toThrow()
             expect(() => screen.getByLabelText(/previous/)).toThrow()
         })
 
         it('resets the page when the data changes', () => {
-            const { rerender } = renderWithRouter(
+            const { rerender } = render(
                 <CampaignsTable {...props} page={3} perPage={5} />,
             )
 
@@ -179,7 +177,7 @@ describe('<CampaignsTable />', () => {
                 data: campaignWithSchedule,
             }
 
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <CampaignsTable {...newProps} perPage={CAMPAIGNS_COUNT} />,
             )
 
@@ -192,7 +190,7 @@ describe('<CampaignsTable />', () => {
         it('blocks toggle activation when over the limit', () => {
             useIsConvertSubscriberSpy.mockImplementation(() => false)
 
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />,
             )
 
@@ -208,7 +206,7 @@ describe('<CampaignsTable />', () => {
         it('displays light campaign modal when toggling active campaign', () => {
             useIsConvertSubscriberSpy.mockImplementation(() => false)
 
-            const { container, getByRole } = renderWithRouter(
+            const { container, getByRole } = render(
                 <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />,
             )
 
@@ -253,7 +251,7 @@ describe('<CampaignsTable />', () => {
         })
 
         it('renders a/b test with other', () => {
-            const { container, getByText } = renderWithRouter(
+            const { container, getByText } = render(
                 <CampaignsTable {...propsWithABGroup} />,
             )
 
@@ -270,7 +268,7 @@ describe('<CampaignsTable />', () => {
                 data: [campaignWithABGroup] as unknown[] as Campaign[],
             }
 
-            const { container, getByText, queryByText } = renderWithRouter(
+            const { container, getByText, queryByText } = render(
                 <CampaignsTable {...componentProps} />,
             )
 
@@ -303,9 +301,7 @@ describe('<CampaignsTable />', () => {
                 data: [campaign] as unknown[] as Campaign[],
             }
 
-            const { container } = renderWithRouter(
-                <CampaignsTable {...componentProps} />,
-            )
+            const { container } = render(<CampaignsTable {...componentProps} />)
 
             const disabledToggles = container.querySelectorAll(
                 'label[class*="isdisabled"]',

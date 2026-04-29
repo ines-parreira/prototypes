@@ -1,9 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import WrappedOrderMetafields from './OrderMetafields'
 
@@ -49,9 +48,7 @@ describe('WrappedOrderMetafields', () => {
     })
 
     it('should log ShopifyMetafieldsOpenOrder event when metafields container is expanded', () => {
-        renderWithQueryClientProvider(
-            <WrappedOrderMetafields integrationId={123} orderId={456} />,
-        )
+        render(<WrappedOrderMetafields integrationId={123} orderId={456} />)
 
         expect(logEvent).not.toHaveBeenCalled()
 

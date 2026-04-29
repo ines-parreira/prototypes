@@ -2,12 +2,10 @@ import React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import WrappedCustomerMetafields from '../WrappedCustomerMetafields'
 
@@ -66,7 +64,7 @@ describe('<WrappedCustomerMetafields />', () => {
         })
 
         it('should return null and not render anything', () => {
-            const { container } = renderWithQueryClientProvider(
+            const { container } = render(
                 <WrappedCustomerMetafields {...defaultProps} />,
             )
 
@@ -80,17 +78,13 @@ describe('<WrappedCustomerMetafields />', () => {
         })
 
         it('should render CustomerMetafields', () => {
-            renderWithQueryClientProvider(
-                <WrappedCustomerMetafields {...defaultProps} />,
-            )
+            render(<WrappedCustomerMetafields {...defaultProps} />)
 
             expect(screen.getByText('Customer Metafields')).toBeInTheDocument()
         })
 
         it('should log ShopifyMetafieldsOpenCustomer event when metafields container is expanded', () => {
-            renderWithQueryClientProvider(
-                <WrappedCustomerMetafields {...defaultProps} />,
-            )
+            render(<WrappedCustomerMetafields {...defaultProps} />)
 
             expect(logEvent).not.toHaveBeenCalled()
 
@@ -104,7 +98,7 @@ describe('<WrappedCustomerMetafields />', () => {
         })
 
         it('should render expanded by default when useSourceMetafields is true', () => {
-            renderWithQueryClientProvider(
+            render(
                 <WrappedCustomerMetafields
                     {...defaultProps}
                     useSourceMetafields={true}
@@ -116,7 +110,7 @@ describe('<WrappedCustomerMetafields />', () => {
         })
 
         it('should render collapsed by default when useSourceMetafields is false', () => {
-            renderWithQueryClientProvider(
+            render(
                 <WrappedCustomerMetafields
                     {...defaultProps}
                     useSourceMetafields={false}
@@ -127,9 +121,7 @@ describe('<WrappedCustomerMetafields />', () => {
         })
 
         it('should render collapsed by default when useSourceMetafields is undefined', () => {
-            renderWithQueryClientProvider(
-                <WrappedCustomerMetafields {...defaultProps} />,
-            )
+            render(<WrappedCustomerMetafields {...defaultProps} />)
 
             expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
         })

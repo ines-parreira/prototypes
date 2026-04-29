@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 
 import {
     useProductsFromShopifyIntegration,
@@ -12,7 +12,6 @@ import { TRIGGERS_CONFIG } from 'pages/convert/campaigns/constants/triggers'
 import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'
 import { useTriggers } from 'pages/convert/campaigns/containers/TriggersProvider'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 jest.mock('pages/convert/campaigns/containers/TriggersProvider')
 const useTriggersMock = assumeMock(useTriggers)
@@ -73,7 +72,7 @@ describe('AdvancedTriggerFactory', () => {
                 value: TRIGGERS_CONFIG[type].defaults.value,
                 type,
             }
-            const { queryAllByText } = renderWithQueryClientProvider(
+            const { queryAllByText } = render(
                 <AdvancedTriggerFactory id="1" trigger={trigger} />,
             )
 

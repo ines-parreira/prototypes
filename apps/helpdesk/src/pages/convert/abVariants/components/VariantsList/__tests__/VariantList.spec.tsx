@@ -1,15 +1,13 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { MemoryRouter } from 'react-router-dom'
 
 import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
 import { campaignWithABGroup } from 'fixtures/abGroup'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { renderWithStore } from 'utils/testing'
 
 import VariantsList from '../VariantList'
 
@@ -34,23 +32,23 @@ describe('<VariantsList />', () => {
             variants: [],
         } as Campaign
 
-        renderWithStore(
-            <MemoryRouter>
-                <VariantsList
-                    integrationId={shopifyIntegration.id}
-                    canPerformActions={true}
-                    campaign={campaign}
-                    onDelete={onDelete}
-                    onDuplicate={onDuplicate}
-                />
-            </MemoryRouter>,
+        render(
+            <VariantsList
+                integrationId={shopifyIntegration.id}
+                canPerformActions={true}
+                campaign={campaign}
+                onDelete={onDelete}
+                onDuplicate={onDuplicate}
+            />,
             {
-                integrations: fromJS({
-                    integrations: [
-                        ...integrationsState.integrations,
-                        shopifyIntegration,
-                    ],
-                }),
+                storeState: {
+                    integrations: fromJS({
+                        integrations: [
+                            ...integrationsState.integrations,
+                            shopifyIntegration,
+                        ],
+                    }),
+                },
             },
         )
 
@@ -66,23 +64,23 @@ describe('<VariantsList />', () => {
     })
 
     it('render and list actions should be disabled', () => {
-        renderWithStore(
-            <MemoryRouter>
-                <VariantsList
-                    integrationId={shopifyIntegration.id}
-                    canPerformActions={true}
-                    campaign={campaignWithABGroup as Campaign}
-                    onDelete={onDelete}
-                    onDuplicate={onDuplicate}
-                />
-            </MemoryRouter>,
+        render(
+            <VariantsList
+                integrationId={shopifyIntegration.id}
+                canPerformActions={true}
+                campaign={campaignWithABGroup as Campaign}
+                onDelete={onDelete}
+                onDuplicate={onDuplicate}
+            />,
             {
-                integrations: fromJS({
-                    integrations: [
-                        ...integrationsState.integrations,
-                        shopifyIntegration,
-                    ],
-                }),
+                storeState: {
+                    integrations: fromJS({
+                        integrations: [
+                            ...integrationsState.integrations,
+                            shopifyIntegration,
+                        ],
+                    }),
+                },
             },
         )
 
@@ -116,23 +114,23 @@ describe('<VariantsList />', () => {
             },
         } as Campaign
 
-        renderWithStore(
-            <MemoryRouter>
-                <VariantsList
-                    integrationId={shopifyIntegration.id}
-                    canPerformActions={true}
-                    campaign={campaign}
-                    onDelete={onDelete}
-                    onDuplicate={onDuplicate}
-                />
-            </MemoryRouter>,
+        render(
+            <VariantsList
+                integrationId={shopifyIntegration.id}
+                canPerformActions={true}
+                campaign={campaign}
+                onDelete={onDelete}
+                onDuplicate={onDuplicate}
+            />,
             {
-                integrations: fromJS({
-                    integrations: [
-                        ...integrationsState.integrations,
-                        shopifyIntegration,
-                    ],
-                }),
+                storeState: {
+                    integrations: fromJS({
+                        integrations: [
+                            ...integrationsState.integrations,
+                            shopifyIntegration,
+                        ],
+                    }),
+                },
             },
         )
 
@@ -149,23 +147,23 @@ describe('<VariantsList />', () => {
             },
         } as Campaign
 
-        renderWithStore(
-            <MemoryRouter>
-                <VariantsList
-                    integrationId={shopifyIntegration.id}
-                    canPerformActions={true}
-                    campaign={campaign}
-                    onDelete={onDelete}
-                    onDuplicate={onDuplicate}
-                />
-            </MemoryRouter>,
+        render(
+            <VariantsList
+                integrationId={shopifyIntegration.id}
+                canPerformActions={true}
+                campaign={campaign}
+                onDelete={onDelete}
+                onDuplicate={onDuplicate}
+            />,
             {
-                integrations: fromJS({
-                    integrations: [
-                        ...integrationsState.integrations,
-                        shopifyIntegration,
-                    ],
-                }),
+                storeState: {
+                    integrations: fromJS({
+                        integrations: [
+                            ...integrationsState.integrations,
+                            shopifyIntegration,
+                        ],
+                    }),
+                },
             },
         )
 

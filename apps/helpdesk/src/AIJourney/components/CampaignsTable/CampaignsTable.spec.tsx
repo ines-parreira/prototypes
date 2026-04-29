@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Location } from 'history'
@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { JourneyProvider } from 'AIJourney/providers'
-import { mockStore, renderWithRouter } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import {
     DEFAULT_TABLE_METRICS,
@@ -106,29 +106,19 @@ const mockFields: TableRow[] = [
 ]
 
 describe('CampaignsTable', () => {
-    let queryClient: QueryClient
     const allColumns = [...columns, ...metricColumns, ...actionColumns]
 
     const wrapper = (children: React.ReactNode) => (
-        <QueryClientProvider client={queryClient}>
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({ integrations: [] }),
-                })}
-            >
-                <JourneyProvider>{children}</JourneyProvider>
-            </Provider>
-        </QueryClientProvider>
+        <Provider
+            store={mockStore({
+                integrations: fromJS({ integrations: [] }),
+            })}
+        >
+            <JourneyProvider>{children}</JourneyProvider>
+        </Provider>
     )
 
     beforeEach(() => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
-
         useParamsMock.mockReturnValue({ shopName: 'test-shop' })
         useLocationMock.mockReturnValue({
             pathname: '/app/ai-journey/test-shop/flows',
@@ -147,16 +137,14 @@ describe('CampaignsTable', () => {
     })
 
     it('should render table with data', () => {
-        renderWithRouter(
-            wrapper(<CampaignsTable columns={columns} data={mockFields} />),
-        )
+        render(wrapper(<CampaignsTable columns={columns} data={mockFields} />))
 
         expect(screen.getByText('Welcome campaign')).toBeInTheDocument()
         expect(screen.getByText('Win back campaign')).toBeInTheDocument()
     })
 
     it('should render loading state', () => {
-        renderWithRouter(
+        render(
             wrapper(
                 <CampaignsTable columns={columns} data={[]} isLoading={true} />,
             ),
@@ -166,9 +154,7 @@ describe('CampaignsTable', () => {
     })
 
     it('should filter data based on search input', async () => {
-        renderWithRouter(
-            wrapper(<CampaignsTable columns={columns} data={mockFields} />),
-        )
+        render(wrapper(<CampaignsTable columns={columns} data={mockFields} />))
 
         const searchInput = screen.getByRole('textbox')
         await userEvent.type(searchInput, 'Welcome campaign')
@@ -211,7 +197,7 @@ describe('CampaignsTable', () => {
         mockGetJourneyData.mockResolvedValue(mockJourneyData)
         mockMutateAsync.mockResolvedValue(mockCreatedJourney)
 
-        renderWithRouter(
+        render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
         )
 
@@ -265,7 +251,7 @@ describe('CampaignsTable', () => {
             },
         ]
 
-        renderWithRouter(
+        render(
             wrapper(
                 <CampaignsTable
                     columns={[...columns, ...metricColumns]}
@@ -289,7 +275,7 @@ describe('CampaignsTable', () => {
             },
         ]
 
-        renderWithRouter(
+        render(
             wrapper(
                 <CampaignsTable
                     columns={[...columns, ...metricColumns]}
@@ -321,7 +307,7 @@ describe('CampaignsTable', () => {
             },
         ]
 
-        renderWithRouter(
+        render(
             wrapper(
                 <CampaignsTable
                     columns={allColumns}
@@ -372,7 +358,7 @@ describe('CampaignsTable', () => {
             },
         ]
 
-        renderWithRouter(
+        render(
             wrapper(
                 <CampaignsTable
                     columns={columns}
@@ -387,7 +373,7 @@ describe('CampaignsTable', () => {
     it('should open send confirmation modal and send campaign when confirmed', async () => {
         mockUseFlag.mockImplementation(() => true)
 
-        renderWithRouter(
+        render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
         )
 
@@ -427,7 +413,7 @@ describe('CampaignsTable', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
         )
 
@@ -461,7 +447,7 @@ describe('CampaignsTable', () => {
         })
         window.USER_IMPERSONATED = true
 
-        renderWithRouter(
+        render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
         )
 
@@ -492,7 +478,7 @@ describe('CampaignsTable', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
         )
 
@@ -526,9 +512,7 @@ describe('CampaignsTable', () => {
     })
 
     it('should not render pagination in bottom toolbar when there are 10 or fewer total rows', () => {
-        renderWithRouter(
-            wrapper(<CampaignsTable columns={columns} data={mockFields} />),
-        )
+        render(wrapper(<CampaignsTable columns={columns} data={mockFields} />))
 
         expect(
             document.querySelector('[data-name="pagination"]'),
@@ -556,7 +540,7 @@ describe('CampaignsTable', () => {
             }),
         )
 
-        renderWithRouter(
+        render(
             wrapper(<CampaignsTable columns={columns} data={largeDataSet} />),
         )
 

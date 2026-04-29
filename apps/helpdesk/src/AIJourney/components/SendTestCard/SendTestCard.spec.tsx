@@ -1,6 +1,4 @@
-import { appQueryClient } from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
@@ -9,7 +7,6 @@ import thunk from 'redux-thunk'
 
 import { shopifyProductResult } from 'fixtures/shopify'
 import { useListProducts } from 'models/integration/queries'
-import { renderWithRouter } from 'utils/testing'
 
 import { SendTestCard } from './SendTestCard'
 
@@ -51,17 +48,14 @@ describe('<SendTestCard />', () => {
     }
 
     const renderComponent = (props = {}) =>
-        renderWithRouter(
+        render(
             <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <SendTestCard {...props} />
-                </QueryClientProvider>
+                <SendTestCard {...props} />
             </Provider>,
         )
 
     beforeEach(() => {
         jest.clearAllMocks()
-        appQueryClient.clear()
         localStorage.clear()
 
         mockHandleTestSms.mockResolvedValue(undefined)

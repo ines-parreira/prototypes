@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -10,12 +9,8 @@ import {
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
 import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import ABGroupPage from '../ABGroupPage'
-
-const queryClient = mockQueryClient()
 
 jest.mock('models/convert/campaign/queries')
 const useGetCampaignMock = assumeMock(useGetCampaign)
@@ -24,11 +19,9 @@ const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
 const renderComponent = () => {
-    return renderWithRouter(
+    return render(
         <Provider store={mockStore()}>
-            <QueryClientProvider client={queryClient}>
-                <ABGroupPage />
-            </QueryClientProvider>
+            <ABGroupPage />
         </Provider>,
     )
 }

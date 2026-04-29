@@ -1,10 +1,7 @@
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { account } from 'fixtures/account'
@@ -23,12 +20,10 @@ import type {
 } from 'models/billing/types'
 import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { AccountFeature } from 'state/currentAccount/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { ConvertStatsNavbar } from '../ConvertStatsNavbar'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
     return jest.fn(() => {
         return <div data-testid="mock-convert-subscription-modal" />
@@ -84,12 +79,11 @@ describe('ConvertStatsNavbar', () => {
             'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
-        const { queryByTestId, getByRole } = renderWithRouter(
-            <Provider store={mockStore(mockedState)}>
-                <Navigation.Root>
-                    <ConvertStatsNavbar />
-                </Navigation.Root>
-            </Provider>,
+        const { queryByTestId, getByRole } = render(
+            <Navigation.Root>
+                <ConvertStatsNavbar />
+            </Navigation.Root>,
+            { storeState: mockedState },
         )
 
         userEvent.click(getByRole('button', { name: /Convert/i }))
@@ -105,12 +99,11 @@ describe('ConvertStatsNavbar', () => {
     })
 
     it('should render links with subscription upgrade icon and modal', () => {
-        const { getByTestId, getByRole } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <Navigation.Root>
-                    <ConvertStatsNavbar />
-                </Navigation.Root>
-            </Provider>,
+        const { getByTestId, getByRole } = render(
+            <Navigation.Root>
+                <ConvertStatsNavbar />
+            </Navigation.Root>,
+            { storeState: defaultState },
         )
 
         userEvent.click(getByRole('button', { name: /Convert/i }))

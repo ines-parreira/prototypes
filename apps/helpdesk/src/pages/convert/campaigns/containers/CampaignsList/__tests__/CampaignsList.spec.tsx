@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -21,7 +21,6 @@ import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { useCampaignListOptions } from '../../../hooks/useCampaignListOptions'
 import { CampaignListOptions } from '../../../providers/CampaignListOptions'
@@ -114,7 +113,7 @@ describe('<CampaignsList />', () => {
 
     describe('Campaigns intro Candu links', () => {
         it('should display', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <Provider store={store}>
                     <CampaignListOptions>
                         <CampaignsList {...props} />
@@ -143,7 +142,7 @@ describe('<CampaignsList />', () => {
 
             const trigger = createTrigger(CampaignTriggerType.BusinessHours)
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <CampaignListOptions>
                         <CampaignsList
@@ -185,7 +184,7 @@ describe('<CampaignsList />', () => {
                 }
             })
 
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} />
                 </Provider>,
@@ -197,7 +196,7 @@ describe('<CampaignsList />', () => {
 
     describe('Campaign filter when A/B test LD is enabled', () => {
         it('should display A/B Test filter', () => {
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} />
                 </Provider>,
@@ -231,7 +230,7 @@ describe('<CampaignsList />', () => {
         ] as unknown[] as Campaign[]
 
         it('should display the status filter', () => {
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} />
                 </Provider>,
@@ -243,7 +242,7 @@ describe('<CampaignsList />', () => {
         })
 
         it('should not display the status filter if there are no campaigns', () => {
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={[]} />
                 </Provider>,
@@ -255,7 +254,7 @@ describe('<CampaignsList />', () => {
         })
 
         it('should display all campaigns by default', () => {
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsForFilters} />
                 </Provider>,
@@ -275,7 +274,7 @@ describe('<CampaignsList />', () => {
                 }
             })
 
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsForFilters} />
                 </Provider>,
@@ -295,7 +294,7 @@ describe('<CampaignsList />', () => {
                 }
             })
 
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsForFilters} />
                 </Provider>,
@@ -312,7 +311,7 @@ describe('<CampaignsList />', () => {
 
         it('should render setup infobar', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
-            const { queryByText } = renderWithRouter(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsList} />
                 </Provider>,
@@ -331,7 +330,7 @@ describe('<CampaignsList />', () => {
 
         it('should render limit reached banner', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
-            const { queryByText } = renderWithRouter(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsList} />
                 </Provider>,

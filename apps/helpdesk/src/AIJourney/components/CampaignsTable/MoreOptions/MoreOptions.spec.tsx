@@ -1,9 +1,8 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
-
-import { renderWithRouter } from 'utils/testing'
 
 import { MoreOptions } from './MoreOptions'
 
@@ -42,7 +41,7 @@ describe('<MoreOptions />', () => {
 
     describe('Options visibility based on state', () => {
         it('should return null when no options are available', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <MoreOptions
                     {...defaultProps}
                     state={'unknown' as JourneyCampaignStateEnum}
@@ -56,7 +55,7 @@ describe('<MoreOptions />', () => {
     describe('Campaign state options', () => {
         it('should show Edit, Send now, Duplicate, and Delete options for Draft state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
@@ -74,7 +73,7 @@ describe('<MoreOptions />', () => {
 
         it('should show Edit, Duplicate and Cancel options for Scheduled state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Scheduled}
@@ -91,7 +90,7 @@ describe('<MoreOptions />', () => {
 
         it('should show Duplicate, Pause, and Cancel options for Active state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Active}
@@ -108,7 +107,7 @@ describe('<MoreOptions />', () => {
 
         it('should show Resume and Cancel options for Paused state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Paused}
@@ -124,7 +123,7 @@ describe('<MoreOptions />', () => {
 
         it('should show only Duplicate option for Canceled state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Canceled}
@@ -142,7 +141,7 @@ describe('<MoreOptions />', () => {
 
         it('should show only Duplicate option for Sent state', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Sent}
@@ -163,7 +162,7 @@ describe('<MoreOptions />', () => {
         it('should call handleSendClick when Send now option is clicked', async () => {
             const user = userEvent.setup()
             const handleSendClick = jest.fn()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     handleSendClick={handleSendClick}
@@ -188,7 +187,7 @@ describe('<MoreOptions />', () => {
 
         it('should navigate to edit page when Edit option is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(<MoreOptions {...defaultProps} />)
+            render(<MoreOptions {...defaultProps} />)
 
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
@@ -211,7 +210,7 @@ describe('<MoreOptions />', () => {
         it('should call handleRemoveClick when Delete option is clicked', async () => {
             const user = userEvent.setup()
             const handleRemoveClick = jest.fn()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     handleRemoveClick={handleRemoveClick}
@@ -237,7 +236,7 @@ describe('<MoreOptions />', () => {
         it('should call handleDuplicateClick when Duplicate option is clicked', async () => {
             const user = userEvent.setup()
             const handleDuplicateClick = jest.fn()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     handleDuplicateClick={handleDuplicateClick}
@@ -263,7 +262,7 @@ describe('<MoreOptions />', () => {
         it('should call handleCancelClick when Cancel option is clicked', async () => {
             const user = userEvent.setup()
             const handleCancelClick = jest.fn()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Active}
@@ -290,7 +289,7 @@ describe('<MoreOptions />', () => {
         it('should call handleChangeStatus with Paused when Pause option is clicked', async () => {
             const user = userEvent.setup()
             const handleChangeStatus = jest.fn()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Active}
@@ -317,7 +316,7 @@ describe('<MoreOptions />', () => {
         it('should call handleChangeStatus with Active when Resume option is clicked', async () => {
             const user = userEvent.setup()
             const handleChangeStatus = jest.fn()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Paused}
@@ -347,7 +346,7 @@ describe('<MoreOptions />', () => {
             mockUseFlag.mockImplementation(() => true)
 
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
@@ -364,7 +363,7 @@ describe('<MoreOptions />', () => {
             mockUseFlag.mockImplementation(() => false)
 
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
@@ -385,7 +384,7 @@ describe('<MoreOptions />', () => {
             ;(window as any).USER_IMPERSONATED = true
 
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
@@ -400,7 +399,7 @@ describe('<MoreOptions />', () => {
 
         it('should not show Send now option when campaign has no included audiences', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
@@ -419,7 +418,7 @@ describe('<MoreOptions />', () => {
 
         it('should show Send now option when campaign has included audiences', async () => {
             const user = userEvent.setup()
-            renderWithRouter(
+            render(
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}

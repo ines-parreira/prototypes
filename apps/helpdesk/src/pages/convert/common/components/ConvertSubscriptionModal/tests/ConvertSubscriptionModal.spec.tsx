@@ -1,5 +1,6 @@
 import client from '@repo/api-resources'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -11,7 +12,6 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -54,10 +54,9 @@ describe('ConvertSubscriptionModal', () => {
     })
 
     it('should not render', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <ConvertSubscriptionModal {...minProps} isOpen={false} />,
-            defaultState,
-        )
+        render(<ConvertSubscriptionModal {...minProps} isOpen={false} />, {
+            storeState: defaultState,
+        })
 
         const canduDataId = document.querySelector(
             `[data-candu-id="${canduId}"]`,
@@ -68,10 +67,9 @@ describe('ConvertSubscriptionModal', () => {
     it('should render', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
-            <ConvertSubscriptionModal {...minProps} />,
-            defaultState,
-        )
+        render(<ConvertSubscriptionModal {...minProps} />, {
+            storeState: defaultState,
+        })
 
         const canduDataId = document.querySelector(
             `[data-candu-id="${canduId}"]`,
@@ -103,10 +101,9 @@ describe('ConvertSubscriptionModal', () => {
             billing: fromJS(billingState),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
-            <ConvertSubscriptionModal {...minProps} />,
-            stateWithTrial,
-        )
+        render(<ConvertSubscriptionModal {...minProps} />, {
+            storeState: stateWithTrial,
+        })
 
         expect(screen.queryByText('I agree to')).not.toBeInTheDocument()
     })

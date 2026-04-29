@@ -1,12 +1,9 @@
 import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import type routerDom from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
 
 import { channelConnection } from 'fixtures/channelConnection'
 import { convertBundle } from 'fixtures/convertBundle'
@@ -14,14 +11,8 @@ import { useListBundles } from 'models/convert/bundle/queries'
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import ConvertOnboardingView from '../ConvertOnboardingView'
-
-const queryClient = mockQueryClient()
-
-const mockStore = configureMockStore()
 
 const defaultStateShopify = {
     integrations: fromJS({
@@ -71,9 +62,7 @@ describe('<ConvertOnboardingView />', () => {
             .mockImplementation(() => isConvertSubscriber)
     }
 
-    beforeEach(() => {
-        queryClient.clear()
-    })
+    beforeEach(() => {})
 
     afterEach(() => {
         useIsConvertSubscriberMock.mockRestore()
@@ -109,13 +98,9 @@ describe('<ConvertOnboardingView />', () => {
 
             const spy = jest.spyOn(history, 'push')
 
-            const { queryByText } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <ConvertOnboardingView />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const { queryByText } = render(<ConvertOnboardingView />, {
+                storeState: defaultState,
+            })
 
             expect(screen.getAllByLabelText('Step completed')).toHaveLength(
                 completedSteps,

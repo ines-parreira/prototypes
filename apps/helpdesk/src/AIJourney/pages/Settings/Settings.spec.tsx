@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -6,7 +7,6 @@ import { useJourneyContext } from 'AIJourney/providers'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { Settings } from './Settings'
 
@@ -60,7 +60,7 @@ const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockSaveConfiguration = jest.fn()
 const mockDispatch = jest.fn()
 
-const renderComponent = () => renderWithRouter(<Settings />)
+const renderComponent = () => render(<Settings />)
 
 describe('<Settings />', () => {
     beforeEach(() => {

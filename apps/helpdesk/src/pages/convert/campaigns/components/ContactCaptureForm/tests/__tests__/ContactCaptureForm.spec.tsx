@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -14,13 +13,10 @@ import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/compon
 import { Customization } from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customization'
 import { PostSubmissionMessage } from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
 import useListTags from 'tags/useListTags'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('tags/useListTags')
 const mockStore = configureMockStore()
 
-const queryClient = mockQueryClient()
 const store = mockStore({
     currentUser: fromJS({
         ...user,
@@ -73,14 +69,9 @@ describe('ContactForm test suite', () => {
     it('displays an error when more than 5 tags are added', async () => {
         const user = userEvent.setup()
 
-        renderWithRouter(
+        render(
             <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <AddContactCaptureForm
-                        open={true}
-                        onOpenChange={jest.fn()}
-                    />
-                </QueryClientProvider>
+                <AddContactCaptureForm open={true} onOpenChange={jest.fn()} />
             </Provider>,
         )
 
@@ -114,7 +105,7 @@ describe('ContactForm test suite', () => {
         }
         const mockSetActiveButton = jest.fn()
 
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <Provider store={store}>
                 <PostSubmissionMessage
                     setNextButtonActive={mockSetActiveButton}
@@ -141,7 +132,7 @@ describe('ContactForm test suite', () => {
         const user = userEvent.setup()
         const mockOnSubmit = jest.fn()
         const mockOnCancel = jest.fn()
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddContactCaptureForm
                     open
@@ -197,17 +188,15 @@ describe('ContactForm test suite', () => {
 
     it('should add tags in the first step and the next step should be available', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
+        render(
             <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <AddContactCaptureForm
-                        open
-                        onOpenChange={() => {}}
-                        onCancel={jest.fn()}
-                        onSubmit={jest.fn()}
-                        onReset={jest.fn()}
-                    />
-                </QueryClientProvider>
+                <AddContactCaptureForm
+                    open
+                    onOpenChange={() => {}}
+                    onCancel={jest.fn()}
+                    onSubmit={jest.fn()}
+                    onReset={jest.fn()}
+                />
             </Provider>,
         )
 
@@ -281,16 +270,15 @@ describe('ContactForm test suite', () => {
             state.postSubmissionMessage = newState.postSubmissionMessage
         }
 
-        const { getByPlaceholderText, getAllByPlaceholderText } =
-            renderWithRouter(
-                <Provider store={store}>
-                    <Customization
-                        setNextButtonActive={jest.fn()}
-                        setAttachmentData={setState as any}
-                        attachmentData={state}
-                    />
-                </Provider>,
-            )
+        const { getByPlaceholderText, getAllByPlaceholderText } = render(
+            <Provider store={store}>
+                <Customization
+                    setNextButtonActive={jest.fn()}
+                    setAttachmentData={setState as any}
+                    attachmentData={state}
+                />
+            </Provider>,
+        )
         const fieldLabelInputs = getAllByPlaceholderText('Email')
         const buttonLabelInput = getByPlaceholderText('Subscribe')
 
@@ -305,7 +293,7 @@ describe('ContactForm test suite', () => {
     })
 
     it('should render the thank you message component', () => {
-        const { getByText, getByRole } = renderWithRouter(
+        const { getByText, getByRole } = render(
             <Provider store={store}>
                 <PostSubmissionMessage
                     setNextButtonActive={jest.fn()}
@@ -332,7 +320,7 @@ describe('ContactForm test suite', () => {
     it('should close when the collapse is called', async () => {
         const user = userEvent.setup()
         const mockOnOpenChange = jest.fn()
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddContactCaptureForm
                     open
@@ -352,7 +340,7 @@ describe('ContactForm test suite', () => {
     it('should open when the toolbar icon is clicked', async () => {
         const user = userEvent.setup()
         const mockOnOpenChange = jest.fn()
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <ContactFormCaptureFormIconButton
                 onOpenChange={mockOnOpenChange}
                 isDisabled={false}
@@ -367,7 +355,7 @@ describe('ContactForm test suite', () => {
     it('should close when the backdrop area is clicked', async () => {
         const user = userEvent.setup()
         const mockOnOpenChange = jest.fn()
-        const { baseElement } = renderWithRouter(
+        const { baseElement } = render(
             <Provider store={store}>
                 <AddContactCaptureForm
                     open={true}
