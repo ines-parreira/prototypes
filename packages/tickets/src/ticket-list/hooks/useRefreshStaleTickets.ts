@@ -62,34 +62,6 @@ function getCachedUpToCursor(
     return getNextCursorFromMeta(lastPage?.meta)
 }
 
-function removeTicketsFromListCache(
-    queryClient: ReturnType<typeof useQueryClient>,
-    queryKey: ReturnType<typeof queryKeys.views.listViewItems>,
-    ticketIds: Set<number>,
-) {
-    if (ticketIds.size === 0) return
-
-    queryClient.setQueryData<InfiniteData<{ data: Ticket[] }>>(
-        queryKey,
-        (old) => {
-            if (!old?.pages) return old
-
-            let didChange = false
-            const pages = old.pages.map((page) => {
-                const data = page.data.filter(
-                    (ticket) => !ticketIds.has(ticket.id),
-                )
-                if (data.length === page.data.length) return page
-
-                didChange = true
-                return { ...page, data }
-            })
-
-            return didChange ? { ...old, pages } : old
-        },
-    )
-}
-
 function diffUpdatesAgainstCache(
     updates: ListViewItemsUpdates200DataItem[],
     cachedUpdatedAt: Map<number, string | null>,
@@ -201,7 +173,17 @@ export function useRefreshStaleTickets({
                 cached.pages[0]?.data.length ?? 0,
             )
 
-        if (canApplyRemovals && insertedIds.size > 0) {
+        if (canApplyRemovals && removedIds.size > 0) {
+            void queryClient.invalidateQueries({
+                queryKey: queryKeys.views.listViewItems(viewId, params),
+            })
+            invalidateTicketCaches(
+                queryClient,
+                updates.flatMap((update) =>
+                    typeof update.id === 'number' ? [update.id] : [],
+                ),
+            )
+        } else if (canApplyRemovals && insertedIds.size > 0) {
             if (shouldRefetchFirstPageOnly) {
                 void queryClient.invalidateQueries({
                     queryKey: queryKeys.views.listViewItems(viewId, params),
@@ -215,18 +197,6 @@ export function useRefreshStaleTickets({
                     queryKey: queryKeys.views.listViewItems(viewId, params),
                 })
             }
-        } else if (canApplyRemovals && removedIds.size > 0) {
-            removeTicketsFromListCache(
-                queryClient,
-                queryKeys.views.listViewItems(viewId, params),
-                removedIds,
-            )
-            invalidateTicketCaches(
-                queryClient,
-                updates.flatMap((update) =>
-                    typeof update.id === 'number' ? [update.id] : [],
-                ),
-            )
         } else if (staleIds.size > 0) {
             void queryClient.invalidateQueries({
                 queryKey: queryKeys.views.listViewItems(viewId, params),

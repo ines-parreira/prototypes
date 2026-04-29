@@ -328,6 +328,34 @@ describe('useRefreshStaleTickets', () => {
         expect(getListRequestCount()).toBe(0)
     })
 
+    it('refetches the authoritative list when updates returns no items', async () => {
+        const { result, rerender } = renderHook(useRefreshHarness, {
+            initialProps: {
+                enabled: false,
+            },
+        })
+
+        await waitFor(() => {
+            expect(result.current.list.isLoading).toBe(false)
+            expect(
+                result.current.list.tickets.map((ticket) => ticket.id),
+            ).toEqual([1, 2])
+        })
+
+        const initialRootRequests = getListRequestCount()
+
+        rerender({
+            enabled: true,
+        })
+
+        await waitFor(() => {
+            expect(getListRequestCount()).toBeGreaterThan(initialRootRequests)
+            expect(
+                result.current.list.tickets.map((ticket) => ticket.id),
+            ).toEqual([1, 2])
+        })
+    })
+
     it('refetches only the stale page and active ticket query', async () => {
         setTwoPageList([ticket1, ticket2], [ticket3])
         updatesData = [
@@ -468,7 +496,7 @@ describe('useRefreshStaleTickets', () => {
         })
     })
 
-    it('removes cached tickets that are no longer in the covered updates window', async () => {
+    it('refetches the authoritative list when cached tickets are no longer in the covered updates window', async () => {
         const currentTicket1 = mockTicket({
             id: ticket1.id,
             updated_datetime: NEW_DATETIME,
@@ -479,17 +507,92 @@ describe('useRefreshStaleTickets', () => {
         })
 
         setSinglePageList([currentTicket1, currentTicket2])
-        updatesData = [makeUpdateItem(currentTicket1)]
 
-        const { result } = renderHook(() => useRefreshHarness())
+        const { result, rerender } = renderHook(useRefreshHarness, {
+            initialProps: {
+                enabled: false,
+            },
+        })
 
         await waitFor(() => {
             expect(
                 result.current.list.tickets.map((ticket) => ticket.id),
-            ).toEqual([1])
+            ).toEqual([1, 2])
         })
 
-        expect(getListRequestCount()).toBe(1)
+        setSinglePageList([currentTicket1])
+        updatesData = [makeUpdateItem(currentTicket1)]
+
+        const initialRootRequests = getListRequestCount()
+
+        rerender({
+            enabled: true,
+        })
+
+        await waitFor(() => {
+            expect(getListRequestCount()).toBeGreaterThan(initialRootRequests)
+            expect(
+                result.current.list.tickets.map((ticket) => ticket.id),
+            ).toEqual([1])
+        })
+    })
+
+    it('prefers a full authoritative refetch when updates include both insertions and removals', async () => {
+        const insertedTicket = mockTicket({
+            id: 99,
+            updated_datetime: NEW_DATETIME,
+        })
+
+        setTwoPageList([ticket1, ticket2], [ticket3])
+        updatesData = [
+            makeUpdateItem(ticket1),
+            makeUpdateItem(ticket2),
+            makeUpdateItem(ticket3),
+        ]
+
+        const { result, rerender } = renderHook(useRefreshHarness, {
+            initialProps: {
+                enabled: false,
+            },
+        })
+
+        await waitFor(() => {
+            expect(result.current.list.isLoading).toBe(false)
+        })
+
+        await act(async () => {
+            await result.current.list.fetchNextPage()
+        })
+
+        await waitFor(() => {
+            expect(
+                result.current.list.tickets.map((ticket) => ticket.id),
+            ).toEqual([1, 2, 3])
+        })
+
+        setTwoPageList([ticket1, insertedTicket], [ticket3])
+        updatesData = [
+            makeUpdateItem(ticket1),
+            makeUpdateItem(insertedTicket),
+            makeUpdateItem(ticket3),
+        ]
+
+        const initialRootRequests = getListRequestCount()
+        const initialSecondPageRequests = getListRequestCount(NEXT_CURSOR)
+
+        rerender({
+            enabled: true,
+        })
+
+        await waitFor(() => {
+            expect(getListRequestCount()).toBeGreaterThan(initialRootRequests)
+            expect(getListRequestCount(NEXT_CURSOR)).toBeGreaterThan(
+                initialSecondPageRequests,
+            )
+            expect(
+                result.current.list.tickets.map((ticket) => ticket.id),
+            ).toEqual([1, 99, 3])
+        })
     })
 
     it('does not trim the cached list when the updates cursor no longer matches the loaded window', async () => {
