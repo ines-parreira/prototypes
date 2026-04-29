@@ -619,10 +619,12 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
     })
 
     describe('AI Agent conditional rendering', () => {
-        it('should not render availability and automation cards when isAiAgentEnabled is true', () => {
+        it('should render availability card with isAiAgentEnabled prop and hide automation card when isAiAgentEnabled is true', () => {
             renderComponent({ isAiAgentEnabled: true })
 
-            expect(mockChatAvailabilityCard).not.toHaveBeenCalled()
+            expect(mockChatAvailabilityCard).toHaveBeenCalledWith(
+                expect.objectContaining({ isAiAgentEnabled: true }),
+            )
             expect(mockChatAutomationCard).not.toHaveBeenCalled()
         })
 

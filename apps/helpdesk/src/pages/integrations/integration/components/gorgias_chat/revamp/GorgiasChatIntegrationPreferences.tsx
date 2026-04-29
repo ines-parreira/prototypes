@@ -200,16 +200,13 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
             >
                 <div className={css.preferencesTab}>
                     <div className={css.cardsWrapper}>
-                        {!isAiAgentEnabled && (
-                            <ChatAvailabilityCard
-                                liveChatAvailability={
-                                    values.liveChatAvailability
-                                }
-                                onChange={(value) =>
-                                    setFieldValue('liveChatAvailability', value)
-                                }
-                            />
-                        )}
+                        <ChatAvailabilityCard
+                            liveChatAvailability={values.liveChatAvailability}
+                            onChange={(value) =>
+                                setFieldValue('liveChatAvailability', value)
+                            }
+                            isAiAgentEnabled={isAiAgentEnabled}
+                        />
                         <ChatVisibilityCard
                             displayChat={values.displayChat}
                             showOutsideBusinessHours={
