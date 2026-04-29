@@ -1,6 +1,5 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 
 import {
@@ -10,20 +9,13 @@ import {
 import { HttpMethod } from 'models/api/types'
 import { useGetHTTPEvents } from 'models/integration/queries/http'
 import type { HTTPIntegrationEvent } from 'models/integration/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import Events from '../Events'
 
 jest.mock('models/integration/queries/http')
 jest.mock('pages/common/utils/DatetimeLabel', () => () => null)
-
 const mockUseGetHTTPEvents = assumeMock(useGetHTTPEvents)
-
-const queryClient = mockQueryClient()
-
 const INTEGRATION_ID = 1
-
 const mockEvents: HTTPIntegrationEvent[] = [
     {
         id: '1',
@@ -54,24 +46,17 @@ const mockEvents: HTTPIntegrationEvent[] = [
         status_code: 500,
     },
 ]
-
 describe('Events', () => {
     afterEach(() => {
         jest.resetAllMocks()
     })
-
     it('should retrieve data when calling useGetHTTPEvents override function', () => {
         mockUseGetHTTPEvents.mockReturnValue({
             data: mockEvents,
             isLoading: false,
             isError: false,
         } as unknown as UseQueryResult)
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>,
-        )
-
+        render(<Events integrationId={INTEGRATION_ID.toString()} />)
         const objectWithDataKey = [
             'this is a string',
         ] as unknown as HTTPIntegrationEvent[]
@@ -80,78 +65,48 @@ describe('Events', () => {
                 apiListCursorPaginationResponse(objectWithDataKey),
             ),
         )
-
         expect(selectReturn).toBe(objectWithDataKey)
     })
-
     it('renders the events', () => {
         mockUseGetHTTPEvents.mockReturnValue({
             data: mockEvents,
             isLoading: false,
             isError: false,
         } as unknown as UseQueryResult)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>,
-        )
-
+        render(<Events integrationId={INTEGRATION_ID.toString()} />)
         expect(mockUseGetHTTPEvents).toHaveBeenCalledWith(
             INTEGRATION_ID,
             expect.any(Object),
         )
-
         expect(screen.getAllByText('https://example.com'))
         expect(screen.getByText(/200/))
         expect(screen.getByText(/500/))
     })
-
     it('renders the loading state', () => {
         mockUseGetHTTPEvents.mockReturnValue({
             data: undefined,
             isLoading: true,
             isError: false,
         } as unknown as UseQueryResult)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>,
-        )
-
+        render(<Events integrationId={INTEGRATION_ID.toString()} />)
         expect(screen.getByTestId('loader'))
     })
-
     it('renders the error state', () => {
         mockUseGetHTTPEvents.mockReturnValue({
             data: undefined,
             isLoading: false,
             isError: true,
         } as unknown as UseQueryResult)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>,
-        )
-
+        render(<Events integrationId={INTEGRATION_ID.toString()} />)
         expect(screen.getByText(/An error occurred/))
     })
-
     it('renders the no logs message', () => {
         mockUseGetHTTPEvents.mockReturnValue({
             data: [],
             isLoading: false,
             isError: false,
         } as unknown as UseQueryResult)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>,
-        )
-
+        render(<Events integrationId={INTEGRATION_ID.toString()} />)
         expect(screen.getByText(/no logs/))
     })
 })

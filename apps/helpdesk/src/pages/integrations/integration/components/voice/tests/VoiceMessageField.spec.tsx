@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -10,7 +11,6 @@ import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
 import type { Account } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import VoiceMessageField from '../VoiceMessageField'
 
@@ -61,7 +61,7 @@ describe('VoiceMessageField', () => {
         value: VoiceMessage = defaultMessage,
         props: Partial<Parameters<typeof VoiceMessageField>[0]> = {},
     ) => {
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <VoiceMessageField
                 name={'testing'}
                 value={value}

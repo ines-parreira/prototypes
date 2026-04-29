@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import type { History, Location } from 'history'
 import type { Map } from 'immutable'
@@ -14,7 +14,6 @@ import {
 } from 'constants/integration'
 import { YotpoIntegrationDetailComponent } from 'pages/integrations/integration/components/yotpo/YotpoIntegrationDetail'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
-import { renderWithRouter } from 'utils/testing'
 
 type Integration = ComponentProps<
     typeof YotpoIntegrationDetailComponent
@@ -55,7 +54,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 name: 'test',
             })
 
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={integration}
@@ -68,7 +67,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
 
     describe('componentWillReceiveProps()', () => {
         it('should not do anything because there is no integration', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <YotpoIntegrationDetailComponent {...minProps} />,
             )
 
@@ -91,7 +90,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     },
                 })
 
-                const { container } = renderWithRouter(
+                const { container } = render(
                     <YotpoIntegrationDetailComponent
                         {...minProps}
                         integration={integration}
@@ -116,7 +115,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 name: 'foo',
             })
 
-            const { container, rerender } = renderWithRouter(
+            const { container, rerender } = render(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={integration}
@@ -155,7 +154,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                const { container, rerender } = renderWithRouter(
+                const { container, rerender } = render(
                     <YotpoIntegrationDetailComponent {...minProps} />,
                 )
 
@@ -208,7 +207,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                const { container, rerender } = renderWithRouter(
+                const { container, rerender } = render(
                     <YotpoIntegrationDetailComponent {...minProps} />,
                 )
 
@@ -257,7 +256,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                renderWithRouter(
+                render(
                     <YotpoIntegrationDetailComponent
                         {...minProps}
                         integration={integration}
@@ -300,7 +299,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -319,7 +318,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         })
 
         it('should render an alert because the import is in progress', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -337,7 +336,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         })
 
         it('should render a small paragraph because the import is over', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -355,7 +354,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         })
 
         it('should render buttons loading and disabled because a submit is in progress', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -374,7 +373,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         })
 
         it('should render not render deactivate / reactivate buttons because authentication is required', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -395,7 +394,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             'should not render anything about the import and render the re-activate button instead of the deactivate ' +
                 'button because the integration is deactivated',
             () => {
-                const { container } = renderWithRouter(
+                const { container } = render(
                     <YotpoIntegrationDetailComponent
                         {...minProps}
                         integration={fromJS({
@@ -417,7 +416,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         )
 
         it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
-            const { getByRole, getByText } = renderWithRouter(
+            const { getByRole, getByText } = render(
                 <YotpoIntegrationDetailComponent
                     {...{
                         ...minProps,

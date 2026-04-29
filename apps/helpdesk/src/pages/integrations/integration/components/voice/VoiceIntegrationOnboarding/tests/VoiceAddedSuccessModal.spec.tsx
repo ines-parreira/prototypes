@@ -1,8 +1,8 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import { renderWithRouter } from 'utils/testing'
 
 import VoiceAddedSuccessModal from '../VoiceAddedSuccessModal'
 
@@ -43,7 +43,7 @@ describe('VoiceAddedSuccessModal', () => {
     })
 
     const renderComponent = () => {
-        return renderWithRouter(<VoiceAddedSuccessModal />)
+        return render(<VoiceAddedSuccessModal />)
     }
 
     it('should not render modal when no integration id in query param', () => {

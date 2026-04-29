@@ -1,14 +1,13 @@
 import type { ComponentProps } from 'react'
 
 import { Form, useFormContext } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { mockEnqueueStep } from '@gorgias/helpdesk-mocks'
 
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowNodeType } from '../constants'
 import { RouteToStepTypeField } from '../RouteToStepTypeField'
@@ -105,7 +104,7 @@ const renderComponent = (
     }
 
     return act(() => {
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <Form defaultValues={defaultFormValues} onValidSubmit={jest.fn()}>
                 <RouteToStepTypeField {...defaultProps} />
             </Form>,

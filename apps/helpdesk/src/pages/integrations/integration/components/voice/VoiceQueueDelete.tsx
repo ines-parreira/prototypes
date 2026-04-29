@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { history } from '@repo/routing'
+import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
@@ -19,6 +19,7 @@ type VoiceQueueDeleteProps = {
 }
 
 export default function VoiceQueueDelete({ queue }: VoiceQueueDeleteProps) {
+    const history = useHistory()
     const notify = useNotify()
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
         useState<boolean>(false)

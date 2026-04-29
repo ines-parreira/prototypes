@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
@@ -6,7 +6,6 @@ import { updateVoiceQueue } from '@gorgias/helpdesk-client'
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import EditQueueModal from '../EditQueueModal'
 
@@ -52,7 +51,7 @@ describe('EditQueueModal', () => {
     }
 
     const renderComponent = (props = {}) =>
-        renderWithQueryClientAndRouter(
+        render(
             <EditQueueModal
                 isOpen={true}
                 onClose={mockOnClose}

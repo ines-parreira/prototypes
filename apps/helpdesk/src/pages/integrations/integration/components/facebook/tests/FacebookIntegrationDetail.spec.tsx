@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { merge } from 'lodash'
-import { Provider } from 'react-redux'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -19,7 +19,6 @@ import type {
 } from 'models/integration/types'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { FacebookIntegrationDetail } from '../FacebookIntegrationDetail'
 import {
@@ -57,7 +56,6 @@ const minProps: ComponentProps<typeof FacebookIntegrationDetail> = {
     deleteIntegration: jest.fn(),
     hasInstagramDMFeature: true,
 }
-
 const defaultFacebookIntegrationSettings: FacebookIntegrationSettings = {
     posts_enabled: false,
     mentions_enabled: false,
@@ -69,7 +67,6 @@ const defaultFacebookIntegrationSettings: FacebookIntegrationSettings = {
     instagram_mentions_enabled: false,
     instagram_ads_enabled: false,
 }
-
 const baseInstagramMeta = {
     id: '',
     name: null,
@@ -78,7 +75,6 @@ const baseInstagramMeta = {
     followers_count: null,
     instagram_direct_message_allowed: null,
 }
-
 const baseIntegrationMeta = {
     oauth: null,
     roles: '',
@@ -95,7 +91,6 @@ const baseIntegrationMeta = {
     picture: null,
     instagram: baseInstagramMeta,
 }
-
 const baseIntegration: FacebookIntegration = {
     id: 1,
     type: IntegrationType.Facebook,
@@ -115,7 +110,6 @@ const baseIntegration: FacebookIntegration = {
     meta: baseIntegrationMeta,
     managed: false,
 }
-
 const checkBoxNameEquivalents = {
     messenger_enabled: 'Messenger',
     posts_enabled: 'Posts, comments and ad comments',
@@ -127,10 +121,8 @@ const checkBoxNameEquivalents = {
     instagram_direct_message_enabled: 'Direct messages icon',
     recommendations_enabled: 'Recommendations',
 }
-
 describe('<FacebookIntegrationDetail/>', () => {
     let store: MockStoreEnhanced
-
     beforeEach(() => {
         jest.resetAllMocks()
         const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
@@ -139,7 +131,6 @@ describe('<FacebookIntegrationDetail/>', () => {
         store = mockStore({})
         Date.now = jest.fn(() => 42)
     })
-
     it('should update the integration on form submit', () => {
         const integration = merge(baseIntegration, {
             meta: {
@@ -160,22 +151,19 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             },
         })
-
-        renderWithRouter(
-            <Provider store={store}>
-                <FacebookIntegrationDetail
-                    {...minProps}
-                    integration={integration}
-                />
-            </Provider>,
+        render(
+            <FacebookIntegrationDetail
+                {...minProps}
+                integration={integration}
+            />,
+            {
+                storeState: store.getState() as object,
+            },
         )
-
         fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
             target: { value: LANGUAGE.DA },
         })
-
         screen.getByRole('button', { name: 'Save changes' }).click()
-
         expect(minProps.updateOrCreateIntegration).toHaveBeenCalledTimes(1)
         expect(minProps.updateOrCreateIntegration).toHaveBeenCalledWith(
             fromJS(
@@ -187,36 +175,32 @@ describe('<FacebookIntegrationDetail/>', () => {
             ),
         )
     })
-
     it('should render a loading state because the integration is loading', () => {
         const integration = merge(baseIntegration, {
             id: 1,
             type: FACEBOOK_INTEGRATION_TYPE,
         })
-
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <FacebookIntegrationDetail
-                    {...minProps}
-                    integration={integration}
-                    loading={fromJS({ integration: integration.id })}
-                />
-            </Provider>,
+        const { container } = render(
+            <FacebookIntegrationDetail
+                {...minProps}
+                integration={integration}
+                loading={fromJS({ integration: integration.id })}
+            />,
+            {
+                storeState: store.getState() as object,
+            },
         )
-
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it('should render nothing because the passed integration is empty', () => {
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <FacebookIntegrationDetail {...minProps} />
-            </Provider>,
+        const { container } = render(
+            <FacebookIntegrationDetail {...minProps} />,
+            {
+                storeState: store.getState() as object,
+            },
         )
-
         expect(container.firstChild).toBeNull()
     })
-
     it('should render an integration with canModerate enabled', () => {
         const integration = merge(baseIntegration, {
             meta: {
@@ -244,23 +228,21 @@ describe('<FacebookIntegrationDetail/>', () => {
                 name: 'My facebook page',
             },
         })
-
-        renderWithRouter(
-            <Provider store={store}>
-                <FacebookIntegrationDetail
-                    {...minProps}
-                    integration={integration}
-                />
-            </Provider>,
+        render(
+            <FacebookIntegrationDetail
+                {...minProps}
+                integration={integration}
+            />,
+            {
+                storeState: store.getState() as object,
+            },
         )
-
         expect(
             screen.queryByText(
                 /to be able to enable features for this integration you need/,
             ),
         ).toBeNull()
     })
-
     it('should render an integration with canModerate disabled because there is no MODERATE_ROLE', () => {
         const integration = merge(baseIntegration, {
             meta: {
@@ -288,23 +270,21 @@ describe('<FacebookIntegrationDetail/>', () => {
                 name: 'My facebook page',
             },
         })
-
-        renderWithRouter(
-            <Provider store={store}>
-                <FacebookIntegrationDetail
-                    {...minProps}
-                    integration={integration}
-                />
-            </Provider>,
+        render(
+            <FacebookIntegrationDetail
+                {...minProps}
+                integration={integration}
+            />,
+            {
+                storeState: store.getState() as object,
+            },
         )
-
         expect(
             screen.getByText(
                 /to be able to enable features for this integration you need/,
             ),
         )
     })
-
     it(
         'should render an integration with instagram disabled because the scope of the integration does not ' +
             'include instagram permissions',
@@ -335,16 +315,15 @@ describe('<FacebookIntegrationDetail/>', () => {
                     name: 'My facebook page',
                 },
             })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>,
+            render(
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             expect(
                 screen
                     .getByRole('checkbox', {
@@ -356,7 +335,6 @@ describe('<FacebookIntegrationDetail/>', () => {
             ).not.toBeNull()
         },
     )
-
     it.each([
         ['messenger_enabled', 0],
         ['posts_enabled', 0],
@@ -387,16 +365,15 @@ describe('<FacebookIntegrationDetail/>', () => {
                     },
                 },
             })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>,
+            render(
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             expect(
                 screen
                     .getAllByRole('checkbox', {
@@ -408,7 +385,6 @@ describe('<FacebookIntegrationDetail/>', () => {
             ).toBeNull()
         },
     )
-
     it.each([
         ['messenger_enabled', 0],
         ['posts_enabled', 0],
@@ -441,16 +417,15 @@ describe('<FacebookIntegrationDetail/>', () => {
                     },
                 },
             })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>,
+            render(
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             expect(
                 screen
                     .getAllByRole('checkbox', {
@@ -460,11 +435,9 @@ describe('<FacebookIntegrationDetail/>', () => {
                     })
                     [position].getAttribute('disabled'),
             ).not.toBeNull()
-
             expect(screen.getByText(/some features are disabled/))
         },
     )
-
     it(
         'should render an integration with instagram disabled because the page has no associated instagram' +
             'account',
@@ -497,20 +470,18 @@ describe('<FacebookIntegrationDetail/>', () => {
                     name: 'My facebook page',
                 },
             })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                    />
-                </Provider>,
+            render(
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             expect(screen.getByText(/You cannot activate Instagram/))
         },
     )
-
     it('should render an integration with instagram ads enabled', () => {
         const integration = merge(baseIntegration, {
             meta: {
@@ -541,23 +512,21 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             },
         })
-
-        renderWithRouter(
-            <Provider store={store}>
-                <FacebookIntegrationDetail
-                    {...minProps}
-                    integration={integration}
-                />
-            </Provider>,
+        render(
+            <FacebookIntegrationDetail
+                {...minProps}
+                integration={integration}
+            />,
+            {
+                storeState: store.getState() as object,
+            },
         )
-
         expect(
             screen.getByRole('checkbox', {
                 name: checkBoxNameEquivalents.instagram_ads_enabled,
             }),
         ).toBeChecked()
     })
-
     it(
         'should render an integration with instagram enabled and loading buttons because the integration ' +
             'is being submitted',
@@ -588,25 +557,23 @@ describe('<FacebookIntegrationDetail/>', () => {
                     },
                 },
             })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        loading={fromJS({
-                            updateIntegration: integration.id,
-                        })}
-                        integration={integration}
-                    />
-                </Provider>,
+            render(
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    loading={fromJS({
+                        updateIntegration: integration.id,
+                    })}
+                    integration={integration}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             expect(
                 screen.getByRole('button', { name: 'Save changes' }),
             ).toBeAriaDisabled()
         },
     )
-
     it.each([
         [
             'account eligible to IG DM and has the feature (Render an enabled IG DM setting)',
@@ -657,11 +624,9 @@ describe('<FacebookIntegrationDetail/>', () => {
                     name: 'My facebook page',
                 },
             })
-
             const currentAccount: Map<any, any> = fromJS({
                 domain: 'acme',
             })
-
             const currentHelpdeskProduct = {
                 ...basicMonthlyHelpdeskPlan,
                 features: {
@@ -671,19 +636,18 @@ describe('<FacebookIntegrationDetail/>', () => {
                     },
                 },
             }
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <FacebookIntegrationDetail
-                        {...minProps}
-                        integration={integration}
-                        currentAccount={currentAccount}
-                        currentHelpdeskProduct={currentHelpdeskProduct}
-                        hasInstagramDMFeature={priceHasInstagramDmFeature}
-                    />
-                </Provider>,
+            render(
+                <FacebookIntegrationDetail
+                    {...minProps}
+                    integration={integration}
+                    currentAccount={currentAccount}
+                    currentHelpdeskProduct={currentHelpdeskProduct}
+                    hasInstagramDMFeature={priceHasInstagramDmFeature}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             if (isIGAccountEligible && priceHasInstagramDmFeature) {
                 await waitFor(() =>
                     expect(

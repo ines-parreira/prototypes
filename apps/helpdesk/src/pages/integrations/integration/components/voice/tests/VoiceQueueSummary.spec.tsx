@@ -1,9 +1,7 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { useGetTeam, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
-
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import VoiceQueueSummary from '../VoiceQueueSummary'
 
@@ -28,7 +26,7 @@ jest.mock('../EditQueueModal', () => ({ isOpen, onClose, queue }: any) => (
 describe('VoiceQueueSummary', () => {
     const queue_id = 1
     const renderComponent = () =>
-        renderWithQueryClientProvider(<VoiceQueueSummary queue_id={queue_id} />)
+        render(<VoiceQueueSummary queue_id={queue_id} />)
 
     it('should render loading state initially', () => {
         useGetVoiceQueueMock.mockReturnValue({

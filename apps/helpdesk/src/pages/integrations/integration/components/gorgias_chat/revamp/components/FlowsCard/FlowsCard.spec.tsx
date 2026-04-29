@@ -1,9 +1,8 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { FlowsCard } from './FlowsCard'
 
@@ -12,7 +11,6 @@ jest.mock('./FlowsSettings', () => ({
         <div data-testid="flows-settings">FlowsSettings Component</div>
     ),
 }))
-
 const mockChannel = {
     type: TicketChannel.Chat,
     value: {
@@ -25,7 +23,6 @@ const mockChannel = {
         },
     },
 } as SelfServiceChatChannel
-
 const defaultProps = {
     isLoading: false,
     shopName: 'test-shop',
@@ -39,35 +36,24 @@ const defaultProps = {
     onRemove: jest.fn(),
     onReorder: jest.fn(),
 }
-
 const renderComponent = (
     props: Partial<Parameters<typeof FlowsCard>[0]> = {},
 ) => {
-    return renderWithQueryClientProvider(
-        <MemoryRouter>
-            <FlowsCard {...defaultProps} {...props} />
-        </MemoryRouter>,
-    )
+    return render(<FlowsCard {...defaultProps} {...props} />)
 }
-
 describe('FlowsCard', () => {
     it('should render the card with heading', () => {
         renderComponent()
-
         expect(
             screen.getByRole('heading', { name: /flows/i }),
         ).toBeInTheDocument()
     })
-
     it('should render FlowsSettings component', () => {
         renderComponent()
-
         expect(screen.getByTestId('flows-settings')).toBeInTheDocument()
     })
-
     it('should render skeleton when isLoading is true', () => {
         renderComponent({ isLoading: true })
-
         expect(
             screen.queryByRole('heading', { name: /flows/i }),
         ).not.toBeInTheDocument()

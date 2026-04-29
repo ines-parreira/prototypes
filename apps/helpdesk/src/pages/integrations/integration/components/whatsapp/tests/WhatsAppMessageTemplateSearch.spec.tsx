@@ -1,11 +1,10 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
 
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplateSearch from '../WhatsAppMessageTemplateSearch'
@@ -14,16 +13,12 @@ jest.mock(
     'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
     () => jest.fn(),
 )
-
 const useWhatsAppEditorSpy = useWhatsAppEditor as jest.Mock
-
 const useWhatsAppEditorMockSetters = {
     setIsTemplateListVisible: jest.fn(),
     setSearchFilter: jest.fn(),
 }
-
 jest.useFakeTimers()
-
 jest.mock(
     'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown',
     () =>
@@ -35,20 +30,15 @@ jest.mock(
             default: () => <div>TemplateTypeFilterDropdown</div>,
         }) as Record<string, any>,
 )
-
 describe('WhatsAppMessageTemplateSearch', () => {
     const renderComponent = () =>
-        renderWithQueryClientProvider(
-            <Provider store={mockStore({} as any)}>
-                <WhatsAppMessageTemplateSearch />
-            </Provider>,
-        )
-
+        render(<WhatsAppMessageTemplateSearch />, {
+            storeState: mockStore({} as any).getState() as object,
+        })
     afterEach(() => {
         cleanup()
         jest.resetAllMocks()
     })
-
     it('should expand template list when clicking arrow', () => {
         useWhatsAppEditorSpy.mockReturnValue({
             ...useWhatsAppEditorMockSetters,
@@ -57,7 +47,6 @@ describe('WhatsAppMessageTemplateSearch', () => {
                 name: 'template',
             },
         } as any)
-
         renderComponent()
         const arrowButton = screen.getByTestId('arrow-button')
         act(() => {
@@ -67,7 +56,6 @@ describe('WhatsAppMessageTemplateSearch', () => {
             useWhatsAppEditorMockSetters.setIsTemplateListVisible,
         ).toHaveBeenCalledWith(true)
     })
-
     it('should collapse template list when clicking arrow', () => {
         useWhatsAppEditorSpy.mockReturnValue({
             ...useWhatsAppEditorMockSetters,
@@ -76,7 +64,6 @@ describe('WhatsAppMessageTemplateSearch', () => {
                 name: 'template',
             },
         } as any)
-
         renderComponent()
         const arrowButton = screen.getByTestId('arrow-button')
         act(() => {
@@ -86,7 +73,6 @@ describe('WhatsAppMessageTemplateSearch', () => {
             useWhatsAppEditorMockSetters.setIsTemplateListVisible,
         ).toHaveBeenCalledWith(false)
     })
-
     it('should not be collapsible when a template is not selected', () => {
         useWhatsAppEditorSpy.mockReturnValue({
             ...useWhatsAppEditorMockSetters,
@@ -94,11 +80,9 @@ describe('WhatsAppMessageTemplateSearch', () => {
             isWhatsAppWindowOpen: false,
             selectedTemplate: null,
         } as any)
-
         renderComponent()
         expect(screen.queryByTestId('arrow-button')).not.toBeInTheDocument()
     })
-
     it('should display filters when input is focused', () => {
         useWhatsAppEditorSpy.mockReturnValue({
             ...useWhatsAppEditorMockSetters,
@@ -106,7 +90,6 @@ describe('WhatsAppMessageTemplateSearch', () => {
             isWhatsAppWindowOpen: false,
             selectedTemplate: null,
         } as any)
-
         renderComponent()
         act(() => {
             screen
@@ -115,7 +98,6 @@ describe('WhatsAppMessageTemplateSearch', () => {
         })
         expect(screen.getByTestId('dropdown-filters')).toBeInTheDocument()
     })
-
     it('should display filters when template list is visible', () => {
         useWhatsAppEditorSpy.mockReturnValue({
             ...useWhatsAppEditorMockSetters,
@@ -123,11 +105,9 @@ describe('WhatsAppMessageTemplateSearch', () => {
             isWhatsAppWindowOpen: false,
             selectedTemplate: null,
         } as any)
-
         renderComponent()
         expect(screen.getByTestId('dropdown-filters')).toBeInTheDocument()
     })
-
     it('should not display TemplateTypeFilterDropdown when WhatsApp window is closed', () => {
         useWhatsAppEditorSpy.mockReturnValue({
             ...useWhatsAppEditorMockSetters,
@@ -135,11 +115,9 @@ describe('WhatsAppMessageTemplateSearch', () => {
             isWhatsAppWindowOpen: false,
             selectedTemplate: null,
         } as any)
-
         renderComponent()
         expect(screen.queryByText('TemplateTypeFilterDropdown')).toBeNull()
     })
-
     it('should display TemplateTypeFilterDropdown when WhatsApp window is open', () => {
         useWhatsAppEditorSpy.mockReturnValue({
             ...useWhatsAppEditorMockSetters,
@@ -147,13 +125,11 @@ describe('WhatsAppMessageTemplateSearch', () => {
             isWhatsAppWindowOpen: true,
             selectedTemplate: null,
         } as any)
-
         renderComponent()
         expect(
             screen.getByText('TemplateTypeFilterDropdown'),
         ).toBeInTheDocument()
     })
-
     it('should set template name filter correctly on change', () => {
         useWhatsAppEditorSpy.mockReturnValue({
             ...useWhatsAppEditorMockSetters,
@@ -161,7 +137,6 @@ describe('WhatsAppMessageTemplateSearch', () => {
             isWhatsAppWindowOpen: true,
             selectedTemplate: null,
         } as any)
-
         renderComponent()
         const input = screen.getByPlaceholderText(
             'Search WhatsApp templates by name',
@@ -170,10 +145,8 @@ describe('WhatsAppMessageTemplateSearch', () => {
             input.focus()
             fireEvent.change(input, { target: { value: 'test' } })
         })
-
         // wait for 350ms debounce
         jest.advanceTimersByTime(350)
-
         expect(
             useWhatsAppEditorMockSetters.setSearchFilter,
         ).toHaveBeenCalledWith({

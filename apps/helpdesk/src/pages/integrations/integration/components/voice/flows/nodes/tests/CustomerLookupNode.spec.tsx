@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -22,7 +23,6 @@ import type { CustomField, ListCustomFields200 } from '@gorgias/helpdesk-types'
 import { ObjectType } from '@gorgias/helpdesk-types'
 
 import { Flow, FlowProvider } from 'core/ui/flows'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowNodeType } from '../../constants'
 import type { VoiceFlowNode } from '../../types'
@@ -141,7 +141,7 @@ const renderComponent = (
     flowDefaultProps: ComponentProps<typeof Flow> = flowProps,
     formDefaultValues = defaultValues,
 ) => {
-    return renderWithStoreAndQueryClientProvider(
+    return render(
         <FlowProvider>
             <Form defaultValues={formDefaultValues} onValidSubmit={jest.fn()}>
                 <VoiceFlowProvider selectedNode={customerLookupStep.id}>
@@ -153,7 +153,7 @@ const renderComponent = (
                 </VoiceFlowProvider>
             </Form>
         </FlowProvider>,
-        {},
+        { storeState: {} },
     )
 }
 

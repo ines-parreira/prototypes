@@ -1,32 +1,26 @@
 import { useFlag } from '@repo/feature-flags'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import { IntegrationDetail } from '../Integration'
 import { Tab } from '../types'
 
 jest.mock('@repo/feature-flags')
-
 jest.mock('../components/aircall/AircallIntegrationList.tsx', () => () => (
     <div>AircallIntegrationList</div>
 ))
 jest.mock('../components/aircall/AircallIntegrationCreate.tsx', () => () => (
     <div>AircallIntegrationCreate</div>
 ))
-
 jest.mock('../components/bigcommerce/BigCommerce', () => () => (
     <div>BigCommerceIntegration</div>
 ))
-
 jest.mock('../components/email/EmailIntegrationList', () => () => (
     <div>EmailIntegrationList</div>
 ))
@@ -42,7 +36,6 @@ jest.mock(
     '../components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer',
     () => () => <div>DEPRECATED_EmailDomainVerificationContainer</div>,
 )
-
 jest.mock(
     '../components/email/EmailIntegrationUpdate/EmailIntegrationUpdate',
     () => () => <div>EmailIntegrationUpdate</div>,
@@ -73,7 +66,6 @@ jest.mock(
             </div>
         ),
 )
-
 jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
     <div>FacebookIntegrationDetail</div>
 ))
@@ -92,58 +84,46 @@ jest.mock(
     '../components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat',
     () => () => <div>FacebookIntegrationCustomerChat</div>,
 )
-
 jest.mock('../components/http/HTTP', () => () => <div>HTTPIntegration</div>)
-
 jest.mock('../components/gorgias_chat/GorgiasChatIntegration', () => ({
     GorgiasChatIntegration: () => <div>GorgiasChatIntegration</div>,
 }))
-
 jest.mock('../components/sms/SmsIntegration', () => () => (
     <div>SmsIntegration</div>
 ))
 jest.mock('../components/voice/VoiceIntegration', () => () => (
     <div>VoiceIntegration</div>
 ))
-
 jest.mock('../components/shopify/Shopify', () => () => (
     <div>ShopifyIntegration</div>
 ))
-
 jest.mock('../components/klaviyo/KlaviyoIntegrationList', () => () => (
     <div>KlaviyoIntegrationList</div>
 ))
 jest.mock('../components/klaviyo/KlaviyoIntegrationDetail', () => () => (
     <div>KlaviyoIntegrationDetail</div>
 ))
-
 jest.mock('../components/recharge/Recharge', () => () => (
     <div>RechargeIntegration</div>
 ))
-
 jest.mock('../components/smile/SmileIntegrationList', () => () => (
     <div>SmileIntegrationList</div>
 ))
 jest.mock('../components/smile/SmileIntegrationDetail', () => () => (
     <div>SmileIntegrationDetail</div>
 ))
-
 jest.mock('../components/yotpo/YotpoIntegrationList', () => () => (
     <div>YotpoIntegrationList</div>
 ))
 jest.mock('../components/yotpo/YotpoIntegrationDetail', () => () => (
     <div>YotpoIntegrationDetail</div>
 ))
-
 jest.mock('../components/magento2/Magento2', () => () => (
     <div>Magento2Integration</div>
 ))
-
-const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
 const useFlagMock = jest.mocked(useFlag)
-
 describe('<IntegrationDetail />', () => {
     const minProps = {
         actions: {
@@ -192,11 +172,9 @@ describe('<IntegrationDetail />', () => {
             domain: 'acme',
         }),
     }
-
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
     })
-
     it.each([
         [IntegrationType.Aircall],
         [IntegrationType.BigCommerce],
@@ -214,40 +192,25 @@ describe('<IntegrationDetail />', () => {
     ])(
         'should render the list or detail page of integrations for %s',
         (integrationType) => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}`,
-                },
-            )
+            const { container } = render(<IntegrationDetail {...minProps} />, {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [`/integrations/${integrationType}`],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         },
     )
-
     it(`should display not available message if ${IntegrationType.Twitter} integration not included in price`, () => {
-        const { container } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <IntegrationDetail
-                        {...minProps}
-                        hasTwitterFeature={false}
-                    />
-                </Provider>
-            </QueryClientProvider>,
+        const { container } = render(
+            <IntegrationDetail {...minProps} hasTwitterFeature={false} />,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                route: `/integrations/${IntegrationType.Twitter}`,
+                initialEntries: [`/integrations/${IntegrationType.Twitter}`],
+                storeState: store.getState() as object,
             },
         )
-
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it.each([
         [IntegrationType.Aircall],
         [IntegrationType.Email],
@@ -255,38 +218,24 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.Phone],
         [IntegrationType.Sms],
     ])('should render the creation page for %s', (integrationType) => {
-        const { container } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                route: `/integrations/${integrationType}/new`,
-            },
-        )
+        const { container } = render(<IntegrationDetail {...minProps} />, {
+            path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+            initialEntries: [`/integrations/${integrationType}/new`],
+            storeState: store.getState() as object,
+        })
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it.each([[IntegrationType.Email], [IntegrationType.Facebook]])(
         'should render the setup page for %s',
         (integrationType) => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}/setup`,
-                },
-            )
+            const { container } = render(<IntegrationDetail {...minProps} />, {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [`/integrations/${integrationType}/setup`],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         },
     )
-
     it.each([
         [IntegrationType.Email],
         [IntegrationType.Facebook],
@@ -299,28 +248,24 @@ describe('<IntegrationDetail />', () => {
     ])(
         'should render the page of a specific integration for %s',
         (integrationType) => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail
-                            {...minProps}
-                            integrations={fromJS({
-                                integration: {
-                                    id: 1,
-                                },
-                            })}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
+            const { container } = render(
+                <IntegrationDetail
+                    {...minProps}
+                    integrations={fromJS({
+                        integration: {
+                            id: 1,
+                        },
+                    })}
+                />,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}/1`,
+                    initialEntries: [`/integrations/${integrationType}/1`],
+                    storeState: store.getState() as object,
                 },
             )
             expect(container.firstChild).toMatchSnapshot()
         },
     )
-
     it.each([
         [IntegrationType.Facebook],
         [IntegrationType.Phone],
@@ -328,94 +273,71 @@ describe('<IntegrationDetail />', () => {
     ])(
         'should render the preferences tab of a specific integrations for %s',
         (integrationType) => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}/1/${Tab.Preferences}`,
-                },
-            )
+            const { container } = render(<IntegrationDetail {...minProps} />, {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/integrations/${integrationType}/1/${Tab.Preferences}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         },
     )
-
     describe(`${IntegrationType.Email}`, () => {
         it('should render the onboarding page', () => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.Email}/new/${Tab.EmailOnboarding}`,
-                },
-            )
+            const { container } = render(<IntegrationDetail {...minProps} />, {
+                path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/channels/${IntegrationType.Email}/new/${Tab.EmailOnboarding}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
-
         it('should render the forwarding page for a specific integration', () => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
-                },
-            )
+            const { container } = render(<IntegrationDetail {...minProps} />, {
+                path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/channels/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
-
         it('should render the verification page for a specific integration', () => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
-                },
-            )
+            const { container } = render(<IntegrationDetail {...minProps} />, {
+                path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/channels/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
-
         it('should render Domain verification tab when new-domain-verification FF is off and provider is mailgun', () => {
-            const { getByText } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail
-                            {...minProps}
-                            integrations={fromJS({
-                                integration: {
-                                    meta: {
-                                        provider: EmailProvider.Mailgun,
-                                    },
-                                },
-                            })}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
+            const { getByText } = render(
+                <IntegrationDetail
+                    {...minProps}
+                    integrations={fromJS({
+                        integration: {
+                            meta: {
+                                provider: EmailProvider.Mailgun,
+                            },
+                        },
+                    })}
+                />,
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailDomainVerification}`,
+                    initialEntries: [
+                        `/channels/${IntegrationType.Email}/1/${Tab.EmailDomainVerification}`,
+                    ],
+                    storeState: store.getState() as object,
                 },
             )
-
             expect(
                 getByText('DEPRECATED_EmailDomainVerificationContainer'),
             ).toBeInTheDocument()
         })
-
         it('should render Outbound verification tab when new-domain-verification FF is off and provider is Sendgrid', () => {
             const props = {
                 ...minProps,
@@ -430,22 +352,15 @@ describe('<IntegrationDetail />', () => {
                     },
                 }),
             }
-
-            const { getByText } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...props} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailOutboundVerification}`,
-                },
-            )
-
+            const { getByText } = render(<IntegrationDetail {...props} />, {
+                path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/channels/${IntegrationType.Email}/1/${Tab.EmailOutboundVerification}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(getByText('EmailOutboundVerification')).toBeInTheDocument()
         })
-
         it.each([
             {
                 provider: EmailProvider.Mailgun,
@@ -459,7 +374,6 @@ describe('<IntegrationDetail />', () => {
             'should render the domain verification tab when new-domain-verification FF is on',
             ({ provider, tab }) => {
                 useFlagMock.mockReturnValue(true)
-
                 const props = {
                     ...minProps,
                     integrations: fromJS({
@@ -470,26 +384,18 @@ describe('<IntegrationDetail />', () => {
                         },
                     }),
                 }
-
-                const { getByText } = renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <IntegrationDetail {...props} />
-                        </Provider>
-                    </QueryClientProvider>,
-                    {
-                        path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                        route: `/channels/${IntegrationType.Email}/1/${tab}`,
-                    },
-                )
-
+                const { getByText } = render(<IntegrationDetail {...props} />, {
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    initialEntries: [
+                        `/channels/${IntegrationType.Email}/1/${tab}`,
+                    ],
+                    storeState: store.getState() as object,
+                })
                 expect(getByText('EmailDomainVerification')).toBeInTheDocument()
             },
         )
-
         it('should render the onboarding tab when domain verification FF is on and tab is Onboarding', () => {
             useFlagMock.mockReturnValue(true)
-
             const props = {
                 ...minProps,
                 integrations: fromJS({
@@ -500,40 +406,31 @@ describe('<IntegrationDetail />', () => {
                     },
                 }),
             }
-
-            const { getByText } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...props} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailOnboarding}`,
-                },
-            )
-
+            const { getByText } = render(<IntegrationDetail {...props} />, {
+                path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/channels/${IntegrationType.Email}/1/${Tab.EmailOnboarding}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(getByText('EmailIntegrationOnboarding')).toBeInTheDocument()
         })
-
         describe('new onboarding', () => {
             it('should render the new onboarding for the onboarding route', () => {
-                const { getByText } = renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <IntegrationDetail {...minProps} />
-                        </Provider>
-                    </QueryClientProvider>,
+                const { getByText } = render(
+                    <IntegrationDetail {...minProps} />,
                     {
                         path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                        route: `/channels/${IntegrationType.Email}/new/${Tab.EmailOnboarding}`,
+                        initialEntries: [
+                            `/channels/${IntegrationType.Email}/new/${Tab.EmailOnboarding}`,
+                        ],
+                        storeState: store.getState() as object,
                     },
                 )
                 expect(
                     getByText('EmailIntegrationOnboarding'),
                 ).toBeInTheDocument()
             })
-
             it('should render the new onboarding for the update route when an email integration is unverified', () => {
                 const props = {
                     ...minProps,
@@ -545,72 +442,50 @@ describe('<IntegrationDetail />', () => {
                         },
                     }),
                 }
-                const { getByText } = renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <IntegrationDetail {...props} />
-                        </Provider>
-                    </QueryClientProvider>,
-                    {
-                        path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                        route: `/channels/${IntegrationType.Email}/1`,
-                    },
-                )
+                const { getByText } = render(<IntegrationDetail {...props} />, {
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    initialEntries: [`/channels/${IntegrationType.Email}/1`],
+                    storeState: store.getState() as object,
+                })
                 expect(
                     getByText('EmailIntegrationOnboarding'),
                 ).toBeInTheDocument()
             })
         })
     })
-
     describe(`${IntegrationType.Facebook}`, () => {
         it('should render the customer chat tab for a specific integration', () => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookCustomerChat}`,
-                },
-            )
+            const { container } = render(<IntegrationDetail {...minProps} />, {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookCustomerChat}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
     })
-
     describe(`${IntegrationType.Phone}`, () => {
         it('should render the voicemail tab of a specific integration', () => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
-                },
-            )
+            const { container } = render(<IntegrationDetail {...minProps} />, {
+                path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/channels/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
     })
-
     describe(`${IntegrationType.GorgiasChat}`, () => {
         it('should render GorgiasChatIntegration', () => {
-            const { getByText } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.GorgiasChat}`,
-                },
-            )
-
+            const { getByText } = render(<IntegrationDetail {...minProps} />, {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                initialEntries: [
+                    `/integrations/${IntegrationType.GorgiasChat}`,
+                ],
+                storeState: store.getState() as object,
+            })
             expect(getByText('GorgiasChatIntegration')).toBeInTheDocument()
         })
     })

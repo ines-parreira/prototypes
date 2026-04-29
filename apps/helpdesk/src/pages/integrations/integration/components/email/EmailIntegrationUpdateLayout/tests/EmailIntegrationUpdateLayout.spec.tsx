@@ -1,13 +1,12 @@
 import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import type { Integration } from 'models/integration/types'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
-import { renderWithRouter } from 'utils/testing'
 
 import {
     canIntegrationDomainBeVerified,
@@ -34,7 +33,7 @@ const minProps: ComponentProps<typeof EmailIntegrationUpdateLayout> = {
 
 const renderComponent = (
     props: ComponentProps<typeof EmailIntegrationUpdateLayout>,
-) => renderWithRouter(<EmailIntegrationUpdateLayout {...props} />)
+) => render(<EmailIntegrationUpdateLayout {...props} />)
 
 describe('EmailIntegrationUpdateLayout', () => {
     beforeEach(() => {
@@ -147,7 +146,7 @@ describe('EmailIntegrationUpdateLayout', () => {
             [FeatureFlagKey.NewDomainVerification]: true,
         })
 
-        renderWithRouter(
+        render(
             <EmailIntegrationUpdateLayout
                 {...minProps}
                 integration={fromJS({

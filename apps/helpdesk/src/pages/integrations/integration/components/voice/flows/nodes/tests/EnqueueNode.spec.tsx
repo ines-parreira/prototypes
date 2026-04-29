@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { Form } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { setupServer } from 'msw/node'
@@ -16,7 +16,6 @@ import type { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
 import { useDeleteNode } from 'pages/integrations/integration/components/voice/flows/utils/useDeleteNode'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import * as utils from '../../utils'
 import { EnqueueNode } from '../EnqueueNode'
@@ -79,7 +78,7 @@ describe('EnqueueNode', () => {
             data: mockStep,
         } as ComponentProps<typeof EnqueueNode>
 
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <FlowProvider>
                 <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
                     <EnqueueNode {...props} />

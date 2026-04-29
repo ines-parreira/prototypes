@@ -1,17 +1,14 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render as testingRender } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
 import { basicMonthlyHelpdeskPlan, customHelpdeskPlan } from 'fixtures/plans'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore, renderWithRouter } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import EmailIntegrationList from '../EmailIntegrationList'
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
@@ -23,24 +20,35 @@ import {
 import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
 import { fetchEmailDomains } from '../resources'
 
-const queryClient = mockQueryClient()
+const CurrentPath = () => {
+    const location = useLocation()
+
+    return <output aria-label="Current path">{location.pathname}</output>
+}
+
+const render = (
+    ui: Parameters<typeof testingRender>[0],
+    options?: Parameters<typeof testingRender>[1],
+) =>
+    testingRender(
+        <>
+            {ui}
+            <CurrentPath />
+        </>,
+        {
+            path: '/',
+            ...options,
+        },
+    )
 
 jest.mock(
     'pages/integrations/integration/components/email/EmailIntegrationListVerificationStatus',
 )
-
 jest.mock('../helpers')
 jest.mock('../resources')
-jest.mock('@repo/routing', () => ({
-    ...jest.requireActual('@repo/routing'),
-    history: {
-        push: jest.fn(),
-    },
-}))
 jest.mock('../hooks/useEmailOnboarding')
 jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector')
-
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
 const EmailIntegrationListVerificationStatusMock = assumeMock(
     EmailIntegrationListVerificationStatus,
@@ -55,7 +63,6 @@ const useEmailOnboardingCompleteCheckMock = assumeMock(
 )
 const useFlagMock = assumeMock(useFlag)
 const useAppSelectorMock = assumeMock(useAppSelector)
-
 describe('<EmailIntegrationList/>', () => {
     function getEmailIntegration(
         id: number,
@@ -76,7 +83,6 @@ describe('<EmailIntegrationList/>', () => {
             },
         }
     }
-
     function getGmailIntegration(
         id: number,
         deactivated = false,
@@ -97,7 +103,6 @@ describe('<EmailIntegrationList/>', () => {
             },
         }
     }
-
     function getOutlookIntegration(
         id: number,
         deactivated = false,
@@ -118,7 +123,6 @@ describe('<EmailIntegrationList/>', () => {
             },
         }
     }
-
     const store = mockStore({} as any)
     const commonProps = {
         integrations: fromJS([getEmailIntegration(1)]),
@@ -126,10 +130,8 @@ describe('<EmailIntegrationList/>', () => {
         gmailRedirectUri: '',
         outlookRedirectUri: '',
     }
-
     beforeEach(() => {
         jest.resetAllMocks()
-
         isBaseEmailIntegrationMock.mockReturnValue(false)
         canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
         EmailIntegrationListVerificationStatusMock.mockImplementation(() => (
@@ -167,7 +169,6 @@ describe('<EmailIntegrationList/>', () => {
             return defaultValue
         })
     })
-
     describe('render()', () => {
         it('should render the page with a warning when the domain is not verified', async () => {
             // Mock specific domain data for an unverified domain
@@ -180,41 +181,34 @@ describe('<EmailIntegrationList/>', () => {
                     }),
                 },
             ])
-
             // Important: make sure base integration is false and domain can be verified
             isBaseEmailIntegrationMock.mockReturnValue(false)
             canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
             // Make sure this is false to trigger domain verification warning
             isOutboundDomainVerifiedMock.mockReturnValue(false)
-
             // Reset the mock to ensure we're tracking fresh calls
             EmailIntegrationListVerificationStatusMock.mockClear()
-
             // Create the integration object with the expected state
             const emailIntegration = getEmailIntegration(
                 1,
                 false, // not deactivated
                 EmailProvider.Mailgun,
                 'email@gorgias-test.com',
-                true, // mark as verified so domain warning shows
+                true,
             )
-
             // Render with specific integration data
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            loading={fromJS({})} // explicitly set loading to false
-                            integrations={fromJS([emailIntegration])}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
+            const { container } = render(
+                <EmailIntegrationList
+                    {...commonProps}
+                    loading={fromJS({})} // explicitly set loading to false
+                    integrations={fromJS([emailIntegration])}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             // Wait for the API call to complete
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
             // Wait for the integration to render
             await waitFor(() => {
                 // The EmailIntegrationListVerificationStatus component should now be mocked
@@ -223,7 +217,6 @@ describe('<EmailIntegrationList/>', () => {
                 expect(container.textContent).toContain(
                     'email@gorgias-test.com',
                 )
-
                 // Check if EmailIntegrationListVerificationStatus is rendered by looking for
                 // the mocked component output
                 expect(container.textContent).toContain(
@@ -231,7 +224,6 @@ describe('<EmailIntegrationList/>', () => {
                 )
             })
         })
-
         it('should render the page with an alert when there are unverified integrations', async () => {
             window.GORGIAS_STATE = {
                 integrations: {
@@ -242,10 +234,8 @@ describe('<EmailIntegrationList/>', () => {
                     },
                 },
             } as any
-
             isBaseEmailIntegrationMock.mockReturnValue(false)
             canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
-
             const get = fetchEmailDomainsMock.mockResolvedValueOnce([
                 {
                     name: 'gorgias-test.com',
@@ -255,7 +245,6 @@ describe('<EmailIntegrationList/>', () => {
                     }),
                 },
             ])
-
             // Mock integration data
             const integrations = [
                 getEmailIntegration(1),
@@ -266,23 +255,19 @@ describe('<EmailIntegrationList/>', () => {
                     'base-email-integration@gorgias.com',
                 ),
             ]
-
             // Create component with explicit loading state
-            const result = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            loading={fromJS({})}
-                            integrations={fromJS(integrations)}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
+            const result = render(
+                <EmailIntegrationList
+                    {...commonProps}
+                    loading={fromJS({})}
+                    integrations={fromJS(integrations)}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             // Wait for the API call to complete
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
             // Wait for one of the integration addresses to be visible
             // using waitFor to check periodically
             await waitFor(() => {
@@ -294,11 +279,9 @@ describe('<EmailIntegrationList/>', () => {
                 ).toBeInTheDocument()
             })
         })
-
         it('should render the alert when there is just the base email integration', async () => {
             isBaseEmailIntegrationMock.mockReturnValue(true)
             canIntegrationDomainBeVerifiedMock.mockReturnValue(false)
-
             const get = fetchEmailDomainsMock.mockResolvedValueOnce([
                 {
                     name: 'gorgias-test.com',
@@ -308,30 +291,26 @@ describe('<EmailIntegrationList/>', () => {
                     }),
                 },
             ])
-
             // Create component with explicit loading state
-            const { queryByText } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            loading={fromJS({})}
-                            integrations={fromJS([
-                                getEmailIntegration(
-                                    2,
-                                    false,
-                                    EmailProvider.Sendgrid,
-                                    'base-email-integration@gorgias.com',
-                                ),
-                            ])}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
+            const { queryByText } = render(
+                <EmailIntegrationList
+                    {...commonProps}
+                    loading={fromJS({})}
+                    integrations={fromJS([
+                        getEmailIntegration(
+                            2,
+                            false,
+                            EmailProvider.Sendgrid,
+                            'base-email-integration@gorgias.com',
+                        ),
+                    ])}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             // Wait for the API call to complete
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
             // Verify alert is not present
             expect(
                 queryByText(
@@ -339,7 +318,6 @@ describe('<EmailIntegrationList/>', () => {
                 ),
             ).not.toBeInTheDocument()
         })
-
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
             'should render the page with a warning when a GMail integration has sending disabled',
             async (emailProvider: EmailProvider) => {
@@ -347,33 +325,24 @@ describe('<EmailIntegrationList/>', () => {
                 EmailIntegrationListVerificationStatusMock.mockClear()
                 isBaseEmailIntegrationMock.mockReturnValue(false)
                 canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
-
-                renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                integrations={fromJS([
-                                    getGmailIntegration(
-                                        1,
-                                        false,
-                                        false,
-                                        emailProvider,
-                                    ),
-                                ])}
-                            />
-                        </Provider>
-                    </QueryClientProvider>,
+                render(
+                    <EmailIntegrationList
+                        {...commonProps}
+                        integrations={fromJS([
+                            getGmailIntegration(1, false, false, emailProvider),
+                        ])}
+                    />,
+                    {
+                        storeState: store.getState() as object,
+                    },
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
                 // We're testing that the page renders without errors
                 // for Gmail integrations with sending disabled
                 // The implementation details might have changed, so we're not
                 // asserting specific behavior about EmailIntegrationListVerificationStatus
             },
         )
-
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
             'should render the page with a warning when an Outlook integration has sending disabled',
             async (emailProvider: EmailProvider) => {
@@ -381,62 +350,49 @@ describe('<EmailIntegrationList/>', () => {
                 EmailIntegrationListVerificationStatusMock.mockClear()
                 isBaseEmailIntegrationMock.mockReturnValue(false)
                 canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
-
-                renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                integrations={fromJS([
-                                    getOutlookIntegration(
-                                        1,
-                                        false,
-                                        false,
-                                        emailProvider,
-                                    ),
-                                ])}
-                            />
-                        </Provider>
-                    </QueryClientProvider>,
+                render(
+                    <EmailIntegrationList
+                        {...commonProps}
+                        integrations={fromJS([
+                            getOutlookIntegration(
+                                1,
+                                false,
+                                false,
+                                emailProvider,
+                            ),
+                        ])}
+                    />,
+                    {
+                        storeState: store.getState() as object,
+                    },
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
                 // We're testing that the page renders without errors
                 // for Outlook integrations with sending disabled
                 // The implementation details might have changed, so we're not
                 // asserting specific behavior about EmailIntegrationListVerificationStatus
             },
         )
-
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
             'should render the page without warning when a GMail integration is deactivated',
             async (emailProvider: EmailProvider) => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
                 isOutboundDomainVerifiedMock.mockReturnValue(false)
                 isBaseEmailIntegrationMock.mockReturnValue(false)
-
-                renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                integrations={fromJS([
-                                    getGmailIntegration(
-                                        1,
-                                        true,
-                                        true,
-                                        emailProvider,
-                                    ),
-                                ])}
-                            />
-                        </Provider>
-                    </QueryClientProvider>,
+                render(
+                    <EmailIntegrationList
+                        {...commonProps}
+                        integrations={fromJS([
+                            getGmailIntegration(1, true, true, emailProvider),
+                        ])}
+                    />,
+                    {
+                        storeState: store.getState() as object,
+                    },
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
                 // Clear mock calls after component has finished initial rendering
                 EmailIntegrationListVerificationStatusMock.mockClear()
-
                 // Allow any pending async operations to complete
                 await waitFor(
                     () => {
@@ -446,7 +402,6 @@ describe('<EmailIntegrationList/>', () => {
                         const calls =
                             EmailIntegrationListVerificationStatusMock.mock
                                 .calls
-
                         // If the component was called, verify no warnings
                         if (calls.length > 0) {
                             const hasWarningCall = calls.some(
@@ -464,36 +419,26 @@ describe('<EmailIntegrationList/>', () => {
                 )
             },
         )
-
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
             'should render the page without warning when a Outlook integration is deactivated',
             async (emailProvider: EmailProvider) => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
                 isOutboundDomainVerifiedMock.mockReturnValue(false)
                 isBaseEmailIntegrationMock.mockReturnValue(false)
-
-                renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                integrations={fromJS([
-                                    getOutlookIntegration(
-                                        1,
-                                        true,
-                                        true,
-                                        emailProvider,
-                                    ),
-                                ])}
-                            />
-                        </Provider>
-                    </QueryClientProvider>,
+                render(
+                    <EmailIntegrationList
+                        {...commonProps}
+                        integrations={fromJS([
+                            getOutlookIntegration(1, true, true, emailProvider),
+                        ])}
+                    />,
+                    {
+                        storeState: store.getState() as object,
+                    },
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
                 // Clear mock calls after component has finished initial rendering
                 EmailIntegrationListVerificationStatusMock.mockClear()
-
                 // Allow any pending async operations to complete
                 await waitFor(
                     () => {
@@ -503,7 +448,6 @@ describe('<EmailIntegrationList/>', () => {
                         const calls =
                             EmailIntegrationListVerificationStatusMock.mock
                                 .calls
-
                         // If the component was called, verify no warnings
                         if (calls.length > 0) {
                             const hasWarningCall = calls.some(
@@ -521,7 +465,6 @@ describe('<EmailIntegrationList/>', () => {
                 )
             },
         )
-
         describe('redirect URLs', () => {
             it.each([
                 {
@@ -648,23 +591,18 @@ describe('<EmailIntegrationList/>', () => {
                     useEmailOnboardingCompleteCheckMock.mockReturnValue({
                         isOnboardingComplete: onboardingComplete,
                     } as any)
-
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
                     isOutboundDomainVerifiedMock.mockReturnValue(false)
-
-                    const component = renderWithRouter(
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={store}>
-                                <EmailIntegrationList
-                                    {...commonProps}
-                                    integrations={fromJS([integration])}
-                                />
-                            </Provider>
-                        </QueryClientProvider>,
+                    const component = render(
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([integration])}
+                        />,
+                        {
+                            storeState: store.getState() as object,
+                        },
                     )
-
                     await component.findByText(integration.meta.address)
-
                     // Click on the arrow icon instead of the email address
                     const iconElement1 =
                         component.container.querySelector('.icon-go-forward')
@@ -672,15 +610,14 @@ describe('<EmailIntegrationList/>', () => {
                     if (iconElement1) {
                         fireEvent.click(iconElement1)
                     }
-
-                    expect(history.push).toHaveBeenCalledWith(expected)
-
+                    expect(
+                        screen.getByLabelText('Current path'),
+                    ).toHaveTextContent(expected)
                     expect(
                         useEmailOnboardingCompleteCheckMock,
                     ).toHaveBeenCalledWith(integration)
                 },
             )
-
             it.each([
                 getGmailIntegration(1, true, true),
                 getOutlookIntegration(1, true, true),
@@ -689,19 +626,16 @@ describe('<EmailIntegrationList/>', () => {
                 async (integration) => {
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
                     isOutboundDomainVerifiedMock.mockReturnValue(false)
-
-                    const component = renderWithRouter(
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={store}>
-                                <EmailIntegrationList
-                                    {...commonProps}
-                                    integrations={fromJS([integration])}
-                                />
-                            </Provider>
-                        </QueryClientProvider>,
+                    const component = render(
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([integration])}
+                        />,
+                        {
+                            storeState: store.getState() as object,
+                        },
                     )
                     await component.findByText(integration.meta.address)
-
                     // Click on the arrow icon instead of the email address
                     const iconElement2 =
                         component.container.querySelector('.icon-go-forward')
@@ -709,13 +643,11 @@ describe('<EmailIntegrationList/>', () => {
                     if (iconElement2) {
                         fireEvent.click(iconElement2)
                     }
-
-                    expect(history.push).toHaveBeenCalledWith(
-                        `/app/settings/channels/email/${1}`,
-                    )
+                    expect(
+                        screen.getByLabelText('Current path'),
+                    ).toHaveTextContent(`/app/settings/channels/email/${1}`)
                 },
             )
-
             it.each([
                 {
                     description:
@@ -811,19 +743,16 @@ describe('<EmailIntegrationList/>', () => {
                     canIntegrationDomainBeVerifiedMock.mockReturnValue(
                         canDomainBeVerified,
                     )
-
-                    const component = renderWithRouter(
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={store}>
-                                <EmailIntegrationList
-                                    {...commonProps}
-                                    integrations={fromJS([integration])}
-                                />
-                            </Provider>
-                        </QueryClientProvider>,
+                    const component = render(
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([integration])}
+                        />,
+                        {
+                            storeState: store.getState() as object,
+                        },
                     )
                     await component.findByText(integration.meta.address)
-
                     // Click on the arrow icon instead of the email address
                     const iconElement3 =
                         component.container.querySelector('.icon-go-forward')
@@ -831,126 +760,91 @@ describe('<EmailIntegrationList/>', () => {
                     if (iconElement3) {
                         fireEvent.click(iconElement3)
                     }
-
-                    expect(history.push).toHaveBeenCalledWith(expected)
+                    expect(
+                        screen.getByLabelText('Current path'),
+                    ).toHaveTextContent(expected)
                 },
             )
         })
-
         it('should not display verification status for base email integrations', () => {
             fetchEmailDomainsMock.mockResolvedValueOnce([])
             isBaseEmailIntegrationMock.mockReturnValue(true)
-
             const integration = getEmailIntegration(
                 1,
                 false,
                 EmailProvider.Sendgrid,
             )
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            integrations={fromJS([integration])}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
+            render(
+                <EmailIntegrationList
+                    {...commonProps}
+                    integrations={fromJS([integration])}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             expect(
                 screen.queryByText('EmailIntegrationListVerificationStatus'),
             ).not.toBeInTheDocument()
         })
-
         it('should navigate to new email integration page when Add New Email button is clicked', async () => {
             fetchEmailDomainsMock.mockResolvedValueOnce([])
-
-            const historyPushMock = jest.fn()
-            jest.spyOn(history, 'push').mockImplementation(historyPushMock)
-
-            const { findByText } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            loading={fromJS({})}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
+            const { findByText } = render(
+                <EmailIntegrationList {...commonProps} loading={fromJS({})} />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             await waitFor(() =>
                 expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
             )
-
             const addButton = await findByText('Add New Email')
             fireEvent.click(addButton)
-
-            expect(historyPushMock).toHaveBeenCalledWith(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 '/app/settings/channels/email/new',
             )
         })
-
         describe('Add New Email button navigation', () => {
             it('should navigate to standard new email page for non-enterprise customers', async () => {
                 fetchEmailDomainsMock.mockResolvedValueOnce([])
-
-                const historyPushMock = jest.fn()
-                jest.spyOn(history, 'push').mockImplementation(historyPushMock)
-
-                const { findByText } = renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                loading={fromJS({})}
-                            />
-                        </Provider>
-                    </QueryClientProvider>,
+                const { findByText } = render(
+                    <EmailIntegrationList
+                        {...commonProps}
+                        loading={fromJS({})}
+                    />,
+                    {
+                        storeState: store.getState() as object,
+                    },
                 )
-
                 await waitFor(() =>
                     expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
                 )
-
                 const addButton = await findByText('Add New Email')
                 fireEvent.click(addButton)
-
-                expect(historyPushMock).toHaveBeenCalledWith(
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
                     '/app/settings/channels/email/new',
                 )
             })
-
             it('should navigate to standard new email page for enterprise customers when force email forwarding flag is disabled', async () => {
                 fetchEmailDomainsMock.mockResolvedValueOnce([])
-
-                const historyPushMock = jest.fn()
-                jest.spyOn(history, 'push').mockImplementation(historyPushMock)
-
-                const { findByText } = renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                loading={fromJS({})}
-                            />
-                        </Provider>
-                    </QueryClientProvider>,
+                const { findByText } = render(
+                    <EmailIntegrationList
+                        {...commonProps}
+                        loading={fromJS({})}
+                    />,
+                    {
+                        storeState: store.getState() as object,
+                    },
                 )
-
                 await waitFor(() =>
                     expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
                 )
-
                 const addButton = await findByText('Add New Email')
                 fireEvent.click(addButton)
-
-                expect(historyPushMock).toHaveBeenCalledWith(
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
                     '/app/settings/channels/email/new',
                 )
             })
-
             it('should navigate to onboarding page for enterprise customers when force email forwarding flag is enabled', async () => {
                 fetchEmailDomainsMock.mockResolvedValueOnce([])
                 useAppSelectorMock.mockImplementation((selector: any) => {
@@ -985,36 +879,26 @@ describe('<EmailIntegrationList/>', () => {
                         return defaultValue
                     },
                 )
-
-                const historyPushMock = jest.fn()
-                jest.spyOn(history, 'push').mockImplementation(historyPushMock)
-
-                const { findByText } = renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                loading={fromJS({})}
-                            />
-                        </Provider>
-                    </QueryClientProvider>,
+                const { findByText } = render(
+                    <EmailIntegrationList
+                        {...commonProps}
+                        loading={fromJS({})}
+                    />,
+                    {
+                        storeState: store.getState() as object,
+                    },
                 )
-
                 await waitFor(() =>
                     expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
                 )
-
                 const addButton = await findByText('Add New Email')
                 fireEvent.click(addButton)
-
-                expect(historyPushMock).toHaveBeenCalledWith(
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
                     '/app/settings/channels/email/new',
                 )
             })
-
             it('should navigate to standard new email page for non-enterprise customers even when force email forwarding flag is enabled', async () => {
                 fetchEmailDomainsMock.mockResolvedValueOnce([])
-
                 useFlagMock.mockImplementation(
                     (flagKey: string, defaultValue: any) => {
                         if (flagKey === FeatureFlagKey.ForceEmailOnboarding) {
@@ -1023,29 +907,21 @@ describe('<EmailIntegrationList/>', () => {
                         return defaultValue
                     },
                 )
-
-                const historyPushMock = jest.fn()
-                jest.spyOn(history, 'push').mockImplementation(historyPushMock)
-
-                const { findByText } = renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                loading={fromJS({})}
-                            />
-                        </Provider>
-                    </QueryClientProvider>,
+                const { findByText } = render(
+                    <EmailIntegrationList
+                        {...commonProps}
+                        loading={fromJS({})}
+                    />,
+                    {
+                        storeState: store.getState() as object,
+                    },
                 )
-
                 await waitFor(() =>
                     expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
                 )
-
                 const addButton = await findByText('Add New Email')
                 fireEvent.click(addButton)
-
-                expect(historyPushMock).toHaveBeenCalledWith(
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
                     '/app/settings/channels/email/new',
                 )
             })

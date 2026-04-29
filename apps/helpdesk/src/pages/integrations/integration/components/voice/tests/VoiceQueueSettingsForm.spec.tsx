@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { FormField } from '@repo/forms'
-import { assumeMock, getLastMockCall, renderHook } from '@repo/testing'
+import { assumeMock, getLastMockCall, render, renderHook } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
@@ -20,7 +20,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import InputField from 'pages/common/forms/input/InputField'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderWithRouter } from 'utils/testing'
 
 import {
     QUEUE_CAPACITY_VALIDATION_ERROR,
@@ -129,7 +128,7 @@ const defaultValues: CreateVoiceQueue = {
 
 describe('VoiceQueueSettingsForm', () => {
     const renderComponent = (initialValues?: UpdateVoiceQueue) =>
-        renderWithRouter(wrapper({ children: <div />, initialValues }))
+        render(wrapper({ children: <div />, initialValues }))
 
     beforeEach(() => {
         mockValidateCreateVoiceQueue.mockReturnValue({})

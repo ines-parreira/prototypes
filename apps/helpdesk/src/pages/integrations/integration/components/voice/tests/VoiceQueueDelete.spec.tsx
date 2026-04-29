@@ -1,12 +1,11 @@
-import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
+import { useLocation } from 'react-router-dom'
 
 import { deleteVoiceQueue } from '@gorgias/helpdesk-client'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueDelete from '../VoiceQueueDelete'
@@ -29,17 +28,19 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: () => mockNotify,
 }))
 
-jest.mock('@repo/routing', () => ({
-    ...jest.requireActual('@repo/routing'),
-    history: {
-        push: jest.fn(),
-    },
-}))
+const CurrentPath = () => {
+    const location = useLocation()
+
+    return <output aria-label="Current path">{location.pathname}</output>
+}
 
 describe('VoiceQueueDelete', () => {
     const renderComponent = () => {
-        return renderWithQueryClientProvider(
-            <VoiceQueueDelete queue={voiceQueue} />,
+        return render(
+            <>
+                <VoiceQueueDelete queue={voiceQueue} />
+                <CurrentPath />
+            </>,
         )
     }
 
@@ -141,7 +142,7 @@ describe('VoiceQueueDelete', () => {
             )
         })
 
-        expect(history.push).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             `${PHONE_INTEGRATION_BASE_URL}/queues`,
         )
     })

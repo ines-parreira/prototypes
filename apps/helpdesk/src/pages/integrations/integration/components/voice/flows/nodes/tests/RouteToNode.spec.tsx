@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
@@ -18,7 +19,6 @@ import type {
 } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
 import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
@@ -59,7 +59,7 @@ const renderComponent = (
         data: mockStep,
     } as ComponentProps<typeof RouteToNode>
 
-    return renderWithStoreAndQueryClientAndRouter(
+    return render(
         <FlowProvider>
             <VoiceFlowProvider selectedNode={mockStep.id}>
                 <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
@@ -73,11 +73,7 @@ const renderComponent = (
                 </Form>
             </VoiceFlowProvider>
         </FlowProvider>,
-        {},
-        {
-            route: '/123',
-            path: '/:integrationId',
-        },
+        { storeState: {}, path: '/:integrationId', initialEntries: ['/123'] },
     )
 }
 

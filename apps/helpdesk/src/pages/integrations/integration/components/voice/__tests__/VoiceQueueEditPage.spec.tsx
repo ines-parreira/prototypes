@@ -1,11 +1,10 @@
-import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { useLocation } from 'react-router-dom'
 
 import { getVoiceQueue, updateVoiceQueue } from '@gorgias/helpdesk-client'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueEditPage from '../VoiceQueueEditPage'
@@ -17,13 +16,6 @@ jest.mock('@gorgias/helpdesk-client', () => ({
 
 const getVoiceQueueMock = assumeMock(getVoiceQueue)
 const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
-
-jest.mock('@repo/routing', () => ({
-    ...jest.requireActual('@repo/routing'),
-    history: {
-        push: jest.fn(),
-    },
-}))
 
 const mockNotify = {
     success: jest.fn(),
@@ -53,18 +45,27 @@ jest.mock('../VoiceQueueSettingsForm', () => ({ children, onSubmit }: any) => (
     </form>
 ))
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useParams: jest.fn().mockReturnValue({ id: '123' }),
-}))
-
 const mockQueue = voiceQueue
+
+const CurrentPath = () => {
+    const location = useLocation()
+
+    return <output aria-label="Current path">{location.pathname}</output>
+}
 
 describe('VoiceQueueEditPage', () => {
     const renderComponent = () =>
-        renderWithQueryClientAndRouter(
-            <VoiceQueueEditPage />,
-            `${PHONE_INTEGRATION_BASE_URL}/queues/${mockQueue.id}`,
+        render(
+            <>
+                <VoiceQueueEditPage />
+                <CurrentPath />
+            </>,
+            {
+                initialEntries: [
+                    `${PHONE_INTEGRATION_BASE_URL}/queues/${mockQueue.id}`,
+                ],
+                path: `${PHONE_INTEGRATION_BASE_URL}/queues/:id?`,
+            },
         )
 
     beforeEach(() => {
@@ -99,7 +100,7 @@ describe('VoiceQueueEditPage', () => {
             )
         })
 
-        expect(history.push).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             `${PHONE_INTEGRATION_BASE_URL}/queues`,
         )
     })
@@ -133,7 +134,7 @@ describe('VoiceQueueEditPage', () => {
             expect(mockNotify.error).toHaveBeenCalledWith(
                 'Something went wrong while fetching the queue. Please try again.',
             )
-            expect(history.push).toHaveBeenCalledWith(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 `${PHONE_INTEGRATION_BASE_URL}/queues`,
             )
         })

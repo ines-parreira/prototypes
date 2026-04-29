@@ -1,11 +1,10 @@
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { integrationBase } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
-import { renderWithRouter } from 'utils/testing'
 
 import List from '../List'
 
@@ -25,49 +24,33 @@ const integrationsState = {
         loading: {},
     },
 }
-
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ integrations: fromJS(integrationsState) })
-
 jest.mock('pages/common/components/Loader/Loader', () => () => (
     <div>Loader</div>
 ))
-
 describe('List', () => {
     it('should render a loader', () => {
-        const { queryByText } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({
-                        ...integrationsState,
-                        state: { loading: { integrations: true } },
-                    }),
-                })}
-            >
-                <List />
-            </Provider>,
-        )
-
+        const { queryByText } = render(<List />, {
+            storeState: mockStore({
+                integrations: fromJS({
+                    ...integrationsState,
+                    state: { loading: { integrations: true } },
+                }),
+            }).getState() as object,
+        })
         expect(queryByText('Loader'))
     })
-
     it('should render the list of HTTP integrations', () => {
-        const { queryAllByText } = renderWithRouter(
-            <Provider store={store}>
-                <List />
-            </Provider>,
-        )
-
+        const { queryAllByText } = render(<List />, {
+            storeState: store.getState() as object,
+        })
         expect(queryAllByText(integrationBase.name)).toHaveLength(2)
     })
-
     it('should render a button to add a new integration', () => {
-        const { queryByText } = renderWithRouter(
-            <Provider store={store}>
-                <List />
-            </Provider>,
-        )
-
+        const { queryByText } = render(<List />, {
+            storeState: store.getState() as object,
+        })
         expect(queryByText('Add HTTP integration'))
     })
 })

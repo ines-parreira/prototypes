@@ -1,8 +1,7 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { mockPhoneIntegration } from '@gorgias/helpdesk-mocks'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import { VoiceIntegrationSelectCaption } from '../VoiceIntegrationSelectCaption'
@@ -13,9 +12,7 @@ const mockIntegration = mockPhoneIntegration({
 })
 
 const renderComponent = (props = {}) => {
-    return renderWithStoreAndQueryClientAndRouter(
-        <VoiceIntegrationSelectCaption {...props} />,
-    )
+    return render(<VoiceIntegrationSelectCaption {...props} />)
 }
 
 describe('<VoiceIntegrationSelectCaption />', () => {

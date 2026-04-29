@@ -1,9 +1,6 @@
 import React from 'react'
 
-import { history } from '@repo/routing'
-import { userEvent } from '@repo/testing'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
+import { render, userEvent } from '@repo/testing'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,7 +10,6 @@ import {
     IvrMenuActionType,
     VoiceMessageType,
 } from 'models/integration/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import VoiceIntegrationIvr from '../VoiceIntegrationIvr'
 
@@ -63,13 +59,9 @@ const ivrIntegration = {
 
 describe('<VoiceIntegrationIvr />', () => {
     const renderComponent = () => {
-        return renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockStore()}>
-                    <VoiceIntegrationIvr integration={ivrIntegration} />
-                </Provider>
-            </Router>,
-        )
+        return render(<VoiceIntegrationIvr integration={ivrIntegration} />, {
+            storeState: mockStore().getState() as object,
+        })
     }
 
     beforeEach(() => {

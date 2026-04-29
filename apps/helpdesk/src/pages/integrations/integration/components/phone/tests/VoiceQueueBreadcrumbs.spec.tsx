@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import { getVoiceQueue } from '@gorgias/helpdesk-client'
@@ -6,8 +6,6 @@ import {
     useGetVoiceQueue,
     useUpdateVoiceQueue,
 } from '@gorgias/helpdesk-queries'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import VoiceQueueBreadcrumbs from '../VoiceQueueBreadcrumbs'
 
@@ -45,9 +43,7 @@ describe('<VoiceQueueBreadcrumbs />', () => {
             isLoading: false,
             isError: false,
         })
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceQueueBreadcrumbs queueId="123" />,
-        )
+        render(<VoiceQueueBreadcrumbs queueId="123" />)
         expect(screen.getByText('Voice')).toBeInTheDocument()
     })
 
@@ -58,9 +54,7 @@ describe('<VoiceQueueBreadcrumbs />', () => {
             isLoading: false,
             isError: false,
         })
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceQueueBreadcrumbs queueId="new" />,
-        )
+        render(<VoiceQueueBreadcrumbs queueId="new" />)
         expect(screen.getByText('Add call queue')).toBeInTheDocument()
         expect(screen.queryByText('Edit queue')).not.toBeInTheDocument()
         expect(screen.queryByRole('switch')).not.toBeInTheDocument()
@@ -79,9 +73,7 @@ describe('<VoiceQueueBreadcrumbs />', () => {
             isError: false,
         })
 
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceQueueBreadcrumbs queueId="123" />,
-        )
+        render(<VoiceQueueBreadcrumbs queueId="123" />)
         await waitFor(() => {
             expect(screen.getByText('Test Queue')).toBeInTheDocument()
             expect(screen.getByRole('switch')).toBeChecked()
@@ -96,9 +88,7 @@ describe('<VoiceQueueBreadcrumbs />', () => {
             isError: true,
         })
 
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceQueueBreadcrumbs queueId="123" />,
-        )
+        render(<VoiceQueueBreadcrumbs queueId="123" />)
         expect(screen.getByText('Edit queue')).toBeInTheDocument()
         expect(screen.queryByRole('switch')).not.toBeInTheDocument()
     })
@@ -110,9 +100,7 @@ describe('<VoiceQueueBreadcrumbs />', () => {
             isLoading: false,
             isError: false,
         })
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceQueueBreadcrumbs queueId="abc" />,
-        )
+        render(<VoiceQueueBreadcrumbs queueId="abc" />)
         expect(getVoiceQueueMock).not.toHaveBeenCalled()
         expect(screen.queryByRole('switch')).not.toBeInTheDocument()
     })
@@ -124,9 +112,7 @@ describe('<VoiceQueueBreadcrumbs />', () => {
             isLoading: false,
             isError: false,
         })
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceQueueBreadcrumbs queueId="new" />,
-        )
+        render(<VoiceQueueBreadcrumbs queueId="new" />)
         expect(getVoiceQueueMock).not.toHaveBeenCalled()
         expect(screen.queryByRole('switch')).not.toBeInTheDocument()
     })

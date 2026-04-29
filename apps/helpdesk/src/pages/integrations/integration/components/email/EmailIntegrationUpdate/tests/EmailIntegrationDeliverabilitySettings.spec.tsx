@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { capitalize } from 'lodash'
 
@@ -9,7 +10,6 @@ import type {
 } from 'models/integration/types'
 import { OutboundVerificationStatusValue } from 'models/integration/types'
 import { getOutboundEmailProviderSettingKey } from 'pages/integrations/integration/components/email/helpers'
-import { renderWithRouter } from 'utils/testing'
 
 import EmailIntegrationDeliverabilitySettings from '../EmailIntegrationDeliverabilitySettings'
 
@@ -23,7 +23,7 @@ type TestProps = {
 }
 
 const renderComponent = (props: TestProps) => {
-    return renderWithRouter(
+    return render(
         <EmailIntegrationDeliverabilitySettings
             integration={getIntegration(props)}
             onChange={onChange}

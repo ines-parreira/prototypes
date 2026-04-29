@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -11,7 +12,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { Flow, FlowProvider } from 'core/ui/flows'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowNodeType } from '../../constants'
 import type { VoiceFlowNode } from '../../types'
@@ -116,7 +116,7 @@ const renderComponent = (
     flowDefaultProps: ComponentProps<typeof Flow> = flowProps,
     formDefaultValues = defaultValues,
 ) => {
-    return renderWithStoreAndQueryClientProvider(
+    return render(
         <FlowProvider>
             <VoiceFlowProvider selectedNode={ivrMenuStep.id}>
                 <Form
@@ -131,7 +131,7 @@ const renderComponent = (
                 </Form>
             </VoiceFlowProvider>
         </FlowProvider>,
-        {},
+        { storeState: {} },
     )
 }
 

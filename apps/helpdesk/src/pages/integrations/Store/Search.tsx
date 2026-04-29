@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { useDebouncedCallback } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { history } from '@repo/routing'
 import classnames from 'classnames'
-import debounce from 'lodash/debounce'
+import { useHistory } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
@@ -18,18 +18,13 @@ import css from './Search.less'
 const DEBOUNCE_DURATION = 200 //ms
 const DEBOUNCE_TRACKING_DURATION = 800 //ms
 
-function setSearch(searchValue: string) {
-    if (searchValue === '') {
-        history.replace('?')
-    } else {
-        history.replace(
-            `?${SEARCH_URL_PARAM}=${encodeURIComponent(
-                searchValue.toLocaleLowerCase().trim(),
-            )}`,
-        )
-    }
+function getSearchUrl(searchValue: string) {
+    return searchValue === ''
+        ? '?'
+        : `?${SEARCH_URL_PARAM}=${encodeURIComponent(
+              searchValue.toLocaleLowerCase().trim(),
+          )}`
 }
-const debouncedSetSearch = debounce(setSearch, DEBOUNCE_DURATION)
 
 function trackSearch(searchValue: string, domain: string) {
     logEvent(SegmentEvent.IntegrationSearched, {
@@ -37,13 +32,26 @@ function trackSearch(searchValue: string, domain: string) {
         account_domain: domain,
     })
 }
-const debouncedTrackSearch = debounce(trackSearch, DEBOUNCE_TRACKING_DURATION)
 
 export default function Search() {
+    const history = useHistory()
     const domain = useAppSelector(getCurrentAccountState).get('domain')
     const search = useSearch<{ [SEARCH_URL_PARAM]: string }>()
     const searchParam = search[SEARCH_URL_PARAM]
     const [inputValue, setInputValue] = useState(searchParam || '')
+
+    const replaceSearch = useCallback(
+        (searchValue: string) => history.replace(getSearchUrl(searchValue)),
+        [history],
+    )
+    const debouncedSetSearch = useDebouncedCallback(
+        replaceSearch,
+        DEBOUNCE_DURATION,
+    )
+    const debouncedTrackSearch = useDebouncedCallback(
+        trackSearch,
+        DEBOUNCE_TRACKING_DURATION,
+    )
 
     useEffect(() => {
         if (!searchParam) setInputValue('')
@@ -55,8 +63,13 @@ export default function Search() {
             debouncedSetSearch(newValue)
             debouncedTrackSearch(newValue, domain)
         },
-        [domain],
+        [debouncedSetSearch, debouncedTrackSearch, domain],
     )
+
+    const handleClear = useCallback(() => {
+        setInputValue('')
+        history.replace(getSearchUrl(''))
+    }, [history])
 
     return (
         <TextInput
@@ -75,7 +88,7 @@ export default function Search() {
                             [css.hidden]: !inputValue,
                         },
                     )}
-                    onClick={() => setSearch('')}
+                    onClick={handleClear}
                 />
             }
         />

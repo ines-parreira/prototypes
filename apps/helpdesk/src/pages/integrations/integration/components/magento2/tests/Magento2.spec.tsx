@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -16,7 +16,6 @@ import {
     proMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
 import { IntegrationType } from 'models/integration/types'
-import { renderWithRouter } from 'utils/testing'
 
 import Magento2 from '../Magento2'
 
@@ -31,7 +30,6 @@ const store = mockStore({
         },
     }),
 })
-
 describe('<Magento2/>', () => {
     const minProps: ComponentProps<typeof Magento2> = {
         integration: fromJS({}),
@@ -46,109 +44,79 @@ describe('<Magento2/>', () => {
         loading: fromJS({}),
         redirectUri: '',
     }
-
     describe('Detail', () => {
         it('should render a detail view', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Magento2 {...minProps} />
-                </Provider>,
-            )
-
+            const { container } = render(<Magento2 {...minProps} />, {
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
     })
-
     describe('Integration', () => {
         it('should render', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Magento2 {...minProps} />
-                </Provider>,
-                {
-                    path: '/:integrationType/:integrationId?',
-                    route: `/magento2/1/`,
-                },
-            )
-
+            const { container } = render(<Magento2 {...minProps} />, {
+                path: '/:integrationType/:integrationId?',
+                initialEntries: [`/magento2/1/`],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
     })
-
     describe('New', () => {
         it('should render', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Magento2 {...minProps} />
-                </Provider>,
-                {
-                    path: '/:integrationType/:integrationId?',
-                    route: `/magento2/new/`,
-                },
-            )
-
+            const { container } = render(<Magento2 {...minProps} />, {
+                path: '/:integrationType/:integrationId?',
+                initialEntries: [`/magento2/new/`],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
     })
-
     describe('List', () => {
         it('should render', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Magento2 {...minProps} />
-                </Provider>,
-                {
-                    path: '/:integrationType/:integrationId?',
-                    route: `/magento2/connections/`,
-                },
-            )
+            const { container } = render(<Magento2 {...minProps} />, {
+                path: '/:integrationType/:integrationId?',
+                initialEntries: [`/magento2/connections/`],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
-
         it('should show no integrations', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <Magento2 {...minProps} integrations={fromJS([])} />
-                </Provider>,
-                {
-                    path: '/:integrationType/:integrationId?',
-                    route: `/magento2/connections/`,
-                },
-            )
+            render(<Magento2 {...minProps} integrations={fromJS([])} />, {
+                path: '/:integrationType/:integrationId?',
+                initialEntries: [`/magento2/connections/`],
+                storeState: store.getState() as object,
+            })
             expect(screen.getByText(/You have no integration/))
         })
-
         it('should have a reconnect button', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <Magento2
-                        {...minProps}
-                        integrations={fromJS([
-                            {
-                                id: '1',
-                                type: IntegrationType.Magento2,
-                                name: 'myShop1',
-                                meta: { shop_url: 'mystore.com/admin' },
-                                deactivated_datetime: true,
-                            },
-                        ])}
-                    />
-                </Provider>,
+            render(
+                <Magento2
+                    {...minProps}
+                    integrations={fromJS([
+                        {
+                            id: '1',
+                            type: IntegrationType.Magento2,
+                            name: 'myShop1',
+                            meta: { shop_url: 'mystore.com/admin' },
+                            deactivated_datetime: true,
+                        },
+                    ])}
+                />,
                 {
                     path: '/:integrationType/:integrationId?',
-                    route: `/magento2/connections/`,
+                    initialEntries: [`/magento2/connections/`],
+                    storeState: store.getState() as object,
                 },
             )
             expect(screen.getByRole('button', { name: 'Reconnect' }))
         })
     })
-
     describe('Not in price', () => {
         const productsWithMagentoDisabled = _cloneDeep(products)
         const basicPlanWithMagentoDisabled = basicMonthlyHelpdeskPlan
         basicPlanWithMagentoDisabled.features.magento_integration.enabled = false
         productsWithMagentoDisabled[0].prices[0] = basicPlanWithMagentoDisabled
-
         const noEnabledFeatureStore = mockStore({
             billing: fromJS({
                 ...billingState,
@@ -163,7 +131,6 @@ describe('<Magento2/>', () => {
                 },
             }),
         })
-
         it.each([
             '/magento2/',
             '/magento2/new/',
@@ -172,15 +139,11 @@ describe('<Magento2/>', () => {
         ])(
             'should render the detail page with a disabled connect and disabled notice in any case',
             (integrationType) => {
-                renderWithRouter(
-                    <Provider store={noEnabledFeatureStore}>
-                        <Magento2 {...minProps} integrations={fromJS([])} />
-                    </Provider>,
-                    {
-                        path: '/:integrationType/:integrationId?',
-                        route: `/integrations/${integrationType}/new`,
-                    },
-                )
+                render(<Magento2 {...minProps} integrations={fromJS([])} />, {
+                    path: '/:integrationType/:integrationId?',
+                    initialEntries: [`/integrations/${integrationType}/new`],
+                    storeState: noEnabledFeatureStore.getState() as object,
+                })
                 expect(
                     screen.getByText(
                         'App is not available on your current plan.',

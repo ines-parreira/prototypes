@@ -1,12 +1,12 @@
 import type { ComponentProps } from 'react'
 
+import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
 import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { AccountFeature } from 'state/currentAccount/types'
-import { renderWithRouter } from 'utils/testing'
 
 import {
     ADS_MANAGEMENT,
@@ -86,7 +86,7 @@ describe('FacebookIntegrationSetup', () => {
     ])
 
     it('should render an empty list because there is no integrations to display', () => {
-        const { queryByRole } = renderWithRouter(
+        const { queryByRole } = render(
             <FacebookIntegrationSetupContainer {...minProps} />,
         )
 
@@ -94,7 +94,7 @@ describe('FacebookIntegrationSetup', () => {
     })
 
     it('should render integrations because there is available data and and it is not loading', () => {
-        const { getAllByRole } = renderWithRouter(
+        const { getAllByRole } = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations}
@@ -105,7 +105,7 @@ describe('FacebookIntegrationSetup', () => {
     })
 
     it('should render a loader because integrations are currently being fetched', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations}
@@ -127,7 +127,7 @@ describe('FacebookIntegrationSetup', () => {
                 [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(','),
             )
 
-        const { container, getAllByRole } = renderWithRouter(
+        const { container, getAllByRole } = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={integrations}
@@ -140,7 +140,7 @@ describe('FacebookIntegrationSetup', () => {
     })
 
     it('should render the integration with canModerate disabled because there is no MODERATE_ROLE', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations
@@ -327,7 +327,7 @@ describe('FacebookIntegrationSetup', () => {
                     true,
                 )
 
-            const { getAllByRole, queryAllByRole } = renderWithRouter(
+            const { getAllByRole, queryAllByRole } = render(
                 <FacebookIntegrationSetupContainer
                     {...minProps}
                     integrations={integrations}
@@ -398,7 +398,7 @@ describe('FacebookIntegrationSetup', () => {
                 },
             }
 
-            const { container, getByText } = renderWithRouter(
+            const { container, getByText } = render(
                 <FacebookIntegrationSetupContainer
                     {...minProps}
                     integrations={integrations}

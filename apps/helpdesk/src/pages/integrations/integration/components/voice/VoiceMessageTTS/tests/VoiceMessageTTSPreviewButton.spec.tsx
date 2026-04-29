@@ -1,5 +1,5 @@
 import { Form } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -10,7 +10,6 @@ import type { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-queries'
 import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import TextToSpeechProvider from '../TextToSpeechProvider'
 import VoiceMessageTTSPreviewButton from '../VoiceMessageTTSPreviewButton'
@@ -77,7 +76,7 @@ describe('VoiceMessageTTSPreviewButton', () => {
     }
 
     const renderComponent = (value: VoiceMessageTextToSpeech) => {
-        return renderWithQueryClientProvider(
+        return render(
             <Form defaultValues={{ testing: value }} onValidSubmit={jest.fn()}>
                 <TextToSpeechProvider integrationId={1}>
                     <VoiceMessageTTSPreviewButton fieldName={'testing'} />

@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
@@ -10,7 +11,6 @@ import {
 import type { PlayMessageStep } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import type { VoiceFlowFormValues } from '../../types'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
@@ -31,7 +31,7 @@ describe('PlayMessageNode', () => {
             data: mockStep,
         } as ComponentProps<typeof PlayMessageNode>
 
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <FlowProvider>
                 <VoiceFlowProvider selectedNode={mockStep.id}>
                     <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>

@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -18,7 +19,6 @@ import type {
 } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { ForwardToNode } from '../ForwardToNode'
@@ -85,7 +85,7 @@ const renderComponent = (
         data: mockStep,
     } as ComponentProps<typeof ForwardToNode>
 
-    return renderWithQueryClientProvider(
+    return render(
         <FlowProvider>
             <VoiceFlowProvider selectedNode={mockStep.id}>
                 <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>

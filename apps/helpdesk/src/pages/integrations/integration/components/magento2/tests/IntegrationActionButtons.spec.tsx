@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { IntegrationActionButtons } from 'pages/integrations/integration/components/magento2/IntegrationActionButtons'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import { deleteIntegration } from 'state/integrations/actions'
-import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -28,7 +27,7 @@ describe('IntegrationActionButtons', () => {
     })
 
     it('renders update connection button when isUpdate is true', () => {
-        const { getByRole } = renderWithStore(
+        const { getByRole } = render(
             <IntegrationActionButtons
                 isUpdate={true}
                 isSubmitting={false}
@@ -36,7 +35,7 @@ describe('IntegrationActionButtons', () => {
                 integration={integration}
                 redirectUri=""
             />,
-            {},
+            { storeState: {} },
         )
 
         expect(
@@ -45,7 +44,7 @@ describe('IntegrationActionButtons', () => {
     })
 
     it('renders connect app button when isUpdate is false', () => {
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <IntegrationActionButtons
                 isUpdate={false}
                 isSubmitting={false}
@@ -53,14 +52,14 @@ describe('IntegrationActionButtons', () => {
                 integration={integration}
                 redirectUri=""
             />,
-            {},
+            { storeState: {} },
         )
 
         expect(getByText(/Connect app/i)).toBeInTheDocument()
     })
 
     it('does not render delete button when isUpdate is false', () => {
-        const { queryByRole } = renderWithStore(
+        const { queryByRole } = render(
             <IntegrationActionButtons
                 isUpdate={false}
                 isSubmitting={false}
@@ -68,7 +67,7 @@ describe('IntegrationActionButtons', () => {
                 integration={integration}
                 redirectUri=""
             />,
-            {},
+            { storeState: {} },
         )
 
         expect(
@@ -77,7 +76,7 @@ describe('IntegrationActionButtons', () => {
     })
 
     it('calls deleteIntegration when delete button is clicked', () => {
-        const { getByRole } = renderWithStore(
+        const { getByRole } = render(
             <IntegrationActionButtons
                 isUpdate={true}
                 isSubmitting={false}
@@ -85,7 +84,7 @@ describe('IntegrationActionButtons', () => {
                 integration={integration}
                 redirectUri=""
             />,
-            {},
+            { storeState: {} },
         )
 
         fireEvent.click(getByRole('button', { name: /Delete App/i }))
@@ -96,7 +95,7 @@ describe('IntegrationActionButtons', () => {
     })
 
     it('renders confirmation message when delete button is clicked and message should contain text about "saved filters"', () => {
-        const { getByRole, getByText } = renderWithStore(
+        const { getByRole, getByText } = render(
             <IntegrationActionButtons
                 isUpdate={true}
                 isSubmitting={false}
@@ -104,7 +103,7 @@ describe('IntegrationActionButtons', () => {
                 integration={integration}
                 redirectUri=""
             />,
-            {},
+            { storeState: {} },
         )
 
         fireEvent.click(getByRole('button', { name: /Delete App/i }))
@@ -124,7 +123,7 @@ describe('IntegrationActionButtons', () => {
             },
         })
 
-        const { getAllByRole } = renderWithStore(
+        const { getAllByRole } = render(
             <IntegrationActionButtons
                 isUpdate={true}
                 isSubmitting={false}
@@ -132,7 +131,7 @@ describe('IntegrationActionButtons', () => {
                 integration={deactivatedManualIntegration}
                 redirectUri=""
             />,
-            {},
+            { storeState: {} },
         )
 
         const buttons = getAllByRole('button', { name: /Reconnect/i })
@@ -150,7 +149,7 @@ describe('IntegrationActionButtons', () => {
             },
         })
 
-        const { getByRole, getByText } = renderWithStore(
+        const { getByRole, getByText } = render(
             <IntegrationActionButtons
                 isUpdate={true}
                 isSubmitting={false}
@@ -158,7 +157,7 @@ describe('IntegrationActionButtons', () => {
                 integration={deactivatedIntegration}
                 redirectUri="https://redirect.example.com"
             />,
-            {},
+            { storeState: {} },
         )
 
         fireEvent.click(getByRole('button', { name: /Reconnect/i }))
@@ -182,7 +181,7 @@ describe('IntegrationActionButtons', () => {
 
         const originalLocation = window.location.href
 
-        const { getByRole } = renderWithStore(
+        const { getByRole } = render(
             <IntegrationActionButtons
                 isUpdate={true}
                 isSubmitting={false}
@@ -190,7 +189,7 @@ describe('IntegrationActionButtons', () => {
                 integration={deactivatedIntegration}
                 redirectUri="https://redirect.example.com"
             />,
-            {},
+            { storeState: {} },
         )
 
         fireEvent.click(getByRole('button', { name: /Reconnect/i }))
@@ -204,7 +203,7 @@ describe('IntegrationActionButtons', () => {
     })
 
     it('does not render reconnect button when integration is not deactivated', () => {
-        const { queryByRole } = renderWithStore(
+        const { queryByRole } = render(
             <IntegrationActionButtons
                 isUpdate={true}
                 isSubmitting={false}
@@ -212,7 +211,7 @@ describe('IntegrationActionButtons', () => {
                 integration={integration}
                 redirectUri=""
             />,
-            {},
+            { storeState: {} },
         )
 
         expect(

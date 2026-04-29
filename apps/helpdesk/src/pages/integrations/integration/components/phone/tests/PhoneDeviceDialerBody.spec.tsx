@@ -1,9 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
 
@@ -46,7 +45,7 @@ const defaultProps = {
 }
 
 const renderComponent = (props: ComponentProps<typeof PhoneDeviceDialerBody>) =>
-    renderWithQueryClientProvider(<PhoneDeviceDialerBody {...props} />)
+    render(<PhoneDeviceDialerBody {...props} />)
 
 describe('PhoneDeviceDialerBody', () => {
     it('should render dialpad when customer is selected', () => {

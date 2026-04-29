@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,8 +9,6 @@ import {
     mockGetIntegrationHandler,
     mockPhoneIntegration,
 } from '@gorgias/helpdesk-mocks'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import VoiceIntegrationFlowPage from '../VoiceIntegrationFlowPage'
 
@@ -28,14 +27,11 @@ const server = setupServer()
 
 describe('VoiceIntegrationFlowPage', () => {
     const renderComponent = () => {
-        return renderWithStoreAndQueryClientAndRouter(
-            <VoiceIntegrationFlowPage />,
-            {},
-            {
-                route: '/123',
-                path: '/:integrationId',
-            },
-        )
+        return render(<VoiceIntegrationFlowPage />, {
+            storeState: {},
+            path: '/:integrationId',
+            initialEntries: ['/123'],
+        })
     }
     beforeAll(() => {
         server.listen()

@@ -1,9 +1,8 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
 import { voiceQueue } from 'fixtures/voiceQueue'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueList from '../VoiceQueueList'
@@ -24,7 +23,7 @@ jest.mock('@repo/routing', () => ({
 
 describe('VoiceQueueListPage', () => {
     const renderComponent = () => {
-        return renderWithQueryClientProvider(<VoiceQueueListPage />)
+        return render(<VoiceQueueListPage />)
     }
 
     beforeEach(() => {

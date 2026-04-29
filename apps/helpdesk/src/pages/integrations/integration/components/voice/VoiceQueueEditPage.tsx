@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 
-import { history } from '@repo/routing'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { UpdateVoiceQueue } from '@gorgias/helpdesk-queries'
@@ -25,6 +24,7 @@ import VoiceQueueSettingsForm from './VoiceQueueSettingsForm'
 import css from './VoiceQueueEditPage.less'
 
 export default function VoiceQueueEditPage() {
+    const history = useHistory()
     const { id: idParam } = useParams<{ id: string }>()
     const id = Number(idParam)
     const notify = useNotify()
@@ -66,7 +66,7 @@ export default function VoiceQueueEditPage() {
             )
             history.push(`${PHONE_INTEGRATION_BASE_URL}/queues`)
         }
-    }, [isError, notify])
+    }, [history, isError, notify])
 
     const handleSubmit = async (values: UpdateVoiceQueue) => {
         updateQueue({ pk: id, data: values })

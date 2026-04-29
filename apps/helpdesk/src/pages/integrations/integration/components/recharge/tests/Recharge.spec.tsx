@@ -1,12 +1,10 @@
 import type { ComponentProps } from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import { renderWithRouter } from 'utils/testing'
 
 import Recharge from '../Recharge'
 
@@ -32,7 +30,6 @@ const store = mockStore({
         ],
     }),
 })
-
 describe('<Recharge/>', () => {
     const minProps: ComponentProps<typeof Recharge> = {
         integration: fromJS({}),
@@ -47,18 +44,13 @@ describe('<Recharge/>', () => {
         loading: fromJS({}),
         redirectUri: '',
     }
-
     describe('Detail', () => {
         it('should render a detail view', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Recharge {...minProps} />
-                </Provider>,
-            )
-
+            const { container } = render(<Recharge {...minProps} />, {
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
-
         it.each([
             [[], [], 'at least one Shopify'],
             [
@@ -72,19 +64,17 @@ describe('<Recharge/>', () => {
         ])(
             'should render the appropriate notification banner and disable buttons',
             (storeIntegrations, rechargeIntegrations, bannerText) => {
-                renderWithRouter(
-                    <Provider
-                        store={mockStore({
+                render(
+                    <Recharge
+                        {...minProps}
+                        integrations={fromJS(rechargeIntegrations)}
+                    />,
+                    {
+                        storeState: mockStore({
                             integrations: fromJS({ storeIntegrations }),
-                        })}
-                    >
-                        <Recharge
-                            {...minProps}
-                            integrations={fromJS(rechargeIntegrations)}
-                        />
-                    </Provider>,
+                        }).getState() as object,
+                    },
                 )
-
                 expect(screen.getByText(new RegExp(bannerText)))
                 expect(
                     screen.getByRole('button', { name: /Connect/ }),
@@ -92,80 +82,59 @@ describe('<Recharge/>', () => {
             },
         )
     })
-
     describe('Integration', () => {
         it('should render', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Recharge {...minProps} />
-                </Provider>,
-                {
-                    path: '/:integrationType/:integrationId?',
-                    route: `/recharge/1/`,
-                },
-            )
-
+            const { container } = render(<Recharge {...minProps} />, {
+                path: '/:integrationType/:integrationId?',
+                initialEntries: [`/recharge/1/`],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
         it('should render shopify integrations list', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Recharge {...minProps} />
-                </Provider>,
-                {
-                    path: '/:integrationType/:integrationId?',
-                    route: `/recharge/new/`,
-                },
-            )
-
+            const { container } = render(<Recharge {...minProps} />, {
+                path: '/:integrationType/:integrationId?',
+                initialEntries: [`/recharge/new/`],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
     })
-
     describe('List', () => {
         it('should render', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Recharge {...minProps} />
-                </Provider>,
-                {
-                    path: '/:integrationType/:integrationId?',
-                    route: `/recharge/connections/`,
-                },
-            )
+            const { container } = render(<Recharge {...minProps} />, {
+                path: '/:integrationType/:integrationId?',
+                initialEntries: [`/recharge/connections/`],
+                storeState: store.getState() as object,
+            })
             expect(container.firstChild).toMatchSnapshot()
         })
         it('should show no integrations', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <Recharge {...minProps} integrations={fromJS([])} />
-                </Provider>,
-                {
-                    path: '/:integrationType/:integrationId?',
-                    route: `/recharge/connections/`,
-                },
-            )
+            render(<Recharge {...minProps} integrations={fromJS([])} />, {
+                path: '/:integrationType/:integrationId?',
+                initialEntries: [`/recharge/connections/`],
+                storeState: store.getState() as object,
+            })
             expect(screen.getByText(/You have no integration/))
         })
         it('should have a reconnect button', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <Recharge
-                        {...minProps}
-                        integrations={fromJS([
-                            {
-                                id: '1',
-                                type: 'recharge',
-                                name: 'myShop1',
-                                meta: { store_name: 'myShop1' },
-                                deactivated_datetime: true,
-                            },
-                        ])}
-                    />
-                </Provider>,
+            render(
+                <Recharge
+                    {...minProps}
+                    integrations={fromJS([
+                        {
+                            id: '1',
+                            type: 'recharge',
+                            name: 'myShop1',
+                            meta: { store_name: 'myShop1' },
+                            deactivated_datetime: true,
+                        },
+                    ])}
+                />,
                 {
                     path: '/:integrationType/:integrationId?',
-                    route: `/recharge/connections/`,
+                    initialEntries: [`/recharge/connections/`],
+                    storeState: store.getState() as object,
                 },
             )
             expect(screen.getByRole('button', { name: 'Reconnect' }))

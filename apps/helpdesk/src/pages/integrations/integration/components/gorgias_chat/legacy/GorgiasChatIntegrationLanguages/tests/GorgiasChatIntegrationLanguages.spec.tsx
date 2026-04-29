@@ -1,6 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -9,13 +9,11 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatIntegrationLanguages from '../GorgiasChatIntegrationLanguages'
 
 jest.mock('@repo/feature-flags')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
-
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
     () => ({
@@ -27,7 +25,6 @@ jest.mock(
         })),
     }),
 )
-
 jest.mock(
     '../components/GorgiasChatIntegrationLanguagesTable/useGorgiasChatIntegrationLanguagesTable',
     () => ({
@@ -40,27 +37,21 @@ jest.mock(
         })),
     }),
 )
-
 jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => (
     <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 ))
-
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
-
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 const mockUseFlag = useFlag as jest.Mock
-
 const defaultState: Partial<RootState> = {
     integrations: fromJS(integrationsState),
     billing: fromJS(billingState),
     currentAccount: fromJS(account),
     entities: {} as any,
 }
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
 describe('GorgiasChatIntegrationLanguages', () => {
     beforeEach(() => {
         mockUseAiAgentAccess.mockReturnValue({
@@ -69,15 +60,15 @@ describe('GorgiasChatIntegrationLanguages', () => {
         })
         mockUseFlag.mockReturnValue(false)
     })
-
     it('should render', () => {
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <GorgiasChatIntegrationLanguages
-                    loading={fromJS({})}
-                    integration={fromJS({})}
-                />
-            </Provider>,
+        render(
+            <GorgiasChatIntegrationLanguages
+                loading={fromJS({})}
+                integration={fromJS({})}
+            />,
+            {
+                storeState: mockStore(defaultState).getState() as object,
+            },
         )
     })
 })

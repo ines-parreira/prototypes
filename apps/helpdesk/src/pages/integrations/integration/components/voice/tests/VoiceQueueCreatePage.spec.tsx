@@ -1,11 +1,9 @@
-import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
+import { useLocation } from 'react-router-dom'
 
 import { createVoiceQueues } from '@gorgias/helpdesk-client'
-
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueCreatePage from '../VoiceQueueCreatePage'
@@ -19,13 +17,6 @@ const mockNotify = {
 }
 jest.mock('hooks/useNotify', () => ({
     useNotify: () => mockNotify,
-}))
-
-jest.mock('@repo/routing', () => ({
-    ...jest.requireActual('@repo/routing'),
-    history: {
-        push: jest.fn(),
-    },
 }))
 
 jest.mock('../VoiceQueueEditOrCreateForm', () => () => (
@@ -48,9 +39,20 @@ jest.mock('../VoiceQueueSettingsForm', () => ({ children, onSubmit }: any) => (
     </form>
 ))
 
+const CurrentPath = () => {
+    const location = useLocation()
+
+    return <output aria-label="Current path">{location.pathname}</output>
+}
+
 describe('VoiceQueueCreatePage', () => {
     const renderComponent = () =>
-        renderWithQueryClientAndRouter(<VoiceQueueCreatePage />)
+        render(
+            <>
+                <VoiceQueueCreatePage />
+                <CurrentPath />
+            </>,
+        )
 
     it('renders the create queue form with all necessary components', () => {
         renderComponent()
@@ -78,7 +80,7 @@ describe('VoiceQueueCreatePage', () => {
             )
         })
 
-        expect(history.push).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             `${PHONE_INTEGRATION_BASE_URL}/queues`,
         )
     })

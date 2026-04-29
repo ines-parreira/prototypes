@@ -1,8 +1,8 @@
 import client from '@repo/api-resources'
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -16,7 +16,6 @@ import type { Application } from 'services/applications'
 import { getApplicationById } from 'services/applications'
 import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
@@ -25,24 +24,22 @@ const store = mockStore({
 })
 const appId = '1234'
 const mockServer = new MockAdapter(client)
-
 jest.mock('services/applications', () => ({
     getApplicationById: jest.fn(),
 }))
 jest.mock('state/notifications/actions', () => {
-    const actions: { notify: unknown } = jest.requireActual(
-        'state/notifications/actions',
-    )
+    const actions: {
+        notify: unknown
+    } = jest.requireActual('state/notifications/actions')
     return {
         ...actions,
         notify: jest.fn(() => () => undefined),
     }
 })
-
 jest.mock('models/integration/resources', () => {
-    const resources: { disconnectApp: unknown } = jest.requireActual(
-        'models/integration/resources',
-    )
+    const resources: {
+        disconnectApp: unknown
+    } = jest.requireActual('models/integration/resources')
     return {
         ...resources,
         disconnectApp: jest.fn((appId: 'success' | 'failure') =>
@@ -50,75 +47,51 @@ jest.mock('models/integration/resources', () => {
         ),
     }
 })
-
 describe(`App`, () => {
     beforeEach(() => {
         mockServer.reset()
     })
-
     it('should render', async () => {
         mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
-
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}`,
-            },
-        )
-
+        const { container } = render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}`],
+            storeState: store.getState() as object,
+        })
         expect(container.firstChild).toMatchSnapshot()
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(container.firstChild).toMatchSnapshot()
     })
-
     it('should render in preview mode', async () => {
         mockServer.onGet(`/api/apps/${appId}`).reply((config) => {
             expect(config.params).toEqual({ preview: true })
             return [200, dummyAppData]
         })
-
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}?preview=1`,
-            },
-        )
+        render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}?preview=1`],
+            storeState: store.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
-
         expect(mockServer.history.get.length).toEqual(2)
     })
-
     it('should render the advanced tab', async () => {
         mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
         mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
-
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId/:extra?',
-                route: `/integrations/app/${appId}/${Tab.Advanced}`,
-            },
-        )
-
+        render(<App />, {
+            path: '/integrations/app/:appId/:extra?',
+            initialEntries: [`/integrations/app/${appId}/${Tab.Advanced}`],
+            storeState: store.getState() as object,
+        })
         await waitFor(() => {
             expect(screen.getByText('Granted permissions')).toBeInTheDocument()
         })
     })
-
     it('should render the connections tab when there are connected integrations', async () => {
         mockServer
             .onGet(`/api/apps/${appId}`)
             .reply(200, { ...dummyAppData, is_installed: true })
         mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
-
         const store = mockStore({
             integrations: fromJS({
                 currentAccount: fromJS({ domain: '20-1 rpz' }),
@@ -133,29 +106,21 @@ describe(`App`, () => {
                 ],
             }),
         } as unknown as RootState)
-
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId/:extra?',
-                route: `/integrations/app/${appId}/${Tab.Connections}`,
-            },
-        )
-
+        render(<App />, {
+            path: '/integrations/app/:appId/:extra?',
+            initialEntries: [`/integrations/app/${appId}/${Tab.Connections}`],
+            storeState: store.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(screen.getByText('App Details')).toBeDefined()
         expect(screen.getByText('Advanced')).toBeDefined()
         expect(screen.getByText('Connections')).toBeDefined()
     })
-
     it('should render the connections tab with the button add connection for apps that support multiple connections', async () => {
         mockServer
             .onGet(`/api/apps/${appId}`)
             .reply(200, { ...dummyAppData, is_installed: true })
         mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
-
         const mockedGetApplicationById =
             getApplicationById as jest.Mock<Application>
         const application = mockApplications[0]
@@ -176,61 +141,42 @@ describe(`App`, () => {
                 ],
             }),
         } as unknown as RootState)
-
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId/:extra?',
-                route: `/integrations/app/${appId}/${Tab.Connections}`,
-            },
-        )
-
+        render(<App />, {
+            path: '/integrations/app/:appId/:extra?',
+            initialEntries: [`/integrations/app/${appId}/${Tab.Connections}`],
+            storeState: store.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(screen.getByText('Add Account')).toBeDefined()
     })
-
     it('should not render the connections tab with no integrations', async () => {
         mockServer
             .onGet(`/api/apps/${appId}`)
             .reply(200, { ...dummyAppData, is_installed: true })
         mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
-
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId/:extra?',
-                route: `/integrations/app/${appId}/${Tab.Advanced}`,
-            },
-        )
-
+        render(<App />, {
+            path: '/integrations/app/:appId/:extra?',
+            initialEntries: [`/integrations/app/${appId}/${Tab.Advanced}`],
+            storeState: store.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(screen.queryByText('App Details')).not.toBeNull()
         expect(screen.queryByText('Advanced')).not.toBeNull()
         expect(screen.queryByText('Connections')).toBeNull()
     })
-
     it('should have a functionnal disconnect flow', async () => {
         mockServer
             .onGet(`/api/apps/${appId}`)
             .reply(200, { ...dummyAppData, id: 'success', is_installed: true })
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}`,
-            },
-        )
+        render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}`],
+            storeState: store.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
         fireEvent.click(screen.getByRole('button', { name: 'Disconnect App' }))
         await waitFor(() => screen.getByRole('button', { name: 'Disconnect' }))
         fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
-
         await waitFor(() => {
             expect(
                 screen.queryByRole('button', { name: 'Connect App' }),
@@ -238,25 +184,19 @@ describe(`App`, () => {
         })
         expect((notify as jest.Mock).mock.calls).toMatchSnapshot()
     })
-
     it('should have a failed disconnection flow', async () => {
         mockServer
             .onGet(`/api/apps/${appId}`)
             .reply(200, { ...dummyAppData, id: 'failure', is_installed: true })
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}`,
-            },
-        )
+        render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}`],
+            storeState: store.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
         fireEvent.click(screen.getByRole('button', { name: 'Disconnect App' }))
         await waitFor(() => screen.getByRole('button', { name: 'Disconnect' }))
         fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
-
         await waitFor(() => {
             expect(
                 screen.queryByRole('button', { name: 'Connect App' }),
@@ -264,39 +204,29 @@ describe(`App`, () => {
         })
         expect((notify as jest.Mock).mock.calls).toMatchSnapshot()
     })
-
     it('should display a warning with the right text', async () => {
         mockServer
             .onGet(`/api/apps/${appId}`)
             .reply(200, { ...dummyAppData, is_unapproved: true })
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}`,
-            },
-        )
+        render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}`],
+            storeState: store.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(screen.getByText(/has not been approved/))
     })
-
     it('should display specific tags', async () => {
         mockServer.onGet(`/api/apps/${appId}`).reply(200, {
             ...dummyAppData,
             has_free_trial: true,
             free_trial_period: TrialPeriod.FOURTEEN,
         })
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}`,
-            },
-        )
+        render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}`],
+            storeState: store.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(screen.getByText('14 DAYS FREE TRIAL'))
     })
@@ -306,15 +236,11 @@ describe(`App`, () => {
             is_unapproved: true,
             name: null,
         })
-        renderWithRouter(
-            <Provider store={store}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}`,
-            },
-        )
+        render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}`],
+            storeState: store.getState() as object,
+        })
         await screen.findByText(new RegExp(DEFAULT_VALUES.title))
     })
     it('disables the disconnect button and shows tooltip when app has connections and supports multiple connections', async () => {
@@ -324,7 +250,6 @@ describe(`App`, () => {
             supports_multiple_connections: true,
             id: appId,
         })
-
         jest.mock('services/applications', () => ({
             getApplicationById: jest.fn(),
         }))
@@ -348,20 +273,15 @@ describe(`App`, () => {
                 ],
             }),
         } as unknown as RootState)
-        const { getByRole } = renderWithRouter(
-            <Provider store={integrationsStore}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}`,
-            },
-        )
+        const { getByRole } = render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}`],
+            storeState: integrationsStore.getState() as object,
+        })
         await screen.findAllByText(new RegExp(dummyAppData.name))
         const disconnectButton = getByRole('button', { name: 'Disconnect App' })
         expect(disconnectButton).toBeAriaDisabled()
     })
-
     it('Shows error banner if supports multilple connections and no connections found', async () => {
         mockServer.onGet(`/api/apps/${appId}`).reply(200, {
             ...dummyAppData,
@@ -369,7 +289,6 @@ describe(`App`, () => {
             supports_multiple_connections: true,
             id: appId,
         })
-
         jest.mock('services/applications', () => ({
             getApplicationById: jest.fn(),
         }))
@@ -385,15 +304,11 @@ describe(`App`, () => {
                 integrations: [],
             }),
         } as unknown as RootState)
-        renderWithRouter(
-            <Provider store={integrationsStore}>
-                <App />
-            </Provider>,
-            {
-                path: '/integrations/app/:appId',
-                route: `/integrations/app/${appId}`,
-            },
-        )
+        render(<App />, {
+            path: '/integrations/app/:appId',
+            initialEntries: [`/integrations/app/${appId}`],
+            storeState: integrationsStore.getState() as object,
+        })
         await screen.findAllByText(
             'This app doesn’t have any connected accounts yet, reconnect the app to start using it. If you still see this message contact our support to help you.',
         )

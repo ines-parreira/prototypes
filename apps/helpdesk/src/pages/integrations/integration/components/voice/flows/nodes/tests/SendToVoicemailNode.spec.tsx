@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
@@ -13,7 +14,6 @@ import type {
 } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
 import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
@@ -30,7 +30,7 @@ describe('SendToVoicemailNode', () => {
             data: mockStep,
         } as ComponentProps<typeof SendToVoicemailNode>
 
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <FlowProvider>
                 <VoiceFlowProvider selectedNode={mockStep.id}>
                     <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>

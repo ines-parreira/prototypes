@@ -1,10 +1,8 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { updateVoiceQueue } from '@gorgias/helpdesk-client'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
-
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import VoiceQueueStatusToggle from '../VoiceQueueStatusToggle'
 
@@ -23,7 +21,7 @@ const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
 const mockQueueId = 123
 
 const renderComponent = (isEnabled: boolean) => {
-    return renderWithQueryClientProvider(
+    return render(
         <VoiceQueueStatusToggle queueId={mockQueueId} isEnabled={isEnabled} />,
     )
 }

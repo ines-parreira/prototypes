@@ -1,9 +1,9 @@
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
 
-import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
+import { useHistory } from 'react-router-dom'
 import { Col, Container } from 'reactstrap'
 
 import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
@@ -50,6 +50,7 @@ type Props = {
 }
 
 const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
+    const history = useHistory()
     const {
         state,
         setName,
@@ -122,7 +123,7 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
         } else {
             history.push('/app/settings/channels/email')
         }
-    }, [state.dirty, showCancelModal])
+    }, [history, state.dirty, showCancelModal])
 
     const handleCancelModalClose = useCallback(() => {
         showCancelModal(false)
@@ -130,7 +131,7 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
 
     const handleDiscardChanges = useCallback(() => {
         history.push('/app/settings/channels/email')
-    }, [])
+    }, [history])
 
     if (loading.get('integration')) {
         return <Loader />

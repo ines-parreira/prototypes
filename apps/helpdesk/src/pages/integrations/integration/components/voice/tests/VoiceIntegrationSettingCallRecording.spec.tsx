@@ -1,7 +1,6 @@
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import VoiceIntegrationSettingCallRecording from '../VoiceIntegrationSettingCallRecording'
 import type { TextToSpeechContext as TextToSpeechContextType } from '../VoiceMessageTTS/TextToSpeechContext'
@@ -14,7 +13,7 @@ const defaultPreferences = {
 
 describe('VoiceIntegrationSettingCallRecording', () => {
     const renderComponent = (preferences = defaultPreferences) =>
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={{
                     meta: {

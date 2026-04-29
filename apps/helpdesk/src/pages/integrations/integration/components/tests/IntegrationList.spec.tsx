@@ -1,12 +1,10 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { List, Map } from 'immutable'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import { renderWithRouter } from 'utils/testing'
 
 import IntegrationList from '../IntegrationList'
 
@@ -17,7 +15,6 @@ describe('<IntegrationList />', () => {
             Map({ id: 1, name: 'Integration 1' }),
             Map({ id: 2, name: 'Integration 2' }),
         ])
-
         const props = {
             integrationType: 'email',
             integrations,
@@ -33,22 +30,15 @@ describe('<IntegrationList />', () => {
                 </tr>
             )),
         }
-
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <IntegrationList {...props} />
-            </Provider>,
-        )
-
+        render(<IntegrationList {...props} />, {
+            storeState: mockStore({}).getState() as object,
+        })
         expect(screen.getByText('Integration 1')).toBeInTheDocument()
         expect(screen.getByText('Integration 2')).toBeInTheDocument()
-
         expect(props.integrationToItemDisplay).toHaveBeenCalled()
     })
-
     it('dont re-render if integrations are the same', () => {
         const integrations = List([Map({ id: 1, name: 'Integration 1' })])
-
         const props = {
             integrationType: 'email',
             integrations,
@@ -64,19 +54,11 @@ describe('<IntegrationList />', () => {
                 </tr>
             )),
         }
-
-        const { rerender } = renderWithRouter(
-            <Provider store={mockStore({})}>
-                <IntegrationList {...props} />
-            </Provider>,
-        )
-
+        const { rerender } = render(<IntegrationList {...props} />, {
+            storeState: mockStore({}).getState() as object,
+        })
         expect(props.integrationToItemDisplay).toHaveBeenCalledTimes(3)
-        rerender(
-            <Provider store={mockStore({})}>
-                <IntegrationList {...props} />
-            </Provider>,
-        )
+        rerender(<IntegrationList {...props} />)
         expect(props.integrationToItemDisplay).toHaveBeenCalledTimes(3)
     })
 })

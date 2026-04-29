@@ -1,4 +1,5 @@
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -16,7 +17,6 @@ import type { TimeSplitConditionalStep } from '@gorgias/helpdesk-types'
 import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import type { VoiceFlowFormValues } from '../../types'
 import { VoiceFlow } from '../../VoiceFlow'
@@ -87,7 +87,7 @@ describe('TimeSplitConditionalNode', () => {
     })
 
     const renderComponent = (mockFlowData: VoiceFlowFormValues) => {
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <FlowProvider>
                 <Box width="100%" height="100%">
                     <Form

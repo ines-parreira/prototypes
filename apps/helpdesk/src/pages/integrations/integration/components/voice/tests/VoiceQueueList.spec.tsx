@@ -1,23 +1,15 @@
-import { history } from '@repo/routing'
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { useLocation } from 'react-router-dom'
 
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
-import { renderWithRouter } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueList from '../VoiceQueueList'
-
-jest.mock('@repo/routing', () => ({
-    ...jest.requireActual('@repo/routing'),
-    history: {
-        push: jest.fn(),
-    },
-}))
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
@@ -25,6 +17,12 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
+
+const CurrentPath = () => {
+    const location = useLocation()
+
+    return <output aria-label="Current path">{location.pathname}</output>
+}
 
 describe('VoiceQueueList', () => {
     const mockQueues: VoiceQueue[] = [
@@ -46,7 +44,12 @@ describe('VoiceQueueList', () => {
     const renderComponent = (
         props = { queues: mockQueues, onScroll: mockOnScroll },
     ) => {
-        return renderWithRouter(<VoiceQueueList {...props} />)
+        return render(
+            <>
+                <VoiceQueueList {...props} />
+                <CurrentPath />
+            </>,
+        )
     }
 
     it('should render the list of queues when not fetching', () => {
@@ -103,7 +106,7 @@ describe('VoiceQueueList', () => {
         fireEvent.click(firstQueueRow)
 
         await waitFor(() => {
-            expect(history.push).toHaveBeenCalledWith(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 `${PHONE_INTEGRATION_BASE_URL}/queues/1`,
             )
         })

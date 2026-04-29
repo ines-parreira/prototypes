@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
-import { history } from '@repo/routing'
 import type { List, Map } from 'immutable'
+import { useHistory } from 'react-router-dom'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import IconLink from 'core/ui/components/IconLink'
@@ -30,6 +30,7 @@ type Props = {
 export default function EmailIntegrationList(props: Props): JSX.Element {
     const { integrations, loading } = props
     const dispatch = useAppDispatch()
+    const history = useHistory()
 
     const [isLoadingDomains, setIsLoadingDomains] = useState(false)
     const [emailDomains, setEmailDomains] = useState<EmailDomain[]>([])

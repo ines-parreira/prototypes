@@ -1,26 +1,22 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { times } from 'lodash'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { IvrMenuAction } from 'models/integration/types'
 import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
 import type { RootState } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import IvrMenuActionsFieldArray from '../DEPRECATED_IvrMenuActionsFieldArray'
 
 const mockStore = configureMockStore([thunk])
-
 describe('<DEPRECATED_IvrMenuActionsFieldArray />', () => {
     const onChange: jest.MockedFunction<(value: IvrMenuAction[]) => void> =
         jest.fn()
-
     const options: IvrMenuAction[] = [
         {
             action: IvrMenuActionType.ForwardToExternalNumber,
@@ -30,47 +26,37 @@ describe('<DEPRECATED_IvrMenuActionsFieldArray />', () => {
             },
         },
     ]
-
     beforeEach(() => {
         jest.resetAllMocks()
     })
-
     const renderComponent = (
         options: IvrMenuAction[],
         integrationsState = [],
     ) =>
-        renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
+        render(
+            <IvrMenuActionsFieldArray value={options} onChange={onChange} />,
+            {
+                storeState: mockStore({
                     integrations: fromJS({ integrations: integrationsState }),
-                } as RootState)}
-            >
-                <IvrMenuActionsFieldArray value={options} onChange={onChange} />
-            </Provider>,
+                } as RootState).getState() as object,
+            },
         )
-
     it('should render with FF on', () => {
         const { getByText } = renderComponent(options)
-
         expect(getByText('Menu options')).toBeInTheDocument()
         expect(getByText('Forward call to external number')).toBeInTheDocument()
         expect(getByText('Add option')).toBeInTheDocument()
-
         act(() => {
             userEvent.click(getByText('arrow_drop_down'))
         })
-
         expect(getByText('Send call to SMS')).toBeInTheDocument()
         expect(getByText('Play message')).toBeInTheDocument()
         expect(getByText('Forward call to Gorgias number')).toBeInTheDocument()
     })
-
     it('should allow adding menu options', () => {
         const { getByText } = renderComponent(options)
-
         const addButton = getByText('Add option')
         fireEvent.click(addButton)
-
         expect(onChange).toHaveBeenCalledWith([
             ...options,
             {
@@ -82,16 +68,12 @@ describe('<DEPRECATED_IvrMenuActionsFieldArray />', () => {
             },
         ])
     })
-
     it('should allow removing menu options', () => {
         const { getByText } = renderComponent(options)
-
         const removeButton = getByText('close')
         fireEvent.click(removeButton)
-
         expect(onChange).toHaveBeenCalledWith([])
     })
-
     it('should limit the number of actions to 9', () => {
         const options: IvrMenuAction[] = times(9, (index) => ({
             digit: (index + 1).toString(),
@@ -100,13 +82,10 @@ describe('<DEPRECATED_IvrMenuActionsFieldArray />', () => {
                 phone_number: '',
             },
         }))
-
         const { queryByText } = renderComponent(options)
-
         const addButton = queryByText('Add option')
         expect(addButton).toBeNull()
     })
-
     it('should display the deflect to sms action', () => {
         const options: IvrMenuAction[] = [
             {
@@ -120,9 +99,7 @@ describe('<DEPRECATED_IvrMenuActionsFieldArray />', () => {
                 },
             },
         ]
-
         const { getByText } = renderComponent(options)
-
         expect(getByText('Send call to SMS')).toBeInTheDocument()
     })
 })

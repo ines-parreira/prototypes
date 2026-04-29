@@ -1,5 +1,4 @@
-import { history } from '@repo/routing'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { CreateVoiceQueue } from '@gorgias/helpdesk-queries'
@@ -17,6 +16,7 @@ import VoiceQueueSettingsForm from './VoiceQueueSettingsForm'
 import css from './VoiceQueueCreatePage.less'
 
 export default function VoiceQueueCreatePage() {
+    const history = useHistory()
     const notify = useNotify()
     const { mutate: createQueue } = useCreateVoiceQueues({
         mutation: {

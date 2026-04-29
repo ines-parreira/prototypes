@@ -1,5 +1,4 @@
-import { QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -11,14 +10,11 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import VoiceIntegrationVoicemail from '../VoiceIntegrationVoicemail'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('@repo/api-resources')
-
 const ivrIntegration: PhoneIntegration = {
     id: 1,
     name: 'My Phone Integration',
@@ -58,29 +54,21 @@ const ivrIntegration: PhoneIntegration = {
     },
     managed: false,
 }
-
 const renderVoiceIntegrationVoicemail = (
     storeState: RootState,
     integration: PhoneIntegration,
 ) =>
-    renderWithRouter(
-        <QueryClientProvider client={mockQueryClient()}>
-            <Provider store={mockStore(storeState)}>
-                <VoiceIntegrationVoicemail integration={integration} />
-            </Provider>
-        </QueryClientProvider>,
-    )
-
+    render(<VoiceIntegrationVoicemail integration={integration} />, {
+        storeState: mockStore(storeState).getState() as object,
+    })
 describe('<VoiceIntegrationVoicemail /> render', () => {
     it('should render IVR integration', () => {
         const { getByLabelText, getByText, getByRole } =
             renderVoiceIntegrationVoicemail({} as RootState, ivrIntegration)
-
         expect(getByText('Custom recording')).toBeInTheDocument()
         expect(getByText('Text-to-speech')).toBeInTheDocument()
         expect(getByText('None')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeChecked()
-
         expect(getByText('Allow caller to leave voicemail')).toBeInTheDocument()
         expect(
             getByText(
@@ -89,7 +77,6 @@ describe('<VoiceIntegrationVoicemail /> render', () => {
         ).toBeInTheDocument()
         expect(getByRole('button', { name: 'Save changes' })).toBeAriaDisabled()
     })
-
     it('should not render anything if the integration is not a phone integration', () => {
         const { container } = renderVoiceIntegrationVoicemail(
             {} as RootState,

@@ -1,6 +1,5 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import CreateEditQueueModalFormContent from '../CreateEditQueueModalFormContent'
 
@@ -13,8 +12,7 @@ jest.mock('../VoiceQueueSettingsFormCallFlowSection', () => () => (
 ))
 
 describe('CreateEditQueueModalFormContent', () => {
-    const renderComponent = () =>
-        renderWithQueryClientAndRouter(<CreateEditQueueModalFormContent />)
+    const renderComponent = () => render(<CreateEditQueueModalFormContent />)
 
     it('renders both form sections', () => {
         renderComponent()

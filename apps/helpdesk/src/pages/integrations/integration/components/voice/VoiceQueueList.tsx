@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { history } from '@repo/routing'
+import { useHistory } from 'react-router-dom'
 import type { VirtuosoHandle } from 'react-virtuoso'
 import { TableVirtuoso } from 'react-virtuoso'
 
@@ -35,6 +35,7 @@ export default function VoiceQueueList({
     queues,
     onScroll,
 }: VoiceQueueListProps) {
+    const history = useHistory()
     const virtuosoRef = useRef<VirtuosoHandle>(null)
 
     return (

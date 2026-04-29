@@ -1,12 +1,10 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { updateEmailIntegrationDomain } from '@gorgias/helpdesk-client'
-
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import * as helpers from '../../../helpers'
 import EmailDomainVerificationForm from '../EmailDomainVerificationForm'
@@ -27,9 +25,7 @@ describe('<EmailDomainVerificationForm/>', () => {
     }
 
     const renderComponent = (props = {}) =>
-        renderWithStoreAndQueryClientProvider(
-            <EmailDomainVerificationForm {...minProps} {...props} />,
-        )
+        render(<EmailDomainVerificationForm {...minProps} {...props} />)
 
     it('should render the form', () => {
         renderComponent()

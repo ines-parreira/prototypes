@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -18,7 +19,6 @@ import type { SendToSMSStep } from '@gorgias/helpdesk-types'
 import { PhoneUseCase } from 'business/twilio'
 import { FlowProvider } from 'core/ui/flows'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
 import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
@@ -97,7 +97,7 @@ describe('SendToSMSNode', () => {
             data: step,
         } as ComponentProps<typeof SendToSMSNode>
 
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <FlowProvider>
                 <VoiceFlowProvider selectedNode={step.id}>
                     <Form defaultValues={flowData} onValidSubmit={jest.fn()}>
@@ -114,10 +114,12 @@ describe('SendToSMSNode', () => {
                 </VoiceFlowProvider>
             </FlowProvider>,
             {
-                entities: {
-                    newPhoneNumbers: mockPhoneNumbers,
+                storeState: {
+                    entities: {
+                        newPhoneNumbers: mockPhoneNumbers,
+                    } as any,
                 } as any,
-            } as any,
+            },
         )
     }
 
@@ -311,7 +313,7 @@ describe('SendToSMSNode', () => {
                 data: step,
             } as ComponentProps<typeof SendToSMSNode>
 
-            return renderWithStoreAndQueryClientProvider(
+            return render(
                 <FlowProvider>
                     <VoiceFlowProvider selectedNode={step.id}>
                         <Form
@@ -331,10 +333,12 @@ describe('SendToSMSNode', () => {
                     </VoiceFlowProvider>
                 </FlowProvider>,
                 {
-                    entities: {
-                        newPhoneNumbers: mockPhoneNumbersWithUseCase,
+                    storeState: {
+                        entities: {
+                            newPhoneNumbers: mockPhoneNumbersWithUseCase,
+                        } as any,
                     } as any,
-                } as any,
+                },
             )
         }
 

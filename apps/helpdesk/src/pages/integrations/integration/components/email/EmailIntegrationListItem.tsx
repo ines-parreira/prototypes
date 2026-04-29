@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { history } from '@repo/routing'
 import classnames from 'classnames'
+import { useHistory } from 'react-router-dom'
 
 import type {
     EmailIntegration,
@@ -45,6 +45,7 @@ export default function EmailIntegrationListItem({
     integrations,
     storeMappings,
 }: Props): JSX.Element {
+    const history = useHistory()
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
     const defaultIntegrations = useAppSelector(getDefaultIntegrationSettings)
 

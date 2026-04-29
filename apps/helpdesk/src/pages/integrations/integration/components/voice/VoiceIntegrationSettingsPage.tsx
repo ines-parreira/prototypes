@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 
 import { Form, toFormErrors } from '@repo/forms'
-import { history } from '@repo/routing'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import type {
     PhoneIntegration,
@@ -22,6 +21,7 @@ import { getDefaultValues, useFormSubmit } from './useVoiceSettingsForm'
 import VoiceIntegrationSettingsForm from './VoiceIntegrationSettingsForm'
 
 function VoiceIntegrationSettingsPage() {
+    const history = useHistory()
     const { integrationId: idParam } = useParams<{ integrationId: string }>()
     const id = Number(idParam)
     const { isFetching, data, isError } = useGetIntegration(id, {
@@ -34,7 +34,7 @@ function VoiceIntegrationSettingsPage() {
             notify.error('Failed to fetch integration')
             history.push(PHONE_INTEGRATION_BASE_URL)
         }
-    }, [isError, notify])
+    }, [history, isError, notify])
 
     if (isFetching) {
         return <Loader />

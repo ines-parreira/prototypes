@@ -1,6 +1,5 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { PhoneCountry, PhoneFunction } from 'business/twilio'
@@ -12,14 +11,12 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'
 import VoiceQueueBreadcrumbs from '../VoiceQueueBreadcrumbs'
 
 jest.mock('../VoiceQueueBreadcrumbs')
 const VoiceQueueBreadcrumbsMock = assumeMock(VoiceQueueBreadcrumbs)
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
@@ -29,7 +26,6 @@ const store = mockStore({
         ),
     },
 } as RootState)
-
 describe('<PhoneIntegrationBreadcrumbs/>', () => {
     const integration: PhoneIntegration = {
         id: 1,
@@ -70,40 +66,36 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
         },
         managed: false,
     }
-
     beforeEach(() => {
         VoiceQueueBreadcrumbsMock.mockReturnValue(
             <div>VoiceQueueBreadcrumbsMock</div>,
         )
     })
-
     describe('render()', () => {
         it('should render for voice integrations', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <PhoneIntegrationBreadcrumbs
-                        type={IntegrationType.Phone}
-                        integration={integration}
-                    />
-                </Provider>,
+            render(
+                <PhoneIntegrationBreadcrumbs
+                    type={IntegrationType.Phone}
+                    integration={integration}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             expect(screen.getByText('Voice')).toBeInTheDocument()
         })
-
         it('should render for SMS integrations', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <PhoneIntegrationBreadcrumbs
-                        type={IntegrationType.Sms}
-                        integration={integration}
-                    />
-                </Provider>,
+            render(
+                <PhoneIntegrationBreadcrumbs
+                    type={IntegrationType.Sms}
+                    integration={integration}
+                />,
+                {
+                    storeState: store.getState() as object,
+                },
             )
-
             expect(screen.getByText('SMS')).toBeInTheDocument()
         })
-
         it.each([
             {
                 queueId: 'new',
@@ -112,15 +104,15 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
                 queueId: '123',
             },
         ])('should render for Voice Queues', ({ queueId }) => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <PhoneIntegrationBreadcrumbs type={IntegrationType.Phone} />
-                </Provider>,
+            render(
+                <PhoneIntegrationBreadcrumbs type={IntegrationType.Phone} />,
                 {
-                    route: `/app/settings/channels/phone/queues/${queueId}`,
+                    initialEntries: [
+                        `/app/settings/channels/phone/queues/${queueId}`,
+                    ],
+                    storeState: store.getState() as object,
                 },
             )
-
             expect(
                 screen.getByText('VoiceQueueBreadcrumbsMock'),
             ).toBeInTheDocument()

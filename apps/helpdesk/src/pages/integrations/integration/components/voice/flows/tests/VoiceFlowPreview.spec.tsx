@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,8 +9,6 @@ import {
     mockGetIntegrationHandler,
     mockPhoneIntegration,
 } from '@gorgias/helpdesk-mocks'
-
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import VoiceFlowPreview from '../VoiceFlowPreview'
 
@@ -42,9 +41,7 @@ describe('VoiceFlowPreview', () => {
     })
 
     const renderComponent = (integrationId: number = 123) => {
-        return renderWithStoreAndQueryClientProvider(
-            <VoiceFlowPreview integrationId={integrationId} />,
-        )
+        return render(<VoiceFlowPreview integrationId={integrationId} />)
     }
 
     it('should render loader while fetching integration', async () => {
@@ -145,7 +142,7 @@ describe('VoiceFlowPreview', () => {
         )
         server.use(mockHandler.handler)
 
-        const { container } = renderWithStoreAndQueryClientProvider(
+        const { container } = render(
             <VoiceFlowPreview
                 integrationId={123}
                 width="800px"

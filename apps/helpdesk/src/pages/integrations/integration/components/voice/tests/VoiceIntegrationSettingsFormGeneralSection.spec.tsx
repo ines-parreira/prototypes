@@ -1,12 +1,11 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { renderWithRouter } from 'utils/testing'
 
 import VoiceIntegrationSettingsFormGeneralSection from '../VoiceIntegrationSettingsFormGeneralSection'
 
@@ -69,7 +68,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return false
         })
 
-        renderWithRouter(
+        render(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,
@@ -90,7 +89,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return false
         })
 
-        renderWithRouter(
+        render(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,
@@ -104,7 +103,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
     })
 
     it('should render editable phone number select field', () => {
-        renderWithRouter(
+        render(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,
@@ -128,7 +127,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return mockPhoneNumbers
         })
 
-        renderWithRouter(
+        render(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,

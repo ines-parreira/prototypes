@@ -1,10 +1,8 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
 import { createVoiceQueues } from '@gorgias/helpdesk-client'
-
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import CreateNewQueueModal from '../CreateNewQueueModal'
@@ -45,7 +43,7 @@ describe('CreateNewQueueModal', () => {
     const mockOnCreateSuccess = jest.fn()
 
     const renderComponent = (props = {}) =>
-        renderWithQueryClientAndRouter(
+        render(
             <CreateNewQueueModal
                 isOpen={true}
                 onClose={mockOnClose}

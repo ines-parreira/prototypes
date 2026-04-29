@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react'
 
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import { MemoryRouter } from 'react-router-dom'
 
 import {
     mockCallRoutingFlow,
@@ -18,7 +18,6 @@ import type { TimeSplitConditionalStep } from '@gorgias/helpdesk-types'
 import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import type { VoiceFlowFormValues } from '../../types'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
@@ -29,11 +28,9 @@ const server = setupServer()
 beforeAll(() => {
     server.listen()
 })
-
 afterAll(() => {
     server.close()
 })
-
 describe('TimeSplitConditionalNode', () => {
     const mockDefaultStep: TimeSplitConditionalStep =
         mockTimeSplitConditionalStep({
@@ -58,7 +55,6 @@ describe('TimeSplitConditionalNode', () => {
         }),
         business_hours_id: 123,
     }
-
     beforeEach(() => {
         const mockListAccountSettings = mockListAccountSettingsHandler()
         const mockGetBusinessHours = mockGetBusinessHoursDetailsHandler(
@@ -78,15 +74,12 @@ describe('TimeSplitConditionalNode', () => {
                     },
                 } as BusinessHoursDetails),
         )
-
         server.use(mockListAccountSettings.handler)
         server.use(mockGetBusinessHours.handler)
     })
-
     afterEach(() => {
         server.resetHandlers()
     })
-
     const renderComponent = (
         mockStep: TimeSplitConditionalStep,
         mockFlowData: VoiceFlowFormValues,
@@ -95,29 +88,23 @@ describe('TimeSplitConditionalNode', () => {
             id: mockStep.id,
             data: mockStep,
         } as ComponentProps<typeof TimeSplitConditionalNode>
-
-        return renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <FlowProvider>
-                    <VoiceFlowProvider selectedNode={mockStep.id}>
-                        <Form
-                            defaultValues={mockFlowData}
-                            onValidSubmit={jest.fn()}
-                        >
-                            <TimeSplitConditionalNode {...props} />
-                        </Form>
-                    </VoiceFlowProvider>
-                </FlowProvider>
-            </MemoryRouter>,
+        return render(
+            <FlowProvider>
+                <VoiceFlowProvider selectedNode={mockStep.id}>
+                    <Form
+                        defaultValues={mockFlowData}
+                        onValidSubmit={jest.fn()}
+                    >
+                        <TimeSplitConditionalNode {...props} />
+                    </Form>
+                </VoiceFlowProvider>
+            </FlowProvider>,
         )
     }
-
     describe('Business hours rule', () => {
         it('should render the component with business hours rule type', async () => {
             renderComponent(mockDefaultStep, mockDefaultFlowData)
-
             expect(screen.getAllByText('Time rule')).toHaveLength(2)
-
             await waitFor(() => {
                 expect(
                     screen.getByText(
@@ -129,11 +116,9 @@ describe('TimeSplitConditionalNode', () => {
                         /Test Business Hours: Monday, 10:00 AM-7:00 PM, America\/New_York/,
                     ),
                 ).toBeInTheDocument()
-
                 expect(screen.getByLabelText('Business hours')).toBeChecked()
             })
         })
-
         it('should default to business hours for no rule type', async () => {
             const step = {
                 ...mockDefaultStep,
@@ -144,9 +129,7 @@ describe('TimeSplitConditionalNode', () => {
                 steps: { [step.id]: step },
             }
             renderComponent(step, mockFlow)
-
             expect(screen.getAllByText('Time rule')).toHaveLength(2)
-
             await waitFor(() => {
                 expect(
                     screen.getByText(
@@ -158,11 +141,9 @@ describe('TimeSplitConditionalNode', () => {
                         /Test Business Hours: Monday, 10:00 AM-7:00 PM, America\/New_York/,
                     ),
                 ).toBeInTheDocument()
-
                 expect(screen.getByLabelText('Business hours')).toBeChecked()
             })
         })
-
         it(`should not render anything when form value doesn't exist`, async () => {
             const mockFlow = {
                 ...mockDefaultFlowData,
@@ -172,10 +153,8 @@ describe('TimeSplitConditionalNode', () => {
                 { id: 'abc' } as any,
                 mockFlow,
             )
-
             expect(container.querySelector('div')).toBeNull()
         })
-
         it('should not render when step is undefined', () => {
             const mockFlow = {
                 ...mockDefaultFlowData,
@@ -187,11 +166,9 @@ describe('TimeSplitConditionalNode', () => {
                 mockDefaultStep,
                 mockFlow as any,
             )
-
             expect(container.querySelector('div')).toBeNull()
         })
     })
-
     describe('Custom Hours', () => {
         const customHoursStep: TimeSplitConditionalStep = {
             ...mockDefaultStep,
@@ -211,13 +188,10 @@ describe('TimeSplitConditionalNode', () => {
             ...mockDefaultFlowData,
             steps: { [customHoursStep.id]: customHoursStep },
         }
-
         it('should render custom hours when rule type is custom', async () => {
             renderComponent(customHoursStep, mockFlowData)
-
             await waitFor(() => {
                 expect(screen.getByLabelText('Custom hours')).toBeChecked()
-
                 // we use timezone from custom hours
                 expect(
                     screen.getByText(
@@ -229,24 +203,18 @@ describe('TimeSplitConditionalNode', () => {
             })
         })
     })
-
     it('should switch from business hours to custom hours when custom radio is clicked', async () => {
         const user = userEvent.setup()
         renderComponent(mockDefaultStep, mockDefaultFlowData)
-
         await waitFor(() => {
             expect(screen.getByLabelText('Custom hours')).toBeInTheDocument()
         })
-
         const customHoursRadio = screen.getByLabelText('Custom hours')
-
         await act(() => user.click(customHoursRadio))
-
         await waitFor(() => {
             expect(screen.getByText('Timezone')).toBeInTheDocument()
         })
     })
-
     it('should switch to custom hours with no custom hours set in the step', async () => {
         const user = userEvent.setup()
         const mockStep = {
@@ -258,41 +226,33 @@ describe('TimeSplitConditionalNode', () => {
             steps: { [mockStep.id]: mockStep },
         }
         renderComponent(mockStep, mockFlow)
-
         await waitFor(() => {
             expect(screen.getByLabelText('Custom hours')).toBeInTheDocument()
         })
-
         const customHoursRadio = screen.getByLabelText('Custom hours')
-
         await act(() => user.click(customHoursRadio))
-
         await waitFor(() => {
             expect(screen.getByText('Timezone')).toBeInTheDocument()
             expect(screen.getByText('America/New_York')).toBeInTheDocument()
         })
     })
-
     it('should show warning when branch options are not pointing to end call', async () => {
         const step = {
             ...mockDefaultStep,
             on_true_step_id: null,
             on_false_step_id: null,
         } as TimeSplitConditionalStep
-
         const mockFlow = {
             ...mockDefaultFlowData,
             steps: { [step.id]: step },
         }
         renderComponent(step, mockFlow)
-
         await waitFor(() => {
             expect(
                 screen.getByRole('img', { name: 'triangle-warning' }),
             ).toBeInTheDocument()
         })
     })
-
     it('should show warning icon when business hours are 24/7', async () => {
         const mockGetBusinessHours24_7 = mockGetBusinessHoursDetailsHandler(
             async () =>
@@ -311,18 +271,14 @@ describe('TimeSplitConditionalNode', () => {
                     },
                 } as BusinessHoursDetails),
         )
-
         server.use(mockGetBusinessHours24_7.handler)
-
         renderComponent(mockDefaultStep, mockDefaultFlowData)
-
         await waitFor(() => {
             expect(
                 screen.getByRole('img', { name: 'triangle-warning' }),
             ).toBeInTheDocument()
         })
     })
-
     it('should show warning icon when false branch is undefined', async () => {
         const step = {
             ...mockDefaultStep,
@@ -336,14 +292,12 @@ describe('TimeSplitConditionalNode', () => {
             business_hours_id: 123,
         }
         renderComponent(step, flow)
-
         await waitFor(() => {
             expect(
                 screen.getByRole('img', { name: 'triangle-warning' }),
             ).toBeInTheDocument()
         })
     })
-
     it('should show warning icon when true branch is undefined', async () => {
         const step = {
             ...mockDefaultStep,
@@ -357,7 +311,6 @@ describe('TimeSplitConditionalNode', () => {
             business_hours_id: 123,
         }
         renderComponent(step, flow)
-
         await waitFor(() => {
             expect(
                 screen.getByRole('img', { name: 'triangle-warning' }),
