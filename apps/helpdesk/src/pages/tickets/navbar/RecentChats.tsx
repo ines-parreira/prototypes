@@ -150,6 +150,7 @@ export const RecentChats = () => {
 
     if (hasWayfindingMS1Flag) {
         const chatItems = tickets
+            .slice(0, MAX_RECENT_CHATS)
             .toArray()
             .map((e, index) => (
                 <RecentChatsItem

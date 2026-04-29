@@ -6,6 +6,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
+import { MAX_RECENT_CHATS } from 'config/recentChats'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { closePanels } from 'state/layout/actions'
@@ -139,6 +140,32 @@ describe('RecentChats', () => {
             const { container } = render(<RecentChats />, { wrapper })
 
             expect(container).toBeEmptyDOMElement()
+        })
+
+        it('should render at most MAX_RECENT_CHATS items when there are more tickets', () => {
+            const manyTickets = Array.from(
+                { length: MAX_RECENT_CHATS + 2 },
+                (_, i) => ({
+                    channel: 'email',
+                    id: i + 1,
+                    is_unread: false,
+                    customer: {
+                        id: i + 1,
+                        email: `customer${i + 1}@example.com`,
+                        name: `Customer ${i + 1}`,
+                    },
+                }),
+            )
+            useAppSelectorMock.mockReturnValue(fromJS({ tickets: manyTickets }))
+
+            render(<RecentChats />, { wrapper })
+
+            for (let i = 1; i <= MAX_RECENT_CHATS; i++) {
+                expect(screen.getByText(`Customer ${i}`)).toBeInTheDocument()
+            }
+            expect(
+                screen.queryByText(`Customer ${MAX_RECENT_CHATS + 1}`),
+            ).not.toBeInTheDocument()
         })
 
         it('should log a segment event and dispatch actions when a ticket item is clicked', async () => {
