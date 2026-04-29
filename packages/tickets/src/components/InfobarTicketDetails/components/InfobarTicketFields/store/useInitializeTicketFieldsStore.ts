@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { usePrevious } from '@repo/hooks'
+
 import { useTicketCustomFieldsValues } from '../hooks/useTicketCustomFieldsValues'
 import type {
     CustomFieldValue,
@@ -8,6 +10,7 @@ import type {
 import { useTicketFieldsStore } from './useTicketFieldsStore'
 
 export const useInitializeTicketFieldsStore = (ticketId: string) => {
+    const previousTicketId = usePrevious(ticketId)
     const initializeFields = useTicketFieldsStore(
         (state) => state.initializeFields,
     )
@@ -20,11 +23,10 @@ export const useInitializeTicketFieldsStore = (ticketId: string) => {
     } = useTicketCustomFieldsValues(Number(ticketId))
 
     useEffect(() => {
-        resetFields()
-        return () => {
+        if (previousTicketId !== ticketId) {
             resetFields()
         }
-    }, [ticketId, resetFields])
+    }, [previousTicketId, resetFields, ticketId])
 
     useEffect(() => {
         if (isLoading || isError) {

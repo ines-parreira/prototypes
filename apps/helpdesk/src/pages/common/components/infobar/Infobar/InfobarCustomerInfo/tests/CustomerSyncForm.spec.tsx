@@ -206,6 +206,46 @@ describe('CustomerSyncForm', () => {
         expect(screen.getByText('Phone number')).toBeInTheDocument()
     })
 
+    it('resets the email after render when integrations are unstable', async () => {
+        ;(
+            useListCustomerIntegrationsWithChannelDefault as jest.Mock
+        ).mockImplementation(() => ({
+            data: fromJS([
+                {
+                    id: 2,
+                    name: 'store2',
+                    type: SHOPIFY_INTEGRATION_TYPE,
+                    default: true,
+                    hasCustomerData: false,
+                },
+            ]),
+        }))
+
+        const { rerender } = renderCustomerSyncForm()
+
+        rerender(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state)}>
+                    <CustomerSyncForm
+                        activeCustomer={Map({
+                            id: 123,
+                            name: 'John Smith',
+                            email: 'john.updated@example.com',
+                        })}
+                        isCustomerSyncFormOpen
+                        setIsCustomerSyncFormOpen={jest.fn()}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByLabelText('Email*')).toHaveValue(
+                'john.updated@example.com',
+            )
+        })
+    })
+
     it('validates the form fields', () => {
         renderCustomerSyncForm({
             activeCustomer: Map({

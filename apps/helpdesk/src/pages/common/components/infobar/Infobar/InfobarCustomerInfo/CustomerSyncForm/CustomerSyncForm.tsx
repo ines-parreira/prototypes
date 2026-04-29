@@ -83,17 +83,21 @@ export default function CustomerSyncForm({
         )
 
     const isUpdateCustomer: boolean = useMemo(() => {
-        const isUpdate = shopifyStores
+        return shopifyStores
             ?.find(
                 (store: Map<any, any>) => store.get('id') === formState.store,
             )
             ?.get('hasCustomerData')
+    }, [shopifyStores, formState.store])
 
-        if (!isUpdate) {
+    useEffect(() => {
+        if (
+            !isUpdateCustomer &&
+            formState.email !== activeCustomer.get('email')
+        ) {
             resetEmailState()
         }
-        return isUpdate
-    }, [shopifyStores, formState.store, resetEmailState])
+    }, [activeCustomer, formState.email, isUpdateCustomer, resetEmailState])
 
     const handleSyncModalClose = useCallback(() => {
         setPerformedValidation(false)
