@@ -3,7 +3,8 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from '@repo/reporting'
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { STANDARD_METRIC_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
 

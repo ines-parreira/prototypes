@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { OnboardingSteppedSlider } from '../OnboardingSteppedSlider'
 
@@ -14,10 +13,8 @@ describe('OnboardingSteppedSlider', () => {
         stepKey: 'step2',
         onChange: jest.fn(),
     }
-
     it('renders the slider', () => {
         render(<OnboardingSteppedSlider {...defaultProps} />)
-
         expect(screen.getByText('Step 1')).toBeInTheDocument()
         expect(screen.getByText('Step 3')).toBeInTheDocument()
     })

@@ -1,12 +1,8 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -23,8 +19,6 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { initialState } from 'state/billing/reducers'
 import { getHasAutomate } from 'state/billing/selectors'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import AiAgentConfigurationContainer from '../AiAgentConfigurationContainer'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
@@ -41,81 +35,66 @@ jest.mock('state/billing/selectors', () => ({
     getHasAutomate: jest.fn(),
 }))
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
-
 jest.mock('../hooks/useGetOrCreateSnippetHelpCenter', () => ({
     useGetOrCreateSnippetHelpCenter: jest.fn(),
 }))
 const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
     useGetOrCreateSnippetHelpCenter,
 )
-
 jest.mock(
     'pages/aiAgent/components/StoreConfigForm/hooks/useVerifyChannelsActivation',
 )
-
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = useAppDispatch as jest.Mock
-
 jest.mock('pages/AppContext')
 const { useAppContext } = require('pages/AppContext')
 const mockUseAppContext = jest.mocked(useAppContext)
-
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
-
 jest.mock('../providers/AiAgentStoreConfigurationContext')
 const mockUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext,
 )
-
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
     useHelpCenterList: () => ({
         isLoading: false,
         helpCenters: [],
     }),
 }))
-
 jest.mock('pages/aiAgent/hooks/useStoresDomainIngestionLogs', () => ({
     useStoresDomainIngestionLogs: () => ({
         isLoading: false,
         data: undefined,
     }),
 }))
-
 jest.mock('pages/automate/common/hooks/useHelpCentersArticleCount', () => ({
     useHelpCentersArticleCount: () => [],
 }))
-
 jest.mock('models/storeMapping/queries', () => ({
     useListStoreMappings: () => ({
         data: [],
     }),
 }))
-
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { AiAgentEnabled: 'ai-agent-enabled' },
 }))
-
 jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
     usePublicResources: () => ({
         sourceItems: [],
         isSourceItemsListLoading: false,
     }),
 }))
-
 jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
     useFileIngestion: () => ({
         ingestedFiles: [],
     }),
 }))
-
 jest.mock('pages/standalone/components/HandoverConfigurationDrawer', () => ({
     HandoverConfigurationDrawer: () => (
         <div data-testid="mocked-handover-drawer"></div>
     ),
 }))
-
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm',
 )
@@ -125,15 +104,12 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm',
 )
-
 jest.mock('models/rule/resources', () => ({
     listRules: () => Promise.resolve({ data: [] }),
 }))
-
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
-
 const getUseStoreConfigurationFormMock = () => ({
     formValues: {
         monitoredChatIntegrations: [],
@@ -156,19 +132,16 @@ const getUseStoreConfigurationFormMock = () => ({
     isChatChannelEnabled: true,
     isSmsChannelEnabled: false,
 })
-
 jest.mock('../hooks/useStoreConfigurationForm', () => ({
     useStoreConfigurationForm: jest.fn(() =>
         getUseStoreConfigurationFormMock(),
     ),
 }))
-
 const useSelfServiceChatChannelsMock = assumeMock(useSelfServiceChatChannels)
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 const mockUseStoreConfigurationForm =
     useStoreConfigurationFormHookModule.useStoreConfigurationForm as jest.Mock
-
 const mockedUseHandoverCustomizationChatOfflineSettingsFormProps = {
     isLoading: false,
     isSaving: false,
@@ -177,7 +150,6 @@ const mockedUseHandoverCustomizationChatOfflineSettingsFormProps = {
     handleOnSave: jest.fn(),
     handleOnCancel: jest.fn(),
 }
-
 const mockedUseHandoverCustomizationChatOnlineSettingsFormProps = {
     isLoading: false,
     isSaving: false,
@@ -186,20 +158,14 @@ const mockedUseHandoverCustomizationChatOnlineSettingsFormProps = {
     handleOnSave: jest.fn(),
     handleOnCancel: jest.fn(),
 }
-
 const mockedUseHandoverCustomizationChatFallbackSettingsFormProps = {
     isLoading: false,
     isSaving: false,
     formValues: {},
 }
-
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
-
-const mockStore = configureMockStore([thunk])
-
 const contactForm = ContactFormFixture
-
 const getState = (accountId?: number) => ({
     currentAccount: fromJS(
         accountId !== undefined ? { ...account, id: accountId } : account,
@@ -244,7 +210,6 @@ const getState = (accountId?: number) => ({
         },
     },
 })
-
 const mockedAiAgentStoreConfigurationContext = {
     isLoading: false,
     storeConfiguration: undefined,
@@ -252,7 +217,6 @@ const mockedAiAgentStoreConfigurationContext = {
     createStoreConfiguration: jest.fn(),
     isPendingCreateOrUpdate: false,
 }
-
 const getHelpCenterListResponse = {
     data: axiosSuccessResponse({
         data: [
@@ -262,7 +226,6 @@ const getHelpCenterListResponse = {
     }),
     isInitialLoading: false,
 } as unknown as ReturnType<typeof useGetHelpCenterList>
-
 const findToggle = (type: 'email' | 'chat') =>
     screen
         .queryAllByLabelText('Enable AI Agent')
@@ -270,32 +233,25 @@ const findToggle = (type: 'email' | 'chat') =>
             (toggle) =>
                 toggle.getAttribute('name') === `toggle-ai-agent-${type}`,
         )
-
 const renderComponent = ({
     accountId = undefined,
     tab = undefined,
-}: { accountId?: number; tab?: string } = {}) => {
+}: {
+    accountId?: number
+    tab?: string
+} = {}) => {
     let path = `/:shopType/:shopName/ai-agent/settings`
     let route = '/shopify/test-shop/ai-agent/settings'
-
     if (tab) {
         path = `${path}/:tab`
         route = `${route}/${tab}`
     }
-
-    return renderWithRouter(
-        <Provider store={mockStore(getState(accountId))}>
-            <QueryClientProvider client={mockQueryClient()}>
-                <AiAgentConfigurationContainer />
-            </QueryClientProvider>
-        </Provider>,
-        {
-            path,
-            route,
-        },
-    )
+    return render(<AiAgentConfigurationContainer />, {
+        path: path,
+        initialEntries: [route],
+        storeState: getState(accountId),
+    })
 }
-
 const setupMocks = ({
     isStoreConfigurationLoading = false,
     isHelpCentersLoading = false,
@@ -307,16 +263,13 @@ const setupMocks = ({
         helpCenter: null,
         isLoading: false,
     })
-
     mockUseAppDispatch.mockReturnValue(jest.fn())
-
     mockUseAppContext.mockReturnValue({
         setCollapsibleColumnChildren: jest.fn(),
         collapsibleColumnChildren: null,
         isCollapsibleColumnOpen: false,
         setIsCollapsibleColumnOpen: jest.fn(),
     })
-
     mockUseAiAgentStoreConfigurationContext.mockReturnValue({
         ...mockedAiAgentStoreConfigurationContext,
         storeConfiguration: hasStoreConfiguration
@@ -324,12 +277,10 @@ const setupMocks = ({
             : undefined,
         isLoading: isStoreConfigurationLoading,
     })
-
     mockUseGetHelpCenterList.mockReturnValue({
         ...getHelpCenterListResponse,
         isInitialLoading: isHelpCentersLoading,
     } as unknown as ReturnType<typeof useGetHelpCenterList>)
-
     applyMockActivationHook()
     useStoreConfigurationsMock.mockReturnValue({
         storeConfigurations: [],
@@ -373,7 +324,6 @@ const setupMocks = ({
         } as any,
     ])
 }
-
 describe('AiAgentConfigurationContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
@@ -397,48 +347,38 @@ describe('AiAgentConfigurationContainer', () => {
             mockedUseHandoverCustomizationChatFallbackSettingsFormProps,
         )
     })
-
     it('renders loader if loading store configuration', () => {
         setupMocks({ isStoreConfigurationLoading: true })
         renderComponent()
         expect(screen.getByLabelText('loading')).toBeInTheDocument()
     })
-
     it('renders loader if loading help centers', () => {
         setupMocks({ isHelpCentersLoading: true })
         renderComponent()
         expect(screen.getByLabelText('loading')).toBeInTheDocument()
     })
-
     it('renders configuration', () => {
         setupMocks()
         renderComponent()
-
         const emailToggle = findToggle('email')
         expect(emailToggle).not.toBeNull()
-
         screen.getByText('Save Changes')
     })
-
     it('renders the configuration page if the merchant already has interacted with the AI Agent', () => {
         setupMocks({
             hasStoreConfiguration: true,
         })
         renderComponent()
-
         const emailToggle = findToggle('email')
         expect(emailToggle).not.toBeNull()
-
         screen.getByText('Save Changes')
     })
-
     it('renders only general sections on general settings page if :tab param not set', () => {
         setupMocks()
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.AiAgentChat || false,
         )
         renderComponent()
-
         expect(
             screen.getByText('Tone of Voice and Language'),
         ).toBeInTheDocument()
@@ -448,13 +388,11 @@ describe('AiAgentConfigurationContainer', () => {
         expect(screen.getByText('AI ticket tagging')).toBeInTheDocument()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
     })
-
     it('renders only channels section on channels settings page if :tab param set to "channels"', () => {
         setupMocks()
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.AiAgentChat || false,
         )
-
         renderComponent({ tab: 'channels' })
         expect(screen.queryByText('General')).not.toBeInTheDocument()
         // The title will be "Settings" since the route is /settings/channels, not /deploy/chat
@@ -473,7 +411,6 @@ describe('AiAgentConfigurationContainer', () => {
         expect(screen.queryByText('AI ticket tagging')).not.toBeInTheDocument()
         expect(screen.getAllByText('Save Changes')[0]).toBeInTheDocument()
     })
-
     describe('when toggling', () => {
         describe('silentHandover toggle', () => {
             it.each([
@@ -484,7 +421,6 @@ describe('AiAgentConfigurationContainer', () => {
                 'should set silentHandover to $expected when the default value is $defaultValue',
                 ({ expected, defaultValue }) => {
                     const mockUpdateValue = jest.fn()
-
                     // Update the mock to have the right initial value
                     mockUseStoreConfigurationForm.mockReturnValue({
                         ...getUseStoreConfigurationFormMock(),
@@ -494,17 +430,14 @@ describe('AiAgentConfigurationContainer', () => {
                         },
                         updateValue: mockUpdateValue,
                     })
-
                     setupMocks({
                         storeConfigurationData: {
                             silentHandover: defaultValue,
                         },
                     })
-
                     mockUseFlag.mockImplementation(
                         (key) => key === FeatureFlagKey.AiAgentChat || false,
                     )
-
                     const { getAllByRole } = renderComponent()
                     fireEvent.click(
                         getAllByRole('checkbox').find(
@@ -521,89 +454,71 @@ describe('AiAgentConfigurationContainer', () => {
             )
         })
     })
-
     describe('form submission and saving', () => {
         it('should disable save button when form is not dirty', () => {
             mockUseStoreConfigurationForm.mockReturnValue(
                 getUseStoreConfigurationFormMock(),
             )
-
             setupMocks()
             renderComponent()
-
             const saveButtons = screen.getAllByText('Save Changes')
             const saveButton = saveButtons[0].closest('button')
             expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         })
-
         it('should show saving state when form is being saved', () => {
             mockUseStoreConfigurationForm.mockReturnValue(
                 getUseStoreConfigurationFormMock(),
             )
-
             setupMocks()
             renderComponent()
-
             const saveButtons = screen.getAllByText('Save Changes')
             const saveButton = saveButtons[0].closest('button')
             expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
-
     describe('error handling', () => {
         it('should handle errors gracefully', () => {
             setupMocks()
-
             expect(() => renderComponent()).not.toThrow()
         })
     })
-
     describe('store configuration creation', () => {
         it('should show appropriate UI when no store configuration exists', () => {
             setupMocks({ hasStoreConfiguration: false })
             renderComponent()
-
             expect(screen.getAllByText('Save Changes')[0]).toBeInTheDocument()
         })
     })
-
     describe('user permissions', () => {
         it('should disable form when user lacks Automate', () => {
             setupMocks()
             mockGetHasAutomate.mockReturnValue(false)
             renderComponent()
-
             expect(screen.getAllByText('Save Changes')[0]).toBeInTheDocument()
         })
-
         it('should enable form when user has Automate', () => {
             setupMocks()
             mockGetHasAutomate.mockReturnValue(true)
             renderComponent()
-
             expect(screen.getAllByText('Save Changes')[0]).toBeInTheDocument()
         })
     })
-
     describe('tab navigation', () => {
         it('should render general tab content', () => {
             setupMocks()
             mockUseFlag.mockImplementation(
                 (key) => key === FeatureFlagKey.AiAgentChat || false,
             )
-
             renderComponent()
             expect(
                 screen.getByText('Tone of Voice and Language'),
             ).toBeInTheDocument()
         })
-
         it('should render channels tab content', () => {
             setupMocks()
             mockUseFlag.mockImplementation(
                 (key) => key === FeatureFlagKey.AiAgentChat || false,
             )
-
             renderComponent({ tab: 'channels' })
             // Check for actual content in channels tab
             expect(
@@ -614,7 +529,6 @@ describe('AiAgentConfigurationContainer', () => {
             ).toBeInTheDocument()
         })
     })
-
     describe('feature flag combinations', () => {
         it('should handle multiple feature flags correctly', () => {
             setupMocks()
@@ -625,9 +539,7 @@ describe('AiAgentConfigurationContainer', () => {
                     key === FeatureFlagKey.AiAgentNewActivationXp ||
                     false,
             )
-
             renderComponent({ tab: 'channels' })
-
             expect(
                 screen.getAllByText('Enable AI Agent on Chat')[0],
             ).toBeInTheDocument()
@@ -635,13 +547,10 @@ describe('AiAgentConfigurationContainer', () => {
                 screen.getAllByText('Enable AI Agent on Email')[0],
             ).toBeInTheDocument()
         })
-
         it('should handle disabled feature flags', () => {
             setupMocks()
             mockUseFlag.mockReturnValue(false)
-
             renderComponent({ tab: 'channels' })
-
             expect(
                 screen.queryByText('Enable AI Agent on Chat'),
             ).not.toBeInTheDocument()
@@ -650,16 +559,13 @@ describe('AiAgentConfigurationContainer', () => {
             ).toBeInTheDocument()
         })
     })
-
     describe('integration state', () => {
         it('should show both chat and email toggles when configured', () => {
             setupMocks()
             mockUseFlag.mockImplementation(
                 (key) => key === FeatureFlagKey.AiAgentChat || false,
             )
-
             renderComponent({ tab: 'channels' })
-
             expect(
                 screen.getAllByText('Enable AI Agent on Chat')[0],
             ).toBeInTheDocument()
@@ -668,105 +574,62 @@ describe('AiAgentConfigurationContainer', () => {
             ).toBeInTheDocument()
         })
     })
-
     describe('route-based section determination', () => {
         it('should determine chat section when route contains /deploy/chat and display Chat title', () => {
             setupMocks()
             mockUseFlag.mockImplementation(
                 (key) => key === FeatureFlagKey.AiAgentChat || false,
             )
-
-            renderWithRouter(
-                <Provider store={mockStore(getState())}>
-                    <QueryClientProvider client={mockQueryClient()}>
-                        <AiAgentConfigurationContainer />
-                    </QueryClientProvider>
-                </Provider>,
-                {
-                    path: '/:shopType/:shopName/ai-agent/deploy/chat',
-                    route: '/shopify/test-shop/ai-agent/deploy/chat',
-                },
-            )
-
+            render(<AiAgentConfigurationContainer />, {
+                path: '/:shopType/:shopName/ai-agent/deploy/chat',
+                initialEntries: ['/shopify/test-shop/ai-agent/deploy/chat'],
+                storeState: getState(),
+            })
             const heading = screen.getByRole('heading', { level: 1 })
             expect(heading).toHaveTextContent('Chat')
         })
-
         it('should determine email section when route contains /deploy/email and display Email title', () => {
             setupMocks()
-
-            renderWithRouter(
-                <Provider store={mockStore(getState())}>
-                    <QueryClientProvider client={mockQueryClient()}>
-                        <AiAgentConfigurationContainer />
-                    </QueryClientProvider>
-                </Provider>,
-                {
-                    path: '/:shopType/:shopName/ai-agent/deploy/email',
-                    route: '/shopify/test-shop/ai-agent/deploy/email',
-                },
-            )
-
+            render(<AiAgentConfigurationContainer />, {
+                path: '/:shopType/:shopName/ai-agent/deploy/email',
+                initialEntries: ['/shopify/test-shop/ai-agent/deploy/email'],
+                storeState: getState(),
+            })
             const heading = screen.getByRole('heading', { level: 1 })
             expect(heading).toHaveTextContent('Email')
         })
-
         it('should determine sms section when route contains /deploy/sms and display SMS title', () => {
             setupMocks()
-
-            renderWithRouter(
-                <Provider store={mockStore(getState())}>
-                    <QueryClientProvider client={mockQueryClient()}>
-                        <AiAgentConfigurationContainer />
-                    </QueryClientProvider>
-                </Provider>,
-                {
-                    path: '/:shopType/:shopName/ai-agent/deploy/sms',
-                    route: '/shopify/test-shop/ai-agent/deploy/sms',
-                },
-            )
-
+            render(<AiAgentConfigurationContainer />, {
+                path: '/:shopType/:shopName/ai-agent/deploy/sms',
+                initialEntries: ['/shopify/test-shop/ai-agent/deploy/sms'],
+                storeState: getState(),
+            })
             const heading = screen.getByRole('heading', { level: 1 })
             expect(heading).toHaveTextContent('SMS')
         })
-
         it('should have undefined section when route does not match any deploy path and display Settings title', () => {
             setupMocks()
-
-            renderWithRouter(
-                <Provider store={mockStore(getState())}>
-                    <QueryClientProvider client={mockQueryClient()}>
-                        <AiAgentConfigurationContainer />
-                    </QueryClientProvider>
-                </Provider>,
-                {
-                    path: '/:shopType/:shopName/ai-agent/settings',
-                    route: '/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationContainer />, {
+                path: '/:shopType/:shopName/ai-agent/settings',
+                initialEntries: ['/shopify/test-shop/ai-agent/settings'],
+                storeState: getState(),
+            })
             const heading = screen.getByRole('heading', { level: 1 })
             expect(heading).toHaveTextContent('Settings')
         })
-
         it('should handle nested deploy paths correctly and display Chat title', () => {
             setupMocks()
             mockUseFlag.mockImplementation(
                 (key) => key === FeatureFlagKey.AiAgentChat || false,
             )
-
-            renderWithRouter(
-                <Provider store={mockStore(getState())}>
-                    <QueryClientProvider client={mockQueryClient()}>
-                        <AiAgentConfigurationContainer />
-                    </QueryClientProvider>
-                </Provider>,
-                {
-                    path: '/:shopType/:shopName/ai-agent/deploy/chat/settings',
-                    route: '/shopify/test-shop/ai-agent/deploy/chat/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationContainer />, {
+                path: '/:shopType/:shopName/ai-agent/deploy/chat/settings',
+                initialEntries: [
+                    '/shopify/test-shop/ai-agent/deploy/chat/settings',
+                ],
+                storeState: getState(),
+            })
             const heading = screen.getByRole('heading', { level: 1 })
             expect(heading).toHaveTextContent('Chat')
         })

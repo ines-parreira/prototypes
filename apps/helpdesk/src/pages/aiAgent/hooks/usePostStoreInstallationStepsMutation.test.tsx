@@ -1,7 +1,6 @@
-import type { ReactNode } from 'react'
-
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { act } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -14,6 +13,12 @@ import {
 import { mockPostStoreInstallationStep } from 'pages/aiAgent/fixtures//post-store-installation-steps.fixture'
 
 import { usePostStoreInstallationStepsMutation } from './usePostStoreInstallationStepsMutation'
+
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
+const mockUseQueryClient = jest.mocked(useQueryClient)
 
 // Mock the auth interceptor to prevent auth requests
 jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
@@ -46,25 +51,14 @@ const mockResponse: PostStoreInstallationStepsResponse = {
     postStoreInstallationSteps: mockPostStoreInstallationStep,
 }
 
-const createWrapper = () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-            mutations: { retry: false },
-        },
-    })
-
-    return ({ children }: { children?: ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-}
-
 describe('usePostStoreInstallationStepsMutation', () => {
     const accountDomain = 'test-domain'
     const shopName = 'test-shop'
     const baseURL = 'http://localhost:9402'
+
+    beforeEach(() => {
+        mockUseQueryClient.mockReturnValue(new QueryClient())
+    })
 
     describe('createPostStoreInstallationStep', () => {
         it('should create a new post-store installation step', async () => {
@@ -76,13 +70,11 @@ describe('usePostStoreInstallationStepsMutation', () => {
             )
             server.use(createHandler)
 
-            const { result } = renderHook(
-                () =>
-                    usePostStoreInstallationStepsMutation({
-                        accountDomain,
-                        shopName,
-                    }),
-                { wrapper: createWrapper() },
+            const { result } = renderHook(() =>
+                usePostStoreInstallationStepsMutation({
+                    accountDomain,
+                    shopName,
+                }),
             )
 
             const createData = {
@@ -129,13 +121,11 @@ describe('usePostStoreInstallationStepsMutation', () => {
             )
             server.use(errorHandler)
 
-            const { result } = renderHook(
-                () =>
-                    usePostStoreInstallationStepsMutation({
-                        accountDomain,
-                        shopName,
-                    }),
-                { wrapper: createWrapper() },
+            const { result } = renderHook(() =>
+                usePostStoreInstallationStepsMutation({
+                    accountDomain,
+                    shopName,
+                }),
             )
 
             const createData = {
@@ -179,13 +169,11 @@ describe('usePostStoreInstallationStepsMutation', () => {
             )
             server.use(updateHandler)
 
-            const { result } = renderHook(
-                () =>
-                    usePostStoreInstallationStepsMutation({
-                        accountDomain,
-                        shopName,
-                    }),
-                { wrapper: createWrapper() },
+            const { result } = renderHook(() =>
+                usePostStoreInstallationStepsMutation({
+                    accountDomain,
+                    shopName,
+                }),
             )
 
             let updated
@@ -213,13 +201,11 @@ describe('usePostStoreInstallationStepsMutation', () => {
             )
             server.use(errorHandler)
 
-            const { result } = renderHook(
-                () =>
-                    usePostStoreInstallationStepsMutation({
-                        accountDomain,
-                        shopName,
-                    }),
-                { wrapper: createWrapper() },
+            const { result } = renderHook(() =>
+                usePostStoreInstallationStepsMutation({
+                    accountDomain,
+                    shopName,
+                }),
             )
 
             await expect(
@@ -262,13 +248,11 @@ describe('usePostStoreInstallationStepsMutation', () => {
             )
             server.use(updateHandler)
 
-            const { result } = renderHook(
-                () =>
-                    usePostStoreInstallationStepsMutation({
-                        accountDomain,
-                        shopName,
-                    }),
-                { wrapper: createWrapper() },
+            const { result } = renderHook(() =>
+                usePostStoreInstallationStepsMutation({
+                    accountDomain,
+                    shopName,
+                }),
             )
 
             let updated
@@ -306,13 +290,11 @@ describe('usePostStoreInstallationStepsMutation', () => {
             )
             server.use(updateHandler)
 
-            const { result } = renderHook(
-                () =>
-                    usePostStoreInstallationStepsMutation({
-                        accountDomain,
-                        shopName,
-                    }),
-                { wrapper: createWrapper() },
+            const { result } = renderHook(() =>
+                usePostStoreInstallationStepsMutation({
+                    accountDomain,
+                    shopName,
+                }),
             )
 
             let updated
@@ -340,13 +322,11 @@ describe('usePostStoreInstallationStepsMutation', () => {
             )
             server.use(createHandler)
 
-            const { result } = renderHook(
-                () =>
-                    usePostStoreInstallationStepsMutation({
-                        accountDomain,
-                        shopName,
-                    }),
-                { wrapper: createWrapper() },
+            const { result } = renderHook(() =>
+                usePostStoreInstallationStepsMutation({
+                    accountDomain,
+                    shopName,
+                }),
             )
 
             // Initially not loading
@@ -384,6 +364,7 @@ describe('usePostStoreInstallationStepsMutation', () => {
             })
 
             const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries')
+            mockUseQueryClient.mockReturnValue(queryClient)
 
             const createHandler = http.post(
                 `${baseURL}/api/config/post-store-installation-steps`,
@@ -393,19 +374,11 @@ describe('usePostStoreInstallationStepsMutation', () => {
             )
             server.use(createHandler)
 
-            const { result } = renderHook(
-                () =>
-                    usePostStoreInstallationStepsMutation({
-                        accountDomain,
-                        shopName,
-                    }),
-                {
-                    wrapper: ({ children }: { children?: ReactNode }) => (
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    ),
-                },
+            const { result } = renderHook(() =>
+                usePostStoreInstallationStepsMutation({
+                    accountDomain,
+                    shopName,
+                }),
             )
 
             await act(async () => {

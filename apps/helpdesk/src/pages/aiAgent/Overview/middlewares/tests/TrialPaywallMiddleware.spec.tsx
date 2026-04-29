@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -6,7 +6,6 @@ import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { TrialPaywallMiddleware } from '../TrialPaywallMiddleware'
 
@@ -49,7 +48,7 @@ describe('TrialPaywallMiddleware', () => {
     it('should render missing integrations page when there are no integrations', () => {
         useStoreIntegrationsMock.mockReturnValue([])
 
-        renderWithStoreAndQueryClientAndRouter(<TrialPaywallMiddleware />)
+        render(<TrialPaywallMiddleware />)
 
         expect(
             screen.getByText('You don’t have a store connected'),
@@ -65,7 +64,7 @@ describe('TrialPaywallMiddleware', () => {
             } as StoreIntegration,
         ])
 
-        renderWithStoreAndQueryClientAndRouter(<TrialPaywallMiddleware />)
+        render(<TrialPaywallMiddleware />)
 
         expect(screen.getByTestId('welcome-page-view')).toBeInTheDocument()
     })
@@ -86,9 +85,7 @@ describe('TrialPaywallMiddleware', () => {
             } as StoreIntegration,
         ])
 
-        renderWithStoreAndQueryClientAndRouter(
-            <TrialPaywallMiddleware shopName={shopName} />,
-        )
+        render(<TrialPaywallMiddleware shopName={shopName} />)
 
         expect(screen.getByTestId('welcome-page-view')).toBeInTheDocument()
     })
@@ -109,9 +106,7 @@ describe('TrialPaywallMiddleware', () => {
             } as StoreIntegration,
         ])
 
-        renderWithStoreAndQueryClientAndRouter(
-            <TrialPaywallMiddleware shopName={shopName} />,
-        )
+        render(<TrialPaywallMiddleware shopName={shopName} />)
 
         expect(screen.getByTestId('welcome-page-view')).toBeInTheDocument()
     })

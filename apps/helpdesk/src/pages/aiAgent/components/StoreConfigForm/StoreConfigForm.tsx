@@ -4,9 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { reportError } from '@repo/logging'
-import { history } from '@repo/routing'
 import { List } from 'immutable'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
@@ -89,6 +88,7 @@ export const StoreConfigForm = ({
     faqHelpCenters,
     section,
 }: Props) => {
+    const history = useHistory()
     const isFollowUpAiAgentPreviewModeEnabled = useFlag(
         FeatureFlagKey.FollowUpAiAgentPreviewMode,
     )

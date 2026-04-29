@@ -1,9 +1,7 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
-import { renderWithRouter } from 'utils/testing'
 
 import ActionsUseCaseTemplatesCards from '../components/ActionsUseCaseTemplatesCards'
 
@@ -11,18 +9,15 @@ jest.mock('pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled')
 jest.mock('../components/UseCaseTemplateModal', () => {
     return () => null
 })
-
 const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
-
 describe('<ActionsUseCaseTemplatesCards />', () => {
     beforeEach(() => {
         mockUseGetIsActionStepEnabled.mockReturnValue(
             jest.fn().mockReturnValue(true),
         )
     })
-
     it('should render use case template card', () => {
-        renderWithRouter(
+        render(
             <ActionsUseCaseTemplatesCards
                 templates={[
                     {
@@ -93,14 +88,12 @@ describe('<ActionsUseCaseTemplatesCards />', () => {
             />,
             {
                 path: '/:shopType/:shopName/ai-agent/actions/templates',
-                route: '/shopify/acme/ai-agent/actions/templates',
+                initialEntries: ['/shopify/acme/ai-agent/actions/templates'],
             },
         )
-
         expect(screen.getByText('template name')).toBeInTheDocument()
         expect(screen.getByText('Subscriptions')).toBeInTheDocument()
     })
-
     it('should ignore templates without category or without enabled steps', () => {
         const mockGetIsActionStepEnabled = jest
             .fn()
@@ -112,12 +105,10 @@ describe('<ActionsUseCaseTemplatesCards />', () => {
                         return false
                 }
             })
-
         mockUseGetIsActionStepEnabled.mockReturnValue(
             mockGetIsActionStepEnabled,
         )
-
-        renderWithRouter(
+        render(
             <ActionsUseCaseTemplatesCards
                 templates={[
                     {
@@ -225,10 +216,9 @@ describe('<ActionsUseCaseTemplatesCards />', () => {
             />,
             {
                 path: '/:shopType/:shopName/ai-agent/actions/templates',
-                route: '/shopify/acme/ai-agent/actions/templates',
+                initialEntries: ['/shopify/acme/ai-agent/actions/templates'],
             },
         )
-
         expect(screen.queryByText('template name 1')).not.toBeInTheDocument()
         expect(screen.queryByText('template name 2')).not.toBeInTheDocument()
     })

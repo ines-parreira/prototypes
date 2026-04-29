@@ -1,6 +1,8 @@
+import { render } from '@repo/testing'
+
 import '@testing-library/jest-dom'
 
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { PlaygroundInitialContent } from './PlaygroundInitialContent'

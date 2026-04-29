@@ -1,15 +1,9 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import type { LlmTriggeredExecution } from '../../types'
 import ActionEventSidePanel from '../ActionEventSidePanel'
 
-const queryClient = mockQueryClient()
 const execution: LlmTriggeredExecution = {
     id: '1',
     state: {
@@ -59,24 +53,20 @@ const actionConfiguration = {
     updated_datetime: new Date().toISOString(),
     apps: [{ type: 'app' as const, app_id: '1' }],
 }
-
 describe('<ActionEventSidePanel />', () => {
     it('should render component', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionEventSidePanel
-                    isLoading={false}
-                    isOpen={true}
-                    onClose={jest.fn()}
-                    execution={execution}
-                    actionConfiguration={actionConfiguration}
-                />
-            </QueryClientProvider>,
+        render(
+            <ActionEventSidePanel
+                isLoading={false}
+                isOpen={true}
+                onClose={jest.fn()}
+                execution={execution}
+                actionConfiguration={actionConfiguration}
+            />,
+            {},
         )
-
         expect(screen.getByText('Event details')).toBeInTheDocument()
     })
-
     it('should render component with status success first then error', () => {
         const executionWithState: LlmTriggeredExecution = {
             ...execution,
@@ -99,21 +89,17 @@ describe('<ActionEventSidePanel />', () => {
                 },
             },
         }
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionEventSidePanel
-                    isLoading={false}
-                    isOpen={true}
-                    onClose={jest.fn()}
-                    execution={executionWithState}
-                    actionConfiguration={actionConfiguration}
-                />
-            </QueryClientProvider>,
+        render(
+            <ActionEventSidePanel
+                isLoading={false}
+                isOpen={true}
+                onClose={jest.fn()}
+                execution={executionWithState}
+                actionConfiguration={actionConfiguration}
+            />,
+            {},
         )
-
         expect(screen.getByText('Event details')).toBeInTheDocument()
-
         const containers = screen
             .getAllByText(/status/i)
             .map((el) => el.closest('.container'))
@@ -123,7 +109,6 @@ describe('<ActionEventSidePanel />', () => {
         const errorContainer = containers.find((container) =>
             container?.textContent?.includes('ERROR'),
         )
-
         expect(successContainer).not.toBeNull()
         expect(errorContainer).not.toBeNull()
         if (successContainer && errorContainer)
@@ -131,7 +116,6 @@ describe('<ActionEventSidePanel />', () => {
                 containers.indexOf(errorContainer),
             )
     })
-
     it('should render output variables when present', () => {
         const executionWithOutputs: LlmTriggeredExecution = {
             ...execution,
@@ -153,26 +137,22 @@ describe('<ActionEventSidePanel />', () => {
                 },
             },
         }
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionEventSidePanel
-                    isLoading={false}
-                    isOpen={true}
-                    onClose={jest.fn()}
-                    execution={executionWithOutputs}
-                    actionConfiguration={actionConfiguration}
-                />
-            </QueryClientProvider>,
+        render(
+            <ActionEventSidePanel
+                isLoading={false}
+                isOpen={true}
+                onClose={jest.fn()}
+                execution={executionWithOutputs}
+                actionConfiguration={actionConfiguration}
+            />,
+            {},
         )
-
         expect(screen.getByText('Output Variables')).toBeInTheDocument()
         expect(screen.getByText('Outputs')).toBeInTheDocument()
         screen.getByText('Outputs').click()
         expect(screen.getByText(/"result": null/)).toBeInTheDocument()
         expect(screen.getByText(/"value": null/)).toBeInTheDocument()
     })
-
     it('should render output variables from nested reusable-llm-prompt-call steps', async () => {
         const executionWithNestedOutputs: LlmTriggeredExecution = {
             ...execution,
@@ -207,19 +187,16 @@ describe('<ActionEventSidePanel />', () => {
                 },
             },
         }
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionEventSidePanel
-                    isLoading={false}
-                    isOpen={true}
-                    onClose={jest.fn()}
-                    execution={executionWithNestedOutputs}
-                    actionConfiguration={actionConfiguration}
-                />
-            </QueryClientProvider>,
+        render(
+            <ActionEventSidePanel
+                isLoading={false}
+                isOpen={true}
+                onClose={jest.fn()}
+                execution={executionWithNestedOutputs}
+                actionConfiguration={actionConfiguration}
+            />,
+            {},
         )
-
         expect(screen.getByText('Output Variables')).toBeInTheDocument()
         expect(screen.getByText('Outputs')).toBeInTheDocument()
         screen.getByText('Outputs').click()

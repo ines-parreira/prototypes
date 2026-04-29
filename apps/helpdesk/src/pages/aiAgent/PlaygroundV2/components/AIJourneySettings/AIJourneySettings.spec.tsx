@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import type { JourneyApiDTO } from '@gorgias/convert-client'

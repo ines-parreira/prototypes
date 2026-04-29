@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { history } from '@repo/routing'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 
 import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
@@ -29,6 +28,7 @@ const AiAgentScrapedDomainProductsView = ({
     helpCenterId,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
+    const history = useHistory()
     const { productId } = useParams<{ productId?: string }>()
     const [syncStoreDomainStatus, setSyncStoreDomainStatus] = useState<
         string | null

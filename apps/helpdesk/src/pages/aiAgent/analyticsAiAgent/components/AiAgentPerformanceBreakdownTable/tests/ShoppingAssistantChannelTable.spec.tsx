@@ -1,15 +1,9 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
-import moment from 'moment/moment'
-import { Provider } from 'react-redux'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import * as useShoppingAssistantChannelMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
-import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 import { ShoppingAssistantChannelTable } from '../ShoppingAssistantChannelTable'
 
@@ -24,32 +18,10 @@ const mockUseShoppingAssistantChannelMetrics =
         typeof useShoppingAssistantChannelMetricsModule.useShoppingAssistantChannelMetrics
     >
 
-const createWrapper = () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-        },
-    })
-    const defaultState = {
-        stats: {
-            filters: {
-                period: {
-                    end_datetime: moment().toISOString(),
-                    start_datetime: moment().toISOString(),
-                },
-            },
-        },
-        ui: {
-            stats: { filters: uiFiltersInitialState },
-        },
-    } as RootState
-
-    return ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(defaultState)}>{children}</Provider>
-        </QueryClientProvider>
-    )
-}
+const createWrapper =
+    () =>
+    ({ children }: { children?: React.ReactNode }) =>
+        children
 
 describe('ShoppingAssistantChannelTable', () => {
     beforeEach(() => {

@@ -1,5 +1,6 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { QueryClient } from '@tanstack/react-query'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import type { Product } from 'constants/integrations/types/shopify'
 
@@ -9,7 +10,6 @@ jest.mock('../../hooks/usePaginatedProductsByIds', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
-
 jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration',
     () => ({
@@ -17,7 +17,6 @@ jest.mock(
         default: jest.fn(),
     }),
 )
-
 jest.mock('../ItemDrawer', () => ({
     ItemDrawer: ({ isOpen, onClose, onSubmit, title }: any) => {
         if (!isOpen) return null
@@ -32,7 +31,6 @@ jest.mock('../ItemDrawer', () => ({
         )
     },
 }))
-
 jest.mock('../RecommendationRuleCard', () => ({
     RecommendationRuleCard: ({
         title,
@@ -62,14 +60,12 @@ jest.mock('../RecommendationRuleCard', () => ({
         </div>
     ),
 }))
-
 const mockUsePaginatedProductsByIds = jest.requireMock(
     '../../hooks/usePaginatedProductsByIds',
 ).default
 const mockUsePaginatedProductIntegration = jest.requireMock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration',
 ).default
-
 const mockProducts: Product[] = [
     {
         id: 1,
@@ -84,19 +80,16 @@ const mockProducts: Product[] = [
         status: 'draft',
     } as Product,
 ]
-
 describe('ProductRecommendationRuleCard', () => {
-    let queryClient: QueryClient
+    let __queryClient: QueryClient
     const mockOnUpsert = jest.fn()
-
     beforeEach(() => {
-        queryClient = new QueryClient({
+        __queryClient = new QueryClient({
             defaultOptions: {
                 queries: { retry: false },
             },
         })
         jest.clearAllMocks()
-
         mockUsePaginatedProductsByIds.mockReturnValue({
             allProducts: mockProducts,
             products: mockProducts,
@@ -110,7 +103,6 @@ describe('ProductRecommendationRuleCard', () => {
             searchTerm: '',
             setSearchTerm: jest.fn(),
         })
-
         mockUsePaginatedProductIntegration.mockReturnValue({
             itemsData: mockProducts,
             isLoading: false,
@@ -120,10 +112,8 @@ describe('ProductRecommendationRuleCard', () => {
             hasNextPage: false,
             hasPrevPage: false,
         })
-
         mockOnUpsert.mockResolvedValue(undefined)
     })
-
     const renderComponent = (props = {}) => {
         const defaultProps = {
             type: 'promote' as const,
@@ -148,24 +138,16 @@ describe('ProductRecommendationRuleCard', () => {
             onUpsert: mockOnUpsert,
             ...props,
         }
-
-        return render(
-            <QueryClientProvider client={queryClient}>
-                <ProductRecommendationRuleCard {...defaultProps} />
-            </QueryClientProvider>,
-        )
+        return render(<ProductRecommendationRuleCard {...defaultProps} />, {})
     }
-
     it('should render promote type correctly', () => {
         const { getByText } = renderComponent({ type: 'promote' })
-
         expect(getByText('Promote products')).toBeInTheDocument()
         expect(
             getByText('Choose products to prioritize in recommendations.'),
         ).toBeInTheDocument()
         expect(getByText('Total: 2')).toBeInTheDocument()
     })
-
     it('should render exclude type correctly', () => {
         const { getByText } = renderComponent({
             type: 'exclude',
@@ -184,98 +166,71 @@ describe('ProductRecommendationRuleCard', () => {
                 },
             },
         })
-
         expect(getByText('Exclude products')).toBeInTheDocument()
         expect(
             getByText('Choose products to exclude from recommendations.'),
         ).toBeInTheDocument()
         expect(getByText('Total: 2')).toBeInTheDocument()
     })
-
     it('should show loading state when rules are loading', () => {
         const { getByText } = renderComponent({ isLoadingRules: true })
-
         expect(getByText('Loading...')).toBeInTheDocument()
     })
-
     it('should display initial products correctly', () => {
         const { getByText } = renderComponent()
-
         expect(getByText('Product 1')).toBeInTheDocument()
         expect(getByText('Product 2')).toBeInTheDocument()
     })
-
     it('should handle product deletion', async () => {
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Delete 1'))
-
         await waitFor(() => {
             expect(mockOnUpsert).toHaveBeenCalledWith(['2'])
         })
     })
-
     it('should open selection drawer when add button clicked', () => {
         const { getByText, queryByTestId } = renderComponent()
-
         expect(queryByTestId('item-selection-drawer')).not.toBeInTheDocument()
-
         fireEvent.click(getByText('Select products'))
-
         expect(queryByTestId('item-selection-drawer')).toBeInTheDocument()
         expect(getByText('Select products to promote')).toBeInTheDocument()
     })
-
     it('should open see all drawer when see all clicked', () => {
         const { getByText, getAllByTestId } = renderComponent()
-
         fireEvent.click(getByText('See All'))
-
         const drawers = getAllByTestId('item-selection-drawer')
         expect(drawers).toHaveLength(1)
         expect(getByText('All promoted products')).toBeInTheDocument()
     })
-
     it('should close selection drawer', () => {
         const { getByText, queryByTestId } = renderComponent()
-
         fireEvent.click(getByText('Select products'))
         expect(queryByTestId('item-selection-drawer')).toBeInTheDocument()
-
         fireEvent.click(getByText('Close'))
-
         expect(queryByTestId('item-selection-drawer')).not.toBeInTheDocument()
     })
-
     it('should handle product selection submission', async () => {
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Select products'))
         fireEvent.click(getByText('Submit'))
-
         await waitFor(() => {
             expect(mockOnUpsert).toHaveBeenCalledWith(['1', '2', '3'])
         })
     })
-
     it('should fetch products only when drawer is opened', () => {
         const { getByText } = renderComponent()
-
         expect(mockUsePaginatedProductIntegration).toHaveBeenCalledWith(
             expect.objectContaining({
                 enabled: false,
             }),
         )
-
         fireEvent.click(getByText('Select products'))
-
         expect(mockUsePaginatedProductIntegration).toHaveBeenCalledWith(
             expect.objectContaining({
                 enabled: true,
             }),
         )
     })
-
     it('should handle empty product list', () => {
         mockUsePaginatedProductsByIds.mockReturnValue({
             allProducts: [],
@@ -290,7 +245,6 @@ describe('ProductRecommendationRuleCard', () => {
             searchTerm: '',
             setSearchTerm: jest.fn(),
         })
-
         const { getByText } = renderComponent({
             rules: {
                 promote: {
@@ -307,23 +261,17 @@ describe('ProductRecommendationRuleCard', () => {
                 },
             },
         })
-
         expect(getByText('Total: 0')).toBeInTheDocument()
     })
-
     it('should show correct drawer titles for exclude type', () => {
         const { getByText } = renderComponent({ type: 'exclude' })
-
         fireEvent.click(getByText('Select products'))
         expect(getByText('Select products to exclude')).toBeInTheDocument()
-
         fireEvent.click(getByText('See All'))
         expect(getByText('All excluded products')).toBeInTheDocument()
     })
-
     it('should disable actions when upserting', () => {
         renderComponent({ isUpserting: true })
-
         expect(mockUsePaginatedProductsByIds).toHaveBeenCalledWith(
             expect.objectContaining({
                 enabled: expect.any(Boolean),

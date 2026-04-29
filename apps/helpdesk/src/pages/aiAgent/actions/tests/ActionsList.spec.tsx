@@ -1,10 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { IntegrationType } from 'models/integration/constants'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
@@ -17,8 +14,7 @@ import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import type { RootState } from 'state/types'
 
 import ActionsList from '../components/ActionsList'
 import type { StoresWorkflowConfiguration } from '../types'
@@ -28,14 +24,12 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)
-
 jest.mock('models/workflows/queries')
 jest.mock('models/knowledgeService/queries')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/useDeleteAction')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
-
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseApps = jest.mocked(useApps)
@@ -48,7 +42,6 @@ const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
     useFindAllGuidancesKnowledgeResources,
 )
-
 const mockActions: StoresWorkflowConfiguration = [
     {
         id: '1',
@@ -97,13 +90,9 @@ const mockActions: StoresWorkflowConfiguration = [
         short_description: 'Action 2 short description',
     },
 ]
-
 const defaultState = {
     integrations: fromJS({ integrations: [] }),
 } as RootState
-
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
-
 describe('ActionsList', () => {
     beforeEach(() => {
         mockUseGetStoreApps.mockReturnValue({
@@ -138,54 +127,37 @@ describe('ActionsList', () => {
             typeof useFindAllGuidancesKnowledgeResources
         >)
     })
-
     it('sorts actions by updated date in ascending order', () => {
-        renderWithQueryClientProvider(
-            <Router>
-                <Provider store={mockStore(defaultState)}>
-                    <ActionsList actions={mockActions} />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ActionsList actions={mockActions} />, {
+            storeState: defaultState,
+        })
         // Initial order should be descending
         const sortedActions = screen.getAllByText(/Action \d/)
         expect(sortedActions[0]).toHaveTextContent('Action 2')
         expect(sortedActions[1]).toHaveTextContent('Action 1')
-
         // Click to sort ascending
         const lastUpdatedHeader = screen.getByText('LAST UPDATED')
         fireEvent.click(lastUpdatedHeader)
-
         const sortedActionsAsc = screen.getAllByText(/Action \d/)
         expect(sortedActionsAsc[0]).toHaveTextContent('Action 1')
         expect(sortedActionsAsc[1]).toHaveTextContent('Action 2')
     })
-
     it('sorts actions by updated date in descending order', () => {
-        renderWithQueryClientProvider(
-            <Router>
-                <Provider store={mockStore(defaultState)}>
-                    <ActionsList actions={mockActions} />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ActionsList actions={mockActions} />, {
+            storeState: defaultState,
+        })
         // Click to sort ascending
         const lastUpdatedHeader = screen.getByText('LAST UPDATED')
         fireEvent.click(lastUpdatedHeader)
         fireEvent.click(lastUpdatedHeader)
-
         const sortedActionsDesc = screen.getAllByText(/Action \d/)
         expect(sortedActionsDesc[0]).toHaveTextContent('Action 2')
         expect(sortedActionsDesc[1]).toHaveTextContent('Action 1')
     })
-
     it('show fake action placeholder', () => {
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.FakeActionPlaceholder || false,
         )
-
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [
                 {
@@ -199,14 +171,9 @@ describe('ActionsList', () => {
                 },
             ],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
-        renderWithQueryClientProvider(
-            <Router>
-                <Provider store={mockStore(defaultState)}>
-                    <ActionsList actions={mockActions} />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ActionsList actions={mockActions} />, {
+            storeState: defaultState,
+        })
         expect(screen.getByText('Get order info')).toBeInTheDocument()
     })
 })

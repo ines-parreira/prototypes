@@ -1,7 +1,7 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionRecentTickets } from './KnowledgeEditorSidePanelSectionRecentTickets'
@@ -16,7 +16,7 @@ describe('KnowledgeEditorSidePanelSectionRecentTickets', () => {
             end_datetime: new Date().toISOString(),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
@@ -69,7 +69,7 @@ describe('KnowledgeEditorSidePanelSectionRecentTickets', () => {
     })
 
     it('renders loading skeletons when isLoading is true', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
@@ -86,7 +86,7 @@ describe('KnowledgeEditorSidePanelSectionRecentTickets', () => {
     })
 
     it('renders 0 for ticket count when ticketCount is undefined and not loading', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
@@ -107,7 +107,7 @@ describe('KnowledgeEditorSidePanelSectionRecentTickets', () => {
             end_datetime: new Date().toISOString(),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
@@ -150,7 +150,7 @@ describe('KnowledgeEditorSidePanelSectionRecentTickets', () => {
             end_datetime: new Date().toISOString(),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >

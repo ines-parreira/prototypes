@@ -1,13 +1,9 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
-import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
@@ -104,9 +100,6 @@ jest.mock('../../../hooks/useAiAgentNavigation', () => ({
     })),
 }))
 
-const middlewares = [thunk]
-const mockStore = configureStore(middlewares)
-
 const mockOpportunityPageState: OpportunityPageState = {
     state: State.HAS_OPPORTUNITIES,
     isLoading: false,
@@ -199,34 +192,18 @@ describe('OpportunitiesContent', () => {
         } as any,
     }
 
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-            mutations: { retry: false },
-        },
-    })
     const renderComponent = (props = {}) => {
-        const store = mockStore({
-            notifications: [],
-        })
-
         const Wrapper = ({ children }: { children?: ReactNode }) => {
             const [isSidebarVisible, setIsSidebarVisible] = useState(true)
             return (
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <OpportunitiesSidebarContext.Provider
-                                value={{
-                                    isSidebarVisible,
-                                    setIsSidebarVisible,
-                                }}
-                            >
-                                {children}
-                            </OpportunitiesSidebarContext.Provider>
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>
+                <OpportunitiesSidebarContext.Provider
+                    value={{
+                        isSidebarVisible,
+                        setIsSidebarVisible,
+                    }}
+                >
+                    {children}
+                </OpportunitiesSidebarContext.Provider>
             )
         }
 

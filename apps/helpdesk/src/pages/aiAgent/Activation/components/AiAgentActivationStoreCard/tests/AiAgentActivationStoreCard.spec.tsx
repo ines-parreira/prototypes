@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
@@ -8,7 +8,6 @@ import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActiva
 import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/Activation/hooks/tests/fixtures/store-configurations.fixture'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import { renderWithRouter } from 'utils/testing'
 
 import { AiAgentActivationStoreCard } from '../AiAgentActivationStoreCard'
 
@@ -56,7 +55,7 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
 
 const renderComponent = (
     props: ComponentProps<typeof AiAgentActivationStoreCard>,
-) => renderWithRouter(<AiAgentActivationStoreCard {...props} />)
+) => render(<AiAgentActivationStoreCard {...props} />)
 
 const storeWithoutAlert: StoreActivation = storeActivationFixture({
     storeName: 'steve-madden',

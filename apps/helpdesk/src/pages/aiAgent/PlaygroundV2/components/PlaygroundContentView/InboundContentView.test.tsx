@@ -1,21 +1,18 @@
+import { render } from '@repo/testing'
+
 import '@testing-library/jest-dom'
 
-import { render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { screen } from '@testing-library/react'
 
 import { MessageType } from 'models/aiAgentPlayground/types'
 
 import { InboundContentView } from './InboundContentView'
-
-const mockStore = configureMockStore()
 
 jest.mock('../PlaygroundInitialContent/PlaygroundInitialContent', () => ({
     PlaygroundInitialContent: () => (
         <div data-testid="initial-content">Initial Content</div>
     ),
 }))
-
 jest.mock('../PlaygroundMessageList/PlaygroundMessageList', () => ({
     PlaygroundMessageList: ({ messages }: { messages: unknown[] }) => (
         <div data-testid="message-list">
@@ -23,7 +20,6 @@ jest.mock('../PlaygroundMessageList/PlaygroundMessageList', () => ({
         </div>
     ),
 }))
-
 describe('InboundContentView', () => {
     const defaultProps = {
         accountId: 1,
@@ -32,32 +28,20 @@ describe('InboundContentView', () => {
         shouldDisplayReasoning: false,
         messages: [],
     }
-
-    const store = mockStore({})
-
     const renderComponent = (props = {}) => {
-        return render(
-            <Provider store={store}>
-                <InboundContentView {...defaultProps} {...props} />
-            </Provider>,
-        )
+        return render(<InboundContentView {...defaultProps} {...props} />, {})
     }
-
     describe('Empty State', () => {
         it('should render initial content when no messages (messages.length === 0)', () => {
             renderComponent({ messages: [] })
-
             expect(screen.getByTestId('initial-content')).toBeInTheDocument()
             expect(screen.queryByTestId('message-list')).not.toBeInTheDocument()
         })
-
         it('should not render message list when no messages (messages.length > 0 is false)', () => {
             renderComponent({ messages: [] })
-
             expect(screen.queryByTestId('message-list')).not.toBeInTheDocument()
         })
     })
-
     describe('With Messages', () => {
         const mockMessages = [
             {
@@ -73,24 +57,19 @@ describe('InboundContentView', () => {
                 text: 'Hi there',
             },
         ]
-
         it('should render message list when messages exist (messages.length > 0)', () => {
             renderComponent({ messages: mockMessages })
-
             expect(screen.getByTestId('message-list')).toBeInTheDocument()
             expect(
                 screen.getByText('Message List (2 messages)'),
             ).toBeInTheDocument()
         })
-
         it('should not render initial content when messages exist (messages.length === 0 is false)', () => {
             renderComponent({ messages: mockMessages })
-
             expect(
                 screen.queryByTestId('initial-content'),
             ).not.toBeInTheDocument()
         })
-
         it('should pass correct props to PlaygroundMessageList', () => {
             renderComponent({
                 messages: mockMessages,
@@ -98,7 +77,6 @@ describe('InboundContentView', () => {
                 userId: 456,
                 shouldDisplayReasoning: true,
             })
-
             expect(screen.getByTestId('message-list')).toBeInTheDocument()
         })
     })

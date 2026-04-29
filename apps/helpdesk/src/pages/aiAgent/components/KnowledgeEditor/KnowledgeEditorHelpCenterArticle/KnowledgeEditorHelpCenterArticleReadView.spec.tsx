@@ -57,8 +57,6 @@ describe('KnowledgeEditorHelpCenterArticleReadView', () => {
                 <h3>Code Example</h3>
                 <pre><code>const example = "Hello World";</code></pre>
 
-
-
                 <blockquote>Remember to always test your changes before deploying.</blockquote>
 
                 <p>For more information, visit <a href="https://docs.example.com">our documentation</a>.</p>

@@ -1,22 +1,17 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useListTrackstarConnections } from 'models/workflows/queries'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import StoreTrackstarContext from '../StoreTrackstarContext'
 import StoreTrackstarProvider from '../StoreTrackstarProvider'
 
 jest.mock('models/workflows/queries')
-
 const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
-
 mockUseListTrackstarConnections.mockReturnValue({
     data: [],
     isInitialLoading: false,
 } as unknown as ReturnType<typeof useListTrackstarConnections>)
-
 describe('<StoreTrackstarProvider />', () => {
     it('should use trackstar integration id from store app', () => {
         mockUseListTrackstarConnections.mockReturnValue({
@@ -32,8 +27,7 @@ describe('<StoreTrackstarProvider />', () => {
             },
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useListTrackstarConnections>)
-
-        renderWithQueryClientProvider(
+        render(
             <StoreTrackstarProvider storeName="acme" storeType="shopify">
                 <StoreTrackstarContext.Consumer>
                     {(contextValue) => {
@@ -42,7 +36,6 @@ describe('<StoreTrackstarProvider />', () => {
                 </StoreTrackstarContext.Consumer>
             </StoreTrackstarProvider>,
         )
-
         expect(
             screen.getByText('Trackstar integration: sandbox_connection_id'),
         ).toBeInTheDocument()

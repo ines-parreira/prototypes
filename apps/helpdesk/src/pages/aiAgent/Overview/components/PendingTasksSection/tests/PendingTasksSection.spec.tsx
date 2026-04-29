@@ -1,8 +1,8 @@
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import { AlwaysDisplayedTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysDisplayed.task'
 import { AlwaysHiddenTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysHidden.task'
-import { renderWithRouter } from 'utils/testing'
 
 import { PendingTasksSection } from '../PendingTasksSection'
 
@@ -23,7 +23,7 @@ const completedTasks = [
 
 describe('PendingTasksSection', () => {
     it('render the section in loading', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <PendingTasksSection
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}
@@ -39,7 +39,7 @@ describe('PendingTasksSection', () => {
 
     it('render the component after loading', () => {
         jest.useFakeTimers()
-        renderWithRouter(
+        render(
             <PendingTasksSection
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}
@@ -54,7 +54,7 @@ describe('PendingTasksSection', () => {
 
     it('render the component after loading when all tasks are completed', () => {
         jest.useFakeTimers()
-        renderWithRouter(
+        render(
             <PendingTasksSection
                 completedTasks={completedTasks}
                 pendingTasks={[]}
@@ -71,7 +71,7 @@ describe('PendingTasksSection', () => {
     })
 
     it('should expand when clicking on expand button', () => {
-        const rendered = renderWithRouter(
+        const rendered = render(
             <PendingTasksSection
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}

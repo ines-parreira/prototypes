@@ -1,5 +1,5 @@
-import { history } from '@repo/routing'
 import classNames from 'classnames'
+import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
@@ -30,6 +30,7 @@ export const AiAgentPreviewModeSection = ({
     isFollowUpAiAgentPreviewModeEnabled,
     className,
 }: Props) => {
+    const history = useHistory()
     const { hasAccess } = useAiAgentAccess(storeConfiguration?.storeName)
 
     const handleAiAgentTrialModeChange = (value: string) => {

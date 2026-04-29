@@ -4,14 +4,9 @@ import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { Link } from 'react-router-dom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
@@ -25,8 +20,6 @@ import Wizard from 'pages/common/components/wizard/Wizard'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import {
     ARTICLE_INGESTION_LOGS_STATUS,
@@ -43,30 +36,23 @@ import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 const SHOP_NAME = 'test-shop'
 const SHOP_TYPE = 'shopify'
-
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
-
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
-
 jest.mock('../../hooks/useAiAgentOnboardingNotification')
 const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification,
 )
-
 jest.mock('../../hooks/useFileIngestion')
 const mockUseFileIngestion = assumeMock(useFileIngestion)
-
 jest.mock('pages/aiAgent/hooks/usePublicResourcesPooling', () => ({
     usePublicResourcesPooling: jest.fn(),
 }))
 const mockUsePublicResourcesPooling = assumeMock(usePublicResourcesPooling)
-
 const mockedHelpCenters = getHelpCentersResponseFixture.data
 const mockedStoreConfiguration = getStoreConfigurationFixture()
-
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
@@ -74,10 +60,8 @@ jest.mock('@repo/logging', () => ({
             'ai-agent-onboarding-wizard-public-url-ingested',
     },
 }))
-
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
-
 const mockedUseAiAgentOnboardingWizard = {
     storeFormValues: getStoreConfigurationFormValuesFixture(),
     faqHelpCenters: mockedHelpCenters,
@@ -90,18 +74,12 @@ const mockedUseAiAgentOnboardingWizard = {
     updateValue: jest.fn(),
     storeConfiguration: mockedStoreConfiguration,
 }
-const queryClient = mockQueryClient()
-const mockStore = configureMockStore([thunk])
-
 const defaultState = {}
 const defaultProps = {
     shopType: SHOP_TYPE,
     shopName: SHOP_NAME,
     storeConfiguration: mockedStoreConfiguration,
 }
-
-const history = createMemoryHistory()
-
 const renderComponent = (
     props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepKnowledge>>,
 ) => {
@@ -109,21 +87,18 @@ const renderComponent = (
         ...defaultProps,
         ...props,
     }
-    renderWithRouter(
-        <Router history={history}>
-            <Provider store={mockStore(defaultState)}>
-                <QueryClientProvider client={queryClient}>
-                    <Wizard steps={[AiAgentOnboardingWizardStep.Knowledge]}>
-                        <AiAgentOnboardingWizardStepKnowledge
-                            {...currentProps}
-                        />
-                    </Wizard>
-                </QueryClientProvider>
-            </Provider>
-        </Router>,
+    render(
+        <>
+            <Wizard steps={[AiAgentOnboardingWizardStep.Knowledge]}>
+                <AiAgentOnboardingWizardStepKnowledge {...currentProps} />
+            </Wizard>
+            <Link to="/test">Navigate away</Link>
+        </>,
+        {
+            storeState: defaultState,
+        },
     )
 }
-
 describe('<AiAgentOnboardingWizardKnowledge />', () => {
     beforeEach(() => {
         mockUseAiAgentOnboardingWizard.mockReturnValue(
@@ -143,10 +118,8 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             defaultUseAiAgentOnboardingNotification,
         )
     })
-
     it('should render the header and footer correctly', () => {
         renderComponent({})
-
         expect(
             screen.getByText('Add knowledge to AI Agent'),
         ).toBeInTheDocument()
@@ -157,24 +130,18 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         ).toBeInTheDocument()
         expect(screen.getByText('Back')).toBeInTheDocument()
         expect(screen.getByText('Finish')).toBeInTheDocument()
-        expect(screen.getByText('Save & Customize Later')).toBeInTheDocument
+        expect(screen.getByText('Save & Customize Later')).toBeInTheDocument()
     })
-
     it('should call handleAction with PREVIOUS_STEP when Back button is clicked', () => {
         renderComponent({})
-
         userEvent.click(screen.getByText('Back'))
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleAction,
         ).toHaveBeenCalledWith(WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP)
     })
-
     it('should call handleSave with SAVE_AND_CUSTOMIZE_LATER when Save & Customize Later button is clicked', () => {
         renderComponent({})
-
         userEvent.click(screen.getByText('Save & Customize Later'))
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
@@ -182,12 +149,9 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
         })
     })
-
     it('should call handleSave and redirect to test tab when Finish button is clicked', () => {
         renderComponent({})
-
         userEvent.click(screen.getByText('Finish'))
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
@@ -203,7 +167,6 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             },
         })
     })
-
     it('should call handleSave and redirect to guidance tab when Finish button is clicked and feature flag is enabled', () => {
         mockUseFlag.mockImplementation(
             (key) =>
@@ -211,11 +174,8 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                     FeatureFlagKey.AiAgentOnboardingWizardKnowledgeRedirect ||
                 false,
         )
-
         renderComponent({})
-
         userEvent.click(screen.getByText('Finish'))
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
@@ -231,13 +191,11 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             },
         })
     })
-
     it('should autofill the help center select when there is only 1 connected help center', () => {
         const mockedStoreConfigurationWithoutHelpCenter = {
             ...getStoreConfigurationFixture(),
             helpCenterId: null,
         }
-
         const mockedUseAiAgentOnboardingWizard = {
             storeFormValues: getStoreConfigurationFormValuesFixture(),
             faqHelpCenters: [{ ...mockedHelpCenters[0], shop_name: SHOP_NAME }],
@@ -250,37 +208,30 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             updateValue: jest.fn(),
             storeConfiguration: mockedStoreConfigurationWithoutHelpCenter,
         }
-
         mockUseAiAgentOnboardingWizard.mockReturnValue(
             mockedUseAiAgentOnboardingWizard,
         )
-
         renderComponent({})
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleFormUpdate,
         ).toHaveBeenCalledWith({
             helpCenterId: mockedUseAiAgentOnboardingWizard.faqHelpCenters[0].id,
         })
     })
-
     it('should left the help center select empty when there is no connected help center', () => {
         const mockedStoreConfigurationWithoutHelpCenter = {
             ...getStoreConfigurationFixture(),
             helpCenterId: null,
         }
-
         renderComponent({
             storeConfiguration: mockedStoreConfigurationWithoutHelpCenter,
         })
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleFormUpdate,
         ).not.toHaveBeenCalledWith({
             helpCenterId: mockedUseAiAgentOnboardingWizard.faqHelpCenters[0].id,
         })
     })
-
     it('should have Public URL sources section when snippetHelpCenter is provided', () => {
         const mockedUseAiAgentOnboardingWizard = {
             storeFormValues: getStoreConfigurationFormValuesFixture(),
@@ -294,79 +245,60 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             updateValue: jest.fn(),
             storeConfiguration: mockedStoreConfiguration,
         }
-
         mockUseAiAgentOnboardingWizard.mockReturnValue(
             mockedUseAiAgentOnboardingWizard,
         )
-
         renderComponent({})
-
         expect(screen.getByText('URLs')).toBeInTheDocument()
     })
-
     it('should call handleFormUpdate when help center select is changed', () => {
         renderComponent({})
-
         const selectedHelpCenter = screen.getByText(mockedHelpCenters[0].name)
         act(() => {
             fireEvent.focus(selectedHelpCenter)
         })
-
         const emptyHelpCenterItem = screen.getByText('No Help Center')
         act(() => {
             fireEvent.click(emptyHelpCenterItem)
         })
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleFormUpdate,
         ).toHaveBeenCalledWith({ helpCenterId: null })
-
         act(() => {
             fireEvent.focus(selectedHelpCenter)
         })
-
         const newSelectedHelpCenter = screen.getByText(
             mockedHelpCenters[1].name,
         )
         act(() => {
             fireEvent.click(newSelectedHelpCenter)
         })
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleFormUpdate,
         ).toHaveBeenCalledWith({ helpCenterId: mockedHelpCenters[1].id })
     })
-
     it('should include public URL changed in handleSave', async () => {
         const mockedUseAiAgentOnboardingWizardWithSnippet = {
             ...mockedUseAiAgentOnboardingWizard,
             snippetHelpCenter: mockedHelpCenters[0],
         }
-
         mockUseAiAgentOnboardingWizard.mockReturnValue(
             mockedUseAiAgentOnboardingWizardWithSnippet,
         )
-
         renderComponent({})
-
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
-
         const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
-
         await userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)
-
         userEvent.click(screen.getByText('Save & Customize Later'))
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             publicUrls: ['https://example.com/faqs'],
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
         })
-
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested,
             {
@@ -376,7 +308,6 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             },
         )
     })
-
     it('should redirect to knowledge section when finishing wizard during public URL sync', async () => {
         mockUseAiAgentOnboardingWizard.mockReturnValue({
             ...mockedUseAiAgentOnboardingWizard,
@@ -385,24 +316,17 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                 helpCenterId: null,
             }),
         })
-
         mockUsePublicResourcesPooling.mockReturnValue({
             articleIngestionLogsStatus: [ARTICLE_INGESTION_LOGS_STATUS.PENDING],
         })
-
         renderComponent({})
-
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
-
         const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
-
         await userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)
-
         userEvent.click(screen.getByText('Finish'))
-
         expect(
             mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
@@ -418,7 +342,6 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             },
         })
     })
-
     it('should log event when new url is ingested', async () => {
         const defaultWizard = getStoreConfigurationFormValuesFixture().wizard!
         const mockedUseAiAgentOnboardingWizardWithSnippet = {
@@ -430,24 +353,17 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                 },
             }),
         }
-
         mockUseAiAgentOnboardingWizard.mockReturnValue(
             mockedUseAiAgentOnboardingWizardWithSnippet,
         )
-
         renderComponent({})
-
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
-
         const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
-
         await userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)
-
         userEvent.click(screen.getByText('Save & Customize Later'))
-
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested,
             {
@@ -457,24 +373,21 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             },
         )
     })
-
     it('should display confirmation dialog modal when user tries to leave after changes help center select', async () => {
         renderComponent({})
-
         const selectedHelpCenter = screen.getByText(mockedHelpCenters[0].name)
         act(() => {
             fireEvent.focus(selectedHelpCenter)
         })
-
         const newSelectedHelpCenter = screen.getByText(
             mockedHelpCenters[1].name,
         )
         act(() => {
             fireEvent.click(newSelectedHelpCenter)
         })
-
-        history.push('/test')
-
+        await userEvent.click(
+            screen.getByRole('link', { name: 'Navigate away' }),
+        )
         await waitFor(() => {
             expect(
                 screen.getByText(
@@ -484,7 +397,6 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             expect(screen.getByText('Save Changes')).toBeInTheDocument()
             expect(screen.getByText('Discard Changes')).toBeInTheDocument()
         })
-
         userEvent.click(screen.getByText('Save Changes'))
         expect(
             mockedUseAiAgentOnboardingWizard.handleSave,
@@ -493,7 +405,6 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
         })
     })
-
     it('should display a warning notification when Finish is clicked and documents are syncing', () => {
         mockUseAiAgentOnboardingWizard.mockReturnValue({
             ...mockedUseAiAgentOnboardingWizard,
@@ -506,11 +417,8 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             isIngesting: true,
             isLoading: false,
         })
-
         renderComponent({})
-
         userEvent.click(screen.getByText('Finish'))
-
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledWith({
             message:
@@ -525,24 +433,19 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             ],
         })
     })
-
     it('should trigger cancellation call on finish AI agent setup notification when Finish is clicked', async () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue({
             ...defaultUseAiAgentOnboardingNotification,
             isAiAgentOnboardingNotificationEnabled: true,
         })
-
         renderComponent({})
-
         userEvent.click(screen.getByText('Finish'))
-
         await waitFor(() => {
             expect(
                 defaultUseAiAgentOnboardingNotification.handleOnSave,
             ).toHaveBeenCalledWith({
                 onboardingState: AiAgentOnboardingState.FinishedSetup,
             })
-
             expect(
                 defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
             ).toHaveBeenCalledWith({
@@ -552,7 +455,6 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             })
         })
     })
-
     it('should log notification segment event when Finish is clicked after receiving finish setup notification', async () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue({
             ...defaultUseAiAgentOnboardingNotification,
@@ -562,11 +464,8 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                     '2024-11-04T13:07:00',
             }),
         })
-
         renderComponent({})
-
         userEvent.click(screen.getByText('Finish'))
-
         await waitFor(() => {
             expect(
                 defaultUseAiAgentOnboardingNotification.handleOnPerformActionPostReceivedNotification,

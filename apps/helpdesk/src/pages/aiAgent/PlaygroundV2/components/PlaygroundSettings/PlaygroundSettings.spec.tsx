@@ -1,14 +1,10 @@
 import type React from 'react'
 
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { AIJourneyProvider } from '../../contexts/AIJourneyContext'
@@ -292,28 +288,21 @@ const mockAIJourneyContext = (
     })
 }
 
-const queryClient = mockQueryClient()
-const mockStore = configureMockStore([thunk])
-
 const withProviders = (
     children: React.ReactNode,
     supportedModes?: ('inbound' | 'outbound')[],
 ) => (
-    <Provider store={mockStore({})}>
-        <QueryClientProvider client={queryClient}>
-            <ConfigurationProvider>
-                <AIJourneyProvider shopName="test-shop">
-                    <CoreProvider>
-                        <EventsProvider>
-                            <SettingsProvider supportedModes={supportedModes}>
-                                {children}
-                            </SettingsProvider>
-                        </EventsProvider>
-                    </CoreProvider>
-                </AIJourneyProvider>
-            </ConfigurationProvider>
-        </QueryClientProvider>
-    </Provider>
+    <ConfigurationProvider>
+        <AIJourneyProvider shopName="test-shop">
+            <CoreProvider>
+                <EventsProvider>
+                    <SettingsProvider supportedModes={supportedModes}>
+                        {children}
+                    </SettingsProvider>
+                </EventsProvider>
+            </CoreProvider>
+        </AIJourneyProvider>
+    </ConfigurationProvider>
 )
 
 const renderComponent = (supportedModes?: ('inbound' | 'outbound')[]) => {

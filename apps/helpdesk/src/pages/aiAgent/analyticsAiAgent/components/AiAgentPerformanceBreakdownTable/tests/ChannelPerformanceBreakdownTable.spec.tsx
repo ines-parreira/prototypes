@@ -1,6 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import * as useChannelPerformanceMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useChannelPerformanceMetrics'
@@ -17,18 +16,10 @@ const mockUseChannelPerformanceMetrics =
         typeof useChannelPerformanceMetricsModule.useChannelPerformanceMetrics
     >
 
-const createWrapper = () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-        },
-    })
-    return ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-}
+const createWrapper =
+    () =>
+    ({ children }: { children?: React.ReactNode }) =>
+        children
 
 describe('ChannelPerformanceBreakdownTable', () => {
     beforeEach(() => {

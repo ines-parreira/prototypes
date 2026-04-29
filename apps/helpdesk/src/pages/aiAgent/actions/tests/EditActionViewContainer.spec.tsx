@@ -1,6 +1,6 @@
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import { IntegrationType } from 'models/integration/constants'
@@ -10,14 +10,17 @@ import {
 } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import EditActionViewContainer from '../EditActionViewContainer'
 
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div>{location.pathname}</div>
+}
+
 jest.mock('models/workflows/queries')
 jest.mock('../EditActionView', () => () => <div>EditActionView</div>)
-
 jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => {
     return {
         __esModule: true,
@@ -26,22 +29,11 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => {
 })
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
-
 const mockUseApps = jest.mocked(useApps)
 const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
-
 const mockUseGetWorkflowConfiguration = jest.mocked(useGetWorkflowConfiguration)
-
-const queryClient = mockQueryClient()
-
 describe('<EditActionViewContainer />', () => {
     it("should redirect to actions page if configuration doesn't exist", () => {
-        const history = createMemoryHistory({
-            initialEntries: [
-                `/app/automation/shopify/shopify-store/ai-agent/actions/edit/test123`,
-            ],
-        })
-        const historyReplaceSpy = jest.spyOn(history, 'replace')
         mockUseListTrackstarConnections.mockReturnValue({
             data: { sandbox: { integration_name: 'sandbox', error: true } },
             isLoading: false,
@@ -88,29 +80,26 @@ describe('<EditActionViewContainer />', () => {
             data: null,
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <EditActionViewContainer />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
             {
-                history,
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/test123`,
+                path: '/app/:product/:shopType?/:shopName?/:section?/:resource?/:mode?/:id?',
+                initialEntries: [
+                    `/app/automation/shopify/shopify-store/ai-agent/actions/edit/test123`,
+                ],
             },
         )
-
         expect(mockUseGetWorkflowConfiguration).toHaveBeenCalledWith(
             'test123',
             expect.anything(),
         )
-        expect(historyReplaceSpy).toHaveBeenCalledWith(
-            expect.objectContaining({
-                pathname: '/app/ai-agent/shopify/shopify-store/actions',
-            }),
-        )
+        expect(
+            screen.getByText('/app/ai-agent/shopify/shopify-store/actions'),
+        ).toBeInTheDocument()
     })
-
     it('should render multi step Action page', () => {
         const b = new WorkflowConfigurationBuilder({
             id: ulid(),
@@ -158,33 +147,19 @@ describe('<EditActionViewContainer />', () => {
         b.insertHttpRequestConditionAndEndStepAndSelect('error', {
             success: false,
         })
-
         mockUseGetWorkflowConfiguration.mockReturnValue({
             data: b.build(),
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <EditActionViewContainer />
-            </QueryClientProvider>,
-        )
-
+        render(<EditActionViewContainer />, {})
         expect(screen.getByText('EditActionView')).toBeInTheDocument()
     })
-
     it('should render loading', () => {
         mockUseGetWorkflowConfiguration.mockReturnValue({
             data: undefined,
             isInitialLoading: true,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <EditActionViewContainer />
-            </QueryClientProvider>,
-        )
-
+        render(<EditActionViewContainer />, {})
         expect(screen.getByText('AiAgentLayout')).toBeInTheDocument()
     })
 })

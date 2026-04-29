@@ -1,6 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import * as useIntentPerformanceMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
@@ -17,18 +16,10 @@ const mockUseIntentPerformanceMetrics =
         typeof useIntentPerformanceMetricsModule.useIntentPerformanceMetrics
     >
 
-const createWrapper = () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-        },
-    })
-    return ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-}
+const createWrapper =
+    () =>
+    ({ children }: { children?: React.ReactNode }) =>
+        children
 
 describe('IntentPerformanceBreakdownTable', () => {
     beforeEach(() => {

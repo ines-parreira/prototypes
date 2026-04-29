@@ -1,7 +1,6 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import {
     useCreatePostStoreInstallationStepPure,
@@ -16,7 +15,6 @@ import {
 import { TasksCategory } from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
 import type { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
-import { mockStore } from 'utils/testing'
 
 import { useGetSetupTasksConfigByCategory } from '../useGetSetupTasksConfigByCategory'
 
@@ -72,25 +70,15 @@ const createMockTask = (
 }
 
 describe('useGetSetupTasksConfigByCategory', () => {
-    let queryClient: QueryClient
-    let store: ReturnType<typeof mockStore>
+    let storeState: ReturnType<typeof fromJS>
 
     beforeEach(() => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
+        storeState = fromJS({
+            currentAccount: {
+                accountId: 123,
+                accountDomain: 'test-domain.com',
             },
         })
-        store = mockStore(
-            fromJS({
-                currentAccount: {
-                    accountId: 123,
-                    accountDomain: 'test-domain.com',
-                },
-            }),
-        )
         jest.clearAllMocks()
 
         mockUsePendingTasksRuleEngine.mockReturnValue({
@@ -128,14 +116,6 @@ describe('useGetSetupTasksConfigByCategory', () => {
         } as any)
     })
 
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        </Provider>
-    )
-
     const defaultParams = {
         accountId: 123,
         shopName: 'test-shop',
@@ -151,7 +131,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(result.current.tasksConfigByCategory).toEqual({})
@@ -170,7 +150,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(result.current.tasksConfigByCategory).toEqual({})
@@ -199,7 +179,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(result.current.tasksConfigByCategory).toEqual({})
@@ -241,7 +221,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(Object.keys(result.current.tasksConfigByCategory)).toContain(
@@ -306,7 +286,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         const customizeTasks =
@@ -348,7 +328,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(Object.keys(result.current.tasksConfigByCategory)).toEqual([
@@ -425,7 +405,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(Object.keys(result.current.tasksConfigByCategory)).toHaveLength(
@@ -467,7 +447,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -483,7 +463,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(result.current.error).toBe(error)
@@ -519,7 +499,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         const essentialTasks =
@@ -573,7 +553,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(result.current.completionPercentage).toBe(67)
@@ -588,7 +568,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(result.current.completionPercentage).toBe(0)
@@ -633,7 +613,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
         const { result } = renderHook(
             () => useGetSetupTasksConfigByCategory(defaultParams),
-            { wrapper },
+            { storeState },
         )
 
         expect(result.current.completionPercentage).toBe(100)
@@ -687,7 +667,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
             })
 
             renderHook(() => useGetSetupTasksConfigByCategory(defaultParams), {
-                wrapper,
+                storeState,
             })
 
             await waitFor(() => {
@@ -743,7 +723,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
             })
 
             renderHook(() => useGetSetupTasksConfigByCategory(defaultParams), {
-                wrapper,
+                storeState,
             })
 
             await waitFor(() => {
@@ -799,7 +779,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
             })
 
             renderHook(() => useGetSetupTasksConfigByCategory(defaultParams), {
-                wrapper,
+                storeState,
             })
 
             await waitFor(() => {
@@ -861,7 +841,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
             const { result } = renderHook(
                 () => useGetSetupTasksConfigByCategory(defaultParams),
                 {
-                    wrapper,
+                    storeState,
                 },
             )
 

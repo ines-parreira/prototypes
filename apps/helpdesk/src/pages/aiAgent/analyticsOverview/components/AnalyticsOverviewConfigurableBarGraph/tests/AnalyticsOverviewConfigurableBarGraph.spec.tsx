@@ -1,8 +1,8 @@
 import { useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraphType } from '@repo/reporting'
-import { assumeMock } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { useListStores } from '@gorgias/helpdesk-queries'

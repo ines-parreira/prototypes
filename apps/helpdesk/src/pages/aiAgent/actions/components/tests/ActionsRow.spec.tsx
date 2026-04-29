@@ -1,8 +1,6 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
@@ -16,8 +14,6 @@ import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import StoreTrackstarProvider from '../../providers/StoreTrackstarProvider'
 import ActionsRow from '../ActionsRow'
@@ -35,9 +31,6 @@ jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')
 jest.mock('pages/aiAgent/actions/hooks/useDeleteAction')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
-
-const queryClient = mockQueryClient()
-
 const mockUseApps = jest.mocked(useApps)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
@@ -46,7 +39,6 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
 const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
-
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
     name: 'Action name',
@@ -117,8 +109,13 @@ b.insertReusableLLMPromptCallAndSelect({
     configuration_internal_id: 'internal_uuid3',
     values: {},
 })
-
 const configuration = b.build() as StoreWorkflowsConfiguration
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div>{location.pathname}</div>
+}
 
 describe('<ActionsRow />', () => {
     beforeEach(() => {
@@ -220,130 +217,92 @@ describe('<ActionsRow />', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useListTrackstarConnections>)
     })
-
     it('should render component', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionsRow action={configuration} />
-            </QueryClientProvider>,
-        )
-
+        render(<ActionsRow action={configuration} />, {})
         expect(screen.getByText('Action name')).toBeInTheDocument()
-
         expect(screen.getByTitle('Shopify')).toBeInTheDocument()
         expect(screen.getByTitle('Recharge')).toBeInTheDocument()
         expect(screen.getByTitle('Some App')).toBeInTheDocument()
         expect(screen.getByTitle('HTTP request')).toBeInTheDocument()
     })
-
     it('should display last updated at datetime', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionsRow
-                    action={{
-                        ...configuration,
-                        updated_datetime: '2025-01-15T14:58:19.164Z',
-                    }}
-                />
-            </QueryClientProvider>,
+        render(
+            <ActionsRow
+                action={{
+                    ...configuration,
+                    updated_datetime: '2025-01-15T14:58:19.164Z',
+                }}
+            />,
+            {},
         )
-
         expect(screen.getByText('01/15/2025')).toBeInTheDocument()
     })
-
     it('should toggle availability for AI Agent', () => {
         const mockUpsertAction = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             mutate: mockUpsertAction,
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionsRow action={configuration} />
-            </QueryClientProvider>,
-        )
-
+        render(<ActionsRow action={configuration} />, {})
         act(() => {
             fireEvent.click(screen.getByRole('switch'))
         })
-
         expect(mockUpsertAction).toHaveBeenCalled()
     })
-
     it('should redirect to edit Action page on click', () => {
-        const history = createMemoryHistory({
-            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <ActionsRow action={configuration} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
             {
-                history,
                 path: '/app/ai-agent/:shopType/:shopName/actions',
-                route: `/app/ai-agent/shopify/shopify-store/actions`,
+                initialEntries: [`/app/ai-agent/shopify/shopify-store/actions`],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Action name'))
         })
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
-        )
+        expect(
+            screen.getByText(
+                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+            ),
+        ).toBeInTheDocument()
     })
-
     it('should delete Action', () => {
         const mockDeleteAction = jest.fn()
-
         mockUseDeleteAction.mockReturnValue({
             mutate: mockDeleteAction,
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useDeleteAction>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionsRow action={configuration} />
-            </QueryClientProvider>,
-        )
-
+        render(<ActionsRow action={configuration} />, {})
         act(() => {
             fireEvent.click(screen.getByText('delete'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Delete'))
         })
-
         expect(mockDeleteAction).toHaveBeenCalled()
     })
-
     it('should display error icon when connection is lost', async () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <StoreTrackstarProvider
-                    storeName="shopify-store"
-                    storeType="shopify"
-                >
-                    <ActionsRow
-                        action={{
-                            ...configuration,
-                            apps: configuration.apps!.filter(
-                                (app) => app.type === 'app',
-                            ),
-                        }}
-                    />
-                </StoreTrackstarProvider>
-            </QueryClientProvider>,
+        render(
+            <StoreTrackstarProvider
+                storeName="shopify-store"
+                storeType="shopify"
+            >
+                <ActionsRow
+                    action={{
+                        ...configuration,
+                        apps: configuration.apps!.filter(
+                            (app) => app.type === 'app',
+                        ),
+                    }}
+                />
+            </StoreTrackstarProvider>,
+            {},
         )
-
         act(() => {
             fireEvent.mouseEnter(screen.getByText('error'))
         })

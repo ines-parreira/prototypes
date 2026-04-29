@@ -1,10 +1,17 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 
 import { helpCenterKeys } from 'models/helpCenter/queries'
 
 import { SkillEditorPage } from './SkillEditorPage'
 
+const mockInvalidateQueries = jest.fn()
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: () => ({
+        invalidateQueries: mockInvalidateQueries,
+    }),
+}))
 const mockUseLocation = jest.fn()
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -27,22 +34,11 @@ const mockUseAiAgentHelpCenter = jest.fn()
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: () => mockUseAiAgentHelpCenter(),
 }))
-
 const renderWithProviders = (ui: React.ReactElement) => {
-    const queryClient = new QueryClient({
-        defaultOptions: { queries: { retry: false } },
-    })
-    const invalidateQueriesSpy = jest.spyOn(queryClient, 'invalidateQueries')
     return {
-        ...render(
-            <QueryClientProvider client={queryClient}>
-                {ui}
-            </QueryClientProvider>,
-        ),
-        invalidateQueriesSpy,
+        ...render(<>{ui}</>, {}),
     }
 }
-
 let capturedProps: Record<string, unknown> = {}
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/KnowledgeEditorSkill',
@@ -58,9 +54,9 @@ jest.mock(
         },
     }),
 )
-
 describe('SkillEditorPage', () => {
     beforeEach(() => {
+        mockInvalidateQueries.mockClear()
         capturedProps = {}
         mockUseLocation.mockReturnValue({
             pathname: '/app/ai-agent/shopify/test-shop/skills/123',
@@ -72,15 +68,12 @@ describe('SkillEditorPage', () => {
             default_locale: 'en-US',
         })
     })
-
     it('renders the skill editor with route params', () => {
         renderWithProviders(<SkillEditorPage />)
-
         expect(
             screen.getByText('Skill Editor: test-shop - 123'),
         ).toBeInTheDocument()
     })
-
     it('passes routeState from location.state', () => {
         const routeState = {
             title: 'Order Status',
@@ -91,63 +84,41 @@ describe('SkillEditorPage', () => {
             search: '',
             state: routeState,
         })
-
         renderWithProviders(<SkillEditorPage />)
-
         expect(capturedProps.routeState).toEqual(routeState)
     })
-
     it('passes undefined routeState when location.state is empty', () => {
         renderWithProviders(<SkillEditorPage />)
-
         expect(capturedProps.routeState).toBeUndefined()
     })
-
     it('passes shopType from route params', () => {
         renderWithProviders(<SkillEditorPage />)
-
         expect(capturedProps.shopType).toBe('shopify')
     })
-
     it('invalidates the intents query when onUpdate is called', () => {
-        const { invalidateQueriesSpy } = renderWithProviders(
-            <SkillEditorPage />,
-        )
-
+        renderWithProviders(<SkillEditorPage />)
         act(() => {
             ;(capturedProps.onUpdate as () => void)()
         })
-
-        expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+        expect(mockInvalidateQueries).toHaveBeenCalledWith(
             helpCenterKeys.intents(42),
         )
     })
-
     it('invalidates the intents query when onDelete is called', () => {
-        const { invalidateQueriesSpy } = renderWithProviders(
-            <SkillEditorPage />,
-        )
-
+        renderWithProviders(<SkillEditorPage />)
         act(() => {
             ;(capturedProps.onDelete as () => void)()
         })
-
-        expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+        expect(mockInvalidateQueries).toHaveBeenCalledWith(
             helpCenterKeys.intents(42),
         )
     })
-
     it('does not invalidate intents when the help center is not loaded', () => {
         mockUseAiAgentHelpCenter.mockReturnValue(undefined)
-
-        const { invalidateQueriesSpy } = renderWithProviders(
-            <SkillEditorPage />,
-        )
-
+        renderWithProviders(<SkillEditorPage />)
         act(() => {
             ;(capturedProps.onUpdate as () => void)()
         })
-
-        expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+        expect(mockInvalidateQueries).not.toHaveBeenCalled()
     })
 })

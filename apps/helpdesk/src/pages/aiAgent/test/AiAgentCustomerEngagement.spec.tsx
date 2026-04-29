@@ -2,17 +2,13 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render, userEvent } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import * as chatColorHook from 'pages/aiAgent/hooks/useGetChatIntegrationColor'
 import * as contextHook from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentCustomerEngagement } from '../AiAgentCustomerEngagement'
 import { SALES } from '../constants'
@@ -22,7 +18,6 @@ jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEvent: (...args: unknown[]) => mockLogEvent(...args),
 }))
-
 jest.mock('pages/aiAgent/hooks/useGetChatIntegrationColor')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
@@ -30,7 +25,6 @@ jest.mock(
     'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
     () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
 )
-
 const mockUpdateApplicationTexts = jest.fn().mockResolvedValue({})
 jest.mock('state/integrations/actions', () => {
     return {
@@ -40,7 +34,6 @@ jest.mock('state/integrations/actions', () => {
             mockUpdateApplicationTexts(...args),
     }
 })
-
 const mockUseTexts = jest.fn().mockReturnValue({
     texts: {
         'en-US': {
@@ -59,14 +52,12 @@ const mockUseTexts = jest.fn().mockReturnValue({
     isLoading: false,
     error: null,
 })
-
 jest.mock(
     'pages/aiAgent/components/CustomerEngagementSettings/hooks/useTexts',
     () => ({
         useTexts: (...args: unknown[]) => mockUseTexts(...args),
     }),
 )
-
 jest.mock(
     'pages/aiAgent/components/CustomerEngagementSettings/CustomerEngagementSettings',
     () => ({
@@ -96,16 +87,12 @@ jest.mock(
         ),
     }),
 )
-
 const mockUseGetChatIntegrationColor = jest.mocked(
     chatColorHook.useGetChatIntegrationColor,
 )
 const mockUseAiAgentStoreConfigurationContext = jest.mocked(
     contextHook.useAiAgentStoreConfigurationContext,
 )
-
-const queryClient = mockQueryClient()
-
 const defaultState = {
     integrations: toImmutable({
         integrations: [],
@@ -114,7 +101,6 @@ const defaultState = {
         products: [],
     }),
 }
-
 const stateWithIntegrations = {
     integrations: toImmutable({
         integrations: [
@@ -133,27 +119,17 @@ const stateWithIntegrations = {
         products: [],
     }),
 }
-
 const renderComponent = (state = defaultState) =>
-    renderWithRouter(
-        <Provider store={mockStore(state)}>
-            <QueryClientProvider client={queryClient}>
-                <AiAgentCustomerEngagement />
-            </QueryClientProvider>
-        </Provider>,
-        {
-            path: '/app/ai-agent/:shopType/:shopName/sales/engagement',
-            route: '/app/ai-agent/shopify/test-store/sales/engagement',
-        },
-    )
-
+    render(<AiAgentCustomerEngagement />, {
+        path: '/app/ai-agent/:shopType/:shopName/sales/engagement',
+        initialEntries: ['/app/ai-agent/shopify/test-store/sales/engagement'],
+        storeState: state,
+    })
 describe('<AiAgentCustomerEngagement />', () => {
     const mockUpdateStoreConfiguration = jest.fn()
     const mockCreateStoreConfiguration = jest.fn()
-
     beforeEach(() => {
         jest.clearAllMocks()
-
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
                 ...getStoreConfigurationFixture(),
@@ -165,28 +141,23 @@ describe('<AiAgentCustomerEngagement />', () => {
             createStoreConfiguration: mockCreateStoreConfiguration,
             isPendingCreateOrUpdate: false,
         })
-
         mockUseGetChatIntegrationColor.mockReturnValue({
             conversationColor: '#000000',
             mainColor: '#000000',
         })
-
         mockUpdateStoreConfiguration.mockResolvedValue({})
     })
-
     it('should render the customer engagement settings', () => {
         renderComponent()
         expect(
             screen.getByRole('heading', { level: 1, name: SALES }),
         ).toBeInTheDocument()
     })
-
     it('should render the save button as disabled initially', () => {
         renderComponent()
         const saveButton = screen.getByRole('button', { name: /save changes/i })
         expect(saveButton).toHaveAttribute('aria-disabled', 'true')
     })
-
     it('should track page view on mount', () => {
         renderComponent()
         expect(mockLogEvent).toHaveBeenCalledWith(
@@ -194,14 +165,11 @@ describe('<AiAgentCustomerEngagement />', () => {
             expect.objectContaining({ shopName: 'test-store' }),
         )
     })
-
     describe('onSave', () => {
         it('should save successfully and update application texts when canUpdateTexts is true', async () => {
             const user = userEvent.setup()
             renderComponent()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -219,7 +187,6 @@ describe('<AiAgentCustomerEngagement />', () => {
                     }),
                 )
             })
-
             await waitFor(() => {
                 expect(mockUpdateApplicationTexts).toHaveBeenCalledWith(
                     '',
@@ -232,7 +199,6 @@ describe('<AiAgentCustomerEngagement />', () => {
                     }),
                 )
             })
-
             await waitFor(() => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     SegmentEvent.AiAgentShoppingAssistantCustomerEngagementUpdated,
@@ -246,7 +212,6 @@ describe('<AiAgentCustomerEngagement />', () => {
                 )
             })
         })
-
         it('should save successfully without updating texts when canUpdateTexts is false', async () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
@@ -259,39 +224,29 @@ describe('<AiAgentCustomerEngagement />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             const user = userEvent.setup()
             renderComponent()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
             })
-
             expect(mockUpdateApplicationTexts).not.toHaveBeenCalled()
         })
-
         it('should show error notification when save fails', async () => {
             mockUpdateStoreConfiguration.mockRejectedValue(
                 new Error('Save failed'),
             )
-
             const user = userEvent.setup()
             renderComponent()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
             })
-
             expect(mockLogEvent).not.toHaveBeenCalledWith(
                 SegmentEvent.AiAgentShoppingAssistantCustomerEngagementUpdated,
                 expect.anything(),
             )
         })
-
         it('should not save when storeConfiguration is null', async () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: undefined,
@@ -300,15 +255,11 @@ describe('<AiAgentCustomerEngagement />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             const user = userEvent.setup()
             renderComponent()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
         })
-
         it('should handle empty needHelpText', async () => {
             jest.doMock(
                 'pages/aiAgent/components/CustomerEngagementSettings/CustomerEngagementSettings',
@@ -339,18 +290,14 @@ describe('<AiAgentCustomerEngagement />', () => {
                     ),
                 }),
             )
-
             const user = userEvent.setup()
             renderComponent()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
             })
         })
     })
-
     describe('tracking events', () => {
         it('should track customer engagement updated with off values', async () => {
             jest.isolateModules(() => {
@@ -384,18 +331,14 @@ describe('<AiAgentCustomerEngagement />', () => {
                     }),
                 )
             })
-
             const user = userEvent.setup()
             renderComponent()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
             })
         })
     })
-
     describe('edge cases', () => {
         it('should handle storeConfiguration with undefined floatingChatInputConfiguration', async () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -410,12 +353,9 @@ describe('<AiAgentCustomerEngagement />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             const user = userEvent.setup()
             renderComponent()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -429,7 +369,6 @@ describe('<AiAgentCustomerEngagement />', () => {
                 )
             })
         })
-
         it('should render correctly when storeConfiguration is loading', () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: undefined,
@@ -438,43 +377,33 @@ describe('<AiAgentCustomerEngagement />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent()
             expect(
                 screen.getByRole('heading', { level: 1, name: SALES }),
             ).toBeInTheDocument()
         })
-
         it('should handle save button click via handleSubmit', async () => {
             const user = userEvent.setup()
             renderComponent()
-
             const saveButton = screen.getByRole('button', {
                 name: /save changes/i,
             })
             expect(saveButton).toHaveAttribute('aria-disabled', 'true')
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
             })
         })
-
         it('should render with gorgias chat integrations', async () => {
             const user = userEvent.setup()
             renderComponent(stateWithIntegrations)
-
             expect(
                 screen.getByRole('heading', { level: 1, name: SALES }),
             ).toBeInTheDocument()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
             })
-
             await waitFor(() => {
                 expect(mockUpdateApplicationTexts).toHaveBeenCalledWith(
                     'test-app-id',
@@ -482,7 +411,6 @@ describe('<AiAgentCustomerEngagement />', () => {
                 )
             })
         })
-
         it('should handle storeConfiguration with all boolean flags true', async () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
@@ -503,13 +431,11 @@ describe('<AiAgentCustomerEngagement />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent()
             expect(
                 screen.getByRole('heading', { level: 1, name: SALES }),
             ).toBeInTheDocument()
         })
-
         it('should handle empty needHelp text from useTexts', async () => {
             mockUseTexts.mockReturnValueOnce({
                 texts: {
@@ -527,16 +453,12 @@ describe('<AiAgentCustomerEngagement />', () => {
                 isLoading: false,
                 error: null,
             })
-
             const user = userEvent.setup()
             renderComponent()
-
             expect(
                 screen.getByRole('heading', { level: 1, name: SALES }),
             ).toBeInTheDocument()
-
             await act(() => user.click(screen.getByTestId('trigger-save')))
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
             })

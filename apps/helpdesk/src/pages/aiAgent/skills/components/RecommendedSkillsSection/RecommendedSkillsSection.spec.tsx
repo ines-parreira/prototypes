@@ -1,8 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { AxiomProvider } from '@gorgias/axiom'
 
@@ -15,9 +13,6 @@ import { IntentStatus } from 'pages/aiAgent/skills/types'
 import type { Intent, SkillTemplate } from 'pages/aiAgent/skills/types'
 
 import { RecommendedSkillsSection } from './RecommendedSkillsSection'
-
-const mockStore = configureMockStore([thunk])
-const store = mockStore({})
 
 jest.mock(
     'pages/aiAgent/skills/components/SharedTableComponents/MetricCells',
@@ -69,14 +64,12 @@ jest.mock(
         })),
     }),
 )
-
 const mockUseIntentsMetrics = useIntentsMetrics as jest.Mock
 const mockUseTotalAiAgentTickets = useTotalAiAgentTickets as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
 const mockUseGetCustomTicketsFieldsDefinitionData =
     useGetCustomTicketsFieldsDefinitionData as jest.Mock
-
 const makeTemplate = (
     id: string,
     name: string,
@@ -94,39 +87,33 @@ const makeTemplate = (
         },
     ],
 })
-
 const mockTemplates: SkillTemplate[] = [
     makeTemplate('order-status', 'Order Status', 'order::status'),
     makeTemplate('order-cancel', 'Order Cancellations', 'order::cancel'),
     makeTemplate('returns', 'Returns and Exchanges', 'return::request'),
 ]
-
 const defaultMetricsDateRange = {
     start_datetime: '2024-01-01T00:00:00.000Z',
     end_datetime: '2024-01-28T23:59:59.000Z',
 }
-
 const renderComponent = (
     skillsTemplates = mockTemplates,
     onCreateSkillsFromTemplate = jest.fn(),
 ): ReturnType<typeof render> =>
     render(
-        <Provider store={store}>
-            <AxiomProvider rootNode={document.body}>
-                <ThemeProvider>
-                    <RecommendedSkillsSection
-                        skillsTemplates={skillsTemplates}
-                        onCreateSkillsFromTemplate={onCreateSkillsFromTemplate}
-                    />
-                </ThemeProvider>
-            </AxiomProvider>
-        </Provider>,
+        <AxiomProvider rootNode={document.body}>
+            <ThemeProvider>
+                <RecommendedSkillsSection
+                    skillsTemplates={skillsTemplates}
+                    onCreateSkillsFromTemplate={onCreateSkillsFromTemplate}
+                />
+            </ThemeProvider>
+        </AxiomProvider>,
+        {},
     )
-
 describe('RecommendedSkillsSection', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: { storeName: 'test-store' },
         })
@@ -141,36 +128,28 @@ describe('RecommendedSkillsSection', () => {
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 0 })
     })
-
     it('renders the section heading', () => {
         renderComponent()
-
         expect(
             screen.getByRole('heading', { name: 'Recommended skills' }),
         ).toBeInTheDocument()
     })
-
     it('renders the description text', () => {
         renderComponent()
-
         expect(
             screen.getByText(
                 'Intents that would benefit most from a dedicated skill, based on your ticket volume and handover rate',
             ),
         ).toBeInTheDocument()
     })
-
     it('renders a card for each template', () => {
         renderComponent()
-
         expect(screen.getByText('Order Status')).toBeInTheDocument()
         expect(screen.getByText('Order Cancellations')).toBeInTheDocument()
         expect(screen.getByText('Returns and Exchanges')).toBeInTheDocument()
     })
-
     it('renders scroll left and right buttons', () => {
         renderComponent()
-
         expect(
             screen.getByRole('button', { name: 'Scroll left' }),
         ).toBeInTheDocument()
@@ -178,65 +157,50 @@ describe('RecommendedSkillsSection', () => {
             screen.getByRole('button', { name: 'Scroll right' }),
         ).toBeInTheDocument()
     })
-
     it('scroll left button is disabled initially', () => {
         renderComponent()
-
         expect(
             screen.getByRole('button', { name: 'Scroll left' }),
         ).toBeDisabled()
     })
-
     it('shows loading skeletons for stats when metrics are loading', () => {
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map(),
             isLoading: true,
             metricsDateRange: defaultMetricsDateRange,
         })
-
         renderComponent()
-
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
-
     it('shows the stats section on the card', () => {
         renderComponent()
-
         expect(screen.getAllByText('Ticket volume').length).toBeGreaterThan(0)
         expect(screen.getAllByText('Handover').length).toBeGreaterThan(0)
     })
-
     it('calls onCreateSkillsFromTemplate with the template id when the CTA button is clicked', async () => {
         const user = userEvent.setup()
         const onCreateSkillsFromTemplate = jest.fn()
         renderComponent(mockTemplates, onCreateSkillsFromTemplate)
-
         await user.click(
             screen.getAllByRole('button', { name: /set up skill/i })[0],
         )
-
         expect(onCreateSkillsFromTemplate).toHaveBeenCalledTimes(1)
         expect(onCreateSkillsFromTemplate).toHaveBeenCalledWith(
             expect.any(String),
         )
     })
-
     it('renders a "Set up skill" button for each template', () => {
         renderComponent()
-
         expect(
             screen.getAllByRole('button', { name: /set up skill/i }),
         ).toHaveLength(mockTemplates.length)
     })
-
     it('scroll right button is disabled initially', () => {
         renderComponent()
-
         expect(
             screen.getByRole('button', { name: 'Scroll right' }),
         ).toBeDisabled()
     })
-
     it('renders cards sorted by descending ticket volume', () => {
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map([
@@ -272,13 +236,10 @@ describe('RecommendedSkillsSection', () => {
             metricsDateRange: defaultMetricsDateRange,
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 300 })
-
         renderComponent()
-
         const orderStatus = screen.getByText('Order Status')
         const orderCancel = screen.getByText('Order Cancellations')
         const returns = screen.getByText('Returns and Exchanges')
-
         expect(
             returns.compareDocumentPosition(orderCancel) &
                 Node.DOCUMENT_POSITION_FOLLOWING,
@@ -288,7 +249,6 @@ describe('RecommendedSkillsSection', () => {
                 Node.DOCUMENT_POSITION_FOLLOWING,
         ).toBeTruthy()
     })
-
     it('displays stats computed from metrics data', () => {
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map([
@@ -306,12 +266,9 @@ describe('RecommendedSkillsSection', () => {
             metricsDateRange: defaultMetricsDateRange,
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 400 })
-
         renderComponent()
-
         expect(screen.getByText('200 (50%)')).toBeInTheDocument()
     })
-
     it('displays ticket volume percent with 1 decimal place when rounding would produce 0', () => {
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map([
@@ -329,12 +286,9 @@ describe('RecommendedSkillsSection', () => {
             metricsDateRange: defaultMetricsDateRange,
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 210 })
-
         renderComponent()
-
         expect(screen.getByText('3 (1.4%)')).toBeInTheDocument()
     })
-
     it('displays handover percent with 1 decimal place', () => {
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map([
@@ -352,9 +306,7 @@ describe('RecommendedSkillsSection', () => {
             metricsDateRange: defaultMetricsDateRange,
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 400 })
-
         renderComponent()
-
         expect(screen.getByText('1 (1%)')).toBeInTheDocument()
     })
 })

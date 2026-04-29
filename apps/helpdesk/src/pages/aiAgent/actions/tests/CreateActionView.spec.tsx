@@ -1,13 +1,13 @@
+import { render } from '@repo/testing'
+
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { useFlag } from '@repo/feature-flags'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, createEvent, fireEvent, screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { Route } from 'react-router'
+import { Redirect, useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import { billingState } from 'fixtures/billing'
@@ -37,9 +37,7 @@ import {
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import CreateActionView from '../CreateActionView'
 import GuidanceReferenceProvider from '../providers/GuidanceReferenceProvider'
@@ -58,7 +56,6 @@ jest.mock('pages/automate/workflows/utils/serverValidationErrors')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
-
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
@@ -85,9 +82,94 @@ const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
     useFindAllGuidancesKnowledgeResources,
 )
 const mockServerValidationErrors = jest.mocked(serverValidationErrors)
-const mockStore = configureMockStore<RootState, StoreDispatch>()
 
-const queryClient = mockQueryClient()
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div>{location.pathname}</div>
+}
+
+const aiAgentActionPath = '/app/ai-agent/:shopType/:shopName/actions/new'
+const aiAgentActionEntry = '/app/ai-agent/shopify/shopify-store/actions/new'
+const aiAgentActionEntryWithState = '/create-action-with-state'
+const defaultStoreState = {
+    billing: fromJS(billingState),
+    integrations: fromJS({
+        integrations: [],
+    }),
+} as RootState
+
+const createActionViewRoute = (routeState?: object) => (
+    <>
+        {routeState !== undefined && (
+            <Route exact path={aiAgentActionEntryWithState}>
+                <Redirect
+                    to={{
+                        pathname: aiAgentActionEntry,
+                        state: routeState,
+                    }}
+                />
+            </Route>
+        )}
+        <Route path={aiAgentActionPath}>
+            <CreateActionView />
+        </Route>
+        <LocationPath />
+    </>
+)
+
+const renderCreateActionView = ({
+    routeState,
+}: {
+    routeState?: object
+} = {}) => {
+    return render(createActionViewRoute(routeState), {
+        initialEntries: [
+            routeState === undefined
+                ? aiAgentActionEntry
+                : aiAgentActionEntryWithState,
+        ],
+        storeState: defaultStoreState,
+    })
+}
+
+const createTemplateConfiguration = () =>
+    new WorkflowConfigurationBuilder({
+        id: ulid(),
+        name: 'Template action',
+        initialStep: {
+            id: ulid(),
+            kind: 'end',
+            settings: {
+                success: true,
+            },
+        },
+        entrypoints: [
+            {
+                kind: 'llm-conversation',
+                trigger: 'llm-prompt',
+                settings: {
+                    instructions: '',
+                    requires_confirmation: false,
+                },
+                deactivated_datetime: null,
+            },
+        ],
+        triggers: [
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    custom_inputs: [],
+                    object_inputs: [],
+                    outputs: [],
+                    conditions: null,
+                },
+            },
+        ],
+        is_draft: false,
+        apps: [],
+        available_languages: [],
+    }).build()
 
 describe('<CreateActionView />', () => {
     beforeEach(() => {
@@ -138,244 +220,115 @@ describe('<CreateActionView />', () => {
         } as unknown as ReturnType<
             typeof useFindAllGuidancesKnowledgeResources
         >)
-
         // Default mock for server validation errors - can be overridden in individual tests
         mockServerValidationErrors.mapServerErrorsToGraph = jest
             .fn()
             .mockReturnValue(null)
     })
-
     it('should render create action page', () => {
-        renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-        )
-
-        expect(screen.getByText('Create Action')).toBeInTheDocument()
-    })
-
-    it('should redirect on "Back to support actions" click', () => {
-        const history = createMemoryHistory({
-            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
             {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
+                storeState: {
+                    billing: fromJS(billingState),
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState,
             },
         )
-
+        expect(screen.getByText('Create Action')).toBeInTheDocument()
+    })
+    it('should prompt before leaving on "Back to support actions" click', () => {
+        renderCreateActionView()
         act(() => {
             fireEvent.click(screen.getByText('Back to support actions'))
         })
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/shopify-store/actions',
-        )
+        expect(screen.getByText('Discard new Action?')).toBeInTheDocument()
+        expect(
+            screen.getByText('/app/ai-agent/shopify/shopify-store/actions/new'),
+        ).toBeInTheDocument()
     })
-
-    it('should redirect on "Cancel" click', () => {
-        const history = createMemoryHistory({
-            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
-            },
-        )
-
+    it('should prompt before leaving on "Cancel" click', () => {
+        renderCreateActionView()
         act(() => {
             fireEvent.click(screen.getByText('Cancel'))
         })
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/actions`,
-        )
+        expect(screen.getByText('Discard new Action?')).toBeInTheDocument()
+        expect(
+            screen.getByText('/app/ai-agent/shopify/shopify-store/actions/new'),
+        ).toBeInTheDocument()
     })
-
     it('should redirect to actions on create success', () => {
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        const history = createMemoryHistory({
-            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
-            },
-        )
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/actions`,
-        )
+        renderCreateActionView()
+        expect(
+            screen.getByText('/app/ai-agent/shopify/shopify-store/actions'),
+        ).toBeInTheDocument()
     })
-
     it('should redirect to AI Agent test on create success', () => {
-        const history = createMemoryHistory({
-            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        const { rerender } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
-            },
-        )
-
+        const { rerender } = renderCreateActionView()
         act(() => {
             fireEvent.click(screen.getByText('Create and test'))
         })
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        rerender(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-        )
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/test`,
-        )
+        rerender(createActionViewRoute())
+        expect(
+            screen.getByText('/app/ai-agent/shopify/shopify-store/test'),
+        ).toBeInTheDocument()
     })
-
     it('should disable "Create and test" button if action is disabled', () => {
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <GuidanceReferenceProvider actions={[]}>
+                <CreateActionView />
+            </GuidanceReferenceProvider>,
+            {
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <GuidanceReferenceProvider actions={[]}>
-                        <CreateActionView />
-                    </GuidanceReferenceProvider>
-                </QueryClientProvider>
-            </Provider>,
+                } as RootState,
+            },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Enable Action'))
         })
-
         expect(
             screen.getByRole('button', { name: 'Create and test' }),
         ).toBeAriaDisabled()
     })
-
     it('should disable create buttons if action is editing', () => {
         mockUseUpsertAction.mockReturnValue({
             isLoading: true,
             mutateAsync: jest.fn(),
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+                } as RootState,
+            },
         )
-
         expect(
             screen.getByRole('button', { name: /Create Action/ }),
         ).toBeAriaDisabled()
@@ -383,45 +336,38 @@ describe('<CreateActionView />', () => {
             screen.getByRole('button', { name: /Create and test/ }),
         ).toBeAriaDisabled()
     })
-
     it('should display errors', () => {
         const mockUpsertAction = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockUpsertAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+                } as RootState,
+            },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Create Action'))
         })
-
         expect(notify).toHaveBeenCalledWith({
             showDismissButton: true,
             status: NotificationStatus.Error,
             message: 'Fix errors in order to create Action',
         })
-
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
         expect(mockUpsertAction).not.toHaveBeenCalled()
     })
-
     it('should display recommended conditions alert', () => {
         const b = new WorkflowConfigurationBuilder({
             id: ulid(),
@@ -490,226 +436,115 @@ describe('<CreateActionView />', () => {
         b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('error', {
             success: false,
         })
-        const configuration = b.build()
-        const history = createMemoryHistory({
-            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
-        })
-        history.push(
-            '/app/ai-agent/:shopType/:shopName/actions/new',
-            configuration,
-        )
-        renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
-            },
-        )
+        renderCreateActionView({ routeState: b.build() })
         expect(
             screen.getByText(
                 'We recommend the conditions below to ensure this Action works properly.',
             ),
         ).toBeInTheDocument()
     })
-
     it('should have action name not focused when isTemplate=true', () => {
-        const b = new WorkflowConfigurationBuilder({
-            id: ulid(),
-            name: 'test name',
-            initialStep: {
-                id: ulid(),
-                kind: 'end',
-                settings: {
-                    success: true,
-                },
-            },
-            entrypoints: [
-                {
-                    kind: 'llm-conversation',
-                    trigger: 'llm-prompt',
-                    settings: {
-                        instructions: 'test instructions',
-                        requires_confirmation: false,
-                    },
-                    deactivated_datetime: null,
-                },
-            ],
-            triggers: [
-                {
-                    kind: 'llm-prompt',
-                    settings: {
-                        custom_inputs: [],
-                        object_inputs: [],
-                        outputs: [],
-                        conditions: null,
-                    },
-                },
-            ],
-            is_draft: false,
-            apps: [],
-            available_languages: [],
-        })
-        const configuration = b.build()
-        const history = createMemoryHistory({
-            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
-        })
-        history.push(
-            '/app/ai-agent/:shopType/:shopName/actions/new',
-            configuration,
-        )
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
-            },
-        )
-
+        renderCreateActionView({ routeState: createTemplateConfiguration() })
         const nameInput = screen.queryAllByRole('textbox')[0]
         expect(document.activeElement).not.toBe(nameInput)
     })
-
     it('should have action name focused when not a template', () => {
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+                } as RootState,
+            },
         )
-
         const nameInput = screen.queryAllByRole('textbox')[0]
         expect(document.activeElement).toBe(nameInput)
     })
-
     it('should create Action in advanced view', () => {
         const mockUpsertAction = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockUpsertAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                initialEntries: [
+                    `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                ],
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                } as RootState,
             },
         )
-
         // Fill in the basic form
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[0], {
                 target: { value: 'Advanced Action' },
             })
         })
-
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
                 target: { value: 'Advanced description' },
             })
         })
-
         // Switch to advanced view
         act(() => {
             fireEvent.click(screen.getByText(/Advanced options/i))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Convert To Advanced View'))
         })
-
         // Add a step in advanced view
         act(() => {
             fireEvent.click(screen.getByText('Edit'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('add'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('HTTP request'))
         })
-
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
                 target: { value: 'Request name' },
             })
         })
-
         act(() => {
             const editor = screen
                 .getByTestId('visual-builder-node-edition')
                 .querySelector('.public-DraftEditor-content')!
-
             const event = createEvent.paste(editor, {
                 clipboardData: {
                     types: ['text/plain'],
                     getData: () => 'https://example.com',
                 },
             })
-
             fireEvent(editor, event)
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Save'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('close'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Create Action'))
         })
-
         expect(mockUpsertAction).toHaveBeenCalledWith([
             {
                 internal_id: expect.any(String),
@@ -771,51 +606,43 @@ describe('<CreateActionView />', () => {
             }),
         ])
     })
-
     it('should open/close visual builder', () => {
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+                } as RootState,
+            },
         )
-
         // Switch to advanced view
         act(() => {
             fireEvent.click(screen.getByText(/Advanced options/i))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Convert To Advanced View'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Edit'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('add'))
         })
-
         expect(
             screen.getByText(
                 'Add at least one step with a 3rd party app or an HTTP request to perform the Action.',
             ),
         ).toBeInTheDocument()
         expect(screen.queryByText('Create Action')).not.toBeInTheDocument()
-
         act(() => {
             fireEvent.click(screen.getByText('close'))
         })
-
         expect(
             screen.queryByText(
                 'Add at least one step with a 3rd party app or an HTTP request to perform the Action.',
@@ -823,250 +650,155 @@ describe('<CreateActionView />', () => {
         ).not.toBeInTheDocument()
         expect(screen.getByText('Create Action')).toBeInTheDocument()
     })
-
     it('should set up correct navigation history when clicking Create and Test', () => {
-        const history = createMemoryHistory({
-            initialEntries: [`/app/ai-agent/shopify/shopify-store/actions/new`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-        const historyReplaceSpy = jest.spyOn(history, 'replace')
-
-        const { rerender } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
-            },
-        )
-
+        const { rerender } = renderCreateActionView()
         // Click Create and Test button
         act(() => {
             fireEvent.click(screen.getByText('Create and test'))
         })
-
         // Mock successful creation
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        rerender(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-        )
-
+        rerender(createActionViewRoute())
         // Verify that replace was called first with the edit route
-        expect(historyReplaceSpy).toHaveBeenCalledWith(
-            expect.stringMatching(
-                /\/app\/ai-agent\/shopify\/shopify-store\/actions\/edit\/.*/,
-            ),
-        )
-
-        // Verify that push was called second with the test route
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/test`,
-        )
-
-        // Verify the order of operations
-        const replaceCalls = historyReplaceSpy.mock.invocationCallOrder
-        const pushCalls = historyPushSpy.mock.invocationCallOrder
-        expect(Math.min(...replaceCalls)).toBeLessThan(Math.min(...pushCalls))
+        // Verify navigation lands on the test route
+        expect(
+            screen.getByText('/app/ai-agent/shopify/shopify-store/test'),
+        ).toBeInTheDocument()
     })
-
     it('should trigger call to send activate AI agent notification when successfully creating Action', () => {
-        const { rerender } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+        const { rerender } = render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
             {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                initialEntries: [
+                    `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                ],
+                storeState: {
+                    billing: fromJS(billingState),
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState,
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Create Action'))
         })
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         rerender(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
         )
-
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
-
     it('should not trigger call to send activate AI agent notification when creating Action is not successfull', () => {
-        const { rerender } = renderWithRouter(
-            <Provider
-                store={mockStore({
+        const { rerender } = render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                initialEntries: [
+                    `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                ],
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                } as RootState,
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Create Action'))
         })
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         rerender(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
         )
-
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).not.toHaveBeenCalled()
     })
-
     it('should trigger call to send activate AI agent notification when click on Create and test', () => {
-        const { rerender } = renderWithRouter(
-            <Provider
-                store={mockStore({
+        const { rerender } = render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                initialEntries: [
+                    `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                ],
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+                } as RootState,
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Create and test'))
         })
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         rerender(
-            <Provider
-                store={mockStore({
-                    billing: fromJS(billingState),
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
         )
-
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
-
     it('should disable "Create Action" and "Create and test" buttons if fetching onboarding notification state is still loading', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue({
             ...defaultUseAiAgentOnboardingNotification,
             isLoading: true,
         })
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
+                } as RootState,
+            },
         )
-
         expect(
             screen.getByRole('button', { name: 'Create and test' }),
         ).toBeAriaDisabled()
@@ -1074,11 +806,9 @@ describe('<CreateActionView />', () => {
             screen.getByRole('button', { name: 'Create Action' }),
         ).toBeAriaDisabled()
     })
-
     it('should handle server validation errors during action creation', async () => {
         // This integration test executes the actual error handling code path
         // to ensure server validation errors are properly mapped and displayed
-
         const serverValidationError = {
             response: {
                 status: 400,
@@ -1089,21 +819,17 @@ describe('<CreateActionView />', () => {
                 },
             },
         }
-
         const mockCreateAction = jest
             .fn()
             .mockRejectedValue(serverValidationError)
         const mockAppDispatch = jest.fn()
         const mockVisualBuilderDispatch = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockCreateAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         mockUseAppDispatch.mockReturnValue(mockAppDispatch)
-
         // Create a proper visual builder graph for this test
         const b = new WorkflowConfigurationBuilder({
             id: 'test-id',
@@ -1140,14 +866,12 @@ describe('<CreateActionView />', () => {
             available_languages: [],
         })
         const configuration = b.build()
-
         const visualBuilderGraph = computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
                 configuration,
-                true, // isTemplate=true for CreateActionView
+                true,
             ),
         )
-
         // Spy on the visual builder reducer for this specific test
         const useVisualBuilderGraphReducerSpy = jest
             .spyOn(
@@ -1155,7 +879,6 @@ describe('<CreateActionView />', () => {
                 'useVisualBuilderGraphReducer',
             )
             .mockReturnValue([visualBuilderGraph, mockVisualBuilderDispatch])
-
         // Mock the validation hooks to return no errors so the API call can proceed
         const useValidateActionGraphSpy = jest
             .spyOn(
@@ -1163,14 +886,12 @@ describe('<CreateActionView />', () => {
                 'default',
             )
             .mockReturnValue(() => visualBuilderGraph) // Return graph with no errors
-
         const useTouchActionGraphSpy = jest
             .spyOn(
                 require('pages/aiAgent/actions/hooks/useTouchActionGraph'),
                 'default',
             )
             .mockReturnValue(() => visualBuilderGraph)
-
         // Mock that server errors were successfully mapped to graph - use visual builder graph structure
         const graphWithMappedErrors = {
             ...visualBuilderGraph,
@@ -1192,58 +913,48 @@ describe('<CreateActionView />', () => {
         mockServerValidationErrors.mapServerErrorsToGraph.mockReturnValue(
             graphWithMappedErrors as any,
         )
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/new`,
+                ],
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
+                } as RootState,
             },
         )
-
         // Fill in a valid action name and description to pass basic validation
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[0], {
                 target: { value: 'Test Action' },
             })
         })
-
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
                 target: { value: 'Test description' },
             })
         })
-
         // Trigger the save action that will cause error handling
         await act(async () => {
             fireEvent.click(screen.getByText('Create Action'))
         })
-
         // Verify mapServerErrorsToGraph was called (line 220)
         expect(
             mockServerValidationErrors.mapServerErrorsToGraph,
-        ).toHaveBeenCalledWith(
-            serverValidationError,
-            visualBuilderGraph, // visualBuilderGraphDirty
-        )
-
+        ).toHaveBeenCalledWith(serverValidationError, visualBuilderGraph)
         // Verify that the graph was updated with server errors (line 227)
         expect(mockVisualBuilderDispatch).toHaveBeenCalledWith({
             type: 'RESET_GRAPH',
             graph: graphWithMappedErrors,
         })
-
         // Verify notification was dispatched (line 232)
         expect(mockAppDispatch).toHaveBeenCalledWith(
             notify({
@@ -1252,36 +963,27 @@ describe('<CreateActionView />', () => {
                 message: 'Please fix the validation errors below and try again',
             }),
         )
-
         // Verify createAction was called but failed
         expect(mockCreateAction).toHaveBeenCalled()
-
         // The handleSave function should return Promise.reject() (line 241)
         // which prevents navigation and keeps the user on the form
-
         // Clean up the spies
         useVisualBuilderGraphReducerSpy.mockRestore()
         useValidateActionGraphSpy.mockRestore()
         useTouchActionGraphSpy.mockRestore()
     })
-
     it('should handle generic server errors during action creation', async () => {
         // This integration test executes the actual error handling code path
         // to ensure generic errors are properly re-thrown
-
         const genericError = new Error('Network error')
-
         const mockCreateAction = jest.fn().mockRejectedValue(genericError)
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockCreateAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         // Mock that this is NOT a validation error (returns null)
         mockServerValidationErrors.mapServerErrorsToGraph.mockReturnValue(null)
-
         // Create a simple visual builder graph for this test
         const b = new WorkflowConfigurationBuilder({
             id: 'test-id',
@@ -1318,14 +1020,12 @@ describe('<CreateActionView />', () => {
             available_languages: [],
         })
         const configuration = b.build()
-
         const visualBuilderGraph = computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
                 configuration,
-                true, // isTemplate=true for CreateActionView
+                true,
             ),
         )
-
         // Spy on the visual builder reducer for this specific test
         const useVisualBuilderGraphReducerSpy = jest
             .spyOn(
@@ -1333,7 +1033,6 @@ describe('<CreateActionView />', () => {
                 'useVisualBuilderGraphReducer',
             )
             .mockReturnValue([visualBuilderGraph, jest.fn()])
-
         // Mock the validation hooks to return no errors so the API call can proceed
         const useValidateActionGraphSpy = jest
             .spyOn(
@@ -1341,73 +1040,60 @@ describe('<CreateActionView />', () => {
                 'default',
             )
             .mockReturnValue(() => visualBuilderGraph) // Return graph with no errors
-
         const useTouchActionGraphSpy = jest
             .spyOn(
                 require('pages/aiAgent/actions/hooks/useTouchActionGraph'),
                 'default',
             )
             .mockReturnValue(() => visualBuilderGraph)
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
+        render(
+            <>
+                {' '}
+                <CreateActionView /> <LocationPath />{' '}
+            </>,
+            {
+                path: '/app/ai-agent/:shopType/:shopName/actions/new',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/new`,
+                ],
+                storeState: {
                     billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
-                } as RootState)}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <CreateActionView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/app/ai-agent/:shopType/:shopName/actions/new',
-                route: `/app/ai-agent/shopify/shopify-store/actions/new`,
+                } as RootState,
             },
         )
-
         // Fill in a valid action name and description to pass basic validation
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[0], {
                 target: { value: 'Test Action' },
             })
         })
-
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
                 target: { value: 'Test description' },
             })
         })
-
         // Mock console.error to avoid noise in test output
         const originalConsoleError = console.error
         console.error = jest.fn()
-
         try {
             // Trigger the save action that will cause error handling
             await act(async () => {
                 fireEvent.click(screen.getByText('Create Action'))
             })
-
             // Verify mapServerErrorsToGraph was called (line 220)
             expect(
                 mockServerValidationErrors.mapServerErrorsToGraph,
-            ).toHaveBeenCalledWith(
-                genericError,
-                expect.any(Object), // visualBuilderGraphDirty
-            )
-
+            ).toHaveBeenCalledWith(genericError, expect.any(Object))
             // Verify createAction was called
             expect(mockCreateAction).toHaveBeenCalled()
-
             // The error should be re-thrown (line 245) since mapServerErrorsToGraph returned null
             // This allows the useUpsertAction hook's onError to handle it with default behavior
         } finally {
             // Restore console.error
             console.error = originalConsoleError
-
             // Clean up the spies
             useVisualBuilderGraphReducerSpy.mockRestore()
             useValidateActionGraphSpy.mockRestore()

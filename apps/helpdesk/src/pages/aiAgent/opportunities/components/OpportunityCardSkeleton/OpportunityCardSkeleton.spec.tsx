@@ -1,4 +1,6 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
+
+import '@testing-library/react'
 
 import { OpportunityCardSkeleton } from './OpportunityCardSkeleton'
 

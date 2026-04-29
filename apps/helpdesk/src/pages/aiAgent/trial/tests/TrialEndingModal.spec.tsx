@@ -1,5 +1,5 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment'
@@ -18,7 +18,6 @@ import type { TrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalPro
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import type { TrialFinishSetupFeature } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TrialEndedModal } from '../components/TrialEndedModal/TrialEndedModal'
 import { TrialEndingModal } from '../components/TrialEndingModal/TrialEndingModal'
@@ -388,7 +387,7 @@ describe('TrialEndedModal', () => {
     it('should render modal when trial has ended and not dismissed', () => {
         mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TrialEndedModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -412,7 +411,7 @@ describe('TrialEndedModal', () => {
             }),
         )
 
-        const { container } = renderWithStoreAndQueryClientProvider(
+        const { container } = render(
             <TrialEndedModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -435,7 +434,7 @@ describe('TrialEndedModal', () => {
 
         mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
-        const { container } = renderWithStoreAndQueryClientProvider(
+        const { container } = render(
             <TrialEndedModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -452,7 +451,7 @@ describe('TrialEndedModal', () => {
             }),
         )
 
-        const { container } = renderWithStoreAndQueryClientProvider(
+        const { container } = render(
             <TrialEndedModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -467,7 +466,7 @@ describe('TrialEndedModal', () => {
 
         mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TrialEndedModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -496,7 +495,7 @@ describe('TrialEndedModal', () => {
 
         mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TrialEndedModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -535,7 +534,7 @@ describe('TrialEndedModal', () => {
 
         mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TrialEndedModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -586,7 +585,7 @@ describe('TrialEndingModal', () => {
     it('should call useTrialEnding with correct parameters', () => {
         mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TrialEndingModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -602,7 +601,7 @@ describe('TrialEndingModal', () => {
     it('should render modal when trial ends tomorrow and not dismissed', () => {
         mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TrialEndingModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -627,7 +626,7 @@ describe('TrialEndingModal', () => {
             }),
         )
 
-        const { container } = renderWithStoreAndQueryClientProvider(
+        const { container } = render(
             <TrialEndingModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -650,7 +649,7 @@ describe('TrialEndingModal', () => {
 
         mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
-        const { container } = renderWithStoreAndQueryClientProvider(
+        const { container } = render(
             <TrialEndingModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -671,7 +670,7 @@ describe('TrialEndingModal', () => {
             }),
         )
 
-        const { container } = renderWithStoreAndQueryClientProvider(
+        const { container } = render(
             <TrialEndingModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -686,7 +685,7 @@ describe('TrialEndingModal', () => {
 
         mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TrialEndingModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -715,7 +714,7 @@ describe('TrialEndingModal', () => {
 
         mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TrialEndingModal
                 storeName={mockStoreConfiguration.storeName}
                 trialType={TrialType.ShoppingAssistant}
@@ -754,7 +753,7 @@ describe('TrialEndingModal', () => {
         })
 
         it('should show upgrade and trial extension options', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TrialEndingModal
                     storeName={mockStoreConfiguration.storeName}
                     trialType={TrialType.ShoppingAssistant}
@@ -778,7 +777,7 @@ describe('TrialEndingModal', () => {
                 }),
             )
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TrialEndingModal
                     storeName={mockStoreConfiguration.storeName}
                     trialType={TrialType.ShoppingAssistant}
@@ -806,7 +805,7 @@ describe('TrialEndingModal', () => {
                 }),
             )
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TrialEndingModal
                     storeName={mockStoreConfiguration.storeName}
                     trialType={TrialType.ShoppingAssistant}
@@ -847,7 +846,7 @@ describe('TrialEndingModal', () => {
                 }),
             )
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TrialEndingModal
                     storeName={mockStoreConfiguration.storeName}
                     trialType={TrialType.ShoppingAssistant}

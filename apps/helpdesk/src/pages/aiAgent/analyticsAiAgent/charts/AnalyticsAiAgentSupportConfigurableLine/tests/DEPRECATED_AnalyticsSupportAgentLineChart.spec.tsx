@@ -1,9 +1,9 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import { useAiAgentSupportInteractionsTimeSeriesData } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTimeSeriesData'
 import { useAiAgentSupportInteractionsTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { DEPRECATED_AnalyticsSupportAgentLineChart } from '../DEPRECATED_AnalyticsSupportAgentLineChart'
 
@@ -54,9 +54,7 @@ describe('DEPRECATED_AnalyticsSupportAgentLineChart', () => {
     })
 
     it('should render the chart card with title', async () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_AnalyticsSupportAgentLineChart />,
-        )
+        render(<DEPRECATED_AnalyticsSupportAgentLineChart />)
 
         await waitFor(() => {
             expect(
@@ -76,17 +74,13 @@ describe('DEPRECATED_AnalyticsSupportAgentLineChart', () => {
             },
         } as any)
 
-        renderWithQueryClientProvider(
-            <DEPRECATED_AnalyticsSupportAgentLineChart />,
-        )
+        render(<DEPRECATED_AnalyticsSupportAgentLineChart />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
     it('should display the value from trend data', async () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_AnalyticsSupportAgentLineChart />,
-        )
+        render(<DEPRECATED_AnalyticsSupportAgentLineChart />)
 
         await waitFor(() => {
             expect(screen.getByText('430')).toBeInTheDocument()

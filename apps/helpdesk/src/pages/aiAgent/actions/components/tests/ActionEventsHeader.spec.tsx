@@ -1,22 +1,11 @@
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { fromJS } from 'immutable'
 import moment from 'moment'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
-import { billingState } from 'fixtures/billing'
 import type { RootState } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import ActionEventsHeader from '../ActionEventsHeader'
 
-const mockStore = configureMockStore([thunk])
-
-const queryClient = mockQueryClient()
 describe('<ActionEventsHeader />', () => {
     it('should render component', () => {
         const periodStart = moment()
@@ -31,17 +20,16 @@ describe('<ActionEventsHeader />', () => {
                 },
             },
         } as RootState
-
-        renderWithRouter(
-            <Provider store={mockStore(storeState)}>
-                <ActionEventsHeader
-                    initialEndDate={new Date()}
-                    initialStartDate={new Date()}
-                    onChange={jest.fn()}
-                />
-            </Provider>,
+        render(
+            <ActionEventsHeader
+                initialEndDate={new Date()}
+                initialStartDate={new Date()}
+                onChange={jest.fn()}
+            />,
+            {
+                storeState: storeState,
+            },
         )
-
         expect(
             screen.getByText(
                 'View all events when this Action has been performed',
@@ -49,7 +37,6 @@ describe('<ActionEventsHeader />', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('should show "Partial Success"', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -63,23 +50,21 @@ describe('<ActionEventsHeader />', () => {
                 },
             },
         } as RootState
-
-        renderWithRouter(
-            <Provider store={mockStore(storeState)}>
-                <ActionEventsHeader
-                    initialEndDate={new Date()}
-                    initialStartDate={new Date()}
-                    onChange={jest.fn()}
-                />
-            </Provider>,
+        render(
+            <ActionEventsHeader
+                initialEndDate={new Date()}
+                initialStartDate={new Date()}
+                onChange={jest.fn()}
+            />,
+            {
+                storeState: storeState,
+            },
         )
-
         expect(screen.queryByText('Success, Error')).toBeNull()
         expect(
             screen.getByText('Success, Error, Partial Success'),
         ).toBeInTheDocument()
     })
-
     describe('Ticket ID filter', () => {
         const defaultStoreState = {
             stats: {
@@ -93,42 +78,37 @@ describe('<ActionEventsHeader />', () => {
                 },
             },
         } as RootState
-
         it('should render Ticket ID input field', () => {
-            renderWithRouter(
-                <Provider store={mockStore(defaultStoreState)}>
-                    <ActionEventsHeader
-                        initialEndDate={new Date()}
-                        initialStartDate={new Date()}
-                        onChange={jest.fn()}
-                    />
-                </Provider>,
+            render(
+                <ActionEventsHeader
+                    initialEndDate={new Date()}
+                    initialStartDate={new Date()}
+                    onChange={jest.fn()}
+                />,
+                {
+                    storeState: defaultStoreState,
+                },
             )
-
             expect(screen.getByLabelText('Ticket ID')).toBeInTheDocument()
             expect(
                 screen.getByPlaceholderText('Enter Ticket ID'),
             ).toBeInTheDocument()
         })
-
         it('should call onChange with userJourneyId when user types and presses Enter', async () => {
             const mockOnChange = jest.fn()
-
-            renderWithRouter(
-                <Provider store={mockStore(defaultStoreState)}>
-                    <ActionEventsHeader
-                        initialEndDate={new Date()}
-                        initialStartDate={new Date()}
-                        onChange={mockOnChange}
-                    />
-                </Provider>,
+            render(
+                <ActionEventsHeader
+                    initialEndDate={new Date()}
+                    initialStartDate={new Date()}
+                    onChange={mockOnChange}
+                />,
+                {
+                    storeState: defaultStoreState,
+                },
             )
-
             const input = screen.getByPlaceholderText('Enter Ticket ID')
-
             fireEvent.change(input, { target: { value: '123' } })
             fireEvent.keyDown(input, { key: 'Enter' })
-
             await waitFor(() => {
                 expect(mockOnChange).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -137,25 +117,21 @@ describe('<ActionEventsHeader />', () => {
                 )
             })
         })
-
         it('should call onChange with userJourneyId when user types and focuses out', async () => {
             const mockOnChange = jest.fn()
-
-            renderWithRouter(
-                <Provider store={mockStore(defaultStoreState)}>
-                    <ActionEventsHeader
-                        initialEndDate={new Date()}
-                        initialStartDate={new Date()}
-                        onChange={mockOnChange}
-                    />
-                </Provider>,
+            render(
+                <ActionEventsHeader
+                    initialEndDate={new Date()}
+                    initialStartDate={new Date()}
+                    onChange={mockOnChange}
+                />,
+                {
+                    storeState: defaultStoreState,
+                },
             )
-
             const input = screen.getByPlaceholderText('Enter Ticket ID')
-
             fireEvent.change(input, { target: { value: '456' } })
             fireEvent.blur(input)
-
             await waitFor(() => {
                 expect(mockOnChange).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -164,25 +140,21 @@ describe('<ActionEventsHeader />', () => {
                 )
             })
         })
-
         it('should call onChange with undefined when input is empty', async () => {
             const mockOnChange = jest.fn()
-
-            renderWithRouter(
-                <Provider store={mockStore(defaultStoreState)}>
-                    <ActionEventsHeader
-                        initialEndDate={new Date()}
-                        initialStartDate={new Date()}
-                        onChange={mockOnChange}
-                    />
-                </Provider>,
+            render(
+                <ActionEventsHeader
+                    initialEndDate={new Date()}
+                    initialStartDate={new Date()}
+                    onChange={mockOnChange}
+                />,
+                {
+                    storeState: defaultStoreState,
+                },
             )
-
             const input = screen.getByPlaceholderText('Enter Ticket ID')
-
             fireEvent.change(input, { target: { value: '' } })
             fireEvent.keyDown(input, { key: 'Enter' })
-
             await waitFor(() => {
                 expect(mockOnChange).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -191,25 +163,21 @@ describe('<ActionEventsHeader />', () => {
                 )
             })
         })
-
         it('should handle numeric input correctly', async () => {
             const mockOnChange = jest.fn()
-
-            renderWithRouter(
-                <Provider store={mockStore(defaultStoreState)}>
-                    <ActionEventsHeader
-                        initialEndDate={new Date()}
-                        initialStartDate={new Date()}
-                        onChange={mockOnChange}
-                    />
-                </Provider>,
+            render(
+                <ActionEventsHeader
+                    initialEndDate={new Date()}
+                    initialStartDate={new Date()}
+                    onChange={mockOnChange}
+                />,
+                {
+                    storeState: defaultStoreState,
+                },
             )
-
             const input = screen.getByPlaceholderText('Enter Ticket ID')
-
             fireEvent.change(input, { target: { value: '789' } })
             fireEvent.blur(input)
-
             await waitFor(() => {
                 expect(mockOnChange).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -219,7 +187,6 @@ describe('<ActionEventsHeader />', () => {
             })
         })
     })
-
     describe('period filter', () => {
         const statsFilters = {
             period: {
@@ -227,79 +194,71 @@ describe('<ActionEventsHeader />', () => {
                 end_datetime: '2010-01-01T23:59:59+02:00',
             },
         }
+        const storeState = {
+            stats: {
+                filters: statsFilters,
+            },
+        } as RootState
 
-        const defaultStore = mockStore({
-            billing: fromJS(billingState),
-            stats: { filters: fromLegacyStatsFilters(statsFilters) },
-        })
         it('renders component', () => {
-            renderWithRouter(
-                <Provider store={defaultStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ActionEventsHeader
-                            onChange={() => {}}
-                            initialStartDate={new Date()}
-                            initialEndDate={new Date()}
-                        />
-                    </QueryClientProvider>
-                </Provider>,
+            render(
+                <ActionEventsHeader
+                    onChange={() => {}}
+                    initialStartDate={new Date()}
+                    initialEndDate={new Date()}
+                />,
                 {
                     path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                    route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                    initialEntries: [
+                        '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                    ],
+                    storeState,
                 },
             )
-
             expect(
                 screen.getByText(
                     /View all events when this Action has been performed, and select an event to view/,
                 ),
             ).toBeInTheDocument()
         })
-
         it('change status filters', () => {
             const onChangeSpy = jest.fn()
-            renderWithRouter(
-                <Provider store={defaultStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ActionEventsHeader
-                            onChange={onChangeSpy}
-                            initialStartDate={new Date()}
-                            initialEndDate={new Date()}
-                        />
-                    </QueryClientProvider>
-                </Provider>,
+            render(
+                <ActionEventsHeader
+                    onChange={onChangeSpy}
+                    initialStartDate={new Date()}
+                    initialEndDate={new Date()}
+                />,
                 {
                     path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                    route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                    initialEntries: [
+                        '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                    ],
+                    storeState,
                 },
             )
-
             expect(onChangeSpy.mock.lastCall).toMatchObject([
                 {
                     from: expect.any(Date),
                     to: expect.any(Date),
                 },
             ])
-
             fireEvent.click(screen.getByText('Success, Error, Partial Success'))
             fireEvent.click(
                 screen.getAllByTestId('filter-dropdown-item-label')[0],
             )
-
             expect(onChangeSpy.mock.lastCall).toMatchObject([
                 {
                     from: expect.any(Date),
                     to: expect.any(Date),
                 },
             ])
-
             fireEvent.click(
                 screen.getAllByTestId('filter-dropdown-item-label')[0],
             )
             fireEvent.click(
                 screen.getAllByTestId('filter-dropdown-item-label')[1],
             )
-
             expect(onChangeSpy.mock.lastCall).toMatchObject([
                 {
                     from: expect.any(Date),
@@ -307,40 +266,32 @@ describe('<ActionEventsHeader />', () => {
                 },
             ])
         })
-
         it('change date period filters', () => {
             const mockedDate = new Date('2000-01-01').getTime()
-
             jest.useFakeTimers()
             jest.setSystemTime(mockedDate)
             const onChangeSpy = jest.fn()
-
-            renderWithRouter(
-                <Provider store={defaultStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ActionEventsHeader
-                            onChange={onChangeSpy}
-                            initialStartDate={
-                                new Date(statsFilters.period.start_datetime)
-                            }
-                            initialEndDate={
-                                new Date(statsFilters.period.end_datetime)
-                            }
-                        />
-                    </QueryClientProvider>
-                </Provider>,
+            render(
+                <ActionEventsHeader
+                    onChange={onChangeSpy}
+                    initialStartDate={
+                        new Date(statsFilters.period.start_datetime)
+                    }
+                    initialEndDate={new Date(statsFilters.period.end_datetime)}
+                />,
                 {
                     path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                    route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                    initialEntries: [
+                        '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+                    ],
+                    storeState,
                 },
             )
-
             const options = {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
             } as const
-
             expect(
                 screen.getByText(
                     new RegExp(
@@ -351,7 +302,6 @@ describe('<ActionEventsHeader />', () => {
                     ),
                 ),
             ).toBeInTheDocument()
-
             expect(
                 screen.getByText(
                     new RegExp(
@@ -362,14 +312,12 @@ describe('<ActionEventsHeader />', () => {
                     ),
                 ),
             ).toBeInTheDocument()
-
             expect(onChangeSpy.mock.lastCall).toMatchObject([
                 {
                     from: new Date(statsFilters.period.start_datetime),
                     to: new Date(statsFilters.period.end_datetime),
                 },
             ])
-
             fireEvent.click(
                 screen.getByText(
                     new RegExp(
@@ -380,19 +328,15 @@ describe('<ActionEventsHeader />', () => {
                     ),
                 ),
             )
-
             fireEvent.click(screen.getByText('Today', { selector: 'li' }))
-
             expect(onChangeSpy.mock.lastCall).toMatchObject([
                 {
                     from: moment(statsFilters.period.end_datetime)
                         .startOf('day')
                         .toDate(),
-
                     to: moment(statsFilters.period.end_datetime).toDate(),
                 },
             ])
-
             jest.useRealTimers()
         })
     })

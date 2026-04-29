@@ -1,15 +1,11 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import BackToActionButton from '../BackToActionButton'
 
 describe('<BackToActionButton />', () => {
     it('should render component', () => {
-        renderWithRouter(<BackToActionButton />)
-
+        render(<BackToActionButton />)
         expect(screen.getByText('Back to Support Actions')).toBeInTheDocument()
     })
 })

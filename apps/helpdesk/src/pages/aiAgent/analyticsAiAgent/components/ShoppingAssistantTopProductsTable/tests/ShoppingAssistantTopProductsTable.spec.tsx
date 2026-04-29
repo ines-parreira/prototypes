@@ -1,6 +1,6 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import type { ShoppingAssistantTopProductRow } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'

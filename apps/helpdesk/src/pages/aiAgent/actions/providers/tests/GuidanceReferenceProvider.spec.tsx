@@ -1,9 +1,9 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledge-service-client'
 
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import GuidanceReferenceContext from '../GuidanceReferenceContext'
 import GuidanceReferenceProvider, { select } from '../GuidanceReferenceProvider'
@@ -34,7 +34,7 @@ describe('<GuidanceReferenceProvider />', () => {
             typeof useFindAllGuidancesKnowledgeResources
         >)
 
-        renderWithQueryClientProvider(
+        render(
             <GuidanceReferenceProvider actions={[{ id: 'action-1' }]}>
                 <GuidanceReferenceContext.Consumer>
                     {(contextValue) => {

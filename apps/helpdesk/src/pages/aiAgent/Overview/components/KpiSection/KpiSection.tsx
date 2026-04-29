@@ -136,8 +136,12 @@ export const KpiSection = ({
             return ''
         }
 
+        if (aiAgentType === 'mixed' || aiAgentType === 'sales') {
+            return `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
+        }
+
         return `/app/stats/${STATS_ROUTES.AI_AGENT_OVERVIEW}`
-    }, [isLoading])
+    }, [aiAgentType, isLoading])
 
     if (isLoading || !aiAgentUserId) {
         return (

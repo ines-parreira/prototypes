@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import * as automationRateTimeSeriesHooks from 'domains/reporting/hooks/automate/useAutomationRateTimeSeriesData'
 import * as automateHooks from 'domains/reporting/hooks/automate/useAutomationRateTrend'

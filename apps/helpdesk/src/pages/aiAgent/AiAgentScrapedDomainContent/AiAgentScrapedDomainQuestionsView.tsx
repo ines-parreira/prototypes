@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { history } from '@repo/routing'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 
 import type { LocaleCode } from 'models/helpCenter/types'
 
@@ -34,6 +33,7 @@ const AiAgentScrapedDomainQuestionsView = ({
     defaultLocale,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
+    const history = useHistory()
     const { articleId } = useParams<{ articleId?: string }>()
     const [syncStoreDomainStatus, setSyncStoreDomainStatus] = useState<
         string | null

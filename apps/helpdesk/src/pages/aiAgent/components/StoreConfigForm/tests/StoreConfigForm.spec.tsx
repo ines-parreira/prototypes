@@ -3,18 +3,13 @@ import type { ComponentProps } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
 import { logEvent, reportError } from '@repo/logging'
-import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
 import moment from 'moment'
-import { Provider } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation, useParams } from 'react-router-dom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -49,8 +44,6 @@ import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacFo
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import { StoreConfigForm } from '../StoreConfigForm'
 
@@ -58,18 +51,6 @@ jest.mock('pages/aiAgent/providers/AiAgentFormChangesProvider', () => ({
     __esModule: true,
     default: jest.fn(({ children }) => children),
 }))
-
-jest.mock('@repo/routing', () => ({
-    ...jest.requireActual('@repo/routing'),
-    history: {
-        push: jest.fn(),
-        replace: jest.fn(),
-        listen: jest.fn(),
-    },
-}))
-
-const queryClient = mockQueryClient()
-
 jest.mock('../hooks/useVerifyChannelsActivation')
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('@repo/logging', () => ({
@@ -78,7 +59,6 @@ jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 const mockLogEvent = jest.mocked(logEvent)
-
 jest.mock('state/notifications/actions')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
@@ -98,7 +78,6 @@ jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
 jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
     PublicSourcesSection: jest.fn(() => <p>Public Source Section</p>),
 }))
-
 jest.mock('pages/common/forms/RichField/RichField', () => ({
     __esModule: true,
     default: ({ placeholder, value, onBlur }: any) => (
@@ -109,7 +88,6 @@ jest.mock('pages/common/forms/RichField/RichField', () => ({
         />
     ),
 }))
-
 // Replace the useStoreActivations mock with useFetchChatIntegrationsStatusData mock
 // Remove this:
 // Mock useStoreActivations hook
@@ -130,7 +108,6 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
         },
     }),
 }))
-
 // Add this instead:
 jest.mock(
     'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',
@@ -143,7 +120,6 @@ jest.mock(
         }),
     }),
 )
-
 // This mocked component is a child of one of the components rendered in the StoreConfigForm (ChatConfigurationFormComponent).
 // By implementing this mock, we're isolating the StoreConfigForm for more focused testing, avoiding not relevant rendering and mocking of components and dependencies that are tested elsewhere.
 jest.mock(
@@ -156,21 +132,18 @@ jest.mock(
         ),
     }),
 )
-
 // Mock the HandoverConfigurationDrawer component
 jest.mock('pages/standalone/components/HandoverConfigurationDrawer', () => ({
     HandoverConfigurationDrawer: () => (
         <div data-testid="mocked-handover-drawer"></div>
     ),
 }))
-
 // mocking the prompt modal
 jest.mock('../FormComponents/StoreConfigUnsavedChangesPrompt', () => ({
     StoreConfigUnsavedChangesPrompt: () => (
         <div data-testid="mocked-unsaved-changes-prompt"></div>
     ),
 }))
-
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
@@ -192,37 +165,28 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
-
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
-
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
-
 const mockUseParams = jest.mocked(useParams)
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockSetSearchParam = jest.fn()
-
 const spyIsAiAgentEnabled = jest.spyOn(util, 'isAiAgentEnabled')
-
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext,
 )
-
 const mockedUseAiAgentFormChangesContext = jest.mocked(
     useAiAgentFormChangesContext,
 )
-
 const mockedUseAccountStoreConfiguration = jest.mocked(
     useAccountStoreConfiguration,
 )
-
 const mockedUseGetOrCreateSnippetHelpCenter = jest.mocked(
     useGetOrCreateSnippetHelpCenter,
 )
@@ -234,25 +198,18 @@ const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
 )
-
 mockedUsePublicResources.mockReturnValue({
     sourceItems: [],
     isSourceItemsListLoading: false,
 } as unknown as ReturnType<typeof usePublicResources>)
-
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
     default: () => mockDispatch,
 }))
-
 jest.mock('@repo/feature-flags')
 const useFlagMock = jest.mocked(useFlag)
-
-const mockStore = configureMockStore([thunk])
-
 const MOCK_EMAIL_ADDRESS = 'test@mail.com'
-
 const MOCK_EMAIL_INTEGRATION = {
     id: 1,
     type: IntegrationType.Email,
@@ -261,28 +218,22 @@ const MOCK_EMAIL_INTEGRATION = {
         address: MOCK_EMAIL_ADDRESS,
     },
 }
-
 const defaultState = {
     integrations: fromJS({
         integrations: [MOCK_EMAIL_INTEGRATION],
     }),
-}
-const contactForm = ContactFormFixture
-
-const mockedStore = mockStore({
-    ...defaultState,
     entities: {
         contactForm: {
             contactFormsAutomationSettings: {
                 automationSettingsByContactFormId: {
-                    [contactForm.id]: {
+                    [ContactFormFixture.id]: {
                         workflows: [],
                         order_management: { enabled: false },
                     },
                 },
             },
             contactForms: {
-                contactFormById: keyBy([contactForm], 'id'),
+                contactFormById: keyBy([ContactFormFixture], 'id'),
             },
         },
         chatsApplicationAutomationSettings:
@@ -298,8 +249,7 @@ const mockedStore = mockStore({
             categories: categoriesState,
         },
     },
-})
-
+}
 const updateValueMocked = jest.fn()
 const mockHandleOnSave = jest
     .fn()
@@ -312,12 +262,10 @@ const mockUpdateStoreConfiguration = jest
 const mockCreateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
-
 const useLocalStorageSpy = jest.spyOn(
     hooksImports,
     'useLocalStorage',
 ) as jest.Mock
-
 const findToggle = (type: 'email' | 'chat') =>
     screen
         .queryAllByRole('checkbox')
@@ -325,52 +273,50 @@ const findToggle = (type: 'email' | 'chat') =>
             (toggle) =>
                 toggle.getAttribute('name') === `toggle-ai-agent-${type}`,
         )
-
+const LocationPath = () => {
+    const location = useLocation()
+    return <span>{location.pathname}</span>
+}
 const renderComponent = (
     props?: Partial<ComponentProps<typeof StoreConfigForm>>,
 ) =>
-    renderWithRouter(
-        <Provider store={mockedStore}>
-            <QueryClientProvider client={queryClient}>
-                <AiAgentFormChangesProvider>
-                    <StoreConfigForm
-                        shopName="test-shop"
-                        accountDomain="test-domain"
-                        shopType="shopify"
-                        faqHelpCenters={
-                            [
-                                { id: 1, name: 'help center 1', type: 'faq' },
-                                { id: 2, name: 'help center 2', type: 'faq' },
-                            ] as unknown as HelpCenter[]
-                        }
-                        {...props}
-                    />
-                </AiAgentFormChangesProvider>
-            </QueryClientProvider>
-        </Provider>,
+    render(
+        <>
+            <AiAgentFormChangesProvider>
+                <StoreConfigForm
+                    shopName="test-shop"
+                    accountDomain="test-domain"
+                    shopType="shopify"
+                    faqHelpCenters={
+                        [
+                            { id: 1, name: 'help center 1', type: 'faq' },
+                            { id: 2, name: 'help center 2', type: 'faq' },
+                        ] as unknown as HelpCenter[]
+                    }
+                    {...props}
+                />
+            </AiAgentFormChangesProvider>
+            <LocationPath />
+        </>,
+        {
+            path: ['/', '/app/views/:viewId'] as unknown as string,
+            storeState: defaultState,
+        },
     )
-
 const getDrawer = () => {
     const drawer = screen.getByRole('dialog', { hidden: true })
     return drawer
 }
-
 jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
     useFileIngestion: jest.fn(),
 }))
-
 const mockedUseFileIngestion = jest.mocked(useFileIngestion)
-
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
 }))
-
 const mockedUseCustomFieldDefinitions = jest.mocked(useCustomFieldDefinitions)
-
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
-
 const mockUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
-
 describe('<StoreConfigForm />', () => {
     const storeConfiguration: StoreConfiguration = {
         shopType: 'shopify',
@@ -426,7 +372,6 @@ describe('<StoreConfigForm />', () => {
         monitoredSmsIntegrations: [],
         smsChannelDeactivatedDatetime: null,
     }
-
     const initialFormValues: FormValues = {
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
@@ -460,7 +405,6 @@ describe('<StoreConfigForm />', () => {
         handoverHttpIntegrationId: null,
         smsDisclaimer: null,
     }
-
     const defaultUseConfigurationFormValues = {
         formValues: initialFormValues,
         resetForm: jest.fn(),
@@ -471,7 +415,6 @@ describe('<StoreConfigForm />', () => {
         handleOnSave: mockHandleOnSave,
         isPendingCreateOrUpdate: false,
     }
-
     beforeEach(() => {
         updateValueMocked.mockReset()
         mockLogEvent.mockClear()
@@ -531,7 +474,6 @@ describe('<StoreConfigForm />', () => {
             ingestFile: jest.fn(),
             deleteIngestedFile: jest.fn(),
         })
-
         useLocalStorageSpy.mockReturnValue([[], jest.fn()])
         mockedUseCustomFieldDefinitions.mockReturnValue({
             data: {
@@ -549,7 +491,6 @@ describe('<StoreConfigForm />', () => {
                 ],
             },
         } as any)
-
         mockUseCustomFieldDefinitions.mockReturnValue({
             data: {
                 data: [
@@ -559,19 +500,15 @@ describe('<StoreConfigForm />', () => {
             },
         } as any)
     })
-
     afterAll(() => {
         spyIsAiAgentEnabled.mockRestore()
     })
-
     it('should render the component', () => {
         renderComponent()
-
         expect(
             screen.getByText('Tone of Voice and Language'),
         ).toBeInTheDocument()
     })
-
     it('should render new email integration caption', () => {
         mockUseParams.mockReturnValue({ tab: 'channels' })
         renderComponent()
@@ -581,7 +518,6 @@ describe('<StoreConfigForm />', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('should call reportError when upsertStoreConfiguration throws an error', async () => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration,
@@ -592,10 +528,8 @@ describe('<StoreConfigForm />', () => {
                 .mockRejectedValue(new Error('Test error')),
             isPendingCreateOrUpdate: false,
         })
-
         try {
             renderComponent()
-
             await waitFor(() => {
                 expect(reportError).toHaveBeenCalledWith(expect.any(Error), {
                     tags: { team: SentryTeam.AI_AGENT },
@@ -606,7 +540,6 @@ describe('<StoreConfigForm />', () => {
             })
         } catch {}
     })
-
     describe('AI Agent chat configuration', () => {
         beforeEach(() => {
             useFlagMock.mockImplementation(
@@ -614,34 +547,27 @@ describe('<StoreConfigForm />', () => {
             )
             mockUseParams.mockReturnValue({ tab: 'channels' })
         })
-
         it('should display chat dropdown', () => {
             renderComponent()
-
             expect(
                 screen.getByText('Select one or more chat integrations'),
             ).toBeInTheDocument()
         })
-
         it('should not display dropdown if feature flag is false', async () => {
             useFlagMock.mockReturnValue(false)
             renderComponent()
-
             await waitFor(() => {
                 expect(
                     screen.queryByText('Select one or more chat integrations'),
                 ).not.toBeInTheDocument()
             })
         })
-
         it('should filter chat channels correctly and populate currentChatChannels', async () => {
             renderComponent()
-
             const dropdown = screen.getByText(
                 'Select one or more chat integrations',
             )
             fireEvent.focus(dropdown)
-
             await waitFor(() => {
                 for (const channel of mockChatChannels) {
                     expect(
@@ -650,7 +576,6 @@ describe('<StoreConfigForm />', () => {
                 }
             })
         })
-
         it('should display chat channels from store configuration in dropdown', async () => {
             const chatIntegration = mockChatChannels[0]
             mockedUseConfigurationForm.mockReturnValue({
@@ -660,14 +585,11 @@ describe('<StoreConfigForm />', () => {
                     monitoredChatIntegrations: [chatIntegration.value.id],
                 },
             })
-
             renderComponent()
-
             await waitFor(() =>
                 expect(screen.getByText(chatIntegration.value.name)),
             )
         })
-
         it('chat toggle should be disabled if user does not have automate', () => {
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
@@ -677,30 +599,22 @@ describe('<StoreConfigForm />', () => {
                 isLoading: false,
             })
             renderComponent()
-
             const chatToggle = findToggle('chat')
-
             expect(chatToggle).toBeDisabled()
         })
-
         it('should trigger monitoredChatIntegrations with correct values on dropdown item click', async () => {
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
             )
-
             renderComponent()
-
             const channelToSelect = mockChatChannels[0]
-
             const dropdown = screen.getByText(
                 'Select one or more chat integrations',
             )
             fireEvent.focus(dropdown)
-
             // Find the channel by its text directly
             const channelText = screen.getByText(/25 Shopify Chat/)
             fireEvent.click(channelText)
-
             await waitFor(() => {
                 expect(updateValueMocked).toHaveBeenCalledWith(
                     'monitoredChatIntegrations',
@@ -709,23 +623,19 @@ describe('<StoreConfigForm />', () => {
             })
         })
     })
-
     describe('AI Agent email configuration', () => {
         beforeEach(() => {
             mockUseParams.mockReturnValue({ tab: 'channels' })
         })
-
         it('email toggle should be disabled if user does not have automate', () => {
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: false,
                 isLoading: false,
             })
             renderComponent()
-
             const emailToggle = findToggle('email')
             expect(emailToggle).toBeDisabled()
         })
-
         it('should render error email integration caption when there is none selected', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -734,13 +644,11 @@ describe('<StoreConfigForm />', () => {
                     monitoredEmailIntegrations: null,
                 },
             })
-
             renderComponent()
             expect(
                 screen.getByText('One or more addresses required.'),
             ).toBeInTheDocument()
         })
-
         it('should render default email signature when signature in form values is null', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -749,13 +657,11 @@ describe('<StoreConfigForm />', () => {
                     monitoredEmailIntegrations: [],
                 },
             })
-
             renderComponent()
             expect(
                 screen.getAllByText('This response was created by AI').length,
             ).toBeGreaterThan(0)
         })
-
         it('should not render error when email channel is disabled', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -765,14 +671,11 @@ describe('<StoreConfigForm />', () => {
                     signature: '',
                 },
             })
-
             renderComponent()
-
             expect(
                 screen.queryByText('Email signature is required.'),
             ).not.toBeInTheDocument()
         })
-
         it('should render error email signature caption when signature is empty', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -783,24 +686,19 @@ describe('<StoreConfigForm />', () => {
                     useEmailIntegrationSignature: false,
                 },
             })
-
             renderComponent()
-
             const textArea = screen.getByPlaceholderText(
                 'AI Agent email signature',
             )
             fireEvent.blur(textArea)
-
             expect(
                 screen.getByText('Email signature is required.'),
             ).toBeInTheDocument()
         })
-
         it('should trigger monitoredEmailIntegration with correct values on dropdown item click', async () => {
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
             )
-
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -826,9 +724,7 @@ describe('<StoreConfigForm />', () => {
                     helpCenterId: 1,
                 },
             })
-
             renderComponent()
-
             const dropdown = screen.getByText(
                 'Select one or more email addresses',
             )
@@ -837,7 +733,6 @@ describe('<StoreConfigForm />', () => {
                 MOCK_EMAIL_INTEGRATION.meta.address,
             )
             fireEvent.click(emailCheckbox)
-
             await waitFor(() => {
                 expect(updateValueMocked).toHaveBeenCalledWith(
                     'monitoredEmailIntegrations',
@@ -851,7 +746,6 @@ describe('<StoreConfigForm />', () => {
             })
         })
     })
-
     it('should call createStoreConfiguration when creating a new configuration', async () => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: undefined,
@@ -863,43 +757,31 @@ describe('<StoreConfigForm />', () => {
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
         })
-
         renderComponent()
-
         const saveButton = screen.getAllByText(/Save Changes/i)[0]
         fireEvent.click(saveButton)
-
         await waitFor(() => {
             expect(mockHandleOnSave).toHaveBeenCalled()
         })
     })
-
     it('scrolls to knowledge section if section query param equals knowledge', () => {
         const mockScrollIntoView = jest.fn()
         Element.prototype.scrollIntoView = mockScrollIntoView()
-
         mockUseSearchParam.mockReturnValue(['knowledge', mockSetSearchParam])
-
         renderComponent()
-
         expect(mockUseSearchParam).toHaveBeenCalledWith('section')
         expect(mockScrollIntoView).toHaveBeenCalled()
         expect(mockSetSearchParam).toHaveBeenCalledWith(null)
     })
-
     it('scrolls to email section if section query param equals email', () => {
         const mockScrollIntoView = jest.fn()
         Element.prototype.scrollIntoView = mockScrollIntoView()
-
         mockUseSearchParam.mockReturnValue(['email', mockSetSearchParam])
-
         renderComponent()
-
         expect(mockUseSearchParam).toHaveBeenCalledWith('section')
         expect(mockScrollIntoView).toHaveBeenCalled()
         expect(mockSetSearchParam).toHaveBeenCalledWith(null)
     })
-
     it('should deactivate email channel', () => {
         mockUseParams.mockReturnValue({ tab: 'channels' })
         mockedUseConfigurationForm.mockReturnValue({
@@ -909,23 +791,19 @@ describe('<StoreConfigForm />', () => {
                 chatChannelDeactivatedDatetime: null,
             },
         })
-
         renderComponent()
         const emailChannelCheckbox = findToggle('email')!
         fireEvent.click(emailChannelCheckbox)
-
         expect(updateValueMocked).toHaveBeenCalledWith(
             'emailChannelDeactivatedDatetime',
             expect.any(String),
         )
     })
-
     it('should deactivate chat channel', () => {
         mockUseParams.mockReturnValue({ tab: 'channels' })
         useFlagMock.mockImplementation(
             (key) => FeatureFlagKey.AiAgentChat === key || false,
         )
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -941,7 +819,6 @@ describe('<StoreConfigForm />', () => {
             expect.any(String),
         )
     })
-
     it('should activate chat channel', () => {
         mockUseParams.mockReturnValue({ tab: 'channels' })
         useFlagMock.mockImplementation(
@@ -955,26 +832,22 @@ describe('<StoreConfigForm />', () => {
                 chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
             },
         })
-
         renderComponent()
         updateValueMocked.mockClear()
         const chatChannelToggle = findToggle('chat')!
         fireEvent.click(chatChannelToggle)
-
         expect(updateValueMocked).toHaveBeenCalledTimes(1)
         expect(updateValueMocked).toHaveBeenLastCalledWith(
             'chatChannelDeactivatedDatetime',
             null,
         )
     })
-
     it('set ai agent enabled toggles correctly if default form values are set', async () => {
         mockedUseAccountStoreConfiguration.mockReturnValue({
             accountConfiguration: undefined,
             aiAgentTicketViewId: 1,
             aiAgentPreviewTicketViewId: 2,
         })
-
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: undefined,
             isLoading: false,
@@ -982,7 +855,6 @@ describe('<StoreConfigForm />', () => {
             createStoreConfiguration: mockCreateStoreConfiguration,
             isPendingCreateOrUpdate: false,
         })
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             isFormDirty: true,
@@ -992,9 +864,7 @@ describe('<StoreConfigForm />', () => {
                 chatChannelDeactivatedDatetime: undefined,
             },
         })
-
         renderComponent()
-
         await waitFor(() => {
             expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
                 INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime,
@@ -1004,7 +874,6 @@ describe('<StoreConfigForm />', () => {
             )
         })
     })
-
     it('should trigger cancellation call on activate AI agent notification when AI agent email is activated', () => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
@@ -1018,7 +887,6 @@ describe('<StoreConfigForm />', () => {
                 .mockRejectedValue(new Error('Test error')),
             isPendingCreateOrUpdate: false,
         })
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1027,18 +895,14 @@ describe('<StoreConfigForm />', () => {
                 emailChannelDeactivatedDatetime: null,
             },
         })
-
         renderComponent()
         const saveChangesButton = screen.getAllByText('Save Changes')[0]
         fireEvent.click(saveChangesButton)
-
         renderComponent()
-
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
-
     it('should trigger cancellation call on activate AI agent notification when AI agent chat is activated', () => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
@@ -1052,7 +916,6 @@ describe('<StoreConfigForm />', () => {
                 .mockRejectedValue(new Error('Test error')),
             isPendingCreateOrUpdate: false,
         })
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1061,24 +924,18 @@ describe('<StoreConfigForm />', () => {
                 chatChannelDeactivatedDatetime: null,
             },
         })
-
         renderComponent()
         const saveChangesButton = screen.getAllByText('Save Changes')[0]
         fireEvent.click(saveChangesButton)
-
         renderComponent()
-
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
-
     it('should display drawer', async () => {
         renderComponent()
-
         // Click on the Tags row to open the drawer
         userEvent.click(screen.getAllByText('Tags')[0])
-
         await waitFor(() => {
             expect(getDrawer()).toBeVisible()
             expect(getDrawer()).toBeInTheDocument()
@@ -1088,59 +945,46 @@ describe('<StoreConfigForm />', () => {
             expect(within(getDrawer()).getByText('Cancel')).toBeInTheDocument()
         })
     })
-
     it('should update form values when saving drawer content', async () => {
         const mockOnSubmit = jest.fn()
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             handleOnSave: mockOnSubmit,
         })
-
         renderComponent()
-
         // Open the drawer by clicking on Tags
         userEvent.click(screen.getAllByText('Tags')[0])
-
         await waitFor(() => {
             expect(getDrawer()).toBeVisible()
         })
-
         // Save changes
         const saveButton = within(getDrawer()).getByRole('button', {
             name: /save changes/i,
         })
         userEvent.click(saveButton)
-
         await waitFor(() => {
             expect(mockOnSubmit).toHaveBeenCalled()
         })
     })
-
     // TODO(React18): Fix this flaky test
     it.skip('should update form values when saving drawer content with new tags', async () => {
         renderComponent()
-
         // Open the drawer by clicking on Tags
         userEvent.click(screen.getAllByText('Tags')[0])
-
         await waitFor(() => {
             expect(getDrawer()).toBeVisible()
         })
-
         userEvent.click(screen.getByRole('button', { name: /add ticket tag/i }))
-
         // Save changes
         const saveButton = within(getDrawer()).getByRole('button', {
             name: /save changes/i,
         })
         userEvent.click(saveButton)
-
         await waitFor(() => {
             expect(updateValueMocked).toHaveBeenCalledWith('tags', [])
         })
         expect(updateValueMocked).toHaveBeenCalledWith('tags', [])
     })
-
     // TODO(React18): This test is flaky, we need to fix it
     it.skip('should update form values when saving drawer content with new ticket fields', async () => {
         useFlagMock.mockImplementation(
@@ -1148,54 +992,41 @@ describe('<StoreConfigForm />', () => {
                 FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields ===
                     key || false,
         )
-
         renderComponent()
-
         // Open the drawer by clicking on Ticket Fields
         await userEvent.click(screen.getAllByText('Ticket Fields')[0])
-
         await waitFor(() => {
             expect(getDrawer()).toBeVisible()
         })
-
         await userEvent.click(
             screen.getByRole('button', { name: /add ticket field/i }),
         )
-
         const ticketFieldCheckbox = await screen.findByLabelText(
             ticketInputFieldDefinition.label,
         )
         await userEvent.click(ticketFieldCheckbox)
-
         await userEvent.click(document.body)
-
         // Save changes
         const saveButton = within(getDrawer()).getByRole('button', {
             name: /save changes/i,
         })
         await userEvent.click(saveButton)
-
         await waitFor(() => {
             expect(updateValueMocked).toHaveBeenCalledWith('customFieldIds', [
                 ticketInputFieldDefinition.id,
             ])
         })
     })
-
     it('should update form values when saving drawer content with new handover topics', async () => {
         renderComponent()
-
         // Open the drawer by clicking on the handover topics link
         await userEvent.click(screen.getByText('handover topics'))
-
         await waitFor(() => {
             expect(getDrawer()).toBeVisible()
         })
-
         await userEvent.click(
             screen.getByRole('button', { name: /add topic/i }),
         )
-
         const input = screen.getAllByPlaceholderText('e.g. Legal inquiry')[0]
         await userEvent.type(input, 'Test')
         // Save changes
@@ -1203,45 +1034,36 @@ describe('<StoreConfigForm />', () => {
             name: /save changes/i,
         })
         await userEvent.click(saveButton)
-
         await waitFor(() => {
             expect(updateValueMocked).toHaveBeenCalledWith('excludedTopics', [
                 'Test',
             ])
         })
     })
-
     it('should not update form values when closing drawer', async () => {
         const mockOnSubmit = jest.fn()
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             handleOnSave: mockOnSubmit,
         })
-
         renderComponent()
-
         // Open the drawer by clicking on Tags
         await userEvent.click(screen.getAllByText('Tags')[0])
-
         // Wait for drawer to be visible
         await waitFor(() => {
             expect(getDrawer()).toBeVisible()
         })
-
         // Add tags
         await userEvent.click(
             screen.getByRole('button', { name: 'Add Ticket Tag' }),
         )
-
         // Cancel changes
         const cancelButton = within(getDrawer()).getByRole('button', {
             name: /cancel/i,
         })
         await userEvent.click(cancelButton)
-
         expect(mockOnSubmit).not.toHaveBeenCalled()
     })
-
     it('should switch drawer content when clicking on different features', async () => {
         useFlagMock.mockImplementation(
             (key) =>
@@ -1249,23 +1071,18 @@ describe('<StoreConfigForm />', () => {
                     key || false,
         )
         renderComponent()
-
         // Open Tags drawer
         await userEvent.click(screen.getAllByText('Tags')[0])
-
         // Wait for drawer to be visible
         await waitFor(() => {
             expect(getDrawer()).toBeVisible()
         })
-
         expect(within(getDrawer()).getByText('Tags')).toBeVisible()
-
         // Close drawer
         const cancelButton = within(getDrawer()).getByRole('button', {
             name: /cancel/i,
         })
         await userEvent.click(cancelButton)
-
         // Open Ticket Fields drawer
         await userEvent.click(screen.getAllByText('Ticket Fields')[0])
         await waitFor(() => {
@@ -1274,13 +1091,10 @@ describe('<StoreConfigForm />', () => {
             ).toBeVisible()
         })
     })
-
     it('should not render the drawer when isOpen is false', () => {
         renderComponent()
-
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
-
     it('should update activeDrawerValues when tags in formValues change', async () => {
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -1289,14 +1103,10 @@ describe('<StoreConfigForm />', () => {
                 tags: [{ name: 'tag1', description: 'tag1 description' }],
             },
         })
-
         const { rerender } = renderComponent()
-
         await userEvent.click(screen.getAllByText('Tags')[0])
-
         expect(screen.getByDisplayValue('tag1')).toBeInTheDocument()
         expect(screen.queryByDisplayValue('tag2')).not.toBeInTheDocument()
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1307,38 +1117,31 @@ describe('<StoreConfigForm />', () => {
                 ],
             },
         })
-
         rerender(
-            <Provider store={mockedStore}>
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentFormChangesProvider>
-                        <StoreConfigForm
-                            shopName="test-shop"
-                            accountDomain="test-domain"
-                            shopType="shopify"
-                            faqHelpCenters={
-                                [
-                                    {
-                                        id: 1,
-                                        name: 'help center 1',
-                                        type: 'faq',
-                                    },
-                                    {
-                                        id: 2,
-                                        name: 'help center 2',
-                                        type: 'faq',
-                                    },
-                                ] as unknown as HelpCenter[]
-                            }
-                        />
-                    </AiAgentFormChangesProvider>
-                </QueryClientProvider>
-            </Provider>,
+            <AiAgentFormChangesProvider>
+                <StoreConfigForm
+                    shopName="test-shop"
+                    accountDomain="test-domain"
+                    shopType="shopify"
+                    faqHelpCenters={
+                        [
+                            {
+                                id: 1,
+                                name: 'help center 1',
+                                type: 'faq',
+                            },
+                            {
+                                id: 2,
+                                name: 'help center 2',
+                                type: 'faq',
+                            },
+                        ] as unknown as HelpCenter[]
+                    }
+                />
+            </AiAgentFormChangesProvider>,
         )
-
         expect(screen.getByDisplayValue('tag2')).toBeInTheDocument()
     })
-
     it('should update activeDrawerValues when tags in formValues change with an undefined value', async () => {
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -1347,13 +1150,9 @@ describe('<StoreConfigForm />', () => {
                 tags: [{ name: 'tag1', description: 'tag1 description' }],
             },
         })
-
         const { rerender } = renderComponent()
-
         await userEvent.click(screen.getAllByText('Tags')[0])
-
         expect(screen.getByDisplayValue('tag1')).toBeInTheDocument()
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1361,38 +1160,31 @@ describe('<StoreConfigForm />', () => {
                 tags: undefined as any,
             },
         })
-
         rerender(
-            <Provider store={mockedStore}>
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentFormChangesProvider>
-                        <StoreConfigForm
-                            shopName="test-shop"
-                            accountDomain="test-domain"
-                            shopType="shopify"
-                            faqHelpCenters={
-                                [
-                                    {
-                                        id: 1,
-                                        name: 'help center 1',
-                                        type: 'faq',
-                                    },
-                                    {
-                                        id: 2,
-                                        name: 'help center 2',
-                                        type: 'faq',
-                                    },
-                                ] as unknown as HelpCenter[]
-                            }
-                        />
-                    </AiAgentFormChangesProvider>
-                </QueryClientProvider>
-            </Provider>,
+            <AiAgentFormChangesProvider>
+                <StoreConfigForm
+                    shopName="test-shop"
+                    accountDomain="test-domain"
+                    shopType="shopify"
+                    faqHelpCenters={
+                        [
+                            {
+                                id: 1,
+                                name: 'help center 1',
+                                type: 'faq',
+                            },
+                            {
+                                id: 2,
+                                name: 'help center 2',
+                                type: 'faq',
+                            },
+                        ] as unknown as HelpCenter[]
+                    }
+                />
+            </AiAgentFormChangesProvider>,
         )
-
         expect(screen.queryByText('tag1')).not.toBeInTheDocument()
     })
-
     it('should update activeDrawerValues when customFieldIds in formValues change', async () => {
         useFlagMock.mockImplementation(
             (key) =>
@@ -1406,18 +1198,14 @@ describe('<StoreConfigForm />', () => {
                 customFieldIds: [ticketInputFieldDefinition.id],
             },
         })
-
         const { rerender } = renderComponent()
-
         await userEvent.click(screen.getByText('Ticket Fields'))
-
         expect(
             screen.getByDisplayValue(ticketInputFieldDefinition.label),
         ).toBeInTheDocument()
         expect(
             screen.queryByDisplayValue(ticketDropdownFieldDefinition.label),
         ).not.toBeInTheDocument()
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1428,40 +1216,33 @@ describe('<StoreConfigForm />', () => {
                 ],
             },
         })
-
         rerender(
-            <Provider store={mockedStore}>
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentFormChangesProvider>
-                        <StoreConfigForm
-                            shopName="test-shop"
-                            accountDomain="test-domain"
-                            shopType="shopify"
-                            faqHelpCenters={
-                                [
-                                    {
-                                        id: 1,
-                                        name: 'help center 1',
-                                        type: 'faq',
-                                    },
-                                    {
-                                        id: 2,
-                                        name: 'help center 2',
-                                        type: 'faq',
-                                    },
-                                ] as unknown as HelpCenter[]
-                            }
-                        />
-                    </AiAgentFormChangesProvider>
-                </QueryClientProvider>
-            </Provider>,
+            <AiAgentFormChangesProvider>
+                <StoreConfigForm
+                    shopName="test-shop"
+                    accountDomain="test-domain"
+                    shopType="shopify"
+                    faqHelpCenters={
+                        [
+                            {
+                                id: 1,
+                                name: 'help center 1',
+                                type: 'faq',
+                            },
+                            {
+                                id: 2,
+                                name: 'help center 2',
+                                type: 'faq',
+                            },
+                        ] as unknown as HelpCenter[]
+                    }
+                />
+            </AiAgentFormChangesProvider>,
         )
-
         expect(
             screen.getByDisplayValue(ticketDropdownFieldDefinition.label),
         ).toBeInTheDocument()
     })
-
     it('should update activeDrawerValues when excludedTopics in formValues change', async () => {
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -1470,14 +1251,10 @@ describe('<StoreConfigForm />', () => {
                 excludedTopics: ['topic1'],
             },
         })
-
         const { rerender } = renderComponent()
-
         await userEvent.click(screen.getByText('handover topics'))
-
         expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
         expect(screen.queryByDisplayValue('topic2')).not.toBeInTheDocument()
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1485,38 +1262,31 @@ describe('<StoreConfigForm />', () => {
                 excludedTopics: ['topic1', 'topic2'],
             },
         })
-
         rerender(
-            <Provider store={mockedStore}>
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentFormChangesProvider>
-                        <StoreConfigForm
-                            shopName="test-shop"
-                            accountDomain="test-domain"
-                            shopType="shopify"
-                            faqHelpCenters={
-                                [
-                                    {
-                                        id: 1,
-                                        name: 'help center 1',
-                                        type: 'faq',
-                                    },
-                                    {
-                                        id: 2,
-                                        name: 'help center 2',
-                                        type: 'faq',
-                                    },
-                                ] as unknown as HelpCenter[]
-                            }
-                        />
-                    </AiAgentFormChangesProvider>
-                </QueryClientProvider>
-            </Provider>,
+            <AiAgentFormChangesProvider>
+                <StoreConfigForm
+                    shopName="test-shop"
+                    accountDomain="test-domain"
+                    shopType="shopify"
+                    faqHelpCenters={
+                        [
+                            {
+                                id: 1,
+                                name: 'help center 1',
+                                type: 'faq',
+                            },
+                            {
+                                id: 2,
+                                name: 'help center 2',
+                                type: 'faq',
+                            },
+                        ] as unknown as HelpCenter[]
+                    }
+                />
+            </AiAgentFormChangesProvider>,
         )
-
         expect(screen.getByDisplayValue('topic2')).toBeInTheDocument()
     })
-
     it('should update activeDrawerValues when excludedTopics is undefined in formValues change', async () => {
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -1525,13 +1295,9 @@ describe('<StoreConfigForm />', () => {
                 excludedTopics: ['topic1'],
             },
         })
-
         const { rerender } = renderComponent()
-
         await userEvent.click(screen.getByText('handover topics'))
-
         expect(screen.getByDisplayValue('topic1')).toBeInTheDocument()
-
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1539,38 +1305,31 @@ describe('<StoreConfigForm />', () => {
                 excludedTopics: undefined as any,
             },
         })
-
         rerender(
-            <Provider store={mockedStore}>
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentFormChangesProvider>
-                        <StoreConfigForm
-                            shopName="test-shop"
-                            accountDomain="test-domain"
-                            shopType="shopify"
-                            faqHelpCenters={
-                                [
-                                    {
-                                        id: 1,
-                                        name: 'help center 1',
-                                        type: 'faq',
-                                    },
-                                    {
-                                        id: 2,
-                                        name: 'help center 2',
-                                        type: 'faq',
-                                    },
-                                ] as unknown as HelpCenter[]
-                            }
-                        />
-                    </AiAgentFormChangesProvider>
-                </QueryClientProvider>
-            </Provider>,
+            <AiAgentFormChangesProvider>
+                <StoreConfigForm
+                    shopName="test-shop"
+                    accountDomain="test-domain"
+                    shopType="shopify"
+                    faqHelpCenters={
+                        [
+                            {
+                                id: 1,
+                                name: 'help center 1',
+                                type: 'faq',
+                            },
+                            {
+                                id: 2,
+                                name: 'help center 2',
+                                type: 'faq',
+                            },
+                        ] as unknown as HelpCenter[]
+                    }
+                />
+            </AiAgentFormChangesProvider>,
         )
-
         expect(screen.queryByDisplayValue('topic1')).not.toBeInTheDocument()
     })
-
     describe('AI Agent ticket view modal', () => {
         it('should not display modal if AI Agent is enabled', async () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
@@ -1578,7 +1337,6 @@ describe('<StoreConfigForm />', () => {
                 aiAgentTicketViewId: 1,
                 aiAgentPreviewTicketViewId: 2,
             })
-
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -1590,7 +1348,6 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 isFormDirty: true,
@@ -1600,29 +1357,23 @@ describe('<StoreConfigForm />', () => {
                     emailChannelDeactivatedDatetime: null,
                 },
             })
-
             renderComponent({})
-
             const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
-
             await waitFor(() => {
                 expect(mockHandleOnSave).toHaveBeenCalled()
-
                 const ticketViewButton = screen.queryByRole('button', {
                     name: 'Show Me',
                 })
                 expect(ticketViewButton).not.toBeInTheDocument()
             })
         })
-
         it('should not display modal if there is no AI Agent view', async () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: null,
                 aiAgentPreviewTicketViewId: 2,
             })
-
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -1634,7 +1385,6 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 isFormDirty: true,
@@ -1644,22 +1394,17 @@ describe('<StoreConfigForm />', () => {
                     emailChannelDeactivatedDatetime: null,
                 },
             })
-
             renderComponent({})
-
             const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
-
             await waitFor(() => {
                 expect(mockHandleOnSave).toHaveBeenCalled()
-
                 const ticketViewButton = screen.queryByRole('button', {
                     name: 'Show Me',
                 })
                 expect(ticketViewButton).not.toBeInTheDocument()
             })
         })
-
         it('should not display modal if the shop has already viewed the modal and persisted in the local storage', async () => {
             useLocalStorageSpy.mockReturnValue([['test-shop'], null])
             mockedUseAccountStoreConfiguration.mockReturnValue({
@@ -1667,7 +1412,6 @@ describe('<StoreConfigForm />', () => {
                 aiAgentTicketViewId: 1,
                 aiAgentPreviewTicketViewId: 2,
             })
-
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -1679,7 +1423,6 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 isFormDirty: true,
@@ -1689,29 +1432,23 @@ describe('<StoreConfigForm />', () => {
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
             })
-
             renderComponent({})
-
             const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
-
             await waitFor(() => {
                 expect(mockHandleOnSave).toHaveBeenCalled()
-
                 const ticketViewButton = screen.queryByRole('button', {
                     name: 'Show Me',
                 })
                 expect(ticketViewButton).not.toBeInTheDocument()
             })
         })
-
         it('should display ai agent configuration modal', async () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
                 aiAgentPreviewTicketViewId: 2,
             })
-
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -1723,7 +1460,6 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 isFormDirty: true,
@@ -1733,19 +1469,14 @@ describe('<StoreConfigForm />', () => {
                     emailChannelDeactivatedDatetime: null,
                 },
             })
-
             // Clear localStorage to ensure modal hasn't been viewed
             localStorage.removeItem('ai-settings-ticket-view-modal-viewed')
-
             renderComponent({})
-
             const saveButton = screen.getAllByText(/Save Changes/i)[0]
             fireEvent.click(saveButton)
-
             await waitFor(() => {
                 expect(mockHandleOnSave).toHaveBeenCalled()
             })
-
             // Verify that handleOnSave was called with the expected parameters
             expect(mockHandleOnSave).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -1754,24 +1485,20 @@ describe('<StoreConfigForm />', () => {
                     onSuccess: expect.any(Function),
                 }),
             )
-
             // Call the success callback which should trigger modal display
             const onSuccessCallback =
                 mockHandleOnSave.mock.calls[0][0].onSuccess
             onSuccessCallback()
-
             // Since we can't easily test React state changes in the modal,
             // verify that the callback would have the right behavior
             // The actual modal display is handled internally by React state
             expect(mockHandleOnSave).toHaveBeenCalled()
         })
-
         it('should show error when chat or email enabled but no integrations selected', () => {
             mockUseParams.mockReturnValue({ tab: 'channels' })
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
             )
-
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {
@@ -1782,18 +1509,14 @@ describe('<StoreConfigForm />', () => {
                     monitoredChatIntegrations: [],
                 },
             })
-
             renderComponent()
-
             expect(
                 screen.getByLabelText(/Select one or more Chats/i),
             ).toBeInvalid()
-
             expect(
                 screen.getByLabelText(/Select one or more emails/i),
             ).toBeInvalid()
         })
-
         it('should display banner if AI Agent on Preview mode', () => {
             useFlagMock.mockImplementation(
                 (key) =>
@@ -1813,15 +1536,12 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent({})
-
             expect(
                 screen.getByText('You’re currently using AI Agent Preview.'),
             ).toBeInTheDocument()
             expect(screen.getByText('Review Drafts')).toBeInTheDocument()
         })
-
         it('should display banner if AI Agent on Preview mode with new method', () => {
             useFlagMock.mockImplementation(
                 (key) =>
@@ -1841,16 +1561,13 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent({})
-
             expect(
                 screen.getByText('You’re currently using AI Agent Preview.'),
             ).toBeInTheDocument()
             expect(screen.getByText('Review Drafts')).toBeInTheDocument()
         })
-
-        it('should redirect to AI Agent Preview ticket views if button on Preview banner is clicked', () => {
+        it('should redirect to AI Agent Preview ticket views if button on Preview banner is clicked', async () => {
             useFlagMock.mockImplementation(
                 (key) =>
                     FeatureFlagKey.FollowUpAiAgentPreviewMode === key || false,
@@ -1873,20 +1590,17 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent({})
-
             expect(
                 screen.getByText('You’re currently using AI Agent Preview.'),
             ).toBeInTheDocument()
-
             const reviewDraftsButton = screen.getByText('Review Drafts')
             expect(reviewDraftsButton).toBeInTheDocument()
-            fireEvent.click(reviewDraftsButton)
-
-            expect(history.push).toHaveBeenCalledWith('/app/views/2')
+            await userEvent.click(reviewDraftsButton)
+            await waitFor(() => {
+                expect(screen.getByText('/app/views/2')).toBeInTheDocument()
+            })
         })
-
         it('should not show Review Drafts button if Preview ticket views id is null', () => {
             useFlagMock.mockImplementation(
                 (key) =>
@@ -1909,14 +1623,11 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent({})
-
             const reviewDraftsButton = screen.queryByText('Review Drafts')
             expect(reviewDraftsButton).not.toBeInTheDocument()
         })
     })
-
     describe('AI Autofill section', () => {
         it('should show the Ticket Fields section if the FF is activated', () => {
             useFlagMock.mockImplementation(
@@ -1924,14 +1635,11 @@ describe('<StoreConfigForm />', () => {
                     FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields ===
                         key || false,
             )
-
             const { container } = renderComponent()
             const section = within(container).getByText('Ticket Fields')
-
             expect(section).toBeInTheDocument()
         })
     })
-
     describe('Preview Mode', () => {
         it('should display banner if AI Agent on Preview mode', () => {
             useFlagMock.mockImplementation(
@@ -1952,15 +1660,12 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent({})
-
             expect(
                 screen.getByText('You’re currently using AI Agent Preview.'),
             ).toBeInTheDocument()
             expect(screen.getByText('Review Drafts')).toBeInTheDocument()
         })
-
         it('should not show Review Drafts button if Preview ticket views id is null', () => {
             useFlagMock.mockImplementation(
                 (key) =>
@@ -1983,14 +1688,11 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent({})
-
             const reviewDraftsButton = screen.queryByText('Review Drafts')
             expect(reviewDraftsButton).not.toBeInTheDocument()
         })
     })
-
     describe('Agent Deactivation', () => {
         it('should not deactivate agent when isCreate is true', async () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -2000,15 +1702,12 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent()
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
                 expect(mockDispatch).not.toHaveBeenCalled()
             })
         })
-
         it('should deactivate agent silently when silentUpdate is true', async () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -2019,7 +1718,6 @@ describe('<StoreConfigForm />', () => {
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
                 },
             })
-
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -2033,9 +1731,7 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent()
-
             await waitFor(() => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -2048,7 +1744,6 @@ describe('<StoreConfigForm />', () => {
                 expect(mockDispatch).not.toHaveBeenCalled()
             })
         })
-
         it('should handle error during deactivation', async () => {
             const mockError = new Error('Test error')
             mockedUseConfigurationForm.mockReturnValue({
@@ -2060,7 +1755,6 @@ describe('<StoreConfigForm />', () => {
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
                 },
             })
-
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -2076,9 +1770,7 @@ describe('<StoreConfigForm />', () => {
                 createStoreConfiguration: mockCreateStoreConfiguration,
                 isPendingCreateOrUpdate: false,
             })
-
             renderComponent()
-
             await waitFor(() => {
                 expect(reportError).toHaveBeenCalledWith(mockError, {
                     tags: { team: SentryTeam.AI_AGENT },
@@ -2089,14 +1781,12 @@ describe('<StoreConfigForm />', () => {
             })
         })
     })
-
     describe('External Knowledge Sources', () => {
         beforeEach(() => {
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
             )
         })
-
         it('should filter knowledge source URLs', async () => {
             mockedUsePublicResources.mockReturnValue({
                 sourceItems: [
@@ -2117,7 +1807,6 @@ describe('<StoreConfigForm />', () => {
                 ],
                 isSourceItemsListLoading: false,
             })
-
             mockedUseFileIngestion.mockReturnValue({
                 ingestedFiles: [
                     {
@@ -2144,19 +1833,15 @@ describe('<StoreConfigForm />', () => {
                 ingestFile: jest.fn(),
                 deleteIngestedFile: jest.fn(),
             })
-
             const mockOnSubmit = jest.fn()
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 handleOnSave: mockOnSubmit,
             })
-
             renderComponent()
-
             await userEvent.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
-
             await waitFor(() => {
                 expect(mockOnSubmit).toHaveBeenCalledWith({
                     publicUrls: ['https://test.com'],
@@ -2169,53 +1854,43 @@ describe('<StoreConfigForm />', () => {
             })
         })
     })
-
     describe('ticket preview visibility', () => {
         it('should not show ticket preview when tab channels', () => {
             mockUseParams.mockReturnValue({ tab: 'channels' })
             renderComponent()
-
             expect(
                 screen.queryByText(/Example of AI Agent's Tone of Voice/i),
             ).not.toBeInTheDocument()
         })
-
         it('should show ticket preview when tab is general and AiAgentToneOfVoice flag is disabled', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
             useFlagMock.mockReturnValue(false)
             renderComponent()
-
             expect(
                 screen.getByText(/Example of AI Agent's Tone of Voice/i),
             ).toBeInTheDocument()
         })
-
         it('should not show ticket preview when tab is general and AiAgentToneOfVoice flag is enabled', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentToneOfVoice === key || false,
             )
             renderComponent()
-
             expect(
                 screen.queryByText(/Example of AI Agent's Tone of Voice/i),
             ).not.toBeInTheDocument()
         })
     })
-
     describe('section prop display logic', () => {
         it('should display channels section when section prop is provided regardless of tab', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
             )
-
             renderComponent({ section: 'email' })
-
             expect(
                 screen.getAllByText('Enable AI Agent on Email').length,
             ).toBeGreaterThan(0)
-
             expect(
                 screen.queryByText('Tone of Voice and Language'),
             ).not.toBeInTheDocument()
@@ -2226,12 +1901,9 @@ describe('<StoreConfigForm />', () => {
                 screen.queryByText('AI ticket tagging'),
             ).not.toBeInTheDocument()
         })
-
         it('should display general sections when section prop is not provided and tab is general', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
-
             renderComponent({ section: undefined })
-
             expect(
                 screen.getByText('Tone of Voice and Language'),
             ).toBeInTheDocument()
@@ -2239,21 +1911,16 @@ describe('<StoreConfigForm />', () => {
                 screen.getByText('Handover and exclusion'),
             ).toBeInTheDocument()
             expect(screen.getByText('AI ticket tagging')).toBeInTheDocument()
-
             expect(
                 screen.queryByText('Enable AI Agent on Email'),
             ).not.toBeInTheDocument()
         })
-
         it('should display channels sections when section prop is not provided and tab is channels', () => {
             mockUseParams.mockReturnValue({ tab: 'channels' })
-
             renderComponent({ section: undefined })
-
             expect(
                 screen.getAllByText('Enable AI Agent on Email').length,
             ).toBeGreaterThan(0)
-
             expect(
                 screen.queryByText('Tone of Voice and Language'),
             ).not.toBeInTheDocument()
@@ -2264,22 +1931,18 @@ describe('<StoreConfigForm />', () => {
                 screen.queryByText('AI ticket tagging'),
             ).not.toBeInTheDocument()
         })
-
         it('should display only specific channel section when section prop is chat', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
             )
-
             renderComponent({ section: 'chat' })
-
             expect(
                 screen.getAllByText('Enable AI Agent on Chat').length,
             ).toBeGreaterThan(0)
             expect(
                 screen.queryByText('Enable AI Agent on Email'),
             ).not.toBeInTheDocument()
-
             expect(
                 screen.queryByText('Tone of Voice and Language'),
             ).not.toBeInTheDocument()
@@ -2290,23 +1953,18 @@ describe('<StoreConfigForm />', () => {
                 screen.queryByText('AI ticket tagging'),
             ).not.toBeInTheDocument()
         })
-
         it('should display only specific channel section when section prop is sms', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentSmsChannel === key || false,
             )
-
             renderComponent({ section: 'sms' })
-
             expect(
                 screen.getAllByText('Enable AI Agent on SMS').length,
             ).toBeGreaterThan(0)
-
             expect(
                 screen.queryByText('Enable AI Agent on Email'),
             ).not.toBeInTheDocument()
-
             expect(
                 screen.queryByText('Tone of Voice and Language'),
             ).not.toBeInTheDocument()
@@ -2318,20 +1976,16 @@ describe('<StoreConfigForm />', () => {
             ).not.toBeInTheDocument()
         })
     })
-
     describe('section-based display logic', () => {
         it('should display only channels section when section prop is chat', () => {
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
             )
             mockUseParams.mockReturnValue({ tab: 'general' })
-
             renderComponent({ section: 'chat' })
-
             expect(
                 screen.getAllByText('Enable AI Agent on Chat').length,
             ).toBeGreaterThan(0)
-
             expect(
                 screen.queryByText('Enable AI Agent on Email'),
             ).not.toBeInTheDocument()
@@ -2345,12 +1999,9 @@ describe('<StoreConfigForm />', () => {
                 screen.queryByText('AI ticket tagging'),
             ).not.toBeInTheDocument()
         })
-
         it('should display general sections when section prop is not provided and tab is general', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
-
             renderComponent({ section: undefined })
-
             expect(
                 screen.getByText('Tone of Voice and Language'),
             ).toBeInTheDocument()
@@ -2358,7 +2009,6 @@ describe('<StoreConfigForm />', () => {
                 screen.getByText('Handover and exclusion'),
             ).toBeInTheDocument()
             expect(screen.getByText('AI ticket tagging')).toBeInTheDocument()
-
             expect(
                 screen.queryByText('Enable AI Agent on Chat'),
             ).not.toBeInTheDocument()
@@ -2366,22 +2016,18 @@ describe('<StoreConfigForm />', () => {
                 screen.queryByText('Enable AI Agent on Email'),
             ).not.toBeInTheDocument()
         })
-
         it('should display channels section when section prop is not provided and tab is channels', () => {
             mockUseParams.mockReturnValue({ tab: 'channels' })
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentChat === key || false,
             )
-
             renderComponent({ section: undefined })
-
             expect(
                 screen.getAllByText('Enable AI Agent on Chat').length,
             ).toBeGreaterThan(0)
             expect(
                 screen.getAllByText('Enable AI Agent on Email').length,
             ).toBeGreaterThan(0)
-
             expect(
                 screen.queryByText('Tone of Voice and Language'),
             ).not.toBeInTheDocument()
@@ -2392,16 +2038,12 @@ describe('<StoreConfigForm />', () => {
                 screen.queryByText('AI ticket tagging'),
             ).not.toBeInTheDocument()
         })
-
         it('should override tab parameter when section prop is email', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
-
             renderComponent({ section: 'email' })
-
             expect(
                 screen.getAllByText('Enable AI Agent on Email').length,
             ).toBeGreaterThan(0)
-
             expect(
                 screen.queryByText('Tone of Voice and Language'),
             ).not.toBeInTheDocument()
@@ -2412,19 +2054,15 @@ describe('<StoreConfigForm />', () => {
                 screen.queryByText('AI ticket tagging'),
             ).not.toBeInTheDocument()
         })
-
         it('should override tab parameter when section prop is sms', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
             useFlagMock.mockImplementation(
                 (key) => FeatureFlagKey.AiAgentSmsChannel === key || false,
             )
-
             renderComponent({ section: 'sms' })
-
             expect(
                 screen.getAllByText('Enable AI Agent on SMS').length,
             ).toBeGreaterThan(0)
-
             expect(
                 screen.queryByText('Tone of Voice and Language'),
             ).not.toBeInTheDocument()
@@ -2436,7 +2074,6 @@ describe('<StoreConfigForm />', () => {
             ).not.toBeInTheDocument()
         })
     })
-
     describe('custom fields', () => {
         beforeEach(() => {
             useFlagMock.mockImplementation(
@@ -2445,7 +2082,6 @@ describe('<StoreConfigForm />', () => {
                         key || false,
             )
         })
-
         it('should not display the custom fields settings card when FF custom-fields is disabled', () => {
             useFlagMock.mockReturnValue(false)
             mockedUseConfigurationForm.mockReturnValue({
@@ -2459,7 +2095,6 @@ describe('<StoreConfigForm />', () => {
                 },
             })
         })
-
         it('should display the correct number of available custom fields in the settings card', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -2472,10 +2107,8 @@ describe('<StoreConfigForm />', () => {
                 },
             })
             renderComponent()
-
             expect(screen.getByText('2 ticket fields')).toBeInTheDocument()
         })
-
         it('should display "No ticket fields" when no custom fields are available', () => {
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: [] },
@@ -2491,10 +2124,8 @@ describe('<StoreConfigForm />', () => {
                 },
             })
             renderComponent()
-
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
-
         it('should display "No ticket fields" when availableCustomFields is undefined', () => {
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: undefined },
@@ -2510,10 +2141,8 @@ describe('<StoreConfigForm />', () => {
                 },
             })
             renderComponent()
-
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
-
         it('should display "No ticket fields" when formValues.customFields is null', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -2523,10 +2152,8 @@ describe('<StoreConfigForm />', () => {
                 },
             })
             renderComponent()
-
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
-
         it('should display "No ticket fields" when availableCustomFields is empty after filtering', () => {
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -2535,12 +2162,9 @@ describe('<StoreConfigForm />', () => {
                     customFieldIds: [],
                 },
             })
-
             renderComponent()
-
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
-
         it('should handle undefined availableCustomFields and use 0 as fallback', () => {
             mockUseCustomFieldDefinitions.mockReturnValue({
                 data: { data: undefined },
@@ -2552,9 +2176,7 @@ describe('<StoreConfigForm />', () => {
                     customFieldIds: [],
                 },
             })
-
             renderComponent()
-
             expect(screen.getByText('No ticket fields')).toBeInTheDocument()
         })
     })

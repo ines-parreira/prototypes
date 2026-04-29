@@ -1,13 +1,10 @@
 import { featureFlagsClientMock } from '@repo/feature-flags/testing'
-import { assumeMock } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
+import { QueryClient } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -23,12 +20,9 @@ import {
     AiAgentScopes,
     WizardStepEnum,
 } from 'pages/aiAgent/Onboarding_V2/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { EngagementStep } from '../EngagementStep'
-
-const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -36,13 +30,6 @@ const testQueryClient = new QueryClient({
         mutations: { retry: false },
     },
 })
-
-const history = createMemoryHistory({
-    initialEntries: [
-        `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/engagement`,
-    ],
-})
-
 const defaultState = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
@@ -50,20 +37,16 @@ const defaultState = {
         integrations: [shopifyIntegration, ...chatIntegrationFixtures],
     }),
 } as RootState
-
 jest.mock(
     'pages/aiAgent/components/CustomerEngagementSettings/hooks/useGmvUsdOver30Days',
 )
 const mockUseGmvUsdOver30Days = assumeMock(useGmvUsdOver30Days)
-
 jest.mock(
     'pages/aiAgent/components/CustomerEngagementSettings/hooks/useLowestPotentialImpact',
 )
 const mockUseLowestPotentialImpact = assumeMock(useLowestPotentialImpact)
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
-
 const mockGmvData = [
     [
         {
@@ -73,46 +56,36 @@ const mockGmvData = [
     ],
 ]
 const mockLowestPotentialImpact = '$500'
-
 const mutateUpdateOnboardingMock = jest.fn()
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding')
 const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
-
 const goToStep = jest.fn()
-
 const renderWithProviders = (props = {}) => {
-    return renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <QueryClientProvider client={testQueryClient}>
-                <EngagementStep
-                    currentStep={4}
-                    totalSteps={5}
-                    goToStep={goToStep}
-                    {...props}
-                />
-            </QueryClientProvider>
-        </Provider>,
+    return render(
+        <EngagementStep
+            currentStep={4}
+            totalSteps={5}
+            goToStep={goToStep}
+            {...props}
+        />,
         {
-            history,
             path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
-            route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/engagement`,
+            initialEntries: [
+                `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/engagement`,
+            ] /* TODO: refactor history-dependent assertions */,
+            storeState: defaultState,
         },
     )
 }
-
 describe('EngagementStep', () => {
     beforeEach(() => {
         testQueryClient.clear()
-
         featureFlagsClientMock.allFlags.mockReturnValue({})
-
         mockUseGmvUsdOver30Days.mockReturnValue({
             data: mockGmvData,
             isLoading: false,
         })
-
         mockUseLowestPotentialImpact.mockReturnValue(mockLowestPotentialImpact)
-
         useGetOnboardingDataMock.mockReturnValue({
             data: {
                 salesPersuasionLevel: PersuasionLevel.Moderate,
@@ -128,26 +101,28 @@ describe('EngagementStep', () => {
             },
             isLoading: false,
         } as any)
-
         useUpdateOnboardingMock.mockReturnValue({
             mutate: mutateUpdateOnboardingMock,
             isLoading: false,
         } as any)
-
         mutateUpdateOnboardingMock.mockImplementation(
-            (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+            (
+                data: any,
+                {
+                    onSuccess,
+                }: {
+                    onSuccess: () => {}
+                },
+            ) => {
                 onSuccess()
             },
         )
     })
-
     afterEach(() => {
         jest.clearAllMocks()
     })
-
     it('renders the main title and form sections', async () => {
         renderWithProviders()
-
         await waitFor(() => {
             expect(
                 screen.getByText(/choose how ai agent engages/i),
@@ -167,16 +142,13 @@ describe('EngagementStep', () => {
             ).toBeInTheDocument()
         })
     })
-
     it.skip('shows confirmation popup when all toggles are off and next is clicked', async () => {
         renderWithProviders()
-
         await waitFor(() => {
             expect(
                 screen.getByText(/choose how ai agent engages/i),
             ).toBeInTheDocument()
         })
-
         // Turn off all toggles (simulate user interaction)
         const toggles = screen.getAllByRole('checkbox')
         toggles.forEach((toggle) => {
@@ -199,46 +171,35 @@ describe('EngagementStep', () => {
             ).toBeInTheDocument()
         })
     })
-
     it('calls goToStep when back is clicked', async () => {
         const user = userEvent.setup()
         renderWithProviders()
-
         await waitFor(() => {
             expect(
                 screen.getByText(/choose how ai agent engages/i),
             ).toBeInTheDocument()
         })
-
         const backButton = screen.getByRole('button', { name: /Back/i })
-
         await act(() => user.click(backButton))
-
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalled()
         })
     })
-
     it('calls updateOnboarding when toggles are changed and Next is clicked', async () => {
         const user = userEvent.setup()
         renderWithProviders()
-
         await waitFor(() => {
             expect(
                 screen.getByText(/choose how ai agent engages/i),
             ).toBeInTheDocument()
         })
-
         const toggles = screen.getAllByRole('checkbox')
         expect(toggles.length).toBeGreaterThan(0)
-
         // Flip the first toggle to make the form dirty
         await act(() => user.click(toggles[0]))
-
         // Click "Next"
         const nextButton = screen.getByRole('button', { name: /next/i })
         await act(() => user.click(nextButton))
-
         await waitFor(() => {
             expect(mutateUpdateOnboardingMock).toHaveBeenCalledWith(
                 {
@@ -254,7 +215,6 @@ describe('EngagementStep', () => {
                 },
                 expect.anything(),
             )
-
             expect(goToStep).toHaveBeenCalled()
         })
     })

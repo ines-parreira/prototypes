@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
@@ -8,7 +9,6 @@ import { LegacyAiAgentActivationStoreCard } from 'pages/aiAgent/Activation/compo
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
@@ -66,7 +66,7 @@ const mockUseFlag = jest.mocked(useFlag)
 
 const renderComponent = (
     props: ComponentProps<typeof LegacyAiAgentActivationStoreCard>,
-) => renderWithRouter(<LegacyAiAgentActivationStoreCard {...props} />)
+) => render(<LegacyAiAgentActivationStoreCard {...props} />)
 
 const storeWithoutAlert = {
     name: 'steve-madden',

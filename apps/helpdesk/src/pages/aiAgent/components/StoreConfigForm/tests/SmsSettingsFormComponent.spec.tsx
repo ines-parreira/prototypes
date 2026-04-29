@@ -1,26 +1,22 @@
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { SmsSettingsFormComponent } from '../FormComponents/SmsSettingsFormComponent'
 import { useSmsPhoneNumbers } from '../hooks/useSmsPhoneNumbers'
 import type { SmsPhoneNumber } from '../types'
 
 jest.mock('../hooks/useSmsPhoneNumbers')
-
-type SmsItem = { id: number; name: string }
-
+type SmsItem = {
+    id: number
+    name: string
+}
 jest.mock(
     '../../SmsIntegrationListSelection/SmsIntegrationListSelection',
     () => ({
@@ -48,36 +44,25 @@ jest.mock(
         ),
     }),
 )
-
 const mockUseSmsPhoneNumbers = jest.mocked(useSmsPhoneNumbers)
 const mockUpdateValue = jest.fn()
 const mockSetIsPristine = jest.fn()
-
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
-
 const defaultState = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
     integrations: fromJS(integrationsState) as Map<any, any>,
 } as RootState
-
 const defaultProps = {
     monitoredSmsIntegrations: null,
     smsDisclaimer: null,
     updateValue: mockUpdateValue,
     setIsPristine: mockSetIsPristine,
 }
-
 const renderWithProvider = (props: any = defaultProps) => {
-    renderWithRouter(
-        <QueryClientProvider client={mockQueryClient()}>
-            <Provider store={mockStore(defaultState)}>
-                <SmsSettingsFormComponent {...props} />
-            </Provider>
-        </QueryClientProvider>,
-    )
+    render(<SmsSettingsFormComponent {...props} />, {
+        storeState: defaultState,
+    })
 }
-
 describe('SmsSettingsFormComponent', () => {
     const mockSmsPhoneNumbers: SmsPhoneNumber[] = [
         {
@@ -99,66 +84,49 @@ describe('SmsSettingsFormComponent', () => {
             name: 'SMS Integration 2',
         },
     ]
-
     beforeEach(() => {
         mockUseSmsPhoneNumbers.mockReturnValue(mockSmsPhoneNumbers)
         mockUpdateValue.mockClear()
         mockSetIsPristine.mockClear()
     })
-
     it('renders the form with default SMS list and shows required label', () => {
         renderWithProvider({ ...defaultProps, isRequired: true })
-
         screen.getByText(/Select phone numbers/i)
         screen.getByText('SMS Integration 1')
         screen.getByText('SMS Integration 2')
         screen.getByText('One or more SMS required.')
     })
-
     it('displays no error message when SMS integrations are selected', () => {
         const props = { ...defaultProps, monitoredSmsIntegrations: [1] }
-
         renderWithProvider(props)
-
         expect(
             screen.queryByText('One or more SMS required.'),
         ).not.toBeInTheDocument()
     })
-
     it('calls updateValue when an SMS integration is selected', () => {
         renderWithProvider()
-
         fireEvent.click(screen.getByText('Select SMS'))
-
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'monitoredSmsIntegrations',
             [1],
         )
     })
-
     it('calls setIsPristine when an SMS integration is selected', () => {
         renderWithProvider()
-
         fireEvent.click(screen.getByText('Select SMS'))
-
         expect(mockSetIsPristine).toHaveBeenCalledWith(false)
     })
-
     it('shows an error message when no SMS is selected and value is required', () => {
         renderWithProvider({ ...defaultProps, isRequired: true })
-
         screen.getByText('One or more SMS required.')
         screen.getByText(/Select phone numbers/i)
     })
-
     it('does not show error message when isRequired is false', () => {
         renderWithProvider({ ...defaultProps, isRequired: false })
-
         expect(
             screen.queryByText('One or more SMS required.'),
         ).not.toBeInTheDocument()
     })
-
     it('prefills initial value when shouldPrefillValue is true', () => {
         const props = {
             ...defaultProps,
@@ -166,15 +134,12 @@ describe('SmsSettingsFormComponent', () => {
             monitoredSmsIntegrations: [],
             shouldPrefillValue: true,
         }
-
         renderWithProvider(props)
-
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'monitoredSmsIntegrations',
             [1],
         )
     })
-
     it('does not prefill when shouldPrefillValue is false', () => {
         const props = {
             ...defaultProps,
@@ -182,12 +147,9 @@ describe('SmsSettingsFormComponent', () => {
             monitoredSmsIntegrations: [],
             shouldPrefillValue: false,
         }
-
         renderWithProvider(props)
-
         expect(mockUpdateValue).not.toHaveBeenCalled()
     })
-
     it('does not prefill when monitoredSmsIntegrations is not empty', () => {
         const props = {
             ...defaultProps,
@@ -195,17 +157,12 @@ describe('SmsSettingsFormComponent', () => {
             monitoredSmsIntegrations: [2],
             shouldPrefillValue: true,
         }
-
         renderWithProvider(props)
-
         expect(mockUpdateValue).not.toHaveBeenCalled()
     })
-
     it('passes disabled state to SmsIntegrationListSelection', () => {
         const props = { ...defaultProps, isDisabled: true }
-
         renderWithProvider(props)
-
         screen.getByText('SMS List Selection Component')
     })
 })

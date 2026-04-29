@@ -1,21 +1,14 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render as renderWithProviders } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { fromJS } from 'immutable'
 import _range from 'lodash/range'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
-import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
-import { account, automationSubscriptionProductPrices } from 'fixtures/account'
-import { billingState } from 'fixtures/billing'
-import { shopifyIntegration } from 'fixtures/integrations'
-import { statsFilters } from 'fixtures/stats'
+import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
+import { initialState as initialUiStatsFiltersState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import {
     useGetConfigurationExecution,
@@ -31,12 +24,34 @@ import {
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import type { Paths } from 'rest_api/workflows_api/client.generated'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { StoreState } from 'state/types'
 
 import ActionEventsViewContainer from '../ActionEventsViewContainer'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div>{location.pathname}</div>
+}
+const defaultStoreState = {
+    ui: {
+        stats: { filters: initialUiStatsFiltersState },
+    },
+    stats: initialStatsFiltersState,
+} as StoreState
+type RenderOptions = NonNullable<Parameters<typeof renderWithProviders>[1]>
+const render = (
+    ui: Parameters<typeof renderWithProviders>[0],
+    options?: RenderOptions,
+) =>
+    renderWithProviders(ui, {
+        ...options,
+        storeState: {
+            ...defaultStoreState,
+            ...options?.storeState,
+        },
+    })
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useGetAppImageUrl')
@@ -60,10 +75,7 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
         </div>
     ),
 }))
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
-const queryClient = mockQueryClient()
 const useGetConfigurationExecutionsMocked = assumeMock(
     useGetConfigurationExecutions,
 )
@@ -90,28 +102,12 @@ useStoreConfigurationsMock.mockReturnValue({
 useStoreActivationsMock.mockReturnValue({
     storeActivations: {},
 } as any)
-
-const defaultStore = mockStore({
-    currentAccount: fromJS({
-        ...account,
-        current_subscription: {
-            ...account.current_subscription,
-            products: automationSubscriptionProductPrices,
-            status: 'active',
-        },
-    }),
-    billing: fromJS(billingState),
-    integrations: fromJS([shopifyIntegration]),
-    stats: { filters: fromLegacyStatsFilters(statsFilters) },
-})
-
 describe('ActionEventsViewContainer', () => {
     beforeEach(() => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
         })
-
         useGetWorkflowConfigurationMocked.mockReturnValue({
             isFetching: false,
             data: {
@@ -121,13 +117,11 @@ describe('ActionEventsViewContainer', () => {
                 template_internal_id: 'template_internal_id',
             },
         } as UseQueryResult<Paths.WfConfigurationControllerGet.Responses.$200>)
-
         useGetConfigurationExecutionsMocked.mockReturnValue({
             isFetching: false,
             isError: false,
             data: undefined,
         } as UseQueryResult<Paths.WfConfigurationControllerGetExecutions.Responses.$200>)
-
         useGetConfigurationExecutionLogsMocked.mockReturnValue({
             isFetching: false,
             data: [
@@ -145,7 +139,6 @@ describe('ActionEventsViewContainer', () => {
                 },
             ],
         } as UseQueryResult<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>)
-
         useGetConfigurationExecutionMocked.mockReturnValue({
             isFetching: false,
             data: {
@@ -165,7 +158,6 @@ describe('ActionEventsViewContainer', () => {
                 },
             },
         } as unknown as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
-
         useGetWorkflowConfigurationTemplatesMocked.mockReturnValue({
             isFetching: false,
             data: [
@@ -183,26 +175,23 @@ describe('ActionEventsViewContainer', () => {
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
     })
-
     it('redirects to automation when access is denied', () => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: false,
             isLoading: false,
         })
-
-        const { history } = renderWithRouter(
-            <Provider store={defaultStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionEventsViewContainer />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                <ActionEventsViewContainer />
+                <LocationPath />
+            </>,
             {
-                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
+                initialEntries: [
+                    '/shopify/my-shop/ai-agent/actions/events/configuration_id',
+                ],
             },
         )
-
-        expect(history.location.pathname).toBe('/app/automation')
+        expect(screen.getByText('/app/automation')).toBeInTheDocument()
     })
     it('renders loading page', () => {
         useGetWorkflowConfigurationMocked.mockReturnValue({
@@ -210,23 +199,15 @@ describe('ActionEventsViewContainer', () => {
             isError: false,
             data: undefined,
         } as UseQueryResult<any>)
-
-        renderWithRouter(
-            <Provider store={defaultStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionEventsViewContainer />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/app/ai-agent/:shopType/:shopName/actions/events/:id',
-                route: '/app/ai-agent/shopify/my-shop/actions/events/configuration_id',
-            },
-        )
-
+        render(<ActionEventsViewContainer />, {
+            path: '/app/ai-agent/:shopType/:shopName/actions/events/:id',
+            initialEntries: [
+                '/app/ai-agent/shopify/my-shop/actions/events/configuration_id',
+            ],
+        })
         expect(screen.getByText(SUPPORT_ACTIONS)).toBeInTheDocument()
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
-
     it('renders empty list of events', () => {
         const executionsResponse: Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200> =
             {
@@ -242,25 +223,17 @@ describe('ActionEventsViewContainer', () => {
                     },
                 },
             }
-
         useGetConfigurationExecutionsMocked.mockReturnValue({
             isFetching: false,
             isError: false,
             data: executionsResponse,
         } as UseQueryResult<Paths.WfConfigurationControllerGetExecutions.Responses.$200>)
-
-        const component = renderWithRouter(
-            <Provider store={defaultStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionEventsViewContainer />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
-            },
-        )
-
+        const component = render(<ActionEventsViewContainer />, {
+            path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+            initialEntries: [
+                '/shopify/my-shop/ai-agent/actions/events/configuration_id',
+            ],
+        })
         expect(screen.getByText(SUPPORT_ACTIONS)).toBeInTheDocument()
         expect(screen.getByText('LAST UPDATED')).toBeInTheDocument()
         expect(screen.getByText('TICKET ID')).toBeInTheDocument()
@@ -273,7 +246,6 @@ describe('ActionEventsViewContainer', () => {
             screen.getByText('No events found for the selected time period'),
         ).toBeInTheDocument()
     })
-
     it('renders list of events wihout pagination', () => {
         const executionsResponse: Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200> =
             {
@@ -305,24 +277,17 @@ describe('ActionEventsViewContainer', () => {
             isError: false,
             data: executionsResponse,
         } as UseQueryResult<Paths.WfConfigurationControllerGetExecutions.Responses.$200>)
-
-        const component = renderWithRouter(
-            <Provider store={defaultStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionEventsViewContainer />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
-            },
-        )
+        const component = render(<ActionEventsViewContainer />, {
+            path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+            initialEntries: [
+                '/shopify/my-shop/ai-agent/actions/events/configuration_id',
+            ],
+        })
         expect(component.container.querySelectorAll('td').length).toBe(40)
         expect(
             component.container.querySelector('[aria-label="previous"]'),
         ).toBeNull()
     })
-
     it('renders list of events pagination numbered', () => {
         const executionsResponse: Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200> =
             {
@@ -354,18 +319,12 @@ describe('ActionEventsViewContainer', () => {
             isError: false,
             data: executionsResponse,
         } as UseQueryResult<Paths.WfConfigurationControllerGetExecutions.Responses.$200>)
-
-        const component = renderWithRouter(
-            <Provider store={defaultStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionEventsViewContainer />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
-            },
-        )
+        const component = render(<ActionEventsViewContainer />, {
+            path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+            initialEntries: [
+                '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
+            ],
+        })
         expect(component.container.querySelectorAll('td').length).toBe(80)
         expect(
             component.container.querySelector('[aria-label="previous"]'),
@@ -374,7 +333,6 @@ describe('ActionEventsViewContainer', () => {
     })
     it('opens events side panel from query param', () => {
         const executionId = 'execution_id'
-
         useGetConfigurationExecutionMocked.mockReturnValue({
             isFetching: false,
             data: {
@@ -386,42 +344,27 @@ describe('ActionEventsViewContainer', () => {
                 },
             },
         } as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
-
-        renderWithRouter(
-            <Provider store={defaultStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionEventsViewContainer />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: `/shopify/my-shop/ai-agent/actions/events/configuration_id?execution_id=${executionId}`,
-            },
-        )
+        render(<ActionEventsViewContainer />, {
+            path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+            initialEntries: [
+                `/shopify/my-shop/ai-agent/actions/events/configuration_id?execution_id=${executionId}`,
+            ],
+        })
         expect(screen.queryAllByRole('table')).toHaveLength(1)
         expect(screen.queryAllByRole('cell')).toHaveLength(0)
-
         expect(screen.getByLabelText('Event details')).toHaveClass('opened')
         fireEvent.click(screen.getByText('keyboard_tab'))
         expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
     })
-
     it('hydrates the ticket filter from the URL and requests executions for that ticket', async () => {
         const startDatetime = '2023-12-31T00:00:00.000Z'
         const endDatetime = '2024-01-02T23:59:59.999Z'
-
-        renderWithRouter(
-            <Provider store={defaultStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionEventsViewContainer />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: `/shopify/my-shop/ai-agent/actions/events/configuration_id?ticket=563832433&start_datetime=${encodeURIComponent(startDatetime)}&end_datetime=${encodeURIComponent(endDatetime)}`,
-            },
-        )
-
+        render(<ActionEventsViewContainer />, {
+            path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+            initialEntries: [
+                `/shopify/my-shop/ai-agent/actions/events/configuration_id?ticket=563832433&start_datetime=${encodeURIComponent(startDatetime)}&end_datetime=${encodeURIComponent(endDatetime)}`,
+            ],
+        })
         await waitFor(() => {
             expect(useGetConfigurationExecutionsMocked.mock.calls).toEqual(
                 expect.arrayContaining([
@@ -436,10 +379,8 @@ describe('ActionEventsViewContainer', () => {
                 ]),
             )
         })
-
         expect(screen.getByLabelText('Ticket ID')).toHaveValue(563832433)
     })
-
     it('open side panel for success execution', () => {
         useGetConfigurationExecutionMocked.mockReturnValue({
             isFetching: false,
@@ -475,7 +416,6 @@ describe('ActionEventsViewContainer', () => {
                 },
             },
         } as unknown as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
-
         useGetConfigurationExecutionsMocked.mockReturnValue({
             isFetching: false,
             isError: false,
@@ -506,7 +446,6 @@ describe('ActionEventsViewContainer', () => {
                 },
             },
         } as unknown as UseQueryResult<Paths.WfConfigurationControllerGetExecutions.Responses.$200>)
-
         useGetWorkflowConfigurationTemplatesMocked.mockReturnValue({
             isFetching: false,
             data: [
@@ -520,33 +459,23 @@ describe('ActionEventsViewContainer', () => {
                 },
             ],
         } as UseQueryResult<Paths.WfConfigurationTemplateControllerList.Responses.$200>)
-
-        renderWithRouter(
-            <Provider store={defaultStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionEventsViewContainer />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
-            },
-        )
-
+        render(<ActionEventsViewContainer />, {
+            path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+            initialEntries: [
+                '/shopify/my-shop/ai-agent/actions/events/configuration_id',
+            ],
+        })
         expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
         fireEvent.click(screen.getAllByRole('cell')[0])
         expect(screen.getByLabelText('Event details')).toHaveClass('opened')
         expect(screen.getByText('Action configuration')).toBeInTheDocument()
-
         expect(screen.getByText(/customer name/)).toBeInTheDocument()
         expect(screen.queryByText(/order name/)).toBeInTheDocument()
         expect(screen.queryByText(/value 1/)).toBeInTheDocument()
         expect(screen.queryByText(/http:\/\/example.com/)).toBeInTheDocument()
         expect(screen.queryByText(/response body/)).toBeInTheDocument()
-
         fireEvent.click(screen.getByText('keyboard_tab'))
         expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
-
         // open side panel again
         fireEvent.click(screen.getAllByRole('cell')[0])
         expect(screen.getByLabelText('Event details')).toHaveClass('opened')

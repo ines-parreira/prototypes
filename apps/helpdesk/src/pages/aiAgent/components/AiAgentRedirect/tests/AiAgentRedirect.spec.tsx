@@ -1,9 +1,8 @@
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -14,9 +13,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { AiAgentRedirect } from '../AiAgentRedirect'
 
@@ -25,19 +22,13 @@ jest.mock('hooks/useAppSelector', () => ({
     default: jest.fn(),
 }))
 const mockUseAppSelector = useAppSelector as jest.Mock
-
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
-
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
-
 jest.mock('pages/aiAgent/AiAgentPaywallView', () => ({
     AiAgentPaywallView: () => <div>Paywall</div>,
 }))
-
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
-
 const defaultState = {
     currentAccount: fromJS(account),
     currentUser: fromJS(user),
@@ -47,22 +38,25 @@ const defaultState = {
     }),
 } as RootState
 
-const renderWithProvider = () => {
-    const { container, getByText, history } = renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <QueryClientProvider client={mockQueryClient()}>
-                <AiAgentRedirect />
-            </QueryClientProvider>
-        </Provider>,
-        {
-            path: '/app/ai-agent',
-            route: '/app/ai-agent',
-        },
-    )
+const LocationPath = () => {
+    const location = useLocation()
 
-    return { container, getByText, history }
+    return <div>{location.pathname}</div>
 }
 
+const renderWithProvider = () => {
+    const { container, getByText } = render(
+        <>
+            <AiAgentRedirect />
+            <LocationPath />
+        </>,
+        {
+            initialEntries: ['/app/ai-agent'],
+            storeState: defaultState,
+        },
+    )
+    return { container, getByText }
+}
 const shop1 = {
     ...shopifyIntegration,
     meta: { ...shopifyIntegration.meta, shop_name: 'Test Store' },
@@ -71,7 +65,6 @@ const shop2 = {
     ...shopifyIntegration,
     meta: { ...shopifyIntegration.meta, shop_name: 'Test Store 2' },
 }
-
 describe('AiAgentRedirect', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -86,31 +79,26 @@ describe('AiAgentRedirect', () => {
             isLoading: false,
         })
     })
-
     test('renders the store integration view if no store is found, and hasAutomate is true', () => {
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getShopifyIntegrationsSortedByName) return []
             return []
         })
-        const { getByText, history } = renderWithProvider()
-
-        expect(history.location.pathname).toBe('/app/ai-agent')
+        const { getByText } = renderWithProvider()
+        expect(getByText('/app/ai-agent')).toBeInTheDocument()
         expect(
             getByText(/Connect your store to start using AI Agent\./),
         ).toBeInTheDocument()
     })
-
     test('redirects to overview page when user has AI Agent access and a store', () => {
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getShopifyIntegrationsSortedByName)
                 return [shop1, shop2]
             return []
         })
-
-        const { history } = renderWithProvider()
-        expect(history.location.pathname).toBe('/app/ai-agent/overview')
+        renderWithProvider()
+        expect(screen.getByText('/app/ai-agent/overview')).toBeInTheDocument()
     })
-
     test('renders the store integration view when no store AND no AI Agent access', () => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: false,
@@ -120,15 +108,12 @@ describe('AiAgentRedirect', () => {
             if (selector === getShopifyIntegrationsSortedByName) return []
             return []
         })
-
-        const { getByText, history } = renderWithProvider()
-
-        expect(history.location.pathname).toBe('/app/ai-agent')
+        const { getByText } = renderWithProvider()
+        expect(getByText('/app/ai-agent')).toBeInTheDocument()
         expect(
             getByText(/Connect your store to start using AI Agent\./),
         ).toBeInTheDocument()
     })
-
     test('renders the paywall view when has store but no AI Agent access', () => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: false,
@@ -139,10 +124,8 @@ describe('AiAgentRedirect', () => {
                 return [shop1, shop2]
             return []
         })
-
-        const { getByText, history } = renderWithProvider()
-
+        const { getByText } = renderWithProvider()
         expect(getByText(/Paywall/)).toBeInTheDocument()
-        expect(history.location.pathname).toBe('/app/ai-agent')
+        expect(getByText('/app/ai-agent')).toBeInTheDocument()
     })
 })

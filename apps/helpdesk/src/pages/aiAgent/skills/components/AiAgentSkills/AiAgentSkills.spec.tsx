@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -23,7 +23,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/skills/hooks/useHasLinkedSkills')
 jest.mock('pages/aiAgent/skills/hooks/useSkillsTemplates')
-
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.MockedFunction<
     typeof useAiAgentNavigation
 >
@@ -85,16 +84,13 @@ jest.mock(
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => null,
 }))
-
 const mockStore = configureMockStore([thunk])
-
 const mockUseHasLinkedSkills = useHasLinkedSkills as jest.MockedFunction<
     typeof useHasLinkedSkills
 >
 const mockUseSkillsTemplates = useSkillsTemplates as jest.MockedFunction<
     typeof useSkillsTemplates
 >
-
 const mockSkillTemplate = {
     id: 'order-status',
     name: 'Order status',
@@ -109,13 +105,11 @@ const mockSkillTemplate = {
         },
     ],
 }
-
 describe('AiAgentSkills', () => {
-    let store: ReturnType<typeof mockStore>
-
+    let __store: ReturnType<typeof mockStore>
     beforeEach(() => {
         jest.clearAllMocks()
-        store = mockStore({
+        __store = mockStore({
             ui: {
                 stats: {
                     drillDown: {
@@ -149,20 +143,16 @@ describe('AiAgentSkills', () => {
             isError: false,
         })
     })
-
     const renderComponent = () => {
         return render(
-            <Provider store={store}>
-                <ThemeProvider>
-                    <AiAgentSkills />
-                </ThemeProvider>
-            </Provider>,
+            <ThemeProvider>
+                <AiAgentSkills />
+            </ThemeProvider>,
+            {},
         )
     }
-
     it('should show empty state when there are no linked skills', () => {
         renderComponent()
-
         expect(
             screen.getByRole('heading', { name: 'Skills' }),
         ).toBeInTheDocument()
@@ -170,16 +160,13 @@ describe('AiAgentSkills', () => {
             screen.getByRole('heading', { name: 'No skills yet' }),
         ).toBeInTheDocument()
     })
-
     it('should show skills table when there are linked skills', () => {
         mockUseHasLinkedSkills.mockReturnValue({
             hasSkills: true,
             isLoading: false,
             isError: false,
         })
-
         renderComponent()
-
         expect(
             screen.getByRole('heading', { name: 'Skills' }),
         ).toBeInTheDocument()
@@ -187,53 +174,41 @@ describe('AiAgentSkills', () => {
             screen.getByRole('region', { name: 'Skills Table' }),
         ).toBeInTheDocument()
     })
-
     it('should show loading state', () => {
         mockUseHasLinkedSkills.mockReturnValue({
             hasSkills: false,
             isLoading: true,
             isError: false,
         })
-
         renderComponent()
-
         expect(screen.getByLabelText('Loading')).toBeInTheDocument()
     })
-
     it('should show RecommendedSkillsSection when skill templates are available', () => {
         renderComponent()
-
         expect(
             screen.getByText('Recommended Skills (1 templates)'),
         ).toBeInTheDocument()
     })
-
     it('should not show RecommendedSkillsSection when no skill templates are available', () => {
         mockUseSkillsTemplates.mockReturnValue({
             allSkillsTemplates: [],
             availableSkillsTemplates: [],
         })
-
         renderComponent()
-
         expect(screen.queryByText(/Recommended Skills/)).not.toBeInTheDocument()
     })
-
     describe('Navigation', () => {
         it('should navigate to new skill with template when creating from template', async () => {
             const user = userEvent.setup()
             renderComponent()
-
             await user.click(
                 screen.getByRole('button', { name: /use template/i }),
             )
-
             expect(mockPush).toHaveBeenCalledWith(
                 '/app/ai-agent/shopify/test-shop/skills/new?template=order-status',
             )
         })
     })
-
     describe('Intents Table', () => {
         beforeEach(() => {
             mockUseHasLinkedSkills.mockReturnValue({
@@ -242,46 +217,36 @@ describe('AiAgentSkills', () => {
                 isError: false,
             })
         })
-
         it('should render intents table closed by default', () => {
             renderComponent()
-
             expect(
                 screen.queryByRole('region', { name: 'Intents Table' }),
             ).not.toBeInTheDocument()
         })
-
         it('should open intents table when "View intents" is clicked', async () => {
             const user = userEvent.setup()
             renderComponent()
-
             await user.click(
                 screen.getByRole('button', { name: /view intents/i }),
             )
-
             await waitFor(() => {
                 expect(
                     screen.getByRole('region', { name: 'Intents Table' }),
                 ).toBeInTheDocument()
             })
         })
-
         it('should close intents table when close button is clicked', async () => {
             const user = userEvent.setup()
             renderComponent()
-
             await user.click(
                 screen.getByRole('button', { name: /view intents/i }),
             )
-
             await waitFor(() => {
                 expect(
                     screen.getByRole('region', { name: 'Intents Table' }),
                 ).toBeInTheDocument()
             })
-
             await user.click(screen.getByRole('button', { name: /close/i }))
-
             await waitFor(() => {
                 expect(
                     screen.queryByRole('region', { name: 'Intents Table' }),

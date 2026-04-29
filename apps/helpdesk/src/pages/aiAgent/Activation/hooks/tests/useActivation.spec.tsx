@@ -1,5 +1,3 @@
-import type React from 'react'
-
 import {
     payingWithCreditCard,
     storeWithActiveSubscriptionWithAutomation,
@@ -7,15 +5,9 @@ import {
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import axios from 'axios'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { Route, Router, Switch } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -24,7 +16,6 @@ import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { useStoresKnowledgeStatus } from 'pages/aiAgent/hooks/useStoresKnowledgeStatus'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { SalesEarlyAccessUtils } from '../../utils'
 import { useActivation } from '../useActivation'
@@ -150,9 +141,6 @@ const defaultState = {
     }),
 }
 
-const mockStore = configureMockStore([thunk])
-const queryClient = mockQueryClient()
-
 const mockSubscriptionUpdateApi = jest.fn(() =>
     Promise.resolve({
         data: {
@@ -208,7 +196,7 @@ jest.spyOn(axios, 'get').mockImplementation(async (url) => {
     return Promise.reject(new Error('Non-mocked API call'))
 })
 
-const renderHookWithRouter = ({
+const renderHookWithProviders = ({
     initialEntry = '/',
     autoDisplayEarlyAccessDisabled = false,
     store = defaultState,
@@ -217,30 +205,17 @@ const renderHookWithRouter = ({
     autoDisplayEarlyAccessDisabled?: boolean
     store?: Record<string, any>
 } = {}) => {
-    const history = createMemoryHistory({ initialEntries: [initialEntry] })
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Router history={history}>
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(store)}>
-                    <Switch>
-                        <Route path="/overview">{children}</Route>
-                        <Route path="/:shopName?">{children}</Route>
-                    </Switch>
-                </Provider>
-            </QueryClientProvider>
-        </Router>
+    return renderHook(
+        () =>
+            useActivation({
+                autoDisplayEarlyAccessDisabled,
+            }),
+        {
+            initialEntries: [initialEntry],
+            path: '/:shopName?',
+            storeState: store,
+        },
     )
-
-    return {
-        ...renderHook(
-            () =>
-                useActivation({
-                    autoDisplayEarlyAccessDisabled,
-                }),
-            { wrapper },
-        ),
-        history,
-    }
 }
 
 jest.mock('@repo/feature-flags')
@@ -263,7 +238,7 @@ describe('useActivation', () => {
     describe('activationModal', () => {
         // more context in [AIFLY-955]
         it.skip('should show early access modal when clicking on learn more', async () => {
-            const { result } = renderHookWithRouter()
+            const { result } = renderHookWithProviders()
 
             await act(() => {
                 result.current.activationModal.props.onLearnMoreClick()
@@ -283,7 +258,7 @@ describe('useActivation', () => {
             })
 
             it('should render legacy modal', () => {
-                const { result } = renderHookWithRouter()
+                const { result } = renderHookWithProviders()
                 expect(result.current.activationModal.type).toBe(
                     AiAgentActivationModal,
                 )
@@ -291,7 +266,7 @@ describe('useActivation', () => {
 
             // more context in [AIFLY-955]
             it.skip('should handle sales change and show early access modal when not on new plan', async () => {
-                const { result } = renderHookWithRouter()
+                const { result } = renderHookWithProviders()
 
                 await act(() => {
                     result.current.activationModal.props.onSalesChange(
@@ -304,7 +279,7 @@ describe('useActivation', () => {
             })
 
             it('should handle support changes', async () => {
-                const { result } = renderHookWithRouter()
+                const { result } = renderHookWithProviders()
 
                 await act(() => {
                     result.current.activationModal.props.onSupportChange(
@@ -335,7 +310,7 @@ describe('useActivation', () => {
             })
 
             it('should render new modal', () => {
-                const { result } = renderHookWithRouter()
+                const { result } = renderHookWithProviders()
                 expect(result.current.activationModal.type).toBe(
                     AiAgentActivationModal,
                 )
@@ -343,7 +318,7 @@ describe('useActivation', () => {
         })
 
         it('should handle support chat changes', async () => {
-            const { result } = renderHookWithRouter()
+            const { result } = renderHookWithProviders()
 
             await act(() => {
                 result.current.activationModal.props.onSupportChatChange(
@@ -364,7 +339,7 @@ describe('useActivation', () => {
         })
 
         it('should handle support email changes', async () => {
-            const { result } = renderHookWithRouter()
+            const { result } = renderHookWithProviders()
 
             await act(() => {
                 result.current.activationModal.props.onSupportEmailChange(
@@ -385,7 +360,7 @@ describe('useActivation', () => {
         })
 
         it('should open the activation modal when ?focusActivationModal param is present', () => {
-            const { result } = renderHookWithRouter({
+            const { result } = renderHookWithProviders({
                 initialEntry: '/?focusActivationModal=true',
             })
 
@@ -407,7 +382,7 @@ describe('useActivation', () => {
         })
 
         it('should handle modal close', async () => {
-            const { result } = renderHookWithRouter()
+            const { result } = renderHookWithProviders()
 
             await act(() => {
                 result.current.earlyAccessModal.props.onClose()
@@ -423,7 +398,7 @@ describe('useActivation', () => {
         })
 
         it('should handle successful upgrade', async () => {
-            const { result } = renderHookWithRouter()
+            const { result } = renderHookWithProviders()
 
             await act(async () => {
                 await result.current.earlyAccessModal.props.onUpgradeClick()
@@ -446,7 +421,7 @@ describe('useActivation', () => {
                 return false
             })
 
-            const { result } = renderHookWithRouter()
+            const { result } = renderHookWithProviders()
 
             await act(async () => {
                 await result.current.earlyAccessModal.props.onUpgradeClick()
@@ -468,7 +443,7 @@ describe('useActivation', () => {
                 return false
             })
 
-            const { result } = renderHookWithRouter()
+            const { result } = renderHookWithProviders()
 
             await act(async () => {
                 await result.current.earlyAccessModal.props.onUpgradeClick()
@@ -483,7 +458,7 @@ describe('useActivation', () => {
         })
 
         it('should log event when modal is viewed', async () => {
-            const { result } = renderHookWithRouter()
+            const { result } = renderHookWithProviders()
 
             await act(() => {
                 result.current.activationModal.props.onSalesChange(
@@ -499,7 +474,7 @@ describe('useActivation', () => {
         })
 
         it('should not auto-display early access modal when account is in trial', async () => {
-            const { result } = renderHookWithRouter({
+            const { result } = renderHookWithProviders({
                 initialEntry: '/',
             })
 
@@ -511,7 +486,7 @@ describe('useActivation', () => {
                 true,
             )
 
-            const { result } = renderHookWithRouter({
+            const { result } = renderHookWithProviders({
                 initialEntry: '/',
                 store: {
                     ...defaultState,
@@ -541,7 +516,7 @@ describe('useActivation', () => {
                 }),
             }
 
-            const { result } = renderHookWithRouter({
+            const { result } = renderHookWithProviders({
                 initialEntry: '/',
                 store,
             })
@@ -550,7 +525,7 @@ describe('useActivation', () => {
         })
 
         it('should open upgrade modal on sales enabled and then save configurations when upgrade is successful', async () => {
-            const { result } = renderHookWithRouter({
+            const { result } = renderHookWithProviders({
                 autoDisplayEarlyAccessDisabled: true,
             })
 

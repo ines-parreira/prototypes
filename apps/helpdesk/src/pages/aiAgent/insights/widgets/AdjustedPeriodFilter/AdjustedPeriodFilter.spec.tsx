@@ -1,17 +1,11 @@
-import React from 'react'
-
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import moment from 'moment'
-import { Provider } from 'react-redux'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore, renderWithRouter } from 'utils/testing'
 
 import {
     AdjustedPeriodFilter,
@@ -24,7 +18,6 @@ jest.mock('domains/reporting/pages/common/filters/PeriodFilter', () => ({
     PeriodFilter: jest.fn(() => <>Date</>),
 }))
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
-
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(() => ({
         data: {
@@ -45,18 +38,14 @@ jest.mock(
 jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
     useGetTicketChannelsStoreIntegrations: jest.fn(() => ['integration-id']),
 }))
-
 const useAppSelectorMock = assumeMock(useAppSelector)
 const mockUseAutomateFilters = assumeMock(useAutomateFilters)
-
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const dispatchMock = jest.fn()
 useAppDispatchMock.mockReturnValue(dispatchMock)
-
 const SHOP_NAME = 'shopify-store'
 const SHOP_TYPE = 'shopify'
-
 const defaultStore = {
     stats: {
         filters: {
@@ -67,23 +56,14 @@ const defaultStore = {
         },
     },
 }
-
 const renderComponent = () => {
     jest.useFakeTimers().setSystemTime(new Date('2024-12-20T00:00:00Z'))
-
-    renderWithRouter(
-        <Provider store={mockStore(defaultStore)}>
-            <QueryClientProvider client={mockQueryClient()}>
-                <AdjustedPeriodFilter />
-            </QueryClientProvider>
-        </Provider>,
-        {
-            path: `/:shopType/:shopName/ai-agent/optimize`,
-            route: `/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`,
-        },
-    )
+    render(<AdjustedPeriodFilter />, {
+        path: `/:shopType/:shopName/ai-agent/optimize`,
+        initialEntries: [`/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`],
+        storeState: defaultStore,
+    })
 }
-
 describe('subtractsPeriodWithoutData', () => {
     it('should subtract 72 hours from the given date', () => {
         const date = moment('2025-01-01T00:00:00Z')
@@ -91,7 +71,6 @@ describe('subtractsPeriodWithoutData', () => {
         expect(result.toISOString()).toBe('2024-12-29T00:00:00.000Z')
     })
 })
-
 describe('subtractsPeriodWithoutDataIfNeeded', () => {
     // TODO(React18): Fix this flaky test
     it.skip('should subtract appropriate number of hours if the date is within the last 72 hours', () => {
@@ -105,14 +84,12 @@ describe('subtractsPeriodWithoutDataIfNeeded', () => {
         )
         jest.restoreAllMocks()
     })
-
     it('should not subtract if the date is beyond the last 72 hours', () => {
         const oldDate = moment().subtract(100, 'hours')
         const result = subtractsPeriodWithoutDataIfNeeded(oldDate.clone())
         expect(result.toISOString()).toBe(oldDate.toISOString())
     })
 })
-
 describe('AdjustedPeriodFilter Component', () => {
     beforeEach(() => {
         mockUseAutomateFilters.mockReturnValue({
@@ -133,12 +110,9 @@ describe('AdjustedPeriodFilter Component', () => {
                 end_datetime: '2024-12-20T00:00:00Z',
             },
         })
-
         renderComponent()
-
         expect(screen.getByText('Date')).toBeInTheDocument()
     })
-
     it('should call dispatch inside useEffectOnce', () => {
         useAppSelectorMock.mockReturnValue({
             period: {
@@ -147,7 +121,6 @@ describe('AdjustedPeriodFilter Component', () => {
             },
         })
         renderComponent()
-
         expect(useAppDispatchMock).toHaveBeenCalledTimes(3)
     })
 })

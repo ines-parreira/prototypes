@@ -1,5 +1,6 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { QueryClient } from '@tanstack/react-query'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import usePaginatedProductCollectionsByIds from '../../hooks/usePaginatedProductCollectionsByIds'
 import usePaginatedProductsByIds from '../../hooks/usePaginatedProductsByIds'
@@ -8,14 +9,11 @@ import { CollectionRecommendationRuleCard } from '../CollectionRecommendationRul
 jest.mock('models/ecommerce/queries', () => ({
     useGetEcommerceProductCollections: jest.fn(),
 }))
-
 jest.mock('../../hooks/usePaginatedProductsByIds')
 const mockUsePaginatedProductsByIds = usePaginatedProductsByIds as jest.Mock
-
 jest.mock('../../hooks/usePaginatedProductCollectionsByIds')
 const mockUsePaginatedProductCollectionsByIds =
     usePaginatedProductCollectionsByIds as jest.Mock
-
 jest.mock('../ItemDrawer', () => ({
     ItemDrawer: ({
         isOpen,
@@ -42,7 +40,6 @@ jest.mock('../ItemDrawer', () => ({
         )
     },
 }))
-
 jest.mock('../RecommendationRuleCard', () => ({
     RecommendationRuleCard: ({
         title,
@@ -76,11 +73,9 @@ jest.mock('../RecommendationRuleCard', () => ({
         </div>
     ),
 }))
-
 const mockUseGetEcommerceProductCollections = jest.requireMock(
     'models/ecommerce/queries',
 ).useGetEcommerceProductCollections
-
 const mockProducts = [
     {
         id: 123,
@@ -101,7 +96,6 @@ const mockProducts = [
         status: 'draft',
     },
 ]
-
 const mockCollections = [
     {
         external_id: '1',
@@ -128,19 +122,16 @@ const mockCollections = [
         },
     },
 ]
-
 describe('CollectionRecommendationRuleCard', () => {
-    let queryClient: QueryClient
+    let __queryClient: QueryClient
     const mockOnUpsert = jest.fn()
-
     beforeEach(() => {
-        queryClient = new QueryClient({
+        __queryClient = new QueryClient({
             defaultOptions: {
                 queries: { retry: false },
             },
         })
         jest.clearAllMocks()
-
         mockUseGetEcommerceProductCollections.mockReturnValue({
             data: {
                 data: mockCollections,
@@ -151,7 +142,6 @@ describe('CollectionRecommendationRuleCard', () => {
             },
             isLoading: false,
         })
-
         mockUsePaginatedProductsByIds.mockReturnValue({
             allProducts: mockProducts,
             products: mockProducts,
@@ -165,7 +155,6 @@ describe('CollectionRecommendationRuleCard', () => {
             searchTerm: '',
             setSearchTerm: jest.fn(),
         })
-
         mockUsePaginatedProductCollectionsByIds.mockReturnValue({
             allCollections: [
                 { id: '1', title: 'Collection 1', productIds: [] },
@@ -185,10 +174,8 @@ describe('CollectionRecommendationRuleCard', () => {
             searchTerm: '',
             setSearchTerm: jest.fn(),
         })
-
         mockOnUpsert.mockResolvedValue(undefined)
     })
-
     const renderComponent = (props = {}) => {
         const defaultProps = {
             type: 'promote' as const,
@@ -213,24 +200,19 @@ describe('CollectionRecommendationRuleCard', () => {
             onUpsert: mockOnUpsert,
             ...props,
         }
-
         return render(
-            <QueryClientProvider client={queryClient}>
-                <CollectionRecommendationRuleCard {...defaultProps} />
-            </QueryClientProvider>,
+            <CollectionRecommendationRuleCard {...defaultProps} />,
+            {},
         )
     }
-
     it('should render promote type correctly', () => {
         const { getByText } = renderComponent({ type: 'promote' })
-
         expect(getByText('Promote collections')).toBeInTheDocument()
         expect(
             getByText('Choose collections to prioritize in recommendations.'),
         ).toBeInTheDocument()
         expect(getByText('Total: 2')).toBeInTheDocument()
     })
-
     it('should render exclude type correctly', () => {
         const { getByText } = renderComponent({
             type: 'exclude',
@@ -249,114 +231,82 @@ describe('CollectionRecommendationRuleCard', () => {
                 },
             },
         })
-
         expect(getByText('Exclude collections')).toBeInTheDocument()
         expect(
             getByText('Choose collections to exclude from recommendations.'),
         ).toBeInTheDocument()
         expect(getByText('Total: 2')).toBeInTheDocument()
     })
-
     it('should show loading state when rules are loading', () => {
         const { getByText } = renderComponent({ isLoadingRules: true })
-
         expect(getByText('Loading...')).toBeInTheDocument()
     })
-
     it('should display selected collections correctly', () => {
         const { getByText } = renderComponent()
-
         expect(getByText('Collection 1')).toBeInTheDocument()
         expect(getByText('Collection 4')).toBeInTheDocument()
     })
-
     it('should handle collection deletion', async () => {
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Delete 1'))
-
         await waitFor(() => {
             expect(mockOnUpsert).toHaveBeenCalledWith(['4'])
         })
     })
-
     it('should open selection drawer when add button clicked', () => {
         const { getByText, queryByTestId } = renderComponent()
-
         expect(queryByTestId('item-selection-drawer')).not.toBeInTheDocument()
-
         fireEvent.click(getByText('Select collections'))
-
         expect(queryByTestId('item-selection-drawer')).toBeInTheDocument()
         expect(getByText('Select collections to promote')).toBeInTheDocument()
     })
-
     it('should open see all drawer when see all clicked', () => {
         const { getByText, getAllByTestId } = renderComponent()
-
         fireEvent.click(getByText('See All'))
-
         const drawers = getAllByTestId('item-selection-drawer')
         expect(drawers).toHaveLength(1)
         expect(getByText('All promoted collections')).toBeInTheDocument()
     })
-
     it('should open collection products drawer when button is clicked', () => {
         const { getByText, getAllByTestId, queryByTestId } = renderComponent()
-
         fireEvent.click(getByText('Show 1 products'))
-
         const drawers = getAllByTestId('item-selection-drawer')
         expect(drawers).toHaveLength(1)
         expect(
             getByText('Products within collection: Collection 1'),
         ).toBeInTheDocument()
-
         fireEvent.click(getByText('Close'))
-
         expect(queryByTestId('item-selection-drawer')).not.toBeInTheDocument()
     })
-
     it('should close selection drawer', () => {
         const { getByText, queryByTestId } = renderComponent()
-
         fireEvent.click(getByText('Select collections'))
         expect(queryByTestId('item-selection-drawer')).toBeInTheDocument()
-
         fireEvent.click(getByText('Close'))
-
         expect(queryByTestId('item-selection-drawer')).not.toBeInTheDocument()
     })
-
     it('should handle collection selection submission', async () => {
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Select collections'))
         fireEvent.click(getByText('Submit'))
-
         await waitFor(() => {
             expect(mockOnUpsert).toHaveBeenCalledWith(['1', '4'])
         })
     })
-
     it('should only load collections when drawer is opened', () => {
         const { getByText } = renderComponent()
-
         expect(mockUseGetEcommerceProductCollections).toHaveBeenCalledWith(
             123,
             expect.any(Object),
             { enabled: false },
         )
-
         fireEvent.click(getByText('Select collections'))
-
         expect(mockUseGetEcommerceProductCollections).toHaveBeenCalledWith(
             123,
             expect.any(Object),
             { enabled: true },
         )
     })
-
     it('should handle empty collection list', () => {
         mockUsePaginatedProductCollectionsByIds.mockReturnValue({
             allCollections: [],
@@ -372,7 +322,6 @@ describe('CollectionRecommendationRuleCard', () => {
             searchTerm: '',
             setSearchTerm: jest.fn(),
         })
-
         const { getByText } = renderComponent({
             rules: {
                 promote: {
@@ -389,20 +338,15 @@ describe('CollectionRecommendationRuleCard', () => {
                 },
             },
         })
-
         expect(getByText('Total: 0')).toBeInTheDocument()
     })
-
     it('should show correct drawer titles for exclude type', () => {
         const { getByText } = renderComponent({ type: 'exclude' })
-
         fireEvent.click(getByText('Select collections'))
         expect(getByText('Select collections to exclude')).toBeInTheDocument()
-
         fireEvent.click(getByText('See All'))
         expect(getByText('All excluded collections')).toBeInTheDocument()
     })
-
     it('should handle pagination in selection drawer', () => {
         mockUseGetEcommerceProductCollections.mockReturnValue({
             data: {
@@ -414,23 +358,19 @@ describe('CollectionRecommendationRuleCard', () => {
             },
             isLoading: false,
         })
-
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Select collections'))
         expect(mockUseGetEcommerceProductCollections).toHaveBeenLastCalledWith(
             123,
             { limit: 25, cursor: null, value: undefined },
             { enabled: true },
         )
-
         fireEvent.click(getByText('Next'))
         expect(mockUseGetEcommerceProductCollections).toHaveBeenLastCalledWith(
             123,
             { limit: 25, cursor: 'next_page', value: undefined },
             { enabled: true },
         )
-
         fireEvent.click(getByText('Prev'))
         expect(mockUseGetEcommerceProductCollections).toHaveBeenLastCalledWith(
             123,

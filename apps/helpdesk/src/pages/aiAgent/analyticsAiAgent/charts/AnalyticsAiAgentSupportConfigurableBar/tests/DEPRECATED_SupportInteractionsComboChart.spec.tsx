@@ -1,10 +1,10 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useAiAgentSupportAgentAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentAutomatedInteractionsTrend'
 import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { DEPRECATED_SupportInteractionsComboChart } from '../DEPRECATED_SupportInteractionsComboChart'
 
@@ -75,7 +75,7 @@ describe('SupportInteractionsComboChart', () => {
             isFieldsAvailable: false,
         })
 
-        const { container } = renderWithQueryClientProvider(
+        const { container } = render(
             <DEPRECATED_SupportInteractionsComboChart />,
         )
 
@@ -83,9 +83,7 @@ describe('SupportInteractionsComboChart', () => {
     })
 
     it('should render the chart card with title', async () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(
@@ -106,9 +104,7 @@ describe('SupportInteractionsComboChart', () => {
             },
         })
 
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
@@ -121,17 +117,13 @@ describe('SupportInteractionsComboChart', () => {
             isFieldsAvailable: true,
         })
 
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
     it('should render horizontal bar chart with data', async () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(
@@ -142,9 +134,7 @@ describe('SupportInteractionsComboChart', () => {
     })
 
     it('should display the value from trend data', async () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(screen.getByText('430')).toBeInTheDocument()
@@ -163,9 +153,7 @@ describe('SupportInteractionsComboChart', () => {
             isFieldsAvailable: true,
         })
 
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(
@@ -182,9 +170,7 @@ describe('SupportInteractionsComboChart', () => {
             isFieldsAvailable: true,
         })
 
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(
@@ -194,9 +180,7 @@ describe('SupportInteractionsComboChart', () => {
     })
 
     it('should render with correct metric format', async () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(screen.getByText('430')).toBeInTheDocument()
@@ -204,25 +188,19 @@ describe('SupportInteractionsComboChart', () => {
     })
 
     it('should use useStatsFilters for period data', () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         expect(mockUseStatsFilters).toHaveBeenCalled()
     })
 
     it('should use useAiAgentSupportAgentAutomatedInteractionsTrend for trend data', () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         expect(mockUseAiAgentSupportInteractionsMetric).toHaveBeenCalled()
     })
 
     it('should use useSupportInteractionsByIntent for chart data', () => {
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         expect(mockUseSupportInteractionsByIntent).toHaveBeenCalled()
     })
@@ -239,9 +217,7 @@ describe('SupportInteractionsComboChart', () => {
             },
         })
 
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(
@@ -258,9 +234,7 @@ describe('SupportInteractionsComboChart', () => {
             isFieldsAvailable: true,
         })
 
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(
@@ -281,9 +255,7 @@ describe('SupportInteractionsComboChart', () => {
             userTimezone: 'America/New_York',
         } as any)
 
-        renderWithQueryClientProvider(
-            <DEPRECATED_SupportInteractionsComboChart />,
-        )
+        render(<DEPRECATED_SupportInteractionsComboChart />)
 
         await waitFor(() => {
             expect(

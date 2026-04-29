@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import {
     ENTITY_DISPLAY_NAMES,

@@ -1,36 +1,31 @@
+import { render } from '@repo/testing'
+
 import '@testing-library/jest-dom'
 
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { MessageType } from 'models/aiAgentPlayground/types'
 
 import { OutboundContentView } from './OutboundContentView'
 
-const mockStore = configureMockStore()
 const mockTriggerMessage = jest.fn()
-
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext', () => ({
     useConfigurationContext: () => ({
         shopName: 'Test Shop',
     }),
 }))
-
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/CoreContext', () => ({
     useCoreContext: () => ({
         isPolling: false,
     }),
 }))
-
 jest.mock('pages/aiAgent/PlaygroundV2/hooks/useAiJourneyMessages', () => ({
     useAiJourneyMessages: () => ({
         triggerMessage: mockTriggerMessage,
         isTriggeringMessage: false,
     }),
 }))
-
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext', () => ({
     useAIJourneyContext: () => ({
         followUpMessagesSent: 0,
@@ -39,7 +34,6 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext', () => ({
         },
     }),
 }))
-
 jest.mock('../PlaygroundInitialContent/PlaygroundInitialContent', () => ({
     PlaygroundInitialContent: ({
         onStartClick,
@@ -55,7 +49,6 @@ jest.mock('../PlaygroundInitialContent/PlaygroundInitialContent', () => ({
         </div>
     ),
 }))
-
 jest.mock('../PlaygroundMessageList/PlaygroundMessageList', () => ({
     PlaygroundMessageList: ({ messages }: { messages: unknown[] }) => (
         <div data-testid="message-list">
@@ -63,7 +56,6 @@ jest.mock('../PlaygroundMessageList/PlaygroundMessageList', () => ({
         </div>
     ),
 }))
-
 describe('OutboundContentView', () => {
     const defaultProps = {
         accountId: 1,
@@ -72,17 +64,12 @@ describe('OutboundContentView', () => {
         shouldDisplayReasoning: false,
         messages: [],
     }
-
-    const store = mockStore({})
-
     const totalFollowUp = 3
     const mockUseAIJourneyContext = jest.requireMock(
         'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext',
     )
-
     beforeEach(() => {
         jest.clearAllMocks()
-
         mockUseAIJourneyContext.useAIJourneyContext = () => ({
             followUpMessagesSent: 0,
             aiJourneySettings: {
@@ -94,46 +81,33 @@ describe('OutboundContentView', () => {
             },
         })
     })
-
     const renderComponent = (props = {}) => {
-        return render(
-            <Provider store={store}>
-                <OutboundContentView {...defaultProps} {...props} />
-            </Provider>,
-        )
+        return render(<OutboundContentView {...defaultProps} {...props} />, {})
     }
-
     describe('Empty State', () => {
         it('should render initial content when no messages (messages.length === 0)', () => {
             renderComponent({ messages: [] })
-
             expect(screen.getByTestId('initial-content')).toBeInTheDocument()
             expect(screen.queryByTestId('message-list')).not.toBeInTheDocument()
         })
-
         it('should not render follow-up button when no messages (messages.length > 0 is false)', () => {
             renderComponent({ messages: [] })
-
             expect(
                 screen.queryByRole('button', {
                     name: /view follow-up message/i,
                 }),
             ).not.toBeInTheDocument()
         })
-
         it('should call triggerMessage when start conversation clicked', async () => {
             const user = userEvent.setup()
             renderComponent({ messages: [] })
-
             const startButton = screen.getByRole('button', {
                 name: /start conversation/i,
             })
             await act(() => user.click(startButton))
-
             expect(mockTriggerMessage).toHaveBeenCalledTimes(1)
         })
     })
-
     describe('With Messages', () => {
         const mockMessages = [
             {
@@ -149,55 +123,43 @@ describe('OutboundContentView', () => {
                 text: 'Hi there',
             },
         ]
-
         it('should render message list when messages exist (messages.length > 0)', () => {
             renderComponent({ messages: mockMessages })
-
             expect(screen.getByTestId('message-list')).toBeInTheDocument()
             expect(
                 screen.getByText('Message List (2 messages)'),
             ).toBeInTheDocument()
         })
-
         it('should not render initial content when messages exist', () => {
             renderComponent({ messages: mockMessages })
-
             expect(
                 screen.queryByTestId('initial-content'),
             ).not.toBeInTheDocument()
         })
-
         it('should render follow-up button when messages exist', () => {
             renderComponent({ messages: mockMessages })
-
             const followUpButton = screen.getByRole('button', {
                 name: /view follow-up message/i,
             })
             expect(followUpButton).toBeInTheDocument()
         })
-
         it('should call triggerMessage when follow-up button clicked', async () => {
             const user = userEvent.setup()
             renderComponent({ messages: mockMessages })
-
             const followUpButton = screen.getByRole('button', {
                 name: /view follow-up message/i,
             })
             await act(() => user.click(followUpButton))
-
             expect(mockTriggerMessage).toHaveBeenCalledTimes(1)
         })
-
         it('should not disable follow-up button by default', () => {
             renderComponent({ messages: mockMessages })
-
             const followUpButton = screen.getByRole('button', {
                 name: /view follow-up message/i,
             })
             expect(followUpButton).not.toBeDisabled()
         })
     })
-
     describe('Follow-up Limit', () => {
         const mockMessages = [
             {
@@ -207,7 +169,6 @@ describe('OutboundContentView', () => {
                 text: 'Hello',
             },
         ]
-
         it('should disable follow-up button when limit reached', () => {
             mockUseAIJourneyContext.useAIJourneyContext = () => ({
                 followUpMessagesSent: totalFollowUp + 1,
@@ -219,15 +180,12 @@ describe('OutboundContentView', () => {
                     type: 'session_abandoned',
                 },
             })
-
             renderComponent({ messages: mockMessages })
-
             const followUpButton = screen.getByRole('button', {
                 name: /view follow-up message/i,
             })
             expect(followUpButton).toBeDisabled()
         })
-
         it('should not render follow-up components when campaign is selected', () => {
             mockUseAIJourneyContext.useAIJourneyContext = () => ({
                 followUpMessagesSent: totalFollowUp + 1,
@@ -239,16 +197,13 @@ describe('OutboundContentView', () => {
                     type: 'campaign',
                 },
             })
-
             renderComponent({ messages: mockMessages })
-
             const followUpButton = screen.queryByRole('button', {
                 name: /view follow-up message/i,
             })
             expect(followUpButton).not.toBeInTheDocument()
         })
     })
-
     describe('Loading and Polling States', () => {
         const mockMessages = [
             {
@@ -258,7 +213,6 @@ describe('OutboundContentView', () => {
                 text: 'Hello',
             },
         ]
-
         it('should disable follow-up button when polling', () => {
             const mockUseCoreContext = jest.requireMock(
                 'pages/aiAgent/PlaygroundV2/contexts/CoreContext',
@@ -266,15 +220,12 @@ describe('OutboundContentView', () => {
             mockUseCoreContext.useCoreContext = () => ({
                 isPolling: true,
             })
-
             renderComponent({ messages: mockMessages })
-
             const followUpButton = screen.getByRole('button', {
                 name: /view follow-up message/i,
             })
             expect(followUpButton).toBeDisabled()
         })
-
         it('should show loading state on follow-up button when triggering', () => {
             const mockUseAiJourneyMessages = jest.requireMock(
                 'pages/aiAgent/PlaygroundV2/hooks/useAiJourneyMessages',
@@ -283,9 +234,7 @@ describe('OutboundContentView', () => {
                 triggerMessage: mockTriggerMessage,
                 isTriggeringMessage: true,
             })
-
             renderComponent({ messages: mockMessages })
-
             const followUpButton = screen.getByRole('button', {
                 name: /view follow-up message/i,
             })

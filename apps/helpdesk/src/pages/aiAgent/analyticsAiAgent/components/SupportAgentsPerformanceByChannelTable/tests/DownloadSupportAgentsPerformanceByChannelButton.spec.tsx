@@ -1,4 +1,6 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
+
+import '@testing-library/react'
 
 import { SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_TABLE } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByChannelTable/columns'
 import { DownloadSupportAgentsPerformanceByChannelButton } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByChannelTable/DownloadSupportAgentsPerformanceByChannelButton'

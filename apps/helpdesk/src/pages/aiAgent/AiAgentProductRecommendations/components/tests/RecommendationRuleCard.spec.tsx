@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 
@@ -17,12 +17,10 @@ const mockDispatch: jest.Mock = jest.fn((action: any) => {
     }
     return action
 })
-
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
     default: () => mockDispatch,
 }))
-
 const createMockStore = () => {
     return configureStore({
         reducer: {
@@ -30,7 +28,6 @@ const createMockStore = () => {
         },
     })
 }
-
 const renderComponent = (
     options: {
         title?: string
@@ -107,45 +104,37 @@ const renderComponent = (
         ],
         hasOnShowProducts = false,
     } = options
-
-    const store = createMockStore()
-
+    const __store = createMockStore()
     return render(
-        <Provider store={store}>
-            <RecommendationRuleCard
-                title={title}
-                description={description}
-                isLoading={isLoading}
-                disableActions={disableActions}
-                hasImages={hasImages}
-                type="exclude"
-                addButton={{
-                    label: 'Select products',
-                    onClick: mockOnAddButtonClick,
-                }}
-                itemLabelSingular={itemLabelSingular}
-                itemLabelPlural={itemLabelPlural}
-                totalItems={items.length}
-                items={items}
-                onDelete={mockOnDelete}
-                onSeeAllClick={mockOnSeeAllClick}
-                onShowProducts={
-                    hasOnShowProducts ? mockOnShowProducts : undefined
-                }
-            />
-        </Provider>,
+        <RecommendationRuleCard
+            title={title}
+            description={description}
+            isLoading={isLoading}
+            disableActions={disableActions}
+            hasImages={hasImages}
+            type="exclude"
+            addButton={{
+                label: 'Select products',
+                onClick: mockOnAddButtonClick,
+            }}
+            itemLabelSingular={itemLabelSingular}
+            itemLabelPlural={itemLabelPlural}
+            totalItems={items.length}
+            items={items}
+            onDelete={mockOnDelete}
+            onSeeAllClick={mockOnSeeAllClick}
+            onShowProducts={hasOnShowProducts ? mockOnShowProducts : undefined}
+        />,
+        {},
     )
 }
-
 describe('RecommendationRuleCard', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockOnDelete.mockResolvedValue(undefined)
     })
-
     it('should render the component correctly', () => {
         const screen = renderComponent()
-
         expect(screen.queryByText('Exclude products')).toBeInTheDocument()
         expect(
             screen.queryByText(
@@ -153,34 +142,26 @@ describe('RecommendationRuleCard', () => {
             ),
         ).toBeInTheDocument()
         expect(screen.queryByText('8 products')).toBeInTheDocument()
-
         const badges = screen.getAllByText('Excluded')
         expect(badges).toHaveLength(4)
-
         const button = screen.getByRole('button', { name: 'Select products' })
         expect(button).toBeInTheDocument()
         expect(button).toHaveAttribute('aria-disabled', 'false')
-
         const skeletons = screen.container.querySelectorAll(
             '[class^="react-loading-skeleton"]',
         )
-
         expect(skeletons.length).toBe(0)
     })
-
     it('should display items count with singular label when one item', () => {
         const screen = renderComponent({
             items: [
                 { id: '1', title: 'Test product 1', img: 'my-image-1-url' },
             ],
         })
-
         expect(screen.queryByText('1 product')).toBeInTheDocument()
     })
-
     it('should render the loading state correctly', () => {
         const screen = renderComponent({ isLoading: true })
-
         expect(screen.queryByText('Exclude products')).toBeInTheDocument()
         expect(
             screen.queryByText(
@@ -188,21 +169,16 @@ describe('RecommendationRuleCard', () => {
             ),
         ).toBeInTheDocument()
         expect(screen.queryByText('8 products')).not.toBeInTheDocument()
-
         const button = screen.getByRole('button', { name: 'Select products' })
         expect(button).toBeInTheDocument()
         expect(button).toHaveAttribute('aria-disabled', 'true')
-
         const skeletons = screen.container.querySelectorAll(
             '[class^="react-loading-skeleton"]',
         )
-
         expect(skeletons.length).toBe(2)
     })
-
     it('should render all items correctly', () => {
         const screen = renderComponent()
-
         expect(screen.queryByText('Test product 1')).toBeInTheDocument()
         expect(screen.queryByText('Test product 2')).toBeInTheDocument()
         expect(screen.queryByText('Test product 3')).toBeInTheDocument()
@@ -211,7 +187,6 @@ describe('RecommendationRuleCard', () => {
         expect(screen.queryByText('Test product 6')).not.toBeInTheDocument()
         expect(screen.queryByText('Test product 7')).not.toBeInTheDocument()
         expect(screen.queryByText('Test product 8')).not.toBeInTheDocument()
-
         expect(
             screen.container.querySelectorAll('[data-testid="item-image"]')
                 .length,
@@ -222,10 +197,8 @@ describe('RecommendationRuleCard', () => {
             ).length,
         ).toBe(2)
     })
-
     it('should not render images when hasImages is false', () => {
         const screen = renderComponent({ hasImages: false })
-
         expect(
             screen.container.querySelectorAll('[data-testid="item-image"]')
                 .length,
@@ -236,78 +209,59 @@ describe('RecommendationRuleCard', () => {
             ).length,
         ).toBe(0)
     })
-
     it('should handle clicks on add button correctly', () => {
         const screen = renderComponent()
-
         const button = screen.getByRole('button', { name: 'Select products' })
         fireEvent.click(button)
-
         expect(mockOnAddButtonClick).toHaveBeenCalledTimes(1)
     })
-
     it('should handle clicks on remove button correctly', () => {
         const screen = renderComponent()
-
         expect(
             screen.getAllByRole('button', { name: 'Remove product' }),
         ).toHaveLength(4)
         expect(screen.queryAllByText('Loading...')).toHaveLength(0)
-
         const button1 = screen.getAllByRole('button', {
             name: 'Remove product',
         })[2]
         fireEvent.click(button1)
-
         expect(mockOnDelete).toHaveBeenCalledTimes(1)
         expect(mockOnDelete).toHaveBeenCalledWith('3')
-
         const button2 = screen.getAllByRole('button', {
             name: 'Remove product',
         })[2]
         fireEvent.click(button2)
-
         expect(mockOnDelete).toHaveBeenCalledTimes(2)
         expect(mockOnDelete).toHaveBeenCalledWith('4')
-
         expect(
             screen.getAllByRole('button', { name: 'Remove product' }),
         ).toHaveLength(3)
         expect(screen.queryAllByText('Loading...')).toHaveLength(1)
     })
-
     it('should handle clicks on show products button correctly', () => {
         const screen = renderComponent({ hasOnShowProducts: true })
-
         expect(
             screen.getAllByRole('button', { name: 'Show products' }),
         ).toHaveLength(4)
-
         const button1 = screen.getAllByRole('button', {
             name: 'Show products',
         })[2]
         fireEvent.click(button1)
-
         expect(mockOnShowProducts).toHaveBeenCalledTimes(1)
         expect(mockOnShowProducts).toHaveBeenCalledWith('3')
-
         const button2 = screen.getAllByRole('button', {
             name: 'Show products',
         })[3]
         fireEvent.click(button2)
-
         expect(mockOnShowProducts).toHaveBeenCalledTimes(2)
         expect(mockOnShowProducts).toHaveBeenCalledWith('4')
     })
-
     it('should not show products button when onShowProducts is not provided', () => {
         const screen = renderComponent()
-
         expect(
             screen.queryAllByRole('button', { name: 'Show products' }),
         ).toHaveLength(0)
     })
-
     it('should render a mix of badges', () => {
         const screen = renderComponent({
             items: [
@@ -348,53 +302,42 @@ describe('RecommendationRuleCard', () => {
                 },
             ],
         })
-
         const draftBadges = screen.getAllByText('Draft')
         expect(draftBadges).toHaveLength(2)
-
         const excludedBadges = screen.getAllByText('Excluded')
         expect(excludedBadges).toHaveLength(2)
-
         const exceptionsBadges = screen.getAllByText('Exceptions')
         expect(exceptionsBadges).toHaveLength(1)
-
         expect(screen.getByText('Excluded product')).toBeInTheDocument()
         expect(screen.getByText('Draft product')).toBeInTheDocument()
         expect(screen.getByText('Another draft product')).toBeInTheDocument()
         expect(screen.getByText('Another excluded product')).toBeInTheDocument()
     })
-
     it('should handle deletion errors with generic message', async () => {
         const error = new Error('Network error')
         mockOnDelete.mockRejectedValue(error)
-
         const screen = renderComponent({
             items: [
                 { id: '1', title: 'Product 1' },
                 { id: '2', title: 'Product 2' },
             ],
         })
-
         const removeButton = screen.getAllByRole('button', {
             name: 'Remove product',
         })[0]
-
         await act(async () => {
             fireEvent.click(removeButton)
             await new Promise((resolve) => setTimeout(resolve, 0))
         })
-
         await waitFor(() => {
             expect(mockOnDelete).toHaveBeenCalledWith('1')
             expect(mockDispatch).toHaveBeenCalled()
         })
-
         const thunkCalls = mockDispatch.mock.calls.filter(
             (call: any[]) => typeof call[0] === 'function',
         )
         expect(thunkCalls.length).toBeGreaterThan(0)
     })
-
     it('should reset deletingItemId after successful deletion', async () => {
         const screen = renderComponent({
             items: [
@@ -402,55 +345,44 @@ describe('RecommendationRuleCard', () => {
                 { id: '2', title: 'Product 2' },
             ],
         })
-
         const removeButtons = screen.getAllByRole('button', {
             name: 'Remove product',
         })
-
         await act(async () => {
             fireEvent.click(removeButtons[0])
         })
-
         await waitFor(() => {
             expect(mockOnDelete).toHaveBeenCalledWith('1')
         })
-
         await waitFor(() => {
             expect(
                 screen.getAllByRole('button', { name: 'Remove product' }),
             ).toHaveLength(2)
         })
     })
-
     it('should reset deletingItemId after failed deletion', async () => {
         mockOnDelete.mockRejectedValue(new Error('Delete failed'))
-
         const screen = renderComponent({
             items: [
                 { id: '1', title: 'Product 1' },
                 { id: '2', title: 'Product 2' },
             ],
         })
-
         const removeButtons = screen.getAllByRole('button', {
             name: 'Remove product',
         })
-
         await act(async () => {
             fireEvent.click(removeButtons[0])
         })
-
         await waitFor(() => {
             expect(mockOnDelete).toHaveBeenCalledWith('1')
         })
-
         await waitFor(() => {
             expect(
                 screen.getAllByRole('button', { name: 'Remove product' }),
             ).toHaveLength(2)
         })
     })
-
     it('should render See All button with correct text and aria-label when more than 4 items', () => {
         const screen = renderComponent({
             items: [
@@ -463,14 +395,12 @@ describe('RecommendationRuleCard', () => {
             itemLabelSingular: 'product',
             itemLabelPlural: 'products',
         })
-
         const seeAllButton = screen.getByRole('button', {
             name: 'See All Excluded Products',
         })
         expect(seeAllButton).toBeInTheDocument()
         expect(seeAllButton).toHaveTextContent('See All Excluded Products')
     })
-
     it('should not render See All button when 4 or fewer items', () => {
         const screen = renderComponent({
             items: [
@@ -480,13 +410,11 @@ describe('RecommendationRuleCard', () => {
                 { id: '4', title: 'Product 4' },
             ],
         })
-
         const seeAllButton = screen.queryByRole('button', {
             name: 'See All Excluded Products',
         })
         expect(seeAllButton).not.toBeInTheDocument()
     })
-
     it('should handle click on See All button', () => {
         const screen = renderComponent({
             items: [
@@ -497,15 +425,12 @@ describe('RecommendationRuleCard', () => {
                 { id: '5', title: 'Product 5' },
             ],
         })
-
         const seeAllButton = screen.getByRole('button', {
             name: 'See All Excluded Products',
         })
         fireEvent.click(seeAllButton)
-
         expect(mockOnSeeAllClick).toHaveBeenCalledTimes(1)
     })
-
     it('should render See All button with custom item label', () => {
         const screen = renderComponent({
             items: [
@@ -518,45 +443,40 @@ describe('RecommendationRuleCard', () => {
             itemLabelSingular: 'tag',
             itemLabelPlural: 'tags',
         })
-
         const seeAllButton = screen.getByRole('button', {
             name: 'See All Excluded Tags',
         })
         expect(seeAllButton).toBeInTheDocument()
         expect(seeAllButton).toHaveTextContent('See All Excluded Tags')
     })
-
     it('should render See All button with Promoted text for promote type', () => {
-        const store = createMockStore()
         const { getByRole } = render(
-            <Provider store={store}>
-                <RecommendationRuleCard
-                    totalItems={5}
-                    title="Promote products"
-                    description="Choose products to prioritize in recommendations."
-                    isLoading={false}
-                    disableActions={false}
-                    hasImages={true}
-                    type="promote"
-                    addButton={{
-                        label: 'Select products',
-                        onClick: mockOnAddButtonClick,
-                    }}
-                    itemLabelSingular="product"
-                    itemLabelPlural="products"
-                    items={[
-                        { id: '1', title: 'Product 1' },
-                        { id: '2', title: 'Product 2' },
-                        { id: '3', title: 'Product 3' },
-                        { id: '4', title: 'Product 4' },
-                        { id: '5', title: 'Product 5' },
-                    ]}
-                    onDelete={mockOnDelete}
-                    onSeeAllClick={mockOnSeeAllClick}
-                />
-            </Provider>,
+            <RecommendationRuleCard
+                totalItems={5}
+                title="Promote products"
+                description="Choose products to prioritize in recommendations."
+                isLoading={false}
+                disableActions={false}
+                hasImages={true}
+                type="promote"
+                addButton={{
+                    label: 'Select products',
+                    onClick: mockOnAddButtonClick,
+                }}
+                itemLabelSingular="product"
+                itemLabelPlural="products"
+                items={[
+                    { id: '1', title: 'Product 1' },
+                    { id: '2', title: 'Product 2' },
+                    { id: '3', title: 'Product 3' },
+                    { id: '4', title: 'Product 4' },
+                    { id: '5', title: 'Product 5' },
+                ]}
+                onDelete={mockOnDelete}
+                onSeeAllClick={mockOnSeeAllClick}
+            />,
+            {},
         )
-
         const seeAllButton = getByRole('button', {
             name: 'See All Promoted Products',
         })

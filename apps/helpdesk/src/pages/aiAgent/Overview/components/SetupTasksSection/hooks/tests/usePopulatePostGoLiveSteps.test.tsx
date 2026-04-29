@@ -1,5 +1,6 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 
 import {
     useCreatePostStoreInstallationStepPure,
@@ -22,6 +23,10 @@ jest.mock('models/aiAgentPostStoreInstallationSteps/queries', () => ({
     useCreatePostStoreInstallationStepPure: jest.fn(),
     useUpdatePostStoreInstallationStepPure: jest.fn(),
 }))
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 
 const mockUseCreatePostStoreInstallationStepPure =
     useCreatePostStoreInstallationStepPure as jest.MockedFunction<
@@ -32,6 +37,7 @@ const mockUseUpdatePostStoreInstallationStepPure =
     useUpdatePostStoreInstallationStepPure as jest.MockedFunction<
         typeof useUpdatePostStoreInstallationStepPure
     >
+const mockUseQueryClient = jest.mocked(useQueryClient)
 
 describe('usePopulatePostGoLiveSteps', () => {
     let queryClient: QueryClient
@@ -126,6 +132,7 @@ describe('usePopulatePostGoLiveSteps', () => {
                 queries: { retry: false },
             },
         })
+        mockUseQueryClient.mockReturnValue(queryClient)
         jest.clearAllMocks()
         mockCreateMutateAsync.mockResolvedValue({
             postStoreInstallationSteps: {},
@@ -168,11 +175,7 @@ describe('usePopulatePostGoLiveSteps', () => {
         } as any)
     })
 
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
+    const wrapper = undefined
 
     it('should not create step when enabled is false', async () => {
         renderHook(

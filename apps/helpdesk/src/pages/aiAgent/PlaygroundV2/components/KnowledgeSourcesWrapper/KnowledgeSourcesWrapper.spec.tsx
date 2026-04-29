@@ -1,18 +1,12 @@
-import React from 'react'
-
 import { storeWithActiveSubscriptionWithConvert } from '@repo/billing/fixtures'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { Skeleton } from '@gorgias/axiom'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { TicketOutcome } from 'models/aiAgentPlayground/types'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useEnrichFeedbackData } from '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
 import { useSettingsContext } from '../../contexts/SettingsContext'
@@ -31,41 +25,28 @@ jest.mock('../../contexts/EventsContext', () => ({
 jest.mock('../../contexts/SettingsContext', () => ({
     useSettingsContext: jest.fn(),
 }))
-
 const mockUseFeedbackPolling = jest.mocked(useFeedbackPolling)
 const mockUseEnrichFeedbackData = jest.mocked(useEnrichFeedbackData)
 const mockUseSettingsContext = jest.mocked(useSettingsContext)
 const SkeletonMock = assumeMock(Skeleton)
-
-const mockStore = configureMockStore()
-const queryClient = mockQueryClient()
-
 const mockStoreConfiguration = {
     shopType: 'shopify',
     storeName: 'Test Store',
 } as StoreConfiguration
-
 const renderComponent = (props: {
     executionId: string
     storeConfiguration: StoreConfiguration
     outcome?: TicketOutcome
 }) => {
-    return render(
-        <Provider store={mockStore(storeWithActiveSubscriptionWithConvert)}>
-            <QueryClientProvider client={queryClient}>
-                <KnowledgeSourcesWrapper {...props} />
-            </QueryClientProvider>
-        </Provider>,
-    )
+    return render(<KnowledgeSourcesWrapper {...props} />, {
+        storeState: storeWithActiveSubscriptionWithConvert,
+    })
 }
-
 describe('KnowledgeSourcesWrapper', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-
         // Mock Skeleton component to render a test-id for easy testing
         SkeletonMock.mockImplementation(() => <div data-testid="skeleton" />)
-
         // Mock SettingsContext to return inbound mode by default
         mockUseSettingsContext.mockReturnValue({
             mode: 'inbound',
@@ -75,7 +56,6 @@ describe('KnowledgeSourcesWrapper', () => {
             setSettings: jest.fn(),
         } as any)
     })
-
     it('should display knowledge sources when data is loaded', () => {
         const mockEnrichedData = {
             knowledgeResources: [
@@ -114,7 +94,6 @@ describe('KnowledgeSourcesWrapper', () => {
             suggestedResources: [],
             freeForm: null,
         }
-
         mockUseFeedbackPolling.mockReturnValue({
             feedback: {
                 accountId: 123,
@@ -133,29 +112,24 @@ describe('KnowledgeSourcesWrapper', () => {
             stopPolling: jest.fn(),
             startPolling: jest.fn(),
         })
-
         mockUseEnrichFeedbackData.mockReturnValue({
             enrichedData: mockEnrichedData,
             isLoading: false,
         } as any)
-
         renderComponent({
             executionId: 'test-execution-id',
             storeConfiguration: mockStoreConfiguration,
             outcome: TicketOutcome.CLOSE,
         })
-
         expect(
             screen.getByText('AI Agent sent a response and Closed the ticket.'),
         ).toBeInTheDocument()
         expect(
             screen.getByText('AI Agent used the following sources:'),
         ).toBeInTheDocument()
-
         expect(screen.getByText('Return Policy')).toBeInTheDocument()
         expect(screen.getByText('Shipping Information')).toBeInTheDocument()
     })
-
     it('should render nothing when no knowledge sources are available', () => {
         mockUseFeedbackPolling.mockReturnValue({
             feedback: {
@@ -168,7 +142,6 @@ describe('KnowledgeSourcesWrapper', () => {
             stopPolling: jest.fn(),
             startPolling: jest.fn(),
         })
-
         mockUseEnrichFeedbackData.mockReturnValue({
             enrichedData: {
                 knowledgeResources: [],
@@ -177,15 +150,12 @@ describe('KnowledgeSourcesWrapper', () => {
             },
             isLoading: false,
         } as any)
-
         const { container } = renderComponent({
             executionId: 'test-execution-id',
             storeConfiguration: mockStoreConfiguration,
         })
-
         expect(container.firstChild).toBeNull()
     })
-
     it('should handle deleted knowledge sources', () => {
         const mockEnrichedData = {
             knowledgeResources: [
@@ -206,7 +176,6 @@ describe('KnowledgeSourcesWrapper', () => {
                 },
             ],
         }
-
         mockUseFeedbackPolling.mockReturnValue({
             feedback: {
                 accountId: 123,
@@ -237,23 +206,18 @@ describe('KnowledgeSourcesWrapper', () => {
             stopPolling: jest.fn(),
             startPolling: jest.fn(),
         })
-
         mockUseEnrichFeedbackData.mockReturnValue({
             enrichedData: mockEnrichedData,
             isLoading: false,
         } as any)
-
         renderComponent({
             executionId: 'test-execution-id',
             storeConfiguration: mockStoreConfiguration,
         })
-
         expect(screen.getByText('Deleted Article')).toBeInTheDocument()
-
         const deletedLink = screen.getByText('Deleted Article').closest('a')
         expect(deletedLink).toHaveClass('deleted')
     })
-
     it('should render knowledge source links with correct attributes', () => {
         const mockEnrichedData = {
             knowledgeResources: [
@@ -273,7 +237,6 @@ describe('KnowledgeSourcesWrapper', () => {
                 },
             ],
         }
-
         mockUseFeedbackPolling.mockReturnValue({
             feedback: {
                 accountId: 123,
@@ -292,26 +255,21 @@ describe('KnowledgeSourcesWrapper', () => {
             stopPolling: jest.fn(),
             startPolling: jest.fn(),
         })
-
         mockUseEnrichFeedbackData.mockReturnValue({
             enrichedData: mockEnrichedData,
             isLoading: false,
         } as any)
-
         renderComponent({
             executionId: 'test-execution-id',
             storeConfiguration: mockStoreConfiguration,
         })
-
         expect(screen.getByText('Test Article')).toBeInTheDocument()
-
         const link = screen.getByText('Test Article').closest('a')
         expect(link).toHaveAttribute('href', 'https://example.com/test')
         expect(link).toHaveAttribute('target', '_blank')
         expect(link).toHaveAttribute('rel', 'noreferrer noopener')
         expect(link).toHaveClass('sourceLink', 'hasLink')
     })
-
     it('should render open in new tab icon', () => {
         const mockEnrichedData = {
             knowledgeResources: [
@@ -331,7 +289,6 @@ describe('KnowledgeSourcesWrapper', () => {
                 },
             ],
         }
-
         mockUseFeedbackPolling.mockReturnValue({
             feedback: {
                 accountId: 123,
@@ -350,19 +307,15 @@ describe('KnowledgeSourcesWrapper', () => {
             stopPolling: jest.fn(),
             startPolling: jest.fn(),
         })
-
         mockUseEnrichFeedbackData.mockReturnValue({
             enrichedData: mockEnrichedData,
             isLoading: false,
         } as any)
-
         renderComponent({
             executionId: 'test-execution-id',
             storeConfiguration: mockStoreConfiguration,
         })
-
         expect(screen.getByText('Test Article')).toBeInTheDocument()
-
         const openInNewTabIcon = screen.getByText('open_in_new')
         expect(openInNewTabIcon).toBeInTheDocument()
         expect(openInNewTabIcon).toHaveClass(
@@ -370,27 +323,22 @@ describe('KnowledgeSourcesWrapper', () => {
             'material-icons',
         )
     })
-
     describe('polling behavior integration', () => {
         beforeEach(() => {
             jest.useFakeTimers()
         })
-
         afterEach(() => {
             jest.runOnlyPendingTimers()
             jest.useRealTimers()
         })
-
         it('should start polling when component mounts with executionId', () => {
             const startPollingMock = jest.fn()
-
             mockUseFeedbackPolling.mockReturnValue({
                 feedback: undefined,
                 isPolling: false,
                 stopPolling: jest.fn(),
                 startPolling: startPollingMock,
             })
-
             mockUseEnrichFeedbackData.mockReturnValue({
                 enrichedData: {
                     knowledgeResources: [],
@@ -399,27 +347,22 @@ describe('KnowledgeSourcesWrapper', () => {
                 },
                 isLoading: false,
             } as any)
-
             renderComponent({
                 executionId: 'test-execution-id',
                 storeConfiguration: mockStoreConfiguration,
             })
-
             // The component should start polling automatically when executionId is provided
             expect(startPollingMock).toHaveBeenCalledTimes(1)
         })
-
         it('should handle 2-minute timeout correctly in integration', () => {
             const startPollingMock = jest.fn()
             const stopPollingMock = jest.fn()
-
             mockUseFeedbackPolling.mockReturnValue({
                 feedback: undefined,
                 isPolling: true,
                 stopPolling: stopPollingMock,
                 startPolling: startPollingMock,
             })
-
             mockUseEnrichFeedbackData.mockReturnValue({
                 enrichedData: {
                     knowledgeResources: [],
@@ -428,20 +371,16 @@ describe('KnowledgeSourcesWrapper', () => {
                 },
                 isLoading: true,
             } as any)
-
             renderComponent({
                 executionId: 'test-execution-id',
                 storeConfiguration: mockStoreConfiguration,
             })
-
             // Should show loading skeleton while polling
             expect(screen.getByTestId('skeleton')).toBeInTheDocument()
         })
-
         it('should stop polling when feedback data is received', () => {
             const startPollingMock = jest.fn()
             const stopPollingMock = jest.fn()
-
             const mockFeedbackData = {
                 accountId: 123,
                 objectId: '123',
@@ -454,7 +393,6 @@ describe('KnowledgeSourcesWrapper', () => {
                     },
                 ],
             }
-
             const mockEnrichedData = {
                 knowledgeResources: [
                     {
@@ -474,7 +412,6 @@ describe('KnowledgeSourcesWrapper', () => {
                 suggestedResources: [],
                 freeForm: null,
             }
-
             // First, mock the state when polling is active but no data yet
             mockUseFeedbackPolling.mockReturnValueOnce({
                 feedback: undefined,
@@ -482,7 +419,6 @@ describe('KnowledgeSourcesWrapper', () => {
                 stopPolling: stopPollingMock,
                 startPolling: startPollingMock,
             })
-
             mockUseEnrichFeedbackData.mockReturnValueOnce({
                 enrichedData: {
                     knowledgeResources: [],
@@ -491,16 +427,13 @@ describe('KnowledgeSourcesWrapper', () => {
                 },
                 isLoading: true,
             } as any)
-
             const { rerender } = renderComponent({
                 executionId: 'test-execution-id',
                 storeConfiguration: mockStoreConfiguration,
             })
-
             // Should show loading skeleton while polling
             expect(screen.getByTestId('skeleton')).toBeInTheDocument()
             expect(startPollingMock).toHaveBeenCalledTimes(1)
-
             // Now mock the state after data is received
             mockUseFeedbackPolling.mockReturnValue({
                 feedback: mockFeedbackData as any,
@@ -508,34 +441,23 @@ describe('KnowledgeSourcesWrapper', () => {
                 stopPolling: stopPollingMock,
                 startPolling: startPollingMock,
             })
-
             mockUseEnrichFeedbackData.mockReturnValue({
                 enrichedData: mockEnrichedData,
                 isLoading: false,
             } as any)
-
             // Trigger re-render to simulate state change
             rerender(
-                <Provider
-                    store={mockStore(storeWithActiveSubscriptionWithConvert)}
-                >
-                    <QueryClientProvider client={queryClient}>
-                        <KnowledgeSourcesWrapper
-                            executionId="test-execution-id"
-                            storeConfiguration={mockStoreConfiguration}
-                        />
-                    </QueryClientProvider>
-                </Provider>,
+                <KnowledgeSourcesWrapper
+                    executionId="test-execution-id"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
             )
-
             // Should display the knowledge sources when data is received
             expect(screen.getByText('Test Article')).toBeInTheDocument()
-
             // Should no longer show loading skeleton (indicates polling has stopped)
             expect(screen.queryByTestId('skeleton')).not.toBeInTheDocument()
         })
     })
-
     describe('outbound mode', () => {
         it('should render nothing when mode is outbound', () => {
             mockUseSettingsContext.mockReturnValue({
@@ -545,7 +467,6 @@ describe('KnowledgeSourcesWrapper', () => {
                 resetSettings: jest.fn(),
                 setSettings: jest.fn(),
             } as any)
-
             const mockEnrichedData = {
                 knowledgeResources: [
                     {
@@ -567,7 +488,6 @@ describe('KnowledgeSourcesWrapper', () => {
                 suggestedResources: [],
                 freeForm: null,
             }
-
             mockUseFeedbackPolling.mockReturnValue({
                 feedback: {
                     accountId: 123,
@@ -586,17 +506,14 @@ describe('KnowledgeSourcesWrapper', () => {
                 stopPolling: jest.fn(),
                 startPolling: jest.fn(),
             })
-
             mockUseEnrichFeedbackData.mockReturnValue({
                 enrichedData: mockEnrichedData,
                 isLoading: false,
             } as any)
-
             const { container } = renderComponent({
                 executionId: 'test-execution-id',
                 storeConfiguration: mockStoreConfiguration,
             })
-
             expect(container.firstChild).toBeNull()
         })
     })

@@ -1,6 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
@@ -23,19 +22,10 @@ const mockUseDownloadShoppingAssistantTopProductsDataLegacy = assumeMock(
     useDownloadShoppingAssistantTopProductsDataLegacy,
 )
 
-const createWrapper = () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-        },
-    })
-
-    return ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-}
+const createWrapper =
+    () =>
+    ({ children }: { children?: React.ReactNode }) =>
+        children
 
 describe('ShoppingAssistantTopProductsTable', () => {
     beforeEach(() => {

@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import type { TransitionsState } from '../types'
 import TransitionConditionsAccordion from './TransitionConditionsAccordion'

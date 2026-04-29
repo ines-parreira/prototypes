@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react'
 
 import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useLocation, useParams } from 'react-router-dom'
@@ -18,7 +18,6 @@ import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResource
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import AiAgentExternalSourceArticlesView from '../AiAgentExternalSourceArticlesView'
 
@@ -44,6 +43,7 @@ jest.mock('@repo/routing', () => ({
 
 const mockUseLocation = assumeMock(useLocation)
 const mockUseParams = assumeMock(useParams)
+const mockHistoryPush = assumeMock(history.push)
 const mockUseGetHelpCenterArticle = assumeMock(useGetHelpCenterArticle)
 const mockUseGetArticleIngestionLogs = assumeMock(useGetArticleIngestionLogs)
 const mockUseGetFileIngestion = assumeMock(useGetFileIngestion)
@@ -101,17 +101,18 @@ const renderComponent = (props = {}) => {
         isLoading: false,
     }
 
-    return renderWithStoreAndQueryClientAndRouter(
+    return render(
         (
             <AiAgentExternalSourceArticlesView {...defaultProps} {...props} />
         ) as ReactElement,
-        defaultState,
+        { storeState: defaultState },
     )
 }
 
 describe('AiAgentExternalSourceArticlesView', () => {
     beforeEach(() => {
         mockFeatureFlags({})
+        mockHistoryPush.mockClear()
         mockUseLocation.mockReturnValue({
             state: {
                 selectedResource: {
@@ -506,34 +507,27 @@ describe('AiAgentExternalSourceArticlesView', () => {
     })
 
     it('should navigate to the article list for URL header type when closing the article detail modal', () => {
-        const mockHistoryPush = jest.spyOn(history, 'push')
+        mockUseParams.mockReturnValue({
+            articleId: '1',
+        })
         renderComponent({ headerType: HeaderType.URL })
 
-        // Click on the first article row to open the modal
-        const articleRow = screen.getByRole('row', { name: /Test article 1/i })
-        fireEvent.click(articleRow)
-
-        // Close the selected article
         const closeButton = screen.getByAltText('hide-view-icon')
         fireEvent.click(closeButton)
 
-        // Should navigate to the article list for URL header type
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            expect.stringContaining('/url-articles/'),
+            '/app/ai-agent/shopify/test-shop/knowledge/sources/url-articles/123/articles',
         )
     })
 
     it('should navigate to the article detail for URL header type when selecting an article', () => {
-        const mockHistoryPush = jest.spyOn(history, 'push')
         renderComponent({ headerType: HeaderType.URL })
 
-        // Click on the first article row to trigger navigation to detail
         const articleRow = screen.getByRole('row', { name: /Test article 1/i })
         fireEvent.click(articleRow)
 
-        // Should navigate to the article detail for URL header type
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            expect.stringContaining('/url-articles/123/articles/1'),
+            '/app/ai-agent/shopify/test-shop/knowledge/sources/url-articles/123/articles/1',
         )
     })
 })

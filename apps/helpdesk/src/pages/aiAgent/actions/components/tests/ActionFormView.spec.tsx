@@ -1,10 +1,10 @@
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { produce } from 'immer'
 
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ActionFormView from '../ActionFormView'
 
@@ -40,7 +40,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_NAME action on name change', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -74,7 +74,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_TOUCHED action on name blur', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -108,7 +108,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_NAME action on description change', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -142,7 +142,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_TOUCHED action on description blur', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -177,7 +177,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch DELETE_LLM_PROMPT_TRIGGER_CONDITION action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: produce(
@@ -228,7 +228,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch ADD_LLM_PROMPT_TRIGGER_CONDITION action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: produce(
@@ -277,7 +277,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -309,7 +309,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_LLM_PROMPT_TRIGGER_CONDITION action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: produce(
@@ -365,7 +365,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_TOUCHED action on condition blur', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: produce(
@@ -421,7 +421,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_LLM_PROMPT_TRIGGER_REQUIRES_CONFIRMATION action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -457,7 +457,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME action', () => {
         const mockDispatch = jest.fn()
 
-        const { rerender } = renderWithQueryClientProvider(
+        const { rerender } = render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -527,7 +527,7 @@ describe('<ActionFormView />', () => {
         }
         graph.nodes[0].data.requires_confirmation = true
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -621,7 +621,7 @@ describe('<ActionFormView />', () => {
         const user = userEvent.setup()
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:

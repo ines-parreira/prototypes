@@ -1,10 +1,9 @@
 import type React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import type { AxiosError } from 'axios'
-import { createMemoryHistory } from 'history'
+import { useLocation } from 'react-router-dom'
 
 import { isGorgiasApiError } from 'models/api/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
@@ -14,14 +13,11 @@ import type { AiAgentStoreConfigurationContextType } from 'pages/aiAgent/provide
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { hasShopifyRequiredPermissions } from 'pages/aiAgent/utils/shopify-integration.utils'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import { AiAgentConfigurationView } from './AiAgentConfigurationView'
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
-
 jest.mock('models/api/types', () => ({
     isGorgiasApiError: jest.fn(),
 }))
@@ -55,7 +51,6 @@ jest.mock('pages/aiAgent/providers/AiAgentFormChangesProvider', () => ({
         <div>{children}</div>
     ),
 }))
-
 const mockUseGetHelpCenterList = jest.mocked(useGetHelpCenterList)
 const mockUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext,
@@ -67,15 +62,11 @@ const mockHasShopifyRequiredPermissions = jest.mocked(
     hasShopifyRequiredPermissions,
 )
 const mockIsGorgiasApiError = jest.mocked(isGorgiasApiError)
-
-const queryClient = mockQueryClient()
-
 const defaultProps = {
     shopName: 'test-shop',
     shopType: 'shopify',
     accountDomain: 'test-account.gorgias.com',
 }
-
 const mockIntegration: ShopifyIntegration = {
     id: 123,
     name: 'Test Shop',
@@ -100,7 +91,6 @@ const mockIntegration: ShopifyIntegration = {
     user: { id: 1 },
     managed: false,
 }
-
 const mockHelpCenterData = {
     data: [
         { id: 1, name: 'Help Center 1', shop_name: 'test-shop' },
@@ -108,12 +98,16 @@ const mockHelpCenterData = {
     ],
 }
 
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div>{location.pathname}</div>
+}
+
 describe('AiAgentConfigurationView', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockDispatch.mockClear()
-        queryClient.clear()
-
         const mockContextValue: AiAgentStoreConfigurationContextType = {
             isLoading: false,
             storeConfiguration: undefined,
@@ -124,17 +118,14 @@ describe('AiAgentConfigurationView', () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue(
             mockContextValue,
         )
-
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integrationId: mockIntegration.id,
             integration: mockIntegration,
             needScopeUpdate: false,
         })
-
         mockHasShopifyRequiredPermissions.mockReturnValue(true)
         mockIsGorgiasApiError.mockReturnValue(false)
     })
-
     describe('when loading data', () => {
         it('should display loading spinner while fetching help centers', () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -144,25 +135,18 @@ describe('AiAgentConfigurationView', () => {
                 updateStoreConfiguration: jest.fn(),
                 isPendingCreateOrUpdate: false,
             })
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: undefined,
                 isInitialLoading: true,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
+                initialEntries: [
+                    '/app/automation/shopify/test-shop/ai-agent/settings',
+                ],
+            })
             expect(screen.getByLabelText('loading')).toBeInTheDocument()
         })
-
         it('should display loading spinner while store config is loading', () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
                 isLoading: true,
@@ -171,58 +155,43 @@ describe('AiAgentConfigurationView', () => {
                 updateStoreConfiguration: jest.fn(),
                 isPendingCreateOrUpdate: false,
             })
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: mockHelpCenterData,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
-            expect(screen.getByLabelText('loading')).toBeInTheDocument()
-        })
-    })
-
-    describe('when integration is missing', () => {
-        it('should redirect to automation page when integration is not found', () => {
-            const history = createMemoryHistory({
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
                 initialEntries: [
                     '/app/automation/shopify/test-shop/ai-agent/settings',
                 ],
             })
-
+            expect(screen.getByLabelText('loading')).toBeInTheDocument()
+        })
+    })
+    describe('when integration is missing', () => {
+        it('should redirect to automation page when integration is not found', () => {
             mockUseShopifyIntegrationAndScope.mockReturnValue({
                 integration: null,
                 integrationId: null,
                 needScopeUpdate: false,
             })
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: mockHelpCenterData,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
+            render(
+                <>
                     <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
+                    <LocationPath />
+                </>,
                 {
-                    history,
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
+                    path: '/app/automation',
+                    initialEntries: [
+                        '/app/automation/shopify/test-shop/ai-agent/settings',
+                    ],
                 },
             )
-
-            expect(history.location.pathname).toBe('/app/automation')
+            expect(screen.getByText('/app/automation')).toBeInTheDocument()
         })
     })
-
     describe('when query encounters an error', () => {
         it('should display error banner with retry button for non-403 errors', () => {
             const mockRefetch = jest.fn()
@@ -236,24 +205,18 @@ describe('AiAgentConfigurationView', () => {
                     },
                 },
             } as AxiosError
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: undefined,
                 isError: true,
                 error: mockError,
                 refetch: mockRefetch,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
+                initialEntries: [
+                    '/app/automation/shopify/test-shop/ai-agent/settings',
+                ],
+            })
             expect(
                 screen.getByText(/Failed to load resources/i),
             ).toBeInTheDocument()
@@ -264,7 +227,6 @@ describe('AiAgentConfigurationView', () => {
                 screen.getByRole('button', { name: /retry/i }),
             ).toBeInTheDocument()
         })
-
         it('should display error banner without retry button for 403 errors', () => {
             const mockRefetch = jest.fn()
             const mockError: AxiosError = {
@@ -277,26 +239,19 @@ describe('AiAgentConfigurationView', () => {
                     },
                 },
             } as AxiosError
-
             mockIsGorgiasApiError.mockReturnValue(true)
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: undefined,
                 isError: true,
                 error: mockError,
                 refetch: mockRefetch,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
+                initialEntries: [
+                    '/app/automation/shopify/test-shop/ai-agent/settings',
+                ],
+            })
             expect(
                 screen.getByText(/Failed to load resources/i),
             ).toBeInTheDocument()
@@ -307,7 +262,6 @@ describe('AiAgentConfigurationView', () => {
                 screen.queryByRole('button', { name: /retry/i }),
             ).not.toBeInTheDocument()
         })
-
         it('should call refetch when retry button is clicked', async () => {
             const mockRefetch = jest.fn()
             const mockError: AxiosError = {
@@ -320,54 +274,39 @@ describe('AiAgentConfigurationView', () => {
                     },
                 },
             } as AxiosError
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: undefined,
                 isError: true,
                 error: mockError,
                 refetch: mockRefetch,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
+                initialEntries: [
+                    '/app/automation/shopify/test-shop/ai-agent/settings',
+                ],
+            })
             const retryButton = screen.getByRole('button', { name: /retry/i })
-
             await act(async () => {
                 await userEvent.click(retryButton)
             })
-
             expect(mockRefetch).toHaveBeenCalledTimes(1)
         })
-
         it('should display fallback error message for non-Gorgias API errors', () => {
             const mockRefetch = jest.fn()
             const mockError = new Error('Network error') as AxiosError
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: undefined,
                 isError: true,
                 error: mockError,
                 refetch: mockRefetch,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
+                initialEntries: [
+                    '/app/automation/shopify/test-shop/ai-agent/settings',
+                ],
+            })
             expect(
                 screen.getByText(
                     'There was an error while trying to fetch help centers. Please try again later.',
@@ -378,75 +317,51 @@ describe('AiAgentConfigurationView', () => {
             ).toBeInTheDocument()
         })
     })
-
     describe('when data is successfully loaded', () => {
         it('should render the store config form with help centers data', () => {
             mockUseGetHelpCenterList.mockReturnValue({
                 data: mockHelpCenterData,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
+                initialEntries: [
+                    '/app/automation/shopify/test-shop/ai-agent/settings',
+                ],
+            })
             expect(screen.getByTestId('store-config-form')).toBeInTheDocument()
         })
-
         it('should display correct title based on section prop', () => {
             mockUseGetHelpCenterList.mockReturnValue({
                 data: mockHelpCenterData,
             } as any)
-
-            const { rerender } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView
-                        {...defaultProps}
-                        section="chat"
-                    />
-                </QueryClientProvider>,
+            const { rerender } = render(
+                <AiAgentConfigurationView {...defaultProps} section="chat" />,
                 {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
+                    path: '/app/automation',
+                    initialEntries: [
+                        '/app/automation/shopify/test-shop/ai-agent/settings',
+                    ],
                 },
             )
-
             expect(screen.getByTestId('ai-agent-layout')).toHaveAttribute(
                 'data-title',
                 'Chat',
             )
-
             rerender(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView
-                        {...defaultProps}
-                        section="email"
-                    />
-                </QueryClientProvider>,
+                <AiAgentConfigurationView {...defaultProps} section="email" />,
             )
-
             expect(screen.getByTestId('ai-agent-layout')).toHaveAttribute(
                 'data-title',
                 'Email',
             )
-
             rerender(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} section="sms" />
-                </QueryClientProvider>,
+                <AiAgentConfigurationView {...defaultProps} section="sms" />,
             )
-
             expect(screen.getByTestId('ai-agent-layout')).toHaveAttribute(
                 'data-title',
                 'SMS',
             )
         })
-
         it('should filter help centers by shop name and null shop names', () => {
             const mockHelpCenterDataWithMultipleShops = {
                 data: {
@@ -465,54 +380,39 @@ describe('AiAgentConfigurationView', () => {
                     ],
                 },
             }
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: mockHelpCenterDataWithMultipleShops,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
+                initialEntries: [
+                    '/app/automation/shopify/test-shop/ai-agent/settings',
+                ],
+            })
             expect(screen.getByTestId('store-config-form')).toBeInTheDocument()
         })
     })
-
     describe('when Shopify permissions are missing', () => {
         it('should display warning banner about missing Shopify permissions', () => {
             const integrationWithoutPermissions = {
                 ...mockIntegration,
                 scopes: [],
             }
-
             mockUseShopifyIntegrationAndScope.mockReturnValue({
                 integration: integrationWithoutPermissions,
                 integrationId: integrationWithoutPermissions.id,
                 needScopeUpdate: false,
             })
-
             mockHasShopifyRequiredPermissions.mockReturnValue(false)
-
             mockUseGetHelpCenterList.mockReturnValue({
                 data: mockHelpCenterData,
             } as any)
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentConfigurationView {...defaultProps} />
-                </QueryClientProvider>,
-                {
-                    path: '/app/automation/:shopType/:shopName/ai-agent/settings',
-                    route: '/app/automation/shopify/test-shop/ai-agent/settings',
-                },
-            )
-
+            render(<AiAgentConfigurationView {...defaultProps} />, {
+                path: '/app/automation',
+                initialEntries: [
+                    '/app/automation/shopify/test-shop/ai-agent/settings',
+                ],
+            })
             expect(
                 screen.getByText(/Update your Shopify permissions/i),
             ).toBeInTheDocument()

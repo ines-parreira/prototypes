@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
 
+import { useActivateAiAgentTrial } from '../Activation/hooks/useActivateAiAgentTrial'
 import { useActivation } from '../Activation/hooks/useActivation'
 import {
     useStoreActivations,
@@ -7,6 +8,7 @@ import {
 } from '../Activation/hooks/useStoreActivations'
 
 jest.mock('pages/aiAgent/Activation/hooks/useActivation')
+jest.mock('pages/aiAgent/Activation/hooks/useActivateAiAgentTrial')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 
 export const applyMockActivationHook = () => {
@@ -18,6 +20,16 @@ export const applyMockActivationHook = () => {
         activationModal: <div>ActivationModal</div>,
         earlyAccessModal: <div>EarlyAccessModal</div>,
         onUpgradePlanClick: () => Promise.resolve(),
+    })
+
+    const mockUseActivateAiAgentTrial = assumeMock(useActivateAiAgentTrial)
+    mockUseActivateAiAgentTrial.mockReturnValue({
+        startTrial: () => {},
+        isLoading: false,
+        routes: {} as ReturnType<typeof useActivateAiAgentTrial>['routes'],
+        canStartTrial: false,
+        canStartTrialFromFeatureFlag: false,
+        shopName: 'test-shop',
     })
 
     const mockUseStoreActivations = assumeMock(useStoreActivations)
@@ -53,3 +65,7 @@ export const applyMockActivationHook = () => {
 }
 
 applyMockActivationHook()
+
+beforeEach(() => {
+    applyMockActivationHook()
+})

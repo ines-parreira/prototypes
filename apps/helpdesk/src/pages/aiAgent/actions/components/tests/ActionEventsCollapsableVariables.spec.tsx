@@ -1,14 +1,11 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import ActionEventsCollapsableVariables from '../ActionEventsCollapsableVariables'
 
 describe('<ActionEventsCollapsableVariables />', () => {
     it('should render component', () => {
-        renderWithRouter(
+        render(
             <ActionEventsCollapsableVariables
                 body={{
                     foo: 'bar',
@@ -16,7 +13,6 @@ describe('<ActionEventsCollapsableVariables />', () => {
                 title="title"
             />,
         )
-
         expect(screen.getByText(/"foo": "bar"/)).toBeInTheDocument()
     })
 })

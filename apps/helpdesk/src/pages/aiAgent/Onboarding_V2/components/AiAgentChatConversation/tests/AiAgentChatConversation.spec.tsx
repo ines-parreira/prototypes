@@ -1,25 +1,21 @@
-import React from 'react'
+import { render } from '@repo/testing'
 
-import { render } from '@testing-library/react'
+import '@testing-library/react'
+
 import { fromJS, Map } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { AttachmentEnum } from 'common/types'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import type { RootState, StoreDispatch } from 'state/types'
+import type { RootState } from 'state/types'
 
 import type { ConversationMessage } from '../AiAgentChatConversation'
 import AiAgentChatConversation from '../AiAgentChatConversation'
-
-const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 const defaultState = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
 } as RootState
-
 describe('AiAgentChatConversation', () => {
     const messages: ConversationMessage[] = [
         {
@@ -72,19 +68,18 @@ describe('AiAgentChatConversation', () => {
             attachments: [],
         },
     ]
-
     const user = Map({ name: 'Test User' })
-
     it('renders agent and customer messages correctly when removeLinksFromMessages is false', () => {
         const { getByText, getByRole } = render(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentChatConversation
-                    conversationColor="#000"
-                    messages={messages}
-                    user={user}
-                    removeLinksFromMessages={false}
-                />
-            </Provider>,
+            <AiAgentChatConversation
+                conversationColor="#000"
+                messages={messages}
+                user={user}
+                removeLinksFromMessages={false}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
         expect(
             getByText(
@@ -99,17 +94,17 @@ describe('AiAgentChatConversation', () => {
         expect(getByText(/View Product/)).toBeInTheDocument()
         expect(getByRole('link')).toBeInTheDocument()
     })
-
     it('renders agent and customer messages correctly when removeLinksFromMessages is true', () => {
         const { getByText, queryByRole } = render(
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentChatConversation
-                    conversationColor="#000"
-                    messages={messages}
-                    user={user}
-                    removeLinksFromMessages
-                />
-            </Provider>,
+            <AiAgentChatConversation
+                conversationColor="#000"
+                messages={messages}
+                user={user}
+                removeLinksFromMessages
+            />,
+            {
+                storeState: defaultState,
+            },
         )
         expect(
             getByText(

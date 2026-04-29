@@ -1,15 +1,10 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import { getStoreConfigurationFormValuesFixture } from '../../fixtures/onboardingWizard.fixture'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
@@ -19,23 +14,17 @@ import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
-
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
-
 jest.mock('../AiAgentOnboardingWizardPersonalize', () => ({
     __esModule: true,
     default: () => <div>Personalize AI Agent </div>,
 }))
-const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
-
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext,
 )
-
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
-
 const mockedUseAiAgentOnboardingWizard = {
     storeFormValues: getStoreConfigurationFormValuesFixture(),
     faqHelpCenters: getHelpCentersResponseFixture.data,
@@ -48,25 +37,14 @@ const mockedUseAiAgentOnboardingWizard = {
     updateValue: jest.fn(),
     storeConfiguration: undefined,
 }
-
-const mockStore = configureMockStore([thunk])
-
 const defaultState = {}
-
 const renderComponent = () => {
-    renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <QueryClientProvider>
-                <AiAgentOnboardingWizard />
-            </QueryClientProvider>
-        </Provider>,
-        {
-            path: `/:shopType/:shopName/ai-agent/new`,
-            route: '/shopify/test-shop/ai-agent/new',
-        },
-    )
+    render(<AiAgentOnboardingWizard />, {
+        path: `/:shopType/:shopName/ai-agent/new`,
+        initialEntries: ['/shopify/test-shop/ai-agent/new'],
+        storeState: defaultState,
+    })
 }
-
 describe('<AiAgentOnboardingWizard />', () => {
     beforeEach(() => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -80,10 +58,8 @@ describe('<AiAgentOnboardingWizard />', () => {
             mockedUseAiAgentOnboardingWizard,
         )
     })
-
     it('should render the component with the correct wizard steps', () => {
         renderComponent()
-
         expect(screen.getByText('Set up AI Agent')).toBeInTheDocument()
         expect(screen.queryByText('How AI Agent works')).not.toBeInTheDocument()
         expect(

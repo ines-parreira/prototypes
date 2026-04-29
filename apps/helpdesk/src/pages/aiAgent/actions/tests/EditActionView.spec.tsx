@@ -1,18 +1,16 @@
+import { render as renderWithProviders } from '@repo/testing'
+
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { useFlag } from '@repo/feature-flags'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { produce } from 'immer'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { billingState } from 'fixtures/billing'
+import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
@@ -39,9 +37,6 @@ import {
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import EditActionView from '../EditActionView'
 
@@ -60,7 +55,6 @@ jest.mock('pages/automate/workflows/utils/serverValidationErrors')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/AppContext')
 jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
-
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
@@ -84,10 +78,8 @@ const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
 const mockServerValidationErrors = jest.mocked(serverValidationErrors)
 const mockUseAiAgentNavigation = jest.mocked(useAiAgentNavigation)
 const mockUsePlaygroundPanel = jest.mocked(usePlaygroundPanel)
-
 const { useAppContext } = require('pages/AppContext')
 const mockUseAppContext = jest.mocked(useAppContext)
-
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('state/integrations/selectors', () => ({
     ...jest.requireActual('state/integrations/selectors'),
@@ -96,27 +88,26 @@ jest.mock('state/integrations/selectors', () => ({
         { type: 'recharge', count: 0 },
     ],
 }))
+const LocationPath = () => {
+    const location = useLocation()
 
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
-    billing: fromJS(billingState),
-    integrations: fromJS({
-        integrations: [
-            {
-                type: 'shopify',
-                count: 1,
-                meta: { store_name: 'shopify-store' },
-            },
-            {
-                type: 'recharge',
-                count: 0,
-                meta: { store_name: 'recharge-store' },
-            },
-        ],
-    }),
-} as RootState)
-
-const queryClient = mockQueryClient()
-
+    return <div>{location.pathname}</div>
+}
+const defaultStoreState = {
+    integrations: fromJS(integrationsState),
+}
+type RenderOptions = NonNullable<Parameters<typeof renderWithProviders>[1]>
+const render = (
+    ui: Parameters<typeof renderWithProviders>[0],
+    options?: RenderOptions,
+) =>
+    renderWithProviders(ui, {
+        ...options,
+        storeState: {
+            ...defaultStoreState,
+            ...options?.storeState,
+        },
+    })
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
     name: 'Action name',
@@ -160,9 +151,7 @@ const b = new WorkflowConfigurationBuilder({
 b.insertHttpRequestConditionAndEndStepAndSelect('success', { success: true })
 b.selectParentStep()
 b.insertHttpRequestConditionAndEndStepAndSelect('error', { success: false })
-
 const configuration = b.build()
-
 describe('<EditActionView />', () => {
     beforeEach(() => {
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
@@ -208,12 +197,10 @@ describe('<EditActionView />', () => {
         } as unknown as ReturnType<
             typeof useFindAllGuidancesKnowledgeResources
         >)
-
         // Default mock for server validation errors - can be overridden in individual tests
         mockServerValidationErrors.mapServerErrorsToGraph = jest
             .fn()
             .mockReturnValue(null)
-
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
                 actions: '/app/ai-agent/shopify/shopify-store/actions',
@@ -223,12 +210,10 @@ describe('<EditActionView />', () => {
             },
             navigationItems: [],
         } as unknown as ReturnType<typeof useAiAgentNavigation>)
-
         mockUsePlaygroundPanel.mockReturnValue({
             openPlayground: jest.fn(),
             closePlayground: jest.fn(),
         } as unknown as ReturnType<typeof usePlaygroundPanel>)
-
         mockUseAppContext.mockReturnValue({
             setCollapsibleColumnChildren: jest.fn(),
             collapsibleColumnChildren: null,
@@ -236,146 +221,113 @@ describe('<EditActionView />', () => {
             setIsCollapsibleColumnOpen: jest.fn(),
         })
     })
-
     it('should render edit action page', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
+            {},
         )
-
         expect(screen.getByText('Save changes')).toBeInTheDocument()
     })
-
     it('should redirect on "Back to support actions" click', () => {
-        const history = createMemoryHistory({
-            initialEntries: [
-                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
-            ],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Back to support actions'))
         })
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/shopify-store/actions',
-        )
+        expect(
+            screen.getByText('/app/ai-agent/shopify/shopify-store/actions'),
+        ).toBeInTheDocument()
     })
-
     it('should redirect on "View Events" click', () => {
-        const history = createMemoryHistory({
-            initialEntries: [
-                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
-            ],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('View Events'))
         })
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/actions/events/${configuration.id}`,
-        )
+        expect(
+            screen.getByText(
+                `/app/ai-agent/shopify/shopify-store/actions/events/${configuration.id}`,
+            ),
+        ).toBeInTheDocument()
     })
-
     it('should redirect on "Cancel" click', () => {
-        const history = createMemoryHistory({
-            initialEntries: [
-                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
-            ],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Cancel'))
         })
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/actions`,
-        )
+        expect(
+            screen.getByText('/app/ai-agent/shopify/shopify-store/actions'),
+        ).toBeInTheDocument()
     })
-
     it('should not redirect after successful edit (stays on edit page)', async () => {
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        const history = createMemoryHistory({
-            initialEntries: [
-                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
-            ],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         await waitFor(() => {
-            expect(historyPushSpy).not.toHaveBeenCalled()
+            expect(
+                screen.getByText(
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ),
+            ).toBeInTheDocument()
         })
     })
-
     it('should open playground panel when "Save and test" succeeds', async () => {
         const mockUpsertAction = jest.fn().mockResolvedValue({ success: true })
         const mockOpenPlayground = jest.fn()
         let isSuccess = false
-
         mockUseUpsertAction.mockImplementation(
             () =>
                 ({
@@ -391,197 +343,149 @@ describe('<EditActionView />', () => {
                     },
                 }) as any,
         )
-
         mockUsePlaygroundPanel.mockReturnValue({
             openPlayground: mockOpenPlayground,
             closePlayground: jest.fn(),
         } as unknown as ReturnType<typeof usePlaygroundPanel>)
-
-        const { rerender } = renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        const { rerender } = render(
+            <EditActionView configuration={configuration} />,
             {
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         await act(async () => {
             fireEvent.click(screen.getByText('Save and test'))
         })
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockUpsertAction,
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        rerender(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
-        )
-
+        rerender(<EditActionView configuration={configuration} />)
         await waitFor(() => {
             expect(mockOpenPlayground).toHaveBeenCalled()
         })
     })
-
     it('should not open playground panel when "Save changes" succeeds (not "Save and test")', async () => {
         const mockUpsertAction = jest.fn().mockResolvedValue({ success: true })
         const mockOpenPlayground = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockUpsertAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         mockUsePlaygroundPanel.mockReturnValue({
             openPlayground: mockOpenPlayground,
             closePlayground: jest.fn(),
         } as unknown as ReturnType<typeof usePlaygroundPanel>)
-
-        const { rerender } = renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        const { rerender } = render(
+            <EditActionView configuration={configuration} />,
             {
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         await act(async () => {
             fireEvent.click(screen.getByText('Save changes'))
         })
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockUpsertAction,
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        rerender(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
-        )
-
+        rerender(<EditActionView configuration={configuration} />)
         await waitFor(() => {
             expect(mockOpenPlayground).not.toHaveBeenCalled()
         })
     })
-
     it('should not open playground panel when isEditActionSuccess is true but no button was clicked', async () => {
         const mockOpenPlayground = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         mockUsePlaygroundPanel.mockReturnValue({
             openPlayground: mockOpenPlayground,
             closePlayground: jest.fn(),
         } as unknown as ReturnType<typeof usePlaygroundPanel>)
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
         await waitFor(() => {
             expect(mockOpenPlayground).not.toHaveBeenCalled()
         })
     })
-
     it('should redirect to actions on delete success', async () => {
         mockUseDeleteAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useDeleteAction>)
-
-        const history = createMemoryHistory({
-            initialEntries: [
-                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
-            ],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         await waitFor(() => {
-            expect(historyPushSpy).toHaveBeenCalledWith(
-                `/app/ai-agent/shopify/shopify-store/actions`,
-            )
+            expect(
+                screen.getByText('/app/ai-agent/shopify/shopify-store/actions'),
+            ).toBeInTheDocument()
         })
     })
-
     it('should disable "Save and test" button if action is disabled', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView
-                        configuration={produce(configuration, (draft) => {
-                            if (draft.entrypoints) {
-                                draft.entrypoints[0].deactivated_datetime =
-                                    new Date().toISOString()
-                            }
-                        })}
-                    />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <EditActionView
+                configuration={produce(configuration, (draft) => {
+                    if (draft.entrypoints) {
+                        draft.entrypoints[0].deactivated_datetime =
+                            new Date().toISOString()
+                    }
+                })}
+            />,
+            {},
         )
-
         expect(
             screen.getByRole('button', { name: 'Save and test' }),
         ).toBeAriaDisabled()
     })
-
     it('should disable save buttons if action is editing', () => {
         mockUseUpsertAction.mockReturnValue({
             isLoading: true,
             mutateAsync: jest.fn(),
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
+            {},
         )
-
         expect(
             screen.getByRole('button', { name: /Save changes/ }),
         ).toBeAriaDisabled()
@@ -589,69 +493,60 @@ describe('<EditActionView />', () => {
             screen.getByRole('button', { name: /Save and test/ }),
         ).toBeAriaDisabled()
     })
-
     it('should display errors', () => {
         const mockUpsertAction = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockUpsertAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
+            {},
         )
-
         act(() => {
             fireEvent.change(screen.getByDisplayValue('Action name'), {
                 target: { value: '' },
             })
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Save changes'))
         })
-
         expect(notify).toHaveBeenCalledWith({
             showDismissButton: true,
             status: NotificationStatus.Error,
             message: 'Fix errors in order to save Action',
         })
-
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
         expect(mockUpsertAction).not.toHaveBeenCalled()
     })
-
     it('should save changes', () => {
         const mockUpsertAction = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockUpsertAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Save changes'))
         })
-
         expect(mockUpsertAction).toHaveBeenCalledWith([
             {
                 internal_id: configuration.internal_id,
@@ -666,40 +561,34 @@ describe('<EditActionView />', () => {
             }),
         ])
     })
-
     it('should open/close visual builder', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
+            {},
         )
-
         // Switch to advanced view
         act(() => {
             fireEvent.click(screen.getByText(/Advanced options/i))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Convert To Advanced View'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Edit'))
         })
-
         expect(
             screen.getByText(
                 'Add at least one step with a 3rd party app or an HTTP request to perform the Action.',
             ),
         ).toBeInTheDocument()
         expect(screen.queryByText('Save changes')).not.toBeInTheDocument()
-
         act(() => {
             fireEvent.click(screen.getByText('close'))
         })
-
         expect(
             screen.queryByText(
                 'Add at least one step with a 3rd party app or an HTTP request to perform the Action.',
@@ -707,11 +596,9 @@ describe('<EditActionView />', () => {
         ).not.toBeInTheDocument()
         expect(screen.getByText('Save changes')).toBeInTheDocument()
     })
-
     it('should handle server validation errors during save', async () => {
         // This integration test executes the actual error handling code path
         // to ensure server validation errors are properly mapped and displayed
-
         const serverValidationError = {
             response: {
                 status: 400,
@@ -722,21 +609,17 @@ describe('<EditActionView />', () => {
                 },
             },
         }
-
         const mockEditAction = jest
             .fn()
             .mockRejectedValue(serverValidationError)
         const mockAppDispatch = jest.fn()
         const mockVisualBuilderDispatch = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockEditAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         mockUseAppDispatch.mockReturnValue(mockAppDispatch)
-
         // Create a proper visual builder graph for this test
         const visualBuilderGraph = computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
@@ -744,7 +627,6 @@ describe('<EditActionView />', () => {
                 false,
             ),
         )
-
         // Spy on the visual builder reducer for this specific test
         const useVisualBuilderGraphReducerSpy = jest
             .spyOn(
@@ -752,7 +634,6 @@ describe('<EditActionView />', () => {
                 'useVisualBuilderGraphReducer',
             )
             .mockReturnValue([visualBuilderGraph, mockVisualBuilderDispatch])
-
         // Mock that server errors were successfully mapped to graph - use visual builder graph structure
         const graphWithMappedErrors = {
             ...visualBuilderGraph,
@@ -774,38 +655,32 @@ describe('<EditActionView />', () => {
         mockServerValidationErrors.mapServerErrorsToGraph.mockReturnValue(
             graphWithMappedErrors as any,
         )
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         // Trigger the save action that will cause error handling
         await act(async () => {
             fireEvent.click(screen.getByText('Save changes'))
         })
-
         // Verify mapServerErrorsToGraph was called (line 189)
         expect(
             mockServerValidationErrors.mapServerErrorsToGraph,
-        ).toHaveBeenCalledWith(
-            serverValidationError,
-            visualBuilderGraph, // visualBuilderGraphDirty
-        )
-
+        ).toHaveBeenCalledWith(serverValidationError, visualBuilderGraph)
         // Verify that the graph was updated with server errors (line 196)
         expect(mockVisualBuilderDispatch).toHaveBeenCalledWith({
             type: 'RESET_GRAPH',
             graph: graphWithMappedErrors,
         })
-
         // Verify notification was dispatched (line 201)
         expect(mockAppDispatch).toHaveBeenCalledWith(
             notify({
@@ -814,67 +689,52 @@ describe('<EditActionView />', () => {
                 message: 'Please fix the validation errors below and try again',
             }),
         )
-
         // Verify editAction was called but failed
         expect(mockEditAction).toHaveBeenCalled()
-
         // The handleSave function should return Promise.reject() (line 210)
         // which prevents navigation and keeps the user on the form
-
         // Clean up the spy
         useVisualBuilderGraphReducerSpy.mockRestore()
     })
-
     it('should handle generic server errors during save', async () => {
         // This integration test executes the actual error handling code path
         // to ensure generic errors are properly re-thrown
-
         const genericError = new Error('Network error')
-
         const mockEditAction = jest.fn().mockRejectedValue(genericError)
-
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockEditAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
         // Mock that this is NOT a validation error (returns null)
         mockServerValidationErrors.mapServerErrorsToGraph.mockReturnValue(null)
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
+        render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
             {
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                path: '/app/ai-agent/:shopType/:shopName/actions',
+                initialEntries: [
+                    `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+                ],
             },
         )
-
         // Mock console.error to avoid noise in test output
         const originalConsoleError = console.error
         console.error = jest.fn()
-
         try {
             // Trigger the save action that will cause error handling
             await act(async () => {
                 fireEvent.click(screen.getByText('Save changes'))
             })
-
             // Verify mapServerErrorsToGraph was called (line 189)
             expect(
                 mockServerValidationErrors.mapServerErrorsToGraph,
-            ).toHaveBeenCalledWith(
-                genericError,
-                expect.any(Object), // visualBuilderGraphDirty
-            )
-
+            ).toHaveBeenCalledWith(genericError, expect.any(Object))
             // Verify editAction was called
             expect(mockEditAction).toHaveBeenCalled()
-
             // The error should be re-thrown (line 214) since mapServerErrorsToGraph returned null
             // This allows the useUpsertAction hook's onError to handle it with default behavior
         } finally {

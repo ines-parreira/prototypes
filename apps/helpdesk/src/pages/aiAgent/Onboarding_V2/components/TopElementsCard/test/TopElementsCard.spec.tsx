@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import TopElementsCard from '../TopElementsCard'
 
@@ -26,11 +25,9 @@ const elements = [
         percentage: 26,
     },
 ]
-
 describe('TopElementsCard', () => {
     it('renders', () => {
         render(<TopElementsCard title="Top Elements" topElements={elements} />)
-
         expect(screen.getByText('Top Elements')).toBeInTheDocument()
         expect(screen.getAllByText('New York').length).toBe(4)
     })

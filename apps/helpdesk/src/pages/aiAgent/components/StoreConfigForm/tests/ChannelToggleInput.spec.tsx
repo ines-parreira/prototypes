@@ -1,15 +1,14 @@
 import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
 
 import {
     BannerText,
     SettingsBannerType,
 } from 'pages/aiAgent/components/StoreConfigForm/constants'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { ChannelToggleInput } from '../FormComponents/ChannelToggleInput'
 
@@ -18,13 +17,12 @@ jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
-
 const mockLogEvent = jest.mocked(logEvent)
-
 // Mock localStorage
 const localStorageMock = (() => {
-    let store: { [key: string]: string } = {}
-
+    let store: {
+        [key: string]: string
+    } = {}
     return {
         getItem: (key: string) => store[key] || null,
         setItem: (key: string, value: string) => {
@@ -35,46 +33,39 @@ const localStorageMock = (() => {
         },
     }
 })()
-
 Object.defineProperty(window, 'localStorage', {
     value: localStorageMock,
 })
-
 const renderComponent = (
     props?: Partial<ComponentProps<typeof ChannelToggleInput>>,
 ) => {
-    renderWithStoreAndQueryClientProvider(
-        <MemoryRouter>
-            <ChannelToggleInput
-                isToggled={true}
-                onUpdate={jest.fn()}
-                channel="email"
-                type={SettingsBannerType.Chat}
-                {...props}
-            />
-        </MemoryRouter>,
+    render(
+        <ChannelToggleInput
+            isToggled={true}
+            onUpdate={jest.fn()}
+            channel="email"
+            type={SettingsBannerType.Chat}
+            {...props}
+        />,
+        {},
     )
 }
-
 describe('ChannelToggleInput', () => {
     beforeEach(() => {
         mockLogEvent.mockClear()
         localStorage.clear()
         jest.clearAllMocks()
     })
-
     test.each(['email', 'chat'])('should render for %s', (channel) => {
         renderComponent({
             channel: channel as ComponentProps<
                 typeof ChannelToggleInput
             >['channel'],
         })
-
         expect(
             screen.getAllByText('Enable AI Agent on Chat')[0],
         ).toBeInTheDocument()
     })
-
     it.each<['chat' | 'email' | 'sms', SegmentEvent]>([
         ['chat', SegmentEvent.AiAgentChatConfigurationDisabled],
         ['email', SegmentEvent.AiAgentEmailConfigurationDisabled],
@@ -83,16 +74,13 @@ describe('ChannelToggleInput', () => {
         'should fire segment event for %s when toggle is off',
         (channel, segmentEvent) => {
             const onUpdate = jest.fn()
-
             renderComponent({ onUpdate, channel })
             fireEvent.click(screen.getByRole('switch'))
-
             expect(onUpdate).toHaveBeenCalledWith(false)
             expect(mockLogEvent).toHaveBeenCalledTimes(1)
             expect(mockLogEvent).toHaveBeenCalledWith(segmentEvent)
         },
     )
-
     describe.each([SettingsBannerType.Chat, SettingsBannerType.Email])(
         'for %s',
         (channel) => {
@@ -102,19 +90,16 @@ describe('ChannelToggleInput', () => {
                     screen.queryByText(BannerText[channel]),
                 ).not.toBeInTheDocument()
             })
-
             it('should show the banner if deactivatedDatetime is provided and localStorage has no acknowledgment', () => {
                 renderComponent({
                     channel,
                     type: channel,
                     deactivatedDatetime: '2024-09-24',
                 })
-
                 expect(
                     screen.getByText(BannerText[channel]),
                 ).toBeInTheDocument()
             })
-
             it('should hide the banner if it has been acknowledged in localStorage', () => {
                 localStorage.setItem(
                     `ai-settings-${channel}-banner-acknowledged`,
@@ -125,12 +110,10 @@ describe('ChannelToggleInput', () => {
                     type: channel,
                     deactivatedDatetime: '2024-09-24',
                 })
-
                 expect(
                     screen.queryByText(BannerText[channel]),
                 ).not.toBeInTheDocument()
             })
-
             it('should show the banner and hide it when the close button is clicked', async () => {
                 localStorage.setItem(
                     `ai-settings-${channel}-banner-acknowledged`,
@@ -141,15 +124,12 @@ describe('ChannelToggleInput', () => {
                     type: channel,
                     deactivatedDatetime: '2024-09-24',
                 })
-
                 expect(
                     screen.getByText(BannerText[channel]),
                 ).toBeInTheDocument()
-
                 await userEvent.click(
                     screen.getByRole('img', { name: 'close-icon' }),
                 )
-
                 expect(
                     localStorage.getItem(
                         `ai-settings-${channel}-banner-acknowledged`,
@@ -159,7 +139,6 @@ describe('ChannelToggleInput', () => {
             })
         },
     )
-
     it('should not show the info banner for SMS', () => {
         renderComponent({
             channel: 'sms',
@@ -167,7 +146,6 @@ describe('ChannelToggleInput', () => {
         })
         expect(screen.queryByTestId('info-banner')).not.toBeInTheDocument()
     })
-
     it('should show the warning text if it is provided', () => {
         renderComponent({
             channel: 'sms',
@@ -176,7 +154,6 @@ describe('ChannelToggleInput', () => {
         })
         expect(screen.getByText('This is a warning text')).toBeInTheDocument()
     })
-
     it('should not show the warning text if it is not provided', () => {
         renderComponent({
             channel: 'sms',

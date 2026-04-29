@@ -1,4 +1,6 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
+
+import '@testing-library/react'
 
 import { SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_TABLE } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByIntentTable/columns'
 import { DownloadSupportAgentsPerformanceByIntentButton } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByIntentTable/DownloadSupportAgentsPerformanceByIntentButton'

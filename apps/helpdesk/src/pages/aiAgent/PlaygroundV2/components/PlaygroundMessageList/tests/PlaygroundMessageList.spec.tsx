@@ -1,4 +1,5 @@
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 
 import type { PlaygroundMessage } from 'models/aiAgentPlayground/types'
 import { MessageType, TicketOutcome } from 'models/aiAgentPlayground/types'

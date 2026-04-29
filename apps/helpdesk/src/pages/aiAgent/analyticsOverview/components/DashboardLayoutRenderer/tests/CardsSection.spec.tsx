@@ -1,5 +1,6 @@
 import { useFlagWithLoading } from '@repo/feature-flags'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ChartType } from 'domains/reporting/pages/dashboards/types'

@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
 import { useFlagWithLoading } from '@repo/feature-flags'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { SupportAgentIntentPerformanceBreakdownTableWrapper } from '../SupportAgentIntentPerformanceBreakdownTableWrapper'
 

@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
 import { SidebarCollapsedGroup, SidebarCollapsedItem } from '@repo/navigation'
-import { history } from '@repo/routing'
-import { matchPath, useLocation } from 'react-router-dom'
+import { matchPath, useHistory, useLocation } from 'react-router-dom'
 
 import { Menu, MenuItem } from '@gorgias/axiom'
 
@@ -15,6 +14,7 @@ type Props = {
 export const CollapsedActionDrivenNavigationItems = ({
     navigationItems,
 }: Props) => {
+    const history = useHistory()
     const { pathname } = useLocation()
 
     const activeItemTitle = useMemo(() => {

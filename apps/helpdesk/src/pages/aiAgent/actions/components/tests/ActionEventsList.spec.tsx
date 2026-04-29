@@ -1,8 +1,5 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import type { LlmTriggeredExecution } from '../../types'
 import ActionEventsList from '../ActionEventsList'
@@ -23,7 +20,7 @@ describe('<ActionEventsList />', () => {
             configuration_internal_id: '1',
             current_step_id: '1',
         }
-        renderWithRouter(
+        render(
             <ActionEventsList
                 isLoading={false}
                 onChangeOrder={jest.fn()}
@@ -32,7 +29,6 @@ describe('<ActionEventsList />', () => {
                 executions={[execution]}
             />,
         )
-
         expect(
             screen.getByText('Today at', { exact: false }),
         ).toBeInTheDocument()

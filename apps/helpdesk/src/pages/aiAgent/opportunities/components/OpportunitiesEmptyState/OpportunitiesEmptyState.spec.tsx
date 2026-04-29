@@ -1,9 +1,7 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
-import { Router } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { State } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
@@ -20,7 +18,6 @@ jest.mock('lottie-react', () => ({
         />
     )),
 }))
-
 const mockOpportunityPageState: OpportunityPageState = {
     state: State.ENABLED_NO_OPPORTUNITIES,
     isLoading: false,
@@ -31,52 +28,47 @@ const mockOpportunityPageState: OpportunityPageState = {
     primaryCta: null,
     showEmptyState: true,
 }
+const LocationPath = () => {
+    const location = useLocation()
 
+    return <div>{location.pathname}</div>
+}
 describe('OpportunitiesEmptyState', () => {
     const renderComponent = (
         opportunitiesPageState: OpportunityPageState = mockOpportunityPageState,
     ) => {
-        const history = createMemoryHistory()
-        return {
-            history,
-            ...render(
-                <Router history={history}>
-                    <OpportunitiesEmptyState
-                        opportunitiesPageState={opportunitiesPageState}
-                    />
-                </Router>,
-            ),
-        }
+        return render(
+            <>
+                <OpportunitiesEmptyState
+                    opportunitiesPageState={opportunitiesPageState}
+                />
+                <LocationPath />
+            </>,
+            {},
+        )
     }
-
     it('should render the title', () => {
         renderComponent()
-
         expect(
             screen.getByRole('heading', {
                 name: 'AI Agent is learning from your conversations',
             }),
         ).toBeInTheDocument()
     })
-
     it('should render the description', () => {
         renderComponent()
-
         expect(
             screen.getByText(
                 /As AI Agent handles more conversations, we'll surface opportunities/,
             ),
         ).toBeInTheDocument()
     })
-
     it('should not render primary CTA button when not provided', () => {
         renderComponent()
-
         expect(
             screen.queryByRole('button', { name: /enable/i }),
         ).not.toBeInTheDocument()
     })
-
     it('should render primary CTA button when provided', () => {
         const stateWithCta: OpportunityPageState = {
             ...mockOpportunityPageState,
@@ -85,14 +77,11 @@ describe('OpportunitiesEmptyState', () => {
                 href: '/app/ai-agent/shopify/test-shop/deploy/email',
             },
         }
-
         renderComponent(stateWithCta)
-
         expect(
             screen.getByRole('button', { name: 'Enable AI Agent' }),
         ).toBeInTheDocument()
     })
-
     it('should navigate to correct path when CTA button is clicked', async () => {
         const user = userEvent.setup()
         const ctaHref = '/app/ai-agent/shopify/test-shop/deploy/email'
@@ -103,15 +92,11 @@ describe('OpportunitiesEmptyState', () => {
                 href: ctaHref,
             },
         }
-
-        const { history } = renderComponent(stateWithCta)
-
+        renderComponent(stateWithCta)
         const button = screen.getByRole('button', { name: 'Enable AI Agent' })
         await user.click(button)
-
-        expect(history.location.pathname).toBe(ctaHref)
+        expect(screen.getByText(ctaHref)).toBeInTheDocument()
     })
-
     it('should not navigate when CTA button is clicked without href', async () => {
         const user = userEvent.setup()
         const stateWithCtaWithoutHref: OpportunityPageState = {
@@ -120,38 +105,28 @@ describe('OpportunitiesEmptyState', () => {
                 label: 'Complete setup',
             },
         }
-
-        const { history } = renderComponent(stateWithCtaWithoutHref)
-        const initialPath = history.location.pathname
-
+        renderComponent(stateWithCtaWithoutHref)
         const button = screen.getByRole('button', { name: 'Complete setup' })
         await user.click(button)
-
-        expect(history.location.pathname).toBe(initialPath)
+        expect(screen.getByText('/')).toBeInTheDocument()
     })
-
     it('should render media when media is provided', () => {
         renderComponent()
-
         const media = screen.getByRole('img', {
             name: 'Opportunities empty state',
         })
         expect(media).toBeInTheDocument()
     })
-
     it('should not render media frame when media is not provided', () => {
         const stateWithoutMedia: OpportunityPageState = {
             ...mockOpportunityPageState,
             media: null,
         }
-
         renderComponent(stateWithoutMedia)
-
         expect(
             screen.queryByAltText('Opportunities empty state'),
         ).not.toBeInTheDocument()
     })
-
     describe('Lottie animation support', () => {
         const mockLottieAnimationData = {
             v: '5.5.7',
@@ -165,63 +140,49 @@ describe('OpportunitiesEmptyState', () => {
             assets: [],
             layers: [],
         }
-
         it('should render Lottie animation when media is an object', () => {
             const stateWithLottieMedia: OpportunityPageState = {
                 ...mockOpportunityPageState,
                 media: mockLottieAnimationData,
             }
-
             renderComponent(stateWithLottieMedia)
-
             const lottieElement = screen.getByTestId('lottie-animation')
             expect(lottieElement).toBeInTheDocument()
         })
-
         it('should pass animation data to Lottie component', () => {
             const stateWithLottieMedia: OpportunityPageState = {
                 ...mockOpportunityPageState,
                 media: mockLottieAnimationData,
             }
-
             renderComponent(stateWithLottieMedia)
-
             const lottieElement = screen.getByTestId('lottie-animation')
             expect(lottieElement).toHaveAttribute(
                 'data-animation-data',
                 JSON.stringify(mockLottieAnimationData),
             )
         })
-
         it('should render Lottie with correct accessibility attributes', () => {
             const stateWithLottieMedia: OpportunityPageState = {
                 ...mockOpportunityPageState,
                 media: mockLottieAnimationData,
             }
-
             renderComponent(stateWithLottieMedia)
-
             const lottieElement = screen.getByRole('img', {
                 name: 'Opportunities empty state',
             })
             expect(lottieElement).toBeInTheDocument()
         })
-
         it('should not render img element when media is an object', () => {
             const stateWithLottieMedia: OpportunityPageState = {
                 ...mockOpportunityPageState,
                 media: mockLottieAnimationData,
             }
-
             const { container } = renderComponent(stateWithLottieMedia)
-
             const imgElement = container.querySelector('img')
             expect(imgElement).not.toBeInTheDocument()
         })
-
         it('should render img element when media is a string', () => {
             renderComponent()
-
             const imgElement = screen.getByRole('img', {
                 name: 'Opportunities empty state',
             })

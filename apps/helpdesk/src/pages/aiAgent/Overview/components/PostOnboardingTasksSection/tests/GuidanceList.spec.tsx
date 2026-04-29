@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -15,7 +14,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         },
     }),
 }))
-
 const defaultProps = {
     guidanceArticles: [
         {
@@ -33,31 +31,24 @@ const defaultProps = {
     onDelete: jest.fn(),
     onEdit: jest.fn(),
 }
-
 describe('GuidanceList', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
-
     it('renders nothing when guidanceArticles is empty', () => {
         const { container } = render(
             <GuidanceList {...defaultProps} guidanceArticles={[]} />,
         )
         expect(container.firstChild).toBeNull()
     })
-
     it('renders guidance articles correctly', () => {
         render(<GuidanceList {...defaultProps} />)
-
         expect(screen.getByText('Guidance Article 1')).toBeInTheDocument()
     })
-
     it('calls onEdit when edit button is clicked', async () => {
         const user = userEvent.setup()
         const onEdit = jest.fn()
-
         render(<GuidanceList {...defaultProps} onEdit={onEdit} />)
-
         const editButtons = screen.getAllByRole('img', { name: 'edit-pencil' })
         const editButton = editButtons[0].closest('.actionButton')
         if (editButton) {
@@ -65,16 +56,12 @@ describe('GuidanceList', () => {
                 await user.click(editButton)
             })
         }
-
         expect(onEdit).toHaveBeenCalledWith(1)
     })
-
     it('calls onDelete when delete button is clicked', async () => {
         const user = userEvent.setup()
         const onDelete = jest.fn()
-
         render(<GuidanceList {...defaultProps} onDelete={onDelete} />)
-
         const deleteButtons = screen.getAllByRole('img', {
             name: 'trash-empty',
         })
@@ -84,16 +71,12 @@ describe('GuidanceList', () => {
                 await user.click(deleteButton)
             })
         }
-
         expect(onDelete).toHaveBeenCalledWith(1)
     })
-
     it('does not show "View all guidance" link when there are 5 or fewer articles', () => {
         render(<GuidanceList {...defaultProps} />)
-
         expect(screen.queryByText('View all guidance')).not.toBeInTheDocument()
     })
-
     it('limits the displayed articles to 5 when there are more', () => {
         const manyArticles = Array.from({ length: 8 }, (_, i) => ({
             id: i + 1,
@@ -107,33 +90,26 @@ describe('GuidanceList', () => {
             draftVersionId: null,
             publishedVersionId: null,
         }))
-
         render(
             <GuidanceList {...defaultProps} guidanceArticles={manyArticles} />,
         )
-
         expect(screen.getByText('View all guidance')).toBeInTheDocument()
-
         // First 5 should be visible
         expect(screen.getByText('Guidance Article 1')).toBeInTheDocument()
         expect(screen.getByText('Guidance Article 5')).toBeInTheDocument()
-
         // 6th and beyond should not be visible
         expect(screen.queryByText('Guidance Article 6')).not.toBeInTheDocument()
         expect(screen.queryByText('Guidance Article 8')).not.toBeInTheDocument()
     })
-
     it('renders loading skeleton when isLoading is true', () => {
         const { container } = render(
             <GuidanceList {...defaultProps} isLoading={true} />,
         )
-
         const skeletons = container.querySelectorAll(
             '[class^="react-loading-skeleton"]',
         )
         expect(skeletons.length).toBeGreaterThan(0)
     })
-
     it('displays Draft badge when isCurrent is false', () => {
         const draftArticle: GuidanceArticle = {
             id: 1,
@@ -148,17 +124,14 @@ describe('GuidanceList', () => {
             draftVersionId: 1,
             publishedVersionId: null,
         }
-
         render(
             <GuidanceList
                 {...defaultProps}
                 guidanceArticles={[draftArticle]}
             />,
         )
-
         expect(screen.getByText('Draft')).toBeInTheDocument()
     })
-
     it('does not display Draft badge when isCurrent is true', () => {
         const publishedArticle: GuidanceArticle = {
             id: 1,
@@ -173,14 +146,12 @@ describe('GuidanceList', () => {
             draftVersionId: 1,
             publishedVersionId: 1,
         }
-
         render(
             <GuidanceList
                 {...defaultProps}
                 guidanceArticles={[publishedArticle]}
             />,
         )
-
         expect(screen.queryByText('Draft')).not.toBeInTheDocument()
     })
 })

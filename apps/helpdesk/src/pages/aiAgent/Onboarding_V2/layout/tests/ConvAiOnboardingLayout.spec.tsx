@@ -1,7 +1,7 @@
+import { render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { ConvAiOnboardingLayout } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
-import { renderWithRouter } from 'utils/testing'
 
 describe('ConvAiOnboardingLayout', () => {
     it('should hide and reactivate all banners when deactivateBanners and reactivateBanners are called', () => {
@@ -10,7 +10,7 @@ describe('ConvAiOnboardingLayout', () => {
             <div class="ui-banner-banner" style="display: block;">Banner 2</div>
         `
 
-        const { unmount } = renderWithRouter(
+        const { unmount } = render(
             <ConvAiOnboardingLayout>Content</ConvAiOnboardingLayout>,
         )
 

@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -17,11 +17,8 @@ jest.mock(
         useStoreIntegrationByShopName: jest.fn(() => ({ id: 1 })),
     }),
 )
-
 Element.prototype.getAnimations = jest.fn(() => [])
-
 const mockUseSkillsArticles = useSkillsArticles as jest.Mock
-
 const mockArticles: TransformedArticle[] = [
     {
         id: 1,
@@ -57,9 +54,7 @@ const mockArticles: TransformedArticle[] = [
         status: 'enabled',
     },
 ]
-
 const mockStore = configureMockStore([thunk])
-
 describe('LinkToSkillModal', () => {
     const defaultProps = {
         isOpen: true,
@@ -69,20 +64,17 @@ describe('LinkToSkillModal', () => {
         onClose: jest.fn(),
         onConfirm: jest.fn(),
     }
-
     const renderComponent = (
         props: Partial<Parameters<typeof LinkToSkillModal>[0]> = {},
     ) => {
-        const store = mockStore({})
+        const __store = mockStore({})
         return render(
-            <Provider store={store}>
-                <ThemeProvider>
-                    <LinkToSkillModal {...defaultProps} {...props} />
-                </ThemeProvider>
-            </Provider>,
+            <ThemeProvider>
+                <LinkToSkillModal {...defaultProps} {...props} />
+            </ThemeProvider>,
+            {},
         )
     }
-
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseSkillsArticles.mockReturnValue({
@@ -94,69 +86,55 @@ describe('LinkToSkillModal', () => {
             metricsDateRange: {},
         })
     })
-
     it('should display all articles including ones that already have the intent linked', () => {
         renderComponent({ intentId: 'order::status' })
-
         expect(
             screen.getByText('Order status, tracking or delivery timing'),
         ).toBeInTheDocument()
         expect(screen.getByText('Order cancellations')).toBeInTheDocument()
         expect(screen.getByText('Shipping address updates')).toBeInTheDocument()
     })
-
     it('renders the modal title with correct text', () => {
         renderComponent()
-
         expect(
             screen.getByText('Link intent to existing skill'),
         ).toBeInTheDocument()
     })
-
     it('should call onConfirm with intentId and full article when Review and test is clicked', async () => {
         const user = userEvent.setup()
         const onConfirm = jest.fn()
         renderComponent({ onConfirm })
-
         await user.click(screen.getByText('Order cancellations'))
         await user.click(
             screen.getByRole('button', { name: /^review and test$/i }),
         )
-
         expect(onConfirm).toHaveBeenCalledWith(
             'order::payment',
             mockArticles[1],
         )
     })
-
     it('should filter articles based on search term', async () => {
         const user = userEvent.setup()
         renderComponent()
-
         await user.type(
             screen.getByPlaceholderText('Search...'),
             'cancellations',
         )
-
         expect(screen.getByText('Order cancellations')).toBeInTheDocument()
         expect(
             screen.queryByText('Order status, tracking or delivery timing'),
         ).not.toBeInTheDocument()
     })
-
     it('should toggle row selection when Enter key is pressed', async () => {
         const user = userEvent.setup()
         renderComponent()
-
         const option = screen.getByRole('option', {
             name: /Order cancellations/i,
         })
         option.focus()
         await user.keyboard('{Enter}')
-
         expect(option).toHaveAttribute('aria-selected', 'true')
     })
-
     it('should show overflow intent count for articles with more than 2 intents', () => {
         mockUseSkillsArticles.mockReturnValue({
             articles: [
@@ -187,7 +165,6 @@ describe('LinkToSkillModal', () => {
             metricsDateRange: {},
         })
         renderComponent()
-
         expect(screen.getByText('+1')).toBeInTheDocument()
     })
 })

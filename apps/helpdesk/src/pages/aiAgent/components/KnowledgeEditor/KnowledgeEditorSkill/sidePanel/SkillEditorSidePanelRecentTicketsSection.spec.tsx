@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -5,7 +6,6 @@ import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automat
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
 import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { SkillEditorSidePanelRecentTicketsSection } from './SkillEditorSidePanelRecentTicketsSection'
 
@@ -101,7 +101,7 @@ const renderComponent = (
         skillMetrics: { metrics: null, isLoading: false },
         isPreview,
     })
-    return renderWithStoreAndQueryClientAndRouter(
+    return render(
         <SkillEditorSidePanelRecentTicketsSection sectionId="recent-tickets" />,
     )
 }

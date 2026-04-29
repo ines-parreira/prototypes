@@ -1,15 +1,13 @@
 import type React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
+import { QueryClient } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { useLocation } from 'react-router-dom'
 
 import type { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { useAverageOrdersPerDayTrend } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
@@ -29,10 +27,7 @@ import {
 } from 'pages/aiAgent/Onboarding_V2/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
-
-const mockStore = configureMockStore<RootState, StoreDispatch>()
+import type { RootState } from 'state/types'
 
 const defaultState = {
     currentAccount: fromJS(account),
@@ -41,11 +36,9 @@ const defaultState = {
         integrations: [shopifyIntegration, ...chatIntegrationFixtures],
     }),
 } as RootState
-
 // Mock the hooks
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
-
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
     () => ({
@@ -55,7 +48,6 @@ jest.mock(
         ),
     }),
 )
-
 jest.mock(
     'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation',
     () => ({
@@ -63,18 +55,15 @@ jest.mock(
         default: () => <div>AI Agent Preview</div>,
     }),
 )
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData', () => ({
     useGetOnboardingData: jest.fn(),
 }))
-
 jest.mock('pages/aiAgent/Onboarding_V2/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend',
 )
 const useAverageOrdersPerDayTrendMock = assumeMock(useAverageOrdersPerDayTrend)
-
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
@@ -82,25 +71,20 @@ jest.mock('@repo/feature-flags', () => ({
         .fn()
         .mockReturnValue({ value: false, isLoading: false }),
 }))
-
 useAverageOrdersPerDayTrendMock.mockReturnValue({
     data: undefined,
     isFetching: false,
     isError: false,
 } as unknown as TimeSeriesResult)
-
 const mockUseFlag = jest.mocked(useFlag)
-
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
 const useAiAgentScopesForAutomationPlanMock = assumeMock(
     useAiAgentScopesForAutomationPlan,
 )
-
 const testQueryClient = new QueryClient({
     defaultOptions: {
         queries: { retry: false },
@@ -108,32 +92,34 @@ const testQueryClient = new QueryClient({
     },
 })
 
-const history = createMemoryHistory()
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div data-testid="current-path">{location.pathname}</div>
+}
 
 const renderComponent = (
     initialRoute = '/app/ai-agent/onboarding/shopify integration',
     defaultPath = '/app/ai-agent/onboarding/:step',
 ) => {
-    history.push(initialRoute)
-
-    return renderWithRouter(
-        <QueryClientProvider client={testQueryClient}>
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentOnboarding />
-            </Provider>
-        </QueryClientProvider>,
-        { history, path: defaultPath },
+    return render(
+        <>
+            <AiAgentOnboarding />
+            <LocationPath />
+        </>,
+        {
+            initialEntries: [initialRoute],
+            path: defaultPath,
+            storeState: defaultState,
+        },
     )
 }
-
 describe('AiAgentOnboarding', () => {
     const user = userEvent.setup({
         advanceTimers: jest.advanceTimersByTime,
     })
-
     beforeEach(() => {
         testQueryClient.clear()
-
         // Populate the return values of the mocked hooks
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: null,
@@ -156,52 +142,41 @@ describe('AiAgentOnboarding', () => {
             isLoading: false,
             data: [],
         })
-
         mockUseFlag.mockReturnValue(false)
-
         useAiAgentScopesForAutomationPlanMock.mockReturnValue([
             AiAgentScopes.SUPPORT,
             AiAgentScopes.SALES,
         ])
     })
-
     beforeAll(() => {
         jest.useFakeTimers()
     })
-
     afterAll(() => {
         jest.useRealTimers()
     })
-
     it('renders the Onboarding component', () => {
         renderComponent()
         jest.runAllTimers()
-
         expect(
             screen.getByRole('heading', {
                 name: /First, let.s connect your Shopify account/i,
             }),
         ).toBeInTheDocument()
     })
-
     it('should keep user on onboarding even if feature flag is disabled', () => {
         mockUseFlag.mockReturnValue(false)
-
         renderComponent()
-
         jest.runAllTimers()
-
-        expect(history.location.pathname).toContain('/app/ai-agent/onboarding')
+        expect(screen.getByTestId('current-path')).toHaveTextContent(
+            '/app/ai-agent/onboarding',
+        )
     })
-
     it('should navigate to the next step when Next button is clicked', async () => {
         renderComponent(
             `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
             '/app/ai-agent/:shopType/:shopName/onboarding/:step',
         )
-
         jest.runAllTimers()
-
         await waitFor(() => {
             expect(
                 screen.getByRole('heading', {
@@ -209,7 +184,6 @@ describe('AiAgentOnboarding', () => {
                 }),
             ).toBeInTheDocument()
         })
-
         // Click Next
         await act(() =>
             user.click(
@@ -218,22 +192,18 @@ describe('AiAgentOnboarding', () => {
                 }),
             ),
         )
-
         await waitFor(() => {
-            expect(history.location.pathname).toContain(
+            expect(screen.getByTestId('current-path')).toHaveTextContent(
                 WizardStepEnum.TONE_OF_VOICE,
             )
         })
     })
-
     it('should navigate to the previous step when Back button is clicked', async () => {
         renderComponent(
             `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.KNOWLEDGE}`,
             '/app/ai-agent/:shopType/:shopName/onboarding/:step',
         )
-
         jest.runAllTimers()
-
         await waitFor(() => {
             expect(
                 screen.getByRole('heading', {
@@ -241,29 +211,24 @@ describe('AiAgentOnboarding', () => {
                 }),
             ).toBeInTheDocument()
         })
-
         // Click Back
         await act(() => user.click(screen.getByText(/Back/i)))
-
         await waitFor(() => {
-            expect(history.location.pathname).toContain(
+            expect(screen.getByTestId('current-path')).toHaveTextContent(
                 WizardStepEnum.ENGAGEMENT,
             )
         })
     })
-
     it('should preserve shop context when current step is invalid', async () => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: null,
         })
-
         renderComponent(
             '/app/ai-agent/shopify/shopify-store/onboarding/invalid-step',
             '/app/ai-agent/:shopType/:shopName/onboarding/:step',
         )
-
         await waitFor(() => {
-            expect(history.location.pathname).toBe(
+            expect(screen.getByTestId('current-path')).toHaveTextContent(
                 `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
             )
         })

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import type { MetricTrendWithCurrency } from 'domains/reporting/hooks/useMetricTrend'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'

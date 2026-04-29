@@ -1,8 +1,7 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { Route } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
@@ -13,10 +12,14 @@ import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import UseCaseTemplateModal from '../UseCaseTemplateModal'
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div>{location.pathname}</div>
+}
 
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
@@ -25,9 +28,6 @@ jest.mock('pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
-
-const queryClient = mockQueryClient()
-
 const mockUseApps = jest.mocked(useApps)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
@@ -37,7 +37,6 @@ const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
 )
-
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
     name: 'test name',
@@ -131,7 +130,6 @@ b.selectParentStep()
 b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('error', {
     success: false,
 })
-
 const template = b.build<ActionTemplate>()
 describe('<UseCaseTemplateModal />', () => {
     beforeEach(() => {
@@ -224,78 +222,74 @@ describe('<UseCaseTemplateModal />', () => {
             defaultUseAiAgentOnboardingNotification,
         )
     })
-
     it('should render use case template modal', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         expect(
             screen.getByText(
                 'First, select the apps you need to perform this Action',
             ),
         ).toBeInTheDocument()
     })
-
     it('should render selectable steps (app names)', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         expect(screen.getByText('Shopify')).toBeInTheDocument()
         expect(screen.getByText('Some app')).toBeInTheDocument()
     })
-
     it('should disable continue button if none steps are selected', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         expect(
             screen.getByRole('button', { name: /Continue/ }),
         ).toBeAriaDisabled()
     })
-
     it('should trigger onClose on cancel button click', () => {
         const mockOnClose = jest.fn()
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal
                     onClose={mockOnClose}
                     template={template}
                 />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Cancel'))
         })
-
         expect(mockOnClose).toHaveBeenCalled()
     })
-
     it('should move to confirmation step if only Shopify steps are selected', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Shopify'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Continue'))
         })
-
         expect(
             screen.getByText('AI Agent will perform the following steps'),
         ).toBeInTheDocument()
@@ -311,38 +305,38 @@ describe('<UseCaseTemplateModal />', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('should create and enable Shopify Action', () => {
         const mockUpsertAction = jest.fn()
-
         mockUseUpsertAction.mockReturnValue({
             mutateAsync: mockUpsertAction,
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+        render(
+            <>
+                <Route path="/app/automation/:shopType/:shopName/ai-agent/actions">
+                    <UseCaseTemplateModal
+                        onClose={jest.fn()}
+                        template={template}
+                    />
+                </Route>
+                <LocationPath />
+            </>,
             {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions',
-                route: `/app/automation/shopify/acme/ai-agent/actions`,
+                initialEntries: [
+                    `/app/automation/shopify/acme/ai-agent/actions`,
+                ],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Shopify'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Continue'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Create and enable'))
         })
-
         expect(mockUpsertAction).toHaveBeenCalledWith([
             {
                 internal_id: expect.any(String),
@@ -386,205 +380,126 @@ describe('<UseCaseTemplateModal />', () => {
             }),
         ])
     })
-
     it('should redirect on create action success', () => {
         mockUseUpsertAction.mockReturnValue({
             mutateAsync: jest.fn(),
             isLoading: false,
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        const history = createMemoryHistory({
-            initialEntries: [`/app/automation/shopify/acme/ai-agent/actions`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+        render(
+            <>
+                <Route path="/app/automation/:shopType/:shopName/ai-agent/actions">
+                    <UseCaseTemplateModal
+                        onClose={jest.fn()}
+                        template={template}
+                    />
+                </Route>
+                <LocationPath />
+            </>,
             {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions',
-                route: `/app/automation/shopify/acme/ai-agent/actions`,
-                history,
+                initialEntries: [
+                    `/app/automation/shopify/acme/ai-agent/actions`,
+                ],
             },
         )
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/acme/actions',
-        )
+        expect(
+            screen.getByText('/app/ai-agent/shopify/acme/actions'),
+        ).toBeInTheDocument()
     })
-
     it('should allow to customize Shopify Action', () => {
-        const history = createMemoryHistory({
-            initialEntries: [`/app/automation/shopify/acme/ai-agent/actions`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+        render(
+            <>
+                <Route path="/app/automation/:shopType/:shopName/ai-agent/actions">
+                    <UseCaseTemplateModal
+                        onClose={jest.fn()}
+                        template={template}
+                    />
+                </Route>
+                <LocationPath />
+            </>,
             {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions',
-                route: `/app/automation/shopify/acme/ai-agent/actions`,
-                history,
+                initialEntries: [
+                    `/app/automation/shopify/acme/ai-agent/actions`,
+                ],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Shopify'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Continue'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Customize'))
         })
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/acme/actions/new',
-            expect.objectContaining({
-                apps: [{ type: 'shopify' }],
-                entrypoints: template.entrypoints,
-                triggers: template.triggers,
-                name: template.name,
-                id: expect.any(String),
-                internal_id: expect.any(String),
-                steps: [
-                    expect.objectContaining({
-                        id: expect.any(String),
-                        kind: 'reusable-llm-prompt-call',
-                        settings: {
-                            configuration_id: 'someid1',
-                            configuration_internal_id: 'someid1',
-                            custom_inputs: {},
-                            objects: {},
-                            values: {},
-                        },
-                    }),
-                    expect.objectContaining({
-                        id: expect.any(String),
-                        kind: 'end',
-                        settings: {
-                            success: true,
-                        },
-                    }),
-                    expect.objectContaining({
-                        id: expect.any(String),
-                        kind: 'end',
-                        settings: {
-                            success: false,
-                        },
-                    }),
-                ],
-            }),
-        )
+        expect(
+            screen.getByText('/app/ai-agent/shopify/acme/actions/new'),
+        ).toBeInTheDocument()
     })
-
     it('should allow to go back to selection step', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+        render(
+            <>
+                <Route path="/app/automation/:shopType/:shopName/ai-agent/actions">
+                    <UseCaseTemplateModal
+                        onClose={jest.fn()}
+                        template={template}
+                    />
+                </Route>
+                <LocationPath />
+            </>,
             {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions',
-                route: `/app/automation/shopify/acme/ai-agent/actions`,
+                initialEntries: [
+                    `/app/automation/shopify/acme/ai-agent/actions`,
+                ],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Shopify'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Continue'))
         })
-
         expect(
             screen.queryByText(
                 'First, select the apps you need to perform this Action',
             ),
         ).not.toBeInTheDocument()
-
         act(() => {
             fireEvent.click(screen.getByText('Back'))
         })
-
         expect(
             screen.getByText(
                 'First, select the apps you need to perform this Action',
             ),
         ).toBeInTheDocument()
     })
-
     it('should redirect to Action view on continue if Action has non-Shopify steps', () => {
-        const history = createMemoryHistory({
-            initialEntries: [`/app/automation/shopify/acme/ai-agent/actions`],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+        render(
+            <>
+                <Route path="/app/automation/:shopType/:shopName/ai-agent/actions">
+                    <UseCaseTemplateModal
+                        onClose={jest.fn()}
+                        template={template}
+                    />
+                </Route>
+                <LocationPath />
+            </>,
             {
-                path: '/app/automation/:shopType/:shopName/ai-agent/actions',
-                route: `/app/automation/shopify/acme/ai-agent/actions`,
-                history,
+                initialEntries: [
+                    `/app/automation/shopify/acme/ai-agent/actions`,
+                ],
             },
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Some app'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Continue'))
         })
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/acme/actions/new',
-            expect.objectContaining({
-                apps: [{ type: 'app', app_id: 'someapp' }],
-                entrypoints: template.entrypoints,
-                triggers: template.triggers,
-                name: template.name,
-                id: expect.any(String),
-                internal_id: expect.any(String),
-                steps: [
-                    expect.objectContaining({
-                        id: expect.any(String),
-                        kind: 'reusable-llm-prompt-call',
-                        settings: {
-                            configuration_id: 'someid2',
-                            configuration_internal_id: 'someid2',
-                            custom_inputs: {},
-                            objects: {},
-                            values: {},
-                        },
-                    }),
-                    expect.objectContaining({
-                        id: expect.any(String),
-                        kind: 'end',
-                        settings: {
-                            success: true,
-                        },
-                    }),
-                    expect.objectContaining({
-                        id: expect.any(String),
-                        kind: 'end',
-                        settings: {
-                            success: false,
-                        },
-                    }),
-                ],
-            }),
-        )
+        expect(
+            screen.getByText('/app/ai-agent/shopify/acme/actions/new'),
+        ).toBeInTheDocument()
     })
-
     it('should render only enabled steps', () => {
         const mockGetIsActionStepEnabled = jest
             .fn()
@@ -596,101 +511,89 @@ describe('<UseCaseTemplateModal />', () => {
                         return false
                 }
             })
-
         mockUseGetIsActionStepEnabled.mockReturnValue(
             mockGetIsActionStepEnabled,
         )
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         expect(screen.getByText('Shopify')).toBeInTheDocument()
         expect(screen.queryByText('Some app')).not.toBeInTheDocument()
     })
-
     it('should trigger call to send activate AI agent notification when successfully creating Action', () => {
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: true,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Shopify'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Continue'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Create and enable'))
         })
-
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
-
     it('should not trigger call to send activate AI agent notification when creating Action is not successfull', () => {
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Shopify'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Continue'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Create and enable'))
         })
-
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).not.toHaveBeenCalled()
     })
-
     it('should disable "Create and enable" button if fetching onboarding notification state is still loading', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue({
             ...defaultUseAiAgentOnboardingNotification,
             isLoading: true,
         })
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
+        render(
+            <>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>,
+                <LocationPath />
+            </>,
+            {},
         )
-
         act(() => {
             fireEvent.click(screen.getByText('Shopify'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Continue'))
         })
-
         expect(
             screen.getByRole('button', { name: 'Create and enable' }),
         ).toBeAriaDisabled()

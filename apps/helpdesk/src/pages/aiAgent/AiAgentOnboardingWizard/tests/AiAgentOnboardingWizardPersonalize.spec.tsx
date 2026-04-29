@@ -3,20 +3,14 @@ import 'tests/__mocks__/intersectionObserverMock'
 import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import {
     AiAgentChannel,
@@ -29,7 +23,6 @@ import type { FormValues } from '../../types'
 import AiAgentOnboardingWizardStepPersonalize from '../AiAgentOnboardingWizardPersonalize'
 import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
-const mockStore = configureMockStore([thunk])
 jest.mock(
     'pages/automate/common/hooks/useSelfServiceChatChannels',
     () => () => mockChatChannels.slice(0, 2),
@@ -37,7 +30,6 @@ jest.mock(
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)
-
 jest.mock(
     '../../components/ChatIntegrationListSelection/ChatIntegrationListSelection',
     () => ({
@@ -46,24 +38,16 @@ jest.mock(
         ),
     }),
 )
-
 const mockUseAiAgentOnboardingWizard = jest.mocked(useAiAgentOnboardingWizard)
-
 jest.mock('../../hooks/useCustomToneOfVoicePreview')
-
 const mockuseCustomToneofVoicePreview = jest.mocked(useCustomToneOfVoicePreview)
-
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
-
-const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 const defaultState = {}
 const defaultProps = {
     shopType: 'shopify',
     shopName: 'test-shop',
 }
-
-const history = createMemoryHistory()
 const renderComponent = (
     props: Partial<
         ComponentProps<typeof AiAgentOnboardingWizardStepPersonalize>
@@ -73,21 +57,18 @@ const renderComponent = (
         ...defaultProps,
         ...props,
     }
-    renderWithRouter(
-        <Router history={history}>
-            <Provider store={mockStore(defaultState)}>
-                <QueryClientProvider>
-                    <Wizard steps={[AiAgentOnboardingWizardStep.Personalize]}>
-                        <AiAgentOnboardingWizardStepPersonalize
-                            {...currentProps}
-                        />
-                    </Wizard>
-                </QueryClientProvider>
-            </Provider>
-        </Router>,
+    render(
+        <>
+            <Wizard steps={[AiAgentOnboardingWizardStep.Personalize]}>
+                <AiAgentOnboardingWizardStepPersonalize {...currentProps} />
+            </Wizard>
+            <Link to="/test">Navigate away</Link>
+        </>,
+        {
+            storeState: defaultState,
+        },
     )
 }
-
 const storeFormValues = {
     toneOfVoice: ToneOfVoice.Friendly,
     signature: 'This response was created by AI',
@@ -108,12 +89,10 @@ const storeFormValues = {
         step: AiAgentOnboardingWizardStep.Personalize,
     },
 } as unknown as FormValues
-
 describe('<AiAgentOnboardingWizardPersonalize />', () => {
     const mockHandleSave = jest.fn()
     const mockHandleFormUpdate = jest.fn()
     const mockHandleAction = jest.fn()
-
     beforeEach(() => {
         mockUseAiAgentOnboardingWizard.mockReturnValue({
             handleFormUpdate: mockHandleFormUpdate,
@@ -127,30 +106,26 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             storeConfiguration: undefined,
             isUpdateWizardSetup: false,
         })
-
         mockuseCustomToneofVoicePreview.mockReturnValue({
             latestCustomToneOfVoicePreview: '',
             onGenerateCustomToneOfVoicePreview: jest.fn(),
             isLoading: false,
             isError: false,
         })
-
         mockUseAppSelector.mockReturnValue([])
     })
-
     it('should render the header and footer correctly', () => {
         renderComponent({})
-
         expect(screen.queryByText('Back')).not.toBeInTheDocument()
-        expect(screen.queryByText('Save & Customize Later')).not
-            .toBeInTheDocument
+        expect(
+            screen.queryByText('Save & Customize Later'),
+        ).not.toBeInTheDocument()
         expect(
             screen.getAllByText('Personalize AI Agent')[1],
         ).toBeInTheDocument()
         expect(screen.getByText('Next')).toBeInTheDocument()
         expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
-
     it('call save form when next button is clicked', () => {
         renderComponent({})
         const nextButton = screen.getByText('Next')
@@ -161,7 +136,6 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             stepName: AiAgentOnboardingWizardStep.Knowledge,
         })
     })
-
     it('call handleAction when cancel button is clicked', () => {
         renderComponent({})
         expect(screen.getByText('Cancel')).toBeInTheDocument()
@@ -170,7 +144,6 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             WIZARD_BUTTON_ACTIONS.CANCEL,
         )
     })
-
     it('handles initial channel setup in useEffect', () => {
         mockUseFlag.mockImplementation((key) =>
             key === FeatureFlagKey.AiAgentChat ? true : false,
@@ -190,9 +163,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             storeConfiguration: undefined,
             isUpdateWizardSetup: false,
         })
-
         renderComponent({})
-
         expect(mockHandleFormUpdate).toHaveBeenCalledWith({
             wizard: {
                 ...DEFAULT_WIZARD_FORM_VALUES,
@@ -200,7 +171,6 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             },
         })
     })
-
     it('should render the ChatIntegrationListSelection component when chat flag is enabled', () => {
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.AiAgentChat || false,
@@ -210,22 +180,19 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             screen.getByText('ChatIntegrationListSelection'),
         ).toBeInTheDocument()
     })
-
     it('should not render the ChatIntegrationListSelection component when chat flag is disabled', () => {
         mockUseFlag.mockReturnValue(false)
         renderComponent({})
-
         expect(
             screen.queryByText('ChatIntegrationListSelection'),
         ).not.toBeInTheDocument()
     })
-
     it('should display confirmation dialog modal when user try to leave the page after changes are made', async () => {
         renderComponent({})
-
         userEvent.click(screen.getByText('Professional'))
-        history.push('/test')
-
+        await userEvent.click(
+            screen.getByRole('link', { name: 'Navigate away' }),
+        )
         await waitFor(() => {
             expect(
                 screen.getByText(
@@ -235,7 +202,6 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             expect(screen.getByText('Save Changes')).toBeInTheDocument()
             expect(screen.getByText('Discard Changes')).toBeInTheDocument()
         })
-
         userEvent.click(screen.getByText('Save Changes'))
         expect(mockHandleSave).toHaveBeenCalledWith({
             stepName: AiAgentOnboardingWizardStep.Personalize,

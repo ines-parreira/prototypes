@@ -1,8 +1,7 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import type { SmsPhoneNumber } from '../../StoreConfigForm/types'
 import { SmsIntegrationListSelection } from '../SmsIntegrationListSelection'
@@ -115,7 +114,7 @@ describe('SmsIntegrationListSelection', () => {
     })
 
     it('renders with placeholder when no SMS integrations are selected', () => {
-        renderWithRouter(<SmsIntegrationListSelection {...defaultProps} />)
+        render(<SmsIntegrationListSelection {...defaultProps} />)
 
         expect(screen.getByTestId('select-input-display')).toHaveTextContent(
             'Select phone numbers',
@@ -128,7 +127,7 @@ describe('SmsIntegrationListSelection', () => {
             selectedIds: [1, 3],
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         expect(screen.getByTestId('select-input-display')).toHaveTextContent(
             'SMS Integration 1, SMS Integration 3',
@@ -136,7 +135,7 @@ describe('SmsIntegrationListSelection', () => {
     })
 
     it('opens dropdown when toggle is clicked', async () => {
-        renderWithRouter(<SmsIntegrationListSelection {...defaultProps} />)
+        render(<SmsIntegrationListSelection {...defaultProps} />)
 
         fireEvent.click(screen.getByTestId('select-input-toggle'))
 
@@ -147,7 +146,7 @@ describe('SmsIntegrationListSelection', () => {
     })
 
     it('renders all SMS integration items in dropdown', async () => {
-        renderWithRouter(<SmsIntegrationListSelection {...defaultProps} />)
+        render(<SmsIntegrationListSelection {...defaultProps} />)
 
         fireEvent.click(screen.getByTestId('select-input-toggle'))
 
@@ -176,7 +175,7 @@ describe('SmsIntegrationListSelection', () => {
             selectedIds: [2],
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         fireEvent.click(screen.getByTestId('select-input-toggle'))
 
@@ -197,7 +196,7 @@ describe('SmsIntegrationListSelection', () => {
             selectedIds: [1, 2],
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         fireEvent.click(screen.getByTestId('select-input-toggle'))
 
@@ -217,7 +216,7 @@ describe('SmsIntegrationListSelection', () => {
             error: 'SMS integration is required',
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         expect(screen.getByTestId('select-input-error')).toHaveTextContent(
             'SMS integration is required',
@@ -230,7 +229,7 @@ describe('SmsIntegrationListSelection', () => {
             smsItems: [],
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         expect(screen.getByTestId('select-input-display')).toHaveTextContent(
             'Select phone numbers',
@@ -243,7 +242,7 @@ describe('SmsIntegrationListSelection', () => {
             selectedIds: [999],
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         expect(screen.getByTestId('select-input-display')).toHaveTextContent(
             'Select phone numbers',
@@ -259,7 +258,7 @@ describe('SmsIntegrationListSelection', () => {
             sortingCallback,
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         fireEvent.click(screen.getByTestId('select-input-toggle'))
 
@@ -279,7 +278,7 @@ describe('SmsIntegrationListSelection', () => {
             labelId: 'test-label-id',
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         expect(screen.getByTestId('select-input-box')).toBeInTheDocument()
     })
@@ -290,7 +289,7 @@ describe('SmsIntegrationListSelection', () => {
             isDisabled: true,
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         expect(screen.getByTestId('select-input-box')).toBeInTheDocument()
     })
@@ -303,7 +302,7 @@ describe('SmsIntegrationListSelection', () => {
             selectedIds: [],
         }
 
-        renderWithRouter(<SmsIntegrationListSelection {...props} />)
+        render(<SmsIntegrationListSelection {...props} />)
 
         fireEvent.click(screen.getByTestId('select-input-toggle'))
 

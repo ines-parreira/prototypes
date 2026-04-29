@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import type { ReactElement, ReactNode } from 'react'
 
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Virtuoso } from 'react-virtuoso'
 

@@ -1,14 +1,10 @@
-import * as React from 'react'
-
 import { trial } from '@repo/billing/fixtures'
 import { useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { assumeMock, render, renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
-import { MemoryRouter, Route } from 'react-router-dom'
 
 import { earlyAccessMonthlyAutomationPlan } from 'fixtures/plans'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
@@ -52,7 +48,6 @@ jest.mock('pages/aiAgent/trial/hooks/useNotifyAdmins')
 jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
 jest.mock('pages/aiAgent/trial/hooks/useAiAgentTrialOnboarding')
 jest.mock('@repo/feature-flags')
-
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
 const mockUseTrialMetrics = assumeMock(useTrialMetrics)
@@ -74,12 +69,10 @@ const mockUseFlag = assumeMock(useFlag)
 const mockLogEvent = jest
     .spyOn(segment, 'logEvent')
     .mockImplementation(jest.fn())
-
 // Helper function to generate trial end time based on remaining days
 const getTrialEndTime = (remainingDays: number): string => {
     return moment().add(remainingDays, 'days').toISOString()
 }
-
 // Helper function to setup mockUseStoreActivations with default values
 const setupMockStoreActivations = (
     overrides: Partial<ReturnType<typeof useStoreActivations>> = {},
@@ -99,49 +92,26 @@ const setupMockStoreActivations = (
         endTrial: jest.fn(),
         activation: jest.fn(),
     }
-
     mockUseStoreActivations.mockReturnValue({
         ...defaultValues,
         ...overrides,
     })
 }
-
 const defaultMockUseShoppingAssistantTrialFlow =
     getUseShoppingAssistantTrialFlowFixture()
-
 describe('useTrialModalProps', () => {
-    function renderHookWithRouter<T>(
+    function renderHookWithProviders<T>(
         callback: (...args: any[]) => T,
         options?: any,
     ) {
-        const queryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
-        const wrapper = ({ children }: { children?: React.ReactNode }) =>
-            React.createElement(
-                QueryClientProvider,
-                { client: queryClient },
-                React.createElement(
-                    MemoryRouter,
-                    { initialEntries: ['/'] },
-                    React.createElement(Route, { path: '/' }, children),
-                ),
-            )
-        return renderHook(callback, { wrapper, ...options })
+        return renderHook(callback, options)
     }
-
     beforeEach(() => {
         jest.clearAllMocks()
-
         // Mock logEvent
         mockLogEvent.mockClear()
-
         // Mock useAppDispatch
         mockUseAppDispatch.mockReturnValue(jest.fn())
-
         // Mock useUpgradePlan
         mockUseUpgradePlan.mockReturnValue({
             upgradePlan: jest.fn(),
@@ -151,27 +121,21 @@ describe('useTrialModalProps', () => {
             isSuccess: false,
             isError: false,
         })
-
         // Default mock implementations
         mockUseTrialMetrics.mockReturnValue({
             gmvInfluenced: '$25',
             gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
             isLoading: false,
         })
-
         mockUseTrialEnding.mockReturnValue(
             getUseTrialEndingFixture({
                 trialEndDatetime: getTrialEndTime(14),
             }),
         )
-
         mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
-
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
-
         // Mock useFlag to return false by default
         mockUseFlag.mockReturnValue(false)
-
         mockUseAppSelector.mockImplementation((selector) => {
             // The Shopify selector appears as "memoized" due to memoization wrapper
             if (selector && selector.name === 'memoized') {
@@ -185,7 +149,6 @@ describe('useTrialModalProps', () => {
                 },
             })
         })
-
         setupMockStoreActivations({
             storeActivations: {
                 store1: {
@@ -231,25 +194,20 @@ describe('useTrialModalProps', () => {
             },
             progressPercentage: 50,
         })
-
         // Remove useStoreConfigurations mock as it's no longer used
-
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
             defaultMockUseShoppingAssistantTrialFlow,
         )
-
         mockUseNotifyAdmins.mockReturnValue({
             handleNotifyAdmins: jest.fn(),
             accountAdmins: [],
             isLoading: false,
             isDisabled: false,
         })
-
         mockUseAiAgentTrialOnboarding.mockReturnValue({
             startOnboardingWizard: jest.fn(),
         })
     })
-
     describe('useTrialUpgradePlanModal', () => {
         it('should return correct modal props with billing state', () => {
             mockUseBillingState.mockReturnValue({
@@ -258,11 +216,9 @@ describe('useTrialModalProps', () => {
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialUpgradePlanModal).toEqual({
                 title: 'Try the full power of AI Agent for 14 days at no additional cost',
                 currentPlan: {
@@ -326,7 +282,6 @@ describe('useTrialModalProps', () => {
                 },
             })
         })
-
         it('should handle missing automate plan by showing $0 price', () => {
             const mockBillingState = {
                 data: {
@@ -337,21 +292,17 @@ describe('useTrialModalProps', () => {
                     },
                 },
             } as any
-
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialUpgradePlanModal.currentPlan.price).toBe(
                 '$0',
             )
         })
-
         it('should handle missing helpdesk plan by showing $0 helpdesk fee in tooltip', () => {
             const mockBillingState = {
                 data: {
@@ -362,21 +313,17 @@ describe('useTrialModalProps', () => {
                     },
                 },
             } as any
-
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(
                 result.current.trialUpgradePlanModal.newPlan.priceTooltipText,
             ).toContain('$0 helpdesk fee')
         })
-
         it('should handle null billing state by showing $0 price and $0 helpdesk fee', () => {
             mockUseBillingState.mockReturnValue({
                 data: null,
@@ -384,11 +331,9 @@ describe('useTrialModalProps', () => {
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialUpgradePlanModal.currentPlan.price).toBe(
                 '$0',
             )
@@ -397,7 +342,6 @@ describe('useTrialModalProps', () => {
             ).toContain('$0 helpdesk fee')
         })
     })
-
     describe('useTrialActivatedModal', () => {
         it('should return correct trial activated modal props', () => {
             mockUseBillingState.mockReturnValue({
@@ -406,17 +350,14 @@ describe('useTrialModalProps', () => {
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialActivatedModal).toEqual({
                 title: 'Trial activated',
             })
         })
     })
-
     describe('useTrialStartedBanner', () => {
         it('should return correct banner with trial metrics', () => {
             mockUseBillingState.mockReturnValue({
@@ -425,13 +366,11 @@ describe('useTrialModalProps', () => {
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
             mockUseTrialMetrics.mockReturnValue({
                 gmvInfluenced: '$25',
                 gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
                 isLoading: false,
             })
-
             mockUseTrialEnding.mockReturnValue(
                 getUseTrialEndingFixture({
                     remainingDays: 7,
@@ -439,11 +378,9 @@ describe('useTrialModalProps', () => {
                     trialEndDatetime: getTrialEndTime(7),
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialStartedBanner).toEqual({
                 title: 'Your Shopping Assistant trial ends in 7 days.',
                 description:
@@ -458,7 +395,6 @@ describe('useTrialModalProps', () => {
                 }),
             })
         })
-
         it('should update when trial metrics change', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
@@ -466,23 +402,19 @@ describe('useTrialModalProps', () => {
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result, rerender } = renderHookWithRouter(() =>
+            const { result, rerender } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             // Initial values
             expect(result.current.trialStartedBanner.title).toBe(
                 'Your Shopping Assistant trial ends in 14 days.',
             )
-
             // Update metrics
             mockUseTrialMetrics.mockReturnValue({
                 gmvInfluenced: '$50',
                 gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
                 isLoading: false,
             })
-
             mockUseTrialEnding.mockReturnValue(
                 getUseTrialEndingFixture({
                     remainingDays: 3,
@@ -490,9 +422,7 @@ describe('useTrialModalProps', () => {
                     trialEndDatetime: getTrialEndTime(3),
                 }),
             )
-
             rerender()
-
             expect(result.current.trialStartedBanner).toEqual({
                 title: 'Your Shopping Assistant trial ends in 3 days.',
                 description:
@@ -507,7 +437,6 @@ describe('useTrialModalProps', () => {
                 }),
             })
         })
-
         describe('remainingDays text formatting', () => {
             beforeEach(() => {
                 mockUseBillingState.mockReturnValue({
@@ -522,14 +451,12 @@ describe('useTrialModalProps', () => {
                     data: { amount: 9900 },
                 } as any)
             })
-
             it('should display "ends today" when remainingDays is 0', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
                     isLoading: false,
                 })
-
                 mockUseTrialEnding.mockReturnValue(
                     getUseTrialEndingFixture({
                         remainingDays: 0,
@@ -537,23 +464,19 @@ describe('useTrialModalProps', () => {
                         trialEndDatetime: getTrialEndTime(0),
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialStartedBanner.title).toBe(
                     'Your Shopping Assistant trial ends today.',
                 )
             })
-
             it('should display "ends today" when remainingDays is negative', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
                     isLoading: false,
                 })
-
                 mockUseTrialEnding.mockReturnValue(
                     getUseTrialEndingFixture({
                         remainingDays: -1,
@@ -561,23 +484,19 @@ describe('useTrialModalProps', () => {
                         trialEndDatetime: getTrialEndTime(-1),
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialStartedBanner.title).toBe(
                     'Your Shopping Assistant trial ends today.',
                 )
             })
-
             it('should display "ends in 1 day" when remainingDays is 1', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
                     isLoading: false,
                 })
-
                 mockUseTrialEnding.mockReturnValue(
                     getUseTrialEndingFixture({
                         remainingDays: 1,
@@ -585,16 +504,13 @@ describe('useTrialModalProps', () => {
                         trialEndDatetime: getTrialEndTime(1),
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialStartedBanner.title).toBe(
                     'Your Shopping Assistant trial ends in 1 day.',
                 )
             })
-
             it('should display "ends in X days" when remainingDays is greater than 1', () => {
                 const testCases = [
                     {
@@ -623,14 +539,12 @@ describe('useTrialModalProps', () => {
                         expected: 'ends in 30 days',
                     },
                 ]
-
                 testCases.forEach(({ remainingDays, expected }) => {
                     mockUseTrialMetrics.mockReturnValue({
                         gmvInfluenced: '$25',
                         gmvInfluencedRate: 0.05,
                         isLoading: false,
                     })
-
                     mockUseTrialEnding.mockReturnValue(
                         getUseTrialEndingFixture({
                             remainingDays,
@@ -638,24 +552,20 @@ describe('useTrialModalProps', () => {
                             trialEndDatetime: getTrialEndTime(remainingDays),
                         }),
                     )
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     expect(result.current.trialStartedBanner.title).toBe(
                         `Your Shopping Assistant trial ${expected}.`,
                     )
                 })
             })
-
             it('should handle edge case with very large remainingDays', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
                     isLoading: false,
                 })
-
                 mockUseTrialEnding.mockReturnValue(
                     getUseTrialEndingFixture({
                         remainingDays: 365,
@@ -663,23 +573,19 @@ describe('useTrialModalProps', () => {
                         trialEndDatetime: getTrialEndTime(365),
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialStartedBanner.title).toBe(
                     'Your Shopping Assistant trial ends in 365 days.',
                 )
             })
-
             it('should update title text when remainingDays changes dynamically', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
                     isLoading: false,
                 })
-
                 mockUseTrialEnding.mockReturnValue(
                     getUseTrialEndingFixture({
                         remainingDays: 5,
@@ -687,23 +593,19 @@ describe('useTrialModalProps', () => {
                         trialEndDatetime: getTrialEndTime(5),
                     }),
                 )
-
-                const { result, rerender } = renderHookWithRouter(() =>
+                const { result, rerender } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 // Initial state
                 expect(result.current.trialStartedBanner.title).toBe(
                     'Your Shopping Assistant trial ends in 5 days.',
                 )
-
                 // Update to 1 day
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
                     isLoading: false,
                 })
-
                 mockUseTrialEnding.mockReturnValue(
                     getUseTrialEndingFixture({
                         remainingDays: 1,
@@ -712,18 +614,15 @@ describe('useTrialModalProps', () => {
                     }),
                 )
                 rerender()
-
                 expect(result.current.trialStartedBanner.title).toBe(
                     'Your Shopping Assistant trial ends in 1 day.',
                 )
-
                 // Update to 0 days
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
                     isLoading: false,
                 })
-
                 mockUseTrialEnding.mockReturnValue(
                     getUseTrialEndingFixture({
                         remainingDays: 0,
@@ -732,13 +631,11 @@ describe('useTrialModalProps', () => {
                     }),
                 )
                 rerender()
-
                 expect(result.current.trialStartedBanner.title).toBe(
                     'Your Shopping Assistant trial ends today.',
                 )
             })
         })
-
         describe('primaryAction based on earlyAccessPlan', () => {
             beforeEach(() => {
                 mockUseBillingState.mockReturnValue({
@@ -763,30 +660,24 @@ describe('useTrialModalProps', () => {
                     optedOutDatetime: null,
                 })
             })
-
             it('should return undefined primaryAction when earlyAccessPlan is null', () => {
                 mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: null,
                 } as any)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(
                     result.current.trialStartedBanner.primaryAction,
                 ).toBeUndefined()
             })
-
             it('should return primaryAction when earlyAccessPlan has value', () => {
                 mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 9900 },
                 } as any)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialStartedBanner.primaryAction).toEqual(
                     {
                         label: 'Upgrade Now',
@@ -795,33 +686,27 @@ describe('useTrialModalProps', () => {
                     },
                 )
             })
-
             it('should return Book a demo when canBookDemo is true regardless of earlyAccessPlan', async () => {
                 const mockWindowOpen = jest.fn()
                 global.window.open = mockWindowOpen
-
                 mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: null,
                 } as any)
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({ canBookDemo: true }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialStartedBanner.primaryAction).toEqual(
                     {
                         label: 'Book a demo',
                         onClick: expect.any(Function),
                     },
                 )
-
                 await act(() =>
                     result.current.trialStartedBanner.primaryAction?.onClick(),
                 )
-
                 expect(mockWindowOpen).toHaveBeenCalledWith(
                     'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
                     '_blank',
@@ -829,7 +714,6 @@ describe('useTrialModalProps', () => {
             })
         })
     })
-
     describe('useTrialAlertBanner', () => {
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
@@ -839,16 +723,13 @@ describe('useTrialModalProps', () => {
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
-
         it('should return correct alert banner when user can book demo', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({ canBookDemo: true }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialAlertBanner).toEqual({
                 title: 'Influence +1.5% GMV with Shopping Assistant',
                 description:
@@ -863,77 +744,60 @@ describe('useTrialModalProps', () => {
                 },
             })
         })
-
         it('should return correct alert banner when user cannot book demo', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialAlertBanner.secondaryAction).toEqual({
                 label: 'How AI Agent can 2x conversion rate',
                 onClick: expect.any(Function),
             })
         })
-
         it('should call onConfirmTrial when primary action is clicked', async () => {
             const mockOnConfirmTrial = jest.fn()
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ onConfirmTrial: mockOnConfirmTrial }),
             )
-
             await act(() =>
                 result.current.trialAlertBanner.primaryAction?.onClick(),
             )
-
             expect(mockOnConfirmTrial).toHaveBeenCalled()
         })
-
         it('should open demo link when "Book a demo" is clicked', async () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
-
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({ canBookDemo: true }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             await act(() =>
                 result.current.trialAlertBanner.primaryAction?.onClick(),
             )
-
             expect(mockWindowOpen).toHaveBeenCalledWith(
                 'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
                 '_blank',
             )
         })
-
         it('should open shopping assistant page when growth link is clicked', async () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             await act(() =>
                 result.current.trialAlertBanner.secondaryAction?.onClick(),
             )
-
             expect(mockWindowOpen).toHaveBeenCalledWith(
                 'https://www.gorgias.com/ai-agent/shopping-assistant',
                 '_blank',
             )
         })
-
         it('should provide default empty function when onConfirmTrial is not provided', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             // Should not throw when called
             expect(async () => {
                 await act(() =>
@@ -942,7 +806,6 @@ describe('useTrialModalProps', () => {
             }).not.toThrow()
         })
     })
-
     describe('useTrialEndedModal', () => {
         describe('when trialType is ShoppingAssistant', () => {
             it('should return correct trial ended modal props', () => {
@@ -969,8 +832,7 @@ describe('useTrialModalProps', () => {
                         isAdminUser: true,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
                 expect(result.current.trialEndedModal.title).toEqual(
@@ -978,6 +840,7 @@ describe('useTrialModalProps', () => {
                 )
                 const descriptionElement = render(
                     <>{result.current.trialEndedModal.description}</>,
+                    {},
                 ).container
                 expect(descriptionElement.textContent).toEqual(
                     'Shopping Assistant drove $25 uplift in GMV. Keep the momentum going and turn even more visitors into buyers.',
@@ -991,7 +854,6 @@ describe('useTrialModalProps', () => {
                     '$25 GMV uplift',
                 ])
             })
-
             it('should handle missing early access automate plan', () => {
                 mockUseBillingState.mockReturnValue({
                     data: trial,
@@ -1006,16 +868,15 @@ describe('useTrialModalProps', () => {
                         isAdminUser: true,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialEndedModal.title).toEqual(
                     'Your trial has ended — and it made an impact.',
                 )
                 const descriptionElement = render(
                     <>{result.current.trialEndedModal.description}</>,
+                    {},
                 ).container
                 expect(descriptionElement.textContent).toEqual(
                     'Shopping Assistant drove $25 uplift in GMV. Keep the momentum going and turn even more visitors into buyers.',
@@ -1030,7 +891,6 @@ describe('useTrialModalProps', () => {
                 ])
             })
         })
-
         describe('when trialType is AiAgent', () => {
             beforeEach(() => {
                 mockUseTrialAccess.mockReturnValue(
@@ -1055,7 +915,6 @@ describe('useTrialModalProps', () => {
                     data: earlyAccessMonthlyAutomationPlan,
                 } as any)
             })
-
             it('should return impact title and personalized description when automation rate is significant', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -1067,16 +926,15 @@ describe('useTrialModalProps', () => {
                     },
                     isLoading: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialEndedModal.title).toEqual(
                     'Your trial has ended — and it made an impact.',
                 )
                 const descriptionElement = render(
                     <>{result.current.trialEndedModal.description}</>,
+                    {},
                 ).container
                 expect(descriptionElement.textContent).toEqual(
                     'AI Agent drove 65% automation rate. Upgrade today to drive even greater impact.',
@@ -1090,7 +948,6 @@ describe('useTrialModalProps', () => {
                     `After your trial, your plan will increase by $10/${Cadence.Month}.`,
                 )
             })
-
             it('should return beginning title and generic description when automation rate is not significant', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -1102,11 +959,9 @@ describe('useTrialModalProps', () => {
                     },
                     isLoading: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialEndedModal.title).toEqual(
                     "Your trial ended — but it's just the beginning.",
                 )
@@ -1124,7 +979,6 @@ describe('useTrialModalProps', () => {
                     `Typical results achieved by merchants. After upgrading, your plan will increase by $10/${Cadence.Month}.`,
                 )
             })
-
             it('should handle undefined automation rate', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -1132,11 +986,9 @@ describe('useTrialModalProps', () => {
                     automationRate: undefined,
                     isLoading: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialEndedModal.title).toEqual(
                     "Your trial ended — but it's just the beginning.",
                 )
@@ -1149,7 +1001,6 @@ describe('useTrialModalProps', () => {
                     '62% conversion rate',
                 ])
             })
-
             it('should handle automation rate exactly at threshold', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -1161,11 +1012,9 @@ describe('useTrialModalProps', () => {
                     },
                     isLoading: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialEndedModal.title).toEqual(
                     "Your trial ended — but it's just the beginning.",
                 )
@@ -1173,7 +1022,6 @@ describe('useTrialModalProps', () => {
                     'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.',
                 )
             })
-
             it('should handle automation rate just above threshold', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -1185,16 +1033,15 @@ describe('useTrialModalProps', () => {
                     },
                     isLoading: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(result.current.trialEndedModal.title).toEqual(
                     'Your trial has ended — and it made an impact.',
                 )
                 const descriptionElement = render(
                     <>{result.current.trialEndedModal.description}</>,
+                    {},
                 ).container
                 expect(descriptionElement.textContent).toEqual(
                     'AI Agent drove 0.6% automation rate. Upgrade today to drive even greater impact.',
@@ -1202,7 +1049,6 @@ describe('useTrialModalProps', () => {
             })
         })
     })
-
     describe('handleUpgradePlan callback', () => {
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
@@ -1212,57 +1058,44 @@ describe('useTrialModalProps', () => {
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
-
         it('should call openUpgradePlanModal and log event when hasOptedOut is true', async () => {
             const mockOpenUpgradePlanModal = jest.fn()
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 openUpgradePlanModal: mockOpenUpgradePlanModal,
             })
-
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     hasCurrentStoreTrialOptedOut: true,
                     hasAnyTrialOptedOut: true,
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             // Call the handleUpgradePlan function
             await act(() =>
                 result.current.trialStartedBanner.primaryAction?.onClick(),
             )
-
             expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
         })
-
         it('should call openUpgradePlanModal and log event when hasActiveTrial is false', async () => {
             const mockOpenUpgradePlanModal = jest.fn()
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 openUpgradePlanModal: mockOpenUpgradePlanModal,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             // Call the handleUpgradePlan function
             await act(() =>
                 result.current.trialStartedBanner.primaryAction?.onClick(),
             )
-
             expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
         })
-
         it('should call upgradePlan when hasActiveTrial is true and hasOptedOut is false', async () => {
             const mockUpgradePlanAsync = jest.fn()
-
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlan: jest.fn(),
                 upgradePlanAsync: mockUpgradePlanAsync,
@@ -1271,11 +1104,9 @@ describe('useTrialModalProps', () => {
                 isSuccess: false,
                 isError: false,
             })
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
                 defaultMockUseShoppingAssistantTrialFlow,
             )
-
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     hasAnyTrialStarted: true,
@@ -1283,20 +1114,16 @@ describe('useTrialModalProps', () => {
                     hasAnyTrialActive: true,
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             // Call the handleUpgradePlan function
             await act(() =>
                 result.current.trialStartedBanner.primaryAction?.onClick(),
             )
-
             expect(mockUpgradePlanAsync).toHaveBeenCalled()
         })
     })
-
     describe('currency formatting', () => {
         it('should format amounts with EUR currency correctly in price and tooltip', () => {
             const mockBillingState = {
@@ -1313,16 +1140,13 @@ describe('useTrialModalProps', () => {
                     },
                 },
             } as any
-
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialUpgradePlanModal.currentPlan.price).toBe(
                 '€50',
             )
@@ -1330,7 +1154,6 @@ describe('useTrialModalProps', () => {
                 result.current.trialUpgradePlanModal.newPlan.priceTooltipText,
             ).toContain('€1 helpdesk fee')
         })
-
         it('should handle zero amounts by showing $0 in price and tooltip', () => {
             const mockBillingState = {
                 data: {
@@ -1346,16 +1169,13 @@ describe('useTrialModalProps', () => {
                     },
                 },
             } as any
-
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialUpgradePlanModal.currentPlan.price).toBe(
                 '$0',
             )
@@ -1364,7 +1184,6 @@ describe('useTrialModalProps', () => {
             ).toContain('$0 helpdesk fee')
         })
     })
-
     describe('memoization', () => {
         it('should memoize the result when dependencies do not change', () => {
             const mockBillingState = {
@@ -1381,21 +1200,16 @@ describe('useTrialModalProps', () => {
                     },
                 },
             } as any
-
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
-            const { result, rerender } = renderHookWithRouter(() =>
+            const { result, rerender } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             const firstResult = result.current
-
             // Rerender without changing dependencies
             rerender()
-
             // The hook returns a new object each time due to the wrapper useMemo
             // But the individual properties should have stable references
             expect(result.current.upgradePlanModal).toEqual(
@@ -1411,33 +1225,26 @@ describe('useTrialModalProps', () => {
                 firstResult.trialEndingModal,
             )
         })
-
         it('should create new object when onConfirmTrial changes', () => {
             const mockBillingState = {
                 data: trial,
             } as any
-
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-
             const mockOnConfirmTrial1 = jest.fn()
             const mockOnConfirmTrial2 = jest.fn()
-
-            const { result, rerender } = renderHookWithRouter(
+            const { result, rerender } = renderHookWithProviders(
                 ({ onConfirmTrial }: { onConfirmTrial: jest.Mock }) =>
                     useTrialModalProps({ onConfirmTrial }),
                 {
                     initialProps: { onConfirmTrial: mockOnConfirmTrial1 },
                 },
             )
-
             const firstResult = result.current
-
             // Change the callback
             rerender({ onConfirmTrial: mockOnConfirmTrial2 })
-
             // The result should be different because onConfirmTrial changed
             expect(result.current).not.toBe(firstResult)
             expect(
@@ -1445,7 +1252,6 @@ describe('useTrialModalProps', () => {
             ).not.toBe(firstResult.trialAlertBanner.primaryAction?.onClick)
         })
     })
-
     describe('hasOptedOut scenarios', () => {
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
@@ -1455,7 +1261,6 @@ describe('useTrialModalProps', () => {
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
-
         it('should handle when user has opted out of trial', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
@@ -1464,28 +1269,22 @@ describe('useTrialModalProps', () => {
                     hasAnyTrialOptedOut: true,
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialUpgradePlanModal).toBeDefined()
             expect(result.current.trialActivatedModal).toBeDefined()
             expect(result.current.trialStartedBanner).toBeDefined()
             expect(result.current.trialAlertBanner).toBeDefined()
         })
-
         it('should maintain consistent modal props when hasOptedOut changes', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({ canSeeTrialCTA: true }),
             )
-
-            const { result, rerender } = renderHookWithRouter(() =>
+            const { result, rerender } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             const initialResult = result.current
-
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeTrialCTA: true,
@@ -1493,9 +1292,7 @@ describe('useTrialModalProps', () => {
                     hasAnyTrialOptedOut: true,
                 }),
             )
-
             rerender()
-
             expect(result.current.trialUpgradePlanModal.title).toBe(
                 initialResult.trialUpgradePlanModal.title,
             )
@@ -1504,11 +1301,9 @@ describe('useTrialModalProps', () => {
             )
         })
     })
-
     describe('useTrialEndedModal secondaryDescription', () => {
         const HIGHER_GMV_RATE = 0.008
         const LOWER_GMV_RATE = 0.003
-
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
                 data: {
@@ -1526,7 +1321,6 @@ describe('useTrialModalProps', () => {
                 }),
             )
         })
-
         describe('when gmvInfluencedRate > 0.005', () => {
             beforeEach(() => {
                 mockUseTrialMetrics.mockReturnValue({
@@ -1535,32 +1329,26 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
             })
-
             it('should show increase message when difference > 0', () => {
                 mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 9900 }, // $99 > $50
                 } as any)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
                     `With the upgrade, your plan will increase by $49/${Cadence.Month}.`,
                 )
             })
-
             it('should show same price message when difference <= 0', () => {
                 mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 5000 }, // $50 = $50
                 } as any)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
@@ -1568,7 +1356,6 @@ describe('useTrialModalProps', () => {
                 )
             })
         })
-
         describe('when gmvInfluencedRate <= 0.005', () => {
             beforeEach(() => {
                 mockUseTrialMetrics.mockReturnValue({
@@ -1577,32 +1364,26 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
             })
-
             it('should show typical results with increase message when difference > 0', () => {
                 mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 9900 }, // $99 > $50
                 } as any)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
                     `Typical results achieved by merchants. After upgrading, your plan will increase by $49/${Cadence.Month}.`,
                 )
             })
-
             it('should show typical results with same price message when difference <= 0', () => {
                 mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 5000 }, // $50 = $50
                 } as any)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({}),
                 )
-
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
@@ -1611,7 +1392,6 @@ describe('useTrialModalProps', () => {
             })
         })
     })
-
     describe('useUpgradePlanModal', () => {
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
@@ -1621,12 +1401,10 @@ describe('useTrialModalProps', () => {
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
-
         it('should return correct upgrade plan modal props', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.upgradePlanModal).toEqual({
                 title: 'Turn every interaction into a sale opportunity',
                 currentPlan: expect.objectContaining({
@@ -1665,20 +1443,16 @@ describe('useTrialModalProps', () => {
                 isLoading: false,
             })
         })
-
         it('should handle modal open state correctly', () => {
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 isUpgradePlanModalOpen: true,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.upgradePlanModal.isOpen).toBe(true)
         })
-
         it('should handle loading state correctly', () => {
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlan: jest.fn(),
@@ -1688,35 +1462,26 @@ describe('useTrialModalProps', () => {
                 isSuccess: false,
                 isError: false,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.upgradePlanModal.isLoading).toBe(true)
         })
-
         it('should call closeUpgradePlanModal when onClose is triggered', () => {
             const mockCloseUpgradePlanModal = jest.fn()
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 closeUpgradePlanModal: mockCloseUpgradePlanModal,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             result.current.upgradePlanModal.onClose()
-
             expect(mockCloseUpgradePlanModal).toHaveBeenCalledTimes(1)
         })
-
         it('should call onUpgradeClick when onConfirm is triggered', async () => {
             const mockUpgradePlanAsync = jest.fn().mockResolvedValue(undefined)
             const mockCloseAllTrialModals = jest.fn()
-
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlan: jest.fn(),
                 upgradePlanAsync: mockUpgradePlanAsync,
@@ -1725,26 +1490,20 @@ describe('useTrialModalProps', () => {
                 isSuccess: false,
                 isError: false,
             })
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 closeAllTrialModals: mockCloseAllTrialModals,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             await result.current.upgradePlanModal.onConfirm()
-
             expect(mockUpgradePlanAsync).toHaveBeenCalledTimes(1)
             expect(mockCloseAllTrialModals).toHaveBeenCalledTimes(1)
         })
-
         it('should log PricingModalClicked event when onConfirm is triggered', async () => {
             const mockUpgradePlanAsync = jest.fn().mockResolvedValue(undefined)
             const consoleSpy = jest.spyOn(console, 'log').mockImplementation()
-
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlan: jest.fn(),
                 upgradePlanAsync: mockUpgradePlanAsync,
@@ -1753,13 +1512,10 @@ describe('useTrialModalProps', () => {
                 isSuccess: false,
                 isError: false,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             await result.current.upgradePlanModal.onConfirm()
-
             expect(consoleSpy).toHaveBeenCalledWith(
                 'Track Segment',
                 segment.SegmentEvent.PricingModalClicked,
@@ -1768,42 +1524,34 @@ describe('useTrialModalProps', () => {
                     trialType: TrialType.ShoppingAssistant,
                 },
             )
-
             consoleSpy.mockRestore()
         })
-
         it('should handle different trial types correctly', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     trialType: TrialType.AiAgent,
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.upgradePlanModal.title).toBe(
                 'Turn every interaction into a sale opportunity',
             )
         })
-
         it('should handle missing billing data gracefully', () => {
             mockUseBillingState.mockReturnValue({
                 data: null,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.upgradePlanModal.currentPlan.price).toBe('$0')
             expect(result.current.upgradePlanModal.currentPlan.currency).toBe(
                 'USD',
             )
         })
     })
-
     describe('edge cases', () => {
         it('should handle undefined early access plan data by showing $0 price in new plan', () => {
             mockUseBillingState.mockReturnValue({
@@ -1812,20 +1560,16 @@ describe('useTrialModalProps', () => {
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: undefined,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialUpgradePlanModal.newPlan.price).toBe(
                 '$0',
             )
         })
     })
-
     describe('useTrialRequestModal', () => {
         const mockStoreName = 'test-store'
-
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
@@ -1834,7 +1578,6 @@ describe('useTrialModalProps', () => {
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
-
         describe('when trialType is ShoppingAssistant', () => {
             it('should return correct modal props for Shopping Assistant', () => {
                 mockUseTrialAccess.mockReturnValue(
@@ -1842,13 +1585,10 @@ describe('useTrialModalProps', () => {
                         trialType: TrialType.ShoppingAssistant,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.trialRequestModal
-
                 expect(modal.title).toBe('Request your admin to start trial')
                 expect(modal.subtitle).toBe(
                     'Your Gorgias admins will be notified of your request to start Shopping Assistant trial via both email and an in-app notification.',
@@ -1857,38 +1597,30 @@ describe('useTrialModalProps', () => {
                 expect(modal.accountAdmins).toBeDefined()
                 expect(modal.onPrimaryAction).toEqual(expect.any(Function))
             })
-
             it('should call handleNotifyAdmins when onPrimaryAction is called for Shopping Assistant', () => {
                 const mockHandleNotifyAdmins = jest.fn()
                 const mockCloseTrialRequestModal = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.ShoppingAssistant,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     closeTrialRequestModal: mockCloseTrialRequestModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
                 mockUseNotifyAdmins.mockReturnValue({
                     handleNotifyAdmins: mockHandleNotifyAdmins,
                     accountAdmins: [],
                     isLoading: false,
                     isDisabled: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 result.current.trialRequestModal.onPrimaryAction()
-
                 expect(mockHandleNotifyAdmins).toHaveBeenCalledTimes(1)
             })
         })
-
         describe('when trialType is AiAgent', () => {
             it('should return correct modal props for AI Agent', () => {
                 mockUseTrialAccess.mockReturnValue(
@@ -1896,13 +1628,10 @@ describe('useTrialModalProps', () => {
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.trialRequestModal
-
                 expect(modal.title).toBe(
                     'Request your admin to activate AI Agent trial',
                 )
@@ -1913,54 +1642,42 @@ describe('useTrialModalProps', () => {
                 expect(modal.accountAdmins).toBeDefined()
                 expect(modal.onPrimaryAction).toEqual(expect.any(Function))
             })
-
             it('should call handleNotifyAdmins when onPrimaryAction is called for AI Agent', () => {
                 const mockHandleNotifyAdmins = jest.fn()
                 const mockCloseTrialRequestModal = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     closeTrialRequestModal: mockCloseTrialRequestModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
                 mockUseNotifyAdmins.mockReturnValue({
                     handleNotifyAdmins: mockHandleNotifyAdmins,
                     accountAdmins: [],
                     isLoading: false,
                     isDisabled: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 result.current.trialRequestModal.onPrimaryAction()
-
                 expect(mockHandleNotifyAdmins).toHaveBeenCalledTimes(1)
             })
-
             it('should call closeTrialRequestModal when hook is used for AI Agent', () => {
                 const mockCloseTrialRequestModal = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     closeTrialRequestModal: mockCloseTrialRequestModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                renderHookWithRouter(() =>
+                renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
                     accountDomain: 'test-domain.com',
                     storeActivations: expect.any(Object),
@@ -1969,10 +1686,8 @@ describe('useTrialModalProps', () => {
             })
         })
     })
-
     describe('useTrialManageModal', () => {
         const mockStoreName = 'test-store'
-
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
@@ -1981,14 +1696,11 @@ describe('useTrialModalProps', () => {
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
-
         it('should return correct modal props with trial ending props', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             const modal = result.current.trialManageModal
-
             expect(modal.title).toBe('Manage Shopping Assistant trial')
             expect(modal.onClose).toEqual(expect.any(Function))
             expect(modal.primaryAction).toEqual({
@@ -2001,36 +1713,29 @@ describe('useTrialModalProps', () => {
                 onClick: expect.any(Function),
             })
         })
-
         it('should inherit properties from trialEndingModal', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             const modal = result.current.trialManageModal
             const trialEndingModal = result.current.trialEndingModal
-
             expect(modal.description).toEqual(trialEndingModal.description)
             expect(modal.advantages).toEqual(trialEndingModal.advantages)
             expect(modal.secondaryDescription).toEqual(
                 trialEndingModal.secondaryDescription,
             )
         })
-
         it('should not show primary action when futurePlan is null', () => {
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: null,
             } as any)
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             expect(
                 result.current.trialManageModal.primaryAction,
             ).toBeUndefined()
         })
-
         it('should show loading state in primary action when upgrade is in progress', () => {
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlan: jest.fn(),
@@ -2040,37 +1745,28 @@ describe('useTrialModalProps', () => {
                 isSuccess: false,
                 isError: false,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             expect(
                 result.current.trialManageModal.primaryAction?.isLoading,
             ).toBe(true)
         })
-
         it('should call closeManageTrialModal when onClose is triggered', () => {
             const mockCloseManageTrialModal = jest.fn()
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 closeManageTrialModal: mockCloseManageTrialModal,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             result.current.trialManageModal.onClose()
-
             expect(mockCloseManageTrialModal).toHaveBeenCalledTimes(1)
         })
-
         it('should call upgradePlanAsync and closeAllTrialModals when primary action is clicked', async () => {
             const mockUpgradePlanAsync = jest.fn().mockResolvedValue(undefined)
             const mockCloseAllTrialModals = jest.fn()
-
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlan: jest.fn(),
                 upgradePlanAsync: mockUpgradePlanAsync,
@@ -2079,28 +1775,22 @@ describe('useTrialModalProps', () => {
                 isSuccess: false,
                 isError: false,
             })
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 closeAllTrialModals: mockCloseAllTrialModals,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             await act(() =>
                 result.current.trialManageModal.primaryAction?.onClick(),
             )
-
             expect(mockUpgradePlanAsync).toHaveBeenCalledTimes(1)
             expect(mockCloseAllTrialModals).toHaveBeenCalledTimes(1)
         })
-
         it('should log PricingModalClicked event when primary action is clicked', async () => {
             const mockUpgradePlanAsync = jest.fn().mockResolvedValue(undefined)
             const consoleSpy = jest.spyOn(console, 'log').mockImplementation()
-
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlan: jest.fn(),
                 upgradePlanAsync: mockUpgradePlanAsync,
@@ -2109,15 +1799,12 @@ describe('useTrialModalProps', () => {
                 isSuccess: false,
                 isError: false,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             await act(() =>
                 result.current.trialManageModal.primaryAction?.onClick(),
             )
-
             expect(consoleSpy).toHaveBeenCalledWith(
                 'Track Segment',
                 segment.SegmentEvent.PricingModalClicked,
@@ -2126,71 +1813,57 @@ describe('useTrialModalProps', () => {
                     trialType: TrialType.ShoppingAssistant,
                 },
             )
-
             consoleSpy.mockRestore()
         })
-
         it('should close manage modal and open opt out modal when secondary action is clicked', async () => {
             const mockCloseManageTrialModal = jest.fn()
             const mockOpenTrialOptOutModal = jest.fn()
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 closeManageTrialModal: mockCloseManageTrialModal,
                 openTrialOptOutModal: mockOpenTrialOptOutModal,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             await act(() =>
                 result.current.trialManageModal.secondaryAction?.onClick(),
             )
-
             expect(mockCloseManageTrialModal).toHaveBeenCalledTimes(1)
             expect(mockOpenTrialOptOutModal).toHaveBeenCalledTimes(1)
         })
-
         it('should handle different trial types correctly', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     trialType: TrialType.AiAgent,
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             expect(result.current.trialManageModal.title).toBe(
                 'Manage AI Agent trial',
             )
         })
-
         it('should pass correct parameters to useShoppingAssistantTrialFlow', () => {
-            renderHookWithRouter(() =>
+            renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
                 accountDomain: 'test-domain.com',
                 storeActivations: expect.any(Object),
                 trialType: TrialType.ShoppingAssistant,
             })
         })
-
         it('should handle missing store name gracefully', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialManageModal).toBeDefined()
             expect(result.current.trialManageModal.title).toBe(
                 'Manage Shopping Assistant trial',
             )
         })
-
         describe('when hasSignificantAutomationRateImpact is true (AiAgent trial)', () => {
             beforeEach(() => {
                 mockUseTrialAccess.mockReturnValue(
@@ -2199,7 +1872,6 @@ describe('useTrialModalProps', () => {
                     }),
                 )
             })
-
             it('should show impact-based content when automation rate is above threshold', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -2211,16 +1883,13 @@ describe('useTrialModalProps', () => {
                     },
                     isLoading: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.trialManageModal
                 expect(modal.title).toBe('Manage AI Agent trial')
                 expect(modal.advantages).toEqual(['65% automation rate'])
             })
-
             it('should show personalized description when automation rate is just above threshold', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -2232,17 +1901,15 @@ describe('useTrialModalProps', () => {
                     },
                     isLoading: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.trialManageModal
                 expect(modal.advantages).toEqual(['0.6% automation rate'])
-
                 const trialEndingModal = result.current.trialEndingModal
                 const descriptionElement = render(
                     <>{trialEndingModal.description}</>,
+                    {},
                 ).container
                 expect(descriptionElement.textContent).toContain(
                     'AI Agent handled 0.6% of customer inquiries',
@@ -2251,7 +1918,6 @@ describe('useTrialModalProps', () => {
                     'drove a 3% lift in revenue',
                 )
             })
-
             it('should show typical results when automation rate is at threshold', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -2263,18 +1929,15 @@ describe('useTrialModalProps', () => {
                     },
                     isLoading: false,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.trialManageModal
                 expect(modal.advantages).toEqual([
                     '60% support inquiries',
                     '35% faster ticket handling',
                     '62% conversion rate',
                 ])
-
                 const trialEndingModal = result.current.trialEndingModal
                 const description = trialEndingModal.description as any
                 expect(description?.type).toBe('span')
@@ -2286,10 +1949,8 @@ describe('useTrialModalProps', () => {
             })
         })
     })
-
     describe('useNewTrialUpgradePlanModal', () => {
         const mockStoreName = 'test-store'
-
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
@@ -2298,7 +1959,6 @@ describe('useTrialModalProps', () => {
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
-
         describe('when trialType is ShoppingAssistant', () => {
             beforeEach(() => {
                 mockUseTrialAccess.mockReturnValue(
@@ -2311,12 +1971,10 @@ describe('useTrialModalProps', () => {
                 )
             })
             it('should return correct modal props', () => {
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.title).toBe(
                     'Try out shopping assistant skills on your current plan',
                 )
@@ -2330,59 +1988,45 @@ describe('useTrialModalProps', () => {
                     'AI Agent + Shopping Assistant',
                 )
             })
-
             it('should call startTrial when primary action is clicked', async () => {
                 const mockStartTrial = jest.fn()
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     startTrial: mockStartTrial,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
                 )
-
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(undefined)
             })
-
             it('should call startTrial with optedInForUpgrade parameter when provided', async () => {
                 const mockStartTrial = jest.fn()
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     startTrial: mockStartTrial,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
                         true,
                     ),
                 )
-
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(true)
-
                 mockStartTrial.mockClear()
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
                         false,
                     ),
                 )
-
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(false)
             })
         })
-
         describe('when trialType is AiAgent', () => {
             it('should return correct modal props for AI Agent trial', () => {
                 mockUseTrialAccess.mockReturnValue(
@@ -2392,13 +2036,10 @@ describe('useTrialModalProps', () => {
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.title).toBe('Try AI Agent')
                 expect(modal.subtitle).toBe(
                     'Unlock powerful automation with Gorgias AI Agent. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance in your brand voice.',
@@ -2406,7 +2047,6 @@ describe('useTrialModalProps', () => {
                 expect(modal.primaryAction?.label).toBe('Start Free Trial Now')
                 expect(modal.secondaryAction?.label).toBe('No, thanks')
             })
-
             it('should include correct tooltip for AI Agent trial single store', () => {
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
@@ -2415,13 +2055,10 @@ describe('useTrialModalProps', () => {
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.newPlan.priceTooltipText).toContain(
                     'be moved from Helpdesk to Helpdesk + AI Agent plan',
                 )
@@ -2435,7 +2072,6 @@ describe('useTrialModalProps', () => {
                     'Upgrade will apply to all stores',
                 )
             })
-
             it('should handle different currencies in AI Agent trial tooltip', () => {
                 const mockBillingState = {
                     data: {
@@ -2445,9 +2081,7 @@ describe('useTrialModalProps', () => {
                         },
                     },
                 } as any
-
                 mockUseBillingState.mockReturnValue(mockBillingState)
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         canSeeTrialCTA: true,
@@ -2455,13 +2089,10 @@ describe('useTrialModalProps', () => {
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.newPlan.priceTooltipText).toContain(
                     'be moved from Helpdesk to Helpdesk + AI Agent plan',
                 )
@@ -2472,124 +2103,94 @@ describe('useTrialModalProps', () => {
                     'plus a €1 helpdesk fee',
                 )
             })
-
             it('should call startTrial when primary action is clicked for AI Agent', async () => {
                 const mockStartTrial = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     startTrial: mockStartTrial,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
                 )
-
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(undefined)
             })
-
             it('should call startTrial with optedInForUpgrade parameter when provided for AI Agent', async () => {
                 const mockStartTrial = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     startTrial: mockStartTrial,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
                         true,
                     ),
                 )
-
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(true)
-
                 mockStartTrial.mockClear()
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
                         false,
                     ),
                 )
-
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(false)
             })
-
             it('should call onDismissTrialUpgradeModal when secondary action is clicked for AI Agent', async () => {
                 const mockOnDismissTrialUpgradeModal = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     onDismissTrialUpgradeModal: mockOnDismissTrialUpgradeModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick(),
                 )
-
                 expect(mockOnDismissTrialUpgradeModal).toHaveBeenCalledTimes(1)
             })
-
             it('should call closeTrialUpgradeModal when onClose is called for AI Agent', () => {
                 const mockCloseTrialUpgradeModal = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.AiAgent,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     closeTrialUpgradeModal: mockCloseTrialUpgradeModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 result.current.newTrialUpgradePlanModal?.onClose?.()
-
                 expect(mockCloseTrialUpgradeModal).toHaveBeenCalledTimes(1)
             })
         })
-
         describe('Primary Action Validation', () => {
             beforeEach(() => {
                 jest.clearAllMocks()
             })
-
             const store = storeActivationFixture()
-
             describe('for ShoppingAssistant trial type', () => {
                 beforeEach(() => {
                     // Mock empty store activations
@@ -2605,27 +2206,21 @@ describe('useTrialModalProps', () => {
                             isOnboarded: true,
                         }),
                     )
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({ storeName: 'nonexistent-store' }),
                     )
-
                     const modal = result.current.newTrialUpgradePlanModal
-
                     expect(modal.primaryAction?.isDisabled).toBe(true)
-
                     // Check that errorMessage is a JSX element and render it to test content
                     const errorMessage = modal.primaryAction
                         ?.errorMessage as any
                     expect(errorMessage?.type).toBe('span')
-
                     // Render the error message to test its content
-                    const { container } = render(<>{errorMessage}</>)
+                    const { container } = render(<>{errorMessage}</>, {})
                     expect(container.textContent).toBe(
                         'AI Agent must be set up for this store to start the trial.',
                     )
                 })
-
                 it('should not disable primary action when store activation is not found and ai agent is not onboarded', () => {
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
@@ -2635,21 +2230,16 @@ describe('useTrialModalProps', () => {
                             isOnboarded: false,
                         }),
                     )
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({ storeName: 'nonexistent-store' }),
                     )
-
                     const modal = result.current.newTrialUpgradePlanModal
-
                     expect(modal.primaryAction?.isDisabled).toBe(false)
-
                     // Check that errorMessage is a JSX element and render it to test content
                     const errorMessage = modal.primaryAction
                         ?.errorMessage as any
                     expect(errorMessage).toBeUndefined()
                 })
-
                 it('should disable primary action when AI agent is onboarded but not deployed on chat or email for store', () => {
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
@@ -2659,7 +2249,6 @@ describe('useTrialModalProps', () => {
                             isOnboarded: true,
                         }),
                     )
-
                     // Mock store activations with AI agent disabled
                     const mockStoreActivations = {
                         'test-store': {
@@ -2673,24 +2262,18 @@ describe('useTrialModalProps', () => {
                             },
                         },
                     }
-
                     setupMockStoreActivations({
                         storeActivations: mockStoreActivations,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({ storeName: 'test-store' }),
                     )
-
                     const modal = result.current.newTrialUpgradePlanModal
-
                     expect(modal.primaryAction?.isDisabled).toBe(true)
-
                     // Check that errorMessage is a JSX element with Link
                     const errorMessage = modal.primaryAction
                         ?.errorMessage as any
                     expect(errorMessage?.type).toBe('span')
-
                     // Test the JSX structure directly
                     const children = errorMessage?.props?.children
                     expect(children).toHaveLength(4)
@@ -2706,10 +2289,8 @@ describe('useTrialModalProps', () => {
                         'deployed on at least one channel',
                     )
                 })
-
                 it('should call onClose when link is clicked', async () => {
                     const mockOnClose = jest.fn()
-
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             canSeeTrialCTA: true,
@@ -2718,7 +2299,6 @@ describe('useTrialModalProps', () => {
                             isOnboarded: true,
                         }),
                     )
-
                     // Mock store activations with AI agent disabled
                     const mockStoreActivations = {
                         'test-store': {
@@ -2732,29 +2312,23 @@ describe('useTrialModalProps', () => {
                             },
                         },
                     }
-
                     setupMockStoreActivations({
                         storeActivations: mockStoreActivations,
                     })
-
                     // Mock the close function
                     mockUseShoppingAssistantTrialFlow.mockReturnValue({
                         ...defaultMockUseShoppingAssistantTrialFlow,
                         closeTrialUpgradeModal: mockOnClose,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({ storeName: 'test-store' }),
                     )
-
                     const modal = result.current.newTrialUpgradePlanModal
                     const errorMessage = modal.primaryAction
                         ?.errorMessage as any
-
                     // Test the Link component's onClick handler directly
                     const children = errorMessage?.props?.children
                     const linkElement = children?.[2] // Link is at index 2
-
                     // Verify the Link component structure by checking for 'to' prop (unique to Link)
                     expect(linkElement?.props?.to).toBe(
                         '/app/ai-agent/shopify/test-store/deploy/chat',
@@ -2762,14 +2336,11 @@ describe('useTrialModalProps', () => {
                     expect(linkElement?.props?.children).toBe(
                         'deployed on at least one channel',
                     )
-
                     // Test the onClick handler
                     expect(linkElement?.props?.onClick).toBeDefined()
                     await act(() => linkElement?.props?.onClick())
-
                     expect(mockOnClose).toHaveBeenCalledTimes(1)
                 })
-
                 it('should enable primary action when AI agent is enabled for store', () => {
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
@@ -2778,7 +2349,6 @@ describe('useTrialModalProps', () => {
                             trialType: TrialType.ShoppingAssistant,
                         }),
                     )
-
                     // Mock store activations with AI agent enabled (channels not deactivated)
                     const mockStoreActivations = {
                         'test-store': {
@@ -2791,27 +2361,21 @@ describe('useTrialModalProps', () => {
                             },
                         },
                     }
-
                     setupMockStoreActivations({
                         storeActivations: mockStoreActivations,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({ storeName: 'test-store' }),
                     )
-
                     const modal = result.current.newTrialUpgradePlanModal
-
                     expect(modal.primaryAction?.isDisabled).toBe(false)
                     expect(modal.primaryAction?.errorMessage).toBeUndefined()
                 })
             })
         })
     })
-
     describe('useTrialOptOutModal', () => {
         const mockStoreName = 'test-store'
-
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
@@ -2827,34 +2391,27 @@ describe('useTrialModalProps', () => {
                 }),
             )
         })
-
         it('should return correct modal props', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             const modal = result.current.trialOptOutModal
-
             expect(modal.isOpen).toBe(false)
             expect(modal.isTrialExtended).toBe(false)
             expect(modal.trialType).toBe(TrialType.ShoppingAssistant)
             expect(modal.onClose).toEqual(expect.any(Function))
             expect(modal.onRequestTrialExtension).toEqual(expect.any(Function))
         })
-
         it('should handle when modal is open', () => {
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 isTrialOptOutModalOpen: true,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             expect(result.current.trialOptOutModal.isOpen).toBe(true)
         })
-
         it('should handle when trial is extended', () => {
             mockUseTrialEnding.mockReturnValue(
                 getUseTrialEndingFixture({
@@ -2864,56 +2421,43 @@ describe('useTrialModalProps', () => {
                     trialEndDatetime: getTrialEndTime(7),
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             expect(result.current.trialOptOutModal.isTrialExtended).toBe(true)
         })
-
         it('should handle different trial types', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     trialType: TrialType.AiAgent,
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             expect(result.current.trialOptOutModal.trialType).toBe(
                 TrialType.AiAgent,
             )
         })
-
         it('should call closeTrialOptOutModal when onClose is triggered', () => {
             const mockCloseTrialOptOutModal = jest.fn()
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 closeTrialOptOutModal: mockCloseTrialOptOutModal,
             })
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             result.current.trialOptOutModal.onClose()
-
             expect(mockCloseTrialOptOutModal).toHaveBeenCalledTimes(1)
         })
-
         it('should call onRequestTrialExtension with trialEndDatetime when onRequestTrialExtension is triggered', () => {
             const mockOnRequestTrialExtension = jest.fn()
             const testTrialEndDatetime = getTrialEndTime(7)
-
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 onRequestTrialExtension: mockOnRequestTrialExtension,
             })
-
             mockUseTrialEnding.mockReturnValue(
                 getUseTrialEndingFixture({
                     remainingDays: 7,
@@ -2921,34 +2465,27 @@ describe('useTrialModalProps', () => {
                     trialEndDatetime: testTrialEndDatetime,
                 }),
             )
-
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             result.current.trialOptOutModal.onRequestTrialExtension()
-
             expect(mockOnRequestTrialExtension).toHaveBeenCalledWith(
                 testTrialEndDatetime,
             )
         })
-
         it('should handle missing store name gracefully', () => {
-            const { result } = renderHookWithRouter(() =>
+            const { result } = renderHookWithProviders(() =>
                 useTrialModalProps({}),
             )
-
             expect(result.current.trialOptOutModal).toBeDefined()
             expect(result.current.trialOptOutModal.trialType).toBe(
                 TrialType.ShoppingAssistant,
             )
         })
-
         it('should pass correct parameters to useShoppingAssistantTrialFlow', () => {
-            renderHookWithRouter(() =>
+            renderHookWithProviders(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
             )
-
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
                 accountDomain: 'test-domain.com',
                 storeActivations: expect.any(Object),
@@ -2956,7 +2493,6 @@ describe('useTrialModalProps', () => {
             })
         })
     })
-
     describe('admin vs non-admin user pricing display', () => {
         const mockBillingStateWithPriceIncrease = {
             data: {
@@ -2970,7 +2506,6 @@ describe('useTrialModalProps', () => {
                 },
             },
         }
-
         const setupMocks = (isAdmin: boolean) => {
             mockUseBillingState.mockReturnValue(
                 mockBillingStateWithPriceIncrease as any,
@@ -2998,7 +2533,6 @@ describe('useTrialModalProps', () => {
                 isLoading: false,
             })
         }
-
         describe('trialEndingModal', () => {
             describe('when user is admin', () => {
                 it('should show price information in secondaryDescription for significant GMV impact', () => {
@@ -3013,18 +2547,15 @@ describe('useTrialModalProps', () => {
                         },
                         isLoading: false,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     expect(
                         result.current.trialEndingModal.secondaryDescription,
                     ).toBe(
                         `With the upgrade, your plan will increase by $10/${Cadence.Month}.`,
                     )
                 })
-
                 it('should show price information for non-significant GMV impact', () => {
                     setupMocks(true) // Admin user
                     mockUseTrialMetrics.mockReturnValue({
@@ -3037,11 +2568,9 @@ describe('useTrialModalProps', () => {
                         },
                         isLoading: false,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     // For Shopping Assistant with non-significant impact, it should show "Typical results achieved by merchants" format
                     expect(
                         result.current.trialEndingModal.secondaryDescription,
@@ -3050,7 +2579,6 @@ describe('useTrialModalProps', () => {
                     )
                 })
             })
-
             describe('when user is not admin', () => {
                 it('should hide price information in secondaryDescription for significant GMV impact', () => {
                     setupMocks(false) // Non-admin user
@@ -3064,16 +2592,13 @@ describe('useTrialModalProps', () => {
                         },
                         isLoading: false,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     expect(
                         result.current.trialEndingModal.secondaryDescription,
                     ).toBe('Typical results achieved by merchants.')
                 })
-
                 it('should hide price information for non-significant GMV impact', () => {
                     setupMocks(false) // Non-admin user
                     mockUseTrialMetrics.mockReturnValue({
@@ -3086,18 +2611,15 @@ describe('useTrialModalProps', () => {
                         },
                         isLoading: false,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     expect(
                         result.current.trialEndingModal.secondaryDescription,
                     ).toBe('Typical results achieved by merchants.')
                 })
             })
         })
-
         describe('trialEndedModal', () => {
             describe('when user is admin', () => {
                 it('should show price information in secondaryDescription for significant GMV impact', () => {
@@ -3112,18 +2634,15 @@ describe('useTrialModalProps', () => {
                         },
                         isLoading: false,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     expect(
                         result.current.trialEndedModal.secondaryDescription,
                     ).toBe(
                         `After your trial, your plan will increase by $10/${Cadence.Month}.`,
                     )
                 })
-
                 it('should show price information for non-significant GMV impact', () => {
                     setupMocks(true) // Admin user
                     mockUseTrialMetrics.mockReturnValue({
@@ -3136,11 +2655,9 @@ describe('useTrialModalProps', () => {
                         },
                         isLoading: false,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     // For Shopping Assistant with non-significant impact, it should show "Typical results achieved by merchants" format
                     expect(
                         result.current.trialEndedModal.secondaryDescription,
@@ -3149,7 +2666,6 @@ describe('useTrialModalProps', () => {
                     )
                 })
             })
-
             describe('when user is not admin', () => {
                 it('should hide price information in secondaryDescription for significant GMV impact', () => {
                     setupMocks(false) // Non-admin user
@@ -3163,16 +2679,13 @@ describe('useTrialModalProps', () => {
                         },
                         isLoading: false,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     expect(
                         result.current.trialEndedModal.secondaryDescription,
                     ).toBe('Typical results achieved by merchants.')
                 })
-
                 it('should hide price information for non-significant GMV impact', () => {
                     setupMocks(false) // Non-admin user
                     mockUseTrialMetrics.mockReturnValue({
@@ -3185,11 +2698,9 @@ describe('useTrialModalProps', () => {
                         },
                         isLoading: false,
                     })
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({}),
                     )
-
                     expect(
                         result.current.trialEndedModal.secondaryDescription,
                     ).toBe('Typical results achieved by merchants.')
@@ -3197,10 +2708,8 @@ describe('useTrialModalProps', () => {
             })
         })
     })
-
     describe('useNewTrialUpgradePlanModal shoppingAssistantProps', () => {
         const mockStoreName = 'test-store'
-
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
@@ -3215,7 +2724,6 @@ describe('useTrialModalProps', () => {
                 }),
             )
         })
-
         describe('when isOnboarded is true', () => {
             it('should return default modal props for onboarded users', () => {
                 mockUseTrialAccess.mockReturnValue(
@@ -3225,13 +2733,10 @@ describe('useTrialModalProps', () => {
                         isOnboarded: true,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.title).toBe(
                     'Try out shopping assistant skills on your current plan',
                 )
@@ -3247,64 +2752,50 @@ describe('useTrialModalProps', () => {
                     expect.any(Function),
                 )
             })
-
             it('should call startTrial when primary action is clicked for onboarded users', async () => {
                 const mockStartTrial = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.ShoppingAssistant,
                         isOnboarded: true,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     startTrial: mockStartTrial,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
                 )
-
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(undefined)
             })
-
             it('should call onDismissTrialUpgradeModal when secondary action is clicked for onboarded users', async () => {
                 const mockOnDismissTrialUpgradeModal = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.ShoppingAssistant,
                         isOnboarded: true,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     onDismissTrialUpgradeModal: mockOnDismissTrialUpgradeModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick(),
                 )
-
                 expect(mockOnDismissTrialUpgradeModal).toHaveBeenCalledTimes(1)
             })
         })
-
         describe('when isOnboarded is false', () => {
             beforeEach(() => {
                 mockUseFlag.mockReturnValue(true)
             })
-
             it('should return modified modal props for non-onboarded users', () => {
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
@@ -3313,13 +2804,10 @@ describe('useTrialModalProps', () => {
                         isOnboarded: false,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.title).toBe(
                     'Try AI Agent with Shopping Assistant skills',
                 )
@@ -3337,7 +2825,6 @@ describe('useTrialModalProps', () => {
                     expect.any(Function),
                 )
             })
-
             it('should include SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED features for non-onboarded users', () => {
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
@@ -3346,13 +2833,10 @@ describe('useTrialModalProps', () => {
                         isOnboarded: false,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.features).toEqual([
                     {
                         icon: 'check',
@@ -3374,57 +2858,44 @@ describe('useTrialModalProps', () => {
                     },
                 ])
             })
-
             it('should call setShoppingAssistantTrialOptin and openTrialFinishSetupModal when primary action is clicked for non-onboarded users', async () => {
                 const mockOpenTrialFinishSetupModal = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.ShoppingAssistant,
                         isOnboarded: false,
                     }),
                 )
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     openTrialFinishSetupModal: mockOpenTrialFinishSetupModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
                 )
-
                 expect(mockOpenTrialFinishSetupModal).toHaveBeenCalledTimes(1)
             })
-
             it('should call setShoppingAssistantTrialOptin and startOnboardingWizzard when secondary action is clicked for non-onboarded users', async () => {
                 const mockStartOnboardingWizzard = jest.fn()
-
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.ShoppingAssistant,
                         isOnboarded: false,
                     }),
                 )
-
                 mockUseAiAgentTrialOnboarding.mockReturnValue({
                     startOnboardingWizard: mockStartOnboardingWizzard,
                 })
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick(),
                 )
-
                 expect(mockStartOnboardingWizzard).toHaveBeenCalledTimes(1)
             })
-
             it('should handle validation state correctly for non-onboarded users', () => {
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
@@ -3433,23 +2904,18 @@ describe('useTrialModalProps', () => {
                         isOnboarded: false,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 // For non-onboarded users, validation should always be valid
                 expect(modal.primaryAction?.isDisabled).toBe(false)
                 expect(modal.primaryAction?.errorMessage).toBeUndefined()
             })
-
             describe('with feature flag enabled', () => {
                 beforeEach(() => {
                     mockUseFlag.mockReturnValue(true)
                 })
-
                 it('should return modified modal props for non-onboarded users when feature flag is enabled', () => {
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
@@ -3458,13 +2924,10 @@ describe('useTrialModalProps', () => {
                             isOnboarded: false,
                         }),
                     )
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({ storeName: mockStoreName }),
                     )
-
                     const modal = result.current.newTrialUpgradePlanModal
-
                     expect(modal.title).toBe(
                         'Try AI Agent with Shopping Assistant skills',
                     )
@@ -3479,12 +2942,10 @@ describe('useTrialModalProps', () => {
                     )
                 })
             })
-
             describe('with feature flag disabled', () => {
                 beforeEach(() => {
                     mockUseFlag.mockReturnValue(false)
                 })
-
                 it('should return default modal props for non-onboarded users when feature flag is disabled', () => {
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
@@ -3493,13 +2954,10 @@ describe('useTrialModalProps', () => {
                             isOnboarded: false,
                         }),
                     )
-
-                    const { result } = renderHookWithRouter(() =>
+                    const { result } = renderHookWithProviders(() =>
                         useTrialModalProps({ storeName: mockStoreName }),
                     )
-
                     const modal = result.current.newTrialUpgradePlanModal
-
                     expect(modal.title).toBe(
                         'Try out shopping assistant skills on your current plan',
                     )
@@ -3511,7 +2969,6 @@ describe('useTrialModalProps', () => {
                 })
             })
         })
-
         describe('when isOnboarded is undefined', () => {
             it('should return default modal props for undefined onboarded state', () => {
                 mockUseTrialAccess.mockReturnValue(
@@ -3521,13 +2978,10 @@ describe('useTrialModalProps', () => {
                         isOnboarded: undefined,
                     }),
                 )
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.title).toBe(
                     'Try out shopping assistant skills on your current plan',
                 )
@@ -3538,18 +2992,15 @@ describe('useTrialModalProps', () => {
                 expect(modal.secondaryAction?.label).toBe('No, thanks')
             })
         })
-
         describe('when source is OPPORTUNITIES', () => {
             it('should return opportunities-specific modal props', () => {
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({
                         storeName: mockStoreName,
                         source: OPPORTUNITIES,
                     }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.title).toBe('Unlock AI Agent Opportunities')
                 expect(modal.subtitle).toBe(
                     'Your AI Agent analyzes its own conversations to surface knowledge gaps and conflicts — so you can fix what matters most and improve automation quality over time. Plus, unlock Shopping Assistant skills to turn support into sales.',
@@ -3559,17 +3010,14 @@ describe('useTrialModalProps', () => {
                 )
                 expect(modal.secondaryAction?.label).toBe('start AI Agent Only')
             })
-
             it('should include SHOPPING_ASSISTANT_TRIAL_WITH_OPPORTUNITIES features', () => {
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({
                         storeName: mockStoreName,
                         source: OPPORTUNITIES,
                     }),
                 )
-
                 const modal = result.current.newTrialUpgradePlanModal
-
                 expect(modal.features).toEqual([
                     {
                         icon: 'check',
@@ -3591,51 +3039,40 @@ describe('useTrialModalProps', () => {
                     },
                 ])
             })
-
             it('should call openTrialFinishSetupModal when primary action is clicked', async () => {
                 const mockOpenTrialFinishSetupModal = jest.fn()
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     openTrialFinishSetupModal: mockOpenTrialFinishSetupModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({
                         storeName: mockStoreName,
                         source: OPPORTUNITIES,
                     }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
                 )
-
                 expect(mockOpenTrialFinishSetupModal).toHaveBeenCalledTimes(1)
             })
-
             it('should call startOnboardingWizard and closeTrialUpgradeModal when secondary action is clicked', async () => {
                 const mockStartOnboardingWizard = jest.fn()
                 const mockCloseTrialUpgradeModal = jest.fn()
-
                 mockUseAiAgentTrialOnboarding.mockReturnValue({
                     startOnboardingWizard: mockStartOnboardingWizard,
                 })
-
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
                     closeTrialUpgradeModal: mockCloseTrialUpgradeModal,
                 } as unknown as UseShoppingAssistantTrialFlowReturn)
-
-                const { result } = renderHookWithRouter(() =>
+                const { result } = renderHookWithProviders(() =>
                     useTrialModalProps({
                         storeName: mockStoreName,
                         source: OPPORTUNITIES,
                     }),
                 )
-
                 await act(() =>
                     result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick(),
                 )
-
                 expect(mockStartOnboardingWizard).toHaveBeenCalledTimes(1)
                 expect(mockCloseTrialUpgradeModal).toHaveBeenCalledTimes(1)
             })

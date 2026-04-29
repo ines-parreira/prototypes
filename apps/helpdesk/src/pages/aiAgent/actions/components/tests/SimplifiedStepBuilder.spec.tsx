@@ -1,9 +1,7 @@
 import type React from 'react'
 
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { fireEvent, screen, within } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { IntegrationType } from 'models/integration/constants'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
@@ -17,8 +15,6 @@ import { StoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServ
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { WorkflowChannelSupportContext } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouterAndDnD } from 'utils/testing'
 
 import { SimplifiedStepBuilder } from '../SimplifiedStepBuilder'
 
@@ -50,20 +46,15 @@ jest.mock(
         }
     },
 )
-
 jest.mock('../../providers/StoreAppsProvider', () => ({
     __esModule: true,
     default: ({ children }: { children?: React.ReactNode }) => <>{children}</>,
 }))
-
 const mockUseApps = useApps as jest.MockedFunction<typeof useApps>
 const mockUseGetAppFromTemplateApp =
     useGetAppFromTemplateApp as jest.MockedFunction<
         typeof useGetAppFromTemplateApp
     >
-const mockStore = configureMockStore()
-const queryClient = mockQueryClient()
-
 const mockStoreIntegration = {
     id: 5,
     type: IntegrationType.Shopify,
@@ -90,55 +81,50 @@ const mockStoreIntegration = {
     },
     managed: false,
 }
-
 const renderWithProviders = (
     ui: React.ReactElement,
     graph: VisualBuilderGraph,
     contextDispatch = jest.fn(),
 ) => {
-    return renderWithRouterAndDnD(
-        <Provider store={mockStore({})}>
-            <QueryClientProvider client={queryClient}>
-                <StoreIntegrationContext.Provider
-                    value={
-                        mockStoreIntegration as unknown as (typeof StoreIntegrationContext.Provider)['arguments'][0]
-                    }
+    return render(
+        <StoreIntegrationContext.Provider
+            value={
+                mockStoreIntegration as unknown as (typeof StoreIntegrationContext.Provider)['arguments'][0]
+            }
+        >
+            <WorkflowChannelSupportContext.Provider
+                value={{
+                    isStepUnsupportedInAllChannels: () => false,
+                    getUnsupportedConnectedChannels: () => [],
+                    getSupportedChannels: () => [],
+                    getUnsupportedChannels: () => [],
+                    getUnsupportedNodeTypes: () => [],
+                }}
+            >
+                <VisualBuilderContext.Provider
+                    value={{
+                        visualBuilderGraph: graph,
+                        initialVisualBuilderGraph: graph,
+                        checkNodeHasVariablesUsedInChildren: () => false,
+                        dispatch: contextDispatch,
+                        getVariableListInChildren: () => [],
+                        checkNewVisualBuilderNode: () => false,
+                        getVariableListForNode: () => [],
+                        isNew: false,
+                    }}
                 >
-                    <WorkflowChannelSupportContext.Provider
-                        value={{
-                            isStepUnsupportedInAllChannels: () => false,
-                            getUnsupportedConnectedChannels: () => [],
-                            getSupportedChannels: () => [],
-                            getUnsupportedChannels: () => [],
-                            getUnsupportedNodeTypes: () => [],
-                        }}
-                    >
-                        <VisualBuilderContext.Provider
-                            value={{
-                                visualBuilderGraph: graph,
-                                initialVisualBuilderGraph: graph,
-                                checkNodeHasVariablesUsedInChildren: () =>
-                                    false,
-                                dispatch: contextDispatch,
-                                getVariableListInChildren: () => [],
-                                checkNewVisualBuilderNode: () => false,
-                                getVariableListForNode: () => [],
-                                isNew: false,
-                            }}
-                        >
-                            {ui}
-                        </VisualBuilderContext.Provider>
-                    </WorkflowChannelSupportContext.Provider>
-                </StoreIntegrationContext.Provider>
-            </QueryClientProvider>
-        </Provider>,
+                    {ui}
+                </VisualBuilderContext.Provider>
+            </WorkflowChannelSupportContext.Provider>
+        </StoreIntegrationContext.Provider>,
+        {
+            storeState: {},
+        },
     )
 }
-
 describe('SimplifiedStepBuilder', () => {
     const mockDispatch = jest.fn()
     const mockContextDispatch = jest.fn()
-
     const defaultGraph = {
         nodes: [
             {
@@ -170,7 +156,6 @@ describe('SimplifiedStepBuilder', () => {
         ],
         name: 'Test Graph',
     } as unknown as VisualBuilderGraph
-
     const defaultSteps: ActionTemplate[] = [
         {
             id: 'config1',
@@ -194,7 +179,6 @@ describe('SimplifiedStepBuilder', () => {
             triggers: [],
         },
     ]
-
     beforeEach(() => {
         const testApp: App = {
             id: 'test-app',
@@ -207,19 +191,15 @@ describe('SimplifiedStepBuilder', () => {
             auth_type: 'api-key',
             auth_settings: {},
         }
-
         mockUseApps.mockReturnValue({
             apps: [testApp],
             actionsApps: [testActionsApp],
             isLoading: false,
         })
-
         mockUseGetAppFromTemplateApp.mockReturnValue(() => testApp)
-
         mockDispatch.mockClear()
         mockContextDispatch.mockClear()
     })
-
     it('renders without crashing', () => {
         renderWithProviders(
             <SimplifiedStepBuilder
@@ -234,7 +214,6 @@ describe('SimplifiedStepBuilder', () => {
         )
         expect(screen.getByText('Action steps')).toBeInTheDocument()
     })
-
     it('displays the correct number of steps', () => {
         renderWithProviders(
             <SimplifiedStepBuilder
@@ -253,7 +232,6 @@ describe('SimplifiedStepBuilder', () => {
         )
         expect(stepItems).toHaveLength(1)
     })
-
     it('shows warning when authentication is required', () => {
         const graphWithMissingAuth: VisualBuilderGraph = {
             ...defaultGraph,
@@ -265,7 +243,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         }
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMissingAuth}
@@ -277,10 +254,8 @@ describe('SimplifiedStepBuilder', () => {
             graphWithMissingAuth,
             mockContextDispatch,
         )
-
         expect(screen.getByText(/provide authentication/i)).toBeInTheDocument()
     })
-
     it('shows warning when values are missing', () => {
         const stepsWithInputs: ActionTemplate[] = [
             {
@@ -295,7 +270,6 @@ describe('SimplifiedStepBuilder', () => {
                 ],
             },
         ]
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={defaultGraph}
@@ -307,10 +281,8 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         expect(screen.getByText(/provide values/i)).toBeInTheDocument()
     })
-
     it('filters apps that have no steps', () => {
         const appsWithNoSteps: App[] = [
             {
@@ -326,13 +298,11 @@ describe('SimplifiedStepBuilder', () => {
                 icon: '',
             },
         ]
-
         mockUseApps.mockReturnValue({
             isLoading: false,
             apps: appsWithNoSteps,
             actionsApps: [],
         })
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={defaultGraph}
@@ -344,14 +314,11 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         // Open dropdown
         fireEvent.click(screen.getByText('Add Step'))
-
         // App with no steps should not be shown
         expect(screen.queryByText('App with no steps')).not.toBeInTheDocument()
     })
-
     it('shows both warnings when values and authentication are missing', () => {
         const stepsWithInputs: ActionTemplate[] = [
             {
@@ -366,7 +333,6 @@ describe('SimplifiedStepBuilder', () => {
                 ],
             },
         ]
-
         const graphWithMissingAuth: VisualBuilderGraph = {
             ...defaultGraph,
             apps: [
@@ -377,7 +343,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         }
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMissingAuth}
@@ -389,12 +354,10 @@ describe('SimplifiedStepBuilder', () => {
             graphWithMissingAuth,
             mockContextDispatch,
         )
-
         expect(
             screen.getByText(/provide values and authentication/i),
         ).toBeInTheDocument()
     })
-
     it('handles step deletion', () => {
         renderWithProviders(
             <SimplifiedStepBuilder
@@ -407,15 +370,12 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         const deleteIcon = screen.getByRole('button', { name: 'Delete step' })
         fireEvent.click(deleteIcon)
-
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'SET_NODE_EDITING_ID',
             nodeId: 'node1',
         })
-
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'DELETE_NODE',
             nodeId: 'node1',
@@ -430,7 +390,6 @@ describe('SimplifiedStepBuilder', () => {
             ],
         })
     })
-
     it('opens app selector dropdown when Add Step is clicked', () => {
         renderWithProviders(
             <SimplifiedStepBuilder
@@ -443,13 +402,10 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         const addStepButton = screen.getByRole('button', { name: /add step/i })
         fireEvent.click(addStepButton)
-
         expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
     })
-
     it('filters apps correctly based on available steps', () => {
         mockUseApps.mockReturnValue({
             apps: [
@@ -481,7 +437,6 @@ describe('SimplifiedStepBuilder', () => {
             isLoading: false,
             error: null,
         } as any)
-
         const stepsWithMultipleApps: ActionTemplate[] = [
             {
                 id: 'config1',
@@ -526,7 +481,6 @@ describe('SimplifiedStepBuilder', () => {
                 triggers: [],
             },
         ]
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={defaultGraph}
@@ -538,19 +492,15 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         const addStepButton = screen.getByRole('button', { name: /add step/i })
         fireEvent.click(addStepButton)
-
         const dropdown = screen.getByTestId('floating-overlay')
         expect(dropdown).toBeInTheDocument()
-
         expect(screen.getByText(/Test Step 1 in Test App/i)).toBeInTheDocument()
         expect(
             screen.queryByText(/Test Step 2 in Unused App/i),
         ).not.toBeInTheDocument()
     })
-
     it('handles empty steps array', () => {
         renderWithProviders(
             <SimplifiedStepBuilder
@@ -563,10 +513,8 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         expect(screen.getByText(/Add one or more steps/i)).toBeInTheDocument()
     })
-
     it('validates required inputs before saving', () => {
         const stepsWithRequiredInputs: ActionTemplate[] = [
             {
@@ -581,7 +529,6 @@ describe('SimplifiedStepBuilder', () => {
                 ],
             },
         ]
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={defaultGraph}
@@ -593,10 +540,8 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         expect(screen.getByText(/provide values/i)).toBeInTheDocument()
     })
-
     it('handles app authentication state changes', () => {
         const initialGraph = {
             ...defaultGraph,
@@ -608,7 +553,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={initialGraph}
@@ -620,11 +564,9 @@ describe('SimplifiedStepBuilder', () => {
             initialGraph,
             mockContextDispatch,
         )
-
         expect(
             screen.queryByText(/provide authentication/i),
         ).not.toBeInTheDocument()
-
         const graphWithInvalidAuth = {
             ...initialGraph,
             apps: [
@@ -635,7 +577,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithInvalidAuth}
@@ -647,10 +588,8 @@ describe('SimplifiedStepBuilder', () => {
             graphWithInvalidAuth,
             mockContextDispatch,
         )
-
         expect(screen.getByText(/provide authentication/i)).toBeInTheDocument()
     })
-
     it('handles step reordering', () => {
         const graphWithMultipleSteps = {
             ...defaultGraph,
@@ -690,7 +629,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMultipleSteps}
@@ -715,33 +653,26 @@ describe('SimplifiedStepBuilder', () => {
             graphWithMultipleSteps,
             mockContextDispatch,
         )
-
         // Find the draggable items
         const stepItems = container.querySelectorAll('[draggable="true"]')
         expect(stepItems).toHaveLength(2)
-
         // Simulate drag and drop with proper coordinates
         const dragElement = stepItems[1] as HTMLElement
         const dropElement = stepItems[0] as HTMLElement
-
         // Get bounding rectangles for realistic coordinates
         const dragRect = dragElement.getBoundingClientRect()
-
         const clientX = dragRect.left + dragRect.width / 2
         const clientY = dragRect.top + dragRect.height / 2
-
         fireEvent.dragStart(dragElement, { clientX, clientY })
         fireEvent.dragEnter(dropElement, { clientX, clientY })
         fireEvent.dragOver(dropElement, { clientX, clientY })
         fireEvent.drop(dropElement, { clientX, clientY })
-
         // Verify the dispatch was called with the correct reordering action
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
             nodeIds: ['node2', 'node1'],
         })
     })
-
     it('handles invalid drag and drop operations', () => {
         const graphWithMultipleSteps = {
             ...defaultGraph,
@@ -766,7 +697,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMultipleSteps}
@@ -785,11 +715,9 @@ describe('SimplifiedStepBuilder', () => {
             graphWithMultipleSteps,
             mockContextDispatch,
         )
-
         // Find the drag handle
         const dragHandle = container.querySelector('.dragIcon')
         expect(dragHandle).toBeTruthy()
-
         // Simulate invalid drag and drop
         const dragStartEvent = new MouseEvent('mousedown', {
             bubbles: true,
@@ -798,7 +726,6 @@ describe('SimplifiedStepBuilder', () => {
             clientY: 0,
         })
         dragHandle!.dispatchEvent(dragStartEvent)
-
         const dragEvent = new MouseEvent('mousemove', {
             bubbles: true,
             cancelable: true,
@@ -806,7 +733,6 @@ describe('SimplifiedStepBuilder', () => {
             clientY: 100, // Move to invalid target
         })
         document.dispatchEvent(dragEvent)
-
         const dropEvent = new MouseEvent('mouseup', {
             bubbles: true,
             cancelable: true,
@@ -814,14 +740,12 @@ describe('SimplifiedStepBuilder', () => {
             clientY: 100,
         })
         container.dispatchEvent(dropEvent)
-
         // Verify no reordering dispatch was called
         expect(mockDispatch).not.toHaveBeenCalledWith({
             type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
             nodeIds: expect.any(Array),
         })
     })
-
     it('closes NodeEditorDrawer when onClose is called', async () => {
         const graphWithEditingNode = {
             ...defaultGraph,
@@ -839,7 +763,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithEditingNode}
@@ -851,18 +774,15 @@ describe('SimplifiedStepBuilder', () => {
             graphWithEditingNode,
             mockContextDispatch,
         )
-
         // Find and click the drawer close button
         const closeButton = await screen.findByTestId(
             'node-editor-close-drawer',
         )
         fireEvent.click(closeButton)
-
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'CLOSE_EDITOR',
         })
     })
-
     it('toggles app selector dropdown state correctly', () => {
         renderWithProviders(
             <SimplifiedStepBuilder
@@ -875,18 +795,14 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
-
         const addStepButton = screen.getByRole('button', { name: /add step/i })
         fireEvent.click(addStepButton)
         expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
-
         const dropdown = screen.getByTestId('floating-overlay')
         fireEvent.keyDown(dropdown, { key: 'Escape' })
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
     })
-
     it.skip('closes advanced view modal when close button is clicked', async () => {
         renderWithProviders(
             <SimplifiedStepBuilder
@@ -899,29 +815,23 @@ describe('SimplifiedStepBuilder', () => {
             defaultGraph,
             mockContextDispatch,
         )
-
         // Open the advanced view modal
         const advancedButton = screen.getByRole('button', {
             name: /advanced options/i,
         })
         fireEvent.click(advancedButton)
-
         // Verify modal is open
         expect(screen.getByRole('dialog')).toBeInTheDocument()
-
         // Close the modal
         const closeButton = screen.getByRole('button', {
             name: /back to editing/i,
         })
         fireEvent.click(closeButton)
-
         // Wait for modal animation to complete
         await new Promise((resolve) => setTimeout(resolve, 500))
-
         // Verify modal is closed
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
-
     it('handles step click', () => {
         const mockDispatch = jest.fn()
         const graph = {
@@ -947,7 +857,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graph}
@@ -966,15 +875,12 @@ describe('SimplifiedStepBuilder', () => {
             graph,
             mockContextDispatch,
         )
-
         fireEvent.click(screen.getByText(/Step 1 in Test App/))
-
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'SET_NODE_EDITING_ID',
             nodeId: 'node1',
         })
     })
-
     it('closes drawer editor when onDrawerEditorClose is called', async () => {
         const graphWithEditingNode = {
             ...defaultGraph,
@@ -992,7 +898,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithEditingNode}
@@ -1004,17 +909,14 @@ describe('SimplifiedStepBuilder', () => {
             graphWithEditingNode,
             mockContextDispatch,
         )
-
         const closeButton = await screen.findByTestId(
             'node-editor-close-drawer',
         )
         fireEvent.click(closeButton)
-
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'CLOSE_EDITOR',
         })
     })
-
     it('handles step reordering with error nodes correctly', () => {
         const graphWithMultipleSteps = {
             ...defaultGraph,
@@ -1115,7 +1017,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMultipleSteps}
@@ -1140,31 +1041,24 @@ describe('SimplifiedStepBuilder', () => {
             graphWithMultipleSteps,
             mockContextDispatch,
         )
-
         const stepItems = container.querySelectorAll('[draggable="true"]')
         expect(stepItems).toHaveLength(2)
-
         // Simulate drag and drop with proper coordinates
         const dragElement = stepItems[1] as HTMLElement
         const dropElement = stepItems[0] as HTMLElement
-
         // Get bounding rectangles for realistic coordinates
         const dragRect = dragElement.getBoundingClientRect()
-
         const clientX = dragRect.left + dragRect.width / 2
         const clientY = dragRect.top + dragRect.height / 2
-
         fireEvent.dragStart(dragElement, { clientX, clientY })
         fireEvent.dragEnter(dropElement, { clientX, clientY })
         fireEvent.dragOver(dropElement, { clientX, clientY })
         fireEvent.drop(dropElement, { clientX, clientY })
-
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
             nodeIds: ['node2', 'node1'],
         })
     })
-
     it('preserves error nodes and connections when reordering multiple steps', () => {
         const graphWithThreeSteps = {
             ...defaultGraph,
@@ -1305,7 +1199,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithThreeSteps}
@@ -1336,33 +1229,26 @@ describe('SimplifiedStepBuilder', () => {
             graphWithThreeSteps,
             mockContextDispatch,
         )
-
         // Find the draggable items
         const stepItems = container.querySelectorAll('[draggable="true"]')
         expect(stepItems).toHaveLength(3)
-
         // Simulate complex reordering: move last item to first position
         const dragElement = stepItems[2] as HTMLElement
         const dropElement = stepItems[0] as HTMLElement
-
         // Get bounding rectangles for realistic coordinates
         const dragRect = dragElement.getBoundingClientRect()
-
         const clientX = dragRect.left + dragRect.width / 2
         const clientY = dragRect.top + dragRect.height / 2
-
         fireEvent.dragStart(dragElement, { clientX, clientY })
         fireEvent.dragEnter(dropElement, { clientX, clientY })
         fireEvent.dragOver(dropElement, { clientX, clientY })
         fireEvent.drop(dropElement, { clientX, clientY })
-
         // Verify the dispatch was called with the correct reordering action
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
             nodeIds: ['node3', 'node1', 'node2'],
         })
     })
-
     it('handles reordering when some steps have no error nodes', () => {
         const graphWithMixedSteps = {
             ...defaultGraph,
@@ -1451,7 +1337,6 @@ describe('SimplifiedStepBuilder', () => {
                 },
             ],
         } as unknown as VisualBuilderGraph
-
         const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMixedSteps}
@@ -1476,26 +1361,20 @@ describe('SimplifiedStepBuilder', () => {
             graphWithMixedSteps,
             mockContextDispatch,
         )
-
         // Find the draggable items
         const stepItems = container.querySelectorAll('[draggable="true"]')
         expect(stepItems).toHaveLength(2)
-
         // Simulate reordering
         const dragElement = stepItems[1] as HTMLElement
         const dropElement = stepItems[0] as HTMLElement
-
         // Get bounding rectangles for realistic coordinates
         const dragRect = dragElement.getBoundingClientRect()
-
         const clientX = dragRect.left + dragRect.width / 2
         const clientY = dragRect.top + dragRect.height / 2
-
         fireEvent.dragStart(dragElement, { clientX, clientY })
         fireEvent.dragEnter(dropElement, { clientX, clientY })
         fireEvent.dragOver(dropElement, { clientX, clientY })
         fireEvent.drop(dropElement, { clientX, clientY })
-
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
             nodeIds: ['node2', 'node1'],

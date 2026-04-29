@@ -1,16 +1,10 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import type { Components } from 'rest_api/workflows_api/client.generated'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import type { ActionStepAccordionItemProps } from '../ActionStepAccordionItem'
 import ActionStepAccordionItem from '../ActionStepAccordionItem'
-
-const queryClient = mockQueryClient()
 
 describe('<ActionStepAccordionItem />', () => {
     const defaultProps = {
@@ -245,7 +239,6 @@ describe('<ActionStepAccordionItem />', () => {
             ],
         },
     } as unknown as ActionStepAccordionItemProps
-
     const httpRequestStepProps = {
         ...defaultProps,
         step: {
@@ -254,7 +247,6 @@ describe('<ActionStepAccordionItem />', () => {
             success: true,
         },
     } as unknown as ActionStepAccordionItemProps
-
     const nestedStepProps = {
         ...defaultProps,
         step: {
@@ -282,7 +274,6 @@ describe('<ActionStepAccordionItem />', () => {
                     success: true,
                     at: '2024-12-27T20:07:04.641Z',
                 },
-
                 nested_step_3: {
                     kind: 'http-request',
                     status_code: 200,
@@ -297,50 +288,30 @@ describe('<ActionStepAccordionItem />', () => {
             stepId: 'llm_step_id',
         },
     } as unknown as ActionStepAccordionItemProps
-
     it('should render step name and status', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionStepAccordionItem {...defaultProps} />
-            </QueryClientProvider>,
-        )
-
+        render(<ActionStepAccordionItem {...defaultProps} />, {})
         expect(screen.getByText('Cancel order.')).toBeInTheDocument()
         expect(screen.getByText('Status')).toBeInTheDocument()
         expect(screen.getByText('SUCCESS')).toBeInTheDocument()
     })
-
     it('should display execution logs', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionStepAccordionItem {...httpRequestStepProps} />
-            </QueryClientProvider>,
-        )
-
+        render(<ActionStepAccordionItem {...httpRequestStepProps} />, {})
         const stepElement = document.getElementById('step_3')
         if (stepElement) {
             fireEvent.click(stepElement)
         }
-
         expect(
             screen.getByText('https://jsonplaceholder.typicode.com/users'),
         ).toBeInTheDocument()
         expect(screen.getByText('SUCCESS')).toBeInTheDocument()
     })
-
     it('should handle nested template configurations', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionStepAccordionItem {...nestedStepProps} />
-            </QueryClientProvider>,
-        )
-
+        render(<ActionStepAccordionItem {...nestedStepProps} />, {})
         expect(screen.getByText('Custom Step')).toBeInTheDocument()
         expect(screen.getByText('get posts')).toBeInTheDocument()
         expect(screen.getByText('get comments')).toBeInTheDocument()
         expect(screen.getAllByText(/https:\/\/jsonplaceholder/)).toHaveLength(2)
     })
-
     it('should display error state correctly', () => {
         const errorProps = {
             ...defaultProps,
@@ -355,17 +326,10 @@ describe('<ActionStepAccordionItem />', () => {
                 },
             ],
         } as unknown as ActionStepAccordionItemProps
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionStepAccordionItem {...errorProps} />
-            </QueryClientProvider>,
-        )
-
+        render(<ActionStepAccordionItem {...errorProps} />, {})
         fireEvent.click(screen.getByText('Cancel order.'))
         expect(screen.getByText('ERROR')).toBeInTheDocument()
     })
-
     it('should render Output Variables from http-request stepOutputs', () => {
         const stepWithHttpRequest = {
             kind: 'reusable-llm-prompt-call',
@@ -385,7 +349,6 @@ describe('<ActionStepAccordionItem />', () => {
                 },
             },
         } as any
-
         // Provide a log with step_id matching the child step
         const httpExecutionLogs: Components.Schemas.HttpRequestEventsResponseDto =
             [
@@ -402,18 +365,16 @@ describe('<ActionStepAccordionItem />', () => {
                     response_body: '',
                 },
             ]
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <ActionStepAccordionItem
-                    step={stepWithHttpRequest}
-                    templateConfigurations={defaultProps.templateConfigurations}
-                    httpExecutionLogs={httpExecutionLogs}
-                    parentTemplateConfiguration={
-                        defaultProps.parentTemplateConfiguration
-                    }
-                />
-            </QueryClientProvider>,
+        render(
+            <ActionStepAccordionItem
+                step={stepWithHttpRequest}
+                templateConfigurations={defaultProps.templateConfigurations}
+                httpExecutionLogs={httpExecutionLogs}
+                parentTemplateConfiguration={
+                    defaultProps.parentTemplateConfiguration
+                }
+            />,
+            {},
         )
         // Expand the accordion using the toggle icon (keyboard_arrow_down)
         const toggle = screen.getByText(

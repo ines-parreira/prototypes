@@ -1,10 +1,5 @@
-import { appQueryClient } from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import {
     mockedAverageOrders,
@@ -18,8 +13,6 @@ import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding_V2/hooks/us
 import { useGetRepeatRate } from 'pages/aiAgent/Onboarding_V2/hooks/useGetRepeatRate'
 import { useTopLocations } from 'pages/aiAgent/Onboarding_V2/hooks/useTopLocations'
 
-const mockStore = configureMockStore([thunk])()
-
 const defaultPreviewData = {
     topProducts: mockedProducts,
     isTopProductsLoading: false,
@@ -32,38 +25,23 @@ const defaultPreviewData = {
     isAverageOrderValueLoading: false,
     isRepeatRateLoading: false,
 }
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgePreviewData')
 const mockUseGetKnowledgePreviewData = assumeMock(useGetKnowledgePreviewData)
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetAverageOrderValue')
 const mockUseGetAverageOrderValue = assumeMock(useGetAverageOrderValue)
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetRepeatRate')
 const mockUseGetRepeatRate = assumeMock(useGetRepeatRate)
-
 jest.mock('pages/aiAgent/Onboarding_V2/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useTopLocations')
 const mockUseTopLocations = assumeMock(useTopLocations)
-
 jest.mock('pages/aiAgent/Onboarding_V2/components/TopProductsCard/hooks')
 const mockUseTopProducts = assumeMock(useTopProducts)
-
 const renderComponent = () => {
-    return render(
-        <Provider store={mockStore}>
-            <QueryClientProvider client={appQueryClient}>
-                <KnowledgePreview shopName="shop-name" />
-            </QueryClientProvider>
-        </Provider>,
-    )
+    return render(<KnowledgePreview shopName="shop-name" />, {})
 }
-
 describe('KnowledgePreview', () => {
     jest.useFakeTimers()
-
     beforeAll(() => {
         mockUseGetKnowledgePreviewData.mockReturnValue({
             data: defaultPreviewData,
@@ -89,10 +67,8 @@ describe('KnowledgePreview', () => {
             isLoading: false,
         })
     })
-
     it('should render without crashing', () => {
         renderComponent()
-
         expect(screen.getAllByText('Average order per day').length).toBe(4)
         expect(screen.getAllByText('Top Locations').length).toBe(4)
         expect(screen.getAllByText('Top Products').length).toBe(4)
@@ -100,7 +76,6 @@ describe('KnowledgePreview', () => {
         expect(screen.getAllByText('Average discount given').length).toBe(4)
         expect(screen.getAllByText('Repeat Rate').length).toBe(4)
     })
-
     it('should render skeleton when averageOrders is undefined', () => {
         mockUseGetKnowledgePreviewData.mockReturnValue({
             data: {
@@ -108,9 +83,7 @@ describe('KnowledgePreview', () => {
                 averageOrders: undefined as any,
             },
         })
-
         const { container } = renderComponent()
-
         expect(
             container.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()

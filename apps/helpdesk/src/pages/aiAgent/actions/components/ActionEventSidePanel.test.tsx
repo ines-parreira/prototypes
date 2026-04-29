@@ -1,9 +1,5 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
-import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import type { LlmTriggeredExecution } from '../types'
 import ActionEventSidePanel from './ActionEventSidePanel'
@@ -21,7 +17,6 @@ jest.mock('pages/common/components/Drawer', () => ({
         },
     ),
 }))
-
 jest.mock('./ActionEventTitle', () => ({
     __esModule: true,
     default: ({ title, status }: { title?: string; status?: string }) => (
@@ -30,7 +25,6 @@ jest.mock('./ActionEventTitle', () => ({
         </div>
     ),
 }))
-
 jest.mock('./ActionStepAccordionItem', () => ({
     __esModule: true,
     default: ({ step }: { step: any }) => (
@@ -44,7 +38,6 @@ jest.mock('./ActionStepAccordionItem', () => ({
         </div>
     ),
 }))
-
 jest.mock('./ActionEventsCollapsableVariables', () => ({
     __esModule: true,
     default: ({ title, body }: { title: string; body: any }) => (
@@ -53,21 +46,10 @@ jest.mock('./ActionEventsCollapsableVariables', () => ({
         </div>
     ),
 }))
-
 jest.mock('pages/common/components/accordion/Accordion', () => ({
     __esModule: true,
     default: ({ children }: any) => <div>{children}</div>,
 }))
-
-const middlewares = [thunk]
-const mockStore = configureStore(middlewares)({})
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-    },
-})
-
 const renderComponent = (props: {
     isOpen: boolean
     actionConfiguration?: any
@@ -78,24 +60,18 @@ const renderComponent = (props: {
     onClose?: () => void
 }) => {
     return render(
-        <Provider store={mockStore}>
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter>
-                    <ActionEventSidePanel
-                        isOpen={props.isOpen}
-                        actionConfiguration={props.actionConfiguration}
-                        execution={props.execution}
-                        httpExecutionLogs={props.httpExecutionLogs}
-                        templateConfigurations={props.templateConfigurations}
-                        isLoading={props.isLoading || false}
-                        onClose={props.onClose || jest.fn()}
-                    />
-                </MemoryRouter>
-            </QueryClientProvider>
-        </Provider>,
+        <ActionEventSidePanel
+            isOpen={props.isOpen}
+            actionConfiguration={props.actionConfiguration}
+            execution={props.execution}
+            httpExecutionLogs={props.httpExecutionLogs}
+            templateConfigurations={props.templateConfigurations}
+            isLoading={props.isLoading || false}
+            onClose={props.onClose || jest.fn()}
+        />,
+        {},
     )
 }
-
 describe('ActionEventSidePanel', () => {
     describe('transition finding logic (lines 65-67)', () => {
         it('should correctly find and attach transition to step when transition exists', () => {
@@ -126,19 +102,16 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(screen.getByTestId('action-step-step-2')).toBeInTheDocument()
             expect(screen.getByTestId('transition-step-2')).toBeInTheDocument()
             expect(
                 screen.getByText('Has transition to: step-2'),
             ).toBeInTheDocument()
         })
-
         it('should handle step without transition correctly', () => {
             const execution: LlmTriggeredExecution = {
                 status: 'success',
@@ -167,18 +140,15 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(screen.getByTestId('action-step-step-1')).toBeInTheDocument()
             expect(
                 screen.queryByTestId('transition-step-1'),
             ).not.toBeInTheDocument()
         })
-
         it('should handle multiple transitions and match the correct one', () => {
             const execution: LlmTriggeredExecution = {
                 status: 'success',
@@ -218,19 +188,16 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(screen.getByTestId('transition-step-2')).toBeInTheDocument()
             expect(screen.getByTestId('transition-step-3')).toBeInTheDocument()
             expect(
                 screen.queryByTestId('transition-step-1'),
             ).not.toBeInTheDocument()
         })
-
         it('should handle execution with no transitions', () => {
             const execution: LlmTriggeredExecution = {
                 status: 'success',
@@ -252,12 +219,10 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(screen.getByTestId('action-step-step-1')).toBeInTheDocument()
             expect(screen.getByTestId('action-step-step-2')).toBeInTheDocument()
             expect(
@@ -267,7 +232,6 @@ describe('ActionEventSidePanel', () => {
                 screen.queryByTestId('transition-step-2'),
             ).not.toBeInTheDocument()
         })
-
         it('should handle execution with undefined transitions', () => {
             const execution: LlmTriggeredExecution = {
                 status: 'success',
@@ -283,18 +247,15 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(screen.getByTestId('action-step-step-1')).toBeInTheDocument()
             expect(
                 screen.queryByTestId('transition-step-1'),
             ).not.toBeInTheDocument()
         })
-
         it('should correctly find transition even with complex transition IDs', () => {
             const execution: LlmTriggeredExecution = {
                 status: 'success',
@@ -323,12 +284,10 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(
                 screen.getByTestId('action-step-step-uuid-456'),
             ).toBeInTheDocument()
@@ -340,7 +299,6 @@ describe('ActionEventSidePanel', () => {
             ).toBeInTheDocument()
         })
     })
-
     describe('steps processing and filtering', () => {
         it('should filter out end steps', () => {
             const execution: LlmTriggeredExecution = {
@@ -363,18 +321,15 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(screen.getByTestId('action-step-step-1')).toBeInTheDocument()
             expect(
                 screen.queryByTestId('action-step-step-2'),
             ).not.toBeInTheDocument()
         })
-
         it('should sort steps by timestamp', () => {
             const execution: LlmTriggeredExecution = {
                 status: 'success',
@@ -401,12 +356,10 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             const { container } = renderComponent({
                 isOpen: true,
                 execution,
             })
-
             const steps = container.querySelectorAll(
                 '[data-testid^="action-step-"]',
             )
@@ -424,7 +377,6 @@ describe('ActionEventSidePanel', () => {
             )
         })
     })
-
     describe('component behavior', () => {
         it('should not render when isOpen is false', () => {
             renderComponent({
@@ -439,22 +391,18 @@ describe('ActionEventSidePanel', () => {
                     },
                 } as any,
             })
-
             expect(screen.queryByTestId('drawer')).not.toBeInTheDocument()
         })
-
         it('should handle empty execution state', () => {
             renderComponent({
                 isOpen: true,
                 execution: undefined,
             })
-
             expect(screen.getByTestId('drawer')).toBeInTheDocument()
             expect(
                 screen.queryByTestId('action-step-step-1'),
             ).not.toBeInTheDocument()
         })
-
         it('should handle execution with empty steps_state', () => {
             const execution: LlmTriggeredExecution = {
                 status: 'success',
@@ -465,18 +413,15 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(screen.getByTestId('drawer')).toBeInTheDocument()
             expect(
                 screen.queryByRole('button', { name: /Action steps/i }),
             ).not.toBeInTheDocument()
         })
-
         it('should handle execution with undefined steps_state', () => {
             const execution: LlmTriggeredExecution = {
                 status: 'success',
@@ -486,12 +431,10 @@ describe('ActionEventSidePanel', () => {
                     custom_inputs: {},
                 },
             } as any
-
             renderComponent({
                 isOpen: true,
                 execution,
             })
-
             expect(screen.getByTestId('drawer')).toBeInTheDocument()
         })
     })

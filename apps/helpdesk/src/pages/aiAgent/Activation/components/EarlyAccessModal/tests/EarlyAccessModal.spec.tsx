@@ -1,7 +1,5 @@
-import React from 'react'
-
-import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { fireEvent, screen, within } from '@testing-library/react'
 
 import { Cadence } from 'models/billing/types'
 
@@ -12,11 +10,9 @@ describe('<EarlyAccessModal />', () => {
         const checkbox = screen.getByRole('checkbox')
         fireEvent.click(checkbox)
     }
-
     it('should render the modal and handler should be called when clicked', () => {
         const onCloseMock = jest.fn()
         const onUpgradeClickMock = jest.fn()
-
         const { getByText } = render(
             <EarlyAccessModal
                 isOpen
@@ -27,12 +23,10 @@ describe('<EarlyAccessModal />', () => {
                 isUpgrading={false}
             />,
         )
-
         const upgradeButton = getByText('Upgrade AI Agent', { exact: true })
         expect(upgradeButton).toBeInTheDocument()
         userEvent.click(upgradeButton)
     })
-
     it('should render the modal in loading state without crashing', () => {
         render(
             <EarlyAccessModal
@@ -45,7 +39,6 @@ describe('<EarlyAccessModal />', () => {
             />,
         )
     })
-
     it('should render good pricing values', () => {
         render(
             <EarlyAccessModal
@@ -77,7 +70,6 @@ describe('<EarlyAccessModal />', () => {
                 }
             />,
         )
-
         const overageElement = screen.getByText('Overage:', {
             selector: 'span',
         })
@@ -87,7 +79,6 @@ describe('<EarlyAccessModal />', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('should display discount information when available', () => {
         const { getByText } = render(
             <EarlyAccessModal
@@ -110,10 +101,8 @@ describe('<EarlyAccessModal />', () => {
                 }
             />,
         )
-
         expect(getByText('450 automated tickets/months')).toBeInTheDocument()
     })
-
     it('should disable upgrade button when terms are not accepted', () => {
         const { queryByText } = render(
             <EarlyAccessModal
@@ -125,12 +114,9 @@ describe('<EarlyAccessModal />', () => {
                 isUpgrading={false}
             />,
         )
-
         const upgradeCta = queryByText('Upgrade AI Agent')?.parentElement
-
         expect(upgradeCta).toBeAriaDisabled()
     })
-
     it('should enable upgrade button when terms are accepted', () => {
         const { queryByText } = render(
             <EarlyAccessModal
@@ -142,14 +128,10 @@ describe('<EarlyAccessModal />', () => {
                 isUpgrading={false}
             />,
         )
-
         acceptTermsAndConditions()
-
         const upgradeCta = queryByText('Upgrade AI Agent')?.parentElement
-
         expect(upgradeCta).toBeAriaEnabled()
     })
-
     it.each([
         {
             userIsAdmin: true,
@@ -172,16 +154,12 @@ describe('<EarlyAccessModal />', () => {
                 isUpgrading={false}
             />,
         )
-
         const upgradeCta = queryByText('Upgrade AI Agent')?.parentElement
         const termsCheckbox = queryByRole('checkbox')
-
         const warningBanner = queryByText(
             'You do not have admin access. Contact your admin to upgrade.',
         )
-
         acceptTermsAndConditions()
-
         if (userIsAdmin) {
             expect(termsCheckbox).toBeEnabled()
             expect(upgradeCta).toBeAriaEnabled()

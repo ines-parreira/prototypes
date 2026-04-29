@@ -1,17 +1,17 @@
-import { history } from '@repo/routing'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useLocation } from 'react-router-dom'
 
 import type { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { renderWithRouter } from 'utils/testing'
 
 import { CollapsedActionDrivenNavigationItems } from '../CollapsedActionDrivenNavigationItems'
 
-jest.mock('@repo/routing', () => ({
-    history: {
-        push: jest.fn(),
-    },
-}))
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div>{location.pathname}</div>
+}
 
 describe('CollapsedActionDrivenNavigationItems', () => {
     const mockNavigationItems: NavigationItem[] = [
@@ -49,15 +49,14 @@ describe('CollapsedActionDrivenNavigationItems', () => {
         },
     ]
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('renders all navigation items', () => {
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={mockNavigationItems}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={mockNavigationItems}
+                />
+                <LocationPath />
+            </>,
         )
 
         expect(
@@ -72,32 +71,40 @@ describe('CollapsedActionDrivenNavigationItems', () => {
 
     it('navigates to route when clicking an item with a direct route', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={mockNavigationItems}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={mockNavigationItems}
+                />
+                <LocationPath />
+            </>,
         )
 
         await user.click(screen.getByRole('img', { name: 'settings' }))
 
-        expect(history.push).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-store/overview',
-        )
+        expect(
+            screen.getByText('/app/ai-agent/shopify/test-store/overview'),
+        ).toBeInTheDocument()
     })
 
     it('navigates to first nested item route when clicking an item without a direct route', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={mockNavigationItems}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={mockNavigationItems}
+                />
+                <LocationPath />
+            </>,
         )
 
         await user.click(screen.getByRole('img', { name: 'flows' }))
 
-        expect(history.push).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-store/analyze/analytics',
-        )
+        expect(
+            screen.getByText(
+                '/app/ai-agent/shopify/test-store/analyze/analytics',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('handles item with nested items and no first item route', async () => {
@@ -111,15 +118,18 @@ describe('CollapsedActionDrivenNavigationItems', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={navItemsWithEmptyNestedRoute}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={navItemsWithEmptyNestedRoute}
+                />
+                <LocationPath />
+            </>,
         )
 
         await user.click(screen.getByRole('img', { name: 'folder' }))
 
-        expect(history.push).not.toHaveBeenCalled()
+        expect(screen.getByText('/')).toBeInTheDocument()
     })
 
     it('does nothing when clicking item without route and without nested items', async () => {
@@ -132,19 +142,22 @@ describe('CollapsedActionDrivenNavigationItems', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={navItemsWithoutRoute}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={navItemsWithoutRoute}
+                />
+                <LocationPath />
+            </>,
         )
 
         await user.click(screen.getByRole('img', { name: 'settings' }))
 
-        expect(history.push).not.toHaveBeenCalled()
+        expect(screen.getByText('/')).toBeInTheDocument()
     })
 
     it('handles empty navigation items array', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <CollapsedActionDrivenNavigationItems navigationItems={[]} />,
         )
 
@@ -171,17 +184,20 @@ describe('CollapsedActionDrivenNavigationItems', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={navItemsWithBothRoutes}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={navItemsWithBothRoutes}
+                />
+                <LocationPath />
+            </>,
         )
 
         await user.click(screen.getByRole('img', { name: 'settings' }))
 
-        expect(history.push).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-store/direct',
-        )
+        expect(
+            screen.getByText('/app/ai-agent/shopify/test-store/direct'),
+        ).toBeInTheDocument()
     })
 
     it('handles navigation item with undefined items array', async () => {
@@ -195,23 +211,29 @@ describe('CollapsedActionDrivenNavigationItems', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={navItemsWithUndefinedItems}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={navItemsWithUndefinedItems}
+                />
+                <LocationPath />
+            </>,
         )
 
         await user.click(screen.getByRole('img', { name: 'flows' }))
 
-        expect(history.push).not.toHaveBeenCalled()
+        expect(screen.getByText('/')).toBeInTheDocument()
     })
 
     it('renders sub-items as menu items for items with nested items', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={mockNavigationItems}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={mockNavigationItems}
+                />
+                <LocationPath />
+            </>,
         )
 
         await user.click(screen.getByRole('img', { name: 'flows' }))
@@ -226,21 +248,25 @@ describe('CollapsedActionDrivenNavigationItems', () => {
 
     it('navigates to sub-item route when clicking a menu item', async () => {
         const user = userEvent.setup()
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={mockNavigationItems}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={mockNavigationItems}
+                />
+                <LocationPath />
+            </>,
         )
 
         await user.click(screen.getByRole('img', { name: 'flows' }))
-        jest.clearAllMocks()
         await user.click(
             screen.getByRole('menuitemradio', { name: 'Opportunities' }),
         )
 
-        expect(history.push).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-store/analyze/opportunities',
-        )
+        expect(
+            screen.getByText(
+                '/app/ai-agent/shopify/test-store/analyze/opportunities',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('renders items without sub-items as bare ButtonGroupItems without a menu', () => {
@@ -253,10 +279,13 @@ describe('CollapsedActionDrivenNavigationItems', () => {
             },
         ]
 
-        renderWithRouter(
-            <CollapsedActionDrivenNavigationItems
-                navigationItems={navItemWithoutSubItems}
-            />,
+        render(
+            <>
+                <CollapsedActionDrivenNavigationItems
+                    navigationItems={navItemWithoutSubItems}
+                />
+                <LocationPath />
+            </>,
         )
 
         expect(screen.getAllByRole('radio')).toHaveLength(1)
@@ -264,11 +293,11 @@ describe('CollapsedActionDrivenNavigationItems', () => {
     })
 
     it('marks the active section as selected when URL matches a direct route', () => {
-        renderWithRouter(
+        render(
             <CollapsedActionDrivenNavigationItems
                 navigationItems={mockNavigationItems}
             />,
-            { route: '/app/ai-agent/shopify/test-store/overview' },
+            { initialEntries: ['/app/ai-agent/shopify/test-store/overview'] },
         )
 
         const buttons = screen.getAllByRole('radio')
@@ -276,12 +305,14 @@ describe('CollapsedActionDrivenNavigationItems', () => {
     })
 
     it('marks the active section as selected when URL matches a sub-item route', () => {
-        renderWithRouter(
+        render(
             <CollapsedActionDrivenNavigationItems
                 navigationItems={mockNavigationItems}
             />,
             {
-                route: '/app/ai-agent/shopify/test-store/analyze/analytics',
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-store/analyze/analytics',
+                ],
             },
         )
 

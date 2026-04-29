@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -6,7 +7,6 @@ import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 
 import { UserRole } from 'config/types/user'
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { KnowledgeEditorSidePanelURLSnippet } from './KnowledgeEditorSidePanelURLSnippet'
 
@@ -40,7 +40,7 @@ describe('KnowledgeEditorSidePanelURLSnippet', () => {
             end_datetime: new Date().toISOString(),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <KnowledgeEditorSidePanelURLSnippet
                 details={{
                     aiAgentStatus: {
@@ -102,7 +102,7 @@ describe('KnowledgeEditorSidePanelURLSnippet', () => {
 
         const testDate = new Date('2025-06-17')
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <KnowledgeEditorSidePanelURLSnippet
                 details={{
                     aiAgentStatus: { value: true, onChange: jest.fn() },
@@ -132,7 +132,7 @@ describe('KnowledgeEditorSidePanelURLSnippet', () => {
 
         const testDate = new Date('2025-06-17')
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <KnowledgeEditorSidePanelURLSnippet
                 details={{
                     aiAgentStatus: { value: true, onChange: jest.fn() },

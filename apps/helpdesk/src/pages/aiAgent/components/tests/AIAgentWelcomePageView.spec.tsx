@@ -1,14 +1,10 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import type { History } from 'history'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -19,9 +15,7 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import type { AiAgentWelcomePageProps } from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
 import { AIAgentWelcomePageView } from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
@@ -38,10 +32,8 @@ const MOCK_WIZARD_VALUES = {
         },
     },
 }
-
 const SHOP_NAME = 'my-store'
 const SHOP_TYPE = 'shopify'
-
 const DEFAULT_TRIAL_ACCESS_MOCK = {
     hasAnyTrialStarted: false,
     hasAnyTrialActive: false,
@@ -58,7 +50,6 @@ const DEFAULT_TRIAL_ACCESS_MOCK = {
     trialType: TrialType.AiAgent,
     isOnboarded: false,
 }
-
 jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(() => ({
         isAdmin: true,
@@ -71,7 +62,6 @@ jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
         isAiAgentOnboardingNotificationEnabled: true,
     })),
 }))
-
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
@@ -79,13 +69,11 @@ jest.mock('@repo/logging', () => ({
         AiAgentWelcomePageCtaClicked: 'ai-agent-welcome-page-cta-clicked',
     },
 }))
-
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
     useTrialAccess: jest.fn(),
 }))
 const mockUseTrialAccess = require('pages/aiAgent/trial/hooks/useTrialAccess')
     .useTrialAccess as jest.MockedFunction<any>
-
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState', () => ({
     useAiAgentOnboardingState: jest.fn(),
     OnboardingState: {
@@ -97,14 +85,12 @@ jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState', () => ({
 const mockUseAiAgentOnboardingState =
     require('pages/aiAgent/hooks/useAiAgentOnboardingState')
         .useAiAgentOnboardingState as jest.MockedFunction<any>
-
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
     useStoreActivations: jest.fn(),
 }))
 const mockUseStoreActivations =
     require('pages/aiAgent/Activation/hooks/useStoreActivations')
         .useStoreActivations as jest.MockedFunction<any>
-
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps', () => ({
     useTrialModalProps: jest.fn(),
     EXTERNAL_URLS: {},
@@ -112,16 +98,13 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps', () => ({
 const mockUseTrialModalProps =
     require('pages/aiAgent/trial/hooks/useTrialModalProps')
         .useTrialModalProps as jest.MockedFunction<any>
-
 jest.mock('../ShoppingAssistant/utils/eventLogger', () => ({
     logInTrialEventFromPaywall: jest.fn(),
 }))
-
 jest.mock('pages/common/components/TrialTryModal/TrialTryModal', () => ({
     __esModule: true,
     default: jest.fn(() => null),
 }))
-
 jest.mock(
     'pages/common/components/RequestTrialModal/RequestTrialModal',
     () => ({
@@ -129,7 +112,6 @@ jest.mock(
         default: jest.fn(() => null),
     }),
 )
-
 jest.mock(
     'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal',
     () => ({
@@ -137,7 +119,6 @@ jest.mock(
         default: jest.fn(() => null),
     }),
 )
-
 jest.mock(
     'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal',
     () => ({
@@ -149,27 +130,23 @@ jest.mock(
 const mockUpgradePlanModal =
     require('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
         .UpgradePlanModal as jest.Mock
-
 // Mock window.open
 Object.defineProperty(window, 'open', {
     value: jest.fn(),
     writable: true,
 })
-
 jest.mock('pages/aiAgent/utils/extractShopNameFromUrl', () => ({
     extractShopNameFromUrl: jest.fn(),
 }))
 const mockExtractShopNameFromUrl =
     require('pages/aiAgent/utils/extractShopNameFromUrl')
         .extractShopNameFromUrl as jest.MockedFunction<any>
-
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow', () => ({
     useShoppingAssistantTrialFlow: jest.fn(),
 }))
 const mockUseShoppingAssistantTrialFlow =
     require('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
         .useShoppingAssistantTrialFlow as jest.MockedFunction<any>
-
 const defaultState = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
@@ -177,58 +154,55 @@ const defaultState = {
         integrations: [shopifyIntegration, ...chatIntegrationFixtures],
     }),
 } as RootState
-
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
-const queryClient = mockQueryClient()
-
 const defaultProps = {
     accountDomain: 'my-account-domain',
     shopType: 'shopify',
     shopName: 'my-store',
     state: 'loading',
 }
-const renderWithProvider = (
-    props: Partial<AiAgentWelcomePageProps> = defaultProps,
-    history?: History,
-) => {
-    renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(defaultState)}>
-                <AIAgentWelcomePageView {...defaultProps} {...props} />
-            </Provider>
-        </QueryClientProvider>,
-        { history },
-    )
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div>{`${location.pathname}${location.search}`}</div>
 }
 
+const renderWithProvider = (
+    props: Partial<AiAgentWelcomePageProps> = defaultProps,
+    initialEntries = ['/'],
+) => {
+    return render(
+        <>
+            <AIAgentWelcomePageView {...defaultProps} {...props} />
+            <LocationPath />
+        </>,
+        {
+            initialEntries,
+            storeState: defaultState,
+        },
+    )
+}
 describe('<AIAgentWelcomePageView />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         jest.resetModules()
-
         mockUseTrialAccess.mockReturnValue(DEFAULT_TRIAL_ACCESS_MOCK)
-
         mockUseAiAgentOnboardingState.mockReturnValue('onboarded')
-
         mockUseStoreActivations.mockReturnValue({
             storeActivations: [],
             allStoreActivations: {},
         })
-
         mockUseTrialModalProps.mockReturnValue({
             newTrialUpgradePlanModal: { isOpen: false },
             trialRequestModal: { isOpen: false },
             trialFinishSetupModal: {},
             upgradePlanModal: { isOpen: false },
         })
-
         mockExtractShopNameFromUrl.mockReturnValue(SHOP_NAME)
-
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
             getUseShoppingAssistantTrialFlowFixture(),
         )
     })
-
     const assertButtonAndLearnMore = () => {
         expect(
             screen.getByText('Set Up AI Agent', {
@@ -236,10 +210,8 @@ describe('<AIAgentWelcomePageView />', () => {
             }),
         ).toBeInTheDocument()
     }
-
     it('should render static state correctly', () => {
         renderWithProvider()
-
         expect(
             screen.getByText(
                 /Introducing AI Agent with Shopping Assistant: Your new team member that drives sales and automates support in 1:1 conversations./,
@@ -261,168 +233,110 @@ describe('<AIAgentWelcomePageView />', () => {
             ),
         ).toBeInTheDocument()
         expect(screen.getByText(/AI Agent Skills/)).toBeInTheDocument()
-
         assertButtonAndLearnMore()
-
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.AiAgentWelcomePageViewed,
             { version: 'Basic', store: 'my-store' },
         )
     })
-
     it('should redirect to onboarding when Set up AI Agent button is clicked', async () => {
         const user = userEvent.setup()
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithProvider({}, history)
-
+        renderWithProvider()
         const button = screen.getByRole('button', {
             name: /Set Up AI Agent/i,
         })
-
         await act(() => user.click(button))
-
-        expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice`,
-            search: '',
-        })
+        expect(
+            screen.getByText(
+                `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice`,
+            ),
+        ).toBeInTheDocument()
     })
-
     it('should redirect to onboarding with search params when Continue Setup button is clicked', async () => {
         const user = userEvent.setup()
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithProvider(
-            {
-                storeConfiguration:
-                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
-            },
-            history,
-        )
-
+        renderWithProvider({
+            storeConfiguration:
+                getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
+        })
         const button = screen.getByRole('button', {
             name: /Continue Setup/i,
         })
-
         await act(() => user.click(button))
-
-        expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice`,
-            search: `?${WIZARD_UPDATE_QUERY_KEY}=true`,
-        })
+        expect(
+            screen.getByText(
+                `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice?${WIZARD_UPDATE_QUERY_KEY}=true`,
+            ),
+        ).toBeInTheDocument()
     })
-
     it('should render dynamic state for Onboarding Wizard update when storeConfiguration exists', () => {
         renderWithProvider({
             storeConfiguration:
                 getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
         })
-
         expect(
             screen.getByRole('button', {
                 name: /Continue Setup/i,
             }),
         ).toBeInTheDocument()
     })
-
     describe('Automatic onboarding wizard navigation for trial users', () => {
         it('should redirect when all conditions are met', () => {
-            const history = createMemoryHistory()
-            const historyPushSpy = jest.spyOn(history, 'push')
-
             mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 isInAiAgentTrial: true,
             })
-
-            renderWithProvider({}, history)
-
-            expect(historyPushSpy).toHaveBeenCalledWith({
-                pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice`,
-                search: '',
-            })
+            renderWithProvider()
+            expect(
+                screen.getByText(
+                    `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice`,
+                ),
+            ).toBeInTheDocument()
         })
-
         it('should NOT redirect when onboarding state is Loading', () => {
-            const history = createMemoryHistory()
-            const historyPushSpy = jest.spyOn(history, 'push')
-
             mockUseAiAgentOnboardingState.mockReturnValue('loading')
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 isInAiAgentTrial: true,
             })
-
-            renderWithProvider({}, history)
-
-            expect(historyPushSpy).not.toHaveBeenCalled()
+            renderWithProvider()
+            expect(screen.getByText('/')).toBeInTheDocument()
         })
-
         it('should NOT redirect when already onboarded', () => {
-            const history = createMemoryHistory()
-            const historyPushSpy = jest.spyOn(history, 'push')
-
             mockUseAiAgentOnboardingState.mockReturnValue('onboarded')
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 isInAiAgentTrial: true,
             })
-
-            renderWithProvider({}, history)
-
-            expect(historyPushSpy).not.toHaveBeenCalled()
+            renderWithProvider()
+            expect(screen.getByText('/')).toBeInTheDocument()
         })
-
         it('should NOT redirect for ShoppingAssistant trial type', () => {
-            const history = createMemoryHistory()
-            const historyPushSpy = jest.spyOn(history, 'push')
-
             mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 isInAiAgentTrial: false,
             })
-
-            renderWithProvider({}, history)
-
-            expect(historyPushSpy).not.toHaveBeenCalled()
+            renderWithProvider()
+            expect(screen.getByText('/')).toBeInTheDocument()
         })
-
         it('should NOT redirect when trial has not started', () => {
-            const history = createMemoryHistory()
-            const historyPushSpy = jest.spyOn(history, 'push')
-
             mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
             mockUseTrialAccess.mockReturnValue(DEFAULT_TRIAL_ACCESS_MOCK)
-
-            renderWithProvider({}, history)
-
-            expect(historyPushSpy).not.toHaveBeenCalled()
+            renderWithProvider()
+            expect(screen.getByText('/')).toBeInTheDocument()
         })
-
         it('should NOT redirect when not on store page', () => {
-            const history = createMemoryHistory()
-            const historyPushSpy = jest.spyOn(history, 'push')
-
             mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 isInAiAgentTrial: true,
             })
             mockExtractShopNameFromUrl.mockReturnValue('different-store')
-
-            renderWithProvider({}, history)
-
-            expect(historyPushSpy).not.toHaveBeenCalled()
+            renderWithProvider()
+            expect(screen.getByText('/')).toBeInTheDocument()
         })
-
         it('should NOT redirect when trial finish setup modal is open', () => {
-            const history = createMemoryHistory()
-            const historyPushSpy = jest.spyOn(history, 'push')
-
             mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -433,13 +347,10 @@ describe('<AIAgentWelcomePageView />', () => {
                     isTrialFinishSetupModalOpen: true,
                 }),
             )
-
-            renderWithProvider({}, history)
-
-            expect(historyPushSpy).not.toHaveBeenCalled()
+            renderWithProvider()
+            expect(screen.getByText('/')).toBeInTheDocument()
         })
     })
-
     describe('CTA button display based on trial and onboarding state', () => {
         it('should show "Set Up AI Agent" CTA when trial expired and not onboarded', () => {
             mockUseTrialAccess.mockReturnValue({
@@ -447,16 +358,13 @@ describe('<AIAgentWelcomePageView />', () => {
                 hasCurrentStoreTrialExpired: true,
                 isOnboarded: false,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByText('Set Up AI Agent', {
                     selector: 'button span',
                 }),
             ).toBeInTheDocument()
         })
-
         it('should show a book a demo CTA', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -465,16 +373,13 @@ describe('<AIAgentWelcomePageView />', () => {
                 canBookDemo: true,
                 isAdminUser: true,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByRole('button', {
                     name: 'Book a demo',
                 }),
             ).toBeInTheDocument()
         })
-
         it('should show trial CTA when has old Automate plan (gen 5) and not onboarded', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -483,22 +388,18 @@ describe('<AIAgentWelcomePageView />', () => {
                 canSeeTrialCTA: true,
                 isAdminUser: true,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByRole('button', {
                     name: /Try for 14 days/i,
                 }),
             ).toBeInTheDocument()
-
             expect(
                 screen.queryByText('Set Up AI Agent', {
                     selector: 'button span',
                 }),
             ).not.toBeInTheDocument()
         })
-
         it('should NOT show "Set Up AI Agent" CTA when trial expired but already onboarded (with old generation Automate plan)', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -506,16 +407,13 @@ describe('<AIAgentWelcomePageView />', () => {
                 isOnboarded: true,
                 currentAutomatePlan: { generation: 5 },
             })
-
             renderWithProvider()
-
             expect(
                 screen.queryByText('Set Up AI Agent', {
                     selector: 'button span',
                 }),
             ).not.toBeInTheDocument()
         })
-
         it('should NOT show "Set Up AI Agent" CTA when no qualifying conditions are met (no trial, onboarded, old plan)', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -523,32 +421,26 @@ describe('<AIAgentWelcomePageView />', () => {
                 isOnboarded: true,
                 currentAutomatePlan: { generation: 5 },
             })
-
             renderWithProvider()
-
             expect(
                 screen.queryByText('Set Up AI Agent', {
                     selector: 'button span',
                 }),
             ).not.toBeInTheDocument()
         })
-
         it('should show "Set Up AI Agent" CTA when has Automate plan generation 6+', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 currentAutomatePlan: { generation: 6 },
                 isOnboarded: false,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByText('Set Up AI Agent', {
                     selector: 'button span',
                 }),
             ).toBeInTheDocument()
         })
-
         it('should show "Set Up AI Agent" CTA when trial expired and not onboarded (even with old plan)', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -556,9 +448,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 hasCurrentStoreTrialExpired: true,
                 isOnboarded: false,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByText('Set Up AI Agent', {
                     selector: 'button span',
@@ -566,7 +456,6 @@ describe('<AIAgentWelcomePageView />', () => {
             ).toBeInTheDocument()
         })
     })
-
     describe('canStartOnboarding calculation', () => {
         it('should allow onboarding when trial expired is the only qualifying condition', () => {
             mockUseTrialAccess.mockReturnValue({
@@ -577,9 +466,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 isOnboarded: false,
                 trialType: TrialType.ShoppingAssistant,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByText('Set Up AI Agent', {
                     selector: 'button span',
@@ -587,7 +474,6 @@ describe('<AIAgentWelcomePageView />', () => {
             ).toBeInTheDocument()
         })
     })
-
     describe('Trial CTA visibility based on onboarding status', () => {
         it('should show trial CTA when Shopping Assistant user has NOT onboarded AI Agent for current store', () => {
             mockUseTrialAccess.mockReturnValue({
@@ -598,16 +484,13 @@ describe('<AIAgentWelcomePageView />', () => {
                 isAdminUser: true,
                 trialType: TrialType.ShoppingAssistant,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByRole('button', {
                     name: /Try for 14 days/i,
                 }),
             ).toBeInTheDocument()
         })
-
         it('should NOT show trial CTA when Shopping Assistant user HAS onboarded AI Agent for current store', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -617,16 +500,13 @@ describe('<AIAgentWelcomePageView />', () => {
                 isAdminUser: true,
                 trialType: TrialType.ShoppingAssistant,
             })
-
             renderWithProvider()
-
             expect(
                 screen.queryByRole('button', {
                     name: /Try for 14 days/i,
                 }),
             ).not.toBeInTheDocument()
         })
-
         it('should show "Start AI Agent only" when has Automate but AI Agent not onboarded for current store', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -638,13 +518,10 @@ describe('<AIAgentWelcomePageView />', () => {
                 isAdminUser: true,
                 trialType: TrialType.ShoppingAssistant,
             })
-
             renderWithProvider()
-
             // Should show "Start AI Agent only" as tertiary CTA
             expect(screen.getByText(/Start AI Agent only/i)).toBeInTheDocument()
         })
-
         it('should NOT show "Start AI Agent only" when has Automate and AI Agent IS onboarded for current store', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -656,9 +533,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 isAdminUser: true,
                 trialType: TrialType.ShoppingAssistant,
             })
-
             renderWithProvider()
-
             // Should NOT show "Start AI Agent only" when already onboarded
             expect(
                 screen.queryByText(/Start AI Agent only/i),
@@ -670,7 +545,6 @@ describe('<AIAgentWelcomePageView />', () => {
                 }),
             ).not.toBeInTheDocument()
         })
-
         it('should show "Learn more" for Enterprise Admin Shopping Assistant when onboarded', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -682,63 +556,51 @@ describe('<AIAgentWelcomePageView />', () => {
                 isAdminUser: true,
                 trialType: TrialType.ShoppingAssistant,
             })
-
             renderWithProvider()
-
             // Should show "Book a demo" as primary CTA for Enterprise tier
             expect(
                 screen.getByRole('button', {
                     name: /Book a demo/i,
                 }),
             ).toBeInTheDocument()
-
             // Should show "Learn more" as secondary CTA
             expect(screen.getByText(/Learn more/i)).toBeInTheDocument()
-
             // Should NOT show trial CTA
             expect(
                 screen.queryByRole('button', {
                     name: /Try for 14 days/i,
                 }),
             ).not.toBeInTheDocument()
-
             // Should NOT show "Start AI Agent only"
             expect(
                 screen.queryByText(/Start AI Agent only/i),
             ).not.toBeInTheDocument()
         })
     })
-
     describe('Paywall type selection based on trial conditions', () => {
         it('should display AI Agent logo when in AI Agent trial', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 trialType: TrialType.AiAgent,
             })
-
             renderWithProvider()
-
             expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
             expect(
                 screen.queryByAltText('Shopping Assistant Logo'),
             ).not.toBeInTheDocument()
         })
-
         it('should display AI Agent logo when has Automate plan generation 6+', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 currentAutomatePlan: { generation: 6 },
                 trialType: TrialType.ShoppingAssistant,
             })
-
             renderWithProvider()
-
             expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
             expect(
                 screen.queryByAltText('Shopping Assistant Logo'),
             ).not.toBeInTheDocument()
         })
-
         it('should display AI Agent logo when trial expired and not onboarded', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -747,15 +609,12 @@ describe('<AIAgentWelcomePageView />', () => {
                 currentAutomatePlan: { generation: 5 },
                 trialType: TrialType.ShoppingAssistant,
             })
-
             renderWithProvider()
-
             expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
             expect(
                 screen.queryByAltText('Shopping Assistant Logo'),
             ).not.toBeInTheDocument()
         })
-
         it('should display Shopping Assistant logo when neither AI Agent trial nor new Automate plan', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -764,9 +623,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 hasCurrentStoreTrialExpired: false,
                 isOnboarded: true,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByAltText('Shopping Assistant Logo'),
             ).toBeInTheDocument()
@@ -774,7 +631,6 @@ describe('<AIAgentWelcomePageView />', () => {
                 screen.queryByAltText('AI Agent Logo'),
             ).not.toBeInTheDocument()
         })
-
         it('should display Shopping Assistant logo when onboarded with old Automate plan', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -782,9 +638,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 currentAutomatePlan: { generation: 5 },
                 isOnboarded: true,
             })
-
             renderWithProvider()
-
             expect(
                 screen.getByAltText('Shopping Assistant Logo'),
             ).toBeInTheDocument()
@@ -792,7 +646,6 @@ describe('<AIAgentWelcomePageView />', () => {
                 screen.queryByAltText('AI Agent Logo'),
             ).not.toBeInTheDocument()
         })
-
         it('should display AI Agent logo when canStartOnboarding is true via isTrialingSubscription with ShoppingAssistant trial', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -801,28 +654,22 @@ describe('<AIAgentWelcomePageView />', () => {
                 trialType: TrialType.ShoppingAssistant,
                 currentAutomatePlan: { generation: 6 },
             })
-
             renderWithProvider()
-
             expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
             expect(
                 screen.queryByAltText('Shopping Assistant Logo'),
             ).not.toBeInTheDocument()
         })
     })
-
     it('renders UpgradePlanModal when upgradePlanModal.isOpen is true and passes props', () => {
         mockUpgradePlanModal.mockClear()
-
         mockUseTrialModalProps.mockReturnValue({
             newTrialUpgradePlanModal: { isOpen: false },
             trialRequestModal: { isOpen: false },
             trialFinishSetupModal: {},
             upgradePlanModal: { isOpen: true, someModalProp: 'value' },
         })
-
         renderWithProvider()
-
         expect(mockUpgradePlanModal).toHaveBeenCalled()
         const passedProps = mockUpgradePlanModal.mock.calls[0][0]
         expect(passedProps.isOpen).toBe(true)

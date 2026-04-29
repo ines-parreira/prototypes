@@ -28,6 +28,12 @@ const fieldProps = {
     },
 }
 
+type AudienceSegmentWithIdentifier = {
+    id: string
+    identifier?: string
+    name: string
+}
+
 export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     const { control, getValues, setValue } = useFormContext()
     const { currentIntegration } = useJourneyContext()
@@ -79,7 +85,10 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
 
     useEffect(() => {
         if (pendingIdentifiers.length === 0) return
-        const gorgiasItems = gorgiasAudienceSegments?.data ?? []
+        const gorgiasItems =
+            (gorgiasAudienceSegments?.data as
+                | AudienceSegmentWithIdentifier[]
+                | undefined) ?? []
 
         const resolved: { identifier: string; actualId: string }[] = []
         for (const identifier of pendingIdentifiers) {
@@ -134,7 +143,10 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
             })
         }
 
-        const gorgiasItems = gorgiasAudienceSegments?.data ?? []
+        const gorgiasItems =
+            (gorgiasAudienceSegments?.data as
+                | AudienceSegmentWithIdentifier[]
+                | undefined) ?? []
         const mergedGorgiasItems = [
             ...gorgiasItems,
             ...localSegments.filter(

@@ -1,5 +1,6 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { QueryClient } from '@tanstack/react-query'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import { VendorRecommendationRuleCard } from '../VendorRecommendationRuleCard'
 
@@ -7,11 +8,9 @@ jest.mock('models/ecommerce/queries', () => ({
     useGetEcommerceLookupValues: jest.fn(),
     useGetEcommerceProducts: jest.fn(),
 }))
-
 jest.mock('../../hooks/usePaginatedItems', () => ({
     usePaginatedItems: jest.fn(),
 }))
-
 jest.mock('../ItemDrawer', () => ({
     ItemDrawer: ({
         isOpen,
@@ -42,7 +41,6 @@ jest.mock('../ItemDrawer', () => ({
         )
     },
 }))
-
 jest.mock('../RecommendationRuleCard', () => ({
     RecommendationRuleCard: ({
         title,
@@ -76,7 +74,6 @@ jest.mock('../RecommendationRuleCard', () => ({
         </div>
     ),
 }))
-
 const mockUseGetEcommerceLookupValues = jest.requireMock(
     'models/ecommerce/queries',
 ).useGetEcommerceLookupValues
@@ -86,19 +83,16 @@ const mockUseGetEcommerceProducts = jest.requireMock(
 const mockUsePaginatedItems = jest.requireMock(
     '../../hooks/usePaginatedItems',
 ).usePaginatedItems
-
 describe('VendorRecommendationRuleCard', () => {
-    let queryClient: QueryClient
+    let __queryClient: QueryClient
     const mockOnUpsert = jest.fn()
-
     beforeEach(() => {
-        queryClient = new QueryClient({
+        __queryClient = new QueryClient({
             defaultOptions: {
                 queries: { retry: false },
             },
         })
         jest.clearAllMocks()
-
         mockUseGetEcommerceLookupValues.mockReturnValue({
             data: {
                 data: [
@@ -113,7 +107,6 @@ describe('VendorRecommendationRuleCard', () => {
             },
             isLoading: false,
         })
-
         mockUseGetEcommerceProducts.mockReturnValue({
             data: {
                 data: [
@@ -151,7 +144,6 @@ describe('VendorRecommendationRuleCard', () => {
             },
             isLoading: false,
         })
-
         mockUsePaginatedItems.mockReturnValue({
             paginatedItems: [
                 { id: 'Nike', title: 'Nike' },
@@ -166,10 +158,8 @@ describe('VendorRecommendationRuleCard', () => {
             setSearch: jest.fn(),
             resetPagination: jest.fn(),
         })
-
         mockOnUpsert.mockResolvedValue(undefined)
     })
-
     const renderComponent = (props = {}) => {
         const defaultProps = {
             type: 'promote' as const,
@@ -195,24 +185,16 @@ describe('VendorRecommendationRuleCard', () => {
             vendorsWithExceptions: ['Nike'],
             ...props,
         }
-
-        return render(
-            <QueryClientProvider client={queryClient}>
-                <VendorRecommendationRuleCard {...defaultProps} />
-            </QueryClientProvider>,
-        )
+        return render(<VendorRecommendationRuleCard {...defaultProps} />, {})
     }
-
     it('should render promote type correctly', () => {
         const { getByText } = renderComponent({ type: 'promote' })
-
         expect(getByText('Promote vendors')).toBeInTheDocument()
         expect(
             getByText('Choose vendors to prioritize in recommendations.'),
         ).toBeInTheDocument()
         expect(getByText('Total: 2')).toBeInTheDocument()
     })
-
     it('should render exclude type correctly', () => {
         const { getByText } = renderComponent({
             type: 'exclude',
@@ -231,89 +213,62 @@ describe('VendorRecommendationRuleCard', () => {
                 },
             },
         })
-
         expect(getByText('Exclude vendors')).toBeInTheDocument()
         expect(
             getByText('Choose vendors to exclude from recommendations.'),
         ).toBeInTheDocument()
         expect(getByText('Total: 2')).toBeInTheDocument()
     })
-
     it('should show loading state when rules are loading', () => {
         const { getByText } = renderComponent({ isLoadingRules: true })
-
         expect(getByText('Loading...')).toBeInTheDocument()
     })
-
     it('should display selected vendors correctly', () => {
         const { getByText } = renderComponent()
-
         expect(getByText('Nike')).toBeInTheDocument()
         expect(getByText('Adidas')).toBeInTheDocument()
     })
-
     it('should handle vendor deletion', async () => {
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Delete Nike'))
-
         await waitFor(() => {
             expect(mockOnUpsert).toHaveBeenCalledWith(['Adidas'])
         })
     })
-
     it('should open selection drawer when add button clicked', () => {
         const { getByText, queryByTestId } = renderComponent()
-
         expect(queryByTestId('item-selection-drawer')).not.toBeInTheDocument()
-
         fireEvent.click(getByText('Select vendors'))
-
         expect(queryByTestId('item-selection-drawer')).toBeInTheDocument()
         expect(getByText('Select vendors to promote')).toBeInTheDocument()
     })
-
     it('should open see all drawer when see all clicked', () => {
         const { getByText, getAllByTestId } = renderComponent()
-
         fireEvent.click(getByText('See All'))
-
         const drawers = getAllByTestId('item-selection-drawer')
         expect(drawers).toHaveLength(1)
         expect(getByText('All promoted vendors')).toBeInTheDocument()
     })
-
     it('should open vendor products drawer when button is clicked', () => {
         const { getByText, getAllByTestId, queryByTestId } = renderComponent()
-
         fireEvent.click(getByText('Show Nike products'))
-
         const drawers = getAllByTestId('item-selection-drawer')
         expect(drawers).toHaveLength(1)
         expect(getByText('Products within vendor: Nike')).toBeInTheDocument()
-
         fireEvent.click(getByText('Close'))
-
         expect(queryByTestId('item-selection-drawer')).not.toBeInTheDocument()
     })
-
     it('should close selection drawer', () => {
         const { getByText, queryByTestId } = renderComponent()
-
         fireEvent.click(getByText('Select vendors'))
         expect(queryByTestId('item-selection-drawer')).toBeInTheDocument()
-
         fireEvent.click(getByText('Close'))
-
         expect(queryByTestId('item-selection-drawer')).not.toBeInTheDocument()
     })
-
     it('should handle vendor selection submission', async () => {
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Select vendors'))
         fireEvent.click(getByText('Submit'))
-
         await waitFor(() => {
             expect(mockOnUpsert).toHaveBeenCalledWith([
                 'vendor1',
@@ -322,19 +277,15 @@ describe('VendorRecommendationRuleCard', () => {
             ])
         })
     })
-
     it('should only load vendors when drawer is opened', () => {
         const { getByText } = renderComponent()
-
         expect(mockUseGetEcommerceLookupValues).toHaveBeenCalledWith(
             'vendor',
             123,
             expect.any(Object),
             { enabled: false },
         )
-
         fireEvent.click(getByText('Select vendors'))
-
         expect(mockUseGetEcommerceLookupValues).toHaveBeenCalledWith(
             'vendor',
             123,
@@ -342,7 +293,6 @@ describe('VendorRecommendationRuleCard', () => {
             { enabled: true },
         )
     })
-
     it('should handle empty vendor list', () => {
         mockUsePaginatedItems.mockReturnValue({
             paginatedItems: [],
@@ -355,7 +305,6 @@ describe('VendorRecommendationRuleCard', () => {
             setSearch: jest.fn(),
             resetPagination: jest.fn(),
         })
-
         const { getByText } = renderComponent({
             rules: {
                 promote: {
@@ -372,20 +321,15 @@ describe('VendorRecommendationRuleCard', () => {
                 },
             },
         })
-
         expect(getByText('Total: 0')).toBeInTheDocument()
     })
-
     it('should show correct drawer titles for exclude type', () => {
         const { getByText } = renderComponent({ type: 'exclude' })
-
         fireEvent.click(getByText('Select vendors'))
         expect(getByText('Select vendors to exclude')).toBeInTheDocument()
-
         fireEvent.click(getByText('See All'))
         expect(getByText('All excluded vendors')).toBeInTheDocument()
     })
-
     it('should handle pagination in selection drawer', () => {
         mockUseGetEcommerceLookupValues.mockReturnValue({
             data: {
@@ -397,9 +341,7 @@ describe('VendorRecommendationRuleCard', () => {
             },
             isLoading: false,
         })
-
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Select vendors'))
         expect(mockUseGetEcommerceLookupValues).toHaveBeenLastCalledWith(
             'vendor',
@@ -407,7 +349,6 @@ describe('VendorRecommendationRuleCard', () => {
             { limit: 25, cursor: null, value: undefined },
             { enabled: true },
         )
-
         fireEvent.click(getByText('Next'))
         expect(mockUseGetEcommerceLookupValues).toHaveBeenLastCalledWith(
             'vendor',
@@ -415,7 +356,6 @@ describe('VendorRecommendationRuleCard', () => {
             { limit: 25, cursor: 'next_page', value: undefined },
             { enabled: true },
         )
-
         fireEvent.click(getByText('Prev'))
         expect(mockUseGetEcommerceLookupValues).toHaveBeenLastCalledWith(
             'vendor',
@@ -424,7 +364,6 @@ describe('VendorRecommendationRuleCard', () => {
             { enabled: true },
         )
     })
-
     it('should handle pagination in tag products drawer', () => {
         mockUseGetEcommerceProducts.mockReturnValue({
             data: {
@@ -436,23 +375,19 @@ describe('VendorRecommendationRuleCard', () => {
             },
             isLoading: false,
         })
-
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('Show Adidas products'))
         expect(mockUseGetEcommerceProducts).toHaveBeenLastCalledWith(
             123,
             { limit: 25, cursor: null, data_vendor: 'Adidas' },
             { enabled: true },
         )
-
         fireEvent.click(getByText('Next'))
         expect(mockUseGetEcommerceProducts).toHaveBeenLastCalledWith(
             123,
             { limit: 25, cursor: 'next_page', data_vendor: 'Adidas' },
             { enabled: true },
         )
-
         fireEvent.click(getByText('Prev'))
         expect(mockUseGetEcommerceProducts).toHaveBeenLastCalledWith(
             123,
@@ -460,23 +395,18 @@ describe('VendorRecommendationRuleCard', () => {
             { enabled: true },
         )
     })
-
     it('should handle search in selection drawer', () => {
         const { getByText, getByPlaceholderText } = renderComponent()
-
         fireEvent.click(getByText('Select vendors'))
-
         expect(mockUseGetEcommerceLookupValues).toHaveBeenLastCalledWith(
             'vendor',
             123,
             { cursor: null, limit: 25, value: undefined },
             { enabled: true },
         )
-
         fireEvent.change(getByPlaceholderText('Search vendors'), {
             target: { value: 'summer' },
         })
-
         expect(mockUseGetEcommerceLookupValues).toHaveBeenLastCalledWith(
             'vendor',
             123,
@@ -484,7 +414,6 @@ describe('VendorRecommendationRuleCard', () => {
             { enabled: true },
         )
     })
-
     it('should reset pagination when see all drawer closes', () => {
         const mockResetPagination = jest.fn()
         mockUsePaginatedItems.mockReturnValue({
@@ -498,26 +427,19 @@ describe('VendorRecommendationRuleCard', () => {
             setSearch: jest.fn(),
             resetPagination: mockResetPagination,
         })
-
         const { getByText } = renderComponent()
-
         fireEvent.click(getByText('See All'))
         fireEvent.click(getByText('Close'))
-
         expect(mockResetPagination).toHaveBeenCalled()
     })
-
     it('should render correctly when data hooks are not enabled yet', () => {
         mockUseGetEcommerceLookupValues.mockReturnValue({
             isLoading: false,
         })
-
         mockUseGetEcommerceProducts.mockReturnValue({
             isLoading: false,
         })
-
         const { getByText } = renderComponent()
-
         expect(getByText('Promote vendors')).toBeInTheDocument()
         expect(
             getByText('Choose vendors to prioritize in recommendations.'),

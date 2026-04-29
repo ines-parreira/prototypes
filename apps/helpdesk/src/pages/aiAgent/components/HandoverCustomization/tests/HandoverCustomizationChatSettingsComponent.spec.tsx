@@ -1,10 +1,8 @@
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import { useHandoverCustomizationChatSettings } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { renderWithRouter } from 'utils/testing'
 
 import { HandoverCustomizationChatSettingsComponent } from '../HandoverCustomizationChatSettingsComponent'
 
@@ -77,7 +75,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
     })
 
     it('renders the component correctly', () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <HandoverCustomizationChatSettingsComponent
                 {...mockProps}
                 setIsFormDirty={() => jest.fn()}
@@ -106,7 +104,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             monitoredChatIntegrationIds: [],
         }
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <HandoverCustomizationChatSettingsComponent
                 {...props}
                 setIsFormDirty={() => jest.fn()}
@@ -145,7 +143,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...props}
                     setIsFormDirty={() => jest.fn()}
@@ -161,7 +159,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         })
 
         it('should render the chat selection if there is more than one chat channel', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...mockProps}
                     monitoredChatIntegrationIds={[14, 15]}
@@ -216,7 +214,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...props}
                     setIsFormDirty={() => jest.fn()}
@@ -234,7 +232,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14, 15],
             }
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...props}
                     setIsFormDirty={() => jest.fn()}
@@ -252,7 +250,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14, 15],
             }
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...props}
                     setIsFormDirty={() => jest.fn()}
@@ -269,7 +267,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...props}
                     setIsFormDirty={() => jest.fn()}
@@ -292,7 +290,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...props}
                     setIsFormDirty={() => jest.fn()}
@@ -315,7 +313,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...props}
                     setIsFormDirty={() => jest.fn()}
@@ -341,7 +339,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 isHandoverSectionDisabled: true,
             })
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...mockProps}
                     setIsFormDirty={() => jest.fn()}
@@ -361,7 +359,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 isHandoverSectionDisabled: true,
             })
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...mockProps}
                     setIsFormDirty={() => jest.fn()}
@@ -381,7 +379,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 isHandoverSectionDisabled: true,
             })
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...mockProps}
                     setIsFormDirty={() => jest.fn()}
@@ -406,7 +404,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...props}
                     setIsFormDirty={() => jest.fn()}
@@ -427,7 +425,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         })
 
         it('should close drawer when clicking on cancel button if there are changes', async () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <HandoverCustomizationChatSettingsComponent
                     {...mockProps}
                     setIsFormDirty={() => jest.fn()}
@@ -451,7 +449,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
     })
 
     it('renders chat handover behavior link with correct URL', () => {
-        renderWithRouter(
+        render(
             <HandoverCustomizationChatSettingsComponent
                 {...mockProps}
                 setIsFormDirty={() => jest.fn()}

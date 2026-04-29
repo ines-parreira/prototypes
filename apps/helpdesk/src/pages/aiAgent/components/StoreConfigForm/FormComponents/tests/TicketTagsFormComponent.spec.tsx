@@ -1,8 +1,7 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, queryByDisplayValue, within } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { renderWithRouter } from 'utils/testing'
 
 import type { Props } from '../TicketTagsFormComponent'
 import { TicketTagsFormComponent } from '../TicketTagsFormComponent'
@@ -30,7 +29,7 @@ describe('TicketTagsFormComponent', () => {
 
     describe('Store configuration Ticket tags', () => {
         it('Should automatically render store configuration stored ticket tags', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <TicketTagsFormComponent {...mockProps} />,
             )
 
@@ -40,7 +39,7 @@ describe('TicketTagsFormComponent', () => {
             expect(storeTagList).toBeDefined()
         })
         it('Each store configuration ticket tag can be delete through the delete button next to it', () => {
-            const { container, rerender } = renderWithRouter(
+            const { container, rerender } = render(
                 <TicketTagsFormComponent {...mockProps} />,
             )
 
@@ -58,7 +57,7 @@ describe('TicketTagsFormComponent', () => {
             ).not.toBeInTheDocument()
         })
         it('should update the value of the description', async () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <TicketTagsFormComponent {...mockProps} />,
             )
 
@@ -75,7 +74,7 @@ describe('TicketTagsFormComponent', () => {
     })
     describe('Select filter', () => {
         it('The select filter component is rendered with "Add Ticket Tags" as its title"', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <TicketTagsFormComponent {...mockProps} />,
             )
 
@@ -84,7 +83,7 @@ describe('TicketTagsFormComponent', () => {
             ).toBeInTheDocument()
         })
         it('The search placeholder should be "Search Ticket Tags"', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <TicketTagsFormComponent {...mockProps} />,
             )
 
@@ -99,7 +98,7 @@ describe('TicketTagsFormComponent', () => {
 
         describe('On close', () => {
             it('Selected tags should be appended to the store configuration custom tags', () => {
-                const { container } = renderWithRouter(
+                const { container } = render(
                     <TicketTagsFormComponent {...mockProps} />,
                 )
 
@@ -119,7 +118,7 @@ describe('TicketTagsFormComponent', () => {
                 ])
             })
             it('Selected fields should not re-appear in available selectable custom fields', () => {
-                const { container } = renderWithRouter(
+                const { container } = render(
                     <TicketTagsFormComponent {...mockProps} />,
                 )
 
@@ -128,7 +127,7 @@ describe('TicketTagsFormComponent', () => {
         })
         describe('All selectable custom fields have been checked', () => {
             it('The add button should be disabled', () => {
-                const { container } = renderWithRouter(
+                const { container } = render(
                     <TicketTagsFormComponent
                         {...mockProps}
                         tags={[

@@ -1,31 +1,23 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { useGetStoreApps } from 'models/workflows/queries'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import StoreAppsContext from '../StoreAppsContext'
 import StoreAppsProvider from '../StoreAppsProvider'
 
 jest.mock('models/workflows/queries')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
-
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
-
 const mockAddStoreApp = jest.fn()
-
 mockUseGetStoreApps.mockReturnValue({
     data: [],
     isInitialLoading: false,
 } as unknown as ReturnType<typeof useGetStoreApps>)
 mockUseAddStoreApp.mockReturnValue(mockAddStoreApp)
-
 describe('<StoreAppsProvider />', () => {
     it('should use recharge integration id from store app', () => {
         mockUseGetStoreApps.mockReturnValue({
@@ -40,38 +32,40 @@ describe('<StoreAppsProvider />', () => {
             ],
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetStoreApps>)
-
-        renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
+        render(
+            <StoreAppsProvider storeName="acme" storeType="shopify">
+                <StoreAppsContext.Consumer>
+                    {(contextValue) => {
+                        return `Recharge integration: ${contextValue.recharge}`
+                    }}
+                </StoreAppsContext.Consumer>
+            </StoreAppsProvider>,
+            {
+                storeState: {
                     integrations: fromJS({
                         integrations: [],
                     }),
-                })}
-            >
-                <StoreAppsProvider storeName="acme" storeType="shopify">
-                    <StoreAppsContext.Consumer>
-                        {(contextValue) => {
-                            return `Recharge integration: ${contextValue.recharge}`
-                        }}
-                    </StoreAppsContext.Consumer>
-                </StoreAppsProvider>
-            </Provider>,
+                },
+            },
         )
-
         expect(screen.getByText('Recharge integration: 1')).toBeInTheDocument()
         expect(mockAddStoreApp).not.toHaveBeenCalled()
     })
-
     it('should use recharge integration from state and add store app', () => {
         mockUseGetStoreApps.mockReturnValue({
             data: [],
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetStoreApps>)
-
-        renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
+        render(
+            <StoreAppsProvider storeName="acme" storeType="shopify">
+                <StoreAppsContext.Consumer>
+                    {(contextValue) => {
+                        return `Recharge integration: ${contextValue.recharge}`
+                    }}
+                </StoreAppsContext.Consumer>
+            </StoreAppsProvider>,
+            {
+                storeState: {
                     integrations: fromJS({
                         integrations: [
                             {
@@ -88,22 +82,12 @@ describe('<StoreAppsProvider />', () => {
                             },
                         ],
                     }),
-                })}
-            >
-                <StoreAppsProvider storeName="acme" storeType="shopify">
-                    <StoreAppsContext.Consumer>
-                        {(contextValue) => {
-                            return `Recharge integration: ${contextValue.recharge}`
-                        }}
-                    </StoreAppsContext.Consumer>
-                </StoreAppsProvider>
-            </Provider>,
+                },
+            },
         )
-
         expect(screen.getByText('Recharge integration: 1')).toBeInTheDocument()
         expect(mockAddStoreApp).toHaveBeenCalled()
     })
-
     it("should use recharge integration from store app and don't add store app as it already exists", () => {
         mockUseGetStoreApps.mockReturnValue({
             data: [
@@ -117,10 +101,16 @@ describe('<StoreAppsProvider />', () => {
             ],
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetStoreApps>)
-
-        renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
+        render(
+            <StoreAppsProvider storeName="acme" storeType="shopify">
+                <StoreAppsContext.Consumer>
+                    {(contextValue) => {
+                        return `Recharge integration: ${contextValue.recharge}`
+                    }}
+                </StoreAppsContext.Consumer>
+            </StoreAppsProvider>,
+            {
+                storeState: {
                     integrations: fromJS({
                         integrations: [
                             {
@@ -137,18 +127,9 @@ describe('<StoreAppsProvider />', () => {
                             },
                         ],
                     }),
-                })}
-            >
-                <StoreAppsProvider storeName="acme" storeType="shopify">
-                    <StoreAppsContext.Consumer>
-                        {(contextValue) => {
-                            return `Recharge integration: ${contextValue.recharge}`
-                        }}
-                    </StoreAppsContext.Consumer>
-                </StoreAppsProvider>
-            </Provider>,
+                },
+            },
         )
-
         expect(screen.getByText('Recharge integration: 1')).toBeInTheDocument()
         expect(mockAddStoreApp).not.toHaveBeenCalled()
     })

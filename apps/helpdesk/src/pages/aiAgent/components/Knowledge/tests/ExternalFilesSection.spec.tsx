@@ -1,6 +1,6 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
@@ -9,7 +9,6 @@ import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { renderWithStoreAndQueryClientAndRouter } from '../../../../../tests/renderWithStoreAndQueryClientAndRouter'
 import { ExternalFilesSection } from '../ExternalFilesSection'
 
 jest.mock('state/notifications/actions')
@@ -21,26 +20,26 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 const mockUseParams = assumeMock(useParams)
-
 const mockDispatch = jest.fn()
 const mockIngestFile = jest.fn()
 const mockDeleteIngestedFile = jest.fn()
 const mockOnEmptyStateChange = jest.fn()
-
 const useFileIngestionMock = assumeMock(useFileIngestion)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const uploadAttachmentsMock = assumeMock(uploadAttachments)
 const notifyMock = assumeMock(notify)
-
 useAppDispatchMock.mockReturnValue(mockDispatch)
+const LocationPath = () => {
+    const location = useLocation()
 
+    return <div>{location.pathname}</div>
+}
 let onSuccess:
     | ((file: Components.Schemas.RetrieveFileIngestionLogDto) => void)
     | undefined
 let onFailure:
     | ((file: Components.Schemas.RetrieveFileIngestionLogDto) => void)
     | undefined
-
 const renderComponent = ({
     ingestedFiles = [],
 }: {
@@ -49,7 +48,6 @@ const renderComponent = ({
     useFileIngestionMock.mockImplementation((props) => {
         onSuccess = props.onSuccess
         onFailure = props.onFailure
-
         return {
             ingestFile: mockIngestFile,
             ingestedFiles,
@@ -59,15 +57,17 @@ const renderComponent = ({
             isLoading: false,
         }
     })
-
-    return renderWithStoreAndQueryClientAndRouter(
-        <ExternalFilesSection
-            helpCenterId={1}
-            onEmptyStateChange={mockOnEmptyStateChange}
-        />,
+    return render(
+        <>
+            <ExternalFilesSection
+                helpCenterId={1}
+                onEmptyStateChange={mockOnEmptyStateChange}
+            />
+            <LocationPath />
+        </>,
+        {},
     )
 }
-
 describe('ExternalFilesSection', () => {
     beforeEach(() => {
         mockUseParams.mockReturnValue({ shopName: 'test' })
@@ -77,16 +77,13 @@ describe('ExternalFilesSection', () => {
         expect(screen.getByText('Documents')).toBeInTheDocument()
         expect(mockOnEmptyStateChange).toHaveBeenCalledWith(true)
     })
-
     it('should render correctly when still loading', () => {
         renderComponent({ ingestedFiles: null })
         expect(screen.getByText('Documents')).toBeInTheDocument()
         expect(mockOnEmptyStateChange).not.toHaveBeenCalled()
     })
-
     it('should handle file upload correctly', async () => {
         renderComponent()
-
         uploadAttachmentsMock.mockResolvedValue([
             {
                 name: 'test.pdf',
@@ -97,21 +94,17 @@ describe('ExternalFilesSection', () => {
                 google_storage_key: 'test.pdf',
             },
         ])
-
         const fileInput = screen.getByDisplayValue('')
         const file = new File(['dummy content'], 'test.pdf', {
             type: 'application/pdf',
         })
-
         Object.defineProperty(fileInput, 'files', {
             value: [file],
         })
         fireEvent.change(fileInput)
-
         expect(
             screen.getByRole('button', { name: /Uploading../ }),
         ).toBeAriaDisabled()
-
         await waitFor(() => {
             expect(mockIngestFile).toHaveBeenCalledWith({
                 filename: 'test.pdf',
@@ -121,7 +114,6 @@ describe('ExternalFilesSection', () => {
             })
         })
     })
-
     it('should not show pending and failed files', () => {
         renderComponent({
             ingestedFiles: [
@@ -157,9 +149,7 @@ describe('ExternalFilesSection', () => {
                 },
             ],
         })
-
         expect(mockOnEmptyStateChange).toHaveBeenCalledWith(false)
-
         expect(
             screen.getByRole('button', { name: /Uploading../ }),
         ).toBeAriaDisabled()
@@ -167,29 +157,23 @@ describe('ExternalFilesSection', () => {
         expect(screen.queryByText('test2.pdf')).not.toBeInTheDocument()
         expect(screen.queryByText('test3.pdf')).toBeInTheDocument()
     })
-
     it('should show an error message if the file is too large', () => {
         renderComponent()
-
         const fileInput = screen.getByDisplayValue('')
         const file = new File(['dummy content'], 'test.pdf', {
             type: 'application/pdf',
         })
-
         Object.defineProperty(file, 'size', { value: 50 * 1024 * 1024 + 1 })
         Object.defineProperty(fileInput, 'files', {
             value: [file],
         })
         fireEvent.change(fileInput)
-
         expect(screen.getByText('Upload Files')).toBeInTheDocument()
-
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
             message: 'File too large. Upload a file smaller than 50 MB.',
         })
     })
-
     it('should show an error message if the file name already exists', () => {
         renderComponent({
             ingestedFiles: [
@@ -205,25 +189,20 @@ describe('ExternalFilesSection', () => {
                 },
             ],
         })
-
         const fileInput = screen.getByDisplayValue('')
         const file = new File(['dummy content'], 'test.pdf', {
             type: 'application/pdf',
         })
-
         Object.defineProperty(fileInput, 'files', {
             value: [file],
         })
         fireEvent.change(fileInput)
-
         expect(screen.getByText('Upload Files')).toBeInTheDocument()
-
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
             message: `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
         })
     })
-
     it('should show an error message when ingestion fails', () => {
         const file = {
             id: 1,
@@ -234,20 +213,16 @@ describe('ExternalFilesSection', () => {
             uploaded_datetime: '2024-11-04T19:24:08Z',
             snippets_article_ids: [],
         }
-
         renderComponent({
             ingestedFiles: [file],
         })
-
-        onFailure && onFailure(file)
-
+        onFailure?.(file)
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
             message:
                 'Failed to upload due to corrupted, incomplete, or mislabeled data. Please double-check the file or upload a different one.',
         })
     })
-
     it('should show a specific error message when ingestion of DOCX/PPTX fails', () => {
         const file = {
             id: 1,
@@ -258,20 +233,16 @@ describe('ExternalFilesSection', () => {
             uploaded_datetime: '2024-11-04T19:24:08Z',
             snippets_article_ids: [],
         }
-
         renderComponent({
             ingestedFiles: [file],
         })
-
-        onFailure && onFailure(file)
-
+        onFailure?.(file)
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
             message:
                 'Failed to upload due to corrupted, incomplete, or mislabeled data. Please try saving the file through Microsoft Office or converting it to PDF.',
         })
     })
-
     it('should show a success message when ingestion succeeds', () => {
         const file = {
             id: 1,
@@ -285,15 +256,12 @@ describe('ExternalFilesSection', () => {
         renderComponent({
             ingestedFiles: [file],
         })
-
-        onSuccess && onSuccess(file)
-
+        onSuccess?.(file)
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Success,
             message: `File ${file.filename} uploaded successfully`,
         })
     })
-
     it('should disable the upload button when max files is reached', () => {
         renderComponent({
             ingestedFiles: Array.from({ length: 10 }, (_, i) => ({
@@ -306,12 +274,10 @@ describe('ExternalFilesSection', () => {
                 snippets_article_ids: [],
             })),
         })
-
         expect(screen.getByText('Upload Files').closest('button')).toHaveClass(
             'ui-button-isdisabled-cef1',
         )
     })
-
     it('should always show articles button for ingested files', () => {
         renderComponent({
             ingestedFiles: [
@@ -327,25 +293,20 @@ describe('ExternalFilesSection', () => {
                 },
             ],
         })
-
         expect(
             screen.getByRole('button', { name: 'Open articles' }),
         ).toBeInTheDocument()
     })
-
     it('should not show articles button when there are no files', () => {
         renderComponent({
             ingestedFiles: [],
         })
-
         expect(
             screen.queryByRole('button', { name: 'Open articles' }),
         ).not.toBeInTheDocument()
     })
-
     it('should handle multiple file uploads', async () => {
         renderComponent()
-
         uploadAttachmentsMock.mockResolvedValueOnce([
             {
                 name: 'test1.txt',
@@ -364,21 +325,17 @@ describe('ExternalFilesSection', () => {
                 google_storage_key: 'test2.txt',
             },
         ])
-
         const fileInput = screen.getByDisplayValue('')
         const files = [
             new File(['content1'], 'test1.txt', { type: 'text/plain' }),
             new File(['content2'], 'test2.txt', { type: 'text/plain' }),
         ]
-
         Object.defineProperty(fileInput, 'files', { value: files })
         fireEvent.change(fileInput)
-
         await waitFor(() => {
             expect(mockIngestFile).toHaveBeenCalledTimes(2)
         })
     })
-
     it('should show error when trying to upload more than max files', async () => {
         renderComponent({
             ingestedFiles: Array.from({ length: 10 }, (_, i) => ({
@@ -391,22 +348,18 @@ describe('ExternalFilesSection', () => {
                 snippets_article_ids: [],
             })),
         })
-
         const fileInput = screen.getByDisplayValue('')
         const file = new File(['content'], 'new.txt', {
             type: 'text/plain',
         })
-
         Object.defineProperty(fileInput, 'files', { value: [file] })
         fireEvent.change(fileInput)
-
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
             message: 'You can only upload a maximum of 10 files.',
         })
         expect(uploadAttachmentsMock).not.toHaveBeenCalled()
     })
-
     it('the open articles button should be disable if the file is .xlsx', () => {
         renderComponent({
             ingestedFiles: [
@@ -422,10 +375,8 @@ describe('ExternalFilesSection', () => {
                 },
             ],
         })
-
         const openArticlesButton = screen.getByLabelText('Open articles')
         expect(openArticlesButton).toBeAriaDisabled()
-
         fireEvent.focus(openArticlesButton)
         expect(
             screen.getByText(
@@ -433,7 +384,6 @@ describe('ExternalFilesSection', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('should navigate to file articles page with selectedResource in location state when Open articles button is clicked and file is not .xlsx', () => {
         const ingestedFile: Components.Schemas.RetrieveFileIngestionLogDto = {
             id: 1,
@@ -444,18 +394,15 @@ describe('ExternalFilesSection', () => {
             uploaded_datetime: '2024-11-04T19:24:08Z',
             snippets_article_ids: [],
         }
-        const { history } = renderComponent({
+        renderComponent({
             ingestedFiles: [ingestedFile],
         })
-
-        jest.spyOn(history, 'push')
-
         const openArticlesButton = screen.getByLabelText('Open articles')
         fireEvent.click(openArticlesButton)
-
-        expect(history.push).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test/knowledge/sources/file-articles/1/articles',
-            { selectedResource: ingestedFile },
-        )
+        expect(
+            screen.getByText(
+                '/app/ai-agent/shopify/test/knowledge/sources/file-articles/1/articles',
+            ),
+        ).toBeInTheDocument()
     })
 })

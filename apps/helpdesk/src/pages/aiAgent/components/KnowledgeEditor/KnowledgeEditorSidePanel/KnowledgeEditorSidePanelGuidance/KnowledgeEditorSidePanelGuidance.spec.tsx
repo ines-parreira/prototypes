@@ -1,10 +1,10 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import type { GuidanceImpactData } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 import { KnowledgeEditorSidePanelGuidance } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const mockToggleVisibility = jest.fn()
 const mockUseGuidanceStore = jest.fn()
@@ -175,9 +175,7 @@ describe('KnowledgeEditorSidePanelGuidance', () => {
     })
 
     it('renders all sections when linked intents feature flag is enabled', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <KnowledgeEditorSidePanelGuidance />,
-        )
+        render(<KnowledgeEditorSidePanelGuidance />)
 
         expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.getByText('Linked intents')).toBeInTheDocument()
@@ -187,9 +185,7 @@ describe('KnowledgeEditorSidePanelGuidance', () => {
 
     it('does not render linked intents section when feature flag is disabled', () => {
         mockUseFlag.mockReturnValue(false)
-        renderWithStoreAndQueryClientAndRouter(
-            <KnowledgeEditorSidePanelGuidance />,
-        )
+        render(<KnowledgeEditorSidePanelGuidance />)
 
         expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.queryByText('Linked intents')).not.toBeInTheDocument()
@@ -206,9 +202,7 @@ describe('KnowledgeEditorSidePanelGuidance', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
-            <KnowledgeEditorSidePanelGuidance />,
-        )
+        render(<KnowledgeEditorSidePanelGuidance />)
 
         expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.getByText('Linked intents')).toBeInTheDocument()

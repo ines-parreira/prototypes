@@ -1,11 +1,8 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { useLocation } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -26,45 +23,36 @@ import {
 } from 'pages/aiAgent/Onboarding_V2/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 // Mock the useShopifyIntegrations hook
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useShopifyIntegrations')
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 jest.mock('pages/aiAgent/hooks/useStoreConfigurationForAccount')
-
 const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 const mockUseStoreConfigurationForAccount =
     useStoreConfigurationForAccount as jest.Mock
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding')
 const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding')
 const useCreateOnboardingMock = assumeMock(useCreateOnboarding)
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
 const useAiAgentScopesForAutomationPlanMock = assumeMock(
     useAiAgentScopesForAutomationPlan,
 )
-
-const queryClient = new QueryClient()
-
 const goToStep = jest.fn()
 const setIsStoreSelected = jest.fn()
+const LocationPath = () => {
+    const location = useLocation()
 
-let history = createMemoryHistory()
-
-const mockStore = configureMockStore<RootState, StoreDispatch>()
-
+    return <div>{location.pathname}</div>
+}
 const defaultState = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
@@ -72,7 +60,6 @@ const defaultState = {
         integrations: [shopifyIntegration, ...chatIntegrationFixtures],
     }),
 } as RootState
-
 const renderComponent = (
     shopifyIntegrations: StoreIntegration[] = [],
     storeConfigurations: StoreConfiguration[] = [],
@@ -82,28 +69,23 @@ const renderComponent = (
         storeConfigurations,
         isLoading: false,
     })
-
-    return renderWithRouter(
+    return render(
         <>
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <ShopifyIntegrationStep
-                        currentStep={0}
-                        totalSteps={4}
-                        goToStep={goToStep}
-                        setIsStoreSelected={setIsStoreSelected}
-                    />
-                </Provider>
-            </QueryClientProvider>
+            <ShopifyIntegrationStep
+                currentStep={0}
+                totalSteps={4}
+                goToStep={goToStep}
+                setIsStoreSelected={setIsStoreSelected}
+            />
+            <LocationPath />
         </>,
-        { history },
+        {
+            storeState: defaultState,
+        },
     )
 }
-
 describe('ShopifyIntegrationStep', () => {
     beforeEach(() => {
-        history = createMemoryHistory()
-
         // Populate the return values of the mocked hooks
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: true,
@@ -112,54 +94,57 @@ describe('ShopifyIntegrationStep', () => {
             emailIntegrations: true,
             defaultIntegration: true,
         })
-
         useGetOnboardingDataMock.mockReturnValue({
             isLoading: false,
             data: undefined,
         })
-
         useUpdateOnboardingMock.mockReturnValue({
-            mutate: (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+            mutate: (
+                data: any,
+                {
+                    onSuccess,
+                }: {
+                    onSuccess: () => {}
+                },
+            ) => {
                 onSuccess()
             },
             isLoading: false,
         } as any)
-
         useCreateOnboardingMock.mockReturnValue({
-            mutate: (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+            mutate: (
+                data: any,
+                {
+                    onSuccess,
+                }: {
+                    onSuccess: () => {}
+                },
+            ) => {
                 onSuccess()
             },
             isLoading: false,
         } as any)
-
         useAiAgentScopesForAutomationPlanMock.mockReturnValue([
             AiAgentScopes.SUPPORT,
             AiAgentScopes.SALES,
         ])
     })
-
     beforeAll(() => {
         jest.useFakeTimers()
     })
-
     afterAll(() => {
         jest.useRealTimers()
     })
-
     it('renders without crashing', async () => {
         renderComponent()
-
         jest.runAllTimers()
-
         await waitFor(() => {
             expect(screen.getByText('Connect Shopify')).toBeInTheDocument()
         })
     })
-
     it('displays connected status when an integration is selected', async () => {
         const integrations = [{ id: 1, name: 'Test Store', type: 'shopify' }]
         renderComponent(integrations as StoreIntegration[])
-
         await waitFor(() => {
             expect(
                 screen.getByText(
@@ -169,26 +154,20 @@ describe('ShopifyIntegrationStep', () => {
             expect(screen.getByText('Connected')).toBeInTheDocument()
         })
     })
-
     it('displays disconnected status when no integration is selected', () => {
         renderComponent()
-
         expect(screen.getByText('Disconnected')).toBeInTheDocument()
     })
-
     it('calls setOnboardingData with the selected integration name', () => {
         const integrations = [{ id: 1, name: 'Test Store', type: 'shopify' }]
         renderComponent(integrations as StoreIntegration[])
-
         // Check that the dropdown selector reflects the chosen store
         expect(screen.getByText('Test Store')).toBeInTheDocument()
     })
-
     it('opens Shopify URL when Connect button is clicked', () => {
         const originalOpen = window.open
         window.open = jest.fn()
         renderComponent()
-
         fireEvent.click(screen.getByText('Connect'))
         expect(window.open).toHaveBeenCalledWith(
             'https://apps.shopify.com/helpdesk',
@@ -196,7 +175,6 @@ describe('ShopifyIntegrationStep', () => {
         )
         window.open = originalOpen
     })
-
     it('opens Shopify URL when "Need to create a new store?" link is clicked', () => {
         const originalOpen = window.open
         window.open = jest.fn()
@@ -211,13 +189,11 @@ describe('ShopifyIntegrationStep', () => {
         )
         window.open = originalOpen
     })
-
     it('renders the dropdown when there are integrations', () => {
         const integrations = [{ id: 1, name: 'Test Store', type: 'shopify' }]
         renderComponent(integrations as StoreIntegration[])
         expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
     })
-
     it('does not render the dropdown when there is no available integrations', () => {
         const integrations = [
             { id: 1, name: 'Test Store', type: 'shopify' },
@@ -227,7 +203,6 @@ describe('ShopifyIntegrationStep', () => {
             { storeName: 'Test Store', monitoredChatIntegrations: [] },
             { storeName: 'Test Store 1', monitoredChatIntegrations: [] },
         ] as unknown as StoreConfiguration[]
-
         renderComponent(integrations, storeConfigurations)
         expect(screen.queryByText('arrow_drop_down')).not.toBeInTheDocument()
         expect(
@@ -236,7 +211,6 @@ describe('ShopifyIntegrationStep', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('renders the dropdown with available integrations', () => {
         const integrations = [
             { id: 1, name: 'Test Store', type: 'shopify' },
@@ -245,16 +219,13 @@ describe('ShopifyIntegrationStep', () => {
         const storeConfigurations = [
             { storeName: 'Test Store', monitoredChatIntegrations: [] },
         ] as unknown as StoreConfiguration[]
-
         renderComponent(integrations, storeConfigurations)
         expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
     })
-
     it('renders the "Connect to Shopify" button when there are no integrations', () => {
         renderComponent()
         expect(screen.getByText('Connect')).toBeInTheDocument()
     })
-
     it('renders the AI banner when the status is connected', () => {
         const integrations = [{ id: 1, name: 'Test Store', type: 'shopify' }]
         renderComponent(integrations as StoreIntegration[])
@@ -264,7 +235,6 @@ describe('ShopifyIntegrationStep', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('renders the AI banner with alternative text when there are multiple integrations', () => {
         const integrations = [
             { id: 1, name: 'Test Store', type: 'shopify' },
@@ -277,24 +247,22 @@ describe('ShopifyIntegrationStep', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('navigates to the TONE_OF_VOICE step when Next is clicked', async () => {
         const integrations = [
             { id: 1, name: 'Test Store', type: 'shopify' },
             { id: 2, name: 'Test Store 2', type: 'shopify' },
         ]
         renderComponent(integrations as StoreIntegration[])
-
         fireEvent.click(screen.getByText(/Next/i))
-
         await waitFor(() => {
             expect(setIsStoreSelected).toHaveBeenCalledWith(true)
-            expect(history.location.pathname).toEqual(
-                `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.TONE_OF_VOICE}`,
-            )
+            expect(
+                screen.getByText(
+                    `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.TONE_OF_VOICE}`,
+                ),
+            ).toBeInTheDocument()
         })
     })
-
     it('navigates to the TONE_OF_VOICE step when Next is clicked and SALES scope is not enabled', async () => {
         const integrations = [
             { id: 1, name: 'Test Store', type: 'shopify' },
@@ -303,42 +271,34 @@ describe('ShopifyIntegrationStep', () => {
         useAiAgentScopesForAutomationPlanMock.mockReturnValue([
             AiAgentScopes.SUPPORT,
         ])
-
         renderComponent(integrations as StoreIntegration[])
-
         fireEvent.click(screen.getByText(/Next/i))
-
         await waitFor(() => {
-            expect(history.location.pathname).toEqual(
-                `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.TONE_OF_VOICE}`,
-            )
+            expect(
+                screen.getByText(
+                    `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.TONE_OF_VOICE}`,
+                ),
+            ).toBeInTheDocument()
         })
     })
-
     it('updates text when another integration is selected', async () => {
         const integrations = [
             { id: 1, name: 'Test Store 1' },
             { id: 2, name: 'Test Store 2' },
         ]
         renderComponent(integrations as StoreIntegration[])
-
         await waitFor(() => {
             expect(screen.getByText('Test Store 1')).toBeInTheDocument()
         })
-
         fireEvent.click(screen.getByText('Test Store 1'))
         fireEvent.click(screen.getByText('Test Store 2'))
-
         await waitFor(() => {
             expect(screen.getByText(integrations[1].name)).toBeInTheDocument()
         })
     })
-
     it('shows error message when Next is clicked and there is no integrations', async () => {
         renderComponent()
-
         fireEvent.click(screen.getByText(/Next/i))
-
         await waitFor(() => {
             expect(
                 screen.getByText(

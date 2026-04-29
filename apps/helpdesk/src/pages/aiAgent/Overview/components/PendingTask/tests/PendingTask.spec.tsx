@@ -1,8 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import { PendingTask } from '../PendingTask'
 
@@ -18,7 +16,7 @@ describe('PendingTask', () => {
     it.each(['BASIC' as const, 'RECOMMENDED' as const])(
         'renders title, caption and type with value %s',
         (type) => {
-            renderWithRouter(
+            render(
                 <PendingTask
                     caption="caption_text"
                     ctaUrl="/"
@@ -36,7 +34,7 @@ describe('PendingTask', () => {
         },
     )
     it('render the loading state', () => {
-        const { container } = renderWithRouter(<PendingTask isLoading={true} />)
+        const { container } = render(<PendingTask isLoading={true} />)
 
         expect(
             container.querySelector('[aria-busy="true"]'),
@@ -46,7 +44,7 @@ describe('PendingTask', () => {
     it.each(['BASIC' as const, 'RECOMMENDED' as const])(
         'calls segment log with type %s on click',
         (type) => {
-            renderWithRouter(
+            render(
                 <PendingTask
                     caption="caption_text"
                     ctaUrl="/"

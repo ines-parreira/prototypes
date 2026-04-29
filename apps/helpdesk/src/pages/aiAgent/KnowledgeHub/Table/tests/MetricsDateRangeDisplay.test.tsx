@@ -1,6 +1,8 @@
+import { render } from '@repo/testing'
+
 import '@testing-library/jest-dom'
 
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { MetricsDateRangeDisplay } from '../MetricsDateRangeDisplay'
 

@@ -1,8 +1,6 @@
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { AxiomProvider } from '@gorgias/axiom'
 
@@ -62,7 +60,6 @@ jest.mock(
         })),
     }),
 )
-
 const mockMetricCell = MetricCell as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
@@ -70,10 +67,6 @@ const mockUseGetTicketChannelsStoreIntegrations =
     useGetTicketChannelsStoreIntegrations as jest.Mock
 const mockUseGetCustomTicketsFieldsDefinitionData =
     useGetCustomTicketsFieldsDefinitionData as jest.Mock
-
-const mockStore = configureMockStore([thunk])
-const store = mockStore({})
-
 const mockSkillTemplate: SkillTemplate = {
     id: 'order-status',
     name: 'Order status, tracking or delivery timing',
@@ -99,7 +92,6 @@ const mockSkillTemplate: SkillTemplate = {
         },
     ],
 }
-
 const renderComponent = (
     props?: {
         hasStats?: boolean
@@ -116,19 +108,17 @@ const renderComponent = (
     onCreateSkillsFromTemplate = jest.fn(),
 ) =>
     render(
-        <Provider store={store}>
-            <AxiomProvider rootNode={document.body}>
-                <ThemeProvider>
-                    <SkillsTemplateCard
-                        skillTemplate={mockSkillTemplate}
-                        onCreateSkillsFromTemplate={onCreateSkillsFromTemplate}
-                        {...props}
-                    />
-                </ThemeProvider>
-            </AxiomProvider>
-        </Provider>,
+        <AxiomProvider rootNode={document.body}>
+            <ThemeProvider>
+                <SkillsTemplateCard
+                    skillTemplate={mockSkillTemplate}
+                    onCreateSkillsFromTemplate={onCreateSkillsFromTemplate}
+                    {...props}
+                />
+            </ThemeProvider>
+        </AxiomProvider>,
+        {},
     )
-
 describe('SkillsTemplateCard', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -141,90 +131,69 @@ describe('SkillsTemplateCard', () => {
             outcomeCustomFieldId: 2,
         })
     })
-
     it('renders the skill template name', () => {
         renderComponent()
-
         expect(
             screen.getByText('Order status, tracking or delivery timing'),
         ).toBeInTheDocument()
     })
-
     describe('intent tags', () => {
         it('renders a maximum of 2 intent tags', () => {
             renderComponent()
-
             expect(screen.getByText('Order / Status')).toBeInTheDocument()
             expect(screen.getByText('Shipping / Delay')).toBeInTheDocument()
             expect(screen.queryByText('Order / Cancel')).not.toBeInTheDocument()
         })
-
         it('shows the remaining count when there are more than 2 intents', () => {
             renderComponent()
-
             expect(screen.getByText('+1')).toBeInTheDocument()
         })
-
         it('shows a tooltip with the hidden intent names on hover', async () => {
             jest.useFakeTimers()
             renderComponent()
-
             const tooltipTrigger = screen
                 .getByText('+1')
                 .closest('[data-name="tooltip-trigger"]') as HTMLElement
-
             await act(async () => {
                 tooltipTrigger.focus()
                 jest.runAllTimers()
             })
-
             expect(
                 screen.getByRole('tooltip', { hidden: true }),
             ).toHaveTextContent('Order / Cancel')
-
             jest.useRealTimers()
         })
-
         it('does not show a remaining count when there are 2 or fewer intents', () => {
             render(
-                <Provider store={store}>
-                    <ThemeProvider>
-                        <SkillsTemplateCard
-                            skillTemplate={{
-                                ...mockSkillTemplate,
-                                intents: mockSkillTemplate.intents.slice(0, 2),
-                            }}
-                            onCreateSkillsFromTemplate={jest.fn()}
-                        />
-                    </ThemeProvider>
-                </Provider>,
+                <ThemeProvider>
+                    <SkillsTemplateCard
+                        skillTemplate={{
+                            ...mockSkillTemplate,
+                            intents: mockSkillTemplate.intents.slice(0, 2),
+                        }}
+                        onCreateSkillsFromTemplate={jest.fn()}
+                    />
+                </ThemeProvider>,
+                {},
             )
-
             expect(screen.queryByText(/^\+/)).not.toBeInTheDocument()
         })
     })
-
     describe('stats section', () => {
         it('is not rendered by default', () => {
             renderComponent()
-
             expect(screen.queryByText('Ticket volume')).not.toBeInTheDocument()
             expect(screen.queryByText('Handover')).not.toBeInTheDocument()
         })
-
         it('is rendered when hasStats is true', () => {
             renderComponent({ hasStats: true })
-
             expect(screen.getByText('Ticket volume')).toBeInTheDocument()
             expect(screen.getByText('Handover')).toBeInTheDocument()
         })
-
         it('shows loading skeletons when isLoadingStats is true', () => {
             renderComponent({ hasStats: true, isLoadingStats: true })
-
             expect(screen.getAllByLabelText('Loading')).toHaveLength(2)
         })
-
         it('shows formatted ticket volume and handover stats when stats are provided', () => {
             renderComponent({
                 hasStats: true,
@@ -235,17 +204,13 @@ describe('SkillsTemplateCard', () => {
                     handoverPercent: 20,
                 },
             })
-
             expect(screen.getByText('1,500 (25%)')).toBeInTheDocument()
             expect(screen.getByText('300 (20%)')).toBeInTheDocument()
         })
-
         it('shows placeholder when hasStats is true but stats is null', () => {
             renderComponent({ hasStats: true, stats: null })
-
             expect(screen.getAllByText('--')).toHaveLength(2)
         })
-
         it('shows a progress bar when handoverCount is greater than 0', () => {
             renderComponent({
                 hasStats: true,
@@ -256,10 +221,8 @@ describe('SkillsTemplateCard', () => {
                     handoverPercent: 30,
                 },
             })
-
             expect(screen.getByRole('progressbar')).toBeInTheDocument()
         })
-
         it('does not show a progress bar when handoverCount is 0', () => {
             renderComponent({
                 hasStats: true,
@@ -270,11 +233,9 @@ describe('SkillsTemplateCard', () => {
                     handoverPercent: 0,
                 },
             })
-
             expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
         })
     })
-
     describe('MetricCell integration', () => {
         const mockStats = {
             ticketVolume: 150,
@@ -282,10 +243,8 @@ describe('SkillsTemplateCard', () => {
             handoverCount: 30,
             handoverPercent: 20,
         }
-
         it('passes correct props to MetricCell for ticket volume', () => {
             renderComponent({ hasStats: true, stats: mockStats })
-
             expect(mockMetricCell).toHaveBeenCalledWith(
                 expect.objectContaining({
                     type: 'intent',
@@ -304,10 +263,8 @@ describe('SkillsTemplateCard', () => {
                 expect.anything(),
             )
         })
-
         it('passes correct props to MetricCell for handover with outcomeValue', () => {
             renderComponent({ hasStats: true, stats: mockStats })
-
             expect(mockMetricCell).toHaveBeenCalledWith(
                 expect.objectContaining({
                     type: 'intent',
@@ -326,10 +283,8 @@ describe('SkillsTemplateCard', () => {
                 expect.anything(),
             )
         })
-
         it('passes placeholder displayValue to MetricCell when stats is null', () => {
             renderComponent({ hasStats: true, stats: null })
-
             expect(mockMetricCell).toHaveBeenCalledWith(
                 expect.objectContaining({
                     metricName: IntentMetric.TicketVolume,
@@ -347,37 +302,29 @@ describe('SkillsTemplateCard', () => {
             )
         })
     })
-
     describe('CTA button', () => {
         it('is not rendered by default', () => {
             renderComponent()
-
             expect(
                 screen.queryByRole('button', { name: /set up skill/i }),
             ).not.toBeInTheDocument()
         })
-
         it('is rendered when hasCTA is true', () => {
             renderComponent({ hasCTA: true })
-
             expect(
                 screen.getByRole('button', { name: /set up skill/i }),
             ).toBeInTheDocument()
         })
-
         it('calls onCreateSkillsFromTemplate when clicked', async () => {
             const user = userEvent.setup()
             const onCreateSkillsFromTemplate = jest.fn()
             renderComponent({ hasCTA: true }, onCreateSkillsFromTemplate)
-
             await user.click(
                 screen.getByRole('button', { name: /set up skill/i }),
             )
-
             expect(onCreateSkillsFromTemplate).toHaveBeenCalledTimes(1)
         })
     })
-
     describe('intent display with long names', () => {
         it('shows only 1 intent when any formatted intent name has more than 2 non-slash words', () => {
             const longNameTemplate: SkillTemplate = {
@@ -397,20 +344,17 @@ describe('SkillsTemplateCard', () => {
                     },
                 ],
             }
-
             render(
-                <Provider store={store}>
-                    <AxiomProvider rootNode={document.body}>
-                        <ThemeProvider>
-                            <SkillsTemplateCard
-                                skillTemplate={longNameTemplate}
-                                onCreateSkillsFromTemplate={jest.fn()}
-                            />
-                        </ThemeProvider>
-                    </AxiomProvider>
-                </Provider>,
+                <AxiomProvider rootNode={document.body}>
+                    <ThemeProvider>
+                        <SkillsTemplateCard
+                            skillTemplate={longNameTemplate}
+                            onCreateSkillsFromTemplate={jest.fn()}
+                        />
+                    </ThemeProvider>
+                </AxiomProvider>,
+                {},
             )
-
             expect(
                 screen.getByText('Shipping / Delivered Not Received'),
             ).toBeInTheDocument()
@@ -420,29 +364,23 @@ describe('SkillsTemplateCard', () => {
             expect(screen.getByText('+1')).toBeInTheDocument()
         })
     })
-
     describe('card click', () => {
         it('calls onCreateSkillsFromTemplate when the card is clicked and hasCTA is false', async () => {
             const user = userEvent.setup()
             const onCreateSkillsFromTemplate = jest.fn()
             renderComponent({ hasCTA: false }, onCreateSkillsFromTemplate)
-
             await user.click(
                 screen.getByText('Order status, tracking or delivery timing'),
             )
-
             expect(onCreateSkillsFromTemplate).toHaveBeenCalledTimes(1)
         })
-
         it('does not call onCreateSkillsFromTemplate when the card is clicked and hasCTA is true', async () => {
             const user = userEvent.setup()
             const onCreateSkillsFromTemplate = jest.fn()
             renderComponent({ hasCTA: true }, onCreateSkillsFromTemplate)
-
             await user.click(
                 screen.getByText('Order status, tracking or delivery timing'),
             )
-
             expect(onCreateSkillsFromTemplate).not.toHaveBeenCalled()
         })
     })

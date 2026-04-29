@@ -1,5 +1,6 @@
 import { useFlag, useFlagWithLoading } from '@repo/feature-flags'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
 
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'

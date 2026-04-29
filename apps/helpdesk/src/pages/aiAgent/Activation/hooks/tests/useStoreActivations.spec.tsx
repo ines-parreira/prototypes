@@ -1,13 +1,7 @@
-import type React from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { Route, Router } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -16,8 +10,6 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import type { ComputeActivationPercentage } from '../useStoreActivations'
 import {
@@ -272,30 +264,18 @@ describe('useStoreActivations', () => {
         }),
     }
 
-    const renderHookWithRouter = ({
+    const renderHookWithProviders = ({
         initialEntry = '/',
         state = defaultState,
     }: {
         initialEntry?: string
         state?: Record<string, any>
     } = {}) => {
-        const queryClient = mockQueryClient()
-
-        const history = createMemoryHistory({ initialEntries: [initialEntry] })
-        const wrapper = ({ children }: { children?: React.ReactNode }) => (
-            <Router history={history}>
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(state)}>
-                        <Route path="/:shopName?">{children}</Route>
-                    </Provider>
-                </QueryClientProvider>
-            </Router>
-        )
-
-        return {
-            ...renderHook(() => useStoreActivations(), { wrapper }),
-            history,
-        }
+        return renderHook(() => useStoreActivations(), {
+            initialEntries: [initialEntry],
+            path: '/:shopName?',
+            storeState: state,
+        })
     }
 
     const upsertStoresConfiguration = jest.fn()
@@ -317,7 +297,7 @@ describe('useStoreActivations', () => {
 
     describe('storeActivations', () => {
         it('should return all storeActivations when not on a single store page', async () => {
-            const { result } = renderHookWithRouter({ initialEntry: '/' })
+            const { result } = renderHookWithProviders({ initialEntry: '/' })
 
             await waitFor(() => {
                 expect(result.current.storeActivations['store1']).toBeTruthy()
@@ -326,7 +306,9 @@ describe('useStoreActivations', () => {
         })
 
         it('should return only storeActivations for the current store when on a single store page', async () => {
-            const { result } = renderHookWithRouter({ initialEntry: '/store1' })
+            const { result } = renderHookWithProviders({
+                initialEntry: '/store1',
+            })
 
             await waitFor(() => {
                 expect(result.current.storeActivations['store1']).toBeTruthy()
@@ -335,7 +317,7 @@ describe('useStoreActivations', () => {
         })
 
         it('should filter store that do not exist', async () => {
-            const { result } = renderHookWithRouter({
+            const { result } = renderHookWithProviders({
                 initialEntry: '/',
                 state: {
                     ...defaultState,
@@ -378,7 +360,7 @@ describe('useStoreActivations', () => {
             mockFeatureFlags({
                 [FeatureFlagKey.AiAgentNewActivationXp]: true,
             })
-            const { result } = renderHookWithRouter({
+            const { result } = renderHookWithProviders({
                 initialEntry: '/store1',
             })
             await result.current.migrateToNewPricing()
@@ -406,7 +388,7 @@ describe('useStoreActivations', () => {
             mockFeatureFlags({
                 [FeatureFlagKey.AiAgentNewActivationXp]: true,
             })
-            const { result } = renderHookWithRouter({
+            const { result } = renderHookWithProviders({
                 initialEntry: '/',
                 state: {
                     ...defaultState,

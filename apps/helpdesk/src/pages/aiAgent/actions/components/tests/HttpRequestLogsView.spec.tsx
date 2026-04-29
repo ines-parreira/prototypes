@@ -1,9 +1,7 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { Components } from 'rest_api/workflows_api/client.generated'
-import { renderWithRouter } from 'utils/testing'
 
 import HttpRequestLogsView from '../HttpRequestLogsView'
 
@@ -24,17 +22,13 @@ describe('<HttpRequestLogsView />', () => {
         step_id: 'step-1',
         execution_id: 'exec-1',
     }
-
     it('should render component with empty logs', () => {
-        renderWithRouter(<HttpRequestLogsView logs={[]} />)
-
+        render(<HttpRequestLogsView logs={[]} />)
         // Should render without errors when no logs provided
         expect(document.body).toBeInTheDocument()
     })
-
     it('should render request information correctly', () => {
-        renderWithRouter(<HttpRequestLogsView logs={[mockLogEntry]} />)
-
+        render(<HttpRequestLogsView logs={[mockLogEntry]} />)
         expect(screen.getByText('Request')).toBeInTheDocument()
         expect(screen.getByText('Method:')).toBeInTheDocument()
         expect(screen.getByText('POST')).toBeInTheDocument()
@@ -43,25 +37,19 @@ describe('<HttpRequestLogsView />', () => {
             screen.getByText('https://api.example.com/users'),
         ).toBeInTheDocument()
     })
-
     it('should render response information correctly', () => {
-        renderWithRouter(<HttpRequestLogsView logs={[mockLogEntry]} />)
-
+        render(<HttpRequestLogsView logs={[mockLogEntry]} />)
         expect(screen.getByText('Response')).toBeInTheDocument()
         expect(screen.getByText('Status Code:')).toBeInTheDocument()
         expect(screen.getByText('201')).toBeInTheDocument()
     })
-
     it('should render response headers correctly', () => {
-        renderWithRouter(<HttpRequestLogsView logs={[mockLogEntry]} />)
-
+        render(<HttpRequestLogsView logs={[mockLogEntry]} />)
         expect(screen.getByText('X-Rate-Limit:')).toBeInTheDocument()
         expect(screen.getByText('100')).toBeInTheDocument()
     })
-
     it('should render request and response body correctly', () => {
-        renderWithRouter(<HttpRequestLogsView logs={[mockLogEntry]} />)
-
+        render(<HttpRequestLogsView logs={[mockLogEntry]} />)
         expect(screen.getAllByText('Body')).toHaveLength(2) // Request and response body
         expect(
             screen.getByText(
@@ -74,7 +62,6 @@ describe('<HttpRequestLogsView />', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it('should handle null/undefined values gracefully', () => {
         const logWithNulls: Components.Schemas.HttpRequestEventsResponseDto[0] =
             {
@@ -91,9 +78,7 @@ describe('<HttpRequestLogsView />', () => {
                 step_id: null,
                 execution_id: null,
             }
-
-        renderWithRouter(<HttpRequestLogsView logs={[logWithNulls]} />)
-
+        render(<HttpRequestLogsView logs={[logWithNulls]} />)
         expect(screen.getByText('GET')).toBeInTheDocument()
         expect(
             screen.getByText('https://api.example.com/test'),
@@ -103,7 +88,6 @@ describe('<HttpRequestLogsView />', () => {
         expect(screen.getAllByText('Body')).toHaveLength(2)
         expect(screen.getAllByText('Headers')).toHaveLength(2)
     })
-
     it('should render multiple log entries', () => {
         const secondLogEntry: Components.Schemas.HttpRequestEventsResponseDto[0] =
             {
@@ -120,11 +104,7 @@ describe('<HttpRequestLogsView />', () => {
                 step_id: 'step-2',
                 execution_id: 'exec-2',
             }
-
-        renderWithRouter(
-            <HttpRequestLogsView logs={[mockLogEntry, secondLogEntry]} />,
-        )
-
+        render(<HttpRequestLogsView logs={[mockLogEntry, secondLogEntry]} />)
         expect(screen.getAllByText('Request')).toHaveLength(2)
         expect(screen.getAllByText('Response')).toHaveLength(2)
         expect(screen.getByText('POST')).toBeInTheDocument()
@@ -136,7 +116,6 @@ describe('<HttpRequestLogsView />', () => {
             screen.getByText('https://api.example.com/products'),
         ).toBeInTheDocument()
     })
-
     it('should handle object values in headers', () => {
         const logWithObjectHeaders: Components.Schemas.HttpRequestEventsResponseDto[0] =
             {
@@ -144,15 +123,12 @@ describe('<HttpRequestLogsView />', () => {
                 request_headers:
                     '{"Custom-Header": {"nested": "value", "count": 42}}',
             }
-
-        renderWithRouter(<HttpRequestLogsView logs={[logWithObjectHeaders]} />)
-
+        render(<HttpRequestLogsView logs={[logWithObjectHeaders]} />)
         expect(screen.getByText('Custom-Header:')).toBeInTheDocument()
         expect(
             screen.getByText('{"nested":"value","count":42}'),
         ).toBeInTheDocument()
     })
-
     it('should render empty bodies as empty content', () => {
         const logWithEmptyBodies: Components.Schemas.HttpRequestEventsResponseDto[0] =
             {
@@ -160,9 +136,7 @@ describe('<HttpRequestLogsView />', () => {
                 request_body: '',
                 response_body: '',
             }
-
-        renderWithRouter(<HttpRequestLogsView logs={[logWithEmptyBodies]} />)
-
+        render(<HttpRequestLogsView logs={[logWithEmptyBodies]} />)
         expect(screen.getAllByText('Body')).toHaveLength(2)
         // Should render empty pre elements for body content
         const preElements = document.querySelectorAll('pre')
@@ -171,7 +145,6 @@ describe('<HttpRequestLogsView />', () => {
             expect(pre.textContent).toBe('')
         })
     })
-
     it('should render Output Variables section with JSON code block for provided stepOutputs', () => {
         const stepOutputs = {
             'step-1': { foo: 'bar', num: 42 },
@@ -182,7 +155,7 @@ describe('<HttpRequestLogsView />', () => {
                 ...mockLogEntry,
                 step_id: 'step-1',
             }
-        renderWithRouter(
+        render(
             <HttpRequestLogsView
                 logs={[logWithStepId]}
                 stepOutputs={stepOutputs}
@@ -193,16 +166,12 @@ describe('<HttpRequestLogsView />', () => {
         expect(screen.getByText(/"foo": "bar"/)).toBeInTheDocument()
         expect(screen.getByText(/"num": 42/)).toBeInTheDocument()
     })
-
     it('should not render Output Variables section with undefined if stepOutputs is not provided', () => {
-        renderWithRouter(<HttpRequestLogsView logs={[mockLogEntry]} />)
+        render(<HttpRequestLogsView logs={[mockLogEntry]} />)
         expect(screen.queryByText('Output Variables')).not.toBeInTheDocument()
     })
-
     it('should render Output Variables section with empty object if stepOutputs is empty', () => {
-        renderWithRouter(
-            <HttpRequestLogsView logs={[mockLogEntry]} stepOutputs={{}} />,
-        )
+        render(<HttpRequestLogsView logs={[mockLogEntry]} stepOutputs={{}} />)
         expect(screen.getByText('Output Variables')).toBeInTheDocument()
         expect(screen.getByText('{}')).toBeInTheDocument()
     })

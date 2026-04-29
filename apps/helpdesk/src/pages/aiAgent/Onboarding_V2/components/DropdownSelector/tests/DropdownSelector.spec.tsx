@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { DropdownSelector } from '../DropdownSelector'
 
@@ -8,16 +7,13 @@ type Item = {
     id: number
     label: string
 }
-
 const items: Item[] = [
     { id: 1, label: 'Item 1' },
     { id: 2, label: 'Item 2' },
     { id: 3, label: 'Item 3' },
 ]
-
 const getItemKey = (item: Item) => item && item.id
 const getItemLabel = (item: Item) => item && item.label
-
 describe('DropdownSelector', () => {
     it('renders without crashing', () => {
         render(
@@ -34,7 +30,6 @@ describe('DropdownSelector', () => {
             screen.getByText('Select one or more chat items'),
         ).toBeInTheDocument()
     })
-
     it('opens the dropdown when clicked', () => {
         render(
             <DropdownSelector
@@ -49,7 +44,6 @@ describe('DropdownSelector', () => {
         fireEvent.click(screen.getByText('Select one or more chat items'))
         expect(screen.getByRole('combobox')).toBeInTheDocument()
     })
-
     it('displays the correct items in the dropdown', () => {
         render(
             <DropdownSelector
@@ -66,7 +60,6 @@ describe('DropdownSelector', () => {
             expect(screen.getByText(item.label)).toBeInTheDocument()
         })
     })
-
     it('calls setSelectedKey with the correct value when an item is clicked', () => {
         const setSelectedKey = jest.fn()
         render(
