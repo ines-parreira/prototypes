@@ -1,9 +1,7 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import _noop from 'lodash/noop'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import {
@@ -19,8 +17,7 @@ import {
     intentsOccurrence,
     intentsOverview,
 } from 'fixtures/stats'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 jest.mock('domains/reporting/hooks/useStatResource')
 jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
@@ -36,7 +33,6 @@ jest.mock(
     () => () => <div>ChannelsStatsFilter</div>,
 )
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
 >
@@ -71,12 +67,9 @@ describe('AutomateIntents', () => {
             return [intentsOccurrence, false, _noop]
         })
 
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AutomateIntents />
-                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
-            </Provider>,
-        )
+        const { container } = render(<AutomateIntents />, {
+            storeState: defaultState,
+        })
 
         expect(container.firstChild).toMatchSnapshot()
     })

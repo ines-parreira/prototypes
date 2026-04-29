@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import type routerDom from 'react-router-dom'
 import { useParams } from 'react-router-dom'
@@ -17,8 +16,6 @@ import { campaign } from 'fixtures/campaign'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -69,15 +66,10 @@ jest.mock('react-router-dom', () => ({
 }))
 const useParamsMock = useParams as jest.Mock
 
-const queryClient = mockQueryClient()
-
 describe('<RevenueStatsContent />', () => {
     const renderComponent = () => {
-        return renderWithStore(
-            <QueryClientProvider client={queryClient}>
-                <RevenueStatsContent />
-            </QueryClientProvider>,
-            {
+        return render(<RevenueStatsContent />, {
+            storeState: {
                 integrations: fromJS({
                     integrations: [
                         ...integrationsState.integrations,
@@ -85,7 +77,7 @@ describe('<RevenueStatsContent />', () => {
                     ],
                 }),
             },
-        )
+        })
     }
 
     beforeAll(() => {

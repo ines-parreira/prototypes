@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useAccuracyTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useAccuracyTrend'
@@ -14,7 +14,6 @@ import { TrendCardConfig } from 'domains/reporting/pages/support-performance/aut
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useAccuracyTrend',
@@ -50,7 +49,7 @@ describe('AccuracyTrendCard', () => {
     })
 
     it('should render AccuracyTrendCard Trend', () => {
-        renderWithStore(<AccuracyTrendCard />, defaultState)
+        render(<AccuracyTrendCard />, { storeState: defaultState })
 
         expect(
             screen.getByText(

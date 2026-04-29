@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -7,7 +7,6 @@ import useGetCampaignRevenueTimeSeries from 'domains/reporting/pages/convert/hoo
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { campaign } from 'fixtures/campaign'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
@@ -48,13 +47,15 @@ describe('<CampaignRevenueChart />', () => {
     })
 
     it('renders without errors', () => {
-        const { getByText } = renderWithStore(<CampaignRevenueChart />, {
-            integrations: fromJS({
-                integrations: [
-                    ...integrationsState.integrations,
-                    shopifyIntegration,
-                ],
-            }),
+        const { getByText } = render(<CampaignRevenueChart />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            },
         })
 
         expect(useGetCampaignRevenueMock).toHaveBeenCalledTimes(1)
@@ -68,13 +69,15 @@ describe('<CampaignRevenueChart />', () => {
             data: undefined,
         })
 
-        const { getByText } = renderWithStore(<CampaignRevenueChart />, {
-            integrations: fromJS({
-                integrations: [
-                    ...integrationsState.integrations,
-                    shopifyIntegration,
-                ],
-            }),
+        const { getByText } = render(<CampaignRevenueChart />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            },
         })
 
         expect(useGetCampaignRevenueMock).toHaveBeenCalledTimes(1)

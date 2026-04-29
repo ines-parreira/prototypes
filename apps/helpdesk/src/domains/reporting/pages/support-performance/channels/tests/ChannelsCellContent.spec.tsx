@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -18,7 +19,6 @@ import {
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     '@gorgias/axiom',
@@ -75,14 +75,14 @@ describe('<ChannelsCellContent />', () => {
             },
         })
 
-        renderWithStore(
+        render(
             <ChannelsCellContent
                 channel={channel}
                 column={column}
                 width={0}
                 useMetric={metricHook}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -102,14 +102,14 @@ describe('<ChannelsCellContent />', () => {
             },
         })
 
-        renderWithStore(
+        render(
             <ChannelsCellContent
                 channel={channel}
                 column={column}
                 width={0}
                 useMetric={metricHook}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -122,14 +122,14 @@ describe('<ChannelsCellContent />', () => {
     it('should render the Channel name in Channel column', () => {
         const column = ChannelsTableColumns.Channel
 
-        renderWithStore(
+        render(
             <ChannelsCellContent
                 channel={channel}
                 column={column}
                 width={0}
                 useMetric={ChannelColumnConfig[column].useMetric}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(screen.getByText(channel.name))
@@ -148,7 +148,7 @@ describe('<ChannelsCellContent />', () => {
             },
         })
 
-        renderWithStore(
+        render(
             <ChannelsCellContent
                 channel={channel}
                 column={column}
@@ -156,17 +156,19 @@ describe('<ChannelsCellContent />', () => {
                 useMetric={metricHook}
             />,
             {
-                ...defaultState,
-                ui: {
-                    stats: {
-                        ...defaultState.ui.stats,
-                        [channelsSlice.name]: {
-                            ...initialState,
-                            heatmapMode: true,
+                storeState: {
+                    ...defaultState,
+                    ui: {
+                        stats: {
+                            ...defaultState.ui.stats,
+                            [channelsSlice.name]: {
+                                ...initialState,
+                                heatmapMode: true,
+                            },
                         },
                     },
-                },
-            } as RootState,
+                } as RootState,
+            },
         )
 
         expect(document.querySelector(`.p${decile}`)).toBeInTheDocument()
@@ -184,14 +186,14 @@ describe('<ChannelsCellContent />', () => {
             },
         }))
 
-        renderWithStore(
+        render(
             <ChannelsCellContent
                 channel={channel}
                 column={column}
                 width={0}
                 useMetric={metricHook}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect((metricHook.mock.calls[0] as Record<string, any>[])[0]).toEqual(

@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
@@ -12,7 +12,6 @@ import { STATS_TIPS_VISIBILITY_KEY } from 'domains/reporting/pages/support-perfo
 import { account } from 'fixtures/account'
 import { AccountSettingType } from 'state/currentAccount/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/support-performance/components/ActivateCustomerSatisfactionSurveyTip',
@@ -64,10 +63,9 @@ describe('CustomerSatisfactionTrendCard', () => {
     })
 
     it('should render the SupportPerformanceTip', () => {
-        renderWithStore(
-            <CustomerSatisfactionTrendCard chartId="ID" />,
-            defaultState,
-        )
+        render(<CustomerSatisfactionTrendCard chartId="ID" />, {
+            storeState: defaultState,
+        })
 
         expect(SupportPerformanceTipMock).toHaveBeenCalled()
     })
@@ -77,7 +75,9 @@ describe('CustomerSatisfactionTrendCard', () => {
             currentAccount: fromJS(accountWithOutSatisfactionSurvey),
         } as RootState
 
-        renderWithStore(<CustomerSatisfactionTrendCard chartId="ID" />, state)
+        render(<CustomerSatisfactionTrendCard chartId="ID" />, {
+            storeState: state,
+        })
 
         expect(ActivateCustomerSatisfactionSurveyTipMock).toHaveBeenCalled()
     })

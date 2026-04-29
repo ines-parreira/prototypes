@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -9,8 +8,6 @@ import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/u
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { campaign } from 'fixtures/campaign'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -36,8 +33,6 @@ jest.mock(
         },
     }),
 )
-
-const queryClient = mockQueryClient()
 
 describe('CampaignPerformanceCharts', () => {
     beforeAll(() => {
@@ -66,11 +61,8 @@ describe('CampaignPerformanceCharts', () => {
     })
 
     it('renders', () => {
-        const { getAllByText } = renderWithStore(
-            <QueryClientProvider client={queryClient}>
-                <CampaignPerformanceCharts />
-            </QueryClientProvider>,
-            {
+        const { getAllByText } = render(<CampaignPerformanceCharts />, {
+            storeState: {
                 integrations: fromJS({
                     integrations: [
                         ...integrationsState.integrations,
@@ -78,7 +70,7 @@ describe('CampaignPerformanceCharts', () => {
                     ],
                 }),
             },
-        )
+        })
 
         expect(useCampaignPerformanceTimeSeriesMock).toHaveBeenCalledTimes(2)
         expect(getAllByText('LineChart')).toHaveLength(3)

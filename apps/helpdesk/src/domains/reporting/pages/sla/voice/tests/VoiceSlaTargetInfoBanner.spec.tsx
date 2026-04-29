@@ -1,4 +1,5 @@
 import { appQueryClient } from '@repo/api-resources'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -10,7 +11,6 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import { VoiceSlaTargetInfoBanner } from 'domains/reporting/pages/sla/voice/VoiceSlaTargetInfoBanner'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 const server = setupServer()
 
@@ -37,7 +37,7 @@ afterAll(() => {
 
 describe('VoiceSlaTargetInfoBanner', () => {
     it('should render skeleton when loading', () => {
-        renderWithStoreAndQueryClientProvider(<VoiceSlaTargetInfoBanner />)
+        render(<VoiceSlaTargetInfoBanner />)
 
         expect(
             document.querySelector('.react-loading-skeleton'),
@@ -67,7 +67,7 @@ describe('VoiceSlaTargetInfoBanner', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(<VoiceSlaTargetInfoBanner />)
+        render(<VoiceSlaTargetInfoBanner />)
 
         expect(
             await screen.findByText(
@@ -86,9 +86,7 @@ describe('VoiceSlaTargetInfoBanner', () => {
             ).handler,
         )
 
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <VoiceSlaTargetInfoBanner />,
-        )
+        const { container } = render(<VoiceSlaTargetInfoBanner />)
 
         await waitFor(() => {
             expect(
@@ -122,9 +120,7 @@ describe('VoiceSlaTargetInfoBanner', () => {
             ).handler,
         )
 
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <VoiceSlaTargetInfoBanner />,
-        )
+        const { container } = render(<VoiceSlaTargetInfoBanner />)
 
         await waitFor(() => {
             expect(
@@ -152,9 +148,7 @@ describe('VoiceSlaTargetInfoBanner', () => {
             ).handler,
         )
 
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <VoiceSlaTargetInfoBanner />,
-        )
+        const { container } = render(<VoiceSlaTargetInfoBanner />)
 
         await waitFor(() => {
             expect(

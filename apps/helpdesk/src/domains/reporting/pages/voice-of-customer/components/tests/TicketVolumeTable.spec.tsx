@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -17,7 +17,6 @@ import {
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { opposite } from 'models/api/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart')
 const LoadingTableMock = assumeMock(LoadingTable)
@@ -80,7 +79,7 @@ describe('TicketVolumeTable', () => {
             data: [],
         })
 
-        renderWithStore(<TicketVolumeTable />, defaultState)
+        render(<TicketVolumeTable />, { storeState: defaultState })
 
         expect(LoadingTableMock).toHaveBeenCalled()
     })
@@ -91,7 +90,7 @@ describe('TicketVolumeTable', () => {
             data: [],
         })
 
-        renderWithStore(<TicketVolumeTable />, defaultState)
+        render(<TicketVolumeTable />, { storeState: defaultState })
 
         expect(NoDataAvailableMock).toHaveBeenCalled()
     })
@@ -102,7 +101,7 @@ describe('TicketVolumeTable', () => {
             data: exampleData,
         })
 
-        renderWithStore(<TicketVolumeTable />, defaultState)
+        render(<TicketVolumeTable />, { storeState: defaultState })
 
         expect(screen.getByText(new RegExp(productName))).toBeInTheDocument()
     })
@@ -116,7 +115,9 @@ describe('TicketVolumeTable', () => {
             data: exampleData,
         })
 
-        const { store } = renderWithStore(<TicketVolumeTable />, defaultState)
+        const { store } = render(<TicketVolumeTable />, {
+            storeState: defaultState,
+        })
         userEvent.click(screen.getByText(ColumnLabels[field]))
 
         await waitFor(() => {

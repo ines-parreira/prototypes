@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -7,7 +7,6 @@ import { useGetRevenueShareChart } from 'domains/reporting/pages/convert/hooks/s
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { campaign } from 'fixtures/campaign'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
@@ -46,13 +45,15 @@ describe('<CampaignRevenueShareStat />', () => {
     })
 
     it('renders without errors', () => {
-        const { getByText } = renderWithStore(<CampaignRevenueShareStat />, {
-            integrations: fromJS({
-                integrations: [
-                    ...integrationsState.integrations,
-                    shopifyIntegration,
-                ],
-            }),
+        const { getByText } = render(<CampaignRevenueShareStat />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            },
         })
 
         expect(useGetRevenueShareChartMock).toHaveBeenCalledTimes(1)
@@ -66,13 +67,15 @@ describe('<CampaignRevenueShareStat />', () => {
             data: undefined,
         })
 
-        const { getByText } = renderWithStore(<CampaignRevenueShareStat />, {
-            integrations: fromJS({
-                integrations: [
-                    ...integrationsState.integrations,
-                    shopifyIntegration,
-                ],
-            }),
+        const { getByText } = render(<CampaignRevenueShareStat />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [
+                        ...integrationsState.integrations,
+                        shopifyIntegration,
+                    ],
+                }),
+            },
         })
 
         expect(useGetRevenueShareChartMock).toHaveBeenCalledTimes(1)

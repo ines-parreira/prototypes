@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import { Skeleton } from '@gorgias/axiom'
@@ -6,7 +6,6 @@ import { Skeleton } from '@gorgias/axiom'
 import { ScoredSurveyDataKey } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { OrderDirection } from 'models/api/types'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('@gorgias/axiom', () => {
     const actual = jest.requireActual('@gorgias/axiom')
@@ -52,7 +51,7 @@ describe('<ScoredSurveysTable>', () => {
         SkeletonMock.mockImplementation(() => <div>Skeleton</div>)
     })
     it('should render table header', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <ScoredSurveysTable
                 data={data}
                 isFetching={false}
@@ -69,7 +68,7 @@ describe('<ScoredSurveysTable>', () => {
     })
 
     it('should render table body content', () => {
-        const { getByText, getAllByText, container } = renderWithRouter(
+        const { getByText, getAllByText, container } = render(
             <ScoredSurveysTable
                 data={data}
                 isFetching={false}
@@ -101,7 +100,7 @@ describe('<ScoredSurveysTable>', () => {
     })
 
     it('should trigger handle sort by clicking on header', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <ScoredSurveysTable
                 data={data}
                 isFetching={false}
@@ -119,7 +118,7 @@ describe('<ScoredSurveysTable>', () => {
     })
 
     it('should render loading state while fetching', () => {
-        const { getAllByText } = renderWithRouter(
+        const { getAllByText } = render(
             <ScoredSurveysTable
                 data={data}
                 isFetching={true}

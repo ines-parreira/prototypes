@@ -1,4 +1,5 @@
 import { appQueryClient } from '@repo/api-resources'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
@@ -9,7 +10,6 @@ import { mockListSlaPoliciesHandler } from '@gorgias/helpdesk-mocks'
 import { VoiceServiceLevelAgreements } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreements'
 import { billingState } from 'fixtures/billing'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const server = setupServer()
 
@@ -71,19 +71,13 @@ describe('<VoiceServiceLevelAgreements />', () => {
     }
 
     it('should render filters panel', async () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceServiceLevelAgreements />,
-            baseState,
-        )
+        render(<VoiceServiceLevelAgreements />, { storeState: baseState })
 
         expect(await screen.findByText('Filters Panel')).toBeInTheDocument()
     })
 
     it('should render overview section with dashboard chart', async () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceServiceLevelAgreements />,
-            baseState,
-        )
+        render(<VoiceServiceLevelAgreements />, { storeState: baseState })
 
         expect(
             await screen.findAllByText('Voice Dashboard Chart'),
@@ -91,19 +85,13 @@ describe('<VoiceServiceLevelAgreements />', () => {
     })
 
     it('should render analytics footer', async () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceServiceLevelAgreements />,
-            baseState,
-        )
+        render(<VoiceServiceLevelAgreements />, { storeState: baseState })
 
         expect(await screen.findByText('Analytics Footer')).toBeInTheDocument()
     })
 
     it('should render VoiceSlaTargetInfoBanner', async () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceServiceLevelAgreements />,
-            baseState,
-        )
+        render(<VoiceServiceLevelAgreements />, { storeState: baseState })
 
         expect(
             await screen.findByText('Voice SLA Target Info Banner'),
@@ -120,10 +108,7 @@ describe('<VoiceServiceLevelAgreements />', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientAndRouter(
-            <VoiceServiceLevelAgreements />,
-            baseState,
-        )
+        render(<VoiceServiceLevelAgreements />, { storeState: baseState })
 
         expect(
             await screen.findByText(/set up your first sla/i),

@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
@@ -16,7 +15,6 @@ import {
     pageSet,
 } from 'domains/reporting/state/ui/stats/voiceAgentsPerformanceSlice'
 import { agents } from 'fixtures/agents'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell',
@@ -109,12 +107,7 @@ describe('VoiceCallTable', () => {
     })
 
     const renderComponent = (store: any = {}) =>
-        renderWithStore(
-            <MemoryRouter>
-                <VoiceAgentsTable />
-            </MemoryRouter>,
-            store,
-        )
+        render(<VoiceAgentsTable />, { storeState: store })
 
     it('should render table with all cells', () => {
         const { getByText, getAllByText } = renderComponent()

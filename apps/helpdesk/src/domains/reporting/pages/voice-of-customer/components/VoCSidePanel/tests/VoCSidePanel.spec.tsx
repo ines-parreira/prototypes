@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
@@ -15,7 +15,6 @@ import {
     setSidePanelActiveTab,
     SidePanelTab,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice-of-customer/components/ProductHeader')
 const ProductHeaderMock = assumeMock(ProductHeader)
@@ -54,7 +53,7 @@ describe('VoCSidePanel', () => {
     })
 
     it('renders with default props', () => {
-        renderWithStore(<VoCSidePanel />, defaultState as any)
+        render(<VoCSidePanel />, { storeState: defaultState as any })
 
         expect(
             screen.getByText(VoCSidePanelTabs[SidePanelTab.Insights].label),
@@ -72,7 +71,7 @@ describe('VoCSidePanel', () => {
         const state = JSON.parse(JSON.stringify(defaultState))
         state.ui.stats.sidePanel.product = product as any
 
-        renderWithStore(<VoCSidePanel />, state as any)
+        render(<VoCSidePanel />, { storeState: state as any })
 
         expect(ProductHeaderMock).toHaveBeenCalledWith(
             expect.objectContaining({ product }),
@@ -84,7 +83,7 @@ describe('VoCSidePanel', () => {
         const state = JSON.parse(JSON.stringify(defaultState))
         state.ui.stats.sidePanel.product = product as any
 
-        renderWithStore(<VoCSidePanel />, state as any)
+        render(<VoCSidePanel />, { storeState: state as any })
 
         expect(InsightsTabMock).toHaveBeenCalled()
     })
@@ -94,7 +93,7 @@ describe('VoCSidePanel', () => {
         state.ui.stats.sidePanel.product = product as any
         state.ui.stats.sidePanel.activeTab = SidePanelTab.TrendOverview
 
-        renderWithStore(<VoCSidePanel />, state as any)
+        render(<VoCSidePanel />, { storeState: state as any })
 
         expect(TrendOverviewReportMock).toHaveBeenCalled()
     })
@@ -103,7 +102,7 @@ describe('VoCSidePanel', () => {
         const state = JSON.parse(JSON.stringify(defaultState))
         state.ui.stats.sidePanel.product = product as any
 
-        const { store } = renderWithStore(<VoCSidePanel />, state as any)
+        const { store } = render(<VoCSidePanel />, { storeState: state as any })
 
         const closeButton = screen.getByText(/keyboard_tab/)
 
@@ -120,7 +119,7 @@ describe('VoCSidePanel', () => {
         const state = JSON.parse(JSON.stringify(defaultState))
         state.ui.stats.sidePanel.product = product as any
 
-        const { store } = renderWithStore(<VoCSidePanel />, state as any)
+        const { store } = render(<VoCSidePanel />, { storeState: state as any })
 
         const backdrop = document.querySelector('.backdrop')
 
@@ -139,7 +138,7 @@ describe('VoCSidePanel', () => {
         const state = JSON.parse(JSON.stringify(defaultState))
         state.ui.stats.sidePanel.product = product as any
 
-        const { store } = renderWithStore(<VoCSidePanel />, state as any)
+        const { store } = render(<VoCSidePanel />, { storeState: state as any })
 
         const trendOverviewTab = screen.getByText(TREND_OVERVIEW_LABEL)
         fireEvent.focus(trendOverviewTab)

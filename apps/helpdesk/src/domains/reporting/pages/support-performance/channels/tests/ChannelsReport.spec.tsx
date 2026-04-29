@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
@@ -28,7 +28,6 @@ import {
 } from 'fixtures/plans'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
@@ -96,13 +95,17 @@ describe('ChannelsReport', () => {
     })
 
     it('should render channels report component', () => {
-        const { getByText } = renderWithStore(<ChannelsReport />, defaultState)
+        const { getByText } = render(<ChannelsReport />, {
+            storeState: defaultState,
+        })
 
         expect(getByText(CHANNELS_REPORT_PAGE_TITLE)).toBeInTheDocument()
     })
 
     it('should render channels report component with filters panel', () => {
-        const { getByText } = renderWithStore(<ChannelsReport />, defaultState)
+        const { getByText } = render(<ChannelsReport />, {
+            storeState: defaultState,
+        })
 
         CHANNEL_REPORT_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
@@ -114,7 +117,9 @@ describe('ChannelsReport', () => {
             ...CHANNEL_REPORT_OPTIONAL_FILTERS,
         ]
 
-        const { getByText } = renderWithStore(<ChannelsReport />, defaultState)
+        const { getByText } = render(<ChannelsReport />, {
+            storeState: defaultState,
+        })
 
         extendedChannelsReportFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
@@ -142,7 +147,7 @@ describe('ChannelsReport', () => {
             ...AUTO_QA_FILTER_KEYS,
         ]
 
-        const { getByText } = renderWithStore(<ChannelsReport />, state)
+        const { getByText } = render(<ChannelsReport />, { storeState: state })
 
         extendedChannelsReportFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()

@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -24,7 +24,6 @@ import { teams } from 'fixtures/teams'
 import type FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useStatResource')
 jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
@@ -115,11 +114,9 @@ describe('SupportPerformanceSatisfaction', () => {
             return [latestSatisfactionSurveys, false, _noop]
         })
 
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceSatisfaction />
-            </Provider>,
-        )
+        const { container } = render(<SupportPerformanceSatisfaction />, {
+            storeState: defaultState,
+        })
 
         expect(container.firstChild).toMatchSnapshot()
     })

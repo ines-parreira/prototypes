@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -8,7 +8,6 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
@@ -78,10 +77,9 @@ describe('SelfServiceStatsPagePaywallCustomCta', () => {
     })
 
     it('should render the subscription button with correct label', () => {
-        renderWithStoreAndQueryClientProvider(
-            <SelfServiceStatsPagePaywallCustomCta />,
-            defaultState,
-        )
+        render(<SelfServiceStatsPagePaywallCustomCta />, {
+            storeState: defaultState,
+        })
 
         const button = screen.getByTestId('automate-subscription-button')
         expect(button).toBeInTheDocument()
@@ -89,10 +87,9 @@ describe('SelfServiceStatsPagePaywallCustomCta', () => {
     })
 
     it('should not render the modal initially', () => {
-        renderWithStoreAndQueryClientProvider(
-            <SelfServiceStatsPagePaywallCustomCta />,
-            defaultState,
-        )
+        render(<SelfServiceStatsPagePaywallCustomCta />, {
+            storeState: defaultState,
+        })
 
         expect(
             screen.queryByTestId('automate-subscription-modal'),
@@ -100,10 +97,9 @@ describe('SelfServiceStatsPagePaywallCustomCta', () => {
     })
 
     it('should open the modal when button is clicked', () => {
-        renderWithStoreAndQueryClientProvider(
-            <SelfServiceStatsPagePaywallCustomCta />,
-            defaultState,
-        )
+        render(<SelfServiceStatsPagePaywallCustomCta />, {
+            storeState: defaultState,
+        })
 
         const button = screen.getByTestId('automate-subscription-button')
         fireEvent.click(button)
@@ -117,10 +113,9 @@ describe('SelfServiceStatsPagePaywallCustomCta', () => {
     })
 
     it('should close the modal when close button is clicked', () => {
-        renderWithStoreAndQueryClientProvider(
-            <SelfServiceStatsPagePaywallCustomCta />,
-            defaultState,
-        )
+        render(<SelfServiceStatsPagePaywallCustomCta />, {
+            storeState: defaultState,
+        })
 
         const button = screen.getByTestId('automate-subscription-button')
         fireEvent.click(button)
@@ -138,10 +133,9 @@ describe('SelfServiceStatsPagePaywallCustomCta', () => {
     })
 
     it('should send segment event with correct data when button is clicked', () => {
-        renderWithStoreAndQueryClientProvider(
-            <SelfServiceStatsPagePaywallCustomCta />,
-            defaultState,
-        )
+        render(<SelfServiceStatsPagePaywallCustomCta />, {
+            storeState: defaultState,
+        })
 
         const button = screen.getByTestId('automate-subscription-button')
         fireEvent.click(button)
@@ -169,10 +163,9 @@ describe('SelfServiceStatsPagePaywallCustomCta', () => {
             billing: fromJS(billingState),
         }
 
-        renderWithStoreAndQueryClientProvider(
-            <SelfServiceStatsPagePaywallCustomCta />,
-            stateWithoutProducts,
-        )
+        render(<SelfServiceStatsPagePaywallCustomCta />, {
+            storeState: stateWithoutProducts,
+        })
 
         const button = screen.getByTestId('automate-subscription-button')
         fireEvent.click(button)

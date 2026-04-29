@@ -1,11 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
@@ -16,8 +13,6 @@ import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voi
 import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallList')
 
@@ -66,8 +61,6 @@ jest.mock(
 )
 const VoiceQueueProviderMock = assumeMock(VoiceQueueProvider)
 VoiceQueueProviderMock.mockImplementation(({ children }) => <>{children}</>)
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const data = [
     {
@@ -158,11 +151,7 @@ describe('VoiceCallTableContent', () => {
             columns: columns,
         },
     ) => {
-        return renderWithRouter(
-            <Provider store={mockStore({})}>
-                <VoiceCallTableContent {...props} />
-            </Provider>,
-        )
+        return render(<VoiceCallTableContent {...props} />)
     }
 
     it.each([[], undefined])(

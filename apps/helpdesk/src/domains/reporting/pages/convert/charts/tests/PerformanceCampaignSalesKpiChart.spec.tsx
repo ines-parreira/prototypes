@@ -1,11 +1,10 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { PerformanceCampaignSalesKpiChart } from 'domains/reporting/pages/convert/charts/PerformanceCampaignSalesKpiChart'
 import { usePerformanceTotalStats } from 'domains/reporting/pages/convert/hooks/usePerformanceTotalStats'
 import { CampaignsTotalsMetricNames } from 'domains/reporting/pages/convert/services/constants'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/convert/hooks/usePerformanceTotalStats')
 const usePerformanceTotalStatsMock = assumeMock(usePerformanceTotalStats)
@@ -22,7 +21,7 @@ describe('CampaignRevenueKPIChart', () => {
             channelConnectionExternalIds: [],
         })
 
-        renderWithStore(<PerformanceCampaignSalesKpiChart />, {})
+        render(<PerformanceCampaignSalesKpiChart />)
 
         expect(
             document.querySelector('.react-loading-skeleton'),
@@ -49,7 +48,7 @@ describe('CampaignRevenueKPIChart', () => {
             channelConnectionExternalIds: [],
         })
 
-        renderWithStore(<PerformanceCampaignSalesKpiChart />, {})
+        render(<PerformanceCampaignSalesKpiChart />)
 
         expect(screen.getByText(campaignSalesCount)).toBeInTheDocument()
     })

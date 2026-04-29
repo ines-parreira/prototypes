@@ -1,13 +1,10 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import type * as ReactRouterDom from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
 
 import RequestABTest from 'domains/reporting/pages/convert/components/RequestABTest/RequestABTest'
 import { useCanRequestABTest } from 'domains/reporting/pages/convert/hooks/stats/useCanRequestABTest'
@@ -22,9 +19,7 @@ import {
     useUpdateABTest,
 } from 'models/convert/abTest/queries'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 jest.mock('models/convert/abTest/queries')
 const useListABTestMock = assumeMock(useListABTests)
@@ -40,10 +35,6 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
-
-const mockStore = configureMockStore<RootState, StoreDispatch>()
-
-const queryClient = mockQueryClient()
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
@@ -61,13 +52,7 @@ describe('RequestABTest', () => {
     } as RootState
 
     const renderComponent = () => {
-        return renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <RequestABTest />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        return render(<RequestABTest />, { storeState: defaultState })
     }
 
     beforeEach(() => {

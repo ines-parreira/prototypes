@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
@@ -9,11 +10,10 @@ import {
     SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH,
     ServiceLevelAgreementsEmptyState,
 } from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState'
-import { renderWithRouter } from 'utils/testing'
 
 describe('ServiceLevelAgreementsEmptyState', () => {
     it('renders banner with correct alt text', () => {
-        renderWithRouter(<ServiceLevelAgreementsEmptyState />)
+        render(<ServiceLevelAgreementsEmptyState />)
 
         expect(screen.getByRole('img')).toHaveAttribute(
             'alt',
@@ -22,7 +22,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
     })
 
     it('renders correct text content', () => {
-        renderWithRouter(<ServiceLevelAgreementsEmptyState />)
+        render(<ServiceLevelAgreementsEmptyState />)
 
         expect(screen.getByText(CONTENT_HEADER_TEXT)).toBeInTheDocument()
         expect(
@@ -34,7 +34,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
     })
 
     it('renders link to SLA settings page with correct text and href', () => {
-        renderWithRouter(<ServiceLevelAgreementsEmptyState />)
+        render(<ServiceLevelAgreementsEmptyState />)
         const linkButton = screen.getByRole('button', {
             name: CONTENT_SET_UP_BUTTON_TEXT,
         })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 
 import {
@@ -14,7 +14,6 @@ import {
     toggleHeatmapMode,
 } from 'domains/reporting/state/ui/stats/channelsSlice'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 describe('ChannelsHeatmapSwitch', () => {
     const defaultState = {
@@ -24,7 +23,7 @@ describe('ChannelsHeatmapSwitch', () => {
     } as RootState
 
     it('Should render Table mode', () => {
-        renderWithStore(<ChannelsHeatmapSwitch />, defaultState)
+        render(<ChannelsHeatmapSwitch />, { storeState: defaultState })
 
         expect(initialState.heatmapMode).toEqual(false)
         expect(
@@ -39,7 +38,7 @@ describe('ChannelsHeatmapSwitch', () => {
             },
         } as RootState
 
-        renderWithStore(<ChannelsHeatmapSwitch />, state)
+        render(<ChannelsHeatmapSwitch />, { storeState: state })
 
         expect(
             screen.getByRole('radio', { name: HEATMAP_MODE_LABEL }),
@@ -47,10 +46,9 @@ describe('ChannelsHeatmapSwitch', () => {
     })
 
     it('Should trigger toggle on click', async () => {
-        const { store } = renderWithStore(
-            <ChannelsHeatmapSwitch />,
-            defaultState,
-        )
+        const { store } = render(<ChannelsHeatmapSwitch />, {
+            storeState: defaultState,
+        })
 
         act(() => {
             userEvent.click(screen.getByRole('radio', { name: 'Heatmap' }))

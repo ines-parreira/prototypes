@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
@@ -13,7 +13,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { isTrialing } from 'state/currentAccount/selectors'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)
@@ -74,7 +73,7 @@ describe('<AutomateStatsNavbar />', () => {
             hasAccess: false,
             isLoading: false,
         })
-        const { getByText, getByRole } = renderWithRouter(
+        const { getByText, getByRole } = render(
             <Navigation.Root>
                 <AutomateStatsNavbar />
             </Navigation.Root>,
@@ -97,7 +96,7 @@ describe('<AutomateStatsNavbar />', () => {
             hasAccess: true,
             isLoading: false,
         })
-        const { getAllByRole, getByRole } = renderWithRouter(
+        const { getAllByRole, getByRole } = render(
             <Navigation.Root>
                 <AutomateStatsNavbar />
             </Navigation.Root>,
@@ -136,7 +135,7 @@ describe('<AutomateStatsNavbar />', () => {
             isLoading: false,
         })
 
-        const { getByText, getByRole } = renderWithRouter(
+        const { getByText, getByRole } = render(
             <Navigation.Root>
                 <AutomateStatsNavbar />
             </Navigation.Root>,
@@ -167,7 +166,7 @@ describe('<AutomateStatsNavbar />', () => {
             isLoading: false,
         })
 
-        const { getByText, getByRole } = renderWithRouter(
+        const { getByText, getByRole } = render(
             <Navigation.Root>
                 <AutomateStatsNavbar />
             </Navigation.Root>,
@@ -198,7 +197,7 @@ describe('<AutomateStatsNavbar />', () => {
             isLoading: false,
         })
 
-        const { getByText, getByRole } = renderWithRouter(
+        const { getByText, getByRole } = render(
             <Navigation.Root>
                 <AutomateStatsNavbar />
             </Navigation.Root>,
@@ -235,7 +234,7 @@ describe('<AutomateStatsNavbar />', () => {
             isLoading: false,
         })
 
-        const { getByText, getByRole } = renderWithRouter(
+        const { getByText, getByRole } = render(
             <Navigation.Root>
                 <AutomateStatsNavbar />
             </Navigation.Root>,
@@ -271,7 +270,7 @@ describe('<AutomateStatsNavbar />', () => {
             }),
         )
 
-        const { queryByText, getByRole } = renderWithRouter(
+        const { queryByText, getByRole } = render(
             <Navigation.Root>
                 <AutomateStatsNavbar />
             </Navigation.Root>,
@@ -298,7 +297,7 @@ describe('<AutomateStatsNavbar />', () => {
             isLoading: false,
         })
 
-        const { getByText, getByRole } = renderWithRouter(
+        const { getByText, getByRole } = render(
             <Navigation.Root>
                 <AutomateStatsNavbar />
             </Navigation.Root>,

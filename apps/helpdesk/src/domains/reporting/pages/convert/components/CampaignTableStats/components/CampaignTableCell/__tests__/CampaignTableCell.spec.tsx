@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { CampaignTableCell } from 'domains/reporting/pages/convert/components/CampaignTableStats/components/CampaignTableCell/CampaignTableCell'
@@ -13,7 +13,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import type { CampaignPreview } from 'models/convert/campaign/types'
 import { InferredCampaignStatus } from 'models/convert/campaign/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()
@@ -88,7 +87,7 @@ describe('<CampaignTableCell />', () => {
     ])(
         'should render the cell with value',
         async (column, value, expectedResult) => {
-            const { findByText } = renderWithRouter(
+            const { findByText } = render(
                 <CampaignTableCell
                     column={column as CampaignTableColumn}
                     cell={cell}
@@ -103,7 +102,7 @@ describe('<CampaignTableCell />', () => {
     )
 
     it('should render campaign name with light campaign label', async () => {
-        const { findByText } = renderWithRouter(
+        const { findByText } = render(
             <CampaignTableCell
                 column={
                     {
@@ -132,7 +131,7 @@ describe('<CampaignTableCell />', () => {
         [InferredCampaignStatus.Deleted, 'deleted'],
         [InferredCampaignStatus.Inactive, 'inactive'],
     ])('should render campaign status badge', async (status, expectedLabel) => {
-        const { findByText } = renderWithRouter(
+        const { findByText } = render(
             <CampaignTableCell
                 column={
                     {
@@ -150,7 +149,7 @@ describe('<CampaignTableCell />', () => {
     })
 
     it('should render drilldown modal on Orders click', async () => {
-        const { findByText } = renderWithRouter(
+        const { findByText } = render(
             <CampaignTableCell
                 column={
                     {

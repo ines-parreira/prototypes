@@ -1,10 +1,10 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import * as api from '@gorgias/helpdesk-queries'
 
 import { WithSlaEmptyState } from 'domains/reporting/pages/sla/components/WithSlaEmptyState'
 import { CONTENT_HEADER_TEXT } from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('@gorgias/helpdesk-queries')
 
@@ -15,7 +15,7 @@ describe('WithSlaEmptyState', () => {
             data: undefined,
         } as any)
 
-        renderWithRouter(<WithSlaEmptyState>something</WithSlaEmptyState>)
+        render(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
         expect(
             document.querySelector('.react-loading-skeleton'),
@@ -28,7 +28,7 @@ describe('WithSlaEmptyState', () => {
             data: { data: { data: [] } },
         } as any)
 
-        renderWithRouter(<WithSlaEmptyState>something</WithSlaEmptyState>)
+        render(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
         expect(screen.getByText(CONTENT_HEADER_TEXT)).toBeInTheDocument()
     })
@@ -40,7 +40,7 @@ describe('WithSlaEmptyState', () => {
         } as any)
         const child = 'something'
 
-        renderWithRouter(<WithSlaEmptyState>{child}</WithSlaEmptyState>)
+        render(<WithSlaEmptyState>{child}</WithSlaEmptyState>)
 
         expect(screen.getByText(child)).toBeInTheDocument()
     })
@@ -53,7 +53,7 @@ describe('WithSlaEmptyState', () => {
                 data: { data: { data: [{}] } },
             } as any)
 
-        renderWithRouter(
+        render(
             <WithSlaEmptyState targetChannel="phone">
                 something
             </WithSlaEmptyState>,
@@ -72,7 +72,7 @@ describe('WithSlaEmptyState', () => {
                 data: { data: { data: [{}] } },
             } as any)
 
-        renderWithRouter(<WithSlaEmptyState>something</WithSlaEmptyState>)
+        render(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
         expect(useListSlaPoliciesSpy).toHaveBeenCalledWith({
             target_channel: undefined,

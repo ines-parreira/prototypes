@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import NoSearchTable from 'domains/reporting/pages/help-center/components/NoSearchTable/NoSearchTable'
 import { useNoSearchResultsMetrics } from 'domains/reporting/pages/help-center/hooks/useNoSearchResultsMetrics'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/help-center/hooks/useNoSearchResultsMetrics',
@@ -22,7 +21,7 @@ const useStatsFiltersMock = assumeMock(useStatsFilters)
 const mockUseNoSearchResultsMetrics = jest.mocked(useNoSearchResultsMetrics)
 
 const renderComponent = () => {
-    renderWithStore(<NoSearchTable />, {})
+    render(<NoSearchTable />)
 }
 
 describe('<NoSearchTable/>', () => {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useResolutionCompletenessTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useResolutionCompletenessTrend'
@@ -14,7 +14,6 @@ import { ResolutionCompletenessTrendCard } from 'domains/reporting/pages/support
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useResolutionCompletenessTrend',
@@ -52,7 +51,9 @@ describe('ResolutionCompletenessTrendCard', () => {
     })
 
     it('should render ResolutionCompletenessTrendCard Trend', () => {
-        renderWithStore(<ResolutionCompletenessTrendCard />, defaultState)
+        render(<ResolutionCompletenessTrendCard />, {
+            storeState: defaultState,
+        })
 
         expect(
             screen.getByText(

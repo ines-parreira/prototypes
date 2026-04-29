@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -22,7 +22,6 @@ import {
     ProductInsightsPage,
 } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal')
@@ -112,7 +111,7 @@ describe('ProductInsightsPage', () => {
     })
 
     it('should render with a title', () => {
-        renderWithStore(<ProductInsightsPage />, state)
+        render(<ProductInsightsPage />, { storeState: state })
 
         expect(
             screen.queryByText(PRODUCT_INSIGHTS_PAGE_TITLE, { exact: false }),
@@ -120,7 +119,7 @@ describe('ProductInsightsPage', () => {
     })
 
     it('should render children charts', () => {
-        renderWithStore(<ProductInsightsPage />, state)
+        render(<ProductInsightsPage />, { storeState: state })
 
         expect(DrillDownModalMock).toHaveBeenCalled()
         expect(FiltersPanelWrapperMock).toHaveBeenCalled()

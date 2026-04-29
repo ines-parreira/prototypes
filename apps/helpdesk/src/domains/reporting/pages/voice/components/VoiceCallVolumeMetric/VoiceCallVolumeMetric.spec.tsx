@@ -1,12 +1,11 @@
 import { formatMetricValue } from '@repo/reporting'
 import type { MetricValueFormat } from '@repo/reporting'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
 import VoiceCallVolumeMetric from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 import { useVoiceCallCountTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallCountTrend')
 const mockUseVoiceCallCountTrend = assumeMock(useVoiceCallCountTrend)
@@ -42,7 +41,7 @@ describe('<VoiceCallVolumeMetric />', () => {
     }
     const renderComponent = (componentProps = {}) => {
         mockUseVoiceCallCountTrend.mockReturnValue(defaultProps.metricTrend)
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <VoiceCallVolumeMetric {...defaultProps} {...componentProps} />,
         )
     }

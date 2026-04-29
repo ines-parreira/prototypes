@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useInternalComplianceTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useInternalComplianceTrend'
@@ -14,7 +14,6 @@ import { InternalComplianceTrendCard } from 'domains/reporting/pages/support-per
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useInternalComplianceTrend',
@@ -50,7 +49,7 @@ describe('InternalComplianceTrendCard', () => {
     })
 
     it('should render InternalComplianceTrendCard Trend', () => {
-        renderWithStore(<InternalComplianceTrendCard />, defaultState)
+        render(<InternalComplianceTrendCard />, { storeState: defaultState })
 
         expect(
             screen.getByText(

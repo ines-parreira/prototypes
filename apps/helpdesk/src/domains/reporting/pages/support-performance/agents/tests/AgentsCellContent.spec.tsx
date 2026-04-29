@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { User } from 'config/types/user'
@@ -19,7 +19,6 @@ import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDown
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     '@gorgias/axiom',
@@ -34,13 +33,13 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModalTrigger.tsx')
 const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
 
 const renderWithTable = (element: ReactElement, state: Partial<RootState>) =>
-    renderWithStore(
+    render(
         <table>
             <tbody>
                 <tr>{element}</tr>
             </tbody>
         </table>,
-        state,
+        { storeState: state },
     )
 
 describe('<AgentsCellContent />', () => {

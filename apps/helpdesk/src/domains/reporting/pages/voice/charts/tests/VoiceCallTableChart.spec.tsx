@@ -1,7 +1,6 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -10,8 +9,6 @@ import { VoiceCallTableChart } from 'domains/reporting/pages/voice/charts/VoiceC
 import VoiceCallFilter from 'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter'
 import { VoiceCallTable } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable'
 import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter',
@@ -30,11 +27,7 @@ const defaultProps: DashboardChartProps = {
 }
 
 const renderComponent = () => {
-    return renderWithQueryClientProvider(
-        <Provider store={mockStore({})}>
-            <VoiceCallTableChart {...defaultProps} />
-        </Provider>,
-    )
+    return render(<VoiceCallTableChart {...defaultProps} />)
 }
 
 const filters = {

@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import { TopAIIntentsForProductOverTimeGraph } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsForProductOverTimeChart/TopAIIntentsForProductOverTimeGraph'
@@ -13,7 +13,6 @@ import {
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/components/ChartCard')
 const ChartCardMock = assumeMock(ChartCard)
@@ -62,7 +61,9 @@ describe('TopAIIntentsForProductOverTimeChart', () => {
     })
 
     it('should not render the chart when no productId', () => {
-        renderWithStore(<TopAIIntentsForProductOverTimeChart />, defaultState)
+        render(<TopAIIntentsForProductOverTimeChart />, {
+            storeState: defaultState,
+        })
 
         expect(
             TopAIIntentsForProductOverTimeGraphMock,
@@ -85,10 +86,9 @@ describe('TopAIIntentsForProductOverTimeChart', () => {
                 },
             },
         } as RootState
-        renderWithStore(
-            <TopAIIntentsForProductOverTimeChart />,
-            stateWithProductInSidePanel,
-        )
+        render(<TopAIIntentsForProductOverTimeChart />, {
+            storeState: stateWithProductInSidePanel,
+        })
 
         expect(TopAIIntentsForProductOverTimeGraphMock).toHaveBeenCalledWith(
             {
@@ -100,7 +100,9 @@ describe('TopAIIntentsForProductOverTimeChart', () => {
     })
 
     it('should render title & tooltip', () => {
-        renderWithStore(<TopAIIntentsForProductOverTimeChart />, defaultState)
+        render(<TopAIIntentsForProductOverTimeChart />, {
+            storeState: defaultState,
+        })
 
         expect(ChartCardMock).toHaveBeenCalledWith(
             expect.objectContaining({

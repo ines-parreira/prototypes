@@ -1,6 +1,7 @@
 import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -16,7 +17,6 @@ import { billingState } from 'fixtures/billing'
 import { ProductType } from 'models/billing/types'
 import * as billingSelectors from 'state/billing/selectors'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const server = setupServer()
 
@@ -138,14 +138,11 @@ describe('ServiceLevelAgreementsPage', () => {
         })
 
         it('should render page title', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                stateWithVoice,
-                {
-                    route: '/app/reporting/stats/slas',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: stateWithVoice,
+                initialEntries: ['/app/reporting/stats/slas'],
+                path: '/app/reporting/stats/slas',
+            })
 
             await waitFor(() => {
                 expect(screen.getByText(SLA_PAGE_TITLE)).toBeInTheDocument()
@@ -153,14 +150,11 @@ describe('ServiceLevelAgreementsPage', () => {
         })
 
         it('should render only tickets SLA without tabs', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                stateWithVoice,
-                {
-                    route: '/app/reporting/stats/slas',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: stateWithVoice,
+                initialEntries: ['/app/reporting/stats/slas'],
+                path: '/app/reporting/stats/slas',
+            })
 
             await waitFor(() => {
                 expect(screen.getByText('Filters Panel')).toBeInTheDocument()
@@ -172,14 +166,11 @@ describe('ServiceLevelAgreementsPage', () => {
         })
 
         it('should show "Download tickets data" button', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                baseState,
-                {
-                    route: '/app/reporting/stats/slas',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: baseState,
+                initialEntries: ['/app/reporting/stats/slas'],
+                path: '/app/reporting/stats/slas',
+            })
 
             await waitFor(() => {
                 expect(
@@ -205,14 +196,11 @@ describe('ServiceLevelAgreementsPage', () => {
         })
 
         it('should render only tickets SLA without tabs', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                baseState,
-                {
-                    route: '/app/reporting/stats/slas',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: baseState,
+                initialEntries: ['/app/reporting/stats/slas'],
+                path: '/app/reporting/stats/slas',
+            })
 
             await waitFor(() => {
                 expect(screen.getByText('Filters Panel')).toBeInTheDocument()
@@ -234,14 +222,11 @@ describe('ServiceLevelAgreementsPage', () => {
         })
 
         it('should render tickets SLA content by default and both Ticket and Calls tabs', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                stateWithVoice,
-                {
-                    route: '/app/reporting/stats/slas',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: stateWithVoice,
+                initialEntries: ['/app/reporting/stats/slas'],
+                path: '/app/reporting/stats/slas',
+            })
 
             await waitFor(() => {
                 expect(screen.getByText('Filters Panel')).toBeInTheDocument()
@@ -262,14 +247,11 @@ describe('ServiceLevelAgreementsPage', () => {
         })
 
         it('should show "Download tickets data" button on tickets route', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                stateWithVoice,
-                {
-                    route: '/app/reporting/stats/slas',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: stateWithVoice,
+                initialEntries: ['/app/reporting/stats/slas'],
+                path: '/app/reporting/stats/slas',
+            })
 
             await waitFor(() => {
                 expect(
@@ -285,14 +267,11 @@ describe('ServiceLevelAgreementsPage', () => {
         })
 
         it('should render voice SLA content on calls route', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                stateWithVoice,
-                {
-                    route: '/app/reporting/stats/slas/calls',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: stateWithVoice,
+                initialEntries: ['/app/reporting/stats/slas/calls'],
+                path: '/app/reporting/stats/slas',
+            })
 
             expect(
                 screen.getByRole('tab', {
@@ -310,14 +289,11 @@ describe('ServiceLevelAgreementsPage', () => {
         it('should switch to voice SLA when clicking on Calls tab', async () => {
             const user = userEvent.setup()
 
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                stateWithVoice,
-                {
-                    route: '/app/reporting/stats/slas',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: stateWithVoice,
+                initialEntries: ['/app/reporting/stats/slas'],
+                path: '/app/reporting/stats/slas',
+            })
 
             expect(
                 screen.getByRole('tab', {
@@ -337,14 +313,11 @@ describe('ServiceLevelAgreementsPage', () => {
         })
 
         it('should show "Download calls data" button on calls route', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <ServiceLevelAgreementsPage />,
-                stateWithVoice,
-                {
-                    route: '/app/reporting/stats/slas/calls',
-                    path: '/app/reporting/stats/slas',
-                },
-            )
+            render(<ServiceLevelAgreementsPage />, {
+                storeState: stateWithVoice,
+                initialEntries: ['/app/reporting/stats/slas/calls'],
+                path: '/app/reporting/stats/slas',
+            })
 
             await waitFor(() => {
                 expect(
@@ -372,14 +345,11 @@ describe('ServiceLevelAgreementsPage', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientAndRouter(
-            <ServiceLevelAgreementsPage />,
-            baseState,
-            {
-                route: '/app/reporting/stats/slas',
-                path: '/app/reporting/stats/slas',
-            },
-        )
+        render(<ServiceLevelAgreementsPage />, {
+            storeState: baseState,
+            initialEntries: ['/app/reporting/stats/slas'],
+            path: '/app/reporting/stats/slas',
+        })
 
         await waitFor(() => {
             expect(

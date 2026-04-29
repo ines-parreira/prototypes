@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -9,7 +10,6 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const mockUseFirstStoreWithAiSalesDataState: {
     isLoading: boolean
@@ -114,10 +114,9 @@ describe('AiSalesAgentSalesOverview', () => {
     } as RootState
 
     const renderComponent = (customState = baseState) => {
-        return renderWithStoreAndQueryClientAndRouter(
-            <AiSalesAgentSalesOverview />,
-            customState,
-        )
+        return render(<AiSalesAgentSalesOverview />, {
+            storeState: customState,
+        })
     }
 
     beforeEach(() => {

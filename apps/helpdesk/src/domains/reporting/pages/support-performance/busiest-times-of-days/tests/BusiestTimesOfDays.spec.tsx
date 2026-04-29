@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -34,7 +34,6 @@ import {
 } from 'fixtures/plans'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
@@ -97,7 +96,7 @@ describe('BusiestTimesOfDays page', () => {
     it('should render the page title', () => {
         const defaultMetric = BusiestTimeOfDaysMetrics.TicketsCreated
 
-        renderWithStore(<BusiestTimesOfDays />, defaultState)
+        render(<BusiestTimesOfDays />, { storeState: defaultState })
 
         expect(
             screen.getByText(BUSIEST_TIME_OF_DAY_PAGE_TITLE),
@@ -113,10 +112,9 @@ describe('BusiestTimesOfDays page', () => {
     })
 
     it('should render FiltersPanel', () => {
-        const { getByText } = renderWithStore(
-            <BusiestTimesOfDays />,
-            defaultState,
-        )
+        const { getByText } = render(<BusiestTimesOfDays />, {
+            storeState: defaultState,
+        })
 
         BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
@@ -130,10 +128,9 @@ describe('BusiestTimesOfDays page', () => {
             FilterKey.Score,
         ]
 
-        const { getByText } = renderWithStore(
-            <BusiestTimesOfDays />,
-            defaultState,
-        )
+        const { getByText } = render(<BusiestTimesOfDays />, {
+            storeState: defaultState,
+        })
 
         extendedBusiestTimeOfDaysOptionalFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
@@ -160,7 +157,9 @@ describe('BusiestTimesOfDays page', () => {
             ...AUTO_QA_FILTER_KEYS,
         ]
 
-        const { getByText } = renderWithStore(<BusiestTimesOfDays />, state)
+        const { getByText } = render(<BusiestTimesOfDays />, {
+            storeState: state,
+        })
 
         extendedBusiestTimeOfDaysOptionalFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()

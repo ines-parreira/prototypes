@@ -1,11 +1,10 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { CampaignsSalesCountKPIChart } from 'domains/reporting/pages/convert/charts/CampaignsSalesCountKPIChart'
 import { useCampaignTotalStats } from 'domains/reporting/pages/convert/hooks/useCampaignTotalStats'
 import { CampaignsTotalsMetricNames } from 'domains/reporting/pages/convert/services/constants'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignTotalStats')
 const useCampaignTotalStatsMock = assumeMock(useCampaignTotalStats)
@@ -21,7 +20,7 @@ describe('CampaignsSalesCountKPIChart', () => {
             channelConnectionExternalIds: [],
         })
 
-        renderWithStore(<CampaignsSalesCountKPIChart />, {})
+        render(<CampaignsSalesCountKPIChart />)
 
         expect(
             document.querySelector('.react-loading-skeleton'),
@@ -47,7 +46,7 @@ describe('CampaignsSalesCountKPIChart', () => {
             channelConnectionExternalIds: [],
         })
 
-        renderWithStore(<CampaignsSalesCountKPIChart />, {})
+        render(<CampaignsSalesCountKPIChart />)
 
         expect(
             screen.getByText(campaignSalesCount, { exact: false }),

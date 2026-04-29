@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -18,7 +18,6 @@ import { campaign } from 'fixtures/campaign'
 import { integrationsState } from 'fixtures/integrations'
 import { InferredCampaignStatus } from 'models/convert/campaign/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -80,11 +79,11 @@ describe('CampaignStatsFilters', () => {
     it('should provide the correct value for campaigns', () => {
         useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
 
-        const { getByText, queryByText } = renderWithStore(
+        const { getByText, queryByText } = render(
             <CampaignStatsFilters>
                 <TestComponent />
             </CampaignStatsFilters>,
-            state,
+            { storeState: state },
         )
 
         expect(getByText(campaign.id)).toBeInTheDocument()
@@ -102,11 +101,11 @@ describe('CampaignStatsFilters', () => {
             </FiltersContext.Consumer>
         )
 
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <CampaignStatsFilters>
                 <TestComponent />
             </CampaignStatsFilters>,
-            state,
+            { storeState: state },
         )
 
         expect(getByText(channelConnectionExternalId)).toBeInTheDocument()
@@ -136,11 +135,11 @@ describe('CampaignStatsFilters', () => {
             </FiltersContext.Consumer>
         )
 
-        const { store } = renderWithStore(
+        const { store } = render(
             <CampaignStatsFilters>
                 <TestComponent />
             </CampaignStatsFilters>,
-            stateWithMultipleStoreIntegrationsSelected,
+            { storeState: stateWithMultipleStoreIntegrationsSelected },
         )
 
         waitFor(() => {
@@ -167,11 +166,11 @@ describe('CampaignStatsFilters', () => {
             </FiltersContext.Consumer>
         )
 
-        const { store } = renderWithStore(
+        const { store } = render(
             <CampaignStatsFilters>
                 <TestComponent />
             </CampaignStatsFilters>,
-            state,
+            { storeState: state },
         )
 
         waitFor(() => {
@@ -198,11 +197,11 @@ describe('CampaignStatsFilters', () => {
             </FiltersContext.Consumer>
         )
 
-        const { store } = renderWithStore(
+        const { store } = render(
             <CampaignStatsFilters>
                 <TestComponent />
             </CampaignStatsFilters>,
-            state,
+            { storeState: state },
         )
 
         waitFor(() => {
@@ -229,11 +228,11 @@ describe('CampaignStatsFilters', () => {
             </FiltersContext.Consumer>
         )
 
-        const { store } = renderWithStore(
+        const { store } = render(
             <CampaignStatsFilters>
                 <TestComponent />
             </CampaignStatsFilters>,
-            state,
+            { storeState: state },
         )
 
         waitFor(() => {
@@ -261,11 +260,11 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
     it('should provide the correct value for campaigns', () => {
         useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
 
-        const { getByText, queryByText } = renderWithStore(
+        const { getByText, queryByText } = render(
             <CampaignStatsFilters>
                 <TestComponent />
             </CampaignStatsFilters>,
-            state,
+            { storeState: state },
         )
 
         expect(getByText(campaign.id)).toBeInTheDocument()
@@ -302,11 +301,11 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
             </FiltersContext.Consumer>
         )
 
-        const { getByText, store } = renderWithStore(
+        const { getByText, store } = render(
             <CampaignStatsFilters isSelectStoreWithData>
                 <TestComponent />
             </CampaignStatsFilters>,
-            stateWithEmptyStoreIntegrations,
+            { storeState: stateWithEmptyStoreIntegrations },
         )
 
         await waitFor(() => {
@@ -354,11 +353,11 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
             </FiltersContext.Consumer>
         )
 
-        const { store } = renderWithStore(
+        const { store } = render(
             <CampaignStatsFilters isSelectStoreWithData>
                 <TestComponent />
             </CampaignStatsFilters>,
-            stateWithEmptyStoreIntegrations,
+            { storeState: stateWithEmptyStoreIntegrations },
         )
 
         await waitFor(() => {
@@ -415,11 +414,11 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
             </FiltersContext.Consumer>
         )
 
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <CampaignStatsFilters isSelectStoreWithData>
                 <TestComponent />
             </CampaignStatsFilters>,
-            customState,
+            { storeState: customState },
         )
 
         expect(getByText(`${integrationFromFilters}`)).toBeInTheDocument()
@@ -468,11 +467,11 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
             </FiltersContext.Consumer>
         )
 
-        const { getByText } = renderWithStore(
+        const { getByText } = render(
             <CampaignStatsFilters isSelectStoreWithData>
                 <TestComponent />
             </CampaignStatsFilters>,
-            customState,
+            { storeState: customState },
         )
 
         expect(getByText(`no-filters`)).toBeInTheDocument()

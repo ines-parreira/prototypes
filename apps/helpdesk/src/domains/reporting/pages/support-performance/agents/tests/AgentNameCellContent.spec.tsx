@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { agents } from 'fixtures/agents'
 import { STATS_ROUTES } from 'routes/constants'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -24,18 +24,16 @@ describe('<AgentNameCellContent>', () => {
     } as RootState
 
     it('should render agent name', () => {
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AgentNameCellContent agent={agent} />
-            </Provider>,
-        )
+        render(<AgentNameCellContent agent={agent} />, {
+            storeState: defaultState,
+        })
 
         expect(screen.getByText(agents[0].name)).toBeInTheDocument()
     })
 
     it('should dispatch agent id on click agent name', () => {
         const store = mockStore(defaultState)
-        renderWithRouter(
+        render(
             <Provider store={store}>
                 <AgentNameCellContent agent={agent} />
             </Provider>,
@@ -53,11 +51,9 @@ describe('<AgentNameCellContent>', () => {
     })
 
     it('should redirect to support performance overview by default', () => {
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AgentNameCellContent agent={agent} />
-            </Provider>,
-        )
+        render(<AgentNameCellContent agent={agent} />, {
+            storeState: defaultState,
+        })
 
         expect(screen.getByText(agents[0].name).closest('a')).toHaveAttribute(
             'href',
@@ -66,13 +62,12 @@ describe('<AgentNameCellContent>', () => {
     })
 
     it('should redirect to custom route if provided', () => {
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <AgentNameCellContent
-                    agent={agent}
-                    redirectTo={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`}
-                />
-            </Provider>,
+        render(
+            <AgentNameCellContent
+                agent={agent}
+                redirectTo={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`}
+            />,
+            { storeState: defaultState },
         )
 
         expect(screen.getByText(agents[0].name).closest('a')).toHaveAttribute(

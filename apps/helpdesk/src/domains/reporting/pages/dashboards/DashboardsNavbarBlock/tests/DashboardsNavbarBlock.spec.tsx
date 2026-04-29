@@ -1,8 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { Accordion } from 'components/Accordion/Accordion'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
@@ -16,9 +15,7 @@ import {
 import { getDashboardPath } from 'domains/reporting/pages/dashboards/utils'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import { isTeamLead } from 'utils'
-import { DndProvider } from 'utils/wrappers/DndProvider'
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
     ...jest.requireActual(
@@ -98,12 +95,10 @@ describe('DashboardsNavbarBlock', () => {
                 getDashboardsHandler: () => [],
             } as any)
 
-            renderWithQueryClientAndRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Accordion.Root>
-                        <DashboardsNavbarBlock />
-                    </Accordion.Root>
-                </DndProvider>,
+            render(
+                <Accordion.Root>
+                    <DashboardsNavbarBlock />
+                </Accordion.Root>,
             )
 
             expect(screen.getByText(DASHBOARDS_NAV_TITLE)).toBeInTheDocument()
@@ -122,12 +117,10 @@ describe('DashboardsNavbarBlock', () => {
         })
 
         it('should display the list of dashboards when data is available', async () => {
-            renderWithQueryClientAndRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Accordion.Root>
-                        <DashboardsNavbarBlock />
-                    </Accordion.Root>
-                </DndProvider>,
+            render(
+                <Accordion.Root>
+                    <DashboardsNavbarBlock />
+                </Accordion.Root>,
             )
 
             await userEvent.click(screen.getByText('keyboard_arrow_down'))
@@ -145,12 +138,10 @@ describe('DashboardsNavbarBlock', () => {
                 getDashboardsHandler: () => mockData,
             } as any)
 
-            renderWithQueryClientAndRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Accordion.Root>
-                        <DashboardsNavbarBlock />
-                    </Accordion.Root>
-                </DndProvider>,
+            render(
+                <Accordion.Root>
+                    <DashboardsNavbarBlock />
+                </Accordion.Root>,
             )
 
             await userEvent.click(screen.getByText('keyboard_arrow_down'))
@@ -182,12 +173,10 @@ describe('DashboardsNavbarBlock', () => {
                 getDashboardsHandler: () => mockData,
             } as any)
 
-            renderWithQueryClientAndRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Accordion.Root>
-                        <DashboardsNavbarBlock />
-                    </Accordion.Root>
-                </DndProvider>,
+            render(
+                <Accordion.Root>
+                    <DashboardsNavbarBlock />
+                </Accordion.Root>,
             )
 
             expect(
@@ -197,12 +186,10 @@ describe('DashboardsNavbarBlock', () => {
         })
 
         it('should not show the info icon when the user is an Admin', () => {
-            renderWithQueryClientAndRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Accordion.Root>
-                        <DashboardsNavbarBlock />
-                    </Accordion.Root>
-                </DndProvider>,
+            render(
+                <Accordion.Root>
+                    <DashboardsNavbarBlock />
+                </Accordion.Root>,
             )
 
             expect(screen.getByText('add')).toBeInTheDocument()
@@ -210,12 +197,10 @@ describe('DashboardsNavbarBlock', () => {
         })
 
         it('should report clicks on add icon clicked', async () => {
-            renderWithQueryClientAndRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Accordion.Root>
-                        <DashboardsNavbarBlock />
-                    </Accordion.Root>
-                </DndProvider>,
+            render(
+                <Accordion.Root>
+                    <DashboardsNavbarBlock />
+                </Accordion.Root>,
             )
             const addIcon = screen.getByText('add')
             expect(addIcon).toBeEnabled()
@@ -233,12 +218,10 @@ describe('DashboardsNavbarBlock', () => {
         })
 
         it('should show the info icon when the user is a LiteAgent', async () => {
-            renderWithQueryClientAndRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Accordion.Root>
-                        <DashboardsNavbarBlock />
-                    </Accordion.Root>
-                </DndProvider>,
+            render(
+                <Accordion.Root>
+                    <DashboardsNavbarBlock />
+                </Accordion.Root>,
             )
 
             const infoIcon = screen.getByText('info')

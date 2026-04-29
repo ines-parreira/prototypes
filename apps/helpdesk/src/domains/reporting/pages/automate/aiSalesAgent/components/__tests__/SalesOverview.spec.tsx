@@ -1,9 +1,7 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import SalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview'
@@ -17,8 +15,6 @@ import { integrationsState } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import type { RootState } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore, renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock('domains/reporting/pages/convert/hooks/useFirstStoreWithAiSalesData')
@@ -57,8 +53,6 @@ const mockUseStoreIntegrationByShopName =
 const mockUseHistory = useHistory as jest.Mock
 const mockHistoryPush = jest.fn()
 const mockHistoryReplace = jest.fn()
-
-const queryClient = mockQueryClient()
 
 describe('<SalesOverview />', () => {
     const defaultState = {
@@ -109,14 +103,10 @@ describe('<SalesOverview />', () => {
         state?: RootState
         path: any
     }) => {
-        return renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state)}>
-                    <SalesOverview />
-                </Provider>
-            </QueryClientProvider>,
-            path,
-        )
+        return render(<SalesOverview />, {
+            ...path,
+            storeState: state,
+        })
     }
 
     beforeEach(() => {
@@ -249,17 +239,13 @@ describe('<SalesOverview />', () => {
         })
 
         it('should replace history path when action-driven AI agent navigation is enabled and conditions match', () => {
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SalesOverview />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    route: '/app/stats/ai-sales-agent/overview/test-shop',
-                    path: '/app/stats/ai-sales-agent/overview/:shopName',
-                },
-            )
+            render(<SalesOverview />, {
+                initialEntries: [
+                    '/app/stats/ai-sales-agent/overview/test-shop',
+                ],
+                path: '/app/stats/ai-sales-agent/overview/:shopName',
+                storeState: defaultState,
+            })
 
             expect(mockHistoryReplace).toHaveBeenCalledWith(
                 '/app/stats/ai-sales-agent/overview',

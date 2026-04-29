@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import {
     fireEvent,
     screen,
@@ -28,7 +28,6 @@ import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -180,13 +179,13 @@ describe('DashboardPage', () => {
             isLoading: false,
         } as any)
 
-        renderWithStore(<DashboardPage />, defaultState)
+        render(<DashboardPage />, { storeState: defaultState })
 
         expect(screen.getByText(CREATE_REPORT_DESCRIPTION)).toBeInTheDocument()
     })
 
     it('should render actions button', () => {
-        renderWithStore(<DashboardPage />, defaultState)
+        render(<DashboardPage />, { storeState: defaultState })
 
         expect(screen.getByText(MOCKED_BUTTON_LABEL)).toBeInTheDocument()
     })
@@ -199,7 +198,7 @@ describe('DashboardPage', () => {
                 role: { name: BASIC_AGENT_ROLE },
             }),
         }
-        renderWithStore(<DashboardPage />, state)
+        render(<DashboardPage />, { storeState: state })
 
         expect(screen.queryByText(MOCKED_BUTTON_LABEL)).not.toBeInTheDocument()
     })
@@ -210,7 +209,7 @@ describe('DashboardPage', () => {
             isLoading: true,
         } as any)
 
-        renderWithStore(<DashboardPage />, {})
+        render(<DashboardPage />)
 
         expect(screen.getByText(/Loading/i))
     })
@@ -222,7 +221,7 @@ describe('DashboardPage', () => {
             isError: true,
         } as any)
 
-        renderWithStore(<DashboardPage />, {})
+        render(<DashboardPage />)
 
         expect(screen.getByText(DASHBOARD_SCHEMA_ERROR))
     })
@@ -233,13 +232,13 @@ describe('DashboardPage', () => {
             isLoading: false,
         } as any)
 
-        renderWithStore(<DashboardPage />, {})
+        render(<DashboardPage />)
 
         expect(PinnedFilterSyncProviderMock).toHaveBeenCalled()
     })
 
     it('should update name when input is blurred', async () => {
-        renderWithStore(<DashboardPage />, {})
+        render(<DashboardPage />)
 
         const nameInput = screen.getByRole('textbox', {
             name: 'Dashboard name',
@@ -255,7 +254,7 @@ describe('DashboardPage', () => {
     })
 
     it('should report Event when Actions menu clicked', () => {
-        renderWithStore(<DashboardPage />, defaultState)
+        render(<DashboardPage />, { storeState: defaultState })
 
         const actionButton = screen.getByText(MOCKED_BUTTON_LABEL)
 
@@ -267,7 +266,7 @@ describe('DashboardPage', () => {
     })
 
     it('should update charts when modal is saved', async () => {
-        renderWithStore(<DashboardPage />, defaultState)
+        render(<DashboardPage />, { storeState: defaultState })
 
         const actionButton = screen.getByText(MOCKED_BUTTON_LABEL)
 
@@ -292,7 +291,7 @@ describe('DashboardPage', () => {
     })
 
     it('should notify on success and close modal', async () => {
-        renderWithStore(<DashboardPage />, defaultState)
+        render(<DashboardPage />, { storeState: defaultState })
 
         const actionButton = screen.getByText(MOCKED_BUTTON_LABEL)
 
@@ -321,7 +320,7 @@ describe('DashboardPage', () => {
     })
 
     it('should show correct notification message when charts are updated', async () => {
-        renderWithStore(<DashboardPage />, defaultState)
+        render(<DashboardPage />, { storeState: defaultState })
 
         const actionButton = screen.getByText(MOCKED_BUTTON_LABEL)
 
@@ -353,7 +352,7 @@ describe('DashboardPage', () => {
     })
 
     it('should render the new dashboard report', () => {
-        renderWithStore(<DashboardPage />, defaultState)
+        render(<DashboardPage />, { storeState: defaultState })
 
         expect(AnalyticsCustomDashboardMock).toHaveBeenCalled()
     })
@@ -379,7 +378,7 @@ describe('DashboardPage', () => {
                 isLoading: false,
             } as any)
 
-            renderWithStore(<DashboardPage />, defaultState)
+            render(<DashboardPage />, { storeState: defaultState })
 
             const pinFilterButton = screen.getByRole('button', {
                 name: PIN_FILTER_BUTTON,
@@ -424,7 +423,7 @@ describe('DashboardPage', () => {
                 ),
             )
 
-            renderWithStore(<DashboardPage />, defaultState)
+            render(<DashboardPage />, { storeState: defaultState })
 
             const pinFilterButton = screen.getByRole('button', {
                 name: PIN_FILTER_BUTTON,
@@ -470,7 +469,7 @@ describe('DashboardPage', () => {
                 ),
             )
 
-            renderWithStore(<DashboardPage />, defaultState)
+            render(<DashboardPage />, { storeState: defaultState })
 
             const pinFilterButton = screen.getByRole('button', {
                 name: PIN_FILTER_BUTTON,
@@ -495,7 +494,7 @@ describe('DashboardPage', () => {
                 isLoading: false,
             } as any)
 
-            renderWithStore(<DashboardPage />, defaultState)
+            render(<DashboardPage />, { storeState: defaultState })
 
             expect(AnalyticsCustomDashboardMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -514,7 +513,7 @@ describe('DashboardPage', () => {
                 isLoading: false,
             } as any)
 
-            renderWithStore(<DashboardPage />, defaultState)
+            render(<DashboardPage />, { storeState: defaultState })
 
             expect(AnalyticsCustomDashboardMock).toHaveBeenCalledWith(
                 expect.objectContaining({

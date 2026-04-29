@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
@@ -11,7 +11,6 @@ import { AgentsTable } from 'domains/reporting/pages/support-performance/agents/
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { agents } from 'fixtures/agents'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/support-performance/agents/AgentsTable')
 const AgentsTableMock = assumeMock(AgentsTable)
@@ -49,7 +48,7 @@ describe('AiAgentTable', () => {
     it('should pass no Agents if there is no iAgent', () => {
         useAIAgentUserMock.mockReturnValue(undefined)
 
-        renderWithStore(<AiAgentTable />, {})
+        render(<AiAgentTable />)
 
         expect(AgentsTableMock).toHaveBeenCalledWith(
             {
@@ -74,7 +73,7 @@ describe('AiAgentTable', () => {
     })
 
     it('should pass paginated agents and filters with AiAgent', () => {
-        renderWithStore(<AiAgentTable />, {})
+        render(<AiAgentTable />)
 
         expect(AgentsTableMock).toHaveBeenCalledWith(
             {

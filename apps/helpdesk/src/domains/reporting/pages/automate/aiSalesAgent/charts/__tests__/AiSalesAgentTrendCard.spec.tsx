@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
@@ -14,7 +15,6 @@ import {
 } from 'domains/reporting/pages/common/utils'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
     useDashboardActions: jest.fn().mockReturnValue({}),
@@ -47,13 +47,13 @@ describe('AiSalesAgentTrendCard', () => {
             data: { value: 100, prevValue: 90, currency: 'USD' },
         })
 
-        renderWithStore(
+        render(
             <WarningBannerProvider isBannerVisible={false}>
                 <AiSalesAgentTrendCard
                     chartId={AiSalesAgentChart.AiSalesAgentGmv}
                 />
             </WarningBannerProvider>,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -76,13 +76,13 @@ describe('AiSalesAgentTrendCard', () => {
     })
 
     it('should use null trend hook when banner is visible', () => {
-        renderWithStore(
+        render(
             <WarningBannerProvider isBannerVisible>
                 <AiSalesAgentTrendCard
                     chartId={AiSalesAgentChart.AiSalesAgentGmv}
                 />
             </WarningBannerProvider>,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(

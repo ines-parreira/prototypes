@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -19,7 +19,6 @@ import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { user } from 'fixtures/users'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)
@@ -96,10 +95,9 @@ describe('<ChartsActionMenu />', () => {
     })
 
     it('should render the chart action menu with all the options and select one', () => {
-        renderWithStore(
-            <ChartsActionMenu chartId="123" chartName={chartName} />,
-            defaultState,
-        )
+        render(<ChartsActionMenu chartId="123" chartName={chartName} />, {
+            storeState: defaultState,
+        })
 
         const menu = screen.getByText('more_vert')
         expect(menu).toBeInTheDocument()
@@ -135,10 +133,9 @@ describe('<ChartsActionMenu />', () => {
     })
 
     it('should filter out Dashboards that already contain the Chart', () => {
-        renderWithStore(
-            <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState,
-        )
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />, {
+            storeState: defaultState,
+        })
 
         const menu = screen.getByText('more_vert')
         userEvent.click(menu)
@@ -153,10 +150,9 @@ describe('<ChartsActionMenu />', () => {
     })
 
     it('should contain filtered dashboards and show the add to dashboard action', () => {
-        renderWithStore(
-            <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState,
-        )
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />, {
+            storeState: defaultState,
+        })
 
         userEvent.click(screen.getByText('more_vert'))
 
@@ -187,10 +183,9 @@ describe('<ChartsActionMenu />', () => {
             getDashboardsHandler: () => mockData,
         } as any)
 
-        renderWithStore(
-            <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState,
-        )
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />, {
+            storeState: defaultState,
+        })
 
         userEvent.click(screen.getByText('more_vert'))
 
@@ -214,10 +209,9 @@ describe('<ChartsActionMenu />', () => {
             getDashboardsHandler: () => [],
         } as any)
 
-        renderWithStore(
-            <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState,
-        )
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />, {
+            storeState: defaultState,
+        })
 
         userEvent.click(screen.getByText('more_vert'))
 
@@ -229,13 +223,13 @@ describe('<ChartsActionMenu />', () => {
     })
 
     it('should render the action menu with the delete button if dashboardId is defined', () => {
-        renderWithStore(
+        render(
             <ChartsActionMenu
                 chartId={chartId}
                 dashboard={dashboard}
                 chartName={chartName}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText('more_vert'))
@@ -252,10 +246,9 @@ describe('<ChartsActionMenu />', () => {
     })
 
     it('should render AddChartToDashboardModal when clicking on add to dashboard', () => {
-        renderWithStore(
-            <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState,
-        )
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />, {
+            storeState: defaultState,
+        })
 
         userEvent.click(screen.getByText('more_vert'))
 
@@ -278,13 +271,15 @@ describe('<ChartsActionMenu />', () => {
     })
 
     it('should not render the chart action menu if the user is not an agent', () => {
-        const { container } = renderWithStore(
+        const { container } = render(
             <ChartsActionMenu chartId="123" chartName={chartName} />,
             {
-                currentUser: fromJS({
-                    ...user,
-                    role: { name: UserRole.LiteAgent },
-                }),
+                storeState: {
+                    currentUser: fromJS({
+                        ...user,
+                        role: { name: UserRole.LiteAgent },
+                    }),
+                },
             },
         )
 

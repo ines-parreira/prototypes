@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useCommunicationSkillsTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useCommunicationSkillsTrend'
@@ -14,7 +14,6 @@ import { CommunicationSkillsTrendCard } from 'domains/reporting/pages/support-pe
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useCommunicationSkillsTrend',
@@ -50,7 +49,7 @@ describe('CommunicationSkillsTrendCard', () => {
     })
 
     it('should render CommunicationSkillsTrendCard Trend', () => {
-        renderWithStore(<CommunicationSkillsTrendCard />, defaultState)
+        render(<CommunicationSkillsTrendCard />, { storeState: defaultState })
 
         expect(
             screen.getByText(

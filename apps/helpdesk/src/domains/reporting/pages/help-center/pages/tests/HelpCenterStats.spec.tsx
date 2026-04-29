@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { getSortByName } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -28,7 +28,6 @@ import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenter
 import type { RootState } from 'state/types'
 import configureStore from 'store/configureStore.prod'
 import type { InitialRootState } from 'types'
-import { renderWithRouter, renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -122,7 +121,7 @@ describe('<HelpCenterStats />', () => {
 
     const renderComponent = () => {
         const store = configureStore({} as InitialRootState)
-        renderWithRouter(
+        render(
             <Provider store={store}>
                 <HelpCenterStats />
             </Provider>,
@@ -284,7 +283,7 @@ describe('<HelpCenterStats />', () => {
             fetchMore: jest.fn(),
         })
 
-        const { store } = renderWithStore(<HelpCenterStats />, state)
+        const { store } = render(<HelpCenterStats />, { storeState: state })
 
         await waitFor(() => {
             expect(store.getActions()).toContainEqual(
@@ -342,7 +341,7 @@ describe('<HelpCenterStats />', () => {
             fetchMore: jest.fn(),
         })
 
-        const { store } = renderWithStore(<HelpCenterStats />, state)
+        const { store } = render(<HelpCenterStats />, { storeState: state })
 
         await waitFor(() => {
             expect(store.getActions()).toContainEqual(
@@ -403,7 +402,7 @@ describe('<HelpCenterStats />', () => {
             fetchMore: jest.fn(),
         })
 
-        const { store } = renderWithStore(<HelpCenterStats />, state)
+        const { store } = render(<HelpCenterStats />, { storeState: state })
 
         await waitFor(() => {
             expect(store.getActions()).toContainEqual(

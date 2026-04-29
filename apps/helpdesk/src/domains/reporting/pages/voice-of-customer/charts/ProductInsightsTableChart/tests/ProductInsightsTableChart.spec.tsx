@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/dom'
 import { fromJS } from 'immutable'
 
@@ -14,7 +14,6 @@ import {
     useGetCustomTicketsFieldsDefinitionData,
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsEditColumns',
@@ -58,7 +57,7 @@ describe('ProductInsightsTableChart', () => {
             currentUser: fromJS(mockNonAdminUser),
         }
 
-        renderWithStore(<ProductInsightsTableChart />, state)
+        render(<ProductInsightsTableChart />, { storeState: state })
 
         expect(
             screen.getByText(PRODUCT_INSIGHTS_TABLE_TITLE),
@@ -70,7 +69,7 @@ describe('ProductInsightsTableChart', () => {
             currentUser: fromJS(mockAdminUser),
         }
 
-        renderWithStore(<ProductInsightsTableChart />, state)
+        render(<ProductInsightsTableChart />, { storeState: state })
 
         expect(ProductInsightsEditColumnsMock).toHaveBeenCalled()
     })
@@ -80,7 +79,7 @@ describe('ProductInsightsTableChart', () => {
             currentUser: fromJS(mockNonAdminUser),
         }
 
-        renderWithStore(<ProductInsightsTableChart />, state)
+        render(<ProductInsightsTableChart />, { storeState: state })
 
         expect(ProductInsightsEditColumnsMock).not.toHaveBeenCalled()
     })
@@ -90,7 +89,7 @@ describe('ProductInsightsTableChart', () => {
             currentUser: fromJS(mockNonAdminUser),
         }
 
-        renderWithStore(<ProductInsightsTableChart />, state)
+        render(<ProductInsightsTableChart />, { storeState: state })
 
         expect(ProductInsightsTableMock).toHaveBeenCalled()
     })
@@ -106,7 +105,7 @@ describe('ProductInsightsTableChart', () => {
             isLoading: false,
         })
 
-        renderWithStore(<ProductInsightsTableChart />, state)
+        render(<ProductInsightsTableChart />, { storeState: state })
 
         expect(ProductInsightsTableMock).not.toHaveBeenCalled()
     })
@@ -122,7 +121,7 @@ describe('ProductInsightsTableChart', () => {
             isLoading: false,
         })
 
-        renderWithStore(<ProductInsightsTableChart />, state)
+        render(<ProductInsightsTableChart />, { storeState: state })
 
         expect(ProductInsightsTableMock).not.toHaveBeenCalled()
     })

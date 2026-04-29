@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -41,7 +40,6 @@ import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useStatResource')
 jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
@@ -268,11 +266,9 @@ describe('SupportPerformanceRevenue', () => {
             'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceRevenue />
-            </Provider>,
-        )
+        const { container } = render(<SupportPerformanceRevenue />, {
+            storeState: defaultState,
+        })
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -295,10 +291,9 @@ describe('SupportPerformanceRevenue', () => {
             'useIsConvertSubscriber',
         ).mockImplementation(() => false)
 
-        const { queryByPlaceholderText } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceRevenue />
-            </Provider>,
+        const { queryByPlaceholderText } = render(
+            <SupportPerformanceRevenue />,
+            { storeState: defaultState },
         )
 
         expect(queryByPlaceholderText('Search campaigns...')).toBe(null)

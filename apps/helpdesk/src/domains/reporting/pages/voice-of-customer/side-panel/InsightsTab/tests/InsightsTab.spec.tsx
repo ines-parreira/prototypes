@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -12,7 +12,6 @@ import {
     sortingOptions,
 } from 'domains/reporting/pages/voice-of-customer/side-panel/InsightsTab/InsightsTab'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
@@ -84,7 +83,7 @@ describe('InsightsTab', () => {
     it('should not render anything if product is missing', () => {
         const state = JSON.parse(JSON.stringify(defaultState))
         state.ui.stats.sidePanel.product = null
-        const { container } = renderWithStore(<InsightsTab />, state)
+        const { container } = render(<InsightsTab />, { storeState: state })
 
         expect(container.firstChild).toBeNull()
     })
@@ -94,13 +93,15 @@ describe('InsightsTab', () => {
             intentCustomFieldId: -1,
         } as any)
 
-        const { container } = renderWithStore(<InsightsTab />, defaultState)
+        const { container } = render(<InsightsTab />, {
+            storeState: defaultState,
+        })
 
         expect(container.firstChild).toBeNull()
     })
 
     it('renders a list of intents for product', () => {
-        renderWithStore(<InsightsTab />, defaultState)
+        render(<InsightsTab />, { storeState: defaultState })
 
         const listitems = screen.getAllByRole('listitem')
 
@@ -119,7 +120,7 @@ describe('InsightsTab', () => {
             data: { allData: withInvalidEntries },
         } as any)
 
-        renderWithStore(<InsightsTab />, defaultState)
+        render(<InsightsTab />, { storeState: defaultState })
 
         const listitems = screen.getAllByRole('listitem')
 
@@ -134,7 +135,7 @@ describe('InsightsTab', () => {
             data: { allData: [] },
         } as any)
 
-        renderWithStore(<InsightsTab />, defaultState)
+        render(<InsightsTab />, { storeState: defaultState })
 
         const noDataFallback = screen.getByText(DATA_MISSING_MESSAGE)
 
@@ -148,7 +149,7 @@ describe('InsightsTab', () => {
             data: { allData: null },
         } as any)
 
-        renderWithStore(<InsightsTab />, defaultState)
+        render(<InsightsTab />, { storeState: defaultState })
 
         const noDataFallback = screen.getByText(DATA_MISSING_MESSAGE)
 
@@ -162,7 +163,7 @@ describe('InsightsTab', () => {
             data: { allData },
         } as any)
 
-        renderWithStore(<InsightsTab />, defaultState)
+        render(<InsightsTab />, { storeState: defaultState })
 
         const listitems = screen.getAllByRole('listitem')
 
@@ -171,7 +172,7 @@ describe('InsightsTab', () => {
     })
 
     it('applies sorting', async () => {
-        renderWithStore(<InsightsTab />, defaultState)
+        render(<InsightsTab />, { storeState: defaultState })
 
         const select = screen.getByRole('button')
 

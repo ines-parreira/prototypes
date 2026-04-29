@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
@@ -9,17 +9,16 @@ import {
 } from 'domains/reporting/pages/constants'
 import { PeriodShortcutSelector } from 'domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/PeriodShortcutSelector'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import { renderWithStore } from 'utils/testing'
 
 describe('PeriodShortcutSelector', () => {
     it('should render the component with "Show Date Range" button', () => {
-        renderWithStore(<PeriodShortcutSelector />, {})
+        render(<PeriodShortcutSelector />)
 
         expect(screen.getByText('Show Date Range')).toBeInTheDocument()
     })
 
     it('should open dropdown when button is clicked', () => {
-        renderWithStore(<PeriodShortcutSelector />, {})
+        render(<PeriodShortcutSelector />)
 
         const button = screen.getByText('Show Date Range')
         userEvent.click(button)
@@ -30,7 +29,7 @@ describe('PeriodShortcutSelector', () => {
     })
 
     it('should dispatch mergeStatsFilters with correct period when a period is selected', () => {
-        const { store } = renderWithStore(<PeriodShortcutSelector />, {})
+        const { store } = render(<PeriodShortcutSelector />)
 
         const button = screen.getByText('Show Date Range')
         userEvent.click(button)
@@ -51,7 +50,7 @@ describe('PeriodShortcutSelector', () => {
     })
 
     it('should dispatch mergeStatsFilters with correct period for each option', () => {
-        const { store } = renderWithStore(<PeriodShortcutSelector />, {})
+        const { store } = render(<PeriodShortcutSelector />)
 
         const periods = getDefaultSetOfRanges()
         const button = screen.getByText('Show Date Range')

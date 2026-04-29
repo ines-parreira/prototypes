@@ -1,9 +1,6 @@
 import { useAreFlagsLoading } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { createMemoryHistory } from 'history'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import type routerDom from 'react-router-dom'
 import { Route, useParams } from 'react-router-dom'
 
@@ -19,9 +16,7 @@ import { IntegrationType } from 'models/integration/constants'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import type { RootState } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
-import { mockStore, renderWithRouter } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -88,28 +83,31 @@ jest.mock(
     }),
 )
 
-const queryClient = mockQueryClient()
-
 const useParamsMock = assumeMock(useParams)
 
 describe('CampaignsStats', () => {
-    const history = createMemoryHistory()
-
-    const renderWithStore = (state: Partial<RootState>, props = {}) =>
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state as any)}>
-                    <Route path="/app/stats/convert/campaigns">
-                        <CampaignStatsPaywallView />
-                    </Route>
-                    <Route path="/app/convert/123/performance">
-                        <CampaignStatsPaywallView />
-                    </Route>
-                    <ConvertCampaignsStats {...props} />
-                </Provider>
-            </QueryClientProvider>,
-
-            { history },
+    const renderWithStore = (
+        state: Partial<RootState>,
+        props = {},
+        initialEntry = '/app/stats/convert/campaigns',
+    ) =>
+        render(
+            <>
+                <Route path="/app/stats/convert/campaigns">
+                    <CampaignStatsPaywallView />
+                </Route>
+                <Route path="/app/convert/123/performance">
+                    <CampaignStatsPaywallView />
+                </Route>
+                <Route path="/app/stats/convert/campaigns/subscribe">
+                    Convert campaigns subscribe route
+                </Route>
+                <Route path="/app/convert/123/performance/subscribe">
+                    Convert performance subscribe route
+                </Route>
+                <ConvertCampaignsStats {...props} />
+            </>,
+            { initialEntries: [initialEntry], storeState: state },
         )
     const mockedState = getStateWithHelpdeskPlan()
 
@@ -146,9 +144,9 @@ describe('CampaignsStats', () => {
             ),
         ).toBeInTheDocument()
 
-        expect(history.location.pathname).toEqual(
-            '/app/stats/convert/campaigns/subscribe',
-        )
+        expect(
+            getByText('Convert campaigns subscribe route'),
+        ).toBeInTheDocument()
     })
 
     it('should redirect to Convert section performance paywall', () => {
@@ -160,7 +158,11 @@ describe('CampaignsStats', () => {
 
         useParamsMock.mockReturnValue({ id: '123' })
 
-        const { getByText, queryByText } = renderWithStore(mockedState)
+        const { getByText, queryByText } = renderWithStore(
+            mockedState,
+            {},
+            '/app/convert/123/performance',
+        )
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
         expect(
@@ -169,9 +171,9 @@ describe('CampaignsStats', () => {
             ),
         ).toBeInTheDocument()
 
-        expect(history.location.pathname).toEqual(
-            '/app/convert/123/performance/subscribe',
-        )
+        expect(
+            getByText('Convert performance subscribe route'),
+        ).toBeInTheDocument()
     })
 
     it('should not render and wait for flags', () => {

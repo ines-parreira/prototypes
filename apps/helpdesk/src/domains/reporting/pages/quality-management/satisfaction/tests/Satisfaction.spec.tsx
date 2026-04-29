@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
@@ -32,7 +32,6 @@ import {
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 const componentMock = () => <div />
 
@@ -131,10 +130,9 @@ describe('<Satisfaction>', () => {
     })
 
     it('should render new satisfaction report page', () => {
-        const { getByText } = renderWithStore(
-            <SatisfactionReport />,
-            defaultState,
-        )
+        const { getByText } = render(<SatisfactionReport />, {
+            storeState: defaultState,
+        })
 
         expect(getByText(SATISFACTION_TITLE)).toBeInTheDocument()
         expect(SatisfactionScoreTrendCardMock).toHaveBeenCalled()
@@ -147,10 +145,9 @@ describe('<Satisfaction>', () => {
     })
 
     it('should contain filters panel component', () => {
-        const { getByText } = renderWithStore(
-            <SatisfactionReport />,
-            defaultState,
-        )
+        const { getByText } = render(<SatisfactionReport />, {
+            storeState: defaultState,
+        })
 
         SATISFACTION_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()

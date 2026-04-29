@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import {
@@ -11,7 +11,6 @@ import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/ty
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)
@@ -37,7 +36,7 @@ describe('ProductInsightsHeaderCellContent', () => {
     })
 
     it('renders without crashing', () => {
-        renderWithStore(
+        render(
             <table>
                 <thead>
                     <tr>
@@ -48,17 +47,15 @@ describe('ProductInsightsHeaderCellContent', () => {
                     </tr>
                 </thead>
             </table>,
-            {},
         )
     })
 
     it('displays the correct title for the column', () => {
-        renderWithStore(
+        render(
             <ProductInsightsHeaderCellContent
                 column={ProductInsightsTableColumns.Product}
                 useSortingQuery={sortingQueryHook}
             />,
-            {},
         )
 
         expect(
@@ -69,7 +66,7 @@ describe('ProductInsightsHeaderCellContent', () => {
     })
 
     it('dispatches setSorting action when clicked', () => {
-        renderWithStore(
+        render(
             <table>
                 <thead>
                     <tr>
@@ -80,7 +77,6 @@ describe('ProductInsightsHeaderCellContent', () => {
                     </tr>
                 </thead>
             </table>,
-            {},
         )
 
         fireEvent.click(
@@ -104,7 +100,7 @@ describe('ProductInsightsHeaderCellContent', () => {
             isLoading: false,
         })
 
-        renderWithStore(
+        render(
             <table>
                 <thead>
                     <tr>
@@ -115,7 +111,6 @@ describe('ProductInsightsHeaderCellContent', () => {
                     </tr>
                 </thead>
             </table>,
-            {},
         )
 
         fireEvent.click(
@@ -141,7 +136,7 @@ describe('ProductInsightsHeaderCellContent', () => {
         const nonSortableColumn =
             ProductInsightsTableColumns.PositiveSentimentDelta
 
-        renderWithStore(
+        render(
             <table>
                 <thead>
                     <tr>
@@ -152,7 +147,6 @@ describe('ProductInsightsHeaderCellContent', () => {
                     </tr>
                 </thead>
             </table>,
-            {},
         )
 
         fireEvent.click(

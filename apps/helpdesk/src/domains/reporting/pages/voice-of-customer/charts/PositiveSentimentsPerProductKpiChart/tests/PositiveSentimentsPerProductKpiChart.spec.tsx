@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 
 import { PositiveSentimentsPerProductKpi } from 'domains/reporting/pages/voice-of-customer/charts/PositiveSentimentsPerProductKpiChart/PositiveSentimentsPerProductKpi'
 import { PositiveSentimentsPerProductKpiChart } from 'domains/reporting/pages/voice-of-customer/charts/PositiveSentimentsPerProductKpiChart/PositiveSentimentsPerProductKpiChart'
@@ -8,7 +8,6 @@ import {
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
@@ -52,7 +51,9 @@ describe('PositiveSentimentsPerProductKpiChart', () => {
             isLoading: false,
         })
 
-        renderWithStore(<PositiveSentimentsPerProductKpiChart />, defaultState)
+        render(<PositiveSentimentsPerProductKpiChart />, {
+            storeState: defaultState,
+        })
 
         expect(PositiveSentimentsPerProductKpiMock).not.toHaveBeenCalled()
     })
@@ -65,7 +66,9 @@ describe('PositiveSentimentsPerProductKpiChart', () => {
             isLoading: false,
         })
 
-        renderWithStore(<PositiveSentimentsPerProductKpiChart />, defaultState)
+        render(<PositiveSentimentsPerProductKpiChart />, {
+            storeState: defaultState,
+        })
 
         expect(PositiveSentimentsPerProductKpiMock).toHaveBeenCalledWith(
             {

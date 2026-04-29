@@ -1,13 +1,9 @@
 import React from 'react'
 
-import { flushPromises } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { flushPromises, render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
@@ -42,10 +38,8 @@ import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
 import { AccountFeature } from 'state/currentAccount/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import type { RootState } from 'state/types'
 import { saveFileAsDownloaded } from 'utils/file'
-import { renderWithRouter } from 'utils/testing'
 
 const mockSelfServiceConfigurations = [
     {
@@ -134,7 +128,6 @@ jest.mock('utils/file', () => ({
     saveFileAsDownloaded: jest.fn(),
 }))
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
 >
@@ -155,8 +148,6 @@ const mockUseTrialAccess = useTrialAccess as jest.MockedFunction<
 const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
     typeof useAiAgentAccess
 >
-
-const mockClient = mockQueryClient()
 
 const WFConfigData = [
     {
@@ -421,13 +412,9 @@ describe('<SelfServiceStatsPage />', () => {
     })
 
     it('should display the loader on loading', () => {
-        const { container } = render(
-            <QueryClientProvider client={mockClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPageWithPaywall />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        const { container } = render(<SelfServiceStatsPageWithPaywall />, {
+            storeState: defaultState,
+        })
         expect(container).toMatchSnapshot()
     })
 
@@ -451,13 +438,9 @@ describe('<SelfServiceStatsPage />', () => {
             ]
         })
 
-        const { container } = renderWithRouter(
-            <QueryClientProvider client={mockClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPageWithPaywall />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        const { container } = render(<SelfServiceStatsPageWithPaywall />, {
+            storeState: defaultState,
+        })
 
         await flushPromises()
 
@@ -484,12 +467,9 @@ describe('<SelfServiceStatsPage />', () => {
             ]
         })
 
-        const { container, getByText } = renderWithRouter(
-            <QueryClientProvider client={mockClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPageWithPaywall />
-                </Provider>
-            </QueryClientProvider>,
+        const { container, getByText } = render(
+            <SelfServiceStatsPageWithPaywall />,
+            { storeState: defaultState },
         )
 
         await flushPromises()
@@ -508,13 +488,9 @@ describe('<SelfServiceStatsPage />', () => {
             isLoading: true,
         } as any)
 
-        render(
-            <QueryClientProvider client={mockClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPageWithPaywall />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        render(<SelfServiceStatsPageWithPaywall />, {
+            storeState: defaultState,
+        })
 
         expect(screen.getByTestId('self-service-loader')).toBeInTheDocument()
     })
@@ -524,13 +500,9 @@ describe('<SelfServiceStatsPage />', () => {
             isLoading: true,
         } as any)
 
-        render(
-            <QueryClientProvider client={mockClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPageWithPaywall />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        render(<SelfServiceStatsPageWithPaywall />, {
+            storeState: defaultState,
+        })
 
         expect(screen.getByTestId('self-service-loader')).toBeInTheDocument()
     })
@@ -544,13 +516,9 @@ describe('<SelfServiceStatsPage />', () => {
             isLoading: false,
         } as any)
 
-        render(
-            <QueryClientProvider client={mockClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPageWithPaywall />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        render(<SelfServiceStatsPageWithPaywall />, {
+            storeState: defaultState,
+        })
 
         expect(
             screen.queryByTestId('self-service-loader'),
@@ -563,13 +531,9 @@ describe('<SelfServiceStatsPage />', () => {
             data: [],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        render(
-            <QueryClientProvider client={mockClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPageWithPaywall />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        render(<SelfServiceStatsPageWithPaywall />, {
+            storeState: defaultState,
+        })
 
         await waitFor(() => {
             expect(mockedDispatch).toHaveBeenCalled()
@@ -602,13 +566,9 @@ describe('<SelfServiceStatsPage />', () => {
             data: WFConfigData,
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const { getAllByText } = renderWithRouter(
-            <QueryClientProvider client={mockClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPageWithPaywall />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        const { getAllByText } = render(<SelfServiceStatsPageWithPaywall />, {
+            storeState: defaultState,
+        })
 
         expect(getAllByText('file_download').length).toBe(4)
         // eslint-disable-next-line @typescript-eslint/require-await
@@ -651,13 +611,7 @@ describe('<SelfServiceStatsPage />', () => {
                 }),
             )
 
-            render(
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SelfServiceStatsPage />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<SelfServiceStatsPage />, { storeState: defaultState })
 
             expect(
                 screen.getByTestId('self-service-loader'),
@@ -692,13 +646,9 @@ describe('<SelfServiceStatsPage />', () => {
                 ]
             })
 
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SelfServiceStatsPage />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const { container } = render(<SelfServiceStatsPage />, {
+                storeState: defaultState,
+            })
 
             expect(
                 screen.queryByTestId('self-service-loader'),
@@ -714,13 +664,7 @@ describe('<SelfServiceStatsPage />', () => {
                 }),
             )
 
-            render(
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SelfServiceStatsPage />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<SelfServiceStatsPage />, { storeState: defaultState })
 
             // Should not show the loader
             expect(
@@ -736,13 +680,7 @@ describe('<SelfServiceStatsPage />', () => {
                 }),
             )
 
-            render(
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SelfServiceStatsPage />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<SelfServiceStatsPage />, { storeState: defaultState })
 
             expect(mockUseTrialAccess).toHaveBeenCalled()
         })
@@ -755,13 +693,7 @@ describe('<SelfServiceStatsPage />', () => {
                 }),
             )
 
-            render(
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SelfServiceStatsPage />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<SelfServiceStatsPage />, { storeState: defaultState })
 
             expect(mockUseTrialAccess).toHaveBeenCalled()
             expect(mockUseTrialAccess).toHaveBeenCalledTimes(1)
@@ -813,13 +745,9 @@ describe('<SelfServiceStatsPage />', () => {
                 ]
             })
 
-            const { getByRole } = renderWithRouter(
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SelfServiceStatsPage />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const { getByRole } = render(<SelfServiceStatsPage />, {
+                storeState: defaultState,
+            })
 
             await flushPromises()
 
@@ -859,13 +787,9 @@ describe('<SelfServiceStatsPage />', () => {
                 ]
             })
 
-            const { queryByRole } = renderWithRouter(
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SelfServiceStatsPage />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const { queryByRole } = render(<SelfServiceStatsPage />, {
+                storeState: defaultState,
+            })
 
             await flushPromises()
 
@@ -908,13 +832,9 @@ describe('<SelfServiceStatsPage />', () => {
                 ]
             })
 
-            const { queryByRole } = renderWithRouter(
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <SelfServiceStatsPage />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const { queryByRole } = render(<SelfServiceStatsPage />, {
+                storeState: defaultState,
+            })
 
             await flushPromises()
 

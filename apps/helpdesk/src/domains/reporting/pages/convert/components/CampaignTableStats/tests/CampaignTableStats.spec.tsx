@@ -1,7 +1,6 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { MemoryRouter } from 'react-router-dom'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { CampaignTableStats } from 'domains/reporting/pages/convert/components/CampaignTableStats/CampaignTableStats'
@@ -15,7 +14,6 @@ import { campaign, campaignVariant } from 'fixtures/campaign'
 import { integrationsState } from 'fixtures/integrations'
 import type { CampaignPreview } from 'models/convert/campaign/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import { renderWithStore } from 'utils/testing'
 
 const chatIntegration = {
     type: 'gorgias_chat',
@@ -81,19 +79,19 @@ describe('CampaignTableStats', () => {
     })
 
     it('should render CampaignTableStats with campaigns and variants', () => {
-        const { getByText, getByRole } = renderWithStore(
-            <MemoryRouter>
-                <CampaignTableStats
-                    chatIntegrationId={8}
-                    isLoading={false}
-                    rows={rows}
-                    offset={0}
-                    onClickNextPage={jest.fn()}
-                    onClickPrevPage={jest.fn()}
-                />
-            </MemoryRouter>,
+        const { getByText, getByRole } = render(
+            <CampaignTableStats
+                chatIntegrationId={8}
+                isLoading={false}
+                rows={rows}
+                offset={0}
+                onClickNextPage={jest.fn()}
+                onClickPrevPage={jest.fn()}
+            />,
             {
-                integrations: fromJS(integrationsState),
+                storeState: {
+                    integrations: fromJS(integrationsState),
+                },
             },
         )
 
@@ -108,18 +106,15 @@ describe('CampaignTableStats', () => {
     })
 
     it('should render the sorting arrow indicators properly when clicking header cell', () => {
-        const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <CampaignTableStats
-                    chatIntegrationId={8}
-                    isLoading={false}
-                    rows={rows}
-                    offset={0}
-                    onClickNextPage={jest.fn()}
-                    onClickPrevPage={jest.fn()}
-                />
-            </MemoryRouter>,
-            {},
+        const { getByText } = render(
+            <CampaignTableStats
+                chatIntegrationId={8}
+                isLoading={false}
+                rows={rows}
+                offset={0}
+                onClickNextPage={jest.fn()}
+                onClickPrevPage={jest.fn()}
+            />,
         )
         const engagementSpan = getByText('Engagement')
         const engagementTh = engagementSpan.closest('th')!
@@ -145,18 +140,15 @@ describe('CampaignTableStats', () => {
     })
 
     it('scroll sets isTableScrolled state correctly', () => {
-        const { container, getByText } = renderWithStore(
-            <MemoryRouter>
-                <CampaignTableStats
-                    chatIntegrationId={8}
-                    isLoading={false}
-                    rows={rows}
-                    offset={0}
-                    onClickNextPage={jest.fn()}
-                    onClickPrevPage={jest.fn()}
-                />
-            </MemoryRouter>,
-            {},
+        const { container, getByText } = render(
+            <CampaignTableStats
+                chatIntegrationId={8}
+                isLoading={false}
+                rows={rows}
+                offset={0}
+                onClickNextPage={jest.fn()}
+                onClickPrevPage={jest.fn()}
+            />,
         )
         const tableDiv = container.querySelector('.container')
 

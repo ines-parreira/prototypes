@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { useTicketCountPerTag } from 'domains/reporting/hooks/ticket-insights/useTicketCountPerTag'
@@ -18,7 +18,6 @@ import { calculatePercentage } from 'domains/reporting/utils/reporting'
 import { tags } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/ticket-insights/useTicketCountPerTag')
 const useTicketCountPerTagMock = assumeMock(useTicketCountPerTag)
@@ -137,12 +136,12 @@ describe('<AllUsedTagsTable />', () => {
     })
 
     it('should render a table with tag data', () => {
-        renderWithStore(
+        render(
             <AllUsedTagsTable
                 heatmapMode={false}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(screen.getByText(TAG_COLUMN_LABEL)).toBeInTheDocument()
@@ -164,12 +163,12 @@ describe('<AllUsedTagsTable />', () => {
             granularity,
         })
 
-        renderWithStore(
+        render(
             <AllUsedTagsTable
                 heatmapMode={false}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -178,12 +177,12 @@ describe('<AllUsedTagsTable />', () => {
     })
 
     it('should render heatmap mode', () => {
-        renderWithStore(
+        render(
             <AllUsedTagsTable
                 heatmapMode={true}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(document.querySelector('.heatmap')).toBeInTheDocument()
@@ -194,12 +193,12 @@ describe('<AllUsedTagsTable />', () => {
             exampleDataRow.timeSeries[0].value,
             columnTotals[0],
         )
-        renderWithStore(
+        render(
             <AllUsedTagsTable
                 heatmapMode={false}
                 valueMode={ValueMode.Percentage}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         expect(
@@ -225,12 +224,12 @@ describe('<AllUsedTagsTable />', () => {
             granularity,
         })
 
-        renderWithStore(
+        render(
             <AllUsedTagsTable
                 heatmapMode={false}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         const nextPageButton = screen.getByText('keyboard_arrow_right')
@@ -258,12 +257,12 @@ describe('<AllUsedTagsTable />', () => {
             granularity,
         })
 
-        renderWithStore(
+        render(
             <AllUsedTagsTable
                 heatmapMode={false}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         userEvent.click(screen.getByText(columnHeader))
 
@@ -272,12 +271,12 @@ describe('<AllUsedTagsTable />', () => {
 
     describe('scrolling', () => {
         it('should handle table scrolling', async () => {
-            renderWithStore(
+            render(
                 <AllUsedTagsTable
                     heatmapMode={false}
                     valueMode={ValueMode.TotalCount}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
             act(() => {
                 const tableRow =
@@ -291,12 +290,12 @@ describe('<AllUsedTagsTable />', () => {
         })
 
         it('should handle table scrolling to the left border', async () => {
-            renderWithStore(
+            render(
                 <AllUsedTagsTable
                     heatmapMode={false}
                     valueMode={ValueMode.TotalCount}
                 />,
-                defaultState,
+                { storeState: defaultState },
             )
             act(() => {
                 const tableRow =

@@ -1,4 +1,4 @@
-import { assumeMock, triggerWidthResize } from '@repo/testing'
+import { assumeMock, render, triggerWidthResize } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 
 import { useSortedChannelsWithData } from 'domains/reporting/hooks/support-performance/useSortedChannelsWithData'
@@ -11,7 +11,6 @@ import {
     MOBILE_CHANNEL_COLUMN_WIDTH,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { channels as mockChannels } from 'fixtures/channels'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/useSortedChannelsWithData',
@@ -43,7 +42,7 @@ describe('<ChannelsTable />', () => {
     })
 
     it('should render Channels metrics', () => {
-        renderWithStore(<ChannelsTable />, {})
+        render(<ChannelsTable />)
 
         mockChannels.forEach((channel) => {
             columnsOrder.forEach((column) => {
@@ -60,7 +59,7 @@ describe('<ChannelsTable />', () => {
 
     it('should render Channels metrics on mobile', () => {
         triggerWidthResize(500)
-        renderWithStore(<ChannelsTable />, {})
+        render(<ChannelsTable />)
 
         expect(ChannelsCellContentMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -71,7 +70,7 @@ describe('<ChannelsTable />', () => {
     })
 
     it('should handle table scrolling', async () => {
-        renderWithStore(<ChannelsTable />, {})
+        render(<ChannelsTable />)
 
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
@@ -89,7 +88,7 @@ describe('<ChannelsTable />', () => {
     })
 
     it('should handle table scrolling to the left border', async () => {
-        renderWithStore(<ChannelsTable />, {})
+        render(<ChannelsTable />)
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
             fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useLanguageProficiencyTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useLanguageProficiencyTrend'
@@ -14,7 +14,6 @@ import { LanguageProficiencyTrendCard } from 'domains/reporting/pages/support-pe
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useLanguageProficiencyTrend',
@@ -50,7 +49,7 @@ describe('LanguageProficiencyTrendCard', () => {
     })
 
     it('should render LanguageProficiencyTrendCard Trend', () => {
-        renderWithStore(<LanguageProficiencyTrendCard />, defaultState)
+        render(<LanguageProficiencyTrendCard />, { storeState: defaultState })
 
         expect(
             screen.getByText(

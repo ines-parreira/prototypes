@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -34,7 +34,6 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/plans'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -156,7 +155,7 @@ describe('AutoQA', () => {
     })
 
     it('should render page title', () => {
-        renderWithStore(<AutoQA />, state)
+        render(<AutoQA />, { storeState: state })
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
@@ -177,7 +176,7 @@ describe('AutoQA', () => {
     it('should render AutoQA page with optional filters and Auto QA dimensions filters added', () => {
         const extendedAutoQAFilters = [...AUTO_QA_OPTIONAL_FILTERS]
 
-        renderWithStore(<AutoQA />, state)
+        render(<AutoQA />, { storeState: state })
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         extendedAutoQAFilters.forEach((optionalFilter) => {

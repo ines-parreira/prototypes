@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useSatisfactionScoreTrend } from 'domains/reporting/hooks/quality-management/satisfaction/useSatisfactionScoreTrend'
@@ -14,7 +14,6 @@ import { SatisfactionScoreTrendCard } from 'domains/reporting/pages/quality-mana
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { SatisfactionMetric } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useSatisfactionScoreTrend',
@@ -50,7 +49,7 @@ describe('SatisfactionScoreTrendCard', () => {
     })
 
     it('should render SatisfactionScoreTrendCard Trend', () => {
-        renderWithStore(<SatisfactionScoreTrendCard />, defaultState)
+        render(<SatisfactionScoreTrendCard />, { storeState: defaultState })
 
         expect(
             screen.getByText(

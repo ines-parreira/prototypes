@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
@@ -34,7 +34,6 @@ import {
 } from 'fixtures/plans'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/feature-flags')
 const useFlagsMock = assumeMock(useFlag)
@@ -101,13 +100,13 @@ describe('<Tags>', () => {
     })
 
     it('should render new tags page', () => {
-        const { getByText } = renderWithStore(<Tags />, defaultState)
+        const { getByText } = render(<Tags />, { storeState: defaultState })
 
         expect(getByText(TAGS_TITLE)).toBeInTheDocument()
     })
 
     it('should contain filters panel component', () => {
-        const { getByText } = renderWithStore(<Tags />, defaultState)
+        const { getByText } = render(<Tags />, { storeState: defaultState })
 
         TAGS_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
@@ -116,7 +115,7 @@ describe('<Tags>', () => {
 
     it('should contain filters panel component and Score filter should be one of the optional filters', () => {
         const extendedTagsOptionalFilters = [...TAGS_OPTIONAL_FILTERS]
-        const { getByText } = renderWithStore(<Tags />, defaultState)
+        const { getByText } = render(<Tags />, { storeState: defaultState })
 
         extendedTagsOptionalFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
@@ -142,7 +141,7 @@ describe('<Tags>', () => {
             ...TAGS_OPTIONAL_FILTERS,
             ...AUTO_QA_FILTER_KEYS,
         ]
-        const { getByText } = renderWithStore(<Tags />, state)
+        const { getByText } = render(<Tags />, { storeState: state })
 
         extendedTagsOptionalFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
@@ -150,13 +149,13 @@ describe('<Tags>', () => {
     })
 
     it('should render the TopUsedTagsChart', () => {
-        renderWithStore(<Tags />, defaultState)
+        render(<Tags />, { storeState: defaultState })
 
         expect(TopUsedTagsChartMock).toHaveBeenCalled()
     })
 
     it('should contain AllUsedTagsTableChart component', () => {
-        renderWithStore(<Tags />, defaultState)
+        render(<Tags />, { storeState: defaultState })
 
         expect(allUsedTagsTableChartMock).toHaveBeenCalled()
     })
@@ -171,7 +170,7 @@ describe('<Tags>', () => {
             return false
         })
 
-        renderWithStore(<Tags />, defaultState)
+        render(<Tags />, { storeState: defaultState })
 
         expect(TagsActionMenuMock).toHaveBeenCalled()
         expect(TagsReportDownloadDataButtonMock).not.toHaveBeenCalled()
@@ -180,7 +179,7 @@ describe('<Tags>', () => {
     it('should render TagsReportDownloadDataButton when feature flag is disabled', () => {
         useFlagsMock.mockReturnValue(false)
 
-        renderWithStore(<Tags />, defaultState)
+        render(<Tags />, { storeState: defaultState })
 
         expect(TagsActionMenuMock).not.toHaveBeenCalled()
         expect(TagsReportDownloadDataButtonMock).toHaveBeenCalled()

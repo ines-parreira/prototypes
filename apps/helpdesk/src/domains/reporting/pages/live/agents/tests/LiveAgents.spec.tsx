@@ -2,8 +2,8 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -25,7 +25,6 @@ import { teams } from 'fixtures/teams'
 import type FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useStatResource')
 jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
@@ -162,11 +161,9 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        const { container } = render(<LiveAgents />, {
+            storeState: defaultState,
+        })
 
         expect(container.firstChild).toMatchSnapshot()
         expect(screen.queryByText('ONLINE STATUS')).toBeInTheDocument()
@@ -216,7 +213,7 @@ describe('LiveAgents', () => {
             ]
         })
 
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <Provider store={store}>
                 <LiveAgents />
             </Provider>,
@@ -232,11 +229,9 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        const { getByText } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        const { getByText } = render(<LiveAgents />, {
+            storeState: defaultState,
+        })
 
         expect(getByText('ONLINE STATUS')).toBeInTheDocument()
         expect(screen.queryByText('ONLINE TIME')).not.toBeInTheDocument()
@@ -248,11 +243,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         expect(screen.queryByText('AVAILABILITY')).not.toBeInTheDocument()
     })
@@ -263,11 +254,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         expect(screen.getByText('AVAILABILITY')).toBeInTheDocument()
     })
@@ -278,11 +265,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         expect(usePerformancePageAgentAvailabilitiesMock).toHaveBeenCalledWith({
             enabled: true,
@@ -295,11 +278,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         expect(usePerformancePageAgentAvailabilitiesMock).toHaveBeenCalledWith({
             enabled: false,
@@ -312,11 +291,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         expect(
             screen.getByTestId('live-agents-realtime-listener'),
@@ -329,11 +304,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         expect(
             screen.queryByTestId('live-agents-realtime-listener'),
@@ -346,11 +317,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         const listener = screen.getByTestId('live-agents-realtime-listener')
         expect(listener).toHaveTextContent('LiveAgentsRealtimeListener: 1')
@@ -362,11 +329,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         expect(usePerformancePageAgentPhoneStatusesMock).toHaveBeenCalledWith({
             enabled: true,
@@ -379,11 +342,7 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <LiveAgents />
-            </Provider>,
-        )
+        render(<LiveAgents />, { storeState: defaultState })
 
         expect(usePerformancePageAgentPhoneStatusesMock).toHaveBeenCalledWith({
             enabled: false,

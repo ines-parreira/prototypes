@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import CommentHighlightsToggle, {
@@ -11,7 +11,6 @@ import { toggleCommentHighlightsCsatSentiment } from 'domains/reporting/state/ui
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -37,10 +36,9 @@ describe('CommentHighlightsToggle', () => {
         },
     } as RootState
     it('renders the toggle buttons correctly', () => {
-        const { getByText } = renderWithStore(
-            <CommentHighlightsToggle />,
-            defaultState,
-        )
+        const { getByText } = render(<CommentHighlightsToggle />, {
+            storeState: defaultState,
+        })
 
         Object.values(COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE).forEach(
             (option) => {
@@ -52,10 +50,9 @@ describe('CommentHighlightsToggle', () => {
     })
 
     it('calls setSelectedOption when a button is clicked', () => {
-        const { getByText } = renderWithStore(
-            <CommentHighlightsToggle />,
-            defaultState,
-        )
+        const { getByText } = render(<CommentHighlightsToggle />, {
+            storeState: defaultState,
+        })
 
         const negativeButton = getByText(
             COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE.NEGATIVE.LABEL,

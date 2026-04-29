@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -29,7 +29,6 @@ import {
 } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
 import { agents } from 'fixtures/agents'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -119,11 +118,7 @@ describe('<AutoQAAgentsTable />', () => {
     })
 
     it('should render the table title, table header and rows', () => {
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <AutoQAAgentsTable />
-            </Provider>,
-        )
+        render(<AutoQAAgentsTable />)
 
         const tableColumns = AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER
 
@@ -146,11 +141,7 @@ describe('<AutoQAAgentsTable />', () => {
     })
 
     it('should handle table scrolling', async () => {
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <AutoQAAgentsTable />
-            </Provider>,
-        )
+        render(<AutoQAAgentsTable />)
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
             fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
@@ -162,11 +153,7 @@ describe('<AutoQAAgentsTable />', () => {
     })
 
     it('should handle table scrolling to the left border', async () => {
-        renderWithRouter(
-            <Provider store={mockStore({})}>
-                <AutoQAAgentsTable />
-            </Provider>,
-        )
+        render(<AutoQAAgentsTable />)
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
             fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })
@@ -179,11 +166,7 @@ describe('<AutoQAAgentsTable />', () => {
 
     describe('Pagination', () => {
         it('should render if there are more agents then perPage', () => {
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <AutoQAAgentsTable />
-                </Provider>,
-            )
+            render(<AutoQAAgentsTable />)
 
             expect(screen.getByText(currentPage)).toBeInTheDocument()
         })
@@ -196,11 +179,7 @@ describe('<AutoQAAgentsTable />', () => {
                 perPage: agents.length + 1,
             })
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <AutoQAAgentsTable />
-                </Provider>,
-            )
+            render(<AutoQAAgentsTable />)
 
             expect(screen.queryByText(currentPage)).not.toBeInTheDocument()
         })
@@ -215,7 +194,7 @@ describe('<AutoQAAgentsTable />', () => {
                 perPage: 1,
             })
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <AutoQAAgentsTable />
                 </Provider>,

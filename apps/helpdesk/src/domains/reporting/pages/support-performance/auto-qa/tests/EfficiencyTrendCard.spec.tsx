@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useEfficiencyTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useEfficiencyTrend'
@@ -14,7 +14,6 @@ import { EfficiencyTrendCard } from 'domains/reporting/pages/support-performance
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useEfficiencyTrend',
@@ -50,7 +49,7 @@ describe('EfficiencyTrendCard', () => {
     })
 
     it('should render EfficiencyTrendCard Trend', () => {
-        renderWithStore(<EfficiencyTrendCard />, defaultState)
+        render(<EfficiencyTrendCard />, { storeState: defaultState })
 
         expect(
             screen.getByText(

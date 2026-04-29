@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useTagsDistribution } from 'domains/reporting/hooks/support-performance/useTagsDistribution'
@@ -12,7 +12,6 @@ import { TopUsedTagsChart } from 'domains/reporting/pages/ticket-insights/tags/T
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useTagsDistribution')
 const useTagsDistributionMock = assumeMock(useTagsDistribution)
@@ -60,7 +59,7 @@ describe('<TopUsedTagsChart/>', () => {
     })
 
     it('should render the table', () => {
-        renderWithStore(<TopUsedTagsChart />, mockStore)
+        render(<TopUsedTagsChart />, { storeState: mockStore })
 
         expect(screen.getByRole('table')).toBeInTheDocument()
         expect(
@@ -77,7 +76,9 @@ describe('<TopUsedTagsChart/>', () => {
             data: [],
             isFetching: true,
         })
-        const { container } = renderWithStore(<TopUsedTagsChart />, mockStore)
+        const { container } = render(<TopUsedTagsChart />, {
+            storeState: mockStore,
+        })
         expect(screen.getByRole('table')).toBeInTheDocument()
         expect(
             container.getElementsByClassName('react-loading-skeleton'),
@@ -89,12 +90,12 @@ describe('<TopUsedTagsChart/>', () => {
             data: [],
             isFetching: false,
         })
-        renderWithStore(<TopUsedTagsChart />, mockStore)
+        render(<TopUsedTagsChart />, { storeState: mockStore })
         expect(screen.getByText('No data available')).toBeInTheDocument()
     })
 
     it('should render all the columns name', () => {
-        renderWithStore(<TopUsedTagsChart />, mockStore)
+        render(<TopUsedTagsChart />, { storeState: mockStore })
 
         expect(screen.getByText('Tags')).toBeInTheDocument()
         expect(screen.getByText('Total')).toBeInTheDocument()
@@ -102,7 +103,7 @@ describe('<TopUsedTagsChart/>', () => {
     })
 
     it('should render all the tags values', () => {
-        renderWithStore(<TopUsedTagsChart />, mockStore)
+        render(<TopUsedTagsChart />, { storeState: mockStore })
 
         useTagsDistributionReturnValue.data.forEach((value) => {
             expect(screen.getByText(new RegExp(value.name))).toBeInTheDocument()

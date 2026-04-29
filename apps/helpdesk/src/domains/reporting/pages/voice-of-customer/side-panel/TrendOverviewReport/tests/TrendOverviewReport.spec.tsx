@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
@@ -18,7 +18,6 @@ import {
     SidePanelTab,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -87,7 +86,7 @@ describe('TrendOverviewReport', () => {
     })
 
     it('should render Charts', () => {
-        renderWithStore(<TrendOverviewReport />, defaultState)
+        render(<TrendOverviewReport />, { storeState: defaultState })
 
         expect(TopAIIntentsForProductOverTimeChartMock).toHaveBeenCalled()
         expect(PositiveSentimentsPerProductKpiChartMock).toHaveBeenCalled()
