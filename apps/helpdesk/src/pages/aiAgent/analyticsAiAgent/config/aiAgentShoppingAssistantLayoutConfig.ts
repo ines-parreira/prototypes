@@ -11,9 +11,10 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                 items: [
                     {
                         chartId:
-                            AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
+                            AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard,
                         gridSize: 3,
                         visibility: true,
+                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
@@ -77,10 +78,9 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                     },
                     {
                         chartId:
-                            AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard,
+                            AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:

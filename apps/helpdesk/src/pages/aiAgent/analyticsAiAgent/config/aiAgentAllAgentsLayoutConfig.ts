@@ -22,7 +22,8 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         visibility: true,
                     },
                     {
-                        chartId: AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
+                        chartId:
+                            AnalyticsAiAgentAllAgentsChart.ConversionRateCard,
                         gridSize: 3,
                         visibility: true,
                     },
@@ -90,6 +91,11 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         gridSize: 3,
                         visibility: true,
                         requiresFeatureFlag: true,
+                    },
+                    {
+                        chartId: AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
+                        gridSize: 3,
+                        visibility: true,
                     },
                 ],
             },

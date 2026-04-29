@@ -141,7 +141,8 @@ describe('buildCustomDashboard', () => {
         }
         expect(section.children[0]).toEqual({
             type: DashboardChildType.Chart,
-            config_id: AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
+            config_id:
+                AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
             metadata: {
                 savedMeasure: undefined,
                 savedDimension: undefined,

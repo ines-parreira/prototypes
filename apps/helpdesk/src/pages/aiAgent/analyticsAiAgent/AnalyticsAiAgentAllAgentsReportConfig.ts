@@ -49,9 +49,13 @@ import {
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
 
+import { AnalyticsAiAgentConversionRateCard } from './charts/AnalyticsAiAgentConversionRateCard'
+import { fetchAiSalesAgentConversionRateTrend } from './charts/useAiSalesAgentConversionRateTrend'
+
 export enum AnalyticsAiAgentAllAgentsChart {
     AutomationRateCard = 'automation_rate_card',
     AutomatedInteractionsCard = 'automated_interactions_card',
+    ConversionRateCard = 'conversion_rate_card',
     TotalSalesCard = 'total_sales_card',
     TimeSavedCard = 'time_saved_card',
     ZeroTouchTicketsCard = 'zero_touch_tickets_card',
@@ -106,6 +110,22 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     'The number of fully automated interactions solved without any human agent intervention.',
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.ConversionRateCard]: {
+                chartComponent: AnalyticsAiAgentConversionRateCard,
+                label: 'Conversion rate',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiSalesAgentConversionRateTrend,
+                        metricFormat: 'decimal-to-percent',
+                    },
+                ],
+                description:
+                    'The percentage of Shopping Assistant interactions after which an order was placed within 3 days.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.TotalSalesCard]: {

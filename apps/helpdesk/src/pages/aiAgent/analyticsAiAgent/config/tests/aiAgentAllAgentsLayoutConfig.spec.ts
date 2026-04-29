@@ -11,11 +11,11 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
         })
 
-        it('should have kpis section with 13 cards', () => {
+        it('should have kpis section with 14 cards', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe(ChartType.Card)
-            expect(kpisSection.items).toHaveLength(13)
+            expect(kpisSection.items).toHaveLength(14)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -27,7 +27,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
                 AnalyticsAiAgentAllAgentsChart.AutomatedInteractionsCard,
             )
             expect(kpisSection.items[2].chartId).toBe(
-                AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
+                AnalyticsAiAgentAllAgentsChart.ConversionRateCard,
             )
             expect(kpisSection.items[3].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.TimeSavedCard,
@@ -58,6 +58,9 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
             expect(kpisSection.items[12].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.SuccessRateCard,
+            )
+            expect(kpisSection.items[13].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
             )
         })
 
@@ -196,13 +199,13 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             expect(breakdownSection.items[1].visibility).toBe(false)
         })
 
-        it('should have total of 17 charts across all sections', () => {
+        it('should have total of 18 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(17)
+            expect(totalCharts).toBe(18)
         })
 
         it('should have all required chart types defined', () => {

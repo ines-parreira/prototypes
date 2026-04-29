@@ -23,7 +23,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             const expectedChartIds = [
-                AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
+                AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard,
                 AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
                 AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard,
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,
@@ -33,7 +33,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
                 AnalyticsAiAgentShoppingAssistantChart.DiscountsOfferedCard,
                 AnalyticsAiAgentShoppingAssistantChart.MedianPurchaseTimeCard,
-                AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard,
+                AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
                 AnalyticsAiAgentShoppingAssistantChart.BuyThroughRateCard,
                 AnalyticsAiAgentShoppingAssistantChart.ClickThroughRateCard,
                 AnalyticsAiAgentShoppingAssistantChart.SuccessRateCard,
@@ -50,7 +50,12 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             const discountCards = kpisSection.items.slice(4)
             discountCards.forEach((item) => {
-                expect(item.requiresFeatureFlag).toBe(true)
+                expect(item.requiresFeatureFlag).toBe(
+                    item.chartId !==
+                        AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard
+                        ? true
+                        : undefined,
+                )
             })
         })
 
