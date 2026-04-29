@@ -1,14 +1,13 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
-
-import { renderWithStore } from 'utils/testing'
 
 import { DateConditionType } from '../DateConditionType'
 
 describe('<DateConditionType />', () => {
     it('should render greaterThan/lessThan disabled date condition ', () => {
-        renderWithStore(
+        render(
             <DateConditionType
                 condition={{
                     lessThan: [{ var: '' }, '2024-08-28T18:46:09.178Z'],
@@ -16,14 +15,14 @@ describe('<DateConditionType />', () => {
                 onChange={jest.fn()}
                 isDisabled
             />,
-            {},
+            { storeState: {} },
         )
 
         expect(screen.getByDisplayValue('Aug 28, 2024')).toBeDisabled()
     })
 
     it('should render greaterThanInterval/lessThanInterval disabled date condition ', () => {
-        renderWithStore(
+        render(
             <DateConditionType
                 condition={{
                     greaterThanInterval: [{ var: '' }, '-1d'],
@@ -31,7 +30,7 @@ describe('<DateConditionType />', () => {
                 onChange={jest.fn()}
                 isDisabled
             />,
-            {},
+            { storeState: {} },
         )
 
         expect(screen.getByDisplayValue('1')).toBeDisabled()

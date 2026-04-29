@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'
@@ -14,7 +15,6 @@ import type {
     HttpRequestNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { renderWithStore } from 'utils/testing'
 
 import HttpRequestEditor from '../index'
 
@@ -102,7 +102,7 @@ describe('<HttpRequestEditor />', () => {
             ],
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -121,7 +121,7 @@ describe('<HttpRequestEditor />', () => {
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         act(() => {
@@ -189,7 +189,7 @@ describe('<HttpRequestEditor />', () => {
             ],
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -208,7 +208,7 @@ describe('<HttpRequestEditor />', () => {
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         expect(screen.getByText('Use service connection')).toBeInTheDocument()
@@ -270,7 +270,7 @@ describe('<HttpRequestEditor />', () => {
             ],
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -289,7 +289,7 @@ describe('<HttpRequestEditor />', () => {
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         act(() => {
@@ -361,7 +361,7 @@ describe('<HttpRequestEditor />', () => {
             ],
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -380,7 +380,7 @@ describe('<HttpRequestEditor />', () => {
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         expect(screen.getByText('Path')).toBeInTheDocument()
@@ -443,7 +443,7 @@ describe('<HttpRequestEditor />', () => {
             ],
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -462,7 +462,7 @@ describe('<HttpRequestEditor />', () => {
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         expect(
@@ -539,7 +539,7 @@ describe('<HttpRequestEditor />', () => {
             ],
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -558,7 +558,7 @@ describe('<HttpRequestEditor />', () => {
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         act(() => {
@@ -631,7 +631,7 @@ describe('<HttpRequestEditor />', () => {
             apps: [{ app_id: 'someid1', type: 'app' }],
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -650,7 +650,7 @@ describe('<HttpRequestEditor />', () => {
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         expect(
@@ -713,7 +713,7 @@ describe('<HttpRequestEditor />', () => {
             apps: [{ type: 'shopify' }],
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -732,7 +732,7 @@ describe('<HttpRequestEditor />', () => {
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         expect(

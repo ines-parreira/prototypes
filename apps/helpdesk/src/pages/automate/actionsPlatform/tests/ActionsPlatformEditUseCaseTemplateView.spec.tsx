@@ -1,12 +1,7 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import {
@@ -15,10 +10,8 @@ import {
 } from 'models/workflows/queries'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import type { RootState } from 'state/types'
 
-import { renderWithDnD } from '../../../../utils/testing'
 import ActionsPlatformEditUseCaseTemplateView from '../ActionsPlatformEditUseCaseTemplateView'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
 import type { ActionTemplate } from '../types'
@@ -26,32 +19,13 @@ import type { ActionTemplate } from '../types'
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')
 jest.mock('pages/automate/workflows/utils/serverValidationErrors')
-
-const mockPush = jest.fn()
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: () => ({
-        push: mockPush,
-    }),
-}))
-
-const queryClient = mockQueryClient()
 const mockUseEditActionTemplate = jest.mocked(useEditActionTemplate)
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
 const mockServerValidationErrors = jest.mocked(serverValidationErrors)
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
-    integrations: fromJS({
-        integrations: [],
-    }),
-    billing: fromJS({
-        products: [],
-    }),
-} as RootState)
 const mockEditActionTemplate = jest.fn()
-
 mockUseEditActionTemplate.mockReturnValue({
     editActionTemplate: mockEditActionTemplate,
     isLoading: false,
@@ -139,7 +113,6 @@ mockUseListActionsApps.mockReturnValue({
     data: [],
     isInitialLoading: false,
 } as unknown as ReturnType<typeof useListActionsApps>)
-
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
     name: 'test template',
@@ -187,57 +160,54 @@ b.selectParentStep()
 b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('error', {
     success: false,
 })
-
 const template = b.build()
+const CurrentPath = () => {
+    const location = useLocation()
 
+    return <output aria-label="Current path">{location.pathname}</output>
+}
 describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
     beforeEach(() => {
-        // Default mock for server validation errors - can be overridden in individual tests
         mockServerValidationErrors.mapServerErrorsToGraph = jest
             .fn()
             .mockReturnValue(null)
-        mockPush.mockClear()
     })
-
     const renderApp = (template: ActionTemplate) => {
-        renderWithDnD(
-            <Provider store={mockStore}>
-                <MemoryRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <ActionsPlatformEditUseCaseTemplateView
-                            template={template}
-                        />
-                    </QueryClientProvider>
-                </MemoryRouter>
-            </Provider>,
+        render(
+            <>
+                <ActionsPlatformEditUseCaseTemplateView template={template} />
+                <CurrentPath />
+            </>,
+            {
+                storeState: {
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                    billing: fromJS({
+                        products: [],
+                    }),
+                } as RootState,
+            },
         )
     }
-
     it('should render edit use case template view', () => {
         renderApp(template as ActionTemplate)
-
         expect(screen.getByDisplayValue(template.name)).toBeInTheDocument()
     })
-
     it('should allow to edit use case template', () => {
         renderApp(template as ActionTemplate)
-
         act(() => {
             fireEvent.click(screen.getByText('Add Step'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Shopify'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Refund order'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Save changes'))
         })
-
         expect(mockEditActionTemplate).toHaveBeenCalledWith([
             {
                 internal_id: template.internal_id,
@@ -295,59 +265,45 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
             }),
         ])
     })
-
     it('should display errors', () => {
         const mockEditActionTemplate = jest.fn()
-
         mockUseEditActionTemplate.mockReturnValue({
             editActionTemplate: mockEditActionTemplate,
             isLoading: false,
         })
-
         renderApp(template as ActionTemplate)
-
         act(() => {
             fireEvent.change(screen.getByDisplayValue(template.name), {
                 target: { value: '' },
             })
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Save changes'))
         })
-
         expect(mockEditActionTemplate).not.toHaveBeenCalled()
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
     })
-
     it('should navigate back when clicking back button', () => {
         renderApp(template as ActionTemplate)
-
         act(() => {
             fireEvent.click(screen.getByText('Back to templates'))
         })
-
-        expect(mockPush).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/ai-agent/actions-platform/use-cases',
         )
     })
-
     it('should navigate back when clicking cancel button', () => {
         renderApp(template as ActionTemplate)
-
         act(() => {
             fireEvent.click(screen.getByText('Cancel'))
         })
-
-        expect(mockPush).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/ai-agent/actions-platform/use-cases',
         )
     })
-
     it('should handle server validation errors during save', async () => {
         // This test validates that server-side validation errors are properly
         // mapped to the visual builder graph nodes
-
         // Arrange: Setup server validation error (e.g., liquid template error)
         const serverValidationError = {
             response: {
@@ -359,16 +315,13 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
                 },
             },
         }
-
         const mockEditActionTemplate = jest
             .fn()
             .mockRejectedValue(serverValidationError)
-
         mockUseEditActionTemplate.mockReturnValue({
             editActionTemplate: mockEditActionTemplate,
             isLoading: false,
         })
-
         // Mock that server errors were successfully mapped to graph
         const graphWithMappedErrors = {
             nodes: [
@@ -386,49 +339,38 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
         mockServerValidationErrors.mapServerErrorsToGraph.mockReturnValue(
             graphWithMappedErrors as any,
         )
-
         // Act & Assert: Verify the error handling flow
         // When handleSave catches a server validation error:
         // 1. It calls mapServerErrorsToGraph to parse the error
         // 2. If errors are mapped (returns truthy), it updates the graph via dispatch
         // 3. The error is re-thrown (for potential default error handling)
-
         expect(mockServerValidationErrors.mapServerErrorsToGraph).toBeDefined()
         expect(mockEditActionTemplate).toBeDefined()
-
         // The component's handleSave will:
         // - Call editActionTemplate which will reject with serverValidationError
         // - Call mapServerErrorsToGraph(serverValidationError, currentGraph)
         // - Since it returns graphWithMappedErrors, dispatch RESET_GRAPH
         // - Re-throw the error for default error handling
     })
-
     it('should handle generic server errors during save', async () => {
         // This test validates that non-validation server errors are re-thrown
         // and handled by the default error handling
-
         // Arrange: Setup generic server error
         const genericError = new Error('Network error')
-
         const mockEditActionTemplate = jest.fn().mockRejectedValue(genericError)
-
         mockUseEditActionTemplate.mockReturnValue({
             editActionTemplate: mockEditActionTemplate,
             isLoading: false,
         })
-
         // Mock that this is NOT a validation error (returns null)
         mockServerValidationErrors.mapServerErrorsToGraph.mockReturnValue(null)
-
         // Act & Assert: Verify the error handling flow
         // When handleSave catches a generic error:
         // 1. It calls mapServerErrorsToGraph which returns null (not a validation error)
         // 2. The error is re-thrown
         // 3. The default error handling takes over
-
         expect(mockServerValidationErrors.mapServerErrorsToGraph).toBeDefined()
         expect(mockEditActionTemplate).toBeDefined()
-
         // The component's handleSave will:
         // - Call editActionTemplate which will reject with genericError
         // - Call mapServerErrorsToGraph(genericError, currentGraph)

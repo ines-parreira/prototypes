@@ -1,9 +1,6 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -18,8 +15,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ReturnOrderFlowViewContainer from '../ReturnOrderFlowViewContainer'
 
@@ -35,13 +31,10 @@ jest.mock(
         }),
     }),
 )
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),
 }))
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-
 const defaultState = {
     billing: fromJS(billingState),
     integrations: fromJS({
@@ -61,7 +54,6 @@ const defaultState = {
         chatsApplicationAutomationSettings: {},
     },
 } as unknown as RootState
-
 describe('<ReturnOrderFlowViewContainer />', () => {
     beforeEach(() => {
         ;(
@@ -80,45 +72,34 @@ describe('<ReturnOrderFlowViewContainer />', () => {
             isLoading: false,
         })
     })
-
     it('should redirect if not automate subscribed', () => {
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <ReturnOrderFlowViewContainer />
-            </Provider>,
-        )
-
+        render(<ReturnOrderFlowViewContainer />, {
+            storeState: defaultState,
+        })
         expect(screen.getByText('Redirect')).toBeInTheDocument()
     })
-
     it('should render return order flow', () => {
         ;(useAiAgentAccess as jest.Mock).mockReturnValue({
             hasAccess: true,
             isLoading: false,
         })
-
-        renderWithRouter(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        current_subscription: {
-                            products: {
-                                [HELPDESK_PRODUCT_ID]:
-                                    basicMonthlyHelpdeskPlan.plan_id,
-                                [AUTOMATION_PRODUCT_ID]:
-                                    basicMonthlyAutomationPlan.plan_id,
-                            },
-                            status: 'active',
+        render(<ReturnOrderFlowViewContainer />, {
+            storeState: {
+                ...defaultState,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
                         },
-                    }),
-                })}
-            >
-                <ReturnOrderFlowViewContainer />
-            </Provider>,
-        )
-
+                        status: 'active',
+                    },
+                }),
+            },
+        })
         expect(screen.getByText('Return order')).toBeInTheDocument()
     })
 })

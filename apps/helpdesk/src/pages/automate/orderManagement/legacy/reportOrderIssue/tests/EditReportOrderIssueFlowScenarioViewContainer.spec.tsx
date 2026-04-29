@@ -1,12 +1,6 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { createDragDropManager } from 'dnd-core'
 import { fromJS } from 'immutable'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -20,10 +14,7 @@ import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
+import type { RootState } from 'state/types'
 
 import EditReportOrderIssueFlowScenarioViewContainer from '../EditReportOrderIssueFlowScenarioViewContainer'
 
@@ -38,9 +29,7 @@ jest.mock(
         }),
     }),
 )
-
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),
@@ -49,11 +38,6 @@ jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => true),
 }))
-
-const queryClient = mockQueryClient()
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-const manager = createDragDropManager(HTML5Backend, undefined, undefined)
-
 const defaultState = {
     billing: fromJS(billingState),
     integrations: fromJS({
@@ -73,7 +57,6 @@ const defaultState = {
         chatsApplicationAutomationSettings: {},
     },
 } as unknown as RootState
-
 describe('<TrackOrderFlowViewContainer />', () => {
     beforeEach(() => {
         ;(
@@ -114,50 +97,34 @@ describe('<TrackOrderFlowViewContainer />', () => {
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
     })
-
     it('should redirect if not automate subscribed', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <EditReportOrderIssueFlowScenarioViewContainer />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
+        render(<EditReportOrderIssueFlowScenarioViewContainer />, {
+            storeState: defaultState,
+        })
         expect(screen.getByText('Redirect')).toBeInTheDocument()
     })
-
     it('should render track order flow', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <DndProvider manager={manager}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultState,
-                            currentAccount: fromJS({
-                                ...account,
-                                current_subscription: {
-                                    products: {
-                                        [HELPDESK_PRODUCT_ID]:
-                                            basicMonthlyHelpdeskPlan.plan_id,
-                                        [AUTOMATION_PRODUCT_ID]:
-                                            basicMonthlyAutomationPlan.plan_id,
-                                    },
-                                    status: 'active',
-                                },
-                            }),
-                        })}
-                    >
-                        <EditReportOrderIssueFlowScenarioViewContainer />
-                    </Provider>
-                </DndProvider>
-            </QueryClientProvider>,
-            {
-                path: `/app/automation/:shopType/:shopName/order-management/report-issue/:scenarioIndex`,
-                route: '/app/automation/shopify/shop-name/order-management/report-issue/0',
+        render(<EditReportOrderIssueFlowScenarioViewContainer />, {
+            path: `/app/automation/:shopType/:shopName/order-management/report-issue/:scenarioIndex`,
+            initialEntries: [
+                '/app/automation/shopify/shop-name/order-management/report-issue/0',
+            ],
+            storeState: {
+                ...defaultState,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                        status: 'active',
+                    },
+                }),
             },
-        )
-
+        })
         expect(screen.getByText('Scenario description')).toBeInTheDocument()
     })
 })

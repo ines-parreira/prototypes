@@ -1,27 +1,30 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ActionsPlatformAppsView from '../ActionsPlatformAppsView'
 import useApps from '../hooks/useApps'
 
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+const storeState = {
     integrations: fromJS({
         integrations: [],
     }),
     billing: fromJS({
         products: [],
     }),
-} as RootState)
+} as RootState
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div aria-label="Current path">{location.pathname}</div>
+}
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useApps')
@@ -64,11 +67,7 @@ mockUseApps.mockReturnValue({
 
 describe('<ActionsPlatformAppsView />', () => {
     it('should render actions platform apps page', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformAppsView />
-            </Provider>,
-        )
+        render(<ActionsPlatformAppsView />, { storeState })
 
         expect(
             screen.getByText(
@@ -80,11 +79,7 @@ describe('<ActionsPlatformAppsView />', () => {
     })
 
     it('should filter apps by name', async () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformAppsView />
-            </Provider>,
-        )
+        render(<ActionsPlatformAppsView />, { storeState })
 
         act(() => {
             fireEvent.change(screen.getByPlaceholderText('Search name'), {
@@ -101,43 +96,37 @@ describe('<ActionsPlatformAppsView />', () => {
     })
 
     it('should redirect to new App settings form on CTA click', () => {
-        const history = createMemoryHistory()
-
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformAppsView />
-            </Provider>,
-            { history },
+            </>,
+            { storeState },
         )
 
         act(() => {
             fireEvent.click(screen.getByText('Create App settings'))
         })
 
-        expect(historyPushSpy).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/ai-agent/actions-platform/apps/new',
         )
     })
 
     it('should redirect to existing App settings form on row click', () => {
-        const history = createMemoryHistory()
-
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformAppsView />
-            </Provider>,
-            { history },
+            </>,
+            { storeState },
         )
 
         act(() => {
             fireEvent.click(screen.getByText('App 1'))
         })
 
-        expect(historyPushSpy).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/ai-agent/actions-platform/apps/edit/1',
         )
     })

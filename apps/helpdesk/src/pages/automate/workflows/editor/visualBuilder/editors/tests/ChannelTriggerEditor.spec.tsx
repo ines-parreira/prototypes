@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
@@ -10,7 +11,6 @@ import type {
     ChannelTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { renderWithStore } from 'utils/testing'
 
 import ChannelTriggerEditor from '../ChannelTriggerEditor'
 
@@ -41,7 +41,7 @@ describe('<ChannelTriggerEditor />', () => {
             isTemplate: false,
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -69,7 +69,7 @@ describe('<ChannelTriggerEditor />', () => {
                     </TranslationsPreviewContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         act(() => {

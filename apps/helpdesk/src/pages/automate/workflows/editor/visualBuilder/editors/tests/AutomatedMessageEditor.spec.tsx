@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 
 import {
@@ -17,7 +18,6 @@ import type {
     AutomatedMessageNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { renderWithStore } from 'utils/testing'
 
 import AutomatedMessageEditor from '../AutomatedMessageEditor'
 
@@ -68,7 +68,7 @@ describe('<AutomatedMessageEditor />', () => {
             isTemplate: false,
         }
 
-        const { container } = renderWithStore(
+        const { container } = render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -102,7 +102,7 @@ describe('<AutomatedMessageEditor />', () => {
                     </StoreIntegrationContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         act(() => {

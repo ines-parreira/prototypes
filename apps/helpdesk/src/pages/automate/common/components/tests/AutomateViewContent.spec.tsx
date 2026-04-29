@@ -3,8 +3,6 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import { renderWithRouter } from 'utils/testing'
-
 import AutomateViewContent from '../AutomateViewContent'
 
 describe('AutomateViewContent', () => {
@@ -24,7 +22,7 @@ describe('AutomateViewContent', () => {
     })
 
     test('renders children correctly', () => {
-        renderWithRouter(
+        render(
             <AutomateViewContent>
                 <div>Child Content</div>
             </AutomateViewContent>,
@@ -36,7 +34,7 @@ describe('AutomateViewContent', () => {
         const handleSubmit = jest.fn()
         const handleCancel = jest.fn()
 
-        renderWithRouter(
+        render(
             <AutomateViewContent
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
@@ -63,7 +61,7 @@ describe('AutomateViewContent', () => {
     test('renders UnsavedChangesPrompt when onSubmit and onCancel is provided', () => {
         const handleSubmit = jest.fn()
         const handleCancel = jest.fn()
-        renderWithRouter(
+        render(
             <AutomateViewContent
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}

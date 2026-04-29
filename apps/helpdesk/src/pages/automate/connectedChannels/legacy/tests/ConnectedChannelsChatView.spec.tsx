@@ -1,14 +1,8 @@
-import { history } from '@repo/routing'
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
@@ -28,11 +22,6 @@ import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacFo
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import type { RootState } from 'state/types'
-import {
-    mockQueryClient,
-    renderWithQueryClientProvider,
-} from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import { initialState as articlesState } from '../../../../../state/entities/helpCenter/articles'
 import { initialState as categoriesState } from '../../../../../state/entities/helpCenter/categories'
@@ -53,8 +42,6 @@ jest.mock(
         }),
     }),
 )
-
-const queryClient = mockQueryClient()
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -67,7 +54,6 @@ jest.mock('react-router-dom', () => ({
         url: '/app/automation/shopType/shopName/connected-channels',
     })),
 }))
-
 const mockHelpCenterFixture = getSingleHelpCenterResponseFixture
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('models/helpCenter/queries', () => ({
@@ -77,160 +63,14 @@ jest.mock('models/helpCenter/queries', () => ({
         isLoading: false,
     })),
 }))
-
-const mockStore = configureMockStore([thunk])
 const useGetHelpCenterMock = useGetHelpCenter as jest.Mock
-
 const defaultState = {
     integrations: fromJS({
         integrations: [],
     }),
-
     billing: fromJS(billingState),
 } as RootState
 const contactForm = ContactFormFixture
-const mockedStore = mockStore({
-    ...defaultState,
-    entities: {
-        contactForm: {
-            contactFormsAutomationSettings: {
-                automationSettingsByContactFormId: {
-                    [contactForm.id]: {
-                        workflows: [],
-                        order_management: { enabled: false },
-                    },
-                },
-            },
-            contactForms: {
-                contactFormById: keyBy([contactForm], 'id'),
-            },
-        },
-        chatsApplicationAutomationSettings: {
-            25: {
-                id: 110,
-                applicationId: 20,
-                articleRecommendation: {
-                    enabled: false,
-                },
-                orderManagement: {
-                    enabled: false,
-                },
-                workflows: {
-                    enabled: true,
-                    entrypoints: [
-                        {
-                            enabled: true,
-                            workflow_id: '01HZHAN2Z7WBMAPK266DTW0ZWC',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HZHASJ8ZN2TEVG0TSTVYXAQX',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HNDKMSSAV6MPV125PXB3MMSG',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HQQYPGNH1CNBART86FG8PCN6',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HQT87MV168MHHENMC1VC55S7',
-                        },
-                    ],
-                },
-                createdDatetime: '2024-06-05T11:27:06.939Z',
-                updatedDatetime: '2024-07-30T14:16:39.411Z',
-            },
-            24: {
-                id: 110,
-                applicationId: 24,
-                articleRecommendation: {
-                    enabled: false,
-                },
-                orderManagement: {
-                    enabled: false,
-                },
-                workflows: {
-                    enabled: true,
-                    entrypoints: [
-                        {
-                            enabled: true,
-                            workflow_id: '01HZHAN2Z7WBMAPK266DTW0ZWC',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HZHASJ8ZN2TEVG0TSTVYXAQX',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HNDKMSSAV6MPV125PXB3MMSG',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HQQYPGNH1CNBART86FG8PCN6',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HQT87MV168MHHENMC1VC55S7',
-                        },
-                    ],
-                },
-                createdDatetime: '2024-06-05T11:27:06.939Z',
-                updatedDatetime: '2024-07-30T14:16:39.411Z',
-            },
-            23: {
-                id: 110,
-                applicationId: 23,
-                articleRecommendation: {
-                    enabled: false,
-                },
-                orderManagement: {
-                    enabled: false,
-                },
-                workflows: {
-                    enabled: true,
-                    entrypoints: [
-                        {
-                            enabled: true,
-                            workflow_id: '01HZHAN2Z7WBMAPK266DTW0ZWC',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HZHASJ8ZN2TEVG0TSTVYXAQX',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HNDKMSSAV6MPV125PXB3MMSG',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HQQYPGNH1CNBART86FG8PCN6',
-                        },
-                        {
-                            enabled: true,
-                            workflow_id: '01HQT87MV168MHHENMC1VC55S7',
-                        },
-                    ],
-                },
-                createdDatetime: '2024-06-05T11:27:06.939Z',
-                updatedDatetime: '2024-07-30T14:16:39.411Z',
-            },
-        },
-        helpCenter: {
-            helpCenters: {
-                helpCentersById: {
-                    '1': getSingleHelpCenterResponseFixture,
-                },
-            },
-            helpCentersAutomationSettings: {},
-            articles: articlesState,
-            categories: categoriesState,
-        },
-    },
-})
-
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 jest.mock('pages/automate/common/hooks/useSelfServiceChannels')
@@ -245,7 +85,6 @@ jest.mock('models/workflows/queries', () => ({
     ...jest.requireActual('models/workflows/queries'),
     useGetWorkflowConfigurations: jest.fn(() => ({ data: [] })),
 }))
-
 describe('ConnectedChannelsView', () => {
     beforeEach(() => {
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
@@ -303,7 +142,6 @@ describe('ConnectedChannelsView', () => {
                     updatedDatetime: '2024-07-30T14:16:39.411Z',
                 },
             },
-
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
@@ -312,79 +150,816 @@ describe('ConnectedChannelsView', () => {
         ).mockReturnValue({ enabledInSettings: true })
     })
     it('should render', () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
     })
-
     it('should render the dropdown', () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
     })
-
     it('should render chat icon in the dropdown', () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(screen.getByText('chat_bubble')).toBeInTheDocument()
     })
-
     it('should show the current channel name', () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(
             // button with aria-label="Currently viewing"
             screen.getByRole('button', { name: 'Currently viewing' }),
         ).toHaveTextContent(mockChatChannels[0].value.name)
     })
-
     it('should render the dropdown options', async () => {
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         // click on the dropdown button
         await userEvent.click(
             screen.getByRole('button', { name: 'Currently viewing' }),
         )
-
         // expect the dropdown to be visible
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
-
         // expect the dropdown to have the same number of options as the channels
         expect(screen.getAllByRole('option').length).toBe(
             mockChatChannels.length,
@@ -393,67 +968,338 @@ describe('ConnectedChannelsView', () => {
             expect(option).toHaveTextContent(mockChatChannels[index].value.name)
         })
     })
-
-    // TEMP disabled until we release the "connect to another store" feature
-    // it('should have a "connect to another store" option button', () => {
-    //     render(
-    //         <Router history={history}>
-    //             <Provider store={mockedStore}>
-    //                 <QueryClientProvider client={queryClient}>
-    //                     <ConnectedChannelsChatView />
-    //                 </QueryClientProvider>
-    //             </Provider>
-    //         </Router>
-    //     )
-
-    //     screen.debug()
-    //     // click on the dropdown button
-    //     screen.getByRole('button', {name: 'Currently viewing'}).click()
-
-    //     // expect the last option to be the "connect to another store" button
-    //     expect(
-    //         screen.getByText('Connect another Chat to this store')
-    //     ).toBeInTheDocument()
-    // })
-
     it('should render the loading spinner', () => {
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
             selfServiceConfiguration: mockSelfServiceConfiguration,
             storeIntegration: null,
             isFetchPending: true,
         })
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(screen.getByRole('status')).toBeInTheDocument()
     })
-
     it('should render the loading spinner if the automation settings does not have the current channel', () => {
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {},
             isFetchPending: true,
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(screen.getByRole('status')).toBeInTheDocument()
     })
-
     it('toggles the settings', async () => {
         const handleUpdate = jest.fn()
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
@@ -462,17 +1308,164 @@ describe('ConnectedChannelsView', () => {
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: handleUpdate,
         })
-
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         await act(async () => {
             fireEvent.click(screen.getByLabelText(/Enable Order Management/i))
             await waitFor(() => {
@@ -480,16 +1473,165 @@ describe('ConnectedChannelsView', () => {
             })
         })
     })
-
     it('calls sets the selected value whenever a new channel is selected', () => {
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         const dropdown = screen.getByRole('button', {
             name: 'Currently viewing',
         })
@@ -499,25 +1641,172 @@ describe('ConnectedChannelsView', () => {
             new MouseEvent('click', { bubbles: true }),
         )
     })
-
     it('will not render the preview chat if selfServiceConfiguration is not defined', () => {
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
             selfServiceConfiguration: null,
             storeIntegration: null,
             isFetchPending: false,
         })
-
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(screen.queryByText(/Test/i)).not.toBeInTheDocument()
     })
-
     it(`will call 'handleUpdate' when switching on the article recommendation`, () => {
         const handleUpdate = jest.fn()
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
@@ -538,17 +1827,166 @@ describe('ConnectedChannelsView', () => {
             },
             isLoading: false,
         })
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         const toggle = screen.getByLabelText(/Enable Article Recommendation/i)
         fireEvent.click(toggle)
-
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
                 articleRecommendation: { enabled: true },
@@ -556,7 +1994,6 @@ describe('ConnectedChannelsView', () => {
             'Article Recommendation enabled',
         )
     })
-
     it('should show Article Recommendation toggle as unchecked when articleRecommendation.enabled is false in settings', () => {
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
@@ -568,43 +2005,338 @@ describe('ConnectedChannelsView', () => {
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
-
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(
             screen.getByRole('switch', {
                 name: /enable article recommendation/i,
             }),
         ).not.toBeChecked()
     })
-
     it(`will call 'handleUpdate' when switching on the order management`, () => {
         const handleUpdate = jest.fn()
-
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings:
                 applicationsAutomationSettingsStateFixture,
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: handleUpdate,
         })
-
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         const toggle = screen.getByLabelText(/Enable Order Management/i)
         fireEvent.click(toggle)
-
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
                 orderManagement: { enabled: true },
@@ -612,10 +2344,8 @@ describe('ConnectedChannelsView', () => {
             'Order Management enabled',
         )
     })
-
     it('should call `handleUpdate` when switching off the order management', () => {
         const handleUpdate = jest.fn()
-
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
             selfServiceConfiguration: mockSelfServiceConfiguration,
             storeIntegration: {
@@ -667,18 +2397,166 @@ describe('ConnectedChannelsView', () => {
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: handleUpdate,
         })
-
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         const toggle = screen.getByLabelText(/Enable Order Management/i)
         fireEvent.click(toggle)
-
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
                 orderManagement: { enabled: false },
@@ -686,10 +2564,8 @@ describe('ConnectedChannelsView', () => {
             'Order Management disabled',
         )
     })
-
     it('should take `shopType` and `shopName` from props when passed', () => {
         const handleUpdate = jest.fn()
-
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
                 25: {
@@ -712,24 +2588,175 @@ describe('ConnectedChannelsView', () => {
                     },
                 },
             },
-
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: handleUpdate,
         })
-
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView
-                        channelId={16}
-                        shopType="shopitay"
-                        shopName="itayshop"
-                        hideDropdown
-                    />
-                </Provider>
-            </Router>,
+        render(
+            <ConnectedChannelsChatView
+                channelId={16}
+                shopType="shopitay"
+                shopName="itayshop"
+                hideDropdown
+            />,
+            {
+                storeState: {
+                    ...defaultState,
+                    entities: {
+                        contactForm: {
+                            contactFormsAutomationSettings: {
+                                automationSettingsByContactFormId: {
+                                    [contactForm.id]: {
+                                        workflows: [],
+                                        order_management: { enabled: false },
+                                    },
+                                },
+                            },
+                            contactForms: {
+                                contactFormById: keyBy([contactForm], 'id'),
+                            },
+                        },
+                        chatsApplicationAutomationSettings: {
+                            25: {
+                                id: 110,
+                                applicationId: 20,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            24: {
+                                id: 110,
+                                applicationId: 24,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            23: {
+                                id: 110,
+                                applicationId: 23,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                        },
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    '1': getSingleHelpCenterResponseFixture,
+                                },
+                            },
+                            helpCentersAutomationSettings: {},
+                            articles: articlesState,
+                            categories: categoriesState,
+                        },
+                    },
+                },
+            },
         )
-
         expect(screen.queryByText(/currently viewing/i)).not.toBeInTheDocument()
         expect(screen.queryByText(/chat_bubble/i)).not.toBeInTheDocument()
         // Article recommendation toggle is shown but should be checked (enabled)
@@ -742,7 +2769,6 @@ describe('ConnectedChannelsView', () => {
             screen.getByRole('switch', { name: /enable order management/i }),
         ).not.toBeChecked()
     })
-
     it('should render the empty state when there are no channels', () => {
         ;(useSelfServiceChannels as jest.Mock).mockReturnValue([])
         ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue([])
@@ -756,17 +2782,166 @@ describe('ConnectedChannelsView', () => {
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
-
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>,
-        )
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(screen.getByText(/Go to Chat/i)).toBeInTheDocument()
     })
-
     it('should render "Configuration Required" warning when the help center is not configured', () => {
         useGetHelpCenterMock.mockReturnValue({
             data: {
@@ -775,18 +2950,166 @@ describe('ConnectedChannelsView', () => {
             },
             isLoading: false,
         })
-
-        renderWithQueryClientProvider(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsChatView />
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(screen.getByText(/Configuration Required/i)).toBeInTheDocument()
     })
-
     it('should show loading spinner when data is being fetched', () => {
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
             selfServiceConfiguration: null,
@@ -799,20 +3122,166 @@ describe('ConnectedChannelsView', () => {
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
         ;(useSelfServiceChannels as jest.Mock).mockReturnValue(mockChatChannels)
-
-        render(
-            <Router history={history}>
-                <Provider store={mockedStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <ConnectedChannelsChatView />
-                    </QueryClientProvider>
-                </Provider>
-            </Router>,
-        )
-
+        render(<ConnectedChannelsChatView />, {
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
+            },
+        })
         expect(screen.getByRole('status')).toBeInTheDocument()
     })
-
     it('should handle channel selection change and navigation', async () => {
         // Mock useIsAutomateSettings to return true
         ;(useIsAutomateSettings as jest.Mock).mockReturnValue(true)
@@ -848,19 +3317,166 @@ describe('ConnectedChannelsView', () => {
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
-
-        renderWithRouter(
-            <Provider store={mockedStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ConnectedChannelsChatView />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                path: '/:shopType/:shopName/channels',
-                route: '/shopify/itay-store-two/channels',
+        render(<ConnectedChannelsChatView />, {
+            path: '/:shopType/:shopName/channels',
+            initialEntries: ['/shopify/itay-store-two/channels'],
+            storeState: {
+                ...defaultState,
+                entities: {
+                    contactForm: {
+                        contactFormsAutomationSettings: {
+                            automationSettingsByContactFormId: {
+                                [contactForm.id]: {
+                                    workflows: [],
+                                    order_management: { enabled: false },
+                                },
+                            },
+                        },
+                        contactForms: {
+                            contactFormById: keyBy([contactForm], 'id'),
+                        },
+                    },
+                    chatsApplicationAutomationSettings: {
+                        25: {
+                            id: 110,
+                            applicationId: 20,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        24: {
+                            id: 110,
+                            applicationId: 24,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                        23: {
+                            id: 110,
+                            applicationId: 23,
+                            articleRecommendation: {
+                                enabled: false,
+                            },
+                            orderManagement: {
+                                enabled: false,
+                            },
+                            workflows: {
+                                enabled: true,
+                                entrypoints: [
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HNDKMSSAV6MPV125PXB3MMSG',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQQYPGNH1CNBART86FG8PCN6',
+                                    },
+                                    {
+                                        enabled: true,
+                                        workflow_id:
+                                            '01HQT87MV168MHHENMC1VC55S7',
+                                    },
+                                ],
+                            },
+                            createdDatetime: '2024-06-05T11:27:06.939Z',
+                            updatedDatetime: '2024-07-30T14:16:39.411Z',
+                        },
+                    },
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                '1': getSingleHelpCenterResponseFixture,
+                            },
+                        },
+                        helpCentersAutomationSettings: {},
+                        articles: articlesState,
+                        categories: categoriesState,
+                    },
+                },
             },
-        )
-
+        })
         // Wait for dropdown to be visible and verify initial state
         await waitFor(() => {
             expect(screen.getByText('Currently viewing')).toBeInTheDocument()
@@ -868,7 +3484,6 @@ describe('ConnectedChannelsView', () => {
         expect(
             screen.getByRole('button', { name: 'Currently viewing' }),
         ).toHaveTextContent(mockChatChannels[0].value.name)
-
         // Open dropdown
         const dropdown = screen.getByRole('button', {
             name: 'Currently viewing',
@@ -876,7 +3491,6 @@ describe('ConnectedChannelsView', () => {
         await act(async () => {
             fireEvent.click(dropdown)
         })
-
         // The dropdown only shows chat channels; click the second one
         await waitFor(() => {
             expect(
@@ -887,7 +3501,6 @@ describe('ConnectedChannelsView', () => {
             fireEvent.click(screen.getByText(mockChatChannels[1].value.name))
         })
     })
-
     describe('Article recommendation visibility for Shopify integrations', () => {
         it('should hide Article Recommendation section when storeIntegration is Shopify and enabledInSettings is false', () => {
             ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
@@ -904,15 +3517,164 @@ describe('ConnectedChannelsView', () => {
             ;(
                 useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
             ).mockReturnValue({ enabledInSettings: false })
-
-            renderWithQueryClientProvider(
-                <Router history={history}>
-                    <Provider store={mockedStore}>
-                        <ConnectedChannelsChatView />
-                    </Provider>
-                </Router>,
-            )
-
+            render(<ConnectedChannelsChatView />, {
+                storeState: {
+                    ...defaultState,
+                    entities: {
+                        contactForm: {
+                            contactFormsAutomationSettings: {
+                                automationSettingsByContactFormId: {
+                                    [contactForm.id]: {
+                                        workflows: [],
+                                        order_management: { enabled: false },
+                                    },
+                                },
+                            },
+                            contactForms: {
+                                contactFormById: keyBy([contactForm], 'id'),
+                            },
+                        },
+                        chatsApplicationAutomationSettings: {
+                            25: {
+                                id: 110,
+                                applicationId: 20,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            24: {
+                                id: 110,
+                                applicationId: 24,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            23: {
+                                id: 110,
+                                applicationId: 23,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                        },
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    '1': getSingleHelpCenterResponseFixture,
+                                },
+                            },
+                            helpCentersAutomationSettings: {},
+                            articles: articlesState,
+                            categories: categoriesState,
+                        },
+                    },
+                },
+            })
             expect(
                 screen.queryByText(/Article Recommendation/i),
             ).not.toBeInTheDocument()
@@ -920,7 +3682,6 @@ describe('ConnectedChannelsView', () => {
                 screen.queryByLabelText(/Enable Article Recommendation/i),
             ).not.toBeInTheDocument()
         })
-
         it('should show Article Recommendation section when storeIntegration is Shopify and enabledInSettings is true', () => {
             ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
                 selfServiceConfiguration: mockSelfServiceConfiguration,
@@ -936,22 +3697,170 @@ describe('ConnectedChannelsView', () => {
             ;(
                 useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
             ).mockReturnValue({ enabledInSettings: true })
-
-            renderWithQueryClientProvider(
-                <Router history={history}>
-                    <Provider store={mockedStore}>
-                        <ConnectedChannelsChatView />
-                    </Provider>
-                </Router>,
-            )
-
+            render(<ConnectedChannelsChatView />, {
+                storeState: {
+                    ...defaultState,
+                    entities: {
+                        contactForm: {
+                            contactFormsAutomationSettings: {
+                                automationSettingsByContactFormId: {
+                                    [contactForm.id]: {
+                                        workflows: [],
+                                        order_management: { enabled: false },
+                                    },
+                                },
+                            },
+                            contactForms: {
+                                contactFormById: keyBy([contactForm], 'id'),
+                            },
+                        },
+                        chatsApplicationAutomationSettings: {
+                            25: {
+                                id: 110,
+                                applicationId: 20,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            24: {
+                                id: 110,
+                                applicationId: 24,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            23: {
+                                id: 110,
+                                applicationId: 23,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                        },
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    '1': getSingleHelpCenterResponseFixture,
+                                },
+                            },
+                            helpCentersAutomationSettings: {},
+                            articles: articlesState,
+                            categories: categoriesState,
+                        },
+                    },
+                },
+            })
             expect(
                 screen.getByRole('switch', {
                     name: /Enable Article Recommendation/i,
                 }),
             ).toBeInTheDocument()
         })
-
         it('should show Article Recommendation section when storeIntegration is non-Shopify (BigCommerce) when enabledInSettings is true', () => {
             ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
                 selfServiceConfiguration: mockSelfServiceConfiguration,
@@ -967,22 +3876,170 @@ describe('ConnectedChannelsView', () => {
             ;(
                 useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
             ).mockReturnValue({ enabledInSettings: true })
-
-            renderWithQueryClientProvider(
-                <Router history={history}>
-                    <Provider store={mockedStore}>
-                        <ConnectedChannelsChatView />
-                    </Provider>
-                </Router>,
-            )
-
+            render(<ConnectedChannelsChatView />, {
+                storeState: {
+                    ...defaultState,
+                    entities: {
+                        contactForm: {
+                            contactFormsAutomationSettings: {
+                                automationSettingsByContactFormId: {
+                                    [contactForm.id]: {
+                                        workflows: [],
+                                        order_management: { enabled: false },
+                                    },
+                                },
+                            },
+                            contactForms: {
+                                contactFormById: keyBy([contactForm], 'id'),
+                            },
+                        },
+                        chatsApplicationAutomationSettings: {
+                            25: {
+                                id: 110,
+                                applicationId: 20,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            24: {
+                                id: 110,
+                                applicationId: 24,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            23: {
+                                id: 110,
+                                applicationId: 23,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                        },
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    '1': getSingleHelpCenterResponseFixture,
+                                },
+                            },
+                            helpCentersAutomationSettings: {},
+                            articles: articlesState,
+                            categories: categoriesState,
+                        },
+                    },
+                },
+            })
             expect(
                 screen.getByRole('switch', {
                     name: /Enable Article Recommendation/i,
                 }),
             ).toBeInTheDocument()
         })
-
         it('should show Article Recommendation section when storeIntegration is non-Shopify (Magento2) when enabledInSettings is true', () => {
             ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
                 selfServiceConfiguration: mockSelfServiceConfiguration,
@@ -995,15 +4052,164 @@ describe('ConnectedChannelsView', () => {
             ;(
                 useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
             ).mockReturnValue({ enabledInSettings: true })
-
-            renderWithQueryClientProvider(
-                <Router history={history}>
-                    <Provider store={mockedStore}>
-                        <ConnectedChannelsChatView />
-                    </Provider>
-                </Router>,
-            )
-
+            render(<ConnectedChannelsChatView />, {
+                storeState: {
+                    ...defaultState,
+                    entities: {
+                        contactForm: {
+                            contactFormsAutomationSettings: {
+                                automationSettingsByContactFormId: {
+                                    [contactForm.id]: {
+                                        workflows: [],
+                                        order_management: { enabled: false },
+                                    },
+                                },
+                            },
+                            contactForms: {
+                                contactFormById: keyBy([contactForm], 'id'),
+                            },
+                        },
+                        chatsApplicationAutomationSettings: {
+                            25: {
+                                id: 110,
+                                applicationId: 20,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            24: {
+                                id: 110,
+                                applicationId: 24,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                            23: {
+                                id: 110,
+                                applicationId: 23,
+                                articleRecommendation: {
+                                    enabled: false,
+                                },
+                                orderManagement: {
+                                    enabled: false,
+                                },
+                                workflows: {
+                                    enabled: true,
+                                    entrypoints: [
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHAN2Z7WBMAPK266DTW0ZWC',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HZHASJ8ZN2TEVG0TSTVYXAQX',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HNDKMSSAV6MPV125PXB3MMSG',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQQYPGNH1CNBART86FG8PCN6',
+                                        },
+                                        {
+                                            enabled: true,
+                                            workflow_id:
+                                                '01HQT87MV168MHHENMC1VC55S7',
+                                        },
+                                    ],
+                                },
+                                createdDatetime: '2024-06-05T11:27:06.939Z',
+                                updatedDatetime: '2024-07-30T14:16:39.411Z',
+                            },
+                        },
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    '1': getSingleHelpCenterResponseFixture,
+                                },
+                            },
+                            helpCentersAutomationSettings: {},
+                            articles: articlesState,
+                            categories: categoriesState,
+                        },
+                    },
+                },
+            })
             expect(
                 screen.getByRole('switch', {
                     name: /Enable Article Recommendation/i,

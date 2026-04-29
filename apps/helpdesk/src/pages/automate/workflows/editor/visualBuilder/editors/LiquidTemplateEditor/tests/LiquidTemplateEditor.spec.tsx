@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 
 import {
@@ -14,7 +15,6 @@ import type {
     LiquidTemplateNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { renderWithStore } from 'utils/testing'
 
 import LiquidTemplateEditor from '..'
 
@@ -111,7 +111,7 @@ describe('<LiquidTemplateEditor />', () => {
         const storeIntegrationContext =
             createSelfServiceStoreIntegrationContextForPreview()
 
-        return renderWithStore(
+        return render(
             <StoreIntegrationContext.Provider value={storeIntegrationContext}>
                 <TranslationsPreviewContext.Provider
                     value={{
@@ -147,7 +147,7 @@ describe('<LiquidTemplateEditor />', () => {
                     </VisualBuilderContext.Provider>
                 </TranslationsPreviewContext.Provider>
             </StoreIntegrationContext.Provider>,
-            {},
+            { storeState: {} },
         )
     }
 

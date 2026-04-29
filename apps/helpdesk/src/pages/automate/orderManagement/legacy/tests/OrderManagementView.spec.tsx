@@ -2,14 +2,11 @@ import React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
+import { useLocation } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { account } from 'fixtures/account'
@@ -35,9 +32,7 @@ import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useAp
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import OrderManagementPreviewContext from '../OrderManagementPreviewContext'
 import OrderManagementView from '../OrderManagementView'
@@ -77,9 +72,6 @@ const mockUseContactFormsAutomationSettings =
         typeof useContactFormsAutomationSettings
     >
 
-const queryClient = mockQueryClient()
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-
 const defaultState = {
     billing: fromJS(billingState),
     integrations: fromJS({
@@ -110,11 +102,16 @@ const defaultState = {
     }),
 } as unknown as RootState
 
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div aria-label="Current path">{location.pathname}</div>
+}
+
 const renderComponent = (
     state = defaultState,
-    path = '/a/1/automate/order-management/integrations/shopify/test-shop',
+    route = '/a/1/automate/order-management/integrations/shopify/test-shop',
 ) => {
-    const history = createMemoryHistory({ initialEntries: [path] })
     const channels: SelfServiceChannel[] = [
         {
             type: TicketChannel.Chat,
@@ -132,23 +129,24 @@ const renderComponent = (
         },
     ]
 
-    return renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(state)}>
-                <Router history={history}>
-                    <OrderManagementPreviewContext.Provider
-                        value={{
-                            channels,
-                            channel: undefined,
-                            onChannelChange: jest.fn(),
-                        }}
-                    >
-                        <OrderManagementView />
-                    </OrderManagementPreviewContext.Provider>
-                </Router>
-            </Provider>
-        </QueryClientProvider>,
-        { history },
+    return render(
+        <>
+            <LocationPath />
+            <OrderManagementPreviewContext.Provider
+                value={{
+                    channels,
+                    channel: undefined,
+                    onChannelChange: jest.fn(),
+                }}
+            >
+                <OrderManagementView />
+            </OrderManagementPreviewContext.Provider>
+        </>,
+        {
+            initialEntries: [route],
+            path: route,
+            storeState: state,
+        },
     )
 }
 
@@ -234,7 +232,7 @@ describe('<OrderManagementView />', () => {
         })
 
         it('should log event only once on mount when flag is enabled', async () => {
-            const { rerender, history } = renderComponent()
+            const { rerender } = renderComponent()
 
             await waitFor(() => {
                 expect(mockLogEvent).toHaveBeenCalledTimes(1)
@@ -258,21 +256,18 @@ describe('<OrderManagementView />', () => {
             ]
 
             rerender(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={history}>
-                            <OrderManagementPreviewContext.Provider
-                                value={{
-                                    channels,
-                                    channel: undefined,
-                                    onChannelChange: jest.fn(),
-                                }}
-                            >
-                                <OrderManagementView />
-                            </OrderManagementPreviewContext.Provider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <>
+                    <LocationPath />
+                    <OrderManagementPreviewContext.Provider
+                        value={{
+                            channels,
+                            channel: undefined,
+                            onChannelChange: jest.fn(),
+                        }}
+                    >
+                        <OrderManagementView />
+                    </OrderManagementPreviewContext.Provider>
+                </>,
             )
 
             expect(mockLogEvent).toHaveBeenCalledTimes(1)
@@ -368,14 +363,17 @@ describe('<OrderManagementView />', () => {
                 isLoading: false,
             })
 
-            const { history } = renderComponent()
-            const initialPath = history.location.pathname
+            renderComponent()
+            const initialPath =
+                screen.getByLabelText('Current path').textContent
 
             const trackOrderItem = screen.getByText('Track order')
             await userEvent.click(trackOrderItem.closest('div')!)
 
             await waitFor(() => {
-                expect(history.location.pathname).toBe(initialPath)
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                    initialPath!,
+                )
             })
         })
 
@@ -385,14 +383,17 @@ describe('<OrderManagementView />', () => {
                 isLoading: false,
             })
 
-            const { history } = renderComponent()
-            const initialPath = history.location.pathname
+            renderComponent()
+            const initialPath =
+                screen.getByLabelText('Current path').textContent
 
             const reportIssueItem = screen.getByText('Report order issue')
             await userEvent.click(reportIssueItem.closest('div')!)
 
             await waitFor(() => {
-                expect(history.location.pathname).toBe(initialPath)
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                    initialPath!,
+                )
             })
         })
 
@@ -430,46 +431,54 @@ describe('<OrderManagementView />', () => {
 
     describe('navigation', () => {
         it('should navigate to track order flow when clicking track order item', async () => {
-            const { history } = renderComponent()
+            renderComponent()
 
             const trackOrderItem = screen.getByText('Track order')
             await userEvent.click(trackOrderItem.closest('div')!)
 
             await waitFor(() => {
-                expect(history.location.pathname).toContain('track')
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                    'track',
+                )
             })
         })
 
         it('should navigate to return order flow when clicking return order item', async () => {
-            const { history } = renderComponent()
+            renderComponent()
 
             const returnOrderItem = screen.getByText('Return order')
             await userEvent.click(returnOrderItem.closest('div')!)
 
             await waitFor(() => {
-                expect(history.location.pathname).toContain('return')
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                    'return',
+                )
             })
         })
 
         it('should navigate to cancel order flow when clicking cancel order item', async () => {
-            const { history } = renderComponent()
+            renderComponent()
 
             const cancelOrderItem = screen.getByText('Cancel order')
             await userEvent.click(cancelOrderItem.closest('div')!)
 
             await waitFor(() => {
-                expect(history.location.pathname).toContain('cancel')
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                    'cancel',
+                )
             })
         })
 
         it('should navigate to report issue flow when clicking report issue item', async () => {
-            const { history } = renderComponent()
+            renderComponent()
 
             const reportIssueItem = screen.getByText('Report order issue')
             await userEvent.click(reportIssueItem.closest('div')!)
 
             await waitFor(() => {
-                expect(history.location.pathname).toContain('report-issue')
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                    'report-issue',
+                )
             })
         })
 

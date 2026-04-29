@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { produce } from 'immer'
 
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ActionsPlatformUseCaseTemplateFormView from '../ActionsPlatformUseCaseTemplateFormView'
 
@@ -13,7 +13,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_CATEGORY action on category change', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -49,7 +49,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_TOUCHED action on category blur', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -83,7 +83,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_NAME action on name change', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -117,7 +117,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_TOUCHED action on name blur', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -151,7 +151,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_NAME action on description change', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -185,7 +185,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_TOUCHED action on description blur', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -220,7 +220,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch DELETE_LLM_PROMPT_TRIGGER_CONDITION action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: produce(
@@ -271,7 +271,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch ADD_LLM_PROMPT_TRIGGER_CONDITION action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: produce(
@@ -320,7 +320,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -352,7 +352,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_LLM_PROMPT_TRIGGER_CONDITION action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: produce(
@@ -408,7 +408,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_TOUCHED action on condition blur', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: produce(
@@ -464,7 +464,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_LLM_PROMPT_TRIGGER_REQUIRES_CONFIRMATION action', () => {
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:

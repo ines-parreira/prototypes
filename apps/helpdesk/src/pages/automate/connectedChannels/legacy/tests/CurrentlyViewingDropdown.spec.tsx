@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { renderWithRouter } from 'utils/testing'
 
 import { CurrentlyViewingDropdown } from '../components/CurrentlyViewingDropdown'
 
@@ -46,7 +46,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     test('renders the component', () => {
-        renderWithRouter(
+        render(
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
@@ -64,7 +64,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     test('opens the dropdown when button is clicked', () => {
-        renderWithRouter(
+        render(
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
@@ -88,7 +88,7 @@ describe('CurrentlyViewingDropdown', () => {
     test('calls onSelectedChannelChange when an item is clicked', () => {
         const onSelectedChannelChange = jest.fn()
 
-        renderWithRouter(
+        render(
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
@@ -110,7 +110,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     it('opens the correct link when clicked on "Chat Settings" link', () => {
-        renderWithRouter(
+        render(
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
@@ -131,7 +131,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     it('opens the correct link when clicked on "Help Center" link', () => {
-        renderWithRouter(
+        render(
             <CurrentlyViewingDropdown
                 channelType="help-center"
                 value=""
@@ -151,7 +151,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     it('opens the correct link when clicked on "Contact Form" link', () => {
-        renderWithRouter(
+        render(
             <CurrentlyViewingDropdown
                 channelType="contact-form"
                 value=""
@@ -176,7 +176,7 @@ describe('CurrentlyViewingDropdown', () => {
         })
 
         it('shows grouped channels when in automate settings', () => {
-            renderWithRouter(
+            render(
                 <CurrentlyViewingDropdown
                     channelType="chat"
                     value=""
@@ -199,7 +199,7 @@ describe('CurrentlyViewingDropdown', () => {
         })
 
         it('shows "Go to" link when channel group is empty', () => {
-            renderWithRouter(
+            render(
                 <CurrentlyViewingDropdown
                     channelType="help-center"
                     value=""
@@ -224,7 +224,7 @@ describe('CurrentlyViewingDropdown', () => {
 
     describe('Connect Call To Action', () => {
         it('shows connect CTA when showConnectCallToAction is true', () => {
-            renderWithRouter(
+            render(
                 <CurrentlyViewingDropdown
                     channelType="chat"
                     value=""
@@ -248,7 +248,7 @@ describe('CurrentlyViewingDropdown', () => {
         })
 
         it('does not show connect CTA when showConnectCallToAction is false', () => {
-            renderWithRouter(
+            render(
                 <CurrentlyViewingDropdown
                     channelType="chat"
                     value=""

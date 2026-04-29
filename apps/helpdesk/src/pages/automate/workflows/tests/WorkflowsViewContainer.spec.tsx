@@ -1,20 +1,13 @@
 import React from 'react'
 
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
-import type { MemoryHistory } from 'history'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter, Route, Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import WorkflowsViewContainer from '../WorkflowsViewContainer'
 
@@ -26,16 +19,36 @@ jest.mock('../WorkflowsView', () => ({
     default: (props: unknown) => mockWorkflowsView(props),
 }))
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const queryClient = mockQueryClient()
-
 const defaultState = {
     billing: fromJS(billingState),
 } as RootState
+const route = '/app/automation/shopify/test-shop/flows'
+const path = '/app/automation/:shopType/:shopName/flows'
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return (
+        <div aria-label="Current path">
+            {location.pathname}
+            {location.search}
+        </div>
+    )
+}
 
 const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
     typeof useAiAgentAccess
 >
+
+const renderComponent = () => {
+    return render(
+        <>
+            <LocationPath />
+            <WorkflowsViewContainer />
+        </>,
+        { initialEntries: [route], path, storeState: defaultState },
+    )
+}
 
 describe('<WorkflowsViewContainer />', () => {
     beforeEach(() => {
@@ -49,19 +62,7 @@ describe('<WorkflowsViewContainer />', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
-            <MemoryRouter
-                initialEntries={['/app/automation/shopify/test-shop/flows']}
-            >
-                <Route path="/app/automation/:shopType/:shopName/flows">
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            <WorkflowsViewContainer />
-                        </Provider>
-                    </QueryClientProvider>
-                </Route>
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         await waitFor(() => {
             expect(
@@ -76,19 +77,7 @@ describe('<WorkflowsViewContainer />', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
-            <MemoryRouter
-                initialEntries={['/app/automation/shopify/test-shop/flows']}
-            >
-                <Route path="/app/automation/:shopType/:shopName/flows">
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            <WorkflowsViewContainer />
-                        </Provider>
-                    </QueryClientProvider>
-                </Route>
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(screen.getByText('WorkflowsView')).toBeInTheDocument()
     })
@@ -99,19 +88,7 @@ describe('<WorkflowsViewContainer />', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
-            <MemoryRouter
-                initialEntries={['/app/automation/shopify/test-shop/flows']}
-            >
-                <Route path="/app/automation/:shopType/:shopName/flows">
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            <WorkflowsViewContainer />
-                        </Provider>
-                    </QueryClientProvider>
-                </Route>
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(mockWorkflowsView).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -122,26 +99,6 @@ describe('<WorkflowsViewContainer />', () => {
     })
 
     describe('navigation callbacks', () => {
-        let history: MemoryHistory
-
-        const renderWithHistory = () => {
-            history = createMemoryHistory({
-                initialEntries: ['/app/automation/shopify/test-shop/flows'],
-            })
-
-            return renderWithRouter(
-                <Router history={history}>
-                    <Route path="/app/automation/:shopType/:shopName/flows">
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore(defaultState)}>
-                                <WorkflowsViewContainer />
-                            </Provider>
-                        </QueryClientProvider>
-                    </Route>
-                </Router>,
-            )
-        }
-
         beforeEach(() => {
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: true,
@@ -150,84 +107,68 @@ describe('<WorkflowsViewContainer />', () => {
         })
 
         it('should navigate to new workflow page when goToNewWorkflowPage is called', () => {
-            renderWithHistory()
+            renderComponent()
 
             const props = mockWorkflowsView.mock.calls[0][0]
             act(() => {
                 props.goToNewWorkflowPage()
             })
 
-            expect(history.location.pathname).toBe(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 '/app/automation/shopify/test-shop/flows/new',
             )
         })
 
         it('should navigate to edit workflow page when goToEditWorkflowPage is called', () => {
-            renderWithHistory()
+            renderComponent()
 
             const props = mockWorkflowsView.mock.calls[0][0]
             act(() => {
                 props.goToEditWorkflowPage('workflow-123')
             })
 
-            expect(history.location.pathname).toBe(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 '/app/automation/shopify/test-shop/flows/edit/workflow-123',
             )
         })
 
         it('should navigate to templates page when goToWorkflowTemplatesPage is called', () => {
-            renderWithHistory()
+            renderComponent()
 
             const props = mockWorkflowsView.mock.calls[0][0]
             act(() => {
                 props.goToWorkflowTemplatesPage()
             })
 
-            expect(history.location.pathname).toBe(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 '/app/automation/shopify/test-shop/flows/templates',
             )
         })
 
         it('should navigate to new workflow with template query param when goToNewWorkflowFromTemplatePage is called', () => {
-            renderWithHistory()
+            renderComponent()
 
             const props = mockWorkflowsView.mock.calls[0][0]
             act(() => {
                 props.goToNewWorkflowFromTemplatePage('template-slug')
             })
 
-            expect(history.location.pathname).toBe(
-                '/app/automation/shopify/test-shop/flows/new',
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                '/app/automation/shopify/test-shop/flows/new?template=template-slug',
             )
-            expect(history.location.search).toBe('?template=template-slug')
         })
     })
 
     describe('notifyMerchant callback', () => {
-        let store: ReturnType<typeof mockStore>
-
         beforeEach(() => {
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: true,
                 isLoading: false,
             })
-            store = mockStore(defaultState)
         })
 
         it('should dispatch success notification when notifyMerchant is called with success', () => {
-            renderWithRouter(
-                <MemoryRouter
-                    initialEntries={['/app/automation/shopify/test-shop/flows']}
-                >
-                    <Route path="/app/automation/:shopType/:shopName/flows">
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={store}>
-                                <WorkflowsViewContainer />
-                            </Provider>
-                        </QueryClientProvider>
-                    </Route>
-                </MemoryRouter>,
-            )
+            const { store } = renderComponent()
 
             const props = mockWorkflowsView.mock.calls[0][0]
             props.notifyMerchant('Operation successful', 'success')
@@ -246,19 +187,7 @@ describe('<WorkflowsViewContainer />', () => {
         })
 
         it('should dispatch error notification when notifyMerchant is called with error', () => {
-            renderWithRouter(
-                <MemoryRouter
-                    initialEntries={['/app/automation/shopify/test-shop/flows']}
-                >
-                    <Route path="/app/automation/:shopType/:shopName/flows">
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={store}>
-                                <WorkflowsViewContainer />
-                            </Provider>
-                        </QueryClientProvider>
-                    </Route>
-                </MemoryRouter>,
-            )
+            const { store } = renderComponent()
 
             const props = mockWorkflowsView.mock.calls[0][0]
             props.notifyMerchant('Operation failed', 'error')
@@ -283,19 +212,7 @@ describe('<WorkflowsViewContainer />', () => {
             isLoading: false,
         })
 
-        const { container } = renderWithRouter(
-            <MemoryRouter
-                initialEntries={['/app/automation/shopify/test-shop/flows']}
-            >
-                <Route path="/app/automation/:shopType/:shopName/flows">
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            <WorkflowsViewContainer />
-                        </Provider>
-                    </QueryClientProvider>
-                </Route>
-            </MemoryRouter>,
-        )
+        const { container } = renderComponent()
 
         expect(container).toBeInTheDocument()
         expect(screen.getByText('WorkflowsView')).toBeInTheDocument()

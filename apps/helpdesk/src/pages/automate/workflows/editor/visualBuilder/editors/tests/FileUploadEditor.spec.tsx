@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 
 import {
@@ -18,7 +19,6 @@ import type {
     FileUploadNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { renderWithStore } from 'utils/testing'
 
 import FileUploadEditor from '../FileUploadEditor'
 
@@ -69,7 +69,7 @@ describe('<FileUploadEditor />', () => {
             isTemplate: false,
         }
 
-        const { container } = renderWithStore(
+        const { container } = render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -121,7 +121,7 @@ describe('<FileUploadEditor />', () => {
                     </StoreIntegrationContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         act(() => {

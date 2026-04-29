@@ -1,16 +1,11 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ActionsPlatformStepsView from '../ActionsPlatformStepsView'
 import useApps from '../hooks/useApps'
@@ -20,23 +15,12 @@ jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')
 jest.mock('../hooks/useApps')
 jest.mock('../hooks/useDeleteActionTemplate')
-
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
 const mockUseApps = jest.mocked(useApps)
 const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
 const mockUseDeleteActionTemplate = jest.mocked(useDeleteActionTemplate)
-
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
-    integrations: fromJS({
-        integrations: [],
-    }),
-    billing: fromJS({
-        products: [],
-    }),
-} as RootState)
-
 mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     data: [
         {
@@ -83,15 +67,18 @@ mockUseDeleteActionTemplate.mockReturnValue({
     isLoading: false,
     deleteActionTemplate: jest.fn(),
 })
-
 describe('<ActionsPlatformStepsView />', () => {
     it('should render actions platform ste[s page', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformStepsView />
-            </Provider>,
-        )
-
+        render(<ActionsPlatformStepsView />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         expect(
             screen.getByText(
                 'Create, customize, publish and maintain reusable Action steps for AI Agent.',
@@ -100,33 +87,37 @@ describe('<ActionsPlatformStepsView />', () => {
         expect(screen.getByText('test1')).toBeInTheDocument()
         expect(screen.getByText('test2')).toBeInTheDocument()
     })
-
     it('should filter steps by app', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformStepsView />
-            </Provider>,
-        )
-
+        render(<ActionsPlatformStepsView />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         act(() => {
             fireEvent.click(screen.getByText('Select value...'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Recharge'))
         })
-
         expect(screen.queryByText('test1')).not.toBeInTheDocument()
         expect(screen.getByText('test2')).toBeInTheDocument()
     })
-
     it('should filter steps by name', async () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformStepsView />
-            </Provider>,
-        )
-
+        render(<ActionsPlatformStepsView />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         act(() => {
             fireEvent.change(screen.getByPlaceholderText('Search name'), {
                 target: {
@@ -134,24 +125,25 @@ describe('<ActionsPlatformStepsView />', () => {
                 },
             })
         })
-
         await waitFor(() => {
             expect(screen.getByText('test1')).toBeInTheDocument()
             expect(screen.queryByText('test2')).not.toBeInTheDocument()
         })
     })
-
     it('should show only relevant apps in app filter', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformStepsView />
-            </Provider>,
-        )
-
+        render(<ActionsPlatformStepsView />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         act(() => {
             fireEvent.click(screen.getByText('Select value...'))
         })
-
         expect(screen.queryByText('Test App')).not.toBeInTheDocument()
     })
 })

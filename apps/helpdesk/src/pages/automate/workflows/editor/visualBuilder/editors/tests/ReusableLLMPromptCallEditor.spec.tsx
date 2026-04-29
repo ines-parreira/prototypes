@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
@@ -7,7 +8,6 @@ import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuild
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { ReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ReusableLLMPromptCallEditor from '../ReusableLLMPromptCallEditor'
 
@@ -123,7 +123,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
 
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: {
@@ -331,7 +331,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
 
         const mockDispatch = jest.fn()
 
-        renderWithQueryClientProvider(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: {

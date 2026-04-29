@@ -1,12 +1,11 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import AutomateFormView from '../AutomateFormView'
 
 describe('<AutomateFormView />', () => {
     it('should render form view with header, secondary navbar and content', () => {
-        renderWithRouter(
+        render(
             <AutomateFormView
                 title="Title"
                 headerNavbarItems={[
@@ -33,7 +32,7 @@ describe('<AutomateFormView />', () => {
     })
 
     it('should render full page loader if isLoading flag is set to true', () => {
-        renderWithRouter(
+        render(
             <AutomateFormView
                 title="Title"
                 headerNavbarItems={[
@@ -60,7 +59,7 @@ describe('<AutomateFormView />', () => {
     })
 
     it('should render secondary navbar with candu ids', () => {
-        renderWithRouter(
+        render(
             <AutomateFormView
                 title="Title"
                 headerNavbarItems={[

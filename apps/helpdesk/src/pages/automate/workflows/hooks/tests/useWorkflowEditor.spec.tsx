@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { render, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import type { AxiosError } from 'axios'
 import { produce } from 'immer'
@@ -17,7 +17,6 @@ import {
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import {
     createWorkflowEditorContextForPreview,
@@ -1139,7 +1138,7 @@ describe('useWorkflowEditor', () => {
                 .mockImplementation(() => {})
 
             expect(() => {
-                renderWithQueryClientProvider(<TestComponent />)
+                render(<TestComponent />)
             }).toThrow(
                 'A workflowConfigurationContext cannot be found in the scope',
             )
@@ -1177,7 +1176,7 @@ describe('useWorkflowEditor', () => {
             const WrappedComponent = withWorkflowEditorContext(TestComponent)
             const workflowId = ulid()
 
-            const { getByTestId } = renderWithQueryClientProvider(
+            const { getByTestId } = render(
                 <WrappedComponent
                     workflowId={workflowId}
                     isNewWorkflow={true}

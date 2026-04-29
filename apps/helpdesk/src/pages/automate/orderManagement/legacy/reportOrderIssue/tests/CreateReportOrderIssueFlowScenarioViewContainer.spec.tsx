@@ -1,16 +1,11 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import CreateReportOrderIssueFlowScenarioView from '../CreateReportOrderIssueFlowScenarioView'
 import CreateReportOrderIssueFlowScenarioViewContainer from '../CreateReportOrderIssueFlowScenarioViewContainer'
@@ -27,21 +22,10 @@ jest.mock(
         }),
     }),
 )
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),
 }))
-
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
-    integrations: fromJS({
-        integrations: [],
-    }),
-    billing: fromJS({
-        products: [],
-    }),
-} as RootState)
-
 describe('<CreateReportOrderIssueFlowScenarioView />', () => {
     beforeEach(() => {
         ;(
@@ -56,18 +40,20 @@ describe('<CreateReportOrderIssueFlowScenarioView />', () => {
             handleSelfServiceConfigurationUpdate: jest.fn(),
         })
     })
-
     it('should render order issue flow scenario view', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <CreateReportOrderIssueFlowScenarioView />
-            </Provider>,
-        )
-
+        render(<CreateReportOrderIssueFlowScenarioView />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         expect(screen.getByText('Create scenario')).toBeInTheDocument()
     })
 })
-
 describe('<CreateReportOrderIssueFlowScenarioViewContainer />', () => {
     beforeEach(() => {
         ;(
@@ -86,29 +72,34 @@ describe('<CreateReportOrderIssueFlowScenarioViewContainer />', () => {
             isLoading: false,
         })
     })
-
     it('should redirect when user does not have access', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <CreateReportOrderIssueFlowScenarioViewContainer />
-            </Provider>,
-        )
-
+        render(<CreateReportOrderIssueFlowScenarioViewContainer />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         expect(screen.getByText('Redirect')).toBeInTheDocument()
     })
-
     it('should render order issue flow scenario view when user has access', () => {
         ;(useAiAgentAccess as jest.Mock).mockReturnValue({
             hasAccess: true,
             isLoading: false,
         })
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <CreateReportOrderIssueFlowScenarioViewContainer />
-            </Provider>,
-        )
-
+        render(<CreateReportOrderIssueFlowScenarioViewContainer />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         expect(screen.getByText('Create scenario')).toBeInTheDocument()
     })
 })

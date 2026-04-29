@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/dom'
 import { fromJS } from 'immutable'
 
@@ -9,7 +10,6 @@ import { COST_SAVED } from 'pages/automate/automate-metrics/constants'
 import { CostSavedMetric } from 'pages/automate/automate-metrics/CostSavedMetric'
 import { initialState } from 'state/billing/reducers'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 const trend: MetricTrend = {
     isFetching: false,
@@ -38,28 +38,21 @@ const mockState: Partial<RootState> = {
 
 describe('CostSavedMetric', () => {
     it('should render correctly', () => {
-        renderWithStoreAndQueryClientProvider(
-            <CostSavedMetric trend={trend} />,
-            mockState,
-        )
+        render(<CostSavedMetric trend={trend} />, { storeState: mockState })
 
         expect(screen.getByText(COST_SAVED)).toBeInTheDocument()
     })
 
     it('should render the correct value', () => {
-        renderWithStoreAndQueryClientProvider(
-            <CostSavedMetric trend={trend} />,
-            mockState,
-        )
+        render(<CostSavedMetric trend={trend} />, { storeState: mockState })
 
         expect(screen.getByText('$300')).toBeInTheDocument()
     })
 
     it('should render a loading state', () => {
-        renderWithStoreAndQueryClientProvider(
-            <CostSavedMetric trend={{ ...trend, isFetching: true }} />,
-            mockState,
-        )
+        render(<CostSavedMetric trend={{ ...trend, isFetching: true }} />, {
+            storeState: mockState,
+        })
 
         expect(screen.queryByText('$300')).not.toBeInTheDocument()
     })

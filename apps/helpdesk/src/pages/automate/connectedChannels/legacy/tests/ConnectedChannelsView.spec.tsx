@@ -1,14 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import type React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
@@ -20,7 +16,6 @@ import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacFo
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import type { RootState } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { initialState as articlesState } from '../../../../../state/entities/helpCenter/articles'
 import { initialState as categoriesState } from '../../../../../state/entities/helpCenter/categories'
@@ -113,17 +108,15 @@ jest.mock('react-router-dom', () => ({
     })),
 }))
 
-const mockStore = configureMockStore([thunk])
-
 const defaultState = {
     integrations: fromJS({
         integrations: [],
     }),
 
     billing: fromJS(billingState),
-} as RootState
+} as unknown as RootState
 const contactForm = ContactFormFixture
-const mockedStore = mockStore({
+const storeState = {
     ...defaultState,
     entities: {
         contactForm: {
@@ -226,7 +219,7 @@ const mockedStore = mockStore({
             categories: categoriesState,
         },
     },
-})
+} as unknown as RootState
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
@@ -304,16 +297,8 @@ jest.mock(
     }),
 )
 
-const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
-    const history = createMemoryHistory({ initialEntries: [route] })
-    return {
-        ...renderWithQueryClientProvider(
-            <Provider store={mockedStore}>
-                <Router history={history}>{ui}</Router>
-            </Provider>,
-        ),
-        history,
-    }
+const renderComponent = (ui: React.ReactElement, { route = '/' } = {}) => {
+    return render(ui, { initialEntries: [route], storeState })
 }
 
 describe('ConnectedChannelsView', () => {
@@ -398,7 +383,7 @@ describe('ConnectedChannelsView', () => {
         })
     })
     it('should render', () => {
-        renderWithRouter(<ConnectedChannelsView />)
+        renderComponent(<ConnectedChannelsView />)
         expect(screen.getByText('Chat')).toBeInTheDocument()
         expect(screen.getByText('Help Center')).toBeInTheDocument()
         expect(screen.getByText('Contact Form')).toBeInTheDocument()
@@ -407,7 +392,7 @@ describe('ConnectedChannelsView', () => {
 
     describe('routing', () => {
         it('should render chat view on base route', () => {
-            renderWithRouter(<ConnectedChannelsView />, {
+            renderComponent(<ConnectedChannelsView />, {
                 route: '/app/automation/shopType/shopName/connected-channels',
             })
 
@@ -418,7 +403,7 @@ describe('ConnectedChannelsView', () => {
         })
 
         it('should render help center view on /help-center route', () => {
-            renderWithRouter(<ConnectedChannelsView />, {
+            renderComponent(<ConnectedChannelsView />, {
                 route: '/app/automation/shopType/shopName/connected-channels/help-center',
             })
 
@@ -428,7 +413,7 @@ describe('ConnectedChannelsView', () => {
         })
 
         it('should render contact form view on /contact-form route', () => {
-            renderWithRouter(<ConnectedChannelsView />, {
+            renderComponent(<ConnectedChannelsView />, {
                 route: '/app/automation/shopType/shopName/connected-channels/contact-form',
             })
 
@@ -438,7 +423,7 @@ describe('ConnectedChannelsView', () => {
         })
 
         it('should render email view on /email route', () => {
-            renderWithRouter(<ConnectedChannelsView />, {
+            renderComponent(<ConnectedChannelsView />, {
                 route: '/app/automation/shopType/shopName/connected-channels/email',
             })
 
@@ -451,7 +436,7 @@ describe('ConnectedChannelsView', () => {
     it('should not render page header and navbar when in automate settings mode', () => {
         ;(useIsAutomateSettings as jest.Mock).mockReturnValue(true)
 
-        renderWithRouter(<ConnectedChannelsView />)
+        renderComponent(<ConnectedChannelsView />)
 
         expect(screen.queryByText('Channels')).not.toBeInTheDocument()
         expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
@@ -460,7 +445,7 @@ describe('ConnectedChannelsView', () => {
     describe('navigation links', () => {
         it('should render all navigation links with correct URLs', () => {
             ;(useIsAutomateSettings as jest.Mock).mockReturnValue(false)
-            renderWithRouter(<ConnectedChannelsView />)
+            renderComponent(<ConnectedChannelsView />)
 
             const links = screen.getAllByRole('link')
             expect(links).toHaveLength(4)

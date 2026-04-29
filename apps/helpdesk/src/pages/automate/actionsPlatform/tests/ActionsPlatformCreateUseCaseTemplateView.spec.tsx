@@ -1,11 +1,9 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -13,8 +11,7 @@ import {
     useListActionsApps,
 } from 'models/workflows/queries'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouterAndDnD } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ActionsPlatformCreateUseCaseTemplateView from '../ActionsPlatformCreateUseCaseTemplateView'
 import useApps from '../hooks/useApps'
@@ -32,14 +29,20 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
 const mockServerValidationErrors = jest.mocked(serverValidationErrors)
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+const storeState = {
     integrations: fromJS({
         integrations: [],
     }),
     billing: fromJS({
         products: [],
     }),
-} as RootState)
+} as RootState
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div aria-label="Current path">{location.pathname}</div>
+}
 
 mockUseListActionsApps.mockReturnValue({
     data: [
@@ -132,11 +135,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
     })
 
     it('should render create use case template simplified step builder', () => {
-        renderWithRouterAndDnD(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateUseCaseTemplateView />
-            </Provider>,
-        )
+        render(<ActionsPlatformCreateUseCaseTemplateView />, { storeState })
 
         expect(screen.getByText('Add Step')).toBeInTheDocument()
     })
@@ -149,16 +148,12 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
             isLoading: false,
         })
 
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouterAndDnD(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformCreateUseCaseTemplateView />
-            </Provider>,
-            {
-                history,
-            },
+            </>,
+            { storeState },
         )
 
         act(() => {
@@ -269,7 +264,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
         ])
 
         await waitFor(() => {
-            expect(historyPushSpy).toHaveBeenCalledWith(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 '/app/ai-agent/actions-platform/use-cases',
             )
         })
@@ -283,11 +278,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
             isLoading: false,
         })
 
-        renderWithRouterAndDnD(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateUseCaseTemplateView />
-            </Provider>,
-        )
+        render(<ActionsPlatformCreateUseCaseTemplateView />, { storeState })
 
         act(() => {
             fireEvent.click(screen.getByText('Create Action'))
@@ -298,14 +289,12 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
     })
 
     it('should navigate to use cases page when clicking back button', async () => {
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouterAndDnD(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformCreateUseCaseTemplateView />
-            </Provider>,
-            { history },
+            </>,
+            { storeState },
         )
 
         act(() => {
@@ -313,21 +302,19 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
         })
 
         await waitFor(() => {
-            expect(historyPushSpy).toHaveBeenCalledWith(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 '/app/ai-agent/actions-platform/use-cases',
             )
         })
     })
 
     it('should navigate to use cases page when clicking cancel', async () => {
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouterAndDnD(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformCreateUseCaseTemplateView />
-            </Provider>,
-            { history },
+            </>,
+            { storeState },
         )
 
         act(() => {
@@ -335,7 +322,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
         })
 
         await waitFor(() => {
-            expect(historyPushSpy).toHaveBeenCalledWith(
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 '/app/ai-agent/actions-platform/use-cases',
             )
         })

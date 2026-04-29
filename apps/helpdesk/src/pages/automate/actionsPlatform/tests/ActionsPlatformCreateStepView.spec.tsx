@@ -1,10 +1,7 @@
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -12,8 +9,7 @@ import {
     useListActionsApps,
 } from 'models/workflows/queries'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ActionsPlatformCreateStepView from '../ActionsPlatformCreateStepView'
 import useApps from '../hooks/useApps'
@@ -46,10 +42,16 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
 const mockServerValidationErrors = jest.mocked(serverValidationErrors)
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
+const storeState = {} as RootState
 
 const mockUseValidateActionStepGraph = jest.mocked(useValidateActionStepGraph)
 const mockUseTouchActionStepGraph = jest.mocked(useTouchActionStepGraph)
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div aria-label="Current path">{location.pathname}</div>
+}
 
 mockUseListActionsApps.mockReturnValue({
     data: [
@@ -126,11 +128,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
     })
 
     it('should render create step visual builder', () => {
-        render(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateStepView />
-            </Provider>,
-        )
+        render(<ActionsPlatformCreateStepView />, { storeState })
 
         expect(
             screen.getByPlaceholderText('e.g. Update shipping address'),
@@ -138,11 +136,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
     })
 
     it.skip('should require to select App', async () => {
-        render(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateStepView />
-            </Provider>,
-        )
+        render(<ActionsPlatformCreateStepView />, { storeState })
 
         act(() => {
             fireEvent.focus(
@@ -160,24 +154,19 @@ describe('<ActionsPlatformCreateStepView />', () => {
     })
 
     it('should redirect on cancel', () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] })
-
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformCreateStepView />
-            </Provider>,
-            {
-                history,
-            },
+            </>,
+            { storeState },
         )
 
         act(() => {
             fireEvent.click(screen.getByText('Cancel'))
         })
 
-        expect(historyPushSpy).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/ai-agent/actions-platform/steps',
         )
     })
@@ -216,11 +205,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
             }
         })
 
-        render(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateStepView />
-            </Provider>,
-        )
+        render(<ActionsPlatformCreateStepView />, { storeState })
 
         act(() => {
             fireEvent.focus(
@@ -258,21 +243,18 @@ describe('<ActionsPlatformCreateStepView />', () => {
         }))
 
         const mockCreateActionTemplate = jest.fn().mockResolvedValue({})
-        const history = createMemoryHistory({ initialEntries: ['/'] })
-        const historyPushSpy = jest.spyOn(history, 'push')
 
         mockUseCreateActionTemplate.mockReturnValue({
             createActionTemplate: mockCreateActionTemplate,
             isLoading: false,
         })
 
-        renderWithRouter(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformCreateStepView />
-            </Provider>,
-            {
-                history,
-            },
+            </>,
+            { storeState },
         )
 
         // Fill in the name field to avoid validation errors
@@ -313,10 +295,8 @@ describe('<ActionsPlatformCreateStepView />', () => {
         })
 
         await waitFor(() => {
-            expect(historyPushSpy).toHaveBeenCalledWith(
-                expect.stringContaining(
-                    '/app/ai-agent/actions-platform/steps/edit/',
-                ),
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                '/app/ai-agent/actions-platform/steps/edit/',
             )
         })
     })
@@ -336,21 +316,18 @@ describe('<ActionsPlatformCreateStepView />', () => {
         }))
 
         const mockCreateActionTemplate = jest.fn().mockResolvedValue({})
-        const history = createMemoryHistory({ initialEntries: ['/'] })
-        const historyPushSpy = jest.spyOn(history, 'push')
 
         mockUseCreateActionTemplate.mockReturnValue({
             createActionTemplate: mockCreateActionTemplate,
             isLoading: false,
         })
 
-        renderWithRouter(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformCreateStepView />
-            </Provider>,
-            {
-                history,
-            },
+            </>,
+            { storeState },
         )
 
         // Fill in the name field to avoid validation errors
@@ -391,10 +368,8 @@ describe('<ActionsPlatformCreateStepView />', () => {
         })
 
         await waitFor(() => {
-            expect(historyPushSpy).toHaveBeenCalledWith(
-                expect.stringContaining(
-                    '/app/ai-agent/actions-platform/steps/edit/',
-                ),
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                '/app/ai-agent/actions-platform/steps/edit/',
             )
         })
     })

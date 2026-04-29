@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
@@ -20,7 +21,6 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
-import { renderWithStore } from 'utils/testing'
 
 import EndNodeEditor from '..'
 
@@ -77,7 +77,7 @@ describe('<EndNodeEditor />', () => {
     const mockDispatch = jest.fn()
 
     const renderComponent = () =>
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: mockGraph,
@@ -129,7 +129,7 @@ describe('<EndNodeEditor />', () => {
                     </StoreIntegrationContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
     beforeEach(() => {
@@ -175,7 +175,7 @@ describe('<EndNodeEditor />', () => {
             },
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: mockGraph,
@@ -227,7 +227,7 @@ describe('<EndNodeEditor />', () => {
                     </StoreIntegrationContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         expect(screen.getByText('When ticket is created')).toBeInTheDocument()
@@ -242,7 +242,7 @@ describe('<EndNodeEditor />', () => {
             },
         }
 
-        renderWithStore(
+        render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: mockGraph,
@@ -294,7 +294,7 @@ describe('<EndNodeEditor />', () => {
                     </StoreIntegrationContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {},
+            { storeState: {} },
         )
 
         expect(screen.getByText('If ticket is created')).toBeInTheDocument()

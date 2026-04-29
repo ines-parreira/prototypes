@@ -1,8 +1,6 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -10,7 +8,6 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformUseCaseTemplatesView from '../ActionsPlatformUseCaseTemplatesView'
 import useApps from '../hooks/useApps'
@@ -20,7 +17,6 @@ jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')
 jest.mock('../hooks/useApps')
 jest.mock('../hooks/useDeleteActionTemplate')
-
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
     integrations: fromJS({
         integrations: [],
@@ -29,14 +25,12 @@ const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
         products: [],
     }),
 } as RootState)
-
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
 const mockUseApps = jest.mocked(useApps)
 const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
 const mockUseDeleteActionTemplate = jest.mocked(useDeleteActionTemplate)
-
 mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     data: [
         {
@@ -85,15 +79,11 @@ mockUseDeleteActionTemplate.mockReturnValue({
     isLoading: false,
     deleteActionTemplate: jest.fn(),
 })
-
 describe('<ActionsPlatformUseCaseTemplatesView />', () => {
     it('should render actions platform templates page', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformUseCaseTemplatesView />{' '}
-            </Provider>,
-        )
-
+        render(<ActionsPlatformUseCaseTemplatesView />, {
+            storeState: mockStore.getState(),
+        })
         expect(
             screen.getByText(
                 'Create, customize and maintain Action templates for AI Agent.',
@@ -102,33 +92,37 @@ describe('<ActionsPlatformUseCaseTemplatesView />', () => {
         expect(screen.getByText('test1')).toBeInTheDocument()
         expect(screen.getByText('test2')).toBeInTheDocument()
     })
-
     it('should filter templates by app', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformUseCaseTemplatesView />
-            </Provider>,
-        )
-
+        render(<ActionsPlatformUseCaseTemplatesView />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         act(() => {
             fireEvent.click(screen.getByText('Select value...'))
         })
-
         act(() => {
             fireEvent.click(screen.getByText('Recharge'))
         })
-
         expect(screen.queryByText('test1')).not.toBeInTheDocument()
         expect(screen.getByText('test2')).toBeInTheDocument()
     })
-
     it('should filter templates by name', async () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformUseCaseTemplatesView />
-            </Provider>,
-        )
-
+        render(<ActionsPlatformUseCaseTemplatesView />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         act(() => {
             fireEvent.change(screen.getByPlaceholderText('Search name'), {
                 target: {
@@ -136,24 +130,25 @@ describe('<ActionsPlatformUseCaseTemplatesView />', () => {
                 },
             })
         })
-
         await waitFor(() => {
             expect(screen.getByText('test1')).toBeInTheDocument()
             expect(screen.queryByText('test2')).not.toBeInTheDocument()
         })
     })
-
     it('should show only relevant apps in app filter', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformUseCaseTemplatesView />
-            </Provider>,
-        )
-
+        render(<ActionsPlatformUseCaseTemplatesView />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+                billing: fromJS({
+                    products: [],
+                }),
+            } as RootState,
+        })
         act(() => {
             fireEvent.click(screen.getByText('Select value...'))
         })
-
         expect(screen.queryByText('Test App')).not.toBeInTheDocument()
     })
 })

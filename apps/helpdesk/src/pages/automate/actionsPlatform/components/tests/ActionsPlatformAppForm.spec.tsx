@@ -1,14 +1,19 @@
 import React from 'react'
 
-import { flushPromises } from '@repo/testing'
+import { flushPromises, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { useLocation } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
-import { renderWithRouter } from 'utils/testing'
 
 import type { App } from '../../types'
 import ActionsPlatformAppForm from '../ActionsPlatformAppForm'
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div aria-label="Current path">{location.pathname}</div>
+}
 
 describe('<ActionsPlatformAppForm />', () => {
     const app: App = {
@@ -19,9 +24,7 @@ describe('<ActionsPlatformAppForm />', () => {
     }
 
     it('should render a form with name, auth method & instructions URL', () => {
-        renderWithRouter(
-            <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />,
-        )
+        render(<ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />)
 
         expect(screen.getByText('App')).toBeInTheDocument()
         expect(screen.getByText('Authentication method')).toBeInTheDocument()
@@ -29,34 +32,30 @@ describe('<ActionsPlatformAppForm />', () => {
     })
 
     it('should render back button', () => {
-        const history = createMemoryHistory()
-
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />,
-            { history },
+        render(
+            <>
+                <LocationPath />
+                <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />
+            </>,
         )
 
         act(() => {
             fireEvent.click(screen.getByText('Back to Apps'))
         })
 
-        expect(historyPushSpy).toHaveBeenCalledWith(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/ai-agent/actions-platform/apps',
         )
     })
 
     it('should render create button if actions app is new', () => {
-        renderWithRouter(
-            <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />,
-        )
+        render(<ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />)
 
         expect(screen.getByText('Create App settings')).toBeInTheDocument()
     })
 
     it('should render save changes button if actions app already exists', () => {
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -74,7 +73,7 @@ describe('<ActionsPlatformAppForm />', () => {
     })
 
     it('should make save changes disabled if form is not dirty', () => {
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -94,7 +93,7 @@ describe('<ActionsPlatformAppForm />', () => {
     })
 
     it('should make cancel button disabled if form is not dirty', () => {
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -116,7 +115,7 @@ describe('<ActionsPlatformAppForm />', () => {
     })
 
     it('should make app select box disabled if app is already selected', () => {
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -136,7 +135,7 @@ describe('<ActionsPlatformAppForm />', () => {
     })
 
     it('should make auth type select box disabled if auth type is already selected', () => {
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -158,9 +157,7 @@ describe('<ActionsPlatformAppForm />', () => {
     it('should trigger onSubmit handle', async () => {
         const mockOnSubmit = jest.fn()
 
-        renderWithRouter(
-            <ActionsPlatformAppForm apps={[app]} onSubmit={mockOnSubmit} />,
-        )
+        render(<ActionsPlatformAppForm apps={[app]} onSubmit={mockOnSubmit} />)
 
         await act(async () => {
             fireEvent.focus(screen.getByText('Select an App'))
@@ -205,7 +202,7 @@ describe('<ActionsPlatformAppForm />', () => {
     it('should not trigger onSubmit handle if form is submitting', async () => {
         const mockOnSubmit = jest.fn()
 
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -236,7 +233,7 @@ describe('<ActionsPlatformAppForm />', () => {
     })
 
     it('should render refresh token URL input when auth_type is oauth2-token', () => {
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -257,7 +254,7 @@ describe('<ActionsPlatformAppForm />', () => {
     })
 
     it('should not render refresh token URL input when auth_type is not oauth2-token', () => {
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -284,7 +281,7 @@ describe('<ActionsPlatformAppForm />', () => {
     it('should allow form submission when auth_type is oauth2-token and refresh token URL is provided', async () => {
         const mockOnSubmit = jest.fn()
 
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -322,7 +319,7 @@ describe('<ActionsPlatformAppForm />', () => {
     it('should not allow form submission when auth_type is oauth2-token and refresh token URL is invalid', async () => {
         const mockOnSubmit = jest.fn()
 
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -353,7 +350,7 @@ describe('<ActionsPlatformAppForm />', () => {
     it('should not allow form submission when auth_type is oauth2-token and refresh token URL is empty', async () => {
         const mockOnSubmit = jest.fn()
 
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -384,7 +381,7 @@ describe('<ActionsPlatformAppForm />', () => {
     it('should allow form submission with API key input label and instruction URL link text', async () => {
         const mockOnSubmit = jest.fn()
 
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -433,7 +430,7 @@ describe('<ActionsPlatformAppForm />', () => {
     it('should allow form submission for OAuth2 token with just instruction URL link text', async () => {
         const mockOnSubmit = jest.fn()
 
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',
@@ -476,7 +473,7 @@ describe('<ActionsPlatformAppForm />', () => {
 
     it('should render trackstar integration when auth_type is trackstar', async () => {
         const mock = jest.fn()
-        renderWithRouter(
+        render(
             <ActionsPlatformAppForm
                 value={{
                     id: 'someid',

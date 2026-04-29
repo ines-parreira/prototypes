@@ -1,10 +1,6 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -17,9 +13,7 @@ import {
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import { IntegrationType } from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ReportOrderIssueFlowViewContainer from '../ReportOrderIssueFlowViewContainer'
 
@@ -34,15 +28,10 @@ jest.mock(
         }),
     }),
 )
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),
 }))
-
-const queryClient = mockQueryClient()
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-
 const defaultState = {
     billing: fromJS(billingState),
     integrations: fromJS({
@@ -62,7 +51,6 @@ const defaultState = {
         chatsApplicationAutomationSettings: {},
     },
 } as unknown as RootState
-
 describe('<ReportOrderIssueFlowViewContainer />', () => {
     beforeEach(() => {
         ;(
@@ -80,44 +68,30 @@ describe('<ReportOrderIssueFlowViewContainer />', () => {
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
     })
-
     it('should redirect if not automate subscribed', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <ReportOrderIssueFlowViewContainer />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
+        render(<ReportOrderIssueFlowViewContainer />, {
+            storeState: defaultState,
+        })
         expect(screen.getByText('Redirect')).toBeInTheDocument()
     })
-
     it('should render track order flow', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                products: {
-                                    [HELPDESK_PRODUCT_ID]:
-                                        basicMonthlyHelpdeskPlan.plan_id,
-                                    [AUTOMATION_PRODUCT_ID]:
-                                        basicMonthlyAutomationPlan.plan_id,
-                                },
-                                status: 'active',
-                            },
-                        }),
-                    })}
-                >
-                    <ReportOrderIssueFlowViewContainer />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
+        render(<ReportOrderIssueFlowViewContainer />, {
+            storeState: {
+                ...defaultState,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                        status: 'active',
+                    },
+                }),
+            },
+        })
         expect(
             screen.getByText(/how to Customize the report order issue/i),
         ).toBeInTheDocument()

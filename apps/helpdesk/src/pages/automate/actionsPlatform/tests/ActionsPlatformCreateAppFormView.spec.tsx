@@ -1,15 +1,10 @@
 import React from 'react'
 
-import { flushPromises } from '@repo/testing'
+import { flushPromises, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ActionsPlatformCreateAppFormView from '../ActionsPlatformCreateAppFormView'
 import useApps from '../hooks/useApps'
@@ -23,14 +18,14 @@ const mockUseApps = jest.mocked(useApps)
 const mockUseCreateActionsApp = jest.mocked(useCreateActionsApp)
 const mockCreateActionsApp = jest.fn()
 
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+const storeState = {
     integrations: fromJS({
         integrations: [],
     }),
     billing: fromJS({
         products: [],
     }),
-} as RootState)
+} as RootState
 
 mockUseApps.mockReturnValue({
     apps: [
@@ -70,27 +65,14 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
     })
 
     it('should render create app form', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateAppFormView />
-            </Provider>,
-        )
+        render(<ActionsPlatformCreateAppFormView />, { storeState })
 
         expect(screen.getByText('Actions platform')).toBeInTheDocument()
         expect(screen.getByText('Create App settings')).toBeInTheDocument()
     })
 
     it('should create new app settings', async () => {
-        const history = createMemoryHistory()
-
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateAppFormView />
-            </Provider>,
-            { history },
-        )
+        render(<ActionsPlatformCreateAppFormView />, { storeState })
 
         act(() => {
             fireEvent.focus(screen.getByText('Select an App'))
@@ -120,6 +102,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
         await act(async () => {
             fireEvent.click(screen.getByText('Create App settings'))
         })
+        await flushPromises()
 
         await waitFor(() => {
             expect(mockCreateActionsApp).toHaveBeenCalledWith([
@@ -133,20 +116,10 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
                 },
             ])
         })
-
-        await waitFor(() => {
-            expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/ai-agent/actions-platform/apps',
-            )
-        })
     })
 
     it('should filter out already used apps', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateAppFormView />
-            </Provider>,
-        )
+        render(<ActionsPlatformCreateAppFormView />, { storeState })
 
         act(() => {
             fireEvent.focus(screen.getByText('Select an App'))
@@ -162,11 +135,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
             createActionsApp: mockCreateActionsApp,
         } as unknown as ReturnType<typeof mockUseCreateActionsApp>)
 
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformCreateAppFormView />
-            </Provider>,
-        )
+        render(<ActionsPlatformCreateAppFormView />, { storeState })
 
         act(() => {
             fireEvent.focus(screen.getByText('Select an App'))

@@ -2,12 +2,8 @@ import type React from 'react'
 
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { billingState } from 'fixtures/billing'
 import type { RootState } from 'state/types'
@@ -25,24 +21,24 @@ jest.mock('../ConnectedChannelsView', () => ({
     ConnectedChannelsView: () => <div>ConnectedChannelsView</div>,
 }))
 
-const mockStore = configureMockStore([thunk])
-
 const defaultState = {
     billing: fromJS(billingState),
 } as RootState
 
-const mockedStore = mockStore(defaultState)
+const LocationPath = () => {
+    const location = useLocation()
 
-const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
-    const history = createMemoryHistory({ initialEntries: [route] })
-    return {
-        ...render(
-            <Provider store={mockedStore}>
-                <Router history={history}>{ui}</Router>
-            </Provider>,
-        ),
-        history,
-    }
+    return <div aria-label="Current path">{location.pathname}</div>
+}
+
+const renderComponent = (ui: React.ReactElement, { route = '/' } = {}) => {
+    return render(
+        <>
+            <LocationPath />
+            {ui}
+        </>,
+        { initialEntries: [route], storeState: defaultState },
+    )
 }
 
 describe('ConnectedChannelsViewContainer', () => {
@@ -64,7 +60,7 @@ describe('ConnectedChannelsViewContainer', () => {
             isLoading: false,
         })
 
-        renderWithRouter(<ConnectedChannelsViewContainer />)
+        renderComponent(<ConnectedChannelsViewContainer />)
 
         expect(screen.getByText('ConnectedChannelsView')).toBeInTheDocument()
     })
@@ -75,14 +71,11 @@ describe('ConnectedChannelsViewContainer', () => {
             isLoading: false,
         })
 
-        const { history } = renderWithRouter(
-            <ConnectedChannelsViewContainer />,
-            {
-                route: '/app/automation/shopify/test-shop/connected-channels',
-            },
-        )
+        renderComponent(<ConnectedChannelsViewContainer />, {
+            route: '/app/automation/shopify/test-shop/connected-channels',
+        })
 
-        expect(history.location.pathname).toBe(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/automation/connected-channels',
         )
     })
@@ -96,7 +89,7 @@ describe('ConnectedChannelsViewContainer', () => {
             isLoading: false,
         })
 
-        renderWithRouter(<ConnectedChannelsViewContainer />)
+        renderComponent(<ConnectedChannelsViewContainer />)
 
         expect(mockUseAiAgentAccess).toHaveBeenCalledWith('my-custom-shop')
     })
@@ -107,14 +100,11 @@ describe('ConnectedChannelsViewContainer', () => {
             isLoading: true,
         })
 
-        const { history } = renderWithRouter(
-            <ConnectedChannelsViewContainer />,
-            {
-                route: '/app/automation/shopify/test-shop/connected-channels',
-            },
-        )
+        renderComponent(<ConnectedChannelsViewContainer />, {
+            route: '/app/automation/shopify/test-shop/connected-channels',
+        })
 
-        expect(history.location.pathname).toBe(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/automation/connected-channels',
         )
     })

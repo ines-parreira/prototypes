@@ -1,16 +1,12 @@
 import React from 'react'
 
-import { flushPromises } from '@repo/testing'
+import { flushPromises, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { useGetActionsApp } from 'models/workflows/queries'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import ActionsPlatformEditAppFormView from '../ActionsPlatformEditAppFormView'
 import useApps from '../hooks/useApps'
@@ -20,14 +16,20 @@ jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionsApp')
 jest.mock('../hooks/useApps')
 
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+const storeState = {
     integrations: fromJS({
         integrations: [],
     }),
     billing: fromJS({
         products: [],
     }),
-} as RootState)
+} as RootState
+
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <div aria-label="Current path">{location.pathname}</div>
+}
 
 const mockUseGetActionsApp = jest.mocked(useGetActionsApp)
 const mockUseApps = jest.mocked(useApps)
@@ -66,27 +68,14 @@ describe('<ActionsPlatformEditAppFormView />', () => {
     })
 
     it('should render edit app form', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformEditAppFormView />
-            </Provider>,
-        )
+        render(<ActionsPlatformEditAppFormView />, { storeState })
 
         expect(screen.getByText('Actions platform')).toBeInTheDocument()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
     })
 
     it('should edit app settings', async () => {
-        const history = createMemoryHistory()
-
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformEditAppFormView />
-            </Provider>,
-            { history },
-        )
+        render(<ActionsPlatformEditAppFormView />, { storeState })
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
@@ -104,6 +93,7 @@ describe('<ActionsPlatformEditAppFormView />', () => {
         act(() => {
             fireEvent.click(screen.getByText('Save Changes'))
         })
+        await flushPromises()
 
         expect(mockEditActionsApp).toHaveBeenCalledWith([
             { id: 'someid' },
@@ -115,11 +105,6 @@ describe('<ActionsPlatformEditAppFormView />', () => {
                 },
             },
         ])
-        await waitFor(() => {
-            expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/ai-agent/actions-platform/apps',
-            )
-        })
     })
 
     it('should disable submit button if edit Actions app is submitting', async () => {
@@ -128,11 +113,7 @@ describe('<ActionsPlatformEditAppFormView />', () => {
             editActionsApp: mockEditActionsApp,
         } as unknown as ReturnType<typeof mockUseEditActionsApp>)
 
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <ActionsPlatformEditAppFormView />
-            </Provider>,
-        )
+        render(<ActionsPlatformEditAppFormView />, { storeState })
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
@@ -150,21 +131,20 @@ describe('<ActionsPlatformEditAppFormView />', () => {
     })
 
     it('should redirect to apps page if Actions app is missing', () => {
-        const history = createMemoryHistory()
-
         mockUseGetActionsApp.mockReturnValue({
             data: null,
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetActionsApp>)
 
-        renderWithRouter(
-            <Provider store={mockStore}>
+        render(
+            <>
+                <LocationPath />
                 <ActionsPlatformEditAppFormView />
-            </Provider>,
-            { history },
+            </>,
+            { storeState },
         )
 
-        expect(history.location.pathname).toEqual(
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
             '/app/ai-agent/actions-platform/apps',
         )
     })

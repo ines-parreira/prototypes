@@ -1,13 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import type React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
@@ -16,9 +12,6 @@ import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/ut
 import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import type { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import type { RootState } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-
-const mockStore = configureMockStore([thunk])
 
 const defaultState = {
     integrations: fromJS({
@@ -31,20 +24,12 @@ const defaultState = {
     billing: fromJS(billingState),
 } as RootState
 
-const mockedStore = mockStore({
+const storeState = {
     ...defaultState,
-})
+} as RootState
 
-const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
-    const history = createMemoryHistory({ initialEntries: [route] })
-    return {
-        ...renderWithQueryClientProvider(
-            <Provider store={mockedStore}>
-                <Router history={history}>{ui}</Router>
-            </Provider>,
-        ),
-        history,
-    }
+const renderComponent = (ui: React.ReactElement, { route = '/' } = {}) => {
+    return render(ui, { initialEntries: [route], storeState })
 }
 
 const mockVisualBuilderNode: VisualBuilderNode = {
@@ -59,7 +44,7 @@ const mockVisualBuilderNode: VisualBuilderNode = {
 
 describe('TestFlowEditor', () => {
     it('should render the chat based on the currentLanguage', () => {
-        renderWithRouter(
+        renderComponent(
             <WorkflowEditorContext.Provider
                 value={
                     {
@@ -91,7 +76,7 @@ describe('TestFlowEditor', () => {
     })
 
     it('should use currentLanguage if selectedTestLanguage is not set', () => {
-        renderWithRouter(
+        renderComponent(
             <WorkflowEditorContext.Provider
                 value={
                     {
@@ -123,7 +108,7 @@ describe('TestFlowEditor', () => {
     })
 
     it('should use selectedTestLanguage if it is set', () => {
-        renderWithRouter(
+        renderComponent(
             <WorkflowEditorContext.Provider
                 value={
                     {
@@ -155,7 +140,7 @@ describe('TestFlowEditor', () => {
     })
 
     it('should use the first available language if currentLanguage is not set', () => {
-        renderWithRouter(
+        renderComponent(
             <WorkflowEditorContext.Provider
                 value={
                     {
@@ -187,7 +172,7 @@ describe('TestFlowEditor', () => {
     })
 
     it('should use the first available language if currentLanguage is undefined', () => {
-        renderWithRouter(
+        renderComponent(
             <WorkflowEditorContext.Provider
                 value={
                     {

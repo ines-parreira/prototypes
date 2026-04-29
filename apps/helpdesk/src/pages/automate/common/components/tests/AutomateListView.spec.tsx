@@ -1,14 +1,13 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import AutomateListView from '../AutomateListView'
 
 describe('<AutomateListView />', () => {
     it('should render list view with header, secondary navbar and content', () => {
-        renderWithRouter(
+        render(
             <AutomateListView
                 title="Title"
                 headerNavbarItems={[
@@ -35,7 +34,7 @@ describe('<AutomateListView />', () => {
     })
 
     it('should render full page loader if isLoading flag is set to true', () => {
-        renderWithRouter(
+        render(
             <AutomateListView
                 title="Title"
                 headerNavbarItems={[
