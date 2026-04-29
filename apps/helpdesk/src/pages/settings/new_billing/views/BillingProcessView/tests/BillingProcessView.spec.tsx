@@ -10,6 +10,8 @@ import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
@@ -21,6 +23,7 @@ import {
     customHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
+    proMonthlyAutomationPlan,
     SMS_PRODUCT_ID,
     smsPlan1,
     VOICE_PRODUCT_ID,
@@ -29,6 +32,7 @@ import {
 import { ProductType } from 'models/billing/types'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import type { RootState } from 'state/types'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 import SummaryTotal from '../../../components/SummaryTotal'
@@ -39,6 +43,16 @@ jest.mock('@repo/billing', () => ({
     ...jest.requireActual('@repo/billing'),
     useBillingState: jest.fn(),
 }))
+
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    toast: {
+        success: jest.fn(),
+        warning: jest.fn(),
+        dismiss: jest.fn(),
+    },
+}))
+
 const mockUseBillingState = assumeMock(useBillingState)
 
 const mockedDispatch = jest.fn()
@@ -65,6 +79,8 @@ const ScheduledCancellationSummaryMock = assumeMock(
 const mockUseProductCancellations = assumeMock(useProductCancellations)
 const mockUseIsPaymentEnabled = assumeMock(useIsPaymentEnabled)
 const SummaryTotalMock = assumeMock(SummaryTotal)
+const mockToastWarning = toast.warning as jest.Mock
+const mockToastDismiss = toast.dismiss as jest.Mock
 
 // Mock PendingChangesModal to capture props
 jest.mock(
@@ -144,6 +160,8 @@ describe('BillingProcessView', () => {
         mockUseIsPaymentEnabled.mockReturnValue(true)
         logEventMock.mockClear()
         SummaryTotalMock.mockClear()
+        mockToastWarning.mockClear()
+        mockToastDismiss.mockClear()
     })
 
     afterEach(() => {
@@ -152,6 +170,8 @@ describe('BillingProcessView', () => {
         mockUseIsPaymentEnabled.mockReset()
         logEventMock.mockReset()
         SummaryTotalMock.mockReset()
+        mockToastWarning.mockReset()
+        mockToastDismiss.mockReset()
     })
 
     it('should render', async () => {
@@ -352,8 +372,173 @@ describe('BillingProcessView', () => {
         expect(logEventMock).toHaveBeenCalledTimes(1)
     })
 
-    it('should track event when clicking Contact Us button for Enterprise plan', async () => {
+    it('rejects ineligible plan selection and shows warning toast', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        useFlagMock.mockReturnValue(true)
+        const setDefaultMessageMock = jest.fn()
+        const setIsModalOpenMock = jest.fn()
+
+        const alteredStore = {
+            ...storeInitialState,
+            currentAccount: fromJS({
+                ...storeInitialState.currentAccount,
+                current_subscription: fromJS({
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicMonthlyAutomationPlan.plan_id,
+                    },
+                    scheduled_to_cancel_at: null,
+                }),
+            }),
+        } as Partial<RootState>
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={setDefaultMessageMock}
+                setIsModalOpen={setIsModalOpenMock}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            alteredStore,
+            { route: '/app/settings/billing/manage/helpdesk' },
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        const automationPriceSelector =
+            screen.getAllByLabelText('Price value')[1]
+        await act(() => userEvent.click(automationPriceSelector))
+
+        await act(() =>
+            userEvent.click(
+                screen.getByRole('menuitem', {
+                    name: /190/i,
+                }),
+            ),
+        )
+
+        await waitFor(() => {
+            const lastSummaryTotalCall =
+                SummaryTotalMock.mock.calls[
+                    SummaryTotalMock.mock.calls.length - 1
+                ]
+            const selectedPlans = lastSummaryTotalCall?.[0]?.selectedPlans
+
+            expect(selectedPlans?.[ProductType.Automation]?.plan?.plan_id).toBe(
+                proMonthlyAutomationPlan.plan_id,
+            )
+        })
+
+        const helpdeskPriceSelector = screen.getAllByLabelText('Price value')[0]
+        await act(() => userEvent.click(helpdeskPriceSelector))
+
+        const menuitems = screen.getAllByRole('menuitem')
+        const enterpriseItem = menuitems[menuitems.length - 1]
+        await act(() => userEvent.click(enterpriseItem))
+
+        await waitFor(() => {
+            expect(mockToastWarning).toHaveBeenCalledWith(
+                'This plan is only available through the Gorgias sales team.',
+                expect.objectContaining({
+                    actions: expect.any(Function),
+                }),
+            )
+        })
+
+        const toastOptions = mockToastWarning.mock.calls.at(-1)?.[1]
+        const toastAction = toastOptions.actions({
+            id: 'ineligible-plan-toast',
+        }) as {
+            props: {
+                children: string
+                onClick: () => void
+                variant: string
+            }
+        }
+
+        expect(toastAction.props.children).toBe('Contact support')
+        expect(toastAction.props.variant).toBe('secondary')
+        toastAction.props.onClick()
+        expect(mockToastDismiss).toHaveBeenCalledWith('ineligible-plan-toast')
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
+        )
+        expect(setDefaultMessageMock).toHaveBeenCalledWith(
+            expect.stringContaining('(Enterprise)'),
+        )
+        expect(setIsModalOpenMock).toHaveBeenCalledWith(true)
+
+        await waitFor(() => {
+            const lastSummaryTotalCall =
+                SummaryTotalMock.mock.calls[
+                    SummaryTotalMock.mock.calls.length - 1
+                ]
+            const selectedPlans = lastSummaryTotalCall?.[0]?.selectedPlans
+
+            expect(selectedPlans?.[ProductType.Helpdesk]?.plan?.plan_id).toBe(
+                basicMonthlyHelpdeskPlan.plan_id,
+            )
+            expect(selectedPlans?.[ProductType.Automation]?.plan?.plan_id).toBe(
+                proMonthlyAutomationPlan.plan_id,
+            )
+        })
+        expect(
+            screen.queryByRole('button', { name: /Contact Us/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should evaluate payment state when selecting an ineligible plan', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        useFlagMock.mockReturnValue(true)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+            { route: '/app/settings/billing/manage/helpdesk' },
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        const [priceSelector] = screen.getAllByLabelText('Price value')
+        await act(() => userEvent.click(priceSelector))
+
+        const menuitems = screen.getAllByRole('menuitem')
+        const enterpriseItem = menuitems[menuitems.length - 1]
+        await act(() => userEvent.click(enterpriseItem))
+
+        await waitFor(() => {
+            expect(mockToastWarning).toHaveBeenCalledWith(
+                'This plan is only available through the Gorgias sales team.',
+                expect.objectContaining({
+                    actions: expect.any(Function),
+                }),
+            )
+        })
+
+        expect(mockUseIsPaymentEnabled).toHaveBeenCalled()
+    })
+
+    it('preserves contact-us enterprise behavior when flag is disabled', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        useFlagMock.mockReturnValue(false)
 
         const setDefaultMessageMock = jest.fn()
         const setIsModalOpenMock = jest.fn()
@@ -379,7 +564,7 @@ describe('BillingProcessView', () => {
             expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
         })
 
-        const priceSelector = screen.getByLabelText('Price value')
+        const [priceSelector] = screen.getAllByLabelText('Price value')
         await act(() => userEvent.click(priceSelector))
 
         const menuitems = screen.getAllByRole('menuitem')
@@ -403,47 +588,11 @@ describe('BillingProcessView', () => {
             SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
         )
         expect(logEventMock).toHaveBeenCalledTimes(1)
-        expect(setIsModalOpenMock).toHaveBeenCalledWith(true)
-    })
-
-    it('should evaluate payment state when rendering enterprise plan summary', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
-        render(
-            <BillingProcessView
-                currentUsage={currentProductsUsage}
-                contactBilling={jest.fn()}
-                dispatchBillingError={jest.fn()}
-                setDefaultMessage={jest.fn()}
-                setIsModalOpen={jest.fn()}
-                periodEnd="2021-01-01"
-                isTrialing={false}
-                isCurrentSubscriptionCanceled={false}
-            />,
-            {
-                storeState: storeInitialState,
-                initialEntries: ['/app/settings/billing/manage/helpdesk'],
-            },
+        expect(setDefaultMessageMock).toHaveBeenCalledWith(
+            expect.stringContaining('Enterprise'),
         )
-
-        await waitFor(() => {
-            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
-        })
-
-        const priceSelector = screen.getByLabelText('Price value')
-        await act(() => userEvent.click(priceSelector))
-
-        const menuitems = screen.getAllByRole('menuitem')
-        const enterpriseItem = menuitems[menuitems.length - 1]
-        await act(() => userEvent.click(enterpriseItem))
-
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('button', { name: /Contact Us/i }),
-            ).toBeInTheDocument()
-        })
-
-        expect(mockUseIsPaymentEnabled).toHaveBeenCalled()
+        expect(setIsModalOpenMock).toHaveBeenCalledWith(true)
+        expect(mockToastWarning).not.toHaveBeenCalled()
     })
 
     describe('Product cancellations hook integration', () => {
@@ -1229,8 +1378,9 @@ describe('BillingProcessView', () => {
         expect(pendingChangesModalProps?.onSave).toBeDefined()
     })
 
-    it('should pass undefined for onSave to PendingChangesModal when enterprise plan is selected', async () => {
+    it('should keep onSave in PendingChangesModal when selecting an ineligible plan', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        useFlagMock.mockReturnValue(true)
 
         render(
             <BillingProcessView
@@ -1253,7 +1403,53 @@ describe('BillingProcessView', () => {
             expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
         })
 
-        const priceSelector = screen.getByLabelText('Price value')
+        const [priceSelector] = screen.getAllByLabelText('Price value')
+        await act(() => userEvent.click(priceSelector))
+
+        const menuitems = screen.getAllByRole('menuitem')
+        const enterpriseItem = menuitems[menuitems.length - 1]
+        await act(() => userEvent.click(enterpriseItem))
+
+        await waitFor(() => {
+            expect(mockToastWarning).toHaveBeenCalledWith(
+                'This plan is only available through the Gorgias sales team.',
+                expect.objectContaining({
+                    actions: expect.any(Function),
+                }),
+            )
+        })
+
+        const pendingChangesModalCalls = mockPendingChangesModal.mock.calls
+        const pendingChangesModalProps =
+            pendingChangesModalCalls[pendingChangesModalCalls.length - 1]?.[0]
+
+        expect(pendingChangesModalProps?.onSave).toBeDefined()
+    })
+
+    it('should pass undefined for onSave in PendingChangesModal when enterprise plan is selected and flag is disabled', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        useFlagMock.mockReturnValue(false)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+            { route: '/app/settings/billing/manage/helpdesk' },
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        const [priceSelector] = screen.getAllByLabelText('Price value')
         await act(() => userEvent.click(priceSelector))
 
         const menuitems = screen.getAllByRole('menuitem')
@@ -1335,10 +1531,6 @@ describe('BillingProcessView', () => {
                 screen.queryByTestId('scheduled-cancellation-summary'),
             ).toBeInTheDocument()
         })
-
-        expect(
-            screen.queryByRole('button', { name: /Contact Us/i }),
-        ).not.toBeInTheDocument()
 
         expect(ScheduledCancellationSummaryMock).toHaveBeenCalledWith(
             {

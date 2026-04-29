@@ -63,6 +63,7 @@ export type ProductPlanSelectionProps = {
     hasScheduledChange?: boolean
     cancelledProducts?: ProductType[]
     contactBilling: (ticketPurpose: TicketPurpose) => void
+    onIneligibleEnterprisePlanSelected?: (selectedPlans: SelectedPlans) => void
 }
 
 const ProductPlanSelection = ({
@@ -83,6 +84,7 @@ const ProductPlanSelection = ({
     hasScheduledChange = false,
     cancelledProducts = [],
     contactBilling,
+    onIneligibleEnterprisePlanSelected,
 }: ProductPlanSelectionProps) => {
     const productInfo = getProductInfo(type, currentPlan)
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -263,14 +265,26 @@ const ProductPlanSelection = ({
             plan_id: ENTERPRISE_PLAN_ID,
             name: 'Enterprise',
         }
-
-        setSelectedPlans((prev) => ({
-            ...prev,
+        const nextSelectedPlans = {
+            ...selectedPlans,
             [type]: {
-                ...prev[type],
+                ...selectedPlans[type],
                 plan: plan ?? enterprisePlan,
             },
-        }))
+        }
+
+        if (!plan && onIneligibleEnterprisePlanSelected) {
+            onIneligibleEnterprisePlanSelected(nextSelectedPlans)
+        } else {
+            setSelectedPlans((prev) => ({
+                ...prev,
+                [type]: {
+                    ...prev[type],
+                    plan: plan ?? enterprisePlan,
+                },
+            }))
+        }
+
         if (plan) {
             logEvent(SegmentEvent.BillingUsageAndPlansPlanSelected, {
                 product: getProductTrackingName(plan.product),

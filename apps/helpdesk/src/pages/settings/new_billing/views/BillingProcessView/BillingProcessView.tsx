@@ -14,7 +14,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
-import { Separator } from '@gorgias/axiom'
+import { Button, Separator, toast } from '@gorgias/axiom'
 import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -133,6 +133,8 @@ export const BillingProcessView = ({
             undefined,
     })
     const isBillingPaused = !!billingState.data?.subscription.is_paused
+    const showsLegacyEnterpriseCard =
+        !isMidCycleUpgradeEnabled && isEnterpriseHelpdeskPlanSelected
 
     const history = useHistory()
     useEffect(() => {
@@ -237,6 +239,38 @@ export const BillingProcessView = ({
         ...productOverrides[type],
     }))
 
+    const handleIneligibleEnterprisePlanSelected = useCallback(
+        (nextSelectedPlans: SelectedPlans) => {
+            const enterpriseMessage = buildEnterpriseMessage(
+                nextSelectedPlans,
+                cadence,
+            )
+
+            toast.warning(
+                'This plan is only available through the Gorgias sales team.',
+                {
+                    actions: ({ id }) => (
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => {
+                                toast.dismiss(id)
+                                logEvent(
+                                    SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
+                                )
+                                setDefaultMessage(enterpriseMessage)
+                                setIsModalOpen(true)
+                            }}
+                        >
+                            Contact support
+                        </Button>
+                    ),
+                },
+            )
+        },
+        [cadence, setDefaultMessage, setIsModalOpen],
+    )
+
     // on page unload, remove error notification
     useEffect(() => {
         return () => {
@@ -299,7 +333,7 @@ export const BillingProcessView = ({
             )
         }
 
-        if (isEnterpriseHelpdeskPlanSelected) {
+        if (showsLegacyEnterpriseCard) {
             return (
                 <EnterprisePlanCard
                     messageForEnterprise={messageForEnterprise}
@@ -378,6 +412,11 @@ export const BillingProcessView = ({
                                     availablePlans={config.available}
                                     selectedPlans={selectedPlans}
                                     setSelectedPlans={setSelectedPlans}
+                                    onIneligibleEnterprisePlanSelected={
+                                        isMidCycleUpgradeEnabled
+                                            ? handleIneligibleEnterprisePlanSelected
+                                            : undefined
+                                    }
                                     isTrialing={isTrialing}
                                     periodEnd={periodEnd}
                                     initialIndex={config.initialIndex}
@@ -405,15 +444,15 @@ export const BillingProcessView = ({
             {!isCurrentSubscriptionScheduledToCancel && (
                 <PendingChangesModal
                     onSave={
-                        !isEnterpriseHelpdeskPlanSelected
-                            ? () => {
+                        showsLegacyEnterpriseCard
+                            ? undefined
+                            : () => {
                                   logEvent(
                                       SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
                                       { action: 'update' },
                                   )
                                   return updateSubscription()
                               }
-                            : undefined
                     }
                     onDiscard={() => {
                         logEvent(
