@@ -1,5 +1,6 @@
+import { render } from '@repo/testing'
+
 import { UserRole } from 'config/types/user'
-import { renderWithRouter } from 'utils/testing'
 
 import Row from '../Row'
 
@@ -31,7 +32,7 @@ const minProps = {
 
 describe('<Row />', () => {
     it('should render', () => {
-        const { container } = renderWithRouter(<Row {...minProps} />)
+        const { container } = render(<Row {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })

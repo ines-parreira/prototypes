@@ -1,5 +1,6 @@
 import client from '@repo/api-resources'
 import { payingWithCreditCard, trial, usages } from '@repo/billing/fixtures'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
@@ -17,7 +18,6 @@ import { BillingInternalViewUI } from 'pages/settings/new_billing/components/Bil
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const mockedServer = new MockAdapter(client)
 
@@ -95,7 +95,7 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When customer has a paying subscription', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
                 billingState={payingWithCreditCard}
@@ -120,7 +120,7 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When customer has a trialing subscription, which has been already extended', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
                 billingState={extendedTrial}
@@ -145,7 +145,7 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When customer has a trialing subscription, and a coupon has been added', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
                 billingState={trialWithHdAoCoupon}
@@ -165,7 +165,7 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When trial has ended and has been extended previously + customer hasn’t converted (no active subscription)', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
                 billingState={extendedTrialOverAndUnconverted}
@@ -199,7 +199,7 @@ describe('BillingInternalViewUI', () => {
 
     it('should be always possible to deactivate (ban) an account if active', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
                 billingState={payingWithCreditCard}
@@ -237,17 +237,19 @@ describe('BillingInternalViewUI', () => {
 
     it('should be always possible to reactivate an account if deactivated', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
                 billingState={payingWithCreditCard}
             />,
             {
-                currentAccount: fromJS({
-                    ...account,
-                    deactivated_datetime: '2025-01-01T00:00:00Z',
-                }),
-            } as Partial<RootState>,
+                storeState: {
+                    currentAccount: fromJS({
+                        ...account,
+                        deactivated_datetime: '2025-01-01T00:00:00Z',
+                    }),
+                } as Partial<RootState>,
+            },
         )
 
         const reactivateButton = screen.getByRole('button', {
@@ -277,7 +279,7 @@ describe('BillingInternalViewUI', () => {
 
     it('should be always possible to vet an account', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
                 billingState={payingWithCreditCard}
@@ -316,7 +318,7 @@ describe('BillingInternalViewUI', () => {
             },
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
                 billingState={vettedAccount}

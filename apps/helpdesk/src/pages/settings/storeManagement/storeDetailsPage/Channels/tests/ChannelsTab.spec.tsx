@@ -1,22 +1,15 @@
 import type { ReactNode } from 'react'
-import React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
-
-import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { renderWithStore } from 'utils/testing'
 
 import { mockStoresWithAssignedChannels } from '../../../fixtures'
 import { StoreManagementProvider } from '../../../StoreManagementProvider'
 import ChannelsTab from '../ChannelsTab'
 
 jest.mock('@repo/feature-flags')
-
 const mockUseFlag = assumeMock(useFlag)
-
 const mockChannel = {
     title: 'Email',
     type: 'email',
@@ -62,7 +55,6 @@ const mockChannel = {
         },
     ],
 }
-
 jest.mock('../hooks/useChannels', () => {
     return {
         useChannels: () => [
@@ -110,11 +102,9 @@ jest.mock('../hooks/useChannels', () => {
         ],
     }
 })
-
 const mockCreateMapping = jest.fn().mockResolvedValue({ success: true })
 const mockDeleteMapping = jest.fn().mockResolvedValue({ success: true })
 const mockRefetchMapping = jest.fn()
-
 jest.mock('models/storeMapping/queries', () => ({
     useCreateStoreMapping: () => ({
         mutateAsync: mockCreateMapping,
@@ -125,14 +115,12 @@ jest.mock('models/storeMapping/queries', () => ({
         isLoading: false,
     }),
 }))
-
 const mockHandleMappingResults = jest.fn()
 jest.mock('../hooks/useNotifications', () => ({
     useNotifications: () => ({
         handleMappingResults: mockHandleMappingResults,
     }),
 }))
-
 jest.mock('../../../StoreManagementProvider', () => ({
     useStoreManagementState: () => ({
         stores: mockStoresWithAssignedChannels,
@@ -143,11 +131,8 @@ jest.mock('../../../StoreManagementProvider', () => ({
         <div>{children}</div>
     ),
 }))
-
 describe('ChannelsTab', () => {
     const storeId = '1'
-    const { QueryClientProvider } = mockQueryClientProvider()
-
     beforeAll(() => {
         mockUseFlag.mockReturnValue([
             'email',
@@ -158,44 +143,32 @@ describe('ChannelsTab', () => {
             'facebook',
         ])
     })
-
     const renderComponent = () => {
-        return renderWithStore(
-            <MemoryRouter initialEntries={['/']}>
-                <QueryClientProvider>
-                    <StoreManagementProvider>
-                        <ChannelsTab storeId={storeId} />
-                    </StoreManagementProvider>
-                </QueryClientProvider>
-            </MemoryRouter>,
-            {},
+        return render(
+            <StoreManagementProvider>
+                <ChannelsTab storeId={storeId} />
+            </StoreManagementProvider>,
+            { storeState: {}, initialEntries: ['/'] },
         )
     }
-
     it('renders the channels section with correct title and description', () => {
         renderComponent()
-
         expect(screen.getByText('Channels')).toBeInTheDocument()
         expect(
             screen.getByText('View and manage your channels for this store.'),
         ).toBeInTheDocument()
     })
-
     it('renders all channel types with correct counts', () => {
         renderComponent()
-
         expect(
             screen.getByTestId('settings-feature-row-email'),
         ).toBeInTheDocument()
     })
-
     describe('Channel drawer interactions', () => {
         it('opens drawer when clicking on a channel', async () => {
             renderComponent()
-
             const emailRow = screen.getByTestId('settings-feature-row-email')
             fireEvent.click(emailRow)
-
             expect(
                 screen.getByRole('button', { name: /save changes/i }),
             ).toBeInTheDocument()
@@ -203,17 +176,12 @@ describe('ChannelsTab', () => {
                 screen.getByRole('button', { name: /cancel/i }),
             ).toBeInTheDocument()
         })
-
         it('shows unconfirmed changes modal when closing with changes', async () => {
             renderComponent()
-
             const emailRow = screen.getByTestId('settings-feature-row-email')
             fireEvent.click(emailRow)
-
             fireEvent.click(screen.getAllByText(/delete/i)[0])
-
             fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
-
             expect(
                 screen.getByRole('button', { name: /discard/i }),
             ).toBeInTheDocument()
@@ -221,52 +189,39 @@ describe('ChannelsTab', () => {
                 screen.getByRole('button', { name: /back to editing/i }),
             ).toBeInTheDocument()
         })
-
         it('closes drawer without modal when no changes made', () => {
             renderComponent()
-
             fireEvent.click(screen.getByTestId('settings-feature-row-email'))
-
             const assignEmailButton = screen.getByRole('button', {
                 name: /assign email/i,
             })
             fireEvent.click(assignEmailButton)
-
             expect(
                 screen.queryByText(
                     /Choose which support emails should be assigned to this store.*/,
                 ),
             ).toBeInTheDocument()
-
             fireEvent.click(screen.getByRole('button', { name: /cancel/i }))
-
             expect(
                 screen.queryByText(
                     /Choose which support emails should be assigned to this store.*/,
                 ),
             ).not.toBeInTheDocument()
         })
-
         it('saves changes and closes drawer when save button clicked', async () => {
             renderComponent()
-
             fireEvent.click(screen.getByTestId('settings-feature-row-email'))
-
             expect(
                 screen.queryByText(
                     /Choose which support emails should be assigned to this store.*/,
                 ),
             ).toBeInTheDocument()
-
             fireEvent.click(screen.getAllByText(/delete/i)[0])
-
             const saveButton = screen.getByRole('button', {
                 name: /save changes/i,
             })
             expect(saveButton).toBeEnabled()
-
             fireEvent.click(saveButton)
-
             await waitFor(() => {
                 expect(
                     screen.queryByText(
@@ -275,28 +230,21 @@ describe('ChannelsTab', () => {
                 ).not.toBeInTheDocument()
             })
         })
-
         it('creates new channel mapping when adding a channel', async () => {
             renderComponent()
-
             fireEvent.click(screen.getByTestId('settings-feature-row-email'))
-
             const assignEmailButton = screen.getByRole('button', {
                 name: /assign email/i,
             })
             fireEvent.click(assignEmailButton)
-
             const emailToAssign = screen.getByText('test@test-4.com')
             fireEvent.click(emailToAssign)
-
             const saveButton = screen.getByRole('button', {
                 name: /save changes/i,
             })
             expect(saveButton).toBeEnabled()
             fireEvent.click(assignEmailButton)
-
             fireEvent.click(saveButton)
-
             await waitFor(() => {
                 expect(mockCreateMapping).toHaveBeenCalledWith([
                     {
@@ -307,31 +255,23 @@ describe('ChannelsTab', () => {
             })
         })
     })
-
     it('should handle errors during mapping operations', async () => {
         mockDeleteMapping.mockRejectedValueOnce(
             new Error('Failed to create mapping'),
         )
-
         renderComponent()
-
         fireEvent.click(screen.getByTestId('settings-feature-row-email'))
-
         expect(
             screen.queryByText(
                 /Choose which support emails should be assigned to this store.*/,
             ),
         ).toBeInTheDocument()
-
         fireEvent.click(screen.getAllByText(/delete/i)[0])
-
         const saveButton = screen.getByRole('button', {
             name: /save changes/i,
         })
         expect(saveButton).toBeEnabled()
-
         fireEvent.click(saveButton)
-
         await waitFor(() => {
             expect(mockHandleMappingResults).toHaveBeenCalledWith(
                 [{ channelId: 1 }],
@@ -340,11 +280,9 @@ describe('ChannelsTab', () => {
             expect(mockRefetchMapping).toHaveBeenCalled()
         })
     })
-
     it('should respect the included channels flag', () => {
         mockUseFlag.mockReturnValue(['email', 'chat'])
         renderComponent()
-
         expect(
             screen.getByTestId('settings-feature-row-email'),
         ).toBeInTheDocument()

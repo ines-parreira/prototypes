@@ -1,5 +1,5 @@
 import { payingWithCreditCard } from '@repo/billing/fixtures'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -14,7 +14,6 @@ import {
 } from 'models/billing/queries'
 import type { InternalProductCatalogPlans } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { InternalManagePlanView } from './InternalManagePlanView'
 
@@ -102,7 +101,7 @@ function mockErrorState() {
 }
 
 function renderComponent() {
-    return renderWithStoreAndQueryClientAndRouter(<InternalManagePlanView />)
+    return render(<InternalManagePlanView />)
 }
 
 describe('InternalManagePlanView', () => {

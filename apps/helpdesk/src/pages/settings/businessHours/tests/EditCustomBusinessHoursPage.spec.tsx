@@ -1,11 +1,10 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockGetBusinessHoursDetailsHandler } from '@gorgias/helpdesk-mocks'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import EditCustomBusinessHoursPage from '../EditCustomBusinessHoursPage'
 
@@ -38,14 +37,11 @@ afterEach(() => {
 
 describe('EditCustomBusinessHoursPage', () => {
     it('renders loading when fetching', () => {
-        const { container } = renderWithStoreAndQueryClientAndRouter(
-            <EditCustomBusinessHoursPage />,
-            {},
-            {
-                route: '/123',
-                path: '/:id',
-            },
-        )
+        const { container } = render(<EditCustomBusinessHoursPage />, {
+            storeState: {},
+            path: '/:id',
+            initialEntries: ['/123'],
+        })
 
         expect(
             container.getElementsByClassName('md-spin')[0],
@@ -60,14 +56,11 @@ describe('EditCustomBusinessHoursPage', () => {
         server.use(getBusinessHoursErrorMock.handler)
         const user = userEvent.setup()
 
-        renderWithStoreAndQueryClientAndRouter(
-            <EditCustomBusinessHoursPage />,
-            {},
-            {
-                route: '/123',
-                path: '/:id',
-            },
-        )
+        render(<EditCustomBusinessHoursPage />, {
+            storeState: {},
+            path: '/:id',
+            initialEntries: ['/123'],
+        })
 
         await waitFor(() => {
             expect(
@@ -91,14 +84,11 @@ describe('EditCustomBusinessHoursPage', () => {
     })
 
     it('renders the page with breadcrumbs and form', async () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <EditCustomBusinessHoursPage />,
-            {},
-            {
-                route: '/123',
-                path: '/:id',
-            },
-        )
+        render(<EditCustomBusinessHoursPage />, {
+            storeState: {},
+            path: '/:id',
+            initialEntries: ['/123'],
+        })
 
         await waitFor(() => {
             expect(screen.getByText('Business hours')).toBeInTheDocument()

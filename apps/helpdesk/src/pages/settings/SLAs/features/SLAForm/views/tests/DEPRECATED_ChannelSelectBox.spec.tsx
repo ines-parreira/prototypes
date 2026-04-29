@@ -1,11 +1,10 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { Channel } from 'models/channel/types'
 import { getChannels } from 'services/channels'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import ChannelSelectBox from '../DEPRECATED_ChannelSelectBox'
 
@@ -34,9 +33,7 @@ mockGetChannels.mockReturnValue([
 describe('ChannelSelectBox', () => {
     it('should render the component', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientProvider(
-            <ChannelSelectBox value={[]} onChange={jest.fn()} />,
-        )
+        render(<ChannelSelectBox value={[]} onChange={jest.fn()} />)
 
         expect(screen.getByText('Channel(s)')).toBeInTheDocument()
 

@@ -10,7 +10,7 @@ import {
 } from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -52,7 +52,6 @@ import type { ProductCardProps } from 'pages/settings/new_billing/components/Pro
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import { TicketPurpose } from 'state/billing/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
@@ -201,7 +200,7 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should render with active subscription containing Helpdesk and Convert products', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -209,7 +208,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 convertBanner={convertBanner}
             />,
-            store,
+            { storeState: store },
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -287,7 +286,7 @@ describe('UsageAndPlansView', () => {
         mockUseFlag.mockImplementation(
             (flag) => flag === FeatureFlagKey.BillingPreventSubscriptionAnyPlan,
         )
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -295,7 +294,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 convertBanner={convertBanner}
             />,
-            store,
+            { storeState: store },
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(0)
     })
@@ -312,13 +311,13 @@ describe('UsageAndPlansView', () => {
                 },
             }),
         }
-        const { container } = renderWithStoreAndQueryClientAndRouter(
+        const { container } = render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={mockedUsage}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -430,7 +429,7 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -438,7 +437,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 smsBanner={smsBanner}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -548,13 +547,13 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={alteredBilling.currentProductsUsage}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -588,13 +587,13 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={mockedUsage}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -610,13 +609,13 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should not be possible to update plan frequency when there is no active subscription', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={undefined}
             />,
-            storeWithCanceledSubscription,
+            { storeState: storeWithCanceledSubscription },
         )
 
         expect(
@@ -655,13 +654,13 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        const { container } = renderWithStoreAndQueryClientAndRouter(
+        const { container } = render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={mockedBilling.currentProductsUsage}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         const updateBillingFrequencyButton = container.querySelector(
@@ -717,13 +716,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedBilling.currentProductsUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
             expect(screen.getByText('Update').closest('a')).toHaveAttribute(
                 'href',
@@ -738,7 +737,7 @@ describe('UsageAndPlansView', () => {
             data: { subscription: { is_paused: true } },
         } as any)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -746,7 +745,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 convertBanner={convertBanner}
             />,
-            store,
+            { storeState: store },
         )
 
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
@@ -824,7 +823,7 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -832,7 +831,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 convertBanner={convertBanner}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
@@ -907,7 +906,7 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should render with trialing subscription having a credit card', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -915,7 +914,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 convertBanner={convertBanner}
             />,
-            storeWithTrialingSubscription,
+            { storeState: storeWithTrialingSubscription },
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
 
@@ -949,13 +948,13 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={mockedUsage}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -1002,13 +1001,13 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={mockedUsage}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -1048,13 +1047,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -1087,13 +1086,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -1143,13 +1142,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -1201,13 +1200,13 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={alteredBilling.currentProductsUsage}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(1)
@@ -1227,13 +1226,13 @@ describe('UsageAndPlansView', () => {
 
     describe('Tracking events', () => {
         it('should log BillingUsageAndPlansVisited event when component mounts', () => {
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                store,
+                { storeState: store },
             )
 
             expect(logEvent).toHaveBeenCalledWith(
@@ -1246,17 +1245,16 @@ describe('UsageAndPlansView', () => {
         })
 
         it('should log BillingUsageAndPlansVisited event with correct pathname', () => {
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                store,
                 {
-                    route: '/app/settings/billing',
+                    storeState: store,
                     path: '/app/settings/billing',
-                    options: {},
+                    initialEntries: ['/app/settings/billing'],
                 },
             )
 
@@ -1275,12 +1273,12 @@ describe('UsageAndPlansView', () => {
             const logEventMock = assumeMock(logEvent)
             const user = userEvent.setup()
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                 />,
-                store,
+                { storeState: store },
             )
 
             const updateButton = screen.getByText('Update')
@@ -1325,13 +1323,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            const { container } = renderWithStoreAndQueryClientAndRouter(
+            const { container } = render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             const updateBillingFrequencyButton = container.querySelector(
@@ -1357,13 +1355,13 @@ describe('UsageAndPlansView', () => {
                 data: new Map(),
             } as any)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                store,
+                { storeState: store },
             )
 
             expect(screen.getByText('Update')).toHaveAttribute(
@@ -1378,13 +1376,13 @@ describe('UsageAndPlansView', () => {
             const mockContactBilling = jest.fn()
             const user = userEvent.setup()
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={mockContactBilling}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                store,
+                { storeState: store },
             )
 
             const contactUsLink = screen.getByText('contact us')
@@ -1399,13 +1397,13 @@ describe('UsageAndPlansView', () => {
 
     describe('BillingScheduledDowngrades', () => {
         it('should render BillingScheduledDowngrades when subscription is active', () => {
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                store,
+                { storeState: store },
             )
 
             expect(
@@ -1414,13 +1412,13 @@ describe('UsageAndPlansView', () => {
         })
 
         it('should not render BillingScheduledDowngrades when subscription is canceled', () => {
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={undefined}
                 />,
-                storeWithCanceledSubscription,
+                { storeState: storeWithCanceledSubscription },
             )
 
             expect(
@@ -1431,13 +1429,13 @@ describe('UsageAndPlansView', () => {
 
     describe('Payment plan label display', () => {
         it('should display "Billed Monthly" for standard monthly plan', () => {
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                store,
+                { storeState: store },
             )
 
             expect(screen.getByText('Billed Monthly')).toBeInTheDocument()
@@ -1459,13 +1457,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             expect(screen.getByText('Billed Quarterly')).toBeInTheDocument()
@@ -1487,13 +1485,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             expect(screen.getByText('Billed Yearly')).toBeInTheDocument()
@@ -1527,13 +1525,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             expect(
@@ -1569,13 +1567,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             expect(
@@ -1613,13 +1611,13 @@ describe('UsageAndPlansView', () => {
                 }),
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                { storeState: alteredStore },
             )
 
             expect(await screen.findByText('Contact us')).toBeInTheDocument()
@@ -1629,13 +1627,13 @@ describe('UsageAndPlansView', () => {
         })
 
         it('should not render CustomPlanBanner for monthly plan', () => {
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                store,
+                { storeState: store },
             )
 
             expect(
@@ -1658,15 +1656,17 @@ describe('UsageAndPlansView', () => {
                 ],
             }
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
                 {
-                    ...storeWithCanceledSubscription,
-                    billing: fromJS(alteredBilling),
+                    storeState: {
+                        ...storeWithCanceledSubscription,
+                        billing: fromJS(alteredBilling),
+                    },
                 },
             )
 

@@ -1,15 +1,9 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { AccountSettingType } from 'state/currentAccount/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import type { OwnProps } from '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import TwoFactorAuthenticationSection from '../TwoFactorAuthenticationSection'
@@ -34,77 +28,58 @@ jest.mock(
         )
     },
 )
-
 describe('<TwoFactorAuthenticationSection />', () => {
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
-
     beforeAll(() => {
         window.AUTH_TIME = Date.now() / 1000
     })
-
     describe('render()', () => {
         it.each([true, false])(
             'should render the Two-Factor Authentication Section with status tag',
             (has2FAEnabled) => {
-                const store = mockStore({
-                    currentUser: fromJS({
-                        has_2fa_enabled: has2FAEnabled,
-                    }),
-                })
-
-                const { baseElement } = renderWithRouter(
-                    <Provider store={store}>
-                        <TwoFactorAuthenticationSection />
-                    </Provider>,
+                const { baseElement } = render(
+                    <TwoFactorAuthenticationSection />,
+                    {
+                        storeState: {
+                            currentUser: fromJS({
+                                has_2fa_enabled: has2FAEnabled,
+                            }),
+                        },
+                    },
                 )
-
                 expect(baseElement).toMatchSnapshot()
             },
         )
-
         it.each([true, false])(
             'should open the Two-Factor Authentication Modal via Enable or Update button',
             async (has2FAEnabled) => {
-                const store = mockStore({
-                    currentUser: fromJS({
-                        has_2fa_enabled: has2FAEnabled,
-                    }),
-                })
-
-                const { baseElement, findByText } = renderWithRouter(
-                    <Provider store={store}>
-                        <TwoFactorAuthenticationSection />
-                    </Provider>,
+                const { baseElement, findByText } = render(
+                    <TwoFactorAuthenticationSection />,
+                    {
+                        storeState: {
+                            currentUser: fromJS({
+                                has_2fa_enabled: has2FAEnabled,
+                            }),
+                        },
+                    },
                 )
-
                 const button = await findByText(
                     has2FAEnabled ? /Update 2FA/ : /Enable 2FA/,
                 )
                 fireEvent.click(button)
-
                 expect(baseElement).toMatchSnapshot()
             },
         )
-
         it('should not open the Two-Factor Authentication Modal for the Gorgias Agent', async () => {
-            const store = mockStore({
-                currentUser: fromJS({
-                    has_2fa_enabled: false,
-                    role: { name: 'internal-agent' },
-                }),
+            const { findByText } = render(<TwoFactorAuthenticationSection />, {
+                storeState: {
+                    currentUser: fromJS({
+                        has_2fa_enabled: false,
+                        role: { name: 'internal-agent' },
+                    }),
+                },
             })
-
-            const { findByText } = renderWithRouter(
-                <Provider store={store}>
-                    <TwoFactorAuthenticationSection />
-                </Provider>,
-            )
-
             const button = await findByText(/Enable 2FA/)
             fireEvent.click(button)
-
             const modalQuery = screen.queryByText(
                 /TwoFactorAuthenticationModal mocked/,
             )
@@ -113,26 +88,20 @@ describe('<TwoFactorAuthenticationSection />', () => {
         it.each([true, false])(
             'should open or not the Two-Factor Authentication Modal via queryParam',
             (has2FAEnabled) => {
-                const store = mockStore({
-                    currentUser: fromJS({
-                        has_2fa_enabled: has2FAEnabled,
-                    }),
-                })
-
-                renderWithRouter(
-                    <Provider store={store}>
-                        <TwoFactorAuthenticationSection />
-                    </Provider>,
-                    {
-                        path: 'app/settings/password-2fa',
-                        route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                render(<TwoFactorAuthenticationSection />, {
+                    path: 'app/settings/password-2fa',
+                    initialEntries: [
+                        'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                    ],
+                    storeState: {
+                        currentUser: fromJS({
+                            has_2fa_enabled: has2FAEnabled,
+                        }),
                     },
-                )
-
+                })
                 const modalQuery = screen.queryByText(
                     /TwoFactorAuthenticationModal mocked/,
                 )
-
                 if (has2FAEnabled) {
                     expect(modalQuery).toBeNull()
                 } else {
@@ -140,34 +109,29 @@ describe('<TwoFactorAuthenticationSection />', () => {
                 }
             },
         )
-
         it('should show the enforcement message without the date', () => {
-            const store = mockStore({
-                currentAccount: fromJS({
-                    settings: [
-                        {
-                            type: AccountSettingType.Access,
-                            data: {
-                                two_fa_enforced_datetime: '2024-08-16T15:00:00',
+            const { getByTestId } = render(<TwoFactorAuthenticationSection />, {
+                path: 'app/settings/password-2fa',
+                initialEntries: [
+                    'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                ],
+                storeState: {
+                    currentAccount: fromJS({
+                        settings: [
+                            {
+                                type: AccountSettingType.Access,
+                                data: {
+                                    two_fa_enforced_datetime:
+                                        '2024-08-16T15:00:00',
+                                },
                             },
-                        },
-                    ],
-                }),
-                currentUser: fromJS({
-                    has_2fa_enabled: false,
-                }),
-            })
-
-            const { getByTestId } = renderWithRouter(
-                <Provider store={store}>
-                    <TwoFactorAuthenticationSection />
-                </Provider>,
-                {
-                    path: 'app/settings/password-2fa',
-                    route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                        ],
+                    }),
+                    currentUser: fromJS({
+                        has_2fa_enabled: false,
+                    }),
                 },
-            )
-
+            })
             expect(getByTestId('banner-text').textContent).not.toContain(
                 'by August 16, 2024.',
             )
@@ -175,40 +139,32 @@ describe('<TwoFactorAuthenticationSection />', () => {
                 'For security reasons, your admin requires you to set up two-factor authentication to access your account by.',
             )
         })
-
         it('should show the enforcement message', () => {
             const tomorrow = new Date(Date.now() + 86400000)
-
-            const store = mockStore({
-                currentAccount: fromJS({
-                    settings: [
-                        {
-                            type: AccountSettingType.Access,
-                            data: {
-                                two_fa_enforced_datetime: tomorrow
-                                    .toISOString()
-                                    .slice(0, 19),
+            const { getByTestId } = render(<TwoFactorAuthenticationSection />, {
+                path: 'app/settings/password-2fa',
+                initialEntries: [
+                    'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                ],
+                storeState: {
+                    currentAccount: fromJS({
+                        settings: [
+                            {
+                                type: AccountSettingType.Access,
+                                data: {
+                                    two_fa_enforced_datetime: tomorrow
+                                        .toISOString()
+                                        .slice(0, 19),
+                                },
                             },
-                        },
-                    ],
-                }),
-                currentUser: fromJS({
-                    has_2fa_enabled: false,
-                }),
-            })
-
-            const { getByTestId } = renderWithRouter(
-                <Provider store={store}>
-                    <TwoFactorAuthenticationSection />
-                </Provider>,
-                {
-                    path: 'app/settings/password-2fa',
-                    route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                        ],
+                    }),
+                    currentUser: fromJS({
+                        has_2fa_enabled: false,
+                    }),
                 },
-            )
-
+            })
             const formattedDate = moment(tomorrow).format('MMMM D, YYYY')
-
             expect(getByTestId('banner-text').textContent).toContain(
                 `by ${formattedDate}.`,
             )

@@ -2,6 +2,7 @@ import type React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -9,7 +10,6 @@ import { TicketChannel } from 'business/types/ticket'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { HelpCenterNavigation } from '../HelpCenterNavigation'
 
@@ -30,21 +30,6 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {
         },
     ])
 })
-jest.mock('react-router-dom', () => {
-    return {
-        useHistory: () => ({
-            location: {
-                pathname: '/app/settings/help-center/1',
-            },
-            push: jest.fn(),
-        }),
-        Link: () => 'Link',
-        NavLink: ({ children }: { children?: React.ReactNode }) => (
-            <div>{children}</div>
-        ),
-    }
-})
-
 jest.mock('@repo/feature-flags')
 
 const mockUseFlags = useFlag as jest.MockedFunction<typeof useFlag>
@@ -71,12 +56,12 @@ describe('HelpCenterNavigation', () => {
         })
     })
     it('should render', () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <HelpCenterNavigation
                 helpCenterId={1}
                 helpCenterShopName={'shopName'}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
     })
 
@@ -85,12 +70,12 @@ describe('HelpCenterNavigation', () => {
             hasAccess: false,
             isLoading: false,
         })
-        renderWithStoreAndQueryClientProvider(
+        render(
             <HelpCenterNavigation
                 helpCenterId={1}
                 helpCenterShopName={'shopName'}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(
             screen.queryByText(/Automation Features/i),
@@ -102,21 +87,20 @@ describe('HelpCenterNavigation', () => {
             hasAccess: true,
             isLoading: false,
         })
-        renderWithStoreAndQueryClientProvider(
+        render(
             <HelpCenterNavigation
                 helpCenterId={1}
                 helpCenterShopName={'shopName'}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(screen.getByText(/Automation Features/i)).toBeInTheDocument()
     })
 
     it('should display a red dot whenever shop name is not provided', () => {
-        renderWithStoreAndQueryClientProvider(
-            <HelpCenterNavigation helpCenterId={1} />,
-            defaultState,
-        )
+        render(<HelpCenterNavigation helpCenterId={1} />, {
+            storeState: defaultState,
+        })
         expect(screen.getByAltText('status icon')).toBeInTheDocument()
     })
 
@@ -132,10 +116,9 @@ describe('HelpCenterNavigation', () => {
             hasAccess: false,
             isLoading: false,
         })
-        renderWithStoreAndQueryClientProvider(
-            <HelpCenterNavigation helpCenterId={1} />,
-            defaultState,
-        )
+        render(<HelpCenterNavigation helpCenterId={1} />, {
+            storeState: defaultState,
+        })
 
         const button = screen.getByText(/Upgrade to AI Agent/i)
         expect(button).toBeInTheDocument()

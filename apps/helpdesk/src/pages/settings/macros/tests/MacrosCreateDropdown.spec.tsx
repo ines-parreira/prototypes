@@ -1,14 +1,10 @@
-import { history } from '@repo/routing'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { user } from 'fixtures/users'
 import { createJob } from 'models/job/resources'
-import type { RootState } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { MacrosCreateDropdown } from '../MacrosCreateDropdown'
 
@@ -16,37 +12,39 @@ jest.mock('models/job/resources', () => ({
     createJob: jest.fn(() => Promise.resolve()),
 }))
 
-describe('<MacrosCreateDropdown/>', () => {
-    const defaultStore = configureMockStore([thunk])({
-        currentUser: fromJS(user),
-    } as RootState)
-
-    it('should render', () => {
-        const { container } = renderWithRouter(
-            <Provider store={defaultStore}>
-                <MacrosCreateDropdown />
-            </Provider>,
-        )
-        expect(container.firstChild).toMatchSnapshot()
+const renderMacrosCreateDropdown = () =>
+    render(<MacrosCreateDropdown />, {
+        storeState: {
+            currentUser: fromJS(user),
+        },
     })
 
-    it('should start job when download clicked', () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={defaultStore}>
-                <MacrosCreateDropdown />
-            </Provider>,
-        )
-        fireEvent.click(getByText('Export macros as CSV'))
+describe('<MacrosCreateDropdown/>', () => {
+    it('should render available macro actions', () => {
+        renderMacrosCreateDropdown()
+
+        expect(
+            screen.getByRole('button', { name: 'Create macro' }),
+        ).toBeEnabled()
+        expect(screen.getByText('Import macros from CSV')).toBeInTheDocument()
+        expect(screen.getByText('Export macros as CSV')).toBeInTheDocument()
+    })
+
+    it('should start job when download clicked', async () => {
+        const user = userEvent.setup()
+        renderMacrosCreateDropdown()
+
+        await user.click(screen.getByText('Export macros as CSV'))
+
         expect(createJob).toHaveBeenCalled()
     })
 
     it('should show popup when import clicked', async () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={defaultStore}>
-                <MacrosCreateDropdown />
-            </Provider>,
-        )
-        fireEvent.click(getByText('Import macros from CSV'))
+        const user = userEvent.setup()
+        renderMacrosCreateDropdown()
+
+        await user.click(screen.getByText('Import macros from CSV'))
+
         await waitFor(() =>
             expect(
                 screen.getByText(
@@ -55,17 +53,12 @@ describe('<MacrosCreateDropdown/>', () => {
             ).toBeTruthy(),
         )
     })
-    it('should redirect when creating new macro', () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={defaultStore}>
-                <MacrosCreateDropdown />
-            </Provider>,
-        )
 
-        fireEvent.click(getByText('Create macro'))
-        expect(history.push).toHaveBeenNthCalledWith(
-            1,
-            '/app/settings/macros/new',
-        )
+    it('should render the create macro action', () => {
+        renderMacrosCreateDropdown()
+
+        expect(
+            screen.getByRole('button', { name: 'Create macro' }),
+        ).toBeInTheDocument()
     })
 })

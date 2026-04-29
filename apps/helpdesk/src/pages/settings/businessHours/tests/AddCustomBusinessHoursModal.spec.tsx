@@ -1,11 +1,10 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockCreateBusinessHoursHandler } from '@gorgias/helpdesk-mocks'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import AddCustomBusinessHoursModal from '../AddCustomBusinessHoursModal'
 
@@ -56,10 +55,9 @@ const defaultProps = {
     onCreateSuccess: jest.fn(),
 }
 const renderComponent = (props = defaultProps) => {
-    return renderWithStoreAndQueryClientAndRouter(
-        <AddCustomBusinessHoursModal {...props} />,
-        {},
-    )
+    return render(<AddCustomBusinessHoursModal {...props} />, {
+        storeState: {},
+    })
 }
 
 describe('AddCustomBusinessHoursModal', () => {

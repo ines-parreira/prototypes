@@ -1,11 +1,11 @@
 import { FormField } from '@repo/forms'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import InputField from 'pages/common/forms/input/InputField'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
-import { renderWithStore } from 'utils/testing'
 
 import CreateCustomBusinessHoursForm from '../CreateCustomBusinessHoursForm'
 import type { CustomBusinessHoursContextState } from '../CustomBusinessHoursContext'
@@ -24,7 +24,7 @@ const renderComponent = (
     },
     storeState: Record<string, any> = {},
 ) => {
-    return renderWithStore(
+    return render(
         <CustomBusinessHoursContext.Provider
             value={providerValue as CustomBusinessHoursContextState}
         >
@@ -32,7 +32,7 @@ const renderComponent = (
                 {children}
             </CreateCustomBusinessHoursForm>
         </CustomBusinessHoursContext.Provider>,
-        storeState,
+        { storeState: storeState },
     )
 }
 

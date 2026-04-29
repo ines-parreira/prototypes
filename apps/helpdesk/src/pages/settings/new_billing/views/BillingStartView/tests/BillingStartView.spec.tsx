@@ -14,7 +14,7 @@ import {
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
@@ -25,7 +25,6 @@ import {
 } from 'fixtures/convert'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import BillingStartView from '../BillingStartView'
 
@@ -111,11 +110,10 @@ describe('BillingStartView', () => {
                 (flag: FeatureFlagKey) => mockFeatureFlags[flag],
             )
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithConvert,
-                { route: BILLING_BASE_PATH },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithConvert,
+                initialEntries: [BILLING_BASE_PATH],
+            })
             expect(useFlagMock).toHaveBeenCalledWith(
                 FeatureFlagKey.BillingMaintenanceMode,
             )
@@ -155,11 +153,10 @@ describe('BillingStartView', () => {
                 (flag: FeatureFlagKey) => mockFeatureFlags[flag],
             )
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithConvert,
-                { route: BILLING_BASE_PATH },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithConvert,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(
                 screen.queryByText('Billing maintenance in progress'),
@@ -173,13 +170,10 @@ describe('BillingStartView', () => {
 
     describe('When customer has no active subscription ', () => {
         it('should only show the "Usage & Plans" and "Payment History" tabs', () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithCanceledSubscription,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithCanceledSubscription,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(
                 screen.getByText(/You don't have any active subscriptions/i),
@@ -201,26 +195,20 @@ describe('BillingStartView', () => {
         it('should show the "Gorgias internal" tab if user is impersonated', () => {
             window.USER_IMPERSONATED = true
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithCanceledSubscription,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithCanceledSubscription,
+                initialEntries: [BILLING_BASE_PATH],
+            })
             expect(screen.getByText(/Gorgias Internal/i)).toBeInTheDocument()
         })
 
         it('should NOT show the "Gorgias internal" tab if user is NOT impersonated', () => {
             window.USER_IMPERSONATED = null
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithCanceledSubscription,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithCanceledSubscription,
+                initialEntries: [BILLING_BASE_PATH],
+            })
             expect(
                 screen.queryByText(/Gorgias Internal/i),
             ).not.toBeInTheDocument()
@@ -236,13 +224,10 @@ describe('BillingStartView', () => {
         it('should render a Convert limit-reached banner', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithConvert,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithConvert,
+                initialEntries: [BILLING_BASE_PATH],
+            })
             expect(
                 screen.queryByText(limitReachedText, { exact: false }),
             ).toBeInTheDocument()
@@ -253,13 +238,10 @@ describe('BillingStartView', () => {
                 convertStatusOkWarningUpgrade,
             )
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithConvert,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithConvert,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(
                 screen.queryByText(upgradeText, { exact: false }),
@@ -269,13 +251,10 @@ describe('BillingStartView', () => {
         it('should render a Convert capping warning banner', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusOkWarning)
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithConvert,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithConvert,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(
                 screen.queryByText(warningText, { exact: false }),
@@ -288,13 +267,10 @@ describe('BillingStartView', () => {
                 estimated_reach_date: '2023-04-01T00:00:00.000Z',
             })
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithConvert,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithConvert,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(
                 screen.queryByText(warningText, { exact: false }),
@@ -308,11 +284,10 @@ describe('BillingStartView', () => {
         })
 
         it('should allow phone user to change billing frequency', () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                { route: BILLING_PAYMENT_PATH },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_PAYMENT_PATH],
+            })
 
             const button = screen.queryByText('Change Frequency', {
                 selector: 'a',
@@ -324,13 +299,10 @@ describe('BillingStartView', () => {
 
     describe('Billing Stripe Elements Integration', () => {
         it('should show the new Stripe elements address form', () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithCanceledSubscription,
-                {
-                    route: BILLING_INFORMATION_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithCanceledSubscription,
+                initialEntries: [BILLING_INFORMATION_PATH],
+            })
 
             expect(
                 screen.getByTestId('billing-address-setup-view'),
@@ -338,13 +310,10 @@ describe('BillingStartView', () => {
         })
 
         it('should show the new Stripe elements payment method form', () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithCanceledSubscription,
-                {
-                    route: BILLING_PAYMENT_CARD_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithCanceledSubscription,
+                initialEntries: [BILLING_PAYMENT_CARD_PATH],
+            })
 
             expect(
                 screen.getByTestId('payment-method-setup-view'),
@@ -360,13 +329,10 @@ describe('BillingStartView', () => {
                 error: null,
             })
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithNewlyActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithNewlyActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(mockAddBanner).toHaveBeenCalled()
             expect(screen.getByText('SMS')).toBeInTheDocument()
@@ -379,13 +345,10 @@ describe('BillingStartView', () => {
                 error: null,
             })
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(mockAddBanner).not.toHaveBeenCalled()
             expect(screen.queryByText('Set Up SMS')).not.toBeInTheDocument()
@@ -400,13 +363,10 @@ describe('BillingStartView', () => {
                 error: null,
             })
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithNewlyActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithNewlyActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(mockAddBanner).toHaveBeenCalled()
             expect(screen.getByText('SMS')).toBeInTheDocument()
@@ -419,13 +379,10 @@ describe('BillingStartView', () => {
                 error: null,
             })
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(mockAddBanner).not.toHaveBeenCalled()
             expect(mockRemoveBanner).toHaveBeenCalled()
@@ -435,13 +392,10 @@ describe('BillingStartView', () => {
 
     describe('BillingPaymentInformationTabClicked tracking', () => {
         it('should track event when Payment Information tab is clicked', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             const paymentInfoTab = screen.getByText('Payment Information')
 
@@ -455,13 +409,10 @@ describe('BillingStartView', () => {
         })
 
         it('should NOT show Payment Information tab when subscription is canceled', () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithCanceledSubscription,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithCanceledSubscription,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(
                 screen.queryByText('Payment Information'),
@@ -471,13 +422,10 @@ describe('BillingStartView', () => {
 
     describe('BillingPaymentHistoryTabClicked tracking', () => {
         it('should track event when Payment History tab is clicked', async () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             const paymentHistoryTab = screen.getByText('Payment History')
 
@@ -499,13 +447,10 @@ describe('BillingStartView', () => {
                 error: null,
             })
 
-            const { container } = renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            const { container } = render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(
                 container.querySelector('.icon-circle-o-notch'),
@@ -525,13 +470,10 @@ describe('BillingStartView', () => {
                 error: null,
             })
 
-            const { container } = renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            const { container } = render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(
                 container.querySelector('.icon-circle-o-notch'),
@@ -542,13 +484,10 @@ describe('BillingStartView', () => {
 
     describe('ContactSupportModal', () => {
         it('should render ContactSupportModal component', () => {
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(screen.getByText('contact us')).toBeInTheDocument()
         })
@@ -562,13 +501,10 @@ describe('BillingStartView', () => {
                 error: null,
             })
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(mockRemoveBanner).toHaveBeenCalled()
         })
@@ -582,13 +518,10 @@ describe('BillingStartView', () => {
                 error: null,
             })
 
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
+            render(<BillingStartView />, {
+                storeState: storeWithActiveSubscriptionWithPhone,
+                initialEntries: [BILLING_BASE_PATH],
+            })
 
             expect(mockRemoveBanner).toHaveBeenCalled()
         })

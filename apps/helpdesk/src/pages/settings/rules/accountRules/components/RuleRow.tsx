@@ -2,10 +2,9 @@ import type { MouseEvent } from 'react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
-import { history } from '@repo/routing'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import classnames from 'classnames'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -60,6 +59,7 @@ export function RuleRow({
     isSearching = false,
     shouldDisplayError = false,
 }: Props) {
+    const history = useHistory()
     const dispatch = useAppDispatch()
     const [error, setError] = useState<string>()
     const { hasAccess } = useAiAgentAccess()

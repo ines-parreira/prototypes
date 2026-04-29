@@ -1,3 +1,5 @@
+import { render } from '@repo/testing'
+
 import HelpCenterEditModalFooter from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter'
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
@@ -5,7 +7,6 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import HelpCenterArticleModalAdvancedViewContent from '../HelpCenterArticleModalAdvancedViewContent'
 
@@ -99,9 +100,9 @@ describe('HelpCenterArticleModalAdvancedViewContent', () => {
             } as any,
         }
 
-        return renderWithStoreAndQueryClientProvider(
+        return render(
             <HelpCenterArticleModalAdvancedViewContent {...props} />,
-            initialState,
+            { storeState: initialState },
         )
     }
 

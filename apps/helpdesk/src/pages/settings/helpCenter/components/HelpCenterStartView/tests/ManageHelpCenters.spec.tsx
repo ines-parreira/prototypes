@@ -1,16 +1,12 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { IntegrationType } from 'models/integration/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { useHelpCenterList } from '../../../hooks/useHelpCenterList'
 import type { ManageHelpCentersProps } from '../ManageHelpCenters'
@@ -38,14 +34,9 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
         useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
-
-const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
-
 const helpCenters = getHelpCentersResponseFixture.data
-
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList')
 ;(useHelpCenterList as jest.Mock).mockReturnValue({
     isLoading: false,
@@ -61,7 +52,6 @@ const props: ManageHelpCentersProps = {
     fetchMore: jest.fn(),
     hasMore: false,
 }
-
 describe('<ManageHelpCenters />', () => {
     const defaultState: Partial<RootState> = {
         entities: {
@@ -82,42 +72,36 @@ describe('<ManageHelpCenters />', () => {
             ],
         }),
     }
-
     it('should render the component', () => {
-        const { container } = renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
-                <ManageHelpCenters {...props} />
-            </Provider>,
-        )
-
+        const { container } = render(<ManageHelpCenters {...props} />, {
+            storeState: defaultState,
+        })
         expect(container).toMatchSnapshot()
     })
-
     it('should not render the "create help center" button while loading in still in progress', () => {
-        renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
-                <ManageHelpCenters
-                    {...props}
-                    isLoading={true}
-                    helpCenterList={[]}
-                />
-            </Provider>,
+        render(
+            <ManageHelpCenters
+                {...props}
+                isLoading={true}
+                helpCenterList={[]}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(screen.queryByText(/create help center/i)).toBeNull()
     })
-
     it('should render the empty list state when the component is loaded and the help center list is empty', () => {
-        renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
-                <ManageHelpCenters
-                    {...props}
-                    isLoading={false}
-                    helpCenterList={[]}
-                />
-            </Provider>,
+        render(
+            <ManageHelpCenters
+                {...props}
+                isLoading={false}
+                helpCenterList={[]}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
-
         screen.getByText(/You have no Help Centers at the moment./i)
         screen.getByText(/create help center/i)
     })

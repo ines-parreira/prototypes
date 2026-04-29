@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import type {
     ShopifyIntegration,
 } from 'models/integration/types'
 import type { RootState } from 'state/types'
-import { renderWithStore } from 'utils/testing'
 
 import StoreFilter from '../StoreFilter'
 
@@ -83,7 +83,7 @@ describe('StoreFilter', () => {
 
     it('should render correctly with no store integrations', () => {
         const state = createMockState([])
-        renderWithStore(<StoreFilter onChange={mockOnChange} />, state)
+        render(<StoreFilter onChange={mockOnChange} />, { storeState: state })
 
         expect(screen.getByTestId('store-selector')).toBeInTheDocument()
         expect(screen.getByTestId('selected-store')).toHaveTextContent(
@@ -97,7 +97,7 @@ describe('StoreFilter', () => {
             bigCommerceStore,
             magento2Store,
         ])
-        renderWithStore(<StoreFilter onChange={mockOnChange} />, state)
+        render(<StoreFilter onChange={mockOnChange} />, { storeState: state })
 
         expect(screen.getByTestId('selected-store')).toHaveTextContent(
             'All Stores',
@@ -117,7 +117,7 @@ describe('StoreFilter', () => {
         const user = userEvent.setup()
 
         const state = createMockState([shopifyStore, bigCommerceStore])
-        renderWithStore(<StoreFilter onChange={mockOnChange} />, state)
+        render(<StoreFilter onChange={mockOnChange} />, { storeState: state })
 
         await act(() => user.click(screen.getByTestId('store-option-1')))
 
@@ -131,7 +131,7 @@ describe('StoreFilter', () => {
         const user = userEvent.setup()
 
         const state = createMockState([shopifyStore])
-        renderWithStore(<StoreFilter onChange={mockOnChange} />, state)
+        render(<StoreFilter onChange={mockOnChange} />, { storeState: state })
 
         await act(() => user.click(screen.getByTestId('all-stores-option')))
 
@@ -145,10 +145,9 @@ describe('StoreFilter', () => {
         const user = userEvent.setup()
 
         const state = createMockState([shopifyStore, bigCommerceStore])
-        const { rerenderComponent } = renderWithStore(
-            <StoreFilter onChange={mockOnChange} />,
-            state,
-        )
+        const { rerender } = render(<StoreFilter onChange={mockOnChange} />, {
+            storeState: state,
+        })
 
         await act(() => user.click(screen.getByTestId('store-option-0')))
 
@@ -157,7 +156,7 @@ describe('StoreFilter', () => {
         )
 
         // Rerender to check internal state is maintained
-        rerenderComponent(<StoreFilter onChange={mockOnChange} />, state)
+        rerender(<StoreFilter onChange={mockOnChange} />)
 
         expect(screen.getByTestId('selected-store')).toHaveTextContent(
             shopifyStore.name,
@@ -168,7 +167,7 @@ describe('StoreFilter', () => {
         const user = userEvent.setup()
 
         const state = createMockState([shopifyStore])
-        renderWithStore(<StoreFilter onChange={mockOnChange} />, state)
+        render(<StoreFilter onChange={mockOnChange} />, { storeState: state })
 
         await act(() =>
             user.click(screen.getByTestId('non-existent-store-option')),

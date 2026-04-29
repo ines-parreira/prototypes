@@ -1,4 +1,5 @@
 import { payingWithCreditCard } from '@repo/billing/fixtures'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
@@ -10,7 +11,6 @@ import {
     voicePlan0,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { InternalConfirmModal } from './InternalConfirmModal'
 import type { ResolvedPlan } from './useInternalPlanEditor'
@@ -91,9 +91,7 @@ function renderComponent(
         ...overrides,
     }
     return {
-        ...renderWithStoreAndQueryClientAndRouter(
-            <InternalConfirmModal {...props} />,
-        ),
+        ...render(<InternalConfirmModal {...props} />),
         props,
     }
 }

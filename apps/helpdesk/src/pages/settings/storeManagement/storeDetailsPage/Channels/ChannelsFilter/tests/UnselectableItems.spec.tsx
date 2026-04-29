@@ -1,10 +1,9 @@
 import type { ContextType } from 'react'
 
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { MemoryRouter, Route } from 'react-router-dom'
 
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
-import { renderWithStore } from 'utils/testing'
 
 import type { ChannelTypes, ChannelWithMetadata } from '../../../../types'
 import UnselectableItems from '../UnselectableItems'
@@ -39,13 +38,11 @@ const mockStores = [
         ],
     },
 ]
-
 jest.mock('../../../../StoreManagementProvider', () => ({
     useStoreManagementState: () => ({
         stores: mockStores,
     }),
 }))
-
 const mockContext: ContextType<typeof DropdownContext> = {
     isMultiple: false,
     value: null,
@@ -54,17 +51,16 @@ const mockContext: ContextType<typeof DropdownContext> = {
     getHighlightedLabel: jest.fn(),
     onQueryChange: jest.fn(),
 }
-
 const renderComponent = (activeChannel: ChannelWithMetadata, storeId = '1') => {
-    return renderWithStore(
-        <MemoryRouter initialEntries={[`/settings/stores/${storeId}`]}>
-            <Route path="/settings/stores/:id">
-                <DropdownContext.Provider value={mockContext}>
-                    <UnselectableItems activeChannel={activeChannel} />
-                </DropdownContext.Provider>
-            </Route>
-        </MemoryRouter>,
-        {},
+    return render(
+        <DropdownContext.Provider value={mockContext}>
+            <UnselectableItems activeChannel={activeChannel} />
+        </DropdownContext.Provider>,
+        {
+            storeState: {},
+            path: '/settings/stores/:id',
+            initialEntries: [`/settings/stores/${storeId}`],
+        },
     )
 }
 const activeChannel = {
@@ -78,11 +74,9 @@ const activeChannel = {
 describe('UnselectableItems', () => {
     it('should display channels from other stores that match the active channel type', () => {
         renderComponent(activeChannel, '1')
-
         expect(
             screen.getByText('store2suppport@company.com'),
         ).toBeInTheDocument()
-
         expect(
             screen.getByText('Already used in another store'),
         ).toBeInTheDocument()
@@ -90,7 +84,6 @@ describe('UnselectableItems', () => {
             screen.queryByText('store1support@company.com'),
         ).not.toBeInTheDocument()
     })
-
     it('should display channel name when address is not available', () => {
         const storesWithNoAddress = [
             {
@@ -105,14 +98,11 @@ describe('UnselectableItems', () => {
                 ],
             },
         ]
-
         jest.spyOn(
             require('../../../../StoreManagementProvider'),
             'useStoreManagementState',
         ).mockReturnValue({ stores: storesWithNoAddress })
-
         renderComponent(activeChannel, '1')
-
         expect(screen.getByText('No Address Email')).toBeInTheDocument()
     })
 })

@@ -1,4 +1,5 @@
 import { payingWithCreditCard } from '@repo/billing/fixtures'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
@@ -9,7 +10,6 @@ import {
     voicePlan4,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { InternalSummary } from './InternalSummary'
 import type { ResolvedPlan } from './useInternalPlanEditor'
@@ -31,7 +31,7 @@ function renderComponent(
     hasChanges = false,
     billingState = payingWithCreditCard,
 ) {
-    return renderWithStoreAndQueryClientAndRouter(
+    return render(
         <InternalSummary
             billingState={billingState}
             resolvedPlans={resolvedPlans}

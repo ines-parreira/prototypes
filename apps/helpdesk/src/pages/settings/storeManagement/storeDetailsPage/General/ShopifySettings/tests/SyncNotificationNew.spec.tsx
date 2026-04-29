@@ -11,7 +11,7 @@ jest.mock('@repo/hooks', () => ({
     }),
 }))
 
-const renderWithRouter = (element: React.ReactElement) => {
+const renderComponent = (element: React.ReactElement) => {
     return render(element, { wrapper: BrowserRouter })
 }
 
@@ -24,7 +24,7 @@ describe('<SyncNotification />', () => {
     }
 
     it('should render loading banner when sync is in progress', () => {
-        renderWithRouter(<SyncNotification {...defaultProps} />)
+        renderComponent(<SyncNotification {...defaultProps} />)
 
         expect(screen.getByText(/Import in progress/)).toBeInTheDocument()
         expect(
@@ -34,7 +34,7 @@ describe('<SyncNotification />', () => {
     })
 
     it('should render success banner when sync is complete', () => {
-        renderWithRouter(
+        renderComponent(
             <SyncNotification {...defaultProps} isSyncComplete={true} />,
         )
 
@@ -48,7 +48,7 @@ describe('<SyncNotification />', () => {
     })
 
     it('should have correct link in view customers button', () => {
-        renderWithRouter(
+        renderComponent(
             <SyncNotification {...defaultProps} isSyncComplete={true} />,
         )
 
@@ -62,7 +62,7 @@ describe('<SyncNotification />', () => {
         const { useLocalStorage } = jest.requireMock('@repo/hooks')
         useLocalStorage.mockImplementation(() => [false, mockSetBannerClosed])
 
-        renderWithRouter(
+        renderComponent(
             <SyncNotification {...defaultProps} isSyncComplete={true} />,
         )
 
@@ -76,7 +76,7 @@ describe('<SyncNotification />', () => {
         const { useLocalStorage } = jest.requireMock('@repo/hooks')
         useLocalStorage.mockImplementation(() => [true, jest.fn()])
 
-        renderWithRouter(
+        renderComponent(
             <SyncNotification {...defaultProps} isSyncComplete={true} />,
         )
 
@@ -86,9 +86,7 @@ describe('<SyncNotification />', () => {
         ).not.toBeInTheDocument()
     })
     it('should render proper banner when the store is disconnected', () => {
-        renderWithRouter(
-            <SyncNotification {...defaultProps} isActive={false} />,
-        )
+        renderComponent(<SyncNotification {...defaultProps} isActive={false} />)
         expect(
             screen.getByText(/Your store is disconnected./),
         ).toBeInTheDocument()

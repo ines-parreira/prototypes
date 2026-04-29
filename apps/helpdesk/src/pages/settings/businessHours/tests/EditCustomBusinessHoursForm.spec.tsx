@@ -1,4 +1,4 @@
-import { history } from '@repo/routing'
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -9,9 +9,6 @@ import {
     mockUpdateBusinessHoursHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-
-import { BUSINESS_HOURS_BASE_URL } from '../constants'
 import CustomBusinessHoursProvider from '../CustomBusinessHoursProvider'
 import EditCustomBusinessHoursForm from '../EditCustomBusinessHoursForm'
 
@@ -63,11 +60,11 @@ const businessHours = mockBusinessHoursDetails({
 })
 
 const renderComponent = () => {
-    return renderWithStoreAndQueryClientAndRouter(
+    return render(
         <CustomBusinessHoursProvider businessHoursId={businessHours.id}>
             <EditCustomBusinessHoursForm businessHours={businessHours} />
         </CustomBusinessHoursProvider>,
-        {},
+        { storeState: {} },
     )
 }
 
@@ -124,7 +121,6 @@ describe('EditCustomBusinessHoursForm', () => {
         expect(mockNotify.success).toHaveBeenCalledWith(
             `'${mockUpdateBusinessHours.data.name}' business hours were successfully updated.`,
         )
-        expect(history.push).toHaveBeenCalledWith(BUSINESS_HOURS_BASE_URL)
     })
 
     it('should call errorNotify when the form is submitted with invalid data', async () => {

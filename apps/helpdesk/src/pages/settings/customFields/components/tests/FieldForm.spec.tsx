@@ -1,8 +1,9 @@
 import { useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
-import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
+import { assumeMock, getLastMockCall, render, userEvent } from '@repo/testing'
 import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { omit } from 'lodash'
+import { Link } from 'react-router-dom'
 
 import type { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
@@ -29,7 +30,6 @@ import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -39,7 +39,6 @@ jest.mock('state/notifications/actions')
 const notifyMock = assumeMock(notify)
 jest.mock('@repo/logging')
 const reportErrorMock = assumeMock(reportError)
-
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 jest.mock('models/aiAgent/queries')
@@ -49,7 +48,6 @@ const useUpdateAiAutofillMock = assumeMock(useUpdateAiAutofill)
 jest.mock('pages/settings/customFields/components/AIAutofill', () =>
     jest.fn(() => <div>AIAutofill</div>),
 )
-
 jest.mock('pages/settings/customFields/components/DropdownInput', () =>
     jest.fn(() => <div>Dropdown</div>),
 )
@@ -58,24 +56,27 @@ jest.mock(
     'pages/settings/customFields/components/ArchiveConfirmationModal',
     () => jest.fn(() => null),
 )
-
 const DropdownInputMock = assumeMock(DropdownInput)
 const useUpdateCustomFieldArchiveStatusMock = assumeMock(
     useUpdateCustomFieldArchiveStatus,
 )
 const ArchiveConfirmationModalMock = assumeMock(ArchiveConfirmationModal)
 const AIAutofillMock = assumeMock(AIAutofill)
-
 const updateMutateMock = jest.fn()
 const updateAiAutofillMock = jest.fn()
-
+const renderWithNavigation = (ui: React.ReactElement) =>
+    render(
+        <>
+            <Link to="/test">Navigate away</Link>
+            {ui}
+        </>,
+    )
 const defaultProps = {
     field: ticketInputFieldDefinition,
     onSubmit: jest.fn().mockResolvedValue({ data: ticketInputFieldDefinition }),
     onClose: jest.fn(),
     objectType: OBJECT_TYPES.TICKET,
 }
-
 describe('<FieldForm/>', () => {
     beforeEach(() => {
         useUpdateCustomFieldArchiveStatusMock.mockImplementation(() => {
@@ -110,36 +111,29 @@ describe('<FieldForm/>', () => {
         updateAiAutofillMock.mockResolvedValue({})
         reportErrorMock.mockClear()
     })
-
     it('should show archiving status and disable type change on edit', () => {
-        renderWithRouter(<FieldForm {...defaultProps} />)
+        render(<FieldForm {...defaultProps} />)
         expect(screen.getByText('ACTIVE'))
         expect(screen.getByText(/Field type can’t be changed/))
     })
-
     it('should show a tooltip on hover save after doing a change on placeholder', async () => {
-        renderWithRouter(<FieldForm {...defaultProps} />)
-
+        render(<FieldForm {...defaultProps} />)
         await userEvent.type(screen.getByLabelText(/Placeholder/), 'a')
         userEvent.hover(screen.getByText(/Save changes/))
         await waitFor(() => {
             expect(screen.getByText(/The values you have changed/))
         })
     })
-
     it('should show a tooltip on hover save after doing a change on description', async () => {
-        renderWithRouter(<FieldForm {...defaultProps} />)
-
+        render(<FieldForm {...defaultProps} />)
         await userEvent.type(screen.getByLabelText(/Description/), 'a')
         userEvent.hover(screen.getByText(/Save changes/))
         await waitFor(() => {
             expect(screen.getByText(/The values you have changed/))
         })
     })
-
     it('should show a tooltip on hover save after doing a change on placeholder with saved filters text added', async () => {
-        renderWithRouter(<FieldForm {...defaultProps} />)
-
+        render(<FieldForm {...defaultProps} />)
         await userEvent.type(screen.getByLabelText(/Placeholder/), 'a')
         userEvent.hover(screen.getByText(/Save changes/))
         await waitFor(() => {
@@ -147,20 +141,15 @@ describe('<FieldForm/>', () => {
             expect(screen.getByText(/Saved Filters/i)).toBeInTheDocument()
         })
     })
-
     it('should disable the save button if the label is empty', () => {
         const props = {
             ...defaultProps,
             field: { ...customFieldInputDefinition, label: '' },
         }
-
-        renderWithRouter(<FieldForm {...props} />)
-
+        render(<FieldForm {...props} />)
         fireEvent.click(screen.getByText(/Save changes/))
-
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
-
     it('should disable the save button if the form has dropdown field and no choices are selected', () => {
         const props = {
             ...defaultProps,
@@ -177,14 +166,10 @@ describe('<FieldForm/>', () => {
                 },
             },
         }
-
-        renderWithRouter(<FieldForm {...props} />)
-
+        render(<FieldForm {...props} />)
         fireEvent.click(screen.getByText(/Save changes/))
-
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
-
     it('should disable the save button if some field has called the `setCustomValidity` method', async () => {
         const text = '20-1 rpz'
         DropdownInputMock.mockImplementation(() => (
@@ -196,57 +181,42 @@ describe('<FieldForm/>', () => {
                 onChange={() => null}
             />
         ))
-
         const props = {
             ...defaultProps,
             field: ticketDropdownFieldDefinition,
         }
-
-        renderWithRouter(<FieldForm {...props} />)
-
+        render(<FieldForm {...props} />)
         const inputEl: HTMLInputElement = screen.getByDisplayValue(text)
         inputEl.setCustomValidity('error')
-
         // necessary to trigger the effect on form data change
         await userEvent.type(screen.getByLabelText(/Description/), 'a')
-
         fireEvent.click(screen.getByText(/Save changes/))
-
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
-
     it('should call onSubmit if the form is valid and the save button is clicked', () => {
-        renderWithRouter(
+        render(
             <FieldForm
                 {...{ ...defaultProps, field: customFieldInputDefinition }}
             />,
         )
-
         fireEvent.click(screen.getByText(/Save changes/))
-
         expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1)
         expect(defaultProps.onSubmit).toHaveBeenCalledWith(
             omit(customFieldInputDefinition, ['priority']),
         )
     })
-
     it('should call onClose if the cancel button is clicked', () => {
         const props = {
             ...defaultProps,
             field: customFieldInputDefinition,
         }
-
-        renderWithRouter(<FieldForm {...props} />)
-
+        render(<FieldForm {...props} />)
         const cancelButton = screen.getByText(/Cancel/)
         cancelButton.click()
-
         expect(props.onClose).toHaveBeenCalledTimes(1)
     })
-
     it('should show three options', () => {
-        renderWithRouter(<FieldForm {...defaultProps} />)
-
+        render(<FieldForm {...defaultProps} />)
         // All three options should be visible
         for (const label of [
             'Always optional',
@@ -255,28 +225,23 @@ describe('<FieldForm/>', () => {
         ]) {
             const input = screen.getByLabelText(label, { selector: 'input' })
             expect(input).toBeInTheDocument()
-
             fireEvent.click(input)
             expect(input).toBeChecked()
         }
-
         // Change the value to "conditional"
         userEvent.click(
             screen.getByLabelText('Conditionally visible', {
                 selector: 'input',
             }),
         )
-
         // Submit the form
         fireEvent.click(screen.getByText('Save changes'))
-
         // The submit event must contain "requirement_type=conditional"
         expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1)
         expect(defaultProps.onSubmit).toHaveBeenCalledWith(
             expect.objectContaining({ requirement_type: 'conditional' }),
         )
     })
-
     it.each([true, false])(
         'should prompt for confirmation when closing the page with unsaved changes (%s)',
         async (error) => {
@@ -288,80 +253,63 @@ describe('<FieldForm/>', () => {
                 onSubmit,
                 field: customFieldInputDefinition,
             }
-
-            const { history } = renderWithRouter(<FieldForm {...props} />)
-
+            renderWithNavigation(<FieldForm {...props} />)
             const nameInput = screen.getByLabelText(/Name/)
             fireEvent.change(nameInput, { target: { value: 'New name' } })
-
-            history.push('/test')
-            expect(history.location.pathname).toBe('/')
-
+            await userEvent.click(
+                screen.getByRole('link', { name: 'Navigate away' }),
+            )
             expect(props.onSubmit).not.toHaveBeenCalled()
             expect(props.onClose).not.toHaveBeenCalled()
-
             await screen.findByText('Save changes?')
-            userEvent.click(
+            await userEvent.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
-
             expect(props.onSubmit).toHaveBeenCalledTimes(1)
-            expect(history.location.pathname).toBe('/')
         },
     )
-
     it('should show an error notification if the form is invalid from saving in unsaved modal', async () => {
-        const { history } = renderWithRouter(<FieldForm {...defaultProps} />)
-
+        renderWithNavigation(<FieldForm {...defaultProps} />)
         const nameInput = screen.getByLabelText(/Name/)
-        userEvent.clear(nameInput)
-
-        history.push('/test')
-
+        await userEvent.clear(nameInput)
+        await userEvent.click(
+            screen.getByRole('link', { name: 'Navigate away' }),
+        )
         await screen.findByRole('button', { name: 'Save Changes' })
-        userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
-
+        await userEvent.click(
+            screen.getByRole('button', { name: 'Save Changes' }),
+        )
         expect(notifyMock).toHaveBeenCalledWith({
             title: 'Unable to save, please complete all required fields',
             status: NotificationStatus.Error,
         })
         expect(defaultProps.onSubmit).not.toHaveBeenCalled()
     })
-
     it('should not trigger a submit when pressing enter in a field', () => {
         const props = {
             ...defaultProps,
             field: customFieldInputDefinition,
         }
-
-        renderWithRouter(<FieldForm {...props} />)
-
+        render(<FieldForm {...props} />)
         const nameInput = screen.getByLabelText(/Name/)
         nameInput.focus()
         fireEvent.keyDown(nameInput, { key: 'Enter' })
-
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
-
     it('should prevent default on form submit', () => {
         const props = {
             ...defaultProps,
             field: customFieldInputDefinition,
         }
-
-        renderWithRouter(<FieldForm {...props} />)
-
+        render(<FieldForm {...props} />)
         const nameInput = screen.getByLabelText(/Name/)
         const form = nameInput.closest('form')!
         const submitEvent = createEvent.submit(form)
         fireEvent(form, submitEvent)
-
         expect(submitEvent.defaultPrevented).toBe(true)
     })
-
     it('should have an archive button calling ArchiveConfirmationModal with the right props', () => {
-        renderWithRouter(<FieldForm {...defaultProps} />)
-
+        render(<FieldForm {...defaultProps} />)
         fireEvent.click(screen.getByText(/Archive/))
         expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
@@ -370,14 +318,11 @@ describe('<FieldForm/>', () => {
             }),
             {},
         )
-
         getLastMockCall(ArchiveConfirmationModalMock)[0].onConfirm()
         expect(updateMutateMock).toHaveBeenCalledWith(true)
     })
-
     it('should not show the archive button opening a modal that closes itself when calling onClose', async () => {
-        renderWithRouter(<FieldForm {...defaultProps} />)
-
+        render(<FieldForm {...defaultProps} />)
         fireEvent.click(screen.getByText(/Archive/))
         expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
@@ -386,9 +331,7 @@ describe('<FieldForm/>', () => {
             }),
             {},
         )
-
         getLastMockCall(ArchiveConfirmationModalMock)[0].onClose()
-
         await waitFor(() => {
             expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
                 expect.objectContaining({
@@ -399,11 +342,10 @@ describe('<FieldForm/>', () => {
             )
         })
     })
-
     it.each(Object.values(OBJECT_TYPES))(
         'should show the correct placeholders when object_type=%s',
         (objectType) => {
-            renderWithRouter(
+            render(
                 <FieldForm
                     {...{
                         ...defaultProps,
@@ -415,14 +357,12 @@ describe('<FieldForm/>', () => {
                     }}
                 />,
             )
-
             const namePlaceholder = screen
                 .getByLabelText(/Name/)
                 .getAttribute('placeholder')
             expect(namePlaceholder).toEqual(
                 OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.LABEL,
             )
-
             const descriptionPlaceholder = screen
                 .getByLabelText(/Description/)
                 .getAttribute('placeholder')
@@ -431,21 +371,17 @@ describe('<FieldForm/>', () => {
             )
         },
     )
-
     describe('Archived field', () => {
         it('should have an unarchive button calling update mutation', () => {
             const props = {
                 ...defaultProps,
                 field: archivedTicketInputFieldDefinition,
             }
-
-            renderWithRouter(<FieldForm {...props} />)
-
+            render(<FieldForm {...props} />)
             fireEvent.click(screen.getByText(/Unarchive/))
             expect(updateMutateMock).toHaveBeenCalledWith(false)
         })
     })
-
     describe('System read only fields', () => {
         it('should show a back button when the field is system read only', () => {
             const props = {
@@ -455,25 +391,19 @@ describe('<FieldForm/>', () => {
                     managed_type: SYSTEM_READ_ONLY_MANAGED_TYPES.CALL_STATUS,
                 },
             }
-
-            renderWithRouter(<FieldForm {...props} />)
-
+            render(<FieldForm {...props} />)
             fireEvent.click(screen.getByText(/Return to/))
             expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
         })
-
         it('should disabled fields', () => {
             const props = {
                 ...defaultProps,
                 field: aiManagedTicketInputFieldDefinition,
             }
-
-            renderWithRouter(<FieldForm {...props} />)
-
+            render(<FieldForm {...props} />)
             expect(screen.getByLabelText(/Name/)).toBeDisabled()
             expect(screen.getByLabelText(/Description/)).toBeDisabled()
         })
-
         it('should pass isDisabled to DropdownInput', () => {
             const props = {
                 ...defaultProps,
@@ -482,8 +412,7 @@ describe('<FieldForm/>', () => {
                     managed_type: 'ai_intent' as ManagedTicketFieldType,
                 },
             }
-
-            renderWithRouter(<FieldForm {...props} />)
+            render(<FieldForm {...props} />)
             expect(DropdownInputMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     isDisabled: true,
@@ -492,20 +421,17 @@ describe('<FieldForm/>', () => {
             )
         })
     })
-
     describe('AI Autofill', () => {
         it('should show AIAutofill when FF enabled and hide when disabled, conditional, or managed', () => {
             // Test 1: Should NOT show when feature flag is disabled
             useFlagMock.mockReturnValue(false)
-            renderWithRouter(<FieldForm {...defaultProps} />)
+            render(<FieldForm {...defaultProps} />)
             expect(AIAutofillMock).not.toHaveBeenCalled()
-
             // Test 2: Should show when feature flag is enabled
             AIAutofillMock.mockClear()
             useFlagMock.mockReturnValue(true)
-            renderWithRouter(<FieldForm {...defaultProps} />)
+            render(<FieldForm {...defaultProps} />)
             expect(AIAutofillMock).toHaveBeenCalled()
-
             // Test 3: Should NOT show when requirement_type is conditional
             AIAutofillMock.mockClear()
             const conditionalField = {
@@ -515,22 +441,19 @@ describe('<FieldForm/>', () => {
                     requirement_type: 'conditional' as const,
                 },
             }
-            renderWithRouter(<FieldForm {...conditionalField} />)
+            render(<FieldForm {...conditionalField} />)
             expect(AIAutofillMock).not.toHaveBeenCalled()
-
             // Test 4: Should NOT show when field has managed_type
             AIAutofillMock.mockClear()
             const managedField = {
                 ...defaultProps,
                 field: aiManagedTicketInputFieldDefinition,
             }
-            renderWithRouter(<FieldForm {...managedField} />)
+            render(<FieldForm {...managedField} />)
             expect(AIAutofillMock).not.toHaveBeenCalled()
         })
-
         it('should initialize checkbox state based on account configuration customFieldIds', () => {
             useFlagMock.mockReturnValue(true)
-
             // Field ID is in customFieldIds - should be enabled
             useGetAccountConfigurationMock.mockReturnValue({
                 data: {
@@ -541,17 +464,13 @@ describe('<FieldForm/>', () => {
                     },
                 },
             } as any)
-
-            renderWithRouter(<FieldForm {...defaultProps} />)
-
+            render(<FieldForm {...defaultProps} />)
             // AIAutofill should be called with value=false initially, then updated via useEffect
             expect(AIAutofillMock).toHaveBeenCalled()
             // The component will update the state via useEffect based on customFieldIds
         })
-
         it('should pass correct props to AIAutofill component and mark form as dirty when changed', () => {
             useFlagMock.mockReturnValue(true)
-
             // Capture the onChange callback
             let capturedOnChange: ((value: boolean) => void) | null = null
             AIAutofillMock.mockImplementation(({ value, onChange }) => {
@@ -562,9 +481,7 @@ describe('<FieldForm/>', () => {
                     </div>
                 )
             })
-
-            renderWithRouter(<FieldForm {...defaultProps} />)
-
+            render(<FieldForm {...defaultProps} />)
             // Verify AIAutofill was rendered with initial value false
             expect(screen.getByTestId('ai-autofill-mock')).toHaveTextContent(
                 'Value: false',
@@ -576,29 +493,22 @@ describe('<FieldForm/>', () => {
                 }),
                 {},
             )
-
             // Simulate changing the value
             expect(capturedOnChange).toBeDefined()
             capturedOnChange!(true)
-
             // Save button should still be enabled (form is valid and dirty)
             const saveButton = screen.getByText(/Save changes/)
             expect(saveButton).toBeEnabled()
         })
-
         it('should call updateAiAutofill when saving field with AI autofill enabled', async () => {
             useFlagMock.mockReturnValue(true)
             const dispatchMock = jest.fn()
             useAppDispatchMock.mockReturnValue(dispatchMock)
-
-            renderWithRouter(<FieldForm {...defaultProps} />)
-
+            render(<FieldForm {...defaultProps} />)
             // Make a change to make form dirty
             await userEvent.type(screen.getByLabelText(/Placeholder/), 'test')
-
             // Click save
             await userEvent.click(screen.getByText(/Save changes/))
-
             await waitFor(() => {
                 expect(defaultProps.onSubmit).toHaveBeenCalled()
                 expect(updateAiAutofillMock).toHaveBeenCalledWith({
@@ -607,24 +517,18 @@ describe('<FieldForm/>', () => {
                 })
             })
         })
-
         it('should handle updateAiAutofill errors and show notification', async () => {
             useFlagMock.mockReturnValue(true)
             const dispatchMock = jest.fn()
             useAppDispatchMock.mockReturnValue(dispatchMock)
-
             // Mock updateAiAutofill to fail
             const aiError = new Error('AI Autofill update failed')
             updateAiAutofillMock.mockRejectedValueOnce(aiError)
-
-            renderWithRouter(<FieldForm {...defaultProps} />)
-
+            render(<FieldForm {...defaultProps} />)
             // Make a change to make form dirty
             await userEvent.type(screen.getByLabelText(/Placeholder/), 'test')
-
             // Click save
             await userEvent.click(screen.getByText(/Save changes/))
-
             await waitFor(() => {
                 expect(reportErrorMock).toHaveBeenCalledWith(
                     aiError,
@@ -648,7 +552,6 @@ describe('<FieldForm/>', () => {
             })
         })
     })
-
     describe('Error handling', () => {
         it('should handle onSubmit errors and keep form dirty', async () => {
             const consoleErrorSpy = jest
@@ -660,15 +563,11 @@ describe('<FieldForm/>', () => {
                     .fn()
                     .mockRejectedValue(new Error('Submit failed')),
             }
-
-            renderWithRouter(<FieldForm {...errorProps} />)
-
+            render(<FieldForm {...errorProps} />)
             // Make a change to make form dirty
             await userEvent.type(screen.getByLabelText(/Placeholder/), 'test')
-
             // Click save
             await userEvent.click(screen.getByText(/Save changes/))
-
             await waitFor(() => {
                 expect(consoleErrorSpy).toHaveBeenCalledWith(
                     'Custom field error',
@@ -677,7 +576,6 @@ describe('<FieldForm/>', () => {
                 // Form should remain open since save returned false
                 expect(defaultProps.onClose).not.toHaveBeenCalled()
             })
-
             consoleErrorSpy.mockRestore()
         })
     })

@@ -1,11 +1,8 @@
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { Route, Switch, useLocation } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -20,8 +17,7 @@ import { CONTACT_FORM_APP_DETAIL } from 'pages/settings/contactForm/views/Contac
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView/ContactFormStartView'
 import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { buildSDKMocks } from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
@@ -31,21 +27,16 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
 >
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
 const testQueryClient = mockQueryClient()
-
 const mockedLocales = [
     { name: 'English', code: 'en-US' },
     { name: 'Spanish', code: 'es-ES' },
     { name: 'French', code: 'fr-FR' },
     { name: 'German', code: 'de-DE' },
 ]
-
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: () => mockedLocales,
 }))
-
 const defaultState = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
@@ -53,10 +44,25 @@ const defaultState = {
         integrations: [shopifyIntegration, ...chatIntegrationFixtures],
     }),
 } as RootState
-
+const LocationPath = () => {
+    const location = useLocation()
+    return <span data-testid="location-path">{location.pathname}</span>
+}
+const ContactFormRoutes = () => (
+    <>
+        <LocationPath />
+        <Switch>
+            <Route exact path={CONTACT_FORM_CREATE_PATH}>
+                Create contact form route
+            </Route>
+            <Route>
+                <ContactFormStartView />
+            </Route>
+        </Switch>
+    </>
+)
 describe('<ContactFormStartView />', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
-
     beforeEach(async () => {
         sdkMocks = await buildSDKMocks()
         // clearing the cache is better than using invalidateQueries because it has no effect
@@ -67,21 +73,17 @@ describe('<ContactFormStartView />', () => {
             client: sdkMocks.client,
             isReady: true,
         })
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getContactForms: 'success-empty',
+        })
     })
-
     describe('Navigation', () => {
         it('should display Navigation bar links correctly', () => {
-            renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ContactFormStartView />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
+            render(<ContactFormStartView />, {
+                storeState: {},
+            })
             const aboutNavLink = screen.getByRole('link', { name: 'About' })
             const formsNavLink = screen.getByRole('link', { name: 'Forms' })
-
             expect(aboutNavLink).toHaveAttribute(
                 'href',
                 CONTACT_FORM_ABOUT_PATH,
@@ -91,197 +93,128 @@ describe('<ContactFormStartView />', () => {
                 CONTACT_FORM_FORMS_PATH,
             )
         })
-
         it('should navigate to `About` section when there is no created CFs', async () => {
             mockResourceServerReplies(sdkMocks.mockedServer, {
                 getContactForms: 'success-empty',
             })
-
-            const history = createMemoryHistory({
-                initialEntries: [HELP_CENTER_BASE_PATH],
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ContactFormStartView />
-                    </Provider>
-                </QueryClientProvider>,
-                { history },
+            render(
+                <>
+                    <LocationPath />
+                    <ContactFormStartView />
+                </>,
+                { initialEntries: [HELP_CENTER_BASE_PATH], storeState: {} },
             )
-
             await waitFor(() => {
-                expect(history.location.pathname).toEqual(
+                expect(screen.getByTestId('location-path')).toHaveTextContent(
                     CONTACT_FORM_ABOUT_PATH,
                 )
             })
         })
-
         it('should navigate to `Forms` section when there is at least 1 created CF', async () => {
             mockResourceServerReplies(sdkMocks.mockedServer, {
                 getContactForms: 'success',
             })
-            const history = createMemoryHistory({
-                initialEntries: [HELP_CENTER_BASE_PATH],
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <ContactFormStartView />,
-                    </Provider>
-                </QueryClientProvider>,
-                { history },
+            render(
+                <>
+                    <LocationPath />
+                    <ContactFormStartView />
+                </>,
+                {
+                    initialEntries: [HELP_CENTER_BASE_PATH],
+                    storeState: defaultState,
+                },
             )
-
             await waitFor(() => {
-                expect(history.location.pathname).toEqual(
+                expect(screen.getByTestId('location-path')).toHaveTextContent(
                     CONTACT_FORM_FORMS_PATH,
                 )
             })
         })
     })
-
     describe('`About` section', () => {
         it('should display description', () => {
-            const { container } = renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ContactFormStartView />,
-                    </Provider>
-                </QueryClientProvider>,
-
-                {
-                    route: CONTACT_FORM_ABOUT_PATH,
-                },
+            const { container } = render(
+                <>
+                    <ContactFormStartView />,
+                </>,
+                { initialEntries: [CONTACT_FORM_ABOUT_PATH], storeState: {} },
             )
-
             screen.getByText(CONTACT_FORM_APP_DETAIL.description)
-
             expect(container).toMatchSnapshot()
         })
-
         it('should display `Create Contact Form` button', () => {
-            renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ContactFormStartView />,
-                    </Provider>
-                </QueryClientProvider>,
-
-                {
-                    route: CONTACT_FORM_ABOUT_PATH,
-                },
+            render(
+                <>
+                    <ContactFormStartView />,
+                </>,
+                { initialEntries: [CONTACT_FORM_ABOUT_PATH], storeState: {} },
             )
-
             const createButtonHref = screen
                 .getByRole('button', { name: /Create Contact Form/ })
                 .closest('a')
                 ?.getAttribute('href')
-
             expect(createButtonHref).toMatch(`${CONTACT_FORM_CREATE_PATH}`)
         })
     })
-
     describe('`Forms` section', () => {
         it('should redirect to the About page if fetching failed with an error', async () => {
             mockResourceServerReplies(sdkMocks.mockedServer, {
                 getContactForms: 'error',
             })
-
-            const history = createMemoryHistory({
-                initialEntries: [CONTACT_FORM_FORMS_PATH],
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ContactFormStartView />,
-                    </Provider>
-                </QueryClientProvider>,
-                { history },
+            render(
+                <>
+                    <LocationPath />
+                    <ContactFormStartView />
+                </>,
+                { initialEntries: [CONTACT_FORM_FORMS_PATH], storeState: {} },
             )
-
             await waitFor(() => {
-                expect(history.location.pathname).toEqual(
+                expect(screen.getByTestId('location-path')).toHaveTextContent(
                     CONTACT_FORM_ABOUT_PATH,
                 )
             })
         })
-
         it('should render ManageContactForms component empty state', async () => {
             mockResourceServerReplies(sdkMocks.mockedServer, {
                 getContactForms: 'success-empty',
             })
-
-            renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ContactFormStartView />,
-                    </Provider>
-                </QueryClientProvider>,
-                { route: CONTACT_FORM_FORMS_PATH },
+            render(
+                <>
+                    <ContactFormStartView />,
+                </>,
+                { initialEntries: [CONTACT_FORM_FORMS_PATH], storeState: {} },
             )
-
             await waitFor(() => {
                 screen.getByText('You have no contact forms at the moment.')
             })
         })
-
         it('should display `Create Form` button in the container when there is no forms', async () => {
             mockResourceServerReplies(sdkMocks.mockedServer, {
                 getContactForms: 'success-empty',
             })
-
-            const history = createMemoryHistory({
+            render(<ContactFormRoutes />, {
                 initialEntries: [CONTACT_FORM_FORMS_PATH],
+                storeState: {},
             })
-
-            jest.spyOn(history, 'push')
-
-            renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ContactFormStartView />
-                    </Provider>
-                </QueryClientProvider>,
-                { history },
-            )
-
             await waitFor(() => {
                 const createButton = screen.getByLabelText('create-form-bottom')
                 fireEvent.click(createButton)
             })
-
-            expect(history.push).toHaveBeenLastCalledWith(
+            expect(screen.getByTestId('location-path')).toHaveTextContent(
                 CONTACT_FORM_CREATE_PATH,
             )
         })
-
         it('should display `Create Form` button in the header when there is at least one form', async () => {
             mockResourceServerReplies(sdkMocks.mockedServer)
-
-            const history = createMemoryHistory({
+            render(<ContactFormRoutes />, {
                 initialEntries: [CONTACT_FORM_FORMS_PATH],
+                storeState: defaultState,
             })
-
-            jest.spyOn(history, 'push')
-
-            renderWithRouter(
-                <QueryClientProvider client={testQueryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <ContactFormStartView />,
-                    </Provider>
-                </QueryClientProvider>,
-                { history },
-            )
-
             await waitFor(() => {
                 const createButton = screen.getByLabelText('create-form-nav')
                 fireEvent.click(createButton)
             })
-
-            expect(history.push).toHaveBeenLastCalledWith(
+            expect(screen.getByTestId('location-path')).toHaveTextContent(
                 CONTACT_FORM_CREATE_PATH,
             )
         })

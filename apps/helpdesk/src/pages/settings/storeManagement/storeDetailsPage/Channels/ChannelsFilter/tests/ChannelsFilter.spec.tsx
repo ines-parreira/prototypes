@@ -1,8 +1,7 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
-import { MemoryRouter, Route } from 'react-router-dom'
 
 import type { Integration } from 'models/integration/types'
-import { renderWithStore } from 'utils/testing'
 
 import type { ChannelWithMetadata } from '../../../../types'
 import ChannelsFilter from '../ChannelsFilter'
@@ -37,16 +36,13 @@ const mockStores = [
         ],
     },
 ]
-
 jest.mock('../../../../StoreManagementProvider', () => ({
     useStoreManagementState: () => ({
         stores: mockStores,
     }),
 }))
-
 describe('ChannelsFilter', () => {
     const mockSetAssignedChannelIds = jest.fn()
-
     const activeChannel: ChannelWithMetadata = {
         description: 'Test Channel Description',
         count: 3,
@@ -75,45 +71,42 @@ describe('ChannelsFilter', () => {
             },
         ] as Integration[],
     }
-
     beforeEach(() => {
         jest.clearAllMocks()
     })
-
     it('renders SelectFilter with correct props', () => {
-        renderWithStore(
+        render(
             <ChannelsFilter
                 selectorLabel="Assign Test Channel"
                 activeChannel={activeChannel}
                 assignedChannelIds={[]}
                 setAssignedChannelIds={mockSetAssignedChannelIds}
             />,
-            {},
+            { storeState: {} },
         )
         expect(
             screen.getByText(`Assign ${activeChannel.title}`),
         ).toBeInTheDocument()
     })
-
     it('filters out already assigned channels', async () => {
-        renderWithStore(
-            <MemoryRouter initialEntries={[`/settings/stores/1}`]}>
-                <Route path="/settings/stores/:id">
-                    <ChannelsFilter
-                        selectorLabel="Assign Test Channel"
-                        activeChannel={activeChannel}
-                        assignedChannelIds={[2]}
-                        setAssignedChannelIds={mockSetAssignedChannelIds}
-                    />
-                    ,
-                </Route>
-            </MemoryRouter>,
-            {},
+        render(
+            <>
+                <ChannelsFilter
+                    selectorLabel="Assign Test Channel"
+                    activeChannel={activeChannel}
+                    assignedChannelIds={[2]}
+                    setAssignedChannelIds={mockSetAssignedChannelIds}
+                />
+                ,
+            </>,
+            {
+                storeState: {},
+                path: '/settings/stores/:id',
+                initialEntries: [`/settings/stores/1}`],
+            },
         )
-
         const button = screen.getByText(`Assign ${activeChannel.title}`)
         button.click()
-
         await waitFor(() => {
             expect(
                 screen.queryByText('email2@test.com'),
@@ -125,16 +118,15 @@ describe('ChannelsFilter', () => {
             expect(screen.getByText('email4@test.com')).toBeInTheDocument()
         })
     })
-
     it('renders nothing when activeChannel is not provided', () => {
-        const { container } = renderWithStore(
+        const { container } = render(
             <ChannelsFilter
                 selectorLabel="Assign Test Channel"
                 activeChannel={undefined}
                 assignedChannelIds={[]}
                 setAssignedChannelIds={mockSetAssignedChannelIds}
             />,
-            {},
+            { storeState: {} },
         )
         expect(container.firstChild).toBeNull()
     })

@@ -1,12 +1,7 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
@@ -17,11 +12,8 @@ import { EditionManagerContextProvider } from 'pages/settings/helpCenter/provide
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
-import type { RootState, StoreDispatch } from 'state/types'
+import type { RootState } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { useHelpCenterCategories } from '../../hooks/useHelpCenterCategories'
 import { SearchContextProvider } from '../../providers/SearchContext'
@@ -30,7 +22,6 @@ import HelpCenterArticlesView from '../HelpCenterArticlesView'
 
 jest.mock('../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
 ;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
-
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
         useHelpCenterApi: () => ({
@@ -53,21 +44,17 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
         useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
-
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture,
 )
-
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
-
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     return {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
 })
-
 jest.mock('hooks/useModalManager/useModalManager.tsx', () => {
     return {
         useModalManager: () => ({
@@ -99,13 +86,6 @@ jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
     id: 1,
     name: 'My Shop',
 })
-
-const queryClient = mockQueryClient()
-
-const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-    thunk,
-])
-
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenter: {
@@ -121,31 +101,27 @@ const defaultState: Partial<RootState> = {
     ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
     billing: fromJS(billingState),
 }
-
 const route = {
     path: '/app/settings/help-center/:helpCenterId/articles',
     route: '/app/settings/help-center/1/articles',
 }
-
 describe('<HelpCenterArticlesView />', () => {
     it('should render the component', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockedStore(defaultState)}>
-                    <DndProvider backend={HTML5Backend}>
-                        <EditionManagerContextProvider>
-                            <SearchContextProvider
-                                helpCenter={getSingleHelpCenterResponseFixture}
-                            >
-                                <HelpCenterArticlesView />
-                            </SearchContextProvider>
-                        </EditionManagerContextProvider>
-                    </DndProvider>
-                </Provider>
-            </QueryClientProvider>,
-            route,
+        render(
+            <EditionManagerContextProvider>
+                <SearchContextProvider
+                    helpCenter={getSingleHelpCenterResponseFixture}
+                >
+                    <HelpCenterArticlesView />
+                </SearchContextProvider>
+            </EditionManagerContextProvider>,
+            {
+                path: route.path,
+                initialEntries: [route.route],
+                dndBackend: HTML5Backend,
+                storeState: defaultState,
+            },
         )
-
         expect(
             screen.getByRole('button', { name: /help center preview/i }),
         ).toBeInTheDocument()

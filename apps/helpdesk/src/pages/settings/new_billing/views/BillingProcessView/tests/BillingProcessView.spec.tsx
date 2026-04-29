@@ -3,11 +3,12 @@ import { useBillingState } from '@repo/billing'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render as testingRender } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
+import { useLocation } from 'react-router-dom'
 
 import {
     AUTOMATION_PRODUCT_ID,
@@ -28,7 +29,6 @@ import {
 import { ProductType } from 'models/billing/types'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 import SummaryTotal from '../../../components/SummaryTotal'
@@ -76,16 +76,27 @@ const mockPendingChangesModal = jest.mocked(
     require('pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'),
 )
 
-const mockHistoryPush = jest.fn()
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
-    useParams: jest.fn().mockReturnValue({
-        selectedProduct: 'helpdesk',
-    }),
-    useHistory: () => ({
-        push: mockHistoryPush,
-    }),
-}))
+const LocationPath = () => {
+    const location = useLocation()
+
+    return <output aria-label="Current path">{location.pathname}</output>
+}
+
+const render = (
+    ui: Parameters<typeof testingRender>[0],
+    options?: Parameters<typeof testingRender>[1],
+) =>
+    testingRender(
+        <>
+            {ui}
+            <LocationPath />
+        </>,
+        {
+            initialEntries: ['/app/settings/billing/manage/helpdesk'],
+            path: '/app/settings/billing/:billingSection?/:selectedProduct?',
+            ...options,
+        },
+    )
 
 const mockedServer = new MockAdapter(client)
 
@@ -133,7 +144,6 @@ describe('BillingProcessView', () => {
         mockUseIsPaymentEnabled.mockReturnValue(true)
         logEventMock.mockClear()
         SummaryTotalMock.mockClear()
-        mockHistoryPush.mockClear()
     })
 
     afterEach(() => {
@@ -147,7 +157,7 @@ describe('BillingProcessView', () => {
     it('should render', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -158,7 +168,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
+            { storeState: storeInitialState },
         )
         await waitFor(() => {
             expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
@@ -168,7 +178,7 @@ describe('BillingProcessView', () => {
     it('should log BillingProductManagementVisited event on component mount', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -179,8 +189,10 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
-            { route: '/app/settings/billing/manage/helpdesk' },
+            {
+                storeState: storeInitialState,
+                initialEntries: ['/app/settings/billing/manage/helpdesk'],
+            },
         )
 
         await waitFor(() => {
@@ -197,7 +209,7 @@ describe('BillingProcessView', () => {
     it('should NOT render if subscription has been canceled', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -208,7 +220,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={true}
             />,
-            storeInitialState,
+            { storeState: storeInitialState },
         )
 
         await waitFor(() => {
@@ -235,7 +247,7 @@ describe('BillingProcessView', () => {
             }),
         } as Partial<RootState>
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -246,7 +258,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         await waitFor(() => {
@@ -281,7 +293,7 @@ describe('BillingProcessView', () => {
             }),
         } as Partial<RootState>
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -292,7 +304,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         await waitFor(() => {
@@ -307,7 +319,7 @@ describe('BillingProcessView', () => {
     it('should track event when clicking See Plans Details link', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -318,8 +330,10 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
-            { route: '/app/settings/billing/manage/helpdesk' },
+            {
+                storeState: storeInitialState,
+                initialEntries: ['/app/settings/billing/manage/helpdesk'],
+            },
         )
 
         await waitFor(() => {
@@ -344,7 +358,7 @@ describe('BillingProcessView', () => {
         const setDefaultMessageMock = jest.fn()
         const setIsModalOpenMock = jest.fn()
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -355,8 +369,10 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
-            { route: '/app/settings/billing/manage/helpdesk' },
+            {
+                storeState: storeInitialState,
+                initialEntries: ['/app/settings/billing/manage/helpdesk'],
+            },
         )
 
         await waitFor(() => {
@@ -393,7 +409,7 @@ describe('BillingProcessView', () => {
     it('should evaluate payment state when rendering enterprise plan summary', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -404,8 +420,10 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
-            { route: '/app/settings/billing/manage/helpdesk' },
+            {
+                storeState: storeInitialState,
+                initialEntries: ['/app/settings/billing/manage/helpdesk'],
+            },
         )
 
         await waitFor(() => {
@@ -437,7 +455,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -448,7 +466,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeInitialState,
+                { storeState: storeInitialState },
             )
 
             await waitFor(() => {
@@ -469,7 +487,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -480,7 +498,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeInitialState,
+                { storeState: storeInitialState },
             )
 
             await waitFor(() => {
@@ -585,7 +603,7 @@ describe('BillingProcessView', () => {
                         .onGet('/billing/state')
                         .reply(200, payingWithCreditCard)
 
-                    renderWithStoreAndQueryClientAndRouter(
+                    render(
                         <BillingProcessView
                             currentUsage={currentProductsUsage}
                             contactBilling={jest.fn()}
@@ -596,7 +614,7 @@ describe('BillingProcessView', () => {
                             isTrialing={false}
                             isCurrentSubscriptionCanceled={false}
                         />,
-                        storeForProduct,
+                        { storeState: storeForProduct },
                     )
 
                     await waitFor(() => {
@@ -679,7 +697,7 @@ describe('BillingProcessView', () => {
                         .onGet('/billing/state')
                         .reply(200, payingWithCreditCard)
 
-                    renderWithStoreAndQueryClientAndRouter(
+                    render(
                         <BillingProcessView
                             currentUsage={currentProductsUsage}
                             contactBilling={jest.fn()}
@@ -690,7 +708,7 @@ describe('BillingProcessView', () => {
                             isTrialing={false}
                             isCurrentSubscriptionCanceled={false}
                         />,
-                        storeForProduct,
+                        { storeState: storeForProduct },
                     )
 
                     await waitFor(() => {
@@ -764,7 +782,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -775,7 +793,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeWithMultipleProducts,
+                { storeState: storeWithMultipleProducts },
             )
 
             await waitFor(() => {
@@ -843,7 +861,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -854,7 +872,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeWithoutAutomation,
+                { storeState: storeWithoutAutomation },
             )
 
             await waitFor(() => {
@@ -880,7 +898,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -891,7 +909,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeInitialState,
+                { storeState: storeInitialState },
             )
 
             await waitFor(() => {
@@ -945,7 +963,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -956,7 +974,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeWithBothProducts,
+                { storeState: storeWithBothProducts },
             )
 
             await waitFor(() => {
@@ -1002,7 +1020,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -1013,7 +1031,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeWithNoProducts,
+                { storeState: storeWithNoProducts },
             )
 
             await waitFor(() => {
@@ -1035,7 +1053,7 @@ describe('BillingProcessView', () => {
     it('should track event when PendingChangesModal is shown', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -1046,7 +1064,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
+            { storeState: storeInitialState },
         )
 
         await waitFor(() => {
@@ -1072,7 +1090,7 @@ describe('BillingProcessView', () => {
     it('should track event when Update Subscription button is clicked in PendingChangesModal', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -1083,7 +1101,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
+            { storeState: storeInitialState },
         )
 
         await waitFor(() => {
@@ -1110,7 +1128,7 @@ describe('BillingProcessView', () => {
     it('should track event when Discard button is clicked in PendingChangesModal', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -1121,7 +1139,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
+            { storeState: storeInitialState },
         )
 
         await waitFor(() => {
@@ -1148,7 +1166,7 @@ describe('BillingProcessView', () => {
     it('should track event when Back to Editing button is clicked in PendingChangesModal', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -1159,7 +1177,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
+            { storeState: storeInitialState },
         )
 
         await waitFor(() => {
@@ -1186,7 +1204,7 @@ describe('BillingProcessView', () => {
     it('should pass onSave to PendingChangesModal when enterprise plan is not selected', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -1197,7 +1215,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
+            { storeState: storeInitialState },
         )
 
         await waitFor(() => {
@@ -1214,7 +1232,7 @@ describe('BillingProcessView', () => {
     it('should pass undefined for onSave to PendingChangesModal when enterprise plan is selected', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -1225,8 +1243,10 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState,
-            { route: '/app/settings/billing/manage/helpdesk' },
+            {
+                storeState: storeInitialState,
+                initialEntries: ['/app/settings/billing/manage/helpdesk'],
+            },
         )
 
         await waitFor(() => {
@@ -1296,7 +1316,7 @@ describe('BillingProcessView', () => {
             }),
         } as Partial<RootState>
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -1307,7 +1327,7 @@ describe('BillingProcessView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            alteredStore,
+            { storeState: alteredStore },
         )
 
         await waitFor(() => {
@@ -1337,7 +1357,7 @@ describe('BillingProcessView', () => {
                 data: { subscription: { is_paused: true } },
             } as any)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -1348,11 +1368,11 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeInitialState,
+                { storeState: storeInitialState },
             )
 
             await waitFor(() => {
-                expect(mockHistoryPush).toHaveBeenCalledWith(
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
                     '/app/settings/billing',
                 )
             })
@@ -1405,7 +1425,7 @@ describe('BillingProcessView', () => {
                 }),
             } as Partial<RootState>
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -1416,11 +1436,11 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeWithYearlyContract,
+                { storeState: storeWithYearlyContract },
             )
 
             await waitFor(() => {
-                expect(mockHistoryPush).toHaveBeenCalledWith(
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
                     '/app/settings/billing',
                 )
             })
@@ -1431,7 +1451,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -1442,7 +1462,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeInitialState,
+                { storeState: storeInitialState },
             )
 
             await waitFor(() => {
@@ -1451,7 +1471,9 @@ describe('BillingProcessView', () => {
                 ).toBeInTheDocument()
             })
 
-            expect(mockHistoryPush).not.toHaveBeenCalled()
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                '/app/settings/billing/manage/helpdesk',
+            )
         })
     })
 
@@ -1531,7 +1553,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -1542,7 +1564,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeWithAutomation,
+                { storeState: storeWithAutomation },
             )
 
             await waitFor(() => {
@@ -1628,7 +1650,7 @@ describe('BillingProcessView', () => {
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
@@ -1639,7 +1661,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                storeWithAutomation,
+                { storeState: storeWithAutomation },
             )
 
             await waitFor(() => {

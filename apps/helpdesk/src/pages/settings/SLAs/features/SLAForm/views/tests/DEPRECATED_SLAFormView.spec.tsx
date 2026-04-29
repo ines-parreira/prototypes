@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 
 import {
     SLAPolicyMetricType,
@@ -8,7 +9,6 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import type { MappedFormSLAPolicy } from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
-import { renderWithRouter } from 'utils/testing'
 
 import SLAFormView from '../DEPRECATED_SLAFormView'
 
@@ -77,7 +77,7 @@ describe('SLAFormView', () => {
     })
 
     it('renders the form', () => {
-        const { getByDisplayValue, getByText } = renderWithRouter(
+        const { getByDisplayValue, getByText } = render(
             <SLAFormView {...defaultProps} />,
         )
 
@@ -103,7 +103,7 @@ describe('SLAFormView', () => {
             business_hours_only: true,
         } as MappedFormSLAPolicy
 
-        const { container } = renderWithRouter(
+        const { container } = render(
             <SLAFormView {...defaultProps} policy={voicePolicy} />,
         )
 

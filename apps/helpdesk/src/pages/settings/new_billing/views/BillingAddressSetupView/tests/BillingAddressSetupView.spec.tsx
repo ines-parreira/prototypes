@@ -1,6 +1,6 @@
 import client from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
 import type { Stripe, StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -10,7 +10,6 @@ import MockAdapter from 'axios-mock-adapter'
 import { act } from 'react-dom/test-utils'
 
 import { billingContact } from 'fixtures/resources'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { BillingAddressSetupView } from '../BillingAddressSetupView'
 
@@ -63,7 +62,7 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should render the component correctly', async () => {
-        renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
+        render(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue(billingContact.email)).toBeVisible()
@@ -78,7 +77,7 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should enable the submit button when the address is complete and the email is valid', async () => {
-        renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
+        render(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue(billingContact.email)).toBeVisible()
@@ -109,7 +108,7 @@ describe('BillingAddressSetupView', () => {
 
     it('should update the email state when input changes', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
+        render(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue(billingContact.email)).toBeVisible()
@@ -137,7 +136,7 @@ describe('BillingAddressSetupView', () => {
 
     it('should not submit empty tax ID fields (they are required)', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
+        render(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue(billingContact.email)).toBeVisible()
@@ -195,7 +194,7 @@ describe('BillingAddressSetupView', () => {
 
     describe('BillingPaymentInformationBillingInformationVisited tracking', () => {
         it('should track event when billing information page is visited', () => {
-            renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
+            render(<BillingAddressSetupView />)
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.BillingPaymentInformationBillingInformationVisited,

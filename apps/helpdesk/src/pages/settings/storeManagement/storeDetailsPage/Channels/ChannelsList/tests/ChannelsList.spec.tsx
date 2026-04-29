@@ -58,7 +58,7 @@ const mockContactFormChannel = [
     },
 ] as Integration[]
 
-const renderWithRouter = (component: React.ReactElement) => {
+const renderComponent = (component: React.ReactElement) => {
     return render(<BrowserRouter>{component}</BrowserRouter>)
 }
 
@@ -69,7 +69,7 @@ describe('ChannelsList', () => {
 
     it('renders channels list correctly', () => {
         const onDelete = jest.fn()
-        renderWithRouter(
+        renderComponent(
             <ChannelsList
                 {...defaultProps}
                 listLabel="Assigned Email"
@@ -88,7 +88,7 @@ describe('ChannelsList', () => {
 
     it('returns null when no channels are provided', () => {
         const onDelete = jest.fn()
-        const { container } = renderWithRouter(
+        const { container } = renderComponent(
             <ChannelsList
                 {...defaultProps}
                 listLabel="Assigned Email"
@@ -101,7 +101,7 @@ describe('ChannelsList', () => {
 
     it('calls onDelete when delete button is clicked', () => {
         const onDelete = jest.fn()
-        renderWithRouter(
+        renderComponent(
             <ChannelsList
                 {...defaultProps}
                 listLabel="Assigned Email"
@@ -118,7 +118,7 @@ describe('ChannelsList', () => {
 
     it('renders empty when channel meta does not have address', () => {
         const onDelete = jest.fn()
-        renderWithRouter(
+        renderComponent(
             <ChannelsList
                 {...defaultProps}
                 listLabel="Assigned Facebook"
@@ -132,7 +132,7 @@ describe('ChannelsList', () => {
 
     it('does not render open in new icon for help center channel', () => {
         const onDelete = jest.fn()
-        renderWithRouter(
+        renderComponent(
             <ChannelsList
                 {...defaultProps}
                 listLabel="Help Center"
@@ -148,7 +148,7 @@ describe('ChannelsList', () => {
 
     it('does not render open in new icon for contact form channel', () => {
         const onDelete = jest.fn()
-        renderWithRouter(
+        renderComponent(
             <ChannelsList
                 {...defaultProps}
                 listLabel="Contact Form"
@@ -164,7 +164,7 @@ describe('ChannelsList', () => {
 
     it('shows tooltip and doesnt show delete button for contact form channels', () => {
         const onDelete = jest.fn()
-        renderWithRouter(
+        renderComponent(
             <ChannelsList
                 activeChannel={
                     {

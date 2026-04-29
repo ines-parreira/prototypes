@@ -1,8 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import BusinessHoursPage from '../BusinessHoursPage'
 import { BUSINESS_HOURS_BASE_URL } from '../constants'
@@ -26,7 +24,7 @@ describe('BusinessHoursPage', () => {
             }
         })
 
-        renderWithStoreAndQueryClientAndRouter(<BusinessHoursPage />, {})
+        render(<BusinessHoursPage />, { storeState: {} })
 
         expect(
             screen.queryByText('Custom Business Hours'),
@@ -35,21 +33,18 @@ describe('BusinessHoursPage', () => {
     })
 
     it('renders CustomBusinessHours when the feature flag is on', () => {
-        renderWithStoreAndQueryClientAndRouter(<BusinessHoursPage />, {})
+        render(<BusinessHoursPage />, { storeState: {} })
 
         expect(screen.getByText('Default Business Hours')).toBeInTheDocument()
         expect(screen.getByText('Custom Business Hours')).toBeInTheDocument()
     })
 
     it('should render the edit custom business hours page', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <BusinessHoursPage />,
-            {},
-            {
-                path: BUSINESS_HOURS_BASE_URL,
-                route: `${BUSINESS_HOURS_BASE_URL}/1`,
-            },
-        )
+        render(<BusinessHoursPage />, {
+            storeState: {},
+            path: BUSINESS_HOURS_BASE_URL,
+            initialEntries: [`${BUSINESS_HOURS_BASE_URL}/1`],
+        })
 
         expect(
             screen.getByText('Edit custom business hours'),

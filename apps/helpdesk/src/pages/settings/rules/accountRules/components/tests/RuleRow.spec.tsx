@@ -1,40 +1,50 @@
 import type { ComponentProps } from 'react'
 
-import { fireEvent, waitFor } from '@testing-library/react'
+import { render as testingRender } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
-import { account } from 'fixtures/account'
-import { billingState } from 'fixtures/billing'
 import { emptyManagedRule, emptyRule as ruleFixture } from 'fixtures/rule'
-import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { createRule, deleteRule } from 'models/rule/resources'
-import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
 import {
     ruleCreated,
     ruleDeleted,
     ruleUpdated,
 } from 'state/entities/rules/actions'
 import { ManagedRulesSlugs } from 'state/rules/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { RuleRow } from '../RuleRow'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('models/rule/resources')
-jest.mock('@repo/routing', () => ({
-    ...jest.requireActual('@repo/routing'),
-    history: {
-        push: jest.fn(),
-    },
-}))
 jest.mock('state/entities/rules/actions')
+const LocationPath = () => {
+    const location = useLocation()
 
+    return <output aria-label="Current path">{location.pathname}</output>
+}
+const defaultStore = {
+    currentUser: fromJS(user),
+    entities: {
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {},
+            },
+        },
+        ruleRecipes: {},
+    },
+}
+const render = (
+    ui: Parameters<typeof testingRender>[0],
+    options?: Parameters<typeof testingRender>[1],
+) =>
+    testingRender(ui, {
+        ...options,
+        storeState: options?.storeState ?? defaultStore,
+    })
 describe('<RuleRow />', () => {
     const ruleCreatedMock = ruleCreated as jest.MockedFunction<
         typeof ruleCreated
@@ -45,13 +55,11 @@ describe('<RuleRow />', () => {
     const ruleUpdatedMock = ruleUpdated as jest.MockedFunction<
         typeof ruleUpdated
     >
-
     const createRuleMock = createRule as jest.MockedFunction<typeof createRule>
     const deleteRuleMock = deleteRule as jest.MockedFunction<typeof deleteRule>
     const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
         typeof useAiAgentAccess
     >
-
     const minProps: ComponentProps<typeof RuleRow> = {
         rule: ruleFixture,
         canDuplicate: true,
@@ -60,78 +68,58 @@ describe('<RuleRow />', () => {
         shouldDisplayError: false,
         isSearching: false,
     }
-
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
-    const store = mockStore({
-        currentAccount: fromJS(account),
-        currentUser: fromJS(user),
-        billing: fromJS(billingState),
-        entities: {
-            ruleRecipes: {
-                [emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture,
-            },
-            helpCenter: helpCenterInitialState,
-        },
-    } as RootState)
-
     beforeEach(() => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
         })
+        ruleCreatedMock.mockReturnValue({ type: 'ruleCreated' } as never)
+        ruleDeletedMock.mockReturnValue({ type: 'ruleDeleted' } as never)
+        ruleUpdatedMock.mockReturnValue({ type: 'ruleUpdated' } as never)
     })
-
     afterEach(() => {
         jest.clearAllMocks()
     })
-
     it('should render a row with a rule', () => {
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <RuleRow {...minProps} />
-            </Provider>,
-        )
+        const { container } = render(<RuleRow {...minProps} />, {})
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render a row with a managed rule tab', () => {
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <RuleRow
-                    {...minProps}
-                    rule={{
-                        ...emptyManagedRule,
-                        settings: { slug: ManagedRulesSlugs.AutoCloseSpam },
-                    }}
-                />
-            </Provider>,
+        const { container } = render(
+            <RuleRow
+                {...minProps}
+                rule={{
+                    ...emptyManagedRule,
+                    settings: { slug: ManagedRulesSlugs.AutoCloseSpam },
+                }}
+            />,
+            {},
         )
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render a row with an error', () => {
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <RuleRow
-                    {...minProps}
-                    rule={{
-                        ...emptyManagedRule,
-                        settings: {
-                            slug: ManagedRulesSlugs.AutoReplyFAQ,
-                            help_center_id: 1,
-                        },
-                    }}
-                    shouldDisplayError={true}
-                />
-            </Provider>,
+        const { container } = render(
+            <RuleRow
+                {...minProps}
+                rule={{
+                    ...emptyManagedRule,
+                    settings: {
+                        slug: ManagedRulesSlugs.AutoReplyFAQ,
+                        help_center_id: 1,
+                    },
+                }}
+                shouldDisplayError={true}
+            />,
+            {},
         )
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should show description on hover', async () => {
-        const { getByText, queryByText } = renderWithRouter(
-            <Provider store={store}>
+        const { getByText, queryByText } = render(
+            <>
                 <RuleRow {...minProps} />)
-            </Provider>,
+            </>,
+            {},
         )
         fireEvent.mouseEnter(getByText(ruleFixture.name))
         await waitFor(() => {
@@ -141,11 +129,11 @@ describe('<RuleRow />', () => {
     })
     it('should not show description on hover if rule has no description', async () => {
         const rule = { ...ruleFixture, description: '' }
-
-        const { getByText, queryByText } = renderWithRouter(
-            <Provider store={store}>
+        const { getByText, queryByText } = render(
+            <>
                 <RuleRow {...minProps} />)
-            </Provider>,
+            </>,
+            {},
         )
         fireEvent.mouseEnter(getByText(rule.name))
         await waitFor(() => {
@@ -155,22 +143,30 @@ describe('<RuleRow />', () => {
     })
     it('should duplicate rule ', async () => {
         createRuleMock.mockResolvedValue(ruleFixture)
-        const { getByText } = renderWithRouter(
-            <Provider store={store}>
-                <RuleRow {...minProps} />)
-            </Provider>,
+        const { getByText } = render(
+            <>
+                <RuleRow {...minProps} />
+                <LocationPath />)
+            </>,
+            {},
         )
         fireEvent.click(getByText(/file_copy/i))
         await waitFor(() => {
             expect(ruleCreatedMock).toHaveBeenCalled()
         })
+        await waitFor(() => {
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                '/app/settings/rules/1',
+            )
+        })
     })
     it('should prompt confirm and then delete rule on click', async () => {
         deleteRuleMock.mockResolvedValue()
-        const { getByText } = renderWithRouter(
-            <Provider store={store}>
+        const { getByText } = render(
+            <>
                 <RuleRow {...minProps} />)
-            </Provider>,
+            </>,
+            {},
         )
         fireEvent.click(getByText(/delete/i))
         fireEvent.click(getByText(/confirm/i))
@@ -179,10 +175,11 @@ describe('<RuleRow />', () => {
         })
     })
     it('should deactivate on toggle button', async () => {
-        const { getByText, getByRole } = renderWithRouter(
-            <Provider store={store}>
+        const { getByText, getByRole } = render(
+            <>
                 <RuleRow {...minProps} />)
-            </Provider>,
+            </>,
+            {},
         )
         fireEvent.click(getByRole('checkbox'))
         fireEvent.click(getByText(/confirm/i))
@@ -195,10 +192,11 @@ describe('<RuleRow />', () => {
             ...ruleFixture,
             deactivated_datetime: '2020-01-01T00:00:00',
         }
-        const { getByRole } = renderWithRouter(
-            <Provider store={store}>
+        const { getByRole } = render(
+            <>
                 <RuleRow {...minProps} rule={deactivatedRule} />)
-            </Provider>,
+            </>,
+            {},
         )
         fireEvent.click(getByRole('checkbox'))
         await waitFor(() => {

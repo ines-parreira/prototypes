@@ -1,4 +1,4 @@
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
@@ -9,7 +9,6 @@ import type { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithStore } from 'utils/testing'
 
 import BusinessHoursDisplay from '../BusinessHoursDisplay'
 
@@ -27,7 +26,6 @@ const mockBusinessHoursData = {
         ],
     },
 }
-
 const renderComponent = ({
     businessHours,
 }: {
@@ -52,22 +50,15 @@ const renderComponent = ({
             ],
         }),
     }
-
-    return renderWithStore(
-        <QueryClientProvider client={queryClient}>
-            <BusinessHoursDisplay businessHours={businessHours} />
-        </QueryClientProvider>,
-        storeState,
-    )
+    return render(<BusinessHoursDisplay businessHours={businessHours} />, {
+        storeState: storeState,
+    })
 }
-
 const queryClient = mockQueryClient()
 const server = setupServer()
-
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
-
 beforeEach(() => {
     const listAccountSettingsMock = mockListAccountSettingsHandler(async () => {
         return HttpResponse.json({
@@ -76,20 +67,16 @@ beforeEach(() => {
     })
     server.use(listAccountSettingsMock.handler)
 })
-
 afterEach(() => {
     server.resetHandlers()
     queryClient.removeQueries()
 })
-
 afterAll(() => {
     server.close()
 })
-
 describe('BusinessHoursDisplay', () => {
     it('should render default business hours when no custom business hours provided', async () => {
         renderComponent()
-
         await waitFor(() => {
             expect(screen.getByText('Default')).toBeInTheDocument()
             expect(
@@ -97,7 +84,6 @@ describe('BusinessHoursDisplay', () => {
             ).toBeInTheDocument()
         })
     })
-
     it('should render custom business hours when provided', () => {
         const customBusinessHours = [
             {
@@ -106,20 +92,17 @@ describe('BusinessHoursDisplay', () => {
                 to_time: '18:00',
             },
         ]
-
         renderComponent({
             businessHours: {
                 business_hours: customBusinessHours,
                 timezone: 'Europe/Bucharest',
             },
         })
-
         expect(screen.getByText('Custom')).toBeInTheDocument()
         expect(
             screen.getByText('Everyday, 8:00 AM-6:00 PM'),
         ).toBeInTheDocument()
     })
-
     it('should handle unknown day values gracefully', () => {
         const unknownDayBusinessHours = [
             {
@@ -128,14 +111,12 @@ describe('BusinessHoursDisplay', () => {
                 to_time: '20:00',
             },
         ]
-
         renderComponent({
             businessHours: {
                 business_hours: unknownDayBusinessHours,
                 timezone: 'Europe/Bucharest',
             },
         })
-
         expect(screen.getByText('Custom')).toBeInTheDocument()
         expect(screen.getByText('12:00 PM-8:00 PM')).toBeInTheDocument()
     })

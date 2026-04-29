@@ -5,14 +5,12 @@ import {
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { AxiosError, AxiosHeaders } from 'axios'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { useLocation } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 
@@ -37,11 +35,10 @@ import {
     shouldPayWithShopify,
 } from 'state/currentAccount/selectors'
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { useBillingPlans } from '../../../hooks/useBillingPlan'
+import useProductCancellations from '../../../hooks/useProductCancellations'
 import BillingFrequencyView from '../BillingFrequencyView'
 
 jest.mock('../../../components/ConfirmChangesModal', () => ({
@@ -51,26 +48,22 @@ jest.mock('../../../components/ConfirmChangesModal', () => ({
         )
         .mockConfirmChangesModalComponent(),
 }))
-
 jest.mock('state/currentAccount/selectors', () => ({
     ...jest.requireActual('state/currentAccount/selectors'),
     shouldPayWithShopify: jest.fn(),
     getShopifyBillingStatus: jest.fn(),
 }))
-
 jest.mock('../../../hooks/useIsPaymentEnabled', () => ({
     useIsPaymentEnabled: jest.fn(() => true),
 }))
-
 jest.mock('../../../hooks/useBillingPlan', () => ({
     useBillingPlans: jest.fn(),
 }))
-
+jest.mock('../../../hooks/useProductCancellations')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
-
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
@@ -84,12 +77,10 @@ jest.mock('@repo/logging', () => ({
             'billing-payment-information-frequency-changed',
     },
 }))
-
 jest.mock('@repo/billing', () => ({
     ...jest.requireActual('@repo/billing'),
     useBillingState: jest.fn(),
 }))
-
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     toast: {
@@ -97,33 +88,29 @@ jest.mock('@gorgias/axiom', () => ({
         error: jest.fn(),
     },
 }))
-
-const mockHistoryPush = jest.fn()
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
-    useParams: jest.fn().mockReturnValue({ selectedProduct: 'helpdesk' }),
-    useHistory: () => ({ push: mockHistoryPush }),
-}))
-
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('state/notifications/actions')
-
 const mockUseFlag = useFlag as jest.Mock
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseBillingPlans = assumeMock(useBillingPlans)
+const mockUseProductCancellations = assumeMock(useProductCancellations)
 const mockReportError = assumeMock(reportError)
 const mockToastSuccess = toast.success as jest.Mock
 const mockToastError = toast.error as jest.Mock
 const mockShouldPayWithShopify = shouldPayWithShopify as unknown as jest.Mock
 const mockGetShopifyBillingStatus =
     getShopifyBillingStatus as unknown as jest.Mock
+const billingFrequencyRoute = `${BILLING_BASE_PATH}/manage/helpdesk`
+const LocationPath = () => {
+    const location = useLocation()
 
+    return <output aria-label="Current path">{location.pathname}</output>
+}
 type CustomerPaymentMethods = {
     credit_card?: unknown
     ach_debit_bank_account?: unknown
     ach_credit_bank_account?: unknown
 }
-
 function setBillingStateWithPaymentMethods(customer: CustomerPaymentMethods) {
     mockUseBillingState.mockReturnValue({
         isLoading: false,
@@ -139,7 +126,6 @@ function setBillingStateWithPaymentMethods(customer: CustomerPaymentMethods) {
         },
     } as any)
 }
-
 function makeGorgiasApiError(msg: string) {
     const headers = new AxiosHeaders()
     const error = new AxiosError(
@@ -155,22 +141,16 @@ function makeGorgiasApiError(msg: string) {
     }
     return error
 }
-
 function makePendingInvoiceError() {
     return makeGorgiasApiError(
         'Proration cannot be performed until all pending invoices are resolved.',
     )
 }
-
 function makeVersionConflictError() {
     return makeGorgiasApiError(
         'subscription has been modified since it was last retrieved',
     )
 }
-
-const queryClient = mockQueryClient()
-const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
-
 const defaultStore: DeepPartial<RootState> = {
     billing: fromJS(billingState),
     currentAccount: fromJS({
@@ -187,13 +167,11 @@ const defaultStore: DeepPartial<RootState> = {
         },
     }),
 }
-
 function setFeatureFlags(flags: Partial<Record<FeatureFlagKey, boolean>>) {
     mockUseFlag.mockImplementation(
         (flag: FeatureFlagKey) => flags[flag] ?? false,
     )
 }
-
 function mockPlansHook(
     overrides: {
         updateSubscription?: jest.Mock
@@ -235,33 +213,39 @@ function mockPlansHook(
     } as any)
     return { updateSubscription }
 }
-
 function renderView(
     isTrialing = false,
-    propOverrides: { dispatchBillingError?: jest.Mock } = {},
+    propOverrides: {
+        dispatchBillingError?: jest.Mock
+    } = {},
 ) {
-    return renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-            <Provider store={mockedStore(defaultStore)}>
-                <BillingFrequencyView
-                    isTrialing={isTrialing}
-                    isCurrentSubscriptionCanceled={false}
-                    periodEnd="2021-01-01"
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={
-                        propOverrides.dispatchBillingError ?? jest.fn()
-                    }
-                />
-            </Provider>
-        </QueryClientProvider>,
+    return render(
+        <>
+            <BillingFrequencyView
+                isTrialing={isTrialing}
+                isCurrentSubscriptionCanceled={false}
+                periodEnd="2021-01-01"
+                contactBilling={jest.fn()}
+                dispatchBillingError={
+                    propOverrides.dispatchBillingError ?? jest.fn()
+                }
+            />
+            <LocationPath />
+        </>,
+        {
+            initialEntries: [billingFrequencyRoute],
+            path: `${BILLING_BASE_PATH}/:section?/:selectedProduct?`,
+            storeState: defaultStore,
+        },
     )
 }
-
 describe('BillingFrequencyView submit flow', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        queryClient.clear()
         setBillingStateWithPaymentMethods({ credit_card: { last4: '4242' } })
+        mockUseProductCancellations.mockReturnValue({
+            data: new Map(),
+        } as any)
         mockShouldPayWithShopify.mockReturnValue(false)
         mockGetShopifyBillingStatus.mockReturnValue(ShopifyBillingStatus.Active)
         setFeatureFlags({
@@ -269,19 +253,16 @@ describe('BillingFrequencyView submit flow', () => {
             [FeatureFlagKey.MidCycleUpgradeBillingLogic]: false,
         })
     })
-
     describe('flag off (direct CTA)', () => {
         it('clicking Update Subscription calls updateSubscription, shows success toast, and redirects to BILLING_BASE_PATH', async () => {
             const user = userEvent.setup()
             const { updateSubscription } = mockPlansHook()
             renderView()
-
             await act(() =>
                 user.click(
                     screen.getByRole('button', { name: 'Update Subscription' }),
                 ),
             )
-
             await waitFor(() => {
                 expect(updateSubscription).toHaveBeenCalledTimes(1)
             })
@@ -289,27 +270,25 @@ describe('BillingFrequencyView submit flow', () => {
                 'Your subscription has successfully been updated.',
                 expect.objectContaining({ duration: 5000 }),
             )
-            expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                BILLING_BASE_PATH,
+            )
         })
-
         it('redirects to BILLING_PAYMENT_CARD_PATH when trialing', async () => {
             const user = userEvent.setup()
             mockPlansHook()
             renderView(true)
-
             await act(() =>
                 user.click(
                     screen.getByRole('button', { name: 'Update Subscription' }),
                 ),
             )
-
             await waitFor(() => {
-                expect(mockHistoryPush).toHaveBeenCalledWith(
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
                     BILLING_PAYMENT_CARD_PATH,
                 )
             })
         })
-
         it('reports the error when updateSubscription rejects, without redirecting (legacy SummaryFooter path — no error toast)', async () => {
             const user = userEvent.setup()
             const updateSubscription = jest
@@ -317,20 +296,19 @@ describe('BillingFrequencyView submit flow', () => {
                 .mockRejectedValue(new Error('API down'))
             mockPlansHook({ updateSubscription })
             renderView()
-
             await act(() =>
                 user.click(
                     screen.getByRole('button', { name: 'Update Subscription' }),
                 ),
             )
-
             await waitFor(() => {
                 expect(mockReportError).toHaveBeenCalledWith(expect.any(Error))
             })
             expect(mockToastError).not.toHaveBeenCalled()
-            expect(mockHistoryPush).not.toHaveBeenCalled()
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                billingFrequencyRoute,
+            )
         })
-
         it('does not dispatch billing-state load errors when the mid-cycle upgrade flag is off', () => {
             const dispatchBillingError = jest.fn()
             mockUseBillingState.mockReturnValue({
@@ -341,22 +319,18 @@ describe('BillingFrequencyView submit flow', () => {
             } as any)
             mockPlansHook()
             renderView(false, { dispatchBillingError })
-
             expect(dispatchBillingError).not.toHaveBeenCalled()
         })
-
         it('passes the real dispatchBillingError to useBillingPlans (legacy path owns update-error toast)', () => {
             const dispatchBillingError = jest.fn()
             mockPlansHook()
             renderView(false, { dispatchBillingError })
-
             const { dispatchBillingError: forwarded } =
                 mockUseBillingPlans.mock.calls[0][0]
             forwarded(new Error('update failed'))
             expect(dispatchBillingError).toHaveBeenCalledTimes(1)
         })
     })
-
     describe('flag on (modal confirm)', () => {
         beforeEach(() => {
             setFeatureFlags({
@@ -364,7 +338,6 @@ describe('BillingFrequencyView submit flow', () => {
                 [FeatureFlagKey.MidCycleUpgradeBillingLogic]: true,
             })
         })
-
         it('surfaces billing-state load errors via dispatchBillingError', () => {
             const dispatchBillingError = jest.fn()
             const fetchError = new Error('billing state unavailable')
@@ -376,40 +349,32 @@ describe('BillingFrequencyView submit flow', () => {
             } as any)
             mockPlansHook()
             renderView(false, { dispatchBillingError })
-
             expect(dispatchBillingError).toHaveBeenCalledWith(fetchError)
         })
-
         it('passes a no-op dispatchBillingError to useBillingPlans so update failures do not double-toast with handleSubmit', () => {
             const dispatchBillingError = jest.fn()
             mockPlansHook()
             renderView(false, { dispatchBillingError })
-
             const { dispatchBillingError: forwarded } =
                 mockUseBillingPlans.mock.calls[0][0]
             forwarded(new Error('update failed'))
             expect(dispatchBillingError).not.toHaveBeenCalled()
         })
-
         it('closes the modal and redirects on successful confirm', async () => {
             const user = userEvent.setup()
             const { updateSubscription } = mockPlansHook()
             renderView()
-
             await act(() =>
                 user.click(
                     screen.getByRole('button', { name: 'Update Subscription' }),
                 ),
             )
-
             expect(screen.getByText('confirm modal open')).toBeInTheDocument()
-
             await act(() =>
                 user.click(
                     screen.getByRole('button', { name: 'confirm changes' }),
                 ),
             )
-
             await waitFor(() => {
                 expect(updateSubscription).toHaveBeenCalledTimes(1)
             })
@@ -418,9 +383,10 @@ describe('BillingFrequencyView submit flow', () => {
                     screen.getByText('confirm modal closed'),
                 ).toBeInTheDocument()
             })
-            expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                BILLING_BASE_PATH,
+            )
         })
-
         describe.each([
             [
                 'pending invoice',
@@ -432,7 +398,7 @@ describe('BillingFrequencyView submit flow', () => {
                 makeVersionConflictError,
                 'version conflict error',
             ],
-        ])('%s blocking state', (_label, makeError, bannerText) => {
+        ])('%s blocking state', (_name, makeError, bannerText) => {
             async function submitViaModal(
                 user: ReturnType<typeof userEvent.setup>,
             ) {
@@ -451,7 +417,6 @@ describe('BillingFrequencyView submit flow', () => {
                     ),
                 )
             }
-
             it('surfaces the typed error banner and skips toast + reportError', async () => {
                 const user = userEvent.setup()
                 mockPlansHook({
@@ -460,16 +425,13 @@ describe('BillingFrequencyView submit flow', () => {
                         .mockRejectedValue(makeError()),
                 })
                 renderView()
-
                 await submitViaModal(user)
-
                 await waitFor(() => {
                     expect(screen.getByText(bannerText)).toBeInTheDocument()
                 })
                 expect(mockReportError).not.toHaveBeenCalled()
                 expect(mockToastError).not.toHaveBeenCalled()
             })
-
             it('clears the banner when the modal is closed and reopened', async () => {
                 const user = userEvent.setup()
                 mockPlansHook({
@@ -478,12 +440,10 @@ describe('BillingFrequencyView submit flow', () => {
                         .mockRejectedValue(makeError()),
                 })
                 renderView()
-
                 await submitViaModal(user)
                 await waitFor(() => {
                     expect(screen.getByText(bannerText)).toBeInTheDocument()
                 })
-
                 await act(() =>
                     user.click(
                         screen.getByRole('button', { name: 'close modal' }),
@@ -496,11 +456,9 @@ describe('BillingFrequencyView submit flow', () => {
                         }),
                     ),
                 )
-
                 expect(screen.queryByText(bannerText)).not.toBeInTheDocument()
             })
         })
-
         it('non-typed errors: reports + dispatches billing-error notification, keeps modal open, no redirect, no banners', async () => {
             const user = userEvent.setup()
             const dispatchBillingError = jest.fn()
@@ -509,7 +467,6 @@ describe('BillingFrequencyView submit flow', () => {
                 updateSubscription: jest.fn().mockRejectedValue(apiError),
             })
             renderView(false, { dispatchBillingError })
-
             await act(() =>
                 user.click(
                     screen.getByRole('button', { name: 'Update Subscription' }),
@@ -520,14 +477,15 @@ describe('BillingFrequencyView submit flow', () => {
                     screen.getByRole('button', { name: 'confirm changes' }),
                 ),
             )
-
             await waitFor(() => {
                 expect(mockReportError).toHaveBeenCalledWith(apiError)
             })
             expect(dispatchBillingError).toHaveBeenCalledWith(apiError)
             expect(mockToastError).not.toHaveBeenCalled()
             expect(screen.getByText('confirm modal open')).toBeInTheDocument()
-            expect(mockHistoryPush).not.toHaveBeenCalled()
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                billingFrequencyRoute,
+            )
             expect(
                 screen.queryByText('pending invoice error'),
             ).not.toBeInTheDocument()
@@ -535,7 +493,6 @@ describe('BillingFrequencyView submit flow', () => {
                 screen.queryByText('version conflict error'),
             ).not.toBeInTheDocument()
         })
-
         describe('payment method gating', () => {
             type Case = {
                 name: string
@@ -543,7 +500,6 @@ describe('BillingFrequencyView submit flow', () => {
                 trialing?: boolean
                 shouldFlag: boolean
             }
-
             const cases: Case[] = [
                 {
                     name: 'active stripe sub without card or ACH flags missing',
@@ -584,13 +540,11 @@ describe('BillingFrequencyView submit flow', () => {
                     shouldFlag: false,
                 },
             ]
-
             it.each(cases)('$name', async ({ setup, trialing, shouldFlag }) => {
                 const user = userEvent.setup()
                 setup()
                 mockPlansHook()
                 renderView(trialing)
-
                 await act(() =>
                     user.click(
                         screen.getByRole('button', {
@@ -598,7 +552,6 @@ describe('BillingFrequencyView submit flow', () => {
                         }),
                     ),
                 )
-
                 if (shouldFlag) {
                     expect(
                         screen.getByText('payment method missing'),

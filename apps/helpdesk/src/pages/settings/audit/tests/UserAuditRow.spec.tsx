@@ -1,19 +1,14 @@
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { events } from 'fixtures/event'
 import type { EventType } from 'models/event/types'
 import { EventObjectType } from 'models/event/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import UserAuditRow from '../UserAuditRow'
 
 global.Math.random = () => 0.8
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     agents: fromJS({
         all: [
@@ -23,60 +18,50 @@ const defaultState: Partial<RootState> = {
         ],
     }),
 } as RootState
-
 describe('<UserAuditRow/>', () => {
     it('should render with a user, event type and object type', () => {
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <UserAuditRow eventItem={events[1]} />
-            </Provider>,
-        )
-
+        const { container } = render(<UserAuditRow eventItem={events[1]} />, {
+            storeState: defaultState,
+        })
         expect(container).toMatchSnapshot()
     })
-
     it('should not render user when no agents are in store', () => {
-        const { container } = renderWithRouter(
-            <Provider store={mockStore({ agents: fromJS({}) })}>
-                <UserAuditRow eventItem={events[1]} />
-            </Provider>,
-        )
-
+        const { container } = render(<UserAuditRow eventItem={events[1]} />, {
+            storeState: { agents: fromJS({}) },
+        })
         expect(container).toMatchSnapshot()
     })
-
     it.each([
         EventObjectType.Ticket,
         EventObjectType.Customer,
         EventObjectType.User,
     ])('should render with a link to %s object type', (objectType) => {
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <UserAuditRow
-                    eventItem={{
-                        ...events[0],
-                        object_type: objectType,
-                        type: '' as EventType,
-                    }}
-                />
-            </Provider>,
+        const { container } = render(
+            <UserAuditRow
+                eventItem={{
+                    ...events[0],
+                    object_type: objectType,
+                    type: '' as EventType,
+                }}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(container).toMatchSnapshot()
     })
-
     it('should fallback to user email when user has no name set', () => {
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <UserAuditRow
-                    eventItem={{
-                        ...events[0],
-                        user_id: 3,
-                    }}
-                />
-            </Provider>,
+        const { container } = render(
+            <UserAuditRow
+                eventItem={{
+                    ...events[0],
+                    user_id: 3,
+                }}
+            />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(container).toMatchSnapshot()
     })
 })

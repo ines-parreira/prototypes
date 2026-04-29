@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import { SYSTEM_READ_ONLY_MANAGED_TYPES } from 'custom-fields/constants'
@@ -10,7 +10,6 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
-import { renderWithRouter } from 'utils/testing'
 
 import Row from '../Row'
 
@@ -70,7 +69,7 @@ describe('<Row />', () => {
                 canReorder,
             }
 
-            renderWithRouter(
+            render(
                 <table>
                     <tbody>
                         <Row {...props} />
@@ -104,7 +103,7 @@ describe('<Row />', () => {
             },
         }
 
-        renderWithRouter(
+        render(
             <table>
                 <tbody>
                     <Row {...props} />
@@ -120,7 +119,7 @@ describe('<Row />', () => {
             customField: aiManagedTicketInputFieldDefinition,
         }
 
-        renderWithRouter(
+        render(
             <table>
                 <tbody>
                     <Row {...props} />
@@ -151,7 +150,7 @@ describe('<Row />', () => {
                 },
             }
 
-            const { queryByTitle } = renderWithRouter(
+            const { queryByTitle } = render(
                 <table>
                     <tbody>
                         <Row {...props} />
@@ -185,7 +184,7 @@ describe('<Row />', () => {
                 },
             }
 
-            const { queryByTitle } = renderWithRouter(
+            const { queryByTitle } = render(
                 <table>
                     <tbody>
                         <Row {...props} />
@@ -214,7 +213,7 @@ describe('<Row />', () => {
             },
         }
 
-        const { findByTitle, findByText } = renderWithRouter(
+        const { findByTitle, findByText } = render(
             <table>
                 <tbody>
                     <Row {...props} />
@@ -274,7 +273,7 @@ describe('<Row />', () => {
             },
         }
 
-        const { findByTitle } = renderWithRouter(
+        const { findByTitle } = render(
             <table>
                 <tbody>
                     <Row {...props} />

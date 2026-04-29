@@ -1,14 +1,9 @@
 import type { ComponentProps } from 'react'
 
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { emptyRule as ruleFixture } from 'fixtures/rule'
-import { user } from 'fixtures/users'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { RuleFormEditor } from '../RuleFormEditor'
 
@@ -16,37 +11,30 @@ describe('<RuleFormEditor />', () => {
     const minProps: ComponentProps<typeof RuleFormEditor> = {
         rule: ruleFixture,
     }
-
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
-    const store = mockStore({
-        entities: {},
-        currentUser: fromJS(user),
-    } as RootState)
+    const renderComponent = (props: ComponentProps<typeof RuleFormEditor>) =>
+        render(<RuleFormEditor {...props} />, {
+            storeState: {
+                currentUser: fromJS({
+                    role: {
+                        name: 'agent',
+                    },
+                }),
+                entities: {
+                    rules: {},
+                },
+            },
+        })
 
     it('should render editor for rule', () => {
-        const { baseElement } = renderWithRouter(
-            <Provider store={store}>
-                <RuleFormEditor {...minProps} />
-            </Provider>,
-        )
-
+        const { baseElement } = renderComponent(minProps)
         expect(baseElement.firstChild).toMatchSnapshot()
     })
-
     it('should render editor for creating rule', () => {
         const props = {
             ...minProps,
             rule: undefined,
         }
-
-        const { baseElement } = renderWithRouter(
-            <Provider store={store}>
-                <RuleFormEditor {...props} />
-            </Provider>,
-        )
-
+        const { baseElement } = renderComponent(props)
         expect(baseElement.firstChild).toMatchSnapshot()
     })
 })

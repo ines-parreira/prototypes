@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import type { StoreInformationFormProps } from '../StoreInformationForm'
 import { StoreInformationForm } from '../StoreInformationForm'
 
-const renderWithRouter = (element: React.ReactElement) => {
+const renderComponent = (element: React.ReactElement) => {
     return render(element, { wrapper: BrowserRouter })
 }
 
@@ -27,7 +27,7 @@ describe('<StoreInformationForm />', () => {
     }
 
     it('should render store information with correct shop name', () => {
-        renderWithRouter(<StoreInformationForm {...minProps} />)
+        renderComponent(<StoreInformationForm {...minProps} />)
 
         expect(screen.getByText('Store Information')).toBeInTheDocument()
         expect(screen.getByDisplayValue('test-store')).toBeDisabled()
@@ -36,7 +36,7 @@ describe('<StoreInformationForm />', () => {
     })
 
     it('should handle customer notes sync toggle change', () => {
-        renderWithRouter(
+        renderComponent(
             <StoreInformationForm {...minProps} syncCustomerNotes={true} />,
         )
 
@@ -50,7 +50,7 @@ describe('<StoreInformationForm />', () => {
     })
 
     it('should render customer matching toggle with correct state', () => {
-        renderWithRouter(
+        renderComponent(
             <StoreInformationForm
                 {...minProps}
                 defaultAddressPhoneMatchingEnabled={true}
@@ -67,7 +67,7 @@ describe('<StoreInformationForm />', () => {
     })
 
     it('should render link to integrations settings', () => {
-        renderWithRouter(<StoreInformationForm {...minProps} />)
+        renderComponent(<StoreInformationForm {...minProps} />)
 
         const link = screen.getByText('My Apps.')
         expect(link).toHaveAttribute(

@@ -1,4 +1,5 @@
 import { PRODUCT_SUBSCRIPTION_DESCRIPTION } from '@repo/billing'
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -7,7 +8,6 @@ import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo, getProductLabel } from 'models/billing/utils'
 import type { PlanSubscriptionDescriptionProps } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 describe('PlanSubscriptionDescription', () => {
     const setSelectedPlanMock = jest.fn()
@@ -34,9 +34,7 @@ describe('PlanSubscriptionDescription', () => {
     } as PlanSubscriptionDescriptionProps
 
     it('should render correctly', () => {
-        renderWithStoreAndQueryClientProvider(
-            <PlanSubscriptionDescription {...props} />,
-        )
+        render(<PlanSubscriptionDescription {...props} />)
 
         expect(
             screen.getByText('Ready to upgrade with Convert', { exact: false }),
@@ -56,7 +54,7 @@ describe('PlanSubscriptionDescription', () => {
     })
 
     it('should render correctly for enterprise plan', async () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <PlanSubscriptionDescription {...props} isEnterprisePlan={true} />,
         )
 
@@ -97,7 +95,7 @@ describe('PlanSubscriptionDescription', () => {
                 productType,
             }
             const user = userEvent.setup()
-            const { container } = renderWithStoreAndQueryClientProvider(
+            const { container } = render(
                 <PlanSubscriptionDescription {...testProps} />,
             )
 
@@ -119,9 +117,7 @@ describe('PlanSubscriptionDescription', () => {
     )
 
     it('should render correctly for yearly plan', () => {
-        renderWithStoreAndQueryClientProvider(
-            <PlanSubscriptionDescription {...props} isYearlyPlan={true} />,
-        )
+        render(<PlanSubscriptionDescription {...props} isYearlyPlan={true} />)
 
         expect(
             screen.getByText('Contact our team to subscribe to a custom plan.'),

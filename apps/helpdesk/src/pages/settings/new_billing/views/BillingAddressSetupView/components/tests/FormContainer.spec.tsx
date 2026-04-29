@@ -1,52 +1,48 @@
 import client from '@repo/api-resources'
 import { BILLING_PAYMENT_PATH } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { AddressElement, useElements } from '@stripe/react-stripe-js'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { act } from 'react-dom/test-utils'
+import { useLocation } from 'react-router-dom'
 
 import { FormContainer } from 'pages/settings/new_billing/views/BillingAddressSetupView/components/FormContainer'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('@repo/logging')
 jest.mock('@stripe/stripe-js')
 jest.mock('@stripe/react-stripe-js')
-
 const logEventMock = assumeMock(logEvent)
-
 let handleAddressChange: (event: StripeAddressElementChangeEvent) => any
-
 assumeMock(AddressElement).mockImplementation(({ onChange }) => {
     handleAddressChange = onChange ?? (() => {})
-
     return <div data-testid="address-element" />
 })
-
 const mockAddressValue = (event: Partial<StripeAddressElementChangeEvent>) => {
     assumeMock(useElements).mockReturnValue({
         getElement: jest.fn().mockReturnValue({
             getValue: jest.fn().mockResolvedValue(event),
         }),
     } as any)
-
     act(() => {
         handleAddressChange(event as any)
     })
 }
-
 const mockedServer = new MockAdapter(client)
+const LocationPath = () => {
+    const location = useLocation()
 
+    return <span data-testid="location-path">{location.pathname}</span>
+}
 describe('FormContainer', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         logEventMock.mockClear()
         mockedServer.resetHistory()
     })
-
     const shipping = {
         name: 'John Doe',
         address: {
@@ -59,24 +55,22 @@ describe('FormContainer', () => {
         },
         phone: '123456789',
     }
-
     it('should submit valid billing address', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
-
         const user = userEvent.setup()
-        const { history } = renderWithStoreAndQueryClientAndRouter(
-            <FormContainer
-                billingInformation={{
-                    email: 'example@gorgias.com',
-                    shipping,
-                }}
-            />,
+        render(
+            <>
+                <LocationPath />
+                <FormContainer
+                    billingInformation={{
+                        email: 'example@gorgias.com',
+                        shipping,
+                    }}
+                />
+            </>,
         )
-
         mockAddressValue({ complete: true, value: shipping })
-
-        expect(history.location.pathname).toBe('/')
-
+        expect(screen.getByTestId('location-path')).toHaveTextContent('/')
         await act(() =>
             user.click(
                 screen.getByRole('button', {
@@ -84,16 +78,15 @@ describe('FormContainer', () => {
                 }),
             ),
         )
-
-        expect(history.location.pathname).toBe(BILLING_PAYMENT_PATH)
+        expect(screen.getByTestId('location-path')).toHaveTextContent(
+            BILLING_PAYMENT_PATH,
+        )
     })
-
     describe('BillingPaymentInformationSaveBillingInformationClicked tracking', () => {
         it('should track event when Save Billing Information button is clicked', async () => {
             mockedServer.onPut('/api/billing/contact/').reply(200, {})
-
             const user = userEvent.setup()
-            renderWithStoreAndQueryClientAndRouter(
+            render(
                 <FormContainer
                     billingInformation={{
                         email: 'example@gorgias.com',
@@ -101,11 +94,8 @@ describe('FormContainer', () => {
                     }}
                 />,
             )
-
             mockAddressValue({ complete: true, value: shipping })
-
             logEventMock.mockClear()
-
             await act(() =>
                 user.click(
                     screen.getByRole('button', {
@@ -113,7 +103,6 @@ describe('FormContainer', () => {
                     }),
                 ),
             )
-
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.BillingPaymentInformationSaveBillingInformationClicked,
             )

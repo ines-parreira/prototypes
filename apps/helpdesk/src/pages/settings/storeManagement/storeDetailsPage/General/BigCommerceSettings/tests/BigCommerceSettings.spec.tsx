@@ -1,7 +1,7 @@
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import type { BigCommerceIntegration } from 'models/integration/types'
-import { renderWithRouter } from 'utils/testing'
 
 import * as Utils from '../../../../../../integrations/integration/components/bigcommerce/Utils'
 import BigCommerceSettings from '../BigCommerceSettings'
@@ -51,7 +51,7 @@ describe('BigCommerceSettings', () => {
     })
 
     it('renders store information and action buttons', () => {
-        renderWithRouter(
+        render(
             <BigCommerceSettings
                 integration={mockIntegration}
                 onDeleteIntegration={onDeleteIntegration}
@@ -63,7 +63,7 @@ describe('BigCommerceSettings', () => {
     })
 
     it('handles delete integration', () => {
-        renderWithRouter(
+        render(
             <BigCommerceSettings
                 integration={mockIntegration}
                 onDeleteIntegration={onDeleteIntegration}
@@ -80,7 +80,7 @@ describe('BigCommerceSettings', () => {
             deactivated_datetime: '2024-01-01T00:00:00Z',
         }
 
-        renderWithRouter(
+        render(
             <BigCommerceSettings
                 integration={deactivatedIntegration}
                 onDeleteIntegration={onDeleteIntegration}
@@ -99,7 +99,7 @@ describe('BigCommerceSettings', () => {
             },
         }
 
-        renderWithRouter(
+        render(
             <BigCommerceSettings
                 integration={integrationNeedingScopeUpdate}
                 onDeleteIntegration={onDeleteIntegration}
@@ -115,7 +115,7 @@ describe('BigCommerceSettings', () => {
             deactivated_datetime: '2024-01-01T00:00:00Z',
         }
 
-        renderWithRouter(
+        render(
             <BigCommerceSettings
                 integration={deactivatedIntegration}
                 onDeleteIntegration={onDeleteIntegration}

@@ -1,3 +1,5 @@
+import { render } from '@repo/testing'
+
 import HelpCenterEditModalFooter from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader'
 import HelpCenterEditor from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor'
@@ -7,7 +9,6 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import HelpCenterArticleModalBasicViewContent from '../HelpCenterArticleModalBasicViewContent'
 
@@ -106,10 +107,9 @@ describe('HelpCenterArticleModalBasicViewContent', () => {
             } as any,
         }
 
-        return renderWithStoreAndQueryClientProvider(
-            <HelpCenterArticleModalBasicViewContent {...props} />,
-            initialState,
-        )
+        return render(<HelpCenterArticleModalBasicViewContent {...props} />, {
+            storeState: initialState,
+        })
     }
 
     beforeEach(() => {

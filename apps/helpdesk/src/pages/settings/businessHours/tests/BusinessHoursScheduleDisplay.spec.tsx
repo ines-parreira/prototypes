@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { TimeFormatType } from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -6,7 +6,6 @@ import { fromJS } from 'immutable'
 
 import { UserSettingType } from 'config/types/user'
 import { useTextOverflow } from 'pages/common/hooks/useTextOverflow'
-import { renderWithStore } from 'utils/testing'
 
 import BusinessHoursScheduleDisplay from '../BusinessHoursScheduleDisplay'
 
@@ -36,7 +35,7 @@ const renderComponent = ({
         }),
     }
 
-    return renderWithStore(
+    return render(
         <BusinessHoursScheduleDisplay
             businessHoursConfig={{
                 business_hours: [
@@ -54,7 +53,7 @@ const renderComponent = ({
                 timezone: 'UTC',
             }}
         />,
-        storeState as any,
+        { storeState: storeState as any },
     )
 }
 

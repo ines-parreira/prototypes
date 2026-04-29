@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
@@ -9,7 +10,6 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import type { MappedFormSLAPolicy } from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import { SLAFormView } from '../SLAFormView'
 
@@ -78,7 +78,7 @@ describe('SLAFormView', () => {
     })
 
     it('renders the form', () => {
-        renderWithQueryClientAndRouter(<SLAFormView {...defaultProps} />)
+        render(<SLAFormView {...defaultProps} />)
 
         expect(screen.getByDisplayValue('Foo SLA')).toBeInTheDocument()
         expect(
@@ -90,7 +90,7 @@ describe('SLAFormView', () => {
     })
 
     it('renders the delete button when policy is provided', () => {
-        renderWithQueryClientAndRouter(
+        render(
             <SLAFormView
                 {...defaultProps}
                 policy={defaultValues as unknown as MappedFormSLAPolicy}

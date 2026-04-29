@@ -1,8 +1,7 @@
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import { ConditionsSelectBox } from '../ConditionsSelectBox'
 import { makeConditionItem } from '../types'
@@ -70,7 +69,7 @@ function renderWithForm(
     props: { maxSelections?: number } = {},
     defaultConditions: ReturnType<typeof makeConditionItem>[] = [],
 ) {
-    return renderWithQueryClientAndRouter(
+    return render(
         <Form
             defaultValues={{
                 conditions: defaultConditions,

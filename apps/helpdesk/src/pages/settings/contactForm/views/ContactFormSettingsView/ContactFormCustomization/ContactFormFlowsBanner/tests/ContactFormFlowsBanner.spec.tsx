@@ -1,21 +1,16 @@
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { billingState } from 'fixtures/billing'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
 import type { RootState } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import ContactFormFlowsBanner from '../ContactFormFlowsBanner'
 
 jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
-
 const mockUseContactFormAutomationSettings =
     useContactFormAutomationSettings as jest.Mock
-const mockStore = configureMockStore()
-
 describe('<ContactFormFlowsBanner />', () => {
     const defaultState: Partial<RootState> = {
         billing: fromJS(billingState),
@@ -24,26 +19,22 @@ describe('<ContactFormFlowsBanner />', () => {
         contactFormId: 123,
         shopName: 'example-shop',
     }
-
     beforeEach(() => {
         jest.resetAllMocks()
     })
-
     it('should render banner if flows are disabled', () => {
         mockUseContactFormAutomationSettings.mockReturnValue({
             automationSettings: CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
             isFetchPending: false,
         })
-
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <ContactFormFlowsBanner {...mockProps} />
-            </Provider>,
+        const { container } = render(
+            <ContactFormFlowsBanner {...mockProps} />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(container).not.toBeEmptyDOMElement()
     })
-
     it('should not render if flows are enabled', () => {
         mockUseContactFormAutomationSettings.mockReturnValue({
             automationSettings: {
@@ -52,28 +43,25 @@ describe('<ContactFormFlowsBanner />', () => {
             },
             isFetchPending: false,
         })
-
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <ContactFormFlowsBanner {...mockProps} />
-            </Provider>,
+        const { container } = render(
+            <ContactFormFlowsBanner {...mockProps} />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(container).toBeEmptyDOMElement()
     })
-
     it('should not render banner if AI Agent settings are not loaded', () => {
         mockUseContactFormAutomationSettings.mockReturnValue({
             automationSettings: CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
             isFetchPending: true,
         })
-
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <ContactFormFlowsBanner {...mockProps} />
-            </Provider>,
+        const { container } = render(
+            <ContactFormFlowsBanner {...mockProps} />,
+            {
+                storeState: defaultState,
+            },
         )
-
         expect(container).toBeEmptyDOMElement()
     })
 })

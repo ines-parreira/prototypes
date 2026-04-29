@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -13,7 +13,6 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/plans'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import AutomateSubscriptionModal from '../AutomateSubscriptionModal'
 
@@ -42,38 +41,38 @@ const minProps: ComponentProps<typeof AutomateSubscriptionModal> = {
 
 describe('<AutomateSubscriptionModal />', () => {
     it('should not render the modal', () => {
-        const { baseElement } = renderWithStoreAndQueryClientProvider(
+        const { baseElement } = render(
             <AutomateSubscriptionModal {...minProps} />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(logEventMock).not.toHaveBeenCalled()
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should render the modal', () => {
-        const { baseElement } = renderWithStoreAndQueryClientProvider(
+        const { baseElement } = render(
             <AutomateSubscriptionModal {...minProps} isOpen />,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallModalUpsell,
-            { location: undefined },
+            { location: '/' },
         )
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should display loader', async () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <>
                 {' '}
                 <AutomateSubscriptionModal {...minProps} isOpen />
             </>,
-            defaultState,
+            { storeState: defaultState },
         )
         const button = await screen.findByText(/I am sure/)
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallModalUpsell,
-            { location: undefined },
+            { location: '/' },
         )
         fireEvent.click(button)
 
@@ -84,22 +83,24 @@ describe('<AutomateSubscriptionModal />', () => {
 
     // TODO(React18): Fix this test
     it.skip('should render for customers already with full add-on features', async () => {
-        const { baseElement } = renderWithStoreAndQueryClientProvider(
+        const { baseElement } = render(
             <AutomateSubscriptionModal {...minProps} isOpen />,
             {
-                ...defaultState,
-                currentAccount: fromJS({
-                    ...account,
-                    current_subscription: {
-                        ...account.current_subscription,
-                        products: automationSubscriptionProductPrices,
-                    },
-                }),
+                storeState: {
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: automationSubscriptionProductPrices,
+                        },
+                    }),
+                },
             },
         )
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallModalUpsell,
-            { location: undefined },
+            { location: '/' },
         )
         await screen.findByText(/Cancel subscription/i)
 
@@ -109,7 +110,7 @@ describe('<AutomateSubscriptionModal />', () => {
     })
 
     it('should display image', async () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <>
                 {' '}
                 <AutomateSubscriptionModal
@@ -118,11 +119,11 @@ describe('<AutomateSubscriptionModal />', () => {
                     image="foo.png"
                 />
             </>,
-            defaultState,
+            { storeState: defaultState },
         )
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallModalUpsell,
-            { location: undefined },
+            { location: '/' },
         )
         const img = await screen.findByAltText(/features/)
         await waitFor(() => {
@@ -131,15 +132,14 @@ describe('<AutomateSubscriptionModal />', () => {
     })
 
     it('should display the new modal description component', async () => {
-        renderWithStoreAndQueryClientProvider(
-            <AutomateSubscriptionModal {...minProps} isOpen />,
-            defaultState,
-        )
+        render(<AutomateSubscriptionModal {...minProps} isOpen />, {
+            storeState: defaultState,
+        })
 
         await waitFor(() => {
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.AutomatePaywallModalUpsell,
-                { location: undefined },
+                { location: '/' },
             )
             expect(
                 screen.getByText(`Ready to upgrade with AI Agent?`),
@@ -148,9 +148,8 @@ describe('<AutomateSubscriptionModal />', () => {
     })
 
     it('should display "Manage AI Agent" header when user has access', async () => {
-        renderWithStoreAndQueryClientProvider(
-            <AutomateSubscriptionModal {...minProps} isOpen />,
-            {
+        render(<AutomateSubscriptionModal {...minProps} isOpen />, {
+            storeState: {
                 ...defaultState,
                 currentAccount: fromJS({
                     ...account,
@@ -160,7 +159,7 @@ describe('<AutomateSubscriptionModal />', () => {
                     },
                 }),
             },
-        )
+        })
 
         await waitFor(() => {
             expect(
@@ -170,10 +169,9 @@ describe('<AutomateSubscriptionModal />', () => {
     })
 
     it('should display "Subscribe to AI Agent" header when user has no access', async () => {
-        renderWithStoreAndQueryClientProvider(
-            <AutomateSubscriptionModal {...minProps} isOpen />,
-            defaultState,
-        )
+        render(<AutomateSubscriptionModal {...minProps} isOpen />, {
+            storeState: defaultState,
+        })
 
         await waitFor(() => {
             expect(
@@ -184,13 +182,13 @@ describe('<AutomateSubscriptionModal />', () => {
 
     it('should display custom header when headerDescription prop is provided', async () => {
         const customHeader = 'Custom Header Text'
-        renderWithStoreAndQueryClientProvider(
+        render(
             <AutomateSubscriptionModal
                 {...minProps}
                 isOpen
                 headerDescription={customHeader}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
 
         await waitFor(() => {
@@ -230,10 +228,9 @@ describe('<AutomateSubscriptionModal />', () => {
             }),
         }
 
-        renderWithStoreAndQueryClientProvider(
-            <AutomateSubscriptionModal {...minProps} isOpen />,
-            yearlyPlanState,
-        )
+        render(<AutomateSubscriptionModal {...minProps} isOpen />, {
+            storeState: yearlyPlanState,
+        })
 
         await waitFor(() => {
             expect(

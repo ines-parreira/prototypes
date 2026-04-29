@@ -1,6 +1,5 @@
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-
-import { renderWithRouter } from 'utils/testing'
 
 import ConfirmCustomerMatchingModal from '../ConfirmCustomerMatchingModal'
 
@@ -13,7 +12,7 @@ describe('<ConfirmCustomerMatchingModal />', () => {
     }
 
     it('should render modal with correct title and content', () => {
-        renderWithRouter(<ConfirmCustomerMatchingModal {...defaultProps} />)
+        render(<ConfirmCustomerMatchingModal {...defaultProps} />)
 
         expect(screen.getByText('Enable customer matching')).toBeInTheDocument()
         expect(
@@ -27,7 +26,7 @@ describe('<ConfirmCustomerMatchingModal />', () => {
     })
 
     it('should render learn more link with correct href', () => {
-        renderWithRouter(<ConfirmCustomerMatchingModal {...defaultProps} />)
+        render(<ConfirmCustomerMatchingModal {...defaultProps} />)
 
         const learnMoreLink = screen.getByText('Learn more')
         expect(learnMoreLink).toHaveAttribute(
@@ -37,7 +36,7 @@ describe('<ConfirmCustomerMatchingModal />', () => {
     })
 
     it('should render enable button with loading state', () => {
-        renderWithRouter(
+        render(
             <ConfirmCustomerMatchingModal {...defaultProps} isLoading={true} />,
         )
 
@@ -47,21 +46,21 @@ describe('<ConfirmCustomerMatchingModal />', () => {
     })
 
     it('should call onConfirm when enable button is clicked', () => {
-        renderWithRouter(<ConfirmCustomerMatchingModal {...defaultProps} />)
+        render(<ConfirmCustomerMatchingModal {...defaultProps} />)
 
         fireEvent.click(screen.getByRole('button', { name: 'Enable' }))
         expect(defaultProps.onConfirm).toHaveBeenCalled()
     })
 
     it('should call onCancel when close button is clicked', () => {
-        renderWithRouter(<ConfirmCustomerMatchingModal {...defaultProps} />)
+        render(<ConfirmCustomerMatchingModal {...defaultProps} />)
 
         fireEvent.click(screen.getByRole('button', { name: 'Close' }))
         expect(defaultProps.onCancel).toHaveBeenCalled()
     })
 
     it('should not render modal when isOpen is false', () => {
-        renderWithRouter(
+        render(
             <ConfirmCustomerMatchingModal {...defaultProps} isOpen={false} />,
         )
 
@@ -76,7 +75,7 @@ describe('<ConfirmCustomerMatchingModal />', () => {
     })
 
     it('should call setIsOpen when modal is closed', () => {
-        renderWithRouter(<ConfirmCustomerMatchingModal {...defaultProps} />)
+        render(<ConfirmCustomerMatchingModal {...defaultProps} />)
 
         fireEvent.click(screen.getByRole('button', { name: 'Close' }))
         expect(defaultProps.setIsOpen).toHaveBeenCalledWith(false)

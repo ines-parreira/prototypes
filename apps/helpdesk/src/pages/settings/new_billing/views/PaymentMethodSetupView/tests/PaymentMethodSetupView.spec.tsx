@@ -1,6 +1,6 @@
 import client from '@repo/api-resources'
 import { payingWithCreditCard, trial } from '@repo/billing/fixtures'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import type { Stripe } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { screen, waitFor } from '@testing-library/react'
@@ -13,7 +13,6 @@ import { account } from 'fixtures/account'
 import { products } from 'fixtures/plans'
 import { billingContact } from 'fixtures/resources'
 import * as useSetupIntentModule from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { PaymentMethodSetupView } from '../PaymentMethodSetupView'
 
@@ -57,10 +56,9 @@ describe('PaymentMethodSetupView', () => {
             new Promise(() => {}),
         )
 
-        renderWithStoreAndQueryClientAndRouter(
-            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
-            mockInitialStoreState,
-        )
+        render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
+            storeState: mockInitialStoreState,
+        })
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
@@ -72,10 +70,9 @@ describe('PaymentMethodSetupView', () => {
             data: { client_secret: 'client-secret', id: 'id' },
         } as any)
 
-        renderWithStoreAndQueryClientAndRouter(
-            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
-            mockInitialStoreState,
-        )
+        render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
+            storeState: mockInitialStoreState,
+        })
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
@@ -96,10 +93,9 @@ describe('PaymentMethodSetupView', () => {
             data: { client_secret: 'client-secret', id: 'id' },
         } as any)
 
-        renderWithStoreAndQueryClientAndRouter(
-            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
-            mockInitialStoreState,
-        )
+        render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
+            storeState: mockInitialStoreState,
+        })
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
 
@@ -127,9 +123,8 @@ describe('PaymentMethodSetupView', () => {
             data: { client_secret: 'client-secret', id: 'id' },
         } as any)
 
-        renderWithStoreAndQueryClientAndRouter(
-            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
-            {
+        render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
+            storeState: {
                 ...mockInitialStoreState,
                 currentAccount: fromJS({
                     current_subscription: fromJS({
@@ -137,7 +132,7 @@ describe('PaymentMethodSetupView', () => {
                     }),
                 }),
             },
-        )
+        })
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
 
@@ -169,10 +164,9 @@ describe('PaymentMethodSetupView', () => {
             'useSetupIntent',
         )
 
-        renderWithStoreAndQueryClientAndRouter(
-            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
-            mockInitialStoreState,
-        )
+        render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
+            storeState: mockInitialStoreState,
+        })
 
         expect(screen.getByTestId('loader')).toBeVisible()
 

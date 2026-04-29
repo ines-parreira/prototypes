@@ -1,9 +1,9 @@
-import { renderWithRouter } from 'utils/testing'
+import { render } from '@repo/testing'
 
 import NoStoresPage from '../NoStoresPage'
 
 const renderComponent = () => {
-    return renderWithRouter(<NoStoresPage />)
+    return render(<NoStoresPage />)
 }
 
 describe('NoStoresPage', () => {

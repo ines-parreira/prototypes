@@ -1,8 +1,7 @@
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { renderWithRouter } from 'utils/testing'
 
 import AIAutofill from '../AIAutofill'
 
@@ -25,7 +24,7 @@ describe('<AIAutofill/>', () => {
             isLoading: false,
         })
 
-        renderWithRouter(<AIAutofill {...defaultProps} />)
+        render(<AIAutofill {...defaultProps} />)
 
         // Visual checks - all content is present
         expect(screen.getByText('AI Autofill')).toBeInTheDocument()
@@ -58,7 +57,7 @@ describe('<AIAutofill/>', () => {
             isLoading: false,
         })
 
-        renderWithRouter(<AIAutofill {...defaultProps} />)
+        render(<AIAutofill {...defaultProps} />)
 
         // Visual checks - all content is present
         expect(screen.getByText('AI Autofill')).toBeInTheDocument()
@@ -92,7 +91,7 @@ describe('<AIAutofill/>', () => {
         })
 
         const onChange = jest.fn()
-        renderWithRouter(
+        render(
             <AIAutofill {...defaultProps} onChange={onChange} value={false} />,
         )
 

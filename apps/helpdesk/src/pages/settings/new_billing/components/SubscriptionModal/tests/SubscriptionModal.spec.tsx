@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -14,14 +13,12 @@ import {
 import { ProductType } from 'models/billing/types'
 import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
 import type { RootState } from 'state/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 describe('SubscriptionModal', () => {
     const canduId = 'my-test-candu-id'
     const confirmLabel = 'Subscribe right now'
     const headerDescription = 'Test header'
     const currentPage = '/app/test-page'
-
     const defaultState: Partial<RootState> = {
         currentUser: fromJS({
             role: { name: UserRole.Admin },
@@ -35,7 +32,6 @@ describe('SubscriptionModal', () => {
         }),
         billing: fromJS(billingState),
     }
-
     const minProps = {
         productType: ProductType.Convert,
         canduId: canduId,
@@ -50,50 +46,41 @@ describe('SubscriptionModal', () => {
         onClose: jest.fn(),
         onSubscribe: jest.fn(),
     }
-
     it('should not render', () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <SubscriptionModal
                 trackingSource="test"
                 {...minProps}
                 isOpen={false}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
-
         expect(screen.queryByText(headerDescription)).not.toBeInTheDocument()
         expect(screen.queryByText(confirmLabel)).not.toBeInTheDocument()
     })
-
     it('should render', () => {
         const onClose = jest.fn()
-
-        renderWithStoreAndQueryClientProvider(
+        render(
             <SubscriptionModal
                 trackingSource="test"
                 {...minProps}
                 isOpen={true}
                 onClose={onClose}
             />,
-            defaultState,
+            { storeState: defaultState },
         )
-
         expect(screen.getByText(headerDescription)).toBeInTheDocument()
         expect(screen.getByText(confirmLabel)).toBeInTheDocument()
-
         const canduDataId = document.querySelector(
             `[data-candu-id="${canduId}"]`,
         )
         expect(canduDataId).not.toBeNull()
-
         const closeButton = document.querySelector('[aria-label="Close"]')
         expect(closeButton).not.toBeNull()
         // @ts-ignore: Button is asserted to not be null
         fireEvent.click(closeButton)
-
         expect(onClose).toHaveBeenCalled()
     })
-
     it('should show custom plan message and Contact Us button for yearly contract plans', async () => {
         const confirmEnterpriseLabel = 'Contact Us'
         const yearlyPlanState: Partial<RootState> = {
@@ -124,17 +111,15 @@ describe('SubscriptionModal', () => {
                 ),
             }),
         }
-
-        renderWithStoreAndQueryClientProvider(
+        render(
             <SubscriptionModal
                 trackingSource="test"
                 {...minProps}
                 isOpen={true}
                 confirmEnterpriseLabel={confirmEnterpriseLabel}
             />,
-            yearlyPlanState,
+            { storeState: yearlyPlanState },
         )
-
         await waitFor(() => {
             expect(
                 screen.getByText(
@@ -142,7 +127,6 @@ describe('SubscriptionModal', () => {
                 ),
             ).toBeInTheDocument()
         })
-
         expect(
             screen.getByRole('button', { name: confirmEnterpriseLabel }),
         ).toBeInTheDocument()

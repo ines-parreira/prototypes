@@ -10,8 +10,6 @@ import { Link } from 'react-router-dom'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import useUpdateCustomFieldConditions from 'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import ConditionalFields, { MAX_CONDITIONS } from '../ConditionalFields'
 
@@ -41,7 +39,6 @@ jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
     useDebouncedValue: jest.fn(),
 }))
-
 const useDebouncedValueMock = assumeMock(useDebouncedValue)
 const mockedLogEvent = assumeMock(logEvent)
 const mockedLink = assumeMock(Link)
@@ -49,37 +46,30 @@ const useCustomFieldConditionsMock = assumeMock(useCustomFieldConditions)
 const useUpdateCustomFieldConditionsMock = assumeMock(
     useUpdateCustomFieldConditions,
 )
-
 const updateConditions = jest.fn()
 useUpdateCustomFieldConditionsMock.mockReturnValue({
     mutate: updateConditions,
     isLoading: false,
     isSuccess: false,
 } as any)
-
 describe('<ConditionalFields/>', () => {
     beforeEach(() => {
         useDebouncedValueMock.mockReturnValue('')
-
         useCustomFieldConditionsMock.mockReturnValue({
             customFieldConditions: [],
             isLoading: false,
             isError: false,
         })
     })
-
     it('should render get started', () => {
         render(<ConditionalFields />)
-
         expect(
             screen.getByText(/Get started with Field Conditions/),
         ).toBeDefined()
         // expect(screen.queryByTestId('custom-fields-list')).toBeNull()
     })
-
     it("should render a 'Create Condition' button", () => {
         render(<ConditionalFields />)
-
         const createConditionButton = screen.getByRole('button', {
             name: 'Create Condition',
         })
@@ -91,7 +81,6 @@ describe('<ConditionalFields/>', () => {
             SegmentEvent.CustomFieldCreateConditionClicked,
         )
     })
-
     it('should disable the create button when max limit is reached and display an alert', () => {
         useCustomFieldConditionsMock.mockReturnValue({
             customFieldConditions: Array.from(
@@ -104,19 +93,14 @@ describe('<ConditionalFields/>', () => {
             isLoading: false,
             isError: false,
         })
-
-        renderWithStoreAndQueryClientProvider(
-            <DndProvider backend={HTML5Backend}>
-                <ConditionalFields />
-            </DndProvider>,
-        )
-
+        render(<ConditionalFields />, {
+            dndBackend: HTML5Backend,
+        })
         expect(screen.getByText(/You can only have/)).toBeDefined()
         expect(
             screen.getByRole('button', { name: 'Create Field' }),
         ).toBeAriaDisabled()
     })
-
     it('should render no results found', async () => {
         useCustomFieldConditionsMock.mockReturnValue({
             customFieldConditions: [customFieldCondition],
@@ -124,7 +108,6 @@ describe('<ConditionalFields/>', () => {
             isError: false,
         })
         useDebouncedValueMock.mockReturnValue('foo')
-
         render(<ConditionalFields />)
         await userEvent.type(
             screen.getByPlaceholderText('Search condition...'),
@@ -135,14 +118,12 @@ describe('<ConditionalFields/>', () => {
         })
         expect(screen.getByText(/No results found./)).toBeInTheDocument()
     })
-
     it('should render an error message when the error is returned by useCustomFieldConditions hook', () => {
         useCustomFieldConditionsMock.mockReturnValue({
             customFieldConditions: [],
             isLoading: false,
             isError: true,
         })
-
         render(<ConditionalFields />)
         const createConditionButton = screen.findAllByRole('button', {
             name: 'Create Condition',
@@ -154,7 +135,6 @@ describe('<ConditionalFields/>', () => {
             ),
         ).toBeInTheDocument()
     })
-
     it.each([[[1, 2, 3]], [[4, 5, 6]], [[1, 1, 1]], [[9, 9, 9]]])(
         'should update conditions on drag and drop',
         (initialSort: number[]) => {
@@ -167,13 +147,9 @@ describe('<ConditionalFields/>', () => {
                 isLoading: false,
                 isError: false,
             })
-
-            renderWithStoreAndQueryClientProvider(
-                <DndProvider backend={HTML5Backend}>
-                    <ConditionalFields />
-                </DndProvider>,
-            )
-
+            render(<ConditionalFields />, {
+                dndBackend: HTML5Backend,
+            })
             // Drag the last row to the first row
             const dragHandles = screen.getAllByText(/drag_indicator/i)
             const from = dragHandles[2]
@@ -186,7 +162,6 @@ describe('<ConditionalFields/>', () => {
             act(() => {
                 fireEvent.drop(dest)
             })
-
             // The new order should have the last row at first
             expect(updateConditions).toHaveBeenCalledWith({
                 data: [

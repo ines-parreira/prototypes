@@ -1,22 +1,21 @@
 import type { ComponentProps } from 'react'
 
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { IntegrationType } from 'models/integration/constants'
+import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { ManagedRulesSlugs } from 'state/rules/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import AutoReplyWismoEditor from '../AutoReplyWismoEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock('models/selfServiceConfiguration/queries')
+
+const mockUseGetSelfServiceConfigurations = jest.mocked(
+    useGetSelfServiceConfigurations,
+)
 
 const mockSelfServiceConfigurations = [
     {
@@ -50,7 +49,11 @@ const mockSelfServiceConfigurations = [
         articleRecommendationHelpCenterId: null,
     },
 ]
-
+const shopifyIntegration = {
+    id: 1,
+    name: 'test-shop',
+    type: IntegrationType.Shopify,
+}
 describe('<AutoReplyWismoEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyWismoEditor> = {
         settings: {
@@ -61,85 +64,58 @@ describe('<AutoReplyWismoEditor/>', () => {
         },
         onChange: jest.fn(),
     }
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
-    const entities = {
-        ruleRecipes: {
-            [ManagedRulesSlugs.AutoReplyWismo as string]:
-                emptyRuleRecipeFixture,
-        },
-        helpCenter: { articles: {}, categories: {}, helpCenters: {} },
-    }
+    const renderComponent = ({
+        integrations = [],
+    }: {
+        integrations?: Array<typeof shopifyIntegration>
+    } = {}) =>
+        render(<AutoReplyWismoEditor {...minProps} />, {
+            storeState: {
+                integrations: fromJS({
+                    integrations,
+                }),
+            },
+        })
+
+    beforeEach(() => {
+        mockUseGetSelfServiceConfigurations.mockReturnValue({
+            data: [],
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetSelfServiceConfigurations>)
+    })
 
     it('should render correctly', () => {
-        const store = mockStore({
-            entities: entities,
-            integrations: fromJS({
-                integrations: [{ type: IntegrationType.Shopify, meta: {} }],
-            }),
-            billing: fromJS({ products: [] }),
-        } as RootState)
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <QueryClientProvider client={mockQueryClient()}>
-                    <AutoReplyWismoEditor {...minProps} />
-                </QueryClientProvider>
-            </Provider>,
-        )
-        expect(container.firstChild).toMatchSnapshot()
+        renderComponent({ integrations: [shopifyIntegration] })
+
+        expect(
+            screen.getByText(
+                /This rule detects emails related to order status or tracking/i,
+            ),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Exclusion email list')).toBeInTheDocument()
+        expect(screen.getByPlaceholderText('Add emails...')).toBeInTheDocument()
+        expect(
+            screen.getByText('Message above tracking links'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Message below tracking links'),
+        ).toBeInTheDocument()
     })
     it('should display an alert if no shopify integration', () => {
-        const store = mockStore({
-            entities: entities,
-            integrations: fromJS({
-                integrations: [],
-            }),
-            billing: fromJS({ products: [] }),
-        } as RootState)
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <QueryClientProvider client={mockQueryClient()}>
-                    <AutoReplyWismoEditor {...minProps} />
-                </QueryClientProvider>
-            </Provider>,
-        )
-        expect(container.firstChild).toMatchSnapshot()
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                'This rule requires at least one Shopify integration to run.',
+            ),
+        ).toBeInTheDocument()
     })
     it('should display an alert if track order flow is enabled without unfulffiled message', async () => {
-        const store = mockStore({
-            entities: {
-                ...entities,
-            },
-            integrations: fromJS({
-                integrations: [
-                    {
-                        id: 1,
-                        type: 'shopify',
-                    },
-                ],
-            }),
-            billing: fromJS({ products: [] }),
-        } as unknown as RootState)
-
-        const useGetSelfServiceConfigurationsMock = jest.spyOn(
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            require('models/selfServiceConfiguration/queries'),
-            'useGetSelfServiceConfigurations',
-        )
-
-        useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
+        mockUseGetSelfServiceConfigurations.mockReturnValueOnce({
             data: mockSelfServiceConfigurations,
             isLoading: false,
-        }))
-
-        renderWithRouter(
-            <Provider store={store}>
-                <QueryClientProvider client={mockQueryClient()}>
-                    <AutoReplyWismoEditor {...minProps} />
-                </QueryClientProvider>
-            </Provider>,
-        )
+        } as unknown as ReturnType<typeof useGetSelfServiceConfigurations>)
+        renderComponent({ integrations: [shopifyIntegration] })
         await screen.findByText(
             /add a response for customers tracking unfulfilled orders/i,
         )

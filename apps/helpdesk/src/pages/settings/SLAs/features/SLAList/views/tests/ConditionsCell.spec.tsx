@@ -1,10 +1,10 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import useResolveConditions from 'pages/settings/SLAs/features/SLAForm/controllers/useResolveConditions'
 import { makeConditionItem } from 'pages/settings/SLAs/features/SLAForm/views/ConditionsSelect/types'
 import { UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
-import { renderWithRouter } from 'utils/testing'
 
 import ConditionsCell from '../ConditionsCell'
 
@@ -28,7 +28,7 @@ describe('ConditionsCell', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <table>
                 <tbody>
                     <tr>
@@ -50,7 +50,7 @@ describe('ConditionsCell', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <table>
                 <tbody>
                     <tr>
@@ -73,7 +73,7 @@ describe('ConditionsCell', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <table>
                 <tbody>
                     <tr>
@@ -98,7 +98,7 @@ describe('ConditionsCell', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <table>
                 <tbody>
                     <tr>
@@ -129,7 +129,7 @@ describe('ConditionsCell', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <table>
                 <tbody>
                     <tr>
@@ -163,7 +163,7 @@ describe('ConditionsCell', () => {
             isLoading: false,
         })
 
-        renderWithRouter(
+        render(
             <table>
                 <tbody>
                     <tr>

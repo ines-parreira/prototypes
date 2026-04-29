@@ -1,10 +1,9 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockListBusinessHoursIntegrationsHandler } from '@gorgias/helpdesk-mocks'
-
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import LinkedIntegrationsList from '../LinkedIntegrationsList'
 
@@ -47,9 +46,7 @@ afterAll(() => {
 
 describe('LinkedIntegrationsList', () => {
     it('should render', async () => {
-        renderWithQueryClientProvider(
-            <LinkedIntegrationsList businessHoursId={1} />,
-        )
+        render(<LinkedIntegrationsList businessHoursId={1} />)
 
         await waitFor(() => {
             expect(

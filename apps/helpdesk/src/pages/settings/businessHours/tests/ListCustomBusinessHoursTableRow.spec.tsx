@@ -1,15 +1,13 @@
 import { Form } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
-import { MemoryRouter } from 'react-router-dom'
 
 import { mockListBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
 
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import { IntegrationType } from 'models/integration/constants'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import LinkedIntegrationsList from '../LinkedIntegrationsList'
 import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'
@@ -17,10 +15,8 @@ import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'
 jest.mock('hooks/businessHours/useDeleteCustomBusinessHours')
 jest.mock('state/notifications/actions')
 jest.mock('../LinkedIntegrationsList')
-
 const LinkedIntegrationsListMock = assumeMock(LinkedIntegrationsList)
 LinkedIntegrationsListMock.mockReturnValue(<div>LinkedIntegrationsList</div>)
-
 const useDeleteCustomBusinessHoursMock = jest.mocked(
     useDeleteCustomBusinessHours,
 )
@@ -29,10 +25,8 @@ useDeleteCustomBusinessHoursMock.mockReturnValue({
     mutate: mockDelete,
     isLoading: false,
 } as any)
-
 describe('ListCustomBusinessHoursTableRow', () => {
     const data = mockListBusinessHoursResponse().data
-
     const businessHours = mockListBusinessHoursResponse({
         data: [
             {
@@ -53,23 +47,18 @@ describe('ListCustomBusinessHoursTableRow', () => {
             },
         ],
     }).data[0]
-
     beforeEach(() => {
         mockDelete.mockClear()
     })
-
     it('should render ', () => {
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <Form onValidSubmit={jest.fn()}>
-                    <ListCustomBusinessHoursTableRow
-                        businessHours={businessHours}
-                    />
-                </Form>
-            </MemoryRouter>,
-            {},
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <ListCustomBusinessHoursTableRow
+                    businessHours={businessHours}
+                />
+            </Form>,
+            { storeState: {} },
         )
-
         expect(screen.getByText(businessHours.name)).toBeInTheDocument()
         expect(
             screen.getByText(businessHours.business_hours_config.timezone),
@@ -82,28 +71,23 @@ describe('ListCustomBusinessHoursTableRow', () => {
         expect(screen.getByText('edit')).toBeInTheDocument()
         expect(screen.getByText('delete')).toBeInTheDocument()
     })
-
     it('should render badge when integration_count is not 1', async () => {
         const { hover } = userEvent.setup()
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <Form onValidSubmit={jest.fn()}>
-                    <ListCustomBusinessHoursTableRow
-                        businessHours={{
-                            ...businessHours,
-                            integration_count: 2,
-                        }}
-                    />
-                </Form>
-            </MemoryRouter>,
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <ListCustomBusinessHoursTableRow
+                    businessHours={{
+                        ...businessHours,
+                        integration_count: 2,
+                    }}
+                />
+            </Form>,
+            {},
         )
-
         expect(screen.getByText('2 integrations')).toBeInTheDocument()
-
         await act(async () => {
             await hover(screen.getByText('2 integrations'))
         })
-
         await waitFor(() => {
             expect(LinkedIntegrationsListMock).toHaveBeenCalledWith(
                 {
@@ -113,99 +97,82 @@ describe('ListCustomBusinessHoursTableRow', () => {
             )
         })
     })
-
     it('should render integration only when count is 1 and store is not defined', () => {
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <Form onValidSubmit={jest.fn()}>
-                    <ListCustomBusinessHoursTableRow
-                        businessHours={{
-                            ...businessHours,
-                            first_integration: {
-                                integration_address: null,
-                                integration_id: 1,
-                                integration_name: 'Customer service',
-                                integration_type: IntegrationType.Phone,
-                                store: null,
-                            },
-                        }}
-                    />
-                </Form>
-            </MemoryRouter>,
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <ListCustomBusinessHoursTableRow
+                    businessHours={{
+                        ...businessHours,
+                        first_integration: {
+                            integration_address: null,
+                            integration_id: 1,
+                            integration_name: 'Customer service',
+                            integration_type: IntegrationType.Phone,
+                            store: null,
+                        },
+                    }}
+                />
+            </Form>,
+            {},
         )
-
         expect(screen.getByText('Customer service')).toBeInTheDocument()
         expect(screen.queryByText('US - Sales')).not.toBeInTheDocument()
     })
-
     it('should render dash when integration_count is 0', () => {
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <Form onValidSubmit={jest.fn()}>
-                    <ListCustomBusinessHoursTableRow
-                        businessHours={{
-                            ...businessHours,
-                            integration_count: 0,
-                            first_integration: null,
-                        }}
-                    />
-                </Form>
-            </MemoryRouter>,
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <ListCustomBusinessHoursTableRow
+                    businessHours={{
+                        ...businessHours,
+                        integration_count: 0,
+                        first_integration: null,
+                    }}
+                />
+            </Form>,
+            {},
         )
-
         expect(screen.getByText('-')).toBeInTheDocument()
     })
-
     it('should delete business hours when delete button is clicked and confirmed', async () => {
         const user = userEvent.setup()
-
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <Form onValidSubmit={jest.fn()}>
-                    <ListCustomBusinessHoursTableRow
-                        businessHours={businessHours}
-                    />
-                </Form>
-            </MemoryRouter>,
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <ListCustomBusinessHoursTableRow
+                    businessHours={businessHours}
+                />
+            </Form>,
+            {},
         )
-
         await user.click(screen.getByText('delete'))
-
         expect(screen.getByText('Delete business hours?')).toBeInTheDocument()
         expect(
             screen.getByText(/Are you sure you want to delete/),
         ).toBeInTheDocument()
-
         await user.click(screen.getByText('Delete'))
-
         expect(mockDelete).toHaveBeenCalledWith({
             id: businessHours.id,
         })
     })
-
     it('should handle deletion error', async () => {
         const user = userEvent.setup()
-
         useDeleteCustomBusinessHoursMock.mockReturnValue({
             mutate: mockDelete,
             isLoading: false,
             error: new Error('Deletion failed'),
         } as any)
-
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
+        render(
+            <>
                 {' '}
                 <Form onValidSubmit={jest.fn()}>
                     <ListCustomBusinessHoursTableRow
                         businessHours={businessHours}
                     />
                 </Form>
-            </MemoryRouter>,
+            </>,
+            {},
         )
-
         await user.click(screen.getByText('delete'))
         await user.click(screen.getByText('Delete'))
-
         expect(mockDelete).toHaveBeenCalledWith({
             id: businessHours.id,
         })

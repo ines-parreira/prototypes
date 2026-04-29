@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -8,7 +9,6 @@ import {
 } from 'fixtures/plans'
 import type { Plan, PlanId } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { ProductRow } from './ProductRow'
 import type { ProductRowProps } from './ProductRow'
@@ -28,9 +28,7 @@ const defaultProps: ProductRowProps = {
 }
 
 function renderComponent(overrides: Partial<ProductRowProps> = {}) {
-    return renderWithStoreAndQueryClientAndRouter(
-        <ProductRow {...defaultProps} {...overrides} />,
-    )
+    return render(<ProductRow {...defaultProps} {...overrides} />)
 }
 
 describe('ProductRow', () => {

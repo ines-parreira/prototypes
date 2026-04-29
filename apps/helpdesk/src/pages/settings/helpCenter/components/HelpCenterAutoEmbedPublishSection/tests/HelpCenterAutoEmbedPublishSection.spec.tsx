@@ -1,16 +1,11 @@
 import { useFlag } from '@repo/feature-flags'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { PageEmbedmentFixture } from 'pages/settings/helpCenter/fixtures/pageEmbedment'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { useGetShopifyPages } from '../../../queries'
 import { HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../HelpCenterAutoEmbedCard'
@@ -18,9 +13,7 @@ import type { HelpCenterAutoEmbedPublishSectionProps } from '../HelpCenterAutoEm
 import HelpCenterAutoEmbedPublishSection from '../HelpCenterAutoEmbedPublishSection'
 
 jest.mock('@repo/feature-flags')
-
 const mockUseFlag = useFlag as jest.Mock
-
 jest.mock('../../../queries', () => {
     const originalModule: Record<string, unknown> =
         jest.requireActual('../../../queries')
@@ -33,18 +26,13 @@ jest.mock('../../../queries', () => {
         })),
     }
 })
-
 const defaultProps: HelpCenterAutoEmbedPublishSectionProps = {
     helpCenterShopName: 'store-name',
     helpCenterId: 1,
     pageEmbedments: [],
 }
-
-const queryClient = mockQueryClient()
-
 const SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED = 'shopify-store-updated'
 const SHOPIFY_SHOP_NAME_UPDATE_NEEDED = 'shopify-store-update-needed'
-
 const defaultStateWithIntegrations = {
     integrations: fromJS({
         integrations: [
@@ -74,44 +62,36 @@ const defaultStateWithIntegrations = {
         ],
     }),
 } as RootState
-
 const helpCenterWithShop = {
     ...getSingleHelpCenterResponseFixture,
     shop_name: 'test-shop',
 }
-
 const renderView = (
     ui: JSX.Element,
-    { state }: { state: Partial<RootState> },
+    {
+        state,
+    }: {
+        state: Partial<RootState>
+    },
 ) => {
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
-    return renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(state)}>{ui}</Provider>
-        </QueryClientProvider>,
-    )
+    return render(<>{ui}</>, {
+        storeState: state,
+    })
 }
-
 describe('<HelpCenterAutoEmbedPublishSection />', () => {
     it('renders null if the feature flag is not active', () => {
         mockUseFlag.mockReturnValue(false)
-
         const { container } = renderView(
             <HelpCenterAutoEmbedPublishSection {...defaultProps} />,
             {
                 state: defaultStateWithIntegrations,
             },
         )
-
         expect(container).toBeEmptyDOMElement()
     })
-
     describe('Help Center - not connected to any stores', () => {
         it('should not fetch Shopify pages', () => {
             mockUseFlag.mockReturnValue(true)
-
             renderView(
                 <HelpCenterAutoEmbedPublishSection
                     helpCenterShopName={'test'}
@@ -122,22 +102,18 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     state: defaultStateWithIntegrations,
                 },
             )
-
             screen
                 .getByTestId(HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID)
                 .click()
-
             expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                 helpCenterWithShop.id,
                 { enabled: false },
             )
         })
     })
-
     describe('Help Center - connected to a non-shopify store', () => {
         it('should render correct section', () => {
             mockUseFlag.mockReturnValue(true)
-
             const { container } = renderView(
                 <HelpCenterAutoEmbedPublishSection
                     helpCenterShopName={'another-store'}
@@ -148,14 +124,11 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     state: defaultStateWithIntegrations,
                 },
             )
-
             expect(container.firstChild).toMatchSnapshot()
-
             screen.getByText(/Automatically embed on your website/i)
             screen.getByText(/recommended/i)
             screen.getByText(/Gorgias will automatically embed/i)
         })
-
         it('should not fetch Shopify pages', () => {
             renderView(
                 <HelpCenterAutoEmbedPublishSection
@@ -167,23 +140,19 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     state: defaultStateWithIntegrations,
                 },
             )
-
             screen
                 .getByTestId(HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID)
                 .click()
-
             expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                 helpCenterWithShop.id,
                 { enabled: false },
             )
         })
     })
-
     describe('Help Center - connected to a shopify store', () => {
         describe('when update permissions not needed', () => {
             it('should render correct section', () => {
                 mockUseFlag.mockReturnValue(true)
-
                 const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection
                         helpCenterShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
@@ -194,25 +163,19 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                         state: defaultStateWithIntegrations,
                     },
                 )
-
                 expect(container.firstChild).toMatchSnapshot()
-
                 expect(
                     screen.queryByText(/update your Shopify app permissions/i),
                 ).toBeNull()
-
                 screen.getByText(/Automatically embed on your website/i)
                 screen.getByText(/recommended/i)
                 screen.getByText(/Gorgias will automatically embed/i)
-
                 screen.getByTestId(
                     HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                 )
             })
-
             it('should render correct section when store has embedments already', () => {
                 mockUseFlag.mockReturnValue(true)
-
                 const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection
                         helpCenterShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
@@ -223,14 +186,11 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                         state: defaultStateWithIntegrations,
                     },
                 )
-
                 expect(container.firstChild).toMatchSnapshot()
-
                 screen.getByText(/Automatically embed on your website/i)
                 screen.getByText(/Gorgias will automatically embed/i)
                 expect(screen.queryByText(/recommended/i)).toBeNull()
             })
-
             it('should fetch Shopify pages', async () => {
                 renderView(
                     <HelpCenterAutoEmbedPublishSection
@@ -242,13 +202,11 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                         state: defaultStateWithIntegrations,
                     },
                 )
-
                 screen
                     .getByTestId(
                         HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                     )
                     .click()
-
                 await waitFor(() => {
                     expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                         helpCenterWithShop.id,
@@ -256,7 +214,6 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     )
                 })
             })
-
             it('should not fetch Shopify pages if is disabled', () => {
                 renderView(
                     <HelpCenterAutoEmbedPublishSection
@@ -269,24 +226,20 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                         state: defaultStateWithIntegrations,
                     },
                 )
-
                 screen
                     .getByTestId(
                         HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                     )
                     .click()
-
                 expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                     helpCenterWithShop.id,
                     { enabled: false },
                 )
             })
         })
-
         describe('when update permissions needed', () => {
             it('should render correct section', () => {
                 mockUseFlag.mockReturnValue(true)
-
                 const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection
                         helpCenterShopName={SHOPIFY_SHOP_NAME_UPDATE_NEEDED}
@@ -297,20 +250,15 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                         state: defaultStateWithIntegrations,
                     },
                 )
-
                 expect(container.firstChild).toMatchSnapshot()
-
                 screen.getByText(/update your Shopify app permissions/i)
-
                 screen.getByText(/Automatically embed on your website/i)
                 screen.getByText(/recommended/i)
                 screen.getByText(/Gorgias will automatically embed/i)
-
                 screen.getByTestId(
                     HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                 )
             })
-
             it('should not fetch Shopify pages', () => {
                 renderView(
                     <HelpCenterAutoEmbedPublishSection
@@ -322,13 +270,11 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                         state: defaultStateWithIntegrations,
                     },
                 )
-
                 screen
                     .getByTestId(
                         HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                     )
                     .click()
-
                 expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                     helpCenterWithShop.id,
                     { enabled: false },

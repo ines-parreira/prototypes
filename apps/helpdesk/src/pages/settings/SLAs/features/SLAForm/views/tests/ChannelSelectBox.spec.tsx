@@ -1,6 +1,6 @@
 import { appQueryClient } from '@repo/api-resources'
 import { Form } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -15,7 +15,6 @@ import {
 import { TicketChannel } from 'business/types/ticket'
 import type { Channel } from 'models/channel/types'
 import { getChannels } from 'services/channels'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { ChannelSelectBox } from '../ChannelSelectBox'
 
@@ -67,7 +66,7 @@ afterAll(() => {
 describe('ChannelSelectBox', () => {
     it('should render the component with all channels', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -116,7 +115,7 @@ describe('ChannelSelectBox', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -183,7 +182,7 @@ describe('ChannelSelectBox', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -268,7 +267,7 @@ describe('ChannelSelectBox', () => {
         const user = userEvent.setup()
         const handleSubmit = jest.fn()
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -331,7 +330,7 @@ describe('ChannelSelectBox', () => {
         const user = userEvent.setup()
         const handleSubmit = jest.fn()
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -401,7 +400,7 @@ describe('ChannelSelectBox', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -436,7 +435,7 @@ describe('ChannelSelectBox', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -474,7 +473,7 @@ describe('ChannelSelectBox', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -514,7 +513,7 @@ describe('ChannelSelectBox', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -552,7 +551,7 @@ describe('ChannelSelectBox', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {
@@ -594,7 +593,7 @@ describe('ChannelSelectBox', () => {
             ).handler,
         )
 
-        renderWithStoreAndQueryClientProvider(
+        render(
             <Form
                 defaultValues={
                     {

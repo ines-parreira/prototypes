@@ -1,8 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 
 import { TEMPLATES_LIST } from 'pages/settings/SLAs/config/templates'
-import { renderWithRouter } from 'utils/testing'
 
 import Templates from '../Templates'
 
@@ -20,9 +19,7 @@ describe('<Templates />', () => {
             }
         })
 
-        const { getByText } = renderWithRouter(
-            <Templates templates={TEMPLATES_LIST} />,
-        )
+        const { getByText } = render(<Templates templates={TEMPLATES_LIST} />)
 
         expect(getByText(TEMPLATES_LIST[0].name)).toBeInTheDocument()
         expect(getByText(TEMPLATES_LIST[1].name)).toBeInTheDocument()
@@ -35,15 +32,13 @@ describe('<Templates />', () => {
                 return false
             }
         })
-        const { queryByText } = renderWithRouter(
-            <Templates templates={TEMPLATES_LIST} />,
-        )
+        const { queryByText } = render(<Templates templates={TEMPLATES_LIST} />)
 
         expect(queryByText('Voice Support SLA')).not.toBeInTheDocument()
     })
 
     it('should display a `See All Templates` button link', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <Templates templates={TEMPLATES_LIST} showSeeAllTemplates />,
         )
 

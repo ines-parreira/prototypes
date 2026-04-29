@@ -1,10 +1,9 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment-timezone'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
-
-import { renderWithRouter } from 'utils/testing'
 
 import { EmailImportModalWizard } from '../EmailImportModalWizard'
 
@@ -92,23 +91,21 @@ describe('EmailImportModalWizzard', () => {
 
     describe('Modal rendering', () => {
         it('should render modal when isOpen is true', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             expect(screen.getByRole('dialog')).toBeInTheDocument()
             expect(screen.getByText('Import email history')).toBeInTheDocument()
         })
 
         it('should not render modal when isOpen is false', () => {
-            renderWithRouter(
-                <EmailImportModalWizard {...defaultProps} isOpen={false} />,
-            )
+            render(<EmailImportModalWizard {...defaultProps} isOpen={false} />)
 
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
 
         it('should call onClose when close button is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const closeButton = screen.getByRole('button', { name: '' })
             await user.click(closeButton)
@@ -119,13 +116,13 @@ describe('EmailImportModalWizzard', () => {
 
     describe('Content rendering', () => {
         it('should render the modal header with correct title', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             expect(screen.getByText('Import email history')).toBeInTheDocument()
         })
 
         it('should render the description text', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             expect(
                 screen.getByText(
@@ -135,7 +132,7 @@ describe('EmailImportModalWizzard', () => {
         })
 
         it('should render the help text section', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             expect(
                 screen.getByText('What will be imported?'),
@@ -156,14 +153,14 @@ describe('EmailImportModalWizzard', () => {
         })
 
         it('should render form components', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             expect(screen.getByText('Email')).toBeInTheDocument()
             expect(screen.getByText('Import timeframe')).toBeInTheDocument()
         })
 
         it('should render action buttons', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const cancelButton = screen.getByRole('button', { name: 'Cancel' })
             const submitButton = screen.getByRole('button', {
@@ -178,7 +175,7 @@ describe('EmailImportModalWizzard', () => {
     describe('Form state management', () => {
         it('should have submit button disabled when form is empty', () => {
             mockUseEmailIntegrations.mockReturnValue([])
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
@@ -191,7 +188,7 @@ describe('EmailImportModalWizzard', () => {
     describe('Form interactions', () => {
         it('should call onClose when cancel button is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const cancelButton = screen.getByRole('button', { name: 'Cancel' })
             await user.click(cancelButton)
@@ -202,7 +199,7 @@ describe('EmailImportModalWizzard', () => {
 
     describe('Error handling', () => {
         it('should not display error message initially', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             expect(
                 screen.queryByText(
@@ -214,14 +211,14 @@ describe('EmailImportModalWizzard', () => {
 
     describe('Form structure', () => {
         it('should have proper form structure', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const form = screen.getByRole('dialog').querySelector('form')
             expect(form).toBeInTheDocument()
         })
 
         it('should have proper button roles and labels', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const cancelButton = screen.getByRole('button', { name: 'Cancel' })
             const submitButton = screen.getByRole('button', {
@@ -235,7 +232,7 @@ describe('EmailImportModalWizzard', () => {
 
     describe('Component behavior', () => {
         it('should maintain modal state when props change', () => {
-            const { rerender } = renderWithRouter(
+            const { rerender } = render(
                 <EmailImportModalWizard {...defaultProps} />,
             )
 
@@ -247,7 +244,7 @@ describe('EmailImportModalWizzard', () => {
         })
 
         it('should handle isOpen prop changes correctly', async () => {
-            const { rerender } = renderWithRouter(
+            const { rerender } = render(
                 <EmailImportModalWizard {...defaultProps} />,
             )
 
@@ -271,7 +268,7 @@ describe('EmailImportModalWizzard', () => {
 
     describe('Loading states', () => {
         it('should show loading state when form submission is triggered', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
@@ -284,7 +281,7 @@ describe('EmailImportModalWizzard', () => {
     describe('Clear functionality', () => {
         it('should reset form state when clear is called', async () => {
             const user = userEvent.setup()
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const timeframeInput = screen.getByPlaceholderText(
                 'Please select a timeframe',
@@ -300,7 +297,7 @@ describe('EmailImportModalWizzard', () => {
 
     describe('Email integrations', () => {
         it('should work with email integrations from API', () => {
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             expect(emailLabel).toBeInTheDocument()
@@ -311,7 +308,7 @@ describe('EmailImportModalWizzard', () => {
         it('should pre-populate email field when selectedEmail is provided', () => {
             const selectedEmail = 'test@gmail.com'
 
-            renderWithRouter(
+            render(
                 <EmailImportModalWizard
                     {...defaultProps}
                     selectedEmail={selectedEmail}
@@ -330,7 +327,7 @@ describe('EmailImportModalWizzard', () => {
                 },
             ])
 
-            renderWithRouter(
+            render(
                 <EmailImportModalWizard
                     {...defaultProps}
                     selectedEmail={null}
@@ -347,7 +344,7 @@ describe('EmailImportModalWizzard', () => {
         })
 
         it('should have empty email field when selectedEmail is undefined', async () => {
-            renderWithRouter(
+            render(
                 <EmailImportModalWizard
                     {...defaultProps}
                     selectedEmail={undefined}
@@ -366,7 +363,7 @@ describe('EmailImportModalWizzard', () => {
             const user = userEvent.setup()
             const selectedEmail = 'test@gmail.com'
 
-            renderWithRouter(
+            render(
                 <EmailImportModalWizard
                     {...defaultProps}
                     selectedEmail={selectedEmail}
@@ -396,7 +393,7 @@ describe('EmailImportModalWizzard', () => {
                 { provider: IntegrationType.Gmail, email: selectedEmail },
             ])
 
-            renderWithRouter(
+            render(
                 <EmailImportModalWizard
                     {...defaultProps}
                     selectedEmail={selectedEmail}
@@ -442,7 +439,7 @@ describe('EmailImportModalWizzard', () => {
     describe('URL redirection', () => {
         it('should redirect to OAuth URL with correct parameters when form is submitted', async () => {
             const user = userEvent.setup()
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -488,7 +485,7 @@ describe('EmailImportModalWizzard', () => {
                 },
             ])
 
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -525,7 +522,7 @@ describe('EmailImportModalWizzard', () => {
 
         it('should parse timeframe correctly and set import window parameters', async () => {
             const user = userEvent.setup()
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -567,7 +564,7 @@ describe('EmailImportModalWizzard', () => {
             const user = userEvent.setup()
             const onCloseMock = jest.fn()
 
-            renderWithRouter(
+            render(
                 <EmailImportModalWizard
                     {...defaultProps}
                     onClose={onCloseMock}
@@ -613,7 +610,7 @@ describe('EmailImportModalWizzard', () => {
                 configurable: true,
             })
 
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -660,7 +657,7 @@ describe('EmailImportModalWizzard', () => {
                 configurable: true,
             })
 
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -693,7 +690,7 @@ describe('EmailImportModalWizzard', () => {
         it('should disable submit button during form submission', async () => {
             const user = userEvent.setup()
 
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -728,7 +725,7 @@ describe('EmailImportModalWizzard', () => {
 
         it('should handle different timeframe formats correctly', async () => {
             const user = userEvent.setup()
-            renderWithRouter(<EmailImportModalWizard {...defaultProps} />)
+            render(<EmailImportModalWizard {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =

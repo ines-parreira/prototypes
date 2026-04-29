@@ -1,6 +1,7 @@
 import type { SelectedPlans } from '@repo/billing'
 import { Cadence, ProductType, useBillingState } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -8,7 +9,6 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SummaryTotal from '../SummaryTotal'
 
@@ -53,7 +53,7 @@ describe('SummaryTotal balance due', () => {
     })
 
     it('renders the "Balance due today" label with a skeleton (no amount) while estimate is loading', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -74,7 +74,7 @@ describe('SummaryTotal balance due', () => {
         const onRetryEstimate = jest.fn()
         const user = userEvent.setup()
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -96,7 +96,7 @@ describe('SummaryTotal balance due', () => {
     })
 
     it('renders the formatted balance due amount when the estimate is positive', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -111,7 +111,7 @@ describe('SummaryTotal balance due', () => {
     })
 
     it('does not render the balance due row when the estimate resolves to 0', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -132,7 +132,7 @@ describe('SummaryTotal without coupons', () => {
     })
 
     it('should render total price without old price', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -145,7 +145,7 @@ describe('SummaryTotal without coupons', () => {
     })
 
     it('should render total price with old price', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmountDifferent}
@@ -182,7 +182,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -217,7 +217,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -252,7 +252,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -276,7 +276,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -297,7 +297,7 @@ describe('SummaryTotal with coupons', () => {
     it('should only render the total, without subtotal & discount line, if there is no subscription in the billing state', async () => {
         mockUseBillingState.mockReturnValue({ data: {} })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -333,7 +333,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -368,7 +368,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -403,7 +403,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -423,7 +423,7 @@ describe('SummaryTotal with coupons', () => {
     it('should subtract totalCancelledAmount from total price', () => {
         const totalCancelledAmount = 3000
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -442,7 +442,7 @@ describe('SummaryTotal with coupons', () => {
     it('should subtract totalCancelledAmount from old price when displayed', () => {
         const totalCancelledAmount = 3000
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmountDifferent}
@@ -460,7 +460,7 @@ describe('SummaryTotal with coupons', () => {
     })
 
     it('should handle zero totalCancelledAmount', () => {
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -494,7 +494,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -529,7 +529,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -564,7 +564,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -591,7 +591,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -627,7 +627,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -665,7 +665,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -718,7 +718,7 @@ describe('SummaryTotal with coupons', () => {
             },
         })
 
-        renderWithStoreAndQueryClientAndRouter(
+        render(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}

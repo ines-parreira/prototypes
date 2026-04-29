@@ -1,27 +1,17 @@
 import type { ComponentProps } from 'react'
 
 import { logEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { ticket as ticketFixture } from 'fixtures/ticket'
 import { fetchTicketsByRuleId } from 'models/ticket/resources'
-import { renderWithRouter } from 'utils/testing'
 
 import { RuleTicketList } from '../RuleTicketList'
 
 jest.mock('models/ticket/resources')
-jest.mock('@repo/routing', () => ({
-    ...jest.requireActual('@repo/routing'),
-    history: {
-        push: jest.fn(),
-    },
-}))
 jest.mock('@repo/logging')
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
-
 describe('<RuleTicketList/>', () => {
     const minProps: ComponentProps<typeof RuleTicketList> = {
         ruleId: 1,
@@ -29,40 +19,26 @@ describe('<RuleTicketList/>', () => {
     }
     const fetchTicketsByRuleIdMock =
         fetchTicketsByRuleId as jest.MockedFunction<typeof fetchTicketsByRuleId>
-    const mockStore = configureMockStore([thunk])
-    const store = mockStore({ entities: {} })
     const defaultApiResponse = {
         data: [{ ...ticketFixture }],
         meta: { prev_cursor: null, next_cursor: null, total_resources: null },
         object: '',
         uri: '',
     }
-
     beforeEach(() => {
         fetchTicketsByRuleIdMock.mockResolvedValue(defaultApiResponse)
     })
     it('should render the rule ticket list', async () => {
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <RuleTicketList {...minProps} />
-            </Provider>,
-        )
+        const { container } = render(<RuleTicketList {...minProps} />, {})
         await waitFor(() =>
             expect(container.getElementsByClassName('md-spin').length).toBe(0),
         )
         expect(container).toMatchSnapshot()
     })
     it('should fetch the tickets on render', async () => {
-        await waitFor(() =>
-            renderWithRouter(
-                <Provider store={store}>
-                    <RuleTicketList {...minProps} />
-                </Provider>,
-            ),
-        )
+        await waitFor(() => render(<RuleTicketList {...minProps} />, {}))
         expect(fetchTicketsByRuleIdMock.mock.calls).toMatchSnapshot()
     })
-
     it('should show navigation if response has cursor', async () => {
         fetchTicketsByRuleIdMock.mockResolvedValue({
             ...defaultApiResponse,
@@ -72,11 +48,7 @@ describe('<RuleTicketList/>', () => {
                 total_resources: null,
             },
         })
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <RuleTicketList {...minProps} />
-            </Provider>,
-        )
+        const { container } = render(<RuleTicketList {...minProps} />, {})
         await waitFor(() =>
             expect(container.getElementsByClassName('md-spin').length).toBe(0),
         )
@@ -91,10 +63,9 @@ describe('<RuleTicketList/>', () => {
                 total_resources: null,
             },
         })
-        const { container, getByText } = renderWithRouter(
-            <Provider store={store}>
-                <RuleTicketList {...minProps} />
-            </Provider>,
+        const { container, getByText } = render(
+            <RuleTicketList {...minProps} />,
+            {},
         )
         await waitFor(() =>
             expect(container.getElementsByClassName('md-spin').length).toBe(0),
@@ -105,10 +76,9 @@ describe('<RuleTicketList/>', () => {
         )
     })
     it('should log segment event on click', async () => {
-        const { container, getByText } = renderWithRouter(
-            <Provider store={store}>
-                <RuleTicketList {...minProps} />
-            </Provider>,
+        const { container, getByText } = render(
+            <RuleTicketList {...minProps} />,
+            {},
         )
         await waitFor(() =>
             expect(container.getElementsByClassName('md-spin').length).toBe(0),

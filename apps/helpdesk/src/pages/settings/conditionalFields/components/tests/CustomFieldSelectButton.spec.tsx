@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { RequirementType } from '@gorgias/helpdesk-types'
@@ -12,13 +10,11 @@ import {
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import CustomFieldSelectButton from '../CustomFieldSelectButton'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
-
 const customFields: CustomField[] = [
     {
         ...ticketInputFieldDefinition,
@@ -39,13 +35,11 @@ const customFields: CustomField[] = [
         requirement_type: RequirementType.Visible,
     },
 ]
-
 const defaultProps = {
     objectType: 'Ticket' as CustomFieldObjectTypes,
     ignoreIds: [],
     onSelect: jest.fn(),
 }
-
 describe('CustomFieldSelectButton', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
@@ -57,63 +51,44 @@ describe('CustomFieldSelectButton', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             isLoading: true,
         } as any)
-        renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} />,
-        )
+        render(<CustomFieldSelectButton {...defaultProps} />)
         expect(screen.queryByText('Add Ticket field')).not.toBeInTheDocument()
         expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
     })
-
     it('should render only the button by default', () => {
-        renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} />,
-        )
-
+        render(<CustomFieldSelectButton {...defaultProps} />)
         expect(screen.getByRole('combobox')).toBeInTheDocument()
         expect(screen.queryByText('Custom field #1')).not.toBeInTheDocument()
     })
-
     it('should list all fields on click', () => {
-        renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} />,
-        )
-
+        render(<CustomFieldSelectButton {...defaultProps} />)
         fireEvent.click(screen.getByRole('combobox'))
         for (const customField of customFields) {
             expect(screen.getByText(customField.label)).toBeInTheDocument()
         }
     })
-
     it('should not show ignored fields', () => {
-        renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} ignoreIds={[1, 2]} />,
-        )
-
+        render(<CustomFieldSelectButton {...defaultProps} ignoreIds={[1, 2]} />)
         fireEvent.click(screen.getByRole('combobox'))
         expect(screen.queryByText('Custom field #1')).not.toBeInTheDocument()
         expect(screen.queryByText('Custom field #2')).not.toBeInTheDocument()
         expect(screen.getByText('Custom field #3')).toBeInTheDocument()
     })
-
     it('should show an error when all fields are already selected', () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <CustomFieldSelectButton {...defaultProps} ignoreIds={[1, 2, 3]} />,
         )
-
         expect(
             screen.getByText('All the possible custom fields have been set.'),
         ).toBeInTheDocument()
     })
-
     it('should trigger onChange when choosing a field', () => {
         const onSelect = jest.fn()
-        renderWithStoreAndQueryClientProvider(
+        render(
             <CustomFieldSelectButton {...defaultProps} onSelect={onSelect} />,
         )
-
         fireEvent.click(screen.getByRole('combobox'))
         fireEvent.click(screen.getByText('Custom field #2'))
-
         expect(onSelect).toHaveBeenCalledWith(customFields[1])
     })
 })

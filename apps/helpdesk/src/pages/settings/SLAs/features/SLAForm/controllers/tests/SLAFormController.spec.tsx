@@ -4,7 +4,7 @@ import {
     useAreFlagsLoading,
     useFlag,
 } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
@@ -14,8 +14,6 @@ import {
     mockGetSlaPolicyHandler,
     mockUpdateSlaPolicyHandler,
 } from '@gorgias/helpdesk-mocks'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SLAFormController from '../SLAFormController'
 
@@ -63,14 +61,11 @@ describe('SLAFormController', () => {
     it('should display loader while feature flags are loading', () => {
         mockUseAreFlagsLoading.mockReturnValue(true)
 
-        const { container } = renderWithStoreAndQueryClientAndRouter(
-            <SLAFormController />,
-            {},
-            {
-                route: '/app/settings/sla/new',
-                path: '/app/settings/sla/:policyId',
-            },
-        )
+        const { container } = render(<SLAFormController />, {
+            storeState: {},
+            path: '/app/settings/sla/:policyId',
+            initialEntries: ['/app/settings/sla/new'],
+        })
 
         expect(container.querySelector('.loader')).toBeInTheDocument()
     })
@@ -83,14 +78,11 @@ describe('SLAFormController', () => {
         })
         mockUseAreFlagsLoading.mockReturnValue(false)
 
-        renderWithStoreAndQueryClientAndRouter(
-            <SLAFormController />,
-            {},
-            {
-                route: '/app/settings/sla/new',
-                path: '/app/settings/sla/:policyId',
-            },
-        )
+        render(<SLAFormController />, {
+            storeState: {},
+            path: '/app/settings/sla/:policyId',
+            initialEntries: ['/app/settings/sla/new'],
+        })
 
         expect(screen.getByRole('form')).toBeInTheDocument()
     })
@@ -103,14 +95,11 @@ describe('SLAFormController', () => {
         })
         mockUseAreFlagsLoading.mockReturnValue(false)
 
-        renderWithStoreAndQueryClientAndRouter(
-            <SLAFormController />,
-            {},
-            {
-                route: '/app/settings/sla/new',
-                path: '/app/settings/sla/:policyId',
-            },
-        )
+        render(<SLAFormController />, {
+            storeState: {},
+            path: '/app/settings/sla/:policyId',
+            initialEntries: ['/app/settings/sla/new'],
+        })
 
         expect(screen.getByRole('form')).toBeInTheDocument()
     })

@@ -1,17 +1,11 @@
-import React from 'react'
-
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 // oxlint-disable-next-line no-named-as-default
 import userEvent from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -30,23 +24,38 @@ import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navig
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+import type { RootState } from 'state/types'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('@repo/feature-flags')
-
-const queryClient = mockQueryClient()
-
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom')
+    return {
+        ...actual,
+        Redirect: ({
+            to,
+        }: {
+            to:
+                | string
+                | {
+                      pathname: string
+                  }
+        }) => (
+            <span data-testid="redirect-to">
+                {typeof to === 'string' ? to : to.pathname}
+            </span>
+        ),
+    }
+})
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 const mockUseFlag = assumeMock(useFlag)
-
+const CONTACT_FORM_SETTINGS_TEST_PATH = `${CONTACT_FORM_SETTINGS_PATH}/:section?`
+const LocationPath = () => {
+    const location = useLocation()
+    return <span data-testid="location-path">{location.pathname}</span>
+}
 describe('<ContactFormSettingsView />', () => {
     const FORM_ID = '1'
     const defaultState: Partial<RootState> = {
@@ -68,31 +77,28 @@ describe('<ContactFormSettingsView />', () => {
             },
         } as any,
     }
-
     const renderView = ({
         path,
+        route = '/',
         state = defaultState,
-        history,
     }: {
         path: string
-        history?: any
+        route?: string
         state?: Partial<RootState>
     }) => {
-        return renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <DndProvider backend={HTML5Backend}>
-                    <Provider store={mockStore(state)}>
-                        <ContactFormSettingsView />
-                    </Provider>
-                </DndProvider>
-            </QueryClientProvider>,
+        return render(
+            <>
+                <LocationPath />
+                <ContactFormSettingsView />
+            </>,
             {
-                path,
-                history,
+                dndBackend: HTML5Backend,
+                initialEntries: [route],
+                path: path ?? CONTACT_FORM_SETTINGS_TEST_PATH,
+                storeState: state,
             },
         )
     }
-
     beforeEach(() => {
         jest.resetAllMocks()
         jest.mocked(useSupportedLocales).mockReturnValue(
@@ -116,24 +122,18 @@ describe('<ContactFormSettingsView />', () => {
         })
         mockUseFlag.mockReturnValue(false)
     })
-
     it('should redirect to CUSTOMIZATION page if just form id provided', () => {
-        const history = createMemoryHistory({
-            initialEntries: [
-                insertContactFormIdParam(CONTACT_FORM_SETTINGS_PATH, FORM_ID),
-            ],
-        })
-
         renderView({
             path: CONTACT_FORM_SETTINGS_PATH,
-            history,
+            route: insertContactFormIdParam(
+                CONTACT_FORM_SETTINGS_PATH,
+                FORM_ID,
+            ),
         })
-
-        expect(history.location.pathname).toEqual(
+        expect(screen.getByTestId('redirect-to')).toHaveTextContent(
             insertContactFormIdParam(CONTACT_FORM_CUSTOMIZATION_PATH, FORM_ID),
         )
     })
-
     it.each([
         CONTACT_FORM_SETTINGS_PATH,
         CONTACT_FORM_PREFERENCES_PATH,
@@ -143,19 +143,15 @@ describe('<ContactFormSettingsView />', () => {
         'should redirect to ABOUT page if contact form id is invalid for %p',
         (path) => {
             const INVALID_ID = 'invalid-number'
-            const history = createMemoryHistory({
-                initialEntries: [insertContactFormIdParam(path, INVALID_ID)],
-            })
-
             renderView({
-                path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                path: '*',
+                route: insertContactFormIdParam(path, INVALID_ID),
             })
-
-            expect(history.location.pathname).toEqual(CONTACT_FORM_BASE_PATH)
+            expect(screen.getByTestId('location-path')).toHaveTextContent(
+                CONTACT_FORM_BASE_PATH,
+            )
         },
     )
-
     it.each([
         CONTACT_FORM_CUSTOMIZATION_PATH,
         CONTACT_FORM_PREFERENCES_PATH,
@@ -163,187 +159,118 @@ describe('<ContactFormSettingsView />', () => {
     ])(
         'should redirect to ABOUT page if the header `Contact Form` link was clicked',
         async (path) => {
-            const history = createMemoryHistory({
-                initialEntries: [insertContactFormIdParam(path, FORM_ID)],
-            })
-
             renderView({
                 path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                route: insertContactFormIdParam(path, FORM_ID),
             })
-
             const headerLink = await screen.findByLabelText('base-path')
             expect(headerLink.getAttribute('href')).toEqual(
                 CONTACT_FORM_BASE_PATH,
             )
         },
     )
-
     it.each([
         CONTACT_FORM_CUSTOMIZATION_PATH,
         CONTACT_FORM_PREFERENCES_PATH,
         CONTACT_FORM_PUBLISH_PATH,
     ])('should display preview button', async (path) => {
-        const history = createMemoryHistory({
-            initialEntries: [insertContactFormIdParam(path, FORM_ID)],
-        })
-
         renderView({
-            history,
             path: CONTACT_FORM_SETTINGS_PATH,
+            route: insertContactFormIdParam(path, FORM_ID),
         })
-
         await screen.findByLabelText('contact form preview')
     })
-
     it('should display "Automation Features" tab', () => {
-        const history = createMemoryHistory({
-            initialEntries: [
-                insertContactFormIdParam(CONTACT_FORM_SETTINGS_PATH, FORM_ID),
-            ],
-        })
-
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
         })
-
         renderView({
             path: CONTACT_FORM_SETTINGS_PATH,
-            history,
+            route: insertContactFormIdParam(
+                CONTACT_FORM_SETTINGS_PATH,
+                FORM_ID,
+            ),
         })
-
         expect(
             screen.getByRole('link', { name: /Automation Features/i }),
         ).toBeInTheDocument()
     })
-
     it('should hide the "Automation Features" tab', () => {
-        const history = createMemoryHistory({
-            initialEntries: [
-                insertContactFormIdParam(CONTACT_FORM_SETTINGS_PATH, FORM_ID),
-            ],
-        })
-
         renderView({
             path: CONTACT_FORM_SETTINGS_PATH,
-            history,
+            route: insertContactFormIdParam(
+                CONTACT_FORM_SETTINGS_PATH,
+                FORM_ID,
+            ),
         })
-
         expect(
             screen.queryByRole('link', { name: /Automation Features/i }),
         ).not.toBeInTheDocument()
     })
-
     describe('Secondary navbar buttons', () => {
         beforeEach(() => {
             mockUseFlag.mockReturnValue(true)
         })
-
         it('should display upgrade button in navbar when hasAccess is false', async () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    insertContactFormIdParam(
-                        CONTACT_FORM_CUSTOMIZATION_PATH,
-                        FORM_ID,
-                    ),
-                ],
-            })
-
             renderView({
                 path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                route: insertContactFormIdParam(
+                    CONTACT_FORM_CUSTOMIZATION_PATH,
+                    FORM_ID,
+                ),
             })
-
             await screen.findByText('Upgrade to AI Agent')
         })
-
         it('should open subscription modal when clicking upgrade button in navbar', async () => {
             const user = userEvent.setup()
-            const history = createMemoryHistory({
-                initialEntries: [
-                    insertContactFormIdParam(
-                        CONTACT_FORM_CUSTOMIZATION_PATH,
-                        FORM_ID,
-                    ),
-                ],
-            })
-
             renderView({
                 path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                route: insertContactFormIdParam(
+                    CONTACT_FORM_CUSTOMIZATION_PATH,
+                    FORM_ID,
+                ),
             })
-
             const upgradeButton = await screen.findByText('Upgrade to AI Agent')
             await user.click(upgradeButton)
-
             expect(
                 screen.getByRole('heading', { name: /subscribe/i }),
             ).toBeInTheDocument()
         })
-
         it('should display connect store button in navbar when hasAccess is true', async () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    insertContactFormIdParam(
-                        CONTACT_FORM_CUSTOMIZATION_PATH,
-                        FORM_ID,
-                    ),
-                ],
-            })
-
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: true,
                 isLoading: false,
             })
-
             renderView({
                 path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                route: insertContactFormIdParam(
+                    CONTACT_FORM_CUSTOMIZATION_PATH,
+                    FORM_ID,
+                ),
             })
-
             await screen.findByText('Connect Store')
         })
-
         it('should navigate to preferences when clicking connect store in navbar', async () => {
             const user = userEvent.setup()
-            const history = createMemoryHistory({
-                initialEntries: [
-                    insertContactFormIdParam(
-                        CONTACT_FORM_CUSTOMIZATION_PATH,
-                        FORM_ID,
-                    ),
-                ],
-            })
-
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: true,
                 isLoading: false,
             })
-
             renderView({
                 path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                route: insertContactFormIdParam(
+                    CONTACT_FORM_CUSTOMIZATION_PATH,
+                    FORM_ID,
+                ),
             })
-
             const connectButton = await screen.findByText('Connect Store')
             await user.click(connectButton)
-
-            expect(history.location.pathname).toEqual(
+            expect(screen.getByTestId('location-path')).toHaveTextContent(
                 `/app/settings/contact-form/${FORM_ID}/preferences`,
             )
         })
-
         it('should not display connect store button when shop is integrated', async () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    insertContactFormIdParam(
-                        CONTACT_FORM_CUSTOMIZATION_PATH,
-                        FORM_ID,
-                    ),
-                ],
-            })
-
             const stateWithShopIntegration = {
                 ...defaultState,
                 entities: {
@@ -364,67 +291,46 @@ describe('<ContactFormSettingsView />', () => {
                     },
                 } as any,
             }
-
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: true,
                 isLoading: false,
             })
-
             renderView({
                 path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                route: insertContactFormIdParam(
+                    CONTACT_FORM_CUSTOMIZATION_PATH,
+                    FORM_ID,
+                ),
                 state: stateWithShopIntegration,
             })
-
             await screen.findByLabelText('contact form preview')
-
             expect(
                 screen.queryByRole('button', { name: /connect store/i }),
             ).not.toBeInTheDocument()
         })
     })
-
     describe('Visual indicators', () => {
         it('should display red dot on Automation Features tab when shop is not integrated', async () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    insertContactFormIdParam(
-                        CONTACT_FORM_CUSTOMIZATION_PATH,
-                        FORM_ID,
-                    ),
-                ],
-            })
-
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: true,
                 isLoading: false,
             })
-
             renderView({
                 path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                route: insertContactFormIdParam(
+                    CONTACT_FORM_CUSTOMIZATION_PATH,
+                    FORM_ID,
+                ),
             })
-
             const automationLink = await screen.findByRole('link', {
                 name: /Automation Features/i,
             })
-
             const redDotImage = automationLink.querySelector(
                 'img[alt="status icon"]',
             )
             expect(redDotImage).toBeInTheDocument()
         })
-
         it('should not display red dot on Automation Features tab when shop is integrated', async () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    insertContactFormIdParam(
-                        CONTACT_FORM_CUSTOMIZATION_PATH,
-                        FORM_ID,
-                    ),
-                ],
-            })
-
             const stateWithShopIntegration = {
                 ...defaultState,
                 entities: {
@@ -445,22 +351,21 @@ describe('<ContactFormSettingsView />', () => {
                     },
                 } as any,
             }
-
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: true,
                 isLoading: false,
             })
-
             renderView({
                 path: CONTACT_FORM_SETTINGS_PATH,
-                history,
+                route: insertContactFormIdParam(
+                    CONTACT_FORM_CUSTOMIZATION_PATH,
+                    FORM_ID,
+                ),
                 state: stateWithShopIntegration,
             })
-
             const automationLink = await screen.findByRole('link', {
                 name: /Automation Features/i,
             })
-
             const redDotImage = automationLink.querySelector(
                 'img[alt="status icon"]',
             )

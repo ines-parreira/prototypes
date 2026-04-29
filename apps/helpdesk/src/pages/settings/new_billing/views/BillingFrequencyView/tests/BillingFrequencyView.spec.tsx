@@ -1,4 +1,5 @@
 import {
+    BILLING_BASE_PATH,
     BILLING_PAYMENT_PATH,
     formatAmount,
     getCorrespondingPlanAtCadence,
@@ -6,13 +7,11 @@ import {
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { useLocation } from 'react-router-dom'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
 import { account } from 'fixtures/account'
@@ -41,11 +40,10 @@ import {
     isOtherCadenceDowngrade,
     isOtherCadenceUpgrade,
 } from 'models/billing/utils'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { ConfirmChangesModal } from '../../../components/ConfirmChangesModal'
+import useProductCancellations from '../../../hooks/useProductCancellations'
 import type {
     PlanByProductType,
     PlansByProductType,
@@ -59,46 +57,33 @@ jest.mock('../../../components/ConfirmChangesModal', () => ({
         )
         .mockConfirmChangesModalComponent(),
 }))
-
 // useIsPaymentEnabled calls useBanners which requires a provider the test doesn't set up.
 jest.mock('../../../hooks/useIsPaymentEnabled', () => ({
     useIsPaymentEnabled: jest.fn(() => true),
 }))
-
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
-
 const useFlagMock = useFlag as jest.Mock
-
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
-
 jest.mock('@repo/billing', () => ({
     ...jest.requireActual('@repo/billing'),
     useBillingState: jest.fn(),
 }))
 const mockUseBillingState = assumeMock(useBillingState)
-
-const queryClient = mockQueryClient()
+jest.mock('../../../hooks/useProductCancellations')
+const mockUseProductCancellations = assumeMock(useProductCancellations)
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
+const billingFrequencyRoute = `${BILLING_BASE_PATH}/manage/helpdesk`
+const LocationPath = () => {
+    const location = useLocation()
 
-const mockedHistoryPush = jest.fn()
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
-    useParams: jest.fn().mockReturnValue({
-        selectedProduct: 'helpdesk',
-    }),
-    useHistory: () => ({
-        push: mockedHistoryPush,
-    }),
-}))
-
-const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
-
+    return <output aria-label="Current path">{location.pathname}</output>
+}
 const defaultStore: DeepPartial<RootState> = {
     billing: fromJS(billingState),
     currentAccount: fromJS({
@@ -115,27 +100,29 @@ const defaultStore: DeepPartial<RootState> = {
         },
     }),
 }
-
 const renderBillingFrequencyView = (
     storeOverride?: DeepPartial<RootState>,
     isCurrentSubscriptionCanceled?: boolean,
 ) =>
-    renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-            <Provider store={mockedStore(storeOverride ?? defaultStore)}>
-                <BillingFrequencyView
-                    isTrialing={false}
-                    isCurrentSubscriptionCanceled={
-                        isCurrentSubscriptionCanceled ?? false
-                    }
-                    periodEnd="2021-01-01"
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                />
-            </Provider>
-        </QueryClientProvider>,
+    render(
+        <>
+            <BillingFrequencyView
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={
+                    isCurrentSubscriptionCanceled ?? false
+                }
+                periodEnd="2021-01-01"
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+            />
+            <LocationPath />
+        </>,
+        {
+            initialEntries: [billingFrequencyRoute],
+            path: `${BILLING_BASE_PATH}/:section?/:selectedProduct?`,
+            storeState: storeOverride ?? defaultStore,
+        },
     )
-
 const getRadioButton = (cadence: Cadence) => {
     // The component used wraps a radio input inside a div with forced aria labels
     // this means getByRole finds multiple, so we need to filter these down to what
@@ -145,13 +132,11 @@ const getRadioButton = (cadence: Cadence) => {
     })
     return components.find((el) => el.getAttribute('type') === 'radio')
 }
-
 const setFeatureFlags = (flags: Partial<Record<FeatureFlagKey, boolean>>) => {
     useFlagMock.mockImplementation(
         (flag: FeatureFlagKey) => flags[flag] ?? false,
     )
 }
-
 const buildPlansForCadence = (
     availablePlans: PlansByProductType,
     cadence: Cadence,
@@ -163,7 +148,6 @@ const buildPlansForCadence = (
                 (plan: Plan) => plan.cadence === cadence,
             ),
     )
-
 const buildCorrespondingPlansForCadence = (
     availablePlans: PlansByProductType,
     currentPlans: PlanByProductType,
@@ -178,26 +162,24 @@ const buildCorrespondingPlansForCadence = (
                 cadence,
             }),
     )
-
 describe('BillingFrequencyView', () => {
     const cadenceValues = Object.values(Cadence)
     const productTypeValues = Object.values(ProductType)
-
     beforeEach(() => {
         jest.clearAllMocks()
-        queryClient.clear()
         logEventMock.mockClear()
         mockUseBillingState.mockReturnValue({
             isLoading: false,
             data: undefined,
         } as any)
-
+        mockUseProductCancellations.mockReturnValue({
+            data: new Map(),
+        } as any)
         setFeatureFlags({
             [FeatureFlagKey.BillingQuarterlyFrequency]: true,
             [FeatureFlagKey.MidCycleUpgradeBillingLogic]: false,
         })
     })
-
     it('assumes correctly the order of product type enum', () => {
         // This test exists only to validate the assumption of ordering of ProductType
         // if this test fails, then the BillingFrequencyView component is going to
@@ -211,41 +193,32 @@ describe('BillingFrequencyView', () => {
             ProductType.Convert,
         ])
     })
-
     it('should track BillingPaymentInformationBillingFrequencyVisited event on component mount', () => {
         renderBillingFrequencyView()
-
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.BillingPaymentInformationBillingFrequencyVisited,
-            { url: '/' },
+            { url: billingFrequencyRoute },
         )
         expect(logEventMock).toHaveBeenCalledTimes(1)
     })
-
     it('should track BillingPaymentInformationFrequencyChanged event when frequency is changed', async () => {
         renderBillingFrequencyView()
-
         const yearlyRadioButton = getRadioButton(Cadence.Year)
         expect(yearlyRadioButton).toBeInTheDocument()
         if (!yearlyRadioButton) return
-
         await act(() => userEvent.click(yearlyRadioButton))
-
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.BillingPaymentInformationFrequencyChanged,
             { cadence: Cadence.Year },
         )
     })
-
     it('should render', () => {
         renderBillingFrequencyView()
-
         expect(
             screen.getByText(
                 'Changing your billing frequency will apply on all your subscribed products',
             ),
         ).toBeInTheDocument()
-
         expect(
             screen.getByRole('heading', { name: 'Billing frequency' }),
         ).toBeInTheDocument()
@@ -264,7 +237,6 @@ describe('BillingFrequencyView', () => {
             screen.getByRole('button', { name: 'Update Subscription' }),
         ).toBeInTheDocument()
     })
-
     const cadenceBooleanCartesianProduct = cadenceValues.flatMap((a) =>
         [true, false].map((b): [Cadence, boolean] => [a, b]),
     )
@@ -277,13 +249,11 @@ describe('BillingFrequencyView', () => {
                 [FeatureFlagKey.BillingQuarterlyFrequency]: enabled,
                 [FeatureFlagKey.MidCycleUpgradeBillingLogic]: false,
             })
-
             const plan = helpdeskProduct.prices.find(
                 (plan: HelpdeskPlan) => plan.cadence === cadence,
             )
             // If a plan can't be found, the test is misconfigured and can't run
             expect(plan).toBeDefined()
-
             const storeOverride: DeepPartial<RootState> = {
                 ...defaultStore,
                 currentAccount: fromJS({
@@ -296,17 +266,13 @@ describe('BillingFrequencyView', () => {
                     },
                 }),
             }
-
             renderBillingFrequencyView(storeOverride)
-
             const canUseQuarterlyBilling =
                 enabled || cadence === Cadence.Quarter
-
             const cadenceValues = Object.values(Cadence).filter(
                 (cadence: Cadence) =>
                     cadence !== Cadence.Quarter || canUseQuarterlyBilling,
             )
-
             const cadenceUpgradeIsPossible =
                 cadenceValues.find(
                     (otherCadence: Cadence) =>
@@ -314,17 +280,17 @@ describe('BillingFrequencyView', () => {
                             canUseQuarterlyBilling) &&
                         isOtherCadenceUpgrade(cadence, otherCadence),
                 ) !== undefined
-
             if (!cadenceUpgradeIsPossible) {
-                expect(mockedHistoryPush).toHaveBeenCalledWith(
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
                     BILLING_PAYMENT_PATH,
                 )
             } else {
-                expect(mockedHistoryPush).toHaveBeenCalledTimes(0)
+                expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                    billingFrequencyRoute,
+                )
             }
         },
     )
-
     it('should redirect users if their subscription is cancelled', () => {
         const storeOverride: DeepPartial<RootState> = {
             ...defaultStore,
@@ -333,54 +299,47 @@ describe('BillingFrequencyView', () => {
                 current_subscription: undefined,
             }),
         }
-
         renderBillingFrequencyView(storeOverride, true)
-
-        expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
+            BILLING_PAYMENT_PATH,
+        )
     })
-
     it('should redirect users when billing is paused', () => {
         mockUseBillingState.mockReturnValue({
             isLoading: false,
             data: { subscription: { is_paused: true } },
         } as any)
-
         renderBillingFrequencyView()
-
-        expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
+            BILLING_PAYMENT_PATH,
+        )
     })
-
     it('should render Loader when billing state is loading', () => {
         mockUseBillingState.mockReturnValue({
             isLoading: true,
             data: undefined,
         } as any)
-
         renderBillingFrequencyView()
-
         expect(
             screen.queryByRole('heading', { name: 'Billing frequency' }),
         ).not.toBeInTheDocument()
     })
-
-    it('should redirect users if at least one product is scheduled to cancel', () => {
-        queryClient.setQueryData(['subscription'], {
-            current_billing_cycle_end_datetime: '2021-12-31T23:59:59+00:00',
-            current_billing_cycle_start_datetime: '2021-12-01T00:00:00+00:00',
-            downgrade_scheduled: true,
-            downgrades: [
-                {
-                    current_plan_id: basicMonthlyAutomationPlan.plan_id,
-                    scheduled_plan: null,
-                },
-            ],
-        })
-
+    it('should redirect users if at least one product is scheduled to cancel', async () => {
+        mockUseProductCancellations.mockReturnValue({
+            data: new Map([
+                [
+                    basicMonthlyAutomationPlan.plan_id,
+                    '2021-12-31T23:59:59+00:00',
+                ],
+            ]),
+        } as any)
         renderBillingFrequencyView()
-
-        expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
+        await waitFor(() => {
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                BILLING_PAYMENT_PATH,
+            )
+        })
     })
-
     it('should not redirect users for scheduled changes when the mid-cycle upgrade flag is off', () => {
         mockUseBillingState.mockReturnValue({
             isLoading: false,
@@ -397,12 +356,11 @@ describe('BillingFrequencyView', () => {
                 },
             },
         } as any)
-
         renderBillingFrequencyView()
-
-        expect(mockedHistoryPush).not.toHaveBeenCalled()
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
+            billingFrequencyRoute,
+        )
     })
-
     it('should redirect users when hasScheduledChanges is true and the mid-cycle upgrade flag is on', () => {
         mockUseBillingState.mockReturnValue({
             isLoading: false,
@@ -420,20 +378,17 @@ describe('BillingFrequencyView', () => {
                 },
             },
         } as any)
-
         setFeatureFlags({
             [FeatureFlagKey.BillingQuarterlyFrequency]: true,
             [FeatureFlagKey.MidCycleUpgradeBillingLogic]: true,
         })
-
         renderBillingFrequencyView()
-
-        expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
+        expect(screen.getByLabelText('Current path')).toHaveTextContent(
+            BILLING_PAYMENT_PATH,
+        )
     })
-
     it('should open confirm changes modal from Update Subscription when the mid-cycle upgrade flag is on', async () => {
         const user = userEvent.setup()
-
         mockUseBillingState.mockReturnValue({
             isLoading: false,
             data: {
@@ -446,34 +401,26 @@ describe('BillingFrequencyView', () => {
                 },
             },
         } as any)
-
         setFeatureFlags({
             [FeatureFlagKey.BillingQuarterlyFrequency]: true,
             [FeatureFlagKey.MidCycleUpgradeBillingLogic]: true,
         })
-
         renderBillingFrequencyView()
-
         expect(screen.getByText('confirm modal closed')).toBeInTheDocument()
-
         const yearlyRadioButton = getRadioButton(Cadence.Year)
         expect(yearlyRadioButton).toBeInTheDocument()
         if (!yearlyRadioButton) return
-
         await act(() => user.click(yearlyRadioButton))
-
         await waitFor(() => {
             expect(
                 screen.getByRole('button', { name: 'Update Subscription' }),
             ).toBeEnabled()
         })
-
         await act(() =>
             user.click(
                 screen.getByRole('button', { name: 'Update Subscription' }),
             ),
         )
-
         expect(screen.getByText('confirm modal open')).toBeInTheDocument()
         expect(ConfirmChangesModal).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -485,20 +432,16 @@ describe('BillingFrequencyView', () => {
             expect.anything(),
         )
     })
-
     it('should block the submit surface entirely when subscription data is not yet loaded and the mid-cycle upgrade flag is on', () => {
         mockUseBillingState.mockReturnValue({
             isLoading: false,
             data: undefined,
         } as any)
-
         setFeatureFlags({
             [FeatureFlagKey.BillingQuarterlyFrequency]: true,
             [FeatureFlagKey.MidCycleUpgradeBillingLogic]: true,
         })
-
         renderBillingFrequencyView()
-
         expect(
             screen.queryByRole('button', { name: 'Update Subscription' }),
         ).not.toBeInTheDocument()
@@ -506,7 +449,6 @@ describe('BillingFrequencyView', () => {
             screen.queryByText('confirm modal closed'),
         ).not.toBeInTheDocument()
     })
-
     const cadenceCartesianProduct = cadenceValues.flatMap((a) =>
         cadenceValues.map((b) => [a, b]),
     )
@@ -520,25 +462,21 @@ describe('BillingFrequencyView', () => {
                 [ProductType.SMS]: smsProduct.prices,
                 [ProductType.Convert]: convertProduct.prices,
             }
-
             const originalPlans = buildPlansForCadence(
                 availablePlans,
                 originalCadence,
             )
-
             const newPlans = buildCorrespondingPlansForCadence(
                 availablePlans,
                 originalPlans,
                 newCadence,
             )
-
             // If any of these are undefined, the test is misconfigured
             // because we don't have a corresponding plan for the product
             for (const productType of productTypeValues) {
                 expect(originalPlans[productType]).toBeDefined()
                 expect(newPlans[productType]).toBeDefined()
             }
-
             const originalPrice = Object.values(originalPlans)
                 .map((plan: Plan | undefined) => plan?.amount ?? 0)
                 .reduce((a: number, b: number) => a + b, 0)
@@ -546,7 +484,6 @@ describe('BillingFrequencyView', () => {
                 originalPrice / 100,
                 originalPlans[ProductType.Helpdesk]?.currency,
             )
-
             const newPrice = Object.values(newPlans)
                 .map((plan: Plan | undefined) => plan?.amount ?? 0)
                 .reduce((a: number, b: number) => a + b, 0)
@@ -554,7 +491,6 @@ describe('BillingFrequencyView', () => {
                 newPrice / 100,
                 originalPlans[ProductType.Helpdesk]?.currency,
             )
-
             const storeOverride: DeepPartial<RootState> = {
                 ...defaultStore,
                 currentAccount: fromJS({
@@ -576,20 +512,15 @@ describe('BillingFrequencyView', () => {
                     },
                 }),
             }
-
             renderBillingFrequencyView(storeOverride)
-
             const totalPrice = screen.getByLabelText('Total price', {
                 selector: 'span',
             })
             expect(totalPrice.textContent).toBe(originalPriceFormatted)
-
             const radioButton = getRadioButton(newCadence)
             expect(radioButton).toBeInTheDocument()
             if (!radioButton) return
-
             await act(() => userEvent.click(radioButton))
-
             if (isOtherCadenceDowngrade(originalCadence, newCadence)) {
                 // Clicking the radio button should be a no-op due to being disabled
                 expect(radioButton).toBeDisabled()
@@ -600,7 +531,6 @@ describe('BillingFrequencyView', () => {
             }
         },
     )
-
     const cadenceUpgradesProductTypeCartesianProduct = cadenceCartesianProduct
         .filter(([originalCadence, newCadence]) =>
             isOtherCadenceUpgrade(originalCadence, newCadence),
@@ -629,18 +559,15 @@ describe('BillingFrequencyView', () => {
                 [ProductType.SMS]: voiceProduct.prices,
                 [ProductType.Convert]: convertProduct.prices,
             }
-
             const originalPlans = buildPlansForCadence(
                 availablePlans,
                 originalCadence,
             )
-
             // If any of these are undefined, the test is misconfigured
             // because we don't have a corresponding plan for the product
             for (const productType of productTypeValues) {
                 expect(originalPlans[productType]).toBeDefined()
             }
-
             const storeOverride: DeepPartial<RootState> = {
                 ...defaultStore,
                 billing: fromJS({
@@ -678,15 +605,12 @@ describe('BillingFrequencyView', () => {
                     },
                 }),
             }
-
             renderBillingFrequencyView(storeOverride)
-
             const radioButton = getRadioButton(newCadence)
             expect(radioButton).toBeInTheDocument()
             expect(radioButton).toBeDisabled()
         },
     )
-
     it('should render with default currency when helpdeskAvailablePlans is empty', () => {
         const storeOverride: DeepPartial<RootState> = {
             ...defaultStore,
@@ -703,16 +627,13 @@ describe('BillingFrequencyView', () => {
                 ),
             }),
         }
-
         renderBillingFrequencyView(storeOverride)
-
         const totalPrice = screen.getByLabelText('Total price', {
             selector: 'span',
         })
         expect(totalPrice).toBeInTheDocument()
         expect(totalPrice.textContent).toContain('$')
     })
-
     it('should render with default currency when helpdeskAvailablePlans is undefined', () => {
         const storeOverride: DeepPartial<RootState> = {
             ...defaultStore,
@@ -724,9 +645,7 @@ describe('BillingFrequencyView', () => {
                 ),
             }),
         }
-
         renderBillingFrequencyView(storeOverride)
-
         const totalPrice = screen.getByLabelText('Total price', {
             selector: 'span',
         })

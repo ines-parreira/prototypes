@@ -3,7 +3,6 @@ import type React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { noop } from 'lodash'
-import { Provider as ReduxProvider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -63,19 +62,16 @@ const fetchedProvidersStateSuccess: FetchedProvidersState = {
 
 const getFile = () => new File([], 'Imported Articles.csv')
 
-const renderWithStore = (element: React.ReactElement) =>
+const renderComponent = (element: React.ReactElement) =>
     render(element, {
-        wrapper: ({ children }: any) => (
-            <ReduxProvider store={mockStore(defaultState)}>
-                {children}
-            </ReduxProvider>
-        ),
+        reduxMiddlewares: [thunk],
+        storeState: mockStore(defaultState).getState(),
     })
 
 describe('<ImportArticlesModal />', () => {
     describe('snapshots', () => {
         test('migration feature disabled', () => {
-            const { baseElement } = renderWithStore(
+            const { baseElement } = renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -97,7 +93,7 @@ describe('<ImportArticlesModal />', () => {
             expect(baseElement).toMatchSnapshot()
         })
         test('no file selected', () => {
-            const { baseElement } = renderWithStore(
+            const { baseElement } = renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -115,7 +111,7 @@ describe('<ImportArticlesModal />', () => {
             expect(baseElement).toMatchSnapshot()
         })
         test('file selected', () => {
-            const { baseElement } = renderWithStore(
+            const { baseElement } = renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -134,7 +130,7 @@ describe('<ImportArticlesModal />', () => {
             expect(baseElement).toMatchSnapshot()
         })
         test('import in progress', () => {
-            const { baseElement } = renderWithStore(
+            const { baseElement } = renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -152,7 +148,7 @@ describe('<ImportArticlesModal />', () => {
             expect(baseElement).toMatchSnapshot()
         })
         test('loading providers', () => {
-            const { baseElement } = renderWithStore(
+            const { baseElement } = renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -174,7 +170,7 @@ describe('<ImportArticlesModal />', () => {
             expect(baseElement).toMatchSnapshot()
         })
         test('providers fetching error', () => {
-            const { baseElement } = renderWithStore(
+            const { baseElement } = renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -200,7 +196,7 @@ describe('<ImportArticlesModal />', () => {
         test('choosing and dropping file', () => {
             const fileSelectHandler = jest.fn<void, [File]>()
 
-            renderWithStore(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -247,7 +243,7 @@ describe('<ImportArticlesModal />', () => {
         it('should not be able to click on import from another provider while providers are loading', () => {
             const dropAreaClickHandler = jest.fn()
 
-            renderWithStore(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -274,7 +270,7 @@ describe('<ImportArticlesModal />', () => {
         it('should be able to start import when file is selcted', () => {
             const importStartHandler = jest.fn()
 
-            renderWithStore(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}

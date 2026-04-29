@@ -1,17 +1,12 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import uniqueId from 'lodash/uniqueId'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import {
     DROPDOWN_NESTING_DELIMITER as delimiter,
     OBJECT_TYPES,
 } from 'custom-fields/constants'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
-import { renderWithDnD } from 'utils/testing'
 
 import DropdownInput from '../DropdownInput'
 import DropdownInputRow from '../DropdownInputRow'
@@ -20,7 +15,6 @@ let idCount = 1
 jest.mock('lodash/uniqueId')
 const uniqueIdMock = uniqueId as jest.Mock
 uniqueIdMock.mockImplementation((id: string) => `${id || ''}${idCount++}`)
-
 jest.mock('../DropdownInputRow', () => ({
     __esModule: true,
     default: jest.fn(
@@ -28,21 +22,16 @@ jest.mock('../DropdownInputRow', () => ({
         jest.requireActual('../DropdownInputRow').DropdownInputRow,
     ),
 }))
-
-const mockStore = configureMockStore([thunk])()
-
 describe('<DropdownInput/>', () => {
     beforeEach(() => {
         idCount = 1
     })
-
     const defaultProps = {
         field: ticketDropdownFieldDefinition,
         value: ['Option 1', 'Option 2'],
         onChange: jest.fn(),
         objectType: OBJECT_TYPES.TICKET,
     }
-
     it('should render correctly', () => {
         const props = {
             ...defaultProps,
@@ -57,16 +46,10 @@ describe('<DropdownInput/>', () => {
                 false,
             ],
         }
-
-        const { container } = renderWithDnD(
-            <Provider store={mockStore}>
-                <DropdownInput {...props} />
-            </Provider>,
-        )
+        const { container } = render(<DropdownInput {...props} />, {})
         expect(container).toMatchSnapshot()
         expect(screen.queryAllByText('drag_indicator')).toHaveLength(9)
     })
-
     it('should show an error for too much nesting', () => {
         const props = {
             ...defaultProps,
@@ -76,88 +59,53 @@ describe('<DropdownInput/>', () => {
                 `Option 3${delimiter}Sub 2${delimiter}Sub 3${delimiter}Sub 4${delimiter}Sub 5${delimiter}Sub 6`,
             ],
         }
-
-        renderWithDnD(
-            <Provider store={mockStore}>
-                <DropdownInput {...props} />
-            </Provider>,
-        )
+        render(<DropdownInput {...props} />, {})
         expect(
             screen.getAllByText(/more than 5 levels of nesting/).length,
         ).toBeGreaterThan(0)
     })
-
     it('should show an error for duplicate values', () => {
         const props = {
             ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 1', 'Option 3'],
         }
-
-        renderWithDnD(
-            <Provider store={mockStore}>
-                <DropdownInput {...props} />
-            </Provider>,
-        )
+        render(<DropdownInput {...props} />, {})
         expect(
             screen.getAllByText(/This value already exists/).length,
         ).toBeGreaterThan(0)
     })
-
     it('should trigger an onChange event when changing a value', () => {
         const props = {
             ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 3'],
         }
-
-        renderWithDnD(
-            <Provider store={mockStore}>
-                <DropdownInput {...props} />
-            </Provider>,
-        )
-
+        render(<DropdownInput {...props} />, {})
         const input = screen.getByTestId('dropdown-choice-2')
         fireEvent.change(input, { target: { value: 'My new value' } })
-
         expect(props.onChange).toHaveBeenCalledWith([
             'Option 1',
             'My new value',
             'Option 3',
         ])
     })
-
     it('should trigger an onChange event when removing a value', () => {
         const props = {
             ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 3'],
         }
-
-        renderWithDnD(
-            <Provider store={mockStore}>
-                <DropdownInput {...props} />
-            </Provider>,
-        )
-
+        render(<DropdownInput {...props} />, {})
         const button = screen.getByTestId('dropdown-choice-2-remove')
         button.click()
-
         expect(props.onChange).toHaveBeenCalledWith(['Option 1', 'Option 3'])
     })
-
     it('should trigger an onChange event when adding a value', () => {
         const props = {
             ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 3'],
         }
-
-        renderWithDnD(
-            <Provider store={mockStore}>
-                <DropdownInput {...props} />
-            </Provider>,
-        )
-
+        render(<DropdownInput {...props} />, {})
         const input = screen.getByTestId('dropdown-choice-4')
         fireEvent.change(input, { target: { value: 'My new value' } })
-
         expect(props.onChange).toHaveBeenCalledWith([
             'Option 1',
             'Option 2',
@@ -165,47 +113,31 @@ describe('<DropdownInput/>', () => {
             'My new value',
         ])
     })
-
     it('should trigger an onChange event when re-ordering values with drag and drop', () => {
         const props = {
             ...defaultProps,
             value: ['Option 1', 'Option 2', 'Option 3'],
         }
-
-        renderWithDnD(
-            <Provider store={mockStore}>
-                <DropdownInput {...props} />
-            </Provider>,
-        )
-
+        render(<DropdownInput {...props} />, {})
         const from = screen.getByTestId('dropdown-choice-3-handle')
         const dest = screen.getByTestId('dropdown-choice-1')
-
         fireEvent.dragStart(from)
         fireEvent.dragEnter(dest)
         fireEvent.dragOver(dest)
         fireEvent.drop(dest)
-
         expect(props.onChange).toHaveBeenCalledWith([
             'Option 1',
             'Option 3',
             'Option 2',
         ])
     })
-
     describe('isDisabled', () => {
         it('should pass isDisabled to DropdownInputRow', () => {
             const props = {
                 ...defaultProps,
                 isDisabled: true,
             }
-
-            renderWithDnD(
-                <Provider store={mockStore}>
-                    <DropdownInput {...props} />
-                </Provider>,
-            )
-
+            render(<DropdownInput {...props} />, {})
             expect(DropdownInputRow).toHaveBeenCalledWith(
                 expect.objectContaining({
                     isDisabled: true,
@@ -213,73 +145,45 @@ describe('<DropdownInput/>', () => {
                 {},
             )
         })
-
         it('should render without csv import when disabled', () => {
             const props = {
                 ...defaultProps,
                 isDisabled: true,
             }
-
-            renderWithDnD(
-                <Provider store={mockStore}>
-                    <DropdownInput {...props} />
-                </Provider>,
-            )
+            render(<DropdownInput {...props} />, {})
             expect(
                 screen.queryByText('Import from CSV'),
             ).not.toBeInTheDocument()
         })
-
         it('should render without instructions when disabled', () => {
             const props = {
                 ...defaultProps,
                 isDisabled: true,
             }
-
-            renderWithDnD(
-                <Provider store={mockStore}>
-                    <DropdownInput {...props} />
-                </Provider>,
-            )
-
+            render(<DropdownInput {...props} />, {})
             expect(
                 screen.queryByText(/Max 2,000 values/),
             ).not.toBeInTheDocument()
-
             expect(screen.queryByText('See examples')).not.toBeInTheDocument()
         })
-
         it('should a specific help link for tickets', () => {
             const props = {
                 ...defaultProps,
                 objectType: OBJECT_TYPES.TICKET,
             }
-
-            renderWithDnD(
-                <Provider store={mockStore}>
-                    <DropdownInput {...props} />
-                </Provider>,
-            )
-
+            render(<DropdownInput {...props} />, {})
             expect(
                 screen.getByText('See examples').getAttribute('href'),
             ).toEqual(
                 'https://docs.gorgias.com/en-US/set-up-ticket-fields-215327#how-to-define-your-fields-to-generate-insights-efficiently',
             )
         })
-
         it('should render a specific helper link for customers', () => {
             const props = {
                 ...defaultProps,
                 objectType: OBJECT_TYPES.CUSTOMER,
             }
-
-            renderWithDnD(
-                <Provider store={mockStore}>
-                    <DropdownInput {...props} />
-                </Provider>,
-            )
-
+            render(<DropdownInput {...props} />, {})
             expect(
                 screen.getByText('See examples').getAttribute('href'),
             ).toEqual('https://link.gorgias.com/t8f')

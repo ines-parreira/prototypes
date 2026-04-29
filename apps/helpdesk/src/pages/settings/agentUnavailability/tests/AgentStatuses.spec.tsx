@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -9,8 +10,6 @@ import {
     mockListCustomUserAvailabilityStatusesHandler,
     mockUpdateCustomUserAvailabilityStatusHandler,
 } from '@gorgias/helpdesk-mocks'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import AgentUnavailabilityStatuses from '../AgentStatuses'
 
@@ -42,14 +41,11 @@ afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
 const renderComponent = () =>
-    renderWithStoreAndQueryClientAndRouter(
-        <AgentUnavailabilityStatuses />,
-        {},
-        {
-            path: '/app/settings/agent-unavailability',
-            route: '/app/settings/agent-unavailability',
-        },
-    )
+    render(<AgentUnavailabilityStatuses />, {
+        storeState: {},
+        path: '/app/settings/agent-unavailability',
+        initialEntries: ['/app/settings/agent-unavailability'],
+    })
 
 async function openCreateModal() {
     const user = userEvent.setup()

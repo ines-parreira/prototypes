@@ -1,10 +1,6 @@
-import React from 'react'
-
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { getSingleCategoryEnglish } from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
@@ -15,36 +11,26 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SearchContextProvider } from 'pages/settings/helpCenter/providers/SearchContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
+import type { RootState } from 'state/types'
 
 import { CategoriesViews } from '../CategoriesView'
-
-const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-    thunk,
-])
 
 jest.mock('@tanstack/react-query', () => ({
     useQueryClient: () => ({
         invalidateQueries: jest.fn(),
     }),
 }))
-
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
     useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
 }))
-
 const useHelpCenterApiMock = useHelpCenterApi as jest.Mock
-
 const mockedListArticles = jest.fn().mockResolvedValue({
     data: { data: [], meta: { item_count: 0 } },
 })
 const mockedListCategoryArticles = jest.fn().mockResolvedValue({
     data: { data: [], meta: { item_count: 0 } },
 })
-
 useHelpCenterApiMock.mockImplementation(() => ({
     isReady: true,
     client: {
@@ -64,15 +50,12 @@ useHelpCenterApiMock.mockImplementation(() => ({
         }),
     },
 }))
-
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture,
 )
-
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
-
 describe('<CategoriesViews />', () => {
     it('should show starter screen', async () => {
         const initialState: Partial<RootState> = {
@@ -100,29 +83,26 @@ describe('<CategoriesViews />', () => {
                 },
             } as any,
         }
-
-        renderWithRouter(
-            <Provider store={mockedStore(initialState)}>
-                <SearchContextProvider
+        render(
+            <SearchContextProvider
+                helpCenter={getSingleHelpCenterResponseFixture}
+            >
+                <CategoriesViews
                     helpCenter={getSingleHelpCenterResponseFixture}
-                >
-                    <CategoriesViews
-                        helpCenter={getSingleHelpCenterResponseFixture}
-                        renderArticleList={() => <div />}
-                        onCreateArticle={jest.fn()}
-                        onCreateCategory={jest.fn()}
-                        onCreateArticleWithTemplate={jest.fn()}
-                        onShowTemplates={jest.fn()}
-                    />
-                </SearchContextProvider>
-            </Provider>,
+                    renderArticleList={() => <div />}
+                    onCreateArticle={jest.fn()}
+                    onCreateCategory={jest.fn()}
+                    onCreateArticleWithTemplate={jest.fn()}
+                    onShowTemplates={jest.fn()}
+                />
+            </SearchContextProvider>,
+            {
+                storeState: initialState,
+            },
         )
-
         await screen.findByText('Start your help center here')
-
         expect(screen.queryByText('Uncategorized articles')).toBe(null)
     })
-
     it('should show uncategorized row', async () => {
         const initialState: Partial<RootState> = {
             entities: {
@@ -150,7 +130,6 @@ describe('<CategoriesViews />', () => {
                 },
             } as any,
         }
-
         mockedListArticles.mockResolvedValue({
             data: {
                 data: [getSingleArticleEnglish],
@@ -165,29 +144,26 @@ describe('<CategoriesViews />', () => {
                 },
             },
         })
-
-        renderWithRouter(
-            <Provider store={mockedStore(initialState)}>
-                <SearchContextProvider
+        render(
+            <SearchContextProvider
+                helpCenter={getSingleHelpCenterResponseFixture}
+            >
+                <CategoriesViews
                     helpCenter={getSingleHelpCenterResponseFixture}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <CategoriesViews
-                            helpCenter={getSingleHelpCenterResponseFixture}
-                            renderArticleList={() => <div />}
-                            onCreateArticle={jest.fn()}
-                            onCreateCategory={jest.fn()}
-                            onCreateArticleWithTemplate={jest.fn()}
-                            onShowTemplates={jest.fn()}
-                        />
-                    </DndProvider>
-                </SearchContextProvider>
-            </Provider>,
+                    renderArticleList={() => <div />}
+                    onCreateArticle={jest.fn()}
+                    onCreateCategory={jest.fn()}
+                    onCreateArticleWithTemplate={jest.fn()}
+                    onShowTemplates={jest.fn()}
+                />
+            </SearchContextProvider>,
+            {
+                dndBackend: HTML5Backend,
+                storeState: initialState,
+            },
         )
-
         await screen.findByText('Uncategorized articles')
     })
-
     it('should show uncategorized row and category row', async () => {
         const initialState: Partial<RootState> = {
             entities: {
@@ -218,26 +194,24 @@ describe('<CategoriesViews />', () => {
                 },
             } as any,
         }
-
-        renderWithRouter(
-            <Provider store={mockedStore(initialState)}>
-                <SearchContextProvider
+        render(
+            <SearchContextProvider
+                helpCenter={getSingleHelpCenterResponseFixture}
+            >
+                <CategoriesViews
                     helpCenter={getSingleHelpCenterResponseFixture}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <CategoriesViews
-                            helpCenter={getSingleHelpCenterResponseFixture}
-                            renderArticleList={() => <div />}
-                            onCreateArticle={jest.fn()}
-                            onCreateCategory={jest.fn()}
-                            onCreateArticleWithTemplate={jest.fn()}
-                            onShowTemplates={jest.fn()}
-                        />
-                    </DndProvider>
-                </SearchContextProvider>
-            </Provider>,
+                    renderArticleList={() => <div />}
+                    onCreateArticle={jest.fn()}
+                    onCreateCategory={jest.fn()}
+                    onCreateArticleWithTemplate={jest.fn()}
+                    onShowTemplates={jest.fn()}
+                />
+            </SearchContextProvider>,
+            {
+                dndBackend: HTML5Backend,
+                storeState: initialState,
+            },
         )
-
         await screen.findByText('Uncategorized articles')
         await screen.findByText('Orders')
     })
