@@ -16,6 +16,7 @@ import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
+import { extractApiErrorMessage } from 'AIJourney/utils/extractApiErrorMessage'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -23,6 +24,7 @@ import { NotificationStatus } from 'state/notifications/types'
 type UseJourneyUpdateHandlerParams = {
     integrationId?: number
     journeyId?: string
+    entityLabel?: string
 }
 
 type HandleUpdateParams = {
@@ -53,6 +55,7 @@ type HandleUpdateParams = {
 export const useJourneyUpdateHandler = ({
     integrationId,
     journeyId,
+    entityLabel = 'journey',
 }: UseJourneyUpdateHandlerParams) => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
@@ -156,16 +159,26 @@ export const useJourneyUpdateHandler = ({
 
                 return updateJourneyMutate
             } catch (error) {
+                const apiMessage = extractApiErrorMessage(error)
                 void dispatch(
                     notify({
-                        message: `Error updating journey: ${error}`,
+                        message: apiMessage
+                            ? `Error updating ${entityLabel}: ${apiMessage}`
+                            : `Error updating ${entityLabel}: ${error}`,
                         status: NotificationStatus.Error,
                     }),
                 )
                 throw error
             }
         },
-        [dispatch, integrationId, journeyId, queryClient, updateJourney],
+        [
+            dispatch,
+            entityLabel,
+            integrationId,
+            journeyId,
+            queryClient,
+            updateJourney,
+        ],
     )
 
     return {

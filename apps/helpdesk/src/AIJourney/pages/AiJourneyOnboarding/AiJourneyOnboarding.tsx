@@ -175,6 +175,7 @@ export const AiJourneyOnboarding = ({
         useJourneyUpdateHandler({
             integrationId: currentIntegration?.id,
             journeyId: journeyData?.id,
+            entityLabel: isCampaign ? 'campaign' : 'journey',
         })
 
     const campaignState = journeyData?.campaign?.state

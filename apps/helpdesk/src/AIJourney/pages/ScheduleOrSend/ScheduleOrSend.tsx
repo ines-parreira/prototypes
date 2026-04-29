@@ -7,6 +7,7 @@ import {
     today,
 } from '@internationalized/date'
 import { useFormContext, useWatch } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 
 import {
     Banner,
@@ -14,6 +15,7 @@ import {
     Card,
     CardHeader,
     DateField,
+    Link,
     RadioCard,
     RadioGroup,
     Skeleton,
@@ -31,8 +33,13 @@ const SCHEDULE_TYPE_LATER = 'later'
 const MAX_SCHEDULE_DAYS = 30
 
 export const ScheduleOrSend = () => {
-    const { journeyData, isLoading: isLoadingJourneyData } = useJourneyContext()
+    const {
+        journeyData,
+        isLoading: isLoadingJourneyData,
+        shopName,
+    } = useJourneyContext()
     const { control, setValue } = useFormContext<SetupFormValues>()
+    const history = useHistory()
     const [isReady, setIsReady] = useState(false)
 
     const scheduleType = useWatch({ control, name: 'scheduleType' })
@@ -194,8 +201,20 @@ export const ScheduleOrSend = () => {
             <Box width={680}>
                 <Text size="sm" color="content-neutral-secondary">
                     The scheduled time is based on your timezone. Messages to
-                    recipients in quiet hours (8 PM – 9 AM their local time)
-                    will be held and delivered once quiet hours end.
+                    recipients within their local quiet hours will be held and
+                    delivered once quiet hours end. You can adjust quiet hours
+                    in{' '}
+                    <Link
+                        size="sm"
+                        onClick={() =>
+                            history.push(
+                                `/app/ai-journey/${shopName}/settings#compliance`,
+                            )
+                        }
+                    >
+                        Settings
+                    </Link>
+                    .
                 </Text>
             </Box>
         </>

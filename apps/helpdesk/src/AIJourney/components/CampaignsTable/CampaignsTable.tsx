@@ -101,6 +101,7 @@ export default function CampaignsTable<TData, TValue>({
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId: currentIntegration?.id,
+        entityLabel: 'campaign',
     })
 
     // send campaign

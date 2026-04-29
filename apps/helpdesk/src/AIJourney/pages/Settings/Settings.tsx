@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { useBeforeUnload } from '@repo/hooks'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useLocation } from 'react-router-dom'
 
 import {
     Box,
@@ -47,9 +48,17 @@ type SettingsFormValues = {
     quiet_hours_end: string | null
 }
 
+const TAB_HASH_LOOKUP: Record<string, SettingsTab> = {
+    [`#${SettingsTab.SenderIdentity}`]: SettingsTab.SenderIdentity,
+    [`#${SettingsTab.Compliance}`]: SettingsTab.Compliance,
+    [`#${SettingsTab.Integrations}`]: SettingsTab.Integrations,
+}
+
 export const Settings = () => {
     const dispatch = useAppDispatch()
     const { currentIntegration } = useJourneyContext()
+    const { hash } = useLocation()
+    const initialTab = TAB_HASH_LOOKUP[hash] ?? SettingsTab.SenderIdentity
 
     const storeIntegrationId = useMemo(() => {
         return currentIntegration?.id || 0
@@ -193,7 +202,7 @@ export const Settings = () => {
                     shouldRedirectAfterSave
                 />
                 <div className={css.tabsContainer}>
-                    <Tabs defaultSelectedItem={SettingsTab.SenderIdentity}>
+                    <Tabs defaultSelectedItem={initialTab}>
                         <TabList>
                             <TabItem
                                 id={SettingsTab.SenderIdentity}

@@ -215,6 +215,72 @@ describe('useJourneyUpdateHandler', () => {
                 }),
             )
         })
+
+        it('should surface the human-readable API error message when present', async () => {
+            const apiError = {
+                response: {
+                    data: {
+                        detail: {
+                            message: 'Validation error',
+                            errors: [
+                                {
+                                    field: 'campaign.campaign',
+                                    message:
+                                        'Value error, scheduled_datetime must be in the future',
+                                    type: 'value_error',
+                                },
+                            ],
+                        },
+                    },
+                },
+            }
+            mockMutateAsync.mockRejectedValue(apiError)
+
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await expect(
+                    result.current.handleUpdate({ followUpValue: 1 }),
+                ).rejects.toBe(apiError)
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notify({
+                    message:
+                        'Error updating journey: Please pick a date and time in the future.',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        })
+
+        it('should use the supplied entityLabel in the error message', async () => {
+            mockMutateAsync.mockRejectedValue(new Error('Mutation failed'))
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyUpdateHandler({
+                        ...defaultHookParams,
+                        entityLabel: 'campaign',
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await expect(
+                    result.current.handleUpdate({ followUpValue: 1 }),
+                ).rejects.toThrow('Mutation failed')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notify({
+                    message: expect.stringMatching(/^Error updating campaign:/),
+                    status: NotificationStatus.Error,
+                }),
+            )
+        })
     })
 
     describe('journey config building', () => {

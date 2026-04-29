@@ -3,11 +3,19 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
+import { MemoryRouter } from 'react-router-dom'
 
 import { useJourneyContext } from 'AIJourney/providers'
 
 import type { SetupFormValues } from '../Setup/Setup'
 import { ScheduleOrSend } from './ScheduleOrSend'
+
+const mockHistoryPush = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({ push: mockHistoryPush }),
+}))
 
 jest.mock('@gorgias/axiom', () => {
     const actual = jest.requireActual('@gorgias/axiom')
@@ -162,9 +170,11 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 function renderComponent() {
     const user = userEvent.setup()
     const result = render(
-        <Wrapper>
-            <ScheduleOrSend />
-        </Wrapper>,
+        <MemoryRouter>
+            <Wrapper>
+                <ScheduleOrSend />
+            </Wrapper>
+        </MemoryRouter>,
     )
     return { ...result, user }
 }
@@ -172,6 +182,7 @@ function renderComponent() {
 describe('<ScheduleOrSend />', () => {
     beforeEach(() => {
         mockUseJourneyContext.mockReturnValue(defaultContextValue as any)
+        mockHistoryPush.mockReset()
     })
 
     it('renders skeleton while loading', () => {
@@ -208,6 +219,29 @@ describe('<ScheduleOrSend />', () => {
                 ),
             ).toBeInTheDocument()
         })
+
+        expect(
+            screen.getByText(/You can adjust quiet hours in/i),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: 'Settings' }),
+        ).toBeInTheDocument()
+    })
+
+    it('navigates to the AI Journey settings page when the Settings link is clicked', async () => {
+        const { user } = renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('link', { name: 'Settings' }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByRole('link', { name: 'Settings' }))
+
+        expect(mockHistoryPush).toHaveBeenCalledWith(
+            '/app/ai-journey/test-shop/settings#compliance',
+        )
     })
 
     it('does not show date/time fields when "Send now" is selected by default', async () => {
