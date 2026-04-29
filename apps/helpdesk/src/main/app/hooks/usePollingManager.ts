@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import type { Program } from 'estree'
 import type { Map } from 'immutable'
 
@@ -14,7 +14,9 @@ import {
 import { getViewFilters } from 'state/views/utils'
 
 export default function usePollingManager() {
-    const hasNewScheduler = useFlag(FeatureFlagKey.ImprovedViewCountUpdates)
+    const { value: hasNewScheduler, isLoading } = useFlagWithLoading(
+        FeatureFlagKey.ImprovedViewCountUpdates,
+    )
     const currentUser = useAppSelector((state) => state.currentUser)
     const activeView = useAppSelector(getActiveView)
     const shouldFetchActiveViewTickets = useAppSelector(
@@ -25,7 +27,7 @@ export default function usePollingManager() {
     const isPreviousCurrentUserActive = useRef()
 
     useEffect(() => {
-        if (hasNewScheduler) return
+        if (isLoading || hasNewScheduler) return
         if (isPreviousCurrentUserActive.current && !isCurrentUserActive) {
             if (activeView.get('filters_ast')) {
                 if (shouldFetchActiveViewTickets) {
@@ -66,13 +68,14 @@ export default function usePollingManager() {
         }
     }, [
         hasNewScheduler,
+        isLoading,
         activeView,
         isCurrentUserActive,
         shouldFetchActiveViewTickets,
     ])
 
     useEffect(() => {
-        if (hasNewScheduler) return
+        if (isLoading || hasNewScheduler) return
         return () => pollingManager.stop()
-    }, [hasNewScheduler])
+    }, [hasNewScheduler, isLoading])
 }

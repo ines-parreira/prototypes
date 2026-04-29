@@ -1,3 +1,4 @@
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
@@ -10,6 +11,7 @@ import usePollingManager from '../usePollingManager'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = useAppSelector as jest.Mock
+const useFlagWithLoadingMock = useFlagWithLoading as jest.Mock
 
 jest.mock('services/pollingManager', () => ({
     start: jest.fn(),
@@ -42,6 +44,22 @@ const mockAppSelector = ({
 describe('usePollingManager', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        useFlagWithLoadingMock.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+    })
+
+    it('should not start polling while the view count scheduler flag is loading', () => {
+        useFlagWithLoadingMock.mockReturnValue({
+            value: false,
+            isLoading: true,
+        })
+        mockAppSelector({ currentUser: { is_active: true } })
+
+        renderHook(() => usePollingManager())
+
+        expect(pollingManager.start).not.toHaveBeenCalled()
     })
 
     it('should start polling when user becomes active', () => {
