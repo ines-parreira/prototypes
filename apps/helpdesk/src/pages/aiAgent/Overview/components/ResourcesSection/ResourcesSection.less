@@ -1,0 +1,20 @@
+@import (reference) '~css/typography';
+
+:local {
+    .titleContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .subtitle {
+        color: var(--neutral-grey-5); // legacy
+        .body-regular();
+    }
+}
+
+.axiom :local {
+    .subtitle {
+        color: var(--content-neutral-secondary);
+    }
+}

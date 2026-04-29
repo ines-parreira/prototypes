@@ -18,6 +18,7 @@ import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/u
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { AiAgentTaskSection } from 'pages/aiAgent/Overview/components/AiAgentTaskSection/AiAgentTaskSection'
 import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
+import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
 import {
@@ -275,6 +276,8 @@ export const AiAgentOverview = () => {
                 shopType={shopType}
                 setIsAiAgentPostLive={setIsAiAgentPostLive}
             />
+            <ResourcesSection />
+
             <ThankYouModal
                 isOpen={isOpen}
                 title={modalContent.title}
