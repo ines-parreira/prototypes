@@ -1,5 +1,6 @@
 export * from './types'
 export * from './constants'
+export * from './utils/buildPlansByProduct'
 export * from './utils/filterTaxIdsByAddress'
 export * from './utils/formatAmount'
 export * from './utils/generateBreadcrumbs'

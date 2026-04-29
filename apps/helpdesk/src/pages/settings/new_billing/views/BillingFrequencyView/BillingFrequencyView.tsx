@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import type { PlansByProduct, SelectedPlans } from '@repo/billing'
+import type { SelectedPlans } from '@repo/billing'
 import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_PATH,
+    buildPlansByProduct,
     getCorrespondingPlanAtCadence,
     PRICING_DETAILS_URL,
     useBillingState,
@@ -17,7 +18,6 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { toast } from '@gorgias/axiom'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
-import useAppSelector from 'hooks/useAppSelector'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { isOtherCadenceUpgrade } from 'models/billing/utils'
@@ -25,13 +25,9 @@ import Alert from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
+import { useIsPaymentMethodMissing } from 'pages/settings/new_billing/hooks/useIsPaymentMethodMissing'
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import type { TicketPurpose } from 'state/billing/types'
-import {
-    getShopifyBillingStatus,
-    shouldPayWithShopify as getShouldPayWithShopify,
-} from 'state/currentAccount/selectors'
-import { ShopifyBillingStatus } from 'state/currentAccount/types'
 
 import BackLink from '../../components/BackLink/BackLink'
 import BillingFrequency from '../../components/BillingFrequency/BillingFrequency'
@@ -209,45 +205,28 @@ const BillingFrequencyView = ({
     const [hasVersionConflictError, setHasVersionConflictError] =
         useState(false)
 
-    const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
-    const shopifyBillingStatus = useAppSelector(getShopifyBillingStatus)
-
-    const customer = billingState.data?.customer
-    const hasStripePaymentMethod =
-        !!customer?.credit_card ||
-        !!customer?.ach_debit_bank_account ||
-        !!customer?.ach_credit_bank_account
-
-    const isActiveSubscription = !isTrialing && !isCurrentSubscriptionCanceled
-    const isPaymentMethodMissing =
-        isActiveSubscription &&
-        (shouldPayWithShopify
-            ? shopifyBillingStatus !== ShopifyBillingStatus.Active
-            : !hasStripePaymentMethod)
+    const isPaymentMethodMissing = useIsPaymentMethodMissing({
+        isActiveSubscription: !isTrialing && !isCurrentSubscriptionCanceled,
+    })
 
     const plansByProduct = useMemo(
-        (): PlansByProduct => ({
-            [ProductType.Helpdesk]: {
-                current: currentHelpdeskPlan,
-                available: helpdeskAvailablePlans,
-            },
-            [ProductType.Automation]: {
-                current: currentAutomatePlan,
-                available: automateAvailablePlans,
-            },
-            [ProductType.Voice]: {
-                current: currentVoicePlan,
-                available: voiceAvailablePlans,
-            },
-            [ProductType.SMS]: {
-                current: currentSmsPlan,
-                available: smsAvailablePlans,
-            },
-            [ProductType.Convert]: {
-                current: currentConvertPlan,
-                available: convertAvailablePlans,
-            },
-        }),
+        () =>
+            buildPlansByProduct(
+                {
+                    helpdesk: currentHelpdeskPlan,
+                    automation: currentAutomatePlan,
+                    voice: currentVoicePlan,
+                    sms: currentSmsPlan,
+                    convert: currentConvertPlan,
+                },
+                {
+                    helpdesk: helpdeskAvailablePlans,
+                    automation: automateAvailablePlans,
+                    voice: voiceAvailablePlans,
+                    sms: smsAvailablePlans,
+                    convert: convertAvailablePlans,
+                },
+            ),
         [
             currentHelpdeskPlan,
             currentAutomatePlan,

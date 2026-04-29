@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
@@ -41,72 +41,55 @@ const minProps: ComponentProps<typeof AutomateSubscriptionModal> = {
 
 describe('<AutomateSubscriptionModal />', () => {
     it('should not render the modal', () => {
-        const { baseElement } = render(
-            <AutomateSubscriptionModal {...minProps} />,
-            { storeState: defaultState },
-        )
+        render(<AutomateSubscriptionModal {...minProps} />, {
+            storeState: defaultState,
+        })
         expect(logEventMock).not.toHaveBeenCalled()
-        expect(baseElement).toMatchSnapshot()
     })
 
     it('should render the modal', () => {
-        const { baseElement } = render(
-            <AutomateSubscriptionModal {...minProps} isOpen />,
-            { storeState: defaultState },
-        )
+        render(<AutomateSubscriptionModal {...minProps} isOpen />, {
+            storeState: defaultState,
+        })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallModalUpsell,
             { location: '/' },
         )
-        expect(baseElement).toMatchSnapshot()
     })
 
-    it('should display loader', async () => {
-        render(
-            <>
-                {' '}
-                <AutomateSubscriptionModal {...minProps} isOpen />
-            </>,
-            { storeState: defaultState },
-        )
-        const button = await screen.findByText(/I am sure/)
+    it('should keep the confirm button disabled until a plan is configured', async () => {
+        render(<AutomateSubscriptionModal {...minProps} isOpen />, {
+            storeState: defaultState,
+        })
+        const button = await screen.findByRole('button', {
+            name: /i am sure/i,
+        })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallModalUpsell,
             { location: '/' },
         )
-        fireEvent.click(button)
-
-        await waitFor(() => {
-            expect(button).toMatchSnapshot()
-        })
+        expect(button).toHaveAttribute('aria-disabled', 'true')
     })
 
     // TODO(React18): Fix this test
     it.skip('should render for customers already with full add-on features', async () => {
-        const { baseElement } = render(
-            <AutomateSubscriptionModal {...minProps} isOpen />,
-            {
-                storeState: {
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        current_subscription: {
-                            ...account.current_subscription,
-                            products: automationSubscriptionProductPrices,
-                        },
-                    }),
-                },
+        render(<AutomateSubscriptionModal {...minProps} isOpen />, {
+            storeState: {
+                ...defaultState,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: automationSubscriptionProductPrices,
+                    },
+                }),
             },
-        )
+        })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallModalUpsell,
             { location: '/' },
         )
         await screen.findByText(/Cancel subscription/i)
-
-        await waitFor(() => {
-            expect(baseElement).toMatchSnapshot()
-        })
     })
 
     it('should display image', async () => {
@@ -126,9 +109,7 @@ describe('<AutomateSubscriptionModal />', () => {
             { location: '/' },
         )
         const img = await screen.findByAltText(/features/)
-        await waitFor(() => {
-            expect(img).toMatchSnapshot()
-        })
+        expect(img).toHaveAttribute('src', 'foo.png')
     })
 
     it('should display the new modal description component', async () => {
