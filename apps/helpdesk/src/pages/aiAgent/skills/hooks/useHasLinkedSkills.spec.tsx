@@ -164,7 +164,11 @@ describe('useHasLinkedSkills', () => {
 
         expect(mockUseGetHelpCenterArticleList).toHaveBeenCalledWith(
             0,
-            { origin: 'skill', per_page: 1 },
+            {
+                origin: 'skill',
+                version_status: 'latest_draft',
+                per_page: 1,
+            },
             { enabled: false },
         )
     })
