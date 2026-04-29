@@ -26,8 +26,6 @@ import { SortableHeaderCell } from '../SkillsTable/SortableHeaderCell'
 import css from './IntentsTable.less'
 
 const TOOLTIP_MESSAGES = {
-    L1_DISABLED:
-        'This is an intent category. Expand it to link individual intents to a skill.',
     L2_LINKED:
         'This intent is linked to a skill. Open the linked skill to turn it off or remove this intent from it.',
     HANDOVER_ONLY:
@@ -251,7 +249,12 @@ export const getColumns = ({
         },
         {
             id: COLUMN_IDS.LINK,
-            header: () => null,
+            header: (info) => (
+                <SortableHeaderCell
+                    label="Linked skill"
+                    sortDirection={info.column.getIsSorted()}
+                />
+            ),
             cell: ({ row }) => {
                 const intent = row.original
                 const isParent = !!intent.children && intent.children.length > 0
@@ -374,14 +377,18 @@ export const getColumns = ({
             ),
             cell: ({ row }) => {
                 const intent = row.original
-                const isParent = !!intent.children
+                const isParent = !!intent.children && intent.children.length > 0
                 const isLinked = intent.status === IntentStatus.Linked
                 const isHandoverOnly = HANDOVER_ONLY_INTENTS.includes(
                     intent.name,
                 )
-                const isDisabled = isParent || isLinked || isHandoverOnly
+                const isDisabled = isLinked || isHandoverOnly
                 const isIntentDisabled = intent.toggleState === 'disabled'
                 const toggleValue = intent.toggleState === 'enabled'
+
+                if (isParent) {
+                    return null
+                }
 
                 const toggle = (
                     <ToggleField
@@ -406,11 +413,9 @@ export const getColumns = ({
                     return toggle
                 }
 
-                const tooltipMessage = isParent
-                    ? TOOLTIP_MESSAGES.L1_DISABLED
-                    : isLinked
-                      ? TOOLTIP_MESSAGES.L2_LINKED
-                      : TOOLTIP_MESSAGES.HANDOVER_ONLY
+                const tooltipMessage = isLinked
+                    ? TOOLTIP_MESSAGES.L2_LINKED
+                    : TOOLTIP_MESSAGES.HANDOVER_ONLY
 
                 return (
                     <Tooltip trigger={toggle}>

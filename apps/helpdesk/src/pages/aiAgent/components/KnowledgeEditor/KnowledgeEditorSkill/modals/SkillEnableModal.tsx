@@ -94,6 +94,7 @@ export const SkillEnableModal = () => {
                     </Button>
                     <Button
                         variant="primary"
+                        intent="success"
                         onClick={onEnable}
                         isLoading={isEnabling}
                     >

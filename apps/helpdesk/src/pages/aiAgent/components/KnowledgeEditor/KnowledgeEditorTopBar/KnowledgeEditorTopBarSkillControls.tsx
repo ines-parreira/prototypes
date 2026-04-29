@@ -231,6 +231,7 @@ export const SkillToolbarControls = () => {
     const enableButton = wrapWithValidationTooltip(
         <Button
             variant="primary"
+            intent="success"
             onClick={requestEnable}
             isDisabled={isBusy || !formValid}
         >

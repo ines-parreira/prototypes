@@ -406,9 +406,11 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                 title={<Heading size="lg">Intents</Heading>}
                 description={
                     <Text size="md" color="var(--content-neutral-secondary)">
-                        Link intents to skills. Once linked, AI Agent will
-                        follow the skill&apos;s instructions every time it
-                        detects a matching conversation.
+                        Intents represent what a conversation is about. Link an
+                        intent to a skill and AI Agent will follow that
+                        skill&apos;s instructions every time it detects that
+                        conversation type. Each intent can only be linked to one
+                        skill at a time.
                     </Text>
                 }
             />

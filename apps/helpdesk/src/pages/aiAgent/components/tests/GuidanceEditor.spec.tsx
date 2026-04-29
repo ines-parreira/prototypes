@@ -265,6 +265,31 @@ describe('GuidanceEditor', () => {
         }
     })
 
+    it('renders default description when description prop is not provided', () => {
+        const { getByText } = renderWithProvider(
+            <GuidanceEditor {...defaultProps} />,
+        )
+
+        expect(
+            getByText(
+                /Describe the steps AI Agent should follow in clear, specific phrases/,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders custom description when description prop is provided', () => {
+        const customDescription =
+            'Write step-by-step instructions for your AI Agent'
+        const { getByText } = renderWithProvider(
+            <GuidanceEditor
+                {...defaultProps}
+                description={customDescription}
+            />,
+        )
+
+        expect(getByText(customDescription)).toBeInTheDocument()
+    })
+
     it('calls handleUpdateContent when pasting HTML content', async () => {
         const handleUpdateContent = jest.fn()
         const { container } = renderWithProvider(

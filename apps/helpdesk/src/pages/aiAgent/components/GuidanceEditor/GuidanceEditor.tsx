@@ -27,6 +27,7 @@ type GuidanceEditorProps = {
     label?: string
     showDefaultToolbarActions?: boolean
     editorContextName?: string
+    description?: string
 }
 
 const defaultToolbarActions = [
@@ -54,6 +55,7 @@ export function GuidanceEditor({
     label,
     showDefaultToolbarActions = true,
     editorContextName = 'Guidance',
+    description,
 }: GuidanceEditorProps) {
     const toolbarActions = useMemo(() => {
         let actions = showDefaultToolbarActions
@@ -121,8 +123,8 @@ export function GuidanceEditor({
 
             <div className={css.textWrapper}>
                 <Text as="p" className={css.helperText} size="sm">
-                    Describe the steps AI Agent should follow in clear, specific
-                    phrases.
+                    {description ??
+                        'Describe the steps AI Agent should follow in clear, specific phrases.'}
                 </Text>
                 <Text as="p" className={css.helperText} size="sm">
                     Type &apos;/&apos; or &apos;@&apos; to insert variables and

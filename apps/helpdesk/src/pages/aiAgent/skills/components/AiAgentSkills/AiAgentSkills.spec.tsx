@@ -84,6 +84,17 @@ jest.mock(
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => null,
 }))
+jest.mock(
+    'pages/aiAgent/skills/components/IntroducingSkillsBanner/IntroducingSkillsBanner',
+    () => ({
+        IntroducingSkillsBanner: ({ shopName }: { shopName: string }) => (
+            <div aria-label={`Introducing Skills Banner for ${shopName}`}>
+                Introducing Skills Banner
+            </div>
+        ),
+    }),
+)
+
 const mockStore = configureMockStore([thunk])
 const mockUseHasLinkedSkills = useHasLinkedSkills as jest.MockedFunction<
     typeof useHasLinkedSkills
@@ -151,6 +162,15 @@ describe('AiAgentSkills', () => {
             {},
         )
     }
+
+    it('should render IntroducingSkillsBanner', () => {
+        renderComponent()
+
+        expect(
+            screen.getByText('Introducing Skills Banner'),
+        ).toBeInTheDocument()
+    })
+
     it('should show empty state when there are no linked skills', () => {
         renderComponent()
         expect(

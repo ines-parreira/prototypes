@@ -27,19 +27,9 @@ export interface TransformedIntent {
     parentId?: string
     children?: TransformedIntent[]
     metrics?: IntentMetrics
-    toggleState: ToggleState
+    toggleState?: ToggleState
     status: IntentStatus
     articles?: ArticleInIntentDto[]
-}
-
-const calculateL1ToggleState = (children: TransformedIntent[]): ToggleState => {
-    if (children.length === 0) return 'enabled'
-
-    const hasEnabledChild = children.some(
-        (child) => child.toggleState === 'enabled',
-    )
-
-    return hasEnabledChild ? 'enabled' : 'disabled'
 }
 
 const getToggleState = (intent: IntentResponseDto): ToggleState => {
@@ -87,7 +77,7 @@ export const useIntentsTable = (helpCenterId: number) => {
                     id: l1Name,
                     name: l1Name,
                     formattedName: formatIntentName(l1Name),
-                    toggleState: 'enabled',
+                    toggleState: undefined,
                     status: IntentStatus.NotLinked,
                     children: [],
                 })
@@ -114,8 +104,11 @@ export const useIntentsTable = (helpCenterId: number) => {
         l1ParentsMap.forEach((parentIntent, parentName) => {
             const children = childrenMap.get(parentName) ?? []
             parentIntent.children = children
-            parentIntent.toggleState = calculateL1ToggleState(children)
             parentIntent.metrics = metricsMap.get(parentName)
+            const hasEnabledChild = children.some(
+                (c) => c.toggleState === 'enabled',
+            )
+            parentIntent.toggleState = hasEnabledChild ? 'enabled' : 'disabled'
         })
 
         return Array.from(l1ParentsMap.values())

@@ -31,6 +31,7 @@ export const KnowledgeEditorSkillEditView = ({
             showActionsButton={true}
             showVariablesButton={!!availableVariables?.length}
             editorContextName="Skill"
+            description="Write step-by-step instructions for how AI Agent should handle conversations tied to this skill's intents."
         />
     </div>
 )

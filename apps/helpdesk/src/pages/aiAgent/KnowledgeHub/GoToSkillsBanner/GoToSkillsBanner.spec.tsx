@@ -40,20 +40,17 @@ describe('GoToSkillsBanner', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('heading', {
-                name: /take control of how ai agent handles specific conversations/i,
-            }),
+            screen.getByText(
+                /Skills are here: your recommendations are ready to review/i,
+            ),
         ).toBeInTheDocument()
     })
 
-    it('renders the "Go to skills" and "Learn more" buttons', () => {
+    it('renders the "Go to skills" button', () => {
         renderComponent()
 
         expect(
             screen.getByRole('button', { name: /go to skills/i }),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: /learn more/i }),
         ).toBeInTheDocument()
     })
 
@@ -72,9 +69,9 @@ describe('GoToSkillsBanner', () => {
         await user.click(screen.getByRole('button', { name: /close/i }))
 
         expect(
-            screen.queryByRole('heading', {
-                name: /take control of how ai agent handles specific conversations/i,
-            }),
+            screen.queryByText(
+                /Skills are here: your recommendations are ready to review/i,
+            ),
         ).not.toBeInTheDocument()
     })
 
@@ -93,9 +90,9 @@ describe('GoToSkillsBanner', () => {
         renderComponent()
 
         expect(
-            screen.queryByRole('heading', {
-                name: /take control of how ai agent handles specific conversations/i,
-            }),
+            screen.queryByText(
+                /Skills are here: your recommendations are ready to review/i,
+            ),
         ).not.toBeInTheDocument()
     })
 
@@ -105,9 +102,9 @@ describe('GoToSkillsBanner', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('heading', {
-                name: /take control of how ai agent handles specific conversations/i,
-            }),
+            screen.getByText(
+                /Skills are here: your recommendations are ready to review/i,
+            ),
         ).toBeInTheDocument()
     })
 })

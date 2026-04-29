@@ -241,6 +241,7 @@ describe('IntentsTable', () => {
             expect(screen.getByText('Intent')).toBeInTheDocument()
             expect(screen.getByText('Ticket volume')).toBeInTheDocument()
             expect(screen.getByText('Handover')).toBeInTheDocument()
+            expect(screen.getByText('Linked skill')).toBeInTheDocument()
             expect(screen.getByText('Enabled')).toBeInTheDocument()
         })
         it('should display intent count', () => {
@@ -563,29 +564,11 @@ describe('IntentsTable', () => {
         })
     })
     describe('Enabled toggle column', () => {
-        it('should show disabled toggle for L1 intents', async () => {
-            const user = userEvent.setup()
+        it('should not render toggle for L1 intents', () => {
             renderComponent()
-            const expandButton = screen.getAllByRole('button', {
-                name: /expand/i,
-            })[0]
-            await user.click(expandButton)
-            await waitFor(() => {
-                const toggles = screen.getAllByRole('switch')
-                const l1Toggle = toggles[0]
-                expect(l1Toggle).toBeDisabled()
-            })
-        })
-        it('should show tooltip for disabled L1 toggle', async () => {
-            const user = userEvent.setup()
-            renderComponent()
-            const toggles = screen.getAllByRole('switch')
-            await user.hover(toggles[0])
-            await waitFor(() => {
-                expect(
-                    screen.getByText(/This is an intent category/i),
-                ).toBeInTheDocument()
-            })
+
+            // All visible rows before expanding are L1 parents, which have no toggle
+            expect(screen.queryAllByRole('switch')).toHaveLength(0)
         })
         it('should show tooltip for a disabled (not handover-only) L2 intent toggle', async () => {
             const user = userEvent.setup()

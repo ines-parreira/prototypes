@@ -67,9 +67,7 @@ export const getColumns = ({
                         <TruncatedTextWithTooltip
                             tooltipContent={article.title}
                         >
-                            <Text size="md" variant="bold">
-                                {article.title}
-                            </Text>
+                            <Text size="md">{article.title}</Text>
                         </TruncatedTextWithTooltip>
                     </div>
                     {hasDraft && (
@@ -86,7 +84,7 @@ export const getColumns = ({
                                     />
                                 }
                             >
-                                <TooltipContent caption="Draft" />
+                                <TooltipContent caption="Continue editing this draft" />
                             </Tooltip>
                             <Text
                                 size="md"

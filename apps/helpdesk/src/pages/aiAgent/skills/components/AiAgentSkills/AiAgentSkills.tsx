@@ -7,6 +7,7 @@ import { Box, Skeleton } from '@gorgias/axiom'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { IntroducingSkillsBanner } from 'pages/aiAgent/skills/components/IntroducingSkillsBanner/IntroducingSkillsBanner'
 import { RecommendedSkillsSection } from 'pages/aiAgent/skills/components/RecommendedSkillsSection/RecommendedSkillsSection'
 import { SkillsTemplateModal } from 'pages/aiAgent/skills/components/SkillsTemplateModal/SkillsTemplateModal'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
@@ -63,6 +64,7 @@ export const AiAgentSkills = () => {
             />
 
             <Box flexDirection="column" className={css.content}>
+                <IntroducingSkillsBanner shopName={shopName} />
                 {availableSkillsTemplates.length > 0 && (
                     <RecommendedSkillsSection
                         skillsTemplates={availableSkillsTemplates}

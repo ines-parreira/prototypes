@@ -104,7 +104,8 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
                     subtitle: (
                         <Text size="sm" color="content-neutral-tertiary">
                             When AI Agent detects one of these intents in a
-                            conversation, this skill takes over.
+                            conversation, it will follow this skill&apos;s
+                            instructions.
                         </Text>
                     ),
                 }}
