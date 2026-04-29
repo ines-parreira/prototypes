@@ -1,17 +1,16 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import type { ContentState } from 'draft-js'
 import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import { Provider } from 'react-redux'
 
 import type { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEditor'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
-import { mockStore, renderWithRouter } from 'utils/testing'
 
 import toolbarPlugin from '../index'
 import Toolbar from '../Toolbar'
@@ -94,7 +93,7 @@ describe('Toolbar', () => {
     })
 
     it('should render character count if max length is specified', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <ToolbarProvider
                 canAddProductCard={true}
                 onAddProductCardAttachment={jest.fn()}
@@ -131,7 +130,7 @@ describe('Toolbar', () => {
         }
 
         it('should not render tooltip tour', () => {
-            const { queryByText } = renderWithRouter(
+            const { queryByText } = render(
                 <ToolbarProvider
                     canAddProductCard={true}
                     onAddProductCardAttachment={jest.fn()}
@@ -153,7 +152,7 @@ describe('Toolbar', () => {
         })
 
         it('should render tooltip tour', () => {
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <ToolbarProvider
                     canAddProductCard={true}
                     onAddProductCardAttachment={jest.fn()}
@@ -180,27 +179,25 @@ describe('Toolbar', () => {
 
         it('should should use "getWorkflowVariables" prop when passed and link is clicked', () => {
             const getWorkflowVariablesMock = jest.fn()
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <ToolbarProvider
-                        canAddProductCard={true}
-                        onAddProductCardAttachment={jest.fn()}
-                        canAddDiscountCodeLink={true}
-                        canAddVideoPlayer={false}
-                        shopifyIntegrations={fromJS([{}])}
-                    >
-                        <Toolbar
-                            maxLength={100}
-                            {...editorProps}
-                            editorState={editorState}
-                            getEditorState={() => editorState}
-                            displayedActions={[ActionName.Link]}
-                            linkIsOpen={true}
-                            linkUrl={'https://help.domain.com/article'}
-                            getWorkflowVariables={getWorkflowVariablesMock}
-                        />
-                    </ToolbarProvider>
-                </Provider>,
+            render(
+                <ToolbarProvider
+                    canAddProductCard={true}
+                    onAddProductCardAttachment={jest.fn()}
+                    canAddDiscountCodeLink={true}
+                    canAddVideoPlayer={false}
+                    shopifyIntegrations={fromJS([{}])}
+                >
+                    <Toolbar
+                        maxLength={100}
+                        {...editorProps}
+                        editorState={editorState}
+                        getEditorState={() => editorState}
+                        displayedActions={[ActionName.Link]}
+                        linkIsOpen={true}
+                        linkUrl={'https://help.domain.com/article'}
+                        getWorkflowVariables={getWorkflowVariablesMock}
+                    />
+                </ToolbarProvider>,
             )
             fireEvent.click(screen.getByText('Click me'))
             expect(getWorkflowVariablesMock).toHaveBeenCalled()
@@ -216,27 +213,25 @@ describe('Toolbar', () => {
 
             mockUseFlag.mockReturnValue(true)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <ToolbarProvider
-                        canAddProductCard={true}
-                        onAddProductCardAttachment={jest.fn()}
-                        canAddDiscountCodeLink={true}
-                        canAddVideoPlayer={false}
-                        guidanceActions={mockGuidanceActions}
-                        shopifyIntegrations={fromJS([{}])}
-                    >
-                        <Toolbar
-                            maxLength={100}
-                            {...editorProps}
-                            editorState={editorState}
-                            getEditorState={() => editorState}
-                            displayedActions={[ActionName.GuidanceAction]}
-                            linkIsOpen={true}
-                            linkUrl={'https://help.domain.com/article'}
-                        />
-                    </ToolbarProvider>
-                </Provider>,
+            render(
+                <ToolbarProvider
+                    canAddProductCard={true}
+                    onAddProductCardAttachment={jest.fn()}
+                    canAddDiscountCodeLink={true}
+                    canAddVideoPlayer={false}
+                    guidanceActions={mockGuidanceActions}
+                    shopifyIntegrations={fromJS([{}])}
+                >
+                    <Toolbar
+                        maxLength={100}
+                        {...editorProps}
+                        editorState={editorState}
+                        getEditorState={() => editorState}
+                        displayedActions={[ActionName.GuidanceAction]}
+                        linkIsOpen={true}
+                        linkUrl={'https://help.domain.com/article'}
+                    />
+                </ToolbarProvider>,
             )
 
             fireEvent.click(screen.getByText('Actions'))
@@ -251,28 +246,26 @@ describe('Toolbar', () => {
         it('should display guidance action picker button as disabled when there is no action', () => {
             mockUseFlag.mockReturnValue(true)
 
-            renderWithRouter(
-                <Provider store={mockStore({})}>
-                    <ToolbarProvider
-                        canAddProductCard={true}
-                        onAddProductCardAttachment={jest.fn()}
-                        canAddDiscountCodeLink={true}
-                        canAddVideoPlayer={false}
-                        guidanceActions={[]}
-                        shopifyIntegrations={fromJS([{}])}
-                        shopName="myshop"
-                    >
-                        <Toolbar
-                            maxLength={100}
-                            {...editorProps}
-                            editorState={editorState}
-                            getEditorState={() => editorState}
-                            displayedActions={[ActionName.GuidanceAction]}
-                            linkIsOpen={true}
-                            linkUrl={'https://help.domain.com/article'}
-                        />
-                    </ToolbarProvider>
-                </Provider>,
+            render(
+                <ToolbarProvider
+                    canAddProductCard={true}
+                    onAddProductCardAttachment={jest.fn()}
+                    canAddDiscountCodeLink={true}
+                    canAddVideoPlayer={false}
+                    guidanceActions={[]}
+                    shopifyIntegrations={fromJS([{}])}
+                    shopName="myshop"
+                >
+                    <Toolbar
+                        maxLength={100}
+                        {...editorProps}
+                        editorState={editorState}
+                        getEditorState={() => editorState}
+                        displayedActions={[ActionName.GuidanceAction]}
+                        linkIsOpen={true}
+                        linkUrl={'https://help.domain.com/article'}
+                    />
+                </ToolbarProvider>,
             )
 
             const actionsButton = screen.getByRole('button', {

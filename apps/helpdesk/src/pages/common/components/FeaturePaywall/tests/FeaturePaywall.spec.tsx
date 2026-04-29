@@ -1,11 +1,9 @@
 import type { ComponentProps } from 'react'
 
 import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { account } from 'fixtures/account'
@@ -18,8 +16,7 @@ import {
 } from 'fixtures/plans'
 import type { AvailablePlansOf, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import FeaturePaywall from '../FeaturePaywall'
 
@@ -51,8 +48,6 @@ jest.mock('react-images', () => {
         </div>
     )
 })
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<FeaturePaywall />', () => {
     const defaultState: Partial<RootState> = {
@@ -105,21 +100,17 @@ describe('<FeaturePaywall />', () => {
             defaultState,
         ],
     ])('should render empty page when %s', (testName, props, state) => {
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(state)}>
-                <FeaturePaywall {...props} />
-            </Provider>,
-        )
+        const { container } = render(<FeaturePaywall {...props} />, {
+            storeState: state,
+        })
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render paywall for the feature', () => {
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <FeaturePaywall {...minProps} />
-            </Provider>,
-        )
+        const { container } = render(<FeaturePaywall {...minProps} />, {
+            storeState: defaultState,
+        })
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -130,9 +121,16 @@ describe('<FeaturePaywall />', () => {
             availablePlansWithLegacyPlans[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(legacyBasicHelpdeskPlan)
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
+        const { container } = render(
+            <FeaturePaywall
+                {...minProps}
+                feature={AccountFeature.AutoAssignment}
+                paywallConfigs={{
+                    [AccountFeature.AutoAssignment]: defaultPaywallConfig,
+                }}
+            />,
+            {
+                storeState: {
                     ...defaultState,
                     currentAccount: fromJS({
                         current_subscription: {
@@ -146,16 +144,8 @@ describe('<FeaturePaywall />', () => {
                         ...billingState,
                         products: availablePlansWithLegacyPlans,
                     }),
-                } as Partial<RootState>)}
-            >
-                <FeaturePaywall
-                    {...minProps}
-                    feature={AccountFeature.AutoAssignment}
-                    paywallConfigs={{
-                        [AccountFeature.AutoAssignment]: defaultPaywallConfig,
-                    }}
-                />
-            </Provider>,
+                } as Partial<RootState>,
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -167,9 +157,17 @@ describe('<FeaturePaywall />', () => {
             availablePlanWithCustomPlan[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(customHelpdeskPlan)
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
+        const { container } = render(
+            <FeaturePaywall
+                {...minProps}
+                feature={AccountFeature.OverviewLiveStatistics}
+                paywallConfigs={{
+                    [AccountFeature.OverviewLiveStatistics]:
+                        defaultPaywallConfig,
+                }}
+            />,
+            {
+                storeState: {
                     ...defaultState,
                     currentAccount: fromJS({
                         current_subscription: {
@@ -183,17 +181,8 @@ describe('<FeaturePaywall />', () => {
                         ...billingState,
                         products: availablePlanWithCustomPlan,
                     }),
-                } as Partial<RootState>)}
-            >
-                <FeaturePaywall
-                    {...minProps}
-                    feature={AccountFeature.OverviewLiveStatistics}
-                    paywallConfigs={{
-                        [AccountFeature.OverviewLiveStatistics]:
-                            defaultPaywallConfig,
-                    }}
-                />
-            </Provider>,
+                } as Partial<RootState>,
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()

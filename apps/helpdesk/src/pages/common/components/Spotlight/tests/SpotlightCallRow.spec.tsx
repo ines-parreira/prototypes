@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { MemoryRouter } from 'react-router-dom'
+import { assumeMock, render } from '@repo/testing'
 
 import {
     VoiceCallDirection,
@@ -12,7 +11,6 @@ import {
     getOutboundDisplayStatus,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
-import { renderWithStore } from 'utils/testing'
 
 import SpotlightCallRow from '../SpotlightCallRow'
 
@@ -50,12 +48,7 @@ describe('<SpotlightCallRow/>', () => {
             VoiceCallDisplayStatus.Answered,
         )
 
-        const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SpotlightCallRow {...defaultProps} />
-            </MemoryRouter>,
-            {},
-        )
+        const { getByText } = render(<SpotlightCallRow {...defaultProps} />)
 
         expect(
             getByText(
@@ -74,23 +67,18 @@ describe('<SpotlightCallRow/>', () => {
             VoiceCallDisplayStatus.Answered,
         )
 
-        const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SpotlightCallRow
-                    {...defaultProps}
-                    item={{
-                        ...voiceCall,
-                        highlights: {
-                            phone_number_source: ['highlighted source'],
-                            phone_number_destination: [
-                                'highlighted destination',
-                            ],
-                            transcripts: ['highlighted transcript'],
-                        },
-                    }}
-                />
-            </MemoryRouter>,
-            {},
+        const { getByText } = render(
+            <SpotlightCallRow
+                {...defaultProps}
+                item={{
+                    ...voiceCall,
+                    highlights: {
+                        phone_number_source: ['highlighted source'],
+                        phone_number_destination: ['highlighted destination'],
+                        transcripts: ['highlighted transcript'],
+                    },
+                }}
+            />,
         )
 
         expect(
@@ -109,12 +97,7 @@ describe('<SpotlightCallRow/>', () => {
             ...voiceCall,
             created_datetime: new Date().toISOString(),
         }
-        const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SpotlightCallRow {...defaultProps} />
-            </MemoryRouter>,
-            {},
-        )
+        const { getByText } = render(<SpotlightCallRow {...defaultProps} />)
 
         expect(getByText('Today')).toBeInTheDocument()
     })
@@ -125,12 +108,7 @@ describe('<SpotlightCallRow/>', () => {
             ...voiceCall,
             created_datetime: new Date(`${currentYear}-01-01`).toISOString(),
         }
-        const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SpotlightCallRow {...defaultProps} />
-            </MemoryRouter>,
-            {},
-        )
+        const { getByText } = render(<SpotlightCallRow {...defaultProps} />)
 
         expect(getByText('Jan 1st')).toBeInTheDocument()
     })
@@ -145,12 +123,7 @@ describe('<SpotlightCallRow/>', () => {
             last_answered_by_agent_id: 1,
             direction: VoiceCallDirection.Inbound,
         }
-        const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SpotlightCallRow {...defaultProps} />
-            </MemoryRouter>,
-            {},
-        )
+        const { getByText } = render(<SpotlightCallRow {...defaultProps} />)
 
         expect(getByText('Abandoned')).toBeInTheDocument
         expect(getInboundDisplayStatus).toHaveBeenCalledWith(
@@ -170,12 +143,7 @@ describe('<SpotlightCallRow/>', () => {
             ...voiceCall,
             direction: VoiceCallDirection.Outbound,
         }
-        const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SpotlightCallRow {...defaultProps} />
-            </MemoryRouter>,
-            {},
-        )
+        const { getByText } = render(<SpotlightCallRow {...defaultProps} />)
 
         expect(getByText('Unanswered')).toBeInTheDocument
         expect(getInboundDisplayStatus).not.toHaveBeenCalled()

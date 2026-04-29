@@ -1,5 +1,5 @@
 import client from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Call } from '@twilio/voice-sdk'
@@ -24,7 +24,6 @@ import socketManager from 'services/socketManager'
 import type { VoiceCallTransferFailedEvent } from 'services/socketManager/types'
 import { SocketEventType } from 'services/socketManager/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockIncomingCall } from 'tests/twilioMocks'
 
 import { CallRecordingStatus, TWILIO_CURRENT_ITEM } from '../../constants'
@@ -174,7 +173,7 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     const renderComponent = (store: Store, call: Call) => {
-        return renderWithQueryClientProvider(
+        return render(
             <Provider store={store}>
                 <OngoingPhoneCall call={call} />
             </Provider>,

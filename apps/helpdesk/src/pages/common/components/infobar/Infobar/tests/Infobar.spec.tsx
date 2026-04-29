@@ -3,7 +3,7 @@ import { useState as mockUseState } from 'react'
 
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -31,7 +31,6 @@ import { setCustomer } from 'state/ticket/actions'
 import { startEditionMode, stopEditionMode } from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { isCurrentlyOnCustomerPage } from 'utils'
-import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore()
 
@@ -331,7 +330,7 @@ describe('<Infobar/>', () => {
                 }),
         )
 
-        const { container, getByTestId, findByText } = renderWithRouter(
+        const { container, getByTestId, findByText } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -345,7 +344,7 @@ describe('<Infobar/>', () => {
     })
 
     it('should render ticket context', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />)
             </Provider>,
@@ -355,7 +354,7 @@ describe('<Infobar/>', () => {
     })
 
     it('should render customer context', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <Provider store={store}>
                 <Infobar
                     {...commonProps}
@@ -368,7 +367,7 @@ describe('<Infobar/>', () => {
     })
 
     it('should render loading state because the search is in progress', () => {
-        const { container, getByTestId } = renderWithRouter(
+        const { container, getByTestId } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -385,7 +384,7 @@ describe('<Infobar/>', () => {
     })
 
     it('should ignore other keys', () => {
-        const { container, getByTestId } = renderWithRouter(
+        const { container, getByTestId } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -408,7 +407,7 @@ describe('<Infobar/>', () => {
                     resp: { data: { data: [{ id: 7 }, { id: 8 }, { id: 9 }] } },
                 }),
         )
-        const { container, getByTestId } = renderWithRouter(
+        const { container, getByTestId } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -450,7 +449,7 @@ describe('<Infobar/>', () => {
                     },
                 }),
         )
-        const { container, getByTestId } = renderWithRouter(
+        const { container, getByTestId } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -486,7 +485,7 @@ describe('<Infobar/>', () => {
                     },
                 }),
         )
-        const { container, getByTestId } = renderWithRouter(
+        const { container, getByTestId } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -506,7 +505,7 @@ describe('<Infobar/>', () => {
                 }),
         )
 
-        const { container, getByText } = renderWithRouter(
+        const { container, getByText } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -517,7 +516,7 @@ describe('<Infobar/>', () => {
     })
 
     it('should render widgets edition mode', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <Provider store={store}>
                 <Infobar
                     {...commonProps}
@@ -554,7 +553,7 @@ describe('<Infobar/>', () => {
                     }),
             )
 
-            const { container, getByTestId } = renderWithRouter(
+            const { container, getByTestId } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -587,7 +586,7 @@ describe('<Infobar/>', () => {
                 })
             })
 
-            const { getByTestId } = renderWithRouter(
+            const { getByTestId } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -625,7 +624,7 @@ describe('<Infobar/>', () => {
         store.dispatch = jest.fn((param: () => unknown | unknown) =>
             typeof param === 'function' ? param() : param,
         )
-        renderWithRouter(
+        render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -639,7 +638,7 @@ describe('<Infobar/>', () => {
     })
 
     it('should start edition mode, because it is mounting in edition mode and the widgets state is not in edit mode', () => {
-        renderWithRouter(
+        render(
             <Provider store={store}>
                 <Infobar {...commonProps} isRouteEditingWidgets={true} />
             </Provider>,
@@ -652,7 +651,7 @@ describe('<Infobar/>', () => {
     })
 
     it('should stop edition mode, because it is mounting in read mode and the widgets state is in edit mode', () => {
-        renderWithRouter(
+        render(
             <Provider store={store}>
                 <Infobar
                     {...commonProps}
@@ -673,12 +672,11 @@ describe('<Infobar/>', () => {
             dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
             return Promise.resolve({ resp: { data: { data: [{ id: 1 }] } } })
         })
-        const { getByPlaceholderText, getByText, getByTestId } =
-            renderWithRouter(
-                <Provider store={store}>
-                    <Infobar {...commonProps} customer={fromJS({})} />
-                </Provider>,
-            )
+        const { getByPlaceholderText, getByText, getByTestId } = render(
+            <Provider store={store}>
+                <Infobar {...commonProps} customer={fromJS({})} />
+            </Provider>,
+        )
 
         fireEvent.change(getByTestId('Search'), { target: { value: 'query' } })
         fireEvent.keyDown(getByTestId('Search'), { key: 'Enter' })
@@ -701,7 +699,7 @@ describe('<Infobar/>', () => {
             return Promise.resolve({ resp: { data: { data: [{ id: 1 }] } } })
         })
 
-        const { getByTestId, findByTestId } = renderWithRouter(
+        const { getByTestId, findByTestId } = render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -756,7 +754,7 @@ describe('<Infobar/>', () => {
             typeof param === 'function' ? param() : param,
         )
 
-        const { getByTestId, getByText, queryByText } = renderWithRouter(
+        const { getByTestId, getByText, queryByText } = render(
             <Provider store={testStore}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -800,7 +798,7 @@ describe('<Infobar/>', () => {
     })
 
     it('should log InfobarEditWidgetsClicked segment event when edit widgets button is clicked', () => {
-        renderWithRouter(
+        render(
             <Provider store={store}>
                 <Infobar {...commonProps} />
             </Provider>,
@@ -821,7 +819,7 @@ describe('<Infobar/>', () => {
                 email: 'test@example.com',
             })
 
-            const { getByRole, findByRole } = renderWithRouter(
+            const { getByRole, findByRole } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} customer={customerWithoutName} />
                 </Provider>,
@@ -845,7 +843,7 @@ describe('<Infobar/>', () => {
                 email: 'john@example.com',
             })
 
-            const { getByRole, findByRole } = renderWithRouter(
+            const { getByRole, findByRole } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} customer={customerWithName} />
                 </Provider>,
@@ -872,7 +870,7 @@ describe('<Infobar/>', () => {
                     }),
             )
 
-            const { getByText, queryByTestId } = renderWithRouter(
+            const { getByText, queryByTestId } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -897,7 +895,7 @@ describe('<Infobar/>', () => {
                     }),
             )
 
-            const { getByText, queryByTestId } = renderWithRouter(
+            const { getByText, queryByTestId } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -934,7 +932,7 @@ describe('<Infobar/>', () => {
                     }),
             )
 
-            const { getByTestId, getByText, queryByTestId } = renderWithRouter(
+            const { getByTestId, getByText, queryByTestId } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -976,7 +974,7 @@ describe('<Infobar/>', () => {
                     }),
             )
 
-            const { getByTestId, getByText, queryByTestId } = renderWithRouter(
+            const { getByTestId, getByText, queryByTestId } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -1023,7 +1021,7 @@ describe('<Infobar/>', () => {
                     }),
             )
 
-            const { getByTestId, getByText, queryByText } = renderWithRouter(
+            const { getByTestId, getByText, queryByText } = render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -1054,7 +1052,7 @@ describe('<Infobar/>', () => {
             useHelpdeskV2MS2FlagMock.mockReturnValue(false)
             isCurrentlyOnCustomerPageMock.mockReturnValue(false)
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -1067,7 +1065,7 @@ describe('<Infobar/>', () => {
             useHelpdeskV2MS2FlagMock.mockReturnValue(true)
             isCurrentlyOnCustomerPageMock.mockReturnValue(false)
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -1082,7 +1080,7 @@ describe('<Infobar/>', () => {
             useHelpdeskV2MS2FlagMock.mockReturnValue(true)
             isCurrentlyOnCustomerPageMock.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -1097,11 +1095,11 @@ describe('<Infobar/>', () => {
             useHelpdeskV2MS2FlagMock.mockReturnValue(true)
             isCurrentlyOnCustomerPageMock.mockReturnValue(false)
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
-                { route: '/app/ticket/new' },
+                { initialEntries: ['/app/ticket/new'] },
             )
 
             expect(screen.getByText('InfobarCustomerInfo')).toBeInTheDocument()
@@ -1112,11 +1110,11 @@ describe('<Infobar/>', () => {
             makeHasIntegrationOfTypesMock.mockReturnValue(() => true)
             isCurrentlyOnCustomerPageMock.mockReturnValue(false)
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
-                { route: '/app/ticket/new' },
+                { initialEntries: ['/app/ticket/new'] },
             )
 
             expect(
@@ -1130,7 +1128,7 @@ describe('<Infobar/>', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
             isCurrentlyOnCustomerPageMock.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,
@@ -1147,7 +1145,7 @@ describe('<Infobar/>', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
             isCurrentlyOnCustomerPageMock.mockReturnValue(false)
 
-            renderWithRouter(
+            render(
                 <Provider store={store}>
                     <Infobar {...commonProps} />
                 </Provider>,

@@ -3,9 +3,8 @@ import type React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -22,9 +21,7 @@ import {
     SMILE_INTEGRATION_TYPE,
 } from 'constants/integration'
 import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { isCurrentlyOnCustomerPage } from 'utils'
-import { renderWithRouter } from 'utils/testing'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
@@ -94,12 +91,7 @@ const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
 }
 
 const renderWithProviders = (ui: React.ReactElement, customStore = store) => {
-    const queryClient = mockQueryClient()
-    return renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-            <Provider store={customStore}>{ui}</Provider>
-        </QueryClientProvider>,
-    )
+    return render(<Provider store={customStore}>{ui}</Provider>)
 }
 
 describe('<InfobarCustomerInfo/>', () => {

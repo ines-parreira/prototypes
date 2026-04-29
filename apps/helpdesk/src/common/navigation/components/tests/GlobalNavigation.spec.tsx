@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import GlobalNavigation from 'common/navigation/components/GlobalNavigation'
@@ -20,7 +20,6 @@ import {
 } from 'routes/constants'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors', () => ({ getCurrentUser: jest.fn() }))
 const getCurrentUserMock = assumeMock(getCurrentUser)
@@ -74,7 +73,7 @@ describe('GlobalNavigation', () => {
     }
 
     const renderWithContext = () =>
-        renderWithRouter(
+        render(
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <GlobalNavigation />
             </NavBarContext.Provider>,

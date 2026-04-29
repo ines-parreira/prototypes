@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { appQueryClient } from '@repo/api-resources'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -10,7 +9,6 @@ import Expression from 'pages/common/components/ast/expression/Expression'
 import Statement from 'pages/common/components/ast/statements/Statement'
 import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
 import type { RuleItemActions } from 'pages/settings/rules/types'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'pages/common/components/ast/operations/DeleteBinaryExpression',
@@ -33,13 +31,11 @@ const commonProps = {
 const renderComponent = (
     props?: Partial<ComponentProps<typeof CallExpression>>,
 ) =>
-    renderWithStore(
-        <QueryClientProvider client={appQueryClient}>
-            <RuleContext.Provider value={{ Expression, Statement }}>
-                <CallExpression {...commonProps} {...props} />
-            </RuleContext.Provider>
-        </QueryClientProvider>,
-        { integrations: fromJS({ integrations: [] }) },
+    render(
+        <RuleContext.Provider value={{ Expression, Statement }}>
+            <CallExpression {...commonProps} {...props} />
+        </RuleContext.Provider>,
+        { storeState: { integrations: fromJS({ integrations: [] }) } },
     )
 
 describe('<CallExpression />', () => {

@@ -5,14 +5,14 @@ import type { ComponentProps, ReactPortal } from 'react'
 import type React from 'react'
 
 import { useSelectedIndex } from '@repo/hooks'
-import { assumeMock, flushPromises } from '@repo/testing'
+import { render, assumeMock, flushPromises } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import { stringify } from 'qs'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -47,7 +47,6 @@ import * as billingSelectors from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import * as platform from '@repo/utils'
-import { renderWithRouter } from 'utils/testing'
 
 const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
 const CUSTOMER_SPOTLIGHT_ROW_TEST_ID = 'spotlight-customer-row'
@@ -142,6 +141,12 @@ const WrappedSpotlightModal = (
         <SpotlightModal {...props} />
     </Provider>
 )
+
+const NavigateButton = ({ to }: { to: string }) => {
+    const routerHistory = useHistory()
+
+    return <button onClick={() => routerHistory.push(to)}>Change route</button>
+}
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 
@@ -268,7 +273,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('keeps restoring the previous focus target until advanced search disables focus restoration', async () => {
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
 
         const setReturnFocus =
             focusTrapMock.mock.calls.at(-1)?.[0].focusTrapOptions
@@ -288,7 +293,7 @@ describe('<SpotlightModal/>', () => {
 
     describe('Tabs', () => {
         it('should render with Federated Search tab as default', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
 
             await waitFor(() => {
@@ -297,7 +302,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should set All tab on click', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
 
             const customersTab = getCustomersTab()
 
@@ -314,7 +319,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should set customers tab on click', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
 
             const customersTab = getCustomersTab()
@@ -328,7 +333,7 @@ describe('<SpotlightModal/>', () => {
         it('should render & set calls tab if available', async () => {
             mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
 
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
 
             const callsTab = getCallsTab()
@@ -344,7 +349,7 @@ describe('<SpotlightModal/>', () => {
         it('should not render calls tab if voice product is disabled', async () => {
             mockCurrentAccountHasProduct.mockReturnValue((() => false) as any)
 
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
 
             expect(screen.queryByRole('tab', { name: CALLS_LABEL })).toBeNull()
@@ -363,7 +368,7 @@ describe('<SpotlightModal/>', () => {
         it('should not navigate to advanced search on calls tab', async () => {
             mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
 
-            const { queryByText } = renderWithRouter(
+            const { queryByText } = render(
                 <WrappedSpotlightModal {...minProps} />,
             )
 
@@ -378,7 +383,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should navigate to tickets advanced search on click when modal is opened and log event', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
             await act(async () => {
@@ -397,7 +402,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should navigate to tickets advanced search on Federated Search', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
 
             const advancedSearchButton = screen.getByText('Advanced Search')
             await act(async () => {
@@ -415,7 +420,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should navigate to customers advanced search on click when modal is opened on the customers tab and log event', async () => {
-            const { getByText } = renderWithRouter(
+            const { getByText } = render(
                 <WrappedSpotlightModal {...minProps} />,
             )
             await act(flushPromises)
@@ -437,7 +442,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should close the modal when navigating to advanced search ', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
             await act(async () => {
@@ -454,9 +459,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should not navigate to advanced search on keypress when modal is closed', async () => {
-            renderWithRouter(
-                <WrappedSpotlightModal {...minProps} isOpen={false} />,
-            )
+            render(<WrappedSpotlightModal {...minProps} isOpen={false} />)
             await act(flushPromises)
             act(() => {
                 fireEnterShortcutUsingKeyboardEvent(
@@ -469,7 +472,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should navigate to tickets advanced search on keypress when modal is opened and log event', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
             await act(async () => {
@@ -492,7 +495,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should navigate to customers advanced search on keypress when modal is opened on a ticket tab ', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
 
             const customersTab = getCustomersTab()
             await act(async () => {
@@ -511,9 +514,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should handle shift + enter shortcut after key input when search input is focused and navigate to advanced search', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />, {
-                history,
-            })
+            render(<WrappedSpotlightModal {...minProps} />)
             const ticketsTab = getTicketsTab()
             await act(async () => {
                 await userEvent.click(ticketsTab)
@@ -543,7 +544,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should handle shift + enter shortcut after key input when search input is not focused and navigate to advanced search', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
             const ticketsTab = getTicketsTab()
             await act(async () => {
                 await userEvent.click(ticketsTab)
@@ -573,7 +574,7 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should not set a query string search param when no input was performed', async () => {
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            render(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
             await act(async () => {
@@ -595,7 +596,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should not set a query string search param when input was deleted', async () => {
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
 
         const searchInput = screen.getByPlaceholderText('Search...')
 
@@ -624,7 +625,7 @@ describe('<SpotlightModal/>', () => {
     it('should fetch tickets on enter keypress from the new search endpoint', async () => {
         const searchQuery = 'foo'
 
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
 
         const searchInput = screen.getByPlaceholderText('Search...')
 
@@ -652,9 +653,7 @@ describe('<SpotlightModal/>', () => {
             data: { data: [voiceCall] },
         } as any)
 
-        const { rerender } = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />,
-        )
+        const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
         rerender(<WrappedSpotlightModal {...minProps} />)
 
@@ -682,7 +681,7 @@ describe('<SpotlightModal/>', () => {
             data: { data: [{ foo: 'foo' }] },
         } as any)
 
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
         const ticketsTab = getTicketsTab()
         await act(async () => {
             ticketsTab?.focus()
@@ -718,7 +717,7 @@ describe('<SpotlightModal/>', () => {
             data: { data: [] },
         } as any)
 
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
 
         const ticketsTab = getTicketsTab()
         await act(async () => {
@@ -747,7 +746,7 @@ describe('<SpotlightModal/>', () => {
             data: { data: [] },
         } as any)
 
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
 
         const searchInput = screen.getByPlaceholderText('Search...')
         const customersTab = getCustomersTab()
@@ -774,7 +773,7 @@ describe('<SpotlightModal/>', () => {
     it('should fetch items for the search term on previous tab if search was not triggered for new query', async () => {
         const searchQuery = 'foo'
 
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
 
         const searchInput = screen.getByPlaceholderText('Search...')
@@ -819,7 +818,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should not fetch items on tab switch if a search has been performed for that item type', async () => {
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
 
         const searchInput = screen.getByPlaceholderText('Search...')
         const ticketsTab = getTicketsTab()
@@ -858,7 +857,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should not fetch items for any query on tab switch if the search was not submitted', async () => {
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
 
         const searchInput = screen.getByPlaceholderText('Search...')
@@ -883,7 +882,7 @@ describe('<SpotlightModal/>', () => {
 
         const searchQuery = 'foo2'
 
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
 
         const searchInput = screen.getByPlaceholderText('Search...')
@@ -914,7 +913,7 @@ describe('<SpotlightModal/>', () => {
 
         const searchQuery = 'foo2'
 
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
 
         const searchInput = screen.getByPlaceholderText('Search...')
@@ -947,9 +946,7 @@ describe('<SpotlightModal/>', () => {
             () => neverResolvingPromise,
         )
 
-        const { rerender } = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />,
-        )
+        const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
         rerender(<WrappedSpotlightModal {...minProps} />)
 
@@ -976,9 +973,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should show SpotlightNoResults component when no results are available ', async () => {
-        const { rerender } = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />,
-        )
+        const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
         const ticketsTab = getTicketsTab()
         await act(async () => {
             ticketsTab?.focus()
@@ -1003,9 +998,7 @@ describe('<SpotlightModal/>', () => {
     it('should notify when an error occurs and register searchRank scenario', async () => {
         searchTicketsWithHighlightsMock.mockRejectedValue({ message: 'error' })
 
-        const { rerender } = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />,
-        )
+        const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
 
         const ticketsTab = getTicketsTab()
         await act(async () => {
@@ -1045,7 +1038,7 @@ describe('<SpotlightModal/>', () => {
         } as any)
         const searchQuery = 'foo'
 
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
 
         const searchInput = screen.getByPlaceholderText('Search...')
@@ -1099,9 +1092,7 @@ describe('<SpotlightModal/>', () => {
                 data: { data: [item] },
             } as any)
 
-            const { rerender } = renderWithRouter(
-                <WrappedSpotlightModal {...minProps} />,
-            )
+            const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
             rerender(<WrappedSpotlightModal {...minProps} />)
 
@@ -1148,9 +1139,7 @@ describe('<SpotlightModal/>', () => {
                 data: response,
             } as any)
 
-            const { rerender } = renderWithRouter(
-                <WrappedSpotlightModal {...minProps} />,
-            )
+            const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
             rerender(<WrappedSpotlightModal {...minProps} />)
 
@@ -1198,8 +1187,9 @@ describe('<SpotlightModal/>', () => {
             data: { data: [ticket] },
         } as any)
 
-        const { getByPlaceholderText, queryByTestId, rerender } =
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        const { getByPlaceholderText, queryByTestId, rerender } = render(
+            <WrappedSpotlightModal {...minProps} />,
+        )
         await act(flushPromises)
 
         const searchInput = getByPlaceholderText('Search...')
@@ -1235,25 +1225,29 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should close modal after pathname change', async () => {
-        const history = createBrowserHistory()
-
-        const { rerender } = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />,
-            { history, route: '/app/tickets' },
+        render(
+            <>
+                <WrappedSpotlightModal {...minProps} />
+                <NavigateButton to="/foo/bar" />
+            </>,
+            {
+                initialEntries: ['/app/tickets'],
+            },
         )
         await act(flushPromises)
 
-        act(() => {
-            history.push('/foo/bar')
+        await act(async () => {
+            await userEvent.click(
+                screen.getByRole('button', { name: 'Change route' }),
+            )
         })
-        rerender(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
 
         expect(mockCloseModal).toHaveBeenCalled()
     })
 
     it('should log event on tab switch', async () => {
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
 
         const ticketsTab = getTicketsTab()
         const customersTab = getCustomersTab()
@@ -1280,7 +1274,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should end previous searchRank scenario on tab switch', async () => {
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        render(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
 
         const ticketsTab = getTicketsTab()
@@ -1326,7 +1320,7 @@ describe('<SpotlightModal/>', () => {
                     },
                 )
 
-                const { rerender } = renderWithRouter(
+                const { rerender } = render(
                     <WrappedSpotlightModal {...minProps} />,
                 )
                 const tab = screen.getByRole('tab', {
@@ -1371,9 +1365,7 @@ describe('<SpotlightModal/>', () => {
                 }
             })
 
-            const { rerender } = renderWithRouter(
-                <WrappedSpotlightModal {...minProps} />,
-            )
+            const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
             rerender(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
@@ -1399,9 +1391,7 @@ describe('<SpotlightModal/>', () => {
                 }
             })
 
-            const { rerender } = renderWithRouter(
-                <WrappedSpotlightModal {...minProps} />,
-            )
+            const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
             rerender(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
@@ -1437,7 +1427,7 @@ describe('<SpotlightModal/>', () => {
                     isGettingItems: false,
                 })
 
-                const { rerender } = renderWithRouter(
+                const { rerender } = render(
                     <WrappedSpotlightModal {...minProps} />,
                 )
                 await act(flushPromises)
@@ -1580,7 +1570,7 @@ describe('<SpotlightModal/>', () => {
                     data: response,
                 } as any)
 
-                const { getByPlaceholderText } = renderWithRouter(
+                const { getByPlaceholderText } = render(
                     <WrappedSpotlightModal {...minProps} />,
                 )
                 const tab = screen.getByRole('tab', { name })
@@ -1722,7 +1712,7 @@ describe('<SpotlightModal/>', () => {
                     data: response,
                 } as any)
 
-                const { rerender, getByPlaceholderText } = renderWithRouter(
+                const { rerender, getByPlaceholderText } = render(
                     <WrappedSpotlightModal {...minProps} />,
                 )
 
@@ -1771,7 +1761,7 @@ describe('<SpotlightModal/>', () => {
                 previous: jest.fn(),
                 reset: jest.fn(),
             })
-            const { rerender, getByPlaceholderText } = renderWithRouter(
+            const { rerender, getByPlaceholderText } = render(
                 <WrappedSpotlightModal {...minProps} isOpen={false} />,
             )
             await act(flushPromises)
@@ -1815,9 +1805,7 @@ describe('<SpotlightModal/>', () => {
             }
         })
 
-        const { rerender } = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />,
-        )
+        const { rerender } = render(<WrappedSpotlightModal {...minProps} />)
 
         await act(flushPromises)
         rerender(<WrappedSpotlightModal {...minProps} />)

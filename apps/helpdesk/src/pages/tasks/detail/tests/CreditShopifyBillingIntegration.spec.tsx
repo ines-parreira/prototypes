@@ -1,10 +1,9 @@
 import React from 'react'
 
 import client from '@repo/api-resources'
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-
-import { renderWithToaster } from 'tests/renderWithToaster'
 
 import CreditShopifyBillingIntegration from '../CreditShopifyBillingIntegration'
 
@@ -16,14 +15,12 @@ describe('<CreditShopifyBillingIntegration />', () => {
     })
 
     it('should render the form', () => {
-        const { container } = renderWithToaster(
-            <CreditShopifyBillingIntegration />,
-        )
+        const { container } = render(<CreditShopifyBillingIntegration />)
         expect(container).toMatchSnapshot()
     })
 
     it('should submit the form', async () => {
-        const { getByText, getByLabelText } = renderWithToaster(
+        const { getByText, getByLabelText } = render(
             <CreditShopifyBillingIntegration />,
         )
 
@@ -58,7 +55,7 @@ describe('<CreditShopifyBillingIntegration />', () => {
     })
 
     it('should disable the submit button when form is not valid', () => {
-        const { getByRole, getByLabelText } = renderWithToaster(
+        const { getByRole, getByLabelText } = render(
             <CreditShopifyBillingIntegration />,
         )
 
@@ -77,7 +74,7 @@ describe('<CreditShopifyBillingIntegration />', () => {
             error: { msg: errorMessage },
         })
 
-        const { getByText, getByLabelText } = renderWithToaster(
+        const { getByText, getByLabelText } = render(
             <CreditShopifyBillingIntegration />,
         )
 

@@ -7,7 +7,6 @@ import LinkPopover from 'pages/common/draftjs/plugins/toolbar/components/LinkPop
 import createLink from 'pages/common/draftjs/plugins/toolbar/decorators/link'
 import type { DecoratorComponentProps } from 'pages/common/draftjs/plugins/types'
 import { convertFromHTML } from 'utils/editor'
-import { renderWithStore } from 'utils/testing'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/components/LinkPopover')
 const LinkPopoverMock = assumeMock(LinkPopover)
@@ -55,19 +54,21 @@ describe('link decorator', () => {
                 onLinkEdit: editSpy,
             })
 
-            renderWithStore(
+            render(
                 <link.component
                     {...minProps}
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                 />,
                 {
-                    ui: {
-                        editor: {
-                            isEditingLink: true,
-                            isFocused: true,
-                        },
-                    } as any,
+                    storeState: {
+                        ui: {
+                            editor: {
+                                isEditingLink: true,
+                                isFocused: true,
+                            },
+                        } as any,
+                    },
                 },
             )
 

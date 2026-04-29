@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import * as segmentTracker from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -19,7 +19,6 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { customerFieldDefinitions } from 'fixtures/customField'
 import type { CustomerChannel } from 'models/customerChannel/types'
 import { initialState } from 'state/twilio/voiceDevice'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { CustomerChannels } from '../CustomerChannels'
 
@@ -87,7 +86,7 @@ describe('CustomerChannels component', () => {
                 }),
             })
 
-            renderWithQueryClientProvider(
+            render(
                 <Provider store={store}>
                     <CustomerChannels
                         {...minProps}
@@ -140,19 +139,18 @@ describe('CustomerChannels component', () => {
         'should display all passed channels and not display the button "show more" because there is only 1 passed ' +
             'channel + add phone number button',
         () => {
-            const { queryByText } = renderWithQueryClientProvider(
-                <Provider store={mockStore(defaultState)}>
-                    <CustomerChannels
-                        {...minProps}
-                        channels={fromJS([
-                            {
-                                type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                                address: 'foo@gorgias.io',
-                                preferred: true,
-                            },
-                        ])}
-                    />
-                </Provider>,
+            const { queryByText } = render(
+                <CustomerChannels
+                    {...minProps}
+                    channels={fromJS([
+                        {
+                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                            address: 'foo@gorgias.io',
+                            preferred: true,
+                        },
+                    ])}
+                />,
+                { storeState: defaultState },
             )
 
             expect(queryByText(/Show more/)).toBeNull()
@@ -160,51 +158,49 @@ describe('CustomerChannels component', () => {
     )
 
     it('should not display the button "show more" because all channels are invalid', () => {
-        renderWithQueryClientProvider(
-            <Provider store={mockStore(defaultState)}>
-                <CustomerChannels
-                    {...minProps}
-                    channels={fromJS([
-                        {
-                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                            preferred: true,
-                        },
-                        {
-                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                            preferred: false,
-                        },
-                        {
-                            type: PHONE_CUSTOMER_CHANNEL_TYPE,
-                            address: '',
-                            preferred: false,
-                        },
-                    ])}
-                />
-            </Provider>,
+        render(
+            <CustomerChannels
+                {...minProps}
+                channels={fromJS([
+                    {
+                        type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                        preferred: true,
+                    },
+                    {
+                        type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                        preferred: false,
+                    },
+                    {
+                        type: PHONE_CUSTOMER_CHANNEL_TYPE,
+                        address: '',
+                        preferred: false,
+                    },
+                ])}
+            />,
+            { storeState: defaultState },
         )
 
         expect(screen.queryByText(/Show more/)).toBeNull()
     })
 
     it('should also display channels others than phone and email', () => {
-        renderWithQueryClientProvider(
-            <Provider store={mockStore(defaultState)}>
-                <CustomerChannels
-                    {...minProps}
-                    channels={fromJS([
-                        {
-                            type: 'aircall',
-                            address: 'AircallHandle',
-                            preferred: false,
-                        },
-                        {
-                            type: 'twilio',
-                            address: 'TwilioHandle',
-                            preferred: false,
-                        },
-                    ])}
-                />
-            </Provider>,
+        render(
+            <CustomerChannels
+                {...minProps}
+                channels={fromJS([
+                    {
+                        type: 'aircall',
+                        address: 'AircallHandle',
+                        preferred: false,
+                    },
+                    {
+                        type: 'twilio',
+                        address: 'TwilioHandle',
+                        preferred: false,
+                    },
+                ])}
+            />,
+            { storeState: defaultState },
         )
 
         userEvent.click(screen.getByText(/Show more/))
@@ -217,16 +213,15 @@ describe('CustomerChannels component', () => {
         `should display all passed channels and not display the button "show more" because there is only 2 passed ` +
             `location channel and and add phone number button`,
         () => {
-            const { getByText, queryByText } = renderWithQueryClientProvider(
-                <Provider store={mockStore(defaultState)}>
-                    <CustomerChannels
-                        {...minProps}
-                        customerLocationInfo={fromJS({
-                            city: 'Paris',
-                            country_name: 'France',
-                        })}
-                    />
-                </Provider>,
+            const { getByText, queryByText } = render(
+                <CustomerChannels
+                    {...minProps}
+                    customerLocationInfo={fromJS({
+                        city: 'Paris',
+                        country_name: 'France',
+                    })}
+                />,
+                { storeState: defaultState },
             )
             ;(minProps.channels.toJS() as CustomerChannel[]).forEach(
                 (channel) => {
@@ -241,15 +236,14 @@ describe('CustomerChannels component', () => {
         'should display all passed channels and not display the button "show more" because there is only 2 passed ' +
             'location channel and add phone number button',
         () => {
-            const { getByText, queryByText } = renderWithQueryClientProvider(
-                <Provider store={mockStore(defaultState)}>
-                    <CustomerChannels
-                        {...minProps}
-                        customerLocationInfo={fromJS({
-                            city: 'Paris',
-                        })}
-                    />
-                </Provider>,
+            const { getByText, queryByText } = render(
+                <CustomerChannels
+                    {...minProps}
+                    customerLocationInfo={fromJS({
+                        city: 'Paris',
+                    })}
+                />,
+                { storeState: defaultState },
             )
 
             ;(minProps.channels.toJS() as CustomerChannel[]).forEach(
@@ -273,18 +267,17 @@ describe('CustomerChannels component', () => {
                 },
             ]
 
-            const { getByText } = renderWithQueryClientProvider(
-                <Provider store={mockStore(defaultState)}>
-                    <CustomerChannels
-                        {...minProps}
-                        customerLocationInfo={fromJS({
-                            city: 'Paris',
-                            country_name: 'France',
-                            time_zone: { offset: '+0100' },
-                        })}
-                        channels={fromJS(channels)}
-                    />
-                </Provider>,
+            const { getByText } = render(
+                <CustomerChannels
+                    {...minProps}
+                    customerLocationInfo={fromJS({
+                        city: 'Paris',
+                        country_name: 'France',
+                        time_zone: { offset: '+0100' },
+                    })}
+                    channels={fromJS(channels)}
+                />,
+                { storeState: defaultState },
             )
 
             userEvent.click(getByText(/Show more/))
@@ -308,17 +301,16 @@ describe('CustomerChannels component', () => {
                 },
             ]
 
-            const { getByText } = renderWithQueryClientProvider(
-                <Provider store={mockStore(defaultState)}>
-                    <CustomerChannels
-                        {...minProps}
-                        customerLocationInfo={fromJS({
-                            country_name: 'France',
-                            time_zone: { offset: '+0100' },
-                        })}
-                        channels={fromJS(channels)}
-                    />
-                </Provider>,
+            const { getByText } = render(
+                <CustomerChannels
+                    {...minProps}
+                    customerLocationInfo={fromJS({
+                        country_name: 'France',
+                        time_zone: { offset: '+0100' },
+                    })}
+                    channels={fromJS(channels)}
+                />,
+                { storeState: defaultState },
             )
 
             userEvent.click(getByText(/Show more/))
@@ -381,7 +373,7 @@ describe('CustomerChannels component', () => {
             },
         ]
 
-        const { getByText } = renderWithQueryClientProvider(
+        const { getByText } = render(
             <Provider store={store}>
                 <CustomerChannels
                     {...minProps}
@@ -405,20 +397,19 @@ describe('CustomerChannels component', () => {
     })
 
     it('should display "Add phone number button', async () => {
-        const { getByText } = renderWithQueryClientProvider(
-            <Provider store={mockStore(defaultState)}>
-                <CustomerChannels
-                    {...minProps}
-                    channels={fromJS([
-                        {
-                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                            address: 'baz@gorgias.io',
-                            preferred: false,
-                            id: 3,
-                        },
-                    ])}
-                />
-            </Provider>,
+        const { getByText } = render(
+            <CustomerChannels
+                {...minProps}
+                channels={fromJS([
+                    {
+                        type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                        address: 'baz@gorgias.io',
+                        preferred: false,
+                        id: 3,
+                    },
+                ])}
+            />,
+            { storeState: defaultState },
         )
         await waitFor(() => expect(getByText(/Add phone number/)).toBeVisible())
     })
@@ -434,11 +425,9 @@ describe('CustomerChannels component', () => {
             } as any)
         })
         it('should show an empty custom fields indicator at the bottom of the channels list', () => {
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(defaultState)}>
-                    <CustomerChannels {...minProps} />
-                </Provider>,
-            )
+            render(<CustomerChannels {...minProps} />, {
+                storeState: defaultState,
+            })
 
             expect(screen.getByText('Customer Fields')).toBeInTheDocument()
         })
@@ -448,11 +437,9 @@ describe('CustomerChannels component', () => {
             adminUser.role.name = UserRole.Admin
             const adminState = { currentUser: fromJS(adminUser) }
 
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(adminState)}>
-                    <CustomerChannels {...minProps} />
-                </Provider>,
-            )
+            render(<CustomerChannels {...minProps} />, {
+                storeState: adminState,
+            })
 
             expect(screen.getByText('Add Customer Fields')).toBeInTheDocument()
 

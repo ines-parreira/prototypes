@@ -3,7 +3,6 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import { renderWithStore } from 'utils/testing'
 
 describe('ActionButtonsGroup component', () => {
     const baseAction = {
@@ -21,7 +20,7 @@ describe('ActionButtonsGroup component', () => {
     })
 
     it('should not render the dropdown if there 3 or less actions', () => {
-        const { container } = renderWithStore(
+        const { container } = render(
             <ActionButtonsGroup
                 actions={[
                     {
@@ -39,14 +38,13 @@ describe('ActionButtonsGroup component', () => {
                 ]}
                 payload={{}}
             />,
-            {},
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the dropdown if there more than 3 actions', () => {
-        const { container } = renderWithStore(
+        const { container } = render(
             <ActionButtonsGroup
                 actions={[
                     {
@@ -68,7 +66,6 @@ describe('ActionButtonsGroup component', () => {
                 ]}
                 payload={{}}
             />,
-            {},
         )
 
         expect(container.firstChild).toMatchSnapshot()

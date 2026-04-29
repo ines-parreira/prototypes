@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,8 +9,6 @@ import {
     mockVoiceQueue,
 } from '@gorgias/helpdesk-mocks'
 import type { VoiceQueue } from '@gorgias/helpdesk-types'
-
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import QueueName from '../QueueName'
 
@@ -34,7 +33,7 @@ const renderComponent = (props: {
     queueId: number | null
     primary?: boolean
 }) => {
-    return renderWithQueryClientProvider(<QueueName {...props} />)
+    return render(<QueueName {...props} />)
 }
 
 describe('QueueName', () => {

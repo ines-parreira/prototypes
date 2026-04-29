@@ -1,10 +1,8 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { cleanup, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs } from 'config/paywalls'
@@ -13,8 +11,6 @@ import { billingState } from 'fixtures/billing'
 import { ProductType } from 'models/billing/types'
 import * as billingSelectors from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import withProductEnabledPaywall from '../withProductEnabledPaywall'
 
@@ -25,8 +21,6 @@ const AnyComponent = () => (
 const CustomPaywallComponent = () => (
     <div data-testid="custom-paywall-component">Custom Paywall</div>
 )
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const currentAccountHasProductSpy = jest.spyOn(
     billingSelectors,
@@ -50,11 +44,7 @@ describe('withProductEnabledPaywall', () => {
 
         currentAccountHasProductSpy.mockReturnValueOnce((() => true) as any)
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <PaywalledComponent />
-            </Provider>,
-        )
+        render(<PaywalledComponent />, { storeState: defaultState })
 
         screen.getByTestId('paywalled-component')
     })
@@ -68,11 +58,7 @@ describe('withProductEnabledPaywall', () => {
 
         currentAccountHasProductSpy.mockReturnValueOnce((() => false) as any)
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <PaywalledComponent />
-            </Provider>,
-        )
+        render(<PaywalledComponent />, { storeState: defaultState })
 
         screen.getByTestId('custom-paywall-component')
     })
@@ -94,11 +80,7 @@ describe('withProductEnabledPaywall', () => {
 
         currentAccountHasProductSpy.mockReturnValueOnce((() => false) as any)
 
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <PaywalledComponent />
-            </Provider>,
-        )
+        render(<PaywalledComponent />, { storeState: defaultState })
 
         screen.getByText('Custom header')
     })

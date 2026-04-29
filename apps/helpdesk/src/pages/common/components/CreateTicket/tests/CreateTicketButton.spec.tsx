@@ -1,8 +1,7 @@
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { useConditionalShortcuts } from '@repo/utils'
 
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
-import { renderWithRouter } from 'utils/testing'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
 
@@ -24,9 +23,7 @@ describe('<CreateTicketButton />', () => {
     })
 
     it('should render draft dropdown when there is a draft', () => {
-        const { getByText, queryByText } = renderWithRouter(
-            <CreateTicketButton />,
-        )
+        const { getByText, queryByText } = render(<CreateTicketButton />)
 
         const createTicketButton = getByText('Create ticket')
         userEvent.click(createTicketButton)
@@ -41,9 +38,7 @@ describe('<CreateTicketButton />', () => {
             onResumeDraft: jest.fn(),
             onDiscardDraft: jest.fn(),
         })
-        const { getByText, queryByText } = renderWithRouter(
-            <CreateTicketButton />,
-        )
+        const { getByText, queryByText } = render(<CreateTicketButton />)
 
         const createTicketButton = getByText('Create ticket')
         userEvent.click(createTicketButton)
@@ -55,7 +50,7 @@ describe('<CreateTicketButton />', () => {
     })
 
     it('should bind keyboard shortcuts', () => {
-        renderWithRouter(<CreateTicketButton shouldBindKeys />)
+        render(<CreateTicketButton shouldBindKeys />)
         expect(useConditionalShortcuts).toHaveBeenCalledWith(
             true,
             'CreateTicketButton',
@@ -68,7 +63,7 @@ describe('<CreateTicketButton />', () => {
     })
 
     it('should not bind keyboard shortcuts', () => {
-        renderWithRouter(<CreateTicketButton />)
+        render(<CreateTicketButton />)
         expect(useConditionalShortcuts).toHaveBeenCalledWith(
             false,
             'CreateTicketButton',
@@ -82,7 +77,7 @@ describe('<CreateTicketButton />', () => {
 
     describe('custom link and button props', () => {
         it('should display for existing draft', () => {
-            const { getByText, getByRole } = renderWithRouter(
+            const { getByText, getByRole } = render(
                 <CreateTicketButton
                     buttonProps={{ intent: 'secondary' }}
                     to={{
@@ -109,7 +104,7 @@ describe('<CreateTicketButton />', () => {
                 onDiscardDraft: jest.fn(),
             })
 
-            const { getByRole } = renderWithRouter(
+            const { getByRole } = render(
                 <CreateTicketButton
                     buttonProps={{ intent: 'secondary' }}
                     to={{

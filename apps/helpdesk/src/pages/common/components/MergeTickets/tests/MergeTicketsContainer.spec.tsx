@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
-import { renderWithStore } from 'utils/testing'
 
 describe('MergeTicketsContainer component', () => {
     const ticketSubject = 'foo'
@@ -32,9 +31,8 @@ describe('MergeTicketsContainer component', () => {
         const props = { ...commonProps }
         props.isOpen = false
 
-        const { container } = renderWithStore(
+        const { container } = render(
             <MergeTicketsContainer sourceTicket={baseTicket} {...props} />,
-            {},
         )
         const modal = document.querySelector('.modal')
 
@@ -43,12 +41,11 @@ describe('MergeTicketsContainer component', () => {
     })
 
     it('should render the selection component if there is no selected ticket in the state', () => {
-        renderWithStore(
+        render(
             <MergeTicketsContainer
                 sourceTicket={baseTicket}
                 {...commonProps}
             />,
-            {},
         )
         const modal = document.querySelector('.modal')
 
@@ -57,12 +54,11 @@ describe('MergeTicketsContainer component', () => {
     })
 
     it('should render the build component if there is a selected ticket in the state', () => {
-        renderWithStore(
+        render(
             <MergeTicketsContainer
                 sourceTicket={baseTicket}
                 {...commonProps}
             />,
-            {},
         )
 
         userEvent.click(screen.getByText(ticketSubject))

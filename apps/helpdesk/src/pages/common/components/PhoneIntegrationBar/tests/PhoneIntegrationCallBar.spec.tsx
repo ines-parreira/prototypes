@@ -1,5 +1,5 @@
 import client from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { useConditionalShortcuts } from '@repo/utils'
 import type { Call, Device } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
@@ -13,7 +13,6 @@ import {
     mockMonitoringCall,
     mockOutgoingCall,
 } from 'tests/twilioMocks'
-import { renderWithRouter } from 'utils/testing'
 
 import PhoneIntegrationCallBar from '../PhoneIntegrationCallBar'
 
@@ -58,7 +57,7 @@ describe('<PhoneIntegrationCallBar/>', () => {
             call: mockIncomingCall() as Call,
         } as VoiceDeviceContextState)
 
-        renderWithRouter(<PhoneIntegrationCallBar />)
+        render(<PhoneIntegrationCallBar />)
 
         expect(useConditionalShortcutsMock).toHaveBeenCalledWith(
             true,
@@ -77,7 +76,7 @@ describe('<PhoneIntegrationCallBar/>', () => {
             call: null,
         } as VoiceDeviceContextState)
 
-        renderWithRouter(<PhoneIntegrationCallBar />)
+        render(<PhoneIntegrationCallBar />)
 
         expect(useConditionalShortcutsMock).toHaveBeenCalledWith(
             false,
@@ -99,7 +98,7 @@ describe('<PhoneIntegrationCallBar/>', () => {
             call,
             isRinging: true,
         } as VoiceDeviceContextState)
-        const { findByTestId } = renderWithRouter(<PhoneIntegrationCallBar />)
+        const { findByTestId } = render(<PhoneIntegrationCallBar />)
         expect(await findByTestId('incoming-phone-call')).toBeTruthy()
 
         useConditionalShortcutsMock.mock.calls[0][2].ACCEPT_CALL.action?.({
@@ -118,7 +117,7 @@ describe('<PhoneIntegrationCallBar/>', () => {
             isDialing: true,
         } as VoiceDeviceContextState)
 
-        const { findByTestId } = renderWithRouter(<PhoneIntegrationCallBar />)
+        const { findByTestId } = render(<PhoneIntegrationCallBar />)
 
         expect(await findByTestId('outgoing-phone-call')).toBeTruthy()
     })
@@ -133,7 +132,7 @@ describe('<PhoneIntegrationCallBar/>', () => {
             isRinging: false,
         } as VoiceDeviceContextState)
 
-        const { findByTestId } = renderWithRouter(<PhoneIntegrationCallBar />)
+        const { findByTestId } = render(<PhoneIntegrationCallBar />)
 
         expect(await findByTestId('ongoing-phone-call')).toBeTruthy()
     })
@@ -147,7 +146,7 @@ describe('<PhoneIntegrationCallBar/>', () => {
             call,
         } as VoiceDeviceContextState)
 
-        const { findByTestId } = renderWithRouter(<PhoneIntegrationCallBar />)
+        const { findByTestId } = render(<PhoneIntegrationCallBar />)
 
         expect(await findByTestId('monitoring-phone-call')).toBeTruthy()
     })

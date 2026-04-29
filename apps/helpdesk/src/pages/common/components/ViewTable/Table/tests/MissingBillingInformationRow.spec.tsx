@@ -1,5 +1,5 @@
 import client from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import type { Stripe, StripeAddressElementChangeEvent } from '@stripe/stripe-js'
@@ -7,12 +7,10 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { MemoryRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
 import { billingContact } from 'fixtures/resources'
 import { PaymentMethodType } from 'state/billing/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import MissingBillingInformationRow from '../MissingBillingInformationRow'
 
@@ -76,12 +74,7 @@ describe('<MissingBillingInformationRow />', () => {
     }
 
     it('should render a row when conditions are met', async () => {
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <MissingBillingInformationRow />
-            </MemoryRouter>,
-            initialState,
-        )
+        render(<MissingBillingInformationRow />, { storeState: initialState })
 
         expect(await screen.findByText('Update Now')).toBeVisible()
 
@@ -134,23 +127,15 @@ describe('<MissingBillingInformationRow />', () => {
             },
         ],
     ])('should not render a row when %s', (testName, state) => {
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <MissingBillingInformationRow />
-            </MemoryRouter>,
-            state,
-        )
+        const { container } = render(<MissingBillingInformationRow />, {
+            storeState: state,
+        })
 
         expect(container.firstChild).toBe(null)
     })
 
     it('should open the modal when clicking on update button', async () => {
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <MissingBillingInformationRow />
-            </MemoryRouter>,
-            initialState,
-        )
+        render(<MissingBillingInformationRow />, { storeState: initialState })
 
         fireEvent.click(await screen.findByText('Update Now'))
 
@@ -160,12 +145,7 @@ describe('<MissingBillingInformationRow />', () => {
     })
 
     it('should submit the billing information when submiting the modal form', async () => {
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <MissingBillingInformationRow />
-            </MemoryRouter>,
-            initialState,
-        )
+        render(<MissingBillingInformationRow />, { storeState: initialState })
 
         fireEvent.click(await screen.findByText('Update Now'))
 

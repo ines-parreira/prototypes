@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import user, { userEvent } from '@testing-library/user-event'
 import type { Call } from '@twilio/voice-sdk'
@@ -10,7 +10,6 @@ import { mockHandleCallWhisperingHandler } from '@gorgias/helpdesk-mocks'
 
 import { useNotify } from 'hooks/useNotify'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { mockMonitoringCall } from 'tests/twilioMocks'
 
 import MonitoringPhoneCall from '../MonitoringPhoneCall'
@@ -75,10 +74,9 @@ describe('MonitoringPhoneCall', () => {
         }),
     }
     const renderComponent = (call: Call) => {
-        return renderWithStoreAndQueryClientProvider(
-            <MonitoringPhoneCall call={call} />,
-            store,
-        )
+        return render(<MonitoringPhoneCall call={call} />, {
+            storeState: store,
+        })
     }
 
     beforeAll(() => {

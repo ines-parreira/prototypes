@@ -1,16 +1,13 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs } from 'config/paywalls'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { AccountFeature } from 'state/currentAccount/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import { withFeaturePaywall } from '../withFeaturePaywall'
 
@@ -21,8 +18,6 @@ const AnyComponent = () => (
 const CustomPaywallComponent = () => (
     <div data-testid="custom-paywall-component">Paywalled</div>
 )
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('withFeaturePaywall', () => {
     const defaultState: Partial<RootState> = {
@@ -40,11 +35,7 @@ describe('withFeaturePaywall', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.InstagramComment,
         )(AnyComponent)
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <PaywalledComponent />
-            </Provider>,
-        )
+        render(<PaywalledComponent />, { storeState: defaultState })
 
         expect(screen.getByText('Not paywalled')).toBeInTheDocument()
     })
@@ -53,11 +44,7 @@ describe('withFeaturePaywall', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.RevenueStatistics,
         )(AnyComponent)
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <PaywalledComponent />
-            </Provider>,
-        )
+        render(<PaywalledComponent />, { storeState: defaultState })
 
         expect(
             screen.getByText(
@@ -71,11 +58,7 @@ describe('withFeaturePaywall', () => {
             AccountFeature.RevenueStatistics,
             CustomPaywallComponent,
         )(AnyComponent)
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <PaywalledComponent />
-            </Provider>,
-        )
+        render(<PaywalledComponent />, { storeState: defaultState })
 
         expect(screen.getByText('Paywalled')).toBeInTheDocument()
     })
@@ -93,11 +76,7 @@ describe('withFeaturePaywall', () => {
             undefined,
             customPaywallConfigs,
         )(AnyComponent)
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <PaywalledComponent />
-            </Provider>,
-        )
+        render(<PaywalledComponent />, { storeState: defaultState })
 
         expect(screen.getByText('Custom page header')).toBeInTheDocument()
     })

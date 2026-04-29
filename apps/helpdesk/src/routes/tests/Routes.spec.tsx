@@ -3,14 +3,17 @@ import type React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
-import { assumeMock, render as renderWithProviders } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import {
+    assumeMock,
+    render,
+    render as renderWithProviders,
+} from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { createBrowserHistory, createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { MemoryRouter, Router, useHistory } from 'react-router-dom'
+import { Router, useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -38,7 +41,6 @@ import Routes from 'routes/Routes'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { initialState } from 'state/billing/reducers'
 import type { RootState } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('@gorgias/axiom', () => ({
@@ -311,7 +313,6 @@ const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 const mockHistory = createBrowserHistory()
-const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
 const mockUseIsAccountDeactivated = useIsAccountDeactivated as jest.Mock
 jest.mock('domains/reporting/pages/report-chart-restrictions/ProtectedRoute')
@@ -696,19 +697,9 @@ describe('<Routes/>', () => {
         } as unknown as RootState
 
         it('should render knowledge page on new namespace', () => {
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/knowledge',
-                        ]}
-                    >
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/shopify/test-shop/knowledge'],
+            })
 
             expect(
                 screen.getByText('KnowledgeHubContainer'),
@@ -718,19 +709,9 @@ describe('<Routes/>', () => {
         it('should render KnowledgeHubContainer', () => {
             mockUseFlag.mockImplementation(() => false)
 
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/knowledge',
-                        ]}
-                    >
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/shopify/test-shop/knowledge'],
+            })
 
             expect(
                 screen.getByText('KnowledgeHubContainer'),
@@ -745,19 +726,11 @@ describe('<Routes/>', () => {
                 return false
             })
 
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/knowledge/sources',
-                        ]}
-                    >
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/knowledge/sources',
+                ],
+            })
 
             expect(
                 screen.getByText('KnowledgeHubContainer'),
@@ -783,15 +756,12 @@ describe('<Routes/>', () => {
             },
         ])('should redirect to $to when accessing $from', ({ from, to }) => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() => mockHistory.push(from))
@@ -800,37 +770,19 @@ describe('<Routes/>', () => {
         })
 
         it('should render sales page', () => {
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/sales',
-                        ]}
-                    >
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/shopify/test-shop/sales'],
+            })
 
             expect(screen.getByText('AiAgentSales')).toBeInTheDocument()
         })
 
         it('should render customer engagement page under sales', () => {
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/sales/customer-engagement',
-                        ]}
-                    >
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/sales/customer-engagement',
+                ],
+            })
 
             expect(
                 screen.getByText('AiAgentCustomerEngagement'),
@@ -851,15 +803,12 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() => mockHistory.push('/app/ai-agent/shopify/test-shop/sales'))
@@ -880,15 +829,12 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() => mockHistory.push('/app/ai-agent/shopify/test-shop/sales'))
@@ -913,15 +859,12 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() => mockHistory.push('/app/ai-agent/shopify/test-shop/sales'))
@@ -934,15 +877,12 @@ describe('<Routes/>', () => {
 
         it('should redirect to /intents when accessing /optimize', () => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() =>
@@ -956,15 +896,12 @@ describe('<Routes/>', () => {
 
         it('should redirect to /app/stats/ai-sales-agent/overview when accessing /sales/analytics', () => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() =>
@@ -982,15 +919,12 @@ describe('<Routes/>', () => {
             mockUseIsAccountDeactivated.mockReturnValue(true)
 
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() =>
@@ -1001,21 +935,11 @@ describe('<Routes/>', () => {
         })
 
         it('should render actions templates page', () => {
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/actions/templates',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/actions/templates',
+                ],
+            })
 
             expect(screen.getByText('ActionTemplatesView')).toBeInTheDocument()
         })
@@ -1028,21 +952,9 @@ describe('<Routes/>', () => {
                 return false
             })
 
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/skills',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/shopify/test-shop/skills'],
+            })
 
             expect(screen.getByText('AiAgentSkills')).toBeInTheDocument()
         })
@@ -1050,36 +962,21 @@ describe('<Routes/>', () => {
         it('should not render skills page when KnowledgeIntentManagementSystem feature flag is disabled', () => {
             mockUseFlag.mockReturnValue(false)
 
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/skills',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/shopify/test-shop/skills'],
+            })
 
             expect(screen.queryByText('AiAgentSkills')).not.toBeInTheDocument()
         })
 
         it('should redirect non-shopify shopType to /app/ai-agent', () => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() =>
@@ -1111,15 +1008,12 @@ describe('<Routes/>', () => {
             },
         ])('$description', ({ from, to }) => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() => mockHistory.push(from))
@@ -1129,21 +1023,11 @@ describe('<Routes/>', () => {
         })
 
         it('should NOT redirect /knowledge/guidance/:id (individual article)', () => {
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/knowledge/guidance/123',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/knowledge/guidance/123',
+                ],
+            })
 
             expect(
                 screen.getByText('KnowledgeHubContainer'),
@@ -1152,15 +1036,12 @@ describe('<Routes/>', () => {
 
         it('should redirect /knowledge to /knowledge/sources', () => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() =>
@@ -1174,15 +1055,12 @@ describe('<Routes/>', () => {
 
         it('should redirect /pages-content to /questions-content', () => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() =>
@@ -1198,15 +1076,12 @@ describe('<Routes/>', () => {
 
         it('should redirect /settings/channels to /deploy/email', () => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() =>
@@ -1222,15 +1097,12 @@ describe('<Routes/>', () => {
 
         it('should redirect /products-content to /products', () => {
             render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Router history={mockHistory}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Router history={mockHistory}>
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
+                </Router>,
+                { storeState: defaultState },
             )
 
             act(() =>
@@ -1247,21 +1119,11 @@ describe('<Routes/>', () => {
         it('should render preview-mode settings for Gorgias users', () => {
             window.USER_IMPERSONATED = true
 
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/settings/preview',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/settings/preview',
+                ],
+            })
 
             expect(
                 screen.getByText('AiAgentPreviewModeSettingsContainer'),
@@ -1269,81 +1131,37 @@ describe('<Routes/>', () => {
         })
 
         it('should render overview page', () => {
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/overview',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/shopify/test-shop/overview'],
+            })
 
             expect(screen.getByText('AiAgentOverview')).toBeInTheDocument()
         })
 
         it('should render tone-of-voice page', () => {
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/tone-of-voice',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/tone-of-voice',
+                ],
+            })
 
             expect(screen.getByText('AiAgentToneOfVoice')).toBeInTheDocument()
         })
 
         it('should render opportunities page', () => {
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/opportunities',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/opportunities',
+                ],
+            })
 
             expect(screen.getByText('AiAgentOpportunities')).toBeInTheDocument()
         })
 
         it('should render playground page', () => {
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/test',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/shopify/test-shop/test'],
+            })
 
             expect(
                 screen.getByText('AiAgentPlaygroundPage'),
@@ -1351,21 +1169,9 @@ describe('<Routes/>', () => {
         })
 
         it('should render configuration page', () => {
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/settings',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/shopify/test-shop/settings'],
+            })
 
             expect(
                 screen.getByText('AiAgentConfigurationContainer'),
@@ -1373,21 +1179,11 @@ describe('<Routes/>', () => {
         })
 
         it('should render deploy section page', () => {
-            render(
-                <QueryClientProvider client={mockQueryClient()}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/deploy/email',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/deploy/email',
+                ],
+            })
 
             expect(
                 screen.getByText('AiAgentConfigurationContainer'),
@@ -1405,48 +1201,26 @@ describe('<Routes/>', () => {
             }),
         } as unknown as RootState
 
-        const queryClient = new QueryClient()
-
         it('should redirect /onboarding to /onboarding/skillset', async () => {
-            const screen = render(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={['/app/ai-agent/onboarding']}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const view = renderRoutes(defaultState, {
+                initialEntries: ['/app/ai-agent/onboarding'],
+            })
 
             await waitFor(() => {
                 expect(
-                    screen.getByText(/First, let's connect your/i),
+                    view.getByText(/First, let's connect your/i),
                 ).toBeInTheDocument()
             })
         })
 
         it('should render AiAgentOnboarding for valid onboarding steps', () => {
-            const screen = render(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <MemoryRouter
-                            initialEntries={[
-                                '/app/ai-agent/onboarding/shopify integration',
-                            ]}
-                        >
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const view = renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/onboarding/shopify integration',
+                ],
+            })
 
-            expect(screen.getByText(/Shopify account/)).toBeInTheDocument()
+            expect(view.getByText(/Shopify account/)).toBeInTheDocument()
         })
     })
 
@@ -1556,7 +1330,6 @@ describe('<Routes/>', () => {
                 isLoading: false,
             } as any)
         })
-        const queryClient = new QueryClient()
         it('should redirect to /app when feature flag is disabled', () => {
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.AiJourneyEnabled) {
@@ -1570,15 +1343,13 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>
-                        <Router history={history}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Provider store={mockStore}>
+                    <Router history={history}>
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
+                    </Router>
+                </Provider>,
             )
 
             expect(mockHistory.location.pathname).toBe('/app')
@@ -1597,15 +1368,13 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>
-                        <Router history={history}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Provider store={mockStore}>
+                    <Router history={history}>
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
+                    </Router>
+                </Provider>,
             )
 
             expect(screen.getByText('AI Journey Analytics')).toBeInTheDocument()
@@ -1622,13 +1391,11 @@ describe('<Routes/>', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <Router history={history}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </QueryClientProvider>
+                    <Router history={history}>
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
+                    </Router>
                 </Provider>,
             )
 
@@ -1646,13 +1413,11 @@ describe('<Routes/>', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <Router history={history}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </QueryClientProvider>
+                    <Router history={history}>
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
+                    </Router>
                 </Provider>,
             )
 
@@ -1671,15 +1436,13 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>
-                        <Router history={history}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                <Provider store={mockStore}>
+                    <Router history={history}>
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
+                    </Router>
+                </Provider>,
             )
 
             await waitFor(() => {
@@ -1696,13 +1459,11 @@ describe('<Routes/>', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <Router history={history}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </QueryClientProvider>
+                    <Router history={history}>
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
+                    </Router>
                 </Provider>,
             )
 

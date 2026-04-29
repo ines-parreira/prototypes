@@ -1,14 +1,10 @@
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { Map } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import type { RootState } from 'state/types'
 
 import Tip from '../Tip'
-
-const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 const defaultState = {
     currentUser: Map({
@@ -17,12 +13,11 @@ const defaultState = {
 } as RootState
 
 const renderTip = () =>
-    renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <Tip icon={true} actionLabel="Got It" storageKey="test">
-                test
-            </Tip>
-        </Provider>,
+    render(
+        <Tip icon={true} actionLabel="Got It" storageKey="test">
+            test
+        </Tip>,
+        { storeState: defaultState },
     )
 
 describe('<Tip/>', () => {

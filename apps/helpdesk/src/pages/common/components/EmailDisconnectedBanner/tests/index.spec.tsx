@@ -1,14 +1,10 @@
-import React from 'react'
-
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import type { Location } from '@sentry/react/types/types'
 import { cleanup, screen, waitFor } from '@testing-library/react'
 import { fromJS, List } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import * as useAppSelector from 'hooks/useAppSelector'
-import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailDisconnectedBanner from '..'
 
@@ -17,20 +13,18 @@ const appSelectorSpy = jest.spyOn(useAppSelector, 'default')
 describe('EmailMigrationBanner', () => {
     let testLocation: Location
     const renderComponent = (route = '/app') =>
-        renderWithRouter(
-            <Provider store={mockStore({} as any)}>
-                <MemoryRouter initialEntries={[route]}>
-                    <EmailDisconnectedBanner />
-                    <Route
-                        path="*"
-                        render={({ location }) => {
-                            testLocation = location
-                            return null
-                        }}
-                    />
-                </MemoryRouter>
-            </Provider>,
-            { route },
+        render(
+            <>
+                <EmailDisconnectedBanner />
+                <Route
+                    path="*"
+                    render={({ location }) => {
+                        testLocation = location
+                        return null
+                    }}
+                />
+            </>,
+            { initialEntries: [route] },
         )
     afterEach(cleanup)
 

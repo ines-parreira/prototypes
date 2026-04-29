@@ -1,10 +1,9 @@
+import { render } from '@repo/testing'
 import { cleanup, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 import * as useAppSelector from 'hooks/useAppSelector'
 import { EmailMigrationStatus } from 'models/integration/types'
-import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailMigrationBanner from '../EmailMigrationBanner'
 import * as helpers from '../helpers'
@@ -28,12 +27,7 @@ jest.spyOn(migrationBannerHook, 'default').mockImplementation(
 )
 
 describe('EmailMigrationBanner', () => {
-    const renderComponent = () =>
-        renderWithRouter(
-            <Provider store={mockStore({} as any)}>
-                <EmailMigrationBanner />
-            </Provider>,
-        )
+    const renderComponent = () => render(<EmailMigrationBanner />)
 
     beforeEach(() => {
         jest.clearAllMocks()

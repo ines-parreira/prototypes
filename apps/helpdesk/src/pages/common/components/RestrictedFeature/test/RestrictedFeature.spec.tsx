@@ -1,10 +1,10 @@
-import { renderWithRouter } from 'utils/testing'
+import { render } from '@repo/testing'
 
 import RestrictedFeature from '../RestrictedFeature'
 
 describe('RestrictedFeature component', () => {
     it('should render image carousel and Lightbox', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <RestrictedFeature
                 imagesURL={['url1', 'url2']}
                 info="text"
@@ -17,7 +17,7 @@ describe('RestrictedFeature component', () => {
     })
 
     it('should render alert with a link and an action', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <RestrictedFeature
                 imagesURL={['url1', 'url2']}
                 info="text"

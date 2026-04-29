@@ -1,13 +1,12 @@
 import { useIsMobileResolution } from '@repo/hooks'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { Product, productConfig } from 'routes/layout/productConfig'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { useCurrentRouteProduct } from '../../hooks/useCurrentRouteProduct'
 import { usePreviousProductNavigation } from '../../hooks/usePreviousProductNavigation'
@@ -88,7 +87,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render SidebarProductHeader for non-sticky products', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -97,7 +96,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render action buttons in header', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -107,7 +106,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render InboxSidebar content', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -116,7 +115,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render footer with UserMenu and buttons - expanded state', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -128,7 +127,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render footer with UserMenu and buttons - collapsed state', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider
                     isCollapsed={true}
                     toggleCollapse={mockToggleCollapse}
@@ -143,7 +142,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render collapse toggle button', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -156,7 +155,7 @@ describe('NavigationSidebar', () => {
 
         it('should not render collapse toggle button on mobile resolution', () => {
             mockUseIsMobileResolution.mockReturnValue(true)
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -168,7 +167,7 @@ describe('NavigationSidebar', () => {
 
         it('should call toggleCollapse when collapse button is clicked', async () => {
             const user = userEvent.setup()
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -184,7 +183,7 @@ describe('NavigationSidebar', () => {
 
         it('should call toggleChat when help button is clicked', async () => {
             const user = userEvent.setup()
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -200,7 +199,7 @@ describe('NavigationSidebar', () => {
 
         it('should render the chat button when chat is ready', () => {
             mockUseIsChatReady.mockReturnValue(true)
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -213,7 +212,7 @@ describe('NavigationSidebar', () => {
 
         it('should not render the chat button when chat is not ready', () => {
             mockUseIsChatReady.mockReturnValue(false)
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -233,7 +232,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render product name button for sticky products', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -242,7 +241,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render SettingsSidebar content', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -251,7 +250,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render back button when sidebar is expanded', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -262,7 +261,7 @@ describe('NavigationSidebar', () => {
         })
 
         it('should not render back button when sidebar is collapsed', () => {
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider
                     isCollapsed={true}
                     toggleCollapse={mockToggleCollapse}
@@ -279,7 +278,7 @@ describe('NavigationSidebar', () => {
             const user = userEvent.setup()
             usePreviousProductNavigationMock.mockReturnValue('/app/tickets')
 
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -294,7 +293,7 @@ describe('NavigationSidebar', () => {
             const user = userEvent.setup()
             usePreviousProductNavigationMock.mockReturnValue(null)
 
-            renderWithQueryClientProvider(
+            render(
                 <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                     <NavigationSidebar />
                 </MockSidebarProvider>,
@@ -341,7 +340,7 @@ describe('NavigationSidebar', () => {
                 useCurrentRouteProductMock.mockReturnValue(
                     productConfig[product],
                 )
-                renderWithQueryClientProvider(
+                render(
                     <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                         <NavigationSidebar />
                     </MockSidebarProvider>,
@@ -353,7 +352,7 @@ describe('NavigationSidebar', () => {
 
     it('should not render sidebar content for Home product', () => {
         useCurrentRouteProductMock.mockReturnValue(productConfig[Product.Home])
-        const { container } = renderWithQueryClientProvider(
+        const { container } = render(
             <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
                 <NavigationSidebar />
             </MockSidebarProvider>,

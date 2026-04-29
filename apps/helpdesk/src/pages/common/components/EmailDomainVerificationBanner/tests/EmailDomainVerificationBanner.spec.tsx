@@ -1,16 +1,11 @@
-import React from 'react'
-
 import { useLocalStorage } from '@repo/hooks'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
 import { IntegrationType } from 'models/integration/constants'
 import { OutboundVerificationStatusValue } from 'models/integration/types'
-import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
 
@@ -26,35 +21,29 @@ describe('EmailDomainVerificationBanner', () => {
         domainStatus = OutboundVerificationStatusValue.Pending,
         route = '/app',
     ) =>
-        renderWithRouter(
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({
-                        integrations: [
-                            {
-                                type: IntegrationType.Email,
-                                meta: {
-                                    address: 'email@gorgias.com',
-                                    outbound_verification_status: {
-                                        sender_verification: 'unverified',
-                                        domain: domainStatus,
-                                    },
+        render(<EmailDomainVerificationBanner />, {
+            initialEntries: [route],
+            storeState: {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            type: IntegrationType.Email,
+                            meta: {
+                                address: 'email@gorgias.com',
+                                outbound_verification_status: {
+                                    sender_verification: 'unverified',
+                                    domain: domainStatus,
                                 },
                             },
-                        ],
-                    }),
-                    currentUser: fromJS({
-                        name: UserRole.Admin,
-                        role: { name: userRole },
-                    }),
-                } as any)}
-            >
-                <MemoryRouter initialEntries={[route]}>
-                    <EmailDomainVerificationBanner />
-                </MemoryRouter>
-            </Provider>,
-            { route },
-        )
+                        },
+                    ],
+                }),
+                currentUser: fromJS({
+                    name: UserRole.Admin,
+                    role: { name: userRole },
+                }),
+            } as any,
+        })
     const dismissFn = jest.fn()
     beforeEach(() => {
         useLocalStorageMock.mockReturnValue([true, dismissFn, dismissFn])

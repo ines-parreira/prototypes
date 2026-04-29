@@ -1,9 +1,8 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import _noop from 'lodash/noop'
-
-import { renderWithDnD } from 'utils/testing'
 
 import AccordionBody from '../AccordionBody'
 import SortableAccordion from '../SortableAccordion'
@@ -12,7 +11,7 @@ import SortableAccordionItem from '../SortableAccordionItem'
 
 describe('<SortableAccordion />', () => {
     it('should render sortable accordion component', () => {
-        const { container } = renderWithDnD(
+        const { container } = render(
             <SortableAccordion onReorder={_noop}>
                 <SortableAccordionItem id="1">
                     <SortableAccordionHeader>Header 1</SortableAccordionHeader>
@@ -39,7 +38,7 @@ describe('<SortableAccordion />', () => {
     it('should reorder sortable accordion items', async () => {
         const onReorderMock = jest.fn()
 
-        renderWithDnD(
+        render(
             <SortableAccordion onReorder={onReorderMock}>
                 <SortableAccordionItem id="1">
                     <SortableAccordionHeader>Header 1</SortableAccordionHeader>
@@ -86,7 +85,7 @@ describe('<SortableAccordion />', () => {
     it('should not reorder sortable accordion items if item was not dropped in a new position', async () => {
         const onReorderMock = jest.fn()
 
-        renderWithDnD(
+        render(
             <SortableAccordion onReorder={onReorderMock}>
                 <SortableAccordionItem id="1">
                     <SortableAccordionHeader>Header 1</SortableAccordionHeader>

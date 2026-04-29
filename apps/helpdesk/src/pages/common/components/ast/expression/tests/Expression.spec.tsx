@@ -1,12 +1,10 @@
 import type { ComponentProps } from 'react'
 
-import { appQueryClient } from '@repo/api-resources'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import Expression from 'pages/common/components/ast/expression/Expression'
-import { renderWithStore } from 'utils/testing'
 
 describe('<Expression />', () => {
     const minProps = {
@@ -25,12 +23,9 @@ describe('<Expression />', () => {
     const renderComponent = (
         props?: Partial<ComponentProps<typeof Expression>>,
     ) =>
-        renderWithStore(
-            <QueryClientProvider client={appQueryClient}>
-                <Expression {...minProps} {...props} />
-            </QueryClientProvider>,
-            { integrations: fromJS({ integrations: [] }) },
-        )
+        render(<Expression {...minProps} {...props} />, {
+            storeState: { integrations: fromJS({ integrations: [] }) },
+        })
 
     it('should render UnknownSyntax because the passed type is invalid, and pass all props to child', () => {
         renderComponent({ type: 'unknownType' })

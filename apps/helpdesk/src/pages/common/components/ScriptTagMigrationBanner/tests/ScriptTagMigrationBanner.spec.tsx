@@ -1,19 +1,14 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { UserRole } from 'config/types/user'
 import { integrationsState } from 'fixtures/integrations'
-import { renderWithRouter } from 'utils/testing'
 
 import useStoresRequiringScriptTagMigration from '../hooks/useStoresRequiringScriptTagMigration'
 import ScriptTagMigrationBanner from '../ScriptTagMigrationBanner'
 
 jest.mock('../hooks/useStoresRequiringScriptTagMigration')
-
-const mockStore = configureMockStore([thunk])
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
@@ -46,16 +41,12 @@ describe('<ScriptTagMigrationBanner />', () => {
             ],
         )
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
-                    integrations: fromJS(integrationsState),
-                })}
-            >
-                <ScriptTagMigrationBanner />
-            </Provider>,
-        )
+        const { container } = render(<ScriptTagMigrationBanner />, {
+            storeState: {
+                currentUser: fromJS({ role: { name: UserRole.Admin } }),
+                integrations: fromJS(integrationsState),
+            },
+        })
         expect(container).toMatchSnapshot()
     })
 
@@ -71,16 +62,12 @@ describe('<ScriptTagMigrationBanner />', () => {
             ],
         )
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
-                    integrations: fromJS(integrationsState),
-                })}
-            >
-                <ScriptTagMigrationBanner />
-            </Provider>,
-        )
+        const { container } = render(<ScriptTagMigrationBanner />, {
+            storeState: {
+                currentUser: fromJS({ role: { name: UserRole.Admin } }),
+                integrations: fromJS(integrationsState),
+            },
+        })
         expect(container).toMatchSnapshot()
     })
 
@@ -96,16 +83,12 @@ describe('<ScriptTagMigrationBanner />', () => {
             ],
         )
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
-                    integrations: fromJS(integrationsState),
-                })}
-            >
-                <ScriptTagMigrationBanner />
-            </Provider>,
-        )
+        const { container } = render(<ScriptTagMigrationBanner />, {
+            storeState: {
+                currentUser: fromJS({ role: { name: UserRole.Admin } }),
+                integrations: fromJS(integrationsState),
+            },
+        })
         expect(container).toMatchSnapshot()
     })
 
@@ -127,16 +110,12 @@ describe('<ScriptTagMigrationBanner />', () => {
             ],
         )
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
-                    integrations: fromJS(integrationsState),
-                })}
-            >
-                <ScriptTagMigrationBanner />
-            </Provider>,
-        )
+        const { container } = render(<ScriptTagMigrationBanner />, {
+            storeState: {
+                currentUser: fromJS({ role: { name: UserRole.Admin } }),
+                integrations: fromJS(integrationsState),
+            },
+        })
         expect(container).toMatchSnapshot()
     })
 
@@ -158,16 +137,12 @@ describe('<ScriptTagMigrationBanner />', () => {
             ],
         )
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
-                    integrations: fromJS(integrationsState),
-                })}
-            >
-                <ScriptTagMigrationBanner />
-            </Provider>,
-        )
+        const { container } = render(<ScriptTagMigrationBanner />, {
+            storeState: {
+                currentUser: fromJS({ role: { name: UserRole.Admin } }),
+                integrations: fromJS(integrationsState),
+            },
+        })
         expect(container).toMatchSnapshot()
     })
 
@@ -189,16 +164,12 @@ describe('<ScriptTagMigrationBanner />', () => {
             ],
         )
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
-                    integrations: fromJS(integrationsState),
-                })}
-            >
-                <ScriptTagMigrationBanner />
-            </Provider>,
-        )
+        const { container } = render(<ScriptTagMigrationBanner />, {
+            storeState: {
+                currentUser: fromJS({ role: { name: UserRole.Admin } }),
+                integrations: fromJS(integrationsState),
+            },
+        })
         expect(container).toMatchSnapshot()
     })
 
@@ -220,16 +191,12 @@ describe('<ScriptTagMigrationBanner />', () => {
             ],
         )
 
-        const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
-                    integrations: fromJS(integrationsState),
-                })}
-            >
-                <ScriptTagMigrationBanner />
-            </Provider>,
-        )
+        const { container } = render(<ScriptTagMigrationBanner />, {
+            storeState: {
+                currentUser: fromJS({ role: { name: UserRole.Admin } }),
+                integrations: fromJS(integrationsState),
+            },
+        })
         expect(container).toMatchSnapshot()
     })
 })

@@ -1,17 +1,13 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 
 import { THEME_NAME, useTheme } from 'core/theme'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
-import { renderWithRouter } from 'utils/testing'
 
 import { useSetBanners } from '../../hooks/useSetBanners'
 import App from '../App'
-
-let history = createMemoryHistory()
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -109,20 +105,19 @@ const mockUseAxiomMigration = useAxiomMigration as jest.MockedFunction<
 
 describe('App component', () => {
     beforeEach(() => {
-        history = createMemoryHistory()
         useFlagMock.mockReturnValue(false)
         useThemeMock.mockReturnValue({ resolvedName: THEME_NAME.Light })
     })
 
     it('should render its children', () => {
         const child = 'ChildComponent'
-        renderWithRouter(<App>{child}</App>, { history })
+        render(<App>{child}</App>)
 
         expect(screen.getByText(child)).toBeInTheDocument()
     })
 
     it('should render the axiom Toaster', () => {
-        renderWithRouter(<App>child</App>, { history })
+        render(<App>child</App>)
 
         expect(
             screen.getAllByRole('region', { name: /notifications/i }).length,
@@ -131,21 +126,19 @@ describe('App component', () => {
 
     it('should apply the `globalNav` class to the AppNode', () => {
         useFlagMock.mockReturnValue(true)
-        const { container } = renderWithRouter(<App>boop</App>, { history })
+        const { container } = render(<App>boop</App>)
         const child = container.firstChild as HTMLElement
         expect(child.classList.contains('globalNav')).toBe(true)
     })
 
     it('should render banners when NOT in AI-Agent onboarding', () => {
-        history.push('/app/home')
-
-        renderWithRouter(
+        render(
             <App>
                 <span role="img" aria-label="cool">
                     🆒
                 </span>
             </App>,
-            { history },
+            { initialEntries: ['/app/home'] },
         )
 
         expect(useSetBanners).toHaveBeenCalledTimes(1)
@@ -159,15 +152,13 @@ describe('App component', () => {
     })
 
     it('should NOT render banners when in AI-Agent onboarding (single step URL)', () => {
-        history.push('/app/ai-agent/onboarding')
-
-        renderWithRouter(
+        render(
             <App>
                 <span role="img" aria-label="cool">
                     🆒
                 </span>
             </App>,
-            { history },
+            { initialEntries: ['/app/ai-agent/onboarding'] },
         )
 
         expect(screen.queryByText('AlertBanners')).not.toBeInTheDocument()
@@ -186,15 +177,13 @@ describe('App component', () => {
     })
 
     it('should NOT render banners when in AI-Agent onboarding (shop-specific URL)', () => {
-        history.push('/app/ai-agent/shopify/store-name/onboarding')
-
-        renderWithRouter(
+        render(
             <App>
                 <span role="img" aria-label="cool">
                     🆒
                 </span>
             </App>,
-            { history },
+            { initialEntries: ['/app/ai-agent/shopify/store-name/onboarding'] },
         )
 
         expect(screen.queryByText('AlertBanners')).not.toBeInTheDocument()
@@ -213,7 +202,7 @@ describe('App component', () => {
     })
 
     it('should call the `useRedirectDeprecatedTicketRoutes` hook', () => {
-        renderWithRouter(<App>boop</App>)
+        render(<App>boop</App>)
         expect(useRedirectDeprecatedTicketRoutes).toHaveBeenCalledWith()
     })
 
@@ -224,7 +213,7 @@ describe('App component', () => {
                 onToggle: jest.fn(),
             })
 
-            const { container } = renderWithRouter(<App>boop</App>)
+            const { container } = render(<App>boop</App>)
             const child = container.firstChild as HTMLElement
             expect(child.classList.contains('axiom')).toBe(false)
             expect(child.classList.contains('legacy')).toBe(true)
@@ -236,7 +225,7 @@ describe('App component', () => {
                 onToggle: jest.fn(),
             })
 
-            const { container } = renderWithRouter(<App>boop</App>)
+            const { container } = render(<App>boop</App>)
             const child = container.firstChild as HTMLElement
             expect(child.classList.contains('axiom')).toBe(true)
             expect(child.classList.contains('legacy')).toBe(false)

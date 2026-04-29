@@ -1,9 +1,9 @@
 import { featureFlagsClientMock } from '@repo/feature-flags/testing'
+import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import { renderWithRouter } from 'utils/testing'
 
 import GuidanceActionTag from '../GuidanceActionTag'
 
@@ -58,7 +58,7 @@ describe('GuidanceActionTag', () => {
     it('renders the action', () => {
         const actionId = encodeAction(mockGuidanceActions[0])
 
-        const { container } = renderWithRouter(
+        const { container } = render(
             <GuidanceActionTag value={actionId}>
                 Action Content
             </GuidanceActionTag>,
@@ -78,7 +78,7 @@ describe('GuidanceActionTag', () => {
     it('handles invalid actions', () => {
         const actionId = 'something'
 
-        renderWithRouter(
+        render(
             <GuidanceActionTag value={actionId}>
                 Action Content
             </GuidanceActionTag>,
@@ -106,7 +106,7 @@ describe('GuidanceActionTag', () => {
 
         const actionValue = encodeAction(mockGuidanceActions[0])
 
-        renderWithRouter(
+        render(
             <GuidanceActionTag value={actionValue}>
                 Action Content
             </GuidanceActionTag>,
@@ -134,7 +134,7 @@ describe('GuidanceActionTag', () => {
 
         const actionValue = encodeAction(mockGuidanceActions[0])
 
-        renderWithRouter(
+        render(
             <GuidanceActionTag value={actionValue}>
                 Action Content
             </GuidanceActionTag>,

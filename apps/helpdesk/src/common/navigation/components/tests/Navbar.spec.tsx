@@ -1,8 +1,7 @@
 import type React from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { ActiveContent } from 'common/navigation'
 import type { NavBarContextType } from 'common/navigation/hooks/useNavBar/context'
@@ -11,7 +10,6 @@ import {
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import useAppSelector from 'hooks/useAppSelector'
-import { renderWithRouter } from 'utils/testing'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from '../../hooks/useShowGlobalNavFeatureFlag'
 import Navbar from '../Navbar'
@@ -83,7 +81,7 @@ describe('Navbar', () => {
     }
 
     const renderWithContext = (component: React.ReactNode) => {
-        return renderWithRouter(<NavBarProvider>{component}</NavBarProvider>)
+        return render(<NavBarProvider>{component}</NavBarProvider>)
     }
 
     beforeEach(() => {
