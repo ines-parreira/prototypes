@@ -8,6 +8,7 @@ const GreyArea = {
     id: 'greyArea',
     beforeDraw(chart: Chart) {
         if (
+            !chart.chartArea ||
             !chart.data.labels ||
             !chart.config.options?.plugins?.greyArea?.start ||
             !chart.config.options.plugins.greyArea?.end
