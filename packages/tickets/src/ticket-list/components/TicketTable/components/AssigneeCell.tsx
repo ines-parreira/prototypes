@@ -5,17 +5,16 @@ import {
     OverflowTooltip,
     Text,
 } from '@gorgias/axiom'
+import type { CellContext } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import type { TicketTableCellLinkProps } from './TicketTableCellLink'
-import { TicketTableCellLink } from './TicketTableCellLink'
+import type { TicketTableRow } from '../TicketTableColumns'
 
-type Props = {
-    assignee: TicketCompact['assignee_user']
-    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
-}
+export type AssigneeCellProps = CellContext<TicketTableRow, unknown>
 
-function getProfilePictureUrl(assignee: NonNullable<Props['assignee']>) {
+type Assignee = NonNullable<TicketCompact['assignee_user']>
+
+function getProfilePictureUrl(assignee: Assignee) {
     if (!assignee.meta || typeof assignee.meta !== 'object') {
         return undefined
     }
@@ -29,7 +28,7 @@ function getProfilePictureUrl(assignee: NonNullable<Props['assignee']>) {
     return typeof profilePictureUrl === 'string' ? profilePictureUrl : undefined
 }
 
-function getAssigneeLabel(assignee: NonNullable<Props['assignee']>) {
+function getAssigneeLabel(assignee: Assignee) {
     const fullName = [assignee.firstname, assignee.lastname]
         .filter(Boolean)
         .join(' ')
@@ -38,43 +37,32 @@ function getAssigneeLabel(assignee: NonNullable<Props['assignee']>) {
     return assignee.name?.trim() || fullName || assignee.email
 }
 
-export function AssigneeCell({ assignee, linkProps }: Props) {
-    if (!assignee) {
-        if (linkProps) {
-            return (
-                <TicketTableCellLink {...linkProps}>{null}</TicketTableCellLink>
-            )
-        }
+export function AssigneeCell(cellContext: AssigneeCellProps) {
+    const assignee = cellContext.row.original.assignee_user
 
-        return <DataTableBaseCell>{null}</DataTableBaseCell>
+    if (!assignee) {
+        return <DataTableBaseCell {...cellContext}>{null}</DataTableBaseCell>
     }
 
     const profilePictureUrl = getProfilePictureUrl(assignee)
     const label = getAssigneeLabel(assignee)
-    const content = (
-        <Box flex={1} minWidth={0} alignItems="center" gap="xs">
-            <Box flexShrink={0}>
-                <Avatar
-                    name={label}
-                    url={profilePictureUrl ?? undefined}
-                    size="sm"
-                />
+
+    return (
+        <DataTableBaseCell {...cellContext} alignItems="center">
+            <Box flex={1} minWidth={0} alignItems="center" gap="xs">
+                <Box flexShrink={0}>
+                    <Avatar
+                        name={label}
+                        url={profilePictureUrl ?? undefined}
+                        size="sm"
+                    />
+                </Box>
+                <OverflowTooltip placement="right">
+                    <Text size="md" overflow="ellipsis">
+                        {label}
+                    </Text>
+                </OverflowTooltip>
             </Box>
-            <OverflowTooltip placement="right">
-                <Text size="md" overflow="ellipsis">
-                    {label}
-                </Text>
-            </OverflowTooltip>
-        </Box>
+        </DataTableBaseCell>
     )
-
-    if (linkProps) {
-        return (
-            <TicketTableCellLink {...linkProps} alignItems="center">
-                {content}
-            </TicketTableCellLink>
-        )
-    }
-
-    return <DataTableBaseCell alignItems="center">{content}</DataTableBaseCell>
 }

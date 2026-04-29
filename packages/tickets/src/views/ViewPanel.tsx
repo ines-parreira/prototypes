@@ -1,9 +1,15 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 
-import { Panel } from '@repo/layout'
+import { Panel as LayoutPanel } from '@repo/layout'
 
-import { Box, SearchField } from '@gorgias/axiom'
+import {
+    Box,
+    Disclosure,
+    DisclosurePanel,
+    Panel,
+    SearchField,
+} from '@gorgias/axiom'
 import type { ViewField } from '@gorgias/helpdesk-types'
 
 import { TicketTable } from '../ticket-list'
@@ -12,7 +18,7 @@ import type { DirtyViewInput } from '../ticket-list/hooks/useTicketTableData'
 import type { SearchTracking } from '../ticket-list/types/searchTracking'
 import { ViewHeader } from './ViewHeader'
 
-const panelConfig = {
+const layoutPanelConfig = {
     defaultSize: Infinity,
     minSize: 300,
     maxSize: Infinity,
@@ -27,7 +33,9 @@ type ViewPanelProps = {
     onFixFilters?: () => void
     onNavigateToTicket?: () => void
     onApplyMacro?: (ticketIds: number[]) => void
-    topContent?: ReactNode
+    settingsContent?: ReactNode
+    isSettingsExpanded?: boolean
+    onSettingsExpandedChange?: (isExpanded: boolean) => void
     dirtyView?: DirtyViewInput
     titleOverride?: string
     hideCreateTicket?: boolean
@@ -46,7 +54,9 @@ export function ViewPanel({
     onFixFilters,
     onNavigateToTicket,
     onApplyMacro,
-    topContent,
+    settingsContent,
+    isSettingsExpanded = false,
+    onSettingsExpandedChange,
     dirtyView,
     titleOverride,
     hideCreateTicket,
@@ -79,8 +89,8 @@ export function ViewPanel({
     }, [setQuery])
 
     return (
-        <Panel name="views" config={panelConfig}>
-            <Box height="100%" width="100%" flexDirection="column">
+        <LayoutPanel name="views" config={layoutPanelConfig}>
+            <Panel h="100%" overflow="auto" withoutBorder>
                 <ViewHeader
                     viewId={viewId}
                     onExpand={onExpand}
@@ -89,6 +99,7 @@ export function ViewPanel({
                     hideCreateTicket={hideCreateTicket}
                     isDraftView={isDraftView}
                     isSearchMode={isSearchMode}
+                    isSettingsExpanded={isSettingsExpanded}
                 />
                 {isSearchMode && (
                     <Box px="lg" pb="sm">
@@ -105,7 +116,18 @@ export function ViewPanel({
                         </Box>
                     </Box>
                 )}
-                {topContent}
+                {isSearchMode || isDraftView ? (
+                    settingsContent
+                ) : (
+                    <Disclosure
+                        isExpanded={isSettingsExpanded}
+                        onExpandedChange={onSettingsExpandedChange}
+                    >
+                        <DisclosurePanel py={0}>
+                            {settingsContent}
+                        </DisclosurePanel>
+                    </Disclosure>
+                )}
                 <TicketTable
                     viewId={viewId}
                     isSearchMode={isSearchMode}
@@ -119,7 +141,7 @@ export function ViewPanel({
                     onDraftFieldsChange={onDraftFieldsChange}
                     searchTracking={searchTracking}
                 />
-            </Box>
-        </Panel>
+            </Panel>
+        </LayoutPanel>
     )
 }

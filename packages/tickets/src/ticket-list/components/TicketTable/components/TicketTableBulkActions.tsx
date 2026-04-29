@@ -1,18 +1,4 @@
-import type { ReactNode } from 'react'
-
-import {
-    Box,
-    Button,
-    DataTableBulkActions,
-    DataTableColumnEditing,
-    DataTableItemCount,
-    DataTableToolbar,
-    Text,
-} from '@gorgias/axiom'
-import type {
-    DataTableBulkActionsProps,
-    DataTableColumnEditingProps,
-} from '@gorgias/axiom'
+import { Box } from '@gorgias/axiom'
 import type {
     Team,
     TicketPriority,
@@ -29,10 +15,6 @@ import { BulkUserAssignSelect } from './BulkMoreActionsMenu/components/BulkUserA
 
 type Props = {
     viewId: number
-    canSelectAllAcrossPages: boolean
-    hasSelectedAll: boolean
-    viewName?: string
-    viewCount?: number
     isDisabled: boolean
     isAssignUserOpen: boolean
     onAssignUserOpenChange: (open: boolean) => void
@@ -50,43 +32,15 @@ type Props = {
     onMoveToTrash: () => void | Promise<void>
     onUndelete: () => void | Promise<void>
     onDeleteForever: () => void | Promise<void>
-    columnEditingFooter?: DataTableColumnEditingProps['footer']
 }
 
-type ItemCountRenderProps = {
-    isAllSelected: boolean
-    text: string
-}
-
-type SelectAllActionRenderProps = {
-    onSelectAll: () => void
-}
-
-type LegacyDataTableItemCountProps = {
-    children?: (props: ItemCountRenderProps) => ReactNode
-}
-
-type LegacyDataTableBulkActionsProps<TData = unknown> =
-    DataTableBulkActionsProps<TData> & {
-        selectAllAction?: (props: SelectAllActionRenderProps) => ReactNode
-    }
-
-const DataTableItemCountWithChildren = DataTableItemCount as unknown as (
-    props: LegacyDataTableItemCountProps,
-) => JSX.Element
-
-const DataTableBulkActionsWithSelectAll = DataTableBulkActions as unknown as <
-    TData = unknown,
->(
-    props: LegacyDataTableBulkActionsProps<TData>,
-) => JSX.Element | null
-
+/**
+ * Horizontal row of bulk action controls (status, assignee, team, tags, more)
+ * shown when one or more ticket rows are selected. Render as the children of
+ * `<DataTableBulkActions>`.
+ */
 export function TicketTableBulkActions({
     viewId,
-    canSelectAllAcrossPages,
-    hasSelectedAll,
-    viewName,
-    viewCount,
     isDisabled,
     isAssignUserOpen,
     onAssignUserOpenChange,
@@ -104,80 +58,38 @@ export function TicketTableBulkActions({
     onMoveToTrash,
     onUndelete,
     onDeleteForever,
-    columnEditingFooter,
 }: Props) {
-    const viewLabel = viewName?.trim() || 'the view'
-
     return (
-        <DataTableToolbar>
-            <DataTableItemCountWithChildren>
-                {({ isAllSelected, text }: ItemCountRenderProps) =>
-                    isAllSelected || hasSelectedAll ? (
-                        <Text size="sm">
-                            {viewCount != null
-                                ? `All ${viewCount} tickets in ${viewLabel} selected`
-                                : `All tickets in ${viewLabel} selected`}
-                        </Text>
-                    ) : (
-                        text
-                    )
-                }
-            </DataTableItemCountWithChildren>
-            <DataTableBulkActionsWithSelectAll
-                selectAllAction={
-                    canSelectAllAcrossPages
-                        ? ({ onSelectAll }: SelectAllActionRenderProps) => (
-                              <Button
-                                  variant="tertiary"
-                                  size="sm"
-                                  onClick={onSelectAll}
-                              >
-                                  {viewCount != null
-                                      ? `Select all ${viewCount} tickets in ${viewLabel}`
-                                      : `Select all tickets in ${viewLabel}`}
-                              </Button>
-                          )
-                        : undefined
-                }
-            >
-                {() => (
-                    <Box alignItems="center" gap="xs" height="24px">
-                        <BulkStatusSelect
-                            onChange={onSetStatus}
-                            isDisabled={isDisabled}
-                        />
-                        <BulkUserAssignSelect
-                            onChange={onAssignUser}
-                            isDisabled={isDisabled}
-                            isOpen={isAssignUserOpen}
-                            onOpenChange={onAssignUserOpenChange}
-                        />
-                        <BulkTeamAssignSelect
-                            onChange={onAssignTeam}
-                            isDisabled={isDisabled}
-                        />
-                        <BulkAddTagSelect
-                            onChange={onAddTag}
-                            isDisabled={isDisabled}
-                            isOpen={isAddTagOpen}
-                            onOpenChange={onAddTagOpenChange}
-                        />
-                        <BulkMoreActionsMenu
-                            viewId={viewId}
-                            isDisabled={isDisabled}
-                            onMarkAsUnread={onMarkAsUnread}
-                            onMarkAsRead={onMarkAsRead}
-                            onChangePriority={onChangePriority}
-                            onApplyMacro={onApplyMacro}
-                            onExportTickets={onExportTickets}
-                            onMoveToTrash={onMoveToTrash}
-                            onUndelete={onUndelete}
-                            onDeleteForever={onDeleteForever}
-                        />
-                    </Box>
-                )}
-            </DataTableBulkActionsWithSelectAll>
-            <DataTableColumnEditing footer={columnEditingFooter} />
-        </DataTableToolbar>
+        <Box alignItems="center" gap="xs" height="24px">
+            <BulkStatusSelect onChange={onSetStatus} isDisabled={isDisabled} />
+            <BulkUserAssignSelect
+                onChange={onAssignUser}
+                isDisabled={isDisabled}
+                isOpen={isAssignUserOpen}
+                onOpenChange={onAssignUserOpenChange}
+            />
+            <BulkTeamAssignSelect
+                onChange={onAssignTeam}
+                isDisabled={isDisabled}
+            />
+            <BulkAddTagSelect
+                onChange={onAddTag}
+                isDisabled={isDisabled}
+                isOpen={isAddTagOpen}
+                onOpenChange={onAddTagOpenChange}
+            />
+            <BulkMoreActionsMenu
+                viewId={viewId}
+                isDisabled={isDisabled}
+                onMarkAsUnread={onMarkAsUnread}
+                onMarkAsRead={onMarkAsRead}
+                onChangePriority={onChangePriority}
+                onApplyMacro={onApplyMacro}
+                onExportTickets={onExportTickets}
+                onMoveToTrash={onMoveToTrash}
+                onUndelete={onUndelete}
+                onDeleteForever={onDeleteForever}
+            />
+        </Box>
     )
 }

@@ -3,11 +3,17 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { usePrevious } from '@repo/hooks'
 import { useUserDateTimePreferences } from '@repo/preferences'
 import { useViewCount } from '@repo/views'
+import { useHistory } from 'react-router-dom'
 
 import {
+    Button,
     createLocalStoragePersistence,
     DataTable,
+    DataTableBulkActions,
+    DataTableColumnEditing,
+    DataTableItemCount,
     DataTablePagination,
+    Text,
     toast,
 } from '@gorgias/axiom'
 import type {
@@ -101,6 +107,7 @@ function TicketTableComponent({
     onDraftFieldsChange,
     searchTracking,
 }: Props) {
+    const history = useHistory()
     const { currentUserId } = useCurrentUserId()
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
     const [isAllSelected, setIsAllSelected] = useState(false)
@@ -240,7 +247,7 @@ function TicketTableComponent({
 
     const { markAsRead } = useMarkTicketAsRead()
 
-    const handleNavigateToTicket = useCallback(
+    const handleRowClick = useCallback(
         (ticket: TicketCompact) => {
             const selectedIndex = items.findIndex(
                 (item) => item.id === ticket.id,
@@ -253,8 +260,19 @@ function TicketTableComponent({
             }
             if (ticket.is_unread) markAsRead(ticket.id)
             onNavigateToTicket?.()
+            // axiom's row-link wrapper preventDefaults the anchor when both
+            // onRowClick and getRowHref are set, so SPA navigation must happen
+            // here. The href on the underlying anchor still drives cmd/middle
+            // click "open in new tab".
+            history.push(`/app/ticket/${ticket.id}`)
         },
-        [items, markAsRead, onNavigateToTicket, searchTracking],
+        [history, items, markAsRead, onNavigateToTicket, searchTracking],
+    )
+
+    const getRowHref = useCallback(
+        (row: TicketTableRow) =>
+            row.id !== undefined ? `/app/ticket/${row.id}` : undefined,
+        [],
     )
 
     const { field: currentSortField, direction: currentSortDirection } =
@@ -284,9 +302,8 @@ function TicketTableComponent({
             createTicketTableColumns({
                 currentUserId,
                 dateTimePreferences,
-                onNavigateToTicket: handleNavigateToTicket,
             }),
-        [currentUserId, dateTimePreferences, handleNavigateToTicket],
+        [currentUserId, dateTimePreferences],
     )
 
     const selectedTicketIds = useMemo(
@@ -385,26 +402,25 @@ function TicketTableComponent({
     const handleUndeleteFromTrashView = useCallback(async () => {
         await handleUndelete({ removeFromCurrentViewCache: true })
     }, [handleUndelete])
-    const localStoragePersistence = useMemo(
-        () =>
-            isDraftView
-                ? undefined
-                : createLocalStoragePersistence(
-                      isSearchMode
-                          ? `ticket-table-${viewId}-search`
-                          : `ticket-table-${viewId}`,
-                  ),
-        [isDraftView, isSearchMode, viewId],
-    )
+
+    const persistenceId = isSearchMode
+        ? `ticket-table-${viewId}-search`
+        : `ticket-table-${viewId}`
 
     const handleResetToDefault = useCallback(() => {
-        if (!localStoragePersistence) {
+        if (isDraftView) {
             return
         }
 
-        localStoragePersistence.clear()
+        const persistence = createLocalStoragePersistence(persistenceId)
+
+        if (!persistence) {
+            return
+        }
+
+        persistence.clear()
         setTableVersion((currentVersion) => currentVersion + 1)
-    }, [localStoragePersistence])
+    }, [isDraftView, persistenceId])
 
     const handleSaveForEveryone = useCallback(
         async (visibleColumns: string[]) => {
@@ -455,12 +471,14 @@ function TicketTableComponent({
                         : `${viewId}-${sortOrder}-${tableVersion}`
                 }
                 persistence={{
-                    enable: true,
-                    localStorage: localStoragePersistence,
+                    enable: !isDraftView,
+                    id: persistenceId,
                 }}
                 data={tableItems}
                 columns={columns}
                 isLoading={isLoading}
+                onRowClick={handleRowClick}
+                getRowHref={getRowHref}
                 overflow="scroll"
                 selection={{
                     enable: true,
@@ -514,34 +532,67 @@ function TicketTableComponent({
                     />
                 )}
             >
-                <TicketTableBulkActions
-                    viewId={viewId}
-                    canSelectAllAcrossPages={canSelectAllInView}
-                    hasSelectedAll={isAllSelected}
-                    viewName={view?.name ?? undefined}
-                    viewCount={viewCount}
-                    isAssignUserOpen={isAssignUserOpen}
-                    isAddTagOpen={isAddTagOpen}
-                    isDisabled={isBulkActionLoading}
-                    onSetStatus={handleSetStatus}
-                    onAssignUser={handleAssignUser}
-                    onAssignTeam={handleAssignTeam}
-                    onAddTag={handleAddTag}
-                    onAssignUserOpenChange={setIsAssignUserOpen}
-                    onAddTagOpenChange={setIsAddTagOpen}
-                    onChangePriority={handleChangePriority}
-                    onExportTickets={handleExportTickets}
-                    onMarkAsRead={handleMarkAsRead}
-                    onMarkAsUnread={handleMarkAsUnread}
-                    onApplyMacro={handleApplyMacro}
-                    onMoveToTrash={handleMoveToTrash}
-                    onUndelete={handleUndeleteFromTrashView}
-                    onDeleteForever={handleDeleteForever}
-                    columnEditingFooter={({
-                        visibleColumns,
-                        orderedColumns,
-                        setIsOpen,
-                    }) => {
+                <DataTableItemCount>
+                    {({ isAllSelected: itemCountIsAllSelected, text }) => {
+                        if (itemCountIsAllSelected || isAllSelected) {
+                            const viewLabel = view?.name?.trim() || 'the view'
+                            return (
+                                <Text size="sm">
+                                    {viewCount != null
+                                        ? `All ${viewCount} tickets in ${viewLabel} selected`
+                                        : `All tickets in ${viewLabel} selected`}
+                                </Text>
+                            )
+                        }
+                        return <Text size="sm">{text}</Text>
+                    }}
+                </DataTableItemCount>
+                <DataTableBulkActions<TicketTableRow>
+                    selectAllAction={
+                        canSelectAllInView
+                            ? ({ onSelectAll }) => {
+                                  const viewLabel =
+                                      view?.name?.trim() || 'the view'
+                                  return (
+                                      <Button
+                                          variant="tertiary"
+                                          size="sm"
+                                          onClick={onSelectAll}
+                                      >
+                                          {viewCount != null
+                                              ? `Select all ${viewCount} tickets in ${viewLabel}`
+                                              : `Select all tickets in ${viewLabel}`}
+                                      </Button>
+                                  )
+                              }
+                            : undefined
+                    }
+                >
+                    {() => (
+                        <TicketTableBulkActions
+                            viewId={viewId}
+                            isAssignUserOpen={isAssignUserOpen}
+                            isAddTagOpen={isAddTagOpen}
+                            isDisabled={isBulkActionLoading}
+                            onSetStatus={handleSetStatus}
+                            onAssignUser={handleAssignUser}
+                            onAssignTeam={handleAssignTeam}
+                            onAddTag={handleAddTag}
+                            onAssignUserOpenChange={setIsAssignUserOpen}
+                            onAddTagOpenChange={setIsAddTagOpen}
+                            onChangePriority={handleChangePriority}
+                            onExportTickets={handleExportTickets}
+                            onMarkAsRead={handleMarkAsRead}
+                            onMarkAsUnread={handleMarkAsUnread}
+                            onApplyMacro={handleApplyMacro}
+                            onMoveToTrash={handleMoveToTrash}
+                            onUndelete={handleUndeleteFromTrashView}
+                            onDeleteForever={handleDeleteForever}
+                        />
+                    )}
+                </DataTableBulkActions>
+                <DataTableColumnEditing
+                    footer={({ visibleColumns, orderedColumns, setIsOpen }) => {
                         if (!shouldShowColumnEditingFooter) {
                             return undefined
                         }
@@ -574,6 +625,7 @@ function TicketTableComponent({
                         )
                     }}
                 />
+
                 <DataTablePagination />
             </DataTable>
         </div>

@@ -160,7 +160,9 @@ type MockViewPanelProps = {
     onFixFilters?: () => void
     onNavigateToTicket?: () => void
     onApplyMacro?: (ticketIds: number[]) => void
-    topContent?: React.ReactNode
+    settingsContent?: React.ReactNode
+    isSettingsExpanded?: boolean
+    onSettingsExpandedChange?: (isExpanded: boolean) => void
     titleOverride?: string
     hideCreateTicket?: boolean
     isDraftView?: boolean
@@ -260,7 +262,8 @@ const mockViewPanel = jest.fn((props: MockViewPanelProps) => {
         onSearchResultCountChange,
         onExpand,
         onApplyMacro,
-        topContent,
+        settingsContent,
+        isSettingsExpanded,
         titleOverride,
         hideCreateTicket,
         isDraftView,
@@ -277,6 +280,7 @@ const mockViewPanel = jest.fn((props: MockViewPanelProps) => {
             <p>dirtyView: {JSON.stringify(dirtyView)}</p>
             <p>draftFields: {JSON.stringify(props.draftFields ?? [])}</p>
             <p>isSearchMode: {String(isSearchMode)}</p>
+            <p>isSettingsExpanded: {String(isSettingsExpanded)}</p>
             <button onClick={() => onSearchResultCountChange?.(200)}>
                 Set search count
             </button>
@@ -290,7 +294,7 @@ const mockViewPanel = jest.fn((props: MockViewPanelProps) => {
             >
                 Change draft fields
             </button>
-            {topContent}
+            {settingsContent}
         </div>
     )
 })
@@ -333,23 +337,24 @@ jest.mock('split-ticket-view-toggle', () => ({
 
 const mockViewPanelFiltersBridge = jest.fn(
     ({
-        isExpanded,
         draftFields,
+        isExpanded,
         isSearchMode,
         hideViewNameInput: __hideViewNameInput,
         hideFooterActions: __hideFooterActions,
-        searchResultCount,
         title: __title,
+        searchResultCount,
     }: {
-        isExpanded: boolean
+        isExpanded?: boolean
         isSearchMode?: boolean
         hideViewNameInput?: boolean
         hideFooterActions?: boolean
-        searchResultCount?: number
         title?: string
+        searchResultCount?: number
         draftFields?: ViewField[]
     }) => (
         <div>
+            <p>ViewPanelFiltersBridge rendered</p>
             <p>ViewPanelFiltersBridge expanded: {String(isExpanded)}</p>
             <p>
                 ViewPanelFiltersBridge draftFields:{' '}
@@ -363,12 +368,12 @@ const mockViewPanelFiltersBridge = jest.fn(
 
 jest.mock('../ViewPanelFiltersBridge', () => ({
     ViewPanelFiltersBridge: (props: {
-        isExpanded: boolean
+        isExpanded?: boolean
         isSearchMode?: boolean
         hideViewNameInput?: boolean
         hideFooterActions?: boolean
-        searchResultCount?: number
         title?: string
+        searchResultCount?: number
         draftFields?: ViewField[]
     }) => mockViewPanelFiltersBridge(props),
 }))
@@ -470,10 +475,9 @@ describe('ViewPanelEntrypoint', () => {
                 'dirtyView: {"enabled":false,"search":"test search","filters":"status:open","areFiltersValid":true}',
             ),
         ).toBeInTheDocument()
-        expect(mockViewPanelFiltersBridge).not.toHaveBeenCalled()
         expect(
-            screen.queryByText(/ViewPanelFiltersBridge expanded:/),
-        ).not.toBeInTheDocument()
+            screen.getByText('isSettingsExpanded: false'),
+        ).toBeInTheDocument()
         expect(screen.queryByText('LegacyViewPanel')).not.toBeInTheDocument()
     })
 
@@ -584,9 +588,7 @@ describe('ViewPanelEntrypoint', () => {
             </Panels>,
         )
 
-        expect(
-            screen.getByText('ViewPanelFiltersBridge expanded: true'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('isSettingsExpanded: true')).toBeInTheDocument()
     })
 
     it('does not rehydrate the search view from the URL while editing filters', () => {
@@ -840,8 +842,14 @@ describe('ViewPanelEntrypoint', () => {
             </Panels>,
         )
 
-        const initialProps = mockViewPanel.mock.calls[0]?.[0]
-        initialProps?.onEditView?.()
+        // Search mode auto-expands the filters, so the first toggle collapses
+        // them. The second toggle re-opens with the synthetic search view.
+        act(() => {
+            mockViewPanel.mock.calls.at(-1)?.[0]?.onEditView?.()
+        })
+        act(() => {
+            mockViewPanel.mock.calls.at(-1)?.[0]?.onEditView?.()
+        })
 
         const draftView = getLastSetViewEditModeDraftView()
         expect(draftView.get('id')).toBe(BASE_VIEW_ID)
@@ -899,7 +907,6 @@ describe('ViewPanelEntrypoint', () => {
                 isSearchMode: true,
                 hideViewNameInput: true,
                 hideFooterActions: true,
-                title: 'Advanced filters',
                 searchResultCount: 200,
             }),
         )
@@ -929,7 +936,7 @@ describe('ViewPanelEntrypoint', () => {
         })
         await waitFor(() => {
             expect(
-                screen.getByText('ViewPanelFiltersBridge expanded: true'),
+                screen.getByText('isSettingsExpanded: true'),
             ).toBeInTheDocument()
         })
         expect(replaceMock).toHaveBeenCalledWith('/app/views/123456', {
@@ -939,7 +946,6 @@ describe('ViewPanelEntrypoint', () => {
 
     it('should close filters when onEditView is triggered a second time', async () => {
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
-        mockSelectors({ currentActiveView: activeView, isEditMode: true })
 
         render(
             <Panels size={1000}>
@@ -947,9 +953,11 @@ describe('ViewPanelEntrypoint', () => {
             </Panels>,
         )
 
-        const props = mockViewPanel.mock.calls.at(-1)?.[0]
         act(() => {
-            props?.onEditView?.()
+            mockViewPanel.mock.calls.at(-1)?.[0]?.onEditView?.()
+        })
+        act(() => {
+            mockViewPanel.mock.calls.at(-1)?.[0]?.onEditView?.()
         })
 
         expect(dispatchMock).toHaveBeenCalledWith(resetViewAction)
@@ -977,7 +985,7 @@ describe('ViewPanelEntrypoint', () => {
         expect(dispatchMock).not.toHaveBeenCalledWith(resetViewAction)
         await waitFor(() => {
             expect(
-                screen.getByText('ViewPanelFiltersBridge expanded: true'),
+                screen.getByText('isSettingsExpanded: true'),
             ).toBeInTheDocument()
         })
     })
@@ -1005,7 +1013,7 @@ describe('ViewPanelEntrypoint', () => {
         expect(dispatchMock).toHaveBeenCalledWith(setViewEditModeAction)
         await waitFor(() => {
             expect(
-                screen.getByText('ViewPanelFiltersBridge expanded: true'),
+                screen.getByText('isSettingsExpanded: true'),
             ).toBeInTheDocument()
         })
     })
@@ -1140,9 +1148,7 @@ describe('ViewPanelEntrypoint', () => {
                 'dirtyView: {"enabled":true,"search":"","filters":"","areFiltersValid":true}',
             ),
         ).toBeInTheDocument()
-        expect(
-            screen.getByText('ViewPanelFiltersBridge expanded: true'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('isSettingsExpanded: true')).toBeInTheDocument()
         expect(setViewActiveMock).not.toHaveBeenCalled()
     })
 

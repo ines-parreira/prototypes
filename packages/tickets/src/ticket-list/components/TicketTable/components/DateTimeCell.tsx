@@ -6,49 +6,48 @@ import {
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
+import type { CellContext } from '@gorgias/axiom'
 
 import { formatTicketTableDateTime } from '../../../utils/formatTicketTableDateTime'
-import type { TicketTableCellLinkProps } from './TicketTableCellLink'
-import { TicketTableCellLink } from './TicketTableCellLink'
+import type { TicketTableRow } from '../TicketTableColumns'
 
-type Props = {
-    datetime: string | null | undefined
+export type DateTimeCellProps = CellContext<
+    TicketTableRow,
+    string | null | undefined
+> & {
     preferences: UserDateTimePreferences
     isUnread?: boolean
-    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
 }
 
 export function DateTimeCell({
-    datetime,
     preferences,
     isUnread = false,
-    linkProps,
-}: Props) {
-    const formattedDatetime = formatTicketTableDateTime(datetime, preferences)
-
-    const content = !formattedDatetime ? null : (
-        <Tooltip
-            placement="right"
-            trigger={() => (
-                <Text
-                    overflow="ellipsis"
-                    variant={isUnread ? 'bold' : 'regular'}
-                >
-                    {formattedDatetime.cellLabel}
-                </Text>
-            )}
-        >
-            <TooltipContent title={formattedDatetime.tooltipLabel} />
-        </Tooltip>
+    ...cellContext
+}: DateTimeCellProps) {
+    const formattedDatetime = formatTicketTableDateTime(
+        cellContext.getValue(),
+        preferences,
     )
 
-    if (linkProps) {
-        return (
-            <TicketTableCellLink {...linkProps} alignItems="stretch">
-                {content}
-            </TicketTableCellLink>
-        )
+    if (!formattedDatetime) {
+        return <DataTableBaseCell {...cellContext}>{null}</DataTableBaseCell>
     }
 
-    return <DataTableBaseCell alignItems="stretch">{content}</DataTableBaseCell>
+    return (
+        <DataTableBaseCell {...cellContext} alignItems="stretch">
+            <Tooltip
+                placement="right"
+                trigger={() => (
+                    <Text
+                        overflow="ellipsis"
+                        variant={isUnread ? 'bold' : 'regular'}
+                    >
+                        {formattedDatetime.cellLabel}
+                    </Text>
+                )}
+            >
+                <TooltipContent title={formattedDatetime.tooltipLabel} />
+            </Tooltip>
+        </DataTableBaseCell>
+    )
 }

@@ -1,45 +1,31 @@
 import { DataTableBaseCell, Tooltip, TooltipContent } from '@gorgias/axiom'
-import type { TicketCompact } from '@gorgias/helpdesk-types'
+import type { CellContext } from '@gorgias/axiom'
 
 import { TicketMessageSourceIcon } from '../../../../components/TicketMessageSourceIcon/TicketMessageSourceIcon'
 import type { TicketMessageSource } from '../../../../components/TicketMessageSourceIcon/utils'
 import { ticketMessageSourceToLabel } from '../../../../components/TicketMessageSourceIcon/utils'
-import type { TicketTableCellLinkProps } from './TicketTableCellLink'
-import { TicketTableCellLink } from './TicketTableCellLink'
+import type { TicketTableRow } from '../TicketTableColumns'
 
-type Props = {
-    ticket: TicketCompact
-    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
-}
+export type ChannelCellProps = CellContext<TicketTableRow, unknown>
 
-export function ChannelCell({ ticket, linkProps }: Props) {
+export function ChannelCell(cellContext: ChannelCellProps) {
+    const ticket = cellContext.row.original
+
     if (!ticket.channel) {
-        if (linkProps) {
-            return (
-                <TicketTableCellLink {...linkProps}>{null}</TicketTableCellLink>
-            )
-        }
-
-        return <DataTableBaseCell>{null}</DataTableBaseCell>
+        return <DataTableBaseCell {...cellContext}>{null}</DataTableBaseCell>
     }
 
     const source = ticket.channel as TicketMessageSource
     const label = ticketMessageSourceToLabel(source)
 
-    const content = (
-        <Tooltip
-            placement="right"
-            trigger={() => <TicketMessageSourceIcon source={source} />}
-        >
-            <TooltipContent title={label} />
-        </Tooltip>
+    return (
+        <DataTableBaseCell {...cellContext}>
+            <Tooltip
+                placement="right"
+                trigger={() => <TicketMessageSourceIcon source={source} />}
+            >
+                <TooltipContent title={label} />
+            </Tooltip>
+        </DataTableBaseCell>
     )
-
-    if (linkProps) {
-        return (
-            <TicketTableCellLink {...linkProps}>{content}</TicketTableCellLink>
-        )
-    }
-
-    return <DataTableBaseCell>{content}</DataTableBaseCell>
 }

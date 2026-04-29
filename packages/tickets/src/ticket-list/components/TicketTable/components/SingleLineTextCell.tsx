@@ -1,30 +1,27 @@
 import { DataTableBaseCell, OverflowTooltip } from '@gorgias/axiom'
+import type { CellContext } from '@gorgias/axiom'
 
 import type { DisplayTextValue } from '../../../types/display'
+import type { TicketTableRow } from '../TicketTableColumns'
 import { DisplayText } from './DisplayText'
-import type { TicketTableCellLinkProps } from './TicketTableCellLink'
-import { TicketTableCellLink } from './TicketTableCellLink'
 
-type Props = {
+export type SingleLineTextCellProps = CellContext<TicketTableRow, unknown> & {
     value: DisplayTextValue | null | undefined
-    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
 }
 
-export function SingleLineTextCell({ value, linkProps }: Props) {
-    const content =
-        !value?.text && !value?.highlightedHtml ? null : (
+export function SingleLineTextCell({
+    value,
+    ...cellContext
+}: SingleLineTextCellProps) {
+    if (!value?.text && !value?.highlightedHtml) {
+        return <DataTableBaseCell {...cellContext}>{null}</DataTableBaseCell>
+    }
+
+    return (
+        <DataTableBaseCell {...cellContext} alignItems="stretch">
             <OverflowTooltip placement="right">
                 <DisplayText value={value} overflow="ellipsis" />
             </OverflowTooltip>
-        )
-
-    if (linkProps) {
-        return (
-            <TicketTableCellLink {...linkProps} alignItems="stretch">
-                {content}
-            </TicketTableCellLink>
-        )
-    }
-
-    return <DataTableBaseCell alignItems="stretch">{content}</DataTableBaseCell>
+        </DataTableBaseCell>
+    )
 }

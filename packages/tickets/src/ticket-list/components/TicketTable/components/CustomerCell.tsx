@@ -1,12 +1,13 @@
-import type { DisplayTextValue } from '../../../types/display'
-import { SingleLineTextCell } from './SingleLineTextCell'
-import type { TicketTableCellLinkProps } from './TicketTableCellLink'
+import type { CellContext } from '@gorgias/axiom'
 
-type Props = {
+import type { DisplayTextValue } from '../../../types/display'
+import type { TicketTableRow } from '../TicketTableColumns'
+import { SingleLineTextCell } from './SingleLineTextCell'
+
+export type CustomerCellProps = CellContext<TicketTableRow, unknown> & {
     value: DisplayTextValue
-    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
 }
 
-export function CustomerCell({ value, linkProps }: Props) {
-    return <SingleLineTextCell value={value} linkProps={linkProps} />
+export function CustomerCell({ value, ...cellContext }: CustomerCellProps) {
+    return <SingleLineTextCell {...cellContext} value={value} />
 }

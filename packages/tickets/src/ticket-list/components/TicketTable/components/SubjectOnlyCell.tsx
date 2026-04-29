@@ -1,34 +1,29 @@
 import { DataTableBaseCell, OverflowTooltip } from '@gorgias/axiom'
+import type { CellContext } from '@gorgias/axiom'
 
 import type { DisplayTextValue } from '../../../types/display'
+import type { TicketTableRow } from '../TicketTableColumns'
 import { DisplayText } from './DisplayText'
-import type { TicketTableCellLinkProps } from './TicketTableCellLink'
-import { TicketTableCellLink } from './TicketTableCellLink'
 
-type Props = {
+export type SubjectOnlyCellProps = CellContext<TicketTableRow, unknown> & {
     value: DisplayTextValue
     isUnread?: boolean
-    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
 }
 
-export function SubjectOnlyCell({ value, isUnread = false, linkProps }: Props) {
-    const content = (
-        <OverflowTooltip>
-            <DisplayText
-                value={value}
-                overflow="ellipsis"
-                variant={isUnread ? 'bold' : 'regular'}
-            />
-        </OverflowTooltip>
+export function SubjectOnlyCell({
+    value,
+    isUnread = false,
+    ...cellContext
+}: SubjectOnlyCellProps) {
+    return (
+        <DataTableBaseCell {...cellContext} alignItems="stretch">
+            <OverflowTooltip>
+                <DisplayText
+                    value={value}
+                    overflow="ellipsis"
+                    variant={isUnread ? 'bold' : 'regular'}
+                />
+            </OverflowTooltip>
+        </DataTableBaseCell>
     )
-
-    if (linkProps) {
-        return (
-            <TicketTableCellLink {...linkProps} alignItems="stretch">
-                {content}
-            </TicketTableCellLink>
-        )
-    }
-
-    return <DataTableBaseCell alignItems="stretch">{content}</DataTableBaseCell>
 }

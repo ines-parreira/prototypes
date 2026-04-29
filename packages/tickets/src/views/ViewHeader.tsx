@@ -1,13 +1,13 @@
 import {
-    Box,
     Button,
     DropdownIcon,
-    Heading,
     Menu,
     MenuItem,
     MenuSection,
+    PanelHeader,
     Tooltip,
     TooltipContent,
+    useStickyScroll,
 } from '@gorgias/axiom'
 import { useGetView } from '@gorgias/helpdesk-queries'
 
@@ -22,6 +22,7 @@ type ViewHeaderProps = {
     hideCreateTicket?: boolean
     isDraftView?: boolean
     isSearchMode?: boolean
+    isSettingsExpanded?: boolean
 }
 
 export function ViewHeader({
@@ -32,15 +33,22 @@ export function ViewHeader({
     hideCreateTicket = false,
     isDraftView = false,
     isSearchMode = false,
+    isSettingsExpanded = false,
 }: ViewHeaderProps) {
     const { data: viewResponse } = useGetView(viewId, {
         query: {
             enabled: !titleOverride && !isDraftView,
         },
     })
+    const { scroll } = useStickyScroll()
+
+    const handleEditView = () => {
+        if (!isSettingsExpanded) scroll.toTop()
+        onEditView?.()
+    }
     const viewName =
         titleOverride ??
-        (viewResponse?.data ? getViewDisplayName(viewResponse.data) : undefined)
+        (viewResponse?.data ? getViewDisplayName(viewResponse.data) : '')
     const { hasDraft, onCreateTicket, onResumeDraft, onDiscardDraft } =
         useCreateTicketDraft()
 
@@ -75,50 +83,58 @@ export function ViewHeader({
         </Button>
     )
 
-    return (
-        <Box
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            gap="xs"
-            p="lg"
+    const showExpandButton = !isDraftView && !isSearchMode
+    const showEditViewButton = !isDraftView && !isSearchMode
+    const showCreateTicketButton = !hideCreateTicket && !isSearchMode
+
+    const leadingSlot = showExpandButton ? (
+        <Tooltip
+            trigger={
+                <Button
+                    variant="secondary"
+                    size="sm"
+                    icon="system-bar-left"
+                    aria-label="Show ticket panel"
+                    onClick={onExpand}
+                />
+            }
         >
-            <Box flexDirection="row" alignItems="center" gap="xs">
-                {!isDraftView && !isSearchMode && (
+            <TooltipContent title="Show ticket panel" />
+        </Tooltip>
+    ) : undefined
+
+    const trailingSlot =
+        showEditViewButton || showCreateTicketButton ? (
+            <>
+                {showEditViewButton && (
                     <Tooltip
                         trigger={
                             <Button
-                                variant="secondary"
-                                size="sm"
-                                icon="system-bar-left"
-                                aria-label="Show ticket panel"
-                                onClick={onExpand}
-                            />
-                        }
-                    >
-                        <TooltipContent title="Show ticket panel" />
-                    </Tooltip>
-                )}
-                <Heading size="xl">{viewName}</Heading>
-            </Box>
-            <Box flexDirection="row" alignItems="center" gap="xs">
-                {!isDraftView && !isSearchMode && (
-                    <Tooltip
-                        trigger={
-                            <Button
-                                variant="tertiary"
+                                variant={
+                                    isSettingsExpanded
+                                        ? 'secondary'
+                                        : 'tertiary'
+                                }
                                 size="sm"
                                 icon="slider-filter"
                                 aria-label="Edit view"
-                                onClick={onEditView}
+                                aria-expanded={isSettingsExpanded}
+                                onClick={handleEditView}
                             />
                         }
                     >
                         <TooltipContent title="Edit view" />
                     </Tooltip>
                 )}
-                {!hideCreateTicket && !isSearchMode && createTicketButton}
-            </Box>
-        </Box>
+                {showCreateTicketButton && createTicketButton}
+            </>
+        ) : undefined
+
+    return (
+        <PanelHeader
+            title={viewName}
+            leadingSlot={leadingSlot}
+            trailingSlot={trailingSlot}
+        />
     )
 }

@@ -59,12 +59,21 @@ h5 {
 // never underline links
 a,
 .btn.btn-link {
-    color: var(--main-primary); // legacy;
     text-decoration: none !important;
+}
 
-    &:active,
-    &:hover {
-        color: var(--main-primary-2); // legacy;
+// Legacy default link color — scoped so it doesn't bleed into axiom-mode
+// anchors (e.g. <DataTable getRowHref> wraps each cell in an <a>, which
+// otherwise picks up this color via the bare `a` selector).
+.legacy {
+    a,
+    .btn.btn-link {
+        color: var(--main-primary); // legacy;
+
+        &:active,
+        &:hover {
+            color: var(--main-primary-2); // legacy;
+        }
     }
 }
 

@@ -11,9 +11,6 @@ import { useHistory } from 'react-router-dom'
 import {
     Box,
     Button,
-    Disclosure,
-    DisclosureHeader,
-    DisclosurePanel,
     Icon,
     Menu,
     MenuItem,
@@ -64,7 +61,6 @@ import {
     deleteView,
     resetView,
     setViewActive,
-    setViewEditMode,
     submitView,
     updateView,
 } from 'state/views/actions'
@@ -84,11 +80,10 @@ import css from './ViewPanelFiltersBridge.less'
 type Props = {
     viewId: number
     draftFields?: ViewField[]
-    isExpanded: boolean
     onExpandedChange: (isExpanded: boolean) => void
+    isExpanded?: boolean
     hideViewNameInput?: boolean
     hideFooterActions?: boolean
-    title?: string
     isSearchMode?: boolean
     searchResultCount?: number
 }
@@ -140,11 +135,10 @@ function isViewResponse(response: unknown): response is View {
 export function ViewPanelFiltersBridge({
     viewId,
     draftFields,
-    isExpanded,
     onExpandedChange,
+    isExpanded = true,
     hideViewNameInput = false,
     hideFooterActions = false,
-    title = 'Edit view',
     isSearchMode = false,
     searchResultCount,
 }: Props) {
@@ -321,19 +315,6 @@ export function ViewPanelFiltersBridge({
         [config, dispatch, firstCustomField, schemas],
     )
 
-    const handleExpandedChange = useCallback(
-        (nextExpanded: boolean) => {
-            if (nextExpanded) {
-                dispatch(setViewEditMode(activeView))
-            } else {
-                setIsDeleteConfirmOpen(false)
-            }
-
-            onExpandedChange(nextExpanded)
-        },
-        [activeView, dispatch, onExpandedChange],
-    )
-
     const handleCancel = useCallback(async () => {
         if (!isExistingView) {
             dispatch(activeViewIdSet(suggestedPreviousViewId))
@@ -502,286 +483,223 @@ export function ViewPanelFiltersBridge({
         return null
     }
 
+    const statusLabel = searchResultCountLabel
+        ? searchResultCountLabel
+        : !isSearchMode && isDirty
+          ? 'Live ticket updates are paused while filters are being edited'
+          : null
+
     return (
         <div className={css.container}>
-            <Disclosure
-                isExpanded={isExpanded}
-                onExpandedChange={handleExpandedChange}
-            >
-                <DisclosureHeader
-                    px="lg"
-                    py="xs"
-                    title={({ isExpanded }) => (
-                        <Box flexDirection="row" alignItems="center" gap="xs">
-                            <Icon name="slider-filter" size="sm" />
-                            <Text variant="bold">{title}</Text>
-                            <Icon
-                                name={
-                                    isExpanded
-                                        ? 'arrow-chevron-up'
-                                        : 'arrow-chevron-down'
-                                }
-                                size="sm"
-                            />
-                        </Box>
-                    )}
-                    trailingSlot={
-                        isSearchMode ? (
-                            searchResultCountLabel ? (
-                                <Box
-                                    className={css.headerTrailing}
-                                    flexShrink={0}
-                                >
-                                    <Text
-                                        size="sm"
-                                        color="content-neutral-secondary"
-                                    >
-                                        {searchResultCountLabel}
-                                    </Text>
-                                </Box>
-                            ) : null
-                        ) : searchResultCountLabel ? (
-                            <Box className={css.headerTrailing} flexShrink={0}>
-                                <Text
-                                    size="sm"
-                                    color="content-neutral-secondary"
-                                >
-                                    {searchResultCountLabel}
-                                </Text>
-                            </Box>
-                        ) : isDirty ? (
-                            <Box className={css.headerTrailing} flexShrink={0}>
-                                <Text
-                                    size="sm"
-                                    color="content-neutral-secondary"
-                                >
-                                    Live ticket updates are paused while filters
-                                    are being edited
-                                </Text>
-                            </Box>
-                        ) : null
-                    }
-                />
-                <DisclosurePanel py={0}>
-                    <Box
-                        className={css.panel}
-                        flexDirection="column"
-                        gap="md"
-                        width="100%"
-                    >
-                        {!hideViewNameInput && (
-                            <Box flexDirection="column" gap="xs" width="100%">
-                                <Box width="40%">
-                                    <TextField
-                                        label="View name"
-                                        value={viewName}
-                                        onChange={setViewName}
-                                        isDisabled={
-                                            isSubmitting || isSystemView
-                                        }
-                                        leadingSlot={
-                                            <EmojiSelect
-                                                container={filterMenuContainer}
-                                                emoji={activeViewEmoji || null}
-                                                triggerMode="axiom-button"
-                                                onEmojiSelect={(emoji) => {
+            {statusLabel && (
+                <Box px="lg" pb="xs">
+                    <Text size="sm" color="content-neutral-secondary">
+                        {statusLabel}
+                    </Text>
+                </Box>
+            )}
+            {isExpanded && (
+                <Box
+                    className={css.panel}
+                    flexDirection="column"
+                    gap="md"
+                    width="100%"
+                >
+                    {!hideViewNameInput && (
+                        <Box flexDirection="column" gap="xs" width="100%">
+                            <Box width="40%">
+                                <TextField
+                                    label="View name"
+                                    value={viewName}
+                                    onChange={setViewName}
+                                    isDisabled={isSubmitting || isSystemView}
+                                    leadingSlot={
+                                        <EmojiSelect
+                                            container={filterMenuContainer}
+                                            emoji={activeViewEmoji || null}
+                                            triggerMode="axiom-button"
+                                            onEmojiSelect={(emoji) => {
+                                                dispatch(
+                                                    updateView(
+                                                        activeView.mergeDeep({
+                                                            decoration: {
+                                                                emoji,
+                                                            },
+                                                        }),
+                                                    ),
+                                                )
+                                            }}
+                                            onEmojiClear={() => {
+                                                if (
+                                                    activeView.get('decoration')
+                                                ) {
                                                     dispatch(
                                                         updateView(
-                                                            activeView.mergeDeep(
-                                                                {
-                                                                    decoration:
-                                                                        {
-                                                                            emoji,
-                                                                        },
-                                                                },
+                                                            activeView.deleteIn(
+                                                                [
+                                                                    'decoration',
+                                                                    'emoji',
+                                                                ],
                                                             ),
                                                         ),
                                                     )
-                                                }}
-                                                onEmojiClear={() => {
-                                                    if (
-                                                        activeView.get(
-                                                            'decoration',
-                                                        )
-                                                    ) {
-                                                        dispatch(
-                                                            updateView(
-                                                                activeView.deleteIn(
-                                                                    [
-                                                                        'decoration',
-                                                                        'emoji',
-                                                                    ],
-                                                                ),
-                                                            ),
-                                                        )
-                                                    }
-                                                }}
-                                            />
-                                        }
-                                    />
-                                </Box>
+                                                }
+                                            }}
+                                        />
+                                    }
+                                />
                             </Box>
-                        )}
+                        </Box>
+                    )}
+                    <Box
+                        className={css.filtersBody}
+                        flexDirection="column"
+                        gap="xs"
+                        width="100%"
+                    >
                         <Box
-                            className={css.filtersBody}
+                            className={css.filtersRows}
                             flexDirection="column"
                             gap="xs"
                             width="100%"
                         >
-                            <Box
-                                className={css.filtersRows}
-                                flexDirection="column"
-                                gap="xs"
-                                width="100%"
-                            >
-                                <ViewFilters
-                                    menuContainer={filterMenuContainer}
-                                />
-                            </Box>
-                            <div className={css.addFilter}>
-                                <AddFilterDropdown
-                                    filterableFields={filterableFields}
-                                    handleClickFilter={handleAddFilter}
-                                />
-                            </div>
+                            <ViewFilters menuContainer={filterMenuContainer} />
                         </Box>
+                        <div className={css.addFilter}>
+                            <AddFilterDropdown
+                                filterableFields={filterableFields}
+                                handleClickFilter={handleAddFilter}
+                            />
+                        </div>
                     </Box>
-                </DisclosurePanel>
-                {!hideFooterActions && (
+                </Box>
+            )}
+            {isExpanded && !hideFooterActions && (
+                <Box
+                    className={css.footer}
+                    flexDirection="column"
+                    alignItems="stretch"
+                    gap="xs"
+                >
                     <Box
-                        className={css.footer}
-                        flexDirection="column"
-                        alignItems="stretch"
+                        className={css.footerActions}
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        alignItems="center"
                         gap="xs"
+                        flexWrap="wrap"
                     >
                         <Box
-                            className={css.footerActions}
                             flexDirection="row"
-                            justifyContent="space-between"
                             alignItems="center"
                             gap="xs"
                             flexWrap="wrap"
                         >
-                            <Box
-                                flexDirection="row"
-                                alignItems="center"
-                                gap="xs"
-                                flexWrap="wrap"
-                            >
-                                {isSystemView && isExistingView ? (
-                                    <Text
-                                        size="sm"
-                                        color="content-neutral-secondary"
-                                    >
-                                        This view cannot be saved.
-                                    </Text>
-                                ) : (
-                                    <Tooltip
-                                        isDisabled={
-                                            !isSaveDisabled || areFiltersValid
-                                        }
-                                        trigger={
-                                            <div className={css.saveActions}>
-                                                {isExistingView ? (
-                                                    <MultiButton>
-                                                        <Button
-                                                            onClick={
-                                                                handleUpdateClick
-                                                            }
-                                                            isLoading={
-                                                                isSubmitting
-                                                            }
-                                                            isDisabled={
-                                                                isSaveDisabled ||
-                                                                !isExistingView
-                                                            }
-                                                        >
-                                                            Update view
-                                                        </Button>
-                                                        <SaveMenuButton
-                                                            isDisabled={
-                                                                isSaveDisabled
-                                                            }
-                                                            onSaveAsNew={
-                                                                handleSaveAsNew
-                                                            }
-                                                        />
-                                                    </MultiButton>
-                                                ) : (
+                            {isSystemView && isExistingView ? (
+                                <Text
+                                    size="sm"
+                                    color="content-neutral-secondary"
+                                >
+                                    This view cannot be saved.
+                                </Text>
+                            ) : (
+                                <Tooltip
+                                    isDisabled={
+                                        !isSaveDisabled || areFiltersValid
+                                    }
+                                    trigger={
+                                        <div className={css.saveActions}>
+                                            {isExistingView ? (
+                                                <MultiButton>
                                                     <Button
-                                                        onClick={() => {
-                                                            void handleSaveAsNew()
-                                                        }}
+                                                        onClick={
+                                                            handleUpdateClick
+                                                        }
                                                         isLoading={isSubmitting}
+                                                        isDisabled={
+                                                            isSaveDisabled ||
+                                                            !isExistingView
+                                                        }
+                                                    >
+                                                        Update view
+                                                    </Button>
+                                                    <SaveMenuButton
                                                         isDisabled={
                                                             isSaveDisabled
                                                         }
-                                                    >
-                                                        Create view
-                                                    </Button>
-                                                )}
-                                            </div>
-                                        }
-                                    >
-                                        <TooltipContent
-                                            title={invalidFiltersMessage}
-                                        />
-                                    </Tooltip>
-                                )}
-                                <Button
-                                    variant="secondary"
-                                    onClick={handleCancel}
-                                    isDisabled={isSubmitting}
+                                                        onSaveAsNew={
+                                                            handleSaveAsNew
+                                                        }
+                                                    />
+                                                </MultiButton>
+                                            ) : (
+                                                <Button
+                                                    onClick={() => {
+                                                        void handleSaveAsNew()
+                                                    }}
+                                                    isLoading={isSubmitting}
+                                                    isDisabled={isSaveDisabled}
+                                                >
+                                                    Create view
+                                                </Button>
+                                            )}
+                                        </div>
+                                    }
                                 >
-                                    Cancel
-                                </Button>
-                            </Box>
-                            <Box
-                                flexDirection="row"
-                                alignItems="center"
-                                gap="xs"
-                                flexWrap="wrap"
+                                    <TooltipContent
+                                        title={invalidFiltersMessage}
+                                    />
+                                </Tooltip>
+                            )}
+                            <Button
+                                variant="secondary"
+                                onClick={handleCancel}
+                                isDisabled={isSubmitting}
                             >
-                                {isExistingView && (
-                                    <>
-                                        <Button
-                                            variant="secondary"
-                                            leadingSlot={
-                                                <Icon name="comm-share-i-os-export" />
-                                            }
-                                            onClick={() => {
-                                                void handleExportTickets()
-                                            }}
-                                            isDisabled={
-                                                isLaunchingExport ||
-                                                !canExportTickets
-                                            }
-                                            isLoading={isLaunchingExport}
-                                        >
-                                            Export tickets
-                                        </Button>
-                                        <ViewSharingButton view={activeView} />
-                                    </>
-                                )}
-                                {isExistingView && !isSystemView && (
+                                Cancel
+                            </Button>
+                        </Box>
+                        <Box
+                            flexDirection="row"
+                            alignItems="center"
+                            gap="xs"
+                            flexWrap="wrap"
+                        >
+                            {isExistingView && (
+                                <>
                                     <Button
-                                        intent="destructive"
-                                        variant="primary"
-                                        onClick={() =>
-                                            setIsDeleteConfirmOpen(true)
+                                        variant="secondary"
+                                        leadingSlot={
+                                            <Icon name="comm-share-i-os-export" />
                                         }
+                                        onClick={() => {
+                                            void handleExportTickets()
+                                        }}
                                         isDisabled={
-                                            isSubmitting || !isExistingView
+                                            isLaunchingExport ||
+                                            !canExportTickets
                                         }
+                                        isLoading={isLaunchingExport}
                                     >
-                                        Delete
+                                        Export tickets
                                     </Button>
-                                )}
-                            </Box>
+                                    <ViewSharingButton view={activeView} />
+                                </>
+                            )}
+                            {isExistingView && !isSystemView && (
+                                <Button
+                                    intent="destructive"
+                                    variant="primary"
+                                    onClick={() => setIsDeleteConfirmOpen(true)}
+                                    isDisabled={isSubmitting || !isExistingView}
+                                >
+                                    Delete
+                                </Button>
+                            )}
                         </Box>
                     </Box>
-                )}
-            </Disclosure>
+                </Box>
+            )}
             <Modal
                 size={ModalSize.Sm}
                 isOpen={isSharedUpdateConfirmOpen}

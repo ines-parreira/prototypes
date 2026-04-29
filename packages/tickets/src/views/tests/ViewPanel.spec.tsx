@@ -68,7 +68,8 @@ describe('ViewPanel', () => {
             <ViewPanel
                 viewId={42}
                 titleOverride="All"
-                topContent={<div>FiltersBridge</div>}
+                settingsContent={<div>FiltersBridge</div>}
+                isSettingsExpanded
             />,
         )
 

@@ -5,38 +5,27 @@ import {
     OverflowTooltip,
     Tag,
 } from '@gorgias/axiom'
-import type { TicketCompact } from '@gorgias/helpdesk-types'
+import type { CellContext } from '@gorgias/axiom'
 
 import { useTicketOtherAgentsViewing } from '../../../hooks/useTicketDisplayData'
-import type { DisplayTextValue } from '../../../types/display'
 import { TicketListItemAgentsViewing } from '../../TicketListItem/components/TicketListItemAgentsViewing'
+import type { TicketTableRow } from '../TicketTableColumns'
 import { DisplayText } from './DisplayText'
-import type { TicketTableCellLinkProps } from './TicketTableCellLink'
-import { TicketTableCellLink } from './TicketTableCellLink'
 
-export type TicketCellProps = {
-    ticketId: TicketCompact['id']
-    messagesCount?: TicketCompact['messages_count']
-    isUnread?: boolean
-    subject: DisplayTextValue
-    excerpt: DisplayTextValue
-    hasFailedMessageTag?: boolean
+export type TicketCellProps = CellContext<TicketTableRow, unknown> & {
     currentUserId?: number
-    linkProps?: Omit<TicketTableCellLinkProps, 'children'>
 }
 
-export function TicketCell({
-    ticketId,
-    messagesCount = 0,
-    isUnread = false,
-    subject,
-    excerpt,
-    hasFailedMessageTag = false,
-    currentUserId,
-    linkProps,
-}: TicketCellProps) {
+export function TicketCell({ currentUserId, ...cellContext }: TicketCellProps) {
+    const ticket = cellContext.row.original
+    const messagesCount = ticket.messages_count ?? 0
+    const isUnread = ticket.is_unread ?? false
+    const hasFailedMessageTag = !!ticket.last_sent_message_not_delivered
+    const subject = ticket.displaySubject
+    const excerpt = ticket.displayExcerpt
+
     const otherAgentsViewing = useTicketOtherAgentsViewing(
-        ticketId,
+        ticket.id,
         currentUserId,
     )
     const subjectWithMessageCount =
@@ -49,8 +38,8 @@ export function TicketCell({
               }
             : subject
 
-    const content = (
-        <>
+    return (
+        <DataTableBaseCell {...cellContext} gap="xs">
             <Box
                 flex={1}
                 minWidth={0}
@@ -93,16 +82,6 @@ export function TicketCell({
                     avatarSize="md"
                 />
             </Box>
-        </>
+        </DataTableBaseCell>
     )
-
-    if (linkProps) {
-        return (
-            <TicketTableCellLink {...linkProps} gap="xs">
-                {content}
-            </TicketTableCellLink>
-        )
-    }
-
-    return <DataTableBaseCell gap="xs">{content}</DataTableBaseCell>
 }

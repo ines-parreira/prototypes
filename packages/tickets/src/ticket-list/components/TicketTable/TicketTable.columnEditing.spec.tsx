@@ -81,6 +81,31 @@ vi.mock('@gorgias/axiom', async () => {
                 </div>
             )
         },
+        DataTableItemCount: () => <div />,
+        DataTableBulkActions: ({
+            children,
+        }: {
+            children?: () => ReactNode
+        }) => <div>{children?.()}</div>,
+        DataTableColumnEditing: ({
+            footer,
+        }: {
+            footer?: (props: {
+                visibleColumns: string[]
+                orderedColumns: string[]
+                setVisibleColumns: (columns: string[]) => void
+                setIsOpen: (isOpen: boolean) => void
+            }) => ReactNode
+        }) => (
+            <div>
+                {footer?.({
+                    visibleColumns: columnEditingConfig.visibleColumns,
+                    orderedColumns: columnEditingConfig.orderedColumns,
+                    setVisibleColumns: vi.fn(),
+                    setIsOpen: setIsOpenMock,
+                })}
+            </div>
+        ),
         DataTablePagination: () => <div />,
         createLocalStoragePersistence: createLocalStoragePersistenceMock,
         toast: {
@@ -239,25 +264,7 @@ vi.mock('./components/TicketTableColumnEditingFooter', () => ({
 }))
 
 vi.mock('./components/TicketTableBulkActions', () => ({
-    TicketTableBulkActions: ({
-        columnEditingFooter,
-    }: {
-        columnEditingFooter?: (props: {
-            visibleColumns: string[]
-            orderedColumns: string[]
-            setVisibleColumns: (columns: string[]) => void
-            setIsOpen: (isOpen: boolean) => void
-        }) => ReactNode
-    }) => (
-        <div>
-            {columnEditingFooter?.({
-                visibleColumns: columnEditingConfig.visibleColumns,
-                orderedColumns: columnEditingConfig.orderedColumns,
-                setVisibleColumns: vi.fn(),
-                setIsOpen: setIsOpenMock,
-            })}
-        </div>
-    ),
+    TicketTableBulkActions: () => <div />,
 }))
 
 describe('TicketTable column editing footer wiring', () => {

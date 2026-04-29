@@ -383,29 +383,22 @@ export function ViewPanelEntrypoint() {
             : null
     }, [isSearchMode, searchFilters, searchQuery])
 
-    const topContent = useMemo(
-        () =>
-            isEditMode || isNewViewRoute || isSearchMode ? (
-                <ViewPanelFiltersBridge
-                    viewId={effectiveViewId}
-                    draftFields={
-                        isNewViewRoute ? effectiveDraftFields : undefined
-                    }
-                    isExpanded={isFiltersExpanded}
-                    onExpandedChange={setIsFiltersExpanded}
-                    hideViewNameInput={isSearchMode}
-                    hideFooterActions={isSearchMode}
-                    title={isSearchMode ? 'Advanced filters' : 'Edit view'}
-                    isSearchMode={isSearchMode}
-                    searchResultCount={
-                        isSearchMode ? searchResultCount : undefined
-                    }
-                />
-            ) : null,
+    const settingsContent = useMemo(
+        () => (
+            <ViewPanelFiltersBridge
+                viewId={effectiveViewId}
+                draftFields={isNewViewRoute ? effectiveDraftFields : undefined}
+                onExpandedChange={setIsFiltersExpanded}
+                isExpanded={isFiltersExpanded}
+                hideViewNameInput={isSearchMode}
+                hideFooterActions={isSearchMode}
+                isSearchMode={isSearchMode}
+                searchResultCount={isSearchMode ? searchResultCount : undefined}
+            />
+        ),
         [
             effectiveDraftFields,
             effectiveViewId,
-            isEditMode,
             isFiltersExpanded,
             isNewViewRoute,
             isSearchMode,
@@ -414,7 +407,7 @@ export function ViewPanelEntrypoint() {
     )
 
     const handleToggleFiltersBridge = useCallback(() => {
-        if (isEditMode) {
+        if (isFiltersExpanded) {
             if (isNewViewRoute && newRouteVisibility) {
                 resetDraftFields()
             }
@@ -424,17 +417,20 @@ export function ViewPanelEntrypoint() {
             return
         }
 
-        dispatch(
-            setViewEditMode(
-                activeSearchView ??
-                    (persistedView ? fromJS(persistedView) : undefined),
-            ),
-        )
+        if (!isEditMode) {
+            dispatch(
+                setViewEditMode(
+                    activeSearchView ??
+                        (persistedView ? fromJS(persistedView) : undefined),
+                ),
+            )
+        }
         setIsFiltersExpanded(true)
     }, [
         activeSearchView,
         dispatch,
         isEditMode,
+        isFiltersExpanded,
         isNewViewRoute,
         newRouteVisibility,
         persistedView,
@@ -508,7 +504,9 @@ export function ViewPanelEntrypoint() {
                     isDraftView={isNewViewRoute}
                     draftFields={effectiveDraftFields}
                     onDraftFieldsChange={setDraftFields}
-                    topContent={topContent}
+                    settingsContent={settingsContent}
+                    isSettingsExpanded={isFiltersExpanded}
+                    onSettingsExpandedChange={setIsFiltersExpanded}
                     dirtyView={dirtyView}
                 />
                 {macroTicketIds !== null && (

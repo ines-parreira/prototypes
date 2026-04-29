@@ -2,11 +2,9 @@ import type { UserDateTimePreferences } from '@repo/preferences'
 
 import {
     createColumnHelper,
+    DataTableBaseCell,
+    DataTableOverflowListCell,
     Dot,
-    OverflowList,
-    OverflowListItem,
-    OverflowListShowLess,
-    OverflowListShowMore,
     Tag,
 } from '@gorgias/axiom'
 import type { ColorValue, DataTableColumnDef } from '@gorgias/axiom'
@@ -21,7 +19,6 @@ import { PriorityCell } from './components/PriorityCell'
 import { SingleLineTextCell } from './components/SingleLineTextCell'
 import { SubjectOnlyCell } from './components/SubjectOnlyCell'
 import { TicketCell } from './components/TicketCell'
-import { TicketTableCellLink } from './components/TicketTableCellLink'
 
 const STATUS_TAG_COLOR = {
     open: 'purple',
@@ -51,29 +48,12 @@ const columnHelper = createColumnHelper<TicketTableRow>()
 export type TicketTableColumnsParams = {
     currentUserId?: number
     dateTimePreferences: UserDateTimePreferences
-    onNavigateToTicket?: (ticket: TicketTableRow) => void
 }
 
 export function createTicketTableColumns({
     currentUserId,
     dateTimePreferences,
-    onNavigateToTicket,
 }: TicketTableColumnsParams): DataTableColumnDef<TicketTableRow>[] {
-    const getLinkProps = (cell: {
-        column: unknown
-        table: unknown
-        row: { original: TicketTableRow }
-    }) => {
-        const ticket = cell.row.original
-
-        return {
-            column: cell.column as never,
-            table: cell.table as never,
-            to: `/app/ticket/${ticket.id}`,
-            onNavigateToTicket: () => onNavigateToTicket?.(ticket),
-        }
-    }
-
     return [
         columnHelper.display({
             id: 'ticket',
@@ -83,24 +63,9 @@ export function createTicketTableColumns({
             size: 350,
             minSize: 350,
             maxSize: 350,
-            cell: (cell) => {
-                const ticket = cell.row.original
-
-                return (
-                    <TicketCell
-                        ticketId={ticket.id}
-                        messagesCount={ticket.messages_count}
-                        isUnread={ticket.is_unread}
-                        subject={ticket.displaySubject}
-                        excerpt={ticket.displayExcerpt}
-                        hasFailedMessageTag={
-                            !!ticket.last_sent_message_not_delivered
-                        }
-                        currentUserId={currentUserId}
-                        linkProps={getLinkProps(cell)}
-                    />
-                )
-            },
+            cell: (cell) => (
+                <TicketCell {...cell} currentUserId={currentUserId} />
+            ),
         }),
         columnHelper.display({
             id: 'subject',
@@ -108,17 +73,13 @@ export function createTicketTableColumns({
             enableSorting: false,
             minSize: 200,
             maxSize: 240,
-            cell: (cell) => {
-                const ticket = cell.row.original
-
-                return (
-                    <SubjectOnlyCell
-                        value={ticket.displaySubject}
-                        isUnread={ticket.is_unread}
-                        linkProps={getLinkProps(cell)}
-                    />
-                )
-            },
+            cell: (cell) => (
+                <SubjectOnlyCell
+                    {...cell}
+                    value={cell.row.original.displaySubject}
+                    isUnread={cell.row.original.is_unread}
+                />
+            ),
         }),
         columnHelper.display({
             id: 'customer',
@@ -128,8 +89,8 @@ export function createTicketTableColumns({
             maxSize: 220,
             cell: (cell) => (
                 <CustomerCell
+                    {...cell}
                     value={cell.row.original.displayCustomer}
-                    linkProps={getLinkProps(cell)}
                 />
             ),
         }),
@@ -139,12 +100,7 @@ export function createTicketTableColumns({
             enableSorting: false,
             minSize: 180,
             maxSize: 250,
-            cell: (cell) => (
-                <AssigneeCell
-                    assignee={cell.row.original.assignee_user}
-                    linkProps={getLinkProps(cell)}
-                />
-            ),
+            cell: (cell) => <AssigneeCell {...cell} />,
         }),
         columnHelper.display({
             id: 'status',
@@ -158,11 +114,11 @@ export function createTicketTableColumns({
                     : ((ticket.status ??
                           'open') as keyof typeof STATUS_TAG_COLOR)
                 return (
-                    <TicketTableCellLink {...getLinkProps(cell)}>
+                    <DataTableBaseCell {...cell}>
                         <Tag color={STATUS_TAG_COLOR[status]}>
                             {STATUS_LABEL[status]}
                         </Tag>
-                    </TicketTableCellLink>
+                    </DataTableBaseCell>
                 )
             },
         }),
@@ -176,10 +132,9 @@ export function createTicketTableColumns({
                 maxSize: 180,
                 cell: (cell) => (
                     <DateTimeCell
-                        datetime={cell.getValue()}
+                        {...cell}
                         preferences={dateTimePreferences}
                         isUnread={cell.row.original.is_unread}
-                        linkProps={getLinkProps(cell)}
                     />
                 ),
             },
@@ -191,50 +146,29 @@ export function createTicketTableColumns({
             minSize: 240,
             maxSize: 350,
             cell: (cell) => (
-                <TicketTableCellLink {...getLinkProps(cell)} overflow="hidden">
-                    <OverflowList gap="xxxs" w="100%">
-                        {cell.row.original.tags.map((tag, index) => (
-                            <OverflowListItem key={index}>
-                                <Tag
-                                    {...(tag.decoration?.color && {
-                                        leadingSlot: (
-                                            <Dot
-                                                color={
-                                                    tag.decoration
-                                                        .color as ColorValue
-                                                }
-                                            />
-                                        ),
-                                    })}
-                                >
-                                    {tag.name}
-                                </Tag>
-                            </OverflowListItem>
-                        ))}
-                        <OverflowListShowMore>
-                            {({ hiddenCount }) => (
-                                <span
-                                    role="button"
-                                    onClick={(event) => {
-                                        event.preventDefault()
-                                    }}
-                                >
-                                    +{hiddenCount}
-                                </span>
-                            )}
-                        </OverflowListShowMore>
-                        <OverflowListShowLess>
-                            <span
-                                role="button"
-                                onClick={(event) => {
-                                    event.preventDefault()
-                                }}
-                            >
-                                Show less
-                            </span>
-                        </OverflowListShowLess>
-                    </OverflowList>
-                </TicketTableCellLink>
+                <DataTableOverflowListCell<
+                    TicketTableRow,
+                    TicketTableRow['tags'][number]
+                >
+                    {...cell}
+                    items={cell.row.original.tags}
+                >
+                    {(tag) => (
+                        <Tag
+                            {...(tag.decoration?.color && {
+                                leadingSlot: (
+                                    <Dot
+                                        color={
+                                            tag.decoration.color as ColorValue
+                                        }
+                                    />
+                                ),
+                            })}
+                        >
+                            {tag.name}
+                        </Tag>
+                    )}
+                </DataTableOverflowListCell>
             ),
         }),
         columnHelper.accessor((ticket) => ticket.priority ?? 'normal', {
@@ -242,30 +176,22 @@ export function createTicketTableColumns({
             header: 'Priority',
             enableSorting: true,
             hug: true,
-            cell: (cell) => (
-                <PriorityCell
-                    ticket={cell.row.original}
-                    linkProps={getLinkProps(cell)}
-                />
-            ),
+            cell: (cell) => <PriorityCell {...cell} />,
         }),
         columnHelper.accessor((ticket) => ticket.assignee_team?.name ?? null, {
             id: 'assignee_team',
             header: 'Assignee team',
             enableSorting: false,
             hug: true,
-            cell: (cell) =>
-                cell.getValue() ? (
+            cell: (cell) => {
+                const value = cell.getValue()
+                return (
                     <SingleLineTextCell
-                        value={{ text: cell.getValue() }}
-                        linkProps={getLinkProps(cell)}
+                        {...cell}
+                        value={value ? { text: value } : null}
                     />
-                ) : (
-                    <SingleLineTextCell
-                        value={null}
-                        linkProps={getLinkProps(cell)}
-                    />
-                ),
+                )
+            },
         }),
         columnHelper.accessor(
             (ticket) =>
@@ -276,18 +202,15 @@ export function createTicketTableColumns({
                 enableSorting: false,
                 minSize: 150,
                 maxSize: 250,
-                cell: (cell) =>
-                    cell.getValue() ? (
+                cell: (cell) => {
+                    const value = cell.getValue()
+                    return (
                         <SingleLineTextCell
-                            value={{ text: cell.getValue() }}
-                            linkProps={getLinkProps(cell)}
+                            {...cell}
+                            value={value ? { text: value } : null}
                         />
-                    ) : (
-                        <SingleLineTextCell
-                            value={null}
-                            linkProps={getLinkProps(cell)}
-                        />
-                    ),
+                    )
+                },
             },
         ),
         columnHelper.accessor((ticket) => String(ticket.id), {
@@ -297,8 +220,8 @@ export function createTicketTableColumns({
             hug: true,
             cell: (cell) => (
                 <SingleLineTextCell
+                    {...cell}
                     value={cell.row.original.displayTicketId}
-                    linkProps={getLinkProps(cell)}
                 />
             ),
         }),
@@ -313,18 +236,15 @@ export function createTicketTableColumns({
                 header: 'Language',
                 enableSorting: false,
                 hug: true,
-                cell: (cell) =>
-                    cell.getValue() ? (
+                cell: (cell) => {
+                    const value = cell.getValue()
+                    return (
                         <SingleLineTextCell
-                            value={{ text: cell.getValue() }}
-                            linkProps={getLinkProps(cell)}
+                            {...cell}
+                            value={value ? { text: value } : null}
                         />
-                    ) : (
-                        <SingleLineTextCell
-                            value={null}
-                            linkProps={getLinkProps(cell)}
-                        />
-                    ),
+                    )
+                },
             },
         ),
         columnHelper.display({
@@ -332,12 +252,7 @@ export function createTicketTableColumns({
             header: 'Channel',
             enableSorting: false,
             hug: true,
-            cell: (cell) => (
-                <ChannelCell
-                    ticket={cell.row.original}
-                    linkProps={getLinkProps(cell)}
-                />
-            ),
+            cell: (cell) => <ChannelCell {...cell} />,
         }),
         columnHelper.accessor((ticket) => ticket.created_datetime, {
             id: 'created_datetime',
@@ -346,11 +261,7 @@ export function createTicketTableColumns({
             hug: true,
             maxSize: 180,
             cell: (cell) => (
-                <DateTimeCell
-                    datetime={cell.getValue()}
-                    preferences={dateTimePreferences}
-                    linkProps={getLinkProps(cell)}
-                />
+                <DateTimeCell {...cell} preferences={dateTimePreferences} />
             ),
         }),
         columnHelper.accessor((ticket) => ticket.updated_datetime, {
@@ -360,11 +271,7 @@ export function createTicketTableColumns({
             hug: true,
             maxSize: 180,
             cell: (cell) => (
-                <DateTimeCell
-                    datetime={cell.getValue()}
-                    preferences={dateTimePreferences}
-                    linkProps={getLinkProps(cell)}
-                />
+                <DateTimeCell {...cell} preferences={dateTimePreferences} />
             ),
         }),
         columnHelper.accessor(
@@ -376,11 +283,7 @@ export function createTicketTableColumns({
                 hug: true,
                 maxSize: 180,
                 cell: (cell) => (
-                    <DateTimeCell
-                        datetime={cell.getValue()}
-                        preferences={dateTimePreferences}
-                        linkProps={getLinkProps(cell)}
-                    />
+                    <DateTimeCell {...cell} preferences={dateTimePreferences} />
                 ),
             },
         ),
@@ -391,11 +294,7 @@ export function createTicketTableColumns({
             hug: true,
             maxSize: 180,
             cell: (cell) => (
-                <DateTimeCell
-                    datetime={cell.getValue()}
-                    preferences={dateTimePreferences}
-                    linkProps={getLinkProps(cell)}
-                />
+                <DateTimeCell {...cell} preferences={dateTimePreferences} />
             ),
         }),
         columnHelper.accessor((ticket) => ticket.snooze_datetime, {
@@ -405,11 +304,7 @@ export function createTicketTableColumns({
             hug: true,
             maxSize: 180,
             cell: (cell) => (
-                <DateTimeCell
-                    datetime={cell.getValue()}
-                    preferences={dateTimePreferences}
-                    linkProps={getLinkProps(cell)}
-                />
+                <DateTimeCell {...cell} preferences={dateTimePreferences} />
             ),
         }),
     ]

@@ -289,26 +289,11 @@ describe('ViewPanelFiltersBridge', () => {
     }
 
     const renderComponent = (
-        isExpandedOrProps:
-            | boolean
-            | Partial<
-                  React.ComponentProps<typeof ViewPanelFiltersBridge>
-              > = true,
-        maybeProps?: Partial<
-            React.ComponentProps<typeof ViewPanelFiltersBridge>
-        >,
+        props?: Partial<React.ComponentProps<typeof ViewPanelFiltersBridge>>,
     ) => {
-        const isExpanded =
-            typeof isExpandedOrProps === 'boolean' ? isExpandedOrProps : true
-        const props =
-            typeof isExpandedOrProps === 'boolean'
-                ? maybeProps
-                : isExpandedOrProps
-
         return render(
             <ViewPanelFiltersBridge
                 viewId={42}
-                isExpanded={isExpanded}
                 onExpandedChange={onExpandedChange}
                 {...props}
             />,
@@ -521,7 +506,6 @@ describe('ViewPanelFiltersBridge', () => {
         rerender(
             <ViewPanelFiltersBridge
                 viewId={42}
-                isExpanded
                 onExpandedChange={onExpandedChange}
             />,
         )
@@ -609,7 +593,6 @@ describe('ViewPanelFiltersBridge', () => {
         rerender(
             <ViewPanelFiltersBridge
                 viewId={42}
-                isExpanded
                 onExpandedChange={onExpandedChange}
             />,
         )
@@ -975,43 +958,6 @@ describe('ViewPanelFiltersBridge', () => {
         expect(onExpandedChange).not.toHaveBeenCalledWith(false)
     })
 
-    it('only collapses the disclosure when the user manually collapses it', async () => {
-        const user = userEvent.setup()
-
-        renderComponent()
-
-        await user.click(
-            screen.getByRole('button', { name: /edit view/i, expanded: true }),
-        )
-
-        expect(onExpandedChange).toHaveBeenCalledWith(false)
-        expect(dispatchMock).not.toHaveBeenCalledWith(resetViewAction)
-    })
-
-    it('allows collapsing the disclosure while the draft is dirty', async () => {
-        const user = userEvent.setup()
-
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getActiveView) return activeView
-            if (selector === getPristineActiveView) return activeView
-            if (selector === getAreFiltersValid) return true
-            if (selector === getIsDirty) return true
-            if (selector === getCurrentUser) return currentUser
-            if (selector === getHasAutomate) return true
-            if (selector === getSchemas) return fromJS({})
-            return undefined
-        })
-
-        renderComponent()
-
-        await user.click(
-            screen.getByRole('button', { name: /edit view/i, expanded: true }),
-        )
-
-        expect(onExpandedChange).toHaveBeenCalledWith(false)
-        expect(dispatchMock).not.toHaveBeenCalledWith(resetViewAction)
-    })
-
     it('shows the stale updates warning in the collapsed header when the draft is dirty', () => {
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getActiveView) return activeView
@@ -1024,7 +970,7 @@ describe('ViewPanelFiltersBridge', () => {
             return undefined
         })
 
-        renderComponent({ isExpanded: false })
+        renderComponent()
 
         expect(
             screen.getAllByText(
@@ -1068,23 +1014,9 @@ describe('ViewPanelFiltersBridge', () => {
         ).toBeInTheDocument()
     })
 
-    it('uses edit view as the disclosure label', () => {
-        renderComponent()
-
-        expect(
-            screen.getByRole('button', { name: /edit view/i }),
-        ).toBeInTheDocument()
-        expect(
-            screen.queryByRole('button', { name: /filters/i }),
-        ).not.toBeInTheDocument()
-    })
-
     it('renders the default bridge chrome when overrides are omitted', () => {
         renderComponent()
 
-        expect(
-            screen.getByRole('button', { name: /edit view/i }),
-        ).toBeInTheDocument()
         expect(screen.getByLabelText(/view name/i)).toBeEnabled()
         expect(
             screen.getByRole('button', { name: /update view/i }),
@@ -1097,15 +1029,11 @@ describe('ViewPanelFiltersBridge', () => {
     })
 
     it('supports search-mode bridge chrome overrides', () => {
-        renderComponent(true, {
-            title: 'Advanced filters',
+        renderComponent({
             hideViewNameInput: true,
             hideFooterActions: true,
         })
 
-        expect(
-            screen.getByRole('button', { name: /advanced filters/i }),
-        ).toBeInTheDocument()
         expect(screen.queryByLabelText(/view name/i)).not.toBeInTheDocument()
         expect(
             screen.queryByRole('button', { name: /update view/i }),
@@ -1116,13 +1044,13 @@ describe('ViewPanelFiltersBridge', () => {
     })
 
     it('shows the search result count outside search mode', () => {
-        renderComponent(true, { searchResultCount: 200 })
+        renderComponent({ searchResultCount: 200 })
 
         expect(screen.getByText('200 tickets')).toBeInTheDocument()
     })
 
     it('shows the search result count in search mode', () => {
-        renderComponent(true, {
+        renderComponent({
             isSearchMode: true,
             searchResultCount: 200,
         })
@@ -1136,7 +1064,7 @@ describe('ViewPanelFiltersBridge', () => {
     })
 
     it('shows the singular search result count in search mode', () => {
-        renderComponent(true, {
+        renderComponent({
             isSearchMode: true,
             searchResultCount: 1,
         })
@@ -1145,7 +1073,7 @@ describe('ViewPanelFiltersBridge', () => {
     })
 
     it('caps the search result count at 5000+ tickets', () => {
-        renderComponent(true, {
+        renderComponent({
             isSearchMode: true,
             searchResultCount: 5000,
         })
@@ -1170,8 +1098,7 @@ describe('ViewPanelFiltersBridge', () => {
             return undefined
         })
 
-        renderComponent(true, {
-            title: 'Advanced filters',
+        renderComponent({
             isSearchMode: true,
         })
 
@@ -1236,7 +1163,7 @@ describe('ViewPanelFiltersBridge', () => {
     })
 
     it('keeps the action row visible when the bridge is collapsed', () => {
-        renderComponent({ isExpanded: false })
+        renderComponent()
 
         expect(
             screen.getByRole('button', { name: /update view/i }),
