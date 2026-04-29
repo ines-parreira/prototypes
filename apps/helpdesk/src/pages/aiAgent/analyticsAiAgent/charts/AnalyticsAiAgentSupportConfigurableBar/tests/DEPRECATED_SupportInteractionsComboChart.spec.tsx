@@ -1,15 +1,15 @@
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useAiAgentSupportAgentAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentAutomatedInteractionsTrend'
 import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { DEPRECATED_SupportInteractionsComboChart } from '../DEPRECATED_SupportInteractionsComboChart'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-const mockUseStatsFilters = jest.mocked(useStatsFilters)
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
+const mockUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentAutomatedInteractionsTrend',
@@ -42,8 +42,8 @@ describe('SupportInteractionsComboChart', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: mockFilters,
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: mockFilters,
             granularity: 'day',
             userTimezone: 'UTC',
         } as any)
@@ -190,7 +190,7 @@ describe('SupportInteractionsComboChart', () => {
     it('should use useStatsFilters for period data', () => {
         render(<DEPRECATED_SupportInteractionsComboChart />)
 
-        expect(mockUseStatsFilters).toHaveBeenCalled()
+        expect(mockUseAiAgentStatsFilters).toHaveBeenCalled()
     })
 
     it('should use useAiAgentSupportAgentAutomatedInteractionsTrend for trend data', () => {
@@ -244,8 +244,8 @@ describe('SupportInteractionsComboChart', () => {
     })
 
     it('should render with different period values', async () => {
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: {
                     start_datetime: '2024-01-01T00:00:00.000Z',
                     end_datetime: '2024-12-31T23:59:59.999Z',

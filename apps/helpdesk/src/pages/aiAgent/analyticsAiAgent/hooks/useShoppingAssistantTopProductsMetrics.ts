@@ -331,16 +331,15 @@ export const fetchShoppingAssistantTopProductsData = async (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         'shopping-assistant-top-products',
     )
 
     const [recommendationsResult, clicksResult, btrResult] = await Promise.all([
-        fetchTimesRecommendedPerProduct(periodFilters, timezone),
-        fetchProductClicksPerProduct(periodFilters, timezone),
-        fetchBuyThroughRatePerProduct(periodFilters, timezone),
+        fetchTimesRecommendedPerProduct(statsFilters, timezone),
+        fetchProductClicksPerProduct(statsFilters, timezone),
+        fetchBuyThroughRatePerProduct(statsFilters, timezone),
     ])
 
     const { productsByIntegration, productIds, totalRecommendedById } =

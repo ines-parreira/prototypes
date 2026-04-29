@@ -8,7 +8,7 @@ import {
 jest.mock('domains/reporting/hooks/automate/automateStatsFormulae')
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration', () => ({
     useGetNewStatsFeatureFlagMigration: jest
         .fn()
@@ -28,9 +28,9 @@ jest.mock('domains/reporting/models/scopes/overallAutomationRate', () => {
     }
 })
 
-const mockUseStatsFilters = jest.requireMock(
-    'domains/reporting/hooks/support-performance/useStatsFilters',
-).useStatsFilters as jest.Mock
+const mockUseAiAgentStatsFilters = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentStatsFilters',
+).useAiAgentStatsFilters as jest.Mock
 const mockUseAIAgentUserId = jest.requireMock(
     'domains/reporting/hooks/automate/useAIAgentUserId',
 ).useAIAgentUserId as jest.Mock
@@ -64,8 +64,8 @@ const mockAutomationRatePerFeatureQueryFactoryV2 = jest.requireMock(
 
 describe('useAutomationRateByFeature', () => {
     beforeEach(() => {
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {},
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {},
             userTimezone: 'UTC',
         })
 
@@ -374,8 +374,8 @@ describe('useAutomationRateByFeature when stage is live or complete', () => {
             stage: 'live',
             isLoading: false,
         })
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {},
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {},
             userTimezone: 'UTC',
         })
         mockUseStatsMetricPerDimension.mockReturnValue({

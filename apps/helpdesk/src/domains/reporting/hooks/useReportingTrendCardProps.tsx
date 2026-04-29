@@ -13,6 +13,7 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { useOverallTimeSeries } from '../../../pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { MetricQueryFactory } from '../models/scopes/scope'
@@ -40,12 +41,7 @@ export const useReportingTrendCardProps = ({
     }
 }) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
-
-    const aiAgentFilters = useMemo(() => {
-        return {
-            period: cleanStatsFilters.period,
-        }
-    }, [cleanStatsFilters])
+    const { statsFilters: aiAgentFilters } = useAiAgentStatsFilters()
 
     const filters = isAiAgentTrendCard ? aiAgentFilters : cleanStatsFilters
 

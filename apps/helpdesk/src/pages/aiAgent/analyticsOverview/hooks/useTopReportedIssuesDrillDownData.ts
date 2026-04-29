@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 
 import { SELF_SERVICE_TOP_REPORTED_ISSUES } from 'domains/reporting/config/stats'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
 import type {
     Period,
@@ -11,6 +10,7 @@ import type {
 import { AUTOMATION_SELF_SERVICE_STAT_NAME } from 'domains/reporting/pages/self-service/constants'
 import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import { limitStatFiltersPeriod } from 'pages/aiAgent/analyticsOverview/utils/limitStatFiltersPeriod'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 const MAX_DAYS = 90
 
@@ -74,7 +74,7 @@ function mapLineToRow(line: TopReportedIssuesStatLine): TopReportedIssuesRow {
 
 export const useTopReportedIssuesDrillDownData =
     (): TopReportedIssuesDrillDownData => {
-        const { statsFilters } = useAutomateFilters()
+        const { statsFilters } = useAiAgentStatsFilters()
 
         const { limitedStatsFilters, isPeriodLimited, previousPeriod } =
             useMemo(() => {
@@ -83,7 +83,11 @@ export const useTopReportedIssuesDrillDownData =
                     MAX_DAYS,
                 )
                 return {
-                    limitedStatsFilters: { period: limitedPeriod },
+                    limitedStatsFilters: {
+                        period: limitedPeriod,
+                        integrations: statsFilters.stores?.values,
+                        channels: statsFilters.channels?.values,
+                    },
                     isPeriodLimited:
                         limitedPeriod.start_datetime !==
                         statsFilters.period.start_datetime,

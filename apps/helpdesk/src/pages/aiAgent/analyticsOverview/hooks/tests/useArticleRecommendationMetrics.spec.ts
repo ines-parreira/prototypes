@@ -8,12 +8,9 @@ import {
     useArticleRecommendationMetrics,
 } from '../useArticleRecommendationMetrics'
 
-jest.mock(
-    'domains/reporting/hooks/support-performance/useStatsFilters',
-    () => ({
-        useStatsFilters: jest.fn(),
-    }),
-)
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => ({
+    useAiAgentStatsFilters: jest.fn(),
+}))
 
 jest.mock('domains/reporting/models/articleRecommendations', () => ({
     useArticleRecommendations: jest.fn(),
@@ -32,9 +29,9 @@ jest.mock('utils/file', () => ({
     createCsv: jest.fn(),
 }))
 
-const mockUseStatsFilters = jest.requireMock(
-    'domains/reporting/hooks/support-performance/useStatsFilters',
-).useStatsFilters as jest.Mock
+const mockUseAiAgentStatsFilters = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentStatsFilters',
+).useAiAgentStatsFilters as jest.Mock
 
 const mockUseArticleRecommendations = jest.requireMock(
     'domains/reporting/models/articleRecommendations',
@@ -102,8 +99,8 @@ const expectedRows = [
 describe('useArticleRecommendationMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: MOCK_STATS_FILTERS,
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: MOCK_STATS_FILTERS,
         })
         mockUseArticleRecommendations.mockReturnValue({
             data: { data: { data: mockApiItems } },
@@ -197,11 +194,11 @@ describe('useArticleRecommendationMetrics', () => {
         )
     })
 
-    it('passes store_integration_id when storeIntegrations filter is set', () => {
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+    it('passes store_integration_id when stores filter is set', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 ...MOCK_STATS_FILTERS,
-                storeIntegrations: { operator: 'and', values: [42] },
+                stores: { operator: 'and', values: [42] },
             },
         })
 
@@ -213,8 +210,8 @@ describe('useArticleRecommendationMetrics', () => {
     })
 
     it('passes channel when channels filter is set', () => {
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 ...MOCK_STATS_FILTERS,
                 channels: { operator: 'and', values: ['email'] },
             },

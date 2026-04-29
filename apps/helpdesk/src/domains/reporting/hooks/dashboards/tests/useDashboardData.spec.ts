@@ -1,3 +1,4 @@
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
@@ -43,6 +44,15 @@ import {
     createTrendReport,
 } from 'domains/reporting/services/supportPerformanceReportingService'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        AiAgentAnalyticsFilters:
+            'linear_project_revamp-ai-agent-analytics_filters',
+    },
+    useFlagWithLoading: jest.fn(),
+}))
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock('domains/reporting/hooks/dashboards/useSanitizedDashboard')
 const useSanitizedDashboardMock = assumeMock(useSanitizedDashboard)
@@ -129,6 +139,11 @@ describe('useDownloadDashboardData', () => {
     const granularity = ReportingGranularity.Day
 
     beforeEach(() => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+
         useSanitizedDashboardMock.mockImplementation((dash) => dash)
         useAgentsTableConfigSettingMock.mockReturnValue({
             columnsOrder: [],
@@ -237,14 +252,76 @@ describe('useDownloadDashboardData', () => {
         )
     })
 
-    it('should pass only the period filter when isAiAgentDashboard is true', () => {
-        const statsFiltersWithAgents = {
+    it('should pass only the period and stores filters when isAiAgentDashboard is true', () => {
+        const mockStores = { values: ['store-1'], operator: 'AND' }
+        const statsFiltersWithAgentsAndStores = {
             ...statsFilters,
             agents: { values: [1, 2], operator: 'AND' },
+            stores: mockStores,
         } as unknown as StatsFilters
 
         useStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: statsFiltersWithAgents,
+            cleanStatsFilters: statsFiltersWithAgentsAndStores,
+            userTimezone,
+            granularity,
+        })
+
+        renderHook(() => useDashboardData(exampleDashboard, true))
+
+        expect(useTrendReportDataMock).toHaveBeenCalledWith(
+            { period: statsFilters.period, stores: mockStores },
+            userTimezone,
+            expect.any(Array),
+        )
+        expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
+            { period: statsFilters.period, stores: mockStores },
+            userTimezone,
+            granularity,
+            expect.any(Array),
+        )
+    })
+
+    it('should pass only period (no stores) when isAiAgentDashboard is true and filters FF is disabled', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+        const mockStores = { values: ['store-1'], operator: 'AND' }
+        useStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: {
+                ...statsFilters,
+                stores: mockStores,
+            } as unknown as StatsFilters,
+            userTimezone,
+            granularity,
+        })
+
+        renderHook(() => useDashboardData(exampleDashboard, true))
+
+        expect(useTrendReportDataMock).toHaveBeenCalledWith(
+            { period: statsFilters.period },
+            userTimezone,
+            expect.any(Array),
+        )
+        expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
+            { period: statsFilters.period },
+            userTimezone,
+            granularity,
+            expect.any(Array),
+        )
+    })
+
+    it('should pass only period (no stores) when isAiAgentDashboard is true and filters FF is loading', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: true,
+        })
+        const mockStores = { values: ['store-1'], operator: 'AND' }
+        useStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: {
+                ...statsFilters,
+                stores: mockStores,
+            } as unknown as StatsFilters,
             userTimezone,
             granularity,
         })

@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
@@ -40,6 +39,7 @@ import {
     fetchTimeSavedPerFlows,
     useTimeSavedPerFlows,
 } from 'pages/aiAgent/analyticsOverview/hooks/useTimeSavedPerFlows'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
 
@@ -119,7 +119,7 @@ function createFlowsFetchConfig(
 }
 
 export const useFlowsMetrics = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const { data: workflows, isLoading: isLoadingWorkflows } =
         useGetWorkflowConfigurations()
 
@@ -140,8 +140,7 @@ export const useFlowsMetrics = () => {
     const isLoading = isLoadingWorkflows || isLoadingMetrics
 
     const data = useMemo(
-        () =>
-            assembleEntityRows(entityData, entities, buildFlowsRow(entityData)),
+        () => assembleEntityRows(entities, buildFlowsRow(entityData)),
         [entityData, entities],
     )
 
@@ -166,9 +165,8 @@ export const fetchFlowsMetrics = async (
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         FLOWS_FILENAME,
     )
 
@@ -178,15 +176,11 @@ export const fetchFlowsMetrics = async (
 
     const metrics = await fetchEntityMetrics(
         createFlowsFetchConfig(costSavedPerInteraction),
-        periodFilters,
+        statsFilters,
         timezone,
     )
 
-    const data = assembleEntityRows(
-        metrics.data,
-        entities,
-        buildFlowsRow(metrics.data),
-    )
+    const data = assembleEntityRows(entities, buildFlowsRow(metrics.data))
 
     if (data.length === 0) {
         return { fileName, files: { [fileName]: '' } }

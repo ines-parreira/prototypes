@@ -87,10 +87,6 @@ export const mapMetricValues = (
 })
 
 export const assembleEntityRows = <TRow, TEntity extends string = string>(
-    entityData: Record<
-        string,
-        Partial<Record<string, number | null | undefined>>
-    >,
     entities: TEntity[],
     buildRow: (entity: TEntity) => TRow,
 ): TRow[] => {

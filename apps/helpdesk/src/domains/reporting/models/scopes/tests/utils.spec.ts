@@ -222,6 +222,75 @@ describe('utils', () => {
             })
         })
 
+        it('should add storeIntegrationId filter from stores when present in scope config and stat filters', () => {
+            const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
+                scope: MetricScope.TicketsOpen,
+                filters: ['storeIntegrationId'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [123, 456],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).toContainEqual({
+                member: 'storeIntegrationId',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [123, 456],
+            })
+        })
+
+        it('should prefer stores over storeIntegrations for storeIntegrationId filter', () => {
+            const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
+                scope: MetricScope.TicketsOpen,
+                filters: ['storeIntegrationId'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [987],
+                },
+                storeIntegrations: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [999],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).toContainEqual({
+                member: 'storeIntegrationId',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [987],
+            })
+            expect(result).not.toContainEqual(
+                expect.objectContaining({ values: [999] }),
+            )
+        })
+
+        it('should not add storeIntegrationId filter when neither stores nor storeIntegrations is present', () => {
+            const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
+                scope: MetricScope.TicketsOpen,
+                filters: ['storeIntegrationId'],
+            }
+
+            const result = createScopeFilters(basePeriodFilters, scopeConfig)
+
+            expect(result).not.toContainEqual(
+                expect.objectContaining({ member: 'storeIntegrationId' }),
+            )
+        })
+
         it('should add teams filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
                 measures: ['ticketCount'],

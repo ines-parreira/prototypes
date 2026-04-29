@@ -6,22 +6,22 @@ import { aiSalesRecommendedProductCountPerProductQueryFactoryV2 as aiSalesTimesR
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 export const useTimesRecommendedPerProduct = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
 ) => {
     const query = aiSalesTimesRecommendedQueryFactoryV2({
-        filters: { period: statsFilters.period },
+        filters,
         timezone,
     })
     return useStatsMetricPerDimension(query)
 }
 
 export const fetchTimesRecommendedPerProduct = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
 ) => {
     const query = aiSalesTimesRecommendedQueryFactoryV2({
-        filters: { period: statsFilters.period },
+        filters,
         timezone,
     })
     return fetchStatsMetricPerDimension(query)

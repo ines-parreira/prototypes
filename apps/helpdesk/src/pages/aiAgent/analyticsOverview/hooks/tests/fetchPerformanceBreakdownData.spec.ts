@@ -92,11 +92,11 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         setupInteractionMocks()
     })
 
-    it('should strip statsFilters to period only when calling fetch functions', async () => {
+    it('should pass all statsFilters when calling fetch functions', async () => {
         await fetchPerformanceMetricsPerFeature(MOCK_STATS_FILTERS, 'UTC')
 
         expect(fetchTrendFromMultipleMetricsTrend).toHaveBeenCalledWith(
-            { period: MOCK_STATS_FILTERS.period },
+            MOCK_STATS_FILTERS,
             'UTC',
             expect.anything(),
             expect.anything(),
@@ -104,11 +104,11 @@ describe('fetchPerformanceMetricsPerFeature', () => {
             expect.anything(),
         )
         expect(fetchHandoverInteractionsPerFeature).toHaveBeenCalledWith(
-            { period: MOCK_STATS_FILTERS.period },
+            MOCK_STATS_FILTERS,
             'UTC',
         )
         expect(fetchTicketHandleTimeTrend).toHaveBeenCalledWith(
-            { period: MOCK_STATS_FILTERS.period },
+            MOCK_STATS_FILTERS,
             'UTC',
         )
     })

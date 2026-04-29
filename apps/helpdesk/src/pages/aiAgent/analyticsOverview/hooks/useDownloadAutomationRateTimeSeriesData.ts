@@ -5,7 +5,7 @@ import moment from 'moment'
 
 import { useAutomationRateTimeSeriesData } from 'domains/reporting/hooks/automate/useAutomationRateTimeSeriesData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { createCsv } from 'utils/file'
 
 import { DATE_FORMAT } from '../constants'
@@ -13,14 +13,10 @@ import { DATE_FORMAT } from '../constants'
 const FILENAME = 'automation-rate-timeseries'
 
 export const useDownloadAutomationRateTimeSeriesData = () => {
-    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+    const { statsFilters, userTimezone, granularity } = useAiAgentStatsFilters()
 
     const { data: timeSeriesData, isFetching } =
-        useAutomationRateTimeSeriesData(
-            cleanStatsFilters,
-            userTimezone,
-            granularity,
-        )
+        useAutomationRateTimeSeriesData(statsFilters, userTimezone, granularity)
 
     const csvData = useMemo(() => {
         const series = timeSeriesData?.[0]
@@ -52,7 +48,7 @@ export const useDownloadAutomationRateTimeSeriesData = () => {
         ]
     }, [timeSeriesData])
 
-    const fileName = getCsvFileNameWithDates(cleanStatsFilters.period, FILENAME)
+    const fileName = getCsvFileNameWithDates(statsFilters.period, FILENAME)
 
     const files = useMemo(() => {
         if (!csvData) {

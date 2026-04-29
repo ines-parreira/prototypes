@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 
 import { SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS } from 'domains/reporting/config/stats'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
 import type {
     TextStatAxisValue,
@@ -9,6 +8,7 @@ import type {
 } from 'domains/reporting/models/stat/types'
 import { AUTOMATION_SELF_SERVICE_STAT_NAME } from 'domains/reporting/pages/self-service/constants'
 import { limitStatFiltersPeriod } from 'pages/aiAgent/analyticsOverview/utils/limitStatFiltersPeriod'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 const MAX_DAYS = 90
 
@@ -47,7 +47,7 @@ function mapLineToRow(line: ReturnOrdersStatLine): ReturnOrdersRow {
 }
 
 export const useReturnOrdersDrillDownData = (): ReturnOrdersDrillDownData => {
-    const { statsFilters } = useAutomateFilters()
+    const { statsFilters } = useAiAgentStatsFilters()
 
     // this API is limited to max 90 days of data, so only show the most recent 90 days
     const { limitedStatsFilters, isPeriodLimited } = useMemo(() => {
@@ -56,7 +56,11 @@ export const useReturnOrdersDrillDownData = (): ReturnOrdersDrillDownData => {
             MAX_DAYS,
         )
         return {
-            limitedStatsFilters: { period: limitedPeriod },
+            limitedStatsFilters: {
+                period: limitedPeriod,
+                integrations: statsFilters.stores?.values,
+                channels: statsFilters.channels?.values,
+            },
             isPeriodLimited:
                 limitedPeriod.start_datetime !==
                 statsFilters.period.start_datetime,

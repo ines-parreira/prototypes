@@ -185,7 +185,9 @@ describe('AnalyticsOverviewReportConfig', () => {
     })
 
     it('should have correct report filters', () => {
-        expect(AnalyticsOverviewReportConfig.reportFilters.optional).toEqual([])
+        expect(AnalyticsOverviewReportConfig.reportFilters.optional).toEqual([
+            FilterKey.Stores,
+        ])
         expect(AnalyticsOverviewReportConfig.reportFilters.persistent).toEqual([
             FilterKey.Period,
             FilterKey.AggregationWindow,

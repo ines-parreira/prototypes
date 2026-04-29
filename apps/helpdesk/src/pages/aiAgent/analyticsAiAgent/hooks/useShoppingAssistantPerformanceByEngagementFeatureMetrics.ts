@@ -164,7 +164,6 @@ export const useShoppingAssistantPerformanceByEngagementFeatureMetrics = () => {
     const data = useMemo(
         () =>
             assembleEntityRows(
-                entityData,
                 SHOPPING_ASSISTANT_ENGAGEMENT_FEATURE_ENTITIES,
                 buildShoppingAssistantPerformanceByEngagementFeatureRow(
                     entityData,
@@ -193,22 +192,20 @@ export const fetchShoppingAssistantPerformanceByEngagementFeatureMetrics =
         statsFilters: StatsFilters,
         timezone: string,
     ): Promise<{ fileName: string; files: Record<string, string> }> => {
-        const periodFilters: StatsFilters = { period: statsFilters.period }
         const fileName = getCsvFileNameWithDates(
-            periodFilters.period,
+            statsFilters.period,
             SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_FILENAME,
         )
 
         const metrics = await fetchEntityMetrics(
             SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_METRICS_CONFIG,
-            periodFilters,
+            statsFilters,
             timezone,
         )
 
         const entityData = normalizeEntityData(metrics.data)
 
         const data = assembleEntityRows(
-            entityData,
             SHOPPING_ASSISTANT_ENGAGEMENT_FEATURE_ENTITIES,
             buildShoppingAssistantPerformanceByEngagementFeatureRow(entityData),
         )

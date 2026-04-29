@@ -41,9 +41,8 @@ export const fetchPerformanceMetricsPerFeature = async (
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         PERFORMANCE_BREAKDOWN_FILENAME,
     )
 
@@ -57,7 +56,7 @@ export const fetchPerformanceMetricsPerFeature = async (
         automationRateResult,
     ] = await Promise.all([
         fetchTrendFromMultipleMetricsTrend(
-            periodFilters,
+            statsFilters,
             timezone,
             aiAgentAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
@@ -65,7 +64,7 @@ export const fetchPerformanceMetricsPerFeature = async (
             'automatedInteractions',
         ),
         fetchTrendFromMultipleMetricsTrend(
-            periodFilters,
+            statsFilters,
             timezone,
             flowsAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
@@ -73,7 +72,7 @@ export const fetchPerformanceMetricsPerFeature = async (
             'automatedInteractions',
         ),
         fetchTrendFromMultipleMetricsTrend(
-            periodFilters,
+            statsFilters,
             timezone,
             articleRecommendationAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
@@ -81,16 +80,16 @@ export const fetchPerformanceMetricsPerFeature = async (
             'automatedInteractions',
         ),
         fetchTrendFromMultipleMetricsTrend(
-            periodFilters,
+            statsFilters,
             timezone,
             orderManagementAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
             orderManagementAutomatedInteractionsQueryV2Factory,
             'automatedInteractions',
         ),
-        fetchHandoverInteractionsPerFeature(periodFilters, timezone),
-        fetchTicketHandleTimeTrend(periodFilters, timezone),
-        fetchAutomationRateByFeatureData(periodFilters, timezone),
+        fetchHandoverInteractionsPerFeature(statsFilters, timezone),
+        fetchTicketHandleTimeTrend(statsFilters, timezone),
+        fetchAutomationRateByFeatureData(statsFilters, timezone),
     ])
 
     const handoverAllValues =

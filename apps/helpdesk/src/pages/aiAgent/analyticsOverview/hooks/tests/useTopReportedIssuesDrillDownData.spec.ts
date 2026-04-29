@@ -1,16 +1,16 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { useTopReportedIssuesDrillDownData } from '../useTopReportedIssuesDrillDownData'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/useStatResource')
 
-const mockUseAutomateFilters = assumeMock(useAutomateFilters)
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 const mockUseStatResource = assumeMock(useStatResource)
 
 const MOCK_STATS_FILTERS = {
@@ -20,7 +20,7 @@ const MOCK_STATS_FILTERS = {
     },
 }
 
-const MOCK_AUTOMATE_FILTERS = {
+const MOCK_AI_AGENT_FILTERS = {
     statsFilters: MOCK_STATS_FILTERS,
     userTimezone: 'UTC',
     granularity: ReportingGranularity.Day,
@@ -63,7 +63,7 @@ const noop = () => {}
 describe('useTopReportedIssuesDrillDownData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAutomateFilters.mockReturnValue(MOCK_AUTOMATE_FILTERS)
+        mockUseAiAgentStatsFilters.mockReturnValue(MOCK_AI_AGENT_FILTERS)
         mockUseStatResource.mockReturnValue([MOCK_STAT, false, noop])
     })
 
@@ -178,11 +178,15 @@ describe('useTopReportedIssuesDrillDownData', () => {
         })
     })
 
-    it('passes only period filters to useStatResource', () => {
-        mockUseAutomateFilters.mockReturnValue({
-            ...MOCK_AUTOMATE_FILTERS,
+    it('passes integrations and channels values to useStatResource', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            ...MOCK_AI_AGENT_FILTERS,
             statsFilters: {
                 ...MOCK_STATS_FILTERS,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [1, 2],
+                },
                 channels: {
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: ['email'],
@@ -195,13 +199,22 @@ describe('useTopReportedIssuesDrillDownData', () => {
         const callArgs = mockUseStatResource.mock.calls[0][0]
         expect(callArgs.statsFilters).toEqual({
             period: MOCK_STATS_FILTERS.period,
+            integrations: [1, 2],
+            channels: ['email'],
         })
-        expect(callArgs.statsFilters).not.toHaveProperty('channels')
+    })
+
+    it('passes undefined integrations and channels when not present in statsFilters', () => {
+        renderHook(() => useTopReportedIssuesDrillDownData())
+
+        const callArgs = mockUseStatResource.mock.calls[0][0]
+        expect(callArgs.statsFilters.integrations).toBeUndefined()
+        expect(callArgs.statsFilters.channels).toBeUndefined()
     })
 
     it('limits the period to 90 days when the range exceeds the maximum', () => {
-        mockUseAutomateFilters.mockReturnValue({
-            ...MOCK_AUTOMATE_FILTERS,
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            ...MOCK_AI_AGENT_FILTERS,
             statsFilters: {
                 period: {
                     start_datetime: '2023-01-01T00:00:00.000Z',
@@ -238,8 +251,8 @@ describe('useTopReportedIssuesDrillDownData', () => {
     })
 
     it('returns isPeriodLimited true when range exceeds 90 days', () => {
-        mockUseAutomateFilters.mockReturnValue({
-            ...MOCK_AUTOMATE_FILTERS,
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            ...MOCK_AI_AGENT_FILTERS,
             statsFilters: {
                 period: {
                     start_datetime: '2023-01-01T00:00:00.000Z',

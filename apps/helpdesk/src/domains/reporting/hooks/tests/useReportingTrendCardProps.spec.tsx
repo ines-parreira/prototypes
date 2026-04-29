@@ -18,6 +18,7 @@ import type {
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { useOverallTimeSeries } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { mockStore } from 'utils/testing'
 
@@ -25,6 +26,8 @@ jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiAgentAnalyticsDashboardsTrendCardsWithTimeseries:
             'ai-agent-analytics-dashboards-trend-cards-with-timeseries',
+        AiAgentAnalyticsFilters:
+            'linear_project_revamp-ai-agent-analytics_filters',
     },
     useFlagWithLoading: jest.fn(),
 }))
@@ -47,6 +50,10 @@ const useAiAgentTrendCardDrillDownMock = assumeMock(
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
+
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
+
+const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
 
 jest.mock('pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod')
 const formatPreviousPeriodMock = assumeMock(formatPreviousPeriod)
@@ -94,6 +101,10 @@ describe('useReportingTrendCardProps', () => {
             operator: LogicalOperatorEnum.ONE_OF,
             values: [42],
         },
+        stores: {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [123],
+        },
     }
 
     const defaultState = {
@@ -117,9 +128,15 @@ describe('useReportingTrendCardProps', () => {
         formatPreviousPeriodMock.mockReturnValue('Jan 1 - Jan 7')
         useAiAgentTrendCardDrillDownMock.mockReturnValue(undefined)
         mockUseFlagWithLoading.mockReturnValue({
-            value: false,
+            value: true,
             isLoading: false,
         })
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                period: mockCleanStatsFilters.period,
+                stores: mockCleanStatsFilters.stores,
+            },
+        } as any)
         mockFormatMetricValue.mockReturnValue('42%')
         mockUseOverallTimeSeries.mockReturnValue({ data: [], isLoading: false })
     })
@@ -436,7 +453,66 @@ describe('useReportingTrendCardProps', () => {
         expect(mockUseTrend).toHaveBeenCalledWith(mockCleanStatsFilters, 'UTC')
     })
 
-    it('should pass only period to useTrend when isAiAgentTrendCard is true', () => {
+    it('should pass period and stores to useTrend when isAiAgentTrendCard is true and filters FF is enabled', () => {
+        mockUseTrend.mockReturnValue(mockTrendData)
+
+        renderHook(
+            () =>
+                useReportingTrendCardProps({
+                    isAiAgentTrendCard: true,
+                    chartConfig: mockChartConfig,
+                    useTrend: mockUseTrend,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(mockUseTrend).toHaveBeenCalledWith(
+            {
+                period: mockCleanStatsFilters.period,
+                stores: mockCleanStatsFilters.stores,
+            },
+            'UTC',
+        )
+    })
+
+    it('should pass period only to useTrend when isAiAgentTrendCard is true and filters FF is disabled', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: { period: mockCleanStatsFilters.period },
+        } as any)
+        mockUseTrend.mockReturnValue(mockTrendData)
+
+        renderHook(
+            () =>
+                useReportingTrendCardProps({
+                    isAiAgentTrendCard: true,
+                    chartConfig: mockChartConfig,
+                    useTrend: mockUseTrend,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(mockUseTrend).toHaveBeenCalledWith(
+            { period: mockCleanStatsFilters.period },
+            'UTC',
+        )
+    })
+
+    it('should pass period only to useTrend when isAiAgentTrendCard is true and filters FF is loading', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: { period: mockCleanStatsFilters.period },
+        } as any)
         mockUseTrend.mockReturnValue(mockTrendData)
 
         renderHook(
@@ -619,7 +695,10 @@ describe('useReportingTrendCardProps', () => {
 
             expect(mockUseOverallTimeSeries).toHaveBeenCalledWith(
                 mockQueryFactory,
-                { period: mockCleanStatsFilters.period },
+                {
+                    period: mockCleanStatsFilters.period,
+                    stores: mockCleanStatsFilters.stores,
+                },
                 'UTC',
                 ReportingGranularity.Day,
                 undefined,
@@ -638,7 +717,10 @@ describe('useReportingTrendCardProps', () => {
 
             expect(mockUseOverallTimeSeries).toHaveBeenCalledWith(
                 mockQueryFactory,
-                { period: mockCleanStatsFilters.period },
+                {
+                    period: mockCleanStatsFilters.period,
+                    stores: mockCleanStatsFilters.stores,
+                },
                 'UTC',
                 ReportingGranularity.Day,
                 valueTransform,

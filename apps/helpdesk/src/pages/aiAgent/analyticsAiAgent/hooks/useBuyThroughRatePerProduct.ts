@@ -6,22 +6,22 @@ import { aiSalesAgentBuyThroughRatePerProductQueryFactoryV2 } from 'domains/repo
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 export const useBuyThroughRatePerProduct = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
 ) => {
     const query = aiSalesAgentBuyThroughRatePerProductQueryFactoryV2({
-        filters: { period: statsFilters.period },
+        filters,
         timezone,
     })
     return useStatsMetricPerDimension(query)
 }
 
 export const fetchBuyThroughRatePerProduct = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
 ) => {
     const query = aiSalesAgentBuyThroughRatePerProductQueryFactoryV2({
-        filters: { period: statsFilters.period },
+        filters,
         timezone,
     })
     return fetchStatsMetricPerDimension(query)

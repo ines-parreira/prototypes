@@ -148,7 +148,6 @@ export const useSupportAgentsPerformanceByChannelMetrics =
         const data = useMemo(
             () =>
                 assembleEntityRows(
-                    entityData,
                     SUPPORT_AGENTS_CHANNEL_ENTITIES,
                     buildSupportAgentsPerformanceByChannelRow(entityData),
                 ),
@@ -182,9 +181,8 @@ export const fetchSupportAgentsPerformanceByChannelMetrics = async (
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_FILENAME,
     )
 
@@ -192,12 +190,11 @@ export const fetchSupportAgentsPerformanceByChannelMetrics = async (
         createSupportAgentsPerformanceByChannelFetchConfig(
             costSavedPerInteraction,
         ),
-        periodFilters,
+        statsFilters,
         timezone,
     )
 
     const data = assembleEntityRows(
-        metrics.data,
         SUPPORT_AGENTS_CHANNEL_ENTITIES,
         buildSupportAgentsPerformanceByChannelRow(metrics.data),
     )

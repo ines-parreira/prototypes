@@ -5,11 +5,11 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     ManagedDashboardId,
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { saveZippedFiles } from 'utils/file'
@@ -32,7 +32,7 @@ export const useExportAnalyticsOverviewToCSV = () => {
     const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
-    const { cleanStatsFilters } = useStatsFilters()
+    const { statsFilters } = useAiAgentStatsFilters()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
     )
@@ -104,11 +104,11 @@ export const useExportAnalyticsOverviewToCSV = () => {
 
     const triggerDownload = useCallback(async () => {
         const fileName = getCsvFileNameWithDates(
-            cleanStatsFilters.period,
+            statsFilters.period,
             REPORT_NAME,
         ).replace('.csv', '')
         await saveZippedFiles(files, fileName)
-    }, [files, cleanStatsFilters.period])
+    }, [files, statsFilters.period])
 
     return {
         triggerDownload,

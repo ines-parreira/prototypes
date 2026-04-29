@@ -271,7 +271,7 @@ describe('useSupportAgentsPerformanceByIntentMetrics', () => {
         it('splits intent entity string into intentL1 and intentL2', () => {
             renderHook(() => useSupportAgentsPerformanceByIntentMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('Billing :: Refund')
 
             expect(row.intentL1).toBe('Billing')
@@ -301,7 +301,7 @@ describe('useSupportAgentsPerformanceByIntentMetrics', () => {
 
             renderHook(() => useSupportAgentsPerformanceByIntentMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('Billing :: Refund')
 
             expect(row.automatedInteractions).toBeNull()
@@ -314,7 +314,7 @@ describe('useSupportAgentsPerformanceByIntentMetrics', () => {
         it('returns an empty second intent level when the entity does not include a delimiter', () => {
             renderHook(() => useSupportAgentsPerformanceByIntentMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('Billing')
 
             expect(row.intentL1).toBe('Billing')
@@ -350,7 +350,7 @@ describe('useSupportAgentsPerformanceByIntentMetrics', () => {
 
         renderHook(() => useSupportAgentsPerformanceByIntentMetrics())
 
-        const passedEntities = mockAssembleEntityRows.mock.calls[0][1]
+        const passedEntities = mockAssembleEntityRows.mock.calls[0][0]
         expect(passedEntities).toEqual([
             'Billing :: Refund',
             'Shipping :: Status',
@@ -413,7 +413,7 @@ describe('fetchSupportAgentsPerformanceByIntentMetrics', () => {
         expect(result.files[result.fileName]).toBe('csv-content')
     })
 
-    it('passes only period filters to fetchEntityMetrics', async () => {
+    it('passes full statsFilters to fetchEntityMetrics', async () => {
         const filtersWithExtra = {
             ...MOCK_STATS_FILTERS,
             channels: {
@@ -428,7 +428,7 @@ describe('fetchSupportAgentsPerformanceByIntentMetrics', () => {
         )
 
         const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-        expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        expect(passedFilters).toEqual(filtersWithExtra)
     })
 
     it('includes Intent L1 and Intent L2 as the first CSV headers', async () => {

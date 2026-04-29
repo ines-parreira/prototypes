@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { fetchArticleRecommendationMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 export const useDownloadArticleRecommendationData = () => {
-    const { cleanStatsFilters } = useStatsFilters()
+    const { statsFilters } = useAiAgentStatsFilters()
 
     const [result, setResult] = useState<{
         fileName: string
@@ -17,9 +17,7 @@ export const useDownloadArticleRecommendationData = () => {
 
     useEffect(() => {
         setIsLoading(true)
-        fetchArticleRecommendationMetrics({
-            period: cleanStatsFilters.period,
-        })
+        fetchArticleRecommendationMetrics(statsFilters)
             .then(({ fileName, files }) => {
                 setResult({ fileName, files })
                 setIsLoading(false)
@@ -30,7 +28,7 @@ export const useDownloadArticleRecommendationData = () => {
                 })
                 setIsLoading(false)
             })
-    }, [cleanStatsFilters])
+    }, [statsFilters])
 
     return {
         files: result?.files ?? {},

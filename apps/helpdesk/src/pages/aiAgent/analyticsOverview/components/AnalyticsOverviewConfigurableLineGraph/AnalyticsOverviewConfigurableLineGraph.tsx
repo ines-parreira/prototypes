@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import {
     dynamicOverallAutomatedInteractionsQueryFactoryV2,
     dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2,
@@ -14,6 +13,7 @@ import type {
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import {
     getLineChartGraphConfig,
     useStoreIntegrations,
@@ -66,7 +66,7 @@ export const AnalyticsOverviewConfigurableLineGraph = ({
     dashboard,
     chartConfig,
 }: Props) => {
-    const { statsFilters, userTimezone, granularity } = useAutomateFilters()
+    const { statsFilters, userTimezone, granularity } = useAiAgentStatsFilters()
     const stores = useStoreIntegrations()
 
     const metrics = useMemo(

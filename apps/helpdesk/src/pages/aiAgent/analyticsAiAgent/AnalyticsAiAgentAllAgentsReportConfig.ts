@@ -364,7 +364,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
             },
         },
         reportFilters: {
-            optional: [],
+            optional: [FilterKey.Stores],
             persistent: [FilterKey.Period, FilterKey.AggregationWindow],
         },
     }

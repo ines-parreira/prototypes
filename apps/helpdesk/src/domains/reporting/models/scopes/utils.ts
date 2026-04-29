@@ -172,7 +172,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                     )
                 }
                 break
-
+            // used for old reports
             case 'integrationId':
                 if (
                     statFilters.integrations &&
@@ -187,9 +187,17 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                     )
                 }
                 break
-
+            // aiAgent scopes
             case 'storeIntegrationId':
-                if (
+                if (statFilters.stores && hasFilter(statFilters.stores)) {
+                    filters.push(
+                        createStandardFilter(
+                            'storeIntegrationId',
+                            statFilters.stores.operator,
+                            statFilters.stores.values,
+                        ),
+                    )
+                } else if (
                     statFilters.storeIntegrations &&
                     hasFilter(statFilters.storeIntegrations)
                 ) {
@@ -202,7 +210,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                     )
                 }
                 break
-
+            // old queries storeIntegrationId
             case 'storeId':
                 if (statFilters.stores && hasFilter(statFilters.stores)) {
                     filters.push(
@@ -417,6 +425,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
         }
     })
+
     return filters as ScopeFilters<TMeta>
 }
 

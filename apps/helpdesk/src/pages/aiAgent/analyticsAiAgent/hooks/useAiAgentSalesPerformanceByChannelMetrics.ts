@@ -159,7 +159,6 @@ export const useAiAgentSalesPerformanceByChannelMetrics =
         const data = useMemo(
             () =>
                 assembleEntityRows(
-                    entityData,
                     AI_AGENT_SALES_CHANNEL_ENTITIES,
                     buildAiAgentSalesPerformanceByChannelRow(entityData),
                 ),
@@ -189,20 +188,18 @@ export const fetchAiAgentSalesPerformanceByChannelMetrics = async (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_FILENAME,
     )
 
     const metrics = await fetchEntityMetrics(
         AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_METRICS_CONFIG,
-        periodFilters,
+        statsFilters,
         timezone,
     )
 
     const data = assembleEntityRows(
-        metrics.data,
         AI_AGENT_SALES_CHANNEL_ENTITIES,
         buildAiAgentSalesPerformanceByChannelRow(metrics.data),
     )

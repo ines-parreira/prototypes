@@ -275,7 +275,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
 
             renderHook(() => useAllAgentsPerformanceByIntentMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('Billing :: Refund')
 
             expect(row.intentL1).toBe('Billing')
@@ -305,7 +305,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
 
             renderHook(() => useAllAgentsPerformanceByIntentMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('Billing :: Refund')
 
             expect(row.automatedInteractions).toBeNull()
@@ -371,7 +371,7 @@ describe('fetchAllAgentsPerformanceByIntentMetrics', () => {
         expect(result.files[result.fileName]).toBe('csv-content')
     })
 
-    it('passes only period filters to fetchEntityMetrics', async () => {
+    it('passes full statsFilters to fetchEntityMetrics', async () => {
         const filtersWithExtra = {
             ...MOCK_STATS_FILTERS,
             channels: {
@@ -386,7 +386,7 @@ describe('fetchAllAgentsPerformanceByIntentMetrics', () => {
         )
 
         const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-        expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        expect(passedFilters).toEqual(filtersWithExtra)
     })
 
     it('includes Intent L1 and Intent L2 as the first CSV headers', async () => {
@@ -461,7 +461,7 @@ describe('fetchAllAgentsPerformanceByIntentMetrics', () => {
             )
 
             const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-            expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+            expect(passedFilters).toEqual(MOCK_STATS_FILTERS)
         })
 
         it('forwards costSavedPerInteraction from extra to the underlying fetch function', async () => {

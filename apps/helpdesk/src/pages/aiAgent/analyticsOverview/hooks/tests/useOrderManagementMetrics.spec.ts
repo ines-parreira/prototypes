@@ -8,8 +8,8 @@ import {
     useOrderManagementMetrics,
 } from '../useOrderManagementMetrics'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters', () => ({
-    useAutomateFilters: jest.fn(),
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => ({
+    useAiAgentStatsFilters: jest.fn(),
 }))
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useEntityMetrics: jest.fn(),
@@ -63,9 +63,9 @@ jest.mock(
     }),
 )
 
-const mockUseAutomateFilters = jest.requireMock(
-    'domains/reporting/hooks/automate/useAutomateFilters',
-).useAutomateFilters as jest.Mock
+const mockUseAiAgentStatsFilters = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentStatsFilters',
+).useAiAgentStatsFilters as jest.Mock
 
 const mockUseEntityMetrics = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -164,7 +164,7 @@ const defaultRows = [
 describe('useOrderManagementMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: MOCK_STATS_FILTERS,
             userTimezone: MOCK_TIMEZONE,
         })
@@ -256,7 +256,7 @@ describe('useOrderManagementMetrics', () => {
         it('uses automated_response_not_helpful key for automated_response_started handover interactions', () => {
             renderHook(() => useOrderManagementMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('automated_response_started')
 
             expect(row.handoverInteractions).toBe(
@@ -268,7 +268,7 @@ describe('useOrderManagementMetrics', () => {
         it('uses the entity name as the handover key for non-remapped entities', () => {
             renderHook(() => useOrderManagementMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('cancel_order')
 
             expect(row.handoverInteractions).toBe(
@@ -298,7 +298,7 @@ describe('useOrderManagementMetrics', () => {
 
             renderHook(() => useOrderManagementMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('cancel_order')
 
             expect(row.automationRate).toBeNull()
@@ -383,16 +383,11 @@ describe('fetchOrderManagementMetrics', () => {
         expect(result.files[result.fileName]).toBe('csv-content')
     })
 
-    it('passes only period filters to fetchEntityMetrics', async () => {
-        const filtersWithExtra = {
-            ...MOCK_STATS_FILTERS,
-            channel: 'chat',
-        }
-
-        await fetchOrderManagementMetrics(filtersWithExtra, MOCK_TIMEZONE)
+    it('passes all statsFilters to fetchEntityMetrics', async () => {
+        await fetchOrderManagementMetrics(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
 
         const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-        expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        expect(passedFilters).toEqual(MOCK_STATS_FILTERS)
     })
 
     it('passes costSavedPerInteraction to createOrderManagementFetchConfig', async () => {

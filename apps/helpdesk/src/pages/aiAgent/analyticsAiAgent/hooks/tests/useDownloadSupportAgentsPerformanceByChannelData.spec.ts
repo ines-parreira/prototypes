@@ -3,6 +3,7 @@ import { waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { useDownloadSupportAgentsPerformanceByChannelData } from '../useDownloadSupportAgentsPerformanceByChannelData'
@@ -40,6 +41,7 @@ describe('useDownloadSupportAgentsPerformanceByChannelData', () => {
                     start_datetime: '2024-01-01T00:00:00Z',
                     end_datetime: '2024-01-31T23:59:59Z',
                 },
+                stores: { operator: LogicalOperatorEnum.ONE_OF, values: [1] },
             },
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
@@ -97,7 +99,7 @@ describe('useDownloadSupportAgentsPerformanceByChannelData', () => {
         })
     })
 
-    it('calls fetchSupportAgentsPerformanceByChannelMetrics with period-only filters, timezone, and costSavedPerInteraction', async () => {
+    it('calls fetchSupportAgentsPerformanceByChannelMetrics with all statsFilters, timezone, and costSavedPerInteraction', async () => {
         renderHook(() => useDownloadSupportAgentsPerformanceByChannelData())
 
         await waitFor(() =>
@@ -108,6 +110,10 @@ describe('useDownloadSupportAgentsPerformanceByChannelData', () => {
                     period: {
                         start_datetime: '2024-01-01T00:00:00Z',
                         end_datetime: '2024-01-31T23:59:59Z',
+                    },
+                    stores: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [1],
                     },
                 },
                 'UTC',

@@ -3,6 +3,7 @@ import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 const overallTimeSavedByAgentScope = defineScope({
     scope: MetricScope.OverallTimeSavedByAgent,
@@ -47,7 +48,7 @@ export const overallTimeSavedByAgentForOrderManagement =
                 ...createScopeFilters(ctx.filters, config),
                 {
                     member: 'automationFeatureType',
-                    operator: 'one-of',
+                    operator: LogicalOperatorEnum.ONE_OF,
                     values: [AutomationFeatureType.OrderManagement],
                 },
             ] as any,
@@ -66,7 +67,7 @@ export const overallTimeSavedByAgentPerFlows = overallTimeSavedByAgentScope
             ...createScopeFilters(ctx.filters, config),
             {
                 member: 'automationFeatureType',
-                operator: 'one-of',
+                operator: LogicalOperatorEnum.ONE_OF,
                 values: [AutomationFeatureType.Flows],
             },
         ] as any,

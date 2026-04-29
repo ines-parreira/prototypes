@@ -54,13 +54,13 @@ describe('useProductClicksPerProduct', () => {
         })
     })
 
-    it('calls the query factory with period filters and timezone', () => {
+    it('calls the query factory with stats filters and timezone', () => {
         renderHook(() =>
             useProductClicksPerProduct(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
-            filters: { period: MOCK_STATS_FILTERS.period },
+            filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
         })
     })
@@ -123,11 +123,11 @@ describe('fetchProductClicksPerProduct', () => {
         })
     })
 
-    it('calls the query factory with period filters and timezone', async () => {
+    it('calls the query factory with stats filters and timezone', async () => {
         await fetchProductClicksPerProduct(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
-            filters: { period: MOCK_STATS_FILTERS.period },
+            filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
         })
     })

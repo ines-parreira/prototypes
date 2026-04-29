@@ -160,7 +160,6 @@ export const useAllAgentsPerformanceByChannelMetrics =
         const data = useMemo(
             () =>
                 assembleEntityRows(
-                    entityData,
                     ALL_AGENTS_CHANNEL_ENTITIES,
                     buildAllAgentsPerformanceByChannelRow(entityData),
                 ),
@@ -207,20 +206,18 @@ export const fetchAllAgentsPerformanceByChannelMetrics = async (
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         ALL_AGENTS_PERFORMANCE_BY_CHANNEL_FILENAME,
     )
 
     const metrics = await fetchEntityMetrics(
         createAllAgentsPerformanceByChannelFetchConfig(costSavedPerInteraction),
-        periodFilters,
+        statsFilters,
         timezone,
     )
 
     const data = assembleEntityRows(
-        metrics.data,
         ALL_AGENTS_CHANNEL_ENTITIES,
         buildAllAgentsPerformanceByChannelRow(metrics.data),
     )

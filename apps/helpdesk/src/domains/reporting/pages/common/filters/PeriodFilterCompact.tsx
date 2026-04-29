@@ -172,25 +172,27 @@ export function PeriodFilterCompact({
     }, [value.start_datetime, value.end_datetime, timeZone])
 
     return (
-        <DateRangePicker
-            value={pickerValue}
-            onChange={handleChange}
-            presets={presets}
-            aria-label="Date range picker"
-            placement="bottom left"
-            isDateUnavailable={isDateUnavailable}
-            trigger={(renderProps) => (
-                <Button
-                    {...renderProps}
-                    variant="tertiary"
-                    id="period-filter-compact-trigger"
-                >
-                    <span className={css.compactLabel}>Date</span>
-                    <span className={css.compactValue}>
-                        {formatDateRange()}
-                    </span>
-                </Button>
-            )}
-        />
+        <div className={css.compactWrapper}>
+            <DateRangePicker
+                value={pickerValue}
+                onChange={handleChange}
+                presets={presets}
+                aria-label="Date range picker"
+                placement="bottom left"
+                isDateUnavailable={isDateUnavailable}
+                trigger={(renderProps) => (
+                    <Button
+                        {...renderProps}
+                        variant="tertiary"
+                        id="period-filter-compact-trigger"
+                    >
+                        <span className={css.compactLabel}>Date</span>
+                        <span className={css.compactValue}>
+                            {formatDateRange()}
+                        </span>
+                    </Button>
+                )}
+            />
+        </div>
     )
 }

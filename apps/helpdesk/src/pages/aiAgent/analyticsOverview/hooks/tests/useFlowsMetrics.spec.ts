@@ -8,8 +8,8 @@ import {
     useFlowsMetrics,
 } from '../useFlowsMetrics'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters', () => ({
-    useAutomateFilters: jest.fn(),
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => ({
+    useAiAgentStatsFilters: jest.fn(),
 }))
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useEntityMetrics: jest.fn(),
@@ -61,9 +61,9 @@ jest.mock('pages/aiAgent/analyticsOverview/hooks/useTimeSavedPerFlows', () => ({
     fetchTimeSavedPerFlows: jest.fn(),
 }))
 
-const mockUseAutomateFilters = jest.requireMock(
-    'domains/reporting/hooks/automate/useAutomateFilters',
-).useAutomateFilters as jest.Mock
+const mockUseAiAgentStatsFilters = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentStatsFilters',
+).useAiAgentStatsFilters as jest.Mock
 
 const mockUseEntityMetrics = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -189,7 +189,7 @@ const defaultRows = [
 describe('useFlowsMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: MOCK_STATS_FILTERS,
             userTimezone: MOCK_TIMEZONE,
         })
@@ -338,7 +338,7 @@ describe('useFlowsMetrics', () => {
     it('passes all workflow entities to assembleEntityRows', () => {
         renderHook(() => useFlowsMetrics())
 
-        const entitiesPassedToAssemble = mockAssembleEntityRows.mock.calls[0][1]
+        const entitiesPassedToAssemble = mockAssembleEntityRows.mock.calls[0][0]
         expect(entitiesPassedToAssemble).toEqual([
             'uuid-10',
             'uuid-25',
@@ -363,7 +363,7 @@ describe('useFlowsMetrics', () => {
 
         renderHook(() => useFlowsMetrics())
 
-        const entitiesPassedToAssemble = mockAssembleEntityRows.mock.calls[0][1]
+        const entitiesPassedToAssemble = mockAssembleEntityRows.mock.calls[0][0]
         expect(entitiesPassedToAssemble).toEqual([
             'uuid-10',
             'uuid-25',
@@ -375,7 +375,7 @@ describe('useFlowsMetrics', () => {
     it('passes all workflow entities regardless of metric values', () => {
         renderHook(() => useFlowsMetrics())
 
-        const entitiesPassedToAssemble = mockAssembleEntityRows.mock.calls[0][1]
+        const entitiesPassedToAssemble = mockAssembleEntityRows.mock.calls[0][0]
         expect(entitiesPassedToAssemble).toEqual([
             'uuid-10',
             'uuid-25',
@@ -388,7 +388,7 @@ describe('useFlowsMetrics', () => {
         it('maps entity data fields to a row', () => {
             renderHook(() => useFlowsMetrics())
 
-            const buildRow = mockAssembleEntityRows.mock.calls[0][2]
+            const buildRow = mockAssembleEntityRows.mock.calls[0][1]
             expect(buildRow('uuid-10')).toEqual({
                 entity: 'uuid-10',
                 automationRate: 0.75,
@@ -402,7 +402,7 @@ describe('useFlowsMetrics', () => {
         it('returns null for missing metric values', () => {
             renderHook(() => useFlowsMetrics())
 
-            const buildRow = mockAssembleEntityRows.mock.calls[0][2]
+            const buildRow = mockAssembleEntityRows.mock.calls[0][1]
             expect(buildRow('nonexistent')).toEqual({
                 entity: 'nonexistent',
                 automationRate: null,
@@ -469,7 +469,7 @@ describe('fetchFlowsMetrics', () => {
         expect(result.files[result.fileName]).toBe('csv-content')
     })
 
-    it('passes only period filters to fetchEntityMetrics', async () => {
+    it('passes all statsFilters to fetchEntityMetrics', async () => {
         const filtersWithExtra = {
             ...MOCK_STATS_FILTERS,
             channel: 'chat',
@@ -478,7 +478,7 @@ describe('fetchFlowsMetrics', () => {
         await fetchFlowsMetrics(filtersWithExtra, MOCK_TIMEZONE)
 
         const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-        expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        expect(passedFilters).toEqual(filtersWithExtra)
     })
 
     it('uses display names to resolve entity names in CSV rows', async () => {

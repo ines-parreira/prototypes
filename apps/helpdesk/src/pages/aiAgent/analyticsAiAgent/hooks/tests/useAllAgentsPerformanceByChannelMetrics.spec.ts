@@ -259,7 +259,7 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
 
             renderHook(() => useAllAgentsPerformanceByChannelMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('email')
 
             expect(row.automatedInteractions).toBeNull()
@@ -326,7 +326,7 @@ describe('fetchAllAgentsPerformanceByChannelMetrics', () => {
         expect(result.files[result.fileName]).toBe('csv-content')
     })
 
-    it('passes only period filters to fetchEntityMetrics', async () => {
+    it('passes full statsFilters to fetchEntityMetrics', async () => {
         const filtersWithExtra = { ...MOCK_STATS_FILTERS, channel: 'chat' }
 
         await fetchAllAgentsPerformanceByChannelMetrics(
@@ -335,7 +335,7 @@ describe('fetchAllAgentsPerformanceByChannelMetrics', () => {
         )
 
         const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-        expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        expect(passedFilters).toEqual(filtersWithExtra)
     })
 
     it('passes costSavedPerInteraction to createAllAgentsPerformanceByChannelFetchConfig', async () => {
@@ -384,7 +384,7 @@ describe('fetchAllAgentsPerformanceByChannelMetrics', () => {
             )
 
             const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-            expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+            expect(passedFilters).toEqual(MOCK_STATS_FILTERS)
         })
 
         it('forwards costSavedPerInteraction from extra to the underlying fetch function', async () => {

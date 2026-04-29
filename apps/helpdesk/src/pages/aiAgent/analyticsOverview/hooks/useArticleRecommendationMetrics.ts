@@ -4,7 +4,6 @@ import { formatMetricValue } from '@repo/reporting'
 
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     fetchArticleRecommendations,
     useArticleRecommendations,
@@ -18,6 +17,7 @@ import {
     ARTICLE_RECOMMENDATION_COLUMNS,
     ARTICLE_RECOMMENDATION_TABLE,
 } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/columns'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { createCsv } from 'utils/file'
 
 export type ArticleRecommendationRow = {
@@ -43,8 +43,8 @@ function buildParams(statsFilters: StatsFilters): ArticleRecommendationsParams {
     return {
         start_datetime: statsFilters.period.start_datetime,
         end_datetime: statsFilters.period.end_datetime,
-        ...(statsFilters.storeIntegrations?.values[0] !== undefined && {
-            store_integration_id: statsFilters.storeIntegrations.values[0],
+        ...(statsFilters.stores?.values[0] !== undefined && {
+            store_integration_id: statsFilters.stores.values[0],
         }),
         ...(statsFilters.channels?.values[0] !== undefined && {
             channel: statsFilters.channels.values[0],
@@ -74,11 +74,8 @@ function transformResponse(data?: ArticleRecommendationApiItem): {
 
 export const useArticleRecommendationMetrics =
     (): ArticleRecommendationMetricsData => {
-        const { cleanStatsFilters } = useStatsFilters()
-        const params = useMemo(
-            () => buildParams(cleanStatsFilters),
-            [cleanStatsFilters],
-        )
+        const { statsFilters } = useAiAgentStatsFilters()
+        const params = useMemo(() => buildParams(statsFilters), [statsFilters])
 
         const { data, isLoading, isError } = useArticleRecommendations(params)
 

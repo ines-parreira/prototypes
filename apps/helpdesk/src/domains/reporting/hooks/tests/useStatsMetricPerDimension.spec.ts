@@ -713,7 +713,6 @@ describe('useStatsMetricPerDimension', () => {
 
         it('returns rows for all entities regardless of values', () => {
             const result = assembleEntityRows(
-                { metric1: { cancel_order: 0, track_order: null } },
                 ['cancel_order', 'track_order'],
                 buildRow,
             )
@@ -726,11 +725,7 @@ describe('useStatsMetricPerDimension', () => {
 
         it('passes entity to buildRow', () => {
             const buildRowSpy = jest.fn((entity: string) => ({ entity }))
-            assembleEntityRows(
-                { metric1: { cancel_order: 10 } },
-                ['cancel_order', 'track_order'],
-                buildRowSpy,
-            )
+            assembleEntityRows(['cancel_order', 'track_order'], buildRowSpy)
 
             expect(buildRowSpy).toHaveBeenCalledWith(
                 'cancel_order',

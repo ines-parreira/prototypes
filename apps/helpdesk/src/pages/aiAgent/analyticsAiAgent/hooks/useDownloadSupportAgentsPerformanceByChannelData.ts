@@ -23,7 +23,7 @@ export const useDownloadSupportAgentsPerformanceByChannelData = () => {
     useEffect(() => {
         setIsLoading(true)
         fetchSupportAgentsPerformanceByChannelMetrics(
-            { period: statsFilters.period },
+            statsFilters,
             userTimezone,
             costSavedPerInteraction,
         )

@@ -232,7 +232,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(
             AnalyticsAiAgentShoppingAssistantReportConfig.reportFilters
                 .optional,
-        ).toEqual([])
+        ).toEqual([FilterKey.Stores])
         expect(
             AnalyticsAiAgentShoppingAssistantReportConfig.reportFilters
                 .persistent,

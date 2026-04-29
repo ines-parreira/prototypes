@@ -19,7 +19,7 @@ export const useDownloadShoppingAssistantPerformanceByEngagementFeatureData =
         useEffect(() => {
             setIsLoading(true)
             fetchShoppingAssistantPerformanceByEngagementFeatureMetrics(
-                { period: statsFilters.period },
+                statsFilters,
                 userTimezone,
             )
                 .then(({ fileName, files }) => {

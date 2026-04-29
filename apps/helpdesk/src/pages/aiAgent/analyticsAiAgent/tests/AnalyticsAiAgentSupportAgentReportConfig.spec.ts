@@ -155,7 +155,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
     it('should have correct report filters', () => {
         expect(
             AnalyticsAiAgentSupportAgentReportConfig.reportFilters.optional,
-        ).toEqual([])
+        ).toEqual([FilterKey.Stores])
         expect(
             AnalyticsAiAgentSupportAgentReportConfig.reportFilters.persistent,
         ).toEqual([FilterKey.Period, FilterKey.AggregationWindow])

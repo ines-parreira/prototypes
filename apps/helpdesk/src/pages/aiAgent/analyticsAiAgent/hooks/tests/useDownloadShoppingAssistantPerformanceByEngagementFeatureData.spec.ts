@@ -3,6 +3,7 @@ import { waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { useDownloadShoppingAssistantPerformanceByEngagementFeatureData } from '../useDownloadShoppingAssistantPerformanceByEngagementFeatureData'
@@ -37,6 +38,7 @@ describe('useDownloadShoppingAssistantPerformanceByEngagementFeatureData', () =>
                     start_datetime: '2024-01-01T00:00:00Z',
                     end_datetime: '2024-01-31T23:59:59Z',
                 },
+                stores: { operator: LogicalOperatorEnum.ONE_OF, values: [1] },
             },
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
@@ -94,7 +96,7 @@ describe('useDownloadShoppingAssistantPerformanceByEngagementFeatureData', () =>
         })
     })
 
-    it('calls fetchShoppingAssistantPerformanceByEngagementFeatureMetrics with period-only filters and timezone', async () => {
+    it('calls fetchShoppingAssistantPerformanceByEngagementFeatureMetrics with all statsFilters and timezone', async () => {
         renderHook(() =>
             useDownloadShoppingAssistantPerformanceByEngagementFeatureData(),
         )
@@ -107,6 +109,10 @@ describe('useDownloadShoppingAssistantPerformanceByEngagementFeatureData', () =>
                     period: {
                         start_datetime: '2024-01-01T00:00:00Z',
                         end_datetime: '2024-01-31T23:59:59Z',
+                    },
+                    stores: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [1],
                     },
                 },
                 'UTC',

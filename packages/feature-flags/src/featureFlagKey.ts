@@ -53,6 +53,7 @@ export enum FeatureFlagKey {
     AiAgentAnalyticsDashboardsChartsAndDropdowns = 'linear.project_revamp-ai-agent-analytics-dashboards.charts-and-dropdowns',
     AiAgentAnalyticsDashboardsTables = 'linear.project_revamp-ai-agent-analytics-dashboards.tables',
     AiAgentAnalyticsDashboardsTrendCardsWithTimeseries = 'linear.project_revamp-ai-agent-analytics-dashboards.trend-cards-with-timeseries',
+    AiAgentAnalyticsFilters = 'linear_project_revamp-ai-agent-analytics_filters',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
     AiJourneyRcsEnable = 'linear.task_AIJOU-1526.enable-rcs-messages',
     AiJourneyAttributionModelComparison = 'linear.AIJOU-1796-show-custom-attribution-model',

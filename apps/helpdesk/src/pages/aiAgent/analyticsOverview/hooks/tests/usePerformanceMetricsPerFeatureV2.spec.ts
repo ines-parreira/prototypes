@@ -8,8 +8,8 @@ import {
     usePerformanceMetricsPerFeatureV2,
 } from '../usePerformanceMetricsPerFeatureV2'
 
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters', () => ({
-    useAutomateFilters: jest.fn(),
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => ({
+    useAiAgentStatsFilters: jest.fn(),
 }))
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useEntityMetrics: jest.fn(),
@@ -63,9 +63,9 @@ jest.mock(
     }),
 )
 
-const mockUseAutomateFilters = jest.requireMock(
-    'domains/reporting/hooks/automate/useAutomateFilters',
-).useAutomateFilters as jest.Mock
+const mockUseAiAgentStatsFilters = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentStatsFilters',
+).useAiAgentStatsFilters as jest.Mock
 
 const mockUseEntityMetrics = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -148,7 +148,7 @@ const defaultRows = [
 describe('usePerformanceMetricsPerFeatureV2', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAutomateFilters.mockReturnValue({
+        mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: MOCK_STATS_FILTERS,
             userTimezone: MOCK_TIMEZONE,
         })
@@ -259,7 +259,7 @@ describe('usePerformanceMetricsPerFeatureV2', () => {
 
             renderHook(() => usePerformanceMetricsPerFeatureV2())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('ai-agent')
 
             expect(row.feature).toBe('AI Agent')
@@ -273,7 +273,7 @@ describe('usePerformanceMetricsPerFeatureV2', () => {
         it('maps AutomationFeatureType values to display names', () => {
             renderHook(() => usePerformanceMetricsPerFeatureV2())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
 
             expect(rowBuilder('ai-agent').feature).toBe('AI Agent')
             expect(rowBuilder('flow').feature).toBe('Flows')
@@ -339,8 +339,12 @@ describe('fetchPerformanceMetricsPerFeatureV2', () => {
         expect(result.files[result.fileName]).toBe('csv-content')
     })
 
-    it('passes only period filters to fetchEntityMetrics', async () => {
-        const filtersWithExtra = { ...MOCK_STATS_FILTERS, channel: 'chat' }
+    it('passes full statsFilters to fetchEntityMetrics', async () => {
+        const filtersWithExtra = {
+            ...MOCK_STATS_FILTERS,
+            channel: 'chat',
+            stores: [1, 2],
+        } as any
 
         await fetchPerformanceMetricsPerFeatureV2(
             filtersWithExtra,
@@ -348,7 +352,7 @@ describe('fetchPerformanceMetricsPerFeatureV2', () => {
         )
 
         const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-        expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        expect(passedFilters).toEqual(filtersWithExtra)
     })
 
     it('passes costSavedPerInteraction override to the cost fetch config', async () => {

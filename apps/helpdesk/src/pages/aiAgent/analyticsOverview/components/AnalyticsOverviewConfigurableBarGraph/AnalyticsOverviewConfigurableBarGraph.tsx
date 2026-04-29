@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
 import { dynamicOverallAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import { dynamicAverageTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
@@ -9,6 +8,7 @@ import type {
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import {
     getBarChartGraphConfig,
     useStoreIntegrations,
@@ -69,7 +69,7 @@ export const AnalyticsOverviewConfigurableBarGraph = ({
     dashboard,
     chartConfig,
 }: Props) => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const stores = useStoreIntegrations()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,

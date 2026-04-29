@@ -57,6 +57,7 @@ import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAi
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...SupportPerformanceOverviewReportConfig.charts,
@@ -208,14 +209,9 @@ export const useDashboardData = (
     extra?: Record<string, number>,
 ) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+    const { statsFilters: aiAgentFilters } = useAiAgentStatsFilters()
 
-    const statsFilters = useMemo(
-        () =>
-            isAiAgentDashboard
-                ? { period: cleanStatsFilters.period }
-                : cleanStatsFilters,
-        [isAiAgentDashboard, cleanStatsFilters],
-    )
+    const statsFilters = isAiAgentDashboard ? aiAgentFilters : cleanStatsFilters
 
     const sanitizedDashboard = useSanitizedDashboard(dashboard)
 

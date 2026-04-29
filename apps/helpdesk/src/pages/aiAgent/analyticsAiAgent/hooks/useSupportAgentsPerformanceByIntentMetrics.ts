@@ -163,7 +163,6 @@ export const useSupportAgentsPerformanceByIntentMetrics = () => {
     const data = useMemo(
         () =>
             assembleEntityRows(
-                entityData,
                 entities,
                 buildSupportAgentsPerformanceByIntentRow(entityData),
             ),
@@ -192,9 +191,8 @@ export const fetchSupportAgentsPerformanceByIntentMetrics = async (
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_FILENAME,
     )
 
@@ -229,14 +227,13 @@ export const fetchSupportAgentsPerformanceByIntentMetrics = async (
 
     const metrics = await fetchEntityMetrics(
         fetchConfig,
-        periodFilters,
+        statsFilters,
         timezone,
     )
 
     const entities = deriveEntities(metrics.data)
 
     const data = assembleEntityRows(
-        metrics.data,
         entities,
         buildSupportAgentsPerformanceByIntentRow(metrics.data),
     )

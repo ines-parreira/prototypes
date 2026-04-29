@@ -1,14 +1,14 @@
 import { renderHook } from '@repo/testing'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { useAutomationRateByFeature } from '../useAutomationRateByFeature'
 import { useDownloadAutomationRateByFeatureData } from '../useDownloadAutomationRateByFeatureData'
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('../useAutomationRateByFeature')
 
-const mockedUseStatsFilters = jest.mocked(useStatsFilters)
+const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockedUseAutomationRateByFeature = jest.mocked(useAutomationRateByFeature)
 
 describe('useDownloadAutomationRateByFeatureData', () => {
@@ -20,12 +20,10 @@ describe('useDownloadAutomationRateByFeatureData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockedUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
                 period: mockPeriod,
             },
-            userTimezone: 'UTC',
-            granularity: 'day',
         } as any)
     })
 

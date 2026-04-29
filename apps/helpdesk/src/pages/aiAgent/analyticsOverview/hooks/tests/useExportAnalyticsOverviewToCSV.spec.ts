@@ -4,17 +4,17 @@ import { act } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import { useDownloadAutomationRateByFeatureData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateByFeatureData'
 import { useDownloadAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateTimeSeriesData'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import * as fileUtils from 'utils/file'
 
 jest.mock('@repo/feature-flags')
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock(
     'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
@@ -33,7 +33,7 @@ jest.mock('utils/file', () => ({
 }))
 
 const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
-const mockedUseStatsFilters = jest.mocked(useStatsFilters)
+const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
@@ -91,10 +91,8 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             emoji: null,
         })
 
-        mockedUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: { period: mockPeriod },
-            userTimezone: 'UTC',
-            granularity: 'day',
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: { period: mockPeriod },
         } as any)
 
         mockedUseDashboardData.mockReturnValue({

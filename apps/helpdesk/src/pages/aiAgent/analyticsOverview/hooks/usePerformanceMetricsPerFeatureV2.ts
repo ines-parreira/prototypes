@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
@@ -41,6 +40,7 @@ import {
     fetchTimeSavedPerFeature,
     useTimeSavedPerFeature,
 } from 'pages/aiAgent/analyticsOverview/hooks/useTimeSavedPerFeature'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
 
@@ -108,7 +108,7 @@ const ALL_FEATURES_METRICS_CONFIG: Record<
 }
 
 export const usePerformanceMetricsPerFeatureV2 = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const {
         data: entityData,
@@ -123,7 +123,6 @@ export const usePerformanceMetricsPerFeatureV2 = () => {
 
     const data = useMemo(() => {
         return assembleEntityRows(
-            entityData,
             FEATURE_ENTITIES,
             buildAllFeaturesRow(entityData),
         )
@@ -152,20 +151,18 @@ export const fetchPerformanceMetricsPerFeatureV2 = async (
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         ALL_FEATURES_FILENAME,
     )
 
     const metrics = await fetchEntityMetrics(
         createAllFeaturesFetchConfig(costSavedPerInteraction),
-        periodFilters,
+        statsFilters,
         timezone,
     )
 
     const data = assembleEntityRows(
-        metrics.data,
         FEATURE_ENTITIES,
         buildAllFeaturesRow(metrics.data),
     )

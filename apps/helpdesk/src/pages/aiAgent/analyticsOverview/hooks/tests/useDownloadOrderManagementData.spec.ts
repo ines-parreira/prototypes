@@ -10,9 +10,9 @@ jest.mock('../useOrderManagementMetrics', () => ({
     fetchOrderManagementMetrics: jest.fn(),
 }))
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters', () => {
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => {
     const stableReturn = {
-        cleanStatsFilters: {
+        statsFilters: {
             period: {
                 start_datetime: '2024-01-01T00:00:00Z',
                 end_datetime: '2024-01-31T23:59:59Z',
@@ -20,7 +20,7 @@ jest.mock('domains/reporting/hooks/support-performance/useStatsFilters', () => {
         },
         userTimezone: 'UTC',
     }
-    return { useStatsFilters: jest.fn(() => stableReturn) }
+    return { useAiAgentStatsFilters: jest.fn(() => stableReturn) }
 })
 
 jest.mock(

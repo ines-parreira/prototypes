@@ -299,29 +299,26 @@ describe('fetchShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
         expect(result.files[result.fileName]).toBe('csv-content')
     })
 
-    it('passes only period filters to fetchEntityMetrics', async () => {
-        await fetchShoppingAssistantPerformanceByEngagementFeatureMetrics(
-            {
-                period: {
-                    start_datetime: '2024-01-01T00:00:00Z',
-                    end_datetime: '2024-01-31T23:59:59Z',
-                },
-                channel: {
-                    operator: 'one_of',
-                    values: ['chat'],
-                } as any,
+    it('passes full statsFilters to fetchEntityMetrics', async () => {
+        const filtersWithExtra = {
+            period: {
+                start_datetime: '2024-01-01T00:00:00Z',
+                end_datetime: '2024-01-31T23:59:59Z',
+            },
+            channel: {
+                operator: 'one_of',
+                values: ['chat'],
             } as any,
+        } as any
+
+        await fetchShoppingAssistantPerformanceByEngagementFeatureMetrics(
+            filtersWithExtra,
             'UTC',
         )
 
         expect(mockFetchEntityMetrics).toHaveBeenCalledWith(
             expect.any(Object),
-            {
-                period: {
-                    start_datetime: '2024-01-01T00:00:00Z',
-                    end_datetime: '2024-01-31T23:59:59Z',
-                },
-            },
+            filtersWithExtra,
             'UTC',
         )
     })

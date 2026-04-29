@@ -1,11 +1,5 @@
 import type { ComponentProps, ComponentType } from 'react'
-import React, {
-    createElement,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import { createElement, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { usePrevious } from '@repo/hooks'

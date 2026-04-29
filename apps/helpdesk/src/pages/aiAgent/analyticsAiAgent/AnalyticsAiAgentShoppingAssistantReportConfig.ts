@@ -425,7 +425,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 },
         },
         reportFilters: {
-            optional: [],
+            optional: [FilterKey.Stores],
             persistent: [FilterKey.Period, FilterKey.AggregationWindow],
         },
     }

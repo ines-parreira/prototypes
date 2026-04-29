@@ -54,13 +54,13 @@ describe('useBuyThroughRatePerProduct', () => {
         })
     })
 
-    it('calls the query factory with period filters and timezone', () => {
+    it('calls the query factory with stats filters and timezone', () => {
         renderHook(() =>
             useBuyThroughRatePerProduct(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
-            filters: { period: MOCK_STATS_FILTERS.period },
+            filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
         })
     })
@@ -123,11 +123,11 @@ describe('fetchBuyThroughRatePerProduct', () => {
         })
     })
 
-    it('calls the query factory with period filters and timezone', async () => {
+    it('calls the query factory with stats filters and timezone', async () => {
         await fetchBuyThroughRatePerProduct(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
-            filters: { period: MOCK_STATS_FILTERS.period },
+            filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
         })
     })

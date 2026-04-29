@@ -6,8 +6,8 @@ import { screen } from '@testing-library/react'
 
 import { useListStores } from '@gorgias/helpdesk-queries'
 
-import * as automateFiltersHooks from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import * as aiAgentStatsFiltersHooks from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 import { AnalyticsOverviewConfigurableLineGraph } from '../AnalyticsOverviewConfigurableLineGraph'
@@ -82,7 +82,10 @@ describe('AnalyticsOverviewConfigurableLineGraph', () => {
     })
 
     beforeEach(() => {
-        jest.spyOn(automateFiltersHooks, 'useAutomateFilters').mockReturnValue({
+        jest.spyOn(
+            aiAgentStatsFiltersHooks,
+            'useAiAgentStatsFilters',
+        ).mockReturnValue({
             statsFilters: {
                 period: {
                     start_datetime: '2024-06-01',

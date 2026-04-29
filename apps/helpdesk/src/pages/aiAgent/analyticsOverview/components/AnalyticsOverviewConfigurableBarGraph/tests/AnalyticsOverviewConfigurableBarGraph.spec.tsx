@@ -7,9 +7,9 @@ import { userEvent } from '@testing-library/user-event'
 
 import { useListStores } from '@gorgias/helpdesk-queries'
 
-import * as automateFiltersHooks from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AnalyticsOverviewConfigurableBarGraph } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableBarGraph/AnalyticsOverviewConfigurableBarGraph'
+import * as aiAgentStatsFiltersHooks from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import * as useMoneySavedHooks from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
@@ -88,7 +88,10 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
     })
 
     beforeEach(() => {
-        jest.spyOn(automateFiltersHooks, 'useAutomateFilters').mockReturnValue({
+        jest.spyOn(
+            aiAgentStatsFiltersHooks,
+            'useAiAgentStatsFilters',
+        ).mockReturnValue({
             statsFilters: {
                 period: {
                     start_datetime: '2024-01-01',

@@ -1,3 +1,4 @@
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { getPreviousUrl } from '@repo/routing'
 import { render } from '@repo/testing'
 import { QueryClient } from '@tanstack/react-query'
@@ -5,11 +6,17 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ThemeProvider } from 'core/theme'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 
 import { useExportAiAgentAllAgentsToCSV } from '../../hooks/useExportAiAgentAllAgentsToCSV'
 import { useExportAiAgentShoppingAssistantToCSV } from '../../hooks/useExportAiAgentShoppingAssistantToCSV'
 import { useExportAiAgentSupportAgentToCSV } from '../../hooks/useExportAiAgentSupportAgentToCSV'
 import { AnalyticsAiAgentLayout } from '../AnalyticsAiAgentLayout'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlagWithLoading: jest.fn(),
+}))
 
 jest.mock('@repo/routing', () => ({
     getPreviousUrl: jest.fn(),
@@ -49,15 +56,9 @@ jest.mock(
     }),
 )
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => {
-    const React = require('react')
-    const MockFiltersPanelWrapper = React.forwardRef(
-        (_props: any, ref: any) => (
-            <div ref={ref} data-testid="filters-panel">
-                Filters
-            </div>
-        ),
-    )
-    MockFiltersPanelWrapper.displayName = 'MockFiltersPanelWrapper'
+    const MockFiltersPanelWrapper = jest.fn(() => (
+        <div data-testid="filters-panel">Filters</div>
+    ))
     return {
         __esModule: true,
         default: MockFiltersPanelWrapper,
@@ -71,6 +72,12 @@ jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
+
+const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
+const mockFiltersPanelWrapper = jest.requireMock(
+    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
+).default as jest.Mock
+
 const mockedGetPreviousUrl = jest.mocked(getPreviousUrl)
 const mockedUseExportAiAgentAllAgentsToCSV = jest.mocked(
     useExportAiAgentAllAgentsToCSV,
@@ -101,6 +108,12 @@ describe('AnalyticsAiAgentLayout', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+
+        mockedUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+
         mockedGetPreviousUrl.mockReturnValue('/app/dashboard')
         mockedUseExportAiAgentAllAgentsToCSV.mockReturnValue({
             triggerDownload: jest.fn(),
@@ -175,5 +188,47 @@ describe('AnalyticsAiAgentLayout', () => {
         expect(
             screen.queryByTestId('dashboard-renderer'),
         ).not.toBeInTheDocument()
+    })
+
+    it('passes optional filters to FiltersPanelWrapper when flag is enabled', () => {
+        mockedUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({ optionalFilters: [FilterKey.Stores] }),
+            expect.anything(),
+        )
+    })
+
+    it('passes empty optionalFilters to FiltersPanelWrapper when flag is disabled', () => {
+        mockedUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({ optionalFilters: [] }),
+            expect.anything(),
+        )
+    })
+
+    it('passes empty optionalFilters to FiltersPanelWrapper while flag is loading', () => {
+        mockedUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: true,
+        })
+
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({ optionalFilters: [] }),
+            expect.anything(),
+        )
     })
 })

@@ -8,7 +8,6 @@ import {
     useTrendFromMultipleMetricsTrend,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     fetchStatsMetricPerDimension,
     useStatsMetricPerDimension,
@@ -33,6 +32,7 @@ import {
 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 const MAP_DIMENSION_API_TO_UI: Record<string, string> = {
     [AutomationFeatureType.AiAgent]: 'AI Agent',
@@ -46,7 +46,7 @@ export const useAutomationRateByFeature = (): {
     isLoading: boolean
     isError: boolean
 } => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
         automationRatePerFeature.name,
@@ -54,7 +54,7 @@ export const useAutomationRateByFeature = (): {
     const newQueryEnabled = stage === 'live' || stage === 'complete'
     const response = useStatsMetricPerDimension(
         automationRatePerFeatureQueryFactoryV2({
-            filters: cleanStatsFilters,
+            filters: statsFilters,
             timezone: userTimezone,
         }),
         'automationFeatureType',
@@ -92,11 +92,11 @@ export const useAutomationRateByFeatureV1 = (
     isLoading: boolean
     isError: boolean
 } => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const aiAgentUserId = useAIAgentUserId()
 
     const aiAgentInteractions = useTrendFromMultipleMetricsTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         aiAgentAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
@@ -106,7 +106,7 @@ export const useAutomationRateByFeatureV1 = (
     )
 
     const flowsInteractions = useTrendFromMultipleMetricsTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         flowsAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
@@ -116,7 +116,7 @@ export const useAutomationRateByFeatureV1 = (
     )
 
     const articleRecommendationInteractions = useTrendFromMultipleMetricsTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         articleRecommendationAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
@@ -126,7 +126,7 @@ export const useAutomationRateByFeatureV1 = (
     )
 
     const orderManagementInteractions = useTrendFromMultipleMetricsTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         orderManagementAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
@@ -136,20 +136,20 @@ export const useAutomationRateByFeatureV1 = (
     )
 
     const allAutomatedInteractions = useAllAutomatedInteractions(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         enabled,
     )
 
     const allAutomatedInteractionsByAutoResponders =
         useAllAutomatedInteractionsByAutoResponders(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
             enabled,
         )
 
     const billableTicketsExcludingAIAgent = useBillableTicketsExcludingAIAgent(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         aiAgentUserId,
         enabled,

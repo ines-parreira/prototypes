@@ -6,22 +6,22 @@ import { aiSalesAgentProductClicksQueryFactoryV2 } from 'domains/reporting/model
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 export const useProductClicksPerProduct = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
 ) => {
     const query = aiSalesAgentProductClicksQueryFactoryV2({
-        filters: { period: statsFilters.period },
+        filters,
         timezone,
     })
     return useStatsMetricPerDimension(query)
 }
 
 export const fetchProductClicksPerProduct = (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
 ) => {
     const query = aiSalesAgentProductClicksQueryFactoryV2({
-        filters: { period: statsFilters.period },
+        filters,
         timezone,
     })
     return fetchStatsMetricPerDimension(query)

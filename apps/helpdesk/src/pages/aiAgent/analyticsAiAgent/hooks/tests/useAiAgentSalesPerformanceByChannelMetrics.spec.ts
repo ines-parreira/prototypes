@@ -259,7 +259,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
 
             renderHook(() => useAiAgentSalesPerformanceByChannelMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('email')
 
             expect(row.automatedInteractions).toBeNull()
@@ -287,7 +287,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
 
             renderHook(() => useAiAgentSalesPerformanceByChannelMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('email')
 
             expect(row.revenuePerInteraction).toBe(5.0)
@@ -313,7 +313,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
 
             renderHook(() => useAiAgentSalesPerformanceByChannelMetrics())
 
-            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
             const row = rowBuilder('email')
 
             expect(row.revenuePerInteraction).toBeNull()
@@ -376,7 +376,7 @@ describe('fetchAiAgentSalesPerformanceByChannelMetrics', () => {
         expect(result.files[result.fileName]).toBe('csv-content')
     })
 
-    it('passes only period filters to fetchEntityMetrics', async () => {
+    it('passes full statsFilters to fetchEntityMetrics', async () => {
         const filtersWithExtra = { ...MOCK_STATS_FILTERS, channel: 'chat' }
 
         await fetchAiAgentSalesPerformanceByChannelMetrics(
@@ -385,7 +385,7 @@ describe('fetchAiAgentSalesPerformanceByChannelMetrics', () => {
         )
 
         const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-        expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        expect(passedFilters).toEqual(filtersWithExtra)
     })
 
     it('uses channel display names in CSV rows', async () => {
@@ -421,7 +421,7 @@ describe('fetchAiAgentSalesPerformanceByChannelMetrics', () => {
             )
 
             const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
-            expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+            expect(passedFilters).toEqual(MOCK_STATS_FILTERS)
         })
     })
 })

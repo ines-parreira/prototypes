@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
@@ -36,6 +35,7 @@ import {
     fetchOverallTimeSavedByAgentPerOrderManagementType,
     useOverallTimeSavedByAgentPerOrderManagementType,
 } from 'pages/aiAgent/analyticsOverview/hooks/useOverallTimeSavedByAgentPerOrderManagementType'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
 
@@ -135,7 +135,7 @@ const ORDER_MANAGEMENT_METRICS_CONFIG: Record<
 }
 
 export const useOrderManagementMetrics = (): OrderManagementMetricsData => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
     const {
         data: entityData,
@@ -151,7 +151,6 @@ export const useOrderManagementMetrics = (): OrderManagementMetricsData => {
     const data = useMemo(
         () =>
             assembleEntityRows(
-                entityData,
                 ORDER_MANAGEMENT_ENTITIES,
                 buildOrderManagementRow(entityData),
             ),
@@ -196,20 +195,18 @@ export const fetchOrderManagementMetrics = async (
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
-    const periodFilters: StatsFilters = { period: statsFilters.period }
     const fileName = getCsvFileNameWithDates(
-        periodFilters.period,
+        statsFilters.period,
         ORDER_MANAGEMENT_FILENAME,
     )
 
     const metrics = await fetchEntityMetrics(
         createOrderManagementFetchConfig(costSavedPerInteraction),
-        periodFilters,
+        statsFilters,
         timezone,
     )
 
     const data = assembleEntityRows(
-        metrics.data,
         ORDER_MANAGEMENT_ENTITIES,
         buildOrderManagementRow(metrics.data),
     )
