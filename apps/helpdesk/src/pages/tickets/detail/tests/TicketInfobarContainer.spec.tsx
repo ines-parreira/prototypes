@@ -1,4 +1,4 @@
-import type { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactElement, ReactNode } from 'react'
 
 import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
@@ -8,7 +8,6 @@ import { assumeMock, render, userEvent } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { act, screen } from '@testing-library/react'
 import { fromJS, OrderedMap } from 'immutable'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -25,11 +24,13 @@ import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentUser } from 'state/currentUser/selectors'
+import { executeAction } from 'state/infobar/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import { getAIAgentMessages, getIntegrationsData } from 'state/ticket/selectors'
 import type { RootState, StoreState } from 'state/types'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
-import { renderWithRouter } from 'utils/testing'
+import { fetchWidgets, selectContext } from 'state/widgets/actions'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useCancelOrder } from '../hooks/useCancelOrder'
 import { useDuplicateOrder } from '../hooks/useDuplicateOrder'
@@ -127,6 +128,7 @@ jest.mock(
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn().mockReturnValue({ type: 'MOCK_EXECUTE_ACTION' }),
 }))
+const mockedExecuteAction = assumeMock(executeAction)
 
 jest.mock('pages/tickets/detail/hooks/useEditOrder', () => ({
     useEditOrder: jest.fn().mockReturnValue({
@@ -237,6 +239,8 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
 )
 
 jest.mock('state/widgets/actions')
+const mockedFetchWidgets = assumeMock(fetchWidgets)
+const mockedSelectContext = assumeMock(selectContext)
 
 jest.mock('state/ui/ticketAIAgentFeedback')
 
@@ -312,7 +316,7 @@ const ticketsStore: Partial<RootState> = {
     integrations: fromJS({ integrations: [] }),
 }
 
-const mockStore = configureMockStore([thunk])
+const mockStore = configureMockStore<Partial<StoreState>>([thunk])
 const state: Partial<StoreState> = ticketsStore
 
 jest.mock('state/ticket/actions', () => ({
@@ -320,6 +324,18 @@ jest.mock('state/ticket/actions', () => ({
     removeTag: jest.fn(),
 }))
 let store = mockStore(state)
+
+const renderWithStore = (
+    ui: ReactElement,
+    options?: Parameters<typeof render>[1],
+    storeState: Partial<StoreState> = store.getState(),
+) => {
+    return render(ui, {
+        storeState,
+        ...options,
+    })
+}
+
 const dateAfterFeatureAvailable = '2025-01-01T00:00:00Z'
 
 describe('<TicketInfobarContainer />', () => {
@@ -343,10 +359,18 @@ describe('<TicketInfobarContainer />', () => {
         mockCapturedOnSyncProfile = undefined
         ;(mockedGetIntegrationsByType as jest.Mock).mockReturnValue(() => [])
         store = mockStore(state)
-        store.dispatch = jest.fn()
 
         useFlagMock.mockReturnValue(false)
         useHelpdeskV2MS1FlagMock.mockReturnValue(false)
+        mockedChangeTicketMessage.mockReturnValue({
+            type: 'MOCK_CHANGE_TICKET_MESSAGE',
+        } as any)
+        mockedFetchWidgets.mockReturnValue({
+            type: 'MOCK_FETCH_WIDGETS',
+        } as any)
+        mockedSelectContext.mockReturnValue({
+            type: 'MOCK_SELECT_CONTEXT',
+        } as any)
 
         useHasAIAgentMock.mockReturnValue(true)
         getCurrentUserMock.mockReturnValue(
@@ -392,14 +416,9 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should render infobar for active customer', () => {
-        const { container } = renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
+        const { container } = renderWithStore(
+            <TicketInfobarContainer {...minProps} />,
+            { path: '/foo/:ticketId?', initialEntries: ['/foo/new'] },
         )
 
         expect(container.firstChild).toHaveTextContent(
@@ -411,15 +430,10 @@ describe('<TicketInfobarContainer />', () => {
     it('should not render the navbar if the UI Vision MS1 flag is enabled', () => {
         useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
+        renderWithStore(<TicketInfobarContainer {...minProps} />, {
+            path: '/foo/:ticketId?',
+            initialEntries: ['/foo/new'],
+        })
 
         expect(
             screen.queryByText(CUSTOMER_DETAILS_TAB.LABEL),
@@ -434,12 +448,10 @@ describe('<TicketInfobarContainer />', () => {
             })
             useHasAIAgentMock.mockReturnValue(true)
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/new' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/new'],
+            })
 
             expect(
                 screen.queryByText(AI_FEEDBACK_TAB.LABEL),
@@ -453,12 +465,10 @@ describe('<TicketInfobarContainer />', () => {
             })
             useHasAIAgentMock.mockReturnValue(false)
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/new' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/new'],
+            })
 
             expect(
                 screen.queryByText(AI_FEEDBACK_TAB.LABEL),
@@ -468,12 +478,10 @@ describe('<TicketInfobarContainer />', () => {
         it('does not show when user cannot access AI feedback', () => {
             useCanAccessAIFeedbackMock.mockReturnValue(false)
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/new' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/new'],
+            })
 
             expect(
                 screen.queryByText(AI_FEEDBACK_TAB.LABEL),
@@ -483,12 +491,10 @@ describe('<TicketInfobarContainer />', () => {
         it('shows when user can access AI feedback', () => {
             useCanAccessAIFeedbackMock.mockReturnValue(true)
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/new' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/new'],
+            })
 
             expect(
                 screen.queryByText(AI_FEEDBACK_TAB.LABEL),
@@ -502,12 +508,10 @@ describe('<TicketInfobarContainer />', () => {
                 }),
             )
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/new' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/new'],
+            })
 
             const aiFeedbackTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
             const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB.LABEL)
@@ -519,15 +523,10 @@ describe('<TicketInfobarContainer />', () => {
         })
 
         it('does not show on edit-widgets route', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                {
-                    path: '/foo/:ticketId?/edit-widgets',
-                    route: '/foo/123/edit-widgets',
-                },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?/edit-widgets',
+                initialEntries: ['/foo/123/edit-widgets'],
+            })
 
             expect(
                 screen.queryByText(AI_FEEDBACK_TAB.LABEL),
@@ -536,14 +535,9 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should render TicketFeedback content when AI Agent tab is clicked', () => {
-        const { rerenderComponent } = renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
+        const { rerender } = renderWithStore(
+            <TicketInfobarContainer {...minProps} />,
+            { path: '/foo/:ticketId?', initialEntries: ['/foo/new'] },
         )
 
         userEvent.click(screen.getByText(AI_FEEDBACK_TAB.LABEL))
@@ -554,11 +548,7 @@ describe('<TicketInfobarContainer />', () => {
             activeTab: TicketInfobarTab.AIFeedback,
             onChangeTab,
         })
-        rerenderComponent(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-        )
+        rerender(<TicketInfobarContainer {...minProps} />)
 
         expect(screen.getByText('TicketFeedback')).toBeInTheDocument()
     })
@@ -572,15 +562,10 @@ describe('<TicketInfobarContainer />', () => {
             } as any,
         ])
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
+        renderWithStore(<TicketInfobarContainer {...minProps} />, {
+            path: '/foo/:ticketId?',
+            initialEntries: ['/foo/new'],
+        })
 
         userEvent.click(screen.getByText(AI_FEEDBACK_TAB.LABEL))
 
@@ -608,15 +593,10 @@ describe('<TicketInfobarContainer />', () => {
             } as any,
         ])
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
+        renderWithStore(<TicketInfobarContainer {...minProps} />, {
+            path: '/foo/:ticketId?',
+            initialEntries: ['/foo/new'],
+        })
 
         userEvent.click(screen.getByText(AI_FEEDBACK_TAB.LABEL))
 
@@ -631,7 +611,6 @@ describe('<TicketInfobarContainer />', () => {
             ...state,
             ticket: fromJS({ ...ticket, status: TicketStatus.Closed }),
         })
-        customStore.dispatch = jest.fn()
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 id: 2,
@@ -639,14 +618,15 @@ describe('<TicketInfobarContainer />', () => {
             }),
         )
 
-        renderWithRouter(
-            <Provider store={customStore}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
+        renderWithStore(
+            <TicketInfobarContainer {...minProps} />,
             {
                 path: `/foo/:ticketId?`,
-                route: `/foo/123/?activeTab=${TicketInfobarTab.AIFeedback}`,
+                initialEntries: [
+                    `/foo/123/?activeTab=${TicketInfobarTab.AIFeedback}`,
+                ],
             },
+            customStore.getState(),
         )
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
@@ -660,15 +640,10 @@ describe('<TicketInfobarContainer />', () => {
             onChangeTab,
         })
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/123',
-            },
-        )
+        renderWithStore(<TicketInfobarContainer {...minProps} />, {
+            path: '/foo/:ticketId?',
+            initialEntries: ['/foo/123'],
+        })
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
     })
@@ -679,31 +654,26 @@ describe('<TicketInfobarContainer />', () => {
             ...state,
             ticket: fromJS({ ...ticket, status: TicketStatus.Closed }),
         })
-        customStore.dispatch = jest.fn()
 
-        renderWithRouter(
-            <Provider store={customStore}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
+        renderWithStore(
+            <TicketInfobarContainer {...minProps} />,
             {
                 path: '/foo/:ticketId?',
-                route: `/foo/123/?activeTab=${TicketInfobarTab.AIFeedback}`,
+                initialEntries: [
+                    `/foo/123/?activeTab=${TicketInfobarTab.AIFeedback}`,
+                ],
             },
+            customStore.getState(),
         )
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
     })
 
     it('should not call onChangeTab when clicking an already active tab', () => {
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
+        renderWithStore(<TicketInfobarContainer {...minProps} />, {
+            path: '/foo/:ticketId?',
+            initialEntries: ['/foo/new'],
+        })
 
         userEvent.click(screen.getByText(CUSTOMER_DETAILS_TAB.LABEL))
 
@@ -712,14 +682,9 @@ describe('<TicketInfobarContainer />', () => {
 
     it('should render AutoQA content when AutoQA tab is clicked', () => {
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
-        const { rerenderComponent } = renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
+        const { rerender } = renderWithStore(
+            <TicketInfobarContainer {...minProps} />,
+            { path: '/foo/:ticketId?', initialEntries: ['/foo/new'] },
         )
 
         userEvent.click(screen.getByText(AUTO_QA_TAB.LABEL))
@@ -731,11 +696,7 @@ describe('<TicketInfobarContainer />', () => {
             activeTab: TicketInfobarTab.AutoQA,
             onChangeTab,
         })
-        rerenderComponent(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-        )
+        rerender(<TicketInfobarContainer {...minProps} />)
 
         expect(screen.getByText('AutoQA Component')).toBeInTheDocument()
     })
@@ -782,12 +743,10 @@ describe('<TicketInfobarContainer />', () => {
             onChangeTab,
         })
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            { path: '/foo/:ticketId?', route: '/foo/123' },
-        )
+        renderWithStore(<TicketInfobarContainer {...minProps} />, {
+            path: '/foo/:ticketId?',
+            initialEntries: ['/foo/123'],
+        })
 
         expect(
             screen.getByText('ShopifyCustomer Component'),
@@ -800,12 +759,10 @@ describe('<TicketInfobarContainer />', () => {
             onChangeTab,
         })
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            { path: '/foo/:ticketId?', route: '/foo/123' },
-        )
+        renderWithStore(<TicketInfobarContainer {...minProps} />, {
+            path: '/foo/:ticketId?',
+            initialEntries: ['/foo/123'],
+        })
 
         expect(screen.getByText(/isOpen:false/)).toBeInTheDocument()
 
@@ -823,12 +780,10 @@ describe('<TicketInfobarContainer />', () => {
                 onChangeTab,
             })
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
         })
 
         it('dispatches executeAction, calls onClose and onSuccess with address payload on submit', () => {
@@ -836,7 +791,7 @@ describe('<TicketInfobarContainer />', () => {
             const onSuccess = jest.fn()
             const addressPayload = { address1: '456 New St', city: 'Austin' }
 
-            render(
+            renderWithStore(
                 mockCapturedRenderEditShippingAddressModal!({
                     isOpen: true,
                     orderId: '123',
@@ -851,7 +806,11 @@ describe('<TicketInfobarContainer />', () => {
             mockCapturedConnectedModalProps!.onChange('payload', addressPayload)
             mockCapturedConnectedModalProps!.onSubmit()
 
-            expect(store.dispatch).toHaveBeenCalled()
+            expect(mockedExecuteAction).toHaveBeenCalledWith({
+                actionName: ShopifyActionType.EditShippingAddress,
+                integrationId: 1,
+                payload: { payload: addressPayload },
+            })
             expect(onClose).toHaveBeenCalledTimes(1)
             expect(onSuccess).toHaveBeenCalledWith(addressPayload)
         })
@@ -861,7 +820,7 @@ describe('<TicketInfobarContainer />', () => {
             const onSuccess = jest.fn()
             const callback = jest.fn()
 
-            render(
+            renderWithStore(
                 mockCapturedRenderEditShippingAddressModal!({
                     isOpen: true,
                     orderId: '1',
@@ -883,7 +842,14 @@ describe('<TicketInfobarContainer />', () => {
             mockCapturedConnectedModalProps!.onSubmit()
 
             expect(callback).toHaveBeenCalled()
-            expect(store.dispatch).toHaveBeenCalled()
+            expect(mockedExecuteAction).toHaveBeenCalledWith({
+                actionName: ShopifyActionType.EditShippingAddress,
+                integrationId: 1,
+                payload: {
+                    city: 'NYC',
+                    payload: { address1: '123 Main St' },
+                },
+            })
         })
     })
 
@@ -897,12 +863,10 @@ describe('<TicketInfobarContainer />', () => {
                 data: { data: { id: 1, customer: { id: 456 } } },
             } as any)
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText('TimelineContent Component'),
@@ -916,12 +880,10 @@ describe('<TicketInfobarContainer />', () => {
             })
             useGetTicketMock.mockReturnValue({ data: null } as any)
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText('TimelineContent Component'),
@@ -943,12 +905,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({ '42': {} }))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText('IntegrationTabContent-recharge'),
@@ -968,12 +928,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({ '42': {} }))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText('IntegrationTabContent-recharge'),
@@ -993,12 +951,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({}))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText('IntegrationTabContent-recharge'),
@@ -1020,12 +976,10 @@ describe('<TicketInfobarContainer />', () => {
                 fromJS({ '42': {}, '43': {} }),
             )
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText(
@@ -1052,12 +1006,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({ '43': {} }))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText(
@@ -1086,12 +1038,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({ '50': {} }))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText('IntegrationTabContent-bigcommerce'),
@@ -1108,12 +1058,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({}))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText('IntegrationTabContent-bigcommerce'),
@@ -1135,12 +1083,10 @@ describe('<TicketInfobarContainer />', () => {
                 fromJS({ '50': {}, '51': {} }),
             )
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText(
@@ -1169,12 +1115,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({ '60': {} }))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText('IntegrationTabContent-magento2'),
@@ -1196,12 +1140,10 @@ describe('<TicketInfobarContainer />', () => {
                 fromJS({ '60': {}, '61': {} }),
             )
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText(
@@ -1227,12 +1169,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({}))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText('WooCommerceTabContent'),
@@ -1249,12 +1189,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({}))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText('WooCommerceTabContent'),
@@ -1276,12 +1214,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({ '70': {} }))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText('IntegrationTabContent-smile'),
@@ -1298,12 +1234,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({}))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText('IntegrationTabContent-smile'),
@@ -1325,12 +1259,10 @@ describe('<TicketInfobarContainer />', () => {
                 fromJS({ '70': {}, '71': {} }),
             )
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText('IntegrationTabContent-smile'),
@@ -1360,12 +1292,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({ '71': {} }))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText(
@@ -1397,12 +1327,10 @@ describe('<TicketInfobarContainer />', () => {
                 ]),
             )
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             const pathMatches = screen.getAllByText(
                 /IntegrationTabContent-smile-path-/,
@@ -1430,12 +1358,10 @@ describe('<TicketInfobarContainer />', () => {
                 fromJS({ '80': {}, '81': {} }),
             )
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText(
@@ -1462,12 +1388,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({ '80': {} }))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.getByText('IntegrationTabContent-yotpo'),
@@ -1484,12 +1408,10 @@ describe('<TicketInfobarContainer />', () => {
             )
             mockedGetIntegrationsData.mockReturnValue(fromJS({}))
 
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
+            renderWithStore(<TicketInfobarContainer {...minProps} />, {
+                path: '/foo/:ticketId?',
+                initialEntries: ['/foo/123'],
+            })
 
             expect(
                 screen.queryByText('IntegrationTabContent-yotpo'),

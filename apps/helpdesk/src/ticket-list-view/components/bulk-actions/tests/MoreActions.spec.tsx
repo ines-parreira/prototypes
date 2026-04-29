@@ -2,13 +2,10 @@ import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { JobType } from '@gorgias/helpdesk-types'
 
@@ -61,8 +58,6 @@ jest.mock(
         ),
 )
 
-const mockStore = configureMockStore([thunk])
-
 const defaultStore = {
     currentUser: fromJS({
         role: { name: UserRole.Agent },
@@ -83,12 +78,7 @@ describe('<MoreActions />', () => {
     const renderWithStore = (
         props: ComponentProps<typeof MoreActions> = minProps,
         store = defaultStore,
-    ) =>
-        render(
-            <Provider store={mockStore(store)}>
-                <MoreActions {...props} />
-            </Provider>,
-        )
+    ) => render(<MoreActions {...props} />, { storeState: store })
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)

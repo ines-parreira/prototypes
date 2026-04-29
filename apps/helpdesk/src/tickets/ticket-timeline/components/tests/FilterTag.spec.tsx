@@ -1,7 +1,6 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { FilterTag } from '../FilterTag'
 
@@ -29,7 +28,7 @@ const defaultSections = [
 ]
 
 const renderComponent = (props = {}) => {
-    return renderWithStoreAndQueryClientProvider(
+    return render(
         <FilterTag label="Test Filter" onRemove={mockOnRemove} {...props} />,
     )
 }

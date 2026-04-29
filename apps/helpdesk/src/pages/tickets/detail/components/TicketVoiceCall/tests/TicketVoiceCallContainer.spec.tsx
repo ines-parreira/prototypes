@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -16,7 +16,6 @@ import {
 import type { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
-import { renderWithStore } from 'utils/testing'
 
 import TicketVoiceCallContainer from '../TicketVoiceCallContainer'
 
@@ -85,7 +84,7 @@ const renderComponent = (
     props: Partial<ComponentProps<typeof TicketVoiceCallContainer>> = {},
     stateOverrides = {},
 ) => {
-    return renderWithStore(
+    return render(
         <TicketVoiceCallContainer
             header={header}
             user={user}
@@ -100,15 +99,17 @@ const renderComponent = (
             {...props}
         />,
         {
-            currentUser: fromJS({
-                id: 123,
-                name: 'Test User',
-                role: { name: UserRole.Admin },
-            }),
-            agents: fromJS({
-                all: [fromJS(inCallAgent)],
-            }),
-            ...stateOverrides,
+            storeState: {
+                currentUser: fromJS({
+                    id: 123,
+                    name: 'Test User',
+                    role: { name: UserRole.Admin },
+                }),
+                agents: fromJS({
+                    all: [fromJS(inCallAgent)],
+                }),
+                ...stateOverrides,
+            },
         },
     )
 }

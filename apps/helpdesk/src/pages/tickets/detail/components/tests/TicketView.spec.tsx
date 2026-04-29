@@ -1,17 +1,14 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock, getLastMockCall } from '@repo/testing'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import Timeline from 'timeline/Timeline'
-import { mockStore } from 'utils/testing'
 
 import TicketView, { TIMELINE_CLOSE_BUTTON_ID } from '../TicketView'
 
@@ -107,17 +104,13 @@ describe('<TicketView />', () => {
     })
 
     it('should not have the hidden classes', () => {
-        const { container } = renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
-                    ticket: mockTicketState,
-                    billing: mockBillingState,
-                    integrations: mockIntegrationsState,
-                })}
-            >
-                <TicketView {...minProps} />
-            </Provider>,
-        )
+        const { container } = render(<TicketView {...minProps} />, {
+            storeState: {
+                ticket: mockTicketState,
+                billing: mockBillingState,
+                integrations: mockIntegrationsState,
+            },
+        })
 
         expect(container.querySelector('.page')).not.toHaveClass(
             'transition',
@@ -128,16 +121,15 @@ describe('<TicketView />', () => {
     })
 
     it('should have the hidden classes', () => {
-        const { container } = renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
+        const { container } = render(
+            <TicketView {...minProps} isTicketHidden />,
+            {
+                storeState: {
                     ticket: mockTicketState,
                     billing: mockBillingState,
                     integrations: mockIntegrationsState,
-                })}
-            >
-                <TicketView {...minProps} isTicketHidden />
-            </Provider>,
+                },
+            },
         )
 
         expect(container.querySelector('.page')).toHaveClass(
@@ -154,17 +146,13 @@ describe('<TicketView />', () => {
             closeTimeline: closeTimelineMock,
         } as unknown as ReturnType<typeof useTimelinePanel>)
 
-        renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
-                    ticket: mockTicketState,
-                    billing: mockBillingState,
-                    integrations: mockIntegrationsState,
-                })}
-            >
-                <TicketView {...minProps} />
-            </Provider>,
-        )
+        render(<TicketView {...minProps} />, {
+            storeState: {
+                ticket: mockTicketState,
+                billing: mockBillingState,
+                integrations: mockIntegrationsState,
+            },
+        })
 
         fireEvent.click(document.getElementById(TIMELINE_CLOSE_BUTTON_ID)!)
 
@@ -177,17 +165,13 @@ describe('<TicketView />', () => {
             closeTimeline: closeTimelineMock,
         } as unknown as ReturnType<typeof useTimelinePanel>)
 
-        renderWithQueryClientProvider(
-            <Provider
-                store={mockStore({
-                    ticket: mockTicketState,
-                    billing: mockBillingState,
-                    integrations: mockIntegrationsState,
-                })}
-            >
-                <TicketView {...minProps} />
-            </Provider>,
-        )
+        render(<TicketView {...minProps} />, {
+            storeState: {
+                ticket: mockTicketState,
+                billing: mockBillingState,
+                integrations: mockIntegrationsState,
+            },
+        })
 
         expect(TimelineMock).toHaveBeenCalledWith(
             {
@@ -214,17 +198,13 @@ describe('<TicketView />', () => {
                 closeTimeline: closeTimelineMock,
             } as unknown as ReturnType<typeof useTimelinePanel>)
 
-            const { container } = renderWithQueryClientProvider(
-                <Provider
-                    store={mockStore({
-                        ticket: mockTicketState,
-                        billing: mockBillingState,
-                        integrations: mockIntegrationsState,
-                    })}
-                >
-                    <TicketView {...minProps} />
-                </Provider>,
-            )
+            const { container } = render(<TicketView {...minProps} />, {
+                storeState: {
+                    ticket: mockTicketState,
+                    billing: mockBillingState,
+                    integrations: mockIntegrationsState,
+                },
+            })
 
             expect(
                 container.querySelector('.timelineDrawer'),
@@ -241,17 +221,13 @@ describe('<TicketView />', () => {
                 closeTimeline: closeTimelineMock,
             } as unknown as ReturnType<typeof useTimelinePanel>)
 
-            const { container } = renderWithQueryClientProvider(
-                <Provider
-                    store={mockStore({
-                        ticket: mockTicketState,
-                        billing: mockBillingState,
-                        integrations: mockIntegrationsState,
-                    })}
-                >
-                    <TicketView {...minProps} />
-                </Provider>,
-            )
+            const { container } = render(<TicketView {...minProps} />, {
+                storeState: {
+                    ticket: mockTicketState,
+                    billing: mockBillingState,
+                    integrations: mockIntegrationsState,
+                },
+            })
 
             expect(
                 container.querySelector('.timelineDrawer'),

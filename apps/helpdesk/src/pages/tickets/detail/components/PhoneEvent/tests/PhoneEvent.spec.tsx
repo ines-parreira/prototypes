@@ -1,25 +1,11 @@
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import type { MockStoreEnhanced } from 'redux-mock-store'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import PhoneEvent from '../PhoneEvent'
 
 describe('<PhoneEvent/>', () => {
-    let store: MockStoreEnhanced
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
-
-    beforeEach(() => {
-        store = mockStore()
-    })
-
     describe('render()', () => {
         it.each([
             PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
@@ -30,10 +16,8 @@ describe('<PhoneEvent/>', () => {
                 type: eventType,
                 customer: { name: 'Michael Gorgias' },
             })
-            const { getByText } = renderWithRouter(
-                <Provider store={store}>
-                    <PhoneEvent event={event} isLast={false} />
-                </Provider>,
+            const { getByText } = render(
+                <PhoneEvent event={event} isLast={false} />,
             )
 
             expect(getByText('keyboard_arrow_down')).toBeInTheDocument()
@@ -44,10 +28,8 @@ describe('<PhoneEvent/>', () => {
                 type: PhoneIntegrationEvent.ConversationStarted,
                 data: { phone_ticket_id: 123 },
             })
-            const { getByText } = renderWithRouter(
-                <Provider store={store}>
-                    <PhoneEvent event={event} isLast={false} />
-                </Provider>,
+            const { getByText } = render(
+                <PhoneEvent event={event} isLast={false} />,
             )
 
             expect(getByText('View ticket')).toBeInTheDocument()
@@ -61,10 +43,8 @@ describe('<PhoneEvent/>', () => {
                     customer: { name: 'Customer' },
                 },
             })
-            const { getByText } = renderWithRouter(
-                <Provider store={store}>
-                    <PhoneEvent event={event} isLast={false} />
-                </Provider>,
+            const { getByText } = render(
+                <PhoneEvent event={event} isLast={false} />,
             )
 
             expect(

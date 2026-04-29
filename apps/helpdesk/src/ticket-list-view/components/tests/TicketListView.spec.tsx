@@ -1,11 +1,10 @@
 import type { ComponentProps, ReactElement, ReactNode } from 'react'
 import { Fragment } from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { clearViewsCount, setViewsCount } from '@repo/views'
 import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Virtuoso } from 'react-virtuoso'
 import configureMockStore from 'redux-mock-store'
@@ -16,7 +15,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import type { RootState, StoreDispatch } from 'state/types'
 import { setViewEditMode } from 'state/views/actions'
-import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import useSelection from 'ticket-list-view/hooks/useSelection'
 import useSortOrder from 'ticket-list-view/hooks/useSortOrder'
 import useTickets from 'ticket-list-view/hooks/useTickets'
@@ -90,6 +88,15 @@ const defaultState: Partial<RootState> = {
     }),
 }
 const store = mockStore(defaultState)
+
+const renderWithStore = (
+    ui: ReactElement,
+    options?: Parameters<typeof render>[1],
+) =>
+    render(ui, {
+        storeState: store.getState(),
+        ...options,
+    })
 
 describe('<TicketListView />', () => {
     const loadMore = jest.fn()
@@ -198,11 +205,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should pause updates when there are selected tickets', () => {
-        renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        renderWithStore(<TicketListView viewId={123} />)
 
         expect(pauseUpdates).toHaveBeenCalledWith()
     })
@@ -215,11 +218,7 @@ describe('<TicketListView />', () => {
             selectedTickets: {},
             clear: jest.fn(),
         })
-        renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        renderWithStore(<TicketListView viewId={123} />)
         expect(resumeUpdates).toHaveBeenCalledWith()
     })
 
@@ -233,53 +232,33 @@ describe('<TicketListView />', () => {
             selectedTickets: {},
         })
 
-        const { rerender } = renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { rerender } = renderWithStore(<TicketListView viewId={123} />)
 
         useSortOrderMock.mockReturnValue([
             'last_message_datetime:desc',
             jest.fn(),
         ])
         act(() => {
-            rerender(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
-            )
+            rerender(<TicketListView viewId={123} />)
         })
 
         expect(clear).toHaveBeenCalledWith()
     })
 
     it('should display a list of tickets', () => {
-        const { getByText } = renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { getByText } = renderWithStore(<TicketListView viewId={123} />)
 
         expect(getByText(ticket.id)).toBeInTheDocument()
     })
 
     it('should register the scrolling element', () => {
-        renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        renderWithStore(<TicketListView viewId={123} />)
 
         expect(setElement).toHaveBeenCalledWith(expect.any(HTMLElement))
     })
 
     it('should call loadMore when the end of the list is reached', () => {
-        renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        renderWithStore(<TicketListView viewId={123} />)
         const [[{ endReached }]] = VirtuosoMock.mock.calls as [
             [{ endReached: () => void }],
         ]
@@ -307,11 +286,7 @@ describe('<TicketListView />', () => {
             partials: [ticket],
         })
 
-        const { getByText } = renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { getByText } = renderWithStore(<TicketListView viewId={123} />)
 
         expect(getByText('true')).toBeInTheDocument()
     })
@@ -357,10 +332,8 @@ describe('<TicketListView />', () => {
             partials: [ticket, { ...ticket, id: 456 }],
         })
 
-        const { rerender, getByText } = renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
+        const { rerender, getByText } = renderWithStore(
+            <TicketListView viewId={123} />,
         )
         useTicketsMock.mockReturnValue({
             loadMore,
@@ -373,16 +346,8 @@ describe('<TicketListView />', () => {
             ticketIds: { current: [152] },
             partials: [ticket],
         })
-        rerender(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
-        rerender(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        rerender(<TicketListView viewId={123} />)
+        rerender(<TicketListView viewId={123} />)
 
         expect(getByText('true')).toBeInTheDocument()
     })
@@ -401,11 +366,7 @@ describe('<TicketListView />', () => {
             partials: [],
         })
 
-        const { getByText } = renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { getByText } = renderWithStore(<TicketListView viewId={123} />)
 
         expect(getByText(listInfoProps.DEFAULT.text)).toBeInTheDocument()
         expect(getByText(listInfoProps.DEFAULT.subText)).toBeInTheDocument()
@@ -429,18 +390,14 @@ describe('<TicketListView />', () => {
             ...view,
             deactivated_datetime: '2021-01-01T00:00:00Z',
         }
-        const { getByText } = renderWithQueryClientAndRouter(
-            <Provider
-                store={mockStore({
-                    views: fromJS({
-                        active: deactivatedView,
-                        items: [deactivatedView],
-                    }),
-                })}
-            >
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { getByText } = renderWithStore(<TicketListView viewId={123} />, {
+            storeState: {
+                views: fromJS({
+                    active: deactivatedView,
+                    items: [deactivatedView],
+                }),
+            },
+        })
 
         expect(
             getByText(listInfoProps.INVALID_FILTERS.text),
@@ -468,17 +425,13 @@ describe('<TicketListView />', () => {
             partials: [],
         })
 
-        const { getByText } = renderWithQueryClientAndRouter(
-            <Provider
-                store={mockStore({
-                    views: fromJS({
-                        active: null,
-                    }),
-                })}
-            >
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { getByText } = renderWithStore(<TicketListView viewId={123} />, {
+            storeState: {
+                views: fromJS({
+                    active: null,
+                }),
+            },
+        })
 
         expect(getByText(listInfoProps.INACCESSIBLE.text)).toBeInTheDocument()
         expect(
@@ -487,17 +440,13 @@ describe('<TicketListView />', () => {
     })
 
     it('should redirect to edition view', () => {
-        const { getByText } = renderWithQueryClientAndRouter(
-            <Provider
-                store={mockStore({
-                    views: fromJS({
-                        active: null,
-                    }),
-                })}
-            >
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { getByText } = renderWithStore(<TicketListView viewId={123} />, {
+            storeState: {
+                views: fromJS({
+                    active: null,
+                }),
+            },
+        })
         fireEvent.click(getByText('tune'))
 
         expect(dispatch).toHaveBeenCalledWith(setViewEditMode())
@@ -509,11 +458,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should display bulk actions', () => {
-        const { getByText } = renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { getByText } = renderWithStore(<TicketListView viewId={123} />)
 
         expect(getByText('BulkActions')).toBeInTheDocument()
     })
@@ -521,11 +466,7 @@ describe('<TicketListView />', () => {
     it('should hide bulk actions for view with count 0', () => {
         setViewsCount({ [view.id]: 0 })
 
-        const { queryByText } = renderWithQueryClientAndRouter(
-            <Provider store={store}>
-                <TicketListView viewId={123} />
-            </Provider>,
-        )
+        const { queryByText } = renderWithStore(<TicketListView viewId={123} />)
 
         expect(queryByText('BulkActions')).not.toBeInTheDocument()
     })
@@ -540,10 +481,8 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
+            const { getByText } = renderWithStore(
+                <TicketListView viewId={123} />,
             )
 
             expect(getByText('Select all')).toBeInTheDocument()
@@ -558,10 +497,8 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
+            const { getByText } = renderWithStore(
+                <TicketListView viewId={123} />,
             )
 
             expect(getByText('? selected')).toBeInTheDocument()
@@ -577,10 +514,8 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
+            const { getByText } = renderWithStore(
+                <TicketListView viewId={123} />,
             )
 
             expect(getByText('7 selected')).toBeInTheDocument()
@@ -597,10 +532,8 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
+            const { getByText } = renderWithStore(
+                <TicketListView viewId={123} />,
             )
 
             expect(getByText('1 selected')).toBeInTheDocument()
@@ -622,11 +555,7 @@ describe('<TicketListView />', () => {
                 partials: [ticket],
             })
 
-            renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
-            )
+            renderWithStore(<TicketListView viewId={123} />)
 
             expect(TicketMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -657,11 +586,7 @@ describe('<TicketListView />', () => {
                 partials: mockPartials,
             })
 
-            renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
-            )
+            renderWithStore(<TicketListView viewId={123} />)
 
             expect(TicketMock).toHaveBeenCalledTimes(3)
         })
@@ -685,11 +610,7 @@ describe('<TicketListView />', () => {
                 partials: mockTickets,
             })
 
-            renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
-            )
+            renderWithStore(<TicketListView viewId={123} />)
 
             expect(TicketMock).toHaveBeenNthCalledWith(
                 1,
@@ -729,10 +650,8 @@ describe('<TicketListView />', () => {
                 partials: initialPartials,
             })
 
-            const { rerender } = renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
+            const { rerender } = renderWithStore(
+                <TicketListView viewId={123} />,
             )
 
             expect(TicketMock).toHaveBeenCalledTimes(1)
@@ -750,11 +669,7 @@ describe('<TicketListView />', () => {
                 partials: updatedPartials,
             })
 
-            rerender(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
-            )
+            rerender(<TicketListView viewId={123} />)
 
             expect(TicketMock).toHaveBeenCalledTimes(3)
         })
@@ -773,11 +688,7 @@ describe('<TicketListView />', () => {
                 partials: [],
             })
 
-            renderWithQueryClientAndRouter(
-                <Provider store={store}>
-                    <TicketListView viewId={123} />
-                </Provider>,
-            )
+            renderWithStore(<TicketListView viewId={123} />)
 
             expect(TicketMock).not.toHaveBeenCalled()
         })

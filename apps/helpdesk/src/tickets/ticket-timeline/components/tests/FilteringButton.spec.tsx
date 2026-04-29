@@ -1,7 +1,6 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { FilteringButton } from '../FilteringButton'
 
@@ -14,9 +13,7 @@ const defaultProps = {
 }
 
 const renderComponent = (props = {}) => {
-    return renderWithStoreAndQueryClientProvider(
-        <FilteringButton {...defaultProps} {...props} />,
-    )
+    return render(<FilteringButton {...defaultProps} {...props} />)
 }
 
 describe('FilteringButton', () => {

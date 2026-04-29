@@ -1,13 +1,8 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { assumeMock, render } from '@repo/testing'
+import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { view as fixtureView } from 'fixtures/views'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -19,8 +14,6 @@ import * as TicketListActionsModule from 'pages/tickets/list/components/TicketLi
 import TicketList from 'pages/tickets/list/TicketList'
 import { fetchTags } from 'state/tags/actions'
 import { updateSelectedItemsIds } from 'state/views/actions'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/tickets/list/components/TicketListActions')
 const TicketListActionsMock =
@@ -99,8 +92,7 @@ jest.mock('@repo/tickets', () => ({
     }),
 }))
 
-const mockStore = configureMockStore([thunk])
-const store = mockStore({
+const defaultStoreState = {
     tickets: fromJS({ items: [] }),
     views: fromJS({
         active: fixtureView,
@@ -108,13 +100,27 @@ const store = mockStore({
             selectedItemsIds: [],
         },
     }),
+}
+
+const createStoreState = (selectedItemsIds = fromJS([])) => ({
+    tickets: fromJS({ items: [] }),
+    views: fromJS({
+        active: fixtureView,
+        _internal: {
+            selectedItemsIds,
+        },
+    }),
 })
+
+const renderTicketList = (options?: Parameters<typeof render>[1]) =>
+    render(<TicketList />, {
+        storeState: defaultStoreState,
+        ...options,
+    })
 
 jest.mock('pages/common/components/CreateTicket/CreateTicketButton')
 const MockCreateTicketButton = CreateTicketButton as jest.Mock
 MockCreateTicketButton.mockImplementation(() => <div>CreateTicketButton</div>)
-
-const mockedQueryClient = mockQueryClient()
 
 describe('<TicketList />', () => {
     beforeEach(() => {
@@ -146,113 +152,62 @@ describe('<TicketList />', () => {
     })
 
     it('should display with default props', () => {
-        const { container } = renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={store}>
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        const { container } = renderTicketList()
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch the tags on load', () => {
-        renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={store}>
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        renderTicketList()
         expect(fetchTagsMock).toHaveBeenCalled()
     })
 
     it('should display "New view" as title', () => {
-        renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={store}>
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: 'app/tickets/',
-                route: 'app/tickets/new',
-            },
-        )
+        renderTicketList({
+            path: 'app/tickets/',
+            initialEntries: ['app/tickets/new'],
+        })
         expect(document.title).toEqual('New view')
     })
 
     it(`should display "${fixtureView.name}" as title`, () => {
-        renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={store}>
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        renderTicketList()
         expect(document.title).toEqual(fixtureView.name)
     })
 
     it('should display Search as title', () => {
-        renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={store}>
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: 'app/tickets/',
-                route: 'app/tickets/search',
-            },
-        )
+        renderTicketList({
+            path: 'app/tickets/',
+            initialEntries: ['app/tickets/search'],
+        })
         expect(document.title).toEqual('Search')
     })
 
     it('should render SearchRankProvider on search url', () => {
-        const { container } = renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={store}>
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: 'app/tickets/',
-                route: 'app/tickets/search',
-            },
-        )
+        const { container } = renderTicketList({
+            path: 'app/tickets/',
+            initialEntries: ['app/tickets/search'],
+        })
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render CreateTicketButton when not in edit mode', () => {
-        const { queryByText } = renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={store}>
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        const { queryByText } = renderTicketList()
 
         expect(queryByText('CreateTicketButton')).toBeInTheDocument()
     })
 
     it('should not render CreateTicketButton when in edit mode', () => {
-        const { queryByText } = renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider
-                    store={mockStore({
-                        tickets: fromJS({ items: [] }),
-                        views: fromJS({
-                            active: { ...fixtureView, editMode: true },
-                            _internal: {
-                                selectedItemsIds: [],
-                            },
-                        }),
-                    })}
-                >
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        const { queryByText } = render(<TicketList />, {
+            storeState: {
+                tickets: fromJS({ items: [] }),
+                views: fromJS({
+                    active: { ...fixtureView, editMode: true },
+                    _internal: {
+                        selectedItemsIds: [],
+                    },
+                }),
+            },
+        })
 
         expect(queryByText('CreateTicketButton')).not.toBeInTheDocument()
     })
@@ -262,23 +217,17 @@ describe('<TicketList />', () => {
             .spyOn(ViewTable, 'default')
             .mockImplementation(() => <div />)
 
-        renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider
-                    store={mockStore({
-                        tickets: fromJS({ items: [] }),
-                        views: fromJS({
-                            active: { ...fixtureView, editMode: true },
-                            _internal: {
-                                selectedItemsIds: [],
-                            },
-                        }),
-                    })}
-                >
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        render(<TicketList />, {
+            storeState: {
+                tickets: fromJS({ items: [] }),
+                views: fromJS({
+                    active: { ...fixtureView, editMode: true },
+                    _internal: {
+                        selectedItemsIds: [],
+                    },
+                }),
+            },
+        })
 
         expect(spy).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -290,34 +239,23 @@ describe('<TicketList />', () => {
     })
 
     it('should render Search ViewTable with tickets_with_highlights', () => {
-        const history = createMemoryHistory({
-            initialEntries: ['app/tickets/search'],
-        })
         const spy = jest
             .spyOn(ViewTable, 'default')
             .mockImplementation(() => <div />)
 
-        renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider
-                    store={mockStore({
-                        tickets: fromJS({ items: [] }),
-                        views: fromJS({
-                            active: { ...fixtureView, editMode: true },
-                            _internal: {
-                                selectedItemsIds: [],
-                            },
-                        }),
-                    })}
-                >
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: 'app/tickets/search',
-                history,
+        render(<TicketList />, {
+            storeState: {
+                tickets: fromJS({ items: [] }),
+                views: fromJS({
+                    active: { ...fixtureView, editMode: true },
+                    _internal: {
+                        selectedItemsIds: [],
+                    },
+                }),
             },
-        )
+            initialEntries: ['app/tickets/search'],
+            path: 'app/tickets/search',
+        })
 
         expect(spy).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -329,13 +267,7 @@ describe('<TicketList />', () => {
     })
 
     it('should trigger update of selected items ids', () => {
-        const { getByText } = renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={store}>
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        const { getByText } = renderTicketList()
 
         fireEvent.click(getByText('TicketListActions'))
         fireEvent.click(getByText('MacroContainer'))
@@ -343,45 +275,33 @@ describe('<TicketList />', () => {
     })
 
     it('should call viewTickets with ticket ids', () => {
-        renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider
-                    store={mockStore({
-                        tickets: fromJS({ items: [{ id: 1 }, { id: 2 }] }),
-                        views: fromJS({
-                            active: fixtureView,
-                            _internal: {
-                                selectedItemsIds: [],
-                            },
-                        }),
-                    })}
-                >
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        render(<TicketList />, {
+            storeState: {
+                tickets: fromJS({ items: [{ id: 1 }, { id: 2 }] }),
+                views: fromJS({
+                    active: fixtureView,
+                    _internal: {
+                        selectedItemsIds: [],
+                    },
+                }),
+            },
+        })
 
         expect(mockViewTickets).toHaveBeenCalledWith([1, 2])
     })
 
     it('should clear viewed tickets on unmount', () => {
-        const { unmount } = renderWithRouter(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider
-                    store={mockStore({
-                        tickets: fromJS({ items: [{ id: 1 }, { id: 2 }] }),
-                        views: fromJS({
-                            active: fixtureView,
-                            _internal: {
-                                selectedItemsIds: [],
-                            },
-                        }),
-                    })}
-                >
-                    <TicketList />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        const { unmount } = render(<TicketList />, {
+            storeState: {
+                tickets: fromJS({ items: [{ id: 1 }, { id: 2 }] }),
+                views: fromJS({
+                    active: fixtureView,
+                    _internal: {
+                        selectedItemsIds: [],
+                    },
+                }),
+            },
+        })
 
         unmount()
 
@@ -407,32 +327,26 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'Original Subject',
-                                        excerpt: 'Original Excerpt',
-                                        language: 'en',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'Original Subject',
+                                excerpt: 'Original Excerpt',
+                                language: 'en',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             const items = spy.mock.calls[0][0].items
             expect(items.get(0).get('subject')).toBe('Original Subject')
@@ -447,31 +361,25 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'Original Subject',
-                                        excerpt: 'Original Excerpt',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'Original Subject',
+                                excerpt: 'Original Excerpt',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             const items = spy.mock.calls[0][0].items
             expect(items.get(0).get('subject')).toBe('Original Subject')
@@ -490,32 +398,26 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'Original Subject',
-                                        excerpt: 'Original Excerpt',
-                                        language: 'es',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'Original Subject',
+                                excerpt: 'Original Excerpt',
+                                language: 'es',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             const items = spy.mock.calls[0][0].items
             expect(items.get(0).get('subject')).toBe('Translated Subject')
@@ -530,32 +432,26 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'Original Subject',
-                                        excerpt: 'Original Excerpt',
-                                        language: 'es',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'Original Subject',
+                                excerpt: 'Original Excerpt',
+                                language: 'es',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             const items = spy.mock.calls[0][0].items
             expect(items.get(0).get('subject')).toBe('Original Subject')
@@ -574,43 +470,37 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'English Subject',
-                                        excerpt: 'English Excerpt',
-                                        language: 'en',
-                                    },
-                                    {
-                                        id: 2,
-                                        subject: 'Spanish Subject',
-                                        excerpt: 'Spanish Excerpt',
-                                        language: 'es',
-                                    },
-                                    {
-                                        id: 3,
-                                        subject: 'No Language Subject',
-                                        excerpt: 'No Language Excerpt',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'English Subject',
+                                excerpt: 'English Excerpt',
+                                language: 'en',
+                            },
+                            {
+                                id: 2,
+                                subject: 'Spanish Subject',
+                                excerpt: 'Spanish Excerpt',
+                                language: 'es',
+                            },
+                            {
+                                id: 3,
+                                subject: 'No Language Subject',
+                                excerpt: 'No Language Excerpt',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             const items = spy.mock.calls[0][0].items
             expect(items.get(0).get('subject')).toBe('English Subject')
@@ -630,41 +520,35 @@ describe('<TicketList />', () => {
 
             jest.spyOn(ViewTable, 'default').mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'Subject 1',
-                                        language: 'en',
-                                    },
-                                    {
-                                        id: 2,
-                                        subject: 'Subject 2',
-                                        language: 'fr',
-                                    },
-                                    {
-                                        id: 3,
-                                        subject: 'Subject 3',
-                                        language: 'de',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'Subject 1',
+                                language: 'en',
+                            },
+                            {
+                                id: 2,
+                                subject: 'Subject 2',
+                                language: 'fr',
+                            },
+                            {
+                                id: 3,
+                                subject: 'Subject 3',
+                                language: 'de',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith('en')
             expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith('fr')
@@ -683,32 +567,26 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'Original Subject',
-                                        excerpt: 'Original Excerpt',
-                                        language: 'ja',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'Original Subject',
+                                excerpt: 'Original Excerpt',
+                                language: 'ja',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             const items = spy.mock.calls[0][0].items
             expect(items.get(0).get('subject')).toBe('Translated Subject')
@@ -726,32 +604,26 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'Original Subject',
-                                        excerpt: 'Original Excerpt',
-                                        language: 'zh',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'Original Subject',
+                                excerpt: 'Original Excerpt',
+                                language: 'zh',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             const items = spy.mock.calls[0][0].items
             expect(items.get(0).get('subject')).toBe('')
@@ -773,44 +645,38 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            tickets: fromJS({
-                                items: [
-                                    {
-                                        id: 1,
-                                        subject: 'Original Subject 1',
-                                        excerpt: 'Original Excerpt 1',
-                                        language: 'es',
-                                    },
-                                    {
-                                        id: 2,
-                                        subject: 'Original Subject 2',
-                                        excerpt: 'Original Excerpt 2',
-                                        language: 'fr',
-                                    },
-                                    {
-                                        id: 3,
-                                        subject: 'Original Subject 3',
-                                        excerpt: 'Original Excerpt 3',
-                                        language: 'de',
-                                    },
-                                ],
-                            }),
-                            views: fromJS({
-                                active: fixtureView,
-                                _internal: {
-                                    selectedItemsIds: [],
-                                },
-                            }),
-                        })}
-                    >
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: {
+                    tickets: fromJS({
+                        items: [
+                            {
+                                id: 1,
+                                subject: 'Original Subject 1',
+                                excerpt: 'Original Excerpt 1',
+                                language: 'es',
+                            },
+                            {
+                                id: 2,
+                                subject: 'Original Subject 2',
+                                excerpt: 'Original Excerpt 2',
+                                language: 'fr',
+                            },
+                            {
+                                id: 3,
+                                subject: 'Original Subject 3',
+                                excerpt: 'Original Excerpt 3',
+                                language: 'de',
+                            },
+                        ],
+                    }),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                },
+            })
 
             const items = spy.mock.calls[0][0].items
             expect(items.get(0).get('subject')).toBe('Translated Subject 1')
@@ -825,15 +691,6 @@ describe('<TicketList />', () => {
     describe('ActionComponent memoization', () => {
         it('should pass selectedItemsIds to TicketListActions', () => {
             const selectedIds = fromJS([1, 2, 3])
-            const customStore = mockStore({
-                tickets: fromJS({ items: [] }),
-                views: fromJS({
-                    active: fixtureView,
-                    _internal: {
-                        selectedItemsIds: selectedIds,
-                    },
-                }),
-            })
 
             jest.spyOn(ViewTable, 'default').mockImplementation(
                 ({
@@ -843,13 +700,9 @@ describe('<TicketList />', () => {
                 },
             )
 
-            renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider store={customStore}>
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            render(<TicketList />, {
+                storeState: createStoreState(selectedIds),
+            })
 
             expect(TicketListActionsMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -865,23 +718,11 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            const { rerender } = renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider store={store}>
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const { rerender } = renderTicketList()
 
             const firstCall = spy.mock.calls[0][0].ActionsComponent
 
-            rerender(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider store={store}>
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            rerender(<TicketList />)
 
             const secondCall = spy.mock.calls[1][0].ActionsComponent
 
@@ -893,43 +734,20 @@ describe('<TicketList />', () => {
                 .spyOn(ViewTable, 'default')
                 .mockImplementation(() => <div />)
 
-            const firstStore = mockStore({
-                tickets: fromJS({ items: [] }),
-                views: fromJS({
-                    active: fixtureView,
-                    _internal: {
-                        selectedItemsIds: fromJS([1]),
-                    },
-                }),
-            })
+            let storeState = createStoreState(fromJS([1]))
 
-            const { rerender } = renderWithRouter(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider store={firstStore}>
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            const { rerender, store } = render(<TicketList />, {
+                storeState: () => storeState,
+            })
 
             const firstCall = spy.mock.calls[0][0].ActionsComponent
 
-            const secondStore = mockStore({
-                tickets: fromJS({ items: [] }),
-                views: fromJS({
-                    active: fixtureView,
-                    _internal: {
-                        selectedItemsIds: fromJS([1, 2]),
-                    },
-                }),
-            })
+            storeState = createStoreState(fromJS([1, 2]))
 
-            rerender(
-                <QueryClientProvider client={mockedQueryClient}>
-                    <Provider store={secondStore}>
-                        <TicketList />
-                    </Provider>
-                </QueryClientProvider>,
-            )
+            act(() => {
+                store.dispatch({ type: 'test/selected-items-updated' })
+            })
+            rerender(<TicketList />)
 
             const secondCall = spy.mock.calls[1][0].ActionsComponent
 

@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { setViewsCount } from '@repo/views'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -6,7 +6,6 @@ import userEvent from '@testing-library/user-event'
 import type { View } from '@gorgias/helpdesk-types'
 
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { renderWithRouter } from 'utils/testing'
 
 import { TicketNavbarViewLinkItem } from '../TicketNavbarViewLinkItem'
 
@@ -34,14 +33,14 @@ const renderComponent = ({
     view?: Pick<View, 'id' | 'name' | 'slug' | 'decoration'>
     label?: string
 } = {}) =>
-    renderWithRouter(
+    render(
         <TicketNavbarViewLinkItem
             icon="user-arrow"
             view={view}
             label={label}
         />,
         {
-            route: '/app/tickets/123/inbox',
+            initialEntries: ['/app/tickets/123/inbox'],
             path: '/app/tickets/:viewId?/:slug?',
         },
     )
@@ -60,13 +59,10 @@ describe('TicketNavbarViewLinkItem', () => {
     })
 
     it('should render the view name when no label is provided', () => {
-        renderWithRouter(
-            <TicketNavbarViewLinkItem icon="inbox" view={defaultView} />,
-            {
-                route: '/app/tickets/123/inbox',
-                path: '/app/tickets/:viewId?/:slug?',
-            },
-        )
+        render(<TicketNavbarViewLinkItem icon="inbox" view={defaultView} />, {
+            initialEntries: ['/app/tickets/123/inbox'],
+            path: '/app/tickets/:viewId?/:slug?',
+        })
 
         expect(screen.getByText('Inbox')).toBeInTheDocument()
     })
@@ -159,10 +155,10 @@ describe('TicketNavbarViewLinkItem', () => {
         const user = userEvent.setup()
         const onClick = jest.fn()
 
-        renderWithRouter(
+        render(
             <TicketNavbarViewLinkItem view={defaultView} onClick={onClick} />,
             {
-                route: '/app/tickets/123/inbox',
+                initialEntries: ['/app/tickets/123/inbox'],
                 path: '/app/tickets/:viewId?/:slug?',
             },
         )
@@ -173,64 +169,55 @@ describe('TicketNavbarViewLinkItem', () => {
     })
 
     it('should be active when the current path matches an additionalActivePath', () => {
-        renderWithRouter(
+        render(
             <TicketNavbarViewLinkItem
                 icon="user-arrow"
                 view={{ ...defaultView, id: 999 }}
                 label="Assigned to me"
                 additionalActivePaths={['/app/views']}
             />,
-            {
-                route: '/app/views',
-                path: '/app/views',
-            },
+            { initialEntries: ['/app/views'], path: '/app/views' },
         )
 
         expect(screen.getByRole('link')).toHaveClass('active')
     })
 
     it('should be active when the current path is /app and it is in additionalActivePaths', () => {
-        renderWithRouter(
+        render(
             <TicketNavbarViewLinkItem
                 icon="user-arrow"
                 view={{ ...defaultView, id: 999 }}
                 label="Assigned to me"
                 additionalActivePaths={['/app/views', '/app']}
             />,
-            {
-                route: '/app',
-                path: '/app',
-            },
+            { initialEntries: ['/app'], path: '/app' },
         )
 
         expect(screen.getByRole('link')).toHaveClass('active')
     })
 
     it('should not be active when additionalActivePaths does not match the current path', () => {
-        renderWithRouter(
+        render(
             <TicketNavbarViewLinkItem
                 icon="user-arrow"
                 view={{ ...defaultView, id: 999 }}
                 label="Assigned to me"
                 additionalActivePaths={['/app/views']}
             />,
-            {
-                route: '/app/other',
-                path: '/app/other',
-            },
+            { initialEntries: ['/app/other'], path: '/app/other' },
         )
 
         expect(screen.getByRole('link')).not.toHaveClass('active')
     })
 
     it('should pass canduId as data-candu-id attribute on the link', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <TicketNavbarViewLinkItem
                 view={defaultView}
                 canduId="test-candu-id"
             />,
             {
-                route: '/app/tickets/123/inbox',
+                initialEntries: ['/app/tickets/123/inbox'],
                 path: '/app/tickets/:viewId?/:slug?',
             },
         )

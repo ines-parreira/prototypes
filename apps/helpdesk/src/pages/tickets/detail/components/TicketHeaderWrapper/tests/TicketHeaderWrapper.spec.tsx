@@ -6,10 +6,6 @@ import { render } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter, Route } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 
@@ -36,7 +32,6 @@ const mockUseHelpdeskV2MS1Flag = useHelpdeskV2MS1Flag as jest.Mock
 const mockUseCollisionDetection = useCollisionDetection as jest.Mock
 
 const mockedServer = new MockAdapter(client)
-const mockStore = configureMockStore([thunk])
 
 describe('<TicketHeaderWrapper/>', () => {
     const minProps: ComponentProps<typeof TicketHeaderWrapper> = {
@@ -50,13 +45,12 @@ describe('<TicketHeaderWrapper/>', () => {
         }),
     }
 
-    const renderWithRouter = (ui: React.ReactElement, ticketId = '123') => {
-        return render(
-            <MemoryRouter initialEntries={[`/tickets/${ticketId}`]}>
-                <Route path="/tickets/:ticketId">{ui}</Route>
-            </MemoryRouter>,
-        )
-    }
+    const renderWithRouter = (state: typeof defaultState, ticketId = '123') =>
+        render(<TicketHeaderWrapper {...minProps} />, {
+            initialEntries: [`/tickets/${ticketId}`],
+            path: '/tickets/:ticketId',
+            storeState: state,
+        })
 
     beforeEach(() => {
         mockedServer.reset()
@@ -71,24 +65,16 @@ describe('<TicketHeaderWrapper/>', () => {
     })
 
     it('should render history button, ticket header and separator, and ticket fields', () => {
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <TicketHeaderWrapper {...minProps} />
-            </Provider>,
-        )
+        const { container } = renderWithRouter(defaultState)
         expect(container).toMatchSnapshot()
     })
 
     it('should hide history button when on a new ticket and not render separator', () => {
         const { container } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    ticket: fromJS({}),
-                })}
-            >
-                <TicketHeaderWrapper {...minProps} />
-            </Provider>,
+            {
+                ...defaultState,
+                ticket: fromJS({}),
+            },
             'new',
         )
         expect(container).toMatchSnapshot()
@@ -97,11 +83,7 @@ describe('<TicketHeaderWrapper/>', () => {
     it('should hide TicketHeader and TicketFields when UIVisionMilestone1 flag is enabled', () => {
         mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
 
-        const { queryByText } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <TicketHeaderWrapper {...minProps} />
-            </Provider>,
-        )
+        const { queryByText } = renderWithRouter(defaultState)
 
         expect(queryByText('TicketHeader')).not.toBeInTheDocument()
         expect(queryByText('TicketFields')).not.toBeInTheDocument()

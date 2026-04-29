@@ -1,7 +1,6 @@
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import defaultUserEvent from '@testing-library/user-event'
-
-import { renderWithStoreAndQueryClientProvider as render } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { SortingButton } from '../components/SortingButton'
 import type { SortOption } from '../hooks/useTimelineData'

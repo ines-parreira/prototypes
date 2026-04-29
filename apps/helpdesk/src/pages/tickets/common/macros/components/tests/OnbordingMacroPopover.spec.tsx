@@ -1,18 +1,15 @@
 import { useRef } from 'react'
 
 import { logEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import type { UserSetting } from 'config/types/user'
 import { UserSettingType } from 'config/types/user'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'
 
@@ -24,8 +21,6 @@ jest.mock('hooks/useAppDispatch.ts', () => {
         default: () => jest.fn(),
     }
 })
-
-const mockStore = configureMockStore([thunk])
 
 // https://github.com/react-bootstrap/react-bootstrap/issues/4997
 jest.mock('popper.js', () => {
@@ -46,10 +41,8 @@ jest.mock('popper.js', () => {
 
 describe('<OnbordingMacroPopover />', () => {
     function OnbordingMacroPopoverTestComp({
-        defaultState,
         props,
     }: {
-        defaultState: Partial<RootState>
         props?: {
             onClearMacro?: () => void
             macrosVisible?: boolean
@@ -57,17 +50,26 @@ describe('<OnbordingMacroPopover />', () => {
     }) {
         const ref = useRef<any>()
         return (
-            <Provider store={mockStore(defaultState)}>
-                <div style={{ width: 800 }} ref={ref} data-testid="parent">
-                    <OnbordingMacroPopover
-                        macrosVisible={props?.macrosVisible ?? true}
-                        onClearMacro={props?.onClearMacro || jest.fn()}
-                        target={ref}
-                    />
-                </div>
-            </Provider>
+            <div style={{ width: 800 }} ref={ref} data-testid="parent">
+                <OnbordingMacroPopover
+                    macrosVisible={props?.macrosVisible ?? true}
+                    onClearMacro={props?.onClearMacro || jest.fn()}
+                    target={ref}
+                />
+            </div>
         )
     }
+
+    const renderPopover = (
+        defaultState: Partial<RootState>,
+        props?: {
+            onClearMacro?: () => void
+            macrosVisible?: boolean
+        },
+    ) =>
+        render(<OnbordingMacroPopoverTestComp props={props} />, {
+            storeState: defaultState,
+        })
 
     it('should display popover', () => {
         const userSettings: UserSetting[] = [
@@ -88,9 +90,7 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        const { baseElement } = renderWithRouter(
-            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
-        )
+        const { baseElement } = renderPopover(defaultState)
 
         expect(baseElement).toMatchSnapshot()
     })
@@ -114,9 +114,7 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        renderWithRouter(
-            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
-        )
+        renderPopover(defaultState)
 
         expect(screen.queryByText('Got it')).toBeFalsy()
     })
@@ -139,9 +137,7 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        renderWithRouter(
-            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
-        )
+        renderPopover(defaultState)
 
         expect(screen.queryByText('Got it')).toBeFalsy()
     })
@@ -165,9 +161,7 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        renderWithRouter(
-            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
-        )
+        renderPopover(defaultState)
 
         expect(screen.queryByText('Got it')).toBeFalsy()
     })
@@ -191,9 +185,7 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        renderWithRouter(
-            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
-        )
+        renderPopover(defaultState)
 
         expect(screen.queryByText('Got it')).toBeFalsy()
     })
@@ -220,12 +212,7 @@ describe('<OnbordingMacroPopover />', () => {
 
         const onClearMacro = jest.fn()
 
-        renderWithRouter(
-            <OnbordingMacroPopoverTestComp
-                props={{ onClearMacro }}
-                defaultState={defaultState}
-            />,
-        )
+        renderPopover(defaultState, { onClearMacro })
 
         fireEvent.click(await screen.findByText('Got it'))
         fireEvent.click(await screen.findByText('Keep search'))
@@ -255,12 +242,7 @@ describe('<OnbordingMacroPopover />', () => {
         }
 
         const onClearMacro = jest.fn()
-        renderWithRouter(
-            <OnbordingMacroPopoverTestComp
-                props={{ onClearMacro }}
-                defaultState={defaultState}
-            />,
-        )
+        renderPopover(defaultState, { onClearMacro })
 
         fireEvent.click(await screen.findByText('Got it'))
         fireEvent.click(await screen.findByText('Revert back'))
@@ -289,9 +271,7 @@ describe('<OnbordingMacroPopover />', () => {
             ticket: fromJS(ticket),
         }
 
-        renderWithRouter(
-            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
-        )
+        renderPopover(defaultState)
 
         fireEvent.click(await screen.findByText('Got it'))
         fireEvent.click(await screen.findByText('Revert back'))
@@ -322,19 +302,16 @@ describe('<OnbordingMacroPopover />', () => {
 
         const onClearMacro = jest.fn()
 
-        const { rerender } = renderWithRouter(
-            <OnbordingMacroPopoverTestComp
-                props={{ onClearMacro, macrosVisible: false }}
-                defaultState={defaultState}
-            />,
-        )
+        const { rerender } = renderPopover(defaultState, {
+            onClearMacro,
+            macrosVisible: false,
+        })
 
         expect(screen.queryByText('Got it')).toBeFalsy()
 
         rerender(
             <OnbordingMacroPopoverTestComp
                 props={{ onClearMacro, macrosVisible: true }}
-                defaultState={defaultState}
             />,
         )
 

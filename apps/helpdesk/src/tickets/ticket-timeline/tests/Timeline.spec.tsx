@@ -1,9 +1,8 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import { MemoryRouter } from 'react-router-dom'
 
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 import { TicketStatus } from '@gorgias/helpdesk-types'
@@ -14,7 +13,6 @@ import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getActiveCustomer } from 'state/customers/selectors'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { useTicketList } from 'timeline/hooks/useTicketList'
 import Timeline from 'timeline/Timeline'
 
@@ -138,11 +136,7 @@ describe('Timeline Integration Tests', () => {
         shopperId: number | null = null,
         ticketId?: number,
     ) => {
-        return renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <Timeline shopperId={shopperId} ticketId={ticketId} />
-            </MemoryRouter>,
-        )
+        return render(<Timeline shopperId={shopperId} ticketId={ticketId} />)
     }
 
     // Helper to mock tickets data

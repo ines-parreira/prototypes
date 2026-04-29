@@ -1,11 +1,8 @@
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { whatsAppMessageTemplates as mockWhatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplateNavigator from '../WhatsAppMessageTemplateNavigator'
 
@@ -34,12 +31,7 @@ jest.mock(
 )
 
 describe('WhatsAppMessageTemplateNavigator', () => {
-    const renderComponent = () =>
-        renderWithQueryClientProvider(
-            <Provider store={mockStore({} as any)}>
-                <WhatsAppMessageTemplateNavigator />
-            </Provider>,
-        )
+    const renderComponent = () => render(<WhatsAppMessageTemplateNavigator />)
 
     afterEach(cleanup)
 
@@ -70,11 +62,7 @@ describe('WhatsAppMessageTemplateNavigator', () => {
     })
     it('should display message when there are no templates', () => {
         listWhatsAppMessageTemplatesMock.mockReturnValue([])
-        renderWithQueryClientProvider(
-            <Provider store={mockStore({} as any)}>
-                <WhatsAppMessageTemplateNavigator />
-            </Provider>,
-        )
+        render(<WhatsAppMessageTemplateNavigator />)
         expect(
             screen.getByTestId('missing-templates-instructions'),
         ).toBeInTheDocument()

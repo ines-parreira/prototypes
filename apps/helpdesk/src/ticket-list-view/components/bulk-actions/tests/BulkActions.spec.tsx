@@ -1,12 +1,9 @@
 import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { JobType } from '@gorgias/helpdesk-types'
 
@@ -61,8 +58,6 @@ const mockCreateJob = jest.fn()
 jest.mock('jobs/useBulkAction')
 const useBulkActionMock = assumeMock(useBulkAction)
 
-const mockStore = configureMockStore([thunk])
-
 const defaultStore = {
     currentUser: fromJS({
         role: { name: UserRole.Agent },
@@ -81,12 +76,7 @@ describe('<BulkActions />', () => {
     const renderWithStore = (
         props: ComponentProps<typeof BulkActions> = minProps,
         store = defaultStore,
-    ) =>
-        render(
-            <Provider store={mockStore(store)}>
-                <BulkActions {...props} />
-            </Provider>,
-        )
+    ) => render(<BulkActions {...props} />, { storeState: store })
 
     beforeEach(() => {
         useBulkActionMock.mockReturnValue({

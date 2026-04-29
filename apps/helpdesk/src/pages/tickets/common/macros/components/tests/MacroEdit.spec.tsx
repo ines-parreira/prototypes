@@ -1,12 +1,8 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { setupServer } from 'msw/node'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { mockListCustomFieldsHandler } from '@gorgias/helpdesk-mocks'
 
@@ -24,13 +20,10 @@ import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
 import type { Attachment } from 'models/ticket/types'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import { MacroEdit } from '../MacroEdit'
 
 const server = setupServer()
-const queryClient = mockQueryClient()
 
 beforeAll(() => server.listen())
 afterEach(() => {
@@ -69,8 +62,6 @@ jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
 }))
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
-
-const mockStore = configureMockStore([thunk])
 
 const mockListCustomFields = mockListCustomFieldsHandler()
 server.use(mockListCustomFields.handler)
@@ -185,13 +176,9 @@ describe('MacroEdit component', () => {
     }
 
     const renderComponent = (props?: Partial<typeof defaultProps>) =>
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore({ integrations: fromJS(state) })}>
-                    <MacroEdit {...defaultProps} {...props} />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        render(<MacroEdit {...defaultProps} {...props} />, {
+            storeState: { integrations: fromJS(state) },
+        })
 
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
@@ -519,11 +506,9 @@ describe('MacroEdit component', () => {
             name: MacroActionName.ExcludeFromCSAT,
             arguments: {},
         }
-        render(
-            <Provider store={mockStore({ integrations: fromJS(state) })}>
-                <MacroEdit {...defaultProps} actions={fromJS([action])} />
-            </Provider>,
-        )
+        render(<MacroEdit {...defaultProps} actions={fromJS([action])} />, {
+            storeState: { integrations: fromJS(state) },
+        })
 
         expect(screen.getByText('Exclude ticket from CSAT')).toBeInTheDocument()
     })

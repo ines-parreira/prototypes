@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import copyToClipboard from 'copy-to-clipboard'
@@ -7,7 +7,6 @@ import type { TicketCompact, TicketTag } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 import TicketFields from 'timeline/TicketFields'
 
@@ -47,7 +46,7 @@ describe('TicketHeader', () => {
     })
 
     it('should render the ticket metadata', () => {
-        renderWithStoreAndQueryClientProvider(<TicketHeader ticket={ticket} />)
+        render(<TicketHeader ticket={ticket} />)
 
         expect(screen.getByText('email')).toBeInTheDocument()
         expect(screen.getByText('Ticket Subject')).toBeInTheDocument()
@@ -56,7 +55,7 @@ describe('TicketHeader', () => {
     })
 
     it('should render the "open" badge if a ticket is open', () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TicketHeader ticket={{ ...ticket, status: TicketStatus.Open }} />,
         )
 
@@ -64,15 +63,13 @@ describe('TicketHeader', () => {
     })
 
     it('should render the "open" badge if a ticket has no status', () => {
-        renderWithStoreAndQueryClientProvider(
-            <TicketHeader ticket={{ ...ticket, status: undefined }} />,
-        )
+        render(<TicketHeader ticket={{ ...ticket, status: undefined }} />)
 
         expect(screen.getByText('open')).toBeInTheDocument()
     })
 
     it('should render the "snoozed" badge if a ticket is snoozed', () => {
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TicketHeader
                 ticket={{ ...ticket, snooze_datetime: '2025-04-15T16:23:47' }}
             />,
@@ -83,7 +80,7 @@ describe('TicketHeader', () => {
 
     it('should render the provided additional action', () => {
         const ActionButton = () => <button>Action</button>
-        renderWithStoreAndQueryClientProvider(
+        render(
             <TicketHeader
                 ticket={ticket}
                 additionalActions={<ActionButton />}
@@ -95,7 +92,7 @@ describe('TicketHeader', () => {
 
     it('should render the copy button for ticket ID', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientProvider(<TicketHeader ticket={ticket} />)
+        render(<TicketHeader ticket={ticket} />)
 
         const copyButton = screen.getByRole('button', { name: /content_copy/i })
         expect(copyButton).toBeInTheDocument()
@@ -106,9 +103,7 @@ describe('TicketHeader', () => {
     })
 
     it('should render the tags', () => {
-        const { rerender } = renderWithStoreAndQueryClientProvider(
-            <TicketHeader ticket={ticket} />,
-        )
+        const { rerender } = render(<TicketHeader ticket={ticket} />)
 
         expect(screen.getByText(/no tags/i)).toBeInTheDocument()
 
@@ -139,7 +134,7 @@ describe('TicketHeader', () => {
     })
 
     it('should render the assignee', () => {
-        renderWithStoreAndQueryClientProvider(<TicketHeader ticket={ticket} />)
+        render(<TicketHeader ticket={ticket} />)
 
         expect(TicketAssignee).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -151,7 +146,7 @@ describe('TicketHeader', () => {
     })
 
     it('should render the ticket fields', () => {
-        renderWithStoreAndQueryClientProvider(<TicketHeader ticket={ticket} />)
+        render(<TicketHeader ticket={ticket} />)
 
         expect(TicketFields).toHaveBeenCalledWith(
             {
@@ -165,9 +160,7 @@ describe('TicketHeader', () => {
     })
 
     it('should set data-rendering to "modal" when not inside side panel', () => {
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <TicketHeader ticket={ticket} />,
-        )
+        const { container } = render(<TicketHeader ticket={ticket} />)
         const headerContainer = container.firstChild as HTMLElement
         expect(headerContainer).toHaveAttribute('data-rendering', 'modal')
     })
@@ -178,9 +171,7 @@ describe('TicketHeader', () => {
             containerRef: null,
             isInsideSidePanel: true,
         })
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <TicketHeader ticket={ticket} />,
-        )
+        const { container } = render(<TicketHeader ticket={ticket} />)
         const headerContainer = container.firstChild as HTMLElement
         expect(headerContainer).toHaveAttribute('data-rendering', 'side-panel')
     })

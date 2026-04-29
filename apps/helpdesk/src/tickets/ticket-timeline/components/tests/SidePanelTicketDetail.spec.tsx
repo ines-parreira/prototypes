@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import type { TicketCustomField } from '@repo/tickets'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,7 +8,6 @@ import type { Ticket, TicketCompact } from '@gorgias/helpdesk-types'
 import { TicketStatus } from '@gorgias/helpdesk-types'
 
 import { TicketChannel } from 'business/types/ticket'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { SidePanelTicketDetail } from '../SidePanelTicketDetail'
 
@@ -156,9 +156,7 @@ describe('SidePanelTicketDetail', () => {
                 ticket: null,
             })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketDetail {...defaultProps} />,
-            )
+            render(<SidePanelTicketDetail {...defaultProps} />)
 
             expect(screen.getAllByLabelText('Loading')).toHaveLength(3)
         })
@@ -173,9 +171,7 @@ describe('SidePanelTicketDetail', () => {
                 ticket: null,
             })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketDetail {...defaultProps} />,
-            )
+            render(<SidePanelTicketDetail {...defaultProps} />)
 
             expect(screen.getAllByLabelText('Loading')).toHaveLength(3)
         })
@@ -183,9 +179,7 @@ describe('SidePanelTicketDetail', () => {
 
     describe('Header rendering', () => {
         it('should render SidePanelTicketHeader with correct props', () => {
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketDetail {...defaultProps} />,
-            )
+            render(<SidePanelTicketDetail {...defaultProps} />)
 
             expect(
                 screen.getByTestId('side-panel-ticket-header'),
@@ -196,7 +190,7 @@ describe('SidePanelTicketDetail', () => {
         it('should pass additionalHeaderActions to header', () => {
             const additionalHeaderActions = <button type="button">Close</button>
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SidePanelTicketDetail
                     {...defaultProps}
                     additionalHeaderActions={additionalHeaderActions}
@@ -211,9 +205,7 @@ describe('SidePanelTicketDetail', () => {
 
     describe('Thread rendering', () => {
         it('should render TicketThread once data is loaded', async () => {
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketDetail {...defaultProps} />,
-            )
+            render(<SidePanelTicketDetail {...defaultProps} />)
 
             await waitFor(() => {
                 expect(screen.getByTestId('ticket-thread')).toBeInTheDocument()
@@ -238,9 +230,7 @@ describe('SidePanelTicketDetail', () => {
                 }),
             })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketDetail {...defaultProps} />,
-            )
+            render(<SidePanelTicketDetail {...defaultProps} />)
 
             await waitFor(() => {
                 expect(
@@ -263,9 +253,7 @@ describe('SidePanelTicketDetail', () => {
                 ticket: createMockFullTicket(),
             })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketDetail {...defaultProps} />,
-            )
+            render(<SidePanelTicketDetail {...defaultProps} />)
 
             await waitFor(() => {
                 expect(screen.getByTestId('ticket-thread')).toBeInTheDocument()
@@ -278,7 +266,7 @@ describe('SidePanelTicketDetail', () => {
             const user = userEvent.setup()
             const onExpand = jest.fn()
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SidePanelTicketDetail {...defaultProps} onExpand={onExpand} />,
             )
 
@@ -288,9 +276,7 @@ describe('SidePanelTicketDetail', () => {
         })
 
         it('should not render expand button when onExpand is not provided', () => {
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketDetail {...defaultProps} />,
-            )
+            render(<SidePanelTicketDetail {...defaultProps} />)
 
             expect(
                 screen.queryByRole('button', { name: /expand/i }),
@@ -303,7 +289,7 @@ describe('SidePanelTicketDetail', () => {
             const { useFlag } = require('@repo/feature-flags')
             useFlag.mockReturnValue(true)
 
-            const { container } = renderWithStoreAndQueryClientProvider(
+            const { container } = render(
                 <SidePanelTicketDetail {...defaultProps} />,
             )
 
@@ -317,7 +303,7 @@ describe('SidePanelTicketDetail', () => {
             const { useFlag } = require('@repo/feature-flags')
             useFlag.mockReturnValue(false)
 
-            const { container } = renderWithStoreAndQueryClientProvider(
+            const { container } = render(
                 <SidePanelTicketDetail {...defaultProps} />,
             )
 

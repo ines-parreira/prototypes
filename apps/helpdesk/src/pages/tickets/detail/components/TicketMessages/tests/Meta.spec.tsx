@@ -1,6 +1,7 @@
-import { QueryClientProvider } from '@tanstack/react-query'
+import type { ReactElement } from 'react'
+
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { TicketVias } from 'business/ticket'
@@ -11,13 +12,10 @@ import { ManagedRuleDisplayName } from 'state/rules/constants'
 import type { ManagedRule } from 'state/rules/types'
 import { ManagedRulesSlugs, RuleType } from 'state/rules/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
 
 import Meta from '../Meta'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-const queryClient = mockQueryClient()
 
 const store = mockStore({
     entities: {
@@ -26,15 +24,16 @@ const store = mockStore({
     },
 } as RootState)
 
+const renderWithStore = (ui: ReactElement) =>
+    render(ui, {
+        storeState: store.getState(),
+    })
+
 jest.mock('models/rule/resources')
 
 describe('ticket message meta', () => {
     it('should add a -sent via rule- label because the message was sent by a rule', async () => {
-        renderWithRouter(
-            <Provider store={store}>
-                <Meta messageId="some-id" via="rule" ruleId="4" />
-            </Provider>,
-        )
+        renderWithStore(<Meta messageId="some-id" via="rule" ruleId="4" />)
 
         await screen.findByText('sent via:')
         await screen.findByText('rule 4')
@@ -47,10 +46,8 @@ describe('ticket message meta', () => {
             return Promise.resolve(rule as any)
         })
 
-        renderWithRouter(
-            <Provider store={store}>
-                <Meta messageId="some-id" via="rule" ruleId={rule.id} />
-            </Provider>,
+        renderWithStore(
+            <Meta messageId="some-id" via="rule" ruleId={rule.id} />,
         )
 
         expect(mockFetchRule).toHaveBeenCalled()
@@ -74,14 +71,8 @@ describe('ticket message meta', () => {
             return Promise.resolve(rule as any)
         })
 
-        renderWithRouter(
-            <Provider store={store}>
-                <Meta
-                    messageId="some-id"
-                    via="rule"
-                    ruleId={rule.id.toString()}
-                />
-            </Provider>,
+        renderWithStore(
+            <Meta messageId="some-id" via="rule" ruleId={rule.id.toString()} />,
         )
 
         expect(await screen.findByText('sent via:')).toBeTruthy()
@@ -101,17 +92,11 @@ describe('ticket message meta', () => {
             return Promise.resolve(rule as any)
         })
 
-        const { rerender } = renderWithRouter(
-            <Provider store={store}>
-                <Meta messageId="some-id" via="rule" ruleId={rule.id} />
-            </Provider>,
+        const { rerender } = renderWithStore(
+            <Meta messageId="some-id" via="rule" ruleId={rule.id} />,
         )
 
-        rerender(
-            <Provider store={store}>
-                <Meta messageId="some-id" via="rule" ruleId={rule.id} />
-            </Provider>,
-        )
+        rerender(<Meta messageId="some-id" via="rule" ruleId={rule.id} />)
 
         expect(mockFetchRule).toHaveBeenCalledTimes(1)
         await screen.findByText('sent via:')
@@ -119,14 +104,12 @@ describe('ticket message meta', () => {
     })
 
     it('should display rule suggestion', async () => {
-        renderWithRouter(
-            <Provider store={store}>
-                <Meta
-                    messageId="some-id"
-                    via="something"
-                    meta={{ rule_suggestion_slug: emptyRuleRecipeFixture.slug }}
-                />
-            </Provider>,
+        renderWithStore(
+            <Meta
+                messageId="some-id"
+                via="something"
+                meta={{ rule_suggestion_slug: emptyRuleRecipeFixture.slug }}
+            />,
         )
 
         await screen.findByText('sent via suggested rule:')
@@ -134,34 +117,29 @@ describe('ticket message meta', () => {
     })
 
     it('should display AI suggestion', async () => {
-        renderWithRouter(
-            <Provider store={store}>
-                <Meta
-                    messageId="some-id"
-                    via="something"
-                    meta={{ ai_suggestion: true }}
-                />
-            </Provider>,
+        renderWithStore(
+            <Meta
+                messageId="some-id"
+                via="something"
+                meta={{ ai_suggestion: true }}
+            />,
         )
 
         await screen.findByText('answer suggested from Gorgias AI')
     })
 
     it('should display AI sales agent help on search', async () => {
-        renderWithRouter(
-            <Provider store={store}>
-                <Meta
-                    messageId="some-id"
-                    via={TicketVias.GORGIAS_CHAT}
-                    meta={{
-                        ai_campaign_id: '123',
-                        ai_campaign_trigger_key: 'manual',
-                        ai_campaign_trigger_operator:
-                            'aiSalesAgentHelpOnSearch',
-                        ai_campaign_trigger_value: 'backpacks',
-                    }}
-                />
-            </Provider>,
+        renderWithStore(
+            <Meta
+                messageId="some-id"
+                via={TicketVias.GORGIAS_CHAT}
+                meta={{
+                    ai_campaign_id: '123',
+                    ai_campaign_trigger_key: 'manual',
+                    ai_campaign_trigger_operator: 'aiSalesAgentHelpOnSearch',
+                    ai_campaign_trigger_value: 'backpacks',
+                }}
+            />,
         )
 
         await screen.findByText('from search')
@@ -172,17 +150,15 @@ describe('ticket message meta', () => {
         'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
             'gorgias-chat integration',
         () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        messageId="some-id"
-                        via={TicketVias.GORGIAS_CHAT}
-                        integrationId={118}
-                        meta={{
-                            campaign_id: '123',
-                        }}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    messageId="some-id"
+                    via={TicketVias.GORGIAS_CHAT}
+                    integrationId={118}
+                    meta={{
+                        campaign_id: '123',
+                    }}
+                />,
             )
             expect(container.firstChild).toMatchSnapshot()
         },
@@ -199,10 +175,8 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta via="facebook" integrationId={118} source={source} />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta via="facebook" integrationId={118} source={source} />,
             )
 
             expect(container.textContent).toBe('go to post')
@@ -227,15 +201,13 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        messageId={`${postId}_${commentId}`}
-                        via="facebook"
-                        integrationId={118}
-                        source={source}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    messageId={`${postId}_${commentId}`}
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                />,
             )
 
             expect(container.textContent).toBe('go to comment')
@@ -267,18 +239,14 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <QueryClientProvider client={queryClient}>
-                        <Meta
-                            via="facebook"
-                            messageId={`${postId}_${commentId}`}
-                            integrationId={118}
-                            source={source}
-                            meta={meta}
-                        />
-                    </QueryClientProvider>
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    via="facebook"
+                    messageId={`${postId}_${commentId}`}
+                    integrationId={118}
+                    source={source}
+                    meta={meta}
+                />,
             )
             await waitFor(() =>
                 expect(container.textContent).toContain(
@@ -301,10 +269,8 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const { container, getByText } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta via="facebook" meta={meta} />
-                </Provider>,
+            const { container, getByText } = renderWithStore(
+                <Meta via="facebook" meta={meta} />,
             )
 
             await waitFor(() =>
@@ -333,15 +299,13 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${userId}`, name: 'Foo Bar' }],
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        messageId={`${postId}_${replyId}`}
-                        via="facebook"
-                        integrationId={118}
-                        source={source}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    messageId={`${postId}_${replyId}`}
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                />,
             )
 
             expect(container.textContent).toBe('go to reply')
@@ -360,10 +324,8 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²' }],
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta via="facebook" integrationId={118} source={source} />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta via="facebook" integrationId={118} source={source} />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -383,10 +345,8 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta via="facebook" integrationId={118} source={source} />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta via="facebook" integrationId={118} source={source} />,
             )
 
             expect(container.textContent).toBe('go to post')
@@ -413,15 +373,13 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        via="facebook"
-                        integrationId={118}
-                        source={source}
-                        messageId={`${postId}_${commentId}`}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                    messageId={`${postId}_${commentId}`}
+                />,
             )
 
             expect(container.textContent).toBe('go to comment')
@@ -444,15 +402,13 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        via="facebook"
-                        integrationId={118}
-                        source={source}
-                        messageId={`${postId}_${commentId}`}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                    messageId={`${postId}_${commentId}`}
+                />,
             )
 
             expect(container.textContent).toBe('go to comment')
@@ -479,15 +435,13 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        via="facebook"
-                        integrationId={118}
-                        source={source}
-                        messageId={`${commentId}_${replyId}`}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                    messageId={`${commentId}_${replyId}`}
+                />,
             )
 
             expect(container.textContent).toBe('go to reply')
@@ -507,10 +461,8 @@ describe('ticket message meta', () => {
                 type: TicketMessageSourceType.InstagramMedia,
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta via="instagram" integrationId={118} source={source} />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta via="instagram" integrationId={118} source={source} />,
             )
 
             expect(container.textContent).toBe('go to media')
@@ -533,17 +485,13 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <QueryClientProvider client={queryClient}>
-                        <Meta
-                            via="instagram"
-                            integrationId={118}
-                            source={source}
-                            meta={meta}
-                        />
-                    </QueryClientProvider>
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    via="instagram"
+                    integrationId={118}
+                    source={source}
+                    meta={meta}
+                />,
             )
             await waitFor(() =>
                 expect(container.textContent).toContain(
@@ -575,14 +523,12 @@ describe('ticket message meta', () => {
                     type: type,
                 }
 
-                const { container } = renderWithRouter(
-                    <Provider store={store}>
-                        <Meta
-                            via={TicketChannel.Twitter}
-                            integrationId={118}
-                            source={source}
-                        />
-                    </Provider>,
+                const { container } = renderWithStore(
+                    <Meta
+                        via={TicketChannel.Twitter}
+                        integrationId={118}
+                        source={source}
+                    />,
                 )
 
                 expect(container.textContent).toBe('go to tweet')
@@ -606,15 +552,13 @@ describe('ticket message meta', () => {
                 type: TicketMessageSourceType.TwitterTweet,
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        externalId={tweetId}
-                        via={TicketChannel.Twitter}
-                        integrationId={118}
-                        source={source}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    externalId={tweetId}
+                    via={TicketChannel.Twitter}
+                    integrationId={118}
+                    source={source}
+                />,
             )
 
             expect(container.textContent).toBe(
@@ -655,16 +599,14 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        externalId={tweetId}
-                        via={TicketChannel.Twitter}
-                        integrationId={118}
-                        source={source}
-                        meta={meta}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    externalId={tweetId}
+                    via={TicketChannel.Twitter}
+                    integrationId={118}
+                    source={source}
+                    meta={meta}
+                />,
             )
 
             expect(container.textContent).toBe(
@@ -680,18 +622,15 @@ describe('ticket message meta', () => {
 
     describe('live-chat-message', () => {
         it('should add a `from https://...` with because the message was sent via live chat', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        messageId="some-id"
-                        via="something"
-                        integrationId={118}
-                        meta={{
-                            current_page:
-                                'https://gorgias.com/best-helpdesk-ever/',
-                        }}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    integrationId={118}
+                    meta={{
+                        current_page: 'https://gorgias.com/best-helpdesk-ever/',
+                    }}
+                />,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -699,63 +638,56 @@ describe('ticket message meta', () => {
 
     describe('chat-contact-form', () => {
         it('should add a `via contact form from https://...` because the message was sent via chat contact form', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        messageId="some-id"
-                        via="something"
-                        integrationId={118}
-                        source={{
-                            type: TicketMessageSourceType.ChatContactForm,
-                            to: [{ address: 'someAddress', name: 'someName' }],
-                        }}
-                        meta={{
-                            current_page:
-                                'https://gorgias.com/best-helpdesk-ever/',
-                        }}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    integrationId={118}
+                    source={{
+                        type: TicketMessageSourceType.ChatContactForm,
+                        to: [{ address: 'someAddress', name: 'someName' }],
+                    }}
+                    meta={{
+                        current_page: 'https://gorgias.com/best-helpdesk-ever/',
+                    }}
+                />,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should add a `via contact form` because the message was sent via chat contact form (but no current_url metadata)', () => {
-            const { container } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        messageId="some-id"
-                        via="something"
-                        integrationId={118}
-                        source={{
-                            type: TicketMessageSourceType.ChatContactForm,
-                            to: [{ address: 'someAddress', name: 'someName' }],
-                        }}
-                        meta={{
-                            current_page: undefined,
-                        }}
-                    />
-                </Provider>,
+            const { container } = renderWithStore(
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    integrationId={118}
+                    source={{
+                        type: TicketMessageSourceType.ChatContactForm,
+                        to: [{ address: 'someAddress', name: 'someName' }],
+                    }}
+                    meta={{
+                        current_page: undefined,
+                    }}
+                />,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should add sms deflection details', () => {
-            const { getByText } = renderWithRouter(
-                <Provider store={store}>
-                    <Meta
-                        messageId="some-id"
-                        via="something"
-                        integrationId={118}
-                        source={{
-                            type: TicketMessageSourceType.Sms,
-                            to: [{ address: 'someAddress', name: 'someName' }],
-                        }}
-                        meta={{
-                            sms_deflection:
-                                'sent via: Fake phone integration Menu Option 123',
-                        }}
-                    />
-                </Provider>,
+            const { getByText } = renderWithStore(
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    integrationId={118}
+                    source={{
+                        type: TicketMessageSourceType.Sms,
+                        to: [{ address: 'someAddress', name: 'someName' }],
+                    }}
+                    meta={{
+                        sms_deflection:
+                            'sent via: Fake phone integration Menu Option 123',
+                    }}
+                />,
             )
             expect(
                 getByText('sent via: Fake phone integration Menu Option 123'),

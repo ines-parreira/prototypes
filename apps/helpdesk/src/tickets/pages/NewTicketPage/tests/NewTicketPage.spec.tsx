@@ -1,5 +1,6 @@
 import { Handle, Panel } from '@repo/layout'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
+import { render } from '@repo/testing'
 import {
     NewTicketInfobarNavigation,
     TicketsLegacyBridgeProvider,
@@ -19,8 +20,6 @@ import {
     mockTeam,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
-
-import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { NewTicketPage } from '../NewTicketPage'
 
@@ -157,15 +156,11 @@ const legacyBridgeTestProps = {
 
 const renderComponent = () => {
     const user = userEvent.setup()
-    const result = renderWithStoreAndQueryClientAndRouter(
+    const result = render(
         <TicketsLegacyBridgeProvider {...legacyBridgeTestProps}>
             <NewTicketPage />
         </TicketsLegacyBridgeProvider>,
-        {},
-        {
-            path: '/app/tickets/new',
-            route: '/app/tickets/new',
-        },
+        { path: '/app/tickets/new', initialEntries: ['/app/tickets/new'] },
     )
     return { ...result, user }
 }

@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import type { TicketCustomField } from '@repo/tickets'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,7 +8,6 @@ import type { TicketCompact } from '@gorgias/helpdesk-types'
 import { TicketStatus } from '@gorgias/helpdesk-types'
 
 import { TicketChannel } from 'business/types/ticket'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { SidePanelTicketHeader } from '../SidePanelTicketHeader'
 
@@ -71,9 +71,7 @@ describe('SidePanelTicketHeader', () => {
 
     describe('Rendering', () => {
         it('should render the ticket subject', () => {
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} />)
 
             expect(
                 screen.getByRole('heading', { name: /test ticket subject/i }),
@@ -81,9 +79,7 @@ describe('SidePanelTicketHeader', () => {
         })
 
         it('should render the channel icon', () => {
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} />)
 
             expect(
                 screen.getByRole('img', { name: /email/i }),
@@ -95,9 +91,7 @@ describe('SidePanelTicketHeader', () => {
         it('should render Open status for open tickets', () => {
             const ticket = createMockTicket({ status: TicketStatus.Open })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} ticket={ticket} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} ticket={ticket} />)
 
             expect(screen.getByText('Open')).toBeInTheDocument()
         })
@@ -105,9 +99,7 @@ describe('SidePanelTicketHeader', () => {
         it('should render Closed status for closed tickets', () => {
             const ticket = createMockTicket({ status: TicketStatus.Closed })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} ticket={ticket} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} ticket={ticket} />)
 
             expect(screen.getByText('Closed')).toBeInTheDocument()
         })
@@ -118,9 +110,7 @@ describe('SidePanelTicketHeader', () => {
                 snooze_datetime: '2024-01-02T10:00:00Z',
             })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} ticket={ticket} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} ticket={ticket} />)
 
             expect(screen.getByText('Snoozed')).toBeInTheDocument()
         })
@@ -128,9 +118,7 @@ describe('SidePanelTicketHeader', () => {
 
     describe('Assignee', () => {
         it('should not render assignee tag when no assignee', () => {
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} />)
 
             expect(screen.queryByText('Unassigned')).not.toBeInTheDocument()
         })
@@ -148,9 +136,7 @@ describe('SidePanelTicketHeader', () => {
                 },
             })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} ticket={ticket} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} ticket={ticket} />)
 
             expect(screen.getByText('John Doe')).toBeInTheDocument()
         })
@@ -158,7 +144,7 @@ describe('SidePanelTicketHeader', () => {
 
     describe('Custom fields', () => {
         it('should show loading state when conditions are loading', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SidePanelTicketHeader
                     {...defaultProps}
                     conditionsLoading={true}
@@ -169,16 +155,14 @@ describe('SidePanelTicketHeader', () => {
         })
 
         it('should render custom fields when loaded', () => {
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} />)
 
             expect(screen.getByText('High')).toBeInTheDocument()
             expect(screen.getByText('Billing')).toBeInTheDocument()
         })
 
         it('should show "No ticket fields yet" when no custom fields', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SidePanelTicketHeader
                     {...defaultProps}
                     customFields={[]}
@@ -195,7 +179,7 @@ describe('SidePanelTicketHeader', () => {
             const user = userEvent.setup()
             const onExpand = jest.fn()
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SidePanelTicketHeader {...defaultProps} onExpand={onExpand} />,
             )
 
@@ -211,7 +195,7 @@ describe('SidePanelTicketHeader', () => {
         it('should render additional actions when provided', () => {
             const additionalActions = <button type="button">Close</button>
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SidePanelTicketHeader
                     {...defaultProps}
                     additionalActions={additionalActions}
@@ -224,7 +208,7 @@ describe('SidePanelTicketHeader', () => {
         })
 
         it('should not render additional actions section when not provided', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SidePanelTicketHeader
                     {...defaultProps}
                     additionalActions={undefined}
@@ -246,9 +230,7 @@ describe('SidePanelTicketHeader', () => {
                 ],
             })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} ticket={ticket} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} ticket={ticket} />)
 
             expect(screen.getByText('urgent')).toBeInTheDocument()
             expect(screen.getByText('billing')).toBeInTheDocument()
@@ -257,9 +239,7 @@ describe('SidePanelTicketHeader', () => {
         it('should not render tags section when ticket has no tags', () => {
             const ticket = createMockTicket({ tags: [] })
 
-            renderWithStoreAndQueryClientProvider(
-                <SidePanelTicketHeader {...defaultProps} ticket={ticket} />,
-            )
+            render(<SidePanelTicketHeader {...defaultProps} ticket={ticket} />)
 
             expect(screen.queryByText('urgent')).not.toBeInTheDocument()
         })

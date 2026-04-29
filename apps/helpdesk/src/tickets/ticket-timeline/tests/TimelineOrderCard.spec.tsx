@@ -1,10 +1,9 @@
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
 
 import type { Order, Product } from 'constants/integrations/types/shopify'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TimelineOrderCard } from '../components/TimelineOrderCard'
 
@@ -44,15 +43,13 @@ const createMockOrder = (overrides: Partial<Order>): Order =>
 
 const renderOrderCard = (order: Order, onSelect?: (order: Order) => void) => {
     const productsMap = new Map()
-    return renderWithStoreAndQueryClientProvider(
-        <MemoryRouter>
-            <TimelineOrderCard
-                order={order}
-                productsMap={productsMap}
-                displayedDate="Jan 1, 2024"
-                onSelect={onSelect}
-            />
-        </MemoryRouter>,
+    return render(
+        <TimelineOrderCard
+            order={order}
+            productsMap={productsMap}
+            displayedDate="Jan 1, 2024"
+            onSelect={onSelect}
+        />,
     )
 }
 
@@ -214,14 +211,12 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         })
 
         const productsMap = new Map()
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <TimelineOrderCard
-                    order={order}
-                    productsMap={productsMap}
-                    displayedDate="Jan 1, 2024"
-                />
-            </MemoryRouter>,
+        render(
+            <TimelineOrderCard
+                order={order}
+                productsMap={productsMap}
+                displayedDate="Jan 1, 2024"
+            />,
         )
 
         const images = screen.getAllByRole('img')
@@ -283,14 +278,12 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         const productsMap = new Map()
         productsMap.set(100, product)
 
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <TimelineOrderCard
-                    order={order}
-                    productsMap={productsMap}
-                    displayedDate="Jan 1, 2024"
-                />
-            </MemoryRouter>,
+        render(
+            <TimelineOrderCard
+                order={order}
+                productsMap={productsMap}
+                displayedDate="Jan 1, 2024"
+            />,
         )
 
         const images = screen.getAllByRole('img')
@@ -346,14 +339,12 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         const productsMap = new Map()
         productsMap.set(100, product)
 
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <TimelineOrderCard
-                    order={order}
-                    productsMap={productsMap}
-                    displayedDate="Jan 1, 2024"
-                />
-            </MemoryRouter>,
+        render(
+            <TimelineOrderCard
+                order={order}
+                productsMap={productsMap}
+                displayedDate="Jan 1, 2024"
+            />,
         )
 
         const images = screen.getAllByRole('img')
@@ -397,14 +388,12 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         const productsMap = new Map()
         productsMap.set(100, product)
 
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <TimelineOrderCard
-                    order={order}
-                    productsMap={productsMap}
-                    displayedDate="Jan 1, 2024"
-                />
-            </MemoryRouter>,
+        render(
+            <TimelineOrderCard
+                order={order}
+                productsMap={productsMap}
+                displayedDate="Jan 1, 2024"
+            />,
         )
 
         const images = screen.getAllByRole('img')
@@ -483,14 +472,12 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         productsMap.set(100, product1)
         productsMap.set(200, product2)
 
-        renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <TimelineOrderCard
-                    order={order}
-                    productsMap={productsMap}
-                    displayedDate="Jan 1, 2024"
-                />
-            </MemoryRouter>,
+        render(
+            <TimelineOrderCard
+                order={order}
+                productsMap={productsMap}
+                displayedDate="Jan 1, 2024"
+            />,
         )
 
         const images = screen.getAllByRole('img')

@@ -1,3 +1,4 @@
+import { render } from '@repo/testing'
 import type { EnrichedTicket, TicketCustomField } from '@repo/tickets'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,7 +8,6 @@ import type { TicketCompact } from '@gorgias/helpdesk-types'
 import { TicketStatus } from '@gorgias/helpdesk-types'
 
 import { TicketChannel } from 'business/types/ticket'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TicketTimelineSidePanelPreview } from '../TicketTimelineSidePanelPreview'
 
@@ -101,7 +101,7 @@ describe('TicketTimelineSidePanelPreview', () => {
 
     describe('Rendering', () => {
         it('should not render ticket content when enrichedTicket is null', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TicketTimelineSidePanelPreview
                     {...defaultProps}
                     enrichedTicket={null}
@@ -112,9 +112,7 @@ describe('TicketTimelineSidePanelPreview', () => {
         })
 
         it('should render the ticket detail when ticket is provided', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TicketTimelineSidePanelPreview {...defaultProps} />,
-            )
+            render(<TicketTimelineSidePanelPreview {...defaultProps} />)
 
             expect(screen.getByText('Ticket #123')).toBeInTheDocument()
         })
@@ -122,7 +120,7 @@ describe('TicketTimelineSidePanelPreview', () => {
 
     describe('Navigation buttons', () => {
         it('should disable Previous button when isFirstTicket is true', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TicketTimelineSidePanelPreview
                     {...defaultProps}
                     isFirstTicket={true}
@@ -135,7 +133,7 @@ describe('TicketTimelineSidePanelPreview', () => {
         })
 
         it('should disable Next button when isLastTicket is true', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TicketTimelineSidePanelPreview
                     {...defaultProps}
                     isLastTicket={true}
@@ -151,7 +149,7 @@ describe('TicketTimelineSidePanelPreview', () => {
             const user = userEvent.setup()
             const onPrevious = jest.fn()
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TicketTimelineSidePanelPreview
                     {...defaultProps}
                     onPrevious={onPrevious}
@@ -169,7 +167,7 @@ describe('TicketTimelineSidePanelPreview', () => {
             const user = userEvent.setup()
             const onNext = jest.fn()
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TicketTimelineSidePanelPreview
                     {...defaultProps}
                     onNext={onNext}
@@ -184,7 +182,7 @@ describe('TicketTimelineSidePanelPreview', () => {
         })
 
         it('should disable both buttons when there is only one ticket', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TicketTimelineSidePanelPreview
                     {...defaultProps}
                     isFirstTicket={true}
@@ -206,7 +204,7 @@ describe('TicketTimelineSidePanelPreview', () => {
             const user = userEvent.setup()
             const onOpenChange = jest.fn()
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TicketTimelineSidePanelPreview
                     {...defaultProps}
                     onOpenChange={onOpenChange}

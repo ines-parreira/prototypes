@@ -1,9 +1,9 @@
 import { parseAbsolute } from '@internationalized/date'
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import defaultUserEvent from '@testing-library/user-event'
 import moment from 'moment'
 
-import { renderWithStoreAndQueryClientProvider as render } from 'tests/renderWithStoreAndQueryClientProvider'
 import { END_OF_TODAY_DATE, MIN_RANGE_DATE } from 'timeline/constants'
 import type { FilterKey, InteractionFilterType, Range } from 'timeline/types'
 

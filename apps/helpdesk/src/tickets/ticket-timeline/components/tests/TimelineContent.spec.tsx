@@ -1,8 +1,7 @@
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
 
 import type { IconName } from '@gorgias/axiom'
 import type { CustomField, TicketCompact } from '@gorgias/helpdesk-types'
@@ -12,7 +11,6 @@ import { TicketChannel } from 'business/types/ticket'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { TimelineItemKind } from 'timeline/types'
 import type { FilterKey, InteractionFilterType } from 'timeline/types'
 
@@ -150,11 +148,7 @@ describe('TimelineContent', () => {
     }
 
     const renderComponent = (props = defaultProps) => {
-        return renderWithStoreAndQueryClientProvider(
-            <MemoryRouter>
-                <TimelineContent {...props} />
-            </MemoryRouter>,
-        )
+        return render(<TimelineContent {...props} />)
     }
 
     beforeEach(() => {

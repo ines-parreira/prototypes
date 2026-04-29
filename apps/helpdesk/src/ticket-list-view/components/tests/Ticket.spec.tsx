@@ -1,5 +1,5 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
@@ -9,7 +9,6 @@ import { TicketPriority } from '@gorgias/helpdesk-types'
 import type { Customer } from 'models/customer/types'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
 import type { TicketCompact } from 'ticket-list-view/types'
-import { renderWithRouter } from 'utils/testing'
 
 import Ticket from '../Ticket'
 
@@ -66,7 +65,7 @@ describe('Ticket', () => {
     })
 
     it('should render a default ticket', () => {
-        renderWithRouter(<Ticket {...defaultProps} />)
+        render(<Ticket {...defaultProps} />)
         expect(
             screen.getByText(defaultProps.ticket.customer!.name),
         ).toBeInTheDocument()
@@ -80,20 +79,20 @@ describe('Ticket', () => {
     })
 
     it('should link to a split ticket view url', () => {
-        renderWithRouter(<Ticket {...defaultProps} />)
+        render(<Ticket {...defaultProps} />)
         const el = screen.getByText(defaultProps.ticket.subject).closest('a')
         expect(el).toHaveAttribute('href', '/app/views/1/1')
     })
 
     it('should link to a ticket view url if the flag is enabled', () => {
         useFlagMock.mockReturnValue(true)
-        renderWithRouter(<Ticket {...defaultProps} />)
+        render(<Ticket {...defaultProps} />)
         const el = screen.getByText(defaultProps.ticket.subject).closest('a')
         expect(el).toHaveAttribute('href', '/app/tickets/1/1')
     })
 
     it('should render customer email', () => {
-        renderWithRouter(
+        render(
             <Ticket
                 {...defaultProps}
                 ticket={{
@@ -111,7 +110,7 @@ describe('Ticket', () => {
     })
 
     it('should render customer id', () => {
-        renderWithRouter(
+        render(
             <Ticket
                 {...defaultProps}
                 ticket={{
@@ -130,7 +129,7 @@ describe('Ticket', () => {
     })
 
     it('should handle unavailable informations on customer', () => {
-        renderWithRouter(
+        render(
             <Ticket
                 {...defaultProps}
                 ticket={{
@@ -147,7 +146,7 @@ describe('Ticket', () => {
     it('should select a ticket when the checkbox is clicked', async () => {
         const user = userEvent.setup()
         const onSelect = jest.fn()
-        renderWithRouter(<Ticket {...defaultProps} onSelect={onSelect} />)
+        render(<Ticket {...defaultProps} onSelect={onSelect} />)
 
         await act(async () => {
             await user.click(screen.getByRole('checkbox'))
@@ -157,7 +156,7 @@ describe('Ticket', () => {
     })
 
     it('should render excerpt when there are no undelivered messages', () => {
-        renderWithRouter(
+        render(
             <Ticket
                 {...defaultProps}
                 ticket={{
@@ -175,7 +174,7 @@ describe('Ticket', () => {
     })
 
     it('should render FailedMessageLabel when there are undelivered messages', () => {
-        renderWithRouter(
+        render(
             <Ticket
                 {...defaultProps}
                 ticket={{
@@ -193,7 +192,7 @@ describe('Ticket', () => {
     })
 
     it('should render excerpt when last_sent_message_not_delivered is undefined', () => {
-        renderWithRouter(
+        render(
             <Ticket
                 {...defaultProps}
                 ticket={{
@@ -212,7 +211,7 @@ describe('Ticket', () => {
 
     describe('customer logic', () => {
         it('should render customer name when available', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -229,7 +228,7 @@ describe('Ticket', () => {
         })
 
         it('should render customer email when name is not available', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -246,7 +245,7 @@ describe('Ticket', () => {
         })
 
         it('should render customer id when name and email are not available', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -263,7 +262,7 @@ describe('Ticket', () => {
         })
 
         it('should render empty string when customer is null', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -289,7 +288,7 @@ describe('Ticket', () => {
                     email: 'john@example.com',
                 },
             }
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithoutChannel as any}
@@ -300,7 +299,7 @@ describe('Ticket', () => {
         })
 
         it('should render empty string when channel exists but customer is undefined', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -317,7 +316,7 @@ describe('Ticket', () => {
 
     describe('hasUndeliveredMessages logic', () => {
         it('should be true when last_sent_message_not_delivered is true', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -335,7 +334,7 @@ describe('Ticket', () => {
         })
 
         it('should be false when last_sent_message_not_delivered is false', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -353,7 +352,7 @@ describe('Ticket', () => {
         })
 
         it('should be falsy when last_sent_message_not_delivered is undefined', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -377,9 +376,7 @@ describe('Ticket', () => {
             delete (ticketWithoutProperty as any)
                 .last_sent_message_not_delivered
 
-            renderWithRouter(
-                <Ticket {...defaultProps} ticket={ticketWithoutProperty} />,
-            )
+            render(<Ticket {...defaultProps} ticket={ticketWithoutProperty} />)
             expect(
                 screen.getByText(defaultProps.ticket.excerpt!),
             ).toBeInTheDocument()
@@ -395,9 +392,7 @@ describe('Ticket', () => {
                 excerpt: 'Test Excerpt',
             }
 
-            renderWithRouter(
-                <Ticket {...defaultProps} ticket={ticketPartial as any} />,
-            )
+            render(<Ticket {...defaultProps} ticket={ticketPartial as any} />)
             expect(
                 screen.queryByText('Last message not delivered'),
             ).not.toBeInTheDocument()
@@ -411,7 +406,7 @@ describe('Ticket', () => {
         })
 
         it('should display priority badge when ticket has priority', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithPriority(TicketPriority.High)}
@@ -424,7 +419,7 @@ describe('Ticket', () => {
         })
 
         it('should not display priority badge when ticket priority is normal', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithPriority(TicketPriority.Normal)}
@@ -437,7 +432,7 @@ describe('Ticket', () => {
         })
 
         it('should not display priority badge when ticket has no priority', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -476,7 +471,7 @@ describe('Ticket', () => {
         }
 
         it('should display translated subject when translation.subject is provided', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithTranslation}
@@ -491,9 +486,7 @@ describe('Ticket', () => {
         })
 
         it('should display original subject when translation.subject is not provided', () => {
-            renderWithRouter(
-                <Ticket {...defaultProps} ticket={ticketWithTranslation} />,
-            )
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
 
             expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
             expect(
@@ -502,7 +495,7 @@ describe('Ticket', () => {
         })
 
         it('should display translate icon when translation.subject is provided', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithTranslation}
@@ -514,15 +507,13 @@ describe('Ticket', () => {
         })
 
         it('should not display translate icon when no translation prop is provided', () => {
-            renderWithRouter(
-                <Ticket {...defaultProps} ticket={ticketWithTranslation} />,
-            )
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
 
             expect(screen.queryByText('translate')).not.toBeInTheDocument()
         })
 
         it('should display translated excerpt when translation.excerpt is provided', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithTranslation}
@@ -537,9 +528,7 @@ describe('Ticket', () => {
         })
 
         it('should display original excerpt when translation.excerpt is not provided', () => {
-            renderWithRouter(
-                <Ticket {...defaultProps} ticket={ticketWithTranslation} />,
-            )
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
 
             expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
             expect(
@@ -548,15 +537,13 @@ describe('Ticket', () => {
         })
 
         it('should display original excerpt when no translation prop is provided', () => {
-            renderWithRouter(
-                <Ticket {...defaultProps} ticket={ticketWithTranslation} />,
-            )
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
 
             expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
         })
 
         it('should display both translated subject and excerpt when both are provided', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithTranslation}
@@ -576,7 +563,7 @@ describe('Ticket', () => {
         })
 
         it('should not display translated excerpt when there are undelivered messages', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={{
@@ -599,7 +586,7 @@ describe('Ticket', () => {
         })
 
         it('should handle empty translation values gracefully', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithTranslation}
@@ -617,9 +604,7 @@ describe('Ticket', () => {
         })
 
         it('should handle undefined translation values gracefully', () => {
-            renderWithRouter(
-                <Ticket {...defaultProps} ticket={ticketWithTranslation} />,
-            )
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
 
             expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
             expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
@@ -627,7 +612,7 @@ describe('Ticket', () => {
         })
 
         it('should use translated excerpt in tooltip when translation.excerpt is provided', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithTranslation}
@@ -640,9 +625,7 @@ describe('Ticket', () => {
         })
 
         it('should use original excerpt in tooltip when translation.excerpt is not provided', () => {
-            renderWithRouter(
-                <Ticket {...defaultProps} ticket={ticketWithTranslation} />,
-            )
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
 
             const tooltip = screen.getByText(
                 defaultTicket.excerpt!,
@@ -670,7 +653,7 @@ describe('Ticket', () => {
         it('should not show translation when shouldShowTranslatedContent returns false', () => {
             mockShouldShowTranslatedContent.mockReturnValue(false)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -692,7 +675,7 @@ describe('Ticket', () => {
         it('should show translation when shouldShowTranslatedContent returns true', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -712,7 +695,7 @@ describe('Ticket', () => {
         })
 
         it('should call shouldShowTranslatedContent with ticket language', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -726,7 +709,7 @@ describe('Ticket', () => {
         it('should not show translation when ticket has no language property', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={defaultTicket}
@@ -743,7 +726,7 @@ describe('Ticket', () => {
         })
 
         it('should not call shouldShowTranslatedContent when ticket has no language', () => {
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={defaultTicket}
@@ -757,7 +740,7 @@ describe('Ticket', () => {
         it('should not show translation when translation is undefined even if shouldShowTranslatedContent returns true', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -773,7 +756,7 @@ describe('Ticket', () => {
         it('should not show translation when translation exists but both subject and excerpt are empty', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -793,7 +776,7 @@ describe('Ticket', () => {
         it('should show translation when only subject is translated and shouldShowTranslatedContent returns true', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -815,7 +798,7 @@ describe('Ticket', () => {
         it('should show translation when only excerpt is translated and shouldShowTranslatedContent returns true', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -847,7 +830,7 @@ describe('Ticket', () => {
                     (lang) => lang !== 'en' && lang !== 'de',
                 )
 
-                const { unmount } = renderWithRouter(
+                const { unmount } = render(
                     <Ticket
                         {...defaultProps}
                         ticket={{ ...defaultTicket, language }}
@@ -876,7 +859,7 @@ describe('Ticket', () => {
         it('should not show translation in tooltip when shouldShowTranslatedContent returns false', () => {
             mockShouldShowTranslatedContent.mockReturnValue(false)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -893,7 +876,7 @@ describe('Ticket', () => {
         it('should show translated content in tooltip when shouldShowTranslatedContent returns true', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={ticketWithLanguage}
@@ -913,7 +896,7 @@ describe('Ticket', () => {
                 language: 'es',
             }
 
-            renderWithRouter(
+            render(
                 <Ticket
                     {...defaultProps}
                     ticket={partialTicket as any}

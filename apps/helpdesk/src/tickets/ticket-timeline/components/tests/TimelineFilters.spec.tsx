@@ -1,7 +1,6 @@
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TimelineFilters } from '../TimelineFilters'
 
@@ -22,9 +21,7 @@ const defaultProps = {
 }
 
 const renderComponent = (props = {}) => {
-    return renderWithStoreAndQueryClientProvider(
-        <TimelineFilters {...defaultProps} {...props} />,
-    )
+    return render(<TimelineFilters {...defaultProps} {...props} />)
 }
 
 describe('TimelineFilters', () => {

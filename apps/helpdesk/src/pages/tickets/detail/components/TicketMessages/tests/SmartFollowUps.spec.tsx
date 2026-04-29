@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { SmartFollowUpType } from 'models/ticket/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import SmartFollowUps from '../SmartFollowUps'
 
@@ -37,9 +37,7 @@ describe('SmartFollowUps', () => {
     ]
 
     it('should return null when followUps is empty array', () => {
-        const { container } = renderWithStoreAndQueryClientProvider(
-            <SmartFollowUps smartFollowUps={[]} />,
-        )
+        const { container } = render(<SmartFollowUps smartFollowUps={[]} />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -54,10 +52,9 @@ describe('SmartFollowUps', () => {
         }
 
         it('should display all smart follow ups', () => {
-            renderWithStoreAndQueryClientProvider(
-                <SmartFollowUps smartFollowUps={mockFollowUps} />,
-                mockState,
-            )
+            render(<SmartFollowUps smartFollowUps={mockFollowUps} />, {
+                storeState: mockState,
+            })
 
             expect(screen.getByText('Order status')).toBeInTheDocument()
             expect(screen.getByText('Shipping policy')).toBeInTheDocument()
@@ -65,12 +62,12 @@ describe('SmartFollowUps', () => {
         })
 
         it('should display check icon for the selected smart follow up', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SmartFollowUps
                     smartFollowUps={mockFollowUps}
                     selectedSmartFollowUpIndex={0}
                 />,
-                mockState,
+                { storeState: mockState },
             )
 
             const checkIcon = screen.getByText('check')
@@ -79,12 +76,12 @@ describe('SmartFollowUps', () => {
         })
 
         it('should not display check icon for non selected smart follow ups', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SmartFollowUps
                     smartFollowUps={mockFollowUps}
                     selectedSmartFollowUpIndex={1}
                 />,
-                mockState,
+                { storeState: mockState },
             )
 
             const smartFollowUps = screen.getAllByTestId('pill')
@@ -109,12 +106,12 @@ describe('SmartFollowUps', () => {
             const tooltipText =
                 'Customer selected a quick-reply given by the AI Agent'
 
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SmartFollowUps
                     smartFollowUps={mockFollowUps}
                     selectedSmartFollowUpIndex={0}
                 />,
-                mockState,
+                { storeState: mockState },
             )
 
             expect(screen.queryByText(tooltipText)).toBeFalsy()
@@ -138,9 +135,9 @@ describe('SmartFollowUps', () => {
         })
 
         it('should apply correct CSS classes when there no smart follow up has been selected', () => {
-            const { container } = renderWithStoreAndQueryClientProvider(
+            const { container } = render(
                 <SmartFollowUps smartFollowUps={mockFollowUps} />,
-                mockState,
+                { storeState: mockState },
             )
 
             const smartFollowUpsContainer = container.firstChild
@@ -148,12 +145,12 @@ describe('SmartFollowUps', () => {
         })
 
         it('should not apply topSpacing class when a smart follow up has been selected', () => {
-            const { container } = renderWithStoreAndQueryClientProvider(
+            const { container } = render(
                 <SmartFollowUps
                     smartFollowUps={mockFollowUps}
                     selectedSmartFollowUpIndex={1}
                 />,
-                mockState,
+                { storeState: mockState },
             )
 
             const smartFollowUpsContainer = container.firstChild
@@ -161,10 +158,9 @@ describe('SmartFollowUps', () => {
         })
 
         it('should render pills with correct color and className', () => {
-            renderWithStoreAndQueryClientProvider(
-                <SmartFollowUps smartFollowUps={mockFollowUps} />,
-                mockState,
-            )
+            render(<SmartFollowUps smartFollowUps={mockFollowUps} />, {
+                storeState: mockState,
+            })
 
             const pills = screen.getAllByTestId('pill')
             pills.forEach((pill) => {
@@ -184,12 +180,12 @@ describe('SmartFollowUps', () => {
         }
 
         it('should display only the selected smart follow up', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SmartFollowUps
                     smartFollowUps={mockFollowUps}
                     selectedSmartFollowUpIndex={2}
                 />,
-                mockState,
+                { storeState: mockState },
             )
 
             expect(screen.getByText('Return policy')).toBeInTheDocument()
@@ -200,12 +196,12 @@ describe('SmartFollowUps', () => {
         })
 
         it('should display check icon for the selected smart follow up', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <SmartFollowUps
                     smartFollowUps={mockFollowUps}
                     selectedSmartFollowUpIndex={2}
                 />,
-                mockState,
+                { storeState: mockState },
             )
 
             const checkIcon = screen.getByText('check')
@@ -214,7 +210,7 @@ describe('SmartFollowUps', () => {
         })
 
         it('should return null when no follow ups were selected', () => {
-            const { container } = renderWithStoreAndQueryClientProvider(
+            const { container } = render(
                 <SmartFollowUps smartFollowUps={mockFollowUps} />,
             )
 

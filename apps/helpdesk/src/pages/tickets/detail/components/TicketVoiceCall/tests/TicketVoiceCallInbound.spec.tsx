@@ -1,9 +1,8 @@
-import { userEvent } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import type { VoiceCall } from 'models/voiceCall/types'
-import { renderWithStore } from 'utils/testing'
 
 import TicketVoiceCallInbound from '../TicketVoiceCallInbound'
 
@@ -64,10 +63,7 @@ describe('TicketVoiceCallInbound', () => {
     } as VoiceCall
 
     const renderComponent = (voiceCall: VoiceCall) => {
-        return renderWithStore(
-            <TicketVoiceCallInbound voiceCall={voiceCall} />,
-            {},
-        )
+        return render(<TicketVoiceCallInbound voiceCall={voiceCall} />)
     }
 
     it('renders the customer label', () => {

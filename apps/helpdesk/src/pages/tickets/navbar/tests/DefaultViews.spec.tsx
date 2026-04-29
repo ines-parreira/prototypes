@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import {
     DefaultViewsMenu,
     SYSTEM_VIEW_DEFINITIONS,
@@ -10,7 +10,6 @@ import userEvent from '@testing-library/user-event'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { activeViewIdSet } from 'state/ui/views/actions'
-import { renderWithRouter } from 'utils/testing'
 
 import { DefaultViews } from '../DefaultViews'
 import { TicketNavbarViewLinkItem } from '../TicketNavbarViewLinkItem'
@@ -70,8 +69,8 @@ const allView = {
 }
 
 const renderComponent = () =>
-    renderWithRouter(<DefaultViews />, {
-        route: '/app/tickets/1/inbox',
+    render(<DefaultViews />, {
+        initialEntries: ['/app/tickets/1/inbox'],
         path: '/app/tickets/:viewId?/:slug?',
     })
 

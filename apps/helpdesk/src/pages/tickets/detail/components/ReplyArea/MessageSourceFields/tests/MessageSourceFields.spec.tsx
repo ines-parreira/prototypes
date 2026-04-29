@@ -3,12 +3,10 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 import MessageSourceFields from '../MessageSourceFields'
 
@@ -20,11 +18,7 @@ const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 describe('<MessageSourceFields />', () => {
     const renderWithStore = (state: Partial<RootState>) =>
-        render(
-            <Provider store={mockStore(state as any)}>
-                <MessageSourceFields />
-            </Provider>,
-        )
+        render(<MessageSourceFields />, { storeState: state })
 
     describe('for a new ticket', () => {
         const initialState: Partial<RootState> = {

@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { renderWithRouter } from '../../../../utils/testing'
 import type SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
 import { TicketSourceContainer } from '../TicketSourceContainer'
 
@@ -55,21 +55,18 @@ describe('<TicketSourceContainer />', () => {
     }
 
     it('should render', () => {
-        const { container } = renderWithRouter(
-            <TicketSourceContainer {...minProps} />,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/32',
-            },
-        )
+        const { container } = render(<TicketSourceContainer {...minProps} />, {
+            path: '/foo/:ticketId?',
+            initialEntries: ['/foo/32'],
+        })
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch ticket on initial render', () => {
-        renderWithRouter(<TicketSourceContainer {...minProps} />, {
+        render(<TicketSourceContainer {...minProps} />, {
             path: '/foo/:ticketId?',
-            route: '/foo/32',
+            initialEntries: ['/foo/32'],
         })
 
         expect(minProps.actions.fetchTicket).toHaveBeenCalledWith('32', {
@@ -79,9 +76,9 @@ describe('<TicketSourceContainer />', () => {
 
     it('should fetch the customer if ticket is new, customer is provided through the URL and is different from the one in the ticket', () => {
         const customerId = 12
-        renderWithRouter(<TicketSourceContainer {...minProps} />, {
+        render(<TicketSourceContainer {...minProps} />, {
             path: '/foo/:ticketId?',
-            route: `/foo/new?customer=${customerId}`,
+            initialEntries: [`/foo/new?customer=${customerId}`],
         })
 
         expect(minProps.actions.fetchCustomer).toHaveBeenCalledWith(

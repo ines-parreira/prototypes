@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
@@ -19,7 +19,6 @@ import {
     getAnsweringVoiceSubject,
     isCallTransfer,
 } from 'models/voiceCall/utils'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
 
@@ -107,9 +106,7 @@ afterAll(() => {
 })
 
 const renderComponent = (voiceCall: VoiceCall) => {
-    return renderWithQueryClientProvider(
-        <TicketVoiceCallInboundStatus voiceCall={voiceCall} />,
-    )
+    return render(<TicketVoiceCallInboundStatus voiceCall={voiceCall} />)
 }
 
 describe('TicketVoiceCallInboundStatus', () => {

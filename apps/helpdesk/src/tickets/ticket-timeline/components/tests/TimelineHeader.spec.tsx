@@ -1,69 +1,54 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TimelineHeader } from '../TimelineHeader'
 
 describe('TimelineHeader', () => {
     describe('Title generation with firstName and lastName', () => {
         it('should display full name when both firstName and lastName are provided', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader firstName="John" lastName="Doe" />,
-            )
+            render(<TimelineHeader firstName="John" lastName="Doe" />)
 
             expect(screen.getByText('John Doe Timeline')).toBeInTheDocument()
         })
 
         it('should display only firstName when lastName is not provided', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader firstName="John" />,
-            )
+            render(<TimelineHeader firstName="John" />)
 
             expect(screen.getByText('John Timeline')).toBeInTheDocument()
         })
 
         it('should display only lastName when firstName is not provided', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader lastName="Doe" />,
-            )
+            render(<TimelineHeader lastName="Doe" />)
 
             expect(screen.getByText('Doe Timeline')).toBeInTheDocument()
         })
 
         it('should display "Customer timeline" when neither firstName nor lastName is provided', () => {
-            renderWithStoreAndQueryClientProvider(<TimelineHeader />)
+            render(<TimelineHeader />)
 
             expect(screen.getByText('Customer timeline')).toBeInTheDocument()
         })
 
         it('should display only firstName when lastName is empty string', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader firstName="John" lastName="" />,
-            )
+            render(<TimelineHeader firstName="John" lastName="" />)
 
             expect(screen.getByText('John Timeline')).toBeInTheDocument()
         })
 
         it('should display only lastName when firstName is empty string', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader firstName="" lastName="Doe" />,
-            )
+            render(<TimelineHeader firstName="" lastName="Doe" />)
 
             expect(screen.getByText('Doe Timeline')).toBeInTheDocument()
         })
 
         it('should display "Customer timeline" when both firstName and lastName are empty strings', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader firstName="" lastName="" />,
-            )
+            render(<TimelineHeader firstName="" lastName="" />)
 
             expect(screen.getByText('Customer timeline')).toBeInTheDocument()
         })
 
         it('should handle names with special characters', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader firstName="María" lastName="O'Connor" />,
-            )
+            render(<TimelineHeader firstName="María" lastName="O'Connor" />)
 
             expect(
                 screen.getByText("María O'Connor Timeline"),
@@ -71,7 +56,7 @@ describe('TimelineHeader', () => {
         })
 
         it('should handle names with multiple spaces correctly', () => {
-            renderWithStoreAndQueryClientProvider(
+            render(
                 <TimelineHeader
                     firstName="John Paul"
                     lastName="van der Berg"
@@ -84,9 +69,7 @@ describe('TimelineHeader', () => {
         })
 
         it('should preserve spaces in the middle when firstName has trailing space', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader firstName="John " lastName="Doe" />,
-            )
+            render(<TimelineHeader firstName="John " lastName="Doe" />)
 
             // The trim() in the component only trims the final result's leading/trailing spaces
             // Middle spaces are preserved, so "John " + " " + "Doe" = "John  Doe"
@@ -95,9 +78,7 @@ describe('TimelineHeader', () => {
         })
 
         it('should display firstName with trailing "Timeline" when only firstName with trailing space', () => {
-            renderWithStoreAndQueryClientProvider(
-                <TimelineHeader firstName="John " />,
-            )
+            render(<TimelineHeader firstName="John " />)
 
             expect(screen.getByText('John Timeline')).toBeInTheDocument()
         })
@@ -105,7 +86,7 @@ describe('TimelineHeader', () => {
 
     describe('Component structure', () => {
         it('should render text with bold variant', () => {
-            const { container } = renderWithStoreAndQueryClientProvider(
+            const { container } = render(
                 <TimelineHeader firstName="John" lastName="Doe" />,
             )
 

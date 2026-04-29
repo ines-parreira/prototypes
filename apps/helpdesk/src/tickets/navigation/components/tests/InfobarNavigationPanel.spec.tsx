@@ -1,14 +1,12 @@
 import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { Panels } from '@repo/layout'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { MemoryRouter, Route } from 'react-router-dom'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { InfobarNavigationPanel } from '../InfobarNavigationPanel'
 
@@ -67,17 +65,17 @@ describe('InfobarNavigationPanel', () => {
     })
 
     const renderComponent = (ticketId = '123') => {
-        return renderWithStoreAndQueryClientProvider(
-            <MemoryRouter initialEntries={[`/tickets/${ticketId}`]}>
-                <Route path="/tickets/:ticketId">
-                    <Panels size={1000}>
-                        <InfobarNavigationPanel />
-                    </Panels>
-                </Route>
-            </MemoryRouter>,
+        return render(
+            <Panels size={1000}>
+                <InfobarNavigationPanel />
+            </Panels>,
             {
-                integrations: fromJS({ integrations: [] }),
-            } as any,
+                initialEntries: [`/tickets/${ticketId}`],
+                path: '/tickets/:ticketId',
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                } as any,
+            },
         )
     }
 

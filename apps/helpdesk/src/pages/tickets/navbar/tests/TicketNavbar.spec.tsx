@@ -1,14 +1,12 @@
 import type { ComponentProps, ReactNode } from 'react'
 
 import client from '@repo/api-resources'
+import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
 
 import { UserRole } from 'config/types/user'
 import { section } from 'fixtures/section'
@@ -19,8 +17,6 @@ import { ViewType, ViewVisibility } from 'models/view/types'
 import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
 import { NotificationStatus } from 'state/notifications/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
-import { mockStore, renderWithRouter } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import type DeleteSectionModal from '../DeleteSectionModal'
 import type SectionFormModal from '../SectionFormModal'
@@ -232,6 +228,17 @@ describe('<TicketNavbar/>', () => {
         entities: fromJS({}),
     }
 
+    const renderTicketNavbar = ({
+        initialEntries = ['/foo/1'],
+        path = '/foo/:viewId?',
+        storeState = store,
+    } = {}) =>
+        render(<TicketNavbarContainer {...minProps} />, {
+            initialEntries,
+            path,
+            storeState: storeState as any,
+        })
+
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
@@ -255,17 +262,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fetch the views and dispatch the views actions (legacy views + views entity)', (done) => {
-        renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        renderTicketNavbar()
 
         setImmediate(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
@@ -279,17 +276,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fetch the sections and dispatch the result', (done) => {
-        renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        renderTicketNavbar()
 
         setImmediate(() => {
             expect(minProps.sectionsFetched).toHaveBeenNthCalledWith(1, [
@@ -300,21 +287,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fallback to location view id when view id is missing from the params', (done) => {
-        const history = createBrowserHistory()
-        history.push('/foo/1')
-
-        history.push('/foo?viewId=2')
-        renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                history,
-                path: '/foo/:viewId?',
-            },
-        )
+        renderTicketNavbar({ initialEntries: ['/foo?viewId=2'] })
 
         setImmediate(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
@@ -328,17 +301,7 @@ describe('<TicketNavbar/>', () => {
 
     it('should dispatch a notification when failing to fetch views', (done) => {
         mockedServer.onGet(/\/api\/views\/.*/).reply(503, { message: 'error' })
-        renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        renderTicketNavbar()
 
         setImmediate(() => {
             expect(minProps.notify).toHaveBeenNthCalledWith(1, {
@@ -350,17 +313,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should create a new section', (done) => {
-        const { getByTestId } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        const { getByTestId } = renderTicketNavbar()
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
         fireEvent.click(getByTestId('SectionModal-submit'))
@@ -372,17 +325,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should update a section', (done) => {
-        const { getByTestId } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        const { getByTestId } = renderTicketNavbar()
 
         fireEvent.click(getByTestId('TicketNavbarContent-rename'))
         fireEvent.click(getByTestId('SectionModal-submit'))
@@ -394,17 +337,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should delete a section', (done) => {
-        const { getByTestId } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(store as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        const { getByTestId } = renderTicketNavbar()
 
         fireEvent.click(getByTestId('TicketNavbarContent-delete'))
         fireEvent.click(getByTestId('DeleteModal-submit'))
@@ -428,17 +361,9 @@ describe('<TicketNavbar/>', () => {
             }),
         }
 
-        const { queryByTestId } = renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(storeWithEmptySystemViews as any)}>
-                    <TicketNavbarContainer {...minProps} />
-                </Provider>
-            </DndProvider>,
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        const { queryByTestId } = renderTicketNavbar({
+            storeState: storeWithEmptySystemViews,
+        })
 
         // Check that the system views container is not rendered
         expect(queryByTestId('new-system-views')).not.toBeInTheDocument()
@@ -451,14 +376,7 @@ describe('<TicketNavbar/>', () => {
 
         it('should create a new section', async () => {
             const user = userEvent.setup()
-            const { getByRole, getByTestId, getByText } = renderWithRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Provider store={mockStore(store as any)}>
-                        <TicketNavbarContainer {...minProps} />
-                    </Provider>
-                </DndProvider>,
-                { path: '/foo/:viewId?', route: '/foo/1' },
-            )
+            const { getByRole, getByTestId, getByText } = renderTicketNavbar()
 
             await user.click(getByRole('button', { name: 'add-plus-circle' }))
 
@@ -478,14 +396,7 @@ describe('<TicketNavbar/>', () => {
 
         it('should update a section', async () => {
             const user = userEvent.setup()
-            const { getByTestId } = renderWithRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Provider store={mockStore(store as any)}>
-                        <TicketNavbarContainer {...minProps} />
-                    </Provider>
-                </DndProvider>,
-                { path: '/foo/:viewId?', route: '/foo/1' },
-            )
+            const { getByTestId } = renderTicketNavbar()
 
             await user.click(getByTestId('TicketNavbarContent-rename'))
             await user.click(getByTestId('SectionModal-submit'))
@@ -500,14 +411,7 @@ describe('<TicketNavbar/>', () => {
 
         it('should delete a section', async () => {
             const user = userEvent.setup()
-            const { getByTestId } = renderWithRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Provider store={mockStore(store as any)}>
-                        <TicketNavbarContainer {...minProps} />
-                    </Provider>
-                </DndProvider>,
-                { path: '/foo/:viewId?', route: '/foo/1' },
-            )
+            const { getByTestId } = renderTicketNavbar()
 
             await user.click(getByTestId('TicketNavbarContent-delete'))
             await user.click(getByTestId('DeleteModal-submit'))
@@ -529,17 +433,7 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { getByText } = renderWithRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Provider store={mockStore(store as any)}>
-                        <TicketNavbarContainer {...minProps} />
-                    </Provider>
-                </DndProvider>,
-                {
-                    path: '/foo/:viewId?',
-                    route: '/foo/1',
-                },
-            )
+            const { getByText } = renderTicketNavbar()
 
             expect(getByText('CollapsedDefaultViews')).toBeInTheDocument()
             expect(getByText('RecentChats')).toBeInTheDocument()
@@ -551,17 +445,7 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { queryAllByTestId, getByText } = renderWithRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Provider store={mockStore(store as any)}>
-                        <TicketNavbarContainer {...minProps} />
-                    </Provider>
-                </DndProvider>,
-                {
-                    path: '/foo/:viewId?',
-                    route: '/foo/1',
-                },
-            )
+            const { queryAllByTestId, getByText } = renderTicketNavbar()
 
             const navbarContents = queryAllByTestId('TicketNavbarContent')
             expect(navbarContents.length).toBeGreaterThan(0)
@@ -580,17 +464,7 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { queryAllByTestId } = renderWithRouter(
-                <DndProvider backend={HTML5Backend}>
-                    <Provider store={mockStore(store as any)}>
-                        <TicketNavbarContainer {...minProps} />
-                    </Provider>
-                </DndProvider>,
-                {
-                    path: '/foo/:viewId?',
-                    route: '/foo/1',
-                },
-            )
+            const { queryAllByTestId } = renderTicketNavbar()
 
             const navbarBlocks = queryAllByTestId('NavbarBlock')
             expect(navbarBlocks.length).toBeGreaterThan(0)

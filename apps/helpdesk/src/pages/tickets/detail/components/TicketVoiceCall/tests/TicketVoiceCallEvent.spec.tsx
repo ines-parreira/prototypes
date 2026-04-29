@@ -1,16 +1,14 @@
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { ProcessedEvent } from 'models/voiceCall/processEvents'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import TicketVoiceCallEvent from '../TicketVoiceCallEvent'
 
 describe('TicketVoiceCallEvent', () => {
     const renderComponent = (event: ProcessedEvent) => {
-        return renderWithStoreAndQueryClientProvider(
-            <TicketVoiceCallEvent event={event} />,
-        )
+        return render(<TicketVoiceCallEvent event={event} />)
     }
 
     it('should render a basic answered action', () => {

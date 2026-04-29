@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -22,7 +23,6 @@ import {
     snoozeTicketAction,
 } from 'fixtures/macro'
 import { MacroActionName } from 'models/macroAction/types'
-import { renderWithStore } from 'utils/testing'
 
 import { Preview } from '../Preview'
 
@@ -43,8 +43,10 @@ jest.mock('pages/common/forms/RichField/TicketRichField', () => () => (
 ))
 
 const renderComponent = (props: ComponentProps<typeof Preview>) =>
-    renderWithStore(<Preview {...props} />, {
-        integrations: fromJS(integrationsState),
+    render(<Preview {...props} />, {
+        storeState: {
+            integrations: fromJS(integrationsState),
+        },
     })
 
 describe('<Preview />', () => {

@@ -1,5 +1,4 @@
 import { assumeMock, render } from '@repo/testing'
-import { MemoryRouter, Route, Switch } from 'react-router-dom'
 
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
@@ -25,18 +24,12 @@ describe('TicketHeaderToggle', () => {
     })
 
     const renderWithRouter = (initialPath: string) => {
-        return render(
-            <MemoryRouter initialEntries={[initialPath]}>
-                <Switch>
-                    <Route path="/views/:viewId/:ticketId">
-                        <TicketHeaderToggle />
-                    </Route>
-                    <Route path="/ticket/:ticketId">
-                        <TicketHeaderToggle />
-                    </Route>
-                </Switch>
-            </MemoryRouter>,
-        )
+        return render(<TicketHeaderToggle />, {
+            initialEntries: [initialPath],
+            path: initialPath.startsWith('/views')
+                ? '/views/:viewId/:ticketId'
+                : '/ticket/:ticketId',
+        })
     }
 
     it('renders Toggle when dtp is disabled', () => {
