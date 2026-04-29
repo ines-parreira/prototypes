@@ -62,11 +62,12 @@ a,
     text-decoration: none !important;
 }
 
-// Legacy default link color — scoped so it doesn't bleed into axiom-mode
-// anchors (e.g. <DataTable getRowHref> wraps each cell in an <a>, which
-// otherwise picks up this color via the bare `a` selector).
+// Legacy link-styled button color. Scoped to .btn.btn-link only — a bare
+// `a` selector painted every anchor blue, including elements that are
+// anchors only structurally (e.g. <DataTable getRowHref> wraps each cell
+// in an <a>, and many wayfinding/navbar items use anchors as click
+// targets but aren't meant to look like inline links).
 .legacy {
-    a,
     .btn.btn-link {
         color: var(--main-primary); // legacy;
 
