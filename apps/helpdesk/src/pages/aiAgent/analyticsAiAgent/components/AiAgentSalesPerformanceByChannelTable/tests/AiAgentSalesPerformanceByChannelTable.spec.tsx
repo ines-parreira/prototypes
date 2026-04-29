@@ -36,6 +36,7 @@ const mockUseAiAgentSalesPerformanceByChannelMetrics = jest.requireMock(
 const defaultLoadingStates = {
     automatedInteractions: false,
     handoverInteractions: false,
+    conversionRate: false,
     totalSales: false,
     ordersInfluenced: false,
     revenuePerInteraction: false,
@@ -46,6 +47,7 @@ const defaultData: AiAgentSalesPerformanceByChannelEntityMetrics[] = [
         entity: 'email',
         automatedInteractions: 2700,
         handoverInteractions: 189,
+        conversionRate: 0.12,
         totalSales: 5000,
         ordersInfluenced: 42,
         revenuePerInteraction: 1.71,
@@ -54,6 +56,7 @@ const defaultData: AiAgentSalesPerformanceByChannelEntityMetrics[] = [
         entity: 'chat',
         automatedInteractions: 900,
         handoverInteractions: null,
+        conversionRate: null,
         totalSales: null,
         ordersInfluenced: null,
         revenuePerInteraction: null,

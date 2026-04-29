@@ -170,6 +170,9 @@ function mergeItemsPreservingDefaultOrder(
     return defaultItems.map((defaultItem) => ({
         ...(savedItemMap.get(defaultItem.chartId) ?? defaultItem),
         requiresFeatureFlag: defaultItem.requiresFeatureFlag,
+        visibleColumns:
+            savedItemMap.get(defaultItem.chartId)?.visibleColumns ??
+            defaultItem.visibleColumns,
     }))
 }
 

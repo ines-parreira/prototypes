@@ -61,3 +61,31 @@ export const dynamicConversionRateTimeseries = aiSalesAgentConversionRateScope
 
 export const dynamicConversionRateTimeseriesQueryFactoryV2 = (ctx: Context) =>
     dynamicConversionRateTimeseries.build(ctx)
+
+export const aiAgentSalesConversionRatePerChannel =
+    aiSalesAgentConversionRateScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_CONVERSION_RATE_PER_CHANNEL,
+        )
+        .defineQuery(() => ({
+            measures: ['conversionRate'] as const,
+            dimensions: ['channel'] as const,
+        }))
+
+export const aiAgentSalesConversionRatePerChannelQueryV2Factory = (
+    ctx: AiSalesAgentConversionRateContext,
+) => aiAgentSalesConversionRatePerChannel.build(ctx)
+
+export const aiAgentSalesConversionRatePerEngagementType =
+    aiSalesAgentConversionRateScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_CONVERSION_RATE_PER_ENGAGEMENT_TYPE,
+        )
+        .defineQuery(() => ({
+            measures: ['conversionRate'] as const,
+            dimensions: ['engagementType'] as const,
+        }))
+
+export const aiAgentSalesConversionRatePerEngagementTypeQueryV2Factory = (
+    ctx: AiSalesAgentConversionRateContext,
+) => aiAgentSalesConversionRatePerEngagementType.build(ctx)

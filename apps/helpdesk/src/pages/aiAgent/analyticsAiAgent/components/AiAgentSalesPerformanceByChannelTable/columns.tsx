@@ -8,7 +8,7 @@ export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS: NameColumnConfi
 export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_TABLE = {
     title: 'AI Agent Sales Performance By Channel',
     description:
-        'Performance metrics per channel for the AI Agent Sales skill, including automated interactions, handovers, total sales, orders influenced, and revenue per interaction.',
+        'Performance metrics per channel for the AI Agent Sales skill, including automated interactions, handovers, conversion rate, total sales, orders influenced, and revenue per interaction.',
 }
 
 export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[] =
@@ -30,6 +30,15 @@ export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[]
                 "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
             metricFormat: 'decimal',
             loadingStateKeys: ['handoverInteractions'],
+        },
+        {
+            accessorKey: 'conversionRate',
+            label: 'Conversion rate',
+            tooltipTitle: 'Conversion rate',
+            tooltipCaption:
+                'The percentage of AI Agent interactions that resulted in a purchase.',
+            metricFormat: 'decimal-to-percent',
+            loadingStateKeys: ['conversionRate'],
         },
         {
             accessorKey: 'totalSales',

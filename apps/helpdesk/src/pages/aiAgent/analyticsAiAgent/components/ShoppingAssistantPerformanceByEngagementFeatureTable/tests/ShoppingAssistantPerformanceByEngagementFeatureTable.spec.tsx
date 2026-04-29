@@ -39,6 +39,7 @@ const mockUseShoppingAssistantPerformanceByEngagementFeatureMetrics =
 const defaultLoadingStates = {
     automatedInteractions: false,
     handoverInteractions: false,
+    conversionRate: false,
     totalSales: false,
     ordersInfluenced: false,
     revenuePerInteraction: false,
@@ -50,6 +51,7 @@ const defaultData: ShoppingAssistantPerformanceByEngagementFeatureEntityMetrics[
             entity: 'search_bar',
             automatedInteractions: 120,
             handoverInteractions: 12,
+            conversionRate: 0.15,
             totalSales: 3500,
             ordersInfluenced: 48,
             revenuePerInteraction: 29.2,
@@ -58,6 +60,7 @@ const defaultData: ShoppingAssistantPerformanceByEngagementFeatureEntityMetrics[
             entity: 'null',
             automatedInteractions: 55,
             handoverInteractions: 4,
+            conversionRate: null,
             totalSales: 1200,
             ordersInfluenced: 14,
             revenuePerInteraction: 21.8,

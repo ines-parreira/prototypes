@@ -148,12 +148,26 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                         gridSize: 12,
                         visibility: true,
                         requiresFeatureFlag: true,
+                        visibleColumns: [
+                            'automatedInteractions',
+                            'handoverInteractions',
+                            'conversionRate',
+                            'ordersInfluenced',
+                            'revenuePerInteraction',
+                        ],
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,
                         gridSize: 12,
                         visibility: false,
+                        visibleColumns: [
+                            'automatedInteractions',
+                            'handoverInteractions',
+                            'conversionRate',
+                            'ordersInfluenced',
+                            'revenuePerInteraction',
+                        ],
                     },
                     {
                         chartId:

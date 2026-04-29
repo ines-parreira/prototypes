@@ -2,10 +2,10 @@ import { SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS } from 'pa
 import { MAP_ENGAGEMENT_TYPE_NAME } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 describe('SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS', () => {
-    it('has 5 entries', () => {
+    it('has 6 entries', () => {
         expect(
             SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS,
-        ).toHaveLength(5)
+        ).toHaveLength(6)
     })
 
     it('has the correct accessorKeys in order', () => {
@@ -16,6 +16,7 @@ describe('SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS', () => {
         ).toEqual([
             'automatedInteractions',
             'handoverInteractions',
+            'conversionRate',
             'totalSales',
             'ordersInfluenced',
             'revenuePerInteraction',

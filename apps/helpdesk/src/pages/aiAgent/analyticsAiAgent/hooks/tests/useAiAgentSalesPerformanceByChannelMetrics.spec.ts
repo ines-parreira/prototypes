@@ -41,6 +41,13 @@ jest.mock(
     }),
 )
 jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useConversionRatePerSalesAgentChannel',
+    () => ({
+        useConversionRatePerSalesAgentChannel: jest.fn(),
+        fetchConversionRatePerSalesAgentChannel: jest.fn(),
+    }),
+)
+jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesPerSalesAgentChannel',
     () => ({
         useTotalSalesPerSalesAgentChannel: jest.fn(),
@@ -95,6 +102,7 @@ const MOCK_TIMEZONE = 'UTC'
 const defaultEntityData = {
     automatedInteractions: { email: 1200, chat: 800 },
     handoverInteractions: { email: 45, chat: 12 },
+    conversionRate: { email: 0.12, chat: 0.08 },
     totalSales: { email: 6225, chat: 4048 },
     ordersInfluenced: { email: 50, chat: 32 },
     revenuePerInteraction: { email: 5.0, chat: 4.97 },
@@ -105,6 +113,7 @@ const defaultRows = [
         entity: 'email',
         automatedInteractions: 1200,
         handoverInteractions: 45,
+        conversionRate: 0.12,
         totalSales: 6225,
         ordersInfluenced: 50,
         revenuePerInteraction: 5.0,
@@ -113,6 +122,7 @@ const defaultRows = [
         entity: 'chat',
         automatedInteractions: 800,
         handoverInteractions: 12,
+        conversionRate: 0.08,
         totalSales: 4048,
         ordersInfluenced: 32,
         revenuePerInteraction: 4.97,
@@ -134,6 +144,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
             loadingStates: {
                 automatedInteractions: false,
                 handoverInteractions: false,
+                conversionRate: false,
                 totalSales: false,
                 ordersInfluenced: false,
                 revenuePerInteraction: false,
@@ -160,6 +171,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
             loadingStates: {
                 automatedInteractions: true,
                 handoverInteractions: false,
+                conversionRate: false,
                 totalSales: false,
                 ordersInfluenced: false,
                 revenuePerInteraction: false,
@@ -181,6 +193,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
             loadingStates: {
                 automatedInteractions: false,
                 handoverInteractions: false,
+                conversionRate: false,
                 totalSales: false,
                 ordersInfluenced: false,
                 revenuePerInteraction: false,
@@ -202,6 +215,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
             loadingStates: {
                 automatedInteractions: false,
                 handoverInteractions: true,
+                conversionRate: false,
                 totalSales: false,
                 ordersInfluenced: false,
                 revenuePerInteraction: false,
@@ -214,6 +228,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
 
         expect(result.current.loadingStates.automatedInteractions).toBe(false)
         expect(result.current.loadingStates.handoverInteractions).toBe(true)
+        expect(result.current.loadingStates.conversionRate).toBe(false)
         expect(result.current.loadingStates.totalSales).toBe(false)
         expect(result.current.loadingStates.ordersInfluenced).toBe(false)
         expect(result.current.loadingStates.revenuePerInteraction).toBe(false)
@@ -225,6 +240,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
                 data: {
                     automatedInteractions: {},
                     handoverInteractions: {},
+                    conversionRate: {},
                     totalSales: {},
                     ordersInfluenced: {},
                     revenuePerInteraction: {},
@@ -234,6 +250,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
                 loadingStates: {
                     automatedInteractions: false,
                     handoverInteractions: false,
+                    conversionRate: false,
                     totalSales: false,
                     ordersInfluenced: false,
                     revenuePerInteraction: false,
@@ -247,6 +264,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
 
             expect(row.automatedInteractions).toBeNull()
             expect(row.handoverInteractions).toBeNull()
+            expect(row.conversionRate).toBeNull()
             expect(row.totalSales).toBeNull()
             expect(row.ordersInfluenced).toBeNull()
             expect(row.revenuePerInteraction).toBeNull()
@@ -260,6 +278,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
                 loadingStates: {
                     automatedInteractions: false,
                     handoverInteractions: false,
+                    conversionRate: false,
                     totalSales: false,
                     ordersInfluenced: false,
                     revenuePerInteraction: false,
@@ -285,6 +304,7 @@ describe('useAiAgentSalesPerformanceByChannelMetrics', () => {
                 loadingStates: {
                     automatedInteractions: false,
                     handoverInteractions: false,
+                    conversionRate: false,
                     totalSales: false,
                     ordersInfluenced: false,
                     revenuePerInteraction: false,
@@ -305,6 +325,7 @@ describe('fetchAiAgentSalesPerformanceByChannelMetrics', () => {
     const mockMetricsData = {
         automatedInteractions: { email: 1200 },
         handoverInteractions: { email: 45 },
+        conversionRate: { email: 0.12 },
         totalSales: { email: 6225 },
         ordersInfluenced: { email: 50 },
         revenuePerInteraction: { email: 5.0 },
@@ -314,6 +335,7 @@ describe('fetchAiAgentSalesPerformanceByChannelMetrics', () => {
         entity: 'email' as const,
         automatedInteractions: 1200,
         handoverInteractions: 45,
+        conversionRate: 0.12,
         totalSales: 6225,
         ordersInfluenced: 50,
         revenuePerInteraction: 5.0,
@@ -411,6 +433,7 @@ describe('fetchAiAgentSalesPerformanceByChannelAsConfigurableTable', () => {
             data: {
                 automatedInteractions: { email: 1200 },
                 handoverInteractions: { email: 45 },
+                conversionRate: { email: 0.12 },
                 totalSales: { email: 6225 },
                 ordersInfluenced: { email: 50 },
                 revenuePerInteraction: { email: 5.0 },
@@ -424,6 +447,7 @@ describe('fetchAiAgentSalesPerformanceByChannelAsConfigurableTable', () => {
                 entity: 'email' as const,
                 automatedInteractions: 1200,
                 handoverInteractions: 45,
+                conversionRate: 0.12,
                 totalSales: 6225,
                 ordersInfluenced: 50,
                 revenuePerInteraction: 5.0,

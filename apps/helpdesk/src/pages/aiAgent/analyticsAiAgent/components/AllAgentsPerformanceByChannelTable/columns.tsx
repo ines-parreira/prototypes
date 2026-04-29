@@ -8,7 +8,7 @@ export const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS: NameColumnConfig[] 
 export const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_TABLE = {
     title: 'All Agents Performance By Channel',
     description:
-        'Automation performance metrics per channel, including automated interactions, handovers, cost saved, coverage rate, and success rate.',
+        'Automation performance metrics per channel, including automated interactions, handovers, conversion rate, cost saved, coverage rate, and success rate.',
 }
 
 export const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[] = [
@@ -29,6 +29,15 @@ export const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[] = [
             "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
         metricFormat: 'decimal',
         loadingStateKeys: ['handoverInteractions'],
+    },
+    {
+        accessorKey: 'conversionRate',
+        label: 'Conversion rate',
+        tooltipTitle: 'Conversion rate',
+        tooltipCaption:
+            'The percentage of AI Agent interactions that resulted in a purchase.',
+        metricFormat: 'decimal-to-percent',
+        loadingStateKeys: ['conversionRate'],
     },
     {
         accessorKey: 'coverageRate',

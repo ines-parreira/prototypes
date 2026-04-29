@@ -35,6 +35,10 @@ import {
     fetchAiAgentSuccessRatePerChannel,
     useAiAgentSuccessRatePerChannel,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSuccessRatePerChannel'
+import {
+    fetchConversionRatePerSalesAgentChannel,
+    useConversionRatePerSalesAgentChannel,
+} from 'pages/aiAgent/analyticsAiAgent/hooks/useConversionRatePerSalesAgentChannel'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { formatChannelName } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
@@ -61,6 +65,7 @@ export type AllAgentsPerformanceByChannelEntityMetrics = {
     entity: AllAgentsChannelName
     automatedInteractions: number | null
     handoverInteractions: number | null
+    conversionRate: number | null
     costSaved: number | null
     coverageRate: number | null
     successRate: number | null
@@ -73,6 +78,7 @@ export type AllAgentsPerformanceByChannelMetricsData = {
     loadingStates: {
         automatedInteractions: boolean
         handoverInteractions: boolean
+        conversionRate: boolean
         costSaved: boolean
         coverageRate: boolean
         successRate: boolean
@@ -82,6 +88,7 @@ export type AllAgentsPerformanceByChannelMetricsData = {
 type AllAgentsPerformanceByChannelMetricKeys =
     | 'automatedInteractions'
     | 'handoverInteractions'
+    | 'conversionRate'
     | 'costSaved'
     | 'coverageRate'
     | 'successRate'
@@ -99,6 +106,7 @@ const buildAllAgentsPerformanceByChannelRow =
         entity,
         automatedInteractions: entityData.automatedInteractions[entity] ?? null,
         handoverInteractions: entityData.handoverInteractions[entity] ?? null,
+        conversionRate: entityData.conversionRate[entity] ?? null,
         costSaved: entityData.costSaved[entity] ?? null,
         coverageRate: entityData.coverageRate[entity] ?? null,
         successRate: entityData.successRate[entity] ?? null,
@@ -115,6 +123,10 @@ const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_METRICS_CONFIG: Record<
     handoverInteractions: {
         use: useAiAgentHandoverInteractionsPerChannel,
         fetch: fetchAiAgentHandoverInteractionsPerChannel,
+    },
+    conversionRate: {
+        use: useConversionRatePerSalesAgentChannel,
+        fetch: fetchConversionRatePerSalesAgentChannel,
     },
     costSaved: {
         use: useAiAgentCostSavedPerChannel,
@@ -160,6 +172,7 @@ export const useAllAgentsPerformanceByChannelMetrics =
                 automatedInteractions:
                     entityLoadingStates.automatedInteractions,
                 handoverInteractions: entityLoadingStates.handoverInteractions,
+                conversionRate: entityLoadingStates.conversionRate,
                 costSaved: entityLoadingStates.costSaved,
                 coverageRate: entityLoadingStates.coverageRate,
                 successRate: entityLoadingStates.successRate,

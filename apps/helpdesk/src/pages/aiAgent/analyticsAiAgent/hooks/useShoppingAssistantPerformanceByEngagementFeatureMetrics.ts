@@ -17,6 +17,10 @@ import {
     useAutomatedInteractionsPerShoppingAssistantEngagementFeature,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAutomatedInteractionsPerShoppingAssistantEngagementFeature'
 import {
+    fetchConversionRatePerShoppingAssistantEngagementFeature,
+    useConversionRatePerShoppingAssistantEngagementFeature,
+} from 'pages/aiAgent/analyticsAiAgent/hooks/useConversionRatePerShoppingAssistantEngagementFeature'
+import {
     fetchHandoverInteractionsPerShoppingAssistantEngagementFeature,
     useHandoverInteractionsPerShoppingAssistantEngagementFeature,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useHandoverInteractionsPerShoppingAssistantEngagementFeature'
@@ -49,6 +53,7 @@ export type ShoppingAssistantPerformanceByEngagementFeatureEntityMetrics = {
     entity: ShoppingAssistantEngagementFeatureName
     automatedInteractions: number | null
     handoverInteractions: number | null
+    conversionRate: number | null
     totalSales: number | null
     ordersInfluenced: number | null
     revenuePerInteraction: number | null
@@ -57,6 +62,7 @@ export type ShoppingAssistantPerformanceByEngagementFeatureEntityMetrics = {
 type ShoppingAssistantPerformanceByEngagementFeatureMetricKeys =
     | 'automatedInteractions'
     | 'handoverInteractions'
+    | 'conversionRate'
     | 'totalSales'
     | 'ordersInfluenced'
     | 'revenuePerInteraction'
@@ -97,6 +103,7 @@ const buildShoppingAssistantPerformanceByEngagementFeatureRow =
         entity,
         automatedInteractions: entityData.automatedInteractions[entity] ?? null,
         handoverInteractions: entityData.handoverInteractions[entity] ?? null,
+        conversionRate: entityData.conversionRate[entity] ?? null,
         totalSales: entityData.totalSales[entity] ?? null,
         ordersInfluenced: entityData.ordersInfluenced[entity] ?? null,
         revenuePerInteraction: entityData.revenuePerInteraction[entity] ?? null,
@@ -113,6 +120,10 @@ const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_METRICS_CONFIG: Recor
     handoverInteractions: {
         use: useHandoverInteractionsPerShoppingAssistantEngagementFeature,
         fetch: fetchHandoverInteractionsPerShoppingAssistantEngagementFeature,
+    },
+    conversionRate: {
+        use: useConversionRatePerShoppingAssistantEngagementFeature,
+        fetch: fetchConversionRatePerShoppingAssistantEngagementFeature,
     },
     totalSales: {
         use: useTotalSalesPerShoppingAssistantEngagementFeature,
@@ -166,6 +177,7 @@ export const useShoppingAssistantPerformanceByEngagementFeatureMetrics = () => {
         () => ({
             automatedInteractions: entityLoadingStates.automatedInteractions,
             handoverInteractions: entityLoadingStates.handoverInteractions,
+            conversionRate: entityLoadingStates.conversionRate,
             totalSales: entityLoadingStates.totalSales,
             ordersInfluenced: entityLoadingStates.ordersInfluenced,
             revenuePerInteraction: entityLoadingStates.revenuePerInteraction,

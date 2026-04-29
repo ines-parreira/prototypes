@@ -1383,5 +1383,93 @@ describe('managedDashboardMappers', () => {
             expect(result.sections).toHaveLength(1)
             expect(result.sections[0].id).toBe('default_section')
         })
+
+        it('should fall back to default visibleColumns when saved item has none for non-card sections', () => {
+            const defaultConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.PerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                                visibleColumns: ['col_a', 'col_b'],
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const savedConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.PerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = mergeWithDefaults(savedConfig, defaultConfig)
+
+            expect(result.sections[0].items[0].visibleColumns).toEqual([
+                'col_a',
+                'col_b',
+            ])
+        })
+
+        it('should preserve saved visibleColumns over default visibleColumns for non-card sections', () => {
+            const defaultConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.PerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                                visibleColumns: ['col_a', 'col_b'],
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const savedConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.PerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                                visibleColumns: ['col_b'],
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = mergeWithDefaults(savedConfig, defaultConfig)
+
+            expect(result.sections[0].items[0].visibleColumns).toEqual([
+                'col_b',
+            ])
+        })
     })
 })

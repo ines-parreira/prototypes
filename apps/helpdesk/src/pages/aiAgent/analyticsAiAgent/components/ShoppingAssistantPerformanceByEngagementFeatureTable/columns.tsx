@@ -14,7 +14,7 @@ export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS: 
 export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_TABLE = {
     title: 'Shopping Assistant Performance By Engagement Feature',
     description:
-        'Performance breakdown by engagement feature, including automated interactions, handover interactions, total sales, orders influenced, and revenue per interaction.',
+        'Performance breakdown by engagement feature, including automated interactions, handover interactions, conversion rate, total sales, orders influenced, and revenue per interaction.',
 }
 
 export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS: MetricColumnConfig[] =
@@ -36,6 +36,15 @@ export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS: Metri
                 "The number of interactions Shopping Assistant transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested a human.",
             metricFormat: 'decimal',
             loadingStateKeys: ['handoverInteractions'],
+        },
+        {
+            accessorKey: 'conversionRate',
+            label: 'Conversion rate',
+            tooltipTitle: 'Conversion rate',
+            tooltipCaption:
+                'The percentage of Shopping Assistant interactions that resulted in a purchase.',
+            metricFormat: 'decimal-to-percent',
+            loadingStateKeys: ['conversionRate'],
         },
         {
             accessorKey: 'totalSales',

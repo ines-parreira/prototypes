@@ -62,6 +62,13 @@ jest.mock(
         fetchAiAgentSuccessRatePerChannel: jest.fn(),
     }),
 )
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useConversionRatePerSalesAgentChannel',
+    () => ({
+        useConversionRatePerSalesAgentChannel: jest.fn(),
+        fetchConversionRatePerSalesAgentChannel: jest.fn(),
+    }),
+)
 
 const mockUseAiAgentStatsFilters = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentStatsFilters',
@@ -96,6 +103,7 @@ const MOCK_TIMEZONE = 'UTC'
 const defaultEntityData = {
     automatedInteractions: { email: 1200, chat: 800 },
     handoverInteractions: { email: 45, chat: 12 },
+    conversionRate: { email: 0.12, chat: 0.08 },
     costSaved: { email: 3720, chat: 2480 },
     coverageRate: { email: 0.85, chat: 0.92 },
     successRate: { email: 0.78, chat: 0.91 },
@@ -106,6 +114,7 @@ const defaultRows = [
         entity: 'email',
         automatedInteractions: 1200,
         handoverInteractions: 45,
+        conversionRate: 0.12,
         costSaved: 3720,
         coverageRate: 0.85,
         successRate: 0.78,
@@ -114,6 +123,7 @@ const defaultRows = [
         entity: 'chat',
         automatedInteractions: 800,
         handoverInteractions: 12,
+        conversionRate: 0.08,
         costSaved: 2480,
         coverageRate: 0.92,
         successRate: 0.91,
@@ -135,6 +145,7 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
             loadingStates: {
                 automatedInteractions: false,
                 handoverInteractions: false,
+                conversionRate: false,
                 costSaved: false,
                 coverageRate: false,
                 successRate: false,
@@ -161,6 +172,7 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
             loadingStates: {
                 automatedInteractions: true,
                 handoverInteractions: false,
+                conversionRate: false,
                 costSaved: false,
                 coverageRate: false,
                 successRate: false,
@@ -182,6 +194,7 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
             loadingStates: {
                 automatedInteractions: false,
                 handoverInteractions: false,
+                conversionRate: false,
                 costSaved: false,
                 coverageRate: false,
                 successRate: false,
@@ -203,6 +216,7 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
             loadingStates: {
                 automatedInteractions: false,
                 handoverInteractions: true,
+                conversionRate: false,
                 costSaved: false,
                 coverageRate: false,
                 successRate: false,
@@ -215,6 +229,7 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
 
         expect(result.current.loadingStates.automatedInteractions).toBe(false)
         expect(result.current.loadingStates.handoverInteractions).toBe(true)
+        expect(result.current.loadingStates.conversionRate).toBe(false)
         expect(result.current.loadingStates.costSaved).toBe(false)
         expect(result.current.loadingStates.coverageRate).toBe(false)
         expect(result.current.loadingStates.successRate).toBe(false)
@@ -226,6 +241,7 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
                 data: {
                     automatedInteractions: {},
                     handoverInteractions: {},
+                    conversionRate: {},
                     costSaved: {},
                     coverageRate: {},
                     successRate: {},
@@ -248,6 +264,7 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
 
             expect(row.automatedInteractions).toBeNull()
             expect(row.handoverInteractions).toBeNull()
+            expect(row.conversionRate).toBeNull()
             expect(row.costSaved).toBeNull()
             expect(row.coverageRate).toBeNull()
             expect(row.successRate).toBeNull()
@@ -259,6 +276,7 @@ describe('fetchAllAgentsPerformanceByChannelMetrics', () => {
     const mockMetricsData = {
         automatedInteractions: { email: 1200 },
         handoverInteractions: { email: 45 },
+        conversionRate: { email: 0.12 },
         costSaved: { email: 3720 },
         coverageRate: { email: 0.85 },
         successRate: { email: 0.78 },
@@ -268,6 +286,7 @@ describe('fetchAllAgentsPerformanceByChannelMetrics', () => {
         entity: 'email' as const,
         automatedInteractions: 1200,
         handoverInteractions: 45,
+        conversionRate: 0.12,
         costSaved: 3720,
         coverageRate: 0.85,
         successRate: 0.78,

@@ -20,6 +20,10 @@ import {
     useAutomatedInteractionsPerSalesAgentChannel,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAutomatedInteractionsPerSalesAgentChannel'
 import {
+    fetchConversionRatePerSalesAgentChannel,
+    useConversionRatePerSalesAgentChannel,
+} from 'pages/aiAgent/analyticsAiAgent/hooks/useConversionRatePerSalesAgentChannel'
+import {
     fetchHandoverInteractionsPerSalesAgentChannel,
     useHandoverInteractionsPerSalesAgentChannel,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useHandoverInteractionsPerSalesAgentChannel'
@@ -60,6 +64,7 @@ export type AiAgentSalesPerformanceByChannelEntityMetrics = {
     entity: AiAgentSalesChannelName
     automatedInteractions: number | null
     handoverInteractions: number | null
+    conversionRate: number | null
     totalSales: number | null
     ordersInfluenced: number | null
     revenuePerInteraction: number | null
@@ -72,6 +77,7 @@ export type AiAgentSalesPerformanceByChannelMetricsData = {
     loadingStates: {
         automatedInteractions: boolean
         handoverInteractions: boolean
+        conversionRate: boolean
         totalSales: boolean
         ordersInfluenced: boolean
         revenuePerInteraction: boolean
@@ -81,6 +87,7 @@ export type AiAgentSalesPerformanceByChannelMetricsData = {
 type AiAgentSalesPerformanceByChannelMetricKeys =
     | 'automatedInteractions'
     | 'handoverInteractions'
+    | 'conversionRate'
     | 'totalSales'
     | 'ordersInfluenced'
     | 'revenuePerInteraction'
@@ -98,6 +105,7 @@ const buildAiAgentSalesPerformanceByChannelRow =
         entity,
         automatedInteractions: entityData.automatedInteractions[entity] ?? null,
         handoverInteractions: entityData.handoverInteractions[entity] ?? null,
+        conversionRate: entityData.conversionRate[entity] ?? null,
         totalSales: entityData.totalSales[entity] ?? null,
         ordersInfluenced: entityData.ordersInfluenced[entity] ?? null,
         revenuePerInteraction: entityData.revenuePerInteraction[entity] ?? null,
@@ -114,6 +122,10 @@ const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_METRICS_CONFIG: Record<
     handoverInteractions: {
         use: useHandoverInteractionsPerSalesAgentChannel,
         fetch: fetchHandoverInteractionsPerSalesAgentChannel,
+    },
+    conversionRate: {
+        use: useConversionRatePerSalesAgentChannel,
+        fetch: fetchConversionRatePerSalesAgentChannel,
     },
     totalSales: {
         use: useTotalSalesPerSalesAgentChannel,
@@ -159,6 +171,7 @@ export const useAiAgentSalesPerformanceByChannelMetrics =
                 automatedInteractions:
                     entityLoadingStates.automatedInteractions,
                 handoverInteractions: entityLoadingStates.handoverInteractions,
+                conversionRate: entityLoadingStates.conversionRate,
                 totalSales: entityLoadingStates.totalSales,
                 ordersInfluenced: entityLoadingStates.ordersInfluenced,
                 revenuePerInteraction:

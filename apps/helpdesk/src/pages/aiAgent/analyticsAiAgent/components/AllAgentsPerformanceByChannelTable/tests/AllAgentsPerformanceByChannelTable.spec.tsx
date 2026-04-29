@@ -36,6 +36,7 @@ const mockUseAllAgentsPerformanceByChannelMetrics = jest.requireMock(
 const defaultLoadingStates = {
     automatedInteractions: false,
     handoverInteractions: false,
+    conversionRate: false,
     costSaved: false,
     coverageRate: false,
     successRate: false,
@@ -46,6 +47,7 @@ const defaultData: AllAgentsPerformanceByChannelEntityMetrics[] = [
         entity: 'email',
         automatedInteractions: 2700,
         handoverInteractions: 189,
+        conversionRate: 0.12,
         costSaved: 1200,
         coverageRate: 0.85,
         successRate: 0.78,
@@ -54,6 +56,7 @@ const defaultData: AllAgentsPerformanceByChannelEntityMetrics[] = [
         entity: 'chat',
         automatedInteractions: 900,
         handoverInteractions: null,
+        conversionRate: null,
         costSaved: 500,
         coverageRate: 0.92,
         successRate: 0.91,

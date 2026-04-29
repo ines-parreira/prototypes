@@ -1,4 +1,8 @@
 import {
+    aiAgentSalesConversionRatePerChannel,
+    aiAgentSalesConversionRatePerChannelQueryV2Factory,
+    aiAgentSalesConversionRatePerEngagementType,
+    aiAgentSalesConversionRatePerEngagementTypeQueryV2Factory,
     aiSalesAgentConversionRateScope,
     conversionRate,
     conversionRateQueryV2Factory,
@@ -380,5 +384,99 @@ describe('dynamicConversionRateTimeseriesQueryFactoryV2', () => {
         })
 
         expect(result.dimensions).toEqual(['channel'])
+    })
+})
+
+describe('aiAgentSalesConversionRatePerChannel', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with channel dimension and conversionRate measure', () => {
+        expect(aiAgentSalesConversionRatePerChannel.build(context)).toEqual({
+            metricName:
+                'ai-agent-sales-performance-conversion-rate-per-channel',
+            scope: 'ai-sales-agent-conversion-rate',
+            measures: ['conversionRate'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    describe('aiAgentSalesConversionRatePerChannelQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSalesConversionRatePerChannelQueryV2Factory(context),
+            ).toEqual(aiAgentSalesConversionRatePerChannel.build(context))
+        })
+    })
+})
+
+describe('aiAgentSalesConversionRatePerEngagementType', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with engagementType dimension and conversionRate measure', () => {
+        expect(
+            aiAgentSalesConversionRatePerEngagementType.build(context),
+        ).toEqual({
+            metricName:
+                'ai-agent-sales-performance-conversion-rate-per-engagement-type',
+            scope: 'ai-sales-agent-conversion-rate',
+            measures: ['conversionRate'],
+            dimensions: ['engagementType'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    describe('aiAgentSalesConversionRatePerEngagementTypeQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSalesConversionRatePerEngagementTypeQueryV2Factory(
+                    context,
+                ),
+            ).toEqual(
+                aiAgentSalesConversionRatePerEngagementType.build(context),
+            )
+        })
     })
 })
