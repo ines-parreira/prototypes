@@ -1,30 +1,12 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import { useSkillSupportingKnowledgeFromContext } from './useSkillSupportingKnowledgeFromContext'
 
 const mockUpdateGuidanceArticle = jest.fn()
 const mockDispatch = jest.fn()
-const mockAppDispatch = jest.fn()
 const mockOnUpdateFn = jest.fn()
 const mockInvalidateQueries = jest.fn()
-
-jest.mock('reapop', () => ({
-    POSITIONS: { bottomRight: 'bottom-right' },
-}))
-
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: () => mockAppDispatch,
-}))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: (config: unknown) => ({ type: 'NOTIFY', payload: config }),
-}))
-
-jest.mock('state/notifications/types', () => ({
-    NotificationStatus: { Error: 'error' },
-}))
 
 jest.mock('@tanstack/react-query', () => ({
     useQueryClient: () => ({
@@ -112,7 +94,9 @@ describe('useSkillSupportingKnowledgeFromContext', () => {
         mockUpdateGuidanceArticle.mockResolvedValue(createUpdateResponse())
     })
 
-    afterEach(() => jest.clearAllMocks())
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
 
     describe('return values', () => {
         it('returns useSupportingKnowledge as true when useSupportingContent is true', () => {
@@ -260,9 +244,12 @@ describe('useSkillSupportingKnowledgeFromContext', () => {
             })
 
             await waitFor(() => {
-                expect(mockAppDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({ type: 'NOTIFY' }),
-                )
+                expect(
+                    screen.getByRole('status', {
+                        name: 'An error occurred while saving linked intents.',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
             expect(onSuccess).not.toHaveBeenCalled()
         })

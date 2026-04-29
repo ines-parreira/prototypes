@@ -10,10 +10,10 @@ import {
     OverlayHeader,
     Text,
     TextField,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { PAGE_NAME } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import {
@@ -27,8 +27,6 @@ import {
     useListenToDocumentEvent,
 } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     helpCenterId: number
@@ -47,7 +45,6 @@ export const SyncUrlModal = ({
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<React.ReactNode>(null)
 
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     const { shopName } = useParams<{
@@ -187,13 +184,7 @@ export const SyncUrlModal = ({
                     : 'Failed to sync URL. Please try again.'
             const errorMessageWithUrl = `${baseErrorMessage}\nURL: ${url}`
             setError(baseErrorMessage)
-            dispatch(
-                notify({
-                    message: errorMessageWithUrl,
-                    status: NotificationStatus.Error,
-                    showDismissButton: true,
-                }),
-            )
+            toast.error(errorMessageWithUrl)
         } finally {
             setIsLoading(false)
         }
@@ -202,7 +193,6 @@ export const SyncUrlModal = ({
         validateUrl,
         syncUrl,
         resetBanner,
-        dispatch,
         closeModal,
         queryClient,
         helpCenterId,

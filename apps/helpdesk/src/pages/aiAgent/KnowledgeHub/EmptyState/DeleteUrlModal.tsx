@@ -1,15 +1,12 @@
 import { useCallback, useState } from 'react'
 
-import { Box, Button, Modal, OverlayHeader, Text } from '@gorgias/axiom'
+import { Box, Button, Modal, OverlayHeader, Text, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { IngestionLog } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
 import { OPEN_DELETE_URL_MODAL } from 'pages/aiAgent/KnowledgeHub/constants'
 import { useListenToDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     helpCenterId: number
@@ -30,7 +27,6 @@ export const DeleteUrlModal = ({
     const [selectedFolder, setSelectedFolder] =
         useState<GroupedKnowledgeItem | null>(null)
 
-    const dispatch = useAppDispatch()
     const { deletePublicResource } = usePublicResourceMutation({
         helpCenterId,
     })
@@ -61,13 +57,7 @@ export const DeleteUrlModal = ({
         )
 
         if (!ingestionLog) {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Could not find URL to delete',
-                    showDismissButton: true,
-                }),
-            )
+            toast.error('Could not find URL to delete')
             return
         }
 
@@ -79,28 +69,16 @@ export const DeleteUrlModal = ({
             onFolderChange(null)
             onRefetch()
 
-            dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'URL successfully deleted',
-                    showDismissButton: true,
-                }),
-            )
+            toast.success('URL successfully deleted')
         } catch {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Error during URL deletion. Try one more time or contact support',
-                    showDismissButton: true,
-                }),
+            toast.error(
+                'Error during URL deletion. Try one more time or contact support',
             )
         }
     }, [
         selectedFolder,
         urlIngestionLogs,
         deletePublicResource,
-        dispatch,
         onFolderChange,
         onRefetch,
         onRemoveFolderParam,

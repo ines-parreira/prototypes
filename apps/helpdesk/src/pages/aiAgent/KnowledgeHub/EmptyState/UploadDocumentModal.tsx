@@ -2,13 +2,18 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Box, Button, Icon, Modal, OverlayHeader, Text } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Icon,
+    Modal,
+    OverlayHeader,
+    Text,
+    toast,
+} from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { PAGE_NAME } from '../../AiAgentScrapedDomainContent/constant'
 import { useIngestionDomainBannerDismissed } from '../../AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
@@ -47,7 +52,6 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([])
     const [isDragActive, setIsDragActive] = useState(false)
     const inputRef = useRef<HTMLInputElement>(null)
-    const dispatch = useAppDispatch()
 
     const { ingestFile, ingestedFiles } = useFileIngestion({
         helpCenterId,
@@ -109,48 +113,37 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
         }
     }, [])
 
-    const handleDrop = useCallback(
-        (e: React.DragEvent) => {
-            e.preventDefault()
-            e.stopPropagation()
-            setIsDragActive(false)
+    const handleDrop = useCallback((e: React.DragEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragActive(false)
 
-            const droppedFiles = Array.from(e.dataTransfer.files)
+        const droppedFiles = Array.from(e.dataTransfer.files)
 
-            // Filter files by accepted types
-            const acceptedExtensions = SUPPORTED_TYPES.map((t) => t.ext)
-            const validFiles = droppedFiles.filter((file) => {
-                const fileExtension =
-                    '.' + file.name.split('.').pop()?.toLowerCase()
-                return acceptedExtensions.includes(fileExtension)
-            })
+        // Filter files by accepted types
+        const acceptedExtensions = SUPPORTED_TYPES.map((t) => t.ext)
+        const validFiles = droppedFiles.filter((file) => {
+            const fileExtension =
+                '.' + file.name.split('.').pop()?.toLowerCase()
+            return acceptedExtensions.includes(fileExtension)
+        })
 
-            if (validFiles.length < droppedFiles.length) {
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Some files were rejected. Only ${acceptedExtensions.join(', ')} files are supported.`,
-                        showDismissButton: true,
-                    }),
-                )
-            }
+        if (validFiles.length < droppedFiles.length) {
+            toast.error(
+                `Some files were rejected. Only ${acceptedExtensions.join(', ')} files are supported.`,
+            )
+        }
 
-            if (validFiles.length > 0) {
-                setSelectedFiles(validFiles)
-            }
-        },
-        [dispatch],
-    )
+        if (validFiles.length > 0) {
+            setSelectedFiles(validFiles)
+        }
+    }, [])
 
     const uploadFile = useCallback(
         async (file: File) => {
             if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `File too large. Upload a file smaller than ${MAX_FILE_SIZE_MB} MB.`,
-                        showDismissButton: true,
-                    }),
+                toast.error(
+                    `File too large. Upload a file smaller than ${MAX_FILE_SIZE_MB} MB.`,
                 )
                 return
             }
@@ -160,12 +153,8 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                     (ingestedFile) => ingestedFile.filename === file.name,
                 )
             ) {
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
-                        showDismissButton: true,
-                    }),
+                toast.error(
+                    `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
                 )
                 return
             }
@@ -183,16 +172,12 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                     google_storage_url: uploadedFile.google_storage_key,
                 })
             } catch {
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `An unknown error occurred while uploading file ${file.name}.`,
-                        showDismissButton: true,
-                    }),
+                toast.error(
+                    `An unknown error occurred while uploading file ${file.name}.`,
                 )
             }
         },
-        [dispatch, helpCenterId, ingestFile, successfullyIngestedFiles],
+        [helpCenterId, ingestFile, successfullyIngestedFiles],
     )
 
     const validateAndUploadFiles = useCallback(async () => {
@@ -202,12 +187,8 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
             selectedFiles.length + successfullyIngestedFiles.length >
             MAX_EXTERNAL_FILES
         ) {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `You can only upload a maximum of ${MAX_EXTERNAL_FILES} files.`,
-                    showDismissButton: true,
-                }),
+            toast.error(
+                `You can only upload a maximum of ${MAX_EXTERNAL_FILES} files.`,
             )
             return
         }
@@ -235,7 +216,6 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
         resetBanner()
     }, [
         selectedFiles,
-        dispatch,
         resetBanner,
         uploadFile,
         successfullyIngestedFiles.length,

@@ -6,20 +6,7 @@ import type { GroupedKnowledgeItem } from '../types'
 import { DeleteDocumentModal } from './DeleteDocumentModal'
 import { openDeleteDocumentModal } from './utils'
 
-const mockInnerDispatch = jest.fn()
-const mockDispatch = jest.fn((action) => {
-    // If action is a function (thunk), execute it
-    if (typeof action === 'function') {
-        return action(mockInnerDispatch, () => ({ notifications: [] }))
-    }
-    return mockInnerDispatch(action)
-})
 const mockDeleteIngestedFile = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: jest.fn(() => mockDispatch),
-}))
 
 jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
     useFileIngestion: jest.fn(() => ({
@@ -281,15 +268,14 @@ describe('DeleteDocumentModal', () => {
                 expect(mockDeleteIngestedFile).toHaveBeenCalledWith(1)
                 expect(mockOnFolderChange).toHaveBeenCalledWith(null)
                 expect(mockOnRefetch).toHaveBeenCalled()
-                expect(mockInnerDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            message: 'Document successfully deleted',
-                            status: 'success',
-                        }),
+            })
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Document successfully deleted',
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -383,15 +369,12 @@ describe('DeleteDocumentModal', () => {
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
-                expect(mockInnerDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            message: 'Could not find document to delete',
-                            status: 'error',
-                        }),
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Could not find document to delete',
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -420,17 +403,12 @@ describe('DeleteDocumentModal', () => {
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
-                expect(mockInnerDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            message: expect.stringContaining(
-                                'Error during document deletion',
-                            ),
-                            status: 'error',
-                        }),
+                expect(
+                    screen.getByRole('status', {
+                        name: /Error during document deletion/,
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -478,15 +456,12 @@ describe('DeleteDocumentModal', () => {
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
-                expect(mockInnerDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            message: 'Could not find document to delete',
-                            status: 'error',
-                        }),
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Could not find document to delete',
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -513,15 +488,12 @@ describe('DeleteDocumentModal', () => {
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
-                expect(mockInnerDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            message: 'Could not find document to delete',
-                            status: 'error',
-                        }),
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Could not find document to delete',
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 

@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useRef } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { useSyncUrl } from 'pages/aiAgent/hooks/useSyncUrl'
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from 'pages/aiAgent/KnowledgeHub/constants'
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type UseUrlSyncStatusParams = {
     helpCenterId: number
@@ -26,7 +25,6 @@ export const useUrlSyncStatus = ({
     helpCenterCustomDomains,
     shopName,
 }: UseUrlSyncStatusParams) => {
-    const dispatch = useAppDispatch()
     const { latestUrlIngestionLog, urlIngestionLogs } = useSyncUrl({
         helpCenterId,
         existingUrls,
@@ -134,27 +132,18 @@ export const useUrlSyncStatus = ({
         if (prevStatus === IngestionLogStatus.Pending) {
             if (currentStatus === IngestionLogStatus.Successful) {
                 dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
-                void dispatch(
-                    notify({
-                        message: 'Your URL has been synced successfully.',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Your URL has been synced successfully.')
             }
 
             if (currentStatus === IngestionLogStatus.Failed) {
-                void dispatch(
-                    notify({
-                        message:
-                            "We couldn't sync your URL. Please try again or contact support.",
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    "We couldn't sync your URL. Please try again or contact support.",
                 )
             }
         }
 
         prevSyncStatusRef.current = currentStatus
-    }, [syncStatus, dispatch])
+    }, [syncStatus])
 
     return {
         syncStatus,

@@ -2,17 +2,12 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { useLocation, useParams } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { ExternalFilesSection } from '../ExternalFilesSection'
 
-jest.mock('state/notifications/actions')
-jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/hooks/useFileIngestion')
 jest.mock('rest_api/help_center_api/uploadAttachments')
 jest.mock('react-router-dom', () => ({
@@ -20,15 +15,11 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 const mockUseParams = assumeMock(useParams)
-const mockDispatch = jest.fn()
 const mockIngestFile = jest.fn()
 const mockDeleteIngestedFile = jest.fn()
 const mockOnEmptyStateChange = jest.fn()
 const useFileIngestionMock = assumeMock(useFileIngestion)
-const useAppDispatchMock = assumeMock(useAppDispatch)
 const uploadAttachmentsMock = assumeMock(uploadAttachments)
-const notifyMock = assumeMock(notify)
-useAppDispatchMock.mockReturnValue(mockDispatch)
 const LocationPath = () => {
     const location = useLocation()
 
@@ -157,7 +148,7 @@ describe('ExternalFilesSection', () => {
         expect(screen.queryByText('test2.pdf')).not.toBeInTheDocument()
         expect(screen.queryByText('test3.pdf')).toBeInTheDocument()
     })
-    it('should show an error message if the file is too large', () => {
+    it('should show an error message if the file is too large', async () => {
         renderComponent()
         const fileInput = screen.getByDisplayValue('')
         const file = new File(['dummy content'], 'test.pdf', {
@@ -169,12 +160,16 @@ describe('ExternalFilesSection', () => {
         })
         fireEvent.change(fileInput)
         expect(screen.getByText('Upload Files')).toBeInTheDocument()
-        expect(notifyMock).toHaveBeenCalledWith({
-            status: NotificationStatus.Error,
-            message: 'File too large. Upload a file smaller than 50 MB.',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'File too large. Upload a file smaller than 50 MB.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
-    it('should show an error message if the file name already exists', () => {
+    it('should show an error message if the file name already exists', async () => {
         renderComponent({
             ingestedFiles: [
                 {
@@ -198,12 +193,16 @@ describe('ExternalFilesSection', () => {
         })
         fireEvent.change(fileInput)
         expect(screen.getByText('Upload Files')).toBeInTheDocument()
-        expect(notifyMock).toHaveBeenCalledWith({
-            status: NotificationStatus.Error,
-            message: `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
-    it('should show an error message when ingestion fails', () => {
+    it('should show an error message when ingestion fails', async () => {
         const file = {
             id: 1,
             help_center_id: 1,
@@ -217,13 +216,16 @@ describe('ExternalFilesSection', () => {
             ingestedFiles: [file],
         })
         onFailure?.(file)
-        expect(notifyMock).toHaveBeenCalledWith({
-            status: NotificationStatus.Error,
-            message:
-                'Failed to upload due to corrupted, incomplete, or mislabeled data. Please double-check the file or upload a different one.',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to upload due to corrupted, incomplete, or mislabeled data. Please double-check the file or upload a different one.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
-    it('should show a specific error message when ingestion of DOCX/PPTX fails', () => {
+    it('should show a specific error message when ingestion of DOCX/PPTX fails', async () => {
         const file = {
             id: 1,
             help_center_id: 1,
@@ -237,13 +239,16 @@ describe('ExternalFilesSection', () => {
             ingestedFiles: [file],
         })
         onFailure?.(file)
-        expect(notifyMock).toHaveBeenCalledWith({
-            status: NotificationStatus.Error,
-            message:
-                'Failed to upload due to corrupted, incomplete, or mislabeled data. Please try saving the file through Microsoft Office or converting it to PDF.',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to upload due to corrupted, incomplete, or mislabeled data. Please try saving the file through Microsoft Office or converting it to PDF.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
-    it('should show a success message when ingestion succeeds', () => {
+    it('should show a success message when ingestion succeeds', async () => {
         const file = {
             id: 1,
             help_center_id: 1,
@@ -257,9 +262,13 @@ describe('ExternalFilesSection', () => {
             ingestedFiles: [file],
         })
         onSuccess?.(file)
-        expect(notifyMock).toHaveBeenCalledWith({
-            status: NotificationStatus.Success,
-            message: `File ${file.filename} uploaded successfully`,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: `File ${file.filename} uploaded successfully`,
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
     it('should disable the upload button when max files is reached', () => {
@@ -354,9 +363,13 @@ describe('ExternalFilesSection', () => {
         })
         Object.defineProperty(fileInput, 'files', { value: [file] })
         fireEvent.change(fileInput)
-        expect(notifyMock).toHaveBeenCalledWith({
-            status: NotificationStatus.Error,
-            message: 'You can only upload a maximum of 10 files.',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'You can only upload a maximum of 10 files.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(uploadAttachmentsMock).not.toHaveBeenCalled()
     })

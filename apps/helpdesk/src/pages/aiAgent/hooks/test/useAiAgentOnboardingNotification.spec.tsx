@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -14,13 +14,10 @@ import {
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { getOnboardingNotificationState } from 'models/aiAgent/resources/configuration'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { NotificationEvent } from 'services/notificationTracker/constants'
 import * as notificationTracker from 'services/notificationTracker/notificationTracker'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 import { getOnboardingNotificationStateFixture } from '../../fixtures/onboardingNotificationState.fixture'
@@ -49,10 +46,6 @@ jest.mock('../useOnboardingNotificationStateMutation')
 const mockUseOnboardingNotificationStateMutation = assumeMock(
     useOnboardingNotificationStateMutation,
 )
-
-jest.mock('state/notifications/actions')
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-const mockUseAppDispatch = assumeMock(useAppDispatch)
 
 jest.mock('models/aiAgent/resources/configuration', () => ({
     getOnboardingNotificationState: jest.fn(),
@@ -83,7 +76,6 @@ const mockStore = configureMockStore([thunk])
 
 describe('useAiAgentOnboardingNotification', () => {
     const logEventSpy = jest.spyOn(notificationTracker, 'logNotificationEvent')
-    const mockDispatch = jest.fn()
     const mockCreateOnboardingNotificationState = jest
         .fn()
         .mockResolvedValue({ mockedOnboardingNotificationState })
@@ -97,7 +89,6 @@ describe('useAiAgentOnboardingNotification', () => {
             (key) =>
                 key === FeatureFlagKey.AiAgentOnboardingNotification || false,
         )
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
 
         mockUseOnboardingnotificationState.mockReturnValue({
             onboardingNotificationState: mockedOnboardingNotificationState,
@@ -159,12 +150,9 @@ describe('useAiAgentOnboardingNotification', () => {
             ...mockedOnboardingNotificationState,
             ...payload,
         })
-        expect(mockDispatch).not.toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Error,
-                message: 'Failed to save onboarding notification state',
-            }),
-        )
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
 
     it('should handle save with error', async () => {
@@ -206,12 +194,15 @@ describe('useAiAgentOnboardingNotification', () => {
                 shopName: SHOP_NAME,
             },
         )
-        expect(mockDispatch).toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Error,
-                message: 'Failed to save onboarding notification state',
-            }),
-        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to save onboarding notification state',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('should log notification event when handleOnSendOrCancelNotification is called', () => {

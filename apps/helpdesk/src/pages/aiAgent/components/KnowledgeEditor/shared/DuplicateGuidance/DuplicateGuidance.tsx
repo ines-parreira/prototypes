@@ -9,13 +9,10 @@ import {
     ListItem,
     ListSection,
     MultiSelect,
+    toast,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../../../../KnowledgeHub/constants'
 import { dispatchDocumentEvent } from '../../../../KnowledgeHub/EmptyState/utils'
@@ -43,7 +40,6 @@ export const DuplicateGuidance = ({
 }: DuplicateGuidanceProps) => {
     const id = useId()
     const buttonId = `duplicate-button-${id}`
-    const dispatch = useAppDispatch()
     const storeIntegrations = useStoresWithCompletedSetup()
     const [selectedStores, setSelectedStores] = useState<
         StoreIntegrationItem[]
@@ -106,13 +102,7 @@ export const DuplicateGuidance = ({
             const result = await onDuplicate(articleIds, cleanedShopNames)
 
             if (!result.success) {
-                await dispatch(
-                    notify({
-                        message: 'An error occurred while duplicating guidance',
-                        status: NotificationStatus.Error,
-                        showDismissButton: true,
-                    }),
-                )
+                toast.error('An error occurred while duplicating guidance')
                 return
             }
 
@@ -120,14 +110,7 @@ export const DuplicateGuidance = ({
                 selectedStores,
                 shopName,
             )
-            await dispatch(
-                notify({
-                    message: notificationMessage,
-                    status: NotificationStatus.Success,
-                    allowHTML: true,
-                    showDismissButton: true,
-                }),
-            )
+            toast.success(notificationMessage)
 
             const isDuplicatingToCurrentStore = cleanedShopNames.some(
                 (cleanedName) => cleanedName === shopName,
@@ -136,18 +119,12 @@ export const DuplicateGuidance = ({
                 dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
             }
         } catch {
-            await dispatch(
-                notify({
-                    message: 'Failed to duplicate guidance',
-                    status: NotificationStatus.Error,
-                    showDismissButton: true,
-                }),
-            )
+            toast.error('Failed to duplicate guidance')
         } finally {
             setSelectedStores([])
             setResetKey((prev) => prev + 1)
         }
-    }, [selectedStores, articleIds, shopName, dispatch, onDuplicate])
+    }, [selectedStores, articleIds, shopName, onDuplicate])
 
     const handleChange = useCallback(
         (value: StoreIntegrationItem[]) => {

@@ -2,20 +2,12 @@ import type { ReactNode } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { dispatchDocumentEvent } from '../EmptyState/utils'
 import { useUrlSyncStatus } from './useUrlSyncStatus'
-
-const mockDispatch = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: () => mockDispatch,
-}))
 
 jest.mock('pages/aiAgent/hooks/useSyncUrl', () => ({
     useSyncUrl: jest.fn(),
@@ -25,10 +17,6 @@ jest.mock('../EmptyState/utils', () => ({
     dispatchDocumentEvent: jest.fn(),
 }))
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn((payload) => ({ type: 'NOTIFY', payload })),
-}))
-
 const mockUseSyncUrl = jest.requireMock(
     'pages/aiAgent/hooks/useSyncUrl',
 ).useSyncUrl
@@ -36,9 +24,6 @@ const mockUseSyncUrl = jest.requireMock(
 const mockDispatchDocumentEvent = dispatchDocumentEvent as jest.MockedFunction<
     typeof dispatchDocumentEvent
 >
-
-const mockNotify = jest.requireMock('state/notifications/actions')
-    .notify as jest.Mock
 
 describe('useUrlSyncStatus', () => {
     let queryClient: QueryClient
@@ -817,11 +802,12 @@ describe('useUrlSyncStatus', () => {
             rerender()
 
             await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message: 'Your URL has been synced successfully.',
-                    status: NotificationStatus.Success,
-                })
-                expect(mockDispatch).toHaveBeenCalled()
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Your URL has been synced successfully.',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -868,12 +854,12 @@ describe('useUrlSyncStatus', () => {
             rerender()
 
             await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message:
-                        "We couldn't sync your URL. Please try again or contact support.",
-                    status: NotificationStatus.Error,
-                })
-                expect(mockDispatch).toHaveBeenCalled()
+                expect(
+                    screen.getByRole('status', {
+                        name: "We couldn't sync your URL. Please try again or contact support.",
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import {
@@ -8,8 +9,6 @@ import {
     getShopUrlFromStoreIntegration,
 } from 'models/selfServiceConfiguration/utils'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     IngestionLogStatus,
@@ -30,7 +29,6 @@ export const useSyncStoreDomain = ({
     onStatusChange: (status: string | null) => void
     isSourcePage?: boolean
 }) => {
-    const dispatch = useAppDispatch()
     const storeIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName),
     ).toJS()
@@ -68,17 +66,12 @@ export const useSyncStoreDomain = ({
                 createdHow: 'from-sync',
             })
         } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Error during Store Domain sync. Please try again later or contact support',
-                }),
+            toast.error(
+                'Error during Store Domain sync. Please try again later or contact support',
             )
             throw error
         }
     }, [
-        dispatch,
         startIngestion,
         storeUrl,
         onStatusChange,

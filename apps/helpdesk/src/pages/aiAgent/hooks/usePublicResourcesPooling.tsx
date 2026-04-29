@@ -4,8 +4,9 @@ import { reportError } from '@repo/logging'
 import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 
+import { Button, toast } from '@gorgias/axiom'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import {
     helpCenterKeys,
@@ -14,8 +15,6 @@ import {
 import type { getArticleIngestionLogs } from 'models/helpCenter/resources'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import type { Components } from 'rest_api/help_center_api/client.generated'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { PAGE_NAME } from '../AiAgentScrapedDomainContent/constant'
 import { updateArticleIngestionLogs } from '../components/PublicSourcesSection/utils'
@@ -39,7 +38,6 @@ export const usePublicResourcesPooling = ({
     shopName: string
     enabled?: boolean
 }): UsePublicResourcesPoolingReturn => {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const { routes } = useAiAgentNavigation({ shopName })
     const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
@@ -117,14 +115,8 @@ export const usePublicResourcesPooling = ({
             pendingArticleIngestionIds &&
             pendingArticleIngestionIds.length
         ) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Loading,
-                    message:
-                        'Syncing in progress. You can finish onboarding while sources are syncing.',
-                    showDismissButton: true,
-                    dismissible: true,
-                }),
+            toast.info(
+                'Syncing in progress. You can finish onboarding while sources are syncing.',
             )
         }
 
@@ -182,16 +174,15 @@ export const usePublicResourcesPooling = ({
         }
 
         if (isAllSuccess) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message:
-                        'URL successfully synced. Review newly generated content for accuracy.',
-                    buttons: [
-                        {
-                            name: 'Review',
-                            primary: false,
-                            onClick: () => {
+            toast.success(
+                'URL successfully synced. Review newly generated content for accuracy.',
+                {
+                    inlineActions: ({ id }) => (
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            onClick={() => {
+                                toast.dismiss(id)
                                 history.push(
                                     routes.urlArticles(
                                         finishedArticleIngestionIds[0].id,
@@ -205,24 +196,19 @@ export const usePublicResourcesPooling = ({
                                         },
                                     },
                                 )
-                            },
-                        },
-                    ],
-                    showDismissButton: isOnboardingWizardPage,
-                }),
+                            }}
+                        >
+                            Review
+                        </Button>
+                    ),
+                },
             )
         } else if (hasError) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'We couldn’t sync your URL. Please try again or contact support if the issue persists.',
-                    showDismissButton: true,
-                }),
+            toast.error(
+                'We couldn’t sync your URL. Please try again or contact support if the issue persists.',
             )
         }
     }, [
-        dispatch,
         helpCenterId,
         processingArticleIngestions,
         queryClient,

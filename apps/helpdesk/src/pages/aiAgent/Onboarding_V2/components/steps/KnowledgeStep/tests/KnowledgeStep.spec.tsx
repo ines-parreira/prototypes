@@ -7,7 +7,6 @@ import { Route } from 'react-router'
 import { useLocation } from 'react-router-dom'
 
 import { shopifyIntegration } from 'fixtures/integrations'
-import useAppDispatch from 'hooks/useAppDispatch'
 import * as hooks from 'hooks/useAppSelector'
 import {
     useGetStoresConfigurationForAccount,
@@ -33,7 +32,6 @@ import {
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { notify } from 'state/notifications/actions'
 
 jest.mock('react-chartjs-2', () => ({
     Line: () => (
@@ -82,8 +80,6 @@ jest.mock('models/aiAgent/queries', () => ({
     useStartSalesTrialMutation: jest.fn(),
     useGetStoresConfigurationForAccount: jest.fn(),
 }))
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
 const useGetHelpCentersByShopNameMock = assumeMock(useGetHelpCentersByShopName)
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useTopLocations')
@@ -97,8 +93,6 @@ const mockUseLocalStorage = useLocalStorage as jest.Mock
 const mockUseStartSalesTrialMutation = useStartSalesTrialMutation as jest.Mock
 const mockUseGetStoresConfigurationForAccount =
     useGetStoresConfigurationForAccount as jest.Mock
-const mockUseAppDispatch = useAppDispatch as jest.Mock
-const mockNotify = notify as jest.Mock
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
 const useAiAgentScopesForAutomationPlanMock = assumeMock(
     useAiAgentScopesForAutomationPlan,
@@ -129,7 +123,6 @@ const renderWithProvider = (props = defaultProps) => {
     )
 }
 describe('KnowledgeStep', () => {
-    const mockDispatch = jest.fn()
     const mockRemoveShoppingAssistantTrialOptin = jest.fn()
     const mockStartSalesTrialMutateAsync = jest
         .fn()
@@ -185,8 +178,6 @@ describe('KnowledgeStep', () => {
             },
         })
         mockUseFlag.mockReturnValue(false)
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
-        mockNotify.mockReturnValue({ type: 'NOTIFY', payload: {} })
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.ShoppingAssistant,
             hasCurrentStoreTrialStarted: false,
@@ -439,13 +430,13 @@ describe('KnowledgeStep', () => {
                     capturedOnErrorCallback?.()
                 })
             }
-            // Verify the error notification was dispatched
             await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'NOTIFY',
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to start the Shopping Assistant trial. Please try again.',
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })

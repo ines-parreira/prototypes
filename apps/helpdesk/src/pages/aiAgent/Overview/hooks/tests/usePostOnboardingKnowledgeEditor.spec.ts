@@ -1,12 +1,11 @@
 import { act, renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { usePostOnboardingKnowledgeEditor } from '../usePostOnboardingKnowledgeEditor'
 
-jest.mock('hooks/useAppDispatch')
-jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -15,31 +14,19 @@ jest.mock('@repo/logging', () => ({
     },
 }))
 
-const mockDispatch = jest.fn()
-const mockUseAppDispatch = jest.fn()
-const mockUseAiAgentNavigation = jest.fn()
 const mockUseAiAgentStoreConfigurationContext = jest.fn()
 
-jest.requireMock('hooks/useAppDispatch').default = mockUseAppDispatch
-jest.requireMock(
-    'pages/aiAgent/hooks/useAiAgentNavigation',
-).useAiAgentNavigation = mockUseAiAgentNavigation
 jest.requireMock(
     'pages/aiAgent/providers/AiAgentStoreConfigurationContext',
 ).useAiAgentStoreConfigurationContext = mockUseAiAgentStoreConfigurationContext
 
 const mockShopName = 'test-shop'
 const mockShopType = 'shopify'
-const mockRoutes = {
-    knowledge: '/test-shop/knowledge',
-}
 
 describe('usePostOnboardingKnowledgeEditor', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         localStorage.clear()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
-        mockUseAiAgentNavigation.mockReturnValue({ routes: mockRoutes })
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
                 guidanceHelpCenterId: 42,
@@ -141,7 +128,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         expect(result.current.currentGuidanceArticleId).toBeUndefined()
     })
 
-    it('should dispatch notification when guidance is created', () => {
+    it('should dispatch notification when guidance is created', async () => {
         const { logEvent } = require('@repo/logging')
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
@@ -161,10 +148,17 @@ describe('usePostOnboardingKnowledgeEditor', () => {
             shop_type: mockShopType,
         })
 
-        expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Guidance saved! You can update or edit it anytime in Knowledge.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
-    it('should dispatch notification when guidance is updated', () => {
+    it('should dispatch notification when guidance is updated', async () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
                 shopName: mockShopName,
@@ -176,10 +170,17 @@ describe('usePostOnboardingKnowledgeEditor', () => {
             result.current.knowledgeEditorProps.onUpdate()
         })
 
-        expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Guidance saved! You can update or edit it anytime in Knowledge.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
-    it('should close editor and dispatch notification when guidance is deleted', () => {
+    it('should close editor and dispatch notification when guidance is deleted', async () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
                 shopName: mockShopName,
@@ -198,10 +199,18 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         })
 
         expect(result.current.isEditorOpen).toBe(false)
-        expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Guidance successfully deleted.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
-    it('should dispatch notification when guidance is duplicated', () => {
+    it('should dispatch notification when guidance is duplicated', async () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
                 shopName: mockShopName,
@@ -213,7 +222,14 @@ describe('usePostOnboardingKnowledgeEditor', () => {
             result.current.knowledgeEditorProps.onCopy()
         })
 
-        expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Guidance successfully duplicated.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
     it('should include guidanceHelpCenterId from store configuration', () => {

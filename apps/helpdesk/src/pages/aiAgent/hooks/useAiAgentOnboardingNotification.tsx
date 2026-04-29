@@ -4,6 +4,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import hash from 'object-hash'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     AI_AGENT_SET_AND_OPTIMIZED_TYPE,
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
@@ -14,7 +16,6 @@ import {
     getNotificationReceivedDatetimePayload,
 } from 'automate/notifications/utils'
 import { UserRole } from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getOnboardingNotificationState } from 'models/aiAgent/resources/configuration'
 import type { OnboardingNotificationState } from 'models/aiAgent/types'
@@ -26,8 +27,6 @@ import {
 } from 'services/notificationTracker/notificationTracker'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { hasRole } from 'utils'
 
 import { useOnboardingNotificationState } from './useOnboardingNotificationState'
@@ -45,7 +44,6 @@ export const useAiAgentOnboardingNotification = ({
     shopName,
     hasAutomateSubscription,
 }: Params) => {
-    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const currentUser = useAppSelector(getCurrentUser)
@@ -89,18 +87,12 @@ export const useAiAgentOnboardingNotification = ({
                 }
                 result = await upsertOnboardingNotificationState(updatedValue)
             } catch {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to save onboarding notification state',
-                    }),
-                )
+                toast.error('Failed to save onboarding notification state')
             }
 
             return result
         },
         [
-            dispatch,
             isAiAgentOnboardingNotificationEnabled,
             onboardingNotificationState,
             shopName,

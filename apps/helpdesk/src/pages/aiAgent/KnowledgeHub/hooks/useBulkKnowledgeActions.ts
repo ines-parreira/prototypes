@@ -1,4 +1,5 @@
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import {
@@ -7,8 +8,6 @@ import {
 } from 'models/helpCenter/knowledgeHub/mutations'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import type { GroupedKnowledgeItem } from '../types'
 import { KnowledgeType } from '../types'
@@ -26,7 +25,6 @@ type UseBulkKnowledgeActionsParams = {
 export function useBulkKnowledgeActions({
     helpCenterIds,
 }: UseBulkKnowledgeActionsParams) {
-    const dispatch = useAppDispatch()
     const accountId = useAppSelector(getCurrentAccountId)
 
     const queryParams = {
@@ -80,23 +78,12 @@ export function useBulkKnowledgeActions({
                     ]),
                 ),
             )
-            void dispatch(
-                notify({
-                    message: 'Successfully deleted items',
-                    status: NotificationStatus.Success,
-                    showDismissButton: true,
-                }),
-            )
+            toast.success('Successfully deleted items')
         } catch (error) {
-            void dispatch(
-                notify({
-                    message: isGorgiasApiError(error)
-                        ? error.response?.data.error.msg
-                        : 'Failed to delete items',
-                    status: NotificationStatus.Error,
-                    showDismissButton: true,
-                }),
-            )
+            const message =
+                (isGorgiasApiError(error) && error.response?.data.error.msg) ||
+                'Failed to delete items'
+            toast.error(message)
         }
     }
 
@@ -125,23 +112,12 @@ export function useBulkKnowledgeActions({
                 visibilityStatus === VisibilityStatusEnum.PUBLIC
                     ? 'enabled'
                     : 'disabled'
-            void dispatch(
-                notify({
-                    message: `Successfully ${action} items for AI Agent`,
-                    status: NotificationStatus.Success,
-                    showDismissButton: true,
-                }),
-            )
+            toast.success(`Successfully ${action} items for AI Agent`)
         } catch (error) {
-            void dispatch(
-                notify({
-                    message: isGorgiasApiError(error)
-                        ? error.response?.data.error.msg
-                        : 'Failed to update items',
-                    status: NotificationStatus.Error,
-                    showDismissButton: true,
-                }),
-            )
+            const message =
+                (isGorgiasApiError(error) && error.response?.data.error.msg) ||
+                'Failed to update items'
+            toast.error(message)
         }
     }
 

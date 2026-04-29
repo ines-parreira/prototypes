@@ -11,20 +11,17 @@ import {
     OverlayHeader,
     SelectField,
     Text,
+    toast,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { HELP_CENTER_SELECT_MODAL_OPEN } from 'pages/aiAgent/KnowledgeHub/constants'
 import { useFaqHelpCenter } from 'pages/aiAgent/KnowledgeHub/EmptyState/useFaqHelpCenter'
 import { useListenToDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './HelpCenterSelectModal.less'
 
 export const HelpCenterSelectModal = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const dispatch = useAppDispatch()
 
     const {
         selectedHelpCenter,
@@ -53,17 +50,10 @@ export const HelpCenterSelectModal = () => {
                     toggleModal()
                 }
             } catch {
-                dispatch(
-                    notify({
-                        message:
-                            'Failed to connect Help Center. Please try again.',
-                        status: NotificationStatus.Error,
-                        showDismissButton: true,
-                    }),
-                )
+                toast.error('Failed to connect Help Center. Please try again.')
             }
         }
-    }, [selectedHelpCenter, handleOnSave, shopName, toggleModal, dispatch])
+    }, [selectedHelpCenter, handleOnSave, shopName, toggleModal])
 
     const goToHelpCenter = useCallback(() => {
         history.push('/app/settings/help-center')

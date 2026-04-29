@@ -1,12 +1,10 @@
 import { assumeMock, renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { useHistory, useParams } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useFetchAiAgentStoreConfigurationData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchAiAgentStoreConfigurationData'
-import { notify as notifyAction } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useCheckStoreAlreadyConfigured } from '../useCheckStoreAlreadyConfigured'
 
@@ -15,22 +13,17 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
     useHistory: jest.fn(),
 }))
-jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
-jest.mock('state/notifications/actions')
 jest.mock(
     'pages/aiAgent/Overview/hooks/pendingTasks/useFetchAiAgentStoreConfigurationData',
 )
 
 const mockUseParams = useParams as jest.Mock
 const mockUseHistory = useHistory as jest.Mock
-const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseFetchAiAgentStoreConfigurationData = assumeMock(
     useFetchAiAgentStoreConfigurationData,
 )
-const notifyActionMock = assumeMock(notifyAction)
-const mockDispatch = jest.fn()
 
 const mockData = getStoreConfigurationFixture({ storeName: 'configured-store' })
 
@@ -40,8 +33,6 @@ describe('useCheckStoreAlreadyConfigured', () => {
     beforeEach(() => {
         mockHistoryPush = jest.fn()
         mockUseHistory.mockReturnValue({ push: mockHistoryPush })
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
-        notifyActionMock.mockReturnValue(mockDispatch)
         mockUseAppSelector.mockReturnValue('test-account') // Mocking accountDomain
     })
 
@@ -57,7 +48,9 @@ describe('useCheckStoreAlreadyConfigured', () => {
         const { result } = renderHook(() => useCheckStoreAlreadyConfigured())
 
         expect(mockHistoryPush).not.toHaveBeenCalled()
-        expect(mockDispatch).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
         expect(result.current).toBeNull()
     })
 
@@ -73,15 +66,26 @@ describe('useCheckStoreAlreadyConfigured', () => {
         const { result } = renderHook(() => useCheckStoreAlreadyConfigured())
 
         expect(mockHistoryPush).not.toHaveBeenCalled()
-        expect(mockDispatch).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
         expect(result.current).toBeNull()
     })
 
-    it('should redirect to settings when storeConfig exists and notify user', () => {
+    it('should redirect to settings when storeConfig exists and notify user', async () => {
         mockUseParams.mockReturnValue({
             shopName: 'configured-store',
             shopType: 'shopify',
         })
+        mockUseFetchAiAgentStoreConfigurationData.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            isFetched: false,
+            error: false,
+        })
+
+        const { rerender } = renderHook(() => useCheckStoreAlreadyConfigured())
+
         mockUseFetchAiAgentStoreConfigurationData.mockReturnValue({
             data: mockData,
             isLoading: false,
@@ -89,14 +93,15 @@ describe('useCheckStoreAlreadyConfigured', () => {
             error: false,
         })
 
-        renderHook(() => useCheckStoreAlreadyConfigured())
+        rerender()
 
-        expect(mockDispatch).toHaveBeenCalledTimes(1)
-        expect(notifyActionMock).toHaveBeenCalledWith({
-            status: NotificationStatus.Error,
-            message:
-                'An Existing Store configuration is already set up. Redirecting to the AI agent settings.',
-            id: 'store-already-configured-error',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'An Existing Store configuration is already set up. Redirecting to the AI agent settings.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(mockHistoryPush).toHaveBeenCalledWith(
             `/app/ai-agent/shopify/configured-store/settings`,

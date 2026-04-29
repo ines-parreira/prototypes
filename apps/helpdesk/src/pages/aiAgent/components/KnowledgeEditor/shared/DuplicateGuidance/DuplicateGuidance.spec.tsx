@@ -245,15 +245,9 @@ describe('DuplicateGuidance', () => {
             await clickApply()
 
             await waitFor(() => {
-                const actions = store.getActions()
-                expect(actions).toContainEqual(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            status: 'success',
-                        }),
-                    }),
-                )
+                expect(
+                    screen.getByRole('status', { hidden: true }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -266,16 +260,12 @@ describe('DuplicateGuidance', () => {
             await clickApply()
 
             await waitFor(() => {
-                const actions = store.getActions()
-                expect(actions).toContainEqual(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            status: 'error',
-                            message: 'Failed to duplicate guidance',
-                        }),
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to duplicate guidance',
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -381,13 +371,9 @@ describe('DuplicateGuidance', () => {
 
             // Wait for error notification
             await waitFor(() => {
-                const actions = store.getActions()
-                const errorNotifications = actions.filter(
-                    (action: any) =>
-                        action.type === 'reapop/upsertNotification' &&
-                        action.payload?.status === 'error',
-                )
-                expect(errorNotifications.length).toBeGreaterThan(0)
+                expect(
+                    screen.getByRole('status', { hidden: true }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
 
             // Reopen dropdown - selection should be cleared even though exception was thrown
@@ -417,24 +403,14 @@ describe('DuplicateGuidance', () => {
                 expect(mockOnDuplicate).toHaveBeenCalled()
             })
 
-            // Should show error notification but not success notification
-            const actions = store.getActions()
-            const errorNotifications = actions.filter(
-                (action: any) =>
-                    action.type === 'reapop/upsertNotification' &&
-                    action.payload?.status === 'error',
-            )
-            const successNotifications = actions.filter(
-                (action: any) =>
-                    action.type === 'reapop/upsertNotification' &&
-                    action.payload?.status === 'success',
-            )
-
-            expect(errorNotifications.length).toBeGreaterThan(0)
-            expect(errorNotifications[0].payload?.message).toBe(
-                'An error occurred while duplicating guidance',
-            )
-            expect(successNotifications).toHaveLength(0)
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'An error occurred while duplicating guidance',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
     })
 

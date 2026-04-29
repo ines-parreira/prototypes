@@ -1,16 +1,14 @@
 import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { POSITIONS } from 'reapop'
 import { useShallow } from 'zustand/react/shallow'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { helpCenterKeys } from 'models/helpCenter/queries'
 import type { UpdateArticleTranslationDto } from 'models/helpCenter/types'
 import { fromArticleTranslationResponse } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/utils'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useSkillEditorStore } from '../../context/KnowledgeEditorSkillContext'
 
@@ -35,20 +33,6 @@ export const usePersistLinkedIntentsSkill = () => {
             onUpdateFn: storeState.config.onUpdateFn,
             dispatch: storeState.dispatch,
         })),
-    )
-
-    const appDispatch = useAppDispatch()
-
-    const notifyError = useCallback(
-        (message: string) =>
-            appDispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Error,
-                    position: POSITIONS.bottomRight,
-                }),
-            ),
-        [appDispatch],
     )
 
     const { updateGuidanceArticle } = useGuidanceArticleMutation({
@@ -98,7 +82,7 @@ export const usePersistLinkedIntentsSkill = () => {
                 onUpdateFn?.()
                 onSuccess()
             } catch {
-                notifyError('An error occurred while saving linked intents.')
+                toast.error('An error occurred while saving linked intents.')
             } finally {
                 dispatch({ type: 'SET_UPDATING', payload: false })
             }
@@ -114,7 +98,6 @@ export const usePersistLinkedIntentsSkill = () => {
             updateGuidanceArticle,
             queryClient,
             onUpdateFn,
-            notifyError,
         ],
     )
 

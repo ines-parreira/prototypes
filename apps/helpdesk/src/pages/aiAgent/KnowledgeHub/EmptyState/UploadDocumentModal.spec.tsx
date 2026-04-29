@@ -13,21 +13,8 @@ import {
 } from './UploadDocumentModal'
 import { dispatchDocumentEvent, useListenToDocumentEvent } from './utils'
 
-const mockInnerDispatch = jest.fn()
-const mockDispatch = jest.fn((action) => {
-    // If action is a function (thunk), execute it
-    if (typeof action === 'function') {
-        return action(mockInnerDispatch, () => ({ notifications: [] }))
-    }
-    return mockInnerDispatch(action)
-})
 const mockIngestFile = jest.fn()
 const mockResetBanner = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: jest.fn(() => mockDispatch),
-}))
 
 jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
     useFileIngestion: jest.fn(() => ({
@@ -344,16 +331,12 @@ describe('UploadDocumentModal', () => {
             })
 
             await waitFor(() => {
-                expect(mockInnerDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            message:
-                                'File too large. Upload a file smaller than 50 MB.',
-                            status: 'error',
-                        }),
+                expect(
+                    screen.getByRole('status', {
+                        name: 'File too large. Upload a file smaller than 50 MB.',
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -398,17 +381,12 @@ describe('UploadDocumentModal', () => {
             })
 
             await waitFor(() => {
-                expect(mockInnerDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            message: expect.stringContaining(
-                                'A file with duplicate.pdf name already exists',
-                            ),
-                            status: 'error',
-                        }),
+                expect(
+                    screen.getByRole('status', {
+                        name: /A file with duplicate\.pdf name already exists/,
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -627,18 +605,97 @@ describe('UploadDocumentModal', () => {
             })
 
             await waitFor(() => {
-                expect(mockInnerDispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        type: 'reapop/upsertNotification',
-                        payload: expect.objectContaining({
-                            message: expect.stringContaining(
-                                'Some files were rejected',
-                            ),
-                            status: 'error',
-                        }),
+                expect(
+                    screen.getByRole('status', {
+                        name: /Some files were rejected/,
+                        hidden: true,
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
+        })
+
+        it('shows error notification when uploadAttachments throws', async () => {
+            mockUploadAttachments.mockRejectedValue(new Error('network error'))
+
+            render(
+                <UploadDocumentModal helpCenterId={1} shopName="test-shop" />,
+            )
+
+            await act(() => {
+                eventCallback?.()
+            })
+
+            const uploadArea = screen.getByTestId('upload-drop-zone')
+
+            const pdfFile = new File(['content'], 'failing.pdf', {
+                type: 'application/pdf',
+            })
+
+            await act(async () => {
+                fireEvent.drop(uploadArea!, {
+                    dataTransfer: {
+                        files: [pdfFile],
+                        items: [{}],
+                    },
+                })
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'An unknown error occurred while uploading file failing.pdf.',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
+        })
+
+        it('shows error when total files exceed MAX_EXTERNAL_FILES', async () => {
+            mockUseFileIngestion.mockReturnValue({
+                ingestFile: mockIngestFile,
+                ingestedFiles: Array.from({ length: 10 }).map((_, index) => ({
+                    filename: `existing-${index + 1}.pdf`,
+                    status: 'SUCCESSFUL',
+                    uploaded_datetime: '2024-01-01',
+                })) as unknown as RetrieveFileIngestionLogDto[],
+                deleteIngestedFile: jest.fn(),
+                isIngesting: false,
+                isLoading: false,
+            })
+
+            render(
+                <UploadDocumentModal helpCenterId={1} shopName="test-shop" />,
+            )
+
+            await act(() => {
+                eventCallback?.()
+            })
+
+            const uploadArea = screen.getByTestId('upload-drop-zone')
+
+            const newFile = new File(['content'], 'extra.pdf', {
+                type: 'application/pdf',
+            })
+
+            await act(async () => {
+                fireEvent.drop(uploadArea!, {
+                    dataTransfer: {
+                        files: [newFile],
+                        items: [{}],
+                    },
+                })
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'You can only upload a maximum of 10 files.',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
+
+            expect(mockUploadAttachments).not.toHaveBeenCalled()
         })
 
         it('filters out invalid files and uploads only valid ones', async () => {
@@ -686,17 +743,14 @@ describe('UploadDocumentModal', () => {
                 )
             })
 
-            expect(mockInnerDispatch).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    type: 'reapop/upsertNotification',
-                    payload: expect.objectContaining({
-                        message: expect.stringContaining(
-                            'Some files were rejected',
-                        ),
-                        status: 'error',
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: /Some files were rejected/,
+                        hidden: true,
                     }),
-                }),
-            )
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
     })
 

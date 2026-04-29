@@ -1,8 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { updateOnboardingData } from 'models/aiAgent/resources/configuration'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
@@ -10,19 +9,12 @@ import {
     AiAgentScopes,
     WizardStepEnum,
 } from 'pages/aiAgent/Onboarding_V2/types'
-import { notify as notifyAction } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useUpdateOnboarding } from '../useUpdateOnboarding'
 
 jest.mock('models/aiAgent/resources/configuration')
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
 
-const notifyActionMock = assumeMock(notifyAction)
 const updateOnboardingDataMock = assumeMock(updateOnboardingData)
-const useAppDispatchMock = assumeMock(useAppDispatch)
-const mockDispatch = jest.fn()
 
 const defaultOnboarding = {
     id: '1',
@@ -38,8 +30,6 @@ describe('useUpdateOnboarding', () => {
     let consoleErrorSpy: jest.SpyInstance
 
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(mockDispatch)
-        notifyActionMock.mockReturnValue(mockDispatch)
         consoleErrorSpy = jest
             .spyOn(console, 'error')
             .mockImplementation(() => {})
@@ -78,13 +68,15 @@ describe('useUpdateOnboarding', () => {
 
         await waitFor(() => {
             expect(result.current.isLoading).toEqual(false)
-            expect(mockDispatch).toHaveBeenCalledTimes(1)
+        })
 
-            expect(notifyActionMock).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message: 'An unexpected error occurred. Please try again.',
-                id: 'update-onboarding-error',
-            })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'An unexpected error occurred. Please try again.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

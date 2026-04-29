@@ -8,18 +8,16 @@ import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
     Label,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { ConfirmNavigationPrompt } from 'pages/common/components/ConfirmNavigationPrompt'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './ExternalFilesSection.less'
 
@@ -58,7 +56,6 @@ export const ExternalFilesSection = ({
 }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
     const inputRef = createRef<HTMLInputElement>()
-    const dispatch = useAppDispatch()
 
     const { shopName } = useParams<{ shopName: string }>()
     const { routes } = useAiAgentNavigation({ shopName })
@@ -71,12 +68,7 @@ export const ExternalFilesSection = ({
         useFileIngestion({
             helpCenterId,
             onSuccess: (file) => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: `File ${file.filename} uploaded successfully`,
-                    }),
-                )
+                toast.success(`File ${file.filename} uploaded successfully`)
             },
             onFailure: (file) => {
                 const filename = file.filename.toLowerCase()
@@ -89,12 +81,7 @@ export const ExternalFilesSection = ({
                         ? 'Please try saving the file through Microsoft Office or converting it to PDF.'
                         : 'Please double-check the file or upload a different one.')
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: errorMessage,
-                    }),
-                )
+                toast.error(errorMessage)
             },
         })
 
@@ -118,11 +105,8 @@ export const ExternalFilesSection = ({
             files.length + successfullyIngestedFiles.length >
             MAX_EXTERNAL_FILES
         ) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `You can only upload a maximum of ${MAX_EXTERNAL_FILES} files.`,
-                }),
+            toast.error(
+                `You can only upload a maximum of ${MAX_EXTERNAL_FILES} files.`,
             )
             return
         }
@@ -134,11 +118,8 @@ export const ExternalFilesSection = ({
 
     const uploadFile = async (file: File) => {
         if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `File too large. Upload a file smaller than ${MAX_FILE_SIZE_MB} MB.`,
-                }),
+            toast.error(
+                `File too large. Upload a file smaller than ${MAX_FILE_SIZE_MB} MB.`,
             )
 
             return
@@ -149,11 +130,8 @@ export const ExternalFilesSection = ({
                 (ingestedFile) => ingestedFile.filename === file.name,
             )
         ) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
-                }),
+            toast.error(
+                `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
             )
 
             return
@@ -179,11 +157,8 @@ export const ExternalFilesSection = ({
                 createdHow: 'from-upload',
             })
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `An unknown error occurred while uploading file ${file.name}.`,
-                }),
+            toast.error(
+                `An unknown error occurred while uploading file ${file.name}.`,
             )
         }
     }
@@ -281,20 +256,12 @@ export const ExternalFilesSection = ({
                                                     ingestedFile.id,
                                                 )
 
-                                                void dispatch(
-                                                    notify({
-                                                        status: NotificationStatus.Success,
-                                                        message:
-                                                            'File deleted successfully',
-                                                    }),
+                                                toast.success(
+                                                    'File deleted successfully',
                                                 )
                                             } catch {
-                                                void dispatch(
-                                                    notify({
-                                                        status: NotificationStatus.Error,
-                                                        message:
-                                                            'An unknown error occurred while deleting the file',
-                                                    }),
+                                                toast.error(
+                                                    'An unknown error occurred while deleting the file',
                                                 )
                                             }
                                         }}

@@ -2,14 +2,13 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { updateRule } from 'models/rule/resources'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
@@ -17,13 +16,10 @@ import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelf
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useRules } from 'state/entities/rules/hooks'
 import type { RulesState } from 'state/entities/rules/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { RuleType } from 'state/rules/types'
 
 import { useAiAgentEnabled } from '../useAiAgentEnabled'
 
-jest.mock('hooks/useAppDispatch')
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn(),
@@ -38,7 +34,6 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const store = mockStore({})
 
-const useAppDispatchMock = assumeMock(useAppDispatch)
 const useParamsMock = assumeMock(useParams)
 const useRulesMock = assumeMock(useRules)
 const useSelfServiceChatChannelsMock = assumeMock(useSelfServiceChatChannels)
@@ -98,14 +93,11 @@ const DEFAULT_PARAMS: Parameters<typeof useAiAgentEnabled>[0] = {
 }
 
 describe('useAiAgentEnabled', () => {
-    const dispatchMock = jest.fn()
-
     const wrapper = ({ children }: { children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
     )
 
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(dispatchMock)
         useParamsMock.mockReturnValue({
             shopType: 'some-shop',
             shopName: 'some-name',
@@ -138,7 +130,9 @@ describe('useAiAgentEnabled', () => {
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
-        expect(dispatchMock).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
 
     it('should update chat application settings when chat integrations are present', () => {
@@ -200,7 +194,7 @@ describe('useAiAgentEnabled', () => {
         )
     })
 
-    it('should dispatch success notification when chat updates succeed', () => {
+    it('should dispatch success notification when chat updates succeed', async () => {
         useSelfServiceChatChannelsMock.mockReturnValue(
             defaultSelfServeChatChannel,
         )
@@ -216,17 +210,17 @@ describe('useAiAgentEnabled', () => {
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
-        void waitFor(() => {
-            expect(dispatchMock).toHaveBeenCalled()
-            expect(notify).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message:
-                    'AI Agent enabled. Article Recommendations have been turned off to avoid conflicting responses.',
-            })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'AI Agent enabled. Article Recommendations have been turned off to avoid conflicting responses.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
-    it('should dispatch success notification when email updates succeed', () => {
+    it('should dispatch success notification when email updates succeed', async () => {
         useRulesMock.mockReturnValue([defaultRules, false])
 
         const { result } = renderHook(
@@ -243,17 +237,17 @@ describe('useAiAgentEnabled', () => {
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
-        void waitFor(() => {
-            expect(dispatchMock).toHaveBeenCalled()
-            expect(notify).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message:
-                    'AI Agent enabled. Autoresponders have been turned off to avoid conflicting responses.',
-            })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'AI Agent enabled. Autoresponders have been turned off to avoid conflicting responses.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
-    it('should dispatch error notification when updates fail', () => {
+    it('should dispatch error notification when updates fail', async () => {
         const handleUpdateMock = jest
             .fn()
             .mockRejectedValueOnce(new Error('Error'))
@@ -283,12 +277,13 @@ describe('useAiAgentEnabled', () => {
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
-        void waitFor(() => {
-            expect(dispatchMock).toHaveBeenCalled()
-            expect(notify).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message: expect.stringContaining('There were some issues'),
-            })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /There were some issues/i,
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

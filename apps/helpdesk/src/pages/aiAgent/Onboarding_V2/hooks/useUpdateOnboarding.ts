@@ -1,11 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { updateOnboardingData } from 'models/aiAgent/resources/configuration'
 import type { OnboardingData } from 'models/aiAgent/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type UpdateOnboardingParams = {
     id: string | number
@@ -17,7 +16,6 @@ type APIErrorResponse = {
 }
 
 export const useUpdateOnboarding = () => {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     return useMutation<
@@ -39,13 +37,7 @@ export const useUpdateOnboarding = () => {
                     err.response?.data?.message ||
                     'An unexpected error occurred. Please try again.'
 
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: errorMessage,
-                        id: 'update-onboarding-error',
-                    }),
-                )
+                toast.error(errorMessage, { id: 'update-onboarding-error' })
             },
         },
     )

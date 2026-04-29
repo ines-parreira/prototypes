@@ -1,12 +1,9 @@
 import { useCallback, useState } from 'react'
 
-import { Box, Button, Modal, OverlayHeader, Text } from '@gorgias/axiom'
+import { Box, Button, Modal, OverlayHeader, Text, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import type { Components } from 'rest_api/help_center_api/client.generated'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { OPEN_DELETE_DOCUMENT_MODAL } from '../constants'
 import type { GroupedKnowledgeItem } from '../types'
@@ -31,7 +28,6 @@ export const DeleteDocumentModal = ({
     const [selectedFolder, setSelectedFolder] =
         useState<GroupedKnowledgeItem | null>(null)
 
-    const dispatch = useAppDispatch()
     const { deleteIngestedFile } = useFileIngestion({
         helpCenterId,
     })
@@ -62,13 +58,7 @@ export const DeleteDocumentModal = ({
         )
 
         if (!fileIngestionLog) {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Could not find document to delete',
-                    showDismissButton: true,
-                }),
-            )
+            toast.error('Could not find document to delete')
             return
         }
 
@@ -80,28 +70,16 @@ export const DeleteDocumentModal = ({
             onFolderChange(null)
             onRefetch()
 
-            dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Document successfully deleted',
-                    showDismissButton: true,
-                }),
-            )
+            toast.success('Document successfully deleted')
         } catch {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Error during document deletion. Try one more time or contact support',
-                    showDismissButton: true,
-                }),
+            toast.error(
+                'Error during document deletion. Try one more time or contact support',
             )
         }
     }, [
         selectedFolder,
         fileIngestionLogs,
         deleteIngestedFile,
-        dispatch,
         onFolderChange,
         onRefetch,
         onRemoveFolderParam,

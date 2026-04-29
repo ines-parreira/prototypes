@@ -1,9 +1,7 @@
 import { act, renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../../../../../KnowledgeHub/constants'
 import { dispatchDocumentEvent } from '../../../../../KnowledgeHub/EmptyState/utils'
@@ -16,17 +14,8 @@ import { useGuidanceContext } from '../../context'
 import type { GuidanceState } from '../../context/types'
 import { useDuplicateModal } from '../useDuplicateModal'
 
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
-
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(),
-}))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
 }))
 
 jest.mock('../../context', () => ({
@@ -46,7 +35,6 @@ jest.mock('../../../shared/DuplicateGuidance/utils', () => ({
 
 describe('useDuplicateModal', () => {
     const mockContextDispatch = jest.fn()
-    const mockAppDispatch = jest.fn()
     const mockDuplicate = jest.fn()
     const mockOnCopyFn = jest.fn()
 
@@ -77,9 +65,6 @@ describe('useDuplicateModal', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useAppDispatch as unknown as jest.Mock).mockReturnValue(
-            mockAppDispatch,
-        )
         ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
             duplicate: mockDuplicate,
         })
@@ -88,7 +73,6 @@ describe('useDuplicateModal', () => {
             dispatch: mockContextDispatch,
             config: defaultConfig,
         })
-        mockAppDispatch.mockResolvedValue(undefined)
     })
 
     describe('isOpen', () => {
@@ -273,11 +257,14 @@ describe('useDuplicateModal', () => {
                 selectedStores,
                 'test-shop',
             )
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Guidance duplicated',
-                status: NotificationStatus.Success,
-                allowHTML: true,
-                showDismissButton: true,
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Guidance duplicated',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -323,10 +310,13 @@ describe('useDuplicateModal', () => {
                 await result.current.onDuplicate(selectedStores)
             })
 
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Failed to duplicate guidance',
-                status: NotificationStatus.Error,
-                showDismissButton: true,
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to duplicate guidance',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 

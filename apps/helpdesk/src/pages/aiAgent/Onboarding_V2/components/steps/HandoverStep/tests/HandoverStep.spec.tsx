@@ -22,13 +22,9 @@ import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useStandaloneIntegrationUpsert } from 'pages/standalone/hooks/useStandaloneIntegrationUpsert'
 import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
-import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 
 jest.mock('services/socketManager')
-jest.mock('state/notifications/actions')
-const mockNotify = jest.fn(() => () => Promise.resolve())
-jest.mocked(notify).mockImplementation(mockNotify)
 // Mock tracking services
 jest.mock('@repo/logging')
 jest.mock('@repo/api-resources/gorgiasAppsAuth')

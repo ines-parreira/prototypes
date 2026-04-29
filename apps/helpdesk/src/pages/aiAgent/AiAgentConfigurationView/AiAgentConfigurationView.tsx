@@ -6,9 +6,9 @@ import {
     Banner,
     Button,
     LegacyLoadingSpinner as LoadingSpinner,
+    toast,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { SETTINGS } from 'pages/aiAgent/constants'
@@ -17,8 +17,6 @@ import { hasShopifyRequiredPermissions } from 'pages/aiAgent/utils/shopify-integ
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { StoreConfigForm } from '../components/StoreConfigForm/StoreConfigForm'
@@ -38,8 +36,6 @@ export const AiAgentConfigurationView = ({
     accountDomain,
     section,
 }: AiAgentConfigurationViewProps) => {
-    const dispatch = useAppDispatch()
-
     const { isLoading: isStoreConfigLoading } =
         useAiAgentStoreConfigurationContext()
 
@@ -68,12 +64,7 @@ export const AiAgentConfigurationView = ({
     )
 
     if (!integration) {
-        void dispatch(
-            notify({
-                message: 'Could not find the integration for this store.',
-                status: NotificationStatus.Error,
-            }),
-        )
+        toast.error('Could not find the integration for this store.')
 
         return <Redirect to="/app/automation" />
     }

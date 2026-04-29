@@ -6,11 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
-import { Tag } from '@gorgias/axiom'
+import { Tag, toast } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-types'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Card } from 'pages/aiAgent/Onboarding_V2/components/Card'
 import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
@@ -39,8 +38,6 @@ import { handoverSchema } from 'pages/standalone/schemas'
 import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
 import { getWebhookRequiredFields } from 'pages/standalone/utils'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './HandoverStep.less'
 
@@ -116,8 +113,6 @@ export const HandoverStep: FC<StepProps> = ({
 
     const { redirectToIntegration, integrationId: emailIntegrationId } =
         useOnboardingIntegrationRedirection()
-
-    const dispatch = useAppDispatch()
 
     const selectableEmailIntegrations = useMemo(() => {
         return emailIntegrations
@@ -224,12 +219,7 @@ export const HandoverStep: FC<StepProps> = ({
                 },
             )
         } else {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Onboarding data not found.',
-                }),
-            )
+            toast.error('Onboarding data not found.')
         }
     }
 

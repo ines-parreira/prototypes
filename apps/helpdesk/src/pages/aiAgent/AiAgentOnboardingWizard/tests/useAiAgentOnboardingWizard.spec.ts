@@ -1,7 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
@@ -20,8 +20,6 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { StoreState } from 'state/types'
 
 import { WIZARD_BUTTON_ACTIONS } from '../../constants'
@@ -35,7 +33,6 @@ jest.mock('@repo/routing', () => ({
         replace: jest.fn(),
     },
 }))
-jest.mock('state/notifications/actions')
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -94,9 +91,6 @@ jest.mock('hooks/useSearchParam')
 const mockUseSearchParam = assumeMock(useSearchParam)
 
 const mockedStoreConfiguration = getStoreConfigurationFixture()
-
-const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 
 const mockUpdateStoreConfiguration = jest
     .fn()
@@ -403,11 +397,14 @@ describe('useAiAgentOnboardingWizard', () => {
 
         await waitFor(() => {
             expect(mockErrorCreateStoreConfiguration).toHaveBeenCalled()
-            expect(mockDispatch).toHaveBeenCalled()
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Failed to save AI Agent configuration',
-                status: NotificationStatus.Error,
-            })
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to save AI Agent configuration',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -483,11 +480,14 @@ describe('useAiAgentOnboardingWizard', () => {
 
         await waitFor(() => {
             expect(mockErrorUpdateStoreConfiguration).toHaveBeenCalled()
-            expect(mockDispatch).toHaveBeenCalled()
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Failed to save AI Agent configuration',
-                status: NotificationStatus.Error,
-            })
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to save AI Agent configuration',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

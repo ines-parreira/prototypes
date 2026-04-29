@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,22 +9,18 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type {
     ShopifyIntegration,
     ShopifyIntegrationMeta,
 } from 'models/integration/types'
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 import { useGetStoreDomainIngestionLog } from '../useGetStoreDomainIngestionLog'
 import { useIngestionLogMutation } from '../useIngestionLogMutation'
 import { useSyncStoreDomain } from '../useSyncStoreDomain'
 
-const mockedDispatch = jest.fn()
 const mockedShopName = 'test-shop'
 const mockedStoreDomainIngestionLog = getIngestionLogFixture({
     domain: `${mockedShopName}.myshopify.com`,
@@ -32,11 +28,6 @@ const mockedStoreDomainIngestionLog = getIngestionLogFixture({
 })
 const mockedStartIngestion = jest.fn()
 const mockedOnStatusChange = jest.fn()
-
-jest.mock('state/notifications/actions')
-
-jest.mock('hooks/useAppDispatch')
-const mockUseAppDispatch = assumeMock(useAppDispatch)
 
 jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog')
 const mockUseGetStoreDomainIngestionLog = assumeMock(
@@ -65,7 +56,6 @@ const mockStore = configureMockStore([thunk])(defaultState)
 describe('useSyncStoreDomain', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockedDispatch)
         mockUseGetStoreDomainIngestionLog.mockReturnValue({
             storeDomainIngestionLog: mockedStoreDomainIngestionLog,
             status: IngestionLogStatus.Pending,
@@ -258,11 +248,13 @@ describe('useSyncStoreDomain', () => {
             }
         })
 
-        expect(mockUseAppDispatch).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            status: NotificationStatus.Error,
-            message:
-                'Error during Store Domain sync. Please try again later or contact support',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Error during Store Domain sync. Please try again later or contact support',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

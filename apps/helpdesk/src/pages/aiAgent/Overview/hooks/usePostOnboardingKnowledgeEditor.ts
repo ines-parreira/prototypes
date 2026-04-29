@@ -2,14 +2,12 @@ import { useCallback, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { GuidanceMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type UsePostOnboardingKnowledgeEditorProps = {
     shopName: string
@@ -24,8 +22,6 @@ export const usePostOnboardingKnowledgeEditor = ({
     shopName,
     shopType,
 }: UsePostOnboardingKnowledgeEditorProps) => {
-    const dispatch = useAppDispatch()
-    const { routes } = useAiAgentNavigation({ shopName })
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
 
     // -------------------------
@@ -91,30 +87,22 @@ export const usePostOnboardingKnowledgeEditor = ({
             shop_type: shopType,
         })
 
-        dispatch(
-            notify({
-                message: `Guidance saved! You can update or edit it anytime in <a href=${routes.knowledge}  style="color: var(--content-neutral-default, #1e242e);"> Knowledge</a>.`,
-                allowHTML: true,
-                dismissAfter: 3000,
-                status: NotificationStatus.Success,
-            }),
+        toast.success(
+            'Guidance saved! You can update or edit it anytime in Knowledge.',
+            { duration: 3000 },
         )
-    }, [shopName, shopType, dispatch, routes])
+    }, [shopName, shopType])
 
     /**
      * Called after a guidance article is successfully updated.
      * Shows success notification.
      */
     const handleUpdate = useCallback(() => {
-        dispatch(
-            notify({
-                message: `Guidance saved! You can update or edit it anytime in <a href=${routes.knowledge}  style="color: var(--content-neutral-default, #1e242e);"> Knowledge</a>.`,
-                allowHTML: true,
-                dismissAfter: 3000,
-                status: NotificationStatus.Success,
-            }),
+        toast.success(
+            'Guidance saved! You can update or edit it anytime in Knowledge.',
+            { duration: 3000 },
         )
-    }, [dispatch, routes])
+    }, [])
 
     /**
      * Called after a guidance article is successfully deleted.
@@ -122,28 +110,16 @@ export const usePostOnboardingKnowledgeEditor = ({
      */
     const handleDelete = useCallback(() => {
         closeEditor()
-        void dispatch(
-            notify({
-                message: 'Guidance successfully deleted.',
-                dismissAfter: 3000,
-                status: NotificationStatus.Success,
-            }),
-        )
-    }, [dispatch, closeEditor])
+        toast.success('Guidance successfully deleted.', { duration: 3000 })
+    }, [closeEditor])
 
     /**
      * Called after a guidance article is successfully duplicated.
      * Shows success notification.
      */
     const handleCopy = useCallback(() => {
-        dispatch(
-            notify({
-                message: 'Guidance successfully duplicated.',
-                dismissAfter: 3000,
-                status: NotificationStatus.Success,
-            }),
-        )
-    }, [dispatch])
+        toast.success('Guidance successfully duplicated.', { duration: 3000 })
+    }, [])
 
     // -------------------------
     // Derived props for KnowledgeEditor component

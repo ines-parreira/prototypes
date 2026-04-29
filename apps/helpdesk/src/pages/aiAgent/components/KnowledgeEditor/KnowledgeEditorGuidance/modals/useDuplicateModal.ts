@@ -1,9 +1,8 @@
 import { useCallback } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../../../../KnowledgeHub/constants'
 import { dispatchDocumentEvent } from '../../../../KnowledgeHub/EmptyState/utils'
@@ -16,7 +15,6 @@ import { useGuidanceContext } from '../context'
 
 export const useDuplicateModal = () => {
     const { state, dispatch: contextDispatch, config } = useGuidanceContext()
-    const appDispatch = useAppDispatch()
 
     const { duplicate } = useGuidanceArticleMutation({
         guidanceHelpCenterId: config.guidanceHelpCenter?.id ?? 0,
@@ -42,14 +40,7 @@ export const useDuplicateModal = () => {
                     selectedStores,
                     shopName,
                 )
-                await appDispatch(
-                    notify({
-                        message: notificationMessage,
-                        status: NotificationStatus.Success,
-                        allowHTML: true,
-                        showDismissButton: true,
-                    }),
-                )
+                toast.success(notificationMessage)
 
                 const isDuplicatingToCurrentStore = shopNames.some(
                     (name) => name === shopName,
@@ -58,19 +49,13 @@ export const useDuplicateModal = () => {
                     dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
                 }
             } catch {
-                await appDispatch(
-                    notify({
-                        message: 'Failed to duplicate guidance',
-                        status: NotificationStatus.Error,
-                        showDismissButton: true,
-                    }),
-                )
+                toast.error('Failed to duplicate guidance')
             } finally {
                 contextDispatch({ type: 'SET_UPDATING', payload: false })
                 contextDispatch({ type: 'CLOSE_MODAL' })
             }
         },
-        [articleId, shopName, duplicate, config, contextDispatch, appDispatch],
+        [articleId, shopName, duplicate, config, contextDispatch],
     )
 
     return {

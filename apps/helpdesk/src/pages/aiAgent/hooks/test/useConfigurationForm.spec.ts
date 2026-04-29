@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { account } from 'fixtures/account'
@@ -11,7 +11,6 @@ import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
-import { notify } from 'state/notifications/actions'
 import type { StoreState } from 'state/types'
 
 import { ToneOfVoice } from '../../constants'
@@ -57,7 +56,6 @@ const INITIAL_FORM_VALUES: FormValues = {
 }
 
 jest.mock('models/helpCenter/queries')
-jest.mock('state/notifications/actions')
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
@@ -87,7 +85,6 @@ const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = jest.mocked(useFlag)
@@ -109,7 +106,6 @@ const mockHelpCenterListData = {
     }),
     isLoading: false,
 } as unknown as ReturnType<typeof useGetHelpCenterList>
-const mockDispatch = jest.fn()
 const mockUpdateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
@@ -272,14 +268,14 @@ describe('useConfigurationForm', () => {
             })
         })
 
-        expect(mockDispatch).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message:
-                    'Please select at least 1 chat integration for AI Agent to use or disable AI Agent for chat to proceed.',
-                status: 'error',
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Please select at least 1 chat integration for AI Agent to use or disable AI Agent for chat to proceed.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('should call onSuccess callback when provided and execution was without error', async () => {
@@ -346,11 +342,13 @@ describe('useConfigurationForm', () => {
             })
         })
 
-        expect(mockDispatch).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'Email address or chat channel already used by AI Agent on a different store.',
-            status: 'error',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Email address or chat channel already used by AI Agent on a different store.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -396,9 +394,13 @@ describe('useConfigurationForm', () => {
             })
         })
 
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Signature is too long',
-            status: 'error',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Signature is too long',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -434,9 +436,13 @@ describe('useConfigurationForm', () => {
             })
         })
 
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Failed to save AI Agent configuration',
-            status: 'error',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to save AI Agent configuration',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

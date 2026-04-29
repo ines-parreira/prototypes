@@ -10,8 +10,6 @@ import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCre
 import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { applyMockActivationHook } from 'pages/aiAgent/test/mock-activation-hooks.utils'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
@@ -29,9 +27,6 @@ jest.mock('react-router-dom', () => {
         >,
     }
 })
-const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
-jest.mock('state/notifications/actions')
 jest.mock('pages/AppContext')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
@@ -263,10 +258,13 @@ describe('AiAgentPreviewModeSettingsView', () => {
                 deactivatedDatetime: expect.any(String),
             })
         })
-        expect(mockDispatch).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Preview mode enabled successfully',
-            status: NotificationStatus.Success,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Preview mode enabled successfully',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
     it('should not calls updateStoreConfiguration if storeConfiguration is undefined', () => {
@@ -293,8 +291,9 @@ describe('AiAgentPreviewModeSettingsView', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Save Changes'))
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
-        expect(mockDispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
     it('should not calls updateStoreConfiguration if there is no knowledge base', () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -313,15 +312,17 @@ describe('AiAgentPreviewModeSettingsView', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Save Changes'))
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
-        expect(mockDispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
     it('should not calls updateStoreConfiguration if no changes is made and previewMode already disabled', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Save Changes'))
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
-        expect(mockDispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
     it('should not calls updateStoreConfiguration if no changes is made and previewMode already enabled', () => {
         const mockCurrentDate = new Date(2024, 11, 4)
@@ -343,36 +344,46 @@ describe('AiAgentPreviewModeSettingsView', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Save Changes'))
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
-        expect(mockDispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
-    it('should not calls updateStoreConfiguration and display notification error if duration is following the requirement', () => {
+    it('should not calls updateStoreConfiguration and display notification error if duration is following the requirement', async () => {
         renderComponent()
         fireEvent.click(screen.getByText('Enable Preview'))
         const durationInput = screen.getByLabelText('Set duration')
         fireEvent.change(durationInput, { target: { value: '-1' } })
         fireEvent.click(screen.getByText('Save Changes'))
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
-        expect(mockDispatch).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Duration must be greater than 0d',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Duration must be greater than 0d',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         fireEvent.change(durationInput, { target: { value: '33' } })
         fireEvent.click(screen.getByText('Save Changes'))
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
-        expect(mockDispatch).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Duration must be less than 30d',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Duration must be less than 30d',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         fireEvent.change(durationInput, { target: { value: '' } })
         fireEvent.click(screen.getByText('Save Changes'))
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
-        expect(mockDispatch).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Duration is required',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Duration is required',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
     it('should resets form on Cancel', () => {

@@ -4,7 +4,8 @@ import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 import { useLocation, useParams } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import {
     helpCenterKeys,
     useGetArticleIngestionLogs,
@@ -33,8 +34,6 @@ import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArtic
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useIngestionDomainBannerDismissed } from '../../AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 
@@ -109,7 +108,6 @@ const AiAgentExternalSourceArticlesView = ({
     headerType: HeaderType
     children?: React.ReactNode
 }) => {
-    const dispatch = useAppDispatch()
     const location = useLocation() as { state: LocationState }
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -278,12 +276,7 @@ const AiAgentExternalSourceArticlesView = ({
             )
             void refetch()
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Error during article visibility change.',
-                }),
-            )
+            toast.error('Error during article visibility change.')
         }
     }
 

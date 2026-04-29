@@ -5,10 +5,10 @@ import classnames from 'classnames'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
@@ -18,8 +18,6 @@ import {
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import InputField from 'pages/common/forms/input/InputField'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 
@@ -72,7 +70,6 @@ const AiAgentPreviewModeSettingsView: React.FC<
         return DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS
     }, [storeConfiguration])
 
-    const dispatch = useAppDispatch()
     const [duration, setDuration] = useState<number>(
         DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS,
     )
@@ -112,12 +109,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
         }
 
         if (durationError) {
-            void dispatch(
-                notify({
-                    message: durationError,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(durationError)
             return
         }
 
@@ -143,13 +135,10 @@ const AiAgentPreviewModeSettingsView: React.FC<
                 ...additionalPayload,
             })
 
-            void dispatch(
-                notify({
-                    message: `Preview mode ${
-                        isToggled ? 'enabled' : 'disabled'
-                    } successfully`,
-                    status: NotificationStatus.Success,
-                }),
+            toast.success(
+                `Preview mode ${
+                    isToggled ? 'enabled' : 'disabled'
+                } successfully`,
             )
 
             if (isToggled) {
@@ -158,13 +147,8 @@ const AiAgentPreviewModeSettingsView: React.FC<
 
             setIsPristine(true)
         } catch {
-            void dispatch(
-                notify({
-                    message: `Failed to ${
-                        isToggled ? 'enabled' : 'disabled'
-                    } Preview mode`,
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                `Failed to ${isToggled ? 'enabled' : 'disabled'} Preview mode`,
             )
         }
     }

@@ -6,15 +6,14 @@ import { isAxiosError } from 'axios'
 import _get from 'lodash/get'
 import _isEqual from 'lodash/isEqual'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import type { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { isGorgiasApiError } from 'models/api/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { getStoreConfigurationFromFormValues } from '../components/StoreConfigForm/StoreConfigForm.utils'
 import { CHANGES_SAVED_SUCCESS, DEFAULT_FORM_VALUES } from '../constants'
@@ -39,7 +38,6 @@ export const useConfigurationForm = ({
     shopType: string
     initValues?: Partial<FormValues>
 }) => {
-    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const { isLoading, createStoreConfiguration, upsertStoreConfiguration } =
@@ -198,12 +196,7 @@ export const useConfigurationForm = ({
             )
         } catch (error) {
             if (error instanceof Error) {
-                void dispatch(
-                    notify({
-                        message: error.message,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(error.message)
             } else {
                 throw error
             }
@@ -268,35 +261,21 @@ export const useConfigurationForm = ({
                 return res
             }
 
-            void dispatch(
-                notify({
-                    message: CHANGES_SAVED_SUCCESS,
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success(CHANGES_SAVED_SUCCESS)
 
             return res
         } catch (error) {
             if (isAxiosError(error) && _get(error, 'response.status') === 409) {
-                void dispatch(
-                    notify({
-                        message:
-                            'Email address or chat channel already used by AI Agent on a different store.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    'Email address or chat channel already used by AI Agent on a different store.',
                 )
             } else {
                 const backendMessage = isGorgiasApiError(error)
                     ? error.response.data.error.msg
                     : null
 
-                void dispatch(
-                    notify({
-                        message:
-                            backendMessage ||
-                            'Failed to save AI Agent configuration',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    backendMessage || 'Failed to save AI Agent configuration',
                 )
             }
         }

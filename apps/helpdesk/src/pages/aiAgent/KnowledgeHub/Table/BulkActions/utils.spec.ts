@@ -1,7 +1,6 @@
 import {
     buildDuplicateNotificationMessage,
     cleanStoreName,
-    createStoreLink,
     isCurrentStore,
 } from '../../../components/KnowledgeEditor/shared/DuplicateGuidance/utils'
 import type {
@@ -747,29 +746,6 @@ describe('BulkActions utils', () => {
             })
         })
 
-        describe('createStoreLink', () => {
-            it('creates HTML link with clean store name', () => {
-                const result = createStoreLink('store-1')
-                expect(result).toBe(
-                    '<a href="/app/ai-agent/shopify/store-1/knowledge">store-1</a>',
-                )
-            })
-
-            it('removes (current) suffix from store name in link', () => {
-                const result = createStoreLink('store-1 (current)')
-                expect(result).toBe(
-                    '<a href="/app/ai-agent/shopify/store-1/knowledge">store-1</a>',
-                )
-            })
-
-            it('handles store names with spaces', () => {
-                const result = createStoreLink('my store')
-                expect(result).toBe(
-                    '<a href="/app/ai-agent/shopify/my store/knowledge">my store</a>',
-                )
-            })
-        })
-
         describe('buildDuplicateNotificationMessage', () => {
             it('returns simple message when only current store is selected', () => {
                 const stores = [{ name: 'store-1 (current)' }]
@@ -789,21 +765,13 @@ describe('BulkActions utils', () => {
                 expect(result).toBe('Guidance duplicated')
             })
 
-            it('returns message with links when only other stores are selected', () => {
+            it('returns plain message when only other stores are selected', () => {
                 const stores = [{ name: 'store-2' }, { name: 'store-3' }]
                 const result = buildDuplicateNotificationMessage(
                     stores,
                     'store-1',
                 )
-                expect(result).toContain('Guidance duplicated to')
-                expect(result).toContain('store-2')
-                expect(result).toContain('store-3')
-                expect(result).toContain(
-                    '/app/ai-agent/shopify/store-2/knowledge',
-                )
-                expect(result).toContain(
-                    '/app/ai-agent/shopify/store-3/knowledge',
-                )
+                expect(result).toBe('Guidance duplicated to store-2, store-3')
             })
 
             it('returns combined message when current and other stores are selected', () => {
@@ -815,10 +783,8 @@ describe('BulkActions utils', () => {
                     stores,
                     'store-1',
                 )
-                expect(result).toContain('store-1')
-                expect(result).toContain('store-2')
-                expect(result).toContain(
-                    '/app/ai-agent/shopify/store-2/knowledge',
+                expect(result).toBe(
+                    'Guidance duplicated to store-1 and store-2',
                 )
             })
 
@@ -832,16 +798,14 @@ describe('BulkActions utils', () => {
                 expect(result).toContain('store-1')
             })
 
-            it('cleans store names in links', () => {
+            it('cleans store names', () => {
                 const stores = [{ name: 'store-2 (current)' }]
                 const result = buildDuplicateNotificationMessage(
                     stores,
                     'store-1',
                 )
                 expect(result).not.toContain('(current)')
-                expect(result).toContain(
-                    '/app/ai-agent/shopify/store-2/knowledge',
-                )
+                expect(result).toContain('store-2')
             })
         })
     })

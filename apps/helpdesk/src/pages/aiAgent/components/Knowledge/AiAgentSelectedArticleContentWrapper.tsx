@@ -1,12 +1,11 @@
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
 import type { IngestedResourceStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { CONTENT_TYPE } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import ScrapedDomainSelectedContent from 'pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent'
 import type { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     shopName: string
@@ -29,8 +28,6 @@ const AiAgentSelectedArticleContentWrapper = ({
     helpCenter,
     onUpdateStatus,
 }: Props) => {
-    const dispatch = useAppDispatch()
-
     const { isError, data, isLoading } = useGetHelpCenterArticle(
         article?.id ?? 0,
         helpCenter.id,
@@ -42,13 +39,7 @@ const AiAgentSelectedArticleContentWrapper = ({
     )
 
     if (isError) {
-        void dispatch(
-            notify({
-                status: NotificationStatus.Error,
-                message: 'Error loading article details',
-                showDismissButton: true,
-            }),
-        )
+        toast.error('Error loading article details')
         handleOnClose()
     }
 

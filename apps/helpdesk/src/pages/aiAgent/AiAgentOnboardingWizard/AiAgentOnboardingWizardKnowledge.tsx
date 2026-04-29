@@ -3,10 +3,9 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { LegacyLabel as Label } from '@gorgias/axiom'
+import { Button, LegacyLabel as Label, toast } from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AiAgentOnboardingState,
     AiAgentOnboardingWizardStep,
@@ -20,8 +19,6 @@ import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { ExternalFilesSection } from '../components/Knowledge/ExternalFilesSection'
 import { CreatePublicSourcesSection } from '../components/StoreConfigForm/StoreConfigForm'
@@ -41,7 +38,6 @@ import css from './AiAgentOnboardingWizardKnowledge.less'
 type Props = AiAgentOnboardingWizardProps
 
 const AiAgentOnboardingWizardStepKnowledge = ({ shopName }: Props) => {
-    const dispatch = useAppDispatch()
     const {
         handleOnSave,
         handleOnSendOrCancelNotification,
@@ -209,30 +205,27 @@ const AiAgentOnboardingWizardStepKnowledge = ({ shopName }: Props) => {
 
     const handleWarningDuringDocumentUpload = () => {
         if (hasNoKnowledgeSource) {
-            void dispatch(
-                notify({
-                    message:
-                        'Documents must finish uploading before moving forward.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                'Documents must finish uploading before moving forward.',
             )
         } else {
-            void dispatch(
-                notify({
-                    message:
-                        'Document upload still in progress. You can finish without uploading but will lose any upload progress.',
-                    status: NotificationStatus.Warning,
-                    buttons: [
-                        {
-                            name: 'Finish Without Upload',
-                            onClick: () => {
+            toast.warning(
+                'Document upload still in progress. You can finish without uploading but will lose any upload progress.',
+                {
+                    inlineActions: ({ id }) => (
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            onClick={() => {
+                                toast.dismiss(id)
                                 setIsFinishingWizard(true)
                                 handleWizardCompletion()
-                            },
-                            primary: false,
-                        },
-                    ],
-                }),
+                            }}
+                        >
+                            Finish Without Upload
+                        </Button>
+                    ),
+                },
             )
         }
     }

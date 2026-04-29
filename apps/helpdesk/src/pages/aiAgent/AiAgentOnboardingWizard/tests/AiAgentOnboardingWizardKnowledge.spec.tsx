@@ -18,8 +18,6 @@ import {
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     ARTICLE_INGESTION_LOGS_STATUS,
@@ -36,9 +34,6 @@ import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 const SHOP_NAME = 'test-shop'
 const SHOP_TYPE = 'shopify'
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('state/notifications/actions')
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
 jest.mock('../../hooks/useAiAgentOnboardingNotification')
@@ -405,7 +400,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
         })
     })
-    it('should display a warning notification when Finish is clicked and documents are syncing', () => {
+    it('should display a warning notification when Finish is clicked and documents are syncing', async () => {
         mockUseAiAgentOnboardingWizard.mockReturnValue({
             ...mockedUseAiAgentOnboardingWizard,
             snippetHelpCenter: mockedHelpCenters[0],
@@ -419,18 +414,13 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         })
         renderComponent({})
         userEvent.click(screen.getByText('Finish'))
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'Document upload still in progress. You can finish without uploading but will lose any upload progress.',
-            status: NotificationStatus.Warning,
-            buttons: [
-                expect.objectContaining({
-                    name: 'Finish Without Upload',
-                    primary: false,
-                    onClick: expect.any(Function),
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Document upload still in progress. You can finish without uploading but will lose any upload progress.',
+                    hidden: true,
                 }),
-            ],
+            ).toHaveAttribute('data-intent', 'warning')
         })
     })
     it('should trigger cancellation call on finish AI agent setup notification when Finish is clicked', async () => {

@@ -1,15 +1,14 @@
 import React from 'react'
 
 import { reportError } from '@repo/logging'
+import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
@@ -17,15 +16,14 @@ import { usePublicResourcesPooling } from '../usePublicResourcesPooling'
 
 const queryClient = mockQueryClient()
 
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
     history: {
         push: jest.fn(),
     },
 }))
-jest.mock('state/notifications/actions')
+
+const mockHistoryPush = history.push as jest.Mock
 
 jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
@@ -99,15 +97,34 @@ describe('usePublicResourcesPooling', () => {
         })
     })
 
-    it('should call the notify action with syncing message when logs are pending', () => {
-        setupHook(shopName, helpCenterId)
+    it('should call the notify action with syncing message when logs are pending', async () => {
+        // First mock returns no pending logs so the initial mount has no toasts
+        // (and the Toaster portal subscribes), then we trigger the pending state
+        // via a rerender to simulate the polled logs becoming pending.
+        mockUseGetArticleIngestionLogs.mockReturnValueOnce({
+            data: [],
+        } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
 
-        expect(notify).toHaveBeenCalledWith({
-            status: NotificationStatus.Loading,
-            message:
-                'Syncing in progress. You can finish onboarding while sources are syncing.',
-            showDismissButton: true,
-            dismissible: true,
+        const { rerender } = setupHook(shopName, helpCenterId)
+
+        mockUseGetArticleIngestionLogs.mockReturnValue({
+            data: [
+                { id: 1, status: 'PENDING' },
+                { id: 2, status: 'SUCCESSFUL' },
+            ],
+        } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+        await act(async () => {
+            rerender()
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Syncing in progress. You can finish onboarding while sources are syncing.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'info')
         })
     })
 
@@ -177,16 +194,9 @@ describe('usePublicResourcesPooling', () => {
                 setupHook(shopName, helpCenterId)
             })
 
-            expect(notify).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    status: NotificationStatus.Success,
-                }),
-            )
-            expect(notify).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    status: NotificationStatus.Error,
-                }),
-            )
+            expect(
+                screen.queryByRole('status', { hidden: true }),
+            ).not.toBeInTheDocument()
         })
 
         it('should return early if current path matches urlArticles', async () => {
@@ -217,16 +227,108 @@ describe('usePublicResourcesPooling', () => {
                 setupHook(shopName, helpCenterId)
             })
 
-            expect(notify).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    status: NotificationStatus.Success,
-                }),
+            expect(
+                screen.queryByRole('status', { hidden: true }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show success toast with Review action when all ingestions are successful', async () => {
+            mockUseSearchParam.mockReturnValue([null, jest.fn()])
+
+            // First mount yields no processing ingestions so the Toaster portal
+            // subscribes before the success toast is fired in the next render.
+            mockUseGetArticleIngestionLogs.mockReturnValueOnce({
+                data: [],
+            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+            const { rerender } = setupHook(shopName, helpCenterId)
+
+            mockUseGetArticleIngestionLogs.mockImplementation((params) => {
+                if (params.ids) {
+                    return {
+                        data: [
+                            {
+                                id: 1,
+                                status: 'SUCCESSFUL',
+                                url: 'https://example.com/article-1',
+                            },
+                        ],
+                        error: null,
+                    } as unknown as ReturnType<
+                        typeof useGetArticleIngestionLogs
+                    >
+                }
+                return {
+                    data: [{ id: 1, status: 'PENDING' }],
+                } as unknown as ReturnType<typeof useGetArticleIngestionLogs>
+            })
+
+            await act(async () => {
+                rerender()
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'URL successfully synced. Review newly generated content for accuracy.',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
+            })
+
+            const reviewButton = await screen.findByRole('button', {
+                name: 'Review',
+                hidden: true,
+            })
+
+            fireEvent.click(reviewButton)
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                `/app/automation/shopify/${shopName}/ai-agent/articles/1`,
+                {
+                    selectedResource: {
+                        id: 1,
+                        url: 'https://example.com/article-1',
+                    },
+                },
             )
-            expect(notify).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    status: NotificationStatus.Error,
-                }),
-            )
+        })
+
+        it('should show error toast when at least one ingestion failed', async () => {
+            mockUseSearchParam.mockReturnValue([null, jest.fn()])
+
+            mockUseGetArticleIngestionLogs.mockReturnValueOnce({
+                data: [],
+            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+            const { rerender } = setupHook(shopName, helpCenterId)
+
+            mockUseGetArticleIngestionLogs.mockImplementation((params) => {
+                if (params.ids) {
+                    return {
+                        data: [{ id: 1, status: 'FAILED' }],
+                        error: null,
+                    } as unknown as ReturnType<
+                        typeof useGetArticleIngestionLogs
+                    >
+                }
+                return {
+                    data: [{ id: 1, status: 'PENDING' }],
+                } as unknown as ReturnType<typeof useGetArticleIngestionLogs>
+            })
+
+            await act(async () => {
+                rerender()
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'We couldn’t sync your URL. Please try again or contact support if the issue persists.',
+                        hidden: true,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
     })
 })

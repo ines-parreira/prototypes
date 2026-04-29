@@ -1,11 +1,9 @@
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { useHistory, useParams } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
-import { notify as notifyAction } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -13,15 +11,10 @@ jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }))
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
 
 const mockUseParams = useParams as jest.Mock
 const mockUseHistory = useHistory as jest.Mock
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
-const notifyActionMock = assumeMock(notifyAction)
-const useAppDispatchMock = assumeMock(useAppDispatch)
-const mockDispatch = jest.fn()
 
 describe('useCheckOnboardingCompleted', () => {
     let mockHistoryPush: jest.Mock
@@ -29,8 +22,6 @@ describe('useCheckOnboardingCompleted', () => {
     beforeEach(() => {
         mockHistoryPush = jest.fn()
         mockUseHistory.mockReturnValue({ push: mockHistoryPush })
-        useAppDispatchMock.mockReturnValue(mockDispatch)
-        notifyActionMock.mockReturnValue(mockDispatch)
     })
 
     it('should not redirect when isLoading is true', () => {
@@ -56,12 +47,21 @@ describe('useCheckOnboardingCompleted', () => {
         const { result } = renderHook(() => useCheckOnboardingCompleted())
 
         expect(mockHistoryPush).not.toHaveBeenCalled()
-        expect(mockDispatch).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
         expect(result.current).toBeNull()
     })
 
-    it('should redirect to the SKILLSET step when onboarding is completed', () => {
+    it('should redirect to the SKILLSET step when onboarding is completed', async () => {
         mockUseParams.mockReturnValue({ shopName: 'completed-store' })
+        mockUseGetOnboardingData.mockReturnValue({
+            data: null,
+            isLoading: true,
+        })
+
+        const { rerender } = renderHook(() => useCheckOnboardingCompleted())
+
         mockUseGetOnboardingData.mockReturnValue({
             data: {
                 completedDatetime: '2024-02-21T12:00:00Z',
@@ -70,14 +70,15 @@ describe('useCheckOnboardingCompleted', () => {
             isLoading: false,
         })
 
-        renderHook(() => useCheckOnboardingCompleted())
+        rerender()
 
-        expect(mockDispatch).toHaveBeenCalledTimes(1)
-        expect(notifyActionMock).toHaveBeenCalledWith({
-            status: NotificationStatus.Error,
-            message:
-                'This store has already completed its onboarding. Redirecting to the AI agent settings.',
-            id: 'onboarding-already-completed',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'This store has already completed its onboarding. Redirecting to the AI agent settings.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(mockHistoryPush).toHaveBeenCalledWith(
             `/app/ai-agent/shopify/completed-store/settings`,

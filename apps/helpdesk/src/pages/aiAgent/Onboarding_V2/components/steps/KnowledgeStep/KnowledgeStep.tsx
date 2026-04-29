@@ -10,11 +10,11 @@ import {
     Icon,
     Skeleton,
     Text,
+    toast,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     storeConfigurationKeys,
     useStartSalesTrialMutation,
@@ -44,8 +44,6 @@ import {
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const KnowledgeStep: React.FC<StepProps> = ({
     currentStep,
@@ -54,7 +52,6 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     isStoreSelected,
 }) => {
     const history = useHistory()
-    const dispatch = useAppDispatch()
 
     const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
@@ -90,12 +87,8 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     const { mutateAsync: startShoppingAssistantTrial } =
         useStartSalesTrialMutation({
             onError: () => {
-                dispatch(
-                    notify({
-                        message:
-                            'Failed to start the Shopping Assistant trial. Please try again.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    'Failed to start the Shopping Assistant trial. Please try again.',
                 )
             },
         })

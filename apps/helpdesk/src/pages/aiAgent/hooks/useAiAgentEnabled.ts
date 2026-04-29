@@ -2,15 +2,13 @@ import { useCallback, useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import { RuleType } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { updateRule } from 'models/rule/resources'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useRules } from 'state/entities/rules/hooks'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const useAiAgentEnabled = ({
     monitoredEmailIntegrations,
@@ -27,8 +25,6 @@ export const useAiAgentEnabled = ({
         shopType: string
         shopName: string
     }>()
-
-    const dispatch = useAppDispatch()
 
     // Get chat channels for the shop
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
@@ -130,28 +126,18 @@ export const useAiAgentEnabled = ({
 
         Promise.all(calls)
             .then(() => {
-                if (successNotification !== '') {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: successNotification,
-                        }),
-                    )
+                if (successNotification !== '' && successNotification) {
+                    toast.success(successNotification)
                 }
             })
             .catch(() => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'There were some issues applying the settings after AI Agent was enabled. ',
-                    }),
+                toast.error(
+                    'There were some issues applying the settings after AI Agent was enabled. ',
                 )
             })
     }, [
         applicationsAutomationSettings,
         chatApplicationsIds,
-        dispatch,
         handleChatApplicationAutomationSettingsUpdate,
         isEnablingChatChannel,
         isEnablingEmailChannel,

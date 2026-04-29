@@ -1,16 +1,14 @@
 import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { POSITIONS } from 'reapop'
 import { useShallow } from 'zustand/react/shallow'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { helpCenterKeys } from 'models/helpCenter/queries'
 import { fromArticleTranslationResponse } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
 import { useSkillEditorStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/context/KnowledgeEditorSkillContext'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const useSkillSupportingKnowledgeFromContext = () => {
     const {
@@ -69,25 +67,11 @@ export const useSkillSupportingKnowledgeFromContext = () => {
     const isViewingPublishedWithDraft = isCurrent === true && hasDraft
     const isReadInPreview = mode === 'read' && !!isPreview
 
-    const appDispatch = useAppDispatch()
-
     const { updateGuidanceArticle } = useGuidanceArticleMutation({
         guidanceHelpCenterId: helpCenterId,
     })
 
     const queryClient = useQueryClient()
-
-    const notifyError = useCallback(
-        (message: string) =>
-            appDispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Error,
-                    position: POSITIONS.bottomRight,
-                }),
-            ),
-        [appDispatch],
-    )
 
     const updateUseSupportingKnowledge = useCallback(
         async (useSupportingKnowledge: boolean, onSuccess: () => void) => {
@@ -129,7 +113,7 @@ export const useSkillSupportingKnowledgeFromContext = () => {
                 onUpdateFn?.()
                 onSuccess()
             } catch {
-                notifyError('An error occurred while saving linked intents.')
+                toast.error('An error occurred while saving linked intents.')
             } finally {
                 dispatch({ type: 'SET_UPDATING', payload: false })
             }
@@ -145,7 +129,6 @@ export const useSkillSupportingKnowledgeFromContext = () => {
             updateGuidanceArticle,
             queryClient,
             onUpdateFn,
-            notifyError,
         ],
     )
 

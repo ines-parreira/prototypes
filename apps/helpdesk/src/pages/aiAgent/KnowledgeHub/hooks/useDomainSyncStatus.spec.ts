@@ -1,22 +1,12 @@
 import { renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useDomainSyncStatus } from './useDomainSyncStatus'
 
-const mockDispatch = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: () => mockDispatch,
-}))
 jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog')
 jest.mock('pages/aiAgent/KnowledgeHub/EmptyState/utils')
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn((payload) => ({ type: 'NOTIFY', payload })),
-}))
 
 const mockUseGetStoreDomainIngestionLog = jest.requireMock(
     'pages/aiAgent/hooks/useGetStoreDomainIngestionLog',
@@ -25,9 +15,6 @@ const mockUseGetStoreDomainIngestionLog = jest.requireMock(
 const mockDispatchDocumentEvent = jest.requireMock(
     'pages/aiAgent/KnowledgeHub/EmptyState/utils',
 ).dispatchDocumentEvent as jest.Mock
-
-const mockNotify = jest.requireMock('state/notifications/actions')
-    .notify as jest.Mock
 
 describe('useDomainSyncStatus', () => {
     const mockParams = {
@@ -98,11 +85,12 @@ describe('useDomainSyncStatus', () => {
         rerender()
 
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                message: 'Your store website has been synced successfully.',
-                status: NotificationStatus.Success,
-            })
-            expect(mockDispatch).toHaveBeenCalled()
+            expect(
+                screen.getByRole('status', {
+                    name: 'Your store website has been synced successfully.',
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -120,12 +108,12 @@ describe('useDomainSyncStatus', () => {
         rerender()
 
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                message:
-                    "We couldn't sync your store website. Please try again or contact support.",
-                status: NotificationStatus.Error,
-            })
-            expect(mockDispatch).toHaveBeenCalled()
+            expect(
+                screen.getByRole('status', {
+                    name: "We couldn't sync your store website. Please try again or contact support.",
+                    hidden: true,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -144,7 +132,9 @@ describe('useDomainSyncStatus', () => {
         rerender()
 
         expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
-        expect(mockNotify).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
 
     it('does not dispatch event when status remains pending', () => {
@@ -158,7 +148,9 @@ describe('useDomainSyncStatus', () => {
         rerender()
 
         expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
-        expect(mockNotify).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
 
     it('handles null storeUrl parameter', () => {
