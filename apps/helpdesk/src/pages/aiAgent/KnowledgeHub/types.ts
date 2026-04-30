@@ -48,7 +48,7 @@ export type GroupedKnowledgeItem = KnowledgeItem & {
 
 export const typeConfig: Record<
     KnowledgeType,
-    { icon: IconName; newIcon?: IconName; label: string }
+    { icon: IconName; label: string }
 > = {
     [KnowledgeType.Document]: {
         icon: 'paperclip-attachment',
@@ -56,7 +56,6 @@ export const typeConfig: Record<
     },
     [KnowledgeType.FAQ]: {
         icon: 'file-document',
-        newIcon: 'bookmark',
         label: 'Help Center articles',
     },
     [KnowledgeType.Guidance]: { icon: 'nav-map', label: 'Guidance' },

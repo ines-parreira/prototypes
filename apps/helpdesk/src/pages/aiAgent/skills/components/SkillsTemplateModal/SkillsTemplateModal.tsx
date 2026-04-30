@@ -26,8 +26,12 @@ export const SkillsTemplateModal: React.FC<Props> = ({
             onOpenChange={onOpenChange}
         >
             <Box flexDirection="column" paddingBottom="26px">
-                <OverlayHeader title={<Heading>Templates</Heading>} />
-                <Text>Use our pre-built templates as a starting point.</Text>
+                <OverlayHeader title={<Heading>Skill templates</Heading>} />
+                <Text>
+                    Start with a template built on best practices from
+                    top-performing merchants. These templates cover the majority
+                    of conversations most merchants encounter.
+                </Text>
             </Box>
             <Box display="grid" gap="md" className={css.templateGrid}>
                 {skillsTemplates.map((template) => (

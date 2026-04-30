@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+
 import classNames from 'classnames'
 
 import { Text } from '@gorgias/axiom'
@@ -12,6 +14,16 @@ type Props = {
 }
 
 export const KnowledgeEditorTopBarTitle = ({ title, onChangeTitle }: Props) => {
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        if (!title) {
+            inputRef.current?.focus()
+        }
+        // Only run on mount — we want to focus once when the editor opens without a title
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     if (!onChangeTitle) {
         return (
             <TruncatedTextWithTooltip tooltipContent={title}>
@@ -31,6 +43,7 @@ export const KnowledgeEditorTopBarTitle = ({ title, onChangeTitle }: Props) => {
                 </div>
             )}
             <input
+                ref={inputRef}
                 type="text"
                 name="title"
                 aria-label="title"

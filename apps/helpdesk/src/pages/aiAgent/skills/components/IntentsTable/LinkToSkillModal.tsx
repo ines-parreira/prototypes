@@ -92,7 +92,7 @@ export const LinkToSkillModal = ({
                     <Heading size="lg">Link intent to existing skill</Heading>
                 }
             />
-            <OverlayContent display="block">
+            <OverlayContent display="block" marginBottom={10}>
                 <Box flexDirection="column" gap="md" mt="10px">
                     <SearchField
                         placeholder="Search..."
@@ -134,7 +134,7 @@ export const LinkToSkillModal = ({
                 </Box>
             </OverlayContent>
             <OverlayFooter hideCancelButton>
-                <Box gap="sm" justifyContent="flex-end" width="100%">
+                <Box gap="sm" justifyContent="space-between" width="100%">
                     <Button variant="tertiary" onClick={onClose}>
                         Cancel
                     </Button>

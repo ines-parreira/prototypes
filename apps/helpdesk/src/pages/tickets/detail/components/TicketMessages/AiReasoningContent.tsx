@@ -15,7 +15,6 @@ import { AiAgentKnowledgeResourceTypeEnum } from '../AIAgentFeedbackBar/types'
 import type { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from '../AIAgentFeedbackBar/utils'
 
-import knowledgeSourceIconCss from '../AIAgentFeedbackBar/KnowledgeSourceIcon.less'
 import css from './AiAgentReasoning.less'
 
 const isKnownResourceType = (markerString: string): boolean => {
@@ -288,7 +287,8 @@ export const AiAgentReasoningContent = ({
                                         resourceType ===
                                             AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
                                 })}
-                                iconClassName={`${css.knowledgeSourceIcon} ${knowledgeSourceIconCss.reasoningBadge}`}
+                                iconClassName={css.knowledgeSourceIcon}
+                                iconSize="xs"
                                 onClick={handleClick}
                                 forceShowBody
                                 isDraft={resource.resourceIsDraft}

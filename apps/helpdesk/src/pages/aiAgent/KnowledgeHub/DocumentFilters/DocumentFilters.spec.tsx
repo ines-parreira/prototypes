@@ -1,19 +1,9 @@
-import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { KnowledgeType } from '../types'
 import { DocumentFilters } from './DocumentFilters'
-
-jest.mock('@repo/feature-flags', () => ({
-    useFlag: jest.fn(),
-    FeatureFlagKey: {
-        KnowledgeIntentManagementSystem: 'knowledge-intent-management-system',
-    },
-}))
-
-const mockUseFlag = useFlag as jest.Mock
 
 describe('DocumentFilters', () => {
     const mockOnFilterChange = jest.fn()
@@ -30,7 +20,6 @@ describe('DocumentFilters', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockReturnValue(false)
     })
 
     const renderComponent = (props = {}) => {
@@ -111,35 +100,6 @@ describe('DocumentFilters', () => {
                 name: /Store website/,
             })
             expect(domainButton).toBeInTheDocument()
-        })
-    })
-
-    describe('feature flag KnowledgeIntentManagementSystem', () => {
-        it('shows old icon for Help Center articles filter when flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-            renderComponent()
-
-            expect(
-                screen.getByRole('img', { name: 'file-document' }),
-            ).toBeInTheDocument()
-        })
-
-        it('shows new icon for Help Center articles filter when flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
-            renderComponent()
-
-            expect(
-                screen.getByRole('img', { name: 'bookmark' }),
-            ).toBeInTheDocument()
-        })
-
-        it('shows same icon for other filters regardless of flag', () => {
-            mockUseFlag.mockReturnValue(true)
-            renderComponent()
-
-            expect(
-                screen.getByRole('img', { name: 'nav-map' }),
-            ).toBeInTheDocument()
         })
     })
 

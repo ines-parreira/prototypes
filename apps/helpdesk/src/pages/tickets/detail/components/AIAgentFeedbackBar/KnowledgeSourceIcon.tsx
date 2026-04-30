@@ -1,46 +1,36 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import cs from 'classnames'
-
-import { Icon } from '@gorgias/axiom'
+import type { IconSize } from '@gorgias/axiom'
+import { Box, Icon, Tag, TagColor } from '@gorgias/axiom'
 
 import type { KnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { KNOWLEDGE_SOURCE_TYPE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
-import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon.less'
 
 type KnowledgeSourceIconProps = {
     type: KnowledgeSourceType
+    iconSize?: IconSize
     withLabel?: boolean
     badgeIconClassname?: string
 }
 
 const KnowledgeSourceIcon = ({
     type,
+    iconSize,
     withLabel = false,
     badgeIconClassname,
 }: KnowledgeSourceIconProps) => {
-    const isKnowledgeIntentManagementSystemEnabled = useFlag(
-        FeatureFlagKey.KnowledgeIntentManagementSystem,
-    )
-
     if (!KNOWLEDGE_SOURCE_TYPE[type]) {
         return null
     }
 
     return (
-        <>
-            <span className={cs(css.badge, badgeIconClassname)}>
+        <Box gap="xxxs" alignItems="center">
+            <Tag color={TagColor.Grey} size="sm" className={badgeIconClassname}>
                 <Icon
-                    name={
-                        isKnowledgeIntentManagementSystemEnabled &&
-                        KNOWLEDGE_SOURCE_TYPE[type].newIcon
-                            ? KNOWLEDGE_SOURCE_TYPE[type].newIcon
-                            : KNOWLEDGE_SOURCE_TYPE[type].icon
-                    }
-                    size={KNOWLEDGE_SOURCE_TYPE[type].size ?? 'xs'}
+                    name={KNOWLEDGE_SOURCE_TYPE[type].icon}
+                    size={KNOWLEDGE_SOURCE_TYPE[type].size ?? iconSize ?? 'sm'}
                 />
-            </span>
+            </Tag>
             {withLabel && <span>{KNOWLEDGE_SOURCE_TYPE[type].label}</span>}
-        </>
+        </Box>
     )
 }
 

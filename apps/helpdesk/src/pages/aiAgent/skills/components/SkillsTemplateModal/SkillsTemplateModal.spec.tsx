@@ -120,11 +120,11 @@ describe('SkillsTemplateModal', () => {
         expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
 
-    it('renders the "Templates" heading', () => {
+    it('renders the "Skill templates" heading', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('heading', { name: 'Templates' }),
+            screen.getByRole('heading', { name: 'Skill templates' }),
         ).toBeInTheDocument()
     })
 
@@ -133,7 +133,7 @@ describe('SkillsTemplateModal', () => {
 
         expect(
             screen.getByText(
-                'Use our pre-built templates as a starting point.',
+                'Start with a template built on best practices from top-performing merchants. These templates cover the majority of conversations most merchants encounter.',
             ),
         ).toBeInTheDocument()
     })

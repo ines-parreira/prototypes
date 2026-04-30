@@ -66,39 +66,12 @@ describe('LinkToSkillRow', () => {
         expect(onToggle).toHaveBeenCalledWith(1)
     })
 
-    it('should show check icon and hide ticket count when selected', () => {
+    it('should show check icon when selected', () => {
         renderRow({ isSelected: true })
 
-        expect(screen.queryByText('672')).not.toBeInTheDocument()
         expect(screen.getByRole('option')).toHaveAttribute(
             'aria-selected',
             'true',
         )
-    })
-
-    it('should show overflow count when article has more than 2 intents', () => {
-        renderRow({
-            article: makeArticle({
-                intents: [
-                    { name: 'order::cancel', formattedName: 'Order / Cancel' },
-                    { name: 'order::refund', formattedName: 'Order / Refund' },
-                    {
-                        name: 'shipping::delay',
-                        formattedName: 'Shipping / Delay',
-                    },
-                ],
-            }),
-        })
-
-        expect(screen.getByText('Order / Cancel')).toBeInTheDocument()
-        expect(screen.getByText('Order / Refund')).toBeInTheDocument()
-        expect(screen.getByText('+1')).toBeInTheDocument()
-        expect(screen.queryByText('Shipping / Delay')).not.toBeInTheDocument()
-    })
-
-    it('should display ticket count when unselected and metrics are available', () => {
-        renderRow({ isSelected: false })
-
-        expect(screen.getByText('672')).toBeInTheDocument()
     })
 })

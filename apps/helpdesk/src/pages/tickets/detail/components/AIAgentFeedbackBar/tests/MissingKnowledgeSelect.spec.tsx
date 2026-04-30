@@ -10,6 +10,7 @@ import { useIsFeedbackMutating } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
+import type { KnowledgeSourceType } from '../constants'
 import MissingKnowledgeSelect, { KnowledgeTag } from '../MissingKnowledgeSelect'
 import type { KnowledgeResource, SuggestedResource } from '../types'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
@@ -165,6 +166,7 @@ jest.mock('../constants', () => {
             article: 'Articles::',
             action: 'Actions::',
             custom: 'Custom::',
+            skill: 'Skills::',
             guidance: 'Guidance::',
             store_website: 'Store website questions::',
         },
@@ -1519,5 +1521,216 @@ describe('MissingKnowledgeSelect', () => {
             const closeButton = screen.getByText('close').parentElement
             expect(closeButton).not.toHaveClass('tagIconDisabled')
         })
+    })
+
+    it('separates skill articles (origin === "skill") from regular guidance articles', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        const resourcesData = {
+            ...enrichedDataMock,
+            guidanceArticles: [
+                { id: 10, title: 'My Skill', helpCenterId: 2, origin: 'skill' },
+                { id: 11, title: 'My Guidance', helpCenterId: 2 },
+            ],
+        } as any
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[]}
+                resourcesData={resourcesData}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Select First'))
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    label: 'Skills::My Skill',
+                    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                }),
+            ]),
+        )
+    })
+
+    it('regular guidance articles without skill origin use Guidance:: prefix', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[]}
+                resourcesData={enrichedDataMock}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Select First'))
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    label: 'Guidance::Guidance Test',
+                    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                }),
+            ]),
+        )
+    })
+
+    it('renders KnowledgeTag with skill icon when iconType is "skill"', () => {
+        render(
+            <KnowledgeTag
+                choice={{
+                    meta: {
+                        url: '',
+                        title: 'My Skill',
+                        content: '',
+                        origin: 'skill',
+                    },
+                    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    iconType: 'skill' as KnowledgeSourceType,
+                    displayLabel: 'Skills::My Skill',
+                    label: 'Skills::My Skill',
+                    value: '10',
+                }}
+                handleRemove={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
+            />,
+        )
+
+        expect(screen.getByText('My Skill')).toBeInTheDocument()
+    })
+
+    it('renders initial skill value with correct Skills:: prefix lookup', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        getResourceMetadataMock.mockReturnValue({
+            title: 'My Skill',
+            content: '',
+            url: undefined,
+            helpCenterId: 2,
+            origin: 'skill',
+        })
+
+        const resourcesData = {
+            ...enrichedDataMock,
+            guidanceArticles: [
+                { id: 10, title: 'My Skill', helpCenterId: 2, origin: 'skill' },
+            ],
+        } as any
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={
+                    [
+                        {
+                            executionId: 'execution1',
+                            feedback: {} as any,
+                            parsedResource: {
+                                resourceId: '10',
+                                resourceType:
+                                    AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                            },
+                            metadata: {
+                                title: 'My Skill',
+                                content: '',
+                                origin: 'skill',
+                            },
+                        },
+                    ] as SuggestedResource[]
+                }
+                resourcesData={resourcesData}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        expect(screen.getByText('My Skill')).toBeInTheDocument()
+    })
+
+    it('excludes skills already present in knowledgeResources', () => {
+        const onSubmit = jest.fn()
+
+        const resourcesData = {
+            ...enrichedDataMock,
+            guidanceArticles: [
+                {
+                    id: 10,
+                    title: 'Existing Skill',
+                    helpCenterId: 2,
+                    origin: 'skill',
+                },
+                {
+                    id: 11,
+                    title: 'New Skill',
+                    helpCenterId: 2,
+                    origin: 'skill',
+                },
+            ],
+            actions: [],
+            articles: [],
+            sourceItems: [],
+            ingestedFiles: [],
+            storeWebsiteQuestions: [],
+        } as any
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[]}
+                resourcesData={resourcesData}
+                knowledgeResources={[
+                    createResource(
+                        '10',
+                        AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    ),
+                ]}
+                onSubmit={onSubmit}
+                onRemove={jest.fn()}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Select First'))
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    label: 'Skills::New Skill',
+                    value: '11',
+                }),
+            ]),
+        )
+        expect(onSubmit).not.toHaveBeenCalledWith(
+            expect.arrayContaining([expect.objectContaining({ value: '10' })]),
+        )
     })
 })

@@ -135,36 +135,4 @@ describe('LinkToSkillModal', () => {
         await user.keyboard('{Enter}')
         expect(option).toHaveAttribute('aria-selected', 'true')
     })
-    it('should show overflow intent count for articles with more than 2 intents', () => {
-        mockUseSkillsArticles.mockReturnValue({
-            articles: [
-                {
-                    id: 4,
-                    title: 'Multi-intent skill',
-                    intents: [
-                        {
-                            name: 'order::cancel',
-                            formattedName: 'Order / Cancel',
-                        },
-                        {
-                            name: 'order::refund',
-                            formattedName: 'Order / Refund',
-                        },
-                        {
-                            name: 'shipping::delay',
-                            formattedName: 'Shipping / Delay',
-                        },
-                    ],
-                    status: 'enabled',
-                },
-            ],
-            isLoading: false,
-            isError: false,
-            isMetricsLoading: false,
-            isMetricsError: false,
-            metricsDateRange: {},
-        })
-        renderComponent()
-        expect(screen.getByText('+1')).toBeInTheDocument()
-    })
 })

@@ -92,43 +92,44 @@ export const SkillsTemplateCard: React.FC<Props> = ({
             gap="sm"
             color="content-neutral-default"
         >
-            <Box
-                display="flex"
-                flexDirection="column"
-                gap={hasStats ? 'xs' : 'sm'}
-            >
+            <Box display="flex" flexDirection="column" gap="xs">
                 <TruncatedTextWithTooltip tooltipContent={skillTemplate.name}>
                     <Text variant="bold" size="md">
                         {skillTemplate.name}
                     </Text>
                 </TruncatedTextWithTooltip>
-                <Box className={css.tagsContainer}>
-                    {displayedIntents.map((intent) => (
-                        <Tag key={intent.name} size="sm">
-                            {formatIntentName(intent.name)}
-                        </Tag>
-                    ))}
-                    {remainingCount > 0 && (
-                        <Box className={css.tooltipWrapper}>
-                            <Tooltip
-                                trigger={
-                                    <div className={css.remainingCount}>
-                                        <Text variant="bold" size="sm">
-                                            +{remainingCount}
-                                        </Text>
-                                    </div>
-                                }
-                            >
-                                <TooltipContent>
-                                    {hiddenIntents.map((intent) => (
-                                        <Text key={intent.name} size="sm">
-                                            {formatIntentName(intent.name)}
-                                        </Text>
-                                    ))}
-                                </TooltipContent>
-                            </Tooltip>
-                        </Box>
-                    )}
+                <Box flexDirection="column" gap="xxxs">
+                    <Text size="xs" color="content-neutral-secondary">
+                        Intents
+                    </Text>
+                    <Box className={css.tagsContainer}>
+                        {displayedIntents.map((intent) => (
+                            <Tag key={intent.name} size="sm">
+                                {formatIntentName(intent.name)}
+                            </Tag>
+                        ))}
+                        {remainingCount > 0 && (
+                            <Box className={css.tooltipWrapper}>
+                                <Tooltip
+                                    trigger={
+                                        <div className={css.remainingCount}>
+                                            <Text variant="bold" size="sm">
+                                                +{remainingCount}
+                                            </Text>
+                                        </div>
+                                    }
+                                >
+                                    <TooltipContent>
+                                        {hiddenIntents.map((intent) => (
+                                            <Text key={intent.name} size="sm">
+                                                {formatIntentName(intent.name)}
+                                            </Text>
+                                        ))}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </Box>
+                        )}
+                    </Box>
                 </Box>
             </Box>
             {!!hasStats && (

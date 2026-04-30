@@ -49,6 +49,7 @@ export const SIMPLIFIED_RESOURCE_LABELS: Record<string, string> = {
     soft_action: 'Actions::Soft action::',
     action: 'Actions::',
     hard_action: 'Actions::Hard action::',
+    skill: 'Skills::',
     guidance: 'Guidance::',
     article: 'Help Center articles::',
     external_snippet: 'Public URLs::',
@@ -59,14 +60,13 @@ export const SIMPLIFIED_RESOURCE_LABELS: Record<string, string> = {
 
 export const KNOWLEDGE_SOURCE_TYPE: Record<
     string,
-    { icon: IconName; newIcon?: IconName; label: string; size?: IconSize }
+    { icon: IconName; label: string; size?: IconSize }
 > = {
     action: { icon: 'webhook', label: 'Action' },
-    skill: { icon: 'article', label: 'Skill' },
+    skill: { icon: 'ai-skill', label: 'Skill' },
     guidance: { icon: 'nav-map', label: 'Guidance' },
     article: {
         icon: 'file-document',
-        newIcon: 'bookmark',
         label: 'Help Center article',
     },
     website: {

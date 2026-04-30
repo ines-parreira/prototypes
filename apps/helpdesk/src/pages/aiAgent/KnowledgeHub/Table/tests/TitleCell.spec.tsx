@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -6,15 +5,6 @@ import userEvent from '@testing-library/user-event'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import { TitleCell } from '../TitleCell'
-
-jest.mock('@repo/feature-flags', () => ({
-    useFlag: jest.fn(),
-    FeatureFlagKey: {
-        KnowledgeIntentManagementSystem: 'knowledge-intent-management-system',
-    },
-}))
-
-const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
     useGuidanceArticle: jest.fn(() => ({
@@ -47,7 +37,6 @@ describe('TitleCell', () => {
 
     beforeEach(() => {
         mockOnClick.mockClear()
-        mockUseFlag.mockReturnValue(false)
     })
 
     it('renders title with correct text', () => {
@@ -345,52 +334,6 @@ describe('TitleCell', () => {
 
         const tagElement = container.querySelector('[color="grey"]')
         expect(tagElement).toBeInTheDocument()
-    })
-
-    describe('feature flag KnowledgeIntentManagementSystem', () => {
-        const faqRow = {
-            ...mockRow,
-            original: {
-                ...mockRow.original,
-                type: KnowledgeType.FAQ,
-                source: 'help.example.com',
-                draftVersionId: 100,
-                publishedVersionId: 100,
-            },
-        } as any
-
-        it('renders old icon for FAQ title when flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-            render(
-                <TitleCell row={faqRow} searchTerm="" availableActions={[]} />,
-            )
-
-            expect(
-                screen.getAllByRole('img', { name: 'file-document' }),
-            ).toHaveLength(2)
-        })
-
-        it('renders new icon for FAQ title when flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
-            render(
-                <TitleCell row={faqRow} searchTerm="" availableActions={[]} />,
-            )
-
-            expect(
-                screen.getAllByRole('img', { name: 'bookmark' }),
-            ).toHaveLength(2)
-        })
-
-        it('renders same icon for non-FAQ types regardless of flag', () => {
-            mockUseFlag.mockReturnValue(true)
-            render(
-                <TitleCell row={mockRow} searchTerm="" availableActions={[]} />,
-            )
-
-            expect(
-                screen.queryByRole('img', { name: 'bookmark' }),
-            ).not.toBeInTheDocument()
-        })
     })
 
     it('renders GuidanceActionsBadge for guidance items with article', () => {

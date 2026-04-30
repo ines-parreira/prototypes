@@ -182,11 +182,7 @@ const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
                                 >
                                     {isLoading ? (
                                         <div className={css.iconSkeleton}>
-                                            <Skeleton
-                                                width={20}
-                                                height={20}
-                                                circle
-                                            />
+                                            <Skeleton width={20} height={20} />
                                         </div>
                                     ) : (
                                         icon

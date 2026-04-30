@@ -3,6 +3,7 @@ import React from 'react'
 
 import cn from 'classnames'
 
+import type { IconSize } from '@gorgias/axiom'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import KnowledgeSourceIcon from './KnowledgeSourceIcon'
@@ -27,6 +28,7 @@ type KnowledgeSourceRendererProps = {
     onClick?: () => void
     className?: string
     iconClassName?: string
+    iconSize?: IconSize
     children?: ReactNode
     renderCustomContent?: (props: {
         icon: ReactNode
@@ -52,6 +54,7 @@ const KnowledgeSourceRenderer = ({
     onClick,
     className,
     iconClassName,
+    iconSize,
     children,
     renderCustomContent,
     forceShowBody = false,
@@ -75,6 +78,7 @@ const KnowledgeSourceRenderer = ({
         <KnowledgeSourceIcon
             type={mapToKnowledgeSourceType(resourceType, origin)}
             badgeIconClassname={iconClassName}
+            iconSize={iconSize}
         />
     )
 

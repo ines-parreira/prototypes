@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
 import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
@@ -37,9 +36,6 @@ export const EmptyStates = ({
     sectionsGap?: SizeValue
     isSyncDisabled?: boolean
 }) => {
-    const isKnowledgeIntentManagementSystemEnabled = useFlag(
-        FeatureFlagKey.KnowledgeIntentManagementSystem,
-    )
     return (
         <Box flexDirection="column" gap={sectionsGap} width="100%">
             {/* Top row*/}
@@ -101,13 +97,7 @@ export const EmptyStates = ({
                                 <Box flexDirection={'row'} gap="xxxs">
                                     <Icon
                                         name={
-                                            isKnowledgeIntentManagementSystemEnabled &&
-                                            typeConfig[KnowledgeType.FAQ]
-                                                .newIcon
-                                                ? typeConfig[KnowledgeType.FAQ]
-                                                      .newIcon
-                                                : typeConfig[KnowledgeType.FAQ]
-                                                      .icon
+                                            typeConfig[KnowledgeType.FAQ].icon
                                         }
                                     />
                                     {typeConfig[KnowledgeType.FAQ].label}

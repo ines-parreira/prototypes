@@ -17,6 +17,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useIsFeedbackMutating } from 'models/knowledgeService/queries'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
+import type { KnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import {
     SIMPLIFIED_RESOURCE_LABELS,
     SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP,
@@ -70,10 +71,12 @@ export type ChoiceOption = {
         title?: string
         content?: string
         helpCenterId?: string
+        origin?: string | null
     }
     label: string
     value: string
     type: AiAgentKnowledgeResourceTypeEnum
+    iconType?: KnowledgeSourceType
     isDeleted?: boolean
     hide?: boolean
 }
@@ -117,9 +120,40 @@ const MissingKnowledgeSelect = ({
 
         return [
             // Order is important here, as it determines the order of the options in the select dropdown
+            // SKILLS
+            ...(resourcesData?.guidanceArticles || [])
+                .filter((guidance) => {
+                    if (guidance.origin !== 'skill') return false
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            resource.resource.resourceId ===
+                                guidance.id.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    )
+                })
+                .map((guidance) => ({
+                    meta: getResourceMetadata(
+                        {
+                            id: guidance.id.toString(),
+                            type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                        },
+                        shopName,
+                        resourcesData,
+                    ),
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.skill}${guidance.title}`,
+                    value: guidance.id.toString(),
+                    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    iconType: 'skill' as KnowledgeSourceType,
+                    hide:
+                        guidance.helpCenterId !== guidanceHelpCenterId ||
+                        guidance.visibility === 'UNLISTED',
+                })),
+
             // GUIDANCES
             ...(resourcesData?.guidanceArticles || [])
                 .filter((guidance) => {
+                    if (guidance.origin === 'skill') return false
                     return !knowledgeResources?.find(
                         (resource) =>
                             resource.resource.resourceId ===
@@ -497,11 +531,16 @@ const MissingKnowledgeSelect = ({
             {initialValues.length > 0 && (
                 <div className={css.tags}>
                     {initialValues.map((value) => {
-                        const labelKey =
-                            RESOURCE_TYPE_TO_LABEL_KEY[
-                                value.parsedResource
-                                    .resourceType as AiAgentKnowledgeResourceTypeEnum
-                            ]
+                        const isSkill =
+                            value.parsedResource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE &&
+                            value.metadata.origin === 'skill'
+                        const labelKey = isSkill
+                            ? 'skill'
+                            : RESOURCE_TYPE_TO_LABEL_KEY[
+                                  value.parsedResource
+                                      .resourceType as AiAgentKnowledgeResourceTypeEnum
+                              ]
                         const prefix = labelKey
                             ? (SIMPLIFIED_RESOURCE_LABELS[labelKey] ?? '')
                             : ''
@@ -514,6 +553,7 @@ const MissingKnowledgeSelect = ({
                                 label: value.metadata.title,
                                 value: value.parsedResource.resourceId,
                                 type: value.parsedResource.resourceType,
+                                iconType: isSkill ? 'skill' : undefined,
                             }
                         }
 
@@ -570,6 +610,7 @@ export const KnowledgeTag = ({
         title: meta?.title || '',
         content: meta?.content || '',
         knowledgeResourceType: type,
+        origin: meta?.origin,
         helpCenterId: meta?.helpCenterId || '',
         shopName,
         shopType,
@@ -606,12 +647,16 @@ export const KnowledgeTag = ({
                         })}
                         onClick={onClick}
                     >
-                        {!!SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
-                            choice.type
-                        ] && (
+                        {!!(
+                            choice.iconType ??
+                            SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
+                                choice.type
+                            ]
+                        ) && (
                             <KnowledgeSourceIcon
                                 badgeIconClassname={css.badge}
                                 type={
+                                    choice.iconType ??
                                     SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP[
                                         choice.type
                                     ]

@@ -205,7 +205,7 @@ export const getColumns = ({
                     intentCustomFieldId={intentCustomFieldId}
                     displayValue={displayValue}
                     title="Tickets"
-                    showProgressBar={true}
+                    showProgressBar={statsDisplayMode === 'percentage'}
                 />
             )
         },
@@ -268,7 +268,7 @@ export const getColumns = ({
                     intentCustomFieldId={intentCustomFieldId}
                     displayValue={displayValue}
                     title="Handover tickets"
-                    showProgressBar={true}
+                    showProgressBar={statsDisplayMode === 'percentage'}
                 />
             )
         },

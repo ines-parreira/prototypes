@@ -187,7 +187,7 @@ export const getColumns = ({
                         intentCustomFieldId={intentCustomFieldId}
                         integrationIds={integrationIds}
                         dateRange={metricsDateRange}
-                        showProgressBar={true}
+                        showProgressBar={statsDisplayMode === 'percentage'}
                     />
                 )
             },
@@ -240,7 +240,7 @@ export const getColumns = ({
                         integrationIds={integrationIds}
                         dateRange={metricsDateRange}
                         outcomeValue={CUSTOM_FIELD_AI_AGENT_HANDOVER}
-                        showProgressBar={true}
+                        showProgressBar={statsDisplayMode === 'percentage'}
                     />
                 )
             },

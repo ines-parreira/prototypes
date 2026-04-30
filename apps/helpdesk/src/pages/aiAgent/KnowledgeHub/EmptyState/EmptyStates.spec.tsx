@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -23,13 +22,6 @@ import { openSyncUrlModal } from './SyncUrlModal'
 import { useFaqHelpCenter } from './useFaqHelpCenter'
 import { dispatchDocumentEvent, openSyncStoreWebsiteModal } from './utils'
 
-jest.mock('@repo/feature-flags', () => ({
-    useFlag: jest.fn(),
-    FeatureFlagKey: {
-        KnowledgeIntentManagementSystem: 'knowledge-intent-management-system',
-    },
-}))
-
 jest.mock('./useFaqHelpCenter')
 jest.mock('./utils', () => ({
     dispatchDocumentEvent: jest.fn(),
@@ -39,8 +31,6 @@ jest.mock('./utils', () => ({
 jest.mock('./SyncUrlModal', () => ({
     openSyncUrlModal: jest.fn(),
 }))
-
-const mockUseFlag = useFlag as jest.Mock
 
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
     typeof useFaqHelpCenter
@@ -72,7 +62,6 @@ const defaultMockValues = {
 beforeEach(() => {
     jest.clearAllMocks()
     mockUseFaqHelpCenter.mockReturnValue(defaultMockValues)
-    mockUseFlag.mockReturnValue(false)
 })
 
 describe('EmptyStates', () => {
@@ -115,26 +104,6 @@ describe('EmptyStates', () => {
                     'Let AI Agent use published Help Center articles as knowledge.',
                 ),
             ).toBeInTheDocument()
-        })
-
-        describe('feature flag KnowledgeIntentManagementSystem', () => {
-            it('renders old icon for FAQ card when flag is disabled', () => {
-                mockUseFlag.mockReturnValue(false)
-                render(<EmptyStates helpCenterId={null} />)
-
-                expect(
-                    screen.getByRole('img', { name: 'file-document' }),
-                ).toBeInTheDocument()
-            })
-
-            it('renders new icon for FAQ card when flag is enabled', () => {
-                mockUseFlag.mockReturnValue(true)
-                render(<EmptyStates helpCenterId={null} />)
-
-                expect(
-                    screen.getByRole('img', { name: 'bookmark' }),
-                ).toBeInTheDocument()
-            })
         })
 
         it('displays Website card when hasWebsiteSync is false', () => {
