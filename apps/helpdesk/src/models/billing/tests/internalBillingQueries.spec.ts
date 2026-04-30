@@ -169,6 +169,25 @@ describe('internal billing queries', () => {
             })
         })
 
+        it('should forward subscription_renewal_ramp_resource_version to the resource function', async () => {
+            const payloadWithRamp = {
+                current_resource_version: 123456789,
+                subscription_renewal_ramp_resource_version: 987654321,
+                new_plans: {
+                    [ProductType.Helpdesk]:
+                        'advanced-monthly-usd-5-1' as string,
+                },
+            }
+            mockUpdateInternalSubscription.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(() => useUpdateInternalSubscription())
+            await result.current.mutateAsync(payloadWithRamp)
+
+            expect(mockUpdateInternalSubscription).toHaveBeenCalledWith(
+                payloadWithRamp,
+            )
+        })
+
         it('should not invalidate queries when error occurs', async () => {
             const mockError = new Error('API error')
             mockUpdateInternalSubscription.mockRejectedValue(mockError)

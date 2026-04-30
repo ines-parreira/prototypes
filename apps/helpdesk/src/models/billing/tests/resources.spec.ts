@@ -229,6 +229,28 @@ describe('billing resources', () => {
             )
         })
 
+        it('should include subscription_renewal_ramp_resource_version in the request body when provided', async () => {
+            const payload = {
+                current_resource_version: 123456789,
+                subscription_renewal_ramp_resource_version: 987654321,
+                new_plans: { helpdesk: 'advanced-monthly-usd-5-1' as const },
+            }
+            const mockResponse = {
+                products: { helpdesk: 'advanced-monthly-usd-5-1' },
+            }
+
+            mockedServer
+                .onPut('/api/billing/internal/subscription')
+                .reply(202, mockResponse)
+
+            const result = await updateInternalSubscription(payload)
+
+            expect(result).toEqual(mockResponse)
+            expect(JSON.parse(mockedServer.history.put[0].data)).toEqual(
+                payload,
+            )
+        })
+
         it('should preserve error payload from backend', async () => {
             const payload = {
                 current_resource_version: 123456789,

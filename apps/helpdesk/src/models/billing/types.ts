@@ -219,6 +219,7 @@ export type InternalProductCatalogResponse = {
 
 export type InternalSubscriptionUpdatePayload = {
     current_resource_version: number
+    subscription_renewal_ramp_resource_version?: number
     invoice?: { generate: boolean }
     new_plans?: Partial<Record<ProductType, PlanId>>
     new_coupons?: string[]

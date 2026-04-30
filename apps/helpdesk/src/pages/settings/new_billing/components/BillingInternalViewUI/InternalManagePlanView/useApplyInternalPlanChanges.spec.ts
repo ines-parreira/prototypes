@@ -231,4 +231,42 @@ describe('useApplyInternalPlanChanges', () => {
 
         expect(mockMutateAsync).not.toHaveBeenCalled()
     })
+
+    it('sends subscription_renewal_ramp_resource_version when billing state has schedule_resource_version', async () => {
+        const billingStateWithSchedule = {
+            ...payingWithCreditCard,
+            subscription: {
+                ...payingWithCreditCard.subscription,
+                schedule_resource_version: 999888777,
+            },
+        }
+
+        const { result } = renderHook(() =>
+            useApplyInternalPlanChanges(
+                billingStateWithSchedule,
+                resolvedPlans,
+            ),
+        )
+
+        await act(() => result.current.apply(true))
+
+        expect(mockMutateAsync).toHaveBeenCalledWith(
+            expect.objectContaining({
+                subscription_renewal_ramp_resource_version: 999888777,
+            }),
+        )
+    })
+
+    it('sends subscription_renewal_ramp_resource_version as undefined when schedule_resource_version is absent', async () => {
+        const { result } = renderHook(() =>
+            useApplyInternalPlanChanges(payingWithCreditCard, resolvedPlans),
+        )
+
+        await act(() => result.current.apply(true))
+
+        const payload = mockMutateAsync.mock.calls[0][0]
+        expect(
+            payload.subscription_renewal_ramp_resource_version,
+        ).toBeUndefined()
+    })
 })

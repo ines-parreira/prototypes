@@ -69,6 +69,8 @@ export function useApplyInternalPlanChanges(
             await mutateAsync({
                 current_resource_version:
                     billingState.subscription.resource_version,
+                subscription_renewal_ramp_resource_version:
+                    billingState.subscription.schedule_resource_version,
                 new_plans: buildNewPlans(resolvedPlans),
                 invoice: { generate: generateInvoice },
             })
