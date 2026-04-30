@@ -3,9 +3,10 @@ import {
     useCustomAgentUnavailableStatusesFlag,
 } from '@repo/agent-status'
 
-import { Button } from '@gorgias/axiom'
+import { Avatar, AvatarStatusIndicator, Button } from '@gorgias/axiom'
 
-import LegacyAvatar from 'pages/common/components/Avatar/Avatar'
+import useAppSelector from 'hooks/useAppSelector'
+import { isAvailable as getIsAvailable } from 'state/currentUser/selectors'
 
 interface UserMenuTriggerProps {
     userId: number
@@ -19,6 +20,7 @@ export function UserMenuTrigger({
     profilePictureUrl,
 }: UserMenuTriggerProps) {
     const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
+    const isAvailable = useAppSelector(getIsAvailable)
 
     return (
         <Button
@@ -32,11 +34,14 @@ export function UserMenuTrigger({
                         url={profilePictureUrl || undefined}
                     />
                 ) : (
-                    <LegacyAvatar
+                    <Avatar
                         name={userName}
-                        url={profilePictureUrl}
-                        shape="round"
-                        size={24}
+                        status={
+                            <AvatarStatusIndicator
+                                color={isAvailable ? 'green' : 'orange'}
+                            />
+                        }
+                        url={profilePictureUrl || undefined}
                     />
                 )
             }

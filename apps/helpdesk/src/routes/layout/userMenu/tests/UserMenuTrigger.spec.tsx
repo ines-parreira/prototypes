@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
+import useAppSelector from 'hooks/useAppSelector'
+
 import { UserMenuTrigger } from '../UserMenuTrigger'
 
 jest.mock('@repo/agent-status', () => ({
@@ -11,27 +13,33 @@ jest.mock('@repo/agent-status', () => ({
     )),
 }))
 
-jest.mock('pages/common/components/Avatar/Avatar', () => ({
-    __esModule: true,
-    default: jest.fn(({ name, url, shape, size }) => (
-        <div data-testid="legacy-avatar">
-            LegacyAvatar:{name}:{String(url)}:{shape}:{size}
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    Avatar: jest.fn(({ name, url, status }) => (
+        <div data-testid="axiom-avatar">
+            Avatar:{name}:{String(url)}:{status}
         </div>
     )),
+    AvatarStatusIndicator: jest.fn(({ color }) => (
+        <div data-testid="avatar-status-indicator">status:{color}</div>
+    )),
+    Button: jest.fn(({ icon, ...props }) => <button {...props}>{icon}</button>),
 }))
+
+jest.mock('hooks/useAppSelector')
 
 const { useCustomAgentUnavailableStatusesFlag, AgentAvatar } =
     jest.requireMock('@repo/agent-status')
-const LegacyAvatar = jest.requireMock(
-    'pages/common/components/Avatar/Avatar',
-).default
+const { Avatar, AvatarStatusIndicator } = jest.requireMock('@gorgias/axiom')
 
 const useCustomAgentUnavailableStatusesFlagMock =
     useCustomAgentUnavailableStatusesFlag as jest.Mock
+const useAppSelectorMock = useAppSelector as jest.Mock
 
 describe('UserMenuTrigger', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useAppSelectorMock.mockReturnValue(true)
     })
 
     it('renders the AgentAvatar when the agent unavailability flag is enabled', () => {
@@ -46,7 +54,7 @@ describe('UserMenuTrigger', () => {
         )
 
         expect(screen.getByTestId('agent-avatar')).toBeInTheDocument()
-        expect(screen.queryByTestId('legacy-avatar')).not.toBeInTheDocument()
+        expect(screen.queryByTestId('axiom-avatar')).not.toBeInTheDocument()
         expect(AgentAvatar).toHaveBeenCalledWith(
             expect.objectContaining({
                 userId: 42,
@@ -78,7 +86,7 @@ describe('UserMenuTrigger', () => {
         )
     })
 
-    it('renders the LegacyAvatar when the agent unavailability flag is disabled', () => {
+    it('renders the axiom Avatar when the agent unavailability flag is disabled', () => {
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
 
         render(
@@ -89,15 +97,49 @@ describe('UserMenuTrigger', () => {
             />,
         )
 
-        expect(screen.getByTestId('legacy-avatar')).toBeInTheDocument()
+        expect(screen.getByTestId('axiom-avatar')).toBeInTheDocument()
         expect(screen.queryByTestId('agent-avatar')).not.toBeInTheDocument()
-        expect(LegacyAvatar).toHaveBeenCalledWith(
+        expect(Avatar).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: 'Legacy User',
                 url: 'https://example.com/legacy.jpg',
-                shape: 'round',
-                size: 24,
             }),
+            expect.anything(),
+        )
+    })
+
+    it('shows a green status indicator when the agent is available', () => {
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
+        useAppSelectorMock.mockReturnValue(true)
+
+        render(
+            <UserMenuTrigger
+                userId={1}
+                userName="User"
+                profilePictureUrl={null}
+            />,
+        )
+
+        expect(AvatarStatusIndicator).toHaveBeenCalledWith(
+            expect.objectContaining({ color: 'green' }),
+            expect.anything(),
+        )
+    })
+
+    it('shows an orange status indicator when the agent is unavailable', () => {
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
+        useAppSelectorMock.mockReturnValue(false)
+
+        render(
+            <UserMenuTrigger
+                userId={1}
+                userName="User"
+                profilePictureUrl={null}
+            />,
+        )
+
+        expect(AvatarStatusIndicator).toHaveBeenCalledWith(
+            expect.objectContaining({ color: 'orange' }),
             expect.anything(),
         )
     })
