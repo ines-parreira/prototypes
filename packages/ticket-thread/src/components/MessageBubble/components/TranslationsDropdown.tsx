@@ -4,12 +4,14 @@ import {
     DisplayedContent,
     FetchingState,
     useRegenerateTicketMessageTranslations,
+    useTranslateTicketModal,
 } from '@repo/tickets'
 
 import {
     Box,
     Button,
     DropdownIcon,
+    Icon,
     IconName,
     Loader,
     Menu,
@@ -45,6 +47,7 @@ export function TranslationsDropdown({
         messageId,
         ticketId,
     })
+    const { openTranslateTicketModal } = useTranslateTicketModal()
     const [isTranslationsMenuOpen, setIsTranslationMenuOpen] = useState(false)
 
     if (!shouldRender) {
@@ -132,6 +135,12 @@ export function TranslationsDropdown({
                             onAction={() =>
                                 regenerateTicketMessageTranslations(messageId)
                             }
+                        />
+                        <MenuItem
+                            id="change-source-language"
+                            label="Change source language"
+                            leadingSlot={<Icon name="translate" />}
+                            onAction={openTranslateTicketModal}
                         />
                     </MenuSection>
                 </Menu>

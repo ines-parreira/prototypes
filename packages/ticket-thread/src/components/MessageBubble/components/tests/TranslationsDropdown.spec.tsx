@@ -7,13 +7,16 @@ import {
     useTicketMessageTranslationDisplay,
     useTicketMessageTranslations,
 } from '@repo/tickets'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
 import { mockGetTicketHandler, mockTicket } from '@gorgias/helpdesk-mocks'
 
 import * as ExpandedMessagesModule from '../../../../contexts/ExpandedMessages'
-import { render } from '../../../../tests/render.utils'
+import {
+    mockTranslateTicketModalContextValue,
+    render,
+} from '../../../../tests/render.utils'
 import { server } from '../../../../tests/server'
 import { TranslationsDropdown } from '../TranslationsDropdown'
 
@@ -55,6 +58,15 @@ function renderComponent() {
     )
 }
 
+async function clickElement(
+    user: ReturnType<typeof renderComponent>['user'],
+    element: HTMLElement,
+) {
+    await act(async () => {
+        await user.click(element)
+    })
+}
+
 beforeEach(() => {
     regenerateTicketMessageTranslations.mockReset()
     server.use(
@@ -70,6 +82,7 @@ beforeEach(() => {
 
     mockUseCurrentUserLanguagePreferences.mockReturnValue({
         isFetching: false,
+        isEnabled: false,
         primary: undefined,
         proficient: undefined,
         shouldShowTranslatedContent: vi.fn(() => true),
@@ -147,7 +160,8 @@ describe('TranslationsDropdown', () => {
         it('should switch to translated when "See translation" is clicked', async () => {
             const { user } = renderComponent()
 
-            await user.click(
+            await clickElement(
+                user,
                 await screen.findByRole('button', { name: /see translation/i }),
             )
 
@@ -186,7 +200,7 @@ describe('TranslationsDropdown', () => {
         it('should show dropdown menu options when opened', async () => {
             const { user } = renderComponent()
 
-            await user.click(await findTranslatedFromSpanishButton())
+            await clickElement(user, await findTranslatedFromSpanishButton())
 
             expect(
                 await screen.findByRole('menuitem', { name: /show original/i }),
@@ -196,13 +210,19 @@ describe('TranslationsDropdown', () => {
                     name: /regenerate translation/i,
                 }),
             ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', {
+                    name: /change source language/i,
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should switch to original when "Show original" is clicked', async () => {
             const { user } = renderComponent()
 
-            await user.click(await findTranslatedFromSpanishButton())
-            await user.click(
+            await clickElement(user, await findTranslatedFromSpanishButton())
+            await clickElement(
+                user,
                 await screen.findByRole('menuitem', { name: /show original/i }),
             )
 
@@ -215,6 +235,27 @@ describe('TranslationsDropdown', () => {
                     messageId,
                 },
             )
+        })
+
+        it('should open the translate ticket modal when "Change source language" is clicked', async () => {
+            const { user } = renderComponent()
+
+            await clickElement(
+                user,
+                await screen.findByRole('button', {
+                    name: /translated from spanish/i,
+                }),
+            )
+            await clickElement(
+                user,
+                screen.getByRole('menuitem', {
+                    name: /change source language/i,
+                }),
+            )
+
+            expect(
+                mockTranslateTicketModalContextValue.openTranslateTicketModal,
+            ).toHaveBeenCalledTimes(1)
         })
     })
 
@@ -277,8 +318,9 @@ describe('TranslationsDropdown', () => {
         it('should call regenerate with correct messageId and close dropdown', async () => {
             const { user } = renderComponent()
 
-            await user.click(await findTranslatedButton())
-            await user.click(
+            await clickElement(user, await findTranslatedButton())
+            await clickElement(
+                user,
                 await screen.findByRole('menuitem', {
                     name: /regenerate translation/i,
                 }),
@@ -303,7 +345,7 @@ describe('TranslationsDropdown', () => {
 
             const { user } = renderComponent()
 
-            await user.click(await findTranslatedButton())
+            await clickElement(user, await findTranslatedButton())
 
             expect(
                 await screen.findByRole('menuitem', {
@@ -367,7 +409,8 @@ describe('TranslationsDropdown', () => {
 
             const { user } = renderComponent()
 
-            await user.click(
+            await clickElement(
+                user,
                 await screen.findByRole('button', { name: /translated/i }),
             )
 
@@ -386,6 +429,7 @@ describe('TranslationsDropdown', () => {
         it('does not render when translated content should not be shown', () => {
             mockUseCurrentUserLanguagePreferences.mockReturnValue({
                 isFetching: false,
+                isEnabled: false,
                 primary: undefined,
                 proficient: undefined,
                 shouldShowTranslatedContent: vi.fn(() => false),

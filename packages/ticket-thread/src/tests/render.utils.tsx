@@ -4,6 +4,7 @@ import {
     renderHook as renderHookPrimitive,
     render as renderPrimitive,
 } from '@repo/testing/vitest'
+import { TranslateTicketModalContext } from '@repo/tickets'
 import type {
     RenderHookOptions as RenderHookOptionsPrimitive,
     RenderOptions as RenderOptionsPrimitive,
@@ -68,6 +69,10 @@ const defaultOptions = {
     },
 }
 
+export const mockTranslateTicketModalContextValue = {
+    openTranslateTicketModal: vi.fn(),
+}
+
 export const render = (element: ReactElement, options?: RenderOptions) => {
     const mergedOptions = {
         ...defaultOptions,
@@ -112,15 +117,21 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         initialEntries,
         path,
         wrapper: ({ children }: { children: ReactNode }) => (
-            <TicketThreadLegacyBridgeProvider {...legacyBridgeProps}>
-                <ExpandedMessagesProvider>
-                    {ExtraWrapper ? (
-                        <ExtraWrapper>{children as ReactElement}</ExtraWrapper>
-                    ) : (
-                        children
-                    )}
-                </ExpandedMessagesProvider>
-            </TicketThreadLegacyBridgeProvider>
+            <TranslateTicketModalContext.Provider
+                value={mockTranslateTicketModalContextValue}
+            >
+                <TicketThreadLegacyBridgeProvider {...legacyBridgeProps}>
+                    <ExpandedMessagesProvider>
+                        {ExtraWrapper ? (
+                            <ExtraWrapper>
+                                {children as ReactElement}
+                            </ExtraWrapper>
+                        ) : (
+                            children
+                        )}
+                    </ExpandedMessagesProvider>
+                </TicketThreadLegacyBridgeProvider>
+            </TranslateTicketModalContext.Provider>
         ),
     })
 
@@ -178,15 +189,21 @@ export const renderHook = <TProps, TResult>(
         initialEntries,
         path,
         wrapper: ({ children }: { children: ReactNode }) => (
-            <TicketThreadLegacyBridgeProvider {...legacyBridgeProps}>
-                <ExpandedMessagesProvider>
-                    {ExtraWrapper ? (
-                        <ExtraWrapper>{children as ReactElement}</ExtraWrapper>
-                    ) : (
-                        children
-                    )}
-                </ExpandedMessagesProvider>
-            </TicketThreadLegacyBridgeProvider>
+            <TranslateTicketModalContext.Provider
+                value={mockTranslateTicketModalContextValue}
+            >
+                <TicketThreadLegacyBridgeProvider {...legacyBridgeProps}>
+                    <ExpandedMessagesProvider>
+                        {ExtraWrapper ? (
+                            <ExtraWrapper>
+                                {children as ReactElement}
+                            </ExtraWrapper>
+                        ) : (
+                            children
+                        )}
+                    </ExpandedMessagesProvider>
+                </TicketThreadLegacyBridgeProvider>
+            </TranslateTicketModalContext.Provider>
         ),
     })
     return result

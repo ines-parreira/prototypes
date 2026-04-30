@@ -766,6 +766,7 @@ describe('polling pause behaviour', () => {
             'useCurrentUserLanguagePreferences',
         ).mockReturnValue({
             isFetching: false,
+            isEnabled: false,
             primary: undefined,
             proficient: undefined,
             shouldShowTranslatedContent: () => false,

@@ -1,30 +1,10 @@
 import { renderHook } from '@repo/testing'
+import { TranslationSupportedLanguagesInEnglish } from '@repo/utils'
 import { act } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
 import { useLanguageDropdown } from '../useLanguageDropdown'
-
-jest.mock('constants/languages', () => ({
-    TranslationSupportedLanguagesInEnglish: [
-        {
-            code: 'en',
-            name: 'English',
-        },
-        {
-            code: 'fr',
-            name: 'French',
-        },
-        {
-            code: 'de',
-            name: 'German',
-        },
-        {
-            code: 'es',
-            name: 'Spanish',
-        },
-    ],
-}))
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -49,7 +29,9 @@ describe('useLanguageDropdown', () => {
 
         expect(result.current.isOpen).toBe(false)
         expect(result.current.searchTerm).toBe('')
-        expect(result.current.filteredLanguages).toHaveLength(4)
+        expect(result.current.filteredLanguages).toHaveLength(
+            TranslationSupportedLanguagesInEnglish.length,
+        )
         expect(result.current.detectedLanguage).toBeUndefined()
         expect(result.current.openDropdown).toBeDefined()
         expect(result.current.closeDropdown).toBeDefined()
@@ -82,9 +64,14 @@ describe('useLanguageDropdown', () => {
             result.current.setSearchTerm('fr')
         })
 
-        expect(result.current.filteredLanguages).toEqual([
-            { code: 'fr', name: 'French' },
-        ])
+        expect(result.current.filteredLanguages).toEqual(
+            expect.arrayContaining([{ code: 'fr', name: 'French' }]),
+        )
+        expect(
+            result.current.filteredLanguages.every(({ name }) =>
+                name.toLowerCase().includes('fr'),
+            ),
+        ).toBe(true)
     })
 
     it('resets search term when closing dropdown', () => {
@@ -114,7 +101,9 @@ describe('useLanguageDropdown', () => {
             code: 'fr',
             name: 'French',
         })
-        expect(result.current.filteredLanguages).toHaveLength(3)
+        expect(result.current.filteredLanguages).toHaveLength(
+            TranslationSupportedLanguagesInEnglish.length - 1,
+        )
         expect(
             result.current.filteredLanguages.find(
                 (lang: { code: string; name: string }) => lang.code === 'fr',
@@ -127,7 +116,9 @@ describe('useLanguageDropdown', () => {
         const { result } = renderHook(() => useLanguageDropdown())
 
         expect(result.current.detectedLanguage).toBeUndefined()
-        expect(result.current.filteredLanguages).toHaveLength(4)
+        expect(result.current.filteredLanguages).toHaveLength(
+            TranslationSupportedLanguagesInEnglish.length,
+        )
     })
 
     it('filters languages excluding detected language', () => {
@@ -143,9 +134,9 @@ describe('useLanguageDropdown', () => {
             result.current.setSearchTerm('fr')
         })
 
-        expect(result.current.filteredLanguages).toEqual([
-            { code: 'fr', name: 'French' },
-        ])
+        expect(result.current.filteredLanguages).toEqual(
+            expect.arrayContaining([{ code: 'fr', name: 'French' }]),
+        )
         expect(
             result.current.filteredLanguages.find(
                 (lang: { code: string; name: string }) => lang.code === 'en',

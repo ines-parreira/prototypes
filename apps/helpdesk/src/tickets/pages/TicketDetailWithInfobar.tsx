@@ -5,7 +5,7 @@ import {
     SOURCE_PANEL_WIDGET_TYPES,
     useTicketInfobarNavigation,
 } from '@repo/navigation'
-import { TicketHeader } from '@repo/tickets'
+import { TicketHeader, TranslateTicketModalProvider } from '@repo/tickets'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { useLocation, useParams } from 'react-router-dom'
 
@@ -46,7 +46,9 @@ const collapsedPanelConfig = {
 export function TicketDetailWithInfobar({ onToggleUnread }: Props) {
     return (
         <KnowledgeSourceSideBarProvider>
-            <TicketDetailContent onToggleUnread={onToggleUnread} />
+            <TranslateTicketModalProvider>
+                <TicketDetailContent onToggleUnread={onToggleUnread} />
+            </TranslateTicketModalProvider>
         </KnowledgeSourceSideBarProvider>
     )
 }

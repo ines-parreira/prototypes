@@ -1,7 +1,9 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useShortcuts } from '@repo/utils'
 
 import {
     Button,
+    Icon,
     IconName,
     Menu,
     MenuItem,
@@ -10,6 +12,8 @@ import {
 } from '@gorgias/axiom'
 import type { Ticket } from '@gorgias/helpdesk-types'
 
+import { useCurrentUserLanguagePreferences } from '../../translations/hooks/useCurrentUserLanguagePreferences'
+import { useTranslateTicketModal } from '../../translations/hooks/useTranslateTicketModal'
 import {
     MergeTicketsModal,
     useMergeTicketsWorflow,
@@ -37,6 +41,10 @@ export type TicketActionsProps = Ticket
 
 export function TicketActions(ticket: TicketActionsProps) {
     const isTrashed = Boolean(ticket.trashed_datetime)
+    const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
+    const { isEnabled: isTranslationEnabled } =
+        useCurrentUserLanguagePreferences()
+    const { openTranslateTicketModal } = useTranslateTicketModal()
 
     const { handleTicketPrint } = useTicketPrint(ticket.id)
     const { markAsSpam } = useMarkAsSpam(ticket.id)
@@ -94,6 +102,7 @@ export function TicketActions(ticket: TicketActionsProps) {
                     {...MergeTicket}
                     onAction={handleMergeTicketsModalClick}
                 />
+
                 {!ticket.is_unread && (
                     <MenuItem
                         {...MarkAsUnread}
@@ -117,6 +126,15 @@ export function TicketActions(ticket: TicketActionsProps) {
                         : QuickRepliesOptions.ShowAll)}
                     onAction={handleShowAllQuickRepliesDisplay}
                 />
+
+                {hasMessagesTranslation && isTranslationEnabled && (
+                    <MenuItem
+                        id="translate-ticket"
+                        label="Translate"
+                        leadingSlot={<Icon name="translate" />}
+                        onAction={openTranslateTicketModal}
+                    />
+                )}
 
                 <MenuItem {...PrintTicket} onAction={handleTicketPrint} />
                 <MenuItem

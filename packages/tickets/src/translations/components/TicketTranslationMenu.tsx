@@ -15,6 +15,7 @@ import type { Ticket } from '@gorgias/helpdesk-types'
 
 import { useTicketTranslationHelper } from '../hooks/useTicketTranslationHelper'
 import { useTicketTranslationMenuDisplay } from '../hooks/useTicketTranslationMenuDisplay'
+import { useTranslateTicketModal } from '../hooks/useTranslateTicketModal'
 import { DisplayedContent } from '../store/constants'
 import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
 
@@ -24,6 +25,7 @@ type TicketTranslationMenuProps = {
 
 export function TicketTranslationMenu({ ticket }: TicketTranslationMenuProps) {
     const history = useHistory()
+    const { openTranslateTicketModal } = useTranslateTicketModal()
     const {
         setAllTicketMessagesToOriginal,
         setAllTicketMessagesToTranslated,
@@ -41,48 +43,58 @@ export function TicketTranslationMenu({ ticket }: TicketTranslationMenuProps) {
     if (!shouldShowTranslationMenu) return null
 
     return (
-        <Tooltip
-            placement="bottom"
-            trigger={
-                <Menu
-                    aria-label="Translation menu"
-                    placement="bottom right"
-                    trigger={
-                        <Button
-                            size="sm"
-                            variant="secondary"
-                            icon="translate"
-                            aria-label={helper}
-                        />
-                    }
-                >
-                    <MenuSection id="ticket-translations" name={helper}>
-                        {isTranslated && (
-                            <MenuItem
-                                id="show-original"
-                                label="Show original"
-                                leadingSlot={<Icon name="arrow-undo-up-left" />}
-                                onAction={setAllTicketMessagesToOriginal}
+        <>
+            <Tooltip
+                placement="bottom"
+                trigger={
+                    <Menu
+                        aria-label="Translation menu"
+                        placement="bottom right"
+                        trigger={
+                            <Button
+                                size="sm"
+                                variant="secondary"
+                                icon="translate"
+                                aria-label={helper}
                             />
-                        )}
-                        {!isTranslated && (
+                        }
+                    >
+                        <MenuSection id="ticket-translations" name={helper}>
+                            {isTranslated && (
+                                <MenuItem
+                                    id="show-original"
+                                    label="Show original"
+                                    leadingSlot={
+                                        <Icon name="arrow-undo-up-left" />
+                                    }
+                                    onAction={setAllTicketMessagesToOriginal}
+                                />
+                            )}
+                            {!isTranslated && (
+                                <MenuItem
+                                    id="show-translation"
+                                    label="See translation"
+                                    leadingSlot={<Icon name="translate" />}
+                                    onAction={setAllTicketMessagesToTranslated}
+                                />
+                            )}
                             <MenuItem
-                                id="show-translation"
-                                label="See translation"
+                                label="Translation settings"
+                                leadingSlot={<Icon name="settings" />}
+                                onAction={handleTranslationSettingsClick}
+                            />
+                            <MenuItem
+                                id="change-source-language"
+                                label="Change source language"
                                 leadingSlot={<Icon name="translate" />}
-                                onAction={setAllTicketMessagesToTranslated}
+                                onAction={openTranslateTicketModal}
                             />
-                        )}
-                        <MenuItem
-                            label="Translation settings"
-                            leadingSlot={<Icon name="settings" />}
-                            onAction={handleTranslationSettingsClick}
-                        />
-                    </MenuSection>
-                </Menu>
-            }
-        >
-            <TooltipContent title={helper} />
-        </Tooltip>
+                        </MenuSection>
+                    </Menu>
+                }
+            >
+                <TooltipContent title={helper} />
+            </Tooltip>
+        </>
     )
 }

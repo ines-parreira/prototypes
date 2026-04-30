@@ -55,6 +55,9 @@ export function useCurrentUserLanguagePreferences() {
 
     return {
         isFetching,
+        isEnabled: Boolean(
+            languagePreferences?.enabled && languagePreferences?.primary,
+        ),
         primary: languagePreferences?.primary as Language | undefined,
         proficient: languagePreferences?.proficient as Language[] | undefined,
         shouldShowTranslatedContent,

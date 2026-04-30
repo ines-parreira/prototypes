@@ -13,7 +13,10 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import { render as renderPrimitive } from '../../../tests/render.utils'
+import {
+    mockTranslateTicketModalContextValue,
+    render as renderPrimitive,
+} from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import type { CurrentUser } from '../../hooks/useCurrentUserLanguagePreferences'
 import { DisplayedContent } from '../../store/constants'
@@ -117,17 +120,26 @@ afterAll(() => {
 const findTranslateButton = () =>
     screen.findByRole('button', { name: /translate/i })
 
+const clickElement = async (
+    user: ReturnType<typeof render>['user'],
+    element: HTMLElement,
+) => {
+    await act(async () => {
+        await user.click(element)
+    })
+}
+
 const openTranslationMenu = async (user: ReturnType<typeof render>['user']) => {
     const translateButton = await findTranslateButton()
 
     if (translateButton.getAttribute('aria-expanded') !== 'true') {
-        await user.click(translateButton)
+        await clickElement(user, translateButton)
     }
 
     try {
         await screen.findByRole('menuitem', { name: /translation settings/i })
     } catch {
-        await user.click(translateButton)
+        await clickElement(user, translateButton)
         await screen.findByRole('menuitem', { name: /translation settings/i })
     }
 }
@@ -165,7 +177,10 @@ describe('TicketTranslationMenu', () => {
                 ).toBeInTheDocument()
             })
 
-            await user.click(screen.getByRole('button', { name: /translate/i }))
+            await clickElement(
+                user,
+                screen.getByRole('button', { name: /translate/i }),
+            )
 
             expect(
                 screen.getByRole('menuitem', { name: /show original/i }),
@@ -270,7 +285,8 @@ describe('TicketTranslationMenu', () => {
                 screen.queryByRole('menuitem', { name: /see translation/i }),
             ).not.toBeInTheDocument()
 
-            await user.click(
+            await clickElement(
+                user,
                 screen.getByRole('menuitem', { name: /show original/i }),
             )
 
@@ -305,13 +321,16 @@ describe('TicketTranslationMenu', () => {
                 ).toBeInTheDocument()
             })
 
-            await user.click(screen.getByRole('button', { name: /translate/i }))
+            await clickElement(
+                user,
+                screen.getByRole('button', { name: /translate/i }),
+            )
 
             const showOriginalItem = screen.getByRole('menuitem', {
                 name: /show original/i,
             })
 
-            await user.click(showOriginalItem)
+            await clickElement(user, showOriginalItem)
 
             const state = useTicketMessageTranslationDisplay.getState()
             expect(state.allMessageDisplayState).toBe(DisplayedContent.Original)
@@ -335,13 +354,16 @@ describe('TicketTranslationMenu', () => {
                 })
             })
 
-            await user.click(screen.getByRole('button', { name: /translate/i }))
+            await clickElement(
+                user,
+                screen.getByRole('button', { name: /translate/i }),
+            )
 
             const seeTranslationItem = screen.getByRole('menuitem', {
                 name: /see translation/i,
             })
 
-            await user.click(seeTranslationItem)
+            await clickElement(user, seeTranslationItem)
 
             const state = useTicketMessageTranslationDisplay.getState()
             expect(state.allMessageDisplayState).toBe(
@@ -362,21 +384,61 @@ describe('TicketTranslationMenu', () => {
                 ).toBeInTheDocument()
             })
 
-            await user.click(screen.getByRole('button', { name: /translate/i }))
+            await clickElement(
+                user,
+                screen.getByRole('button', { name: /translate/i }),
+            )
 
             expect(
                 screen.getByRole('menuitem', { name: /translation settings/i }),
             ).toBeInTheDocument()
 
-            await user.click(
+            await clickElement(
+                user,
                 screen.getByRole('menuitem', { name: /show original/i }),
             )
 
-            await user.click(screen.getByRole('button', { name: /translate/i }))
+            await clickElement(
+                user,
+                screen.getByRole('button', { name: /translate/i }),
+            )
 
             expect(
                 screen.getByRole('menuitem', { name: /translation settings/i }),
             ).toBeInTheDocument()
+        })
+
+        it('should display "Change source language" in the menu', async () => {
+            const { user } = render(
+                <TicketTranslationMenu ticket={testTicket} />,
+            )
+
+            await openTranslationMenu(user)
+
+            expect(
+                screen.getByRole('menuitem', {
+                    name: /change source language/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should open the translate ticket modal when "Change source language" is clicked', async () => {
+            const { user } = render(
+                <TicketTranslationMenu ticket={testTicket} />,
+            )
+
+            await openTranslationMenu(user)
+
+            await clickElement(
+                user,
+                screen.getByRole('menuitem', {
+                    name: /change source language/i,
+                }),
+            )
+
+            expect(
+                mockTranslateTicketModalContextValue.openTranslateTicketModal,
+            ).toHaveBeenCalledTimes(1)
         })
 
         it('should navigate to translation settings page when "Translation settings" is clicked', async () => {
@@ -411,13 +473,16 @@ describe('TicketTranslationMenu', () => {
                 '/app/tickets/123',
             )
 
-            await user.click(screen.getByRole('button', { name: /translate/i }))
+            await clickElement(
+                user,
+                screen.getByRole('button', { name: /translate/i }),
+            )
 
             const translationSettingsItem = screen.getByRole('menuitem', {
                 name: /translation settings/i,
             })
 
-            await user.click(translationSettingsItem)
+            await clickElement(user, translationSettingsItem)
 
             await waitFor(() => {
                 expect(
@@ -446,18 +511,26 @@ describe('TicketTranslationMenu', () => {
                 DisplayedContent.Translated,
             )
 
-            await user.click(screen.getByRole('button', { name: /translate/i }))
+            await clickElement(
+                user,
+                screen.getByRole('button', { name: /translate/i }),
+            )
 
-            await user.click(
+            await clickElement(
+                user,
                 screen.getByRole('menuitem', { name: /show original/i }),
             )
 
             state = useTicketMessageTranslationDisplay.getState()
             expect(state.allMessageDisplayState).toBe(DisplayedContent.Original)
 
-            await user.click(screen.getByRole('button', { name: /translate/i }))
+            await clickElement(
+                user,
+                screen.getByRole('button', { name: /translate/i }),
+            )
 
-            await user.click(
+            await clickElement(
+                user,
                 screen.getByRole('menuitem', { name: /see translation/i }),
             )
 

@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { useFlag } from '@repo/feature-flags'
 import { Handle } from '@repo/layout'
 import { useTicketInfobarNavigation } from '@repo/navigation'
@@ -30,7 +32,8 @@ const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('@repo/tickets', () => ({
     TicketHeader: () => <div>TicketHeader</div>,
-    useHelpdeskV2MS1Flag: jest.fn(),
+    TranslateTicketModalProvider: ({ children }: { children: ReactNode }) =>
+        children,
 }))
 jest.mock('@repo/tickets/feature-flags', () => ({
     ...jest.requireActual('@repo/tickets/feature-flags'),

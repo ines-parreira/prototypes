@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { UserRole } from '@repo/permissions'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -17,8 +18,12 @@ import {
     mockUpdateTicketHandler,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
+import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import { render } from '../../../tests/render.utils'
+import {
+    mockTranslateTicketModalContextValue,
+    render,
+} from '../../../tests/render.utils'
 import { TicketActions } from '../TicketActions'
 
 vi.mock('@repo/logging', () => ({
@@ -27,6 +32,15 @@ vi.mock('@repo/logging', () => ({
         PrintTicketClicked: 'Print Ticket Clicked',
     },
 }))
+
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        MessagesTranslations: 'messages-translations',
+    },
+    useFlag: vi.fn(),
+}))
+
+const mockUseFlag = vi.mocked(useFlag)
 
 const agentUser = mockUser({
     id: 1,
@@ -37,7 +51,20 @@ const agentUser = mockUser({
 })
 
 const mockGetCurrentUser = mockGetCurrentUserHandler(async () => {
-    return HttpResponse.json(agentUser)
+    return HttpResponse.json({
+        ...agentUser,
+        settings: [
+            {
+                id: 1,
+                type: UserSettingType.LanguagePreferences,
+                data: {
+                    enabled: true,
+                    primary: Language.En,
+                    proficient: [],
+                },
+            },
+        ],
+    } as any)
 })
 const mockGetView = mockGetViewHandler(async () =>
     HttpResponse.json(mockGetViewResponse({ id: 1 })),
@@ -99,6 +126,7 @@ describe('TicketActions', () => {
     const toggleQuickReplies = vi.fn()
 
     beforeEach(() => {
+        mockUseFlag.mockReturnValue(true)
         vi.spyOn(window, 'open').mockImplementation(() => null)
         server.use(mockGetCurrentUser.handler)
         server.use(mockGetView.handler)
@@ -123,8 +151,19 @@ describe('TicketActions', () => {
         const button = screen.getByRole('button', {
             name: /dots-meatballs-horizontal/i,
         })
-        await act(() => user.click(button))
+        await act(async () => {
+            await user.click(button)
+        })
         return button
+    }
+
+    async function clickElement(
+        user: ReturnType<typeof render>['user'],
+        element: HTMLElement,
+    ) {
+        await act(async () => {
+            await user.click(element)
+        })
     }
 
     it('should render menu trigger button', () => {
@@ -142,12 +181,28 @@ describe('TicketActions', () => {
         await openMenu(user)
 
         expect(screen.getByText('Merge ticket')).toBeInTheDocument()
+        expect(screen.getByText('Translate')).toBeInTheDocument()
         expect(screen.getByText('Mark as unread')).toBeInTheDocument()
         expect(screen.getByText('Show all events')).toBeInTheDocument()
         expect(screen.getByText('Show all quick replies')).toBeInTheDocument()
         expect(screen.getByText('Print ticket')).toBeInTheDocument()
         expect(screen.getByText('Mark as spam')).toBeInTheDocument()
         expect(screen.getByText('Move to trash')).toBeInTheDocument()
+    })
+
+    it('should open the translate ticket modal when "Translate" is clicked', async () => {
+        const { user } = render(<TicketActions {...defaultProps} />)
+
+        await openMenu(user)
+
+        await clickElement(
+            user,
+            screen.getByRole('menuitem', { name: /translate/i }),
+        )
+
+        expect(
+            mockTranslateTicketModalContextValue.openTranslateTicketModal,
+        ).toHaveBeenCalledTimes(1)
     })
 
     it('should open print window and log analytics when print ticket is clicked', async () => {
@@ -159,7 +214,7 @@ describe('TicketActions', () => {
         await openMenu(user)
 
         const printMenuItem = screen.getByText('Print ticket')
-        await act(() => user.click(printMenuItem))
+        await clickElement(user, printMenuItem)
 
         await vi.waitFor(() => {
             expect(window.open).toHaveBeenCalledWith('/app/ticket/123/print')
@@ -185,7 +240,7 @@ describe('TicketActions', () => {
             ).not.toBeInTheDocument()
 
             const showEventsMenuItem = screen.getByText('Show all events')
-            await act(() => user.click(showEventsMenuItem))
+            await clickElement(user, showEventsMenuItem)
 
             await waitFor(() => {
                 expect(dispatchAuditLogEvents).toHaveBeenCalledTimes(1)
@@ -207,7 +262,7 @@ describe('TicketActions', () => {
             ).not.toBeInTheDocument()
 
             const hideEventsMenuItem = screen.getByText('Hide all events')
-            await act(() => user.click(hideEventsMenuItem))
+            await clickElement(user, hideEventsMenuItem)
 
             await waitFor(() => {
                 expect(dispatchHideAuditLogEvents).toHaveBeenCalledTimes(1)
@@ -235,7 +290,7 @@ describe('TicketActions', () => {
             const showQuickRepliesMenuItem = screen.getByText(
                 'Show all quick replies',
             )
-            await act(() => user.click(showQuickRepliesMenuItem))
+            await clickElement(user, showQuickRepliesMenuItem)
 
             await waitFor(() => {
                 expect(toggleQuickReplies).toHaveBeenCalledWith(true)
@@ -263,7 +318,7 @@ describe('TicketActions', () => {
             const hideQuickRepliesMenuItem = screen.getByText(
                 'Hide all quick replies',
             )
-            await act(() => user.click(hideQuickRepliesMenuItem))
+            await clickElement(user, hideQuickRepliesMenuItem)
 
             await waitFor(() => {
                 expect(toggleQuickReplies).toHaveBeenCalledWith(false)
@@ -329,7 +384,7 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const markAsSpamItem = screen.getByText('Mark as spam')
-            await act(() => user.click(markAsSpamItem))
+            await clickElement(user, markAsSpamItem)
 
             await waitFor(() => {
                 expect(
@@ -359,7 +414,7 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const unmarkAsSpamItem = screen.getByText('Unmark as spam')
-            await act(() => user.click(unmarkAsSpamItem))
+            await clickElement(user, unmarkAsSpamItem)
 
             await waitFor(() => {
                 expect(screen.queryByRole('status')).not.toBeInTheDocument()
@@ -381,7 +436,7 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const markAsSpamItem = screen.getByText('Mark as spam')
-            await act(() => user.click(markAsSpamItem))
+            await clickElement(user, markAsSpamItem)
 
             await waitFor(() => {
                 expect(
@@ -429,7 +484,7 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const markAsUnreadItem = screen.getByText('Mark as unread')
-            await act(() => user.click(markAsUnreadItem))
+            await clickElement(user, markAsUnreadItem)
 
             await waitFor(() => {
                 expect(
@@ -456,7 +511,7 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const markAsUnreadItem = screen.getByText('Mark as unread')
-            await act(() => user.click(markAsUnreadItem))
+            await clickElement(user, markAsUnreadItem)
 
             await waitFor(() => {
                 expect(
@@ -492,12 +547,12 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const moveToTrashMenuItem = screen.getByText('Move to trash')
-            await act(() => user.click(moveToTrashMenuItem))
+            await clickElement(user, moveToTrashMenuItem)
 
             const deleteButton = screen.getByRole('button', {
                 name: 'Delete ticket',
             })
-            await act(() => user.click(deleteButton))
+            await clickElement(user, deleteButton)
 
             await waitFor(() => {
                 expect(
@@ -524,14 +579,14 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const moveToTrashMenuItem = screen.getByText('Move to trash')
-            await act(() => user.click(moveToTrashMenuItem))
+            await clickElement(user, moveToTrashMenuItem)
 
             expect(screen.getByText('Are you sure?')).toBeInTheDocument()
 
             const deleteButton = screen.getByRole('button', {
                 name: 'Delete ticket',
             })
-            await act(() => user.click(deleteButton))
+            await clickElement(user, deleteButton)
 
             await waitFor(() => {
                 expect(
@@ -561,7 +616,7 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const restoreMenuItem = screen.getByText('Restore ticket')
-            await act(() => user.click(restoreMenuItem))
+            await clickElement(user, restoreMenuItem)
 
             await waitFor(() => {
                 expect(screen.queryByRole('status')).not.toBeInTheDocument()
@@ -583,12 +638,12 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const moveToTrashMenuItem = screen.getByText('Move to trash')
-            await act(() => user.click(moveToTrashMenuItem))
+            await clickElement(user, moveToTrashMenuItem)
 
             const deleteButton = screen.getByRole('button', {
                 name: 'Delete ticket',
             })
-            await act(() => user.click(deleteButton))
+            await clickElement(user, deleteButton)
 
             await waitFor(() => {
                 expect(
@@ -620,7 +675,7 @@ describe('TicketActions', () => {
             await openMenu(user)
 
             const restoreMenuItem = screen.getByText('Restore ticket')
-            await act(() => user.click(restoreMenuItem))
+            await clickElement(user, restoreMenuItem)
 
             expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument()
         })

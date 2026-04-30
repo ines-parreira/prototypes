@@ -17,7 +17,15 @@ export { isTimedelta } from './misc/ast'
 export { isCallActive, registerCallStateCallback } from './misc/reloadCallGuard'
 export { getSortByName } from './misc/getSortByName'
 export { getDeviceType, isDesktopDevice } from './misc/device'
-export { IntlDisplayNames } from './language/language'
+export {
+    getTranslationLanguageOptionsData,
+    IntlDisplayNames,
+    TranslationSupportedLanguagesInEnglish,
+} from './language/language'
+export type {
+    TranslationLanguageOption,
+    TranslationLanguageOptionsData,
+} from './language/language'
 export { platform, isMacOs } from './misc/platform'
 export { isSubmitShortcut } from './misc/keyboard'
 export { Diff, diffChars } from './misc/diffCheck'

@@ -10,13 +10,9 @@ import {
     useRequestTicketMessageTranslation,
     useRequestTicketTranslation,
 } from '@gorgias/helpdesk-queries'
-import type {
-    Language,
-    TicketMessage,
-    TicketMessageSourceType,
-} from '@gorgias/helpdesk-types'
+import type { Language, TicketMessage } from '@gorgias/helpdesk-types'
 
-import { isInternalNote } from '../../../helpers/isInternalNote'
+import { getTranslatableTicketMessages } from '../../helpers/getTranslatableTicketMessages'
 import { DisplayedContent, FetchingState } from '../../store/constants'
 import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
 import { useCurrentUserLanguagePreferences } from '../useCurrentUserLanguagePreferences'
@@ -199,19 +195,8 @@ export const useLiveTicketTranslationsUpdates = ({
 
     const messagesWithNoTranslation = useMemo(
         () =>
-            ticketMessages
+            getTranslatableTicketMessages(ticketMessages)
                 .filter((message) => {
-                    if (!message.id) return false
-
-                    // We don't want to generate translations for internal notes
-                    if (
-                        message?.source &&
-                        isInternalNote(
-                            message.source.type as TicketMessageSourceType,
-                        )
-                    )
-                        return false
-
                     const messageTranslation =
                         ticketTranslations?.data.data.find(
                             (translation) =>
@@ -232,9 +217,7 @@ export const useLiveTicketTranslationsUpdates = ({
 
     const messagesWithTranslation = useMemo(
         () =>
-            ticketMessages.filter((message) => {
-                if (!message.id) return false
-
+            getTranslatableTicketMessages(ticketMessages).filter((message) => {
                 const messageTranslation = ticketTranslations?.data.data.find(
                     (translation) =>
                         translation.ticket_message_id === message.id,

@@ -47,6 +47,10 @@ export { useCurrentUserId } from './hooks/useCurrentUserId'
 export { useTicketViewNavigation } from './hooks/useTicketViewNavigation'
 
 export { TicketTranslationMenu } from './translations/components/TicketTranslationMenu'
+export { TranslateTicketModal } from './translations/components/TranslateTicketModal'
+export { TranslateTicketModalContext } from './translations/context/TranslateTicketModalContext'
+export { TranslateTicketModalProvider } from './translations/context/TranslateTicketModalProvider'
+export { useTranslateTicketModal } from './translations/hooks/useTranslateTicketModal'
 export { useLiveTicketTranslationsUpdates } from './translations/hooks/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
 export {
     useTicketMessageTranslationDisplay,
@@ -58,6 +62,7 @@ export { useTicketsTranslatedProperties } from './translations/hooks/useTicketsT
 export { useRegenerateTicketMessageTranslations } from './translations/hooks/useRegenerateTicketMessageTranslations'
 export { useTicketMessageTranslations } from './translations/hooks/useTicketMessageTranslations'
 export { useCurrentUserLanguagePreferences } from './translations/hooks/useCurrentUserLanguagePreferences'
+export { useRetranslateTicket } from './translations/hooks/useRetranslateTicket'
 
 export { DisplayedContent, FetchingState } from './translations/store/constants'
 

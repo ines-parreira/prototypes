@@ -1,4 +1,9 @@
-import { TicketLanguage } from '@gorgias/helpdesk-types'
+import {
+    IntlDisplayNames,
+    TranslationSupportedLanguagesInEnglish,
+} from '@repo/utils'
+
+export { IntlDisplayNames, TranslationSupportedLanguagesInEnglish }
 
 export enum LANGUAGE {
     CZ = 'cz',
@@ -164,10 +169,6 @@ export const ISO639 = [
     'zh',
 ]
 
-export const IntlDisplayNames = new Intl.DisplayNames(['en'], {
-    type: 'language',
-})
-
 export const ISO639English = ISO639.reduce((pair: string[][], code) => {
     pair.push([code, IntlDisplayNames.of(code) as string])
     return pair
@@ -177,28 +178,3 @@ export const ISO639English = ISO639.reduce((pair: string[][], code) => {
         obj[pair[0]] = pair[1]
         return obj
     }, {})
-
-const TranslationSupportedRecord = Object.values(TicketLanguage)
-    .filter((code) => !code.includes('-'))
-    .reduce<Record<string, string>>((record, code) => {
-        const label = IntlDisplayNames.of(code) as string
-        // If the code and the last label are identical, theirs not support by the
-        // browser IntlDisplayNames, so we don't need to add it to the list
-        if (code === label) {
-            return record
-        }
-
-        // Prevent duplicates (Akan for example)
-        record[IntlDisplayNames.of(code) as string] = code
-
-        return record
-    }, {})
-
-export const TranslationSupportedLanguagesInEnglish = Object.entries(
-    TranslationSupportedRecord,
-)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([name, code]) => ({
-        code,
-        name,
-    }))
