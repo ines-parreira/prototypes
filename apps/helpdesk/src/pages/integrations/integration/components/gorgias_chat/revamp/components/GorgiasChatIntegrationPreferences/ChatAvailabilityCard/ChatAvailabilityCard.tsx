@@ -38,21 +38,21 @@ const defaultOptions = [
 const aiAgentOptions = [
     {
         value: GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
-        label: 'Only outside business hours',
+        label: 'Outside business hours only',
         caption:
-            'Shoppers stay in chat during business hours, even if no agent is live. Outside business hours, AI Agent hands over by email.',
+            'During business hours, conversations stay in chat. Outside business hours, the AI Agent hands over by email.',
     },
     {
         value: GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
         label: 'When no agent is live on chat',
         caption:
-            'If an agent is available, handover stays in chat. If no agent is available (outside business hours or no one live), AI Agent hands over by email.',
+            'If anyone from your team is online, the conversation stays in chat. If no one is online, the AI Agent hands over by email.',
     },
     {
         value: GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
         label: 'Always transfer to email',
         caption:
-            'Every handover goes to email, regardless of agent availability.',
+            "Every handover goes to email, regardless of business hours or who's online.",
     },
 ]
 
@@ -67,9 +67,11 @@ export const ChatAvailabilityCard = ({
     onChange,
     isAiAgentEnabled = false,
 }: Props) => {
-    const title = isAiAgentEnabled ? 'Handover to email' : 'Chat availability'
+    const title = isAiAgentEnabled
+        ? 'When to hand over by email'
+        : 'Chat availability'
     const description = isAiAgentEnabled
-        ? 'Choose when the AI Agent should hand over to your team by email instead of keeping the conversation in chat. Outside of these cases, handover stays in chat and an agent takes over when available.'
+        ? 'Choose when the AI Agent hands over by email. Otherwise, the conversation stays in chat for your team to pick up.'
         : 'Control when shoppers can start a live chat and what happens outside business hours.'
     const options = isAiAgentEnabled ? aiAgentOptions : defaultOptions
 
@@ -103,9 +105,8 @@ export const ChatAvailabilityCard = ({
 
                 {isAiAgentEnabled && (
                     <Text size="sm" className={css.cardDescription}>
-                        AI Agent is always active in chat. These settings only
-                        control what happens after AI Agent hands over to your
-                        team.
+                        The AI Agent always answers in chat. This setting only
+                        controls what happens when it hands over to your team.
                     </Text>
                 )}
             </div>

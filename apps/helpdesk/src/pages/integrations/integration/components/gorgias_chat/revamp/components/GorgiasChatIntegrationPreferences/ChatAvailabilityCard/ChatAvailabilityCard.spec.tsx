@@ -179,7 +179,9 @@ describe('ChatAvailabilityCard', () => {
             renderAiAgent()
 
             expect(
-                screen.getByRole('heading', { name: 'Handover to email' }),
+                screen.getByRole('heading', {
+                    name: 'When to hand over by email',
+                }),
             ).toBeInTheDocument()
         })
 
@@ -188,7 +190,7 @@ describe('ChatAvailabilityCard', () => {
 
             expect(
                 screen.getByText(
-                    /Choose when the AI Agent should hand over to your team by email/,
+                    /Choose when the AI Agent hands over by email\./,
                 ),
             ).toBeInTheDocument()
         })
@@ -197,7 +199,7 @@ describe('ChatAvailabilityCard', () => {
             renderAiAgent()
 
             expect(
-                screen.getByLabelText(/Only outside business hours/),
+                screen.getByLabelText(/Outside business hours only/),
             ).toBeInTheDocument()
             expect(
                 screen.getByLabelText(/When no agent is live on chat/),
@@ -212,17 +214,17 @@ describe('ChatAvailabilityCard', () => {
 
             expect(
                 screen.getByText(
-                    /Shoppers stay in chat during business hours, even if no agent is live/,
+                    /During business hours, conversations stay in chat\./,
                 ),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    /If an agent is available, handover stays in chat/,
+                    /If anyone from your team is online, the conversation stays in chat\./,
                 ),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Every handover goes to email, regardless of agent availability.',
+                    "Every handover goes to email, regardless of business hours or who's online.",
                 ),
             ).toBeInTheDocument()
         })
@@ -232,7 +234,7 @@ describe('ChatAvailabilityCard', () => {
 
             expect(
                 screen.getByText(
-                    /AI Agent is always active in chat\. These settings only control what happens after AI Agent hands over to your team\./,
+                    /The AI Agent always answers in chat\. This setting only controls what happens when it hands over to your team\./,
                 ),
             ).toBeInTheDocument()
         })
@@ -249,13 +251,13 @@ describe('ChatAvailabilityCard', () => {
             )
         })
 
-        it('should call onChange with the correct value when "Only outside business hours" is selected', async () => {
+        it('should call onChange with the correct value when "Outside business hours only" is selected', async () => {
             const user = userEvent.setup()
             const onChange = jest.fn()
             renderAiAgent({ onChange })
 
             await user.click(
-                screen.getByLabelText(/Only outside business hours/),
+                screen.getByLabelText(/Outside business hours only/),
             )
 
             expect(onChange).toHaveBeenCalledWith(
