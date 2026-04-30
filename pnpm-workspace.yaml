@@ -49,6 +49,7 @@ catalogs:
     '@gorgias/convert-queries': '^0.2.70'
     '@gorgias/convert-types': '^0.4.38'
     '@gorgias/customer-segmentation-client': '^0.2.9'
+    '@gorgias/customer-segmentation-mocks': '^0.2.13'
     '@gorgias/customer-segmentation-queries': '^0.2.9'
     '@gorgias/customer-segmentation-types': '^0.2.7'
     '@gorgias/ecommerce-storage-client': '^0.2.11'

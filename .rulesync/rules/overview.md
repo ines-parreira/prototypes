@@ -27,30 +27,31 @@ globs:
 
 Always prefer running the tests on specific files rather than an entire package.
 
-- Run tests with `pnpm test <package>` for a specific package (e.g., `pnpm test @repo/tickets`)
-- Run tests for specific files `pnpm test <package> <path-to-test or test-file-name>` in a specific package (e.g., `pnpm test @repo/tickets TicketHeader.spec.tsx`)
+- Run tests with `pnpm --filter @repo/<package> test` for a specific package (e.g., `pnpm --filter @repo/tickets test`)
+- Run tests for specific files with `pnpm --filter @repo/<package> test -- <path-to-test or test-file-name>` (e.g., `pnpm --filter @repo/tickets test -- TicketHeader.spec.tsx`)
 - Run tests with `pnpm test:all` for all packages
 - Run tests with `pnpm test:affected` for all affected packages
-- Update snapshots with `pnpm test <package> -u` for a specific package
+- `apps/helpdesk` currently uses Jest, extracted `packages/**` usually use Vitest, and the local package config is the final source of truth when a package is an exception
+- Update snapshots with the local package's test script and snapshot flag (for example `pnpm --filter @repo/<package> test -- -u`) only when a snapshot is still intentional
 - Update snapshots with `pnpm test:all -u` for all packages
 - Update snapshots with `pnpm test:affected -u` for all affected packages
 
 ### Linting
 
-- Lint code with `pnpm lint <package>` for a specific package (e.g., `pnpm lint @repo/tickets`)
+- Lint code with `pnpm --filter @repo/<package> lint` for a specific package (e.g., `pnpm --filter @repo/tickets lint`)
 - Lint code with `pnpm lint:code:all` for all packages
 - Lint code with `pnpm lint:code:affected` for all affected packages
 
 ### Formatting
 
-- Check formatting with `pnpm format:check <package>` for a specific package (e.g., `pnpm format:check @repo/tickets`)
-- Fix formatting with `pnpm format:fix <package>` for a specific package (e.g., `pnpm format:fix @repo/tickets`)
+- Check formatting with `pnpm --filter @repo/<package> format:check` for a specific package (e.g., `pnpm --filter @repo/tickets format:check`)
+- Fix formatting with `pnpm --filter @repo/<package> format:fix` for a specific package (e.g., `pnpm --filter @repo/tickets format:fix`)
 - Fix formatting with `pnpm format:fix:all` for all packages
 - Fix formatting with `pnpm format:fix:affected` for all affected packages
 
 ### Type checking
 
-- Type check with `pnpm typecheck <package>` for a specific package (e.g., `pnpm typecheck @repo/tickets`)
+- Type check with `pnpm --filter @repo/<package> typecheck` for a specific package (e.g., `pnpm --filter @repo/tickets typecheck`)
 - Type check with `pnpm typecheck:all` for all packages
 - Type check with `pnpm typecheck:affected` for all affected packages
 
@@ -121,7 +122,7 @@ All HTTP operations and server state management must use the `rest-api-sdk` suit
 
 ## The rest-api-sdk suite of packages:
 
-Each service has a consistent package structure: `-client`, `-queries`, `-types`, `-validators`, and `-mocks`.
+Most services publish `-client`, `-queries`, and `-types` packages, and some also publish `-validators` or `-mocks` companions. Only reference packages that actually exist in the workspace catalog.
 
 ### Helpdesk API (most common)
 
@@ -159,6 +160,13 @@ Each service has a consistent package structure: `-client`, `-queries`, `-types`
 - `@gorgias/ecommerce-storage-client` - API client
 - `@gorgias/ecommerce-storage-queries` - Data fetching hooks
 - `@gorgias/ecommerce-storage-mocks` - MSW mock handlers for testing
+
+### Customer Segmentation API
+
+- `@gorgias/customer-segmentation-client` - API client
+- `@gorgias/customer-segmentation-mocks` - MSW mock handlers for testing
+- `@gorgias/customer-segmentation-queries` - Data fetching hooks
+- `@gorgias/customer-segmentation-types` - Generated types
 
 ## Key Requirements
 
@@ -520,6 +528,7 @@ import { Button } from '@gorgias/axiom'
 
 - **Always use** `@gorgias/helpdesk-mocks` or the other mocks packages like `@gorgias/knowledge-service-mocks` for mocking API responses and handlers
 - **Never create manual mocks** for API calls - use the provided SDK mocks instead
+- **Never mock core providers or data hooks** such as `@gorgias/axiom`, `react-router`, `react-router-dom`, `@tanstack/react-query`, or `@gorgias/*-queries` packages. Use real providers through the shared render helpers and mock network boundaries with SDK MSW handlers.
 - **Follow naming conventions** for mocks:
     - Component mocks: `mock<ComponentName>Component`
     - Response body mocks: `mock<HandlerName>ResponseBody`
@@ -556,23 +565,39 @@ afterAll(() => {
 
 ## Test Structure and Patterns
 
+### Choose the runner first
+
+Before copying any test pattern, confirm which runner the target package actually uses.
+
+- `apps/helpdesk/**` defaults to Jest and should import `render` and `renderHook` from `@repo/testing` with `jest.*` globals
+- Extracted `packages/**` usually use Vitest and should follow `@repo/testing/vitest`, package-local `tests/render.utils`, and `vi.*` globals
+- Local `package.json`, `jest.config.*`, `vitest.config.*`, and neighboring tests override the folder heuristic for exceptions
+
+### Use package render helpers
+
+In `apps/helpdesk/**`, always import `render` and `renderHook` from `@repo/testing`. Do not import those helpers directly from `@testing-library/react`. Test-local setup helpers may wrap `@repo/testing` `render` or `renderHook` when a spec needs extra providers or route state.
+
+In `packages/**`, prefer the package-local `tests/render.utils` `render` and `renderHook` helpers whenever they exist. Those helpers wrap `@repo/testing/vitest` with package-specific providers, router state, legacy bridges, `QueryClient` ownership, and `userEvent` setup.
+
+Do not import `render` or `renderHook` directly from `@testing-library/react` in package tests when a local helper is available. It is still fine to import `screen`, `waitFor`, `within`, `act`, and Testing Library types from `@testing-library/react`.
+
 ### Component rendering setup
 
 ```typescript
 const renderComponent = () => {
-    return render(
-        <MemoryRouter>
-            <Provider store={mocksStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <ThemeProvider>
-                        <YourComponent />
-                    </ThemeProvider>
-                </QueryClientProvider>
+    const store = mockStore()
+
+    return render(<YourComponent />, {
+        wrapper: ({ children }) => (
+            <Provider store={store}>
+                <ThemeProvider>{children}</ThemeProvider>
             </Provider>
-        </MemoryRouter>,
-    )
+        ),
+    })
 }
 ```
+
+Prefer the shared render helper that matches the active runner. In `apps/helpdesk`, use `@repo/testing`. In extracted packages, use the nearest package-local helper before falling back to `@repo/testing/vitest`. Those helpers should create a fresh `QueryClient` per render by default, which aligns with the [TanStack Query testing guide](https://tanstack.com/query/v4/docs/framework/react/guides/testing).
 
 ### For Component Testing:
 
@@ -594,7 +619,8 @@ const renderComponent = () => {
 - **Use `waitFor()`** for async content that appears after API calls or other async operations
 - **Wait for component to load** before making assertions
 - **Test loading states** before testing final states
-- **`act()` is always needed for**: direct state updates like `jest.advanceTimersByTime()`, non-userEvent DOM manipulations, and testing hooks directly with `renderHook`
+- **Use `act()` only for** manual timer advancement or state transitions that Testing Library does not already wrap for you
+- Prefer `findBy*` queries when waiting for an element, option, dialog, or list to appear. Use `waitFor` for state transitions, callback assertions, request sequencing, disappearance, or enabled/disabled changes.
 
 ```typescript
 // ✅: Good - userEvent v14+ handles act internally
@@ -627,11 +653,40 @@ await waitFor(() => {
 ```
 
 ```typescript
-// act() IS still needed for timer manipulations
+// act() is still needed for timer manipulations
 act(() => {
-    jest.advanceTimersByTime(1000)
+    vi.advanceTimersByTime(1000) // Use jest.advanceTimersByTime(...) in apps/helpdesk
 })
 ```
+
+- Prefer waiting on visible UI state or captured requests over internals such as `queryClient.isFetching()` or mock-call polling
+- For portal-backed menus, dropdowns, modals, and submenus, wait for the opened control with `findByRole` or scoped `within(menu).findByRole(...)` before clicking or asserting nested items
+- Wait for controls to be enabled before clicking when loading, permissions, or async options can temporarily disable them
+- Re-query triggers, menus, searchboxes, dialogs, and options after close/reopen flows. DOM handles captured before Escape, click-away, or unmount/remount can be stale.
+- Reusable opener helpers should encode readiness by checking open state when available and returning a fresh element from `findByRole`. Avoid generic retry-click helpers and click-twice fallbacks.
+- Do not wrap `userEvent` in `act()` as a default fallback. React notes that libraries like Testing Library already wrap their helpers with `act()`: <https://react.dev/reference/react/act>
+- Shared `render` and `renderHook` helpers should own `QueryClient` creation and cleanup. Consumer specs should not create, seed, poll, or clear query clients directly; use SDK MSW handlers and observable UI/request assertions instead.
+
+### Fake timers
+
+Only use fake timers for timer-driven behavior such as debounced inputs. Testing Library recommends wiring `advanceTimers` into `userEvent.setup()` and flushing pending timers before restoring real timers:
+
+```typescript
+beforeEach(() => {
+    vi.useFakeTimers()
+})
+
+afterEach(() => {
+    vi.runOnlyPendingTimers()
+    vi.useRealTimers()
+})
+
+const user = userEvent.setup({
+    advanceTimers: vi.advanceTimersByTime,
+})
+```
+
+In `apps/helpdesk`, use the same pattern with Jest's timer APIs instead: `jest.useFakeTimers()`, `jest.advanceTimersByTime(...)`, `jest.runOnlyPendingTimers()`, and `jest.useRealTimers()`.
 
 ### User Interaction Testing
 
@@ -741,10 +796,8 @@ const waitForUpdateCurrentUserRequest =
     mockUpdateCurrentUser.waitForRequest(server)
 
 // Trigger action
-act(() => {
-    userEvent.click(getByLabelText(/Some Label/))
-    userEvent.type(getByRole('textbox'), 'new value')
-})
+await user.click(getByLabelText(/Some Label/))
+await user.type(getByRole('textbox'), 'new value')
 
 await waitForUpdateCurrentUserRequest(async (request) => {
     const body = await request.json()
@@ -791,6 +844,7 @@ it('should correctly disable inputs for a Gorgias agent', async () => {
 - **Don't use snapshot testing** - never use `toMatchSnapshot()` or `toMatchInlineSnapshot()`
 - **Don't test implementation details** - focus on user-visible behavior
 - **Don't create manual mocks** for API calls - use SDK mocks
+- **Don't mock Axiom, router, TanStack Query, or SDK query packages** - use real providers and SDK MSW handlers instead
 - **Don't test internal state** - test observable outcomes
 - **Don't skip async operations** - always use `waitFor` for async behavior
 - **Don't test multiple concerns** in a single test - keep tests focused

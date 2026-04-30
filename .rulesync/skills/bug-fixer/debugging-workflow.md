@@ -79,8 +79,10 @@ return <div>{user.name}</div>
 Run relevant tests:
 
 ```bash
-pnpm test <package-name> <path-to-test>
+pnpm --filter @repo/<package-name> test -- <path-to-test>
 ```
+
+For test failures, confirm the local runner before changing helpers. `apps/helpdesk` currently defaults to Jest, extracted `packages/**` usually default to Vitest, and the local package config wins for exceptions.
 
 Check in browser if applicable.
 
@@ -101,7 +103,7 @@ Remove debugging code:
 1. Run single test in isolation
 
     ```bash
-    pnpm test <package-name> <path> -t "test name"
+    pnpm --filter @repo/<package-name> test -- <path> -t "test name"
     ```
 
 2. Add `screen.debug()` to see DOM state
@@ -168,9 +170,11 @@ Cause: Shared state between tests
 Fix:
 
 ```tsx
-afterEach(() => {
-    server.resetHandlers() // Reset MSW
-    queryClient.clear() // Clear React Query cache
+afterEach(async () => {
+    cleanup()
+    await queryClient.cancelQueries()
+    queryClient.clear()
+    server.resetHandlers()
 })
 ```
 
@@ -195,8 +199,8 @@ await waitFor(
     { timeout: 5000 },
 )
 
-// Mock time if needed
-jest.useFakeTimers()
+// Use fake timers only for timer-driven behavior
+vi.useFakeTimers() // Use jest.useFakeTimers() in apps/helpdesk
 ```
 
 ### The "Works Locally" Bug

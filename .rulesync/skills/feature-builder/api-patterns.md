@@ -2,7 +2,7 @@
 
 ## SDK Packages
 
-Use these packages for all HTTP operations. Each service has a consistent structure: `-client`, `-queries`, `-types`, `-validators`, and `-mocks`.
+Use these packages for all HTTP operations. Most services publish `-client`, `-queries`, and `-types` packages, and some also publish `-validators` or `-mocks` companions.
 
 | Service | Queries Package | Types Package | Mocks Package |
 |---------|-----------------|---------------|---------------|
@@ -11,6 +11,7 @@ Use these packages for all HTTP operations. Each service has a consistent struct
 | Help Center | `@gorgias/help-center-queries` | `@gorgias/help-center-types` | `@gorgias/help-center-mocks` |
 | Convert | `@gorgias/convert-queries` | `@gorgias/convert-types` | `@gorgias/convert-mocks` |
 | Ecommerce Storage | `@gorgias/ecommerce-storage-queries` | N/A | `@gorgias/ecommerce-storage-mocks` |
+| Customer Segmentation | `@gorgias/customer-segmentation-queries` | `@gorgias/customer-segmentation-types` | `@gorgias/customer-segmentation-mocks` |
 
 ## Basic Query Hook Usage
 

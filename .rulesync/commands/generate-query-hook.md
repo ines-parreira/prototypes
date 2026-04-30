@@ -23,6 +23,7 @@ Generate wrapper hooks for SDK queries following established patterns.
 - `--service=help-center` - Use help-center SDK
 - `--service=convert` - Use convert SDK
 - `--service=ecommerce-storage` - Use ecommerce-storage SDK
+- `--service=customer-segmentation` - Use customer segmentation SDK
 - `--with-transform` - Add data transformation
 - `--with-options` - Add configurable query options
 
@@ -36,6 +37,7 @@ When the user runs this command:
     - Help center: `@gorgias/help-center-queries`
     - Convert: `@gorgias/convert-queries`
     - Ecommerce storage: `@gorgias/ecommerce-storage-queries`
+    - Customer segmentation: `@gorgias/customer-segmentation-queries`
 
 2. **Identify the primitive hook** to wrap:
     - `useGetXxx` wraps `useGetXxx` primitive

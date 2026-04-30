@@ -267,6 +267,7 @@
     },
     "devDependencies": {
         "@gorgias/config": "^0.2.4",
+        "@gorgias/customer-segmentation-mocks": "catalog:rest-api-sdk",
         "@gorgias/help-center-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-mocks": "catalog:rest-api-sdk",

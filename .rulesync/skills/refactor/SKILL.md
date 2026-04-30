@@ -78,10 +78,12 @@ After refactoring:
 3. Run validation for the affected package
 
 ```bash
-pnpm lint <package>
-pnpm typecheck <package>
-pnpm test <package> <path-to-test>
+pnpm --filter @repo/<package> lint
+pnpm --filter @repo/<package> typecheck
+pnpm --filter @repo/<package> test -- <path-to-test>
 ```
+
+When the refactor touches tests, confirm the local runner first. `apps/helpdesk` currently defaults to Jest, extracted `packages/**` usually default to Vitest, and the local package config wins for exceptions.
 
 ## Reference Files
 

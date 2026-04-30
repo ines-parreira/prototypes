@@ -23,6 +23,7 @@ Generate mutation hooks with cache management following established patterns.
 - `--service=help-center` - Use help-center SDK
 - `--service=convert` - Use convert SDK
 - `--service=ecommerce-storage` - Use ecommerce-storage SDK
+- `--service=customer-segmentation` - Use customer segmentation SDK
 - `--with-optimistic-update` - Include optimistic update logic
 - `--list-query=<queryKey>` - Specify the list query to invalidate
 
@@ -41,6 +42,7 @@ When the user runs this command:
     - Help center: `@gorgias/help-center-queries`
     - Convert: `@gorgias/convert-queries`
     - Ecommerce storage: `@gorgias/ecommerce-storage-queries`
+    - Customer segmentation: `@gorgias/customer-segmentation-queries`
 
 3. **Generate the mutation hook file**:
 

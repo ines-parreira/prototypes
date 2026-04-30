@@ -53,10 +53,12 @@ A typical feature includes:
 Run validation after implementation:
 
 ```bash
-pnpm lint <package-name>
-pnpm typecheck <package-name>
-pnpm test <package-name> <path-to-test>
+pnpm --filter @repo/<package-name> lint
+pnpm --filter @repo/<package-name> typecheck
+pnpm --filter @repo/<package-name> test -- <path-to-test>
 ```
+
+`apps/helpdesk` currently runs Jest, extracted packages usually run Vitest, and the local package config wins for exceptions.
 
 ## Reference Files
 

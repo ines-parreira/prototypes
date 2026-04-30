@@ -1,27 +1,42 @@
 # Test Patterns
 
-## Test File Structure
+## Choose the Runner First
+
+Confirm the active runner before copying any setup.
+
+- `apps/helpdesk/**` defaults to Jest and should import `render` and `renderHook` from `@repo/testing` with `jest.*`
+- Extracted `packages/**` usually use Vitest and should follow `@repo/testing/vitest`, package-local `tests/render.utils`, and `vi.*`
+- Local `package.json`, `jest.config.*`, `vitest.config.*`, and neighboring tests override the folder heuristic when a package is an exception
+
+## Render Helpers
+
+In `apps/helpdesk/**`, import `render` and `renderHook` from `@repo/testing`. Do not import those helpers directly from `@testing-library/react`. Test-local setup helpers may wrap `@repo/testing` `render` or `renderHook` when a spec needs extra providers or route state.
+
+In `packages/**`, import `render` and `renderHook` from the nearest package-local `tests/render.utils` when it exists. Those helpers carry package providers, router defaults, bridge context, `QueryClient` ownership, and `userEvent` setup.
+
+Do not import `render` or `renderHook` directly from `@testing-library/react` when a package helper is available. Keep using Testing Library for `screen`, `waitFor`, `within`, `act`, and types.
+
+## Vitest Package Example
 
 ```tsx
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@repo/testing/vitest'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
-import { appQueryClient, mockStore } from 'testing/utils'
 
 import { ThemeProvider } from '@gorgias/axiom'
-import { mockGetTicketHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetTicketHandler,
+    mockUpdateTicketHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { ComponentName } from './ComponentName'
 
-// 1. Setup handlers at the top
 const mockGetTicket = mockGetTicketHandler()
-const localHandlers = [mockGetTicket.handler]
+const mockUpdateTicket = mockUpdateTicketHandler()
+const localHandlers = [mockGetTicket.handler, mockUpdateTicket.handler]
 
-// 2. Setup server
 const server = setupServer()
 
 beforeAll(() => {
@@ -40,24 +55,20 @@ afterAll(() => {
     server.close()
 })
 
-// 3. Render helper
 function renderComponent(props = {}) {
-    return render(
-        <MemoryRouter>
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <ThemeProvider>
-                        <ComponentName {...props} />
-                    </ThemeProvider>
-                </QueryClientProvider>
+    const store = mockStore()
+
+    return render(<ComponentName {...props} />, {
+        wrapper: ({ children }) => (
+            <Provider store={store}>
+                <ThemeProvider>{children}</ThemeProvider>
             </Provider>
-        </MemoryRouter>,
-    )
+        ),
+    })
 }
 
-// 4. Tests
 describe('ComponentName', () => {
-    it('should render ticket details', async () => {
+    it('renders ticket details', async () => {
         renderComponent({ ticketId: 123 })
 
         await waitFor(() => {
@@ -69,74 +80,136 @@ describe('ComponentName', () => {
 })
 ```
 
-## Accessible Selectors (Priority Order)
+For `apps/helpdesk`, keep the same test shape but import `render` and `renderHook` from `@repo/testing` and use `jest.*` globals.
+
+## Shared QueryClient Ownership
+
+The safest default is to let shared render helpers own the query client lifecycle and to wait on user-visible outcomes or captured requests instead of query internals.
+
+- In `apps/helpdesk`, prefer `@repo/testing` render helpers and Jest setup patterns
+- In extracted packages, prefer `@repo/testing/vitest` or existing package-local render helpers
+- Do not add module-scoped `QueryClient` instances to generic consumer-test templates
+- Do not seed, poll, or clear query clients in consumer specs. Drive server data through SDK MSW handlers and let render helpers own query lifecycle.
+
+## Portal Menus and Async Controls
+
+Portal-backed menus, dropdowns, modals, and submenus often render a tick after the trigger interaction. Wait for the opened UI before clicking nested items:
 
 ```tsx
-// 1. getByRole - BEST (accessibility + user behavior)
+await user.click(screen.getByRole('button', { name: /more actions/i }))
+
+const menu = (await screen.findAllByRole('menu')).at(-1)!
+await user.click(
+    await within(menu).findByRole('menuitem', { name: /assign to team/i }),
+)
+```
+
+Prefer `findBy*` queries when the next step needs an element that appears after async data or a portal render:
+
+```tsx
+await user.click(screen.getByRole('button', { name: /status/i }))
+
+const lunchBreakOption = await screen.findByRole('option', {
+    name: /lunch break/i,
+})
+await user.click(lunchBreakOption)
+```
+
+If a control is enabled after async data, wait for that state first:
+
+```tsx
+const mergeButton = await screen.findByRole('button', { name: /merge/i })
+
+await waitFor(() => {
+    expect(mergeButton).toBeEnabled()
+})
+
+await user.click(mergeButton)
+```
+
+When a test closes and reopens a dropdown, dialog, or async select, discard previous handles and query the reopened UI again:
+
+```tsx
+await user.keyboard('{Escape}')
+await waitFor(() => {
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+})
+
+await user.click(await screen.findByRole('button', { name: /tags/i }))
+const reopenedSearchbox = await screen.findByRole('searchbox')
+await user.type(reopenedSearchbox, 'vip')
+```
+
+Reusable opener helpers should return a fresh ready element and can guard against already-open triggers:
+
+```tsx
+async function openTagsDropdown(user: UserEvent) {
+    const trigger = await screen.findByRole('button', { name: /tags/i })
+
+    if (trigger.getAttribute('aria-expanded') !== 'true') {
+        await user.click(trigger)
+    }
+
+    return screen.findByRole('searchbox')
+}
+```
+
+## Accessible Selectors
+
+```tsx
 screen.getByRole('button', { name: /submit/i })
 screen.getByRole('textbox', { name: /email/i })
 screen.getByRole('heading', { level: 1 })
-
-// 2. getByText - For text content
 screen.getByText('Submit')
-screen.getByText(/welcome/i)
-
-// 3. getByLabelText - For form inputs
 screen.getByLabelText('Email address')
-
-// 4. queryByText - For conditional content
 screen.queryByText('Error message')
-
-// 5. getByPlaceholderText - Inputs without labels
 screen.getByPlaceholderText('Search...')
 
-// 6. getByTestId - LAST RESORT ONLY
-// ❌ Avoid - screen.getByTestId('submit-button')
+// LAST RESORT ONLY
+screen.getByTestId('submit-button')
 ```
 
 ## User Interactions
 
-With userEvent await user interaction methods:
-
 ```tsx
-it('should handle form submission', async () => {
-    const user = userEvent.setup()
-    renderComponent()
+it('handles form submission', async () => {
+    const { user } = renderComponent()
 
-    // Wait for component to load
     await waitFor(() => {
         expect(
             screen.getByRole('textbox', { name: /name/i }),
         ).toBeInTheDocument()
     })
 
-    // Interact
     await user.type(screen.getByRole('textbox', { name: /name/i }), 'John')
     await user.click(screen.getByRole('button', { name: /save/i }))
 
-    // Assert result
     await waitFor(() => {
         expect(screen.getByText('Saved successfully')).toBeInTheDocument()
     })
 })
 ```
 
-If this genenerate act() related warning:
+If you hit an `act()` warning, do **not** default to `await act(() => user.click(...))`. React notes that Testing Library helpers are already wrapped in `act()`: <https://react.dev/reference/react/act>.
 
-```
-Warning: An update to Component inside a test was not wrapped in act(...)
-```
-
-Then wrap the user event in an act()
+Instead:
 
 ```typescript
-// BEFORE
+// 1. Ensure the interaction is awaited
 await user.click(button)
-// AFTER
-await act(() => user.click(button))
+
+// 2. Wait for a visible outcome or request boundary
+await waitFor(() => {
+    expect(screen.getByText('Saved successfully')).toBeInTheDocument()
+})
+
+// 3. Use act() only for timer or manual state transitions that RTL does not wrap
+act(() => {
+    vi.advanceTimersByTime(300) // Use jest.advanceTimersByTime(...) in apps/helpdesk
+})
 ```
 
-## Multiple interactions
+## Multiple Interactions
 
 ```tsx
 await user.clear(screen.getByRole('textbox'))
@@ -147,7 +220,7 @@ await user.click(screen.getByRole('button', { name: /save/i }))
 ## Handler Overrides for Specific Tests
 
 ```tsx
-it('should handle error state', async () => {
+it('handles error state', async () => {
     const { handler } = mockGetTicketHandler(async () =>
         HttpResponse.json({ error: { msg: 'Not found' } }, { status: 404 }),
     )
@@ -159,27 +232,14 @@ it('should handle error state', async () => {
         expect(screen.getByText(/not found/i)).toBeInTheDocument()
     })
 })
-
-it('should handle different user role', async () => {
-    const { handler } = mockGetCurrentUserHandler(async () =>
-        HttpResponse.json({
-            ...mockGetCurrentUser.data,
-            role: { name: 'admin' },
-        }),
-    )
-    server.use(handler)
-
-    // Test admin-specific behavior
-})
 ```
 
 ## Request Assertions
 
 ```tsx
-it('should send correct data on submit', async () => {
-    const waitForRequest = mockUpdateTicketHandler.waitForRequest(server)
-    const user = userEvent.setup()
-    renderComponent()
+it('sends correct data on submit', async () => {
+    const waitForRequest = mockUpdateTicket.waitForRequest(server)
+    const { user } = renderComponent()
 
     await user.type(screen.getByRole('textbox'), 'Updated title')
     await user.click(screen.getByRole('button', { name: /save/i }))
@@ -193,12 +253,45 @@ it('should send correct data on submit', async () => {
 })
 ```
 
+## Timer-Driven Tests
+
+Only use fake timers for debounce or explicit timer behavior. Testing Library recommends wiring `advanceTimers` into `userEvent.setup()` and flushing pending timers before restoring real timers:
+
+```tsx
+beforeEach(() => {
+    vi.useFakeTimers() // Use jest.useFakeTimers() in apps/helpdesk
+})
+
+afterEach(() => {
+    vi.runOnlyPendingTimers() // Use jest.runOnlyPendingTimers() in apps/helpdesk
+    vi.useRealTimers() // Use jest.useRealTimers() in apps/helpdesk
+})
+
+it('submits after the debounce window', async () => {
+    const user = userEvent.setup({
+        advanceTimers: vi.advanceTimersByTime,
+    })
+
+    renderComponent()
+
+    await user.type(screen.getByRole('textbox', { name: /search/i }), 'shoe')
+
+    act(() => {
+        vi.advanceTimersByTime(300) // Use jest.advanceTimersByTime(...) in apps/helpdesk
+    })
+
+    await waitFor(() => {
+        expect(screen.getByText('Results')).toBeInTheDocument()
+    })
+})
+```
+
 ## Common Patterns
 
 ### Loading State
 
 ```tsx
-it('should show loading state', () => {
+it('shows loading state', () => {
     renderComponent()
     expect(screen.getByRole('progressbar')).toBeInTheDocument()
 })
@@ -207,7 +300,7 @@ it('should show loading state', () => {
 ### Empty State
 
 ```tsx
-it('should show empty state when no data', async () => {
+it('shows empty state when no data', async () => {
     const { handler } = mockListTicketsHandler(async () =>
         HttpResponse.json({ data: [] }),
     )
@@ -224,18 +317,41 @@ it('should show empty state when no data', async () => {
 ## Anti-patterns
 
 ```tsx
-// ❌ Don't use fireEvent when userEvent works
+// Don't use fireEvent when userEvent works
 fireEvent.click(button)
 
-// ❌ Don't use getByTestId
+// Don't use getByTestId when an accessible query works
 screen.getByTestId('submit-button')
 
-// ❌ Don't forget await on userEvent (methods are async)
-user.click(button) // Missing await
+// Don't forget await on userEvent methods
+user.click(button)
 
-// ❌ Don't test implementation details
+// Don't share a module-scoped QueryClient in a generic consumer test
+const queryClient = createTestQueryClient()
+
+// Don't mock core providers, routing, cache, or SDK query hooks
+vi.mock('@gorgias/axiom')
+vi.mock('react-router-dom')
+vi.mock('@tanstack/react-query')
+vi.mock('@gorgias/helpdesk-queries', () => ({ useListTickets: vi.fn() }))
+
+// Don't wait on query internals when a UI or request assertion would work
+await waitFor(() => {
+    expect(queryClient.isFetching()).toBe(0)
+})
+
+// Don't use generic retry-click helpers or click twice to "unstick" the UI
+await user.click(button)
+await user.click(button)
+
+// Don't use index-based selectors when a role/name or scoped query is possible
+screen.getAllByRole('button')[1]
+
+// Don't test implementation details
 expect(component.state.isOpen).toBe(true)
 
-// ❌ Don't create manual mocks for API calls
-jest.mock('../api', () => ({ fetchTicket: jest.fn() }))
+// Don't create manual mocks for API calls
+vi.mock('../api', () => ({ fetchTicket: vi.fn() }))
 ```
+
+Mocking `@gorgias/axiom`, `react-router`, `react-router-dom`, `@tanstack/react-query`, or `@gorgias/*-queries` is a severe anti-pattern. Use shared render helpers for providers/router/query setup and SDK MSW handlers for API responses instead.

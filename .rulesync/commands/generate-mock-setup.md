@@ -29,6 +29,9 @@ When the user runs this command:
         - `@gorgias/help-center-queries` -> `@gorgias/help-center-mocks`
         - `@gorgias/convert-queries` -> `@gorgias/convert-mocks`
         - `@gorgias/ecommerce-storage-queries` -> `@gorgias/ecommerce-storage-mocks`
+        - `@gorgias/customer-segmentation-queries` -> `@gorgias/customer-segmentation-mocks`
+
+   Do not generate module mocks for `@gorgias/axiom`, `react-router`, `react-router-dom`, `@tanstack/react-query`, or `@gorgias/*-queries`. Those are core integration surfaces and mocking them is a severe anti-pattern. Use render helpers for providers/router/query setup and SDK MSW handlers for API responses.
 
 2. **Map hooks to mock handlers**:
     - `useGetXxx` -> `mockGetXxxHandler` from the corresponding mocks package

@@ -167,13 +167,15 @@ it('should recover from error', async () => {
 
 ```bash
 # Run with coverage
-pnpm test <package-name> --coverage <path>
+pnpm --filter @repo/<package-name> test -- --coverage <path>
 
 # Focus on meaningful coverage
 # - Branch coverage > Line coverage
 # - Critical paths fully covered
 # - Error handling tested
 ```
+
+When repeating constrained package test runs, clear stale package coverage artifacts and reset Nx state between iterations so failures reflect the current run instead of previous terminal output or coverage temp-file collisions. Keep coverage output available on failures when debugging CI flakes.
 
 ## Test Maintenance
 

@@ -2,6 +2,8 @@
 
 ## Basic Server Setup
 
+Prefer package-level shared MSW server setup when it exists. For example, if a package exposes `src/tests/server.ts`, import that `server` in individual specs instead of creating a new `setupServer()` per file. File-local tests should add their handlers with `server.use(...localHandlers)` and reset handlers in `afterEach`.
+
 ```tsx
 import { setupServer } from 'msw/node'
 import { mockGetTicketHandler, mockListTicketsHandler } from '@gorgias/helpdesk-mocks'
@@ -36,6 +38,24 @@ afterAll(() => {
 })
 ```
 
+When using a shared package server, the spec setup usually becomes:
+
+```tsx
+import { server } from '../../tests/server'
+
+const localHandlers = [mockGetTicket.handler, mockListTickets.handler]
+
+beforeEach(() => {
+    server.use(...localHandlers)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+```
+
+Do not create a second file-local `setupServer()` in a package that already has a shared server. Multiple independent servers make handler registration and teardown order harder to reason about under parallel Vitest runs.
+
 ## SDK Mock Packages
 
 | Service | Package |
@@ -45,6 +65,7 @@ afterAll(() => {
 | Help Center | `@gorgias/help-center-mocks` |
 | Convert | `@gorgias/convert-mocks` |
 | Ecommerce Storage | `@gorgias/ecommerce-storage-mocks` |
+| Customer Segmentation | `@gorgias/customer-segmentation-mocks` |
 
 ## Handler Naming Convention
 

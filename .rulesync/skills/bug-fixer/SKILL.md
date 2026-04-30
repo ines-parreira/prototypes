@@ -74,7 +74,7 @@ Confirm the fix works:
 
 ```bash
 # For test failures
-pnpm test <package-name> <path-to-test>
+pnpm --filter @repo/<package-name> test -- <path-to-test>
 
 # For type errors
 pnpm typecheck:affected
@@ -82,6 +82,8 @@ pnpm typecheck:affected
 # For lint errors
 pnpm lint:code:affected
 ```
+
+When the failure is in tests, confirm the local runner first. `apps/helpdesk` currently defaults to Jest, extracted `packages/**` usually default to Vitest, and the local package config wins for exceptions.
 
 ### Step 7: Prevent Regression
 

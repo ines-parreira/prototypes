@@ -59,7 +59,7 @@ For the error, collect:
 | Error                    | Likely Cause                   | Fix                                  |
 | ------------------------ | ------------------------------ | ------------------------------------ |
 | `Unable to find element` | Wrong selector or timing       | Use accessible selector, add waitFor |
-| `act() warning`          | Missing await or act wrapper   | Wrap userEvent in `await act()`      |
+| `act() warning`          | Missing await, wrong wait target, or manual timer advance | Await userEvent and wait on UI or requests; use `act()` only for timers/manual state |
 | `Network request failed` | Missing MSW handler            | Add handler from SDK mocks           |
 | `Timeout`                | Async operation not completing | Check mock setup, increase timeout   |
 
@@ -122,14 +122,16 @@ After applying fix:
 
 ```bash
 # For TypeScript errors
-pnpm typecheck <package>
+pnpm --filter @repo/<package> typecheck
 
 # For test failures
-pnpm test <package> <path-to-test>
+pnpm --filter @repo/<package> test -- <path-to-test>
 
 # For lint errors
-pnpm lint <package>
+pnpm --filter @repo/<package> lint
 ```
+
+When the issue is test-related, confirm the local runner first. `apps/helpdesk` currently defaults to Jest, extracted `packages/**` usually default to Vitest, and the local package config wins for exceptions.
 
 ## Quick Reference: Test Debugging
 

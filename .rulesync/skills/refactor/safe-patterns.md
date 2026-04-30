@@ -258,8 +258,8 @@ const data = useNewQuery()
 
 After each refactoring step:
 
-- [ ] Code compiles (`pnpm typecheck <package>`)
-- [ ] Tests pass (`pnpm test <package> <path-to-test>` for files being changed)
-- [ ] No lint errors (`pnpm lint <package>`)
+- [ ] Code compiles (`pnpm --filter @repo/<package> typecheck`)
+- [ ] Tests pass (`pnpm --filter @repo/<package> test -- <path-to-test>` for files being changed)
+- [ ] No lint errors (`pnpm --filter @repo/<package> lint`)
 - [ ] Behavior unchanged (manual verification if needed)
 - [ ] No dead code left behind

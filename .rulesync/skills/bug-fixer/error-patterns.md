@@ -233,24 +233,17 @@ user.click(button) // ❌ Missing await
 // Right
 await user.click(button) // ✅
 
+await waitFor(() => {
+    expect(screen.getByText('Updated')).toBeInTheDocument()
+})
+
 // For timer manipulations, act() IS still needed
 act(() => {
-    jest.advanceTimersByTime(1000)
-    // or
-    vitest.advanceTimersByTime(1000)
+    vi.advanceTimersByTime(1000)
 })
 ```
 
-If, despite the fix, the warning is still present, then:
-
-**Fix:** Wrap the user event in an act()
-
-```typescript
-// BEFORE
-await user.click(button)
-// AFTER
-await act(() => user.click(button))
-```
+Do not default to `await act(() => user.click(button))`. React documents that Testing Library helpers are already wrapped with `act()`: <https://react.dev/reference/react/act>.
 
 ### Network request not handled
 

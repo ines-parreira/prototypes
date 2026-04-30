@@ -269,6 +269,9 @@ catalogs:
     '@gorgias/customer-segmentation-client':
       specifier: ^0.2.9
       version: 0.2.9
+    '@gorgias/customer-segmentation-mocks':
+      specifier: ^0.2.13
+      version: 0.2.13
     '@gorgias/customer-segmentation-queries':
       specifier: ^0.2.9
       version: 0.2.9
@@ -1183,6 +1186,9 @@ importers:
       '@gorgias/config':
         specifier: ^0.2.4
         version: 0.2.4(@babel/core@7.29.0)(@babel/eslint-parser@7.23.10(@babel/core@7.29.0)(eslint@8.1.0))(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.1))(eslint-plugin-import@2.25.2(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.9.3))(eslint@8.1.0))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@7.0.1(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)
+      '@gorgias/customer-segmentation-mocks':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.13(@types/node@24.12.2)(typescript@5.9.3)
       '@gorgias/help-center-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.60(@types/node@24.12.2)(typescript@5.9.3)
@@ -5401,11 +5407,20 @@ packages:
   '@gorgias/customer-segmentation-client@0.2.9':
     resolution: {integrity: sha512-VOS6eQA+J53lSWXYzAPexRGLrjA3RM0YzzxG4kdj+acxKtIEsoyJe8BRJvMzHO+nLgQWcs90vtWkrWZiyDdGEw==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-client/0.2.9/f504bf90c80bfe6d867fa0521f4eee735676f639}
 
+  '@gorgias/customer-segmentation-mocks@0.2.13':
+    resolution: {integrity: sha512-H3334xqWXB5MPUiTH+OU0Y2xmWdm5Y3pC5v14jd+pIr8x7W//fOsVlp3M5UH6N4WQiXYHEyCe2i3LXawQVjD6A==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-mocks/0.2.13/3c0909f6f5103a2d82dd3c34dcf2f2c2aa7f873f}
+
   '@gorgias/customer-segmentation-queries@0.2.9':
     resolution: {integrity: sha512-6YDj5BpsdkIC5Y5zWglHGGhcCO9c/aJ9j/mIjEeBjSaoRgAxLq5IIabkBZF16Hy+a5qduxG9iHQfisc1JvsMPQ==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-queries/0.2.9/8d2cf5c857250ed02476dd551c6ae35802e0646f}
 
+  '@gorgias/customer-segmentation-spec@0.3.7':
+    resolution: {integrity: sha512-PSZuC+1JCZ1Xaz6rWEh7magzJmuECP3QjRmP/Q00xT+pThEjhKKshrdPhgGbswGVyChYOdoWnbkSjSudVUWYiA==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-spec/0.3.7/ff43f653fecab884e250fa484301389c7a81f878}
+
   '@gorgias/customer-segmentation-types@0.2.7':
     resolution: {integrity: sha512-FYfe7DIjnJ9HqkQ0ESmUb/Y+mqCE3nvKC19r5B/zm3yhAWqwpz7p6qKQHUf2bbanR54dckchnqB0lWoZeczzzA==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-types/0.2.7/96a61daefeec89a97bbd1b4ab895cc6cb9c44134}
+
+  '@gorgias/customer-segmentation-types@0.2.8':
+    resolution: {integrity: sha512-MrMhgkPwtNgVXYAOl7iDmOYBxeBGhnhXA4pBfLA1VmXs59fWgsUNqKTD+pIDlCUqRI5M+7r1hxg4SQhUkMMg1w==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-types/0.2.8/aa38790207fdedd74388c8b71311be9fb5e57bbf}
 
   '@gorgias/design-tokens@0.11.4':
     resolution: {integrity: sha512-zpJjYuwRU8kaYyug6pRHn4jGi0YCquiIzJS5e4/N2BJTJMTZcUrxmxUQKigDSZ/ppxqSyjLUWmyEZpcAxPf+Xw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.4/44e8e159b3a75f452426c6b2a25758afc0e3f673}
@@ -17999,6 +18014,18 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@gorgias/customer-segmentation-mocks@0.2.13(@types/node@24.12.2)(typescript@5.9.3)':
+    dependencies:
+      '@gorgias/customer-segmentation-spec': 0.3.7
+      '@gorgias/customer-segmentation-types': 0.2.8
+      '@gorgias/sdk-mocks': 0.14.10(@types/node@24.12.2)(typescript@5.9.3)
+      '@gorgias/sdk-spec-utils': 0.11.1
+      lodash-es: 4.18.1
+      msw: 2.9.0(@types/node@24.12.2)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - typescript
+
   '@gorgias/customer-segmentation-queries@0.2.9(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@gorgias/customer-segmentation-client': 0.2.9
@@ -18010,7 +18037,11 @@ snapshots:
       - react-dom
       - react-native
 
+  '@gorgias/customer-segmentation-spec@0.3.7': {}
+
   '@gorgias/customer-segmentation-types@0.2.7': {}
+
+  '@gorgias/customer-segmentation-types@0.2.8': {}
 
   '@gorgias/design-tokens@0.11.4': {}
 

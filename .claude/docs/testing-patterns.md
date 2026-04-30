@@ -7,7 +7,8 @@ Integration testing patterns using React Testing Library and MSW.
 ### Basic Setup
 
 ```typescript
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -33,6 +34,10 @@ afterAll(() => {
 ```
 
 ### Render Helper
+
+In `apps/helpdesk/**`, import `render` and `renderHook` from `@repo/testing`. Keep Testing Library imports for `screen`, `waitFor`, `within`, `act`, and types.
+
+In extracted `packages/**`, use the nearest package-local `tests/render.utils` helper when it exists, then fall back to `@repo/testing/vitest`.
 
 ```typescript
 const renderComponent = (props = {}) => {
