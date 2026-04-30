@@ -1,23 +1,17 @@
 import { Box, Text } from '@gorgias/axiom'
 
-import type { ConditionsFormValue, DrilldownLevel } from './types'
+import type { ConditionsFormValue } from './types'
 
 import css from './ConditionsPopoverContent.less'
 
 export function ClearAllFooter({
-    level,
     selectedConditions,
     onClear,
 }: {
-    level: DrilldownLevel
     selectedConditions: ConditionsFormValue
     onClear: () => void
 }) {
-    if (
-        level.type === 'root' ||
-        level.type === 'ticket_fields' ||
-        selectedConditions.length === 0
-    ) {
+    if (selectedConditions.length === 0) {
         return null
     }
 

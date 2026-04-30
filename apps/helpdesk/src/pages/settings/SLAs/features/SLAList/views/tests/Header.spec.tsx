@@ -10,9 +10,12 @@ describe('</Header>', () => {
 
         expect(getByText('Service level agreements')).toBeInTheDocument()
         expect(
-            getByText('SLAs (service level agreements) are used to establish', {
-                exact: false,
-            }),
+            getByText(
+                'SLAs (service level agreements) set first response and',
+                {
+                    exact: false,
+                },
+            ),
         ).toBeInTheDocument()
     })
 })

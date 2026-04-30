@@ -7,13 +7,14 @@ export default function Header() {
         <div className={settingsCss.pageContainer}>
             <h1 className={css.heading}>Service level agreements</h1>
             <p className={css.infoText}>
-                SLAs (service level agreements) are used to establish clear
-                commitments between your support team and your customers by
-                setting first response and reply timers to be hit.
+                SLAs (service level agreements) set first response and
+                resolution time targets for your support team. Policies are
+                evaluated from top to bottom so the first policy that matches a
+                ticket will apply. Drag to reorder priorities.
             </p>
             <p className={settingsCss.mb0}>
-                The first policy that matches a ticket will apply. Edit the
-                order below to adjust policy priority.
+                Make sure your last policy has no conditions so it acts as a
+                catch-all for tickets that don&apos;t match any specific policy.
             </p>
         </div>
     )

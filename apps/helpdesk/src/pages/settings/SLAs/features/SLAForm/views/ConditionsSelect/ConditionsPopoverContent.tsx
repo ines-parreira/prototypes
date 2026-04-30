@@ -128,7 +128,6 @@ export function ConditionsPopoverContent({
                 )}
             </InfiniteScroll>
             <ClearAllFooter
-                level={level}
                 selectedConditions={selectedConditions}
                 onClear={onClearAll}
             />
