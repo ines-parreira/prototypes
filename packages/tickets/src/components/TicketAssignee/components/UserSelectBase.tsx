@@ -111,6 +111,7 @@ export function UserSelectBase({
             onOpenChange={handleOpenChange}
             aria-label={ariaLabel}
             size="sm"
+            autoFocus={false}
             header={header?.({ onClear: handleClear, search })}
             footer={footer?.({ onClear: handleClear, search })}
             trigger={(args) =>

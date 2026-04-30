@@ -99,6 +99,7 @@ export function TeamAssigneeSelect({
             onLoadMore={() => shouldLoadMore && onLoad()}
             aria-label="Team selection"
             size="sm"
+            autoFocus={false}
             trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
                 const emoji = isNumber(selectedOption?.id)
                     ? teamsMap.get(selectedOption?.id)?.decoration?.emoji
