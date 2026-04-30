@@ -11,6 +11,7 @@ import { getAvatar } from 'pages/common/components/Avatar/utils'
 import { AVATAR_SIZE, MessageAvatar } from '../MessageAvatar'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyAvatar: jest.fn(() => null),
 }))
 

@@ -38,6 +38,7 @@ const DisclosureContext = React.createContext<{
 })
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Box: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),

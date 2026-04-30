@@ -10,6 +10,7 @@ import DistributeToTeamsWidget from '../DistributeToTeamsWidget'
 const mockStore = configureMockStore([thunk])
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     SelectField: ({
         children,
         items,

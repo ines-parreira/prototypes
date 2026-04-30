@@ -39,6 +39,7 @@ jest.mock('pages/aiAgent/components/PlaygroundPanel/PlaygroundPanel', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Box: ({
         children,
         className,

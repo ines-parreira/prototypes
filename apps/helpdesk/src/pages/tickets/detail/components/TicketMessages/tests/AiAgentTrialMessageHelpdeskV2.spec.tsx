@@ -21,6 +21,7 @@ import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import { AiAgentTrialMessageHelpdeskV2 } from '../AIAgentTrialMessageHelpdeskV2/AiAgentTrialMessageHelpdeskV2'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Box: ({
         children,
         className,

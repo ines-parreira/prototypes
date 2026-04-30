@@ -15,6 +15,7 @@ import {
 import { AIAgentUsedDataHelpdeskV2 } from '../AIAgentDraftMessageHelpdeskV2/AIAgentUsedDataHelpdeskV2'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Box: ({
         children,
         className,

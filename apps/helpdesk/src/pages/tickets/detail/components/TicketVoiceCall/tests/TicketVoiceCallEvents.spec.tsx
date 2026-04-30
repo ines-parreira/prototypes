@@ -12,6 +12,7 @@ import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
 const useListVoiceCallEventsSpy = jest.spyOn(queries, 'useListVoiceCallEvents')
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Skeleton: () => <div>Loading</div>,
 }))
 

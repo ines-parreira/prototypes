@@ -9,6 +9,7 @@ const mockOnUpdateFn = jest.fn()
 const mockInvalidateQueries = jest.fn()
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: () => ({
         invalidateQueries: mockInvalidateQueries,
     }),

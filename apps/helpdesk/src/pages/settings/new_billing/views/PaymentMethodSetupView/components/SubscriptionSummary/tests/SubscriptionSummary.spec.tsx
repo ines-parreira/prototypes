@@ -22,6 +22,7 @@ jest.mock('@repo/hooks', () => ({
 }))
 jest.mock('pages/settings/new_billing/hooks/useBillingPlan')
 jest.mock('react-redux', () => ({
+    ...jest.requireActual('react-redux'),
     useDispatch: jest.fn(() => jest.fn()),
 }))
 const selectedPlans: SelectedPlans = {

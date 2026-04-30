@@ -1,21 +1,16 @@
 import React from 'react'
 
 import { UserRole } from '@repo/permissions'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { Provider } from 'react-redux'
-import { Route, StaticRouter } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { user } from 'fixtures/users'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { useStoreSelector } from 'settings/automate'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import type { RootState } from 'state/types'
 
 import {
     ArticleRecommendationsSettings,
@@ -67,9 +62,7 @@ const useIsArticleRecommendationsEnabledWhileSunsetMock = assumeMock(
     useIsArticleRecommendationsEnabledWhileSunset,
 )
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
-const initialState = {
+const initialState: Partial<RootState> = {
     currentAccount: Map({
         id: 12345,
     }),
@@ -117,6 +110,13 @@ describe('ArticleRecommendationsSettings', () => {
 
     let onChange: jest.Mock
 
+    const renderSettings = () =>
+        render(<ArticleRecommendationsSettings />, {
+            initialEntries: [BASE_PATH],
+            path: `${BASE_PATH}/:shopType?/:shopName?`,
+            storeState: initialState,
+        })
+
     beforeEach(() => {
         onChange = jest.fn()
         useStoreSelectorMock.mockImplementation((basePath, types) => {
@@ -143,15 +143,7 @@ describe('ArticleRecommendationsSettings', () => {
         })
 
         it('should not filter store integrations - show all integrations', () => {
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter location={BASE_PATH}>
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <ArticleRecommendationsSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings()
 
             // Check that StoreSelector receives all integrations
             const storeSelector = screen.getByTestId('store-selector')
@@ -179,15 +171,7 @@ describe('ArticleRecommendationsSettings', () => {
         })
 
         it('should show only non-Shopify store integrations', () => {
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter location={BASE_PATH}>
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <ArticleRecommendationsSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings()
 
             // Check that only non-Shopify integrations are shown
             const storeSelector = screen.getByTestId('store-selector')

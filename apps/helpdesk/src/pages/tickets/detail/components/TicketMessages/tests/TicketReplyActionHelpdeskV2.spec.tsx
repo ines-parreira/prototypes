@@ -12,6 +12,7 @@ import type { Team } from 'models/team/types'
 import TicketReplyActionHelpdeskV2 from '../AIAgentDraftMessageHelpdeskV2/TicketReplyActionHelpdeskV2/TicketReplyActionHelpdeskV2'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Avatar: ({ name }: { name: string }) => <span>{name}</span>,
     Box: ({
         children,

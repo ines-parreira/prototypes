@@ -42,6 +42,7 @@ jest.mock('../components/YourProfileView', () => ({
 
 // Mock the LoadingSpinner component
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyLoadingSpinner: jest.fn(() => (
         <div data-testid="loading-spinner">Loading...</div>
     )),

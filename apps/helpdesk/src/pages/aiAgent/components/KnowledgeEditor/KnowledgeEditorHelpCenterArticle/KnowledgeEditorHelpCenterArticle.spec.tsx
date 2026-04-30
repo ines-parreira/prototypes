@@ -46,6 +46,7 @@ jest.mock('./useKnowledgeEditorArticleData', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Box: ({
         children,
         className,

@@ -4,7 +4,10 @@ import { useLocation } from 'react-router-dom'
 
 import useActiveItem from '../useActiveItem'
 
-jest.mock('react-router-dom', () => ({ useLocation: jest.fn() }))
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+}))
 const useLocationMock = assumeMock(useLocation)
 
 describe('useActiveItem', () => {

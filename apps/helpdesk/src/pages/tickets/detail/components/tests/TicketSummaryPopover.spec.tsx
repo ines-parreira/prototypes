@@ -51,6 +51,7 @@ jest.mock('components/Popover', () => {
 })
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyTooltip: ({ children }: any) => (
         <div data-testid="tooltip">{children}</div>
     ),

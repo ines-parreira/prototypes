@@ -9,6 +9,7 @@ import { ConfigurationSection } from './ConfigurationSection'
 jest.mock('./ConfigurationSection.less', () => ({}))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     __esModule: true,
     LegacyBadge: ({
         children,

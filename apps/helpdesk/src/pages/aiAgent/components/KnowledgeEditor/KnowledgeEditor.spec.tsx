@@ -12,6 +12,7 @@ const defaultPanelBaseWidth =
     'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     SidePanel: ({
         isOpen,
         onOpenChange,

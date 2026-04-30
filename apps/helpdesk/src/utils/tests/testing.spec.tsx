@@ -1,15 +1,6 @@
-import { render } from '@repo/testing'
-
 import { getCombinations } from '../testing'
 
 describe('testing', () => {
-    describe('renderWithRouter', () => {
-        it('should render', () => {
-            const { container } = render(<div>Bloup</div>)
-            expect(container.firstChild).toMatchSnapshot()
-        })
-    })
-
     describe('getCombinations', () => {
         it('should return all combinations', () => {
             expect(

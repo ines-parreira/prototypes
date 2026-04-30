@@ -23,6 +23,7 @@ jest.mock(
     }),
 )
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),
 }))

@@ -15,6 +15,7 @@ jest.mock('react-router-dom', () => {
     const mockUseParams = jest.fn()
 
     return {
+        ...jest.requireActual('react-router-dom'),
         useHistory: () => ({
             replace: mockHistoryReplace,
         }),

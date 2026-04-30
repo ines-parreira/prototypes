@@ -1,15 +1,8 @@
-import type { ReactNode } from 'react'
-
 import { useFlagWithLoading } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { ChannelPerformanceBreakdownTableWrapper } from '../ChannelPerformanceBreakdownTableWrapper'
-
-jest.mock('@gorgias/axiom', () => ({
-    Box: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Skeleton: () => <div aria-label="Loading" />,
-}))
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {

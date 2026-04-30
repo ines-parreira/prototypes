@@ -37,6 +37,7 @@ jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter', () => ({
 }))
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: () => ({
         invalidateQueries: jest.fn(),
     }),

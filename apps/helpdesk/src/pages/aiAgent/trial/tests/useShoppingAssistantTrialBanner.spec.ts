@@ -25,6 +25,7 @@ jest.mock('@repo/feature-flags', () => ({
 const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useHistory: jest.fn(),
     useLocation: jest.fn(),

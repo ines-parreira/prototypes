@@ -28,6 +28,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyBadge: jest.fn(({ children, type }) => (
         <div data-testid={`badge-${type}`}>{children}</div>
     )),

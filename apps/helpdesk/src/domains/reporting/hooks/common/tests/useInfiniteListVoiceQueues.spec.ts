@@ -7,7 +7,10 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useInfiniteQuery: jest.fn(),
+}))
 const useInfiniteQueryMock = assumeMock(useInfiniteQuery)
 
 jest.mock('@gorgias/helpdesk-client')

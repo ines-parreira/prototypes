@@ -26,6 +26,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import UserList from '..'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Link: jest.fn(() => <div>Link Mock</div>),
 }))

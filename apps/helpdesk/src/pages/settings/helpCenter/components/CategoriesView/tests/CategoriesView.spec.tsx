@@ -16,6 +16,7 @@ import type { RootState } from 'state/types'
 import { CategoriesViews } from '../CategoriesView'
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: () => ({
         invalidateQueries: jest.fn(),
     }),

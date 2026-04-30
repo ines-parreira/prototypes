@@ -21,7 +21,10 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 
 const logEventMock = logEvent as jest.Mock
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useInfiniteQuery: jest.fn(),
+}))
 const useInfiniteQuerySpy = jest.spyOn(reactQuery, 'useInfiniteQuery')
 
 const mockMacrosData = [{ id: 1 }, { id: 2 }]

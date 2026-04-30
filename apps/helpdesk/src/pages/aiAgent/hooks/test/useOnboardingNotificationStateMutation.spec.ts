@@ -11,6 +11,7 @@ import { getOnboardingNotificationStateFixture } from '../../fixtures/onboarding
 import { useOnboardingNotificationStateMutation } from '../useOnboardingNotificationStateMutation'
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: jest.fn(),
 }))
 

@@ -21,6 +21,7 @@ jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceContext', () => {
 })
 jest.mock('react-router-dom', () => {
     return {
+        ...jest.requireActual('react-router-dom'),
         useParams: () => ({
             shopName: 'test-store',
             shopType: 'shopify' as const,

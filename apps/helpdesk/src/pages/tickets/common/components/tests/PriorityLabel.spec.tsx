@@ -6,6 +6,7 @@ import type { TicketPriority } from '@gorgias/helpdesk-types'
 import { PriorityLabel } from '../PriorityLabel'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyBadge: ({ children, className, type, ref }: any) => (
         <div
             data-testid="badge"

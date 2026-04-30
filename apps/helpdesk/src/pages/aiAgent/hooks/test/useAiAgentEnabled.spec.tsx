@@ -21,6 +21,7 @@ import { RuleType } from 'state/rules/types'
 import { useAiAgentEnabled } from '../useAiAgentEnabled'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn(),
 }))

@@ -16,6 +16,7 @@ import EditCustomField from 'pages/settings/customFields/EditCustomField'
 import EditFieldForm from '../components/EditFieldForm'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: () => ({ id: 10 }),
     Link: () => 'link',

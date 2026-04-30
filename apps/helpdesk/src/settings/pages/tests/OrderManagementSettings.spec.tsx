@@ -1,21 +1,16 @@
 import type { ReactNode } from 'react'
 
 import { UserRole } from '@repo/permissions'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { Provider } from 'react-redux'
-import { Route, StaticRouter } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { useStoreSelector } from 'settings/automate'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import type { RootState } from 'state/types'
 
 import { BASE_PATH, OrderManagementSettings } from '../OrderManagementSettings'
 
@@ -67,9 +62,7 @@ const mockUseChatPreviewPanel = jest.requireMock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
 ).useChatPreviewPanel as jest.Mock
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
-const initialState = {
+const initialState: Partial<RootState> = {
     currentAccount: Map({
         id: 12345,
     }),
@@ -105,6 +98,13 @@ const integrationWithDifferentDisplayName = {
 
 describe('OrderManagementSettings', () => {
     let onChange: jest.Mock
+
+    const renderSettings = (route = BASE_PATH) =>
+        render(<OrderManagementSettings />, {
+            initialEntries: [route],
+            path: `${BASE_PATH}/:shopType?/:shopName?`,
+            storeState: initialState,
+        })
 
     beforeEach(() => {
         onChange = jest.fn()
@@ -142,28 +142,12 @@ describe('OrderManagementSettings', () => {
 
     describe('legacy header', () => {
         it('should render the header title', () => {
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter location={BASE_PATH}>
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings()
             expect(screen.getByText('Order Management')).toBeInTheDocument()
         })
 
         it('should not render navigation if no store is selected', () => {
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter location={BASE_PATH}>
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings()
             expect(screen.queryByText('Configuration')).not.toBeInTheDocument()
         })
 
@@ -174,17 +158,7 @@ describe('OrderManagementSettings', () => {
                 selected: integrations[0],
             })
 
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter
-                        location={`${BASE_PATH}/shopify/my-first-store`}
-                    >
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings(`${BASE_PATH}/shopify/my-first-store`)
             expect(screen.getByText('Configuration')).toBeInTheDocument()
             expect(screen.getByText('Channels')).toBeInTheDocument()
         })
@@ -196,17 +170,7 @@ describe('OrderManagementSettings', () => {
                 selected: integrations[0],
             })
 
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter
-                        location={`${BASE_PATH}/shopify/my-first-store/track`}
-                    >
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings(`${BASE_PATH}/shopify/my-first-store/track`)
             expect(screen.getByText('Order management')).toBeInTheDocument()
             expect(screen.getByText('Track order')).toBeInTheDocument()
         })
@@ -218,16 +182,8 @@ describe('OrderManagementSettings', () => {
                 selected: integrations[0],
             })
 
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter
-                        location={`${BASE_PATH}/shopify/my-first-store/report-issue/new`}
-                    >
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
+            renderSettings(
+                `${BASE_PATH}/shopify/my-first-store/report-issue/new`,
             )
             expect(screen.getByText('Report order issue')).toBeInTheDocument()
             expect(screen.getByText(/new/i)).toBeInTheDocument()
@@ -252,28 +208,12 @@ describe('OrderManagementSettings', () => {
         })
 
         it('should render the header title', () => {
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter location={BASE_PATH}>
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings()
             expect(screen.getByText('Order Management')).toBeInTheDocument()
         })
 
         it('should not render navigation if no store is selected', () => {
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter location={BASE_PATH}>
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings()
             expect(screen.queryByText('Configuration')).not.toBeInTheDocument()
         })
 
@@ -284,17 +224,7 @@ describe('OrderManagementSettings', () => {
                 selected: integrations[0],
             })
 
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter
-                        location={`${BASE_PATH}/shopify/my-first-store`}
-                    >
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings(`${BASE_PATH}/shopify/my-first-store`)
             expect(screen.getByText('Configuration')).toBeInTheDocument()
             expect(screen.getByText('Channels')).toBeInTheDocument()
         })
@@ -348,15 +278,7 @@ describe('OrderManagementSettings', () => {
             })
 
             act(() => {
-                renderWithQueryClientProvider(
-                    <Provider store={mockStore(initialState)}>
-                        <StaticRouter location={BASE_PATH}>
-                            <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                                <OrderManagementSettings />
-                            </Route>
-                        </StaticRouter>
-                    </Provider>,
-                )
+                renderSettings()
             })
 
             expect(onChatPreviewLoaded).toHaveBeenCalledWith(

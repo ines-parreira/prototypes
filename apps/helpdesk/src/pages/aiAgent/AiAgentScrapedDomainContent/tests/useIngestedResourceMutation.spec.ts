@@ -13,6 +13,7 @@ import { IngestedResourceStatus } from '../constant'
 import { useIngestedResourceMutation } from '../hooks/useIngestedResourceMutation'
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: jest.fn(),
 }))
 

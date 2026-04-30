@@ -10,6 +10,7 @@ import type { KnowledgeEditorReturn } from './useKnowledgeHubEditor'
 import { useKnowledgeHubGuidanceEditor } from './useKnowledgeHubGuidanceEditor'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
     useLocation: jest.fn(),
 }))

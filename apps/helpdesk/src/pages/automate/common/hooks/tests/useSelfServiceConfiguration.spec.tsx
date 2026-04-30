@@ -14,7 +14,10 @@ import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
 import { useSelfServiceConfigurationUpdate } from '../useSelfServiceConfigurationUpdate'
 import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('models/selfServiceConfiguration/queries')
 jest.mock('models/selfServiceConfiguration/resources')

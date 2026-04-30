@@ -15,6 +15,7 @@ const captured: {
 }
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Box: ({ children }: any) => <div>{children}</div>,
     SelectField: ({
         onChange,

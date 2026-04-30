@@ -17,7 +17,10 @@ const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('domains/reporting/hooks/voice-of-customer/useTopIntentPerProduct')
 const useTopIntentPerProductMock = assumeMock(useTopIntentPerProduct)
 
-jest.mock('@gorgias/axiom')
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    Skeleton: jest.fn(),
+}))
 const SkeletonMock = assumeMock(Skeleton)
 
 const renderWithTable = (ui: ReactNode) => {

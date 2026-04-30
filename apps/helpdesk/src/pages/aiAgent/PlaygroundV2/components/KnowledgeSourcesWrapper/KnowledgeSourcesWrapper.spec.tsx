@@ -18,7 +18,10 @@ jest.mock('../../hooks/useFeedbackPolling')
 jest.mock(
     '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData',
 )
-jest.mock('@gorgias/axiom')
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    Skeleton: jest.fn(),
+}))
 jest.mock('../../contexts/EventsContext', () => ({
     useSubscribeToEvent: jest.fn(),
 }))

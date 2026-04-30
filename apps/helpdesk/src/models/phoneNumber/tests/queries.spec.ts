@@ -4,7 +4,10 @@ import { useQuery } from '@tanstack/react-query'
 import { phoneNumberKeys, usePhoneNumberCapabilitiesMap } from '../queries'
 import { fetchPhoneCapabilities } from '../resources'
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQuery: jest.fn(),
+}))
 
 const useQueryMock = assumeMock(useQuery)
 

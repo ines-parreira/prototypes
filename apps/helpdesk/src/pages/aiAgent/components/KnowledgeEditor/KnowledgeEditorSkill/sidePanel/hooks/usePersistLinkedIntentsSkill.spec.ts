@@ -7,7 +7,6 @@ const mockUpdateGuidanceArticle = jest.fn()
 const mockDispatch = jest.fn()
 const mockAppDispatch = jest.fn()
 const mockOnUpdateFn = jest.fn()
-const mockInvalidateQueries = jest.fn()
 
 jest.mock('reapop', () => ({
     POSITIONS: { bottomRight: 'bottom-right' },
@@ -24,12 +23,6 @@ jest.mock('state/notifications/actions', () => ({
 
 jest.mock('state/notifications/types', () => ({
     NotificationStatus: { Success: 'success', Error: 'error' },
-}))
-
-jest.mock('@tanstack/react-query', () => ({
-    useQueryClient: () => ({
-        invalidateQueries: mockInvalidateQueries,
-    }),
 }))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({

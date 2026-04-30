@@ -42,7 +42,10 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('state/notifications/actions')
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 const useQueryClientMock = assumeMock(useQueryClient)
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')

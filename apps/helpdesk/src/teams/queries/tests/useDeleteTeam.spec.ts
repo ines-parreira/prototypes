@@ -26,7 +26,10 @@ const mockMutateDeleteTeam = jest.fn()
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 const useQueryClientMock = assumeMock(useQueryClient)
 
 jest.mock('state/notifications/actions')

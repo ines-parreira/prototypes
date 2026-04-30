@@ -7,6 +7,7 @@ import { useLinkedIntentsModalSkill } from './useLinkedIntentsModalSkill'
 const mockPersistLinkedIntents = jest.fn()
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: () => ({ shopName: 'test-shop' }),
 }))
 

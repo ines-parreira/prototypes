@@ -47,6 +47,7 @@ const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
 )
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn(() => ({
         shopType: 'shopify',

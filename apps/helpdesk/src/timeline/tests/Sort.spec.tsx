@@ -15,6 +15,7 @@ jest.mock('@repo/feature-flags', () => ({
 
 jest.mock('@gorgias/axiom', () => {
     return {
+        ...jest.requireActual('@gorgias/axiom'),
         LegacyIconButton: React.forwardRef(
             (props: any, ref: React.Ref<HTMLButtonElement>) => (
                 <button {...props} ref={ref} data-testid="icon-button" />

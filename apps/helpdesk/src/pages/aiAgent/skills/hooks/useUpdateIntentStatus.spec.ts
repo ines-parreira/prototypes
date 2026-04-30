@@ -10,6 +10,7 @@ import {
 import { useUpdateIntentStatus } from './useUpdateIntentStatus'
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: jest.fn(),
 }))
 jest.mock('models/helpCenter/queries', () => ({

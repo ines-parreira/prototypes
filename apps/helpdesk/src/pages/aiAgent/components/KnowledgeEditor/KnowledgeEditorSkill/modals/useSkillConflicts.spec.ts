@@ -39,6 +39,7 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
 }))
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: () => ({
         removeQueries: mockRemoveQueries,
         invalidateQueries: mockInvalidateQueries,

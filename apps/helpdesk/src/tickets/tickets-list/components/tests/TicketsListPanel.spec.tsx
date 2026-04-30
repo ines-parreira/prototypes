@@ -12,6 +12,7 @@ import { setViewEditMode } from 'state/views/actions'
 import TicketsListPanel from '../TicketsListPanel'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
     useLocation: jest.fn(),
     useParams: jest.fn(),

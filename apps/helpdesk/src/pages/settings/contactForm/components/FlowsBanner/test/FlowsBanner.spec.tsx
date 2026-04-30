@@ -9,6 +9,7 @@ import FlowsBanner from '../FlowsBanner'
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useHistory: () => ({
         push: mockHistoryPush,

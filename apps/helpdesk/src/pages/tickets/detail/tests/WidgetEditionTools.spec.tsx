@@ -11,6 +11,7 @@ import { WidgetEnvironment } from 'state/widgets/types'
 import WidgetEditionTools from '../WidgetEditionTools'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Button: ({ children, onClick, isDisabled, isLoading, ...rest }: any) => (
         <button onClick={onClick} disabled={isDisabled || isLoading} {...rest}>
             {children}

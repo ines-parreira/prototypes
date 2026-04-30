@@ -9,6 +9,7 @@ import type { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import InfiniteScroll from '../InfiniteScroll'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyLoadingSpinner: ({ size }: ComponentProps<typeof LoadingSpinner>) => (
         <div>
             SpinnerMock

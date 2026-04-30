@@ -16,6 +16,7 @@ jest.mock('../utils', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyTooltip: jest.fn(({ children, target }) => (
         <div data-testid="tooltip" data-target={target}>
             {children}

@@ -19,6 +19,7 @@ import {
 } from '../AIAgentDraftMessageHelpdeskV2/TicketReplyActionHelpdeskV2/components'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Avatar: ({ name, url }: { name: string; url?: string }) => (
         <span>{`avatar:${name}:${url ?? 'none'}`}</span>
     ),

@@ -21,6 +21,7 @@ jest.mock('@repo/logging', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Skeleton: () => <div data-testid="skeleton">Loading...</div>,
 }))
 

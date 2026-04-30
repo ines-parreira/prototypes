@@ -15,7 +15,10 @@ import { NotificationStatus } from 'state/notifications/types'
 import { handleError } from '../errorHandler'
 import { useCreateAgent } from '../useCreateAgent'
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 jest.mock('models/agents/queries')
 const usePureCreateAgentMock = assumeMock(usePureCreateAgent)
 jest.mock('../errorHandler')

@@ -16,7 +16,10 @@ import { useGuidanceArticles } from '../useGuidanceArticles'
 jest.mock('../useGuidanceArticles')
 jest.mock('models/aiAgent/queries')
 jest.mock('hooks/useAppSelector')
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 
 const useQueryClientMock = assumeMock(useQueryClient)
 const mockedUseGuidanceArticles = assumeMock(useGuidanceArticles)

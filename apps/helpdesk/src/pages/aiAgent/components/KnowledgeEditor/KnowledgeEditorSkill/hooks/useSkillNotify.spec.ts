@@ -5,6 +5,7 @@ import { toast } from '@gorgias/axiom'
 import { useSkillNotify } from './useSkillNotify'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     toast: {
         success: jest.fn(),
         error: jest.fn(),

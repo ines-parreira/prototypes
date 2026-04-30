@@ -9,6 +9,7 @@ import type { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
 import { TicketAssignee } from '../TicketAssignee'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyAvatar: jest.fn(() => <div />),
 }))
 

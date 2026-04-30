@@ -100,6 +100,7 @@ const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
 >
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Link: () => <div>Link Mock</div>,
     useLocation: jest.fn(),

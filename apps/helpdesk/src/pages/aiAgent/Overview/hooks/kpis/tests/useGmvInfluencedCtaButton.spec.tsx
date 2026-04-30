@@ -23,7 +23,13 @@ import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrial
 const mockStore = createMockStore([thunk])
 const queryClient = new QueryClient({})
 
-jest.mock('react-router-dom', () => ({ useLocation: jest.fn() }))
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: jest.fn(),
+    }),
+    useLocation: jest.fn(),
+}))
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 useStoreActivationsMock.mockReturnValue({
@@ -45,17 +51,6 @@ const useTrialEligibilityMock = assumeMock(useTrialEligibility)
 const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
     useTrialEligibilityForManualActivationFromFeatureFlag,
 )
-jest.mock(
-    'react-router-dom',
-    () =>
-        ({
-            useHistory: () => ({
-                push: jest.fn(),
-            }),
-            useLocation: jest.fn(),
-        }) as Record<string, unknown>,
-)
-
 describe('CtaButton', () => {
     it('is on new plan', async () => {
         const props = {

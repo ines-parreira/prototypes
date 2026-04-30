@@ -1,10 +1,6 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { Provider } from 'react-redux'
-import { Route, StaticRouter } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { AGENT_ROLE } from 'config/user'
 import { user } from 'fixtures/users'
@@ -13,8 +9,7 @@ import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { useStoreSelector } from 'settings/automate'
 import { getHasAutomate } from 'state/billing/selectors'
-import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import type { RootState } from 'state/types'
 
 import { BASE_PATH, FlowsSettings } from '../FlowsSettings'
 
@@ -53,9 +48,7 @@ const mockUseChatPreviewPanel = jest.requireMock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
 ).useChatPreviewPanel as jest.Mock
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
-const initialState = {
+const initialState: Partial<RootState> = {
     currentAccount: Map({
         id: 12345,
     }),
@@ -84,6 +77,13 @@ describe('FlowsSettings', () => {
     ] as StoreIntegration[]
 
     let onChange: jest.Mock
+
+    const renderSettings = (route = BASE_PATH) =>
+        render(<FlowsSettings />, {
+            initialEntries: [route],
+            path: `${BASE_PATH}/:shopType?/:shopName?`,
+            storeState: initialState,
+        })
 
     beforeEach(() => {
         onChange = jest.fn()
@@ -118,28 +118,12 @@ describe('FlowsSettings', () => {
     })
 
     it('should render the header', () => {
-        renderWithQueryClientProvider(
-            <Provider store={mockStore(initialState)}>
-                <StaticRouter location={BASE_PATH}>
-                    <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                        <FlowsSettings />
-                    </Route>
-                </StaticRouter>
-            </Provider>,
-        )
+        renderSettings()
         expect(screen.getByText('Flows')).toBeInTheDocument()
     })
 
     it('should not render the navigation if no store is selected', () => {
-        renderWithQueryClientProvider(
-            <Provider store={mockStore(initialState)}>
-                <StaticRouter location={BASE_PATH}>
-                    <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                        <FlowsSettings />
-                    </Route>
-                </StaticRouter>
-            </Provider>,
-        )
+        renderSettings()
         expect(screen.queryByText('Configuration')).not.toBeInTheDocument()
     })
 
@@ -150,15 +134,7 @@ describe('FlowsSettings', () => {
             selected: integrations[0],
         })
 
-        renderWithQueryClientProvider(
-            <Provider store={mockStore(initialState)}>
-                <StaticRouter location={`${BASE_PATH}/shopify/my-first-store`}>
-                    <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                        <FlowsSettings />
-                    </Route>
-                </StaticRouter>
-            </Provider>,
-        )
+        renderSettings(`${BASE_PATH}/shopify/my-first-store`)
         expect(screen.getByText('Configuration')).toBeInTheDocument()
     })
 })

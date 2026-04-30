@@ -85,7 +85,10 @@ const dispatch = jest.fn()
 useAppDispatchMock.mockReturnValue(dispatch)
 
 // Mock tanstack useQueryClient
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 const useQueryClientMock = assumeMock(useQueryClient)
 const invalidateQueriesMock = jest.fn()
 useQueryClientMock.mockImplementation(

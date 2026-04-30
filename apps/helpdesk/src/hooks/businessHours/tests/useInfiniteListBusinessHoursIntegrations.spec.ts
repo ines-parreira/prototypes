@@ -8,7 +8,10 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import useInfiniteListBusinessHoursIntegrations from '../useInfiniteListBusinessHoursIntegrations'
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useInfiniteQuery: jest.fn(),
+}))
 const useInfiniteQueryMock = assumeMock(useInfiniteQuery)
 
 jest.mock('@gorgias/helpdesk-client')

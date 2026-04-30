@@ -22,7 +22,10 @@ useAppDispatchMock.mockReturnValue(dispatch)
 
 jest.mock('state/notifications/actions')
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 const useQueryClientMock = assumeMock(useQueryClient)
 const invalidateQueriesMock = jest.fn()
 useQueryClientMock.mockImplementation(

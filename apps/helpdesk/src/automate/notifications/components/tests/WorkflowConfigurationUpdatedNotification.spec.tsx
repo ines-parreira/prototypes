@@ -9,7 +9,10 @@ import { trackstarDefinitionKeys } from 'models/workflows/queries'
 
 import WorkflowConfigurationUpdatedNotification from '../WorkflowConfigurationUpdatedNotification'
 
-jest.mock('@tanstack/react-query')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 const useQueryClientMock = assumeMock(useQueryClient)
 
 describe('WorkflowConfigurationUpdatedNotification', () => {

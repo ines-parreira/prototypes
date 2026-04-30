@@ -10,6 +10,7 @@ import { TicketDetail } from '../TicketDetail'
 import { TicketHeader } from '../TicketHeader'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Box: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     Skeleton: ({ height }: any) => (
         <div data-testid="skeleton" style={{ height }}>

@@ -1,170 +1,17 @@
-import type { ReactElement } from 'react'
-
 import type { shortcutManager } from '@repo/utils'
-import type { RenderOptions } from '@testing-library/react'
-import { act, render } from '@testing-library/react'
-import type { BackendFactory } from 'dnd-core'
-import type { History } from 'history'
-import { createMemoryHistory } from 'history'
+import { act } from '@testing-library/react'
 import _findLast from 'lodash/findLast'
 import _last from 'lodash/last'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { createPortal } from 'react-dom'
-import { Provider } from 'react-redux'
-import { Route, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Toaster } from '@gorgias/axiom'
-
-import type { RootState } from 'state/types'
-import { DndProvider } from 'utils/wrappers/DndProvider'
-
 const middlewares = [thunk]
-const toaster = createPortal(<Toaster />, document.body)
 
 /**
  * Mock a Redux store
  */
 export const mockStore = <T extends object>(store: T) =>
     configureMockStore(middlewares)(store)
-
-/**
- * @deprecated Use `render` from `@repo/testing` instead.
- */
-export type RenderWithRouterParams = {
-    options?: Omit<RenderOptions, 'wrapper'>
-    path?: string
-    route?: string
-    history?: History
-}
-
-/**
- * @deprecated Use `render` from `@repo/testing` instead.
- */
-export const renderWithStore = (
-    ui: ReactElement,
-    state: Partial<RootState>,
-) => {
-    const store = configureMockStore(middlewares)(state)
-    const component = render(
-        <>
-            <Provider store={store}>{ui}</Provider>
-            {toaster}
-        </>,
-    )
-    return {
-        ...component,
-        rerenderComponent: (
-            newUi: ReactElement,
-            newState: Partial<RootState>,
-        ) =>
-            component.rerender(
-                <>
-                    <Provider store={configureMockStore(middlewares)(newState)}>
-                        {newUi}
-                    </Provider>
-                    {toaster}
-                </>,
-            ),
-        store,
-    }
-}
-
-/**
- * @deprecated Use `render` from `@repo/testing` instead.
- */
-export const renderWithRouter = (
-    ui: ReactElement,
-    {
-        options,
-        path = '/',
-        route = '/',
-        history = createMemoryHistory({ initialEntries: [route] }),
-    }: RenderWithRouterParams = {},
-) => {
-    const component = render(ui, {
-        wrapper: ({ children }: any) => (
-            <>
-                <Router history={history}>
-                    <Route path={path}>{children}</Route>
-                </Router>
-                {toaster}
-            </>
-        ),
-        ...options,
-    })
-    return {
-        ...component,
-        rerenderComponent: (newUi: ReactElement) =>
-            component.rerender(
-                <Router history={history}>
-                    <Route path={path}>{newUi}</Route>
-                </Router>,
-            ),
-        history,
-    }
-}
-
-/**
- * @deprecated Use `render` from `@repo/testing` instead.
- */
-export type RenderWithDnDParams = {
-    options?: Omit<RenderOptions, 'wrapper'>
-    backend?: BackendFactory
-}
-
-/**
- * @deprecated Use `render` from `@repo/testing` instead.
- */
-export const renderWithDnD = (
-    ui: ReactElement,
-    { options, backend = HTML5Backend }: RenderWithDnDParams = {},
-) => {
-    return render(ui, {
-        wrapper: ({ children }: any) => (
-            <>
-                <DndProvider backend={backend}>{children}</DndProvider>
-                {toaster}
-            </>
-        ),
-        ...options,
-    })
-}
-
-/**
- * @deprecated Use `render` from `@repo/testing` instead.
- */
-export type RenderWithRouterAndDnDParams = RenderWithRouterParams &
-    RenderWithDnDParams
-
-/**
- * @deprecated Use `render` from `@repo/testing` instead.
- */
-export const renderWithRouterAndDnD = (
-    ui: ReactElement,
-    {
-        options,
-        path = '/',
-        route = '/',
-        history = createMemoryHistory({ initialEntries: [route] }),
-        backend = HTML5Backend,
-    }: RenderWithRouterAndDnDParams = {},
-) => {
-    return render(ui, {
-        wrapper: ({ children }: any) => (
-            <>
-                <DndProvider backend={backend}>
-                    <Router history={history}>
-                        <Route path={path}>{children}</Route>
-                    </Router>
-                </DndProvider>
-                {toaster}
-            </>
-        ),
-        ...options,
-    })
-}
 
 export const makeExecuteKeyboardAction = (
     shortcutManagerMock: jest.Mocked<typeof shortcutManager>,

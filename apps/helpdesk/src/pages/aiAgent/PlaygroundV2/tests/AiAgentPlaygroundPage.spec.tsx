@@ -55,6 +55,7 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Button: ({ children, onClick, leadingSlot, variant, ...props }: any) => (
         <button onClick={onClick} data-variant={variant} {...props}>
             {leadingSlot && <span data-icon={leadingSlot} />}

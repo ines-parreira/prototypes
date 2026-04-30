@@ -8,6 +8,7 @@ import BookDemoContainer from '../BookDemoContainer'
 
 // Mock the Button component from @gorgias/axiom
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyButton: ({
         children,
         onClick,

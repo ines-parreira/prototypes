@@ -112,6 +112,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess')
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Switch: ({ children }: { children?: React.ReactNode }) => children,
     Route: ({

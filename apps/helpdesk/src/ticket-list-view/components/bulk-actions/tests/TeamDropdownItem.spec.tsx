@@ -11,6 +11,7 @@ const mockEmojiMart = assumeMock(Emoji)
 mockEmojiMart.mockReturnValue(<div>mockEmojiMart</div>)
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyTooltip: ({ children }: { children?: ReactNode }) => (
         <div>Tooltip{children}</div>
     ),

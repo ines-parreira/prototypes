@@ -1,10 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { shopifyIntegration } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
@@ -62,33 +59,9 @@ jest.mock('react-router-dom', () => ({
         hash: '',
         state: null,
     }),
-    MemoryRouter: ({ children }: { children?: React.ReactNode }) => children,
 }))
 
 describe('useTrialPromoCard', () => {
-    let queryClient: QueryClient
-    const mockStore = configureMockStore()
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
-
-        const store = mockStore({})
-
-        return ({ children }: { children?: React.ReactNode }) => (
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            </Provider>
-        )
-    }
-
     const mockFeatureFlags = (
         shoppingAssistantTrialImprovement: boolean = true,
         aiAgentExpandingTrialExperienceMilestone2: boolean = false,
@@ -208,11 +181,8 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current.trialAccess).toBeDefined()
@@ -225,11 +195,8 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current.trialFlow).toBeDefined()
@@ -242,11 +209,8 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current).toHaveProperty('trialAccess')
@@ -261,11 +225,8 @@ describe('useTrialPromoCard', () => {
         it('should return null when main feature flag is disabled', () => {
             mockFeatureFlags(false, false)
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).toBeNull()
@@ -283,11 +244,8 @@ describe('useTrialPromoCard', () => {
                 hasAnyTrialStarted: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).toBeNull()
@@ -313,11 +271,8 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).toBeNull()
@@ -336,11 +291,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should return admin-trial variant with correct content - Try for X days', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).toEqual({
@@ -374,16 +326,12 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should trigger trial flow when primary button is clicked', () => {
-            const { result } = renderHook(
-                () =>
-                    useTrialPromoCard(
-                        'first-shop',
-                        mockShopifyIntegrations,
-                        'first-shop',
-                    ),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard(
+                    'first-shop',
+                    mockShopifyIntegrations,
+                    'first-shop',
+                ),
             )
 
             result.current?.promoCardContent?.primaryButton.onClick?.()
@@ -392,11 +340,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should trigger trial flow when video modal CTA is clicked', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             result.current?.promoCardContent?.videoModalButton?.onClick?.()
@@ -405,11 +350,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should log correct event when primary button is clicked', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             result.current?.promoCardContent?.primaryButton.onClick?.()
@@ -421,11 +363,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should log correct event when video modal CTA is clicked', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             result.current?.promoCardContent?.videoModalButton?.onClick?.()
@@ -437,11 +376,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should log correct event when secondary button is clicked', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             result.current?.promoCardContent?.secondaryButton?.onClick?.()
@@ -465,11 +401,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should return admin-demo variant with correct content - Book a Demo', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).toEqual({
@@ -503,11 +436,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should log correct event when demo button is clicked', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             result.current?.promoCardContent?.primaryButton.onClick?.()
@@ -531,11 +461,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should return lead-notify variant with correct content and notification icon', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).toEqual({
@@ -565,11 +492,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should log correct event when notify admin button is clicked', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             result.current?.promoCardContent?.primaryButton.onClick?.()
@@ -593,11 +517,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should return lead-notify variant with notify admin as primary and demo as secondary', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).toEqual({
@@ -627,11 +548,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should log correct event when primary notify admin button is clicked', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             result.current?.promoCardContent?.primaryButton?.onClick?.()
@@ -643,11 +561,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should log correct event when secondary demo button is clicked', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             result.current?.promoCardContent?.secondaryButton?.onClick?.()
@@ -672,11 +587,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialStarted: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.variant).toBe(
@@ -694,11 +606,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialStarted: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.variant).toBe(
@@ -718,11 +627,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialStarted: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).not.toBeNull()
@@ -740,11 +646,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialStarted: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current).not.toBeNull()
@@ -761,11 +664,8 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
@@ -780,11 +680,8 @@ describe('useTrialPromoCard', () => {
                 canBookDemo: true,
             })
 
-            renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
@@ -799,11 +696,8 @@ describe('useTrialPromoCard', () => {
                 canNotifyAdmin: true,
             })
 
-            renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
@@ -818,11 +712,8 @@ describe('useTrialPromoCard', () => {
                 // All false - no access
             })
 
-            renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(mockLogEvent).not.toHaveBeenCalledWith(
@@ -839,11 +730,8 @@ describe('useTrialPromoCard', () => {
                 canNotifyAdmin: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(
@@ -860,11 +748,8 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(
@@ -883,11 +768,8 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
@@ -905,11 +787,8 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
@@ -918,16 +797,12 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should use route shopName when provided', () => {
-            renderHook(
-                () =>
-                    useTrialPromoCard(
-                        'specific-shop',
-                        mockShopifyIntegrations,
-                        'specific-shop',
-                    ),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard(
+                    'specific-shop',
+                    mockShopifyIntegrations,
+                    'specific-shop',
+                ),
             )
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
@@ -953,15 +828,11 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(
-                () =>
-                    useTrialPromoCard(
-                        undefined as any, // Test edge case with no shop name
-                        [], // Pass empty array to match what the selector returns
-                    ),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard(
+                    undefined as any, // Test edge case with no shop name
+                    [], // Pass empty array to match what the selector returns
+                ),
             )
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
@@ -999,15 +870,11 @@ describe('useTrialPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(
-                () =>
-                    useTrialPromoCard(
-                        undefined as any, // Test edge case with no shop name
-                        integrationsWithoutShopName, // Pass the integrations without shop_name
-                    ),
-                {
-                    wrapper: createWrapper(),
-                },
+            renderHook(() =>
+                useTrialPromoCard(
+                    undefined as any, // Test edge case with no shop name
+                    integrationsWithoutShopName, // Pass the integrations without shop_name
+                ),
             )
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
@@ -1034,11 +901,8 @@ describe('useTrialPromoCard', () => {
                 automationRate: undefined,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.description).toBe(
@@ -1056,11 +920,8 @@ describe('useTrialPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.description).toBe('')
@@ -1076,11 +937,8 @@ describe('useTrialPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.primaryButton.label).toBe(
@@ -1098,11 +956,8 @@ describe('useTrialPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.primaryButton.label).toBe(
@@ -1120,11 +975,8 @@ describe('useTrialPromoCard', () => {
                 isLoading: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.description).toBe('')
@@ -1146,11 +998,8 @@ describe('useTrialPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.description).toBe(
@@ -1176,11 +1025,8 @@ describe('useTrialPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.variant).toBe(
@@ -1218,15 +1064,8 @@ describe('useTrialPromoCard', () => {
                     }),
                 )
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(result.current?.promoCardContent?.showProgressBar).toBe(
@@ -1249,15 +1088,8 @@ describe('useTrialPromoCard', () => {
                     }),
                 )
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1277,15 +1109,8 @@ describe('useTrialPromoCard', () => {
                     }),
                 )
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1305,15 +1130,8 @@ describe('useTrialPromoCard', () => {
                     }),
                 )
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1333,15 +1151,8 @@ describe('useTrialPromoCard', () => {
                     hasCurrentStoreTrialStarted: true,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(result.current?.promoCardContent?.showProgressBar).toBe(
@@ -1359,15 +1170,8 @@ describe('useTrialPromoCard', () => {
                     hasCurrentStoreTrialStarted: true,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(result.current?.promoCardContent?.showProgressBar).toBe(
@@ -1386,15 +1190,8 @@ describe('useTrialPromoCard', () => {
                     hasAnyTrialStarted: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(result.current?.promoCardContent?.showProgressBar).toBe(
@@ -1422,15 +1219,8 @@ describe('useTrialPromoCard', () => {
                     }),
                 )
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1465,15 +1255,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(result.current?.promoCardContent?.variant).toBe(
@@ -1500,15 +1283,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1526,15 +1302,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1552,15 +1321,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: true,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1578,15 +1340,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1605,15 +1360,8 @@ describe('useTrialPromoCard', () => {
                     hasCurrentStoreTrialOptedOut: true,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1651,15 +1399,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(result.current?.promoCardContent?.variant).toBe(
@@ -1684,15 +1425,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1716,15 +1450,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1746,15 +1473,8 @@ describe('useTrialPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(
-                    () =>
-                        useTrialPromoCard(
-                            'first-shop',
-                            mockShopifyIntegrations,
-                        ),
-                    {
-                        wrapper: createWrapper(),
-                    },
+                const { result } = renderHook(() =>
+                    useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 )
 
                 expect(
@@ -1772,11 +1492,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent).toBeNull()
@@ -1796,11 +1513,8 @@ describe('useTrialPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.isLoading).toBe(false)
@@ -1819,11 +1533,8 @@ describe('useTrialPromoCard', () => {
                 automationRate: undefined,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.isLoading).toBe(true)
@@ -1841,11 +1552,8 @@ describe('useTrialPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.isLoading).toBe(true)
@@ -1922,11 +1630,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -1948,11 +1653,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -1975,11 +1677,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -2001,11 +1700,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -2017,11 +1713,8 @@ describe('useTrialPromoCard', () => {
         })
 
         it('should show video when not in trial progress', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.showVideo).toBe(true)
@@ -2038,11 +1731,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.showVideo).toBe(false)
@@ -2060,11 +1750,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(
@@ -2086,11 +1773,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(
@@ -2172,11 +1856,8 @@ describe('useTrialPromoCard', () => {
                 isOnboarded: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -2199,11 +1880,8 @@ describe('useTrialPromoCard', () => {
                 hasCurrentStoreTrialExpired: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -2243,11 +1921,8 @@ describe('useTrialPromoCard', () => {
                 isOnboarded: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -2269,11 +1944,8 @@ describe('useTrialPromoCard', () => {
                 isOnboarded: true,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -2295,11 +1967,8 @@ describe('useTrialPromoCard', () => {
                 isOnboarded: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -2322,11 +1991,8 @@ describe('useTrialPromoCard', () => {
                 isOnboarded: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
@@ -2348,11 +2014,8 @@ describe('useTrialPromoCard', () => {
                 isOnboarded: false,
             })
 
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
+            const { result } = renderHook(() =>
+                useTrialPromoCard('first-shop', mockShopifyIntegrations),
             )
 
             expect(result.current?.promoCardContent?.description).toBe(

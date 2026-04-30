@@ -46,6 +46,7 @@ const mockHelpCentersList = [
 ] as unknown as HelpCenter[]
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn().mockReturnValue({
         shopType: 'shopify',

@@ -103,6 +103,7 @@ const MockTableBodyContent = jest.fn(({ rows, columnCount, onRowClick }) => (
 ))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     createTableV1SortableColumn: jest.fn(
         (accessorKey, header, cellRenderer) => ({
             accessorKey,

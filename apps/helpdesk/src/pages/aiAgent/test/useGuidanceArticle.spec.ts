@@ -18,6 +18,7 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: () => ({
         getQueryData: jest.fn(() => undefined),
     }),

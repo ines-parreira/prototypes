@@ -6,6 +6,7 @@ import type { VersionItem } from './types'
 import { useVersionUsers } from './useVersionUsers'
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueries: jest.fn(),
 }))
 

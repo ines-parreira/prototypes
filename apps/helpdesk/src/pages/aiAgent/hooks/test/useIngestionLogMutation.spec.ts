@@ -9,6 +9,7 @@ import { IngestionType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constan
 import { useIngestionLogMutation } from '../useIngestionLogMutation'
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: jest.fn(),
 }))
 

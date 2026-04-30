@@ -25,6 +25,7 @@ jest.mock('pages/convert/abVariants/hooks/useStartABGroup')
 const useStartABGroupMock = assumeMock(useStartABGroup)
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useLocation: jest.fn(),
 }))

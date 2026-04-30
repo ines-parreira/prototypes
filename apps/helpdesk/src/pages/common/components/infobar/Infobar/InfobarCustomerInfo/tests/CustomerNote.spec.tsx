@@ -9,6 +9,7 @@ import { submitCustomer } from 'state/customers/actions'
 import CustomerNote from '../CustomerNote'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     ...jest.requireActual<typeof import('@gorgias/axiom')>('@gorgias/axiom'),
     LegacyLoadingSpinner: () => <div>SpinnerMock</div>,
 }))

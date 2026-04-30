@@ -26,6 +26,7 @@ jest.mock(
 )
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Skeleton: () => <div data-testid="skeleton" />,
 }))
 
