@@ -14,13 +14,18 @@ import {
 } from 'domains/reporting/models/queries'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 const getNewStatsFeatureFlagMigrationMock = assumeMock(
     getNewStatsFeatureFlagMigration,
+)
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
 )
 
 describe('MultipleMetricTrend', () => {
@@ -42,6 +47,10 @@ describe('MultipleMetricTrend', () => {
     describe('useMultipleMetricTrend', () => {
         beforeEach(() => {
             usePostReportingV2Mock.mockReturnValue(defaultReporting)
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'off',
+                isLoading: false,
+            })
         })
 
         it('should return isFetching=false when no queries are fetching', () => {
@@ -180,6 +189,94 @@ describe('MultipleMetricTrend', () => {
                         },
                     },
             })
+        })
+
+        it('should return 0 when measure value is 0', () => {
+            usePostReportingV2Mock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: {
+                    [AutomationDatasetMeasure.AutomatedInteractions]: 0,
+                    [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 0,
+                },
+            } as UseQueryResult)
+            usePostReportingV2Mock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: {
+                    [AutomationDatasetMeasure.AutomatedInteractions]: 0,
+                    [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 0,
+                },
+            } as UseQueryResult)
+
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(defaultQuery, defaultQuery),
+            )
+
+            expect(result.current.data).toEqual({
+                [AutomationDatasetMeasure.AutomatedInteractions]: {
+                    value: 0,
+                    prevValue: 0,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 0,
+                        [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 0,
+                    },
+                },
+                [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]:
+                    {
+                        value: 0,
+                        prevValue: 0,
+                        rawData: {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 0,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 0,
+                        },
+                    },
+            })
+        })
+
+        it('should use V2 measures when migration stage is complete and V2 query is provided', () => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue({
+                stage: 'complete',
+                isLoading: false,
+            })
+            const currentPeriodQueryV2 = {
+                ...defaultQuery,
+                measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                scope: 'test-scope',
+            } as any
+
+            usePostReportingV2Mock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: {
+                    [AutomationDatasetMeasure.AutomatedInteractions]: 42,
+                },
+            } as UseQueryResult)
+            usePostReportingV2Mock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: {
+                    [AutomationDatasetMeasure.AutomatedInteractions]: 21,
+                },
+            } as UseQueryResult)
+
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(
+                    defaultQuery,
+                    defaultQuery,
+                    currentPeriodQueryV2,
+                    currentPeriodQueryV2,
+                ),
+            )
+
+            expect(result.current.data).toEqual({
+                [AutomationDatasetMeasure.AutomatedInteractions]: {
+                    value: 42,
+                    prevValue: 21,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 42,
+                    },
+                },
+            })
+            expect(result.current.data).not.toHaveProperty(
+                AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+            )
         })
 
         it('should call usePostReporting with the query', () => {
@@ -420,6 +517,56 @@ describe('MultipleMetricTrend', () => {
                         rawData: {
                             [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                             [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                        },
+                    },
+            })
+        })
+
+        it('should return 0 when measure value is 0', async () => {
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
+                ...defaultReporting,
+                data: {
+                    data: [
+                        {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 0,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 0,
+                        },
+                    ],
+                },
+            } as any)
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
+                ...defaultReporting,
+                data: {
+                    data: [
+                        {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 0,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 0,
+                        },
+                    ],
+                },
+            } as any)
+
+            const result = await fetchMultipleMetricsTrends(
+                defaultQuery,
+                defaultQuery,
+            )
+
+            expect(result.data).toEqual({
+                [AutomationDatasetMeasure.AutomatedInteractions]: {
+                    value: 0,
+                    prevValue: 0,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 0,
+                        [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 0,
+                    },
+                },
+                [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]:
+                    {
+                        value: 0,
+                        prevValue: 0,
+                        rawData: {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 0,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 0,
                         },
                     },
             })

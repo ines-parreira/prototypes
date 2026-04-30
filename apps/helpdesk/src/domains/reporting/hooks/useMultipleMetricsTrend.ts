@@ -71,12 +71,14 @@ export const useMultipleMetricsTrends = <
             : currentPeriodQuery.measures
     const data = measures.reduce((acc, measure) => {
         acc[measure] = {
-            value: currentMetrics.data?.[measure]
-                ? parseFloat(currentMetrics.data[measure])
-                : null,
-            prevValue: previousMetrics.data?.[measure]
-                ? parseFloat(previousMetrics.data[measure])
-                : null,
+            value:
+                currentMetrics.data?.[measure] != null
+                    ? parseFloat(currentMetrics.data[measure])
+                    : null,
+            prevValue:
+                previousMetrics.data?.[measure] != null
+                    ? parseFloat(previousMetrics.data[measure])
+                    : null,
             rawData: currentMetrics.data,
         }
         return acc
@@ -129,12 +131,14 @@ export const fetchMultipleMetricsTrends = async <
                 : currentPeriodQuery.measures
             const data = measures.reduce((acc, measure) => {
                 acc[measure] = {
-                    value: currentMetrics?.[measure]
-                        ? parseFloat(currentMetrics[measure])
-                        : null,
-                    prevValue: previousMetrics?.[measure]
-                        ? parseFloat(previousMetrics[measure])
-                        : null,
+                    value:
+                        currentMetrics?.[measure] != null
+                            ? parseFloat(currentMetrics[measure])
+                            : null,
+                    prevValue:
+                        previousMetrics?.[measure] != null
+                            ? parseFloat(previousMetrics[measure])
+                            : null,
                     rawData: currentMetrics,
                 }
                 return acc
