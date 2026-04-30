@@ -1,27 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App should have a failed disconnection flow 1`] = `
-[
-  [
-    {
-      "message": "Sorry, something went wrong. My test app is still connected.",
-      "status": "error",
-    },
-  ],
-]
-`;
-
-exports[`App should have a functionnal disconnect flow 1`] = `
-[
-  [
-    {
-      "message": "My test app has been disconnected.",
-      "status": "success",
-    },
-  ],
-]
-`;
-
 exports[`App should render 1`] = `
 <div
   class="container"

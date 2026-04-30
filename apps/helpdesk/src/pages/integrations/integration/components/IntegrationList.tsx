@@ -18,7 +18,6 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import withRouter from 'pages/common/utils/withRouter'
 import { getIntegrationConfig } from 'state/integrations/helpers'
-import { notify } from 'state/notifications/actions'
 
 import NoIntegration from './NoIntegration'
 
@@ -194,8 +193,6 @@ class IntegrationList extends Component<Props> {
     }
 }
 
-const connector = connect(null, {
-    notify,
-})
+const connector = connect(null, {})
 
 export default withRouter(connector(IntegrationList))

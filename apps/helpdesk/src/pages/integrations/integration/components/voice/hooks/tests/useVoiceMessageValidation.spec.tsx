@@ -1,7 +1,7 @@
 import type React from 'react'
 
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -85,20 +85,29 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
         expect(result.current).toBe(true)
     })
 
-    it('canPayloadBeSubmitted checks voice message file failure', () => {
+    it('canPayloadBeSubmitted checks voice message file failure', async () => {
         const payload: PhoneIntegrationVoicemailSettings = {
             voice_message_type: VoiceMessageType.VoiceRecording,
             allow_to_leave_voicemail: true,
         }
 
-        const { result } = renderCanPayloadBeSubmittedHook(payload)
-
-        expect(result.current).toBe(false)
-        const notification = mockStore.getActions()[0]
-        expect(notification).toHaveProperty(
-            'payload.message',
-            'Cannot save. Upload a recording to use it as your voicemail.',
+        const { result } = renderHook(
+            () => useVoiceMessageValidation().canPayloadBeSubmitted,
+            { wrapper },
         )
+
+        let returnValue: boolean | undefined
+        act(() => {
+            returnValue = result.current(payload)
+        })
+
+        expect(returnValue).toBe(false)
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Cannot save. Upload a recording to use it as your voicemail.',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('canPayloadBeSubmitted checks text to speech field', () => {
@@ -163,7 +172,6 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
 
     beforeEach(() => {
         window.URL.createObjectURL = jest.fn().mockReturnValue(mockObjectURL)
-        mockStore.clearActions()
     })
 
     afterEach(() => {
@@ -232,11 +240,12 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
             expect(res).toBeNull()
         })
 
-        const notification = mockStore.getActions()[0]
-        expect(notification).toHaveProperty(
-            'payload.message',
-            'Please upload an audio file of 10 seconds or less.',
-        )
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Please upload an audio file of 10 seconds or less.',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('is invalid because audio size too big', async () => {
@@ -264,11 +273,12 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
             expect(res).toBeNull()
         })
 
-        const notification = mockStore.getActions()[0]
-        expect(notification).toHaveProperty(
-            'payload.message',
-            'File too large. Upload a recording smaller than 1MB.',
-        )
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'File too large. Upload a recording smaller than 1MB.',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('is invalid because wrong audio file format', async () => {
@@ -292,11 +302,13 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
                 10,
             )
             expect(res).toBeNull()
-            const notification = mockStore.getActions()[0]
-            expect(notification).toHaveProperty(
-                'payload.message',
-                'Invalid audio file format provided. Please upload a valid mp3 file.',
-            )
+        })
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Invalid audio file format provided. Please upload a valid mp3 file.',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

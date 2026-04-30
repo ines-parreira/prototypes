@@ -9,6 +9,7 @@ import { fromJS } from 'immutable'
 import {
     LegacyButton as Button,
     LegacyLabel as Label,
+    toast,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
@@ -35,7 +36,6 @@ import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsAp
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { StoreNameDropdown } from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
@@ -166,12 +166,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     notification.status === NotificationStatus.Error &&
                     notification.message
                 ) {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: notification.message,
-                        }),
-                    )
+                    toast.error(notification.message)
                 }
             },
         })

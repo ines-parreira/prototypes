@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useLocalStorage, useTitle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
 import logoRecharge from 'assets/img/integrations/recharge.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
@@ -21,8 +21,6 @@ import {
     getIntegrationsList,
 } from 'state/integrations/selectors'
 import type { IntegrationListItem } from 'state/integrations/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import Card from '../Card'
 import CardsWrapper from '../CardsWrapper'
@@ -64,11 +62,8 @@ export default function Mine() {
                 const res = await fetchInstalledApps()
                 setConnectedApps(res)
             } catch {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Something went wrong while trying to fetch additional apps.`,
-                    }),
+                toast.error(
+                    'Something went wrong while trying to fetch additional apps.',
                 )
             } finally {
                 setLoading(false)
@@ -76,7 +71,7 @@ export default function Mine() {
         }
 
         void fetchData()
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
         void dispatch(fetchIntegrations())

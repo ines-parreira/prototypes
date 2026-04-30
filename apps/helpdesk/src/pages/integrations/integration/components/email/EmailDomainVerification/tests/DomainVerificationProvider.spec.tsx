@@ -1,8 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import type { EmailDomain, HttpResponse } from '@gorgias/helpdesk-client'
 import {
@@ -11,11 +8,6 @@ import {
     verifyEmailIntegrationDomain,
 } from '@gorgias/helpdesk-client'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-
 import {
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
@@ -23,16 +15,9 @@ import {
 import DomainVerificationProvider from '../DomainVerificationProvider'
 import useDomainVerification from '../useDomainVerification'
 
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
 jest.mock('@gorgias/helpdesk-client')
 jest.mock('../../helpers')
 
-const queryClient = mockQueryClient()
-const mockStore = configureMockStore()()
-
-const notifyMock = assumeMock(notify)
-const useAppDispatchMock = assumeMock(useAppDispatch)
 const getDomainMock = assumeMock(getEmailIntegrationDomain)
 const verifyDomainMock = assumeMock(verifyEmailIntegrationDomain)
 const updateEmailIntegrationDomainMock = assumeMock(
@@ -66,21 +51,17 @@ const getEmailDomain = ({ verified } = { verified: false }): EmailDomain => ({
     },
 })
 
-const render = () => {
-    return renderHook(() => useDomainVerification(), {
+const render = () =>
+    renderHook(() => useDomainVerification(), {
         wrapper: ({ children }) => (
-            <QueryClientProvider client={queryClient}>
-                <DomainVerificationProvider domainName="gorgias.com">
-                    <Provider store={mockStore}>{children}</Provider>
-                </DomainVerificationProvider>
-            </QueryClientProvider>
+            <DomainVerificationProvider domainName="gorgias.com">
+                {children}
+            </DomainVerificationProvider>
         ),
     })
-}
 
 describe('DomainVerificationProvider', () => {
     beforeEach(() => {
-        queryClient.clear()
         localStorage.clear()
         parseRecordsCurrentValuesMock.mockImplementation((records) => records)
     })
@@ -293,8 +274,6 @@ describe('DomainVerificationProvider', () => {
             })
 
             it('should show notification on success', async () => {
-                const dispatchMock = jest.fn()
-                useAppDispatchMock.mockReturnValue(dispatchMock)
                 verifyDomainMock.mockReturnValue(
                     Promise.resolve({} as HttpResponse<void>),
                 )
@@ -303,30 +282,24 @@ describe('DomainVerificationProvider', () => {
                 result.current.verifyDomain()
 
                 await waitFor(() => {
-                    expect(dispatchMock).toHaveBeenCalled()
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        message:
-                            'The status of your domain verification is being checked.',
-                        status: NotificationStatus.Success,
+                    const toast = screen.getByRole('status', {
+                        name: 'The status of your domain verification is being checked.',
                     })
+                    expect(toast).toHaveAttribute('data-intent', 'success')
                 })
             })
 
             it('should show notification on error', async () => {
-                const dispatchMock = jest.fn()
-                useAppDispatchMock.mockReturnValue(dispatchMock)
                 verifyDomainMock.mockReturnValue(Promise.reject())
 
                 const { result } = render()
                 result.current.verifyDomain()
 
                 await waitFor(() => {
-                    expect(dispatchMock).toHaveBeenCalled()
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        message:
-                            'Requesting a domain verification failed. Please try again.',
-                        status: NotificationStatus.Error,
+                    const toast = screen.getByRole('status', {
+                        name: 'Requesting a domain verification failed. Please try again.',
                     })
+                    expect(toast).toHaveAttribute('data-intent', 'destructive')
                 })
             })
         })
@@ -348,9 +321,6 @@ describe('DomainVerificationProvider', () => {
         })
 
         it('should not create domain if another creation failed', async () => {
-            const dispatchMock = jest.fn()
-            useAppDispatchMock.mockReturnValue(dispatchMock)
-
             getDomainMock.mockReturnValue(
                 Promise.reject({
                     status: 404,

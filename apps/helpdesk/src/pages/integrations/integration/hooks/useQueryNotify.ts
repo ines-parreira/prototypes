@@ -1,38 +1,50 @@
 import { useEffect } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { useSearch } from 'hooks/useSearch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+
+type ToastIntent = 'success' | 'error' | 'info' | 'warning'
+
+function notifyByIntent(intent: ToastIntent | undefined, message: string) {
+    switch (intent) {
+        case 'success':
+            toast.success(message)
+            return
+        case 'warning':
+            toast.warning(message)
+            return
+        case 'error':
+            toast.error(message)
+            return
+        case 'info':
+        default:
+            toast.info(message)
+    }
+}
 
 // Display a notification based on some query params
 export default function useQueryNotify() {
-    const dispatch = useAppDispatch()
     const search = useSearch<{
         error?: string
         message?: string
-        message_type?: NotificationStatus
+        message_type?: ToastIntent
     }>()
     useEffect(() => {
         const { message, message_type, error } = search
 
         if (error === 'need_scope_update') {
-            void dispatch(
-                notify({
-                    status: message_type || NotificationStatus.Error,
-                    message:
-                        'You need to update your app permissions in order to do that.',
-                }),
+            notifyByIntent(
+                message_type ?? 'error',
+                'You need to update your app permissions in order to do that.',
             )
         }
 
         if (message) {
-            void dispatch(
-                notify({
-                    status: message_type || NotificationStatus.Info,
-                    message: decodeURIComponent(message.replace(/\+/g, ' ')),
-                }),
+            notifyByIntent(
+                message_type,
+                decodeURIComponent(message.replace(/\+/g, ' ')),
             )
         }
-    }, [dispatch, search])
+    }, [search])
 }

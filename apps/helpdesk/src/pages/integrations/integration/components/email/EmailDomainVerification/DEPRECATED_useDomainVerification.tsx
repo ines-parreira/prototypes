@@ -2,16 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useInterval, useLocalStorage } from '@repo/hooks'
 
+import { toast } from '@gorgias/axiom'
 import type { EmailDomain } from '@gorgias/helpdesk-queries'
 import {
     useDeleteEmailIntegrationDomain,
     useGetEmailIntegrationDomain,
     useVerifyEmailIntegrationDomain,
 } from '@gorgias/helpdesk-queries'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     parseRecordsCurrentValues,
@@ -49,8 +46,6 @@ export function DEPRECATED_useDomainVerification(
     domainName: string,
     options?: UseDomainVerificationRequestHookOptions,
 ): UseDomainVerificationRequestHookResult {
-    const dispatch = useAppDispatch()
-
     const {
         isPending: isRequestPending,
         isRequested,
@@ -98,24 +93,16 @@ export function DEPRECATED_useDomainVerification(
     const { mutate: triggerVerify, isLoading: isVerifying } =
         useVerifyEmailIntegrationDomain({
             mutation: {
-                onSuccess: async () => {
+                onSuccess: () => {
                     options?.onVerify?.()
                     setRequestedAt(new Date())
-                    await dispatch(
-                        notify({
-                            message:
-                                'The status of your domain verification is being checked.',
-                            status: NotificationStatus.Success,
-                        }),
+                    toast.success(
+                        'The status of your domain verification is being checked.',
                     )
                 },
-                onError: async () => {
-                    await dispatch(
-                        notify({
-                            message:
-                                'Requesting a domain verification failed. Please try again.',
-                            status: NotificationStatus.Error,
-                        }),
+                onError: () => {
+                    toast.error(
+                        'Requesting a domain verification failed. Please try again.',
                     )
                 },
             },

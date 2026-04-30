@@ -1,140 +1,84 @@
 import React from 'react'
 
 import { renderHook } from '@repo/testing'
-import { createMemoryHistory } from 'history'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { render, screen, waitFor } from '@testing-library/react'
+import { createPortal } from 'react-dom'
 
-import * as actions from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { Toaster } from '@gorgias/axiom'
 
 import useQueryNotify from '../useQueryNotify'
 
-const mockStore = configureMockStore([thunk])
+const renderUseQueryNotify = (initialEntries: string[]) => {
+    // Pre-mount the Toaster so it's subscribed before the hook's first
+    // useEffect fires (sonner doesn't replay toasts published before subscribe).
+    render(<>{createPortal(<Toaster />, document.body)}</>)
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(() => () => undefined),
-}))
-
-const notify = actions.notify as jest.Mock
+    return renderHook(() => useQueryNotify(), { initialEntries })
+}
 
 describe('useQueryNotify()', () => {
-    beforeEach(() => {
-        notify.mockClear()
-    })
     it('should do nothing if it has no error or message', () => {
-        const history = createMemoryHistory({
-            initialEntries: [''],
-        })
-        const store = mockStore({})
-        store.dispatch = jest.fn()
-        renderHook(() => useQueryNotify(), {
-            wrapper: ({ children }) => (
-                <Router history={history}>
-                    <Provider store={mockStore({})}>{children}</Provider>
-                </Router>
-            ),
-        })
-        expect(notify).toHaveBeenCalledTimes(0)
-    })
-    it('should call notify if it has an error', () => {
-        const history = createMemoryHistory({
-            initialEntries: ['?error=need_scope_update'],
-        })
-        const store = mockStore({})
-        store.dispatch = jest.fn()
-        renderHook(() => useQueryNotify(), {
-            wrapper: ({ children }) => (
-                <Router history={history}>
-                    <Provider store={mockStore({})}>{children}</Provider>
-                </Router>
-            ),
-        })
-        expect(notify.mock.calls).toMatchInlineSnapshot(`
-            [
-              [
-                {
-                  "message": "You need to update your app permissions in order to do that.",
-                  "status": "error",
-                },
-              ],
-            ]
-        `)
-    })
-    it('should call notify if it has a message', () => {
-        const history = createMemoryHistory({
-            initialEntries: ['?message=you+should+see+me+in+snaps'],
-        })
-        const store = mockStore({})
-        store.dispatch = jest.fn()
-        renderHook(() => useQueryNotify(), {
-            wrapper: ({ children }) => (
-                <Router history={history}>
-                    <Provider store={mockStore({})}>{children}</Provider>
-                </Router>
-            ),
-        })
-        expect(notify.mock.calls).toMatchInlineSnapshot(`
-            [
-              [
-                {
-                  "message": "you should see me in snaps",
-                  "status": "info",
-                },
-              ],
-            ]
-        `)
-    })
-    it('should call notify with the correct status if provided', () => {
-        let history = createMemoryHistory({
-            initialEntries: [
-                `?message=you+should+see+me+in+snaps&message_type=${NotificationStatus.Warning}`,
-            ],
-        })
-        const store = mockStore({})
-        store.dispatch = jest.fn()
-        renderHook(() => useQueryNotify(), {
-            wrapper: ({ children }) => (
-                <Router history={history}>
-                    <Provider store={mockStore({})}>{children}</Provider>
-                </Router>
-            ),
-        })
-        expect(notify.mock.calls).toMatchInlineSnapshot(`
-            [
-              [
-                {
-                  "message": "you should see me in snaps",
-                  "status": "warning",
-                },
-              ],
-            ]
-        `)
+        renderUseQueryNotify(['/'])
 
-        notify.mockClear()
-        history = createMemoryHistory({
-            initialEntries: [
-                `?error=need_scope_update&message_type=${NotificationStatus.Warning}`,
-            ],
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    })
+
+    it('should show an error toast if it has an error', async () => {
+        renderUseQueryNotify(['/?error=need_scope_update'])
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'You need to update your app permissions in order to do that.',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
-        renderHook(() => useQueryNotify(), {
-            wrapper: ({ children }) => (
-                <Router history={history}>
-                    <Provider store={mockStore({})}>{children}</Provider>
-                </Router>
-            ),
+    })
+
+    it('should show an info toast if it has a message', async () => {
+        renderUseQueryNotify(['/?message=you+should+see+me+in+snaps'])
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'you should see me in snaps',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'info')
         })
-        expect(notify.mock.calls).toMatchInlineSnapshot(`
-            [
-              [
-                {
-                  "message": "You need to update your app permissions in order to do that.",
-                  "status": "warning",
-                },
-              ],
-            ]
-        `)
+    })
+
+    it('should show a warning toast when message_type=warning is provided with a message', async () => {
+        renderUseQueryNotify([
+            '/?message=you+should+see+me+in+snaps&message_type=warning',
+        ])
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'you should see me in snaps',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'warning')
+        })
+    })
+
+    it('should show a warning toast when message_type=warning is provided with an error', async () => {
+        renderUseQueryNotify(['/?error=need_scope_update&message_type=warning'])
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'You need to update your app permissions in order to do that.',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'warning')
+        })
+    })
+
+    it('should show a success toast when message_type=success is provided with a message', async () => {
+        renderUseQueryNotify([
+            '/?message=integration+connected&message_type=success',
+        ])
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'integration connected',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'success')
+        })
     })
 })

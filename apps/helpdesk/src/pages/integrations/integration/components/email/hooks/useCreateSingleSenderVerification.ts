@@ -1,12 +1,12 @@
 import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { createVerification } from 'models/singleSenderVerification/resources'
 import type { SenderInformation } from 'models/singleSenderVerification/types'
 import { setVerification } from 'state/entities/singleSenderVerification/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export default function useCreateSingleSenderVerification() {
     const dispatch = useAppDispatch()
@@ -18,12 +18,7 @@ export default function useCreateSingleSenderVerification() {
             try {
                 const verification = await createVerification(id, values)
                 dispatch(setVerification(verification))
-                void dispatch(
-                    notify({
-                        message: 'Verification created successfully',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Verification created successfully')
             } catch (error) {
                 const { response } = error as AxiosError<{
                     error: { msg: string }
@@ -33,12 +28,7 @@ export default function useCreateSingleSenderVerification() {
                         ? response.data.error.msg
                         : 'Failed to create verification'
 
-                void dispatch(
-                    notify({
-                        message: errorMsg,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(errorMsg)
             }
         },
         [dispatch],

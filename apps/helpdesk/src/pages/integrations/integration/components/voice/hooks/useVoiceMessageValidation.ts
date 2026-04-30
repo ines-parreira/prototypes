@@ -1,11 +1,11 @@
 import _pick from 'lodash/pick'
 
+import { toast } from '@gorgias/axiom'
 import {
     VoiceQueueWaitMusicCustomRecordingTypeType,
     VoiceQueueWaitMusicLibraryTypeType,
 } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type {
     IvrMenuAction,
     LocalWaitMusicPreferences,
@@ -15,15 +15,11 @@ import type {
     VoiceMessage,
 } from 'models/integration/types'
 import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getBase64 } from 'utils/file'
 
 import { getAudioFileDuration } from '../utils'
 
 export default function useVoiceMessageValidation() {
-    const dispatch = useAppDispatch()
-
     const validateVoiceRecordingUpload = async (
         event: React.ChangeEvent<HTMLInputElement>,
         maxRecordingDuration?: number,
@@ -39,14 +35,10 @@ export default function useVoiceMessageValidation() {
             maxRecordingSizeInMB &&
             uploadedFile.size > maxRecordingSizeInMB * 1_000_000
         ) {
-            void dispatch(
-                notify({
-                    title: newErrorMessages ? 'Failed to upload' : '',
-                    message: newErrorMessages
-                        ? `File too large. Upload a recording smaller than ${maxRecordingSizeInMB}MB.`
-                        : `Invalid file size. The max size is ${maxRecordingSizeInMB} MB.`,
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                newErrorMessages
+                    ? `File too large. Upload a recording smaller than ${maxRecordingSizeInMB}MB.`
+                    : `Invalid file size. The max size is ${maxRecordingSizeInMB} MB.`,
             )
             return null
         }
@@ -57,21 +49,14 @@ export default function useVoiceMessageValidation() {
             try {
                 const duration = await getAudioFileDuration(url)
                 if (duration > maxRecordingDuration) {
-                    void dispatch(
-                        notify({
-                            message: `Please upload an audio file of ${maxRecordingDuration} seconds or less.`,
-                            status: NotificationStatus.Error,
-                        }),
+                    toast.error(
+                        `Please upload an audio file of ${maxRecordingDuration} seconds or less.`,
                     )
                     return null
                 }
             } catch {
-                void dispatch(
-                    notify({
-                        message:
-                            'Invalid audio file format provided. Please upload a valid mp3 file.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    'Invalid audio file format provided. Please upload a valid mp3 file.',
                 )
                 return null
             }
@@ -96,11 +81,8 @@ export default function useVoiceMessageValidation() {
             !payload.voice_recording_file_path &&
             !payload.new_voice_recording_file
         ) {
-            void dispatch(
-                notify({
-                    message: `Cannot save. Upload a recording to use it as your voicemail.`,
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                `Cannot save. Upload a recording to use it as your voicemail.`,
             )
             return false
         }

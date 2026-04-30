@@ -4,6 +4,8 @@ import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 import { Col, Container } from 'reactstrap'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { fetchMigrations } from 'models/integration/resources/email'
@@ -11,8 +13,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
 import { SET_EMAIL_PROVIDER_MIGRATIONS } from 'state/integrations/constants'
 import { getEmailMigrations } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import SteppedNavBar from '../SteppedNavBar/SteppedNavBar'
 import MigrationEmailForwarding from './MigrationEmailForwarding'
@@ -48,12 +48,7 @@ export default function MigrationInProgress() {
                 response && response.data.error
                     ? response.data.error.msg
                     : 'Failed to fetch migrations'
-            void dispatch(
-                notify({
-                    message: errorMsg,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(errorMsg)
         }
     })
 

@@ -27,7 +27,6 @@ import zoho from 'assets/img/integrations/zoho.svg'
 import { IntegrationType } from '../../../../../../models/integration/types'
 import { sendVerificationEmail } from '../../../../../../state/integrations/actions'
 import { getForwardingEmailAddress } from '../../../../../../state/integrations/selectors'
-import { notify } from '../../../../../../state/notifications/actions'
 import type { RootState } from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 
@@ -220,7 +219,6 @@ const connector = connect(
     }),
     {
         sendVerificationEmail,
-        notify,
     },
 )
 

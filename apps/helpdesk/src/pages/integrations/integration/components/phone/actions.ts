@@ -1,6 +1,8 @@
 import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import type {
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
@@ -10,8 +12,6 @@ import { IntegrationType } from '../../../../../models/integration/types'
 import { fetchIntegration } from '../../../../../state/integrations/actions'
 import * as constants from '../../../../../state/integrations/constants'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
-import { notify } from '../../../../../state/notifications/actions'
-import { NotificationStatus } from '../../../../../state/notifications/types'
 import type { RootState, StoreDispatch } from '../../../../../state/types'
 
 export const updatePhoneVoicemailConfiguration =
@@ -39,12 +39,8 @@ export const updatePhoneVoicemailConfiguration =
                         integrationId.toString(),
                         IntegrationType.Phone,
                     )(dispatch)
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: successMessage,
-                        }),
-                    )
+                    toast.success(successMessage)
+                    return undefined
                 },
                 (error: AxiosError) => {
                     return dispatch({
@@ -74,12 +70,8 @@ export const updatePhoneGreetingMessageConfiguration =
             )
             .then(
                 () => {
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Greeting message successfully updated.',
-                        }),
-                    )
+                    toast.success('Greeting message successfully updated.')
+                    return undefined
                 },
                 (error: AxiosError) => {
                     return dispatch({
@@ -110,12 +102,8 @@ export const updatePhoneIvrConfiguration =
                         integrationId.toString(),
                         IntegrationType.Phone,
                     )(dispatch)
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'IVR configuration successfully updated.',
-                        }),
-                    )
+                    toast.success('IVR configuration successfully updated.')
+                    return undefined
                 },
                 (error: AxiosError) => {
                     return dispatch({

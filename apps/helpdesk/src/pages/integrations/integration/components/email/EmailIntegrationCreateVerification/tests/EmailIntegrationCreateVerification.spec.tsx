@@ -22,7 +22,6 @@ const commonProps: ComponentProps<typeof EmailIntegrationCreateVerification> = {
     emailForwardingActivated: false,
     deleteIntegration: jest.fn(),
     sendVerificationEmail: jest.fn(),
-    notify: jest.fn(),
     resendAccountVerificationEmail: jest.fn(),
     verifyEmailIntegrationManually: jest.fn(),
 }

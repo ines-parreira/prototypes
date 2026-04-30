@@ -1,5 +1,5 @@
 import { assumeMock, render } from '@repo/testing'
-import { act, fireEvent, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 
 import type { UploadedCustomRecording } from '@gorgias/helpdesk-queries'
@@ -10,14 +10,13 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
 import type { Account } from 'state/currentAccount/types'
-import { notify } from 'state/notifications/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import DEPRECATED_VoiceMessageField from '../DEPRECATED_VoiceMessageField'
 
 jest.mock('@gorgias/helpdesk-queries')
-jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+
 const useUploadCustomVoiceRecordingMock = assumeMock(
     useUploadCustomVoiceRecording,
 )
@@ -345,10 +344,10 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             }
             await waitFor(() => {
                 expect(onChange).not.toHaveBeenCalled()
-                expect(notify).toHaveBeenCalledWith({
-                    status: 'error',
-                    title: 'Failed to upload custom recording',
+                const toast = screen.getByRole('status', {
+                    name: 'Failed to upload custom recording',
                 })
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
         it('disabled the upload button when the file is uploading', () => {

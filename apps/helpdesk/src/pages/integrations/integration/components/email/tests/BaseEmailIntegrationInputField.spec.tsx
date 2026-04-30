@@ -1,10 +1,8 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import copy from 'copy-to-clipboard'
-
-import { notify } from 'state/notifications/actions'
 
 import BaseEmailIntegrationInputField from '../BaseEmailIntegrationInputField'
 
@@ -18,8 +16,6 @@ window.GORGIAS_STATE = {
     },
 } as any
 
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-jest.mock('state/notifications/actions')
 jest.mock('copy-to-clipboard')
 const copyMock = assumeMock(copy)
 
@@ -42,20 +38,22 @@ describe('<BaseEmailIntegrationInputField />', () => {
         expect(screen.getByText('Your Base Email Address')).toBeInTheDocument()
     })
 
-    it('should copy the value when clicking on the auxiliary button', () => {
+    it('should copy the value when clicking on the auxiliary button', async () => {
         render(<BaseEmailIntegrationInputField />)
 
         fireEvent.click(screen.getByRole('button', { name: 'Copy' }))
 
         expect(copyMock).toHaveBeenCalledWith('acme123@email.gorgias.com')
 
-        expect(notify).toHaveBeenCalledWith({
-            status: 'success',
-            title: 'Address copied to clipboard',
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Address copied to clipboard',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'success')
         })
     })
 
-    it('should display an error notification when copying fails', () => {
+    it('should display an error notification when copying fails', async () => {
         render(<BaseEmailIntegrationInputField />)
 
         copyMock.mockImplementationOnce(() => {
@@ -65,9 +63,11 @@ describe('<BaseEmailIntegrationInputField />', () => {
         fireEvent.click(screen.getByRole('button', { name: 'Copy' }))
         expect(copyMock).toHaveBeenCalledWith('acme123@email.gorgias.com')
 
-        expect(notify).toHaveBeenCalledWith({
-            status: 'error',
-            title: 'Failed to copy address',
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Failed to copy address',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

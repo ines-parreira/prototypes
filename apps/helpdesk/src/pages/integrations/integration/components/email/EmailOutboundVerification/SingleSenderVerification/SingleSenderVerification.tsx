@@ -2,6 +2,8 @@ import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { EmailIntegration } from 'models/integration/types'
@@ -11,8 +13,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import { setVerification } from 'state/entities/singleSenderVerification/actions'
 import { getSingleSenderVerification } from 'state/entities/singleSenderVerification/selectors'
 import { fetchIntegration, fetchIntegrations } from 'state/integrations/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import useCreateSingleSenderVerification from '../../hooks/useCreateSingleSenderVerification'
 import BackButton from '../BackButton'
@@ -70,12 +70,7 @@ export default function SingleSenderVerification({
                         ? response.data.error.msg
                         : 'Failed to retrieve verification'
                 history.push(baseURL)
-                void dispatch(
-                    notify({
-                        message: errorMsg,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(errorMsg)
             }
         }, [dispatch, verification])
 

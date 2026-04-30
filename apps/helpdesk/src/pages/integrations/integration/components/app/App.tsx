@@ -8,6 +8,7 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -36,8 +37,6 @@ import { getApplicationById } from 'services/applications'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { getIntegrationsByAppId } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import IntegrationsList from './IntegrationsList'
 
@@ -196,7 +195,6 @@ function AppCTA({
     isConnected,
     title,
 }: AppDetailType) {
-    const dispatch = useAppDispatch()
     const domain = useAppSelector(getCurrentAccountState).get('domain')
 
     const [isLoading, setLoading] = useState(false)
@@ -224,21 +222,13 @@ function AppCTA({
             const isUninstalled = await disconnectApp(appId)
             if (isUninstalled) {
                 setAppInstalled(!isUninstalled)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: `${title} has been disconnected.`,
-                    }),
-                )
+                toast.success(`${title} has been disconnected.`)
             } else {
                 throw new Error(`Not disconnected`)
             }
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Sorry, something went wrong. ${title} is still connected.`,
-                }),
+            toast.error(
+                `Sorry, something went wrong. ${title} is still connected.`,
             )
         } finally {
             setModalOpen(false)

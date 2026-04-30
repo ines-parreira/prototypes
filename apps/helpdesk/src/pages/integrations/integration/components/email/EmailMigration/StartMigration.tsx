@@ -4,7 +4,7 @@ import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -19,8 +19,6 @@ import {
     getEmailMigrationStatus,
     getIntegrationsByTypes,
 } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getMoment, stringToDatetime } from 'utils/date'
 
 import { isBaseEmailIntegration } from '../helpers'
@@ -59,12 +57,7 @@ export default function StartMigration() {
                 response && response.data.error
                     ? response.data.error.msg
                     : 'Failed to start migration'
-            void dispatch(
-                notify({
-                    message: errorMsg,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(errorMsg)
         }
     })
 

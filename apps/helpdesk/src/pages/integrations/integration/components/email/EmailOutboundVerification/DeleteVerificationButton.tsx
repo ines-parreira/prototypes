@@ -1,13 +1,13 @@
 import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { deleteVerification } from 'models/singleSenderVerification/resources'
 import type { SenderVerification } from 'models/singleSenderVerification/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { removeVerification } from 'state/entities/singleSenderVerification/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     isLoading?: boolean
@@ -29,12 +29,7 @@ export default function DeleteVerificationButton({
             try {
                 await deleteVerification(verification.integration_id)
                 onConfirm?.(verification)
-                void dispatch(
-                    notify({
-                        message: 'Verification deleted successfully',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Verification deleted successfully')
                 dispatch(removeVerification(verification.integration_id))
             } catch (error) {
                 const { response } = error as AxiosError<{
@@ -44,12 +39,7 @@ export default function DeleteVerificationButton({
                     response && response.data.error
                         ? response.data.error.msg
                         : 'Failed to delete verification'
-                void dispatch(
-                    notify({
-                        message: errorMsg,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(errorMsg)
             }
         }, [verification])
 

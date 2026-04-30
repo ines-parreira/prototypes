@@ -1,14 +1,12 @@
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
 
@@ -20,7 +18,6 @@ jest.mock('@repo/routing', () => ({
         push: jest.fn(),
     },
 }))
-jest.mock('state/notifications/actions')
 jest.mock('models/api/types')
 
 const useDeleteIntegrationMock = assumeMock(useDeleteIntegration)
@@ -74,7 +71,7 @@ describe('useDeleteEmailIntegration', () => {
         expect(mockPush).toHaveBeenCalledWith(expect.any(String))
     })
 
-    it('should handle deletion error', () => {
+    it('should handle deletion error', async () => {
         const integration = { id: 'test-id' }
         const mutate = jest.fn()
         const errorResponse = {
@@ -102,15 +99,13 @@ describe('useDeleteEmailIntegration', () => {
             )
         })
 
-        expect(mockDispatch).toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Error,
-                message: 'Error message',
-            }),
-        )
+        await waitFor(() => {
+            const toast = screen.getByRole('status', { name: 'Error message' })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
-    it('should handle deletion error with default message', () => {
+    it('should handle deletion error with default message', async () => {
         const integration = { id: 'test-id' }
         const mutate = jest.fn()
         useDeleteIntegrationMock.mockReturnValue({
@@ -135,11 +130,11 @@ describe('useDeleteEmailIntegration', () => {
             )
         })
 
-        expect(mockDispatch).toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Error,
-                message: 'Failed to delete integration',
-            }),
-        )
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Failed to delete integration',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 })

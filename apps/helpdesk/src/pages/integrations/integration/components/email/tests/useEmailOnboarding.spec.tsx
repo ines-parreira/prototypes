@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -21,7 +21,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import socketManager from 'services/socketManager'
 import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
-import { notify } from 'state/notifications/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -49,7 +48,6 @@ jest.mock('@repo/routing', () => ({
 }))
 jest.mock('@gorgias/helpdesk-client')
 jest.mock('state/integrations/actions')
-jest.mock('state/notifications/actions')
 jest.mock('services/socketManager')
 jest.mock('hooks/useAppDispatch')
 
@@ -445,10 +443,10 @@ describe('useEmailOnboarding()', () => {
                         undefined,
                     )
                     expect(result.current.isRequested).toBe(false)
-                    expect(notify).toHaveBeenCalledWith({
-                        message: 'Please wait a bit',
-                        status: 'error',
+                    const toast = screen.getByRole('status', {
+                        name: 'Please wait a bit',
                     })
+                    expect(toast).toHaveAttribute('data-intent', 'destructive')
                 })
             })
 
@@ -501,10 +499,10 @@ describe('useEmailOnboarding()', () => {
                         undefined,
                     )
                     expect(result.current.isRequested).toBe(false)
-                    expect(notify).toHaveBeenCalledWith({
-                        message: 'Failed to send verification message',
-                        status: 'error',
+                    const toast = screen.getByRole('status', {
+                        name: 'Failed to send verification message',
                     })
+                    expect(toast).toHaveAttribute('data-intent', 'destructive')
                 })
             })
 
@@ -659,10 +657,10 @@ describe('useEmailOnboarding()', () => {
                         1,
                         undefined,
                     )
-                    expect(notify).toHaveBeenCalledWith({
-                        message: 'Deletion failed',
-                        status: 'error',
+                    const toast = screen.getByRole('status', {
+                        name: 'Deletion failed',
                     })
+                    expect(toast).toHaveAttribute('data-intent', 'destructive')
                 })
             })
 
@@ -681,10 +679,10 @@ describe('useEmailOnboarding()', () => {
                         1,
                         undefined,
                     )
-                    expect(notify).toHaveBeenCalledWith({
-                        message: 'Failed to delete integration',
-                        status: 'error',
+                    const toast = screen.getByRole('status', {
+                        name: 'Failed to delete integration',
                     })
+                    expect(toast).toHaveAttribute('data-intent', 'destructive')
                 })
             })
 

@@ -6,6 +6,7 @@ import isObject from 'lodash/isObject'
 import kebabCase from 'lodash/kebabCase'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type {
     CreateIntegrationBody,
     EmailIntegration,
@@ -28,8 +29,6 @@ import socketManager from 'services/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
 import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export enum EmailIntegrationOnboardingStep {
     ConnectIntegration = 'ConnectIntegration',
@@ -177,12 +176,7 @@ function useMutations(
                 )
             }
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message,
-                }),
-            )
+            toast.error(message)
         },
     }
 
@@ -201,12 +195,7 @@ function useMutations(
                 ? error.response.data.error.msg
                 : 'Failed to delete integration'
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message,
-                }),
-            )
+            toast.error(message)
         },
     }
 

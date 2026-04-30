@@ -5,14 +5,11 @@ import type { AxiosError } from 'axios'
 import { useHistory } from 'react-router-dom'
 import { Col } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchMigrationDomains } from 'models/integration/resources/email'
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getMoment } from 'utils/date'
 
 import MigrationDomainList from './MigrationDomainList'
@@ -36,8 +33,6 @@ export default function MigrationOutboundVerification({ onBackClick }: Props) {
         useState<EmailMigrationOutboundVerification[]>()
 
     const fetchMigrationStatus = useMigrationBannerStatus()
-
-    const dispatch = useAppDispatch()
 
     useEffectOnce(() => {
         void handleRefresh()
@@ -67,12 +62,7 @@ export default function MigrationOutboundVerification({ onBackClick }: Props) {
                 response && response.data.error
                     ? response.data.error.msg
                     : 'Failed to fetch domains'
-            void dispatch(
-                notify({
-                    message: errorMsg,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(errorMsg)
         }
     })
 

@@ -3,20 +3,20 @@ import React, { useCallback } from 'react'
 import copy from 'copy-to-clipboard'
 import { isEmpty } from 'lodash'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    toast,
+} from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     label?: string
 }
 
 export default function BaseEmailIntegrationInputField({ label }: Props) {
-    const dispatch = useAppDispatch()
     const baseAddress =
         window.GORGIAS_STATE?.integrations?.authentication?.email
             ?.forwarding_email_address ?? ''
@@ -24,23 +24,13 @@ export default function BaseEmailIntegrationInputField({ label }: Props) {
     const handleCopy = useCallback(() => {
         try {
             copy(baseAddress)
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    title: 'Address copied to clipboard',
-                }),
-            )
+            toast.success('Address copied to clipboard')
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    title: 'Failed to copy address',
-                }),
-            )
+            toast.error('Failed to copy address')
         }
 
         copy(baseAddress)
-    }, [baseAddress, dispatch])
+    }, [baseAddress])
 
     if (isEmpty(baseAddress)) {
         return null

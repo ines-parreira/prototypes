@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { LanguageChat } from 'constants/languages'
@@ -67,10 +67,6 @@ jest.mock(
         })),
     }),
 )
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(() => ({ type: 'NOTIFY' })),
-}))
 
 jest.mock('config/integrations/gorgias_chat', () => {
     const { fromJS: fromJSActual } = jest.requireActual('immutable')
@@ -386,8 +382,6 @@ describe('useGorgiasTranslateText', () => {
     it('should dispatch error notification when submitData fails', async () => {
         mockMutateAsync.mockRejectedValue(new Error('API error'))
 
-        const { notify } = require('state/notifications/actions')
-
         const { result } = renderHook(() =>
             useGorgiasTranslateText({ integration: defaultIntegration }),
         )
@@ -400,11 +394,12 @@ describe('useGorgiasTranslateText', () => {
             await result.current.submitData()
         })
 
-        expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: expect.stringContaining("couldn't update"),
-            }),
-        )
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: /couldn't update/,
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('should reset hasChanges when resetValues is called', async () => {

@@ -3,10 +3,9 @@ import React from 'react'
 
 import Clipboard from 'clipboard'
 
-import { store } from 'common/store'
+import { toast } from '@gorgias/axiom'
+
 import IconButton from 'pages/common/components/button/IconButton'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from '../EmailDomainVerification.less'
 
@@ -22,12 +21,7 @@ const clipboardCopy = (button: HTMLButtonElement) => {
 
     const clipboard = new Clipboard(button)
     clipboard.on('success', () => {
-        store.dispatch(
-            notify({
-                status: NotificationStatus.Info,
-                message: 'Copied to clipboard!',
-            }) as any,
-        )
+        toast.info('Copied to clipboard!')
     })
 }
 

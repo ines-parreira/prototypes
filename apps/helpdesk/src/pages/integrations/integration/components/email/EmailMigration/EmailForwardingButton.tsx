@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { verifyMigrationIntegration } from 'models/integration/resources/email'
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 import { UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS } from 'state/integrations/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import EmailVerificationButton from './EmailVerificationButton'
 import { computeMigrationInboundVerificationStatus } from './utils'
@@ -39,12 +39,7 @@ export default function EmailForwardingButton({ migration }: Props) {
                     response && response.data.error
                         ? response.data.error.msg
                         : 'Failed to verify integration'
-                void dispatch(
-                    notify({
-                        message: errorMsg,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(errorMsg)
             }
         },
     )
@@ -57,12 +52,8 @@ export default function EmailForwardingButton({ migration }: Props) {
                 emailMigrationVerificationStatus:
                     EmailMigrationInboundVerificationStatus.InboundPending,
             })
-            void dispatch(
-                notify({
-                    message: `Verifying forwarding for ${migration.integration.meta.address}. This may take several minutes.`,
-                    status: NotificationStatus.Loading,
-                    dismissible: true,
-                }),
+            toast.info(
+                `Verifying forwarding for ${migration.integration.meta.address}. This may take several minutes.`,
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

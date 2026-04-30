@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
-import { Box, Label } from '@gorgias/axiom'
+import { Box, Label, toast } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import type {
     VoiceMessage as ApiVoiceMessage,
@@ -14,7 +14,6 @@ import type {
 } from '@gorgias/helpdesk-types'
 import { VoiceMessageType } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import type { VoiceMessage } from 'models/integration/types'
@@ -22,8 +21,6 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import Caption from 'pages/common/forms/Caption/Caption'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 import TextToSpeechRecordingInput from './TextToSpeechRecordingInput'
@@ -66,7 +63,6 @@ const VoiceMessageField = ({
     const floatingRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
 
-    const dispatch = useAppDispatch()
     const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
         string | undefined | null
@@ -111,13 +107,7 @@ const VoiceMessageField = ({
                 const error = _get(err, 'response.data.error', '') as
                     | GorgiasApiResponseDataError
                     | undefined
-                void dispatch(
-                    notify({
-                        title:
-                            error?.msg || 'Failed to upload custom recording',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(error?.msg || 'Failed to upload custom recording')
             },
         },
     })

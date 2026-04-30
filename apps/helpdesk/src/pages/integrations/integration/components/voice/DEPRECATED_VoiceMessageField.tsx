@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import _get from 'lodash/get'
 
+import { toast } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import type {
     VoiceMessage as ApiVoiceMessage,
@@ -10,14 +11,11 @@ import type {
 } from '@gorgias/helpdesk-types'
 import { VoiceMessageType as ApiVoiceMessageType } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
 import RadioButton from 'pages/common/components/RadioButton'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 import TextToSpeechRecordingInput from './TextToSpeechRecordingInput'
@@ -48,7 +46,6 @@ const DEPRECATED_VoiceMessageField = ({
     shouldUpload = false,
     customRecordingType,
 }: Props): JSX.Element => {
-    const dispatch = useAppDispatch()
     const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
         string | undefined | null
@@ -89,13 +86,7 @@ const DEPRECATED_VoiceMessageField = ({
                 const error = _get(err, 'response.data.error', '') as
                     | GorgiasApiResponseDataError
                     | undefined
-                void dispatch(
-                    notify({
-                        title:
-                            error?.msg || 'Failed to upload custom recording',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(error?.msg || 'Failed to upload custom recording')
             },
         },
     })

@@ -11,6 +11,8 @@ import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { EmailProvider } from 'models/integration/constants'
 import { IntegrationType } from 'models/integration/types'
@@ -30,8 +32,6 @@ import {
     getEligibleShopifyIntegrationsFor,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 import { compare } from 'utils'
 
@@ -175,12 +175,7 @@ export const IntegrationDetail = ({
                 dispatch(newPhoneNumbersFetched(newNumbers.data))
             }
         } catch {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch phone numbers',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to fetch phone numbers')
         }
     })
 

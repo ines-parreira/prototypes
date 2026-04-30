@@ -1,22 +1,18 @@
 import type { MouseEvent } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { requestNewIntegration } from 'models/integration/resources'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import TextArea from 'pages/common/forms/TextArea'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './RequestApp.less'
 
 export default function RequestApp() {
-    const dispatch = useAppDispatch()
     const [isOpen, setOpen] = useState(false)
     const [description, setDescription] = useState('')
     const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -34,21 +30,12 @@ export default function RequestApp() {
         try {
             await requestNewIntegration({ description })
         } catch {
-            void dispatch(
-                notify({
-                    message:
-                        'Uh oh! An error happened trying to save your request, please try again.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                'Uh oh! An error happened trying to save your request, please try again.',
             )
             return
         }
-        void dispatch(
-            notify({
-                message: 'Thank you for your feedback!',
-                status: NotificationStatus.Success,
-            }),
-        )
+        toast.success('Thank you for your feedback!')
 
         setDescription('')
         setOpen(false)

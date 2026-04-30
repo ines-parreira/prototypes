@@ -14,7 +14,6 @@ import App, { Tab } from 'pages/integrations/integration/components/app/App'
 import { DEFAULT_VALUES } from 'pages/integrations/mappers/mapDefaults'
 import type { Application } from 'services/applications'
 import { getApplicationById } from 'services/applications'
-import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
@@ -27,15 +26,7 @@ const mockServer = new MockAdapter(client)
 jest.mock('services/applications', () => ({
     getApplicationById: jest.fn(),
 }))
-jest.mock('state/notifications/actions', () => {
-    const actions: {
-        notify: unknown
-    } = jest.requireActual('state/notifications/actions')
-    return {
-        ...actions,
-        notify: jest.fn(() => () => undefined),
-    }
-})
+
 jest.mock('models/integration/resources', () => {
     const resources: {
         disconnectApp: unknown
@@ -182,7 +173,10 @@ describe(`App`, () => {
                 screen.queryByRole('button', { name: 'Connect App' }),
             ).toBeTruthy()
         })
-        expect((notify as jest.Mock).mock.calls).toMatchSnapshot()
+        const toast = await screen.findByRole('status', {
+            name: `${dummyAppData.name} has been disconnected.`,
+        })
+        expect(toast).toHaveAttribute('data-intent', 'success')
     })
     it('should have a failed disconnection flow', async () => {
         mockServer
@@ -202,7 +196,10 @@ describe(`App`, () => {
                 screen.queryByRole('button', { name: 'Connect App' }),
             ).toBeFalsy()
         })
-        expect((notify as jest.Mock).mock.calls).toMatchSnapshot()
+        const toast = await screen.findByRole('status', {
+            name: `Sorry, something went wrong. ${dummyAppData.name} is still connected.`,
+        })
+        expect(toast).toHaveAttribute('data-intent', 'destructive')
     })
     it('should display a warning with the right text', async () => {
         mockServer

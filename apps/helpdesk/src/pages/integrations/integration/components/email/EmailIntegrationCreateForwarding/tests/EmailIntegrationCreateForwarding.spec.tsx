@@ -14,7 +14,6 @@ const commonProps: ComponentProps<typeof EmailIntegrationCreateForwarding> = {
         },
     }),
     forwardingEmailAddress: 'forwardingaddress@emails.gorgias.com',
-    notify: jest.fn(),
     sendVerificationEmail: jest.fn(),
 }
 

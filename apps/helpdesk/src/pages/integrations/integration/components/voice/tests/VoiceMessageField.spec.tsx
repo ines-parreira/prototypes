@@ -10,7 +10,6 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
 import type { Account } from 'state/currentAccount/types'
-import { notify } from 'state/notifications/actions'
 
 import VoiceMessageField from '../VoiceMessageField'
 
@@ -19,7 +18,6 @@ jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => () => (
 ))
 
 jest.mock('@gorgias/helpdesk-queries')
-jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('../utils', () => ({
     getAudioFileDuration: jest
@@ -323,10 +321,10 @@ describe('VoiceMessageField', () => {
                 )
             })
 
-            expect(notify).toHaveBeenCalledWith({
-                title: 'File too large',
-                status: 'error',
+            const toast = await screen.findByRole('status', {
+                name: 'File too large',
             })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should disable upload button when loading', () => {
@@ -363,12 +361,10 @@ describe('VoiceMessageField', () => {
             })
 
             await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    title: 'Failed to upload',
-                    message:
-                        'File too large. Upload a recording smaller than 2MB.',
-                    status: 'error',
+                const toast = screen.getByRole('status', {
+                    name: 'File too large. Upload a recording smaller than 2MB.',
                 })
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
                 expect(mutateUploadMock).not.toHaveBeenCalled()
             })
         })

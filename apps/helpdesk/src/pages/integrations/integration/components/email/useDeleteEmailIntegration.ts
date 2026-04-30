@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { history } from '@repo/routing'
 
+import { toast } from '@gorgias/axiom'
 import type {
     EmailIntegration,
     GmailIntegration,
@@ -13,8 +14,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import type { OutlookIntegration } from 'models/integration/types'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { listUrl } from './hooks/useEmailOnboarding'
 
@@ -38,12 +37,7 @@ export default function useDeleteEmailIntegration(
                 ? error.response.data.error.msg
                 : 'Failed to delete integration'
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message,
-                }),
-            )
+            toast.error(message)
         },
     }
 

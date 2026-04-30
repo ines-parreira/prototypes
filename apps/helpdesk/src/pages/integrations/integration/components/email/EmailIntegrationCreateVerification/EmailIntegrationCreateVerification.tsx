@@ -39,7 +39,6 @@ import {
     getEmailForwardingActivated,
     getForwardingEmailAddress,
 } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 
 type OwnProps = {
@@ -295,7 +294,6 @@ const connector = connect(
     {
         sendVerificationEmail,
         verifyEmailIntegrationManually,
-        notify,
         deleteIntegration,
         resendAccountVerificationEmail: resendVerificationEmail,
     },

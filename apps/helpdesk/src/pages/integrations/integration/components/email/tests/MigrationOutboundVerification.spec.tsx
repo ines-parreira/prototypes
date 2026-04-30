@@ -4,6 +4,9 @@ import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
+import { toast } from '@gorgias/axiom'
+
+import * as emailResources from 'models/integration/resources/email'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import * as dateUtils from 'utils/date'
 
@@ -14,6 +17,23 @@ jest.useFakeTimers()
 jest.mock('models/integration/resources/email', () => ({
     fetchMigrationDomains: jest.fn(() => ({ data: [] })),
 }))
+
+jest.mock('@gorgias/axiom', () => {
+    const actual = jest.requireActual('@gorgias/axiom')
+    const toastMock = Object.assign(jest.fn(), {
+        info: jest.fn(),
+        success: jest.fn(),
+        warning: jest.fn(),
+        error: jest.fn(),
+        ai: jest.fn(),
+        promise: jest.fn(),
+        dismiss: jest.fn(),
+    })
+    return {
+        ...actual,
+        toast: toastMock,
+    }
+})
 
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment') as jest.Mock
 
@@ -78,5 +98,21 @@ describe('MigrationOutboundVerification', () => {
 
         await waitFor(() => expect(refreshButton).toBeAriaEnabled())
         expect(screen.getByText('Last checked: Today at 00:01')).toBeVisible()
+    })
+
+    it('should call toast.error when fetching domains fails', async () => {
+        const fetchMigrationDomainsMock =
+            emailResources.fetchMigrationDomains as jest.Mock
+        fetchMigrationDomainsMock.mockRejectedValueOnce({
+            response: {
+                data: { error: { msg: 'Cannot fetch domains' } },
+            },
+        })
+
+        renderComponent()
+
+        await waitFor(() => {
+            expect(toast.error).toHaveBeenCalledWith('Cannot fetch domains')
+        })
     })
 })

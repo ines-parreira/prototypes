@@ -2,9 +2,8 @@ import { useState } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     DEFAULT_IVR_DEFLECTION_SMS_CONTENT,
@@ -18,8 +17,6 @@ import type {
 import { Drawer } from 'pages/common/components/Drawer'
 import TextArea from 'pages/common/forms/TextArea'
 import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 
@@ -58,8 +55,6 @@ const IvrMenuActionSendToSMSField = ({
         initialSmsIntegrationId,
     )
 
-    const dispatch = useAppDispatch()
-
     const isSubmitDisabled = (): boolean => {
         if (smsSentToCallers.length === 0) {
             return true
@@ -80,12 +75,7 @@ const IvrMenuActionSendToSMSField = ({
 
     const handleSubmit = () => {
         if (!smsIntegrationId) {
-            void dispatch(
-                notify({
-                    message: `Cannot save. Please select an SMS integration.`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Cannot save. Please select an SMS integration.`)
             return
         }
 
@@ -95,11 +85,8 @@ const IvrMenuActionSendToSMSField = ({
             !smsConfirmationMessage.voice_recording_file_path &&
             !smsConfirmationMessage.new_voice_recording_file
         ) {
-            void dispatch(
-                notify({
-                    message: `Cannot save. Upload a recording to use it as your confirmation message.`,
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                `Cannot save. Upload a recording to use it as your confirmation message.`,
             )
             return
         }

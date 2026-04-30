@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { getCheapestPlanNameForFeature } from '@repo/billing'
 import { useTitle } from '@repo/hooks'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
@@ -32,8 +34,6 @@ import {
     getIntegrationsList,
 } from 'state/integrations/selectors'
 import type { IntegrationListItem } from 'state/integrations/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import Card from './Card'
 import CardsWrapper from './CardsWrapper'
@@ -118,18 +118,15 @@ export default function All() {
                 const res = await fetchApps()
                 setApps(res)
             } catch {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Something went wrong while trying to fetch additional apps.`,
-                    }),
+                toast.error(
+                    'Something went wrong while trying to fetch additional apps.',
                 )
             } finally {
                 setLoading(false)
             }
         }
         void fetchData()
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
         void dispatch(fetchIntegrations())

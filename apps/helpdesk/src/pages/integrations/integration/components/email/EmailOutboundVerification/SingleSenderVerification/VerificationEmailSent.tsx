@@ -5,16 +5,13 @@ import type { AxiosError } from 'axios'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { EmailProvider } from 'models/integration/constants'
 import { resendVerificationEmail } from 'models/singleSenderVerification/resources'
 import type { SenderVerification } from 'models/singleSenderVerification/types'
 import { VerificationStatus } from 'models/singleSenderVerification/types'
 import Alert from 'pages/common/components/Alert/Alert'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import DeleteVerificationButton from '../DeleteVerificationButton'
 
@@ -37,7 +34,6 @@ export default function VerificationEmailSent({
     refetchVerification,
     provider,
 }: Props) {
-    const dispatch = useAppDispatch()
     const pollingTimer = useRef<number>()
     const history = useHistory()
 
@@ -65,12 +61,7 @@ export default function VerificationEmailSent({
     const [{ loading: isLoading }, handleResendEmail] = useAsyncFn(async () => {
         try {
             await resendVerificationEmail(verification.integration_id)
-            void dispatch(
-                notify({
-                    message: 'Verification email resent successfully.',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Verification email resent successfully.')
         } catch (error) {
             const { response } = error as AxiosError<{ error: { msg: string } }>
             const errorMsg =
@@ -78,14 +69,9 @@ export default function VerificationEmailSent({
                     ? response.data.error.msg
                     : 'Failed to resend verification email'
 
-            void dispatch(
-                notify({
-                    message: errorMsg,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(errorMsg)
         }
-    }, [dispatch, verification])
+    }, [verification])
 
     return (
         <div data-testid="verification-email-sent-step">

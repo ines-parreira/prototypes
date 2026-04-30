@@ -9,6 +9,8 @@ import type { Path } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { useHistory, useLocation } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     getLanguagesFromChatConfig,
     getPrimaryLanguageFromChatConfig,
@@ -28,8 +30,6 @@ import type {
     Translations,
 } from 'rest_api/gorgias_chat_protected_api/types'
 import * as IntegrationsActions from 'state/integrations/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     emptyTextsPerLanguage,
@@ -373,21 +373,6 @@ export const useGorgiasTranslateText = ({ integration }: Props) => {
             ? emailCaptureEnforcementValue
             : undefined
 
-    const dispatchNotification = useCallback(
-        (
-            message: string,
-            status: NotificationStatus = NotificationStatus.Success,
-        ) => {
-            void dispatch(
-                notify({
-                    status,
-                    message: message,
-                }),
-            )
-        },
-        [dispatch],
-    )
-
     const saveKeyValue = useCallback(
         (key: string, value: string) => {
             form.setValue(key as Path<TextsPerLanguage>, value || '')
@@ -471,8 +456,8 @@ export const useGorgiasTranslateText = ({ integration }: Props) => {
     const resetValues = useCallback(() => {
         form.reset(initialTextsOfSelectedLanguageRef.current)
         setHasChanges(false)
-        dispatchNotification('Discarded changes')
-    }, [form, dispatchNotification])
+        toast.success('Discarded changes')
+    }, [form])
 
     const submitData = useCallback(async () => {
         try {
@@ -488,34 +473,23 @@ export const useGorgiasTranslateText = ({ integration }: Props) => {
                 })
                 initialTextsOfSelectedLanguageRef.current = savedValues
             } else {
-                dispatchNotification(
+                toast.error(
                     `There was a problem. We couldn't update your changes`,
-                    NotificationStatus.Error,
                 )
                 return
             }
 
             form.reset(savedValues)
             setHasChanges(false)
-            dispatchNotification('Your changes are now live')
+            toast.success('Your changes are now live')
 
             logEvent(SegmentEvent.ChatSettingsToneOfVoicePageSaved, {
                 id: integration.get('id'),
             })
         } catch {
-            dispatchNotification(
-                `There was a problem. We couldn't update your changes`,
-                NotificationStatus.Error,
-            )
+            toast.error(`There was a problem. We couldn't update your changes`)
         }
-    }, [
-        saveApplicationTexts,
-        form,
-        dispatchNotification,
-        integration,
-        language,
-        initialTexts,
-    ])
+    }, [saveApplicationTexts, form, integration, language, initialTexts])
 
     const handleBackClick = useCallback(() => {
         if (hasChanges) {
@@ -536,10 +510,7 @@ export const useGorgiasTranslateText = ({ integration }: Props) => {
             await submitData()
             history.push(backUrl)
         } catch {
-            dispatchNotification(
-                `There was a problem. We couldn't update your changes`,
-                NotificationStatus.Error,
-            )
+            toast.error(`There was a problem. We couldn't update your changes`)
         }
     }
 
@@ -558,10 +529,7 @@ export const useGorgiasTranslateText = ({ integration }: Props) => {
                 handleLanguageChange(modalState.pendingLanguage, true)
             }
         } catch {
-            dispatchNotification(
-                `There was a problem. We couldn't update your changes`,
-                NotificationStatus.Error,
-            )
+            toast.error(`There was a problem. We couldn't update your changes`)
         }
     }
 

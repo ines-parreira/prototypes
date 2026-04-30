@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Card } from '@gorgias/axiom'
+import { Card, toast } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -27,7 +27,6 @@ import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsAp
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
@@ -126,12 +125,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     notification.status === NotificationStatus.Error &&
                     notification.message
                 ) {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: notification.message,
-                        }),
-                    )
+                    toast.error(notification.message)
                 }
             },
         })
