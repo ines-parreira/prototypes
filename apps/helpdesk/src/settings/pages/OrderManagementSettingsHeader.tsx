@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
@@ -15,8 +16,12 @@ export const OrderManagementSettingsHeader = () => {
         IntegrationType.Shopify,
     ])
 
+    const selectedName = selected
+        ? getShopNameFromStoreIntegration(selected)
+        : undefined
+
     const selectedPath = selected
-        ? `${BASE_PATH}/${selected.type}/${selected.name}`
+        ? `${BASE_PATH}/${selected.type}/${selectedName}`
         : undefined
 
     return (

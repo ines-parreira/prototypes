@@ -86,25 +86,33 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ push: mockPush }),
     useParams: () => ({ shopType: 'shopify', shopName: 'my-store' }),
-    Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
-        <a href={to}>{children}</a>
-    ),
-    NavLink: ({ children, to }: { children: React.ReactNode; to: string }) => (
-        <a href={to}>{children}</a>
-    ),
 }))
 
 jest.mock('settings/automate', () => ({
     useStoreSelector: (...args: unknown[]) => mockUseStoreSelector(...args),
 }))
 
-jest.mock(
-    'pages/common/components/SecondaryNavbar/SecondaryNavbar',
-    () =>
-        ({ children }: { children?: React.ReactNode }) => (
-            <nav aria-label="secondary">{children}</nav>
-        ),
-)
+jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => {
+    const ReactActual: typeof import('react') = jest.requireActual('react')
+
+    type SecondaryLinkProps = {
+        activeClassName?: string
+        className?: string
+    }
+
+    return ({ children }: { children?: React.ReactNode }) => (
+        <nav aria-label="secondary">
+            {ReactActual.Children.map(children, (child) =>
+                ReactActual.isValidElement<SecondaryLinkProps>(child)
+                    ? ReactActual.cloneElement(child, {
+                          activeClassName: 'active',
+                          className: 'link',
+                      })
+                    : child,
+            )}
+        </nav>
+    )
+})
 
 jest.mock('pages/common/components/StoreSelector/StoreSelector', () => () => (
     <div>StoreSelector</div>
@@ -291,6 +299,36 @@ describe('OrderManagementFlowHeader', () => {
             expect(links[1]).toHaveAttribute(
                 'href',
                 '/app/settings/order-management/shopify/my-store/channels',
+            )
+        })
+
+        it('should highlight Configuration on order management flow routes', () => {
+            render(<OrderManagementFlowHeader {...defaultProps} />, {
+                initialEntries: [
+                    '/app/settings/order-management/shopify/my-store/report-issue/0',
+                ],
+            })
+
+            expect(
+                screen.getByRole('link', { name: 'Configuration' }),
+            ).toHaveClass('active')
+            expect(
+                screen.getByRole('link', { name: 'Channels' }),
+            ).not.toHaveClass('active')
+        })
+
+        it('should not highlight Configuration on the Channels route', () => {
+            render(<OrderManagementFlowHeader {...defaultProps} />, {
+                initialEntries: [
+                    '/app/settings/order-management/shopify/my-store/channels',
+                ],
+            })
+
+            expect(
+                screen.getByRole('link', { name: 'Configuration' }),
+            ).not.toHaveClass('active')
+            expect(screen.getByRole('link', { name: 'Channels' })).toHaveClass(
+                'active',
             )
         })
     })

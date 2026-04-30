@@ -92,9 +92,16 @@ const integrations = [
         id: 1,
         type: IntegrationType.Shopify,
         name: 'my-first-store',
-        meta: {},
+        meta: { shop_name: 'my-first-store' },
     },
 ] as StoreIntegration[]
+
+const integrationWithDifferentDisplayName = {
+    id: 2,
+    type: IntegrationType.Shopify,
+    name: 'My Shop',
+    meta: { shop_name: 'gorgiastest' },
+} as StoreIntegration
 
 describe('OrderManagementSettings', () => {
     let onChange: jest.Mock
@@ -290,6 +297,33 @@ describe('OrderManagementSettings', () => {
             )
             expect(screen.getByText('Configuration')).toBeInTheDocument()
             expect(screen.getByText('Channels')).toBeInTheDocument()
+        })
+
+        it('should build navigation links from the store route name', () => {
+            useStoreSelectorMock.mockReturnValue({
+                integrations: [integrationWithDifferentDisplayName],
+                onChange,
+                selected: integrationWithDifferentDisplayName,
+            })
+
+            renderWithQueryClientProvider(
+                <Provider store={mockStore(initialState)}>
+                    <StaticRouter location={`${BASE_PATH}/shopify/gorgiastest`}>
+                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
+                            <OrderManagementSettings />
+                        </Route>
+                    </StaticRouter>
+                </Provider>,
+            )
+
+            const configurationLink = screen.getByRole('link', {
+                name: 'Configuration',
+            })
+            expect(configurationLink).toHaveAttribute(
+                'href',
+                '/app/settings/order-management/shopify/gorgiastest',
+            )
+            expect(configurationLink).toHaveAttribute('aria-current', 'page')
         })
     })
 

@@ -47,6 +47,13 @@ export const OrderManagementFlowHeader = ({
     ])
 
     const storePath = `${BASE_PATH}/${shopType}/${shopName}`
+    const channelsPath = `${storePath}/channels`
+
+    const isConfigurationPath = (pathname: string) =>
+        pathname === storePath ||
+        (pathname.startsWith(`${storePath}/`) &&
+            pathname !== channelsPath &&
+            !pathname.startsWith(`${channelsPath}/`))
 
     const breadcrumbItems = useMemo(
         () => [
@@ -127,10 +134,16 @@ export const OrderManagementFlowHeader = ({
                 />
             </div>
             <SecondaryNavbar>
-                <NavLink exact to={storePath}>
+                <NavLink
+                    exact
+                    to={storePath}
+                    isActive={(_, location) =>
+                        isConfigurationPath(location.pathname)
+                    }
+                >
                     Configuration
                 </NavLink>
-                <NavLink exact to={`${storePath}/channels`}>
+                <NavLink exact to={channelsPath}>
                     Channels
                 </NavLink>
             </SecondaryNavbar>
