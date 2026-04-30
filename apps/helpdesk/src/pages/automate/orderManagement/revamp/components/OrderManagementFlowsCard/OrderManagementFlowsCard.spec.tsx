@@ -99,6 +99,28 @@ describe('OrderManagementFlowsCard', () => {
             expect(screen.getByText('Cancel order')).toBeInTheDocument()
             expect(screen.getByText('Report issue')).toBeInTheDocument()
         })
+
+        it('should render a warning when a flow has an empty response', () => {
+            renderComponent({
+                flows: mockFlows.map((flow) =>
+                    flow.key === 'returnOrderPolicy'
+                        ? { ...flow, hasEmptyResponse: true }
+                        : flow,
+                ),
+            })
+
+            expect(
+                screen.getByText('No response configured'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render a warning when no flow has an empty response', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByText('No response configured'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('toggles', () => {
@@ -159,6 +181,17 @@ describe('OrderManagementFlowsCard', () => {
             renderComponent({ onFlowClick })
 
             await user.click(screen.getByText('Track order'))
+
+            expect(onFlowClick).toHaveBeenCalledWith('track')
+        })
+
+        it('should call onFlowClick when pressing Enter on a navigable row', async () => {
+            const user = userEvent.setup()
+            const onFlowClick = jest.fn()
+            renderComponent({ onFlowClick })
+
+            screen.getByRole('button', { name: /track order/i }).focus()
+            await user.keyboard('{Enter}')
 
             expect(onFlowClick).toHaveBeenCalledWith('track')
         })

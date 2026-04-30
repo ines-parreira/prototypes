@@ -14,25 +14,44 @@
 
     .tableRow {
         display: grid;
-        grid-template-columns: 65px 1fr auto;
+        grid-template-columns: 65px minmax(0, 1fr);
         align-items: center;
         padding: var(--spacing-sm) var(--spacing-md);
 
         &:not(:last-child) {
             border-bottom: 1px solid var(--border-neutral-default);
         }
-
-        &[role='button'] {
-            cursor: pointer;
-
-            &:hover {
-                background-color: var(--background-neutral-hover);
-            }
-        }
     }
 
     .toggleWrapper {
         display: flex;
         align-items: center;
+    }
+
+    .alert {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .flowButton,
+    .flowContent {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        align-items: center;
+        width: 100%;
+    }
+
+    .flowButton {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+
+        &:hover {
+            background-color: var(--background-neutral-hover);
+        }
     }
 }

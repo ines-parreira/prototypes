@@ -1,5 +1,3 @@
-import type { MouseEvent } from 'react'
-
 import {
     Box,
     Card,
@@ -12,6 +10,7 @@ import {
 } from '@gorgias/axiom'
 
 import type { PolicyKey } from 'models/selfServiceConfiguration/types'
+import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
 
 import type { OrderManagementFlow } from './useOrderManagementFlows'
 
@@ -54,33 +53,61 @@ export const OrderManagementFlowsCard = ({
                         Button
                     </Text>
                 </div>
-                {flows.map((flow) => (
-                    <div
-                        key={flow.key}
-                        className={css.tableRow}
-                        onClick={() =>
-                            flow.canNavigate && onFlowClick(flow.routePath)
-                        }
-                        role={flow.canNavigate ? 'button' : undefined}
-                    >
-                        <div
-                            className={css.toggleWrapper}
-                            onClick={(e: MouseEvent) => e.stopPropagation()}
-                        >
-                            <ToggleField
-                                value={flow.isEnabled}
-                                isDisabled={isUpdatePending}
-                                onChange={(value) =>
-                                    onFlowToggle(flow.key, value)
-                                }
-                            />
+                {flows.map((flow) => {
+                    const rowContent = (
+                        <>
+                            <Text size="md">{flow.title}</Text>
+                            <div className={css.alert}>
+                                {flow.hasEmptyResponse && (
+                                    <EmptyResponseMessageContentError />
+                                )}
+                            </div>
+                            {flow.canNavigate && (
+                                <Icon name="arrow-chevron-right" size="sm" />
+                            )}
+                        </>
+                    )
+
+                    if (!flow.canNavigate) {
+                        return (
+                            <div key={flow.key} className={css.tableRow}>
+                                <div className={css.toggleWrapper}>
+                                    <ToggleField
+                                        value={flow.isEnabled}
+                                        isDisabled={isUpdatePending}
+                                        onChange={(value) =>
+                                            onFlowToggle(flow.key, value)
+                                        }
+                                    />
+                                </div>
+                                <div className={css.flowContent}>
+                                    {rowContent}
+                                </div>
+                            </div>
+                        )
+                    }
+
+                    return (
+                        <div key={flow.key} className={css.tableRow}>
+                            <div className={css.toggleWrapper}>
+                                <ToggleField
+                                    value={flow.isEnabled}
+                                    isDisabled={isUpdatePending}
+                                    onChange={(value) =>
+                                        onFlowToggle(flow.key, value)
+                                    }
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                className={css.flowButton}
+                                onClick={() => onFlowClick(flow.routePath)}
+                            >
+                                {rowContent}
+                            </button>
                         </div>
-                        <Text size="md">{flow.title}</Text>
-                        {flow.canNavigate && (
-                            <Icon name="arrow-chevron-right" size="sm" />
-                        )}
-                    </div>
-                ))}
+                    )
+                })}
             </div>
         </Card>
     )
