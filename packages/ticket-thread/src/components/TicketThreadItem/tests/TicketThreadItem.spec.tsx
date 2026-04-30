@@ -5,8 +5,11 @@ import { HttpResponse } from 'msw'
 import {
     mockCustomer,
     mockGetCustomerHandler,
+    mockGetIntegrationHandler,
+    mockGetIntegrationResponse,
     mockGetTicketHandler,
     mockGetUserAvailabilityHandler,
+    mockIntegration,
     mockListIntegrationsHandler,
     mockListIntegrationsResponse,
     mockListUsersHandler,
@@ -78,6 +81,17 @@ beforeEach(() => {
                         prev_cursor: null,
                         next_cursor: null,
                     },
+                }),
+            ),
+        ).handler,
+        mockGetIntegrationHandler(async () =>
+            HttpResponse.json(
+                mockGetIntegrationResponse({
+                    ...mockIntegration({
+                        id: 33858,
+                        type: 'shopify',
+                        name: 'Main Shop',
+                    }),
                 }),
             ),
         ).handler,
@@ -183,7 +197,7 @@ const actionExecutedEventData = {
         action_label: null,
         action_name: 'shopifyRefundOrder',
         app_id: null,
-        integration_id: null,
+        integration_id: 33858,
         payload: {
             order_id: 360037000,
         },
@@ -251,7 +265,7 @@ describe('TicketThreadItem', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('renders an action executed event item', () => {
+    it('renders an action executed event item', async () => {
         renderItem(
             {
                 _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
@@ -263,7 +277,7 @@ describe('TicketThreadItem', () => {
             },
         )
 
-        expect(screen.getByText('Refund order')).toBeInTheDocument()
+        expect(await screen.findByText('Refund order')).toBeInTheDocument()
     })
 
     it('renders a merged events item', () => {

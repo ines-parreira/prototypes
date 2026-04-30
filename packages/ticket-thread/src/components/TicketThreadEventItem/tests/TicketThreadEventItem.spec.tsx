@@ -2,8 +2,9 @@ import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
 import {
-    mockListIntegrationsHandler,
-    mockListIntegrationsResponse,
+    mockGetIntegrationHandler,
+    mockGetIntegrationResponse,
+    mockIntegration,
     mockListUsersHandler,
     mockListUsersResponse,
 } from '@gorgias/helpdesk-mocks'
@@ -60,7 +61,7 @@ const actionExecutedEventData = {
         action_label: null,
         action_name: 'shopifyRefundOrder',
         app_id: null,
-        integration_id: null,
+        integration_id: 33858,
         payload: {
             order_id: 360037000,
         },
@@ -80,14 +81,14 @@ describe('TicketThreadEventItem', () => {
     beforeEach(() => {
         server.use(
             getCurrentUserHandler().handler,
-            mockListIntegrationsHandler(async () =>
+            mockGetIntegrationHandler(async () =>
                 HttpResponse.json(
-                    mockListIntegrationsResponse({
-                        data: [],
-                        meta: {
-                            prev_cursor: null,
-                            next_cursor: null,
-                        },
+                    mockGetIntegrationResponse({
+                        ...mockIntegration({
+                            id: 33858,
+                            type: 'shopify',
+                            name: 'Main Shop',
+                        }),
                     }),
                 ),
             ).handler,
@@ -169,11 +170,14 @@ describe('TicketThreadEventItem', () => {
         },
     ]
 
-    it.each(eventItems)('renders $label item', ({ item, renderedText }) => {
-        renderItem(item)
+    it.each(eventItems)(
+        'renders $label item',
+        async ({ item, renderedText }) => {
+            renderItem(item)
 
-        expect(screen.getByText(renderedText)).toBeInTheDocument()
-    })
+            expect(await screen.findByText(renderedText)).toBeInTheDocument()
+        },
+    )
 
     it('renders grouped events', () => {
         const firstEventData = {

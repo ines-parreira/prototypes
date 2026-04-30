@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react'
 
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 
 import {
+    mockGetIntegrationHandler,
+    mockGetIntegrationResponse,
     mockIntegration,
-    mockListIntegrationsHandler,
-    mockListIntegrationsResponse,
     mockListUsersHandler,
     mockListUsersResponse,
     mockUser,
@@ -54,15 +54,13 @@ vi.mock('@gorgias/axiom', async (importOriginal) => {
     }
 })
 
-function getIntegrationsHandler(integrations: unknown[]) {
-    return mockListIntegrationsHandler(async () =>
+function getIntegrationHandler(
+    integration: ReturnType<typeof mockIntegration>,
+) {
+    return mockGetIntegrationHandler(async () =>
         HttpResponse.json(
-            mockListIntegrationsResponse({
-                data: integrations as any[],
-                meta: {
-                    prev_cursor: null,
-                    next_cursor: null,
-                },
+            mockGetIntegrationResponse({
+                ...integration,
             }),
         ),
     )
@@ -115,7 +113,7 @@ function buildItem({
                 ...dataOverrides,
                 payload: {
                     ...baseData.payload,
-                    ...(dataOverrides?.payload ?? {}),
+                    ...dataOverrides?.payload,
                 },
             },
         },
@@ -135,7 +133,7 @@ describe('TicketThreadActionExecutedEventItem', () => {
 
     it('renders shopify row with logo, label, order link, store, author, and date', async () => {
         server.use(
-            getIntegrationsHandler([
+            getIntegrationHandler(
                 mockIntegration({
                     id: 33858,
                     type: 'shopify',
@@ -144,7 +142,7 @@ describe('TicketThreadActionExecutedEventItem', () => {
                         shop_name: 'main-shop',
                     },
                 }),
-            ]).handler,
+            ).handler,
             getUsersHandler([
                 mockUser({
                     id: 42,
@@ -157,7 +155,7 @@ describe('TicketThreadActionExecutedEventItem', () => {
             <TicketThreadActionExecutedEventItemComponent item={buildItem()} />,
         )
 
-        expect(screen.getByText('Refund order')).toBeInTheDocument()
+        expect(await screen.findByText('Refund order')).toBeInTheDocument()
         expect(await screen.findByText(/Main Shop/)).toBeInTheDocument()
         expect(
             await screen.findByRole('link', {
@@ -174,7 +172,7 @@ describe('TicketThreadActionExecutedEventItem', () => {
 
     it('renders tooltip details with payload and error information', async () => {
         server.use(
-            getIntegrationsHandler([
+            getIntegrationHandler(
                 mockIntegration({
                     id: 33858,
                     type: 'shopify',
@@ -183,7 +181,7 @@ describe('TicketThreadActionExecutedEventItem', () => {
                         shop_name: 'main-shop',
                     },
                 }),
-            ]).handler,
+            ).handler,
             getUsersHandler([
                 mockUser({
                     id: 42,
@@ -213,7 +211,9 @@ describe('TicketThreadActionExecutedEventItem', () => {
         )
 
         await user.click(
-            screen.getByRole('button', { name: 'Show action details' }),
+            await screen.findByRole('button', {
+                name: 'Show action details',
+            }),
         )
 
         expect(screen.getByText('Action request failed')).toBeInTheDocument()
@@ -228,7 +228,13 @@ describe('TicketThreadActionExecutedEventItem', () => {
 
     it('renders custom HTTP action modal with structured request sections', async () => {
         server.use(
-            getIntegrationsHandler([]).handler,
+            getIntegrationHandler(
+                mockIntegration({
+                    id: 33858,
+                    type: 'http',
+                    name: 'Custom HTTP',
+                }),
+            ).handler,
             getUsersHandler([mockUser({ id: 42, name: 'Alex Agent' })]).handler,
         )
 
@@ -257,7 +263,9 @@ describe('TicketThreadActionExecutedEventItem', () => {
         )
 
         await user.click(
-            screen.getByRole('button', { name: 'Show action details' }),
+            await screen.findByRole('button', {
+                name: 'Show action details',
+            }),
         )
 
         expect(screen.getByText('Request')).toBeInTheDocument()
@@ -279,21 +287,13 @@ describe('TicketThreadActionExecutedEventItem', () => {
         expect(screen.getByText('{"status":"ok"}')).toBeInTheDocument()
     })
 
-    it('falls back when integration cannot be resolved', async () => {
+    it('does not render when integration cannot be resolved', async () => {
         server.use(
-            getIntegrationsHandler([
-                mockIntegration({
-                    id: 1,
-                    type: 'shopify',
-                    name: 'Other Shop',
-                    meta: {
-                        shop_name: 'other-shop',
-                    },
-                }),
-            ]).handler,
+            mockGetIntegrationHandler(async () => HttpResponse.json(null))
+                .handler,
         )
 
-        const { container } = render(
+        render(
             <TicketThreadActionExecutedEventItemComponent
                 item={buildItem({
                     eventOverrides: {
@@ -310,14 +310,15 @@ describe('TicketThreadActionExecutedEventItem', () => {
             />,
         )
 
-        expect(screen.getByText('Cancel subscription')).toBeInTheDocument()
-        expect(screen.getByText('#987654')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Cancel subscription'),
+            ).not.toBeInTheDocument()
+        })
         expect(
             screen.queryByRole('link', {
                 name: '#987654',
             }),
         ).not.toBeInTheDocument()
-        expect(screen.queryByText('Other Shop')).not.toBeInTheDocument()
-        expect(getIconUseElement(container, 'shopping-bag')).toBeTruthy()
     })
 })
