@@ -49,7 +49,7 @@ describe('aggregateIntentMetrics', () => {
             ticketVolume: 30,
             ticketVolumePercent: 15, // 30/200 = 15%
             handoverCount: 5,
-            handoverPercent: 17, // 5/30 = 16.67% -> 17%
+            handoverPercent: 16.7, // 5/30 = 16.67% -> 16.7%
         })
 
         expect(result.get('product::pricing')).toEqual({

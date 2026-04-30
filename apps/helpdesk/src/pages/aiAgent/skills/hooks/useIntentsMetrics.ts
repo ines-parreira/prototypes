@@ -13,14 +13,14 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { getTimezone } from 'state/currentUser/selectors'
 
 import type { IntentMetrics } from './useIntentsTable'
-import { useTotalAiAgentTickets } from './useTotalAiAgentTickets'
+import { useTotalCoveredAiAgentTickets } from './useTotalCoveredAiAgentTickets'
 
 /**
  * Hook to fetch resource metrics for all intents.
  * Fetches metrics for the last 28 days filtered by shopIntegrationId:
  * - Number of tickets where this intent was used
  * - Number of handover tickets
- * - Percent of tickets (ticket volume %) = ticket volume / total AI agent tickets
+ * - Percent of tickets (ticket volume %) = ticket volume / total covered tickets (tickets with any outcome set)
  * - Percent of handover = handover / ticket volume
  */
 export const useIntentsMetrics = (enabled: boolean = true) => {
@@ -74,7 +74,7 @@ export const useIntentsMetrics = (enabled: boolean = true) => {
         isQueryEnabled && !isCustomFieldsLoading,
     )
 
-    const { totalCount: totalAiAgentTickets } = useTotalAiAgentTickets()
+    const { totalCount: totalAiAgentTickets } = useTotalCoveredAiAgentTickets()
 
     const isLoading = totalMetric.isFetching || handoverMetric.isFetching
     const isError = totalMetric.isError || handoverMetric.isError

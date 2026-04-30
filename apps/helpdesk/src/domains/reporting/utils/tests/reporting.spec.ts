@@ -493,6 +493,24 @@ describe('reporting utils', () => {
 
             expect(calculatePercentage(a, b)).toEqual((a / b) * 100)
         })
+
+        it('should return 0 when x is 0', () => {
+            expect(calculatePercentage(0, 10)).toEqual(0)
+        })
+
+        it('should return 0 when y is 0', () => {
+            expect(calculatePercentage(5, 0)).toEqual(0)
+        })
+
+        it('should round to the given precision', () => {
+            expect(calculatePercentage(1, 3, 1)).toEqual(33.3)
+            expect(calculatePercentage(5, 30, 1)).toEqual(16.7)
+            expect(calculatePercentage(1, 4, 2)).toEqual(25.0)
+        })
+
+        it('should return an integer percentage when precision is 0', () => {
+            expect(calculatePercentage(1, 3, 0)).toEqual(33)
+        })
     })
 
     describe('matchAndCalculateAllEntries', () => {

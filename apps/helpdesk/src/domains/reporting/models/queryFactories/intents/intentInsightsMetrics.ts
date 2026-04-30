@@ -7,6 +7,7 @@ import {
 import { customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
+import { calculatePercentage } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 import type { IntentMetrics } from 'pages/aiAgent/skills/hooks/useIntentsTable'
 
@@ -44,16 +45,13 @@ const buildIntentCountMap = (allData: MetricDataRecord[]): IntentCountMap => {
     return map
 }
 
-const calculatePercentage = (value: number, total: number): number =>
-    total > 0 ? Math.round((value / total) * 100) : 0
-
 /**
  * Aggregate intent metrics from raw query data.
  * Builds L1/L2 count maps and computes percentage metrics.
  *
  * @param totalData - Raw metric records for total ticket volume per intent
  * @param handoverData - Raw metric records for handover ticket count per intent
- * @param totalAiAgentTickets - Total AI agent tickets (denominator for ticket volume %)
+ * @param totalAiAgentTickets - Total covered AI agent tickets (tickets with any outcome set; denominator for ticket volume %)
  * @returns Map of intent name to metrics (ticketVolume, ticketVolumePercent, handoverCount, handoverPercent)
  */
 export const aggregateIntentMetrics = (
@@ -76,9 +74,14 @@ export const aggregateIntentMetrics = (
             ticketVolumePercent: calculatePercentage(
                 ticketVolume,
                 totalAiAgentTickets,
+                1,
             ),
             handoverCount,
-            handoverPercent: calculatePercentage(handoverCount, ticketVolume),
+            handoverPercent: calculatePercentage(
+                handoverCount,
+                ticketVolume,
+                1,
+            ),
         })
     })
 

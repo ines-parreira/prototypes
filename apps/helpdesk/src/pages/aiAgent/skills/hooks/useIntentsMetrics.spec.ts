@@ -10,7 +10,7 @@ import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import { useIntentsMetrics } from './useIntentsMetrics'
-import { useTotalAiAgentTickets } from './useTotalAiAgentTickets'
+import { useTotalCoveredAiAgentTickets } from './useTotalCoveredAiAgentTickets'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
     useMetricPerDimensionV2: jest.fn(),
@@ -58,8 +58,8 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
 
-jest.mock('./useTotalAiAgentTickets', () => ({
-    useTotalAiAgentTickets: jest.fn(),
+jest.mock('./useTotalCoveredAiAgentTickets', () => ({
+    useTotalCoveredAiAgentTickets: jest.fn(),
 }))
 
 const mockUseMetricPerDimensionV2 = useMetricPerDimensionV2 as jest.Mock
@@ -74,7 +74,8 @@ const mockUseGetCustomTicketsFieldsDefinitionData =
     useGetCustomTicketsFieldsDefinitionData as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
-const mockUseTotalAiAgentTickets = useTotalAiAgentTickets as jest.Mock
+const mockUseTotalCoveredAiAgentTickets =
+    useTotalCoveredAiAgentTickets as jest.Mock
 
 const mockDateRange = { from: '2024-01-01', to: '2024-01-28' }
 
@@ -103,7 +104,7 @@ describe('useIntentsMetrics', () => {
         })
         mockUseGetTicketChannelsStoreIntegrations.mockReturnValue([42])
         mockUseMetricPerDimensionV2.mockReturnValue(defaultMetricResult)
-        mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 100 })
+        mockUseTotalCoveredAiAgentTickets.mockReturnValue({ totalCount: 100 })
         mockAggregateIntentMetrics.mockReturnValue(
             new Map([
                 [

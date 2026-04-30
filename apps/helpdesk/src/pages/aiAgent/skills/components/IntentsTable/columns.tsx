@@ -164,7 +164,7 @@ export const getColumns = ({
 
                 const displayValue =
                     statsDisplayMode === 'percentage'
-                        ? `${metrics.ticketVolumePercent}%`
+                        ? `${metrics.ticketVolumePercent.toFixed(1)}%`
                         : String(metrics.ticketVolume)
 
                 if (

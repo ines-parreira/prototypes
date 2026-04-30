@@ -898,7 +898,7 @@ describe('IntentsTable', () => {
                 expect(screen.getByText('Order')).toBeInTheDocument()
             })
             expect(mockMetricCell).not.toHaveBeenCalled()
-            expect(screen.getByText('50%')).toBeInTheDocument()
+            expect(screen.getByText('50.0%')).toBeInTheDocument()
         })
         it('should render MetricCell when metrics, dateRange and custom field IDs are available', async () => {
             mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({

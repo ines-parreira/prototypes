@@ -475,8 +475,17 @@ export const agentFilter = (agentAssigneeId?: string): ReportingFilter => ({
     values: agentAssigneeId ? [agentAssigneeId] : [],
 })
 
-export const calculatePercentage = (x: number, y: number) =>
-    x === 0 || y === 0 ? 0 : (x / y) * 100
+export const calculatePercentage = (
+    x: number,
+    y: number,
+    precision?: number,
+) => {
+    if (x === 0 || y === 0) return 0
+    const raw = (x / y) * 100
+    if (precision === undefined) return raw
+    const factor = Math.pow(10, precision)
+    return Math.round(raw * factor) / factor
+}
 
 export const matchAndCalculateAllEntries = <
     TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
