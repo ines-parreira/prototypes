@@ -1,14 +1,13 @@
 import React from 'react'
 
-import { cleanup, render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
+import { cleanup, screen } from '@testing-library/react'
 
 import {
     migrationOutboundVerificationUnverifiedSingleSender,
     migrationOutboundVerificationVerifiedSingleSender,
 } from 'fixtures/emailMigration'
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'
-import { mockStore } from 'utils/testing'
 
 import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
@@ -21,14 +20,12 @@ describe('SingleSenderVerificationAccordionItem', () => {
         verification: EmailMigrationOutboundVerification,
     ) =>
         render(
-            <Provider store={mockStore({} as any)}>
-                <SingleSenderVerificationAccordionItem
-                    verification={verification}
-                    onVerificationMethodSwitch={jest.fn()}
-                    onBulkSubmitClick={jest.fn()}
-                    refreshMigrationData={jest.fn()}
-                />
-            </Provider>,
+            <SingleSenderVerificationAccordionItem
+                verification={verification}
+                onVerificationMethodSwitch={jest.fn()}
+                onBulkSubmitClick={jest.fn()}
+                refreshMigrationData={jest.fn()}
+            />,
         )
 
     afterEach(cleanup)

@@ -1,15 +1,10 @@
-import type React from 'react'
-
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { mockStore } from 'utils/testing'
 
 import { useFlows } from '../useFlows'
 
@@ -53,14 +48,6 @@ describe('useFlows', () => {
         },
     })
 
-    const store = mockStore({})
-
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={store}>
-            <MemoryRouter>{children}</MemoryRouter>
-        </Provider>
-    )
-
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -98,9 +85,8 @@ describe('useFlows', () => {
     })
 
     it('should return automationSettingsWorkflows from automation settings', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: defaultIntegration }),
         )
 
         expect(result.current.automationSettingsWorkflows).toEqual([
@@ -117,18 +103,16 @@ describe('useFlows', () => {
             },
         })
 
-        const { result } = renderHook(
-            () => useFlows({ integration: integrationWithoutAppId }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: integrationWithoutAppId }),
         )
 
         expect(result.current.automationSettingsWorkflows).toEqual([])
     })
 
     it('should return workflowEntrypoints from selfServiceConfiguration', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: defaultIntegration }),
         )
 
         expect(result.current.workflowEntrypoints).toEqual([
@@ -137,9 +121,8 @@ describe('useFlows', () => {
     })
 
     it('should return workflowConfigurations from query', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: defaultIntegration }),
         )
 
         expect(result.current.workflowConfigurations).toEqual([
@@ -148,18 +131,16 @@ describe('useFlows', () => {
     })
 
     it('should return channel with correct type', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: defaultIntegration }),
         )
 
         expect(result.current.channel.type).toBe(TicketChannel.Chat)
     })
 
     it('should return shopName and shopType from integration', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: defaultIntegration }),
         )
 
         expect(result.current.shopName).toBe('test-shop')
@@ -173,9 +154,8 @@ describe('useFlows', () => {
             isFetchPending: true,
         } as any)
 
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -190,18 +170,16 @@ describe('useFlows', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as false when all data is loaded', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useFlows({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(false)
@@ -209,18 +187,15 @@ describe('useFlows', () => {
 
     describe('deferred flows save', () => {
         it('should not expose handleFlowsChange (flow changes are deferred to the header Save)', () => {
-            const { result } = renderHook(
-                () => useFlows({ integration: defaultIntegration }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useFlows({ integration: defaultIntegration }),
             )
 
             expect('handleFlowsChange' in result.current).toBe(false)
         })
 
         it('should not call handleChatApplicationAutomationSettingsUpdate on mount', () => {
-            renderHook(() => useFlows({ integration: defaultIntegration }), {
-                wrapper,
-            })
+            renderHook(() => useFlows({ integration: defaultIntegration }))
 
             expect(
                 mockHandleChatApplicationAutomationSettingsUpdate,
@@ -247,9 +222,8 @@ describe('useFlows', () => {
                     mockHandleChatApplicationAutomationSettingsUpdate,
             } as any)
 
-            const { result } = renderHook(
-                () => useFlows({ integration: defaultIntegration }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useFlows({ integration: defaultIntegration }),
             )
 
             expect(result.current.automationSettingsWorkflows).toEqual([

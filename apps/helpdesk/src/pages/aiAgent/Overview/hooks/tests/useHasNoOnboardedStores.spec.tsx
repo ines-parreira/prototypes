@@ -1,11 +1,9 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 import { useHasNoOnboardedStores } from '../useHasNoOnboardedStores'
 
@@ -19,9 +17,7 @@ const defaultState = {
 
 const renderUseHasNoOnboardedStores = () => {
     return renderHook(() => useHasNoOnboardedStores(), {
-        wrapper: ({ children }) => (
-            <Provider store={mockStore(defaultState)}>{children}</Provider>
-        ),
+        storeState: defaultState,
     })
 }
 

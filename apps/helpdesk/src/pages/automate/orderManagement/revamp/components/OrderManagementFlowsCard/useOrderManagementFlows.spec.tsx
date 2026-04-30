@@ -1,13 +1,9 @@
-import type React from 'react'
-
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { mockStore } from 'utils/testing'
 
 import { useOrderManagementFlows } from './useOrderManagementFlows'
 
@@ -71,11 +67,6 @@ const mockSelfServiceConfiguration = {
 }
 
 describe('useOrderManagementFlows', () => {
-    const store = mockStore({})
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={store}>{children}</Provider>
-    )
-
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -101,17 +92,13 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: null,
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             expect(result.current.isLoading).toBe(true)
         })
 
         it('should return isLoading as false when fetch is complete', () => {
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             expect(result.current.isLoading).toBe(false)
         })
@@ -128,25 +115,19 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: null,
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             expect(result.current.flows).toHaveLength(0)
         })
 
         it('should return 4 flows when configuration is loaded', () => {
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             expect(result.current.flows).toHaveLength(4)
         })
 
         it('should return flows in correct order', () => {
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             expect(result.current.flows.map((f) => f.key)).toEqual([
                 'trackOrderPolicy',
@@ -157,9 +138,7 @@ describe('useOrderManagementFlows', () => {
         })
 
         it('should reflect the enabled state of each flow from configuration', () => {
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const { flows } = result.current
             expect(flows[0].isEnabled).toBe(true) // trackOrderPolicy
@@ -171,9 +150,7 @@ describe('useOrderManagementFlows', () => {
 
     describe('canNavigate', () => {
         it('should set canNavigate to true for track and report flows when user has access', () => {
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const trackFlow = result.current.flows.find(
                 (f) => f.key === 'trackOrderPolicy',
@@ -189,9 +166,7 @@ describe('useOrderManagementFlows', () => {
         it('should set canNavigate to false for track and report flows when user has no access', () => {
             mockedUseAiAgentAccess.mockReturnValue({ hasAccess: false } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const trackFlow = result.current.flows.find(
                 (f) => f.key === 'trackOrderPolicy',
@@ -207,9 +182,7 @@ describe('useOrderManagementFlows', () => {
         it('should always set canNavigate to true for return and cancel flows regardless of access', () => {
             mockedUseAiAgentAccess.mockReturnValue({ hasAccess: false } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const returnFlow = result.current.flows.find(
                 (f) => f.key === 'returnOrderPolicy',
@@ -240,9 +213,7 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: { id: 1 },
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const trackFlow = result.current.flows.find(
                 (f) => f.key === 'trackOrderPolicy',
@@ -268,9 +239,7 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: { id: 1 },
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const trackFlow = result.current.flows.find(
                 (f) => f.key === 'trackOrderPolicy',
@@ -295,9 +264,7 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: { id: 1 },
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const trackFlow = result.current.flows.find(
                 (f) => f.key === 'trackOrderPolicy',
@@ -327,9 +294,7 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: { id: 1 },
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const cancelFlow = result.current.flows.find(
                 (f) => f.key === 'cancelOrderPolicy',
@@ -359,9 +324,7 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: { id: 1 },
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const returnFlow = result.current.flows.find(
                 (f) => f.key === 'returnOrderPolicy',
@@ -391,9 +354,7 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: { id: 1 },
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const returnFlow = result.current.flows.find(
                 (f) => f.key === 'returnOrderPolicy',
@@ -437,9 +398,7 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: { id: 1 },
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const reportFlow = result.current.flows.find(
                 (f) => f.key === 'reportIssuePolicy',
@@ -483,9 +442,7 @@ describe('useOrderManagementFlows', () => {
                 storeIntegration: { id: 1 },
             } as any)
 
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             const reportFlow = result.current.flows.find(
                 (f) => f.key === 'reportIssuePolicy',
@@ -497,9 +454,7 @@ describe('useOrderManagementFlows', () => {
 
     describe('handleFlowToggle', () => {
         it('should call handleSelfServiceConfigurationUpdate when toggling a flow', () => {
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             act(() => {
                 result.current.handleFlowToggle('trackOrderPolicy', false)
@@ -511,9 +466,7 @@ describe('useOrderManagementFlows', () => {
 
     describe('navigateToFlow', () => {
         it('should push the correct path when navigating to a flow', () => {
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             act(() => {
                 result.current.navigateToFlow('track')
@@ -525,9 +478,7 @@ describe('useOrderManagementFlows', () => {
         })
 
         it('should push the correct path for report-issue flow', () => {
-            const { result } = renderHook(() => useOrderManagementFlows(), {
-                wrapper,
-            })
+            const { result } = renderHook(() => useOrderManagementFlows())
 
             act(() => {
                 result.current.navigateToFlow('report-issue')

@@ -1,15 +1,11 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { mockStore } from 'utils/testing'
 
 import { useGetAverageOrderValue } from '../useGetAverageOrderValue'
-
-const store = mockStore({})
 
 const filters: StatsFilters = {
     period: {
@@ -26,11 +22,7 @@ jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const mockUseMetricPerDimension = assumeMock(useMetricPerDimension)
 
 const renderHookWithWrapper = (hook: typeof useGetAverageOrderValue) => {
-    return renderHook(() => hook(filters, 'UTC'), {
-        wrapper: ({ children }) => (
-            <Provider store={store}>{children}</Provider>
-        ),
-    })
+    return renderHook(() => hook(filters, 'UTC'))
 }
 
 describe('useGetAverageOrderValue', () => {

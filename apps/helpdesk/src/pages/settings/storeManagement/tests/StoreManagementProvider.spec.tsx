@@ -2,11 +2,8 @@ import React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { mockStoresWithAssignedChannels } from 'pages/settings/storeManagement/fixtures'
-import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import {
     StoreManagementProvider,
@@ -23,20 +20,13 @@ jest.mock('../hooks/useStoresWithMaps', () => ({
 }))
 
 describe('StoreManagementProvider', () => {
-    const { QueryClientProvider } = mockQueryClientProvider()
-    const store = mockStore({} as any)
+    const wrapper = ({ children }: React.PropsWithChildren) => (
+        <StoreManagementProvider>{children}</StoreManagementProvider>
+    )
 
     it('provides initial state correctly', () => {
         const { result } = renderHook(() => useStoreManagementState(), {
-            wrapper: ({ children }) => (
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <StoreManagementProvider>
-                            {children}
-                        </StoreManagementProvider>
-                    </QueryClientProvider>
-                </Provider>
-            ),
+            wrapper,
         })
 
         const { stores, paginatedStores, currentPage, totalPages } =
@@ -52,15 +42,7 @@ describe('StoreManagementProvider', () => {
 
     it('handles pagination correctly', () => {
         const { result } = renderHook(() => useStoreManagementState(), {
-            wrapper: ({ children }) => (
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <StoreManagementProvider>
-                            {children}
-                        </StoreManagementProvider>
-                    </QueryClientProvider>
-                </Provider>
-            ),
+            wrapper,
         })
 
         act(() => {

@@ -1,15 +1,12 @@
-import type React from 'react'
-
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { useGetHelpCenter } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
-import { mockStore } from 'utils/testing'
 
 import { useArticleRecommendation } from '../useArticleRecommendation'
 
@@ -63,12 +60,6 @@ describe('useArticleRecommendation', () => {
         },
     })
 
-    const store = mockStore({})
-
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={store}>{children}</Provider>
-    )
-
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -105,9 +96,8 @@ describe('useArticleRecommendation', () => {
     })
 
     it('should return enabledInSettings from useIsArticleRecommendationsEnabledWhileSunset', () => {
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.enabledInSettings).toBe(true)
@@ -119,18 +109,16 @@ describe('useArticleRecommendation', () => {
             enabledInStatistics: false,
         })
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.enabledInSettings).toBe(false)
     })
 
     it('should return isArticleRecommendationEnabled based on automation settings', () => {
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isArticleRecommendationEnabled).toBe(true)
@@ -150,9 +138,8 @@ describe('useArticleRecommendation', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isArticleRecommendationEnabled).toBe(false)
@@ -164,9 +151,8 @@ describe('useArticleRecommendation', () => {
             enabledInStatistics: true,
         })
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isArticleRecommendationEnabled).toBe(false)
@@ -178,9 +164,8 @@ describe('useArticleRecommendation', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isDisabled).toBe(true)
@@ -192,9 +177,8 @@ describe('useArticleRecommendation', () => {
             isError: true,
         } as any)
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isDisabled).toBe(true)
@@ -209,18 +193,16 @@ describe('useArticleRecommendation', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isDisabled).toBe(true)
     })
 
     it('should return isDisabled as false when help center is active', () => {
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isDisabled).toBe(false)
@@ -233,9 +215,8 @@ describe('useArticleRecommendation', () => {
             isFetchPending: true,
         } as any)
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -249,18 +230,16 @@ describe('useArticleRecommendation', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as false when all data is loaded', () => {
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(false)
@@ -272,9 +251,8 @@ describe('useArticleRecommendation', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         expect(result.current.showHelpCenterRequired).toBe(true)
@@ -282,9 +260,8 @@ describe('useArticleRecommendation', () => {
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate when handleToggle is called', () => {
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         act(() => {
@@ -302,9 +279,8 @@ describe('useArticleRecommendation', () => {
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate with disabled message when toggling off', () => {
-        const { result } = renderHook(
-            () => useArticleRecommendation({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({ integration: defaultIntegration }),
         )
 
         act(() => {
@@ -330,12 +306,10 @@ describe('useArticleRecommendation', () => {
             },
         })
 
-        const { result } = renderHook(
-            () =>
-                useArticleRecommendation({
-                    integration: integrationWithoutAppId,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useArticleRecommendation({
+                integration: integrationWithoutAppId,
+            }),
         )
 
         act(() => {

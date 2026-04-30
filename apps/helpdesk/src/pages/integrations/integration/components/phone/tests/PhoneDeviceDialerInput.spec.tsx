@@ -7,7 +7,6 @@ import type { CountryCode } from 'libphonenumber-js'
 
 import type { UserSearchResult } from 'models/search/types'
 import type { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import { mockStore } from 'utils/testing'
 
 import * as PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
 import PhoneDeviceDialerInput from '../PhoneDeviceDialerInput'
@@ -138,9 +137,6 @@ describe('PhoneDeviceDialerInput', () => {
                 onValidationChange={onValidationChange}
                 {...props}
             />,
-            {
-                storeState: mockStore({} as any).getState() as object,
-            },
         )
     beforeEach(() => {
         jest.clearAllMocks()

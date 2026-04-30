@@ -18,16 +18,19 @@ import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
 import { marked } from 'marked'
 import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { predictionKey } from 'pages/common/draftjs/plugins/prediction/state'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import { convertFromHTML } from 'utils/editor'
-import { mockStore } from 'utils/testing'
 
 import toolbarPlugin from '../../../draftjs/plugins/toolbar/index'
 import provideToolbarPlugin from '../provideToolbarPlugin'
 import { RichFieldEditor } from '../RichFieldEditor'
+
+const mockStore = configureMockStore([thunk])
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () =>
@@ -152,14 +155,12 @@ describe('RichFieldEditor', () => {
         const mockOnFocus = jest.fn()
 
         const { container, rerender } = render(
-            <Provider store={mockStore({})}>
-                <RichFieldEditor
-                    {...defaultProps}
-                    editorKey="editor"
-                    editorState={editorState}
-                    onFocus={mockOnFocus}
-                />
-            </Provider>,
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onFocus={mockOnFocus}
+            />,
         )
         const editor = container.querySelector('.public-DraftEditor-content')!
         fireEvent.focus(editor)
@@ -167,15 +168,13 @@ describe('RichFieldEditor', () => {
         expect(mockOnFocus).toHaveBeenCalled()
 
         rerender(
-            <Provider store={mockStore({})}>
-                <RichFieldEditor
-                    {...defaultProps}
-                    editorKey="editor"
-                    editorState={editorState}
-                    onFocus={mockOnFocus}
-                    isFocused={true}
-                />
-            </Provider>,
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onFocus={mockOnFocus}
+                isFocused={true}
+            />,
         )
 
         expect(defaultProps.onChange).toHaveBeenCalledWith(
@@ -690,21 +689,19 @@ describe('RichFieldEditor', () => {
         const mockOnLinkCreate = jest.fn()
 
         const { container } = render(
-            <Provider store={mockStore({})}>
-                <RichFieldEditor
-                    {...defaultProps}
-                    createToolbarPlugin={(imageDecorator) =>
-                        toolbarPlugin({
-                            imageDecorator,
-                            onLinkEdit: jest.fn(),
-                            onLinkCreate: mockOnLinkCreate,
-                            getDisplayedActions: jest.fn(),
-                        })
-                    }
-                    editorKey="editor"
-                    editorState={editorState}
-                />
-            </Provider>,
+            <RichFieldEditor
+                {...defaultProps}
+                createToolbarPlugin={(imageDecorator) =>
+                    toolbarPlugin({
+                        imageDecorator,
+                        onLinkEdit: jest.fn(),
+                        onLinkCreate: mockOnLinkCreate,
+                        getDisplayedActions: jest.fn(),
+                    })
+                }
+                editorKey="editor"
+                editorState={editorState}
+            />,
         )
 
         const editor = container.querySelector('.public-DraftEditor-content')!
@@ -1007,15 +1004,13 @@ describe('RichFieldEditor', () => {
             const onChangeSpy = jest.fn()
 
             const { rerender } = render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        onChange={onChangeSpy}
-                        canAddMention={true}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    canAddMention={true}
+                />,
             )
 
             onChangeSpy.mockClear()
@@ -1070,15 +1065,13 @@ describe('RichFieldEditor', () => {
             const onChangeSpy = jest.fn()
 
             const { rerender } = render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        onChange={onChangeSpy}
-                        isFocused={false}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    isFocused={false}
+                />,
             )
 
             onChangeSpy.mockClear()
@@ -1804,15 +1797,13 @@ describe('RichFieldEditor', () => {
             } = { current: null }
 
             render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        onChange={onChangeSpy}
-                        ref={instanceRef}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    ref={instanceRef}
+                />,
             )
 
             expect(instanceRef.current!.state.wasEverFocused).toBe(false)
@@ -1837,15 +1828,13 @@ describe('RichFieldEditor', () => {
             } = { current: null }
 
             render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        onChange={onChangeSpy}
-                        ref={instanceRef}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    ref={instanceRef}
+                />,
             )
 
             act(() => {
@@ -1904,15 +1893,13 @@ describe('RichFieldEditor', () => {
                 EditorState.createWithContent(initialContent)
 
             const { rerender } = render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={initialEditorState}
-                        onChange={onChangeSpy}
-                        isFocused={true}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={initialEditorState}
+                    onChange={onChangeSpy}
+                    isFocused={true}
+                />,
             )
 
             onChangeSpy.mockClear()
@@ -3431,14 +3418,12 @@ describe('RichFieldEditor', () => {
             } = { current: null }
 
             render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        ref={instanceRef}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    ref={instanceRef}
+                />,
             )
 
             act(() => {
@@ -3454,14 +3439,12 @@ describe('RichFieldEditor', () => {
             } = { current: null }
 
             render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        ref={instanceRef}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    ref={instanceRef}
+                />,
             )
 
             act(() => {
@@ -3606,15 +3589,13 @@ describe('RichFieldEditor', () => {
             const onChangeSpy = jest.fn()
 
             const { rerender } = render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        onChange={onChangeSpy}
-                        getGuidanceVariables={() => []}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    getGuidanceVariables={() => []}
+                />,
             )
 
             rerender(
@@ -3813,15 +3794,13 @@ describe('RichFieldEditor', () => {
             } = { current: null }
 
             render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        onChange={onChangeSpy}
-                        ref={instanceRef}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    ref={instanceRef}
+                />,
             )
 
             act(() => {
@@ -3844,16 +3823,14 @@ describe('RichFieldEditor', () => {
             ;(scrollToReactNode as jest.Mock).mockClear()
 
             render(
-                <Provider store={mockStore({})}>
-                    <RichFieldEditor
-                        {...defaultProps}
-                        editorKey="editor"
-                        editorState={editorState}
-                        onChange={onChangeSpy}
-                        noAutoScroll
-                        ref={instanceRef}
-                    />
-                </Provider>,
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    noAutoScroll
+                    ref={instanceRef}
+                />,
             )
 
             act(() => {

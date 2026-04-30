@@ -1,9 +1,12 @@
-import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import type { ReactElement } from 'react'
+
+import { render as renderPrimitive } from '@repo/testing'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { toImmutable } from 'common/utils'
 import {
@@ -14,9 +17,10 @@ import { useStoresWithCompletedSetup } from 'pages/aiAgent/components/KnowledgeE
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance'
+
+const mockStore = configureMockStore([thunk])
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => null,
@@ -251,13 +255,11 @@ const defaultState = {
         products: [],
     }),
 }
-const store = mockStore(defaultState)
 
-const Wrapper = ({ children }: { children?: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-        <Provider store={store}>{children}</Provider>
-    </QueryClientProvider>
-)
+const render = (
+    ui: ReactElement,
+    options?: Parameters<typeof renderPrimitive>[1],
+) => renderPrimitive(ui, { storeState: defaultState, ...options })
 
 describe('KnowledgeEditorGuidance', () => {
     beforeEach(() => {
@@ -347,20 +349,19 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onClickPrevious={jest.fn()}
-                    onClickNext={jest.fn()}
-                    guidanceMode="edit"
-                    isOpen
-                    onDelete={jest.fn()}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                guidanceArticleId={1}
+                onClose={jest.fn()}
+                onClickPrevious={jest.fn()}
+                onClickNext={jest.fn()}
+                guidanceMode="edit"
+                isOpen
+                onDelete={jest.fn()}
+            />,
+            { storeState: defaultState },
         )
 
         // In edit mode with draft, Publish button should be present
@@ -396,20 +397,19 @@ describe('KnowledgeEditorGuidance', () => {
 
     it('toggles fullscreen mode in edit mode', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onClickPrevious={jest.fn()}
-                    onClickNext={jest.fn()}
-                    guidanceMode="edit"
-                    isOpen
-                    onDelete={jest.fn()}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                guidanceArticleId={1}
+                onClose={jest.fn()}
+                onClickPrevious={jest.fn()}
+                onClickNext={jest.fn()}
+                guidanceMode="edit"
+                isOpen
+                onDelete={jest.fn()}
+            />,
+            { storeState: defaultState },
         )
 
         fireEvent.click(screen.getByRole('button', { name: 'fullscreen' }))
@@ -429,20 +429,19 @@ describe('KnowledgeEditorGuidance', () => {
 
     it('fetches the content if guidanceArticleId is changed', () => {
         const { rerender } = render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onClickPrevious={jest.fn()}
-                    onClickNext={jest.fn()}
-                    guidanceMode="read"
-                    isOpen
-                    onDelete={jest.fn()}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                guidanceArticleId={1}
+                onClose={jest.fn()}
+                onClickPrevious={jest.fn()}
+                onClickNext={jest.fn()}
+                guidanceMode="read"
+                isOpen
+                onDelete={jest.fn()}
+            />,
+            { storeState: defaultState },
         )
 
         expect(screen.getByText(guidanceArticle.content)).toBeInTheDocument()
@@ -490,19 +489,18 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         const { getByLabelText } = render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    onClose={jest.fn()}
-                    onClickPrevious={jest.fn()}
-                    onClickNext={jest.fn()}
-                    onDelete={jest.fn()}
-                    guidanceMode="create"
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                onClose={jest.fn()}
+                onClickPrevious={jest.fn()}
+                onClickNext={jest.fn()}
+                onDelete={jest.fn()}
+                guidanceMode="create"
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         const nameInput = getByLabelText(/Guidance name/i)
@@ -525,20 +523,19 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    onClose={jest.fn()}
-                    onClickPrevious={jest.fn()}
-                    onClickNext={jest.fn()}
-                    onDelete={jest.fn()}
-                    guidanceMode="create"
-                    guidanceTemplate={mockGuidanceTemplate}
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                onClose={jest.fn()}
+                onClickPrevious={jest.fn()}
+                onClickNext={jest.fn()}
+                onDelete={jest.fn()}
+                guidanceMode="create"
+                guidanceTemplate={mockGuidanceTemplate}
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         // Template name should be pre-filled
@@ -560,18 +557,17 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    onClose={jest.fn()}
-                    onDelete={jest.fn()}
-                    guidanceMode="create"
-                    guidanceTemplate={mockGuidanceTemplate}
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                onClose={jest.fn()}
+                onDelete={jest.fn()}
+                guidanceMode="create"
+                guidanceTemplate={mockGuidanceTemplate}
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         // AI Agent status toggle should be unchecked by default (hidden from AI until published)
@@ -587,17 +583,16 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    onClose={jest.fn()}
-                    onCreate={jest.fn()}
-                    guidanceMode="create"
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                onClose={jest.fn()}
+                onCreate={jest.fn()}
+                guidanceMode="create"
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         // Title is empty, content is empty - auto-save should not be triggered
@@ -627,18 +622,17 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onUpdate={onUpdate}
-                    guidanceMode="edit"
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                guidanceArticleId={1}
+                onClose={jest.fn()}
+                onUpdate={onUpdate}
+                guidanceMode="edit"
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         // Click Publish button to open the modal
@@ -669,18 +663,17 @@ describe('KnowledgeEditorGuidance', () => {
         const user = userEvent.setup()
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onDelete={jest.fn()}
-                    guidanceMode="read"
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                guidanceArticleId={1}
+                onClose={jest.fn()}
+                onDelete={jest.fn()}
+                guidanceMode="read"
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         // Open the kebab menu
@@ -706,16 +699,15 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    onClose={jest.fn()}
-                    guidanceMode="create"
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                onClose={jest.fn()}
+                guidanceMode="create"
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         // Title field should be empty
@@ -741,17 +733,16 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    guidanceMode="edit"
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                guidanceArticleId={1}
+                onClose={jest.fn()}
+                guidanceMode="edit"
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         const publishButton = screen.getByRole('button', { name: 'Publish' })
@@ -769,16 +760,15 @@ describe('KnowledgeEditorGuidance', () => {
         const onClose = jest.fn()
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    onClose={onClose}
-                    guidanceMode="create"
-                    isOpen={true}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                onClose={onClose}
+                guidanceMode="create"
+                isOpen={true}
+            />,
+            { storeState: defaultState },
         )
 
         const deleteDraftButton = screen.getByRole('button', {
@@ -793,20 +783,19 @@ describe('KnowledgeEditorGuidance', () => {
 
     it('toggles ai agent status', async () => {
         render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceHelpCenterId={1}
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onClickPrevious={jest.fn()}
-                    onClickNext={jest.fn()}
-                    guidanceMode="edit"
-                    isOpen
-                    onDelete={jest.fn()}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidance
+                shopName="Test Shop"
+                shopType="Test Shop Type"
+                guidanceHelpCenterId={1}
+                guidanceArticleId={1}
+                onClose={jest.fn()}
+                onClickPrevious={jest.fn()}
+                onClickNext={jest.fn()}
+                guidanceMode="edit"
+                isOpen
+                onDelete={jest.fn()}
+            />,
+            { storeState: defaultState },
         )
 
         // Side panel is expanded by default (isDetailsView: true)
@@ -830,17 +819,16 @@ describe('KnowledgeEditorGuidance', () => {
     describe('Split View - Playground Panel', () => {
         it('should toggle playground panel visibility when test button is clicked', async () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const playgroundPanel = screen.getByTestId('playground-panel')
@@ -885,17 +873,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={42}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={42}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const testButton = screen.getByRole('button', { name: /test/i })
@@ -930,17 +917,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={42}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={42}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const testButton = screen.getByRole('button', { name: /test/i })
@@ -971,17 +957,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={42}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={42}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const testButton = screen.getByRole('button', { name: /test/i })
@@ -1008,17 +993,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={42}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={42}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const testButton = screen.getByRole('button', { name: /test/i })
@@ -1049,17 +1033,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={42}
-                        onClose={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={42}
+                    onClose={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const testButton = screen.getByRole('button', { name: /test/i })
@@ -1094,17 +1077,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={42}
-                        onClose={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={42}
+                    onClose={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const testButton = screen.getByRole('button', { name: /test/i })
@@ -1125,17 +1107,16 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('should render both editor and playground when test button is clicked', async () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const playgroundPanel = screen.getByTestId('playground-panel')
@@ -1159,17 +1140,16 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('should maintain editor content when playground is toggled', async () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const articleTitle = screen.getByText(guidanceArticle.title)
@@ -1204,17 +1184,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const fullscreenButton = screen.getByRole('button', {
@@ -1252,21 +1231,20 @@ describe('KnowledgeEditorGuidance', () => {
             const onSharedPanelStateChange = jest.fn()
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={onClose}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="read"
-                        isOpen
-                        onDelete={jest.fn()}
-                        onSharedPanelStateChange={onSharedPanelStateChange}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={onClose}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="read"
+                    isOpen
+                    onDelete={jest.fn()}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+                { storeState: defaultState },
             )
 
             await waitFor(() => {
@@ -1287,20 +1265,19 @@ describe('KnowledgeEditorGuidance', () => {
             const onClose = jest.fn()
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={onClose}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="read"
-                        isOpen
-                        onDelete={jest.fn()}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={onClose}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="read"
+                    isOpen
+                    onDelete={jest.fn()}
+                />,
+                { storeState: defaultState },
             )
 
             expect(onClose).not.toHaveBeenCalled()
@@ -1313,21 +1290,20 @@ describe('KnowledgeEditorGuidance', () => {
             const onSharedPanelStateChange = jest.fn()
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={onClose}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="read"
-                        isOpen
-                        onDelete={jest.fn()}
-                        onSharedPanelStateChange={onSharedPanelStateChange}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={onClose}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="read"
+                    isOpen
+                    onDelete={jest.fn()}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+                { storeState: defaultState },
             )
 
             expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
@@ -1355,20 +1331,19 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('can render in shared panel mode without callback', () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="read"
-                        isOpen
-                        onDelete={jest.fn()}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="read"
+                    isOpen
+                    onDelete={jest.fn()}
+                />,
+                { storeState: defaultState },
             )
 
             expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
@@ -1378,20 +1353,18 @@ describe('KnowledgeEditorGuidance', () => {
     describe('Impact Metrics', () => {
         it('calls useResourceMetrics with correct parameters', () => {
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="read"
-                        isOpen
-                        onDelete={jest.fn()}
-                    />
-                </Wrapper>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="read"
+                    isOpen
+                    onDelete={jest.fn()}
+                />,
             )
 
             expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
@@ -1415,20 +1388,18 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="read"
-                        isOpen
-                        onDelete={jest.fn()}
-                    />
-                </Wrapper>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="read"
+                    isOpen
+                    onDelete={jest.fn()}
+                />,
             )
 
             await waitFor(() => {
@@ -1454,17 +1425,16 @@ describe('KnowledgeEditorGuidance', () => {
     describe('isOpen behavior', () => {
         it('returns null when isOpen is false', () => {
             const { container } = render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={false}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={false}
+                />,
+                { storeState: defaultState },
             )
 
             expect(container.firstChild).toBeNull()
@@ -1472,17 +1442,16 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('renders content when isOpen is true', () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
@@ -1497,17 +1466,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(
@@ -1528,17 +1496,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(
@@ -1556,16 +1523,15 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="create"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(screen.queryByRole('status')).not.toBeInTheDocument()
@@ -1576,17 +1542,16 @@ describe('KnowledgeEditorGuidance', () => {
     describe('useGuidanceArticle hook parameters', () => {
         it('passes correct parameters when editing an article', () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={42}
-                        onClose={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={42}
+                    onClose={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(mockUseGuidanceArticle).toHaveBeenCalledWith({
@@ -1606,16 +1571,15 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="create"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(mockUseGuidanceArticle).toHaveBeenCalledWith(
@@ -1633,16 +1597,15 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(mockUseGuidanceArticle).toHaveBeenCalledWith(
@@ -1661,19 +1624,18 @@ describe('KnowledgeEditorGuidance', () => {
             const onClickNext = jest.fn()
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={onClickPrevious}
-                        onClickNext={onClickNext}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={onClickPrevious}
+                    onClickNext={onClickNext}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             const previousButton = screen.getByRole('button', {
@@ -1692,17 +1654,16 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('hides navigation buttons when callbacks are not provided', () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="read"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(
@@ -1715,19 +1676,18 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('hides navigation buttons in edit mode even when callbacks are provided', () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(
@@ -1755,18 +1715,17 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={onClose}
-                        guidanceMode="edit"
-                        isOpen={true}
-                        onSharedPanelStateChange={onSharedPanelStateChange}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={onClose}
+                    guidanceMode="edit"
+                    isOpen={true}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+                { storeState: defaultState },
             )
 
             const nameInput = screen.getByLabelText(/Guidance name/i)
@@ -1813,18 +1772,16 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore({})}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={onClose}
-                        guidanceMode="edit"
-                        isOpen={true}
-                        onSharedPanelStateChange={onSharedPanelStateChange}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={onClose}
+                    guidanceMode="edit"
+                    isOpen={true}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
             )
 
             const nameInput = screen.getByLabelText(/Guidance name/i)
@@ -1889,17 +1846,16 @@ describe('KnowledgeEditorGuidance', () => {
             mockIsGorgiasApiError.mockReturnValue(true)
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={onClose}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={onClose}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             await waitFor(() => {
@@ -1937,17 +1893,16 @@ describe('KnowledgeEditorGuidance', () => {
             mockIsGorgiasApiError.mockReturnValue(true)
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={onClose}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={onClose}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             await waitFor(() => {
@@ -1975,16 +1930,15 @@ describe('KnowledgeEditorGuidance', () => {
             mockIsGorgiasApiError.mockReturnValue(false)
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(mockNotifyError).not.toHaveBeenCalled()
@@ -2007,16 +1961,15 @@ describe('KnowledgeEditorGuidance', () => {
             mockIsGorgiasApiError.mockReturnValue(false)
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        onClose={jest.fn()}
-                        guidanceMode="create"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             expect(mockNotifyError).not.toHaveBeenCalled()
@@ -2040,17 +1993,16 @@ describe('KnowledgeEditorGuidance', () => {
             mockIsGorgiasApiError.mockReturnValue(false)
 
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={onClose}
-                        guidanceMode="edit"
-                        isOpen={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={onClose}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />,
+                { storeState: defaultState },
             )
 
             await waitFor(() => {
@@ -2069,21 +2021,19 @@ describe('KnowledgeEditorGuidance', () => {
             ).useGetArticleTranslationVersion
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen
-                        onDelete={jest.fn()}
-                        initialVersionId={42}
-                    />
-                </Wrapper>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                    initialVersionId={42}
+                />,
             )
 
             expect(mockUseGetArticleTranslationVersion).toHaveBeenCalledWith(
@@ -2102,20 +2052,18 @@ describe('KnowledgeEditorGuidance', () => {
             ).useGetArticleTranslationVersion
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen
-                        onDelete={jest.fn()}
-                    />
-                </Wrapper>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                />,
             )
 
             expect(mockUseGetArticleTranslationVersion).toHaveBeenCalledWith(
@@ -2138,21 +2086,19 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen
-                        onDelete={jest.fn()}
-                        initialVersionId={42}
-                    />
-                </Wrapper>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                    initialVersionId={42}
+                />,
             )
 
             await waitFor(() => {
@@ -2173,21 +2119,19 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen
-                        onDelete={jest.fn()}
-                        initialVersionId={42}
-                    />
-                </Wrapper>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                    initialVersionId={42}
+                />,
             )
 
             await waitFor(() => {
@@ -2216,21 +2160,19 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidance
-                        shopName="Test Shop"
-                        shopType="Test Shop Type"
-                        guidanceHelpCenterId={1}
-                        guidanceArticleId={1}
-                        onClose={jest.fn()}
-                        onClickPrevious={jest.fn()}
-                        onClickNext={jest.fn()}
-                        guidanceMode="edit"
-                        isOpen
-                        onDelete={jest.fn()}
-                        initialVersionId={42}
-                    />
-                </Wrapper>,
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                    initialVersionId={42}
+                />,
             )
 
             await waitFor(() => {

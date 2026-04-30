@@ -2,29 +2,19 @@ import { render } from '@repo/testing'
 import type { QueryObserverResult } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import type { Dictionary } from 'lodash'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import type { Workflow } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/types'
-import { mockStore } from 'utils/testing'
 
 import { useArticleRecommendation } from '../../hooks/useArticleRecommendation'
 import { useFlows } from '../../hooks/useFlows'
 import { useOrderManagement } from '../../hooks/useOrderManagement'
 import { ConnectedChannelsChatView } from './ConnectedChannelsChatView'
 
-const renderComponent = () =>
-    render(
-        <Provider store={mockStore({})}>
-            <MemoryRouter>
-                <ConnectedChannelsChatView />
-            </MemoryRouter>
-        </Provider>,
-    )
+const renderComponent = () => render(<ConnectedChannelsChatView />)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

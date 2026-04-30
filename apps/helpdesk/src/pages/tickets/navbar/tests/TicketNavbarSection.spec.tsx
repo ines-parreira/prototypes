@@ -5,9 +5,6 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { section } from 'fixtures/section'
@@ -15,8 +12,6 @@ import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
-import { mockStore } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { TicketNavbarSectionContainer } from '../TicketNavbarSection'
 
@@ -79,22 +74,17 @@ describe('<TicketNavbarSection/>', () => {
         ['views collapsed', { value: [] }],
     ])('should render a section (%s)', (_, props) => {
         const { container } = render(
-            <DndProvider backend={HTML5Backend}>
-                <Provider
-                    store={mockStore({
-                        entities: fromJS({}),
-                        currentUser: fromJS(user),
-                    })}
-                >
-                    <MemoryRouter initialEntries={['/']}>
-                        <SplitTicketViewProvider>
-                            <Navigation.Root value={props.value}>
-                                <TicketNavbarSectionContainer {...minProps} />
-                            </Navigation.Root>
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>
-            </DndProvider>,
+            <SplitTicketViewProvider>
+                <Navigation.Root value={props.value}>
+                    <TicketNavbarSectionContainer {...minProps} />
+                </Navigation.Root>
+            </SplitTicketViewProvider>,
+            {
+                storeState: {
+                    entities: fromJS({}),
+                    currentUser: fromJS(user),
+                },
+            },
         )
 
         expect(
@@ -128,17 +118,15 @@ describe('<TicketNavbarSection/>', () => {
         }
 
         const { container } = render(
-            <DndProvider backend={HTML5Backend}>
-                <Navigation.Root>
-                    <TicketNavbarSectionContainer
-                        {...minProps}
-                        sectionElement={{
-                            ...minProps.sectionElement,
-                            data: section,
-                        }}
-                    />
-                </Navigation.Root>
-            </DndProvider>,
+            <Navigation.Root>
+                <TicketNavbarSectionContainer
+                    {...minProps}
+                    sectionElement={{
+                        ...minProps.sectionElement,
+                        data: section,
+                    }}
+                />
+            </Navigation.Root>,
         )
 
         const element = container.querySelector('[data-candu-id]')
@@ -153,22 +141,17 @@ describe('<TicketNavbarSection/>', () => {
 
     it('should have the correct component structure', () => {
         const { container } = render(
-            <DndProvider backend={HTML5Backend}>
-                <Provider
-                    store={mockStore({
-                        entities: fromJS({}),
-                        currentUser: fromJS(user),
-                    })}
-                >
-                    <MemoryRouter initialEntries={['/']}>
-                        <SplitTicketViewProvider>
-                            <Navigation.Root>
-                                <TicketNavbarSectionContainer {...minProps} />
-                            </Navigation.Root>
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>
-            </DndProvider>,
+            <SplitTicketViewProvider>
+                <Navigation.Root>
+                    <TicketNavbarSectionContainer {...minProps} />
+                </Navigation.Root>
+            </SplitTicketViewProvider>,
+            {
+                storeState: {
+                    entities: fromJS({}),
+                    currentUser: fromJS(user),
+                },
+            },
         )
 
         // Verify the outer DnD target structure
@@ -207,26 +190,21 @@ describe('<TicketNavbarSection/>', () => {
         const user = userEvent.setup()
 
         render(
-            <DndProvider backend={HTML5Backend}>
-                <Provider
-                    store={mockStore({
-                        entities: fromJS({}),
-                        currentUser: fromJS(user),
-                    })}
-                >
-                    <MemoryRouter initialEntries={['/']}>
-                        <SplitTicketViewProvider>
-                            <Navigation.Root>
-                                <TicketNavbarSectionContainer
-                                    {...minProps}
-                                    onSectionDeleteClick={onSectionDeleteClick}
-                                    onSectionRenameClick={onSectionRenameClick}
-                                />
-                            </Navigation.Root>
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>
-            </DndProvider>,
+            <SplitTicketViewProvider>
+                <Navigation.Root>
+                    <TicketNavbarSectionContainer
+                        {...minProps}
+                        onSectionDeleteClick={onSectionDeleteClick}
+                        onSectionRenameClick={onSectionRenameClick}
+                    />
+                </Navigation.Root>
+            </SplitTicketViewProvider>,
+            {
+                storeState: {
+                    entities: fromJS({}),
+                    currentUser: fromJS(user),
+                },
+            },
         )
 
         // Open dropdown
@@ -257,28 +235,23 @@ describe('<TicketNavbarSection/>', () => {
         }
 
         const { container } = render(
-            <DndProvider backend={HTML5Backend}>
-                <Provider
-                    store={mockStore({
-                        entities: fromJS({}),
-                        currentUser: fromJS(user),
-                    })}
-                >
-                    <MemoryRouter initialEntries={['/']}>
-                        <SplitTicketViewProvider>
-                            <Navigation.Root>
-                                <TicketNavbarSectionContainer
-                                    {...minProps}
-                                    sectionElement={{
-                                        ...minProps.sectionElement,
-                                        data: sectionWithEmoji,
-                                    }}
-                                />
-                            </Navigation.Root>
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>
-            </DndProvider>,
+            <SplitTicketViewProvider>
+                <Navigation.Root>
+                    <TicketNavbarSectionContainer
+                        {...minProps}
+                        sectionElement={{
+                            ...minProps.sectionElement,
+                            data: sectionWithEmoji,
+                        }}
+                    />
+                </Navigation.Root>
+            </SplitTicketViewProvider>,
+            {
+                storeState: {
+                    entities: fromJS({}),
+                    currentUser: fromJS(user),
+                },
+            },
         )
 
         const emojiElement = container.querySelector(`.${css.emoji}`)
@@ -288,26 +261,21 @@ describe('<TicketNavbarSection/>', () => {
 
     it('should handle section without dropdown menu when no actions provided', () => {
         const { container } = render(
-            <DndProvider backend={HTML5Backend}>
-                <Provider
-                    store={mockStore({
-                        entities: fromJS({}),
-                        currentUser: fromJS(user),
-                    })}
-                >
-                    <MemoryRouter initialEntries={['/']}>
-                        <SplitTicketViewProvider>
-                            <Navigation.Root>
-                                <TicketNavbarSectionContainer
-                                    {...minProps}
-                                    onSectionDeleteClick={undefined}
-                                    onSectionRenameClick={undefined}
-                                />
-                            </Navigation.Root>
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>
-            </DndProvider>,
+            <SplitTicketViewProvider>
+                <Navigation.Root>
+                    <TicketNavbarSectionContainer
+                        {...minProps}
+                        onSectionDeleteClick={undefined}
+                        onSectionRenameClick={undefined}
+                    />
+                </Navigation.Root>
+            </SplitTicketViewProvider>,
+            {
+                storeState: {
+                    entities: fromJS({}),
+                    currentUser: fromJS(user),
+                },
+            },
         )
 
         const dropdownToggle = container.querySelector(
@@ -323,25 +291,20 @@ describe('<TicketNavbarSection/>', () => {
         }
 
         const { container } = render(
-            <DndProvider backend={HTML5Backend}>
-                <Provider
-                    store={mockStore({
-                        entities: fromJS({}),
-                        currentUser: fromJS(user),
-                    })}
-                >
-                    <MemoryRouter initialEntries={['/']}>
-                        <SplitTicketViewProvider>
-                            <Navigation.Root>
-                                <TicketNavbarSectionContainer
-                                    {...minProps}
-                                    sectionElement={sectionWithoutChildren}
-                                />
-                            </Navigation.Root>
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>
-            </DndProvider>,
+            <SplitTicketViewProvider>
+                <Navigation.Root>
+                    <TicketNavbarSectionContainer
+                        {...minProps}
+                        sectionElement={sectionWithoutChildren}
+                    />
+                </Navigation.Root>
+            </SplitTicketViewProvider>,
+            {
+                storeState: {
+                    entities: fromJS({}),
+                    currentUser: fromJS(user),
+                },
+            },
         )
 
         const sectionIndicator = container.querySelector('.sectionIndicator')
@@ -355,23 +318,15 @@ describe('<TicketNavbarSection/>', () => {
             > = {},
         ) =>
             render(
-                <DndProvider backend={HTML5Backend}>
-                    <Provider
-                        store={mockStore({
-                            entities: fromJS({}),
-                            currentUser: fromJS(user),
-                        })}
-                    >
-                        <MemoryRouter initialEntries={['/']}>
-                            <SplitTicketViewProvider>
-                                <TicketNavbarSectionContainer
-                                    {...minProps}
-                                    {...props}
-                                />
-                            </SplitTicketViewProvider>
-                        </MemoryRouter>
-                    </Provider>
-                </DndProvider>,
+                <SplitTicketViewProvider>
+                    <TicketNavbarSectionContainer {...minProps} {...props} />
+                </SplitTicketViewProvider>,
+                {
+                    storeState: {
+                        entities: fromJS({}),
+                        currentUser: fromJS(user),
+                    },
+                },
             )
 
         beforeEach(() => {

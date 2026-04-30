@@ -3,8 +3,8 @@ import type { ComponentProps } from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useDrag } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { MAX_TICKET_COUNT_PER_VIEW } from 'config/views'
 import { user as agentUserFixture } from 'fixtures/users'
@@ -14,12 +14,12 @@ import type { View } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
 import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
-import { mockStore } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { TicketNavbarView } from '../TicketNavbarView'
 
 import css from '../TicketNavbarView.less'
+
+const mockStore = configureMockStore([thunk])
 
 // --- Mocks ---
 jest.mock('hooks/useAppSelector')
@@ -122,14 +122,7 @@ const renderComponent = (
     const dragRef = jest.fn()
     useDragMock.mockReturnValue([{ isDragging: false }, dragRef])
 
-    return render(
-        <DndProvider backend={HTML5Backend}>
-            <Provider store={store}>
-                <TicketNavbarView {...mergedProps} />
-            </Provider>
-        </DndProvider>,
-        renderOptions,
-    )
+    return render(<TicketNavbarView {...mergedProps} />, renderOptions)
 }
 
 describe('<TicketNavbarView/>', () => {
@@ -207,7 +200,6 @@ describe('<TicketNavbarView/>', () => {
                     topIndicatorClassName: expect.any(String),
                     bottomIndicatorClassName: expect.any(String),
                 }),
-                {},
             )
         })
 
@@ -277,13 +269,13 @@ describe('<TicketNavbarView/>', () => {
                 const dropResult = onDrop(
                     { type: TicketNavbarElementType.View, id: 1 },
                     {},
-                    'above',
-                ) // Dummy item, monitor, direction
+                    'up',
+                )
 
                 expect(dropResult).toEqual({
                     sectionId: nestedView.section_id,
                     viewId: nestedView.id,
-                    direction: 'above',
+                    direction: 'up',
                 })
             })
         })

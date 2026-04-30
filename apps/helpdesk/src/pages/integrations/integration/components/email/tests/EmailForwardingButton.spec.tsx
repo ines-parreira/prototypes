@@ -1,19 +1,12 @@
 import React from 'react'
 
 import client from '@repo/api-resources'
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import { Provider } from 'react-redux'
 
 import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 import { UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS } from 'state/integrations/constants'
-import { mockStore } from 'utils/testing'
 
 import EmailForwardingButton from '../EmailMigration/EmailForwardingButton'
 import * as utils from '../EmailMigration/utils'
@@ -32,11 +25,7 @@ const mockMigration = { integration: { id: 1, meta: {} } }
 
 describe('EmailForwardingButton', () => {
     const renderComponent = (migration = mockMigration) =>
-        render(
-            <Provider store={mockStore({} as any)}>
-                <EmailForwardingButton migration={migration as any} />
-            </Provider>,
-        )
+        render(<EmailForwardingButton migration={migration as any} />)
 
     afterEach(cleanup)
 

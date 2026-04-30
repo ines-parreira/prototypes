@@ -1,14 +1,11 @@
 import type { ReactNode } from 'react'
 
-import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock, render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import { StaticRouter, useHistory } from 'react-router-dom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
@@ -18,7 +15,6 @@ import { ThemeProvider } from 'core/theme'
 import { account } from 'fixtures/account'
 import useAppSelector from 'hooks/useAppSelector'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
-import { mockStore } from 'utils/testing'
 
 import { AiJourneyNavbar } from './Navbar'
 
@@ -55,18 +51,14 @@ const renderNavbar = (
     isCollapsed = false,
 ) =>
     render(
-        <QueryClientProvider client={appQueryClient}>
-            <Provider store={mockStore({})}>
-                <ThemeProvider>
-                    <MockSidebarProvider
-                        isCollapsed={isCollapsed}
-                        toggleCollapse={mockToggleCollapse}
-                    >
-                        <AiJourneyNavbar />
-                    </MockSidebarProvider>
-                </ThemeProvider>
-            </Provider>
-        </QueryClientProvider>,
+        <ThemeProvider>
+            <MockSidebarProvider
+                isCollapsed={isCollapsed}
+                toggleCollapse={mockToggleCollapse}
+            >
+                <AiJourneyNavbar />
+            </MockSidebarProvider>
+        </ThemeProvider>,
         {
             wrapper: ({ children }: { children?: ReactNode }) => (
                 <StaticRouter location={location}>
@@ -268,17 +260,11 @@ describe('<AiJourneyNavbar />', () => {
 
         it('should highlight campaigns link when pathname contains "campaign"', async () => {
             render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ThemeProvider>
-                            <MockSidebarProvider
-                                toggleCollapse={mockToggleCollapse}
-                            >
-                                <AiJourneyNavbar />
-                            </MockSidebarProvider>
-                        </ThemeProvider>
-                    </Provider>
-                </QueryClientProvider>,
+                <ThemeProvider>
+                    <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                        <AiJourneyNavbar />
+                    </MockSidebarProvider>
+                </ThemeProvider>,
                 {
                     wrapper: ({ children }: { children?: ReactNode }) => (
                         <StaticRouter location="/app/ai-journey/teststore1/campaigns">
@@ -294,19 +280,13 @@ describe('<AiJourneyNavbar />', () => {
 
         it('should highlight campaigns link when pathname contains "campaign" (singular)', async () => {
             render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <ThemeProvider>
-                            <MockSidebarProvider
-                                toggleCollapse={mockToggleCollapse}
-                            >
-                                <JourneyProvider>
-                                    <AiJourneyNavbar />
-                                </JourneyProvider>
-                            </MockSidebarProvider>
-                        </ThemeProvider>
-                    </Provider>
-                </QueryClientProvider>,
+                <ThemeProvider>
+                    <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                        <JourneyProvider>
+                            <AiJourneyNavbar />
+                        </JourneyProvider>
+                    </MockSidebarProvider>
+                </ThemeProvider>,
                 {
                     wrapper: ({ children }: { children?: ReactNode }) => (
                         <StaticRouter location="/app/ai-journey/teststore1/campaign/123">

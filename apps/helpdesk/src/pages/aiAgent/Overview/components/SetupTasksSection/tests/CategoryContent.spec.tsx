@@ -1,10 +1,11 @@
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { usePostStoreInstallationStepsMutation } from 'pages/aiAgent/hooks/usePostStoreInstallationStepsMutation'
-import { mockStore } from 'utils/testing'
 
 import { CategoryContent } from '../CategoryContent'
 import {
@@ -12,6 +13,8 @@ import {
     VerifyEmailDomainBody,
 } from '../SetupTaskBodies'
 import type { TaskConfig } from '../types'
+
+const mockStore = configureMockStore([thunk])
 
 jest.mock('pages/aiAgent/hooks/usePostStoreInstallationStepsMutation')
 const mockUsePostStoreInstallationStepsMutation =
@@ -65,7 +68,6 @@ describe('CategoryContent', () => {
                 postGoLiveStepId={postGoLiveStepId}
                 shopType="test-type"
             />,
-            {},
         )
     }
     it('should render all tasks', () => {
@@ -125,7 +127,6 @@ describe('CategoryContent', () => {
                 postGoLiveStepId={undefined}
                 shopType="shopify"
             />,
-            {},
         )
         const circleIcon = screen.getByLabelText('shape-circle')
         fireEvent.click(circleIcon)

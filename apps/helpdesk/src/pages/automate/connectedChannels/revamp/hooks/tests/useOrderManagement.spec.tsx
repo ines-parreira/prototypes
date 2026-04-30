@@ -1,13 +1,9 @@
-import type React from 'react'
-
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { mockStore } from 'utils/testing'
 
 import { useOrderManagement } from '../useOrderManagement'
 
@@ -44,12 +40,6 @@ const mockChatChannel = {
 } as any
 
 describe('useOrderManagement', () => {
-    const store = mockStore({})
-
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={store}>{children}</Provider>
-    )
-
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -76,9 +66,7 @@ describe('useOrderManagement', () => {
     })
 
     it('should return enabledInSettings as true when store is connected', () => {
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.enabledInSettings).toBe(true)
     })
@@ -90,17 +78,13 @@ describe('useOrderManagement', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.enabledInSettings).toBe(false)
     })
 
     it('should return isOrderManagementEnabled based on automation settings', () => {
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isOrderManagementEnabled).toBe(true)
     })
@@ -119,9 +103,7 @@ describe('useOrderManagement', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isOrderManagementEnabled).toBe(false)
     })
@@ -129,9 +111,7 @@ describe('useOrderManagement', () => {
     it('should return isOrderManagementEnabled as false when no chat channel found', () => {
         mockedUseSelfServiceChannels.mockReturnValue([])
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isOrderManagementEnabled).toBe(false)
     })
@@ -143,9 +123,7 @@ describe('useOrderManagement', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isOrderManagementEnabled).toBe(false)
     })
@@ -157,17 +135,13 @@ describe('useOrderManagement', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isDisabled).toBe(true)
     })
 
     it('should return isDisabled as false when store is connected', () => {
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isDisabled).toBe(false)
     })
@@ -179,25 +153,19 @@ describe('useOrderManagement', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.showStoreRequired).toBe(true)
     })
 
     it('should return showStoreRequired as false when store is connected', () => {
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.showStoreRequired).toBe(false)
     })
 
     it('should return the correct orderManagementUrl', () => {
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.orderManagementUrl).toBe(
             '/app/settings/order-management/shopify/test-shop',
@@ -211,9 +179,7 @@ describe('useOrderManagement', () => {
             isFetchPending: true,
         } as any)
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isLoading).toBe(true)
     })
@@ -226,25 +192,19 @@ describe('useOrderManagement', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as false when all data is loaded', () => {
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         expect(result.current.isLoading).toBe(false)
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate when handleToggle is called with true', () => {
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         act(() => {
             result.current.handleToggle(true)
@@ -261,9 +221,7 @@ describe('useOrderManagement', () => {
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate with disabled message when toggling off', () => {
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         act(() => {
             result.current.handleToggle(false)
@@ -282,9 +240,7 @@ describe('useOrderManagement', () => {
     it('should not call handleChatApplicationAutomationSettingsUpdate when no chat channel found', () => {
         mockedUseSelfServiceChannels.mockReturnValue([])
 
-        const { result } = renderHook(() => useOrderManagement(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useOrderManagement(defaultParams))
 
         act(() => {
             result.current.handleToggle(true)

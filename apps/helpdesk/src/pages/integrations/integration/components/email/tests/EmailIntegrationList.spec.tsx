@@ -8,7 +8,6 @@ import { basicMonthlyHelpdeskPlan, customHelpdeskPlan } from 'fixtures/plans'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
-import { mockStore } from 'utils/testing'
 
 import EmailIntegrationList from '../EmailIntegrationList'
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
@@ -123,7 +122,6 @@ describe('<EmailIntegrationList/>', () => {
             },
         }
     }
-    const store = mockStore({} as any)
     const commonProps = {
         integrations: fromJS([getEmailIntegration(1)]),
         loading: fromJS({}),
@@ -203,9 +201,7 @@ describe('<EmailIntegrationList/>', () => {
                     loading={fromJS({})} // explicitly set loading to false
                     integrations={fromJS([emailIntegration])}
                 />,
-                {
-                    storeState: store.getState() as object,
-                },
+                {},
             )
             // Wait for the API call to complete
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
@@ -262,9 +258,7 @@ describe('<EmailIntegrationList/>', () => {
                     loading={fromJS({})}
                     integrations={fromJS(integrations)}
                 />,
-                {
-                    storeState: store.getState() as object,
-                },
+                {},
             )
             // Wait for the API call to complete
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
@@ -305,9 +299,7 @@ describe('<EmailIntegrationList/>', () => {
                         ),
                     ])}
                 />,
-                {
-                    storeState: store.getState() as object,
-                },
+                {},
             )
             // Wait for the API call to complete
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
@@ -332,9 +324,7 @@ describe('<EmailIntegrationList/>', () => {
                             getGmailIntegration(1, false, false, emailProvider),
                         ])}
                     />,
-                    {
-                        storeState: store.getState() as object,
-                    },
+                    {},
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
                 // We're testing that the page renders without errors
@@ -362,9 +352,7 @@ describe('<EmailIntegrationList/>', () => {
                             ),
                         ])}
                     />,
-                    {
-                        storeState: store.getState() as object,
-                    },
+                    {},
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
                 // We're testing that the page renders without errors
@@ -386,9 +374,7 @@ describe('<EmailIntegrationList/>', () => {
                             getGmailIntegration(1, true, true, emailProvider),
                         ])}
                     />,
-                    {
-                        storeState: store.getState() as object,
-                    },
+                    {},
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
                 // Clear mock calls after component has finished initial rendering
@@ -432,9 +418,7 @@ describe('<EmailIntegrationList/>', () => {
                             getOutlookIntegration(1, true, true, emailProvider),
                         ])}
                     />,
-                    {
-                        storeState: store.getState() as object,
-                    },
+                    {},
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
                 // Clear mock calls after component has finished initial rendering
@@ -598,9 +582,7 @@ describe('<EmailIntegrationList/>', () => {
                             {...commonProps}
                             integrations={fromJS([integration])}
                         />,
-                        {
-                            storeState: store.getState() as object,
-                        },
+                        {},
                     )
                     await component.findByText(integration.meta.address)
                     // Click on the arrow icon instead of the email address
@@ -631,9 +613,7 @@ describe('<EmailIntegrationList/>', () => {
                             {...commonProps}
                             integrations={fromJS([integration])}
                         />,
-                        {
-                            storeState: store.getState() as object,
-                        },
+                        {},
                     )
                     await component.findByText(integration.meta.address)
                     // Click on the arrow icon instead of the email address
@@ -748,9 +728,7 @@ describe('<EmailIntegrationList/>', () => {
                             {...commonProps}
                             integrations={fromJS([integration])}
                         />,
-                        {
-                            storeState: store.getState() as object,
-                        },
+                        {},
                     )
                     await component.findByText(integration.meta.address)
                     // Click on the arrow icon instead of the email address
@@ -779,9 +757,7 @@ describe('<EmailIntegrationList/>', () => {
                     {...commonProps}
                     integrations={fromJS([integration])}
                 />,
-                {
-                    storeState: store.getState() as object,
-                },
+                {},
             )
             expect(
                 screen.queryByText('EmailIntegrationListVerificationStatus'),
@@ -791,9 +767,7 @@ describe('<EmailIntegrationList/>', () => {
             fetchEmailDomainsMock.mockResolvedValueOnce([])
             const { findByText } = render(
                 <EmailIntegrationList {...commonProps} loading={fromJS({})} />,
-                {
-                    storeState: store.getState() as object,
-                },
+                {},
             )
             await waitFor(() =>
                 expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
@@ -812,9 +786,7 @@ describe('<EmailIntegrationList/>', () => {
                         {...commonProps}
                         loading={fromJS({})}
                     />,
-                    {
-                        storeState: store.getState() as object,
-                    },
+                    {},
                 )
                 await waitFor(() =>
                     expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
@@ -832,9 +804,7 @@ describe('<EmailIntegrationList/>', () => {
                         {...commonProps}
                         loading={fromJS({})}
                     />,
-                    {
-                        storeState: store.getState() as object,
-                    },
+                    {},
                 )
                 await waitFor(() =>
                     expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
@@ -884,9 +854,7 @@ describe('<EmailIntegrationList/>', () => {
                         {...commonProps}
                         loading={fromJS({})}
                     />,
-                    {
-                        storeState: store.getState() as object,
-                    },
+                    {},
                 )
                 await waitFor(() =>
                     expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),
@@ -912,9 +880,7 @@ describe('<EmailIntegrationList/>', () => {
                         {...commonProps}
                         loading={fromJS({})}
                     />,
-                    {
-                        storeState: store.getState() as object,
-                    },
+                    {},
                 )
                 await waitFor(() =>
                     expect(fetchEmailDomainsMock).toHaveBeenCalledTimes(1),

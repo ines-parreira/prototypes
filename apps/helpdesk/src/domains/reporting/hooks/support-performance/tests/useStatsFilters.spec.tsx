@@ -2,13 +2,11 @@ import React from 'react'
 
 import { renderHook } from '@repo/testing'
 import moment from 'moment'
-import { Provider } from 'react-redux'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 describe('useStatsFilters', () => {
     const periodStart = moment()
@@ -37,9 +35,7 @@ describe('useStatsFilters', () => {
         } as RootState
 
         const { result } = renderHook(() => useStatsFilters(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current.cleanStatsFilters).toEqual({
@@ -68,9 +64,7 @@ describe('useStatsFilters', () => {
         } as RootState
 
         const { result } = renderHook(() => useStatsFilters(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current.cleanStatsFilters).toEqual({
@@ -111,9 +105,7 @@ describe('useStatsFilters', () => {
         } as RootState
 
         const { result } = renderHook(() => useStatsFilters(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current.cleanStatsFilters).toEqual({

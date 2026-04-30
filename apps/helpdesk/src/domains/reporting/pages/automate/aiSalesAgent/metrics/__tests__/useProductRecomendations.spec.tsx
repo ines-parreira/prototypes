@@ -1,10 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
-import { Provider } from 'react-redux'
 
 import type { Product } from 'constants/integrations/types/shopify'
 import {
@@ -33,8 +31,6 @@ import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import type { RootState } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 const timezone = 'UTC'
 
@@ -52,8 +48,6 @@ const statsFilters: StatsFilters = {
         operator: LogicalOperatorEnum.ONE_OF,
     },
 }
-
-const queryClient = mockQueryClient()
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
@@ -105,18 +99,6 @@ describe('productRecommendations', () => {
         options: [],
     }
 
-    const hookWrapper =
-        (state: RootState) =>
-        ({ children }: any) => {
-            return (
-                <Provider store={mockStore(state)}>
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                </Provider>
-            )
-        }
-
     describe('useProductRecommendations', () => {
         beforeEach(() => {
             useMetricPerDimensionV2Mock.mockReturnValue({
@@ -145,7 +127,7 @@ describe('productRecommendations', () => {
             const { result } = renderHook(
                 () => useProductRecommendations(statsFilters, timezone),
                 {
-                    wrapper: hookWrapper(stateWithoutIntegration),
+                    storeState: stateWithoutIntegration,
                 },
             )
 
@@ -174,7 +156,7 @@ describe('productRecommendations', () => {
             const { result } = renderHook(
                 () => useProductRecommendations(statsFilters, timezone),
                 {
-                    wrapper: hookWrapper(defaultState),
+                    storeState: defaultState,
                 },
             )
 
@@ -216,7 +198,7 @@ describe('productRecommendations', () => {
             const { result } = renderHook(
                 () => useProductRecommendations(statsFilters, timezone),
                 {
-                    wrapper: hookWrapper(defaultState),
+                    storeState: defaultState,
                 },
             )
 

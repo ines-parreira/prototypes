@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import { useAverageDiscountPercentage } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageDiscountPercentage'
 import { useAverageOrdersPerDayTrend } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
@@ -7,11 +6,8 @@ import { mockedAverageOrders } from 'pages/aiAgent/Onboarding_V2/components/Know
 import useTopProducts from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard/hooks'
 import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding_V2/hooks/useGetAverageOrderValue'
 import { useGetRepeatRate } from 'pages/aiAgent/Onboarding_V2/hooks/useGetRepeatRate'
-import { mockStore } from 'utils/testing'
 
 import { useGetKnowledgePreviewData } from '../useGetKnowledgePreviewData'
-
-const store = mockStore({})
 
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend',
@@ -41,11 +37,7 @@ const mockAverageOrdersPerDayRawData = () =>
     }))
 
 const renderHookWithWrapper = (hook: typeof useGetKnowledgePreviewData) => {
-    return renderHook(hook, {
-        wrapper: ({ children }) => (
-            <Provider store={store}>{children}</Provider>
-        ),
-    })
+    return renderHook(hook)
 }
 
 describe('useGetKnowledgePreviewData', () => {

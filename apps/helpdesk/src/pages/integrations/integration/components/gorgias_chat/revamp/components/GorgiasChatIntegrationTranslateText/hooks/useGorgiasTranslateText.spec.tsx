@@ -1,13 +1,10 @@
-import type React from 'react'
-
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { LanguageChat } from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as IntegrationsActions from 'state/integrations/actions'
-import { mockStore } from 'utils/testing'
 
 import { multiLanguageInitialTextsEmptyData } from '../utils/translateTextHelpers'
 import { useGorgiasTranslateText } from './useGorgiasTranslateText'
@@ -118,11 +115,6 @@ const defaultIntegration = fromJS({
     name: 'My Chat',
 })
 
-const store = mockStore({})
-
-const wrapper = ({ children }: { children?: React.ReactNode }) =>
-    (<Provider store={store}>{children}</Provider>) as React.ReactElement
-
 describe('multiLanguageInitialTextsEmptyData', () => {
     it('should contain an entry for every LanguageChat value', () => {
         const allLanguages = Object.values(LanguageChat)
@@ -169,9 +161,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should return initial state with language null and hasChanges false', () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         expect(result.current.hasChanges).toBe(false)
@@ -180,9 +171,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should return dependenciesLoaded as true after API calls resolve', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -191,9 +181,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should set language based on the URL when dependencies load', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -204,9 +193,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should open language change modal when handleLanguageChange is called with pending changes', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -227,9 +215,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should close all modals when onCloseModals is called', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -255,9 +242,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should switch language directly when handleLanguageChange is called without pending changes', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -275,9 +261,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should mark hasChanges as true when saveKeyValue changes a value', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -299,9 +284,8 @@ describe('useGorgiasTranslateText', () => {
         const { useHistory } = require('react-router-dom')
         useHistory.mockReturnValue({ push: mockPush })
 
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -321,9 +305,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should discard changes and switch language on onDiscardChangesAndSwitchLanguage', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -351,9 +334,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should return isAutomateSubscriber from the hook', () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         expect(result.current.isAutomateSubscriber).toBe(false)
@@ -373,9 +355,8 @@ describe('useGorgiasTranslateText', () => {
             },
         })
 
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -386,9 +367,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should call updateApplicationTexts when submitData is called', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -408,9 +388,8 @@ describe('useGorgiasTranslateText', () => {
 
         const { notify } = require('state/notifications/actions')
 
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -429,9 +408,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should reset hasChanges when resetValues is called', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -456,9 +434,8 @@ describe('useGorgiasTranslateText', () => {
         const { useHistory } = require('react-router-dom')
         useHistory.mockReturnValue({ push: mockPush })
 
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -476,9 +453,8 @@ describe('useGorgiasTranslateText', () => {
     })
 
     it('should save data and switch language when onSaveValuesAndSwitchLanguage is called', async () => {
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -523,12 +499,10 @@ describe('useGorgiasTranslateText', () => {
             name: 'My Chat',
         })
 
-        const { result } = renderHook(
-            () =>
-                useGorgiasTranslateText({
-                    integration: integrationWithDecoration,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({
+                integration: integrationWithDecoration,
+            }),
         )
 
         await waitFor(() => {
@@ -545,9 +519,8 @@ describe('useGorgiasTranslateText', () => {
             pathname: '/app/settings/channels/gorgias_chat/1/languages/en-US',
         })
 
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -579,12 +552,10 @@ describe('useGorgiasTranslateText', () => {
             name: 'My Chat',
         })
 
-        const { result } = renderHook(
-            () =>
-                useGorgiasTranslateText({
-                    integration: integrationWithIconLabel,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({
+                integration: integrationWithIconLabel,
+            }),
         )
 
         await waitFor(() => {
@@ -605,9 +576,8 @@ describe('useGorgiasTranslateText', () => {
             pathname: '/app/settings/channels/gorgias_chat/1/languages/fr-CA',
         })
 
-        const { result } = renderHook(
-            () => useGorgiasTranslateText({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({ integration: defaultIntegration }),
         )
 
         await waitFor(() => {
@@ -629,12 +599,10 @@ describe('useGorgiasTranslateText', () => {
             name: 'My Chat',
         })
 
-        const { result } = renderHook(
-            () =>
-                useGorgiasTranslateText({
-                    integration: integrationWithoutMeta,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({
+                integration: integrationWithoutMeta,
+            }),
         )
 
         // Without meta, dependencies cannot load (language is never set)
@@ -680,12 +648,10 @@ describe('useGorgiasTranslateText', () => {
             meta: {},
         })
 
-        const { result } = renderHook(
-            () =>
-                useGorgiasTranslateText({
-                    integration: integrationWithPrivacyPolicy,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGorgiasTranslateText({
+                integration: integrationWithPrivacyPolicy,
+            }),
         )
 
         await waitFor(() => {

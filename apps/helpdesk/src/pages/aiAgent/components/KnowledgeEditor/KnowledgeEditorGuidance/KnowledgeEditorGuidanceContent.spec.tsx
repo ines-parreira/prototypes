@@ -1,13 +1,12 @@
-import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import type { ReactElement } from 'react'
+
+import { render as renderPrimitive } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorGuidanceProvider } from './context'
 import type { GuidanceContextConfig } from './context'
@@ -154,13 +153,10 @@ const defaultState = {
     }),
 }
 
-const store = mockStore(defaultState)
-
-const Wrapper = ({ children }: { children?: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-        <Provider store={store}>{children}</Provider>
-    </QueryClientProvider>
-)
+const render = (
+    ui: ReactElement,
+    options?: Parameters<typeof renderPrimitive>[1],
+) => renderPrimitive(ui, { storeState: defaultState, ...options })
 
 const baseConfig: GuidanceContextConfig = {
     shopName: 'Test Shop',
@@ -183,13 +179,11 @@ describe('KnowledgeEditorGuidanceContent', () => {
             const closeHandlerRef = { current: null }
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
+                <KnowledgeEditorGuidanceProvider config={baseConfig}>
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </KnowledgeEditorGuidanceProvider>,
             )
 
             expect(
@@ -203,13 +197,11 @@ describe('KnowledgeEditorGuidanceContent', () => {
             const closeHandlerRef = { current: null }
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
+                <KnowledgeEditorGuidanceProvider config={baseConfig}>
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </KnowledgeEditorGuidanceProvider>,
             )
 
             expect(screen.getByTestId('read-view')).toBeInTheDocument()
@@ -225,13 +217,11 @@ describe('KnowledgeEditorGuidanceContent', () => {
             const closeHandlerRef = { current: null }
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={editConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
+                <KnowledgeEditorGuidanceProvider config={editConfig}>
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </KnowledgeEditorGuidanceProvider>,
             )
 
             expect(screen.getByTestId('edit-view')).toBeInTheDocument()
@@ -248,13 +238,11 @@ describe('KnowledgeEditorGuidanceContent', () => {
             const closeHandlerRef = { current: null }
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={createConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
+                <KnowledgeEditorGuidanceProvider config={createConfig}>
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </KnowledgeEditorGuidanceProvider>,
             )
 
             expect(screen.getByTestId('edit-view')).toBeInTheDocument()
@@ -265,13 +253,11 @@ describe('KnowledgeEditorGuidanceContent', () => {
             const closeHandlerRef = { current: null }
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
+                <KnowledgeEditorGuidanceProvider config={baseConfig}>
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </KnowledgeEditorGuidanceProvider>,
             )
 
             expect(screen.queryByTestId('diff-view')).not.toBeInTheDocument()
@@ -285,13 +271,11 @@ describe('KnowledgeEditorGuidanceContent', () => {
             const closeHandlerRef = { current: null }
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={editConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
+                <KnowledgeEditorGuidanceProvider config={editConfig}>
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </KnowledgeEditorGuidanceProvider>,
             )
 
             expect(screen.queryByTestId('diff-view')).not.toBeInTheDocument()
@@ -306,13 +290,11 @@ describe('KnowledgeEditorGuidanceContent', () => {
             const closeHandlerRef = { current: null }
 
             render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={createConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
+                <KnowledgeEditorGuidanceProvider config={createConfig}>
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </KnowledgeEditorGuidanceProvider>,
             )
 
             expect(screen.queryByTestId('diff-view')).not.toBeInTheDocument()

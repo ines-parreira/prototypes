@@ -1,9 +1,11 @@
-import { getCombinations, renderWithRouter } from '../testing'
+import { render } from '@repo/testing'
+
+import { getCombinations } from '../testing'
 
 describe('testing', () => {
     describe('renderWithRouter', () => {
         it('should render', () => {
-            const { container } = renderWithRouter(<div>Bloup</div>)
+            const { container } = render(<div>Bloup</div>)
             expect(container.firstChild).toMatchSnapshot()
         })
     })

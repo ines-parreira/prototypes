@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import {
@@ -18,7 +17,6 @@ import { useAgentAvailabilityData } from 'domains/reporting/pages/support-perfor
 import { sortAgentAvailability } from 'domains/reporting/pages/support-performance/agents/sortAgentAvailability'
 import { createAgentsAvailabilityReport } from 'domains/reporting/services/agentsAvailabilityReportingService'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
@@ -41,9 +39,7 @@ const sortAgentAvailabilityMock = assumeMock(sortAgentAvailability)
 describe('useDownloadAgentsAvailabilityData', () => {
     const renderHookWithStore = (storeState: RootState = defaultState) =>
         renderHook(() => useDownloadAgentsAvailabilityData(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(storeState)}>{children}</Provider>
-            ),
+            storeState: storeState,
         })
 
     beforeEach(() => {

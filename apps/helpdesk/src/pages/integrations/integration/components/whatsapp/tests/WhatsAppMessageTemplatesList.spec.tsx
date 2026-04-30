@@ -5,7 +5,6 @@ import { cleanup, screen } from '@testing-library/react'
 
 import { whatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
-import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplatesList from '../WhatsAppMessageTemplatesList'
 
@@ -19,9 +18,6 @@ describe('WhatsAppMessageTemplatesList', () => {
     const renderComponent = () =>
         render(
             <WhatsAppMessageTemplatesList phoneNumberId={mockPhoneNumberId} />,
-            {
-                storeState: mockStore({} as any).getState() as object,
-            },
         )
     beforeEach(() => {
         useListWhatsAppMessageTemplatesMock.mockReturnValue({

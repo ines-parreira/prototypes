@@ -2,9 +2,6 @@ import type { ComponentProps } from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { section } from 'fixtures/section'
@@ -12,8 +9,6 @@ import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
-import { mockStore } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import type { TicketNavbarElement } from '../TicketNavbarContent'
 import {
@@ -58,24 +53,17 @@ describe('<TicketNavbarContent/>', () => {
     describe('rendering', () => {
         it('should render sections and views', () => {
             const { getByText } = render(
-                <DndProvider backend={HTML5Backend}>
-                    <MemoryRouter initialEntries={['/']}>
-                        <Provider
-                            store={mockStore({
-                                entities: fromJS({}),
-                                currentUser: fromJS(user),
-                            })}
-                        >
-                            <SplitTicketViewProvider>
-                                <Navigation.Root>
-                                    <TicketNavbarContentContainer
-                                        {...minProps}
-                                    />
-                                </Navigation.Root>
-                            </SplitTicketViewProvider>
-                        </Provider>
-                    </MemoryRouter>
-                </DndProvider>,
+                <SplitTicketViewProvider>
+                    <Navigation.Root>
+                        <TicketNavbarContentContainer {...minProps} />
+                    </Navigation.Root>
+                </SplitTicketViewProvider>,
+                {
+                    storeState: {
+                        entities: fromJS({}),
+                        currentUser: fromJS(user),
+                    },
+                },
             )
 
             expect(

@@ -1,6 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -10,7 +9,6 @@ import { IntegrationType } from 'models/integration/constants'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -80,11 +78,7 @@ describe('useCsat', () => {
         renderHook(
             () => useCsat(filters, timezone, aiAgentUserId, integrationIds),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 

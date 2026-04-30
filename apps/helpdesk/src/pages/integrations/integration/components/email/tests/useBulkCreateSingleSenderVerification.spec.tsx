@@ -2,24 +2,16 @@ import React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { createVerification } from 'models/singleSenderVerification/resources'
-import { mockStore } from 'utils/testing'
 
 import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')
 
 describe('useBulkCreateSingleSenderVerification', () => {
-    const wrapper = ({ children }: any) => {
-        return <Provider store={mockStore({} as any)}>{children}</Provider>
-    }
-
     it('should call createVerification for each integration', () => {
-        const { result } = renderHook(useBulkCreateSingleSenderVerification, {
-            wrapper,
-        })
+        const { result } = renderHook(useBulkCreateSingleSenderVerification)
         const integrations = [
             { id: 1, meta: { address: 'email1@gorgias.com' } },
             { id: 2, meta: { address: 'email2@gorgias.com' } },

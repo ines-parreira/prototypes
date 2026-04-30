@@ -1,14 +1,11 @@
-import type { ReactNode } from 'react'
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
-import { mockStore } from 'utils/testing'
 
 import {
     OnboardingState,
@@ -32,13 +29,6 @@ describe('useAiAgentOnboardingState', () => {
             storeConfiguration: { wizard: { completedDatetime: null } },
         })
     })
-
-    const wrapper = ({ children }: { children?: ReactNode }) => (
-        <Provider store={mockStore({ currentAccount: fromJS(account) })}>
-            {children}
-        </Provider>
-    )
-
     test('returns loading state when store configuration is loading', () => {
         mockUseStoreConfiguration.mockReturnValueOnce({
             isLoading: true,
@@ -48,7 +38,7 @@ describe('useAiAgentOnboardingState', () => {
         const { result } = renderHook(
             () => useAiAgentOnboardingState(shopName),
             {
-                wrapper,
+                storeState: { currentAccount: fromJS(account) },
             },
         )
 
@@ -59,7 +49,7 @@ describe('useAiAgentOnboardingState', () => {
         const { result } = renderHook(
             () => useAiAgentOnboardingState(shopName),
             {
-                wrapper,
+                storeState: { currentAccount: fromJS(account) },
             },
         )
 
@@ -74,7 +64,7 @@ describe('useAiAgentOnboardingState', () => {
         const { result } = renderHook(
             () => useAiAgentOnboardingState(shopName),
             {
-                wrapper,
+                storeState: { currentAccount: fromJS(account) },
             },
         )
 

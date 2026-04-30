@@ -1,15 +1,12 @@
 import { useFlag, useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { view } from 'fixtures/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useViewId from 'hooks/useViewId'
 import type { View } from 'models/view/types'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { mockStore } from 'utils/testing'
 
 import TicketNavbarViewLink from '../TicketNavbarViewLink'
 
@@ -60,11 +57,9 @@ describe('TicketNavbarViewLink', () => {
     })
 
     it('should render a default link', () => {
-        render(
-            <MemoryRouter initialEntries={['/app']}>
-                <TicketNavbarViewLink view={defaultView} />
-            </MemoryRouter>,
-        )
+        render(<TicketNavbarViewLink view={defaultView} />, {
+            initialEntries: ['/app'],
+        })
         const el = screen.getByText('Inbox').closest('a')
         expect(el).toHaveAttribute('href', '/app/tickets/123/inbox')
     })
@@ -73,22 +68,18 @@ describe('TicketNavbarViewLink', () => {
         useSplitTicketViewMock.mockReturnValue({
             isEnabled: true,
         } as SplitTicketViewContext)
-        render(
-            <MemoryRouter initialEntries={['/app']}>
-                <TicketNavbarViewLink view={defaultView} />
-            </MemoryRouter>,
-        )
+        render(<TicketNavbarViewLink view={defaultView} />, {
+            initialEntries: ['/app'],
+        })
         const el = screen.getByText('Inbox').closest('a')
         expect(el).toHaveAttribute('href', '/app/views/123')
     })
 
     it('should render the new ticket link format with the feature flag', () => {
         useFlagMock.mockReturnValue(true)
-        render(
-            <MemoryRouter initialEntries={['/app']}>
-                <TicketNavbarViewLink view={defaultView} />
-            </MemoryRouter>,
-        )
+        render(<TicketNavbarViewLink view={defaultView} />, {
+            initialEntries: ['/app'],
+        })
         const el = screen.getByText('Inbox').closest('a')
         expect(el).toHaveAttribute('href', '/app/tickets/123')
     })
@@ -104,11 +95,9 @@ describe('TicketNavbarViewLink', () => {
             deactivated_datetime: null,
         } as unknown as View
 
-        const { container } = render(
-            <MemoryRouter initialEntries={['/app']}>
-                <TicketNavbarViewLink view={view} />
-            </MemoryRouter>,
-        )
+        const { container } = render(<TicketNavbarViewLink view={view} />, {
+            initialEntries: ['/app'],
+        })
 
         const expectedDataCanduId = 'ticket-navbar-ai-agent-view-link-handover'
 
@@ -122,18 +111,12 @@ describe('TicketNavbarViewLink', () => {
     })
 
     it('should have the correct component structure', () => {
-        const { container } = render(
-            <Provider
-                store={mockStore({
-                    entities: {},
-                    currentUser: {},
-                })}
-            >
-                <MemoryRouter initialEntries={['/']}>
-                    <TicketNavbarViewLink {...minProps} />
-                </MemoryRouter>
-            </Provider>,
-        )
+        const { container } = render(<TicketNavbarViewLink {...minProps} />, {
+            storeState: {
+                entities: {},
+                currentUser: {},
+            },
+        })
 
         // Verify the outer div structure for DnD functionality
         const outerDiv = container.firstChild as HTMLElement
@@ -159,22 +142,18 @@ describe('TicketNavbarViewLink', () => {
         })
 
         it('should render a link to the view via TicketNavbarViewLinkItem', () => {
-            render(
-                <MemoryRouter initialEntries={['/app']}>
-                    <TicketNavbarViewLink view={defaultView} />
-                </MemoryRouter>,
-            )
+            render(<TicketNavbarViewLink view={defaultView} />, {
+                initialEntries: ['/app'],
+            })
 
             const link = screen.getByRole('link')
             expect(link).toHaveAttribute('href', '/app/tickets/123/inbox')
         })
 
         it('should render the view name', () => {
-            render(
-                <MemoryRouter initialEntries={['/app']}>
-                    <TicketNavbarViewLink view={defaultView} />
-                </MemoryRouter>,
-            )
+            render(<TicketNavbarViewLink view={defaultView} />, {
+                initialEntries: ['/app'],
+            })
 
             expect(screen.getByText('Inbox')).toBeInTheDocument()
         })

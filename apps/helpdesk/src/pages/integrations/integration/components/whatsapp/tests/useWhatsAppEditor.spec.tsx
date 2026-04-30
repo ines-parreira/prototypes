@@ -4,15 +4,18 @@ import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { MacroAction } from 'models/macroAction/types'
 import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
-import { mockStore } from 'utils/testing'
 
 import useWhatsAppEditor from '../useWhatsAppEditor'
 import * as whatsAppUtils from '../utils'
 import WhatsAppEditorProvider from '../WhatsAppEditorProvider'
+
+const mockStore = configureMockStore([thunk])
 
 const isWhatsAppWindowOpenSpy = jest.spyOn(
     whatsAppUtils,

@@ -3,13 +3,11 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import type {
     ZendeskIntegration,
     ZendeskIntegrationMeta,
 } from 'models/integration/types'
-import { mockStore } from 'utils/testing'
 
 import EditCredentialsForm from '../EditCredentialsForm'
 import { ImportStatus } from '../types'
@@ -23,23 +21,22 @@ jest.mock('state/integrations/actions', () => ({
 describe('EditCredentialsForm', () => {
     const renderComponent = (integrationStatus: ImportStatus) =>
         render(
-            <Provider
-                store={mockStore({
+            <EditCredentialsForm
+                integration={
+                    {
+                        id: 1,
+                        name: 'gorgias',
+                        meta: {
+                            status: integrationStatus,
+                        } as ZendeskIntegrationMeta,
+                    } as ZendeskIntegration
+                }
+            />,
+            {
+                storeState: {
                     integrations: fromJS({}),
-                } as any)}
-            >
-                <EditCredentialsForm
-                    integration={
-                        {
-                            id: 1,
-                            name: 'gorgias',
-                            meta: {
-                                status: integrationStatus,
-                            } as ZendeskIntegrationMeta,
-                        } as ZendeskIntegration
-                    }
-                />
-            </Provider>,
+                } as any,
+            },
         )
 
     afterEach(() => {

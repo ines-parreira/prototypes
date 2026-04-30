@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { cleanup, render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
+import { cleanup, screen } from '@testing-library/react'
 
 import { migrationOutboundVerificationUnverifiedSingleSender } from 'fixtures/emailMigration'
-import { mockStore } from 'utils/testing'
 
 import SingleSenderVerificationTable from '../EmailMigration/SingleSenderVerificationTable'
 
@@ -19,13 +18,11 @@ jest.mock(
 describe('SingleSenderVerificationTable', () => {
     const renderComponent = () =>
         render(
-            <Provider store={mockStore({} as any)}>
-                <SingleSenderVerificationTable
-                    refreshMigrationData={jest.fn()}
-                    integrations={Array(10).fill(integrations[0])}
-                    hasSubmittedBulkVerification={false}
-                />
-            </Provider>,
+            <SingleSenderVerificationTable
+                refreshMigrationData={jest.fn()}
+                integrations={Array(10).fill(integrations[0])}
+                hasSubmittedBulkVerification={false}
+            />,
         )
 
     afterEach(cleanup)

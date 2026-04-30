@@ -4,7 +4,6 @@ import { formatMetricValue } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 
 import { Box, createTableV1SortableColumn } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
@@ -18,7 +17,6 @@ import {
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { ThemeProvider } from 'core/theme'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
-import { mockStore } from 'utils/testing'
 
 import { JourneysTable } from './JourneysTable'
 
@@ -91,14 +89,12 @@ const renderComponent = (
     }
 
     return render(
-        <Provider store={mockStore({})}>
-            <ThemeProvider>
-                <JourneysTable<JourneyApiDTO, unknown>
-                    {...defaultProps}
-                    {...props}
-                />
-            </ThemeProvider>
-        </Provider>,
+        <ThemeProvider>
+            <JourneysTable<JourneyApiDTO, unknown>
+                {...defaultProps}
+                {...props}
+            />
+        </ThemeProvider>,
     )
 }
 

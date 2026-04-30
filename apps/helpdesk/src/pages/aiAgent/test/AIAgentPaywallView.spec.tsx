@@ -1,10 +1,8 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render, userEvent } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
@@ -18,8 +16,6 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { useStoreActivations } from '../Activation/hooks/useStoreActivations'
 import type { AiAgentPaywallViewProps } from '../AiAgentPaywallView'
@@ -38,7 +34,6 @@ const mockUseStoreActivations = assumeMock(useStoreActivations)
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 const mockUseTheme = useTheme as jest.MockedFunction<typeof useTheme>
-const queryClient = mockQueryClient()
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 
 const defaultState = {
@@ -65,13 +60,7 @@ const defaultProps = {
 }
 
 const renderComponent = (props: AiAgentPaywallViewProps = defaultProps) =>
-    render(
-        <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(defaultState)}>
-                <AiAgentPaywallView {...props} />
-            </Provider>
-        </QueryClientProvider>,
-    )
+    render(<AiAgentPaywallView {...props} />, { storeState: defaultState })
 
 describe('<AiAgentPaywallView />', () => {
     beforeEach(() => {

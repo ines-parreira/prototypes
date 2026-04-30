@@ -1,8 +1,6 @@
 import { assumeMock, render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { Provider } from 'react-redux'
 
 import {
     useListCustomerIntegrationsWithChannelDefault,
@@ -14,8 +12,6 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import CustomerSyncForm from '../CustomerSyncForm/CustomerSyncForm'
 
@@ -37,7 +33,6 @@ const activeCustomer = Map({
     email: 'john.smith@example.com',
 })
 
-const queryClient = mockQueryClient()
 const state = {}
 
 const createMockMutation = (overrides = {}) => ({
@@ -77,13 +72,7 @@ const renderCustomerSyncForm = (props = {}) => {
         ...props,
     }
 
-    return render(
-        <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(state)}>
-                <CustomerSyncForm {...defaultProps} />
-            </Provider>
-        </QueryClientProvider>,
-    )
+    return render(<CustomerSyncForm {...defaultProps} />, { storeState: state })
 }
 
 const fillBasicForm = (includePhone = true) => {
@@ -224,19 +213,15 @@ describe('CustomerSyncForm', () => {
         const { rerender } = renderCustomerSyncForm()
 
         rerender(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state)}>
-                    <CustomerSyncForm
-                        activeCustomer={Map({
-                            id: 123,
-                            name: 'John Smith',
-                            email: 'john.updated@example.com',
-                        })}
-                        isCustomerSyncFormOpen
-                        setIsCustomerSyncFormOpen={jest.fn()}
-                    />
-                </Provider>
-            </QueryClientProvider>,
+            <CustomerSyncForm
+                activeCustomer={Map({
+                    id: 123,
+                    name: 'John Smith',
+                    email: 'john.updated@example.com',
+                })}
+                isCustomerSyncFormOpen
+                setIsCustomerSyncFormOpen={jest.fn()}
+            />,
         )
 
         await waitFor(() => {

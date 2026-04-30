@@ -1,18 +1,11 @@
 import React from 'react'
 
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    within,
-} from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { IntegrationType } from 'models/integration/constants'
 import * as actions from 'state/integrations/actions'
-import { mockStore } from 'utils/testing'
 
 import StartMigrationIntegrationsTable from '../EmailMigration/StartMigrationIntegrationsTable'
 
@@ -44,11 +37,7 @@ const integrations = [
 
 describe('StartMigrationIntegrationsTable', () => {
     const renderComponent = (integrations: any = []) =>
-        render(
-            <Provider store={mockStore({} as any)}>
-                <StartMigrationIntegrationsTable integrations={integrations} />
-            </Provider>,
-        )
+        render(<StartMigrationIntegrationsTable integrations={integrations} />)
 
     afterEach(cleanup)
 

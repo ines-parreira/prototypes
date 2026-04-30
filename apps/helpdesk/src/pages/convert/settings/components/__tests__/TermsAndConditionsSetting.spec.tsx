@@ -2,15 +2,11 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { LANGUAGE as MockLanguage } from 'constants/languages'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { TermsAndConditionsSetting } from 'pages/convert/settings/components/TermsAndConditionsSetting'
 import type { DisclaimerSettings } from 'pages/convert/settings/types'
-import { mockStore } from 'utils/testing'
-
-const store = mockStore({})
 
 describe('<TermsAndConditionsSetting />', () => {
     const defaultProps = {
@@ -39,18 +35,16 @@ describe('<TermsAndConditionsSetting />', () => {
         disclaimerMap[MockLanguage.EN_GB] = 'f'.repeat(281)
         const mockOnError = jest.fn()
         const { getByText } = render(
-            <Provider store={store}>
-                <TermsAndConditionsSetting
-                    {...defaultProps}
-                    disclaimerSettings={{
-                        ...defaultProps.disclaimerSettings,
-                        disclaimerEnabled: true,
-                        disclaimerMap: disclaimerMap,
-                        selectedLanguage: MockLanguage.EN_GB,
-                    }}
-                    onErrorChange={mockOnError}
-                />
-            </Provider>,
+            <TermsAndConditionsSetting
+                {...defaultProps}
+                disclaimerSettings={{
+                    ...defaultProps.disclaimerSettings,
+                    disclaimerEnabled: true,
+                    disclaimerMap: disclaimerMap,
+                    selectedLanguage: MockLanguage.EN_GB,
+                }}
+                onErrorChange={mockOnError}
+            />,
         )
         expect(
             getByText(

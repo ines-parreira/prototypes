@@ -1,7 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
@@ -9,7 +7,6 @@ import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallati
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 import { useAiAgentOverviewModeEnabled } from '../useAiAgentOverviewModeEnabled'
 import { useIsAiAgentDuringDeployment } from '../useIsAiAgentDuringDeployment'
@@ -59,14 +56,6 @@ describe('useAiAgentOverviewModeEnabled', () => {
         isPendingCreateOrUpdate: false,
     }
 
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: {
-                retry: false,
-            },
-        },
-    })
-
     const renderUseAiAgentOverviewModeEnabled = (
         shopName = 'test-shop',
         shopType = 'shopify',
@@ -75,13 +64,7 @@ describe('useAiAgentOverviewModeEnabled', () => {
         return renderHook(
             () => useAiAgentOverviewModeEnabled(shopName, shopType, enabled),
             {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            {children}
-                        </Provider>
-                    </QueryClientProvider>
-                ),
+                storeState: defaultState,
             },
         )
     }

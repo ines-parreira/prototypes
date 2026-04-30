@@ -1,7 +1,6 @@
 import { useFlagWithLoading } from '@repo/feature-flags'
 import { formatMetricValue } from '@repo/reporting'
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -20,7 +19,6 @@ import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { useOverallTimeSeries } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
-import { mockStore } from 'utils/testing'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
@@ -152,11 +150,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -200,11 +194,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -236,11 +226,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -269,11 +255,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -291,11 +273,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -317,11 +295,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -339,11 +313,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -361,11 +331,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -390,11 +356,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -420,11 +382,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -442,11 +400,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -464,11 +418,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -495,11 +445,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -523,11 +469,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -551,11 +493,7 @@ describe('useReportingTrendCardProps', () => {
                         AiAgentDrillDownMetricName.AllAgentsCsatCard,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -576,11 +514,7 @@ describe('useReportingTrendCardProps', () => {
                         AiAgentDrillDownMetricName.AllAgentsCsatCard,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -599,11 +533,7 @@ describe('useReportingTrendCardProps', () => {
                     useTrend: mockUseTrend,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -634,11 +564,7 @@ describe('useReportingTrendCardProps', () => {
                         timeSeriesView,
                     }),
                 {
-                    wrapper: ({ children }) => (
-                        <Provider store={mockStore(defaultState)}>
-                            {children}
-                        </Provider>
-                    ),
+                    storeState: defaultState,
                 },
             )
 
@@ -767,11 +693,7 @@ describe('useReportingTrendCardProps', () => {
                         AiAgentDrillDownMetricName.AllAgentsCsatCard,
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 

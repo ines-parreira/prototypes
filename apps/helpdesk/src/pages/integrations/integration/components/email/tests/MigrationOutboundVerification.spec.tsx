@@ -1,18 +1,11 @@
 import React from 'react'
 
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
 
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import * as dateUtils from 'utils/date'
-import { mockStore } from 'utils/testing'
 
 import MigrationOutboundVerification from '../EmailMigration/MigrationOutboundVerification'
 
@@ -33,11 +26,7 @@ describe('MigrationOutboundVerification', () => {
     const onBackClick = jest.fn()
 
     const renderComponent = () =>
-        render(
-            <Provider store={mockStore({} as any)}>
-                <MigrationOutboundVerification onBackClick={onBackClick} />
-            </Provider>,
-        )
+        render(<MigrationOutboundVerification onBackClick={onBackClick} />)
 
     afterEach(cleanup)
 

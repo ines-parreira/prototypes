@@ -1,10 +1,6 @@
-import type React from 'react'
-
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
@@ -12,8 +8,6 @@ import type { StoreConfigurationsResponse } from 'models/aiAgent/types'
 import { IntegrationType } from 'models/integration/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import type { RootState } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { useStoresWithCompletedSetup } from './useStoresWithCompletedSetup'
 
@@ -55,25 +49,14 @@ const defaultState: RootState = {
 } as RootState
 
 describe('useStoresWithCompletedSetup', () => {
-    let queryClient: ReturnType<typeof mockQueryClient>
-
     beforeEach(() => {
         jest.clearAllMocks()
-        queryClient = mockQueryClient()
 
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
         })
     })
-
-    const createWrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={mockStore(defaultState)}>
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        </Provider>
-    )
 
     it('returns stores with wizard.completedDatetime !== null', () => {
         const storeConfig1 = getStoreConfigurationFixture({
@@ -112,7 +95,7 @@ describe('useStoresWithCompletedSetup', () => {
         } as unknown as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(useStoresWithCompletedSetup, {
-            wrapper: createWrapper,
+            storeState: defaultState,
         })
 
         expect(result.current).toHaveLength(1)
@@ -148,7 +131,7 @@ describe('useStoresWithCompletedSetup', () => {
         } as unknown as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(useStoresWithCompletedSetup, {
-            wrapper: createWrapper,
+            storeState: defaultState,
         })
 
         expect(result.current).toHaveLength(1)
@@ -162,7 +145,7 @@ describe('useStoresWithCompletedSetup', () => {
         } as unknown as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(useStoresWithCompletedSetup, {
-            wrapper: createWrapper,
+            storeState: defaultState,
         })
 
         expect(result.current).toEqual([])
@@ -175,7 +158,7 @@ describe('useStoresWithCompletedSetup', () => {
         } as unknown as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(useStoresWithCompletedSetup, {
-            wrapper: createWrapper,
+            storeState: defaultState,
         })
 
         expect(result.current).toEqual([])
@@ -218,7 +201,7 @@ describe('useStoresWithCompletedSetup', () => {
         } as unknown as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(useStoresWithCompletedSetup, {
-            wrapper: createWrapper,
+            storeState: defaultState,
         })
 
         expect(result.current).toEqual([])
@@ -266,7 +249,7 @@ describe('useStoresWithCompletedSetup', () => {
         } as unknown as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(useStoresWithCompletedSetup, {
-            wrapper: createWrapper,
+            storeState: defaultState,
         })
 
         expect(result.current).toHaveLength(2)
@@ -314,7 +297,7 @@ describe('useStoresWithCompletedSetup', () => {
         } as unknown as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
         const { result } = renderHook(useStoresWithCompletedSetup, {
-            wrapper: createWrapper,
+            storeState: defaultState,
         })
 
         expect(result.current).toHaveLength(1)
@@ -327,9 +310,7 @@ describe('useStoresWithCompletedSetup', () => {
             data: { storeConfigurations: [] },
         } as unknown as UseQueryResult<StoreConfigurationsResponse, unknown>)
 
-        renderHook(useStoresWithCompletedSetup, {
-            wrapper: createWrapper,
-        })
+        renderHook(useStoresWithCompletedSetup, { storeState: defaultState })
 
         expect(mockUseGetStoresConfigurationForAccount).toHaveBeenCalledWith({
             accountDomain: 'test-account.gorgias.com',

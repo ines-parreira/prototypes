@@ -1,19 +1,12 @@
 import React from 'react'
 
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    within,
-} from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen, within } from '@testing-library/react'
 import { merge } from 'lodash'
-import { Provider } from 'react-redux'
 
 import { integrationsState } from 'fixtures/integrations'
 import type { EmailIntegration } from 'models/integration/types'
 import { OutboundVerificationStatusValue } from 'models/integration/types'
-import { mockStore } from 'utils/testing'
 
 import type { Props } from '../EmailVerification'
 import EmailVerification from '../EmailVerification'
@@ -33,14 +26,13 @@ describe('EmailVerification', () => {
         cleanup()
 
         return render(
-            <Provider store={mockStore(store as any)}>
-                <EmailVerification
-                    baseURL={'emailVerificationMockUrl'}
-                    loading={false}
-                    integration={integration}
-                    {...props}
-                />
-            </Provider>,
+            <EmailVerification
+                baseURL={'emailVerificationMockUrl'}
+                loading={false}
+                integration={integration}
+                {...props}
+            />,
+            { storeState: store as any },
         )
     }
 

@@ -4,13 +4,16 @@ import * as featureFlagsModule from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { IntegrationType } from 'models/integration/constants'
 import {
     CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE,
     useIsArticleRecommendationsEnabledWhileSunset,
 } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
-import { mockStore } from 'utils/testing'
+
+const mockStore = configureMockStore([thunk])
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

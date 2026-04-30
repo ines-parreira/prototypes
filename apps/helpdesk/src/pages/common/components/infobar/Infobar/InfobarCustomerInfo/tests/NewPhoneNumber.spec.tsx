@@ -1,14 +1,12 @@
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
-import { Provider } from 'react-redux'
 
 import { useGetCustomer, useUpdateCustomer } from '@gorgias/helpdesk-queries'
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { mockStore } from 'utils/testing'
 
 import NewPhoneNumber from '../NewPhoneNumber'
 
@@ -51,11 +49,7 @@ describe('NewPhoneNumber', () => {
     const mutateCustomer = jest.fn()
 
     const renderComponent = () => {
-        render(
-            <Provider store={mockStore({} as any)}>
-                <NewPhoneNumber customerId={1} />
-            </Provider>,
-        )
+        render(<NewPhoneNumber customerId={1} />)
     }
 
     beforeEach(() => {
@@ -187,7 +181,7 @@ describe('NewPhoneNumber', () => {
                         } as any,
                     } as any,
                 } as any,
-            },
+            } as any,
             {} as any,
             undefined,
         )
@@ -206,7 +200,7 @@ describe('NewPhoneNumber', () => {
                         error: {} as any,
                     } as any,
                 } as any,
-            },
+            } as any,
             {} as any,
             undefined,
         )

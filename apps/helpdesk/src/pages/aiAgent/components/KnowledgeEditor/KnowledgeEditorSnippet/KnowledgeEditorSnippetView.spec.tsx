@@ -1,39 +1,30 @@
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
-import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
 
-const store = mockStore({
-    ui: {
-        stats: {
-            drillDown: {
-                isOpen: false,
-                currentPage: 1,
-                metricData: null,
-                export: {
-                    isLoading: false,
-                    isError: false,
-                    isRequested: false,
+const renderWithProvider = (ui: React.ReactElement) => {
+    return render(ui, {
+        storeState: {
+            ui: {
+                stats: {
+                    drillDown: {
+                        isOpen: false,
+                        currentPage: 1,
+                        metricData: null,
+                        export: {
+                            isLoading: false,
+                            isError: false,
+                            isRequested: false,
+                        },
+                    },
                 },
             },
         },
-    },
-})
-
-const MockQueryClientProvider = mockQueryClientProvider().QueryClientProvider
-
-const renderWithProvider = (ui: React.ReactElement) => {
-    return render(
-        <Provider store={store}>
-            <MockQueryClientProvider>{ui}</MockQueryClientProvider>
-        </Provider>,
-    )
+    })
 }
 
 describe('KnowledgeEditorSnippetView', () => {

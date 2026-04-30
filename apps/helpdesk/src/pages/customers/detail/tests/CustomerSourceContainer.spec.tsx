@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { shopifyWidget } from 'fixtures/widgets'
 
-import { renderWithRouter } from '../../../../utils/testing'
 import type SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
 import { CustomerSourceContainer } from '../CustomerSourceContainer'
 
@@ -60,21 +60,18 @@ describe('<CustomerSourceContainer />', () => {
     } as unknown as ComponentProps<typeof CustomerSourceContainer>
 
     it('should display content when a customer id is provided', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <CustomerSourceContainer {...minProps} />,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
+            { path: '/foo/:customerId?', initialEntries: ['/foo/1'] },
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch customer with the provided parameter', () => {
-        renderWithRouter(<CustomerSourceContainer {...minProps} />, {
+        render(<CustomerSourceContainer {...minProps} />, {
             path: '/foo/:customerId?',
-            route: '/foo/1',
+            initialEntries: ['/foo/1'],
         })
 
         expect(minProps.actions.customers.fetchCustomer).toHaveBeenCalledWith(

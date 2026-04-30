@@ -1,42 +1,13 @@
-import React from 'react'
-
 import { renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
-import type { User } from 'config/types/user'
 import * as agentsQueries from 'models/agents/queries'
 import * as customersQueries from 'models/customer/queries'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { useAgentDetails, useCustomerDetails } from '../hooks'
 
 const useGetAgentSpy = jest.spyOn(agentsQueries, 'useGetAgent')
 const useGetCustomerSpy = jest.spyOn(customersQueries, 'useGetCustomer')
-
-const queryClient = mockQueryClient()
-
-const agentDetailsWrapper = ({ children }: any) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-)
-
-const createCustomerDetailsWrapper =
-    (storeCustomerData: Partial<User> = {}) =>
-    ({ children }: any) => (
-        <Provider
-            store={mockStore({
-                ticket: fromJS({
-                    customer: storeCustomerData,
-                }),
-            } as any)}
-        >
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        </Provider>
-    )
 
 describe('hooks', () => {
     describe('useCustomerDetails', () => {
@@ -44,10 +15,14 @@ describe('hooks', () => {
             const { result } = renderHook(
                 () => useCustomerDetails({ customerId: 1 }),
                 {
-                    wrapper: createCustomerDetailsWrapper({
-                        id: 1,
-                        name: 'Customer Name',
-                    }),
+                    storeState: {
+                        ticket: fromJS({
+                            customer: {
+                                id: 1,
+                                name: 'Customer Name',
+                            },
+                        }),
+                    },
                 },
             )
 
@@ -64,10 +39,14 @@ describe('hooks', () => {
             const { result } = renderHook(
                 () => useCustomerDetails({ customerId: 2 }),
                 {
-                    wrapper: createCustomerDetailsWrapper({
-                        id: 1,
-                        name: 'Customer Name',
-                    }),
+                    storeState: {
+                        ticket: fromJS({
+                            customer: {
+                                id: 1,
+                                name: 'Customer Name',
+                            },
+                        }),
+                    },
                 },
             )
             expect(result.current.customer).toEqual({
@@ -80,33 +59,24 @@ describe('hooks', () => {
             useGetCustomerSpy.mockReturnValue({
                 error: { response: { status: 404 } },
             } as any)
-            const { result } = renderHook(
-                () => useCustomerDetails({ customerId: 1 }),
-                {
-                    wrapper: createCustomerDetailsWrapper({}),
-                },
+            const { result } = renderHook(() =>
+                useCustomerDetails({ customerId: 1 }),
             )
 
             expect(result.current.error).toEqual({ response: { status: 404 } })
         })
 
         it('should not disable query when isEnabled is true', () => {
-            renderHook(
-                () => useCustomerDetails({ customerId: 1, isEnabled: true }),
-                {
-                    wrapper: createCustomerDetailsWrapper({}),
-                },
+            renderHook(() =>
+                useCustomerDetails({ customerId: 1, isEnabled: true }),
             )
 
             expect(useGetCustomerSpy.mock.calls?.[0]?.[1]?.enabled).toBe(true)
         })
 
         it('should disable query when isEnabled is false', () => {
-            renderHook(
-                () => useCustomerDetails({ customerId: 1, isEnabled: false }),
-                {
-                    wrapper: createCustomerDetailsWrapper({}),
-                },
+            renderHook(() =>
+                useCustomerDetails({ customerId: 1, isEnabled: false }),
             )
 
             expect(useGetCustomerSpy.mock.calls?.[0]?.[1]?.enabled).toBe(false)
@@ -125,9 +95,7 @@ describe('hooks', () => {
                     ],
                 },
             } as any
-            const { result } = renderHook(() => useAgentDetails(1), {
-                wrapper: agentDetailsWrapper,
-            })
+            const { result } = renderHook(() => useAgentDetails(1))
 
             expect(result.current.data).toEqual({ id: 1, name: 'Agent Name' })
         })
@@ -141,9 +109,7 @@ describe('hooks', () => {
                     all: [],
                 },
             } as any
-            const { result } = renderHook(() => useAgentDetails(1), {
-                wrapper: agentDetailsWrapper,
-            })
+            const { result } = renderHook(() => useAgentDetails(1))
 
             expect(result.current.data).toEqual({
                 id: 1,
@@ -155,9 +121,7 @@ describe('hooks', () => {
             useGetAgentSpy.mockReturnValue({
                 error: { response: { status: 404 } },
             } as any)
-            const { result } = renderHook(() => useAgentDetails(1), {
-                wrapper: agentDetailsWrapper,
-            })
+            const { result } = renderHook(() => useAgentDetails(1))
 
             expect(result.current.error).toEqual({ response: { status: 404 } })
         })

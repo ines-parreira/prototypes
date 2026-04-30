@@ -1,17 +1,10 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    within,
-} from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen, within } from '@testing-library/react'
 
 import { whatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
-import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplateBody from '../WhatsAppMessageTemplateBody'
 
@@ -22,14 +15,12 @@ describe('WhatsAppMessageTemplateBody', () => {
         props: Partial<ComponentProps<typeof WhatsAppMessageTemplateBody>> = {},
     ) =>
         render(
-            <Provider store={mockStore({} as any)}>
-                <WhatsAppMessageTemplateBody
-                    isPreview={true}
-                    template={whatsAppMessageTemplates[0]}
-                    onChange={onInputChange}
-                    {...props}
-                />
-            </Provider>,
+            <WhatsAppMessageTemplateBody
+                isPreview={true}
+                template={whatsAppMessageTemplates[0]}
+                onChange={onInputChange}
+                {...props}
+            />,
         )
 
     afterEach(cleanup)

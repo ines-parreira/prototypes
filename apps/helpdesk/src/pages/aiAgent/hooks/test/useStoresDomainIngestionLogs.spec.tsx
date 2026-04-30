@@ -1,9 +1,7 @@
 import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import * as resources from 'models/helpCenter/resources'
@@ -15,7 +13,6 @@ import type { Components } from 'rest_api/help_center_api/client.generated'
 import { buildSDKMocks } from 'rest_api/help_center_api/tests/buildSdkMocks'
 import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 jest.mock('@repo/logging')
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
@@ -226,13 +223,7 @@ describe('useStoresDomainIngestionLogs', () => {
                     storeNames: [STORE_NAME_1, STORE_NAME_2],
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -281,13 +272,7 @@ describe('useStoresDomainIngestionLogs', () => {
                     storeNames: [STORE_NAME_3],
                 }),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 

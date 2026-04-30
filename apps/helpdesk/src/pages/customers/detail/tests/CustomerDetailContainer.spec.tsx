@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { createBrowserHistory } from 'history'
+import { assumeMock, render } from '@repo/testing'
+import { cleanup } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +11,6 @@ import thunk from 'redux-thunk'
 import { customer } from 'fixtures/customer'
 import type { RootState, StoreDispatch } from 'state/types'
 import Timeline from 'timeline/Timeline'
-import { renderWithRouter } from 'utils/testing'
 
 import { CustomerDetailContainer } from '../CustomerDetailContainer'
 
@@ -62,58 +61,52 @@ describe('<CustomerDetailContainer />', () => {
     })
 
     it('should display the customer and its history of messages', () => {
-        const { container } = renderWithRouter(
+        const { container } = render(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
                     activeCustomer={fromJS(mockActiveCustomer)}
                 />
             </Provider>,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
+            { path: '/foo/:customerId?', initialEntries: ['/foo/1'] },
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch the customer', () => {
-        const history = createBrowserHistory()
-        history.push('/foo/1')
-
-        const { rerender } = renderWithRouter(
+        render(
             <Provider store={store}>
                 <CustomerDetailContainer {...minProps} />
             </Provider>,
-            { history, path: '/foo/:customerId?' },
+            { path: '/foo/:customerId?', initialEntries: ['/foo/1'] },
         )
 
         expect(minProps.fetchCustomer).toHaveBeenCalledWith('1')
-        history.push('/foo/2')
-        rerender(
+
+        cleanup()
+
+        render(
             <Provider store={store}>
                 <CustomerDetailContainer {...minProps} />
             </Provider>,
+            { path: '/foo/:customerId?', initialEntries: ['/foo/2'] },
         )
         expect(minProps.fetchCustomer).toHaveBeenLastCalledWith('2')
     })
 
     it('should display an unknown state when no active customer is provided', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <Provider store={store}>
                 <CustomerDetailContainer {...minProps} />
             </Provider>,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
+            { path: '/foo/:customerId?', initialEntries: ['/foo/1'] },
         )
         expect(getByText(/Unknown customer/i)).toBeTruthy()
     })
 
     it('should display a loader when active customer is being loaded', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
@@ -122,44 +115,35 @@ describe('<CustomerDetailContainer />', () => {
                     })}
                 />
             </Provider>,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
+            { path: '/foo/:customerId?', initialEntries: ['/foo/1'] },
         )
 
         expect(getByText(/Loading customer/i)).toBeTruthy()
     })
 
     it('should call setRecentItems on mount', () => {
-        renderWithRouter(
+        render(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
                     activeCustomer={fromJS(mockActiveCustomer)}
                 />
             </Provider>,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
+            { path: '/foo/:customerId?', initialEntries: ['/foo/1'] },
         )
 
         expect(mockSetRecentItem).toHaveBeenCalledWith(mockActiveCustomer)
     })
 
     it('should call `Timeline` component', () => {
-        renderWithRouter(
+        render(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
                     activeCustomer={fromJS(mockActiveCustomer)}
                 />
             </Provider>,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
+            { path: '/foo/:customerId?', initialEntries: ['/foo/1'] },
         )
 
         expect(Timeline).toHaveBeenCalled()

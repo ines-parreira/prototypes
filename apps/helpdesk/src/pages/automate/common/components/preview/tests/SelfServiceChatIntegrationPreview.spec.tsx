@@ -1,17 +1,12 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import { MemoryRouter, Route } from 'react-router-dom'
 
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from '../constants'
 import SelfServiceChatIntegrationPreview from '../SelfServiceChatIntegrationPreview'
@@ -45,7 +40,6 @@ const mockIntegration = {
         },
     },
 } as any
-const queryClient = mockQueryClient()
 describe('SelfServiceChatIntegrationPreview', () => {
     beforeEach(() => {
         ;(useSelfServicePreviewContext as jest.Mock).mockReturnValue({
@@ -55,34 +49,18 @@ describe('SelfServiceChatIntegrationPreview', () => {
 
     it('renders correctly with default props', () => {
         render(
-            <Provider store={mockStore({})}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter>
-                        <SelfServiceChatIntegrationPreview
-                            integration={mockIntegration}
-                        />
-                    </MemoryRouter>
-                </QueryClientProvider>
-            </Provider>,
+            <SelfServiceChatIntegrationPreview integration={mockIntegration} />,
         )
         expect(screen.getByText('Welcome to our chat!')).toBeInTheDocument()
     })
 
     it('renders the correct page based on route', () => {
         render(
-            <Provider store={mockStore({})}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter
-                        initialEntries={[SELF_SERVICE_PREVIEW_ROUTES.ORDERS]}
-                    >
-                        <Route path={SELF_SERVICE_PREVIEW_ROUTES.ORDERS}>
-                            <SelfServiceChatIntegrationPreview
-                                integration={mockIntegration}
-                            />
-                        </Route>
-                    </MemoryRouter>
-                </QueryClientProvider>
-            </Provider>,
+            <SelfServiceChatIntegrationPreview integration={mockIntegration} />,
+            {
+                initialEntries: [SELF_SERVICE_PREVIEW_ROUTES.ORDERS],
+                path: SELF_SERVICE_PREVIEW_ROUTES.ORDERS,
+            },
         )
 
         expect(screen.getByText('Your orders')).toBeInTheDocument()
@@ -90,17 +68,10 @@ describe('SelfServiceChatIntegrationPreview', () => {
 
     it('renders the footer correctly based on path', () => {
         render(
-            <Provider store={mockStore({})}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter
-                        initialEntries={[SELF_SERVICE_PREVIEW_ROUTES.CANCEL]}
-                    >
-                        <SelfServiceChatIntegrationPreview
-                            integration={mockIntegration}
-                        />
-                    </MemoryRouter>
-                </QueryClientProvider>
-            </Provider>,
+            <SelfServiceChatIntegrationPreview integration={mockIntegration} />,
+            {
+                initialEntries: [SELF_SERVICE_PREVIEW_ROUTES.CANCEL],
+            },
         )
 
         expect(
@@ -110,15 +81,7 @@ describe('SelfServiceChatIntegrationPreview', () => {
 
     it('updates correctly on prop changes', () => {
         const { rerender } = render(
-            <Provider store={mockStore({})}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter>
-                        <SelfServiceChatIntegrationPreview
-                            integration={mockIntegration}
-                        />
-                    </MemoryRouter>
-                </QueryClientProvider>
-            </Provider>,
+            <SelfServiceChatIntegrationPreview integration={mockIntegration} />,
         )
 
         const updatedIntegration = {
@@ -130,15 +93,9 @@ describe('SelfServiceChatIntegrationPreview', () => {
         }
 
         rerender(
-            <Provider store={mockStore({})}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter>
-                        <SelfServiceChatIntegrationPreview
-                            integration={updatedIntegration}
-                        />
-                    </MemoryRouter>
-                </QueryClientProvider>
-            </Provider>,
+            <SelfServiceChatIntegrationPreview
+                integration={updatedIntegration}
+            />,
         )
 
         expect(

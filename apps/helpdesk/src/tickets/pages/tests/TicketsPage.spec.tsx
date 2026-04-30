@@ -3,7 +3,6 @@ import { NavigationProvider } from '@repo/navigation'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import { Route, StaticRouter } from 'react-router-dom'
 
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
@@ -11,7 +10,6 @@ import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { mockStore } from 'utils/testing'
 
 import { TicketsPage } from '../TicketsPage'
 
@@ -57,21 +55,18 @@ describe('TicketsPage', () => {
         ticket: fromJS({ id: 123, customer: { id: 456 } }),
     }
 
-    const store = mockStore(baseState)
-
     const renderComponent = (location: string) => {
         return render(
-            <Provider store={store}>
-                <NavigationProvider>
-                    <StaticRouter location={location}>
-                        <Route path="/app/tickets">
-                            <Panels size={1000}>
-                                <TicketsPage />
-                            </Panels>
-                        </Route>
-                    </StaticRouter>
-                </NavigationProvider>
-            </Provider>,
+            <NavigationProvider>
+                <StaticRouter location={location}>
+                    <Route path="/app/tickets">
+                        <Panels size={1000}>
+                            <TicketsPage />
+                        </Panels>
+                    </Route>
+                </StaticRouter>
+            </NavigationProvider>,
+            { storeState: baseState },
         )
     }
 

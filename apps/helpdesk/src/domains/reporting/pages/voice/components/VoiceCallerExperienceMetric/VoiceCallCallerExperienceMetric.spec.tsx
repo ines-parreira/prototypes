@@ -1,6 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -14,7 +13,6 @@ import {
 import { useVoiceCallAverageTimeTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend'
 import type { VoiceMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend')
 const mockUseVoiceCallAverageTimeTrend = assumeMock(
@@ -46,8 +44,6 @@ const defaultTrendValue = {
 }
 
 describe('<VoiceCallCallerExperienceMetric />', () => {
-    const store = mockStore({} as any)
-
     const renderComponent = (
         trendValue: MetricTrend,
         metricData: VoiceMetrics = averageWaitTimeMetricData,
@@ -61,21 +57,15 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
         mockUseVoiceCallAverageTimeTrend.mockReturnValue(trendValue)
 
         return render(
-            <Provider store={store}>
-                <VoiceCallCallerExperienceMetric
-                    metricTrend={trendValue}
-                    title={'Total duration'}
-                    hint={'Total duration of the call'}
-                    statsFilters={statsFilters}
-                    metricData={metricData}
-                />
-            </Provider>,
+            <VoiceCallCallerExperienceMetric
+                metricTrend={trendValue}
+                title={'Total duration'}
+                hint={'Total duration of the call'}
+                statsFilters={statsFilters}
+                metricData={metricData}
+            />,
         )
     }
-
-    beforeEach(() => {
-        store.clearActions()
-    })
 
     it('should render', async () => {
         const trendValue = {

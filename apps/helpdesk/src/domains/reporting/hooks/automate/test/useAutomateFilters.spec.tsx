@@ -2,13 +2,11 @@ import React from 'react'
 
 import { renderHook } from '@repo/testing'
 import moment from 'moment'
-import { Provider } from 'react-redux'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 describe('useNewAutomateFilters', () => {
     const periodStart = moment()
@@ -37,9 +35,7 @@ describe('useNewAutomateFilters', () => {
         } as RootState
 
         const { result } = renderHook(() => useAutomateFilters(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current.statsFilters).toEqual({
@@ -58,9 +54,7 @@ describe('useNewAutomateFilters', () => {
         } as RootState
 
         const { result } = renderHook(() => useAutomateFilters(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current.statsFilters).toEqual(state.stats.filters)
@@ -92,9 +86,7 @@ describe('useNewAutomateFilters', () => {
         } as RootState
 
         const { result } = renderHook(() => useAutomateFilters(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current.statsFilters).toEqual({

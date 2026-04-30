@@ -2,9 +2,6 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-
-import { mockStore } from 'utils/testing'
 
 import TicketVoiceCallSource from '../TicketVoiceCallSource'
 
@@ -24,11 +21,7 @@ describe('TicketVoiceCallSource', () => {
     }
 
     const renderComponent = () => {
-        return render(
-            <Provider store={mockStore({} as any)}>
-                <TicketVoiceCallSource {...props} />
-            </Provider>,
-        )
+        return render(<TicketVoiceCallSource {...props} />)
     }
 
     it('should render the component', () => {

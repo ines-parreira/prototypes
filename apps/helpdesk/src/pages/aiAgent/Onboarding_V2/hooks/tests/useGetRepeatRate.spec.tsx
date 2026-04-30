@@ -1,15 +1,11 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrderCustomersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { mockStore } from 'utils/testing'
 
 import { useGetRepeatRate } from '../useGetRepeatRate'
-
-const store = mockStore({})
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const mockUseMetricPerDimension = assumeMock(useMetricPerDimension)
@@ -26,11 +22,7 @@ const filters: StatsFilters = {
 }
 
 const renderHookWithWrapper = (hook: typeof useGetRepeatRate) => {
-    return renderHook(() => hook(filters, 'UTC'), {
-        wrapper: ({ children }) => (
-            <Provider store={store}>{children}</Provider>
-        ),
-    })
+    return renderHook(() => hook(filters, 'UTC'))
 }
 
 describe('useGetRepeatRate', () => {

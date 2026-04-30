@@ -3,10 +3,8 @@ import type { ReactNode } from 'react'
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 
 import { ThemeProvider } from 'core/theme'
-import { mockStore } from 'utils/testing'
 
 import { ShopifyVariablesDropdown } from '../ShopifyVariablesDropdown'
 
@@ -46,11 +44,9 @@ const defaultProps = {
 
 const renderComponent = (props: Partial<typeof defaultProps> = {}) => {
     return render(
-        <Provider store={mockStore({})}>
-            <ThemeProvider>
-                <ShopifyVariablesDropdown {...defaultProps} {...props} />
-            </ThemeProvider>
-        </Provider>,
+        <ThemeProvider>
+            <ShopifyVariablesDropdown {...defaultProps} {...props} />
+        </ThemeProvider>,
     )
 }
 

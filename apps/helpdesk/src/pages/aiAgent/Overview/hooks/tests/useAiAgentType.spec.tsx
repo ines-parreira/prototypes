@@ -2,7 +2,6 @@ import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
@@ -15,7 +14,6 @@ import {
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock('models/aiAgent/queries')
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
@@ -69,11 +67,7 @@ describe('useAiAgentType', () => {
 
         const renderUseAiAgentTypeForAccount = () =>
             renderHook(() => useAiAgentTypeForAccount(), {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             })
 
         it('should return sales when all stores scope are sales', () => {

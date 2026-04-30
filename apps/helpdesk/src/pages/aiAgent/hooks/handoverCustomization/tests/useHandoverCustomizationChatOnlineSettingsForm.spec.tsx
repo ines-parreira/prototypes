@@ -1,6 +1,5 @@
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -20,8 +19,6 @@ import {
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOnlineSettingsForm.utils'
 import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
-import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import type { HandoverCustomizationChatOnlineSettingsFormValues } from '../../../types'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
@@ -73,8 +70,6 @@ jest.mock(
     }),
 )
 
-const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
-
 const defaultState = {}
 
 // Mock functions
@@ -88,13 +83,7 @@ const renderHookWithProviders = (integration: GorgiasChatIntegration) => {
     return renderHook(
         () => useHandoverCustomizationChatOnlineSettingsForm({ integration }),
         {
-            wrapper: ({ children }) => (
-                <QueryClientProvider>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            storeState: defaultState,
         },
     )
 }

@@ -1,23 +1,20 @@
 import React from 'react'
 
-import { cleanup, render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
+import { cleanup, screen } from '@testing-library/react'
 
 import { whatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
-import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplateDetailsDrawer from '../WhatsAppMessageTemplateDetailsDrawer'
 
 describe('WhatsAppMessageTemplateDetailsDrawer', () => {
     const renderComponent = () =>
         render(
-            <Provider store={mockStore({} as any)}>
-                <WhatsAppMessageTemplateDetailsDrawer
-                    template={whatsAppMessageTemplates[0]}
-                    setIsOpen={jest.fn()}
-                    isOpen
-                />
-            </Provider>,
+            <WhatsAppMessageTemplateDetailsDrawer
+                template={whatsAppMessageTemplates[0]}
+                setIsOpen={jest.fn()}
+                isOpen
+            />,
         )
 
     afterEach(cleanup)

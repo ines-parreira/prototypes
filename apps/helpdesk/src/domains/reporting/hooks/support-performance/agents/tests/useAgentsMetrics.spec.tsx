@@ -1,6 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
-import { Provider } from 'react-redux'
 
 import {
     useClosedTicketsMetricPerAgent,
@@ -26,7 +25,6 @@ import { initialState as agentPerformanceInitialState } from 'domains/reporting/
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/metricsPerAgent')
 jest.mock('domains/reporting/hooks/useMessagesSentPerHourPerAgent')
@@ -171,9 +169,7 @@ describe('useAgentsMetric', () => {
 
     it('should return agents performance metrics', () => {
         const { result } = renderHook(() => useAgentsMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current).toEqual(expectedAgentsMetrics)

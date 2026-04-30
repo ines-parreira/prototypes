@@ -2,6 +2,8 @@ import { render } from '@repo/testing'
 import { QueryClient } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {
     useCreatePostStoreInstallationStepPure,
@@ -10,10 +12,11 @@ import {
     useUpdateStepNotificationsPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import { useGetSetupTasksConfigByCategory } from 'pages/aiAgent/Overview/components/SetupTasksSection/hooks/useGetSetupTasksConfigByCategory'
-import { mockStore } from 'utils/testing'
 
 import { SetupTaskSection } from '../SetupTaskSection'
 import { mockSetupTasksConfigByCategory } from './fixtures/setupTasksConfigByCategory.fixture'
+
+const mockStore = configureMockStore([thunk])
 
 jest.mock('models/aiAgentPostStoreInstallationSteps/queries')
 jest.mock(
@@ -125,7 +128,6 @@ describe('SetupTaskSection', () => {
         })
         return render(
             <SetupTaskSection shopName="test-shop" shopType="shopify" />,
-            {},
         )
     }
     it('should render the setup checklist header', () => {

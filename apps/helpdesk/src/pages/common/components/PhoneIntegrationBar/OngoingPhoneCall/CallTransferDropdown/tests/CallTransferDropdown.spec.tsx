@@ -2,13 +2,11 @@ import type { ComponentProps } from 'react'
 import { createRef } from 'react'
 
 import { render } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, cleanup, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Call } from '@twilio/voice-sdk'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import { Provider } from 'react-redux'
 
 import { mockTransferCallHandler } from '@gorgias/helpdesk-mocks'
 import { VoiceCallTransferReceiverType } from '@gorgias/helpdesk-queries'
@@ -18,7 +16,6 @@ import { TransferType } from 'pages/common/components/PhoneIntegrationBar/Ongoin
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockIncomingCall } from 'tests/twilioMocks'
-import { mockStore } from 'utils/testing'
 
 jest.mock(
     'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/AgentCallTransferDropdownContent',
@@ -153,13 +150,6 @@ jest.mock('state/notifications/actions')
 const mockNotify = jest.mocked(notify)
 
 const server = setupServer()
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-    },
-})
-
 describe('CallTransferDropdown', () => {
     const setIsOpen = jest.fn()
     const onTransferInitiated = jest.fn()
@@ -175,14 +165,7 @@ describe('CallTransferDropdown', () => {
 
     const renderComponent = (
         props: ComponentProps<typeof CallTransferDropdown> = baseProps,
-    ) =>
-        render(
-            <Provider store={mockStore({} as any)}>
-                <QueryClientProvider client={queryClient}>
-                    <CallTransferDropdown {...props} />
-                </QueryClientProvider>
-            </Provider>,
-        )
+    ) => render(<CallTransferDropdown {...props} />)
 
     beforeAll(() => {
         server.listen({ onUnhandledRequest: 'error' })
@@ -196,7 +179,6 @@ describe('CallTransferDropdown', () => {
 
     afterEach(() => {
         server.resetHandlers()
-        queryClient.clear()
         cleanup()
     })
 

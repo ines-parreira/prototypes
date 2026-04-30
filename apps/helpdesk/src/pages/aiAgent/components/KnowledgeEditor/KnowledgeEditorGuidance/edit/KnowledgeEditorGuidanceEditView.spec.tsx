@@ -1,28 +1,23 @@
 import { render } from '@repo/testing'
-import { Provider } from 'react-redux'
-
-import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorGuidanceEditView } from './KnowledgeEditorGuidanceEditView'
 
 describe('KnowledgeEditorGuidanceEditView', () => {
     it('renders', () => {
         const { container } = render(
-            <Provider store={mockStore({})}>
-                <KnowledgeEditorGuidanceEditView
-                    content="Test Content"
-                    onChangeContent={jest.fn()}
-                    title="Test title"
-                    onChangeTitle={jest.fn()}
-                    shopName="Test shop"
-                    availableActions={[
-                        {
-                            name: 'Test action',
-                            value: 'test-action',
-                        },
-                    ]}
-                />
-            </Provider>,
+            <KnowledgeEditorGuidanceEditView
+                content="Test Content"
+                onChangeContent={jest.fn()}
+                title="Test title"
+                onChangeTitle={jest.fn()}
+                shopName="Test shop"
+                availableActions={[
+                    {
+                        name: 'Test action',
+                        value: 'test-action',
+                    },
+                ]}
+            />,
         )
 
         const editorContent = container.querySelector(

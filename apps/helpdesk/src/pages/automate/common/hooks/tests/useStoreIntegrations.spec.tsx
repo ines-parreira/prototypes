@@ -2,7 +2,6 @@ import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import {
     integrationsState,
@@ -16,7 +15,6 @@ import {
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 import useStoreIntegrations from '../useStoreIntegrations'
 
@@ -61,9 +59,7 @@ describe('useStoreIntegrations', () => {
         })
 
         const { result } = renderHook(useStoreIntegrations, {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
+            storeState: defaultState,
         })
 
         expect(result.current).toEqual([shopifyIntegration.toJS()])
@@ -76,24 +72,18 @@ describe('useStoreIntegrations', () => {
         })
 
         const { result } = renderHook(useStoreIntegrations, {
-            wrapper: ({ children }) => (
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentAccount: fromJS({
-                            current_subscription: {
-                                products: {
-                                    [AUTOMATION_PRODUCT_ID]:
-                                        basicMonthlyAutomationPlan.plan_id,
-                                },
-                                status: 'active',
-                            },
-                        }),
-                    })}
-                >
-                    {children}
-                </Provider>
-            ),
+            storeState: {
+                ...defaultState,
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                        status: 'active',
+                    },
+                }),
+            },
         })
         expect(result.current).toEqual([
             integrationsState.integrations.find(
@@ -113,11 +103,7 @@ describe('useStoreIntegrations', () => {
         const { result } = renderHook(
             () => useStoreIntegrations([IntegrationType.Shopify]),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 

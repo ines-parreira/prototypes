@@ -1,4 +1,4 @@
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 
 import { TicketStatus } from 'business/types/ticket'
@@ -6,7 +6,6 @@ import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTick
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { renderWithRouter } from 'utils/testing'
 
 import useAutoQA from '../../hooks/useAutoQA'
 import AutoQA from '../AutoQA'
@@ -57,7 +56,7 @@ describe('AutoQA', () => {
     })
 
     it('should render the component', () => {
-        const { getByText } = renderWithRouter(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(getByText('Auto QA Score')).toBeInTheDocument()
     })
 
@@ -73,7 +72,7 @@ describe('AutoQA', () => {
             saveState: 'idle',
         })
 
-        const { getByText } = renderWithRouter(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(getByText('Loading...')).toBeInTheDocument()
     })
 
@@ -86,7 +85,7 @@ describe('AutoQA', () => {
             saveState: 'idle',
         })
 
-        const { getByText } = renderWithRouter(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(
             getByText(
                 'Auto QA results will be available 12 hours after ticket closure.',
@@ -107,7 +106,7 @@ describe('AutoQA', () => {
             saveState: 'idle',
         })
 
-        const { getByText } = renderWithRouter(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(
             getByText(
                 /Only tickets that meet certain requirements are scored by Auto QA./,
@@ -127,7 +126,7 @@ describe('AutoQA', () => {
             saveState: 'idle',
         })
 
-        const { getAllByText } = renderWithRouter(<AutoQA />)
+        const { getAllByText } = render(<AutoQA />)
         const els = getAllByText('Dimension')
         expect(els.length).toBe(2)
     })
@@ -151,14 +150,14 @@ describe('AutoQA', () => {
             ),
             saveState: 'idle',
         })
-        const { getByText } = renderWithRouter(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(getByText('Last updated: Today at 9:00 PM')).toBeInTheDocument()
     })
 
     it('should render Unauthorized when SimplifyAiAgentFeedbackCollection is enabled and has no agent privileges', () => {
         useHasAgentPrivilegesMock.mockReturnValue(false)
 
-        const { getByText } = renderWithRouter(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(getByText('Unauthorized')).toBeInTheDocument()
         expect(
             getByText('You do not have permission to view ticket feedback.'),
@@ -176,7 +175,7 @@ describe('AutoQA', () => {
                 saveState: 'saved',
             })
 
-            const { getByTestId } = renderWithRouter(<AutoQA />)
+            const { getByTestId } = render(<AutoQA />)
             expect(getByTestId('auto-save-badge').textContent).toBe(
                 AutoSaveState.SAVED.toString(),
             )
@@ -192,7 +191,7 @@ describe('AutoQA', () => {
                 saveState: 'saved',
             })
 
-            const { rerender, getByTestId } = renderWithRouter(<AutoQA />)
+            const { rerender, getByTestId } = render(<AutoQA />)
 
             // Verify initial state is SAVED
             expect(getByTestId('auto-save-badge').textContent).toBe(
@@ -225,7 +224,7 @@ describe('AutoQA', () => {
                 saveState: 'saving',
             })
 
-            const { getByTestId } = renderWithRouter(<AutoQA />)
+            const { getByTestId } = render(<AutoQA />)
             expect(getByTestId('auto-save-badge').textContent).toBe(
                 AutoSaveState.SAVING.toString(),
             )
@@ -241,7 +240,7 @@ describe('AutoQA', () => {
                 saveState: 'idle',
             })
 
-            const { getByTestId } = renderWithRouter(<AutoQA />)
+            const { getByTestId } = render(<AutoQA />)
             expect(getByTestId('auto-save-badge').textContent).toBe(
                 AutoSaveState.INITIAL.toString(),
             )
@@ -252,7 +251,7 @@ describe('AutoQA', () => {
         it('should render star icon when UIVisionMilestone1 is enabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
-            const { container } = renderWithRouter(<AutoQA />)
+            const { container } = render(<AutoQA />)
             const titleWrapper = container.querySelector(
                 '[class*="titleWrapper"]',
             )
@@ -265,7 +264,7 @@ describe('AutoQA', () => {
         it('should not render star icon when UIVisionMilestone1 is disabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
-            const { container } = renderWithRouter(<AutoQA />)
+            const { container } = render(<AutoQA />)
             const titleWrapper = container.querySelector(
                 '[class*="titleWrapper"]',
             )
@@ -278,7 +277,7 @@ describe('AutoQA', () => {
         it('should apply hasUIVisionMS1 class to container when UIVisionMilestone1 is enabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
-            const { container } = renderWithRouter(<AutoQA />)
+            const { container } = render(<AutoQA />)
             const containerDiv = container.querySelector(
                 '[class*="hasUIVisionMS1"]',
             )
@@ -289,7 +288,7 @@ describe('AutoQA', () => {
         it('should not apply hasUIVisionMS1 class to container when UIVisionMilestone1 is disabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
-            const { container } = renderWithRouter(<AutoQA />)
+            const { container } = render(<AutoQA />)
             const containerDiv = container.querySelector(
                 '[class*="hasUIVisionMS1"]',
             )

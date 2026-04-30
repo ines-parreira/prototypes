@@ -1,8 +1,6 @@
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import {
     useRecentTicketsWithDrilldown,
@@ -10,8 +8,6 @@ import {
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import * as helpCenterQueries from 'models/helpCenter/queries'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorSnippetLoader } from './KnowledgeEditorSnippetLoader'
 
@@ -52,21 +48,6 @@ jest.mock(
 const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
 const mockedUseRecentTicketsWithDrilldown = jest.mocked(
     useRecentTicketsWithDrilldown,
-)
-
-const queryClient = mockQueryClient()
-const store = mockStore({
-    currentUser: fromJS({
-        timezone: 'America/New_York',
-    }),
-})
-
-const wrapper = ({ children }: { children?: React.ReactNode }) => (
-    <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    </Provider>
 )
 
 describe('KnowledgeEditorSnippetLoader', () => {
@@ -143,7 +124,6 @@ describe('KnowledgeEditorSnippetLoader', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        queryClient.clear()
         mockNotifyError.mockClear()
 
         mockedFetchResourceMetrics.mockReturnValue({
@@ -244,7 +224,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -258,7 +244,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -322,7 +314,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.Document}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -336,7 +334,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.Document}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -401,7 +405,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.Store}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -415,7 +425,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.Store}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -462,7 +478,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.Store}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -498,7 +520,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.Store}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -541,7 +569,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.Store}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -612,7 +646,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -636,7 +676,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             // Check for skeleton loading elements
@@ -670,7 +716,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             // Check for skeleton loading elements
@@ -730,7 +782,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -762,7 +820,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -818,7 +882,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     snippetType={SnippetType.URL}
                     onClose={onClose}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -863,7 +933,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     snippetType={SnippetType.URL}
                     onClose={onClose}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -899,7 +975,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     snippetType={SnippetType.URL}
                     onClose={onClose}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             await waitFor(() => {
@@ -956,7 +1038,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             expect(mockNotifyError).not.toHaveBeenCalled()
@@ -1008,7 +1096,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     {...baseProps}
                     snippetType={SnippetType.URL}
                 />,
-                { wrapper },
+                {
+                    storeState: {
+                        currentUser: fromJS({
+                            timezone: 'America/New_York',
+                        }),
+                    },
+                },
             )
 
             expect(mockNotifyError).not.toHaveBeenCalled()

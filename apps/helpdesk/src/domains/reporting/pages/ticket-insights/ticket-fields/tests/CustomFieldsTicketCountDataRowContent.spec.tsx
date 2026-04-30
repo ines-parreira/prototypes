@@ -1,11 +1,11 @@
 import {
     assumeMock,
     mockRequestAnimationFrame,
+    render,
     triggerWidthResize,
 } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { forEach } from 'lodash'
-import { Provider } from 'react-redux'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -26,7 +26,6 @@ import {
     getValueMode,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
-import { mockStore } from 'utils/testing'
 
 const rafControl = mockRequestAnimationFrame()
 
@@ -122,11 +121,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             totalsDecile: 3,
         }
 
-        render(
-            <Provider store={mockStore({} as any)}>
-                <CustomFieldsTicketCountDataRowContent {...props} />
-            </Provider>,
-        )
+        render(<CustomFieldsTicketCountDataRowContent {...props} />)
 
         expect(screen.getByText(valueWithSeparator)).toBeInTheDocument()
         expect(screen.getByText('3,456')).toBeInTheDocument()
@@ -159,11 +154,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             totalsDecile: 3,
         }
 
-        render(
-            <Provider store={mockStore({} as any)}>
-                <CustomFieldsTicketCountDataRowContent {...props} />
-            </Provider>,
-        )
+        render(<CustomFieldsTicketCountDataRowContent {...props} />)
 
         expect(screen.getByText(formattedTotalValue)).toBeInTheDocument()
         expect(screen.getByText(formattedPercent)).toBeInTheDocument()
@@ -196,11 +187,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             totalsDecile: 3,
         }
 
-        render(
-            <Provider store={mockStore({} as any)}>
-                <CustomFieldsTicketCountDataRowContent {...props} />
-            </Provider>,
-        )
+        render(<CustomFieldsTicketCountDataRowContent {...props} />)
 
         expect(
             screen.getByText(lessThenHalfValueAsRefinedPercentage),
@@ -238,11 +225,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
                 totalsDecile: 3,
             }
 
-            render(
-                <Provider store={mockStore({} as any)}>
-                    <CustomFieldsTicketCountDataRowContent {...props} />
-                </Provider>,
-            )
+            render(<CustomFieldsTicketCountDataRowContent {...props} />)
 
             expect(
                 screen.getByText(NOT_AVAILABLE_PLACEHOLDER),
@@ -276,11 +259,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         getValueModeMock.mockReturnValue(ValueMode.Percentage)
         getHeatmapModeMock.mockReturnValue(true)
 
-        render(
-            <Provider store={mockStore({} as any)}>
-                <CustomFieldsTicketCountDataRowContent {...props} />
-            </Provider>,
-        )
+        render(<CustomFieldsTicketCountDataRowContent {...props} />)
 
         forEach(screen.getAllByRole('cell'), (cell, index) => {
             if (index > 0) {
@@ -316,11 +295,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         getValueModeMock.mockReturnValue(ValueMode.Percentage)
         getHeatmapModeMock.mockReturnValue(true)
 
-        render(
-            <Provider store={mockStore({} as any)}>
-                <CustomFieldsTicketCountDataRowContent {...props} />
-            </Provider>,
-        )
+        render(<CustomFieldsTicketCountDataRowContent {...props} />)
 
         forEach(screen.getAllByRole('cell'), (cell, index) => {
             if (index > 0) {
@@ -350,11 +325,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         'should check the mobile view marginLeft styles for label with different levels of depth',
         async ({ props, expectedResult }) => {
             getValueModeMock.mockReturnValue(ValueMode.Percentage)
-            render(
-                <Provider store={mockStore({} as any)}>
-                    <CustomFieldsTicketCountDataRowContent {...props} />
-                </Provider>,
-            )
+            render(<CustomFieldsTicketCountDataRowContent {...props} />)
             triggerWidthResize(500)
             rafControl.run()
             const label = screen.getByText('someTag')
@@ -381,11 +352,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         'should check the desktop view marginLeft styles for label with different levels of depth',
         ({ props, expectedResult }) => {
             getValueModeMock.mockReturnValue(ValueMode.Percentage)
-            render(
-                <Provider store={mockStore({} as any)}>
-                    <CustomFieldsTicketCountDataRowContent {...props} />
-                </Provider>,
-            )
+            render(<CustomFieldsTicketCountDataRowContent {...props} />)
             const label = screen.getByText('someTag')
             expect(label).toHaveStyle({ marginLeft: expectedResult })
         },

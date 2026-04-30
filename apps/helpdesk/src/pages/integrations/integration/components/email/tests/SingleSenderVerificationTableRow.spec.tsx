@@ -1,19 +1,12 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { migrationOutboundVerificationUnverifiedSingleSender } from 'fixtures/emailMigration'
 import type { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import { VerificationStatus } from 'models/singleSenderVerification/types'
-import { mockStore } from 'utils/testing'
 
 import SingleSenderVerificationTableRow from '../EmailMigration/SingleSenderVerificationTableRow'
 
@@ -78,14 +71,12 @@ describe('SingleSenderVerificationTableRow', () => {
         props: Partial<ComponentProps<typeof SingleSenderVerificationTableRow>>,
     ) =>
         render(
-            <Provider store={mockStore({} as any)}>
-                <SingleSenderVerificationTableRow
-                    refreshMigrationData={refreshMigrationData}
-                    hasSubmittedBulkVerification={false}
-                    integration={unverifiedIntegration}
-                    {...props}
-                />
-            </Provider>,
+            <SingleSenderVerificationTableRow
+                refreshMigrationData={refreshMigrationData}
+                hasSubmittedBulkVerification={false}
+                integration={unverifiedIntegration}
+                {...props}
+            />,
         )
 
     afterEach(() => {

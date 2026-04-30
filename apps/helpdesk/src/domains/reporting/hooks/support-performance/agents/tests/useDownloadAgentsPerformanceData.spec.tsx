@@ -1,6 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { useTableReportData } from 'domains/reporting/hooks/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
@@ -23,7 +22,6 @@ import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/common/useTableReportData')
 const useTableReportDataMock = assumeMock(useTableReportData)
@@ -172,9 +170,7 @@ describe('useDownloadAgentsPerformanceData', () => {
         const { result } = renderHook(
             () => useDownloadAgentsPerformanceData(),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(state)}>{children}</Provider>
-                ),
+                storeState: state,
             },
         )
 
@@ -209,9 +205,7 @@ describe('useDownloadAgentsPerformanceData', () => {
         const { result } = renderHook(
             () => useDownloadAgentsPerformanceData(),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(state)}>{children}</Provider>
-                ),
+                storeState: state,
             },
         )
 

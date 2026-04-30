@@ -4,11 +4,9 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { cleanup, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { TicketChannel } from 'business/types/ticket'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
-import { mockStore } from 'utils/testing'
 
 import TemplateTypeFilterDropdown from '../TemplateTypeFilterDropdown'
 import { TemplateTypeFilterOption } from '../types'
@@ -26,20 +24,16 @@ describe('TemplateTypeFilterDropdown', () => {
         channel: TicketChannel,
         isPublic: boolean,
     ) =>
-        render(
-            <Provider
-                store={mockStore({
-                    newMessage: fromJS({
-                        newMessage: {
-                            channel,
-                            public: isPublic,
-                        },
-                    }),
-                } as any)}
-            >
-                <TemplateTypeFilterDropdown {...props} />
-            </Provider>,
-        )
+        render(<TemplateTypeFilterDropdown {...props} />, {
+            storeState: {
+                newMessage: fromJS({
+                    newMessage: {
+                        channel,
+                        public: isPublic,
+                    },
+                }),
+            } as any,
+        })
 
     beforeEach(() => {
         useWhatsAppEditorSpy.mockReturnValue({

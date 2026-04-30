@@ -1,14 +1,10 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
-import { mockStore } from 'utils/testing'
 
 import { SignatureFormComponent } from '../FormComponents/SignatureFormComponent'
-
-const store = mockStore({})
 
 describe('SignatureFormComponent', () => {
     const mockUpdateValue = jest.fn()
@@ -26,9 +22,7 @@ describe('SignatureFormComponent', () => {
 
     const renderComponent = (overrides = {}) => {
         return render(
-            <Provider store={store}>
-                <SignatureFormComponent {...defaultProps} {...overrides} />
-            </Provider>,
+            <SignatureFormComponent {...defaultProps} {...overrides} />,
         )
     }
 

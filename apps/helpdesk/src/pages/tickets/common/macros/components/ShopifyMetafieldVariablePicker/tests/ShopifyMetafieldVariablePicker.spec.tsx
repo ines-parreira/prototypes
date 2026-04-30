@@ -1,7 +1,6 @@
 import { render } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 
 import { ThemeProvider } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,7 +9,6 @@ import { useMetafieldDefinitions } from 'pages/settings/storeManagement/storeDet
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
-import { mockStore } from 'utils/testing'
 
 import { ShopifyMetafieldVariablePicker } from '../ShopifyMetafieldVariablePicker'
 
@@ -63,11 +61,9 @@ const defaultProps = {
 
 const renderComponent = (props: Partial<typeof defaultProps> = {}) => {
     return render(
-        <Provider store={mockStore({})}>
-            <ThemeProvider>
-                <ShopifyMetafieldVariablePicker {...defaultProps} {...props} />
-            </ThemeProvider>
-        </Provider>,
+        <ThemeProvider>
+            <ShopifyMetafieldVariablePicker {...defaultProps} {...props} />
+        </ThemeProvider>,
     )
 }
 

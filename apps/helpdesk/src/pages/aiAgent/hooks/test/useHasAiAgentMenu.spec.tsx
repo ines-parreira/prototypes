@@ -2,7 +2,6 @@ import React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -11,7 +10,6 @@ import type { IntegrationBase } from 'models/integration/types/base'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 const renderUseHasAiAgentMenu = (
     integrations: IntegrationBase[] = [],
@@ -26,9 +24,7 @@ const renderUseHasAiAgentMenu = (
     } as RootState
 
     return renderHook(() => useHasAiAgentMenu(), {
-        wrapper: ({ children }) => (
-            <Provider store={mockStore(defaultState)}>{children}</Provider>
-        ),
+        storeState: defaultState,
     })
 }
 

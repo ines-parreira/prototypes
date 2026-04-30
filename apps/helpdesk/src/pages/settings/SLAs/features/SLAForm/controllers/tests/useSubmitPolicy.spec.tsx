@@ -1,9 +1,8 @@
-import type React from 'react'
+import type { PropsWithChildren } from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -13,7 +12,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import type { SLAFormValues } from '../useFormValues'
 import useSubmitPolicy from '../useSubmitPolicy'
@@ -42,11 +40,8 @@ assumeMock(useUpdateSlaPolicy).mockReturnValue({
 } as any)
 
 const queryClient = mockQueryClient()
-
-const wrapper = ({ children }: { children?: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-        <Provider store={mockStore({} as any)}>{children}</Provider>
-    </QueryClientProvider>
+const wrapper = ({ children }: PropsWithChildren) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
 describe('useSubmitPolicy()', () => {
@@ -66,7 +61,7 @@ describe('useSubmitPolicy()', () => {
             conditions: [],
         } as unknown as SLAFormValues
 
-        result.current.save(data)
+        await result.current.save(data)
 
         expect(createMock).toHaveBeenCalledWith({
             data: {
@@ -95,7 +90,7 @@ describe('useSubmitPolicy()', () => {
             conditions: [],
         } as unknown as SLAFormValues
 
-        result.current.save(data)
+        await result.current.save(data)
 
         expect(updateMock).toHaveBeenCalledWith({
             id: '1',

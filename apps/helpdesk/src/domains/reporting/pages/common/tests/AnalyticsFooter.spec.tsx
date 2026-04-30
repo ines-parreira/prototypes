@@ -1,6 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import {
     AnalyticsFooter,
@@ -11,7 +10,6 @@ import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/comp
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
-import { mockStore } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors')
 jest.mock('state/currentAccount/selectors')
@@ -23,11 +21,7 @@ describe('<AnalyticsFooter />', () => {
         const timeZone = 'SomeTimezone'
         getTimezoneMock.mockReturnValue(timeZone)
 
-        render(
-            <Provider store={mockStore({} as any)}>
-                <AnalyticsFooter />
-            </Provider>,
-        )
+        render(<AnalyticsFooter />)
 
         expect(screen.getByText(new RegExp(timeZone))).toBeInTheDocument()
         expect(
@@ -38,11 +32,7 @@ describe('<AnalyticsFooter />', () => {
     it('should render default Timezone if User`s Timezone is not available', () => {
         getTimezoneMock.mockReturnValue(null)
 
-        render(
-            <Provider store={mockStore({} as any)}>
-                <AnalyticsFooter />
-            </Provider>,
-        )
+        render(<AnalyticsFooter />)
 
         expect(
             screen.getByText(new RegExp(DEFAULT_TIMEZONE)),
@@ -56,11 +46,7 @@ describe('<AnalyticsFooter />', () => {
             data: { timezone: businessHoursTimezone },
         } as AccountSettingBusinessHours)
 
-        render(
-            <Provider store={mockStore({} as any)}>
-                <AnalyticsFooter useBusinessHoursTimezone />
-            </Provider>,
-        )
+        render(<AnalyticsFooter useBusinessHoursTimezone />)
 
         expect(
             screen.getByText(new RegExp(businessHoursTimezone)),

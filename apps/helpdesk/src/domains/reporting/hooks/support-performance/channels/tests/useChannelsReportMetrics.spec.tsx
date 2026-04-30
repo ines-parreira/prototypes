@@ -1,6 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
-import { Provider } from 'react-redux'
 
 import {
     fetchTableReportData,
@@ -22,7 +21,6 @@ import { saveReport } from 'domains/reporting/services/channelsReportingService'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { channels } from 'fixtures/channels'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useSortedChannels')
 
@@ -113,9 +111,7 @@ describe('useChannelsReportMetrics', () => {
 
     it('should return channels metrics', () => {
         const { result } = renderHook(() => useChannelsReportMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}> {children} </Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current).toEqual(expectedMetrics)
@@ -123,9 +119,7 @@ describe('useChannelsReportMetrics', () => {
 
     it('should return channels metrics with MedianResponseTime', () => {
         const { result } = renderHook(() => useChannelsReportMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}> {children} </Provider>
-            ),
+            storeState: state,
         })
 
         expect(result.current.reportData).toEqual(
@@ -137,9 +131,7 @@ describe('useChannelsReportMetrics', () => {
 
     it('should call one of hooks with stats filters with default logical operator', () => {
         renderHook(() => useChannelsReportMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}> {children} </Provider>
-            ),
+            storeState: state,
         })
 
         expect(useTableReportDataMock).toHaveBeenCalledWith(

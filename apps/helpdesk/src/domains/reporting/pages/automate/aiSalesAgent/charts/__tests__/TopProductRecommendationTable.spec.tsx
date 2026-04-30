@@ -1,7 +1,6 @@
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import moment from 'moment/moment'
-import { Provider } from 'react-redux'
 
 import TopProductRecommendationTable from 'domains/reporting/pages/automate/aiSalesAgent/charts/TopProductRecommendationTable'
 import { WarningBannerProvider } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
@@ -9,7 +8,6 @@ import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/
 import { useProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations',
@@ -57,11 +55,10 @@ describe('<TopProductRecommendationTable />', () => {
 
     it('renders', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
-                <WarningBannerProvider isBannerVisible={false}>
-                    <TopProductRecommendationTable />
-                </WarningBannerProvider>
-            </Provider>,
+            <WarningBannerProvider isBannerVisible={false}>
+                <TopProductRecommendationTable />
+            </WarningBannerProvider>,
+            { storeState: defaultState },
         )
 
         expect(screen.getByText('Top products recommended')).toBeInTheDocument()
@@ -73,11 +70,10 @@ describe('<TopProductRecommendationTable />', () => {
 
     it('does not render data if banner is visible', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
-                <WarningBannerProvider isBannerVisible>
-                    <TopProductRecommendationTable />
-                </WarningBannerProvider>
-            </Provider>,
+            <WarningBannerProvider isBannerVisible>
+                <TopProductRecommendationTable />
+            </WarningBannerProvider>,
+            { storeState: defaultState },
         )
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
@@ -85,11 +81,10 @@ describe('<TopProductRecommendationTable />', () => {
 
     it('navigates pages correctly', async () => {
         render(
-            <Provider store={mockStore(defaultState)}>
-                <WarningBannerProvider isBannerVisible={false}>
-                    <TopProductRecommendationTable />
-                </WarningBannerProvider>
-            </Provider>,
+            <WarningBannerProvider isBannerVisible={false}>
+                <TopProductRecommendationTable />
+            </WarningBannerProvider>,
+            { storeState: defaultState },
         )
 
         // Check initial state
@@ -115,11 +110,10 @@ describe('<TopProductRecommendationTable />', () => {
 
     it('sorts columns correctly', async () => {
         render(
-            <Provider store={mockStore(defaultState)}>
-                <WarningBannerProvider isBannerVisible={false}>
-                    <TopProductRecommendationTable />
-                </WarningBannerProvider>
-            </Provider>,
+            <WarningBannerProvider isBannerVisible={false}>
+                <TopProductRecommendationTable />
+            </WarningBannerProvider>,
+            { storeState: defaultState },
         )
 
         // Check initial state

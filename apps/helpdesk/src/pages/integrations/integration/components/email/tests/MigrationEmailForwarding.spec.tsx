@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen } from '@testing-library/react'
 
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
-import { mockStore } from 'utils/testing'
 
 import MigrationEmailForwarding from '../EmailMigration/MigrationEmailForwarding'
 
@@ -17,12 +16,10 @@ describe('MigrationEmailForwarding', () => {
 
     const renderComponent = (migrations: any) =>
         render(
-            <Provider store={mockStore({} as any)}>
-                <MigrationEmailForwarding
-                    migrations={migrations}
-                    onNextClick={onNextClick}
-                />
-            </Provider>,
+            <MigrationEmailForwarding
+                migrations={migrations}
+                onNextClick={onNextClick}
+            />,
         )
 
     afterEach(cleanup)

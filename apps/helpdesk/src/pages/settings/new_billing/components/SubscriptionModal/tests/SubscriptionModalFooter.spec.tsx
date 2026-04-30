@@ -2,11 +2,9 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { UserRole } from 'config/types/user'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
-import { mockStore } from 'utils/testing'
 
 describe('SubscriptionModalFooter', () => {
     const confirmLabel = 'Confirm'
@@ -27,11 +25,9 @@ describe('SubscriptionModalFooter', () => {
             }),
         }
 
-        return render(
-            <Provider store={mockStore(storeState as any)}>
-                <SubscriptionModalFooter {...props} />
-            </Provider>,
-        )
+        return render(<SubscriptionModalFooter {...props} />, {
+            storeState: storeState as any,
+        })
     }
 
     it('should render clickable button for admin', () => {

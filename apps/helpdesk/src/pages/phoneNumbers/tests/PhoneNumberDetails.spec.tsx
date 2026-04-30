@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,7 +9,6 @@ import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { IntegrationType } from 'models/integration/types'
 import type { PhoneNumber } from 'models/phoneNumber/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import { PhoneNumberDetails } from '../PhoneNumberDetails'
 
@@ -22,12 +22,12 @@ const mockUseFlag = useFlag as jest.Mock
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
-        newPhoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({ ...acc, [number.id]: number }),
-            {},
-        ),
+        newPhoneNumbers: phoneNumbers.reduce((acc, number) => ({
+            ...acc,
+            [number.id]: number,
+        })),
     },
-} as RootState)
+} as unknown as RootState)
 
 describe('<PhoneNumberDetails/>', () => {
     beforeEach(() => {
@@ -36,7 +36,7 @@ describe('<PhoneNumberDetails/>', () => {
 
     describe('render()', () => {
         it('should render with a local US number', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
                 </Provider>,
@@ -45,7 +45,7 @@ describe('<PhoneNumberDetails/>', () => {
         })
 
         it('should render with a toll-free CA number', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[1]} />
                 </Provider>,
@@ -54,7 +54,7 @@ describe('<PhoneNumberDetails/>', () => {
         })
 
         it('should render with a mobile GB number', () => {
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[2]} />
                 </Provider>,
@@ -65,14 +65,14 @@ describe('<PhoneNumberDetails/>', () => {
         it('should render the link to an SMS integration', () => {
             const store = mockStore({
                 entities: {
-                    phoneNumbers: phoneNumbers.reduce(
-                        (acc, number) => ({ ...acc, [number.id]: number }),
-                        {},
-                    ),
+                    phoneNumbers: phoneNumbers.reduce((acc, number) => ({
+                        ...acc,
+                        [number.id]: number,
+                    })),
                 },
-            } as RootState)
+            } as unknown as RootState)
 
-            const { container, queryByText } = renderWithRouter(
+            const { container, queryByText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[1]} />
                 </Provider>,
@@ -103,7 +103,7 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const { container, queryAllByText } = renderWithRouter(
+            const { container, queryAllByText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>,
@@ -127,7 +127,7 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const { container, queryAllByText } = renderWithRouter(
+            const { container, queryAllByText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>,
@@ -151,7 +151,7 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const { container, queryAllByText } = renderWithRouter(
+            const { container, queryAllByText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>,
@@ -169,7 +169,7 @@ describe('<PhoneNumberDetails/>', () => {
         it('should not render Use case field when feature flag is disabled', () => {
             mockUseFlag.mockReturnValue(false)
 
-            const { queryByLabelText } = renderWithRouter(
+            const { queryByLabelText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
                 </Provider>,
@@ -181,7 +181,7 @@ describe('<PhoneNumberDetails/>', () => {
         it('should render Use case field when feature flag is enabled', () => {
             mockUseFlag.mockReturnValue(true)
 
-            const { getByLabelText } = renderWithRouter(
+            const { getByLabelText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
                 </Provider>,
@@ -197,7 +197,7 @@ describe('<PhoneNumberDetails/>', () => {
             mockUseFlag.mockReturnValue(true)
             const phoneNumber = { ...phoneNumbers[0], usecase: undefined }
 
-            const { getByLabelText } = renderWithRouter(
+            const { getByLabelText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>,
@@ -213,7 +213,7 @@ describe('<PhoneNumberDetails/>', () => {
                 usecase: PhoneUseCase.Marketing,
             }
 
-            const { getByLabelText } = renderWithRouter(
+            const { getByLabelText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>,

@@ -1,12 +1,9 @@
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
-import type { MemoryHistory } from 'history'
-import { createMemoryHistory } from 'history'
-import { Provider } from 'react-redux'
-import { Route, Router } from 'react-router-dom'
+import { waitFor } from '@testing-library/react'
+import { useLocation } from 'react-router-dom'
 
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
-import { mockStore } from 'utils/testing'
 
 import useSplitTicketViewSwitcher from '../useSplitTicketViewSwitcher'
 
@@ -16,22 +13,18 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = assumeMock(useFlag)
 
-function renderSwitcherHook(route: string, path: string = '/'): MemoryHistory {
-    const history = createMemoryHistory({ initialEntries: [route] })
-    const store = mockStore({})
-    const wrapper = ({ children }: any) => (
-        <Provider store={store}>
-            <Router history={history}>
-                <Route path={path}>
-                    <SplitTicketViewProvider>
-                        {children}
-                    </SplitTicketViewProvider>
-                </Route>
-            </Router>
-        </Provider>
-    )
-    renderHook(() => useSplitTicketViewSwitcher(), { wrapper })
-    return history
+function useSwitcherLocation() {
+    useSplitTicketViewSwitcher()
+    return useLocation()
+}
+
+function renderSwitcherHook(route: string) {
+    return renderHook(() => useSwitcherLocation(), {
+        initialEntries: [route],
+        wrapper: ({ children }: any) => (
+            <SplitTicketViewProvider>{children}</SplitTicketViewProvider>
+        ),
+    })
 }
 
 describe('useSplitTicketViewSwitcher', () => {
@@ -45,8 +38,8 @@ describe('useSplitTicketViewSwitcher', () => {
 
     it('should do nothing is the deprecated ticket routes flag is active', () => {
         useFlagMock.mockReturnValue(true)
-        const history = renderSwitcherHook('/app')
-        expect(history.location.pathname).toBe('/app')
+        const { result } = renderSwitcherHook('/app')
+        expect(result.current.pathname).toBe('/app')
     })
 
     describe('Split view enabled', () => {
@@ -54,32 +47,35 @@ describe('useSplitTicketViewSwitcher', () => {
             localStorage.setItem('split-ticket-view-enabled', 'true')
         })
 
-        it('should redirect from /app to /app/views', () => {
-            const history = renderSwitcherHook('/app')
+        it('should redirect from /app to /app/views', async () => {
+            const { result } = renderSwitcherHook('/app')
 
-            expect(history.location.pathname).toBe('/app/views')
+            await waitFor(() => {
+                expect(result.current.pathname).toBe('/app/views')
+            })
         })
 
-        it('should keep query parameters', () => {
-            const history = renderSwitcherHook('/app?query=value')
+        it('should keep query parameters', async () => {
+            const { result } = renderSwitcherHook('/app?query=value')
 
-            expect(history.location.pathname).toBe('/app/views')
-            expect(history.location.search).toBe('?query=value')
+            await waitFor(() => {
+                expect(result.current.pathname).toBe('/app/views')
+                expect(result.current.search).toBe('?query=value')
+            })
         })
 
-        it('should redirect from /app/tickets/VIEW_ID to /app/views/VIEW_ID', () => {
-            const history = renderSwitcherHook(
-                '/app/tickets/123',
-                '/app/tickets/:viewId/:ticketId?',
-            )
+        it('should redirect from /app/tickets/VIEW_ID to /app/views/VIEW_ID', async () => {
+            const { result } = renderSwitcherHook('/app/tickets/123')
 
-            expect(history.location.pathname).toBe('/app/views/123')
+            await waitFor(() => {
+                expect(result.current.pathname).toBe('/app/views/123')
+            })
         })
 
         it('should not redirect from /app/ticket/TICKET_ID/print', () => {
-            const history = renderSwitcherHook('/app/ticket/123/print')
+            const { result } = renderSwitcherHook('/app/ticket/123/print')
 
-            expect(history.location.pathname).toBe('/app/ticket/123/print')
+            expect(result.current.pathname).toBe('/app/ticket/123/print')
         })
     })
 
@@ -88,41 +84,43 @@ describe('useSplitTicketViewSwitcher', () => {
             localStorage.setItem('split-ticket-view-enabled', 'false')
         })
 
-        it('should redirect from /app/views to /app', () => {
-            const history = renderSwitcherHook('/app/views')
+        it('should redirect from /app/views to /app', async () => {
+            const { result } = renderSwitcherHook('/app/views')
 
-            expect(history.location.pathname).toBe('/app')
+            await waitFor(() => {
+                expect(result.current.pathname).toBe('/app')
+            })
         })
 
-        it('should keep query parameters', () => {
-            const history = renderSwitcherHook('/app/views?query=value')
+        it('should keep query parameters', async () => {
+            const { result } = renderSwitcherHook('/app/views?query=value')
 
-            expect(history.location.pathname).toBe('/app')
-            expect(history.location.search).toBe('?query=value')
+            await waitFor(() => {
+                expect(result.current.pathname).toBe('/app')
+                expect(result.current.search).toBe('?query=value')
+            })
         })
 
-        it('should redirect from /app/views/VIEW_ID to /app/tickets/VIEW_ID', () => {
-            const history = renderSwitcherHook(
-                '/app/views/123',
-                '/app/views/:viewId/:ticketId?',
-            )
+        it('should redirect from /app/views/VIEW_ID to /app/tickets/VIEW_ID', async () => {
+            const { result } = renderSwitcherHook('/app/views/123')
 
-            expect(history.location.pathname).toBe('/app/tickets/123')
+            await waitFor(() => {
+                expect(result.current.pathname).toBe('/app/tickets/123')
+            })
         })
 
-        it('should redirect from /app/views/VIEW_ID/TICKET_ID to /app/ticket/TICKET_ID', () => {
-            const history = renderSwitcherHook(
-                '/app/views/123/456',
-                '/app/views/:viewId/:ticketId?',
-            )
+        it('should redirect from /app/views/VIEW_ID/TICKET_ID to /app/ticket/TICKET_ID', async () => {
+            const { result } = renderSwitcherHook('/app/views/123/456')
 
-            expect(history.location.pathname).toBe('/app/ticket/456')
+            await waitFor(() => {
+                expect(result.current.pathname).toBe('/app/ticket/456')
+            })
         })
 
         it('should not redirect from /app/ticket/TICKET_ID/print', () => {
-            const history = renderSwitcherHook('/app/ticket/123/print')
+            const { result } = renderSwitcherHook('/app/ticket/123/print')
 
-            expect(history.location.pathname).toBe('/app/ticket/123/print')
+            expect(result.current.pathname).toBe('/app/ticket/123/print')
         })
     })
 })

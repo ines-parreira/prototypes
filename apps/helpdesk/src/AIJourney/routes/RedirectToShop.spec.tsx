@@ -1,14 +1,10 @@
 import type { ReactNode } from 'react'
 
-import { appQueryClient } from '@repo/api-resources'
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import { StaticRouter, useHistory } from 'react-router-dom'
 
 import { ThemeProvider } from 'core/theme'
-import { mockStore } from 'utils/testing'
 
 import { RedirectToShop } from './RedirectToShop'
 
@@ -24,23 +20,10 @@ const mockReplace = jest.fn()
 type ShopifyIntegrationStub = { name: string }
 
 const makeWrapper =
-    (integrations: ShopifyIntegrationStub[] = []) =>
+    () =>
     ({ children }: { children?: ReactNode }) => (
         <StaticRouter location="/app/ai-journey">
-            <QueryClientProvider client={appQueryClient}>
-                <Provider
-                    store={mockStore({
-                        integrations: fromJS({
-                            integrations: integrations.map((s) => ({
-                                type: 'shopify',
-                                name: s.name,
-                            })),
-                        }),
-                    })}
-                >
-                    <ThemeProvider>{children}</ThemeProvider>
-                </Provider>
-            </QueryClientProvider>
+            <ThemeProvider>{children}</ThemeProvider>
         </StaticRouter>
     )
 
@@ -49,7 +32,15 @@ const renderComponent = (
     integrations: ShopifyIntegrationStub[] = [],
 ) =>
     render(<RedirectToShop basePath={basePath} />, {
-        wrapper: makeWrapper(integrations),
+        storeState: {
+            integrations: fromJS({
+                integrations: integrations.map((store) => ({
+                    type: 'shopify',
+                    name: store.name,
+                })),
+            }),
+        },
+        wrapper: makeWrapper(),
     })
 
 describe('<RedirectToShop />', () => {

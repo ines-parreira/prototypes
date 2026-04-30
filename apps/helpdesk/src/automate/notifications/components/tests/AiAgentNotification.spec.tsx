@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import type { AiAgentNotificationPayload } from 'automate/notifications/types'
@@ -8,7 +8,6 @@ import { getNotificationReceivedDatetimePayload } from 'automate/notifications/u
 import type { Notification } from 'common/notifications'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import { renderWithRouter } from 'utils/testing'
 
 import AiAgentNotification from '../AiAgentNotification'
 
@@ -148,7 +147,7 @@ describe('AiAgentNotification', () => {
                 payload,
             }
 
-            const { getByText, container } = renderWithRouter(
+            const { getByText, container } = render(
                 <AiAgentNotification notification={notification} />,
             )
 
@@ -181,7 +180,7 @@ describe('AiAgentNotification', () => {
                 } as unknown as AiAgentNotificationPayload,
             }
 
-        const { container } = renderWithRouter(
+        const { container } = render(
             <AiAgentNotification notification={unsupportedNotification} />,
         )
 
@@ -200,9 +199,7 @@ describe('AiAgentNotification', () => {
                 payload,
             }
 
-            renderWithRouter(
-                <AiAgentNotification notification={notification} />,
-            )
+            render(<AiAgentNotification notification={notification} />)
 
             expect(
                 defaultUseAiAgentOnboardingNotification.handleOnSave,
@@ -235,7 +232,7 @@ describe('AiAgentNotification', () => {
             },
         }
 
-        renderWithRouter(<AiAgentNotification notification={notification} />)
+        render(<AiAgentNotification notification={notification} />)
 
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSave,
@@ -256,7 +253,7 @@ describe('AiAgentNotification', () => {
                 payload,
             }
 
-            const { container } = renderWithRouter(
+            const { container } = render(
                 <AiAgentNotification notification={notification} />,
             )
 
@@ -291,7 +288,7 @@ describe('AiAgentNotification', () => {
             },
         }
 
-        const { container } = renderWithRouter(
+        const { container } = render(
             <AiAgentNotification
                 notification={notification}
                 onClick={mockOnClick}
@@ -322,7 +319,7 @@ describe('AiAgentNotification', () => {
             },
         }
 
-        const { container } = renderWithRouter(
+        const { container } = render(
             <AiAgentNotification notification={notification} />,
         )
 

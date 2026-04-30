@@ -1,13 +1,9 @@
-import { assumeMock } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import usePhoneNumbers from 'pages/integrations/integration/components/phone/usePhoneNumbers'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { useInfiniteListVoiceIntegrations } from '../hooks/useInfiniteListVoiceIntegrations'
 import VoiceIntegrationSelectField from '../VoiceIntegrationSelectField'
@@ -46,15 +42,11 @@ const useGetIntegrationMock = assumeMock(useGetIntegration)
 const handleChange = jest.fn()
 const renderComponent = (value?: number, hiddenIntegrations?: number[]) =>
     render(
-        <QueryClientProvider client={mockQueryClient()}>
-            <Provider store={mockStore({} as any)}>
-                <VoiceIntegrationSelectField
-                    value={value}
-                    onChange={handleChange}
-                    hiddenIntegrations={hiddenIntegrations}
-                />
-            </Provider>
-        </QueryClientProvider>,
+        <VoiceIntegrationSelectField
+            value={value}
+            onChange={handleChange}
+            hiddenIntegrations={hiddenIntegrations}
+        />,
     )
 
 const mockIntegrations = [

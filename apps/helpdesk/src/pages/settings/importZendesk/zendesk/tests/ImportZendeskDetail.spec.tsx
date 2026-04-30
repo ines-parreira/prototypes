@@ -4,10 +4,7 @@ import { render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter, useParams } from 'react-router-dom'
-
-import { mockStore } from 'utils/testing'
+import { useParams } from 'react-router-dom'
 
 import { ImportZendeskDetail } from '../ImportZendeskDetail'
 import { successImport } from './fixtures'
@@ -26,17 +23,11 @@ const renderComponent = (
 ): RenderResult => {
     mockUseParams.mockReturnValue({ integrationId: props.integrationId || '1' })
 
-    return render(
-        <MemoryRouter>
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({}),
-                } as any)}
-            >
-                <ImportZendeskDetail {...props} />
-            </Provider>
-        </MemoryRouter>,
-    )
+    return render(<ImportZendeskDetail {...props} />, {
+        storeState: {
+            integrations: fromJS({}),
+        } as any,
+    })
 }
 
 describe('<ImportZendeskDetail/>', () => {
@@ -70,28 +61,20 @@ describe('<ImportZendeskDetail/>', () => {
                 }),
             )
             rerender(
-                <MemoryRouter>
-                    <Provider
-                        store={mockStore({
-                            integrations: fromJS({}),
-                        } as any)}
-                    >
-                        <ImportZendeskDetail
-                            {...{
-                                ...props,
-                                integrations: [
-                                    {
-                                        ...successImport,
-                                        meta: {
-                                            ...successImport.meta,
-                                            continuous_import_enabled: true,
-                                        },
-                                    },
-                                ],
-                            }}
-                        />
-                    </Provider>
-                </MemoryRouter>,
+                <ImportZendeskDetail
+                    {...{
+                        ...props,
+                        integrations: [
+                            {
+                                ...successImport,
+                                meta: {
+                                    ...successImport.meta,
+                                    continuous_import_enabled: true,
+                                },
+                            },
+                        ],
+                    }}
+                />,
             )
             expect(getByText('Pause')).toBeDefined()
         })

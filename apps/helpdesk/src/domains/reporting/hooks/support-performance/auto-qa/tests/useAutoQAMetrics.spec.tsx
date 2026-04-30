@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import { useAccuracyPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useAccuracyPerAgent'
 import { useAccuracyTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useAccuracyTrend'
@@ -26,7 +25,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { getSortedAutoQAAgents } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
 import { agents } from 'fixtures/agents'
-import { mockStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useCommunicationSkillsPerAgent',
@@ -158,9 +156,7 @@ describe('useAutoQAMetrics', () => {
 
     it('should return data from all hooks and a list of agents', () => {
         const { result } = renderHook(() => useAutoQAMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
+            storeState: defaultState,
         })
 
         expect(result.current).toEqual({
@@ -196,9 +192,7 @@ describe('useAutoQAMetrics', () => {
         useReviewedClosedTicketsTrendMock.mockReturnValue(loadingTrendData)
 
         const { result } = renderHook(() => useAutoQAMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
+            storeState: defaultState,
         })
 
         expect(result.current).toEqual({

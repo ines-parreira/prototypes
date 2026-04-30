@@ -1,10 +1,7 @@
 import { render } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import { Provider } from 'react-redux'
-import { MemoryRouter, Route } from 'react-router-dom'
 
 import {
     mockListMetafieldDefinitionsHandler,
@@ -15,7 +12,6 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
-import { mockStore } from 'utils/testing'
 
 import ShopifyMetafields from './ShopifyMetafields'
 
@@ -42,23 +38,11 @@ afterAll(() => {
 })
 
 describe('ShopifyMetafields', () => {
-    let queryClient: QueryClient
-
     const renderComponent = () => {
-        const store = mockStore({})
-        return render(
-            <MemoryRouter
-                initialEntries={[`/integrations/${INTEGRATION_ID}/settings`]}
-            >
-                <Route path="/integrations/:id/settings">
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <ShopifyMetafields />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
-        )
+        return render(<ShopifyMetafields />, {
+            initialEntries: [`/integrations/${INTEGRATION_ID}/settings`],
+            path: '/integrations/:id/settings',
+        })
     }
 
     function setupEmptyListHandler() {
@@ -74,13 +58,6 @@ describe('ShopifyMetafields', () => {
     }
 
     beforeEach(() => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
-
         mockUseAppSelector.mockImplementation((selector: any) => {
             if (selector === getCurrentAccountId) {
                 return 1
@@ -95,9 +72,7 @@ describe('ShopifyMetafields', () => {
         server.use(mockUpdateHandler.handler)
     })
 
-    afterEach(() => {
-        queryClient.clear()
-    })
+    afterEach(() => {})
 
     it('should render the explainer text correctly', async () => {
         setupEmptyListHandler()

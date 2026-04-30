@@ -3,11 +3,9 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Location } from 'history'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { JourneyProvider } from 'AIJourney/providers'
-import { mockStore } from 'utils/testing'
 
 import {
     DEFAULT_TABLE_METRICS,
@@ -109,13 +107,7 @@ describe('CampaignsTable', () => {
     const allColumns = [...columns, ...metricColumns, ...actionColumns]
 
     const wrapper = (children: React.ReactNode) => (
-        <Provider
-            store={mockStore({
-                integrations: fromJS({ integrations: [] }),
-            })}
-        >
-            <JourneyProvider>{children}</JourneyProvider>
-        </Provider>
+        <JourneyProvider>{children}</JourneyProvider>
     )
 
     beforeEach(() => {
@@ -137,7 +129,14 @@ describe('CampaignsTable', () => {
     })
 
     it('should render table with data', () => {
-        render(wrapper(<CampaignsTable columns={columns} data={mockFields} />))
+        render(
+            wrapper(<CampaignsTable columns={columns} data={mockFields} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
+        )
 
         expect(screen.getByText('Welcome campaign')).toBeInTheDocument()
         expect(screen.getByText('Win back campaign')).toBeInTheDocument()
@@ -148,13 +147,25 @@ describe('CampaignsTable', () => {
             wrapper(
                 <CampaignsTable columns={columns} data={[]} isLoading={true} />,
             ),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
     })
 
     it('should filter data based on search input', async () => {
-        render(wrapper(<CampaignsTable columns={columns} data={mockFields} />))
+        render(
+            wrapper(<CampaignsTable columns={columns} data={mockFields} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
+        )
 
         const searchInput = screen.getByRole('textbox')
         await userEvent.type(searchInput, 'Welcome campaign')
@@ -199,6 +210,11 @@ describe('CampaignsTable', () => {
 
         render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         const user = userEvent.setup()
@@ -258,6 +274,11 @@ describe('CampaignsTable', () => {
                     data={dataWithLoadingMetrics}
                 />,
             ),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         const skeletons = document.querySelectorAll('[class*="skeleton"]')
@@ -282,6 +303,11 @@ describe('CampaignsTable', () => {
                     data={dataWithMetrics}
                 />,
             ),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         expect(screen.getByText('150')).toBeInTheDocument()
@@ -314,6 +340,11 @@ describe('CampaignsTable', () => {
                     data={mockCampaignWithActiveState}
                 />,
             ),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         const user = userEvent.setup()
@@ -365,6 +396,11 @@ describe('CampaignsTable', () => {
                     data={draftWithoutAudience}
                 />,
             ),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         expect(screen.getByText('No audience')).toBeInTheDocument()
@@ -375,6 +411,11 @@ describe('CampaignsTable', () => {
 
         render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         const user = userEvent.setup()
@@ -415,6 +456,11 @@ describe('CampaignsTable', () => {
 
         render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         const user = userEvent.setup()
@@ -449,6 +495,11 @@ describe('CampaignsTable', () => {
 
         render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         const user = userEvent.setup()
@@ -480,6 +531,11 @@ describe('CampaignsTable', () => {
 
         render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         const user = userEvent.setup()
@@ -512,7 +568,14 @@ describe('CampaignsTable', () => {
     })
 
     it('should not render pagination in bottom toolbar when there are 10 or fewer total rows', () => {
-        render(wrapper(<CampaignsTable columns={columns} data={mockFields} />))
+        render(
+            wrapper(<CampaignsTable columns={columns} data={mockFields} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
+        )
 
         expect(
             document.querySelector('[data-name="pagination"]'),
@@ -542,6 +605,11 @@ describe('CampaignsTable', () => {
 
         render(
             wrapper(<CampaignsTable columns={columns} data={largeDataSet} />),
+            {
+                storeState: {
+                    integrations: fromJS({ integrations: [] }),
+                },
+            },
         )
 
         expect(

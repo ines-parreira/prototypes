@@ -5,7 +5,6 @@ import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
-import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplateSearch from '../WhatsAppMessageTemplateSearch'
 
@@ -31,10 +30,7 @@ jest.mock(
         }) as Record<string, any>,
 )
 describe('WhatsAppMessageTemplateSearch', () => {
-    const renderComponent = () =>
-        render(<WhatsAppMessageTemplateSearch />, {
-            storeState: mockStore({} as any).getState() as object,
-        })
+    const renderComponent = () => render(<WhatsAppMessageTemplateSearch />)
     afterEach(() => {
         cleanup()
         jest.resetAllMocks()

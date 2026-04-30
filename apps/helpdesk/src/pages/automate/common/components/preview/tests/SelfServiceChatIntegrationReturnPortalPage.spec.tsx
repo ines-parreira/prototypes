@@ -1,10 +1,7 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
 import type { GorgiasChatIntegration } from 'models/integration/types'
@@ -14,12 +11,8 @@ import {
 } from 'models/integration/types'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import SelfServiceChatIntegrationReturnPortalPage from '../SelfServiceChatIntegrationReturnPortalPage'
-
-const queryClient = mockQueryClient()
 
 const mockIntegration: GorgiasChatIntegration = {
     name: 'integration',
@@ -65,31 +58,25 @@ const mockIntegration: GorgiasChatIntegration = {
 describe('<SelfServiceChatIntegrationReturnPortalPage />', () => {
     it('should render component', () => {
         render(
-            <Provider store={mockStore({})}>
-                <MemoryRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <SelfServicePreviewContext.Provider
-                            value={{
-                                reportOrderIssueReason: {
-                                    reasonKey: 'reasonKey',
-                                    action: {
-                                        responseMessageContent: {
-                                            html: 'html',
-                                            text: 'text',
-                                        },
-                                        type: 'automated_response',
-                                        showHelpfulPrompt: true,
-                                    },
-                                },
-                            }}
-                        >
-                            <SelfServiceChatIntegrationReturnPortalPage
-                                integration={mockIntegration}
-                            />
-                        </SelfServicePreviewContext.Provider>
-                    </QueryClientProvider>
-                </MemoryRouter>
-            </Provider>,
+            <SelfServicePreviewContext.Provider
+                value={{
+                    reportOrderIssueReason: {
+                        reasonKey: 'reasonKey',
+                        action: {
+                            responseMessageContent: {
+                                html: 'html',
+                                text: 'text',
+                            },
+                            type: 'automated_response',
+                            showHelpfulPrompt: true,
+                        },
+                    },
+                }}
+            >
+                <SelfServiceChatIntegrationReturnPortalPage
+                    integration={mockIntegration}
+                />
+            </SelfServicePreviewContext.Provider>,
         )
         expect(
             screen.getByText(/complete your return in our return portal/i),

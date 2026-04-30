@@ -1,13 +1,16 @@
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { mockStore } from 'utils/testing'
 
 import { DeploySection } from '../DeploySection'
 import type { PostOnboardingStepMetadata } from '../types'
+
+const mockStore = configureMockStore([thunk])
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -106,7 +109,6 @@ describe('DeploySection', () => {
                     mockMarkPostStoreInstallationAsCompleted
                 }
             />,
-            {},
         )
     }
     beforeEach(() => {

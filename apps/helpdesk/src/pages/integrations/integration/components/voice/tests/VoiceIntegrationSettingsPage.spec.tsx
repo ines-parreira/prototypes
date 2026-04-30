@@ -11,7 +11,6 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { integrationsState } from 'fixtures/integrations'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceIntegrationSettingsPage from '../VoiceIntegrationSettingsPage'
@@ -51,7 +50,7 @@ describe('VoiceIntegrationSettings', () => {
             {
                 initialEntries: ['/app/settings/channels/phone/1/preferences'],
                 path: '/app/settings/channels/phone/:integrationId?/:tab?',
-                storeState: mockStore(storeState).getState() as object,
+                storeState: storeState,
             },
         )
     }

@@ -1,12 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-
-import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorTopBar } from './KnowledgeEditorTopBar'
-
-const store = mockStore({})
 
 describe('KnowledgeEditorTopBar', () => {
     it('renders', () => {
@@ -18,22 +13,20 @@ describe('KnowledgeEditorTopBar', () => {
         const onToggleFullscreen = jest.fn()
 
         const { rerender } = render(
-            <Provider store={store}>
-                <KnowledgeEditorTopBar
-                    disabled={false}
-                    title="Guidance"
-                    isFullscreen={false}
-                    onToggleFullscreen={onToggleFullscreen}
-                    onClose={onClose}
-                    isDetailsView={false}
-                    onToggleDetailsView={onToggleDetailsView}
-                    onClickPrevious={onClickPrevious}
-                    onClickNext={onClickNext}
-                    onChangeTitle={onChangeTitle}
-                >
-                    <div>Test Content</div>
-                </KnowledgeEditorTopBar>
-            </Provider>,
+            <KnowledgeEditorTopBar
+                disabled={false}
+                title="Guidance"
+                isFullscreen={false}
+                onToggleFullscreen={onToggleFullscreen}
+                onClose={onClose}
+                isDetailsView={false}
+                onToggleDetailsView={onToggleDetailsView}
+                onClickPrevious={onClickPrevious}
+                onClickNext={onClickNext}
+                onChangeTitle={onChangeTitle}
+            >
+                <div>Test Content</div>
+            </KnowledgeEditorTopBar>,
         )
 
         expect(screen.getByText('Test Content')).toBeInTheDocument()
@@ -61,22 +54,20 @@ describe('KnowledgeEditorTopBar', () => {
         expect(onToggleFullscreen).toHaveBeenCalled()
 
         rerender(
-            <Provider store={store}>
-                <KnowledgeEditorTopBar
-                    disabled={false}
-                    title="Guidance"
-                    isFullscreen={true}
-                    onToggleFullscreen={onToggleFullscreen}
-                    onClose={onClose}
-                    isDetailsView={false}
-                    onToggleDetailsView={onToggleDetailsView}
-                    onClickPrevious={onClickPrevious}
-                    onClickNext={onClickNext}
-                    onChangeTitle={onChangeTitle}
-                >
-                    <div>Test Content</div>
-                </KnowledgeEditorTopBar>
-            </Provider>,
+            <KnowledgeEditorTopBar
+                disabled={false}
+                title="Guidance"
+                isFullscreen={true}
+                onToggleFullscreen={onToggleFullscreen}
+                onClose={onClose}
+                isDetailsView={false}
+                onToggleDetailsView={onToggleDetailsView}
+                onClickPrevious={onClickPrevious}
+                onClickNext={onClickNext}
+                onChangeTitle={onChangeTitle}
+            >
+                <div>Test Content</div>
+            </KnowledgeEditorTopBar>,
         )
 
         fireEvent.click(
@@ -87,19 +78,17 @@ describe('KnowledgeEditorTopBar', () => {
 
     it('renders disabled when updating', () => {
         render(
-            <Provider store={store}>
-                <KnowledgeEditorTopBar
-                    disabled={true}
-                    title="Guidance"
-                    isFullscreen={false}
-                    onToggleFullscreen={jest.fn()}
-                    onClose={jest.fn()}
-                    isDetailsView={false}
-                    onToggleDetailsView={jest.fn()}
-                >
-                    <div>Test Content</div>
-                </KnowledgeEditorTopBar>
-            </Provider>,
+            <KnowledgeEditorTopBar
+                disabled={true}
+                title="Guidance"
+                isFullscreen={false}
+                onToggleFullscreen={jest.fn()}
+                onClose={jest.fn()}
+                isDetailsView={false}
+                onToggleDetailsView={jest.fn()}
+            >
+                <div>Test Content</div>
+            </KnowledgeEditorTopBar>,
         )
 
         expect(screen.getByRole('button', { name: 'close' })).toBeDisabled()
@@ -110,17 +99,15 @@ describe('KnowledgeEditorTopBar', () => {
 
     it('disables navigation buttons when not provided', () => {
         render(
-            <Provider store={store}>
-                <KnowledgeEditorTopBar
-                    disabled={false}
-                    title="Guidance"
-                    isFullscreen={false}
-                    onToggleFullscreen={jest.fn()}
-                    onClose={jest.fn()}
-                    isDetailsView={false}
-                    onToggleDetailsView={jest.fn()}
-                />
-            </Provider>,
+            <KnowledgeEditorTopBar
+                disabled={false}
+                title="Guidance"
+                isFullscreen={false}
+                onToggleFullscreen={jest.fn()}
+                onClose={jest.fn()}
+                isDetailsView={false}
+                onToggleDetailsView={jest.fn()}
+            />,
         )
 
         expect(
@@ -133,19 +120,17 @@ describe('KnowledgeEditorTopBar', () => {
 
     it('shows last saved indicator when editorMode is edit', () => {
         render(
-            <Provider store={store}>
-                <KnowledgeEditorTopBar
-                    disabled={false}
-                    title="Guidance"
-                    isFullscreen={false}
-                    onToggleFullscreen={jest.fn()}
-                    onClose={jest.fn()}
-                    isDetailsView={false}
-                    onToggleDetailsView={jest.fn()}
-                    editorMode="edit"
-                    lastUpdatedDatetime={new Date('2024-01-15T10:30:00Z')}
-                />
-            </Provider>,
+            <KnowledgeEditorTopBar
+                disabled={false}
+                title="Guidance"
+                isFullscreen={false}
+                onToggleFullscreen={jest.fn()}
+                onClose={jest.fn()}
+                isDetailsView={false}
+                onToggleDetailsView={jest.fn()}
+                editorMode="edit"
+                lastUpdatedDatetime={new Date('2024-01-15T10:30:00Z')}
+            />,
         )
 
         expect(
@@ -155,19 +140,17 @@ describe('KnowledgeEditorTopBar', () => {
 
     it('does not show last saved indicator when editorMode is not edit and onChangeTitle is not provided', () => {
         render(
-            <Provider store={store}>
-                <KnowledgeEditorTopBar
-                    disabled={false}
-                    title="Guidance"
-                    isFullscreen={false}
-                    onToggleFullscreen={jest.fn()}
-                    onClose={jest.fn()}
-                    isDetailsView={false}
-                    onToggleDetailsView={jest.fn()}
-                    editorMode="read"
-                    lastUpdatedDatetime={new Date('2024-01-15T10:30:00Z')}
-                />
-            </Provider>,
+            <KnowledgeEditorTopBar
+                disabled={false}
+                title="Guidance"
+                isFullscreen={false}
+                onToggleFullscreen={jest.fn()}
+                onClose={jest.fn()}
+                isDetailsView={false}
+                onToggleDetailsView={jest.fn()}
+                editorMode="read"
+                lastUpdatedDatetime={new Date('2024-01-15T10:30:00Z')}
+            />,
         )
 
         expect(
@@ -178,17 +161,15 @@ describe('KnowledgeEditorTopBar', () => {
     describe('shouldHideFullscreenButton prop', () => {
         it('should render fullscreen button by default when shouldHideFullscreenButton is not provided', () => {
             render(
-                <Provider store={store}>
-                    <KnowledgeEditorTopBar
-                        disabled={false}
-                        title="Guidance"
-                        isFullscreen={false}
-                        onToggleFullscreen={jest.fn()}
-                        onClose={jest.fn()}
-                        isDetailsView={false}
-                        onToggleDetailsView={jest.fn()}
-                    />
-                </Provider>,
+                <KnowledgeEditorTopBar
+                    disabled={false}
+                    title="Guidance"
+                    isFullscreen={false}
+                    onToggleFullscreen={jest.fn()}
+                    onClose={jest.fn()}
+                    isDetailsView={false}
+                    onToggleDetailsView={jest.fn()}
+                />,
             )
 
             expect(
@@ -198,18 +179,16 @@ describe('KnowledgeEditorTopBar', () => {
 
         it('should render fullscreen button when shouldHideFullscreenButton is false', () => {
             render(
-                <Provider store={store}>
-                    <KnowledgeEditorTopBar
-                        disabled={false}
-                        title="Guidance"
-                        isFullscreen={false}
-                        onToggleFullscreen={jest.fn()}
-                        onClose={jest.fn()}
-                        isDetailsView={false}
-                        onToggleDetailsView={jest.fn()}
-                        shouldHideFullscreenButton={false}
-                    />
-                </Provider>,
+                <KnowledgeEditorTopBar
+                    disabled={false}
+                    title="Guidance"
+                    isFullscreen={false}
+                    onToggleFullscreen={jest.fn()}
+                    onClose={jest.fn()}
+                    isDetailsView={false}
+                    onToggleDetailsView={jest.fn()}
+                    shouldHideFullscreenButton={false}
+                />,
             )
 
             expect(
@@ -219,18 +198,16 @@ describe('KnowledgeEditorTopBar', () => {
 
         it('should hide fullscreen button when shouldHideFullscreenButton is true', () => {
             render(
-                <Provider store={store}>
-                    <KnowledgeEditorTopBar
-                        disabled={false}
-                        title="Guidance"
-                        isFullscreen={false}
-                        onToggleFullscreen={jest.fn()}
-                        onClose={jest.fn()}
-                        isDetailsView={false}
-                        onToggleDetailsView={jest.fn()}
-                        shouldHideFullscreenButton={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorTopBar
+                    disabled={false}
+                    title="Guidance"
+                    isFullscreen={false}
+                    onToggleFullscreen={jest.fn()}
+                    onClose={jest.fn()}
+                    isDetailsView={false}
+                    onToggleDetailsView={jest.fn()}
+                    shouldHideFullscreenButton={true}
+                />,
             )
 
             expect(
@@ -240,18 +217,16 @@ describe('KnowledgeEditorTopBar', () => {
 
         it('should hide fullscreen button when shouldHideFullscreenButton is true regardless of isFullscreen state', () => {
             render(
-                <Provider store={store}>
-                    <KnowledgeEditorTopBar
-                        disabled={false}
-                        title="Guidance"
-                        isFullscreen={true}
-                        onToggleFullscreen={jest.fn()}
-                        onClose={jest.fn()}
-                        isDetailsView={false}
-                        onToggleDetailsView={jest.fn()}
-                        shouldHideFullscreenButton={true}
-                    />
-                </Provider>,
+                <KnowledgeEditorTopBar
+                    disabled={false}
+                    title="Guidance"
+                    isFullscreen={true}
+                    onToggleFullscreen={jest.fn()}
+                    onClose={jest.fn()}
+                    isDetailsView={false}
+                    onToggleDetailsView={jest.fn()}
+                    shouldHideFullscreenButton={true}
+                />,
             )
 
             // Should not find button with either label
@@ -265,18 +240,16 @@ describe('KnowledgeEditorTopBar', () => {
 
         it('should still respond to isFullscreen prop when button is visible', () => {
             const { rerender } = render(
-                <Provider store={store}>
-                    <KnowledgeEditorTopBar
-                        disabled={false}
-                        title="Guidance"
-                        isFullscreen={false}
-                        onToggleFullscreen={jest.fn()}
-                        onClose={jest.fn()}
-                        isDetailsView={false}
-                        onToggleDetailsView={jest.fn()}
-                        shouldHideFullscreenButton={false}
-                    />
-                </Provider>,
+                <KnowledgeEditorTopBar
+                    disabled={false}
+                    title="Guidance"
+                    isFullscreen={false}
+                    onToggleFullscreen={jest.fn()}
+                    onClose={jest.fn()}
+                    isDetailsView={false}
+                    onToggleDetailsView={jest.fn()}
+                    shouldHideFullscreenButton={false}
+                />,
             )
 
             // Initially not fullscreen
@@ -286,18 +259,16 @@ describe('KnowledgeEditorTopBar', () => {
 
             // Rerender with fullscreen
             rerender(
-                <Provider store={store}>
-                    <KnowledgeEditorTopBar
-                        disabled={false}
-                        title="Guidance"
-                        isFullscreen={true}
-                        onToggleFullscreen={jest.fn()}
-                        onClose={jest.fn()}
-                        isDetailsView={false}
-                        onToggleDetailsView={jest.fn()}
-                        shouldHideFullscreenButton={false}
-                    />
-                </Provider>,
+                <KnowledgeEditorTopBar
+                    disabled={false}
+                    title="Guidance"
+                    isFullscreen={true}
+                    onToggleFullscreen={jest.fn()}
+                    onClose={jest.fn()}
+                    isDetailsView={false}
+                    onToggleDetailsView={jest.fn()}
+                    shouldHideFullscreenButton={false}
+                />,
             )
 
             // Now fullscreen

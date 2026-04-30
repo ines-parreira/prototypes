@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import type { MergedRecordWithEnrichment } from 'domains/reporting/hooks/types'
 import {
@@ -34,7 +33,6 @@ import {
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import type { RootState } from 'state/types'
 import { assetsUrl } from 'utils'
-import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/voice-of-customer/metricsPerProduct')
 const useTicketCountPerProductWithEnrichmentMock = assumeMock(
@@ -102,11 +100,7 @@ describe('useSortedProducts', () => {
     describe('useSortedProducts', () => {
         it('returns products array', () => {
             const { result } = renderHook(() => useSortedProducts(), {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             })
 
             expect(Array.isArray(result.current.products)).toBeTruthy()
@@ -121,11 +115,7 @@ describe('useSortedProducts', () => {
             })
 
             const { result } = renderHook(() => useSortedProducts(), {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             })
 
             expect(result.current.isLoading).toBe(isFetching)
@@ -162,15 +152,11 @@ describe('useSortedProducts', () => {
                     },
                 },
             } as RootState
-            const store = mockStore(state)
-
-            renderHook(
+            const { store } = renderHook(
                 () =>
                     useProductsSorting(column, dataWithEnrichment, isFetching),
                 {
-                    wrapper: ({ children }) => (
-                        <Provider store={store}>{children}</Provider>
-                    ),
+                    storeState: state,
                 },
             )
 
@@ -210,15 +196,11 @@ describe('useSortedProducts', () => {
                     },
                 },
             } as RootState
-            const store = mockStore(state)
-
-            renderHook(
+            const { store } = renderHook(
                 () =>
                     useProductsSorting(column, dataWithEnrichment, isFetching),
                 {
-                    wrapper: ({ children }) => (
-                        <Provider store={store}>{children}</Provider>
-                    ),
+                    storeState: state,
                 },
             )
 
@@ -249,13 +231,12 @@ describe('useSortedProducts', () => {
                     },
                 },
             } as RootState
-            const store = mockStore(state)
-
-            renderHook(() => useProductsSorting(column, null, isFetching), {
-                wrapper: ({ children }) => (
-                    <Provider store={store}>{children}</Provider>
-                ),
-            })
+            const { store } = renderHook(
+                () => useProductsSorting(column, null, isFetching),
+                {
+                    storeState: state,
+                },
+            )
 
             expect(store.getActions()).toContainEqual(setProducts([]))
         })
@@ -284,15 +265,11 @@ describe('useSortedProducts', () => {
                     },
                 },
             } as RootState
-            const store = mockStore(state)
-
-            renderHook(
+            const { store } = renderHook(
                 () =>
                     useProductsSorting(column, dataWithEnrichment, isFetching),
                 {
-                    wrapper: ({ children }) => (
-                        <Provider store={store}>{children}</Provider>
-                    ),
+                    storeState: state,
                 },
             )
 
@@ -328,15 +305,11 @@ describe('useSortedProducts', () => {
                     },
                 },
             } as RootState
-            const store = mockStore(state)
-
-            renderHook(
+            const { store } = renderHook(
                 () =>
                     useProductsSorting(column, dataWithEnrichment, isFetching),
                 {
-                    wrapper: ({ children }) => (
-                        <Provider store={store}>{children}</Provider>
-                    ),
+                    storeState: state,
                 },
             )
 

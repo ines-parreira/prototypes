@@ -1,13 +1,10 @@
-import type React from 'react'
-
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { IntegrationType } from 'models/integration/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { mockStore } from 'utils/testing'
 
 import { useOrderManagement } from '../useOrderManagement'
 
@@ -41,12 +38,6 @@ describe('useOrderManagement', () => {
         },
     })
 
-    const store = mockStore({})
-
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={store}>{children}</Provider>
-    )
-
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -71,9 +62,8 @@ describe('useOrderManagement', () => {
     })
 
     it('should return enabledInSettings as true when store is connected', () => {
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.enabledInSettings).toBe(true)
@@ -86,18 +76,16 @@ describe('useOrderManagement', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.enabledInSettings).toBe(false)
     })
 
     it('should return isOrderManagementEnabled based on automation settings', () => {
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.isOrderManagementEnabled).toBe(true)
@@ -117,9 +105,8 @@ describe('useOrderManagement', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.isOrderManagementEnabled).toBe(false)
@@ -132,9 +119,8 @@ describe('useOrderManagement', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.isOrderManagementEnabled).toBe(false)
@@ -147,18 +133,16 @@ describe('useOrderManagement', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.isDisabled).toBe(true)
     })
 
     it('should return isDisabled as false when store is connected', () => {
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.isDisabled).toBe(false)
@@ -171,9 +155,8 @@ describe('useOrderManagement', () => {
             isFetchPending: true,
         } as any)
 
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -187,18 +170,16 @@ describe('useOrderManagement', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as false when all data is loaded', () => {
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.isLoading).toBe(false)
@@ -211,27 +192,24 @@ describe('useOrderManagement', () => {
             isFetchPending: false,
         } as any)
 
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.showStoreRequired).toBe(true)
     })
 
     it('should return showStoreRequired as false when store is connected', () => {
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.showStoreRequired).toBe(false)
     })
 
     it('should return orderManagementUrl based on shopType and shopName', () => {
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         expect(result.current.orderManagementUrl).toBe(
@@ -247,21 +225,18 @@ describe('useOrderManagement', () => {
             },
         })
 
-        const { result } = renderHook(
-            () =>
-                useOrderManagement({
-                    integration: integrationWithoutShopInfo,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({
+                integration: integrationWithoutShopInfo,
+            }),
         )
 
         expect(result.current.orderManagementUrl).toBe('')
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate when handleToggle is called', () => {
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         act(() => {
@@ -279,9 +254,8 @@ describe('useOrderManagement', () => {
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate with disabled message when toggling off', () => {
-        const { result } = renderHook(
-            () => useOrderManagement({ integration: defaultIntegration }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({ integration: defaultIntegration }),
         )
 
         act(() => {
@@ -307,12 +281,10 @@ describe('useOrderManagement', () => {
             },
         })
 
-        const { result } = renderHook(
-            () =>
-                useOrderManagement({
-                    integration: integrationWithoutAppId,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useOrderManagement({
+                integration: integrationWithoutAppId,
+            }),
         )
 
         act(() => {

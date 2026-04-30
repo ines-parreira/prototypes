@@ -8,7 +8,6 @@ import { IntegrationType } from 'models/integration/constants'
 import * as resources from 'models/integration/resources/email'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import * as dateUtils from 'utils/date'
-import { mockStore } from 'utils/testing'
 
 import StartMigration from '../EmailMigration/StartMigration'
 
@@ -63,14 +62,14 @@ const mockIntegrations = [
 describe('StartMigration', () => {
     const renderComponent = (integrations: any = mockIntegrations) =>
         render(<StartMigration />, {
-            storeState: mockStore({
+            storeState: {
                 integrations: fromJS({
                     integrations,
                     emailMigrationBannerStatus: {
                         due_at: '2023-01-31T00:00',
                     },
                 }),
-            } as any).getState() as object,
+            } as any,
         })
     afterEach(cleanup)
     it('should call Start Migration endpoint and refresh banner when clicking start', async () => {

@@ -1,12 +1,10 @@
 import { createRef } from 'react'
 
 import { render } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { setupServer } from 'msw/node'
-import { Provider } from 'react-redux'
 
 import { mockListUsersHandler } from '@gorgias/helpdesk-mocks'
 
@@ -17,7 +15,6 @@ import {
     getAvailabilityStatus,
     mergeAgentData,
 } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/utils'
-import { mockStore } from 'utils/testing'
 
 jest.mock('pages/common/utils/labels', () => ({
     AgentLabel: ({
@@ -43,13 +40,6 @@ const mockGetAvailabilityStatus = getAvailabilityStatus as jest.Mock
 const mockMergeAgentData = mergeAgentData as jest.Mock
 
 const server = setupServer()
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-    },
-})
-
 describe('AgentCallTransferDropdownContent', () => {
     const setSelectedAgentId = jest.fn()
     const clearErrors = jest.fn()
@@ -67,34 +57,30 @@ describe('AgentCallTransferDropdownContent', () => {
             React.ComponentProps<typeof AgentCallTransferDropdownContent>
         > = {},
     ) => (
-        <Provider
-            store={mockStore({
+        <Dropdown
+            isOpen={true}
+            onToggle={() => {}}
+            target={createRef<HTMLElement>()}
+        >
+            <AgentCallTransferDropdownContent
+                setSelectedAgentId={setSelectedAgentId}
+                clearErrors={clearErrors}
+                {...props}
+            />
+        </Dropdown>
+    )
+
+    const renderComponent = (props = {}) =>
+        render(<TestAgentCallTransferDropdownContent {...props} />, {
+            storeState: {
                 agents: fromJS({
                     all: allAgents,
                 }),
                 currentUser: fromJS({
                     id: 2,
                 }),
-            } as any)}
-        >
-            <QueryClientProvider client={queryClient}>
-                <Dropdown
-                    isOpen={true}
-                    onToggle={() => {}}
-                    target={createRef<HTMLElement>()}
-                >
-                    <AgentCallTransferDropdownContent
-                        setSelectedAgentId={setSelectedAgentId}
-                        clearErrors={clearErrors}
-                        {...props}
-                    />
-                </Dropdown>
-            </QueryClientProvider>
-        </Provider>
-    )
-
-    const renderComponent = (props = {}) =>
-        render(<TestAgentCallTransferDropdownContent {...props} />)
+            },
+        })
 
     beforeAll(() => {
         server.listen({ onUnhandledRequest: 'error' })
@@ -108,7 +94,6 @@ describe('AgentCallTransferDropdownContent', () => {
 
     afterEach(() => {
         server.resetHandlers()
-        queryClient.clear()
         cleanup()
     })
 

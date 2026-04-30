@@ -2,6 +2,8 @@ import { assumeMock } from '@repo/testing'
 import { render, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {
     useClosedTicketsMetricPerAgent,
@@ -31,7 +33,8 @@ import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
+
+const mockStore = configureMockStore([thunk])
 
 jest.mock('domains/reporting/hooks/metricsPerAgent')
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(

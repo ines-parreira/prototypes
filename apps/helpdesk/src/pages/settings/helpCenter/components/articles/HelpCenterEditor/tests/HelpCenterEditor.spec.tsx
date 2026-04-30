@@ -1,8 +1,4 @@
 import { render } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
-
-import { mockStore } from 'utils/testing'
 
 import HelpCenterEditor from '../HelpCenterEditor'
 
@@ -49,23 +45,8 @@ describe('HelpCenterEditor', () => {
         setIsEditorCodeViewActive: jest.fn(),
     }
 
-    const renderComponent = (props = {}) => {
-        const store = mockStore({})
-        const queryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
-
-        return render(
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <HelpCenterEditor {...defaultProps} {...props} />
-                </QueryClientProvider>
-            </Provider>,
-        )
-    }
+    const renderComponent = (props = {}) =>
+        render(<HelpCenterEditor {...defaultProps} {...props} />)
 
     beforeEach(() => {
         jest.clearAllMocks()

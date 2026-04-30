@@ -8,7 +8,6 @@ import { integrationsState } from 'fixtures/integrations'
 import type { PhoneIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { PhoneFunction } from 'models/phoneNumber/types'
-import { mockStore } from 'utils/testing'
 
 import VoiceIntegrationSecondaryNavigation from '../VoiceIntegrationSecondaryNavigation'
 
@@ -38,7 +37,7 @@ describe('<VoiceIntegrationSecondaryNavigation />', () => {
         render(
             <VoiceIntegrationSecondaryNavigation integration={integration} />,
             {
-                storeState: mockStore(defaultState as any).getState() as object,
+                storeState: defaultState as any,
             },
         )
     it('should render the secondary navigation with integration', () => {

@@ -6,7 +6,6 @@ import { fromJS } from 'immutable'
 
 import type { EmailMigrationBannerStatus } from 'models/integration/types'
 import { EmailMigrationStatus } from 'models/integration/types'
-import { mockStore } from 'utils/testing'
 
 import EmailMigration from '../EmailMigration/EmailMigration'
 
@@ -24,12 +23,12 @@ describe('EmailMigration', () => {
         migrationBannerStatus: EmailMigrationBannerStatus | null,
     ) =>
         render(<EmailMigration />, {
-            storeState: mockStore({
+            storeState: {
                 integrations: fromJS({
                     integrations: [],
                     emailMigrationBannerStatus: migrationBannerStatus,
                 }),
-            } as any).getState() as object,
+            } as any,
         })
     afterEach(cleanup)
     it('should render loader when there is no info about the status of the migration', () => {

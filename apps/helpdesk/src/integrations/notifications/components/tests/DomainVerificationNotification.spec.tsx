@@ -1,5 +1,6 @@
+import { render } from '@repo/testing'
+
 import type { Notification } from 'common/notifications'
-import { renderWithRouter } from 'utils/testing'
 
 import type { EmailDomainPayload } from '../../types'
 import DomainVerificationNotification from '../DomainVerificationNotification'
@@ -17,7 +18,7 @@ const notification = {
 
 describe('UserMentionedNotification', () => {
     it('should render the notification with a sender', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = render(
             <DomainVerificationNotification notification={notification} />,
         )
         expect(getByText('Domain verification complete')).toBeInTheDocument()

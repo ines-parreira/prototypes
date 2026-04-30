@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import { useAverageScoreTrend } from 'domains/reporting/hooks/quality-management/satisfaction/useAverageScoreTrend'
 import { useResponseRateTrend } from 'domains/reporting/hooks/quality-management/satisfaction/useResponseRateTrend'
@@ -12,7 +11,6 @@ import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
-import { mockStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useSatisfactionScoreTrend',
@@ -85,9 +83,7 @@ describe('useSatisfactionMetrics', () => {
 
     it('should return data from all hooks', () => {
         const { result } = renderHook(() => useSatisfactionMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
+            storeState: defaultState,
         })
 
         expect(result.current).toEqual({
@@ -112,9 +108,7 @@ describe('useSatisfactionMetrics', () => {
         useResponseRateTrendMock.mockReturnValue(loadingTrendData)
 
         const { result } = renderHook(() => useSatisfactionMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
+            storeState: defaultState,
         })
 
         expect(result.current).toEqual({

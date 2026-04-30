@@ -1,15 +1,11 @@
-import type React from 'react'
-
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { mockStore } from 'utils/testing'
 
 import { useFlows } from '../useFlows'
 
@@ -66,12 +62,6 @@ const mockChatChannel = {
 const mockWorkflowEntrypoints = [{ id: 'flow-1' }] as any
 
 describe('useFlows', () => {
-    const store = mockStore({})
-
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={store}>{children}</Provider>
-    )
-
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -106,9 +96,7 @@ describe('useFlows', () => {
     })
 
     it('should return the chat channel', () => {
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.channel).toEqual(mockChatChannel)
     })
@@ -116,17 +104,13 @@ describe('useFlows', () => {
     it('should return undefined channel when no chat channels exist', () => {
         mockedUseSelfServiceChannels.mockReturnValue([])
 
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.channel).toBeUndefined()
     })
 
     it('should return automationSettingsWorkflows from automation settings', () => {
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.automationSettingsWorkflows).toEqual(
             mockWorkflowEntrypoints,
@@ -136,17 +120,13 @@ describe('useFlows', () => {
     it('should return empty automationSettingsWorkflows when no chat channel', () => {
         mockedUseSelfServiceChannels.mockReturnValue([])
 
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.automationSettingsWorkflows).toEqual([])
     })
 
     it('should return workflowEntrypoints from self service configuration', () => {
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.workflowEntrypoints).toEqual(
             mockWorkflowEntrypoints,
@@ -159,9 +139,7 @@ describe('useFlows', () => {
             data: mockConfigs,
         } as any)
 
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.workflowConfigurations).toEqual(mockConfigs)
     })
@@ -169,9 +147,7 @@ describe('useFlows', () => {
     it('should return primaryLanguage from chat config', () => {
         mockedGetPrimaryLanguageFromChatConfig.mockReturnValue('fr')
 
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.primaryLanguage).toBe('fr')
     })
@@ -183,9 +159,7 @@ describe('useFlows', () => {
             isFetchPending: true,
         } as any)
 
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.isLoading).toBe(true)
     })
@@ -198,25 +172,19 @@ describe('useFlows', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as false when all data is loaded', () => {
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         expect(result.current.isLoading).toBe(false)
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate with correct args when adding a flow', () => {
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         act(() => {
             result.current.handleFlowAdd([{ id: 'flow-1' }] as any)
@@ -235,9 +203,7 @@ describe('useFlows', () => {
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate with correct args when removing a flow', () => {
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         act(() => {
             result.current.handleFlowRemove([])
@@ -254,9 +220,7 @@ describe('useFlows', () => {
     })
 
     it('should call handleChatApplicationAutomationSettingsUpdate with correct args when reordering flows', () => {
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         act(() => {
             result.current.handleFlowReorder([
@@ -280,9 +244,7 @@ describe('useFlows', () => {
     it('should not call handleChatApplicationAutomationSettingsUpdate when no chat channel', () => {
         mockedUseSelfServiceChannels.mockReturnValue([])
 
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         act(() => {
             result.current.handleFlowAdd([])
@@ -301,9 +263,7 @@ describe('useFlows', () => {
                 mockHandleChatApplicationAutomationSettingsUpdate,
         } as any)
 
-        const { result } = renderHook(() => useFlows(defaultParams), {
-            wrapper,
-        })
+        const { result } = renderHook(() => useFlows(defaultParams))
 
         act(() => {
             result.current.handleFlowAdd([])

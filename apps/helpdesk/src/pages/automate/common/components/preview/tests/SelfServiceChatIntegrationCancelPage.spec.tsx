@@ -2,7 +2,6 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { IntegrationType } from 'models/integration/constants'
 import type { GorgiasChatIntegration } from 'models/integration/types'
@@ -12,7 +11,6 @@ import {
 } from 'models/integration/types'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import { mockStore } from 'utils/testing'
 
 import SelfServiceChatIntegrationCancelPage from '../SelfServiceChatIntegrationCancelPage'
 
@@ -60,27 +58,25 @@ const mockIntegration: GorgiasChatIntegration = {
 describe('<SelfServiceChatIntegrationCancelPage />', () => {
     it('should render component', () => {
         render(
-            <Provider store={mockStore({})}>
-                <SelfServicePreviewContext.Provider
-                    value={{
-                        reportOrderIssueReason: {
-                            reasonKey: 'reasonKey',
-                            action: {
-                                responseMessageContent: {
-                                    html: 'html',
-                                    text: 'text',
-                                },
-                                type: 'automated_response',
-                                showHelpfulPrompt: true,
+            <SelfServicePreviewContext.Provider
+                value={{
+                    reportOrderIssueReason: {
+                        reasonKey: 'reasonKey',
+                        action: {
+                            responseMessageContent: {
+                                html: 'html',
+                                text: 'text',
                             },
+                            type: 'automated_response',
+                            showHelpfulPrompt: true,
                         },
-                    }}
-                >
-                    <SelfServiceChatIntegrationCancelPage
-                        integration={mockIntegration}
-                    />
-                </SelfServicePreviewContext.Provider>
-            </Provider>,
+                    },
+                }}
+            >
+                <SelfServiceChatIntegrationCancelPage
+                    integration={mockIntegration}
+                />
+            </SelfServicePreviewContext.Provider>,
         )
         expect(
             screen.getByText(/I'd like to cancel the following fulfillment/),

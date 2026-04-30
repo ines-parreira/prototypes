@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -8,7 +9,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
 
 import CustomerListContainer from '../CustomerListContainer'
 
@@ -91,11 +91,11 @@ function renderComponent({
         }),
     })
 
-    return renderWithRouter(
+    return render(
         <Provider store={store}>
             <CustomerListContainer />
         </Provider>,
-        { route, path },
+        { initialEntries: [route], path },
     )
 }
 

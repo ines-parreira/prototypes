@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { Provider } from 'react-redux'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -19,7 +18,6 @@ import {
     TICKET_COUNT_FIELD,
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { OrderDirection } from 'models/api/types'
-import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/voice-of-customer/useTicketsPerProductTrend')
 const useTicketsPerProductTrendMock = assumeMock(useTicketsPerProductTrend)
@@ -86,11 +84,7 @@ describe('useTicketsDistributionPerProduct', () => {
         const { result } = renderHook(
             () => useTicketsPerProductDistribution(),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -142,9 +136,7 @@ describe('useTicketsDistributionPerProduct', () => {
         const { result } = renderHook(
             () => useTicketsPerProductDistribution(),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(state)}>{children}</Provider>
-                ),
+                storeState: state,
             },
         )
 
@@ -196,9 +188,7 @@ describe('useTicketsDistributionPerProduct', () => {
         const { result } = renderHook(
             () => useTicketsPerProductDistribution(),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(state)}>{children}</Provider>
-                ),
+                storeState: state,
             },
         )
 
@@ -250,9 +240,7 @@ describe('useTicketsDistributionPerProduct', () => {
         const { result } = renderHook(
             () => useTicketsPerProductDistribution(),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(state)}>{children}</Provider>
-                ),
+                storeState: state,
             },
         )
 
@@ -315,11 +303,7 @@ describe('useTicketsDistributionPerProduct', () => {
         const { result } = renderHook(
             () => useTicketsPerProductDistribution(),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 
@@ -358,11 +342,7 @@ describe('useTicketsDistributionPerProduct', () => {
         const { result } = renderHook(
             () => useTicketsPerProductDistribution(),
             {
-                wrapper: ({ children }) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
+                storeState: defaultState,
             },
         )
 

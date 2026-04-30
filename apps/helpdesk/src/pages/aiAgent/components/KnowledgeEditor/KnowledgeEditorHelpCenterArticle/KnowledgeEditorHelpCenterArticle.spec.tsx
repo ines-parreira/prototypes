@@ -1,12 +1,10 @@
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { toImmutable } from 'common/utils'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { mockStore } from 'utils/testing'
 
 import type { InitialArticleModeValue } from './context'
 import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArticle'
@@ -221,12 +219,11 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
 
     const renderComponent = (articleProps: any) => {
         return render(
-            <Provider store={mockStore(defaultState)}>
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseProps}
-                    article={articleProps}
-                />
-            </Provider>,
+            <KnowledgeEditorHelpCenterArticle
+                {...baseProps}
+                article={articleProps}
+            />,
+            { storeState: defaultState },
         )
     }
 

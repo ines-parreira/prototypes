@@ -1,12 +1,8 @@
-import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -26,7 +22,6 @@ import { initialState as drillDownInitialState } from 'domains/reporting/state/u
 import { shopifyIntegration } from 'fixtures/integrations'
 import { useSearchParam } from 'hooks/useSearchParam'
 import type { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
 
 import { Flows } from './Flows'
 
@@ -109,15 +104,10 @@ const renderComponent = (initialSearch = '') => {
     }
 
     return render(
-        <MemoryRouter initialEntries={[`/${initialSearch}`]}>
-            <Provider store={mockStore(initialState)}>
-                <QueryClientProvider client={appQueryClient}>
-                    <ThemeProvider>
-                        <Flows />
-                    </ThemeProvider>
-                </QueryClientProvider>
-            </Provider>
-        </MemoryRouter>,
+        <ThemeProvider>
+            <Flows />
+        </ThemeProvider>,
+        { initialEntries: [`/${initialSearch}`], storeState: initialState },
     )
 }
 

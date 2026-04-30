@@ -1,13 +1,12 @@
-import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import type { ReactElement } from 'react'
+
+import { render as renderPrimitive } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorSkill } from './KnowledgeEditorSkill'
 
@@ -159,13 +158,11 @@ const defaultState = {
         products: [],
     }),
 }
-const store = mockStore(defaultState)
 
-const Wrapper = ({ children }: { children?: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-        <Provider store={store}>{children}</Provider>
-    </QueryClientProvider>
-)
+const render = (
+    ui: ReactElement,
+    options?: Parameters<typeof renderPrimitive>[1],
+) => renderPrimitive(ui, { storeState: defaultState, ...options })
 
 const defaultProps = {
     shopName: 'Test Shop',
@@ -199,11 +196,7 @@ describe('KnowledgeEditorSkill', () => {
             isLoading: true,
         })
 
-        const { container } = render(
-            <Wrapper>
-                <KnowledgeEditorSkill {...defaultProps} />
-            </Wrapper>,
-        )
+        const { container } = render(<KnowledgeEditorSkill {...defaultProps} />)
 
         expect(
             screen.queryByRole('button', { name: /back to skills/i }),
@@ -222,9 +215,7 @@ describe('KnowledgeEditorSkill', () => {
         })
 
         const { container } = render(
-            <Wrapper>
-                <KnowledgeEditorSkill {...defaultProps} skillId="1" />
-            </Wrapper>,
+            <KnowledgeEditorSkill {...defaultProps} skillId="1" />,
         )
 
         expect(
@@ -246,11 +237,7 @@ describe('KnowledgeEditorSkill', () => {
             error: null,
         })
 
-        render(
-            <Wrapper>
-                <KnowledgeEditorSkill {...defaultProps} skillId="1" />
-            </Wrapper>,
-        )
+        render(<KnowledgeEditorSkill {...defaultProps} skillId="1" />)
 
         expect(
             screen.getByDisplayValue(guidanceArticle.title),
@@ -258,11 +245,7 @@ describe('KnowledgeEditorSkill', () => {
     })
 
     it('renders in create mode when skillId is not provided', () => {
-        render(
-            <Wrapper>
-                <KnowledgeEditorSkill {...defaultProps} />
-            </Wrapper>,
-        )
+        render(<KnowledgeEditorSkill {...defaultProps} />)
 
         expect(
             screen.getByRole('button', { name: /enable/i }),
@@ -273,12 +256,10 @@ describe('KnowledgeEditorSkill', () => {
         const onSharedPanelStateChange = jest.fn()
 
         render(
-            <Wrapper>
-                <KnowledgeEditorSkill
-                    {...defaultProps}
-                    onSharedPanelStateChange={onSharedPanelStateChange}
-                />
-            </Wrapper>,
+            <KnowledgeEditorSkill
+                {...defaultProps}
+                onSharedPanelStateChange={onSharedPanelStateChange}
+            />,
         )
 
         expect(onSharedPanelStateChange).toHaveBeenCalledWith(
@@ -291,11 +272,7 @@ describe('KnowledgeEditorSkill', () => {
 
     it('does not call onSharedPanelStateChange when not provided', () => {
         expect(() => {
-            render(
-                <Wrapper>
-                    <KnowledgeEditorSkill {...defaultProps} />
-                </Wrapper>,
-            )
+            render(<KnowledgeEditorSkill {...defaultProps} />)
         }).not.toThrow()
     })
 
@@ -311,13 +288,11 @@ describe('KnowledgeEditorSkill', () => {
         })
 
         render(
-            <Wrapper>
-                <KnowledgeEditorSkill
-                    {...defaultProps}
-                    skillId="999"
-                    onClose={onClose}
-                />
-            </Wrapper>,
+            <KnowledgeEditorSkill
+                {...defaultProps}
+                skillId="999"
+                onClose={onClose}
+            />,
         )
 
         expect(mockNotifyError).toHaveBeenCalledWith(

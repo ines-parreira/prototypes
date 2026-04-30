@@ -5,7 +5,6 @@ import type { CountryCode } from 'libphonenumber-js'
 
 import type { PhoneIntegration } from 'models/integration/types'
 import type { UserSearchResult } from 'models/search/types'
-import { mockStore } from 'utils/testing'
 
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
 import PhoneDeviceDialerInput from '../PhoneDeviceDialerInput'
@@ -58,9 +57,7 @@ describe('PhoneDeviceDialer', () => {
         handleCall: mockHandleCall,
     }
     const renderComponent = () =>
-        render(<PhoneDeviceDialer onCallInitiated={mockOnCallInitiated} />, {
-            storeState: mockStore({} as any).getState() as object,
-        })
+        render(<PhoneDeviceDialer onCallInitiated={mockOnCallInitiated} />)
     beforeEach(() => {
         jest.clearAllMocks()
         mockSetIsPhoneNumberValid.mockImplementation((value) => {

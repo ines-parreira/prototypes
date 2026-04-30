@@ -1,18 +1,13 @@
 import { render } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import { Provider } from 'react-redux'
-import { MemoryRouter, Route } from 'react-router-dom'
 
 import {
     mockListMetafieldDefinitionsHandler,
     mockUpdateMetafieldDefinitionHandler,
 } from '@gorgias/helpdesk-mocks'
-
-import { mockStore } from 'utils/testing'
 
 import { columns } from './Columns'
 import MetafieldsTable from './MetafieldsTable'
@@ -63,30 +58,22 @@ const mockFields: Field[] = [
 
 describe('MetafieldsTable', () => {
     let user: ReturnType<typeof userEvent.setup>
-    let queryClient: QueryClient
 
     const renderComponent = (
         props: Partial<
             React.ComponentProps<typeof MetafieldsTable<Field, unknown>>
         > = {},
     ) => {
-        const store = mockStore({})
         return render(
-            <MemoryRouter
-                initialEntries={[`/integrations/${INTEGRATION_ID}/settings`]}
-            >
-                <Route path="/integrations/:id/settings">
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <MetafieldsTable<Field, unknown>
-                                columns={columns}
-                                data={mockFields}
-                                {...props}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
+            <MetafieldsTable<Field, unknown>
+                columns={columns}
+                data={mockFields}
+                {...props}
+            />,
+            {
+                initialEntries: [`/integrations/${INTEGRATION_ID}/settings`],
+                path: '/integrations/:id/settings',
+            },
         )
     }
 
@@ -102,21 +89,13 @@ describe('MetafieldsTable', () => {
 
     beforeEach(() => {
         user = userEvent.setup()
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
 
         const mockListHandler = mockListMetafieldDefinitionsHandler()
         const mockUpdateHandler = mockUpdateMetafieldDefinitionHandler()
         server.use(mockListHandler.handler, mockUpdateHandler.handler)
     })
 
-    afterEach(() => {
-        queryClient.clear()
-    })
+    afterEach(() => {})
 
     it('should render table with data', () => {
         renderComponent()

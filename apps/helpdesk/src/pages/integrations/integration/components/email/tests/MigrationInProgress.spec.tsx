@@ -1,13 +1,12 @@
 import React from 'react'
 
 import client from '@repo/api-resources'
-import { cleanup, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, screen } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
-import { mockStore } from 'utils/testing'
 
 import MigrationInProgress from '../EmailMigration/MigrationInProgress'
 import * as migrationUtils from '../EmailMigration/utils'
@@ -32,17 +31,13 @@ describe('MigrationInProgress', () => {
     })
 
     const renderComponent = () =>
-        render(
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({
-                        migrations: { email: [migration] },
-                    }),
-                } as any)}
-            >
-                <MigrationInProgress />
-            </Provider>,
-        )
+        render(<MigrationInProgress />, {
+            storeState: {
+                integrations: fromJS({
+                    migrations: { email: [migration] },
+                }),
+            } as any,
+        })
 
     afterEach(cleanup)
 

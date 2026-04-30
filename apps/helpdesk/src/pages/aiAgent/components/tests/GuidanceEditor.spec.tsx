@@ -3,9 +3,6 @@ import type React from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-
-import { mockStore } from 'utils/testing'
 
 import { GuidanceEditor } from '../GuidanceEditor/GuidanceEditor'
 
@@ -28,7 +25,7 @@ describe('GuidanceEditor', () => {
     }
 
     const renderWithProvider = (ui: React.ReactElement) => {
-        return render(<Provider store={mockStore({})}>{ui}</Provider>)
+        return render(ui)
     }
 
     beforeEach(() => {

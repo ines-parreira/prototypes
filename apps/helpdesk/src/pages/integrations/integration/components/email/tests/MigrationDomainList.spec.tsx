@@ -1,14 +1,8 @@
 import type { ComponentProps } from 'react'
 
 import * as hooksImports from '@repo/hooks'
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    within,
-} from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen, within } from '@testing-library/react'
 
 import {
     migrationOutboundVerificationNotStarted,
@@ -17,7 +11,6 @@ import {
 } from 'fixtures/emailMigration'
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'
 import { OutboundVerificationType } from 'models/integration/types'
-import { mockStore } from 'utils/testing'
 
 import type DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
 import MigrationDomainList from '../EmailMigration/MigrationDomainList'
@@ -69,12 +62,10 @@ jest.mock(
 describe('MigrationDomainList', () => {
     const renderComponent = (domains: EmailMigrationOutboundVerification[]) =>
         render(
-            <Provider store={mockStore({} as any)}>
-                <MigrationDomainList
-                    domains={domains}
-                    refreshMigrationData={jest.fn()}
-                />
-            </Provider>,
+            <MigrationDomainList
+                domains={domains}
+                refreshMigrationData={jest.fn()}
+            />,
         )
 
     afterEach(cleanup)
