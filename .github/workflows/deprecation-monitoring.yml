@@ -18,14 +18,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GH_BOT_FRONTEND_PKG_WRITE_TOKEN }}
 
       - name: Install node
-        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        uses: actions/setup-node@v5
         with:
           node-version: "24.15.0"
+          package-manager-cache: false
+
+      - name: Enable pnpm
+        shell: bash
+        run: |
+          corepack enable
+          corepack prepare "$(node -p "require('./package.json').packageManager")" --activate
 
       - name: Set GitHub Packages auth token
         shell: bash

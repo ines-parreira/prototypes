@@ -31,7 +31,7 @@ jobs:
       nx-base-ref: ${{ env.NX_BASE_REF }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -71,7 +71,7 @@ jobs:
         include: ${{ fromJSON(needs.workspace-setup.outputs.react-doctor-affected-packages) }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -113,7 +113,7 @@ jobs:
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcloud-key.json
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download React Doctor report artifact
         uses: actions/download-artifact@v4

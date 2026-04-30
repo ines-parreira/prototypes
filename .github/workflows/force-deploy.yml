@@ -34,7 +34,7 @@ jobs:
       cache-key: ${{ env.CACHE_KEY }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
 

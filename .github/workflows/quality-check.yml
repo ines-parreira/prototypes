@@ -39,7 +39,7 @@ jobs:
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -63,7 +63,7 @@ jobs:
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -87,7 +87,7 @@ jobs:
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -118,7 +118,7 @@ jobs:
       CODECOV_CLI_VERSION: "v10.2.1"
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -212,7 +212,7 @@ jobs:
       CODECOV_CLI_VERSION: "v10.2.1"
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 

@@ -5,7 +5,7 @@ jobs:
   Check-Snapshot-Tests:
     runs-on: gh-actions-small-runner-set
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
         with:
             fetch-depth: 0
       - run: ./scripts/check-snapshots.sh
