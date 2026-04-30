@@ -1991,6 +1991,55 @@ describe('utils', () => {
                 AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
             )
         })
+
+        it('should not throw when resourceId is undefined', () => {
+            expect(() =>
+                getResourceType(
+                    undefined as unknown as string,
+                    AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                    {
+                        storeWebsiteQuestions: mockStoreWebsiteQuestions,
+                        ingestedFiles: mockIngestedFiles,
+                    },
+                ),
+            ).not.toThrow()
+        })
+
+        it('should not throw when a store website question has a missing article_id', () => {
+            const questionsWithMissingArticleId = [
+                { id: 1, title: 'Question 1', helpCenterId: 300 },
+                {
+                    id: 2,
+                    article_id: 123,
+                    title: 'Question 2',
+                    helpCenterId: 300,
+                },
+            ] as any
+
+            expect(() =>
+                getResourceType(
+                    '123',
+                    AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                    {
+                        storeWebsiteQuestions: questionsWithMissingArticleId,
+                        ingestedFiles: mockIngestedFiles,
+                    },
+                ),
+            ).not.toThrow()
+
+            expect(
+                getResourceType(
+                    '123',
+                    AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                    {
+                        storeWebsiteQuestions: questionsWithMissingArticleId,
+                        ingestedFiles: mockIngestedFiles,
+                    },
+                ),
+            ).toBe(
+                AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+            )
+        })
     })
 
     describe('useProcessResources', () => {

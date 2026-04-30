@@ -536,9 +536,14 @@ export const getResourceType = (
     },
 ) => {
     if (type === AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET) {
+        if (resourceId == null) {
+            return type
+        }
+
         const storeWebsiteQuestion = storeWebsiteQuestions.find(
             (question) =>
-                question.article_id.toString() === resourceId.toString(),
+                question.article_id != null &&
+                String(question.article_id) === String(resourceId),
         )
         if (storeWebsiteQuestion) {
             return AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET
