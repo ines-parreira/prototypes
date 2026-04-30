@@ -3,6 +3,7 @@ import _get from 'lodash/get'
 import memoizeOne from 'memoize-one'
 import moment from 'moment'
 
+import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
@@ -38,6 +39,10 @@ export function isTicketMessageSourceType(
 
 export function isTicketChannel(input: unknown): input is TicketChannel {
     return Object.values<string>(TicketChannel).includes(input as string)
+}
+
+export function isLegacyTicketChannel(input: unknown): input is TicketChannel {
+    return Object.values<string>(LegacyChannelSlug).includes(input as string)
 }
 
 export const isTicketContactReasonSuggestion = (obj: Record<string, unknown>) =>

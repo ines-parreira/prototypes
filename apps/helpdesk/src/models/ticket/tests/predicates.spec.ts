@@ -5,6 +5,7 @@ import {
     hasPendingAction,
     isFailed,
     isGorgiasContactFormTicketMeta,
+    isLegacyTicketChannel,
     isPending,
     isTicketChannel,
     isTicketMessageSourceType,
@@ -374,6 +375,32 @@ describe('predicates', () => {
             expect(
                 isTicketChannel(TicketMessageSourceType.WhatsAppMessage),
             ).toBe(false)
+        })
+    })
+
+    describe('isLegacyTicketChannel', () => {
+        it('returns true for a known legacy channel slug', () => {
+            expect(isLegacyTicketChannel(TicketChannel.Email)).toBe(true)
+            expect(isLegacyTicketChannel(TicketChannel.Facebook)).toBe(true)
+            expect(isLegacyTicketChannel('email')).toBe(true)
+        })
+
+        it('returns false for tiktok-shop', () => {
+            expect(isLegacyTicketChannel(TicketChannel.TiktokShop)).toBe(false)
+            expect(isLegacyTicketChannel('tiktok-shop')).toBe(false)
+        })
+
+        it('returns false for custom-chat', () => {
+            expect(isLegacyTicketChannel(TicketChannel.CustomChat)).toBe(false)
+            expect(isLegacyTicketChannel('custom-chat')).toBe(false)
+        })
+
+        it('returns false for unknown slugs', () => {
+            expect(isLegacyTicketChannel('google-business-messenger')).toBe(
+                false,
+            )
+            expect(isLegacyTicketChannel(null)).toBe(false)
+            expect(isLegacyTicketChannel(undefined)).toBe(false)
         })
     })
 })

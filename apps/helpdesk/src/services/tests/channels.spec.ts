@@ -108,6 +108,27 @@ describe('services', () => {
                 )
             })
 
+            it('returns false for tiktok-shop channel slug', () => {
+                expect(isLegacyChannel('tiktok-shop')).toBe(false)
+            })
+
+            it('returns false for custom-chat channel slug', () => {
+                expect(isLegacyChannel('custom-chat')).toBe(false)
+            })
+
+            it('returns true for a legacy slug like email', () => {
+                expect(isLegacyChannel('email')).toBe(true)
+            })
+
+            it('returns false for tiktok-shop Channel object', () => {
+                const channel = mockChannels.find(
+                    (c) => c.slug === 'tiktok-shop',
+                )
+                if (channel) {
+                    expect(isLegacyChannel(channel)).toBe(false)
+                }
+            })
+
             it('should return false for new channels', () => {
                 expect(isLegacyChannel('tiktok-shop')).toBe(false)
                 expect(isLegacyChannel(getChannelBySlug('tiktok-shop')!)).toBe(

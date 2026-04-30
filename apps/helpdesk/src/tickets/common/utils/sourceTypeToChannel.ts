@@ -3,7 +3,7 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import { isTicketChannel } from 'models/ticket/predicates'
+import { isLegacyTicketChannel } from 'models/ticket/predicates'
 import type { TicketMessage } from 'models/ticket/types'
 import { DEFAULT_CHANNEL } from 'tickets/common/config'
 
@@ -31,7 +31,7 @@ export default function sourceTypeToChannel(
             return TicketChannel.Phone
         }
 
-        if (!isTicketChannel(lastMessage.get('channel'))) {
+        if (!isLegacyTicketChannel(lastMessage.get('channel'))) {
             return sourceType
         }
 

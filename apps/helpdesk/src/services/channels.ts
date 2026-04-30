@@ -10,7 +10,7 @@ import { channelsQueryKeys, useListChannels } from 'models/channel/queries'
 import type { listChannels } from 'models/channel/resources'
 import type { Channel, ChannelLike, LegacyChannel } from 'models/channel/types'
 import {
-    isTicketChannel,
+    isLegacyTicketChannel,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
@@ -86,11 +86,11 @@ export function isLegacyChannel(
     if (isChannel(channel)) {
         return (
             isTicketMessageSourceType(channel.slug) ||
-            isTicketChannel(channel.slug)
+            isLegacyTicketChannel(channel.slug)
         )
     }
 
-    return isTicketMessageSourceType(channel) || isTicketChannel(channel)
+    return isTicketMessageSourceType(channel) || isLegacyTicketChannel(channel)
 }
 
 export function isNewChannel(channel: ChannelLike): boolean {

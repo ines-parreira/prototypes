@@ -27,8 +27,8 @@ import {
     isWhatsAppIntegration,
 } from 'models/integration/types'
 import {
+    isLegacyTicketChannel,
     isSourceAddress,
-    isTicketChannel,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
 import type { SourceAddress } from 'models/ticket/types'
@@ -520,7 +520,7 @@ export const getSendersForChannel =
     (channelLike: ChannelLike) =>
     (state: RootState): SourceAddress[] => {
         if (
-            isTicketChannel(channelLike) ||
+            isLegacyTicketChannel(channelLike) ||
             isTicketMessageSourceType(channelLike)
         ) {
             const sendersForSource =
