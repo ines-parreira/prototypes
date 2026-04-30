@@ -52,4 +52,25 @@ describe('useExhaustEndpoint', () => {
 
         expect(result.current.data).toEqual([])
     })
+
+    it('keeps the first page when pagination meta is missing', async () => {
+        const mockFetch = vi.fn().mockResolvedValue({
+            data: {
+                data: [{ id: 1 }, { id: 2 }],
+            },
+        })
+
+        const { result } = renderHook(() =>
+            useExhaustEndpoint(['test-missing-meta'], (cursor) =>
+                mockFetch(cursor),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(mockFetch).toHaveBeenCalledTimes(1)
+        expect(result.current.data).toEqual([{ id: 1 }, { id: 2 }])
+    })
 })

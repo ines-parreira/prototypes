@@ -31,7 +31,8 @@ export function useInfiniteListUsers<
                 },
                 { signal },
             ),
-        getNextPageParam: (lastPage) => lastPage.data.meta.next_cursor,
+        getNextPageParam: (lastPage) =>
+            lastPage.data.meta?.next_cursor ?? undefined,
         ...options,
     })
 }

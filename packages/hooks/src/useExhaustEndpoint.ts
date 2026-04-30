@@ -6,7 +6,7 @@ import type { QueryKey, UseInfiniteQueryOptions } from '@tanstack/react-query'
 import type { HttpResponse, PaginationMeta } from '@gorgias/helpdesk-client'
 
 type ListResponse<ListItemType> = {
-    meta: PaginationMeta
+    meta?: PaginationMeta
     data: ListItemType[]
 }
 
@@ -27,7 +27,7 @@ export function useExhaustEndpoint<ListItemType>(
         refetch,
     } = useInfiniteQuery(queryKey, ({ pageParam }) => fetchPage(pageParam), {
         ...options,
-        getNextPageParam: ({ data }) => data.meta.next_cursor ?? undefined,
+        getNextPageParam: ({ data }) => data.meta?.next_cursor ?? undefined,
     })
 
     useEffect(() => {

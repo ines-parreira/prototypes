@@ -25,7 +25,8 @@ export function useInfiniteListTeams<
         queryKey: [...queryKeys.teams.listTeams(params), 'paginated'],
         queryFn: async ({ pageParam, signal }) =>
             listTeams({ ...params, cursor: pageParam }, { signal }),
-        getNextPageParam: (lastPage) => lastPage.data.meta.next_cursor,
+        getNextPageParam: (lastPage) =>
+            lastPage.data.meta?.next_cursor ?? undefined,
         ...options,
     })
 }
