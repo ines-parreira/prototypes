@@ -34,14 +34,21 @@ export function TagsMultiSelectShowMore({
                             </div>
                         }
                     >
-                        <TooltipContent>
+                        <TooltipContent maxWidth={256}>
                             <Box
+                                className={css.overflowTooltipContent}
                                 flexDirection="column"
                                 alignItems="flex-start"
                                 gap="xxxxs"
                             >
                                 {hiddenTags.map((tag) => (
-                                    <Text key={tag.id} size="sm" variant="bold">
+                                    <Text
+                                        key={tag.id}
+                                        className={css.overflowTooltipTag}
+                                        size="sm"
+                                        variant="bold"
+                                        wrap="wrap"
+                                    >
                                         {tag.name}
                                     </Text>
                                 ))}
