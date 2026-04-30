@@ -1,0 +1,25 @@
+@import '~css/new/mixins';
+
+:local {
+    .editorContainer {
+        padding: 16px 24px 24px;
+
+        ///* extra bottom padding on touchscreen devices,
+        //* for the onscreen keyboard
+        //*/
+        @media (pointer: coarse) {
+            padding-bottom: 14rem;
+        }
+    }
+}
+
+:global(.globalNav) :local {
+    .editorContainer {
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s)
+            var(--layout-spacing-s);
+
+        @media (pointer: coarse) {
+            padding-bottom: 14rem;
+        }
+    }
+}

@@ -23,7 +23,7 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 import { useTicketInfobarNavigationShortcuts } from '../../hooks/useTicketInfobarNavigationShortcuts'
 import { InfobarNavigationContainer } from './components/InfobarNavigationContainer'
 import { InfobarNavigationItem } from './components/InfobarNavigationItem'
-import { InfobarToggle } from './components/TicketInfobarNavigationToggle'
+import { TicketInfobarNavigationToggle } from './components/TicketInfobarNavigationToggle'
 
 type TicketInfobarNavigationProps = {
     hasAIFeedback?: boolean
@@ -73,7 +73,10 @@ export function TicketInfobarNavigation({
 
     return (
         <InfobarNavigationContainer>
-            <InfobarToggle isExpanded={isExpanded} onToggle={onToggle} />
+            <TicketInfobarNavigationToggle
+                isExpanded={isExpanded}
+                onToggle={onToggle}
+            />
             <ButtonGroup
                 size="lg"
                 withoutBorder

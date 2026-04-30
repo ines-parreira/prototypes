@@ -1,6 +1,6 @@
 {
-  "date": "2026-04-27T15:46:29.457Z",
-  "total": 6667,
+  "date": "2026-04-28T11:48:37.393Z",
+  "total": 6632,
   "deprecated": [
     {
       "nodeType": "ExportNamedDeclaration",
@@ -3998,39 +3998,6 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
-      "nodeName": "renderHookWithStoreAndQueryClientProvider",
-      "comment": "*\n * @deprecated Use `renderHook` from `@repo/testing` instead.\n ",
-      "count": 19,
-      "filePath": "apps/helpdesk/src/tests/renderHookWithStoreAndQueryClientProvider.tsx",
-      "usages": [
-        {
-          "name": "renderHookWithStoreAndQueryClientProvider",
-          "files": [
-            "apps/helpdesk/src/domains/reporting/hooks/drill-down/useDrillDownModalTrigger.spec.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/drill-down/tests/DrillDownModalTrigger.spec.tsx",
-            "apps/helpdesk/src/models/aiAgent/tests/queries.spec.ts",
-            "apps/helpdesk/src/models/billing/tests/internalBillingQueries.spec.ts",
-            "apps/helpdesk/src/models/billing/tests/queries.spec.ts",
-            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/__tests__/useGetOnboardings.spec.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/__tests__/useTransformToneOfVoiceConversations.spec.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/tests/useCreateOnboarding.spec.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/tests/useSteps.spec.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/tests/useUpdateOnboarding.spec.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/hooks/tests/useKpis.spec.ts",
-            "apps/helpdesk/src/pages/aiAgent/Overview/hooks/tests/useStartAiSalesAgentTrialForMultipleStores.spec.ts",
-            "apps/helpdesk/src/pages/aiAgent/trial/tests/useStartShoppingAssistantTrial.spec.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/hooks/tests/useIsPaymentEnabled.spec.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/tests/useConfirmStripeSetupIntent.spec.ts",
-            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/tests/useSubmitPaymentMethod.spec.ts",
-            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/tests/useSubmitPaymentMethodWithBillingContact.spec.ts",
-            "apps/helpdesk/src/routes/hooks/tests/useCanduRouter.spec.tsx",
-            "apps/helpdesk/src/routes/layout/products/analytics.spec.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
       "nodeName": "replaceAttachmentURL",
       "comment": "*\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
       "count": 18,
@@ -4414,33 +4381,6 @@
             "apps/helpdesk/src/tests/utils.spec.ts",
             "apps/helpdesk/src/tickets/ticket-detail/helpers/processContent.ts",
             "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/processContent.spec.ts"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "renderHookWithQueryClientProvider",
-      "comment": "*\n * @deprecated Use `renderHook` from `@repo/testing` instead.\n ",
-      "count": 13,
-      "filePath": "apps/helpdesk/src/tests/reactQueryTestingUtils.tsx",
-      "usages": [
-        {
-          "name": "renderHookWithQueryClientProvider",
-          "files": [
-            "apps/helpdesk/src/hooks/businessHours/tests/useDeleteCustomBusinessHours.spec.ts",
-            "apps/helpdesk/src/hooks/businessHours/tests/useIntegrationBusinessHours.spec.ts",
-            "apps/helpdesk/src/models/workflows/tests/queries.spec.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/hooks/tests/useVisualBuilder.spec.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/hooks/tests/useWorkflowEditor.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/tests/useWrapUpTime.spec.ts",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus.spec.ts",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/flows/utils/tests/useVoiceFlowForm.spec.ts",
-            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/tests/useInvoicePayment.spec.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/hooks/tests/useCancelOrder.spec.ts",
-            "apps/helpdesk/src/pages/tickets/detail/hooks/tests/useDuplicateOrder.spec.ts",
-            "apps/helpdesk/src/pages/tickets/detail/hooks/tests/useEditOrder.spec.ts",
-            "apps/helpdesk/src/pages/tickets/detail/hooks/tests/useRefundOrder.spec.ts"
           ]
         }
       ]
@@ -6031,23 +5971,6 @@
       ]
     },
     {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "renderHookWithRouter",
-      "comment": "*\n * @deprecated Use `renderHook` from `@repo/testing` instead.\n ",
-      "count": 3,
-      "filePath": "apps/helpdesk/src/tests/renderHookWithRouter.tsx",
-      "usages": [
-        {
-          "name": "renderHookWithRouter",
-          "files": [
-            "apps/helpdesk/src/pages/aiAgent/trial/tests/useTrialFinishSetupModal.spec.tsx",
-            "apps/helpdesk/src/settings/automate/hooks/tests/useAutomateBaseURL.spec.ts",
-            "apps/helpdesk/src/settings/automate/hooks/tests/useIsAutomateSettings.spec.ts"
-          ]
-        }
-      ]
-    },
-    {
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "isInternalNote",
       "comment": "*\n * @deprecated Use isInternalNote from @gorgias/tickets package instead\n * @date 2025-12-22\n * @type tickets-migration\n * Return true if the message's source type identifies an internal note\n ",
@@ -6884,6 +6807,45 @@
       "usages": [
         {
           "name": "HandleUsageBanner",
+          "files": []
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "renderHookWithQueryClientProvider",
+      "comment": "*\n * @deprecated Use `renderHook` from `@repo/testing` instead.\n ",
+      "count": 0,
+      "filePath": "apps/helpdesk/src/tests/reactQueryTestingUtils.tsx",
+      "usages": [
+        {
+          "name": "renderHookWithQueryClientProvider",
+          "files": []
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "renderHookWithRouter",
+      "comment": "*\n * @deprecated Use `renderHook` from `@repo/testing` instead.\n ",
+      "count": 0,
+      "filePath": "apps/helpdesk/src/tests/renderHookWithRouter.tsx",
+      "usages": [
+        {
+          "name": "renderHookWithRouter",
+          "files": []
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "renderHookWithStoreAndQueryClientProvider",
+      "comment": "*\n * @deprecated Use `renderHook` from `@repo/testing` instead.\n ",
+      "count": 0,
+      "filePath": "apps/helpdesk/src/tests/renderHookWithStoreAndQueryClientProvider.tsx",
+      "usages": [
+        {
+          "name": "renderHookWithStoreAndQueryClientProvider",
           "files": []
         }
       ]

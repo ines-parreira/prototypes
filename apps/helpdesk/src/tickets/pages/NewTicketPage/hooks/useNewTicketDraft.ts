@@ -2,18 +2,28 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
 import { useEffectOnce, usePrevious } from '@repo/hooks'
-import type { RawDraftContentState, SelectionState } from 'draft-js'
-import { convertFromRaw } from 'draft-js'
-import type { Map } from 'immutable'
-import { fromJS, List } from 'immutable'
+import type { TicketFieldsState } from '@repo/tickets'
+import { useTicketFieldsStore } from '@repo/tickets'
+import type { SelectionState } from 'draft-js'
+import { fromJS } from 'immutable'
+import type { List, Map } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
+import _isEqual from 'lodash/isEqual'
 import { v4 as uuidv4 } from 'uuid'
 
-import type { Macro, TicketPriority } from '@gorgias/helpdesk-queries'
+import type {
+    Macro,
+    TicketPriority,
+    TicketTag,
+    TicketTeam,
+    TicketUser,
+} from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import type { TicketDraft } from 'hooks/useTicketDraft'
+import { DRAFT_TICKET_STORE, isTicketDraftEmpty } from 'hooks/useTicketDraft'
 import type { Ticket } from 'models/ticket/types'
 import { convertToRawWithoutPredictions } from 'pages/common/draftjs/plugins/prediction/utils'
 import {
@@ -24,7 +34,6 @@ import {
 import { hasOnlySignatureText } from 'state/newMessage/emailExtraUtils'
 import { transformMessageContext } from 'state/newMessage/responseUtils'
 import {
-    getNewMessage,
     getNewMessageAttachments,
     getNewMessageContentState,
     getNewMessageDiscountCodes,
@@ -40,72 +49,36 @@ import {
     restoreTicketDraft,
     restoreTicketDraftApplyMacro,
 } from 'state/ticket/actions'
-import {
-    getAppliedMacro,
-    getProperty,
-    getTicketFieldState,
-} from 'state/ticket/selectors'
+import { getAppliedMacro } from 'state/ticket/selectors'
 
-export const DRAFT_TICKET_STORE = 'ticket-drafts'
-
-export type TicketDraft = {
-    appliedMacro: Macro | null
-    assignee_team: Ticket['assignee_team'] | null
-    assignee_user: Ticket['assignee_user'] | null
-    attachments: Message['attachments']
-    custom_fields: Ticket['custom_fields']
-    customer: Ticket['customer'] | null
-    priority: TicketPriority | undefined
-    source: Message['source']
-    sourceType: TicketMessageSourceType
+type UseNewTicketDraftArgs = {
     subject: string
-    tags: Ticket['tags']
-    ticket: {
-        contentState: RawDraftContentState
-        originalContentState?: RawDraftContentState
-    } | null
-    temporaryId: string
+    priority: TicketPriority | undefined
+    assigneeUser: TicketUser | null
+    assigneeTeam: TicketTeam | null
+    tags: TicketTag[]
+    customer: Ticket['customer'] | null
 }
 
-export const isTicketDraftEmpty = (ticketDraft: TicketDraft | null) => {
-    if (ticketDraft) {
-        const {
-            appliedMacro,
-            assignee_team,
-            assignee_user,
-            attachments,
-            custom_fields,
-            customer,
-            priority,
-            source,
-            subject,
-            ticket,
-            tags,
-        } = ticketDraft
-        if (ticket && convertFromRaw(ticket?.contentState).hasText()) {
-            return false
-        }
-
-        return (
-            appliedMacro === null &&
-            assignee_team === null &&
-            assignee_user === null &&
-            attachments.length === 0 &&
-            _isEmpty(custom_fields) &&
-            customer === null &&
-            priority === undefined &&
-            source.type === TicketMessageSourceType.Email &&
-            source.to?.length === 0 &&
-            subject === '' &&
-            tags.length === 0
-        )
-    }
-    return true
+export type RestoredLocalState = {
+    subject: string
+    priority: TicketPriority | undefined
+    assigneeUser: TicketUser | null
+    assigneeTeam: TicketTeam | null
+    tags: TicketTag[]
+    customFields: TicketFieldsState
 }
 
-export default function useTicketDraft(isTicketNew = false) {
-    const isPreviousTicketNew = usePrevious(isTicketNew)
+export function useNewTicketDraft({
+    subject,
+    priority,
+    assigneeUser,
+    assigneeTeam,
+    tags,
+    customer,
+}: UseNewTicketDraftArgs) {
     const localForageRef = useRef<LocalForage>()
+    const { initializeFields, resetFields } = useTicketFieldsStore()
     if (!localForageRef.current) {
         localForageRef.current = localForageManager.getTable(DRAFT_TICKET_STORE)
     }
@@ -114,27 +87,7 @@ export default function useTicketDraft(isTicketNew = false) {
 
     const attachments = useAppSelector(getNewMessageAttachments)
     const source = useAppSelector(getNewMessageSource)
-    const assigneeTeam = useAppSelector((state) =>
-        getProperty('assignee_team')(state),
-    ) as Map<any, any> | null
-    const assigneeUser = useAppSelector((state) =>
-        getProperty('assignee_user')(state),
-    ) as Map<any, any> | null
-    const subject = useAppSelector((state) =>
-        getProperty('subject')(state),
-    ) as unknown as string
-    const tags =
-        useAppSelector((state) => getProperty('tags')(state)) ??
-        (List() as unknown as List<any>)
-    const customer = useAppSelector((state) =>
-        getProperty('customer')(state),
-    ) as Map<any, any> | null
-    const newMessage = useAppSelector(getNewMessage)
     const newMessageState = useAppSelector(getNewMessageState)
-    const bodyText = useMemo(
-        () => newMessage.get('body_text') as string,
-        [newMessage],
-    )
     const newMessageIsEmailExtraAdded = useAppSelector(
         isNewMessageEmailExtraAdded,
     )
@@ -164,7 +117,7 @@ export default function useTicketDraft(isTicketNew = false) {
     const appliedMacro = useAppSelector(getAppliedMacro)
     const isMacroApplied = !!appliedMacro && !appliedMacro.isEmpty()
     const newMessageDiscountCodes = useAppSelector(getNewMessageDiscountCodes)
-    const customFields = useAppSelector(getTicketFieldState)
+    const customFields = useTicketFieldsStore((state) => state.fields)
 
     const ticket = useMemo(() => {
         if (
@@ -203,29 +156,25 @@ export default function useTicketDraft(isTicketNew = false) {
     ])
 
     const temporaryId = useRef<string | null>(null)
+    const isHydratingStoredDraftRef = useRef(false)
 
-    const priority = useAppSelector((state) =>
-        getProperty('priority')(state),
-    ) as unknown as TicketPriority | undefined
-
-    const reduxState = useMemo(
-        () => ({
-            appliedMacro: (appliedMacro?.toJS() as Macro) || null,
-            assignee_team:
-                (assigneeTeam?.toJS() as Ticket['assignee_team']) || null,
-            assignee_user:
-                (assigneeUser?.toJS() as Ticket['assignee_user']) || null,
-            custom_fields: customFields,
-            customer: (customer?.toJS() as Ticket['customer']) || null,
-            priority,
-            attachments: attachments.toJS() as Message['attachments'],
-            source: source.toJS() as Message['source'],
-            sourceType: newMessageSourceType,
-            subject,
-            ticket,
-            tags: tags.toJS() as Ticket['tags'],
-            temporaryId: temporaryId.current,
-        }),
+    const draftState = useMemo(
+        () =>
+            ({
+                appliedMacro: (appliedMacro?.toJS() as Macro) || null,
+                assignee_team: assigneeTeam as Ticket['assignee_team'] | null,
+                assignee_user: assigneeUser as Ticket['assignee_user'] | null,
+                custom_fields: customFields as Ticket['custom_fields'],
+                customer,
+                priority,
+                attachments: attachments.toJS() as Message['attachments'],
+                source: source.toJS() as Message['source'],
+                sourceType: newMessageSourceType,
+                subject,
+                ticket,
+                tags: tags as Ticket['tags'],
+                temporaryId: temporaryId.current ?? '',
+            }) satisfies TicketDraft,
         [
             appliedMacro,
             assigneeTeam,
@@ -242,84 +191,152 @@ export default function useTicketDraft(isTicketNew = false) {
         ],
     )
 
-    const [ticketDraft, setTicketDraft] = useState<TicketDraft | null>(null)
-
-    const isStoredTicketDraftEmpty = useMemo(
-        () => isTicketDraftEmpty(ticketDraft),
-        [ticketDraft],
+    const bodyText = useMemo(
+        () =>
+            newMessageContentState?.hasText()
+                ? newMessageContentState.getPlainText()
+                : '',
+        [newMessageContentState],
     )
 
-    const isNewTicketEmpty = useMemo(
+    const isDraftEmptyExceptCustomFields = useMemo(
         () =>
             appliedMacro === null &&
             assigneeTeam === null &&
             assigneeUser === null &&
             attachments.size === 0 &&
             bodyText === '' &&
-            _isEmpty(customFields) &&
             customer === null &&
+            priority === undefined &&
             source.get('type') === TicketMessageSourceType.Email &&
             (!!source.get('to')
                 ? (source.get('to') as List<any>).size === 0
                 : true) &&
             subject === '' &&
-            tags.size === 0,
+            tags.length === 0,
         [
             appliedMacro,
             assigneeTeam,
             assigneeUser,
             attachments,
             bodyText,
-            customFields,
             customer,
+            priority,
             source,
             subject,
             tags,
         ],
     )
 
-    const previousIsNewTicketEmpty = usePrevious(isNewTicketEmpty)
+    const isDraftEmpty = useMemo(
+        () => isDraftEmptyExceptCustomFields && _isEmpty(customFields),
+        [customFields, isDraftEmptyExceptCustomFields],
+    )
+
+    const previousIsDraftEmpty = usePrevious(isDraftEmpty)
+
+    const [storedDraft, setStoredDraft] = useState<TicketDraft | null>(null)
+    const [hasLoadedStoredDraft, setHasLoadedStoredDraft] = useState(false)
+    const [restoredLocalState, setRestoredLocalState] =
+        useState<RestoredLocalState | null>(null)
+    const [hasAppliedRestoredLocalState, setHasAppliedRestoredLocalState] =
+        useState(false)
+
+    const isStoredDraftEmpty = useMemo(
+        () => isTicketDraftEmpty(storedDraft),
+        [storedDraft],
+    )
+
+    const syncCustomFieldsStore = useCallback(
+        (customFields?: Ticket['custom_fields']) => {
+            resetFields()
+            if (customFields && !_isEmpty(customFields)) {
+                initializeFields(customFields as TicketFieldsState)
+            }
+        },
+        [initializeFields, resetFields],
+    )
 
     useEffectOnce(() => {
         async function fetchTicketDraft() {
             const draft = (await localForage.getItem('new')) as TicketDraft
-            setTicketDraft(draft)
-            if (
-                draft &&
-                draft.temporaryId &&
-                !isTicketDraftEmpty(draft) &&
-                isTicketNew
-            ) {
+            setStoredDraft(draft)
+            if (draft && draft.temporaryId && !isTicketDraftEmpty(draft)) {
                 temporaryId.current = draft.temporaryId
-            } else if (isTicketNew) {
+                if (isDraftEmptyExceptCustomFields) {
+                    isHydratingStoredDraftRef.current = true
+                    syncCustomFieldsStore()
+                }
+            } else {
                 temporaryId.current = uuidv4()
+                syncCustomFieldsStore()
             }
+            setHasLoadedStoredDraft(true)
         }
         void fetchTicketDraft()
     })
 
-    useEffect(() => {
-        if (!isTicketNew) {
-            temporaryId.current = null
-        } else if (isPreviousTicketNew === false && isTicketNew) {
-            temporaryId.current = uuidv4()
+    const shouldHydrateStoredDraft =
+        hasLoadedStoredDraft &&
+        !isStoredDraftEmpty &&
+        !restoredLocalState &&
+        isDraftEmptyExceptCustomFields
+
+    const isRestoredLocalStateApplied = useMemo(() => {
+        if (!restoredLocalState) {
+            return true
         }
-    }, [isPreviousTicketNew, isTicketNew])
+
+        return (
+            subject === restoredLocalState.subject &&
+            priority === restoredLocalState.priority &&
+            _isEqual(assigneeUser, restoredLocalState.assigneeUser) &&
+            _isEqual(assigneeTeam, restoredLocalState.assigneeTeam) &&
+            _isEqual(tags, restoredLocalState.tags)
+        )
+    }, [
+        assigneeTeam,
+        assigneeUser,
+        priority,
+        restoredLocalState,
+        subject,
+        tags,
+    ])
+
+    useEffect(() => {
+        if (restoredLocalState && isRestoredLocalStateApplied) {
+            isHydratingStoredDraftRef.current = false
+            setHasAppliedRestoredLocalState(true)
+        }
+    }, [isRestoredLocalStateApplied, restoredLocalState])
+
+    const shouldWaitForRestoredLocalState =
+        isHydratingStoredDraftRef.current ||
+        (!!restoredLocalState && !hasAppliedRestoredLocalState)
 
     const shouldSaveDraft = useMemo(
         () =>
-            isTicketNew &&
-            ((!isStoredTicketDraftEmpty && !isNewTicketEmpty) ||
-                (isStoredTicketDraftEmpty && !isNewTicketEmpty)),
-        [isTicketNew, isNewTicketEmpty, isStoredTicketDraftEmpty],
+            hasLoadedStoredDraft &&
+            !shouldHydrateStoredDraft &&
+            !shouldWaitForRestoredLocalState &&
+            ((!isStoredDraftEmpty && !isDraftEmpty) ||
+                (isStoredDraftEmpty && !isDraftEmpty)),
+        [
+            hasLoadedStoredDraft,
+            isDraftEmpty,
+            isStoredDraftEmpty,
+            shouldHydrateStoredDraft,
+            shouldWaitForRestoredLocalState,
+        ],
     )
 
     const persist = useCallback(() => {
-        void localForage.setItem('new', reduxState)
-    }, [reduxState, localForage])
+        void localForage.setItem('new', draftState)
+    }, [draftState, localForage])
 
     const hydrate = useCallback(() => {
-        if (ticketDraft) {
+        if (storedDraft) {
+            isHydratingStoredDraftRef.current = true
             const {
                 appliedMacro,
                 assignee_team,
@@ -327,12 +344,13 @@ export default function useTicketDraft(isTicketNew = false) {
                 attachments,
                 custom_fields,
                 customer,
+                priority,
                 source,
                 sourceType,
                 subject,
                 ticket,
                 tags,
-            } = ticketDraft
+            } = storedDraft
 
             dispatch(
                 restoreNewMessageDraft({
@@ -360,8 +378,19 @@ export default function useTicketDraft(isTicketNew = false) {
                 )
                 dispatch(restoreNewMessageBodyText(newTicket))
             }
+
+            syncCustomFieldsStore(custom_fields)
+
+            setRestoredLocalState({
+                subject,
+                priority,
+                assigneeUser: assignee_user as TicketUser | null,
+                assigneeTeam: assignee_team as TicketTeam | null,
+                tags: tags as TicketTag[],
+                customFields: (custom_fields ?? {}) as TicketFieldsState,
+            })
         }
-    }, [dispatch, ticketDraft])
+    }, [dispatch, storedDraft, syncCustomFieldsStore])
 
     useEffect(() => {
         if (shouldSaveDraft) {
@@ -371,22 +400,32 @@ export default function useTicketDraft(isTicketNew = false) {
 
     useEffect(() => {
         if (
-            isTicketNew &&
-            previousIsNewTicketEmpty === false &&
-            isNewTicketEmpty
+            hasLoadedStoredDraft &&
+            !shouldHydrateStoredDraft &&
+            !shouldWaitForRestoredLocalState &&
+            previousIsDraftEmpty === false &&
+            isDraftEmpty
         ) {
             persist()
         }
-    }, [isNewTicketEmpty, isTicketNew, persist, previousIsNewTicketEmpty])
+    }, [
+        hasLoadedStoredDraft,
+        isDraftEmpty,
+        persist,
+        previousIsDraftEmpty,
+        shouldHydrateStoredDraft,
+        shouldWaitForRestoredLocalState,
+    ])
 
     useEffect(() => {
-        if (isTicketNew && !isStoredTicketDraftEmpty && isNewTicketEmpty) {
+        if (shouldHydrateStoredDraft) {
             hydrate()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isStoredTicketDraftEmpty])
+    }, [shouldHydrateStoredDraft])
 
     return {
         temporaryId: temporaryId.current,
+        restoredLocalState,
     }
 }

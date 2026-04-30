@@ -7,6 +7,7 @@ import {
 } from '@repo/tickets'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -47,6 +48,28 @@ jest.mock('@repo/customer', () => ({
     ShopifyCustomer: jest.fn(() => <div>ShopifyCustomer</div>),
     ShopifyCustomerProvider: jest.fn(({ children }) => <>{children}</>),
     TemplateResolverProvider: jest.fn(({ children }) => <>{children}</>),
+}))
+
+jest.mock(
+    'tickets/pages/NewTicketPage/components/NewTicketPageContent/NewTicketPageContent',
+    () => ({
+        NewTicketPageContent: jest.fn(() => <div>Main content here</div>),
+    }),
+)
+
+jest.mock('tickets/pages/NewTicketPage/hooks/useNewTicketPageSync', () => ({
+    useNewTicketPageSync: jest.fn(),
+}))
+
+jest.mock('pages/tickets/detail/hooks/useDraftTicketActivityTracking', () =>
+    jest.fn(),
+)
+
+jest.mock('providers/OutboundTranslationProvider', () => ({
+    OutboundTranslationProvider: jest.fn(({ children }) => <>{children}</>),
+    useOutboundTranslationContext: jest.fn(() => ({
+        isTranslationPending: false,
+    })),
 }))
 
 const mockedPanel = jest.mocked(Panel)
@@ -160,7 +183,15 @@ const renderComponent = () => {
         <TicketsLegacyBridgeProvider {...legacyBridgeTestProps}>
             <NewTicketPage />
         </TicketsLegacyBridgeProvider>,
-        { path: '/app/tickets/new', initialEntries: ['/app/tickets/new'] },
+        {
+            path: '/app/tickets/new',
+            initialEntries: ['/app/tickets/new'],
+            storeState: {
+                billing: fromJS({
+                    products: [],
+                }),
+            },
+        },
     )
     return { ...result, user }
 }

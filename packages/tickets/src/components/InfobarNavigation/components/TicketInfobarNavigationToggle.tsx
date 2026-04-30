@@ -1,12 +1,14 @@
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-export function InfobarToggle({
-    isExpanded,
-    onToggle,
-}: {
+type TicketInfobarNavigationToggleProps = {
     isExpanded: boolean
     onToggle: () => void
-}) {
+}
+
+export function TicketInfobarNavigationToggle({
+    isExpanded,
+    onToggle,
+}: TicketInfobarNavigationToggleProps) {
     return (
         <Tooltip
             placement="left"

@@ -1,5 +1,10 @@
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
-import { InfobarTicketDetailsContainer, TagsMultiSelect } from '@repo/tickets'
+import {
+    InfobarTicketDetailsContainer,
+    InfobarTicketDetailsHeaderContainer,
+    TagsMultiSelect,
+    TicketInfobarTicketDetailsTagsContainer,
+} from '@repo/tickets'
 
 import { Box, Heading } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
@@ -27,12 +32,17 @@ export function NewTicketPageInfobar({
                 {activeTab === TicketInfobarTab.Customer && (
                     <Box flex={1} flexDirection="column" minWidth="340px">
                         <InfobarTicketDetailsContainer>
-                            <Heading size="sm">Ticket details</Heading>
-                            <TagsMultiSelect
-                                value={tags}
-                                onChange={onTagsChange}
-                                aria-label="Ticket tags selection"
-                            />
+                            <InfobarTicketDetailsHeaderContainer>
+                                <Heading size="sm">Ticket details</Heading>
+                            </InfobarTicketDetailsHeaderContainer>
+                            <TicketInfobarTicketDetailsTagsContainer>
+                                <TagsMultiSelect
+                                    value={tags}
+                                    onChange={onTagsChange}
+                                    aria-label="Ticket tags selection"
+                                />
+                            </TicketInfobarTicketDetailsTagsContainer>
+
                             <NewTicketPageInfobarFields />
                         </InfobarTicketDetailsContainer>
                     </Box>

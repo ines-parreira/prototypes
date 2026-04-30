@@ -6,7 +6,7 @@ import { ButtonGroup } from '@gorgias/axiom'
 import { useTicketInfobarNavigationShortcuts } from '../../hooks/useTicketInfobarNavigationShortcuts'
 import { InfobarNavigationContainer } from './components/InfobarNavigationContainer'
 import { InfobarNavigationItem } from './components/InfobarNavigationItem'
-import { InfobarToggle } from './components/TicketInfobarNavigationToggle'
+import { TicketInfobarNavigationToggle } from './components/TicketInfobarNavigationToggle'
 
 export function NewTicketInfobarNavigation() {
     const { activeTab, isExpanded, onChangeTab, onToggle } =
@@ -16,7 +16,10 @@ export function NewTicketInfobarNavigation() {
 
     return (
         <InfobarNavigationContainer>
-            <InfobarToggle isExpanded={isExpanded} onToggle={onToggle} />
+            <TicketInfobarNavigationToggle
+                isExpanded={isExpanded}
+                onToggle={onToggle}
+            />
             <ButtonGroup
                 size="lg"
                 withoutBorder

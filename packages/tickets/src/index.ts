@@ -1,4 +1,6 @@
 export { InfobarTicketDetails } from './components/InfobarTicketDetails/InfobarTicketDetails'
+export { InfobarTicketDetailsHeaderContainer } from './components/InfobarTicketDetails/components/InfobarTicketDetailsHeaderContainer'
+export { TicketInfobarTicketDetailsTagsContainer } from './components/InfobarTicketDetails/components/InfobarTicketTags/TicketInfobarTicketDetailsTagsContainer'
 export { InfobarTicketFields } from './components/InfobarTicketDetails/components/InfobarTicketFields/InfobarTicketFields'
 export { InfobarTicketDetailsContainer } from './components/InfobarTicketDetails/components/InfobarTicketDetailsContainer'
 export { useTicketFieldsStore } from './components/InfobarTicketDetails/components/InfobarTicketFields/store/useTicketFieldsStore'

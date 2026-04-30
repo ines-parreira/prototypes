@@ -2,6 +2,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 
 import { OverflowList } from '@gorgias/axiom'
 import {
+    DropdownInputSettingsSettingsInputType,
     InputSettingsNumberInputType,
     InputSettingsTextInputType,
     NumberDataTypeDefinitionDataType,
@@ -35,7 +36,7 @@ function TestWrapper({ field }: { field: VisibleTicketField }) {
         <OverflowList nonExpandedLineCount={5}>
             <InfobarTicketField
                 field={field}
-                fieldState={fieldState}
+                fieldState={fieldState ?? {}}
                 onFieldChange={onFieldChange}
                 onFieldBlur={onFieldBlur}
             />
@@ -116,6 +117,18 @@ describe('InfobarTicketField', () => {
             })
         })
 
+        it('should keep focus when typing into an initially empty text field', async () => {
+            const { user } = renderWithOverflowList(textField)
+
+            const input = screen.getByPlaceholderText('Enter issue type')
+
+            await act(() => user.click(input))
+            await act(() => user.type(input, 'Bug'))
+
+            expect(input).toHaveFocus()
+            expect(input).toHaveValue('Bug')
+        })
+
         it('should show required indicator when field is required', () => {
             const requiredField = { ...textField, isRequired: true }
 
@@ -127,6 +140,26 @@ describe('InfobarTicketField', () => {
             renderWithOverflowList(requiredField)
 
             expect(screen.getByText('Issue Type')).toBeInTheDocument()
+        })
+
+        it('should clear the visible text value when the store is reset', async () => {
+            useTicketFieldsStore.getState().updateFieldValue(1, 'Bug')
+
+            renderWithOverflowList(textField)
+
+            expect(screen.getByDisplayValue('Bug')).toBeInTheDocument()
+
+            act(() => {
+                useTicketFieldsStore.getState().resetFields()
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByPlaceholderText(
+                        'Enter issue type',
+                    ) as HTMLInputElement,
+                ).toHaveValue('')
+            })
         })
     })
 
@@ -196,6 +229,65 @@ describe('InfobarTicketField', () => {
                 const storeValue =
                     useTicketFieldsStore.getState().fields[2]?.value
                 expect(storeValue).toBe(7)
+            })
+        })
+
+        it('should clear the visible number value when the store is reset', async () => {
+            useTicketFieldsStore.getState().updateFieldValue(2, 123)
+
+            renderWithOverflowList(numberField)
+
+            expect(screen.getByDisplayValue('123')).toBeInTheDocument()
+
+            act(() => {
+                useTicketFieldsStore.getState().resetFields()
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByPlaceholderText(
+                        'Enter priority',
+                    ) as HTMLInputElement,
+                ).toHaveValue('')
+            })
+        })
+    })
+
+    describe('Dropdown input field', () => {
+        const dropdownField: VisibleTicketField = {
+            fieldDefinition: {
+                id: 4,
+                label: 'Category',
+                object_type: 'ticket',
+                definition: {
+                    data_type: TextDataTypeDefinitionDataType.Text,
+                    input_settings: {
+                        input_type:
+                            DropdownInputSettingsSettingsInputType.Dropdown,
+                        choices: ['Bug', 'Feature'],
+                    },
+                },
+            } as any,
+            isRequired: false,
+        }
+
+        it('should clear the visible dropdown value when the store is reset', async () => {
+            useTicketFieldsStore.getState().updateFieldValue(4, 'Bug')
+
+            renderWithOverflowList(dropdownField)
+
+            expect(
+                screen.getByLabelText('Category selected value'),
+            ).toHaveValue('Bug')
+
+            act(() => {
+                useTicketFieldsStore.getState().resetFields()
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByPlaceholderText('+ Add') as HTMLInputElement,
+                ).toHaveValue('')
             })
         })
     })

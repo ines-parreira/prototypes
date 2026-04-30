@@ -1,0 +1,136 @@
+import { useCallback } from 'react'
+
+import { localForageManager } from '@repo/browser-storage'
+import { MacroActionName, useTicketFieldsStore } from '@repo/tickets'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+
+import type {
+    TicketPriority,
+    TicketTag,
+    TicketTeam,
+    TicketUser,
+} from '@gorgias/helpdesk-queries'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import { DRAFT_TICKET_STORE } from 'hooks/useTicketDraft'
+import type { Ticket as TicketModel } from 'models/ticket/types'
+import { updateMessageText } from 'pages/tickets/detail/components/ReplyArea/TicketReplyEditor'
+import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
+import { submitTicket } from 'state/newMessage/actions'
+import { canSend as getCanSend } from 'state/newMessage/selectors'
+import { restoreTicketDraft } from 'state/ticket/actions'
+
+type UseNewTicketSubmitArgs = {
+    subject: string
+    priority: TicketPriority | undefined
+    assigneeUser: TicketUser | null
+    assigneeTeam: TicketTeam | null
+    tags: TicketTag[]
+    customer: TicketModel['customer'] | null
+    temporaryId: string | null
+}
+
+export function useNewTicketSubmit({
+    subject,
+    priority,
+    assigneeUser,
+    assigneeTeam,
+    tags,
+    customer,
+    temporaryId,
+}: UseNewTicketSubmitArgs) {
+    const dispatch = useAppDispatch()
+    const canSendMessage = useAppSelector(getCanSend)
+
+    const submit = useCallback(
+        async ({ status, resetMessage = true }: SubmitArgs) => {
+            const state = dispatch((_, getState) => getState())
+            const newMessage = state.newMessage
+
+            if (newMessage.getIn(['_internal', 'loading', 'submitMessage'])) {
+                return
+            }
+
+            if (!canSendMessage) {
+                return
+            }
+
+            updateMessageText.flush()
+
+            const customFields = useTicketFieldsStore.getState().fields
+
+            dispatch(
+                restoreTicketDraft({
+                    assignee_team: assigneeTeam as TicketModel['assignee_team'],
+                    assignee_user: assigneeUser as TicketModel['assignee_user'],
+                    custom_fields: customFields as TicketModel['custom_fields'],
+                    customer,
+                    subject,
+                    tags: tags as TicketModel['tags'],
+                }),
+            )
+
+            const freshState = dispatch((_, getState) => getState())
+            const ticket = freshState.ticket
+            const currentUser = freshState.currentUser
+
+            let submittedTicket = ticket.setIn(['newMessage', 'sender'], {
+                id: currentUser.get('id'),
+            })
+
+            const sourceType = newMessage.getIn([
+                'newMessage',
+                'source',
+                'type',
+            ])
+            const hasInternalNoteAction = (
+                ticket.getIn(
+                    ['state', 'appliedMacro', 'actions'],
+                    fromJS([]),
+                ) as List<Map<any, any>>
+            ).some(
+                (action) =>
+                    action?.get('name') === MacroActionName.AddInternalNote,
+            )
+
+            if (sourceType !== 'internal-note' && !hasInternalNoteAction) {
+                const receiver = newMessage.getIn(['newMessage', 'receiver'])
+                submittedTicket = submittedTicket.set('customer', receiver)
+            }
+
+            if (priority !== undefined) {
+                submittedTicket = submittedTicket.set('priority', priority)
+            }
+
+            const { error } = ((await dispatch(
+                submitTicket(
+                    submittedTicket,
+                    status,
+                    ticket.getIn(['state', 'appliedMacro', 'actions']),
+                    currentUser,
+                    resetMessage,
+                    temporaryId,
+                ),
+            )) || {}) as { error?: unknown }
+
+            if (!error) {
+                localForageManager.clearTable(DRAFT_TICKET_STORE)
+            }
+        },
+        [
+            dispatch,
+            canSendMessage,
+            assigneeTeam,
+            assigneeUser,
+            customer,
+            subject,
+            tags,
+            priority,
+            temporaryId,
+        ],
+    )
+
+    return { submit }
+}

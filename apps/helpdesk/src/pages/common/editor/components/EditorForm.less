@@ -1,0 +1,25 @@
+@import '~css/new/mixins';
+
+:local {
+    .editorForm {
+        border: 1px solid var(--neutral-grey-2); // legacy
+        border-radius: 4px;
+
+        @media @mobiles {
+            margin: 0 -20px;
+        }
+    }
+}
+
+.axiom :local {
+    .editorForm {
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-mid);
+        box-shadow: var(--effects-shadow-container);
+        border-radius: var(--spacing-sm);
+
+        @media @mobiles {
+            margin: 0 -20px;
+        }
+    }
+}

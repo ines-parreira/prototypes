@@ -8,8 +8,7 @@ import {
     useUpdateTicketTags,
 } from './hooks/useUpdateTicketTags'
 import { TagsMultiSelect } from './TagsMultiSelect'
-
-import css from './TicketInfobarTicketDetailsTags.less'
+import { TicketInfobarTicketDetailsTagsContainer } from './TicketInfobarTicketDetailsTagsContainer'
 
 type TicketInfobarTicketDetailsTagsProps = {
     ticketId: string
@@ -31,12 +30,12 @@ export function TicketInfobarTicketDetailsTags({
     )
 
     return (
-        <div className={css.container}>
+        <TicketInfobarTicketDetailsTagsContainer>
             <TagsMultiSelect
                 value={ticket?.data.tags ?? []}
                 onChange={handleChange}
                 aria-label="Ticket tags selection"
             />
-        </div>
+        </TicketInfobarTicketDetailsTagsContainer>
     )
 }

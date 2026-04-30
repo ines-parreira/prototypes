@@ -23,6 +23,7 @@ import {
     makeGetNewMessageSourceProperty,
 } from 'state/newMessage/selectors'
 import { getTicket } from 'state/ticket/selectors'
+import type { Receiver } from 'state/ticket/utils'
 import type { RootState } from 'state/types'
 
 import ReceiversSelectField from './components/ReceiversSelectField'
@@ -51,7 +52,13 @@ const LEGACY_SOURCES_THAT_CAN_CHANGE_RECEIVERS = [
     TicketMessageSourceType.Sms,
 ]
 
-export default function MessageSourceFields() {
+type Props = {
+    onRecipientsChange?: (prop: string, recipients: Receiver[]) => void
+}
+
+export default function MessageSourceFields({
+    onRecipientsChange,
+}: Props = {}) {
     const dispatch = useAppDispatch()
     const sourceType = useAppSelector(getNewMessageType)
     const ticket = useAppSelector(getTicket)
@@ -217,6 +224,10 @@ export default function MessageSourceFields() {
                                                     },
                                                     false,
                                                 ),
+                                            )
+                                            onRecipientsChange?.(
+                                                prop,
+                                                recipients,
                                             )
                                         }}
                                     />
