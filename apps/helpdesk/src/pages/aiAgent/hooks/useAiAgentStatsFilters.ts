@@ -19,7 +19,10 @@ export const useAiAgentStatsFilters = (): {
         return {
             period: cleanStatsFilters.period,
             ...(!isFiltersFFLoading && isFiltersEnabled
-                ? { stores: cleanStatsFilters.stores }
+                ? {
+                      stores: cleanStatsFilters.stores,
+                      channels: cleanStatsFilters.channels,
+                  }
                 : {}),
         }
     }, [cleanStatsFilters, isFiltersEnabled, isFiltersFFLoading])

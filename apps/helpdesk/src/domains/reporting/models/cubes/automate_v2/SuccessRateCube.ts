@@ -9,6 +9,7 @@ export enum SuccessRateFilterMember {
     StoreIntegrationId = 'SuccessRate.storeIntegrationId',
     PeriodStart = 'SuccessRate.periodStart',
     PeriodEnd = 'SuccessRate.periodEnd',
+    Channel = 'SuccessRate.channel',
 }
 
 export type SuccessRateCube = Cube<

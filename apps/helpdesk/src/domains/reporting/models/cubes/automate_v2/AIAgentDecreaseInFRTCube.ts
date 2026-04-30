@@ -9,6 +9,8 @@ export enum AIAgentDecreaseInFRTFilterMember {
     PeriodStart = 'AIAgentDecreaseInFRT.periodStart',
     PeriodEnd = 'AIAgentDecreaseInFRT.periodEnd',
     AiAgentRole = 'AIAgentDecreaseInFRT.aiAgentRole',
+    Channel = 'AIAgentDecreaseInFRT.channel',
+    StoreIntegrationId = 'AIAgentDecreaseInFRT.storeIntegrationId',
 }
 
 export type AIAgentDecreaseInFRTCube = Cube<

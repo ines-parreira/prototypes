@@ -8,6 +8,8 @@ export enum AIAgentClosedTicketsFilterMember {
     PeriodStart = 'AIAgentClosedTickets.periodStart',
     PeriodEnd = 'AIAgentClosedTickets.periodEnd',
     AiAgentRole = 'AIAgentClosedTickets.aiAgentRole',
+    Channel = 'AIAgentClosedTickets.channel',
+    StoreIntegrationId = 'AIAgentClosedTickets.storeIntegrationId',
 }
 
 export type AIAgentClosedTicketsCube = Cube<

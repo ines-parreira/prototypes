@@ -8,6 +8,8 @@ export enum AIAgentAutomatedInteractionsV2FilterMember {
     PeriodStart = 'AIAgentAutomatedInteractionsV2.periodStart',
     PeriodEnd = 'AIAgentAutomatedInteractionsV2.periodEnd',
     AiAgentRole = 'AIAgentAutomatedInteractionsV2.aiAgentRole',
+    Channel = 'AIAgentAutomatedInteractionsV2.channel',
+    StoreIntegrationId = 'AIAgentAutomatedInteractionsV2.storeIntegrationId',
 }
 
 export type AIAgentAutomatedInteractionsV2Cube = Cube<

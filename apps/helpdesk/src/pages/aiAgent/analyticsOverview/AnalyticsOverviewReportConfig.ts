@@ -261,7 +261,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
             },
         },
         reportFilters: {
-            optional: [FilterKey.Stores],
+            optional: [FilterKey.Stores, FilterKey.Channels],
             persistent: [FilterKey.Period, FilterKey.AggregationWindow],
         },
     }

@@ -41,6 +41,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import type { DrillDownReportingQuery } from 'models/job/types'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 
@@ -137,9 +138,15 @@ export const useDrillDownQuery = (
     metricData: DrillDownMetric,
 ) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters: aiAgentFilters } = useAiAgentStatsFilters()
+
+    const isAiAgentMetric = Object.values(AiAgentDrillDownMetricName).includes(
+        metricData.metricName as AiAgentDrillDownMetricName,
+    )
+    const filters = isAiAgentMetric ? aiAgentFilters : cleanStatsFilters
 
     return query(
-        cleanStatsFilters,
+        filters,
         userTimezone,
         getDrillDownMetricOrder(metricData.metricName),
     )

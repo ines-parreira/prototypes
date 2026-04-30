@@ -1,3 +1,4 @@
+// Used in useDrillDownQuery (domains/reporting/hooks/useDrillDownData.ts) to apply useAiAgentStatsFilters instead of the full filter set
 export enum AiAgentDrillDownMetricName {
     AutomatedInteractionsCard = 'automated_interactions_card',
     ResolvedInteractionsCard = 'resolved_interactions_card',

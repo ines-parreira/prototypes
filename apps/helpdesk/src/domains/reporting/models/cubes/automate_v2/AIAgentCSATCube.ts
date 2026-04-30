@@ -10,6 +10,8 @@ export enum AIAgentCSATFilterMember {
     PeriodEnd = 'AIAgentCSAT.periodEnd',
     AiAgentRole = 'AIAgentCSAT.aiAgentRole',
     SurveyScore = 'AIAgentCSAT.surveyScore',
+    Channel = 'AIAgentCSAT.channel',
+    StoreIntegrationId = 'AIAgentCSAT.storeIntegrationId',
 }
 
 export type AIAgentCSATCube = Cube<

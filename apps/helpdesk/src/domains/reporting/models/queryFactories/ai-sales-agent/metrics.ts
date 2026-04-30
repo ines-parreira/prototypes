@@ -830,7 +830,8 @@ export const gmvByInfluencedProductQueryFactory = (
 const successRateFiltersMembers = {
     periodStart: SuccessRateFilterMember.PeriodStart,
     periodEnd: SuccessRateFilterMember.PeriodEnd,
-    storeIntegrations: SuccessRateFilterMember.StoreIntegrationId,
+    stores: SuccessRateFilterMember.StoreIntegrationId,
+    channels: SuccessRateFilterMember.Channel,
 }
 
 export const successRateV2DrillDownQueryFactory = (

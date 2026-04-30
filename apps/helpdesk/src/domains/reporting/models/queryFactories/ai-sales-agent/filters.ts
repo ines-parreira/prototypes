@@ -38,7 +38,8 @@ export const aiSalesAgentConversationsDefaultFiltersMembers: StatsFiltersMembers
 export const aiSalesAgentActivityDefaultFiltersMembers: StatsFiltersMembers = {
     periodStart: AiSalesAgentActivityFilterMember.PeriodStart,
     periodEnd: AiSalesAgentActivityFilterMember.PeriodEnd,
-    storeIntegrations: AiSalesAgentActivityFilterMember.StoreIntegrationId,
+    stores: AiSalesAgentActivityFilterMember.StoreIntegrationId,
+    channels: AiSalesAgentActivityFilterMember.Channel,
 }
 
 export const clicksDefaultFilters = (

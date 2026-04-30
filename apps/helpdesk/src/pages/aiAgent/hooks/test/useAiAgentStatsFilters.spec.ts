@@ -20,6 +20,7 @@ const mockPeriod = {
     end_datetime: '2024-01-31T23:59:59Z',
 }
 const mockStores = { values: ['store-1'], operator: 'AND' as const }
+const mockChannels = { values: ['email'], operator: 'AND' as const }
 
 describe('useAiAgentStatsFilters', () => {
     beforeEach(() => {
@@ -29,13 +30,14 @@ describe('useAiAgentStatsFilters', () => {
             cleanStatsFilters: {
                 period: mockPeriod,
                 stores: mockStores,
+                channels: mockChannels,
             },
             userTimezone: 'UTC',
             granularity: 'day',
         } as any)
     })
 
-    it('includes stores in statsFilters when flag is enabled', () => {
+    it('includes stores and channels in statsFilters when flag is enabled', () => {
         mockedUseFlagWithLoading.mockReturnValue({
             value: true,
             isLoading: false,
@@ -46,10 +48,11 @@ describe('useAiAgentStatsFilters', () => {
         expect(result.current.statsFilters).toEqual({
             period: mockPeriod,
             stores: mockStores,
+            channels: mockChannels,
         })
     })
 
-    it('omits stores from statsFilters when flag is disabled', () => {
+    it('omits stores and channels from statsFilters when flag is disabled', () => {
         mockedUseFlagWithLoading.mockReturnValue({
             value: false,
             isLoading: false,
@@ -60,7 +63,7 @@ describe('useAiAgentStatsFilters', () => {
         expect(result.current.statsFilters).toEqual({ period: mockPeriod })
     })
 
-    it('omits stores from statsFilters while flag is loading', () => {
+    it('omits stores and channels from statsFilters while flag is loading', () => {
         mockedUseFlagWithLoading.mockReturnValue({
             value: false,
             isLoading: true,

@@ -15,6 +15,7 @@ import {
     getDrillDownMetricOrder,
     useDrillDownData,
     useDrillDownDataV2,
+    useDrillDownQuery,
     useEnrichedDrillDownData,
     useEnrichedDrillDownDataUnpaginated,
 } from 'domains/reporting/hooks/useDrillDownData'
@@ -38,6 +39,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     formatConvertCampaignSalesDrillDownRowData,
@@ -66,6 +68,7 @@ import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { agents } from 'fixtures/agents'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -105,6 +108,8 @@ const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
 )
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
+const useAiAgentStatsFiltersMock = assumeMock(useAiAgentStatsFilters)
 
 describe('DrillDownData hooks', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -136,6 +141,11 @@ describe('DrillDownData hooks', () => {
                 granularity: ReportingGranularity.Day,
             },
         )
+        useAiAgentStatsFiltersMock.mockReturnValue({
+            statsFilters,
+            userTimezone,
+            granularity: ReportingGranularity.Day,
+        })
     })
 
     describe('useEnrichedDrillDownData', () => {
@@ -1421,6 +1431,67 @@ describe('DrillDownData hooks', () => {
 
             const result = filterCSATDataBasedOnIntent(metricData, data)
             expect(result).toEqual([])
+        })
+    })
+
+    describe('useDrillDownQuery', () => {
+        const aiAgentFilters = {
+            period: {
+                start_datetime: '2024-01-01T00:00:00Z',
+                end_datetime: '2024-01-31T23:59:59Z',
+            },
+            channels: withDefaultLogicalOperator(['Chat']),
+        }
+
+        beforeEach(() => {
+            useAiAgentStatsFiltersMock.mockReturnValue({
+                statsFilters: aiAgentFilters,
+                userTimezone,
+                granularity: ReportingGranularity.Day,
+            })
+        })
+
+        it('passes AI Agent filters to the query for AI Agent metrics', () => {
+            const query = jest.fn()
+            const metricData: DrillDownMetric = {
+                metricName:
+                    AiAgentDrillDownMetricName.AutomatedInteractionsCard,
+            }
+
+            renderHook(() => useDrillDownQuery(query, metricData), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(initialState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
+
+            expect(query).toHaveBeenCalledWith(
+                aiAgentFilters,
+                userTimezone,
+                OrderDirection.Desc,
+            )
+        })
+
+        it('passes full stats filters to the query for non-AI Agent metrics', () => {
+            const query = jest.fn()
+            const metricData: DrillDownMetric = {
+                metricName: OverviewMetric.MessagesSent,
+            }
+
+            renderHook(() => useDrillDownQuery(query, metricData), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(initialState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
+
+            expect(query).toHaveBeenCalledWith(
+                statsFiltersWithLogicalOperators,
+                userTimezone,
+                OrderDirection.Desc,
+            )
         })
     })
 })

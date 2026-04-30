@@ -137,7 +137,9 @@ describe('AnalyticsOverviewLayout', () => {
         renderComponent()
 
         expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
-            expect.objectContaining({ optionalFilters: [FilterKey.Stores] }),
+            expect.objectContaining({
+                optionalFilters: [FilterKey.Stores, FilterKey.Channels],
+            }),
             expect.anything(),
         )
     })

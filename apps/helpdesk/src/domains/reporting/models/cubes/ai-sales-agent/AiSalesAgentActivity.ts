@@ -16,6 +16,7 @@ export enum AiSalesAgentActivityFilterMember {
     PeriodStart = 'AiSalesAgentActivity.periodStart',
     PeriodEnd = 'AiSalesAgentActivity.periodEnd',
     StoreIntegrationId = 'AiSalesAgentActivity.storeIntegrationId',
+    Channel = 'AiSalesAgentActivity.channel',
 }
 
 export type AiSalesAgentActivityCube = Cube<

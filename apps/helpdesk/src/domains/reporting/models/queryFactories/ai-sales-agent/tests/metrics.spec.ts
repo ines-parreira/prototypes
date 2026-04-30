@@ -923,7 +923,8 @@ describe('gmvInfluencedQueryFactory', () => {
 const successRateFiltersMembers = {
     periodStart: SuccessRateFilterMember.PeriodStart,
     periodEnd: SuccessRateFilterMember.PeriodEnd,
-    storeIntegrations: SuccessRateFilterMember.StoreIntegrationId,
+    stores: SuccessRateFilterMember.StoreIntegrationId,
+    channels: SuccessRateFilterMember.Channel,
 }
 
 describe('successRateV2DrillDownQueryFactory', () => {
@@ -956,13 +957,13 @@ describe('successRateV2DrillDownQueryFactory', () => {
         })
     })
 
-    it('should build a query with storeIntegrationId filter', () => {
+    it('should build a query with stores filter', () => {
         const filters = {
             period: {
                 start_datetime: '2021-01-01T00:00:00Z',
                 end_datetime: '2021-01-02T00:00:00Z',
             },
-            storeIntegrations: {
+            stores: {
                 values: [123],
                 operator: LogicalOperatorEnum.ONE_OF,
             },

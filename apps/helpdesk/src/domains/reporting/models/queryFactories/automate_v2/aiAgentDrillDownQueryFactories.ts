@@ -35,38 +35,83 @@ import {
     SuccessRateDimension,
     SuccessRateFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
+import { mapTicketChannelsToAutomateChannels } from 'domains/reporting/models/queryFactories/automate_v2/filters'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
-import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
+import type { StatsFiltersMembers } from 'domains/reporting/utils/reporting'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    statsFiltersToReportingFilters,
+} from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 
-const buildPeriodFilters = (filters: StatsFilters) => [
-    {
-        member: AIAgentAutomatedInteractionsV2FilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [filters.period.start_datetime],
-    },
-    {
-        member: AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [filters.period.end_datetime],
-    },
-]
+// Channels and stores are conditionally included when the AiAgentAnalyticsFilters feature flag is enabled —
+// useDrillDownQuery (domains/reporting/hooks/useDrillDownData.ts) passes them via useAiAgentStatsFilters
 
-const buildHandoverPeriodFilters = (filters: StatsFilters) => [
-    {
-        member: HandoverInteractionsFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [filters.period.start_datetime],
-    },
-    {
-        member: HandoverInteractionsFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [filters.period.end_datetime],
-    },
-]
+// Maps ticket channel values (e.g. 'contact_form') to automate cube channel values ('contact-form')
+const withAutomateChannels = (filters: StatsFilters): StatsFilters => {
+    if (!filters.channels) return filters
+    return {
+        ...filters,
+        channels: {
+            ...filters.channels,
+            values: mapTicketChannelsToAutomateChannels(
+                filters.channels.values,
+            ),
+        },
+    }
+}
+
+const automatedInteractionsFiltersMembers: StatsFiltersMembers = {
+    periodStart: AIAgentAutomatedInteractionsV2FilterMember.PeriodStart,
+    periodEnd: AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
+    channels: AIAgentAutomatedInteractionsV2FilterMember.Channel,
+    stores: AIAgentAutomatedInteractionsV2FilterMember.StoreIntegrationId,
+}
+
+const handoverInteractionsFiltersMembers: StatsFiltersMembers = {
+    periodStart: HandoverInteractionsFilterMember.PeriodStart,
+    periodEnd: HandoverInteractionsFilterMember.PeriodEnd,
+    channels: HandoverInteractionsFilterMember.Channel,
+    stores: HandoverInteractionsFilterMember.StoreIntegrationId,
+}
+
+const closedTicketsFiltersMembers: StatsFiltersMembers = {
+    periodStart: AIAgentClosedTicketsFilterMember.PeriodStart,
+    periodEnd: AIAgentClosedTicketsFilterMember.PeriodEnd,
+    channels: AIAgentClosedTicketsFilterMember.Channel,
+    stores: AIAgentClosedTicketsFilterMember.StoreIntegrationId,
+}
+
+const csatFiltersMembers: StatsFiltersMembers = {
+    periodStart: AIAgentCSATFilterMember.PeriodStart,
+    periodEnd: AIAgentCSATFilterMember.PeriodEnd,
+    channels: AIAgentCSATFilterMember.Channel,
+    stores: AIAgentCSATFilterMember.StoreIntegrationId,
+}
+
+const frtFiltersMembers: StatsFiltersMembers = {
+    periodStart: AIAgentDecreaseInFRTFilterMember.PeriodStart,
+    periodEnd: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
+    channels: AIAgentDecreaseInFRTFilterMember.Channel,
+    stores: AIAgentDecreaseInFRTFilterMember.StoreIntegrationId,
+}
+
+const resolutionTimeFiltersMembers: StatsFiltersMembers = {
+    periodStart: AIAgentDecreaseInResolutionTimeFilterMember.PeriodStart,
+    periodEnd: AIAgentDecreaseInResolutionTimeFilterMember.PeriodEnd,
+    channels: AIAgentDecreaseInResolutionTimeFilterMember.Channel,
+    stores: AIAgentDecreaseInResolutionTimeFilterMember.StoreIntegrationId,
+}
+
+const successRateFiltersMembers: StatsFiltersMembers = {
+    periodStart: SuccessRateFilterMember.PeriodStart,
+    periodEnd: SuccessRateFilterMember.PeriodEnd,
+    channels: SuccessRateFilterMember.Channel,
+    stores: SuccessRateFilterMember.StoreIntegrationId,
+}
 
 export const allAgentsAutomatedInteractionsDrillDownQueryFactory = (
     filters: StatsFilters,
@@ -77,7 +122,10 @@ export const allAgentsAutomatedInteractionsDrillDownQueryFactory = (
         METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILL_DOWN,
     measures: [],
     dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
-    filters: buildPeriodFilters(filters),
+    filters: statsFiltersToReportingFilters(
+        automatedInteractionsFiltersMembers,
+        withAutomateChannels(filters),
+    ),
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting
@@ -100,7 +148,10 @@ export const shoppingAssistantAutomatedInteractionsDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSales],
         },
-        ...buildPeriodFilters(filters),
+        ...statsFiltersToReportingFilters(
+            automatedInteractionsFiltersMembers,
+            withAutomateChannels(filters),
+        ),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -124,7 +175,10 @@ export const supportAgentAutomatedInteractionsDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },
-        ...buildPeriodFilters(filters),
+        ...statsFiltersToReportingFilters(
+            automatedInteractionsFiltersMembers,
+            withAutomateChannels(filters),
+        ),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -148,7 +202,10 @@ export const allAgentsHandoverInteractionsDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AutomationFeatureType.AiAgent],
         },
-        ...buildHandoverPeriodFilters(filters),
+        ...statsFiltersToReportingFilters(
+            handoverInteractionsFiltersMembers,
+            withAutomateChannels(filters),
+        ),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -170,7 +227,10 @@ export const shoppingAssistantHandoverInteractionsDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSales],
         },
-        ...buildHandoverPeriodFilters(filters),
+        ...statsFiltersToReportingFilters(
+            handoverInteractionsFiltersMembers,
+            withAutomateChannels(filters),
+        ),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -192,38 +252,15 @@ export const supportAgentHandoverInteractionsDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },
-        ...buildHandoverPeriodFilters(filters),
+        ...statsFiltersToReportingFilters(
+            handoverInteractionsFiltersMembers,
+            withAutomateChannels(filters),
+        ),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[HandoverInteractionsDimension.TicketId, sorting]] : [],
 })
-
-const buildClosedTicketsPeriodFilters = (filters: StatsFilters) => [
-    {
-        member: AIAgentClosedTicketsFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [filters.period.start_datetime],
-    },
-    {
-        member: AIAgentClosedTicketsFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [filters.period.end_datetime],
-    },
-]
-
-const buildFRTPeriodFilters = (filters: StatsFilters) => [
-    {
-        member: AIAgentDecreaseInFRTFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [filters.period.start_datetime],
-    },
-    {
-        member: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [filters.period.end_datetime],
-    },
-]
 
 export const allAgentsClosedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
@@ -233,29 +270,14 @@ export const allAgentsClosedTicketsDrillDownQueryFactory = (
     metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILL_DOWN,
     measures: [],
     dimensions: [AIAgentClosedTicketsDimension.TicketId],
-    filters: buildClosedTicketsPeriodFilters(filters),
+    filters: statsFiltersToReportingFilters(
+        closedTicketsFiltersMembers,
+        filters,
+    ),
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[AIAgentClosedTicketsDimension.TicketId, sorting]] : [],
 })
-
-const buildCsatPeriodFilters = (filters: StatsFilters) => [
-    {
-        member: AIAgentCSATFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [filters.period.start_datetime],
-    },
-    {
-        member: AIAgentCSATFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [filters.period.end_datetime],
-    },
-    {
-        member: AIAgentCSATFilterMember.SurveyScore,
-        operator: ReportingFilterOperator.Gte,
-        values: ['1'],
-    },
-]
 
 export const allAgentsCsatDrillDownQueryFactory = (
     filters: StatsFilters,
@@ -268,7 +290,14 @@ export const allAgentsCsatDrillDownQueryFactory = (
         AIAgentCSATDimension.TicketId,
         AIAgentCSATDimension.SurveyScore,
     ],
-    filters: buildCsatPeriodFilters(filters),
+    filters: [
+        ...statsFiltersToReportingFilters(csatFiltersMembers, filters),
+        {
+            member: AIAgentCSATFilterMember.SurveyScore,
+            operator: ReportingFilterOperator.Gte,
+            values: ['1'],
+        },
+    ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[AIAgentCSATDimension.SurveyScore, sorting]] : [],
@@ -291,7 +320,12 @@ export const supportAgentCsatDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },
-        ...buildCsatPeriodFilters(filters),
+        ...statsFiltersToReportingFilters(csatFiltersMembers, filters),
+        {
+            member: AIAgentCSATFilterMember.SurveyScore,
+            operator: ReportingFilterOperator.Gte,
+            values: ['1'],
+        },
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -309,7 +343,7 @@ export const allAgentsFRTDrillDownQueryFactory = (
         AIAgentDecreaseInFRTDimension.TicketId,
         AIAgentDecreaseInFRTDimension.FirstResponseTime,
     ],
-    filters: buildFRTPeriodFilters(filters),
+    filters: statsFiltersToReportingFilters(frtFiltersMembers, filters),
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting
@@ -330,22 +364,9 @@ export const supportAgentFRTDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },
-        ...buildFRTPeriodFilters(filters),
+        ...statsFiltersToReportingFilters(frtFiltersMembers, filters),
     ],
 })
-
-const buildResolutionTimePeriodFilters = (filters: StatsFilters) => [
-    {
-        member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [filters.period.start_datetime],
-    },
-    {
-        member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [filters.period.end_datetime],
-    },
-]
 
 export const allAgentsResolutionTimeDrillDownQueryFactory = (
     filters: StatsFilters,
@@ -358,7 +379,10 @@ export const allAgentsResolutionTimeDrillDownQueryFactory = (
         AIAgentDecreaseInResolutionTimeDimension.TicketId,
         AIAgentDecreaseInResolutionTimeDimension.ResolutionTime,
     ],
-    filters: buildResolutionTimePeriodFilters(filters),
+    filters: statsFiltersToReportingFilters(
+        resolutionTimeFiltersMembers,
+        filters,
+    ),
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting
@@ -379,22 +403,12 @@ export const supportAgentResolutionTimeDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },
-        ...buildResolutionTimePeriodFilters(filters),
+        ...statsFiltersToReportingFilters(
+            resolutionTimeFiltersMembers,
+            filters,
+        ),
     ],
 })
-
-const buildSuccessRatePeriodFilters = (filters: StatsFilters) => [
-    {
-        member: SuccessRateFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [filters.period.start_datetime],
-    },
-    {
-        member: SuccessRateFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [filters.period.end_datetime],
-    },
-]
 
 export const allAgentsSuccessRateDrillDownQueryFactory = (
     filters: StatsFilters,
@@ -404,7 +418,7 @@ export const allAgentsSuccessRateDrillDownQueryFactory = (
     metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_SUCCESS_RATE_DRILL_DOWN,
     measures: [],
     dimensions: [SuccessRateDimension.TicketId],
-    filters: buildSuccessRatePeriodFilters(filters),
+    filters: statsFiltersToReportingFilters(successRateFiltersMembers, filters),
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[SuccessRateDimension.TicketId, sorting]] : [],
@@ -424,7 +438,7 @@ export const supportAgentSuccessRateDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },
-        ...buildSuccessRatePeriodFilters(filters),
+        ...statsFiltersToReportingFilters(successRateFiltersMembers, filters),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,

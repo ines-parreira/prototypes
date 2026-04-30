@@ -1,10 +1,16 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { HandoverInteractionsFilterMember } from 'domains/reporting/models/cubes/ai-agent/HandoverInteractionsCube'
+import {
+    HandoverInteractionsDimension,
+    HandoverInteractionsFilterMember,
+} from 'domains/reporting/models/cubes/ai-agent/HandoverInteractionsCube'
 import {
     AIAgentAutomatedInteractionsV2Dimension,
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
-import { AIAgentClosedTicketsDimension } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
+import {
+    AIAgentClosedTicketsDimension,
+    AIAgentClosedTicketsFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
 import {
     AIAgentCSATDimension,
     AIAgentCSATFilterMember,
@@ -46,354 +52,196 @@ import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
-const mockFilters: StatsFilters = {
+const timezone = 'UTC'
+
+const filters: StatsFilters = {
+    channels: withDefaultLogicalOperator(['chat']),
+    stores: withDefaultLogicalOperator([122]),
     period: {
-        start_datetime: '2024-01-01T00:00:00.000Z',
-        end_datetime: '2024-01-31T23:59:59.999Z',
+        start_datetime: '2021-01-01T00:00:00.000',
+        end_datetime: '2021-01-02T00:00:00.000',
     },
 }
 
+const automatedInteractionsBaseFilters = [
+    {
+        member: AIAgentAutomatedInteractionsV2FilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+    {
+        member: AIAgentAutomatedInteractionsV2FilterMember.StoreIntegrationId,
+        operator: ReportingFilterOperator.Equals,
+        values: ['122'],
+    },
+    {
+        member: AIAgentAutomatedInteractionsV2FilterMember.Channel,
+        operator: ReportingFilterOperator.Equals,
+        values: ['chat'],
+    },
+]
+
+const handoverBaseFilters = [
+    {
+        member: HandoverInteractionsFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: HandoverInteractionsFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+    {
+        member: HandoverInteractionsFilterMember.StoreIntegrationId,
+        operator: ReportingFilterOperator.Equals,
+        values: ['122'],
+    },
+    {
+        member: HandoverInteractionsFilterMember.Channel,
+        operator: ReportingFilterOperator.Equals,
+        values: ['chat'],
+    },
+]
+
 describe('allAgentsAutomatedInteractionsDrillDownQueryFactory', () => {
-    it('should return correct metricName', () => {
-        const result = allAgentsAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILL_DOWN,
-        )
+    it('returns correct query', () => {
+        expect(
+            allAgentsAutomatedInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILL_DOWN,
+            measures: [],
+            dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
+            filters: automatedInteractionsBaseFilters,
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
     })
 
-    it('should include TicketId in dimensions', () => {
-        const result = allAgentsAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.dimensions).toContain(
-            AIAgentAutomatedInteractionsV2Dimension.TicketId,
-        )
-    })
-
-    it('should have empty measures', () => {
-        const result = allAgentsAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.measures).toEqual([])
-    })
-
-    it('should include periodStart filter with AfterDate operator', () => {
-        const result = allAgentsAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        const periodStartFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.PeriodStart,
-        )
-        expect(periodStartFilter).toBeDefined()
-        if (periodStartFilter && 'operator' in periodStartFilter) {
-            expect(periodStartFilter.operator).toBe(
-                ReportingFilterOperator.AfterDate,
-            )
-            expect(periodStartFilter.values).toEqual([
-                mockFilters.period.start_datetime,
-            ])
-        }
-    })
-
-    it('should include periodEnd filter with BeforeDate operator', () => {
-        const result = allAgentsAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        const periodEndFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
-        )
-        expect(periodEndFilter).toBeDefined()
-        if (periodEndFilter && 'operator' in periodEndFilter) {
-            expect(periodEndFilter.operator).toBe(
-                ReportingFilterOperator.BeforeDate,
-            )
-            expect(periodEndFilter.values).toEqual([
-                mockFilters.period.end_datetime,
-            ])
-        }
-    })
-
-    it('should set correct limit', () => {
-        const result = allAgentsAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
-    })
-
-    it('should set empty order when no sorting provided', () => {
-        const result = allAgentsAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.order).toEqual([])
-    })
-
-    it('should set order when sorting is provided', () => {
-        const result = allAgentsAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-            OrderDirection.Asc,
-        )
-        expect(result.order).toEqual([
-            [
-                AIAgentAutomatedInteractionsV2Dimension.TicketId,
+    it('includes sorting when provided', () => {
+        expect(
+            allAgentsAutomatedInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
                 OrderDirection.Asc,
-            ],
-        ])
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AIAgentAutomatedInteractionsV2Dimension.TicketId,
+                        OrderDirection.Asc,
+                    ],
+                ],
+            }),
+        )
     })
 })
 
 describe('shoppingAssistantAutomatedInteractionsDrillDownQueryFactory', () => {
-    it('should return correct metricName', () => {
-        const result =
+    it('returns correct query', () => {
+        expect(
             shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
-                mockFilters,
-                'UTC',
-            )
-        expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILL_DOWN,
-        )
-    })
-
-    it('should include TicketId in dimensions', () => {
-        const result =
-            shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
-                mockFilters,
-                'UTC',
-            )
-        expect(result.dimensions).toContain(
-            AIAgentAutomatedInteractionsV2Dimension.TicketId,
-        )
-    })
-
-    it('should include aiAgentRole filter with AIAgentSales value', () => {
-        const result =
-            shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
-                mockFilters,
-                'UTC',
-            )
-        const skillFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.AiAgentRole,
-        )
-        expect(skillFilter).toBeDefined()
-        if (skillFilter && 'operator' in skillFilter) {
-            expect(skillFilter.operator).toBe(ReportingFilterOperator.Equals)
-            expect(skillFilter.values).toEqual([AIAgentSkills.AIAgentSales])
-        }
-    })
-
-    it('should include periodStart filter with AfterDate operator', () => {
-        const result =
-            shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
-                mockFilters,
-                'UTC',
-            )
-        const periodStartFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.PeriodStart,
-        )
-        expect(periodStartFilter).toBeDefined()
-        if (periodStartFilter && 'operator' in periodStartFilter) {
-            expect(periodStartFilter.operator).toBe(
-                ReportingFilterOperator.AfterDate,
-            )
-            expect(periodStartFilter.values).toEqual([
-                mockFilters.period.start_datetime,
-            ])
-        }
-    })
-
-    it('should include periodEnd filter with BeforeDate operator', () => {
-        const result =
-            shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
-                mockFilters,
-                'UTC',
-            )
-        const periodEndFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
-        )
-        expect(periodEndFilter).toBeDefined()
-        if (periodEndFilter && 'operator' in periodEndFilter) {
-            expect(periodEndFilter.operator).toBe(
-                ReportingFilterOperator.BeforeDate,
-            )
-            expect(periodEndFilter.values).toEqual([
-                mockFilters.period.end_datetime,
-            ])
-        }
-    })
-
-    it('should set correct limit', () => {
-        const result =
-            shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
-                mockFilters,
-                'UTC',
-            )
-        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
-    })
-
-    it('should set empty order when no sorting provided', () => {
-        const result =
-            shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
-                mockFilters,
-                'UTC',
-            )
-        expect(result.order).toEqual([])
-    })
-
-    it('should set order when sorting is provided', () => {
-        const result =
-            shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
-                mockFilters,
-                'UTC',
-                OrderDirection.Desc,
-            )
-        expect(result.order).toEqual([
-            [
-                AIAgentAutomatedInteractionsV2Dimension.TicketId,
-                OrderDirection.Desc,
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILL_DOWN,
+            measures: [],
+            dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
+            filters: [
+                {
+                    member: AIAgentAutomatedInteractionsV2FilterMember.AiAgentRole,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [AIAgentSkills.AIAgentSales],
+                },
+                ...automatedInteractionsBaseFilters,
             ],
-        ])
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('includes sorting when provided', () => {
+        expect(
+            shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Desc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AIAgentAutomatedInteractionsV2Dimension.TicketId,
+                        OrderDirection.Desc,
+                    ],
+                ],
+            }),
+        )
     })
 })
 
 describe('supportAgentAutomatedInteractionsDrillDownQueryFactory', () => {
-    it('should return correct metricName', () => {
-        const result = supportAgentAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILL_DOWN,
-        )
-    })
-
-    it('should include TicketId in dimensions', () => {
-        const result = supportAgentAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.dimensions).toContain(
-            AIAgentAutomatedInteractionsV2Dimension.TicketId,
-        )
-    })
-
-    it('should include aiAgentRole filter with AIAgentSupport value', () => {
-        const result = supportAgentAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        const skillFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.AiAgentRole,
-        )
-        expect(skillFilter).toBeDefined()
-        if (skillFilter && 'operator' in skillFilter) {
-            expect(skillFilter.operator).toBe(ReportingFilterOperator.Equals)
-            expect(skillFilter.values).toEqual([AIAgentSkills.AIAgentSupport])
-        }
-    })
-
-    it('should include period filters', () => {
-        const result = supportAgentAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        const periodStartFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.PeriodStart,
-        )
-        const periodEndFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
-        )
-        expect(periodStartFilter).toBeDefined()
-        expect(periodEndFilter).toBeDefined()
-    })
-
-    it('should set correct limit', () => {
-        const result = supportAgentAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
-    })
-
-    it('should set empty order when no sorting provided', () => {
-        const result = supportAgentAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.order).toEqual([])
-    })
-
-    it('should set order when sorting is provided', () => {
-        const result = supportAgentAutomatedInteractionsDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-            OrderDirection.Asc,
-        )
-        expect(result.order).toEqual([
-            [
-                AIAgentAutomatedInteractionsV2Dimension.TicketId,
-                OrderDirection.Asc,
+    it('returns correct query', () => {
+        expect(
+            supportAgentAutomatedInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILL_DOWN,
+            measures: [],
+            dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
+            filters: [
+                {
+                    member: AIAgentAutomatedInteractionsV2FilterMember.AiAgentRole,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [AIAgentSkills.AIAgentSupport],
+                },
+                ...automatedInteractionsBaseFilters,
             ],
-        ])
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('includes sorting when provided', () => {
+        expect(
+            supportAgentAutomatedInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Asc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AIAgentAutomatedInteractionsV2Dimension.TicketId,
+                        OrderDirection.Asc,
+                    ],
+                ],
+            }),
+        )
     })
 })
 
-const timezone = 'UTC'
-const filters: StatsFilters = {
-    channels: withDefaultLogicalOperator(['chat']),
-    period: {
-        start_datetime: '2021-01-01T00:00:00Z',
-        end_datetime: '2021-01-02T00:00:00Z',
-    },
-}
-
-const periodFilters = [
-    {
-        member: 'HandoverInteractions.periodStart',
-        operator: 'afterDate',
-        values: ['2021-01-01T00:00:00Z'],
-    },
-    {
-        member: 'HandoverInteractions.periodEnd',
-        operator: 'beforeDate',
-        values: ['2021-01-02T00:00:00Z'],
-    },
-]
-
 describe('allAgentsHandoverInteractionsDrillDownQueryFactory', () => {
-    it('returns query with automationFeatureType filter and period filters', () => {
+    it('returns correct query', () => {
         expect(
             allAgentsHandoverInteractionsDrillDownQueryFactory(
                 filters,
@@ -403,14 +251,14 @@ describe('allAgentsHandoverInteractionsDrillDownQueryFactory', () => {
             metricName:
                 METRIC_NAMES.AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILL_DOWN,
             measures: [],
-            dimensions: ['HandoverInteractions.ticketId'],
+            dimensions: [HandoverInteractionsDimension.TicketId],
             filters: [
                 {
                     member: HandoverInteractionsFilterMember.FeatureType,
                     operator: ReportingFilterOperator.Equals,
                     values: [AutomationFeatureType.AiAgent],
                 },
-                ...periodFilters,
+                ...handoverBaseFilters,
             ],
             timezone,
             limit: DRILLDOWN_QUERY_LIMIT,
@@ -418,20 +266,28 @@ describe('allAgentsHandoverInteractionsDrillDownQueryFactory', () => {
         })
     })
 
-    it('includes sorting order when sorting is provided', () => {
-        const result = allAgentsHandoverInteractionsDrillDownQueryFactory(
-            filters,
-            timezone,
-            OrderDirection.Asc,
+    it('includes sorting when provided', () => {
+        expect(
+            allAgentsHandoverInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Asc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        HandoverInteractionsDimension.TicketId,
+                        OrderDirection.Asc,
+                    ],
+                ],
+            }),
         )
-        expect(result.order).toEqual([
-            ['HandoverInteractions.ticketId', OrderDirection.Asc],
-        ])
     })
 })
 
 describe('shoppingAssistantHandoverInteractionsDrillDownQueryFactory', () => {
-    it('returns query with AIAgentSales skill filter and period filters', () => {
+    it('returns correct query', () => {
         expect(
             shoppingAssistantHandoverInteractionsDrillDownQueryFactory(
                 filters,
@@ -441,14 +297,14 @@ describe('shoppingAssistantHandoverInteractionsDrillDownQueryFactory', () => {
             metricName:
                 METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILL_DOWN,
             measures: [],
-            dimensions: ['HandoverInteractions.ticketId'],
+            dimensions: [HandoverInteractionsDimension.TicketId],
             filters: [
                 {
-                    member: 'HandoverInteractions.aiAgentRole',
-                    operator: 'equals',
+                    member: HandoverInteractionsFilterMember.AiAgentRole,
+                    operator: ReportingFilterOperator.Equals,
                     values: [AIAgentSkills.AIAgentSales],
                 },
-                ...periodFilters,
+                ...handoverBaseFilters,
             ],
             timezone,
             limit: DRILLDOWN_QUERY_LIMIT,
@@ -456,21 +312,28 @@ describe('shoppingAssistantHandoverInteractionsDrillDownQueryFactory', () => {
         })
     })
 
-    it('includes sorting order when sorting is provided', () => {
-        const result =
+    it('includes sorting when provided', () => {
+        expect(
             shoppingAssistantHandoverInteractionsDrillDownQueryFactory(
                 filters,
                 timezone,
                 OrderDirection.Desc,
-            )
-        expect(result.order).toEqual([
-            ['HandoverInteractions.ticketId', OrderDirection.Desc],
-        ])
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        HandoverInteractionsDimension.TicketId,
+                        OrderDirection.Desc,
+                    ],
+                ],
+            }),
+        )
     })
 })
 
 describe('supportAgentHandoverInteractionsDrillDownQueryFactory', () => {
-    it('returns query with AIAgentSupport skill filter and period filters', () => {
+    it('returns correct query', () => {
         expect(
             supportAgentHandoverInteractionsDrillDownQueryFactory(
                 filters,
@@ -480,14 +343,14 @@ describe('supportAgentHandoverInteractionsDrillDownQueryFactory', () => {
             metricName:
                 METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILL_DOWN,
             measures: [],
-            dimensions: ['HandoverInteractions.ticketId'],
+            dimensions: [HandoverInteractionsDimension.TicketId],
             filters: [
                 {
-                    member: 'HandoverInteractions.aiAgentRole',
-                    operator: 'equals',
+                    member: HandoverInteractionsFilterMember.AiAgentRole,
+                    operator: ReportingFilterOperator.Equals,
                     values: [AIAgentSkills.AIAgentSupport],
                 },
-                ...periodFilters,
+                ...handoverBaseFilters,
             ],
             timezone,
             limit: DRILLDOWN_QUERY_LIMIT,
@@ -495,20 +358,28 @@ describe('supportAgentHandoverInteractionsDrillDownQueryFactory', () => {
         })
     })
 
-    it('includes sorting order when sorting is provided', () => {
-        const result = supportAgentHandoverInteractionsDrillDownQueryFactory(
-            filters,
-            timezone,
-            OrderDirection.Asc,
+    it('includes sorting when provided', () => {
+        expect(
+            supportAgentHandoverInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Asc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        HandoverInteractionsDimension.TicketId,
+                        OrderDirection.Asc,
+                    ],
+                ],
+            }),
         )
-        expect(result.order).toEqual([
-            ['HandoverInteractions.ticketId', OrderDirection.Asc],
-        ])
     })
 })
 
 describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
-    it('should build a query', () => {
+    it('returns correct query', () => {
         expect(
             allAgentsClosedTicketsDrillDownQueryFactory(filters, timezone),
         ).toEqual({
@@ -517,14 +388,24 @@ describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
             dimensions: [AIAgentClosedTicketsDimension.TicketId],
             filters: [
                 {
-                    member: 'AIAgentClosedTickets.periodStart',
+                    member: AIAgentClosedTicketsFilterMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
                     values: [filters.period.start_datetime],
                 },
                 {
-                    member: 'AIAgentClosedTickets.periodEnd',
+                    member: AIAgentClosedTicketsFilterMember.PeriodEnd,
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [filters.period.end_datetime],
+                },
+                {
+                    member: AIAgentClosedTicketsFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: AIAgentClosedTicketsFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
                 },
             ],
             timezone,
@@ -533,252 +414,274 @@ describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
         })
     })
 
-    it('should build a query with sorting', () => {
+    it('includes sorting when provided', () => {
         expect(
             allAgentsClosedTicketsDrillDownQueryFactory(
                 filters,
                 timezone,
                 OrderDirection.Desc,
             ),
-        ).toEqual({
-            metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILL_DOWN,
-            measures: [],
-            dimensions: [AIAgentClosedTicketsDimension.TicketId],
-            filters: [
-                {
-                    member: 'AIAgentClosedTickets.periodStart',
-                    operator: ReportingFilterOperator.AfterDate,
-                    values: [filters.period.start_datetime],
-                },
-                {
-                    member: 'AIAgentClosedTickets.periodEnd',
-                    operator: ReportingFilterOperator.BeforeDate,
-                    values: [filters.period.end_datetime],
-                },
-            ],
-            timezone,
-            limit: DRILLDOWN_QUERY_LIMIT,
-            order: [
-                [AIAgentClosedTicketsDimension.TicketId, OrderDirection.Desc],
-            ],
-        })
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AIAgentClosedTicketsDimension.TicketId,
+                        OrderDirection.Desc,
+                    ],
+                ],
+            }),
+        )
     })
 })
 
 describe('allAgentsCsatDrillDownQueryFactory', () => {
-    it('should return correct metricName', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_ALL_AGENTS_CSAT_DRILL_DOWN,
-        )
+    it('returns correct query', () => {
+        expect(allAgentsCsatDrillDownQueryFactory(filters, timezone)).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CSAT_DRILL_DOWN,
+            measures: [],
+            dimensions: [
+                AIAgentCSATDimension.TicketId,
+                AIAgentCSATDimension.SurveyScore,
+            ],
+            filters: [
+                {
+                    member: AIAgentCSATFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: AIAgentCSATFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+                {
+                    member: AIAgentCSATFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: AIAgentCSATFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
+                },
+                {
+                    member: AIAgentCSATFilterMember.SurveyScore,
+                    operator: ReportingFilterOperator.Gte,
+                    values: ['1'],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
     })
 
-    it('should include TicketId and SurveyScore in dimensions', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.dimensions).toContain(AIAgentCSATDimension.TicketId)
-        expect(result.dimensions).toContain(AIAgentCSATDimension.SurveyScore)
-    })
-
-    it('should have empty measures', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.measures).toEqual([])
-    })
-
-    it('should include periodStart filter with AfterDate operator', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        const periodStartFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member === AIAgentCSATFilterMember.PeriodStart,
-        )
-        expect(periodStartFilter).toBeDefined()
-        if (periodStartFilter && 'operator' in periodStartFilter) {
-            expect(periodStartFilter.operator).toBe(
-                ReportingFilterOperator.AfterDate,
-            )
-            expect(periodStartFilter.values).toEqual([
-                mockFilters.period.start_datetime,
-            ])
-        }
-    })
-
-    it('should include periodEnd filter with BeforeDate operator', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        const periodEndFilter = result.filters?.find(
-            (f) =>
-                'member' in f && f.member === AIAgentCSATFilterMember.PeriodEnd,
-        )
-        expect(periodEndFilter).toBeDefined()
-        if (periodEndFilter && 'operator' in periodEndFilter) {
-            expect(periodEndFilter.operator).toBe(
-                ReportingFilterOperator.BeforeDate,
-            )
-            expect(periodEndFilter.values).toEqual([
-                mockFilters.period.end_datetime,
-            ])
-        }
-    })
-
-    it('should set correct limit', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
-    })
-
-    it('should set empty order when no sorting provided', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.order).toEqual([])
-    })
-
-    it('should filter out unscored tickets with surveyScore >= 1', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.filters).toContainEqual(
+    it('includes sorting when provided', () => {
+        expect(
+            allAgentsCsatDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Desc,
+            ),
+        ).toEqual(
             expect.objectContaining({
-                member: AIAgentCSATFilterMember.SurveyScore,
-                operator: ReportingFilterOperator.Gte,
-                values: ['1'],
+                order: [
+                    [AIAgentCSATDimension.SurveyScore, OrderDirection.Desc],
+                ],
             }),
         )
-    })
-
-    it('should set order when sorting is provided', () => {
-        const result = allAgentsCsatDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-            OrderDirection.Desc,
-        )
-        expect(result.order).toEqual([
-            [AIAgentCSATDimension.SurveyScore, OrderDirection.Desc],
-        ])
     })
 })
 
 describe('supportAgentCsatDrillDownQueryFactory', () => {
-    it('should return correct metricName', () => {
-        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_CSAT_DRILL_DOWN,
-        )
-    })
-
-    it('should include TicketId and SurveyScore in dimensions', () => {
-        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.dimensions).toContain(AIAgentCSATDimension.TicketId)
-        expect(result.dimensions).toContain(AIAgentCSATDimension.SurveyScore)
-    })
-
-    it('should set correct limit', () => {
-        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
-    })
-
-    it('should include aiAgentRole fixed filter for support agent', () => {
-        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        const roleFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member === AIAgentCSATFilterMember.AiAgentRole,
-        )
-        expect(roleFilter).toEqual({
-            member: AIAgentCSATFilterMember.AiAgentRole,
-            operator: ReportingFilterOperator.Equals,
-            values: [AIAgentSkills.AIAgentSupport],
+    it('returns correct query', () => {
+        expect(
+            supportAgentCsatDrillDownQueryFactory(filters, timezone),
+        ).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_CSAT_DRILL_DOWN,
+            measures: [],
+            dimensions: [
+                AIAgentCSATDimension.TicketId,
+                AIAgentCSATDimension.SurveyScore,
+            ],
+            filters: [
+                {
+                    member: AIAgentCSATFilterMember.AiAgentRole,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [AIAgentSkills.AIAgentSupport],
+                },
+                {
+                    member: AIAgentCSATFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: AIAgentCSATFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+                {
+                    member: AIAgentCSATFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: AIAgentCSATFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
+                },
+                {
+                    member: AIAgentCSATFilterMember.SurveyScore,
+                    operator: ReportingFilterOperator.Gte,
+                    values: ['1'],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
         })
     })
 
-    it('should filter out unscored tickets with surveyScore >= 1', () => {
-        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
-        expect(result.filters).toContainEqual(
+    it('includes sorting when provided', () => {
+        expect(
+            supportAgentCsatDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Desc,
+            ),
+        ).toEqual(
             expect.objectContaining({
-                member: AIAgentCSATFilterMember.SurveyScore,
-                operator: ReportingFilterOperator.Gte,
-                values: ['1'],
+                order: [
+                    [AIAgentCSATDimension.SurveyScore, OrderDirection.Desc],
+                ],
             }),
         )
-    })
-
-    it('should set order when sorting is provided', () => {
-        const result = supportAgentCsatDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-            OrderDirection.Desc,
-        )
-        expect(result.order).toEqual([
-            [AIAgentCSATDimension.SurveyScore, OrderDirection.Desc],
-        ])
     })
 })
 
 describe('allAgentsFRTDrillDownQueryFactory', () => {
-    const filters: StatsFilters = mockFilters
-    const timezone = 'UTC'
-
-    it('should return correct metricName', () => {
-        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
-        expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT_DRILL_DOWN,
-        )
-    })
-
-    it('should include TicketId and FirstResponseTime in dimensions', () => {
-        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
-        expect(result.dimensions).toContain(
-            AIAgentDecreaseInFRTDimension.TicketId,
-        )
-        expect(result.dimensions).toContain(
-            AIAgentDecreaseInFRTDimension.FirstResponseTime,
-        )
-    })
-
-    it('should have empty measures', () => {
-        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
-        expect(result.measures).toEqual([])
-    })
-
-    it('should include periodStart filter with AfterDate operator', () => {
-        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
-        expect(result.filters).toContainEqual({
-            member: AIAgentDecreaseInFRTFilterMember.PeriodStart,
-            operator: ReportingFilterOperator.AfterDate,
-            values: [filters.period.start_datetime],
-        })
-    })
-
-    it('should include periodEnd filter with BeforeDate operator', () => {
-        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
-        expect(result.filters).toContainEqual({
-            member: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
-            operator: ReportingFilterOperator.BeforeDate,
-            values: [filters.period.end_datetime],
-        })
-    })
-
-    it('should have limit equal to DRILLDOWN_QUERY_LIMIT', () => {
-        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
-        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
-    })
-
-    it('returns empty order when no sorting provided', () => {
-        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
-        expect(result.order).toEqual([])
-    })
-
-    it('includes sorting order when sorting is provided', () => {
-        const result = allAgentsFRTDrillDownQueryFactory(
-            filters,
-            timezone,
-            OrderDirection.Asc,
-        )
-        expect(result.order).toEqual([
-            [
+    it('returns correct query', () => {
+        expect(allAgentsFRTDrillDownQueryFactory(filters, timezone)).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT_DRILL_DOWN,
+            measures: [],
+            dimensions: [
+                AIAgentDecreaseInFRTDimension.TicketId,
                 AIAgentDecreaseInFRTDimension.FirstResponseTime,
-                OrderDirection.Asc,
             ],
-        ])
+            filters: [
+                {
+                    member: AIAgentDecreaseInFRTFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+                {
+                    member: AIAgentDecreaseInFRTFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: AIAgentDecreaseInFRTFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('includes sorting when provided', () => {
+        expect(
+            allAgentsFRTDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Asc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AIAgentDecreaseInFRTDimension.FirstResponseTime,
+                        OrderDirection.Asc,
+                    ],
+                ],
+            }),
+        )
+    })
+})
+
+describe('supportAgentFRTDrillDownQueryFactory', () => {
+    it('returns correct query', () => {
+        expect(supportAgentFRTDrillDownQueryFactory(filters, timezone)).toEqual(
+            {
+                metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_FRT_DRILL_DOWN,
+                measures: [],
+                dimensions: [
+                    AIAgentDecreaseInFRTDimension.TicketId,
+                    AIAgentDecreaseInFRTDimension.FirstResponseTime,
+                ],
+                filters: [
+                    {
+                        member: AIAgentDecreaseInFRTFilterMember.AiAgentRole,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [AIAgentSkills.AIAgentSupport],
+                    },
+                    {
+                        member: AIAgentDecreaseInFRTFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [filters.period.start_datetime],
+                    },
+                    {
+                        member: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [filters.period.end_datetime],
+                    },
+                    {
+                        member: AIAgentDecreaseInFRTFilterMember.StoreIntegrationId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['122'],
+                    },
+                    {
+                        member: AIAgentDecreaseInFRTFilterMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['chat'],
+                    },
+                ],
+                timezone,
+                limit: DRILLDOWN_QUERY_LIMIT,
+                order: [],
+            },
+        )
+    })
+
+    it('includes sorting when provided', () => {
+        expect(
+            supportAgentFRTDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Asc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AIAgentDecreaseInFRTDimension.FirstResponseTime,
+                        OrderDirection.Asc,
+                    ],
+                ],
+            }),
+        )
     })
 })
 
 describe('allAgentsResolutionTimeDrillDownQueryFactory', () => {
-    it('returns query with period filters only and correct metricName', () => {
+    it('returns correct query', () => {
         expect(
             allAgentsResolutionTimeDrillDownQueryFactory(filters, timezone),
         ).toEqual({
@@ -800,6 +703,16 @@ describe('allAgentsResolutionTimeDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [filters.period.end_datetime],
                 },
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
+                },
             ],
             timezone,
             limit: DRILLDOWN_QUERY_LIMIT,
@@ -807,23 +720,28 @@ describe('allAgentsResolutionTimeDrillDownQueryFactory', () => {
         })
     })
 
-    it('includes sorting order when sorting is provided', () => {
-        const result = allAgentsResolutionTimeDrillDownQueryFactory(
-            filters,
-            timezone,
-            OrderDirection.Asc,
-        )
-        expect(result.order).toEqual([
-            [
-                AIAgentDecreaseInResolutionTimeDimension.TicketId,
+    it('includes sorting when provided', () => {
+        expect(
+            allAgentsResolutionTimeDrillDownQueryFactory(
+                filters,
+                timezone,
                 OrderDirection.Asc,
-            ],
-        ])
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AIAgentDecreaseInResolutionTimeDimension.TicketId,
+                        OrderDirection.Asc,
+                    ],
+                ],
+            }),
+        )
     })
 })
 
 describe('supportAgentResolutionTimeDrillDownQueryFactory', () => {
-    it('returns query with AIAgentSupport skill filter and period filters', () => {
+    it('returns correct query', () => {
         expect(
             supportAgentResolutionTimeDrillDownQueryFactory(filters, timezone),
         ).toEqual({
@@ -850,6 +768,16 @@ describe('supportAgentResolutionTimeDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [filters.period.end_datetime],
                 },
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
+                },
             ],
             timezone,
             limit: DRILLDOWN_QUERY_LIMIT,
@@ -857,289 +785,131 @@ describe('supportAgentResolutionTimeDrillDownQueryFactory', () => {
         })
     })
 
-    it('includes sorting order when sorting is provided', () => {
-        const result = supportAgentResolutionTimeDrillDownQueryFactory(
-            filters,
-            timezone,
-            OrderDirection.Desc,
-        )
-        expect(result.order).toEqual([
-            [
-                AIAgentDecreaseInResolutionTimeDimension.TicketId,
-                OrderDirection.Desc,
-            ],
-        ])
-    })
-})
-
-describe('supportAgentFRTDrillDownQueryFactory', () => {
-    it('returns query with AIAgentSupport role filter and period filters', () => {
-        expect(supportAgentFRTDrillDownQueryFactory(filters, timezone)).toEqual(
-            {
-                metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_FRT_DRILL_DOWN,
-                measures: [],
-                dimensions: [
-                    AIAgentDecreaseInFRTDimension.TicketId,
-                    AIAgentDecreaseInFRTDimension.FirstResponseTime,
-                ],
-                filters: [
-                    {
-                        member: AIAgentDecreaseInFRTFilterMember.AiAgentRole,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [AIAgentSkills.AIAgentSupport],
-                    },
-                    {
-                        member: AIAgentDecreaseInFRTFilterMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [filters.period.start_datetime],
-                    },
-                    {
-                        member: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [filters.period.end_datetime],
-                    },
-                ],
+    it('includes sorting when provided', () => {
+        expect(
+            supportAgentResolutionTimeDrillDownQueryFactory(
+                filters,
                 timezone,
-                limit: DRILLDOWN_QUERY_LIMIT,
-                order: [],
-            },
+                OrderDirection.Desc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AIAgentDecreaseInResolutionTimeDimension.TicketId,
+                        OrderDirection.Desc,
+                    ],
+                ],
+            }),
         )
-    })
-
-    it('includes sorting order when sorting is provided', () => {
-        const result = supportAgentFRTDrillDownQueryFactory(
-            filters,
-            timezone,
-            OrderDirection.Asc,
-        )
-        expect(result.order).toEqual([
-            [
-                AIAgentDecreaseInFRTDimension.FirstResponseTime,
-                OrderDirection.Asc,
-            ],
-        ])
     })
 })
 
 describe('allAgentsSuccessRateDrillDownQueryFactory', () => {
-    it('should return correct metricName', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_ALL_AGENTS_SUCCESS_RATE_DRILL_DOWN,
-        )
+    it('returns correct query', () => {
+        expect(
+            allAgentsSuccessRateDrillDownQueryFactory(filters, timezone),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_ALL_AGENTS_SUCCESS_RATE_DRILL_DOWN,
+            measures: [],
+            dimensions: [SuccessRateDimension.TicketId],
+            filters: [
+                {
+                    member: SuccessRateFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: SuccessRateFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+                {
+                    member: SuccessRateFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: SuccessRateFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
     })
 
-    it('should include TicketId in dimensions', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
+    it('includes sorting when provided', () => {
+        expect(
+            allAgentsSuccessRateDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Desc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [[SuccessRateDimension.TicketId, OrderDirection.Desc]],
+            }),
         )
-        expect(result.dimensions).toContain(SuccessRateDimension.TicketId)
-    })
-
-    it('should have empty measures', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.measures).toEqual([])
-    })
-
-    it('should not include aiAgentRole filter', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.filters).not.toEqual(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    member: SuccessRateFilterMember.AiAgentRole,
-                }),
-            ]),
-        )
-    })
-
-    it('should include periodStart filter with AfterDate operator', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        const periodStartFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member === SuccessRateFilterMember.PeriodStart,
-        )
-        expect(periodStartFilter).toBeDefined()
-        if (periodStartFilter && 'operator' in periodStartFilter) {
-            expect(periodStartFilter.operator).toBe(
-                ReportingFilterOperator.AfterDate,
-            )
-            expect(periodStartFilter.values).toEqual([
-                mockFilters.period.start_datetime,
-            ])
-        }
-    })
-
-    it('should include periodEnd filter with BeforeDate operator', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        const periodEndFilter = result.filters?.find(
-            (f) =>
-                'member' in f && f.member === SuccessRateFilterMember.PeriodEnd,
-        )
-        expect(periodEndFilter).toBeDefined()
-        if (periodEndFilter && 'operator' in periodEndFilter) {
-            expect(periodEndFilter.operator).toBe(
-                ReportingFilterOperator.BeforeDate,
-            )
-            expect(periodEndFilter.values).toEqual([
-                mockFilters.period.end_datetime,
-            ])
-        }
-    })
-
-    it('should set correct limit', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
-    })
-
-    it('should set empty order when no sorting provided', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.order).toEqual([])
-    })
-
-    it('should set order when sorting is provided', () => {
-        const result = allAgentsSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-            OrderDirection.Desc,
-        )
-        expect(result.order).toEqual([
-            [SuccessRateDimension.TicketId, OrderDirection.Desc],
-        ])
     })
 })
 
 describe('supportAgentSuccessRateDrillDownQueryFactory', () => {
-    it('should return correct metricName', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE_DRILL_DOWN,
-        )
-    })
-
-    it('should include TicketId in dimensions', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.dimensions).toContain(SuccessRateDimension.TicketId)
-    })
-
-    it('should have empty measures', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.measures).toEqual([])
-    })
-
-    it('should include aiAgentRole fixed filter for support agent', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        const roleFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member === SuccessRateFilterMember.AiAgentRole,
-        )
-        expect(roleFilter).toEqual({
-            member: SuccessRateFilterMember.AiAgentRole,
-            operator: ReportingFilterOperator.Equals,
-            values: [AIAgentSkills.AIAgentSupport],
+    it('returns correct query', () => {
+        expect(
+            supportAgentSuccessRateDrillDownQueryFactory(filters, timezone),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE_DRILL_DOWN,
+            measures: [],
+            dimensions: [SuccessRateDimension.TicketId],
+            filters: [
+                {
+                    member: SuccessRateFilterMember.AiAgentRole,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [AIAgentSkills.AIAgentSupport],
+                },
+                {
+                    member: SuccessRateFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: SuccessRateFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+                {
+                    member: SuccessRateFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: SuccessRateFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
         })
     })
 
-    it('should include periodStart filter with AfterDate operator', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
+    it('includes sorting when provided', () => {
+        expect(
+            supportAgentSuccessRateDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Asc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [[SuccessRateDimension.TicketId, OrderDirection.Asc]],
+            }),
         )
-        const periodStartFilter = result.filters?.find(
-            (f) =>
-                'member' in f &&
-                f.member === SuccessRateFilterMember.PeriodStart,
-        )
-        expect(periodStartFilter).toBeDefined()
-        if (periodStartFilter && 'operator' in periodStartFilter) {
-            expect(periodStartFilter.operator).toBe(
-                ReportingFilterOperator.AfterDate,
-            )
-            expect(periodStartFilter.values).toEqual([
-                mockFilters.period.start_datetime,
-            ])
-        }
-    })
-
-    it('should include periodEnd filter with BeforeDate operator', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        const periodEndFilter = result.filters?.find(
-            (f) =>
-                'member' in f && f.member === SuccessRateFilterMember.PeriodEnd,
-        )
-        expect(periodEndFilter).toBeDefined()
-        if (periodEndFilter && 'operator' in periodEndFilter) {
-            expect(periodEndFilter.operator).toBe(
-                ReportingFilterOperator.BeforeDate,
-            )
-            expect(periodEndFilter.values).toEqual([
-                mockFilters.period.end_datetime,
-            ])
-        }
-    })
-
-    it('should set correct limit', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
-    })
-
-    it('should set empty order when no sorting provided', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-        )
-        expect(result.order).toEqual([])
-    })
-
-    it('should set order when sorting is provided', () => {
-        const result = supportAgentSuccessRateDrillDownQueryFactory(
-            mockFilters,
-            'UTC',
-            OrderDirection.Asc,
-        )
-        expect(result.order).toEqual([
-            [SuccessRateDimension.TicketId, OrderDirection.Asc],
-        ])
     })
 })

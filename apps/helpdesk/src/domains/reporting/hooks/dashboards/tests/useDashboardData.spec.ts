@@ -1,4 +1,3 @@
-import { useFlagWithLoading } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
@@ -44,15 +43,7 @@ import {
     createTrendReport,
 } from 'domains/reporting/services/supportPerformanceReportingService'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        AiAgentAnalyticsFilters:
-            'linear_project_revamp-ai-agent-analytics_filters',
-    },
-    useFlagWithLoading: jest.fn(),
-}))
-const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 jest.mock('domains/reporting/hooks/dashboards/useSanitizedDashboard')
 const useSanitizedDashboardMock = assumeMock(useSanitizedDashboard)
@@ -76,6 +67,8 @@ jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('domains/reporting/hooks/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
+const useAiAgentStatsFiltersMock = assumeMock(useAiAgentStatsFilters)
 
 describe('useDownloadDashboardData', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -139,17 +132,17 @@ describe('useDownloadDashboardData', () => {
     const granularity = ReportingGranularity.Day
 
     beforeEach(() => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
-
         useSanitizedDashboardMock.mockImplementation((dash) => dash)
         useAgentsTableConfigSettingMock.mockReturnValue({
             columnsOrder: [],
         } as unknown as ReturnType<typeof useAgentsTableConfigSetting>)
         useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
+            userTimezone,
+            granularity,
+        })
+        useAiAgentStatsFiltersMock.mockReturnValue({
+            statsFilters,
             userTimezone,
             granularity,
         })
@@ -252,16 +245,17 @@ describe('useDownloadDashboardData', () => {
         )
     })
 
-    it('should pass only the period and stores filters when isAiAgentDashboard is true', () => {
+    it('should use aiAgentStatsFilters when isAiAgentDashboard is true', () => {
         const mockStores = { values: ['store-1'], operator: 'AND' }
-        const statsFiltersWithAgentsAndStores = {
+        const mockChannels = { values: ['email'], operator: 'AND' }
+        const aiAgentFilters = {
             ...statsFilters,
-            agents: { values: [1, 2], operator: 'AND' },
             stores: mockStores,
+            channels: mockChannels,
         } as unknown as StatsFilters
 
-        useStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: statsFiltersWithAgentsAndStores,
+        useAiAgentStatsFiltersMock.mockReturnValue({
+            statsFilters: aiAgentFilters,
             userTimezone,
             granularity,
         })
@@ -269,72 +263,12 @@ describe('useDownloadDashboardData', () => {
         renderHook(() => useDashboardData(exampleDashboard, true))
 
         expect(useTrendReportDataMock).toHaveBeenCalledWith(
-            { period: statsFilters.period, stores: mockStores },
+            aiAgentFilters,
             userTimezone,
             expect.any(Array),
         )
         expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
-            { period: statsFilters.period, stores: mockStores },
-            userTimezone,
-            granularity,
-            expect.any(Array),
-        )
-    })
-
-    it('should pass only period (no stores) when isAiAgentDashboard is true and filters FF is disabled', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
-        const mockStores = { values: ['store-1'], operator: 'AND' }
-        useStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: {
-                ...statsFilters,
-                stores: mockStores,
-            } as unknown as StatsFilters,
-            userTimezone,
-            granularity,
-        })
-
-        renderHook(() => useDashboardData(exampleDashboard, true))
-
-        expect(useTrendReportDataMock).toHaveBeenCalledWith(
-            { period: statsFilters.period },
-            userTimezone,
-            expect.any(Array),
-        )
-        expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
-            { period: statsFilters.period },
-            userTimezone,
-            granularity,
-            expect.any(Array),
-        )
-    })
-
-    it('should pass only period (no stores) when isAiAgentDashboard is true and filters FF is loading', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: true,
-        })
-        const mockStores = { values: ['store-1'], operator: 'AND' }
-        useStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: {
-                ...statsFilters,
-                stores: mockStores,
-            } as unknown as StatsFilters,
-            userTimezone,
-            granularity,
-        })
-
-        renderHook(() => useDashboardData(exampleDashboard, true))
-
-        expect(useTrendReportDataMock).toHaveBeenCalledWith(
-            { period: statsFilters.period },
-            userTimezone,
-            expect.any(Array),
-        )
-        expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
-            { period: statsFilters.period },
+            aiAgentFilters,
             userTimezone,
             granularity,
             expect.any(Array),

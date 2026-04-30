@@ -9,6 +9,8 @@ export enum HandoverInteractionsFilterMember {
     PeriodEnd = 'HandoverInteractions.periodEnd',
     AiAgentRole = 'HandoverInteractions.aiAgentRole',
     FeatureType = 'HandoverInteractions.featureType',
+    Channel = 'HandoverInteractions.channel',
+    StoreIntegrationId = 'HandoverInteractions.storeIntegrationId',
 }
 
 export type HandoverInteractionsCube = Cube<
