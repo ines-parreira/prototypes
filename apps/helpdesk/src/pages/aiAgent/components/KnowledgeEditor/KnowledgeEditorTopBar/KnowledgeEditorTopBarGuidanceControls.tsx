@@ -1,6 +1,6 @@
 import { useShallow } from 'zustand/react/shallow'
 
-import { Button, Menu, MenuItem } from '@gorgias/axiom'
+import { Button, Menu, MenuItem, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useGuidanceStore } from '../KnowledgeEditorGuidance/context'
 import { useVersionHistory } from '../KnowledgeEditorGuidance/hooks/useVersionHistory'
@@ -65,12 +65,39 @@ const MoreActionsMenu = ({
     )
 }
 
+const PublishButton = ({
+    onClick,
+    isDisabled,
+    disabledReason,
+}: {
+    onClick: () => void
+    isDisabled: boolean
+    disabledReason: string | undefined
+}) => {
+    const button = (
+        <Button onClick={onClick} isDisabled={isDisabled} variant="primary">
+            Publish
+        </Button>
+    )
+
+    if (!disabledReason) {
+        return button
+    }
+
+    return (
+        <Tooltip trigger={button}>
+            <TooltipContent title={disabledReason} />
+        </Tooltip>
+    )
+}
+
 export const GuidanceToolbarControls = () => {
     const {
         state: toolbarState,
         actions,
         isDisabled,
         isFormValid,
+        publishDisabledReason,
         canEdit,
         editDisabledReason,
         onTest,
@@ -215,13 +242,11 @@ export const GuidanceToolbarControls = () => {
                         onOpenDeleteModal={onOpenDeleteModal}
                         onOpenDuplicateModal={onOpenDuplicateModal}
                     />
-                    <Button
+                    <PublishButton
                         onClick={onClickPublish}
                         isDisabled={!isFormValid || isDisabled}
-                        variant="primary"
-                    >
-                        Publish
-                    </Button>
+                        disabledReason={publishDisabledReason}
+                    />
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={isDisabled} />
                     )}
@@ -286,13 +311,13 @@ export const GuidanceToolbarControls = () => {
                         }
                         disabled={isDisabled}
                     />
-                    <Button
+                    <PublishButton
                         onClick={onClickPublish}
                         isDisabled={isPublishDisabled}
-                        variant="primary"
-                    >
-                        Publish
-                    </Button>
+                        disabledReason={
+                            isCreateMode ? undefined : publishDisabledReason
+                        }
+                    />
                     {!isPlaygroundOpen && (
                         <TestButton
                             onTest={onTest}

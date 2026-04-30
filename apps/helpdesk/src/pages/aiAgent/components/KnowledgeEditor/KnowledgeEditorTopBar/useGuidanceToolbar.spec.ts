@@ -11,6 +11,10 @@ import {
 } from '../KnowledgeEditorGuidance/context'
 import { useGuidanceToolbar } from './useGuidanceToolbar'
 
+jest.mock('./useHasDisabledActionsInContent', () => ({
+    useHasDisabledActionsInContent: jest.fn().mockReturnValue(false),
+}))
+
 jest.mock('../KnowledgeEditorGuidance/context', () => ({
     useGuidanceContext: jest.fn(),
     useGuidanceStore: jest.fn(),

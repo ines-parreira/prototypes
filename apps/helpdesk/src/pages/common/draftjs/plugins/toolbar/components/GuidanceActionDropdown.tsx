@@ -128,31 +128,50 @@ const GuidanceActionDropdown = ({
                 {(search !== null
                     ? search.filteredActions
                     : guidanceActions
-                ).map((action, index) => (
-                    <DropdownItem
-                        key={`${action.value}-${index}`}
-                        option={{
-                            label: action.name,
-                            value: action.value,
-                        }}
-                        onClick={() => {
-                            onSelect(action)
-                            onToggle(false)
-                        }}
-                        className={css.item}
-                    >
-                        <div className={css.itemContent}>
-                            <img
-                                src={actionsIcon}
-                                alt="action"
-                                className={css.itemIcon}
-                                width={14}
-                                height={14}
-                            />
-                            <span className={css.itemName}>{action.name}</span>
-                        </div>
-                    </DropdownItem>
-                ))}
+                ).map((action, index) => {
+                    const needsSetup =
+                        action.enabled !== false &&
+                        (action.requiresAuth || action.hasMissingValues)
+                    return (
+                        <DropdownItem
+                            key={`${action.value}-${index}`}
+                            option={{
+                                label: action.name,
+                                value: action.value,
+                            }}
+                            onClick={() => {
+                                onSelect(action)
+                                onToggle(false)
+                            }}
+                            className={css.item}
+                        >
+                            <div className={css.itemContent}>
+                                <img
+                                    src={actionsIcon}
+                                    alt="action"
+                                    className={css.itemIcon}
+                                    width={14}
+                                    height={14}
+                                />
+                                <span className={css.itemName}>
+                                    {action.name}
+                                </span>
+                                {action.enabled === false && (
+                                    <span className={css.itemDisabledTag}>
+                                        <span className={css.itemIconDot} />
+                                        Disabled
+                                    </span>
+                                )}
+                                {needsSetup && (
+                                    <span className={css.itemDisabledTag}>
+                                        <span className={css.itemIconDot} />
+                                        Setup required
+                                    </span>
+                                )}
+                            </div>
+                        </DropdownItem>
+                    )
+                })}
             </DropdownBody>
         </Dropdown>
     )

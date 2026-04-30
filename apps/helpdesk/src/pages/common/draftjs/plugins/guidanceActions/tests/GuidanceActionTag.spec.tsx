@@ -13,16 +13,15 @@ jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarContext', () => ({
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    LegacyTooltip: jest.fn(({ children, target }) => (
-        <div data-testid="tooltip" data-target={target}>
+    Tooltip: jest.fn(({ children, trigger }) => (
+        <div data-testid="tooltip">
+            {trigger}
             {children}
         </div>
     )),
-}))
-
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
-    useId: jest.fn().mockImplementation(() => 'mock-id'),
+    TooltipContent: jest.fn(({ title, children }) => (
+        <div data-testid="tooltip-content">{title ?? children}</div>
+    )),
 }))
 
 describe('GuidanceActionTag', () => {
@@ -37,21 +36,18 @@ describe('GuidanceActionTag', () => {
         jest.clearAllMocks()
 
         featureFlagsClientMock.allFlags.mockReturnValue({})
-
-        // Mock useToolbarContext
         ;(useToolbarContext as jest.Mock).mockReturnValue({
             guidanceActions: mockGuidanceActions,
             shopName: 'test-shop',
         })
 
-        // Mock Element.prototype properties used in the component
         Object.defineProperty(HTMLSpanElement.prototype, 'offsetWidth', {
             configurable: true,
             value: 100,
         })
         Object.defineProperty(HTMLSpanElement.prototype, 'scrollWidth', {
             configurable: true,
-            value: 100, // Equal to offsetWidth by default (no overflow)
+            value: 100,
         })
     })
 
@@ -94,14 +90,13 @@ describe('GuidanceActionTag', () => {
     })
 
     it('shows tooltip when text overflows', () => {
-        // Mock text overflow
         Object.defineProperty(HTMLSpanElement.prototype, 'offsetWidth', {
             configurable: true,
             value: 50,
         })
         Object.defineProperty(HTMLSpanElement.prototype, 'scrollWidth', {
             configurable: true,
-            value: 100, // Greater than offsetWidth (overflow)
+            value: 100,
         })
 
         const actionValue = encodeAction(mockGuidanceActions[0])
@@ -112,24 +107,20 @@ describe('GuidanceActionTag', () => {
             </GuidanceActionTag>,
         )
 
-        const tooltip = screen.getByTestId('tooltip')
-        expect(tooltip).toBeInTheDocument()
-        expect(tooltip).toHaveTextContent('TOTO action')
-        expect(tooltip).toHaveAttribute(
-            'data-target',
-            'guidance-action-tag-mock-id',
+        expect(screen.getByTestId('tooltip')).toBeInTheDocument()
+        expect(screen.getByTestId('tooltip-content')).toHaveTextContent(
+            'TOTO action',
         )
     })
 
     it('does not show tooltip when text does not overflow', () => {
-        // Ensure no text overflow
         Object.defineProperty(HTMLSpanElement.prototype, 'offsetWidth', {
             configurable: true,
             value: 100,
         })
         Object.defineProperty(HTMLSpanElement.prototype, 'scrollWidth', {
             configurable: true,
-            value: 90, // Less than offsetWidth (no overflow)
+            value: 90,
         })
 
         const actionValue = encodeAction(mockGuidanceActions[0])

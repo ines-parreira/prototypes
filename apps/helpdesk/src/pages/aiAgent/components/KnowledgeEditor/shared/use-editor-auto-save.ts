@@ -78,12 +78,17 @@ export function useEditorAutoSave<TExtra = unknown, TEntity = unknown>(
                 return
             }
 
+            // Re-read mode and articleId from the store at fire time; the params
+            // may have been captured before a concurrent save completed and
+            // switched the mode from 'create' to 'edit'.
+            const liveState = getCurrentState()
+
             const titleMatchesSnapshot = areTrimmedStringsEqual(
                 params.title,
-                params.savedSnapshot.title,
+                liveState.savedSnapshot.title,
             )
             const contentMatchesSnapshot =
-                params.content === params.savedSnapshot.content
+                params.content === liveState.savedSnapshot.content
 
             if (titleMatchesSnapshot && contentMatchesSnapshot) {
                 dispatch.setAutoSaving(false)
@@ -96,7 +101,11 @@ export function useEditorAutoSave<TExtra = unknown, TEntity = unknown>(
             }
 
             try {
-                const result = await performSave(params)
+                const result = await performSave({
+                    ...params,
+                    mode: liveState.mode,
+                    articleId: liveState.articleId,
+                })
 
                 if (result && pendingSaveRef.current) {
                     const savedValues = pendingSaveRef.current
@@ -125,6 +134,7 @@ export function useEditorAutoSave<TExtra = unknown, TEntity = unknown>(
         },
         [
             isHelpCenterReady,
+            getCurrentState,
             performSave,
             dispatch,
             onCreated,

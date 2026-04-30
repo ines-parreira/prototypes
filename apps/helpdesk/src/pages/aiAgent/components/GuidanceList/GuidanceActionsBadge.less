@@ -5,4 +5,27 @@
         gap: var(--spacing-xxxxs);
         color: var(--content-neutral-secondary);
     }
+
+    .setupPill {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-xxxs);
+        height: 24px;
+        min-width: 24px;
+        padding: 0 var(--spacing-xs) 0 var(--spacing-xxs);
+        border-radius: var(--spacing-xxs);
+        border: 0.5px solid var(--border-neutral-tertiary);
+        color: var(--content-neutral-default);
+        font-size: 12px;
+    }
+
+    .setupPillDot {
+        flex-shrink: 0;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--static-warning);
+    }
 }

@@ -159,6 +159,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetGuidancesAvailableActionsMocked.mockReturnValue({
             isLoading: false,
             guidanceActions: [],
+            rawActions: [],
         })
         useGoToNextTicketMock.mockReturnValue({
             goToTicket: jest.fn(),

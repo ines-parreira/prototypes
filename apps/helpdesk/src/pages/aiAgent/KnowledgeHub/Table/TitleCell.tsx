@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import type { Row } from '@gorgias/axiom'
 import { Box, Icon, Tag, Text } from '@gorgias/axiom'
 
@@ -8,6 +10,8 @@ import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import { isActionSetupRequired } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import { guidanceActionRegex } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 
 import { hasDraftEdits, isDraft } from '../utils/articleUtils'
 
@@ -78,6 +82,21 @@ export const TitleCell = ({
     const isArticleDraft = isDraft(articleVersionInfo)
     const hasArticleDraftEdits = hasDraftEdits(articleVersionInfo)
 
+    const hasSetupRequired = useMemo(() => {
+        if (!guidanceArticle || type !== KnowledgeType.Guidance) return false
+        const mentionedIds = new Set(
+            [
+                ...guidanceArticle.content.matchAll(
+                    new RegExp(guidanceActionRegex.source, 'g'),
+                ),
+            ].map(([, id]) => id),
+        )
+        return availableActions.some(
+            (action) =>
+                mentionedIds.has(action.value) && isActionSetupRequired(action),
+        )
+    }, [guidanceArticle, availableActions, type])
+
     const getIcon = () => {
         if (!isGrouped) {
             if (
@@ -120,7 +139,8 @@ export const TitleCell = ({
                 {!isGrouped &&
                     (type === KnowledgeType.FAQ ||
                         type === KnowledgeType.Guidance) &&
-                    isArticleDraft && (
+                    isArticleDraft &&
+                    !hasSetupRequired && (
                         <Tag
                             id={row.original.id}
                             color={hasArticleDraftEdits ? undefined : 'grey'}

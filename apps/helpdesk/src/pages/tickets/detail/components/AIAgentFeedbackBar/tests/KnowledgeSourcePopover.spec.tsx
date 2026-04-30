@@ -33,6 +33,7 @@ describe('KnowledgeSourcePopover', () => {
         useGetGuidancesAvailableActionsMocked.mockReturnValue({
             isLoading: false,
             guidanceActions: [],
+            rawActions: [],
         })
     })
     it('should show popover content on hover and hides on mouse leave', async () => {

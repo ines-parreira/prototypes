@@ -202,6 +202,7 @@ describe('MissingKnowledgeSelect', () => {
         useGetGuidancesAvailableActionsMocked.mockReturnValue({
             isLoading: false,
             guidanceActions: [],
+            rawActions: [],
         })
         mockUseFlag.mockReturnValue(false)
         mockUseIsFeedbackMutating.mockReturnValue(false)

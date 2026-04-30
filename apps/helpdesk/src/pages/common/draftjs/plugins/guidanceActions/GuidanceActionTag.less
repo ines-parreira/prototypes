@@ -6,6 +6,7 @@
         vertical-align: top;
         height: 24px;
         line-height: 24px;
+        margin: 0 2px;
     }
 
     .container {
@@ -30,9 +31,23 @@
         color: var(--feedback-variations-error-4); // legacy
     }
 
+    .disabled {
+        background: var(--accessory-orange-1); // legacy
+        color: var(--accessory-orange-4); // legacy
+    }
+
     .actionLogo {
         vertical-align: initial;
         margin-right: var(--layout-spacing-xxs);
+    }
+
+    .warningDot {
+        flex-shrink: 0;
+        margin-right: var(--layout-spacing-xxs);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--feedback-warning-4); // legacy
     }
 
     .content {
@@ -70,6 +85,15 @@
     .invalid {
         background: var(--surface-error-secondary);
         color: var(--content-error-primary);
+    }
+
+    .disabled {
+        background: var(--surface-warning-default);
+        color: var(--content-warning-default);
+    }
+
+    .warningDot {
+        background: var(--static-warning);
     }
 
     .wrapper[data-selected] .container {

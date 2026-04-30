@@ -3,6 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'
+import { GuidanceDisabledActionsBar } from 'pages/aiAgent/components/GuidanceEditor/GuidanceDisabledActionsBar'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 
@@ -163,6 +164,8 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                 <div className={css.knowledgeEditor}>
                     <div className={css.editorContainer}>
                         <KnowledgeEditorGuidanceVersionBanner />
+
+                        {mode !== 'diff' && <GuidanceDisabledActionsBar />}
 
                         {mode === 'read' && (
                             <KnowledgeEditorGuidanceReadView

@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
-import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import { isActionSetupRequired } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { guidanceActionRegex } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 
 import css from './GuidanceActionsBadge.less'
@@ -15,8 +16,6 @@ export const GuidanceActionsBadge = ({
     article: GuidanceArticle
     availableActions: GuidanceAction[]
 }) => {
-    const [spanRef, setSpanRef] = useState<HTMLSpanElement | null>(null)
-
     const actions = useMemo(() => {
         const actionsFound: { [actionId: string]: GuidanceAction } = {}
 
@@ -41,25 +40,49 @@ export const GuidanceActionsBadge = ({
     }, [article.content, availableActions])
 
     const numActions = Object.keys(actions).length
+    const actionValues = Object.values(actions)
+    const needsSetup = actionValues.some(isActionSetupRequired)
 
     if (numActions === 0) {
         return null
     }
 
+    const tooltipContent = (
+        <TooltipContent>
+            <strong>
+                {numActions} Action{numActions > 1 ? 's' : ''} used:
+            </strong>{' '}
+            {actionValues.map(({ name }) => name).join(', ')}
+        </TooltipContent>
+    )
+
+    if (needsSetup) {
+        return (
+            <Tooltip
+                trigger={
+                    <span className={css.setupPill}>
+                        <span className={css.setupPillDot} />
+                        Setup required
+                    </span>
+                }
+                placement="top"
+            >
+                {tooltipContent}
+            </Tooltip>
+        )
+    }
+
     return (
-        <span className={css.guidanceActionsBadge} ref={setSpanRef}>
-            <Icon name={'webhook'} size="sm" />
-            {numActions}
-            {spanRef && (
-                <Tooltip target={spanRef} placement="top">
-                    <strong>
-                        {numActions} Action{numActions > 1 ? 's' : ''} used:
-                    </strong>{' '}
-                    {Object.values(actions)
-                        .map(({ name }) => name)
-                        .join(', ')}
-                </Tooltip>
-            )}
-        </span>
+        <Tooltip
+            trigger={
+                <span className={css.guidanceActionsBadge}>
+                    <Icon name={'webhook'} size="sm" />
+                    {numActions}
+                </span>
+            }
+            placement="top"
+        >
+            {tooltipContent}
+        </Tooltip>
     )
 }

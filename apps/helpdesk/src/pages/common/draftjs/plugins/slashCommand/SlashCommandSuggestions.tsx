@@ -307,6 +307,32 @@ export default function SlashCommandSuggestions({
     const hasActions = guidanceActions.length > 0
     const hasNoResults = isSearching && items.length === 0
 
+    const renderActionItem = (action: GuidanceAction) => {
+        const isDisabled = action.enabled === false
+        const needsSetup =
+            !isDisabled && (action.requiresAuth || action.hasMissingValues)
+        return (
+            <div className={css.itemContent}>
+                <span className={css.itemIcon}>
+                    <span className="material-icons">webhook</span>
+                </span>
+                <span className={css.itemName}>{action.name}</span>
+                {isDisabled && (
+                    <span className={css.itemDisabledTag}>
+                        <span className={css.itemIconDot} />
+                        Disabled
+                    </span>
+                )}
+                {needsSetup && (
+                    <span className={css.itemDisabledTag}>
+                        <span className={css.itemIconDot} />
+                        Setup required
+                    </span>
+                )}
+            </div>
+        )
+    }
+
     let navCounter = 0
 
     function getNavIndex() {
@@ -491,30 +517,9 @@ export default function SlashCommandSuggestions({
                                                                 navIndex,
                                                             )}
                                                         >
-                                                            <div
-                                                                className={
-                                                                    css.itemContent
-                                                                }
-                                                            >
-                                                                <span
-                                                                    className={
-                                                                        css.itemIcon
-                                                                    }
-                                                                >
-                                                                    <span className="material-icons">
-                                                                        webhook
-                                                                    </span>
-                                                                </span>
-                                                                <span
-                                                                    className={
-                                                                        css.itemName
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        action.name
-                                                                    }
-                                                                </span>
-                                                            </div>
+                                                            {renderActionItem(
+                                                                action,
+                                                            )}
                                                         </DropdownItem>
                                                     )
                                                 },
@@ -630,28 +635,9 @@ export default function SlashCommandSuggestions({
                                                             navIndex,
                                                         )}
                                                     >
-                                                        <div
-                                                            className={
-                                                                css.itemContent
-                                                            }
-                                                        >
-                                                            <span
-                                                                className={
-                                                                    css.itemIcon
-                                                                }
-                                                            >
-                                                                <span className="material-icons">
-                                                                    webhook
-                                                                </span>
-                                                            </span>
-                                                            <span
-                                                                className={
-                                                                    css.itemName
-                                                                }
-                                                            >
-                                                                {action.name}
-                                                            </span>
-                                                        </div>
+                                                        {renderActionItem(
+                                                            action,
+                                                        )}
                                                     </DropdownItem>
                                                 )
                                             },

@@ -59,6 +59,7 @@ describe('KnowledgeSourceFeedback', () => {
         useGetGuidancesAvailableActionsMocked.mockReturnValue({
             isLoading: false,
             guidanceActions: [],
+            rawActions: [],
         })
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,

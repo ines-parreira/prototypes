@@ -1,0 +1,30 @@
+:local {
+    .bar {
+        margin-top: var(--spacing-lg);
+        padding: 0 var(--spacing-xxl);
+        width: 100%;
+        // 522px+48px+48px
+        min-width: 618px;
+        // 600px+48px+48px
+        max-width: 696px;
+        margin-bottom: 0;
+    }
+
+    .actionList {
+        margin-top: var(--spacing-xxxs);
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .actionLink {
+        color: inherit;
+        text-decoration: underline;
+        cursor: pointer;
+        word-break: break-word;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}

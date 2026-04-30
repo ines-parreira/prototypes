@@ -10,6 +10,7 @@ import {
     useGuidanceStoreApi,
 } from '../KnowledgeEditorGuidance/context'
 import type { GuidanceModeType } from '../KnowledgeEditorGuidance/context/types'
+import { useHasDisabledActionsInContent } from './useHasDisabledActionsInContent'
 
 export type GuidanceToolbarState =
     | { type: 'published-with-draft' }
@@ -34,6 +35,7 @@ export type GuidanceToolbarData = {
     actions: GuidanceToolbarActions
     isDisabled: boolean
     isFormValid: boolean
+    publishDisabledReason: string | undefined
     canEdit: boolean
     editDisabledReason: string | undefined
     onTest: () => void
@@ -78,6 +80,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
     const guidanceIsFormValid = useGuidanceStore((storeState) =>
         isFormValid(storeState.state),
     )
+    const hasDisabledActionsInContent = useHasDisabledActionsInContent()
 
     const onClickEdit = useCallback(() => {
         onEditFn?.()
@@ -121,6 +124,10 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
 
     const isDisabled = isUpdating || isAutoSaving
 
+    const publishDisabledReason = hasDisabledActionsInContent
+        ? 'Actions may require set up before publishing'
+        : undefined
+
     const editDisabledReason =
         toolbarState.type === 'published-with-draft' || !guidanceCanEdit
             ? 'This version is read-only. Edit the draft to make changes.'
@@ -137,7 +144,8 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
             onDiscardCreate,
         },
         isDisabled,
-        isFormValid: guidanceIsFormValid,
+        isFormValid: guidanceIsFormValid && !hasDisabledActionsInContent,
+        publishDisabledReason,
         canEdit: guidanceCanEdit,
         editDisabledReason,
         onTest,
