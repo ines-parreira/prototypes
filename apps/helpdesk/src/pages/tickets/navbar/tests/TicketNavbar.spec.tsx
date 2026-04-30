@@ -1,12 +1,17 @@
 import type { ComponentProps, ReactNode } from 'react'
 
 import client from '@repo/api-resources'
-import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
+import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
+
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 import { section } from 'fixtures/section'
@@ -15,8 +20,16 @@ import { view } from 'fixtures/views'
 import type { View } from 'models/view/types'
 import { ViewType, ViewVisibility } from 'models/view/types'
 import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
+import { submitSettingSuccess } from 'state/currentUser/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import {
+    optimisticAccountSettingsReset,
+    optimisticUserSettingsReset,
+} from 'state/ui/ticketNavbar/actions'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+import type { RenderWithRouterParams } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
+import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import type DeleteSectionModal from '../DeleteSectionModal'
 import type SectionFormModal from '../SectionFormModal'
@@ -142,31 +155,58 @@ jest.mock(
     () =>
         ({
             elements,
+            isPrivate,
+            onSubmitMoveItem,
             onSectionDeleteClick,
             onSectionRenameClick,
-        }: ComponentProps<typeof TicketNavbarContent>) => (
-            <div data-testid="TicketNavbarContent">
-                {elements.map((element) => (
-                    <div key={element.data.id}>
-                        element: {JSON.stringify(element)}
-                    </div>
-                ))}
-                {onSectionDeleteClick && (
-                    <div
-                        data-testid="TicketNavbarContent-delete"
-                        onClick={() => onSectionDeleteClick(1)}
-                    />
-                )}
-                {onSectionRenameClick && (
-                    <div
-                        data-testid="TicketNavbarContent-rename"
-                        onClick={() => onSectionRenameClick(1)}
-                    />
-                )}
-            </div>
-        ),
+        }: ComponentProps<typeof TicketNavbarContent>) => {
+            if (isPrivate) {
+                privateOnSubmitMoveItem = onSubmitMoveItem
+            } else {
+                publicOnSubmitMoveItem = onSubmitMoveItem
+            }
+
+            return (
+                <div
+                    data-testid="TicketNavbarContent"
+                    data-scope={isPrivate ? 'private' : 'public'}
+                >
+                    {elements.map((element) => (
+                        <div key={element.data.id}>
+                            element: {JSON.stringify(element)}
+                        </div>
+                    ))}
+                    {onSectionDeleteClick && (
+                        <div
+                            data-testid="TicketNavbarContent-delete"
+                            onClick={() => onSectionDeleteClick(1)}
+                        />
+                    )}
+                    {onSectionRenameClick && (
+                        <div
+                            data-testid="TicketNavbarContent-rename"
+                            onClick={() => onSectionRenameClick(1)}
+                        />
+                    )}
+                </div>
+            )
+        },
 )
 const mockedServer = new MockAdapter(client)
+let publicOnSubmitMoveItem:
+    | ComponentProps<typeof TicketNavbarContent>['onSubmitMoveItem']
+    | undefined
+let privateOnSubmitMoveItem:
+    | ComponentProps<typeof TicketNavbarContent>['onSubmitMoveItem']
+    | undefined
+let queryClient: QueryClient
+
+function makeTestView(overrides: Partial<View>): View {
+    return {
+        ...view,
+        ...overrides,
+    }
+}
 
 describe('<TicketNavbar/>', () => {
     const minProps = {
@@ -187,6 +227,7 @@ describe('<TicketNavbar/>', () => {
         sectionCreated: jest.fn(),
         sectionDeleted: jest.fn(),
         sectionUpdated: jest.fn(),
+        viewUpdated: jest.fn(),
         viewsFetched: jest.fn(),
         privateElements: [
             {
@@ -228,20 +269,31 @@ describe('<TicketNavbar/>', () => {
         entities: fromJS({}),
     }
 
-    const renderTicketNavbar = ({
-        initialEntries = ['/foo/1'],
-        path = '/foo/:viewId?',
-        storeState = store,
-    } = {}) =>
-        render(<TicketNavbarContainer {...minProps} />, {
-            initialEntries,
-            path,
-            storeState: storeState as any,
-        })
+    function renderNavbar(
+        props: ComponentProps<typeof TicketNavbarContainer> = minProps,
+        {
+            state = store,
+            ...routerParams
+        }: RenderWithRouterParams & { state?: typeof store } = {},
+    ) {
+        return renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <DndProvider backend={HTML5Backend}>
+                    <Provider store={mockStore(state as any)}>
+                        <TicketNavbarContainer {...props} />
+                    </Provider>
+                </DndProvider>
+            </QueryClientProvider>,
+            routerParams,
+        )
+    }
 
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
+        queryClient = new QueryClient()
+        publicOnSubmitMoveItem = undefined
+        privateOnSubmitMoveItem = undefined
         mockedServer.onGet(/\/api\/views\/.*/).reply(200, {
             data: [view],
             meta: {},
@@ -262,7 +314,10 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fetch the views and dispatch the views actions (legacy views + views entity)', (done) => {
-        renderTicketNavbar()
+        renderNavbar(minProps, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
+        })
 
         setImmediate(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
@@ -276,7 +331,10 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fetch the sections and dispatch the result', (done) => {
-        renderTicketNavbar()
+        renderNavbar(minProps, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
+        })
 
         setImmediate(() => {
             expect(minProps.sectionsFetched).toHaveBeenNthCalledWith(1, [
@@ -287,7 +345,14 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fallback to location view id when view id is missing from the params', (done) => {
-        renderTicketNavbar({ initialEntries: ['/foo?viewId=2'] })
+        const history = createBrowserHistory()
+        history.push('/foo/1')
+
+        history.push('/foo?viewId=2')
+        renderNavbar(minProps, {
+            history,
+            path: '/foo/:viewId?',
+        })
 
         setImmediate(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
@@ -301,7 +366,10 @@ describe('<TicketNavbar/>', () => {
 
     it('should dispatch a notification when failing to fetch views', (done) => {
         mockedServer.onGet(/\/api\/views\/.*/).reply(503, { message: 'error' })
-        renderTicketNavbar()
+        renderNavbar(minProps, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
+        })
 
         setImmediate(() => {
             expect(minProps.notify).toHaveBeenNthCalledWith(1, {
@@ -312,8 +380,144 @@ describe('<TicketNavbar/>', () => {
         })
     })
 
+    it('should invalidate public ordering and view queries after moving a shared view', async () => {
+        const invalidateQueries = jest
+            .spyOn(queryClient, 'invalidateQueries')
+            .mockResolvedValue(undefined)
+        const currentPublicView = makeTestView({
+            id: 4,
+            section_id: null,
+            visibility: ViewVisibility.Public,
+        })
+        const nextPublicView = makeTestView({
+            id: 4,
+            section_id: 1,
+            visibility: ViewVisibility.Public,
+        })
+
+        mockedServer.onPut('/api/views/4/').reply(200, {
+            ...nextPublicView,
+        })
+        mockedServer.onPost('/api/account/settings/').reply(200, {
+            id: 42,
+            type: 'views-ordering',
+            data: {
+                views: { 4: { display_order: 1 } },
+                view_sections: { 1: { display_order: 0 } },
+            },
+        })
+
+        renderNavbar(
+            {
+                ...minProps,
+                accountSetting: {} as any,
+                optimisticAccountSettingsReset,
+            },
+            {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            },
+        )
+
+        expect(publicOnSubmitMoveItem).toBeDefined()
+
+        await act(async () => {
+            await publicOnSubmitMoveItem!(
+                {
+                    data: nextPublicView,
+                    type: TicketNavbarElementType.View,
+                },
+                {
+                    data: currentPublicView,
+                    type: TicketNavbarElementType.View,
+                },
+                {
+                    views: { 4: { display_order: 1 } },
+                    view_sections: { 1: { display_order: 0 } },
+                },
+                false,
+            )
+        })
+
+        expect(invalidateQueries).toHaveBeenNthCalledWith(1, {
+            queryKey: queryKeys.views.listAllViews(),
+        })
+        expect(invalidateQueries).toHaveBeenNthCalledWith(2, {
+            queryKey: queryKeys.views.getView(4),
+        })
+        expect(invalidateQueries).toHaveBeenNthCalledWith(3, {
+            queryKey: queryKeys.account.listAccountSettings({
+                type: 'views-ordering',
+            }),
+        })
+    })
+
+    it('should patch the private ordering query after reordering a private view', async () => {
+        const setQueryData = jest.spyOn(queryClient, 'setQueryData')
+        const privateView = makeTestView({
+            id: 5,
+            section_id: null,
+            visibility: ViewVisibility.Private,
+        })
+
+        mockedServer.onPost('/api/users/0/settings/').reply(200, {
+            id: 77,
+            type: 'views-ordering',
+            data: {
+                views: { 5: { display_order: 1 } },
+                view_sections: { 2: { display_order: 0 } },
+            },
+        })
+
+        renderNavbar(
+            {
+                ...minProps,
+                accountSetting: {} as any,
+                optimisticUserSettingsReset,
+                submitSettingSuccess,
+            },
+            {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            },
+        )
+
+        const nextPrivateOrdering = {
+            views: { 5: { display_order: 1 } },
+            view_sections: { 2: { display_order: 0 } },
+        }
+
+        expect(privateOnSubmitMoveItem).toBeDefined()
+
+        await act(async () => {
+            await privateOnSubmitMoveItem!(
+                {
+                    data: privateView,
+                    type: TicketNavbarElementType.View,
+                },
+                {
+                    data: privateView,
+                    type: TicketNavbarElementType.View,
+                },
+                nextPrivateOrdering,
+                true,
+            )
+        })
+
+        expect(setQueryData).toHaveBeenCalledWith(
+            ['views', 'ordering', 'private'],
+            {
+                id: 77,
+                data: nextPrivateOrdering,
+            },
+        )
+    })
+
     it('should create a new section', (done) => {
-        const { getByTestId } = renderTicketNavbar()
+        const { getByTestId } = renderNavbar(minProps, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
+        })
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
         fireEvent.click(getByTestId('SectionModal-submit'))
@@ -325,7 +529,10 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should update a section', (done) => {
-        const { getByTestId } = renderTicketNavbar()
+        const { getByTestId } = renderNavbar(minProps, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
+        })
 
         fireEvent.click(getByTestId('TicketNavbarContent-rename'))
         fireEvent.click(getByTestId('SectionModal-submit'))
@@ -337,7 +544,10 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should delete a section', (done) => {
-        const { getByTestId } = renderTicketNavbar()
+        const { getByTestId } = renderNavbar(minProps, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
+        })
 
         fireEvent.click(getByTestId('TicketNavbarContent-delete'))
         fireEvent.click(getByTestId('DeleteModal-submit'))
@@ -361,8 +571,10 @@ describe('<TicketNavbar/>', () => {
             }),
         }
 
-        const { queryByTestId } = renderTicketNavbar({
-            storeState: storeWithEmptySystemViews,
+        const { queryByTestId } = renderNavbar(minProps, {
+            state: storeWithEmptySystemViews,
+            path: '/foo/:viewId?',
+            route: '/foo/1',
         })
 
         // Check that the system views container is not rendered
@@ -376,7 +588,10 @@ describe('<TicketNavbar/>', () => {
 
         it('should create a new section', async () => {
             const user = userEvent.setup()
-            const { getByRole, getByTestId, getByText } = renderTicketNavbar()
+            const { getByRole, getByTestId, getByText } = renderNavbar(
+                minProps,
+                { path: '/foo/:viewId?', route: '/foo/1' },
+            )
 
             await user.click(getByRole('button', { name: 'add-plus-circle' }))
 
@@ -396,7 +611,10 @@ describe('<TicketNavbar/>', () => {
 
         it('should update a section', async () => {
             const user = userEvent.setup()
-            const { getByTestId } = renderTicketNavbar()
+            const { getByTestId } = renderNavbar(minProps, {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            })
 
             await user.click(getByTestId('TicketNavbarContent-rename'))
             await user.click(getByTestId('SectionModal-submit'))
@@ -411,7 +629,10 @@ describe('<TicketNavbar/>', () => {
 
         it('should delete a section', async () => {
             const user = userEvent.setup()
-            const { getByTestId } = renderTicketNavbar()
+            const { getByTestId } = renderNavbar(minProps, {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            })
 
             await user.click(getByTestId('TicketNavbarContent-delete'))
             await user.click(getByTestId('DeleteModal-submit'))
@@ -433,7 +654,10 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { getByText } = renderTicketNavbar()
+            const { getByText } = renderNavbar(minProps, {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            })
 
             expect(getByText('CollapsedDefaultViews')).toBeInTheDocument()
             expect(getByText('RecentChats')).toBeInTheDocument()
@@ -445,7 +669,10 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { queryAllByTestId, getByText } = renderTicketNavbar()
+            const { queryAllByTestId, getByText } = renderNavbar(minProps, {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            })
 
             const navbarContents = queryAllByTestId('TicketNavbarContent')
             expect(navbarContents.length).toBeGreaterThan(0)
@@ -464,7 +691,10 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { queryAllByTestId } = renderTicketNavbar()
+            const { queryAllByTestId } = renderNavbar(minProps, {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            })
 
             const navbarBlocks = queryAllByTestId('NavbarBlock')
             expect(navbarBlocks.length).toBeGreaterThan(0)

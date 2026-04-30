@@ -100,6 +100,7 @@ import TicketNavbarDropTarget, {
 } from './TicketNavbarDropTarget'
 import TicketNavbarViewLink from './TicketNavbarViewLink'
 import { useStoredNavigationSections } from './useStoredNavigationSections'
+import { useTicketNavbarOrderingCacheSync } from './useTicketNavbarOrderingCacheSync'
 
 import css from './TicketNavbar.less'
 
@@ -349,6 +350,8 @@ export function TicketNavbarContainer({
                 })
             }
         }, [sectionForm])
+    const { syncViewQueriesForSectionMove, syncViewsOrderingQueryCache } =
+        useTicketNavbarOrderingCacheSync()
 
     const handleSubmitMoveItem = useCallback(
         async (
@@ -370,6 +373,7 @@ export function TicketNavbarContainer({
                         section_id: nextElement.data.section_id,
                     })
                     viewUpdated(res)
+                    syncViewQueriesForSectionMove(currentElement, nextElement)
                 } catch {
                     void notify({
                         message: 'Failed to add the view to the section',
@@ -392,6 +396,11 @@ export function TicketNavbarContainer({
                               data: nextSettingData,
                           }))
                     submitSettingSuccess(resp.data, !!userSetting)
+                    syncViewsOrderingQueryCache(
+                        nextSettingData,
+                        true,
+                        resp.data.id,
+                    )
                 } else {
                     const resp = await (accountSetting.id
                         ? updateAccountSetting({
@@ -403,6 +412,11 @@ export function TicketNavbarContainer({
                               data: nextSettingData as AccountViewsOrderingSettingData,
                           }))
                     submitAccountSettingSuccess(resp.data, !!accountSetting)
+                    syncViewsOrderingQueryCache(
+                        nextSettingData,
+                        false,
+                        resp.data.id,
+                    )
                 }
             } catch {
                 void notify({
@@ -417,7 +431,12 @@ export function TicketNavbarContainer({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [accountSetting, userSetting],
+        [
+            accountSetting,
+            syncViewQueriesForSectionMove,
+            syncViewsOrderingQueryCache,
+            userSetting,
+        ],
     )
 
     const [categories, setCategories] = useState<ViewCategoryNavbar[]>(() => {
