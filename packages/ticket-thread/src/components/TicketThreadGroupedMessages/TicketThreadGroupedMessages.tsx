@@ -16,6 +16,7 @@ import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
+import { getMessageCurrentPageUrl } from '../MessageBubble/components/MessageHeader/getMessageCurrentPageUrl'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
@@ -154,6 +155,7 @@ export function TicketThreadGroupedMessages({
     const { from, to, cc, bcc } = getMessageChannelParticipants(
         firstMessage.data.source,
     )
+    const currentPageUrl = getMessageCurrentPageUrl(firstMessage.data.meta)
 
     return (
         <Box
@@ -186,6 +188,7 @@ export function TicketThreadGroupedMessages({
                                     to={to}
                                     cc={cc}
                                     bcc={bcc}
+                                    currentPageUrl={currentPageUrl}
                                 />
                                 <MessageDeliveryIcon item={lastMessage} />
                                 <MessageTimestamp

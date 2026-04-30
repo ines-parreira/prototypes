@@ -15,7 +15,19 @@ vi.mock('@repo/utils', () => ({
 vi.mock('@gorgias/axiom', () => ({
     Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
     Icon: () => <div>Icon</div>,
-    Text: ({ children }: { children: ReactNode }) => <span>{children}</span>,
+    Text: ({
+        children,
+        color,
+        variant,
+    }: {
+        children: ReactNode
+        color?: string
+        variant?: string
+    }) => (
+        <span data-color={color} data-variant={variant}>
+            {children}
+        </span>
+    ),
     Tooltip: ({
         trigger,
         children,
@@ -69,5 +81,29 @@ describe('MessageChannel', () => {
         expect(
             screen.getByText('Audit (audit@example.com)'),
         ).toBeInTheDocument()
+    })
+
+    it('renders the current page URL in the tooltip content', () => {
+        render(
+            <MessageChannel
+                channel="chat"
+                currentPageUrl="https://example.com/products/sneakers"
+            />,
+        )
+
+        const link = screen.getByRole('link', {
+            name: 'https://example.com/products/sneakers',
+        })
+
+        expect(screen.getByText('Url:')).toBeInTheDocument()
+        expect(link).toHaveAttribute(
+            'href',
+            'https://example.com/products/sneakers',
+        )
+        expect(link).toHaveAttribute('target', '_blank')
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+        expect(
+            screen.getByText('https://example.com/products/sneakers'),
+        ).toHaveAttribute('data-color', 'content-inverted-default')
     })
 })

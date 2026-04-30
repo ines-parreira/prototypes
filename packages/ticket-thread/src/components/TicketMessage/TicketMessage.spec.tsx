@@ -149,6 +149,9 @@ function createItem(): TicketThreadRegularMessageItem {
                     },
                 ],
             },
+            meta: {
+                current_page: 'https://example.com/products/sneakers',
+            },
             sender: {
                 id: 1,
                 name: 'Agent Smith',
@@ -175,6 +178,7 @@ describe('TicketMessage', () => {
                 to: 'Alice (alice@example.com), Billing (billing@example.com)',
                 cc: 'Manager (manager@example.com)',
                 bcc: 'Audit (audit@example.com)',
+                currentPageUrl: 'https://example.com/products/sneakers',
             }),
         )
     })

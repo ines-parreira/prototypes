@@ -17,6 +17,7 @@ export type MessageChannelProps = {
     to?: string | null
     cc?: string | null
     bcc?: string | null
+    currentPageUrl?: string | null
 }
 
 export function MessageChannel({
@@ -29,6 +30,7 @@ export function MessageChannel({
     to,
     cc,
     bcc,
+    currentPageUrl,
 }: MessageChannelProps) {
     const { format, timezone } = useTicketThreadDateTimeFormat()
     const resolvedChannelIcon =
@@ -112,6 +114,25 @@ export function MessageChannel({
                                     timezone,
                                 )}
                             </Text>
+                        </Text>
+                    )}
+                    {currentPageUrl && (
+                        <Text size="xs">
+                            Url:{' '}
+                            <a
+                                href={currentPageUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title={currentPageUrl}
+                            >
+                                <Text
+                                    size="xs"
+                                    variant="bold"
+                                    color="content-inverted-default"
+                                >
+                                    {currentPageUrl}
+                                </Text>
+                            </a>
                         </Text>
                     )}
                 </Box>

@@ -166,6 +166,9 @@ function createGroupedItem(): TicketThreadGroupedMessagesItem {
                         email: 'agent@example.com',
                         meta: null,
                     },
+                    meta: {
+                        current_page: 'https://example.com/products/sneakers',
+                    },
                 }) as TicketThreadRegularMessageItem['data'],
             },
             {
@@ -210,6 +213,7 @@ describe('TicketThreadGroupedMessages tooltip', () => {
                 to: 'Alice (alice@example.com)',
                 cc: 'Manager (manager@example.com)',
                 bcc: 'Audit (audit@example.com)',
+                currentPageUrl: 'https://example.com/products/sneakers',
             }),
         )
     })
