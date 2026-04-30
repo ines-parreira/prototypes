@@ -30,6 +30,7 @@ declare global {
             currentUser?: GorgiasStateCurrentUser | null
         }
         USER_IMPERSONATED: true | null
+        USER_IMPERSONATED_AUTHORIZED_FOR_BILLING_WRITE_OPS: boolean
         SEGMENT_ANALYTICS_USER_ID: string
         GORGIAS_CLUSTER: string
         HARNESS_CLIENT_SDK_KEY?: string

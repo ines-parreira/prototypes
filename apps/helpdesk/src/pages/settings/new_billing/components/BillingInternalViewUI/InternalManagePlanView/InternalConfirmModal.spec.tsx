@@ -103,6 +103,7 @@ describe('InternalConfirmModal', () => {
 
     beforeEach(() => {
         server.use(estimateSuccessHandler())
+        window.USER_IMPERSONATED_AUTHORIZED_FOR_BILLING_WRITE_OPS = true
     })
 
     afterEach(() => {
@@ -264,6 +265,73 @@ describe('InternalConfirmModal', () => {
                     screen.getByRole('button', { name: /^Apply$/i }),
                 ).toBeDisabled()
             })
+        })
+    })
+
+    describe('when user is not authorized for billing write operations', () => {
+        beforeEach(() => {
+            window.USER_IMPERSONATED_AUTHORIZED_FOR_BILLING_WRITE_OPS = false
+        })
+
+        it('disables both invoice buttons and shows tooltip on hover', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /apply without invoice/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /apply with invoice/i }),
+            ).toBeDisabled()
+
+            await user.hover(
+                screen.getByRole('button', { name: /apply without invoice/i }),
+            )
+            expect(
+                await screen.findByText(
+                    /not authorized to perform this action/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('does not call onApply when invoice buttons are clicked', async () => {
+            const user = userEvent.setup()
+            const { props } = renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /apply without invoice/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /apply with invoice/i }),
+            )
+
+            expect(props.onApply).not.toHaveBeenCalled()
+        })
+
+        it('disables the Apply button and shows tooltip on hover when there is no upgrade', async () => {
+            const user = userEvent.setup()
+            renderComponent({ resolvedPlans: downgradeOnlyPlans })
+
+            const applyButton = screen.getByRole('button', { name: /^Apply$/i })
+            expect(applyButton).toBeDisabled()
+
+            await user.hover(applyButton)
+            expect(
+                await screen.findByText(
+                    /not authorized to perform this action/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('does not call onApply when the Apply button is clicked', async () => {
+            const user = userEvent.setup()
+            const { props } = renderComponent({
+                resolvedPlans: downgradeOnlyPlans,
+            })
+
+            await user.click(screen.getByRole('button', { name: /^Apply$/i }))
+
+            expect(props.onApply).not.toHaveBeenCalled()
         })
     })
 

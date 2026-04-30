@@ -9,6 +9,8 @@ import {
     OverlayFooter,
     OverlayHeader,
     Text,
+    Tooltip,
+    TooltipContent,
 } from '@gorgias/axiom'
 
 import { isGorgiasApiError } from 'models/api/types'
@@ -58,8 +60,10 @@ export function InternalConfirmModal({
         ({ status }) => status === 'upgraded' || status === 'added',
     )
 
+    const isWriteBlocked =
+        !window.USER_IMPERSONATED_AUTHORIZED_FOR_BILLING_WRITE_OPS
     const isApplyDisabled =
-        isSubmitting || isEstimateFetching || isEstimateError
+        isWriteBlocked || isSubmitting || isEstimateFetching || isEstimateError
 
     const estimateErrorMessage = isEstimateError
         ? isGorgiasApiError(estimateError)
@@ -97,34 +101,60 @@ export function InternalConfirmModal({
                 <Box gap="sm">
                     {hasUpgrade ? (
                         <>
-                            <Button
-                                variant="secondary"
-                                onClick={() => handleApply('without')}
-                                isLoading={
-                                    isSubmitting && activeAction === 'without'
+                            <Tooltip
+                                trigger={
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() => handleApply('without')}
+                                        isLoading={
+                                            isSubmitting &&
+                                            activeAction === 'without'
+                                        }
+                                        isDisabled={isApplyDisabled}
+                                    >
+                                        Apply without invoice
+                                    </Button>
                                 }
-                                isDisabled={isApplyDisabled}
                             >
-                                Apply without invoice
-                            </Button>
-                            <Button
-                                onClick={() => handleApply('with')}
-                                isLoading={
-                                    isSubmitting && activeAction === 'with'
+                                {isWriteBlocked && (
+                                    <TooltipContent title="You are not authorized to perform this action. Please reach out to the Billing Ops team to do it" />
+                                )}
+                            </Tooltip>
+                            <Tooltip
+                                trigger={
+                                    <Button
+                                        onClick={() => handleApply('with')}
+                                        isLoading={
+                                            isSubmitting &&
+                                            activeAction === 'with'
+                                        }
+                                        isDisabled={isApplyDisabled}
+                                    >
+                                        Apply with invoice
+                                    </Button>
                                 }
-                                isDisabled={isApplyDisabled}
                             >
-                                Apply with invoice
-                            </Button>
+                                {isWriteBlocked && (
+                                    <TooltipContent title="You are not authorized to perform this action. Please reach out to the Billing Ops team to do it" />
+                                )}
+                            </Tooltip>
                         </>
                     ) : (
-                        <Button
-                            onClick={() => handleApply('without')}
-                            isLoading={isSubmitting}
-                            isDisabled={isApplyDisabled}
+                        <Tooltip
+                            trigger={
+                                <Button
+                                    onClick={() => handleApply('without')}
+                                    isLoading={isSubmitting}
+                                    isDisabled={isApplyDisabled}
+                                >
+                                    Apply
+                                </Button>
+                            }
                         >
-                            Apply
-                        </Button>
+                            {isWriteBlocked && (
+                                <TooltipContent title="You are not authorized to perform this action. Please reach out to the Billing Ops team to do it" />
+                            )}
+                        </Tooltip>
                     )}
                 </Box>
             </OverlayFooter>
