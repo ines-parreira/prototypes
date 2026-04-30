@@ -338,4 +338,42 @@ describe('ChartCard', () => {
             expect(screen.getByText('Response Time')).toBeInTheDocument()
         })
     })
+
+    describe('withTrend prop', () => {
+        it('should render children instead of NoDataPlaceholder when withTrend is false and no value', () => {
+            render(
+                <ChartCard title="My Chart" withTrend={false}>
+                    <div>Chart Content</div>
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('Chart Content')).toBeInTheDocument()
+            expect(screen.queryByText('No data found')).not.toBeInTheDocument()
+        })
+
+        it('should render NoDataPlaceholder when withTrend is true (default) and no value', () => {
+            render(
+                <ChartCard title="My Chart">
+                    <div>Chart Content</div>
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+            expect(screen.queryByText('Chart Content')).not.toBeInTheDocument()
+        })
+
+        it('should not render the heading value when withTrend is false', () => {
+            const { container } = render(
+                <ChartCard title="My Chart" value={42} withTrend={false}>
+                    <div>Chart Content</div>
+                </ChartCard>,
+            )
+
+            expect(screen.queryByText('42')).not.toBeInTheDocument()
+            const headings = container.querySelectorAll(
+                'h1, h2, h3, h4, h5, h6',
+            )
+            expect(headings.length).toBe(0)
+        })
+    })
 })

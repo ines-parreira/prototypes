@@ -123,6 +123,63 @@ describe('ConfigurableChart', () => {
 
             expect(screen.queryByText('%')).not.toBeInTheDocument()
         })
+
+        it('renders chart content instead of NoDataPlaceholder when useTrendData is not provided', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
+                },
+            ]
+
+            render(<ConfigurableGraph metrics={metrics} />)
+
+            expect(screen.getByText('ChartContent')).toBeInTheDocument()
+            expect(screen.queryByText('No data found')).not.toBeInTheDocument()
+        })
+
+        it('does not render a trend badge when useTrendData is not provided', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
+                },
+            ]
+
+            const { container } = render(
+                <ConfigurableGraph metrics={metrics} />,
+            )
+
+            const icons = container.querySelectorAll('svg')
+            const hasTrendIcon = Array.from(icons).some((icon) =>
+                icon.getAttribute('aria-label')?.includes('trending'),
+            )
+            expect(hasTrendIcon).toBe(false)
+        })
+
+        it('renders NoDataPlaceholder when useTrendData is provided but value is absent', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
+                    useTrendData: () => ({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    }),
+                },
+            ]
+
+            render(<ConfigurableGraph metrics={metrics} />)
+
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+        })
     })
 
     describe('MetricGroupingSelect visibility', () => {

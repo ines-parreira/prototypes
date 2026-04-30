@@ -1,21 +1,9 @@
 import { useMemo } from 'react'
 
-import {
-    dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
-    dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
-import {
-    dynamicRevenuePerInteractionQueryFactoryV2,
-    dynamicRevenuePerInteractionTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiSalesAgentActivity'
-import {
-    dynamicConversionRateQueryFactoryV2,
-    dynamicConversionRateTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
-import {
-    dynamicTotalSalesAmountQueryFactoryV2,
-    dynamicTotalSalesAmountTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
+import { dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { dynamicRevenuePerInteractionTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
+import { dynamicConversionRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
+import { dynamicTotalSalesAmountTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -42,7 +30,6 @@ export const SHOPPING_ASSISTANT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Conversion rate',
         metricFormat: 'decimal-to-percent' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicConversionRateQueryFactoryV2,
         timeSeriesQueryFactory: dynamicConversionRateTimeseriesQueryFactoryV2,
         dimensions: [
             'overall',
@@ -56,8 +43,6 @@ export const SHOPPING_ASSISTANT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Automated interactions',
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory:
-            dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
         dimensions: [
@@ -73,7 +58,6 @@ export const SHOPPING_ASSISTANT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Total sales',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicTotalSalesAmountQueryFactoryV2,
         timeSeriesQueryFactory: dynamicTotalSalesAmountTimeseriesQueryFactoryV2,
         dimensions: [
             'overall',
@@ -87,7 +71,6 @@ export const SHOPPING_ASSISTANT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Revenue per interaction',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicRevenuePerInteractionQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicRevenuePerInteractionTimeseriesQueryFactoryV2,
         dimensions: [

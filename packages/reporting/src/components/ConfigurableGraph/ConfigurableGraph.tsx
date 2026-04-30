@@ -89,6 +89,7 @@ export function ConfigurableGraph({
             }}
             chartControls={chartControls}
             alwaysShowChartControls={true}
+            withTrend={hasTrend}
             value={hasTrend ? (trendData.data?.value ?? undefined) : undefined}
             prevValue={
                 hasTrend ? (trendData.data?.prevValue ?? undefined) : undefined

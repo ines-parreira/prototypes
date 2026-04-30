@@ -1,13 +1,7 @@
 import { useMemo } from 'react'
 
-import {
-    dynamicOverallAutomatedInteractionsQueryFactoryV2,
-    dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/overallAutomatedInteractions'
-import {
-    dynamicOverallAutomationRateQueryFactoryV2,
-    dynamicOverallAutomationRateTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/overallAutomationRate'
+import { dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
+import { dynamicOverallAutomationRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -34,7 +28,6 @@ export const OVERVIEW_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Overall automation rate',
         metricFormat: 'decimal-to-percent' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicOverallAutomationRateQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicOverallAutomationRateTimeseriesQueryFactoryV2,
         dimensions: [
@@ -49,7 +42,6 @@ export const OVERVIEW_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Automated interactions',
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicOverallAutomatedInteractionsQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2,
         dimensions: [

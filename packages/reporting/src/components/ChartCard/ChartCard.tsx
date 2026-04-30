@@ -29,6 +29,7 @@ type ChartCardProps = {
     }
     isLoading?: boolean
     alwaysShowChartControls?: boolean
+    withTrend?: boolean
 }
 
 export const ChartCard = ({
@@ -45,6 +46,7 @@ export const ChartCard = ({
     tooltipData,
     isLoading,
     alwaysShowChartControls = false,
+    withTrend = true,
 }: ChartCardProps) => {
     const noData = !isLoading && !value
 
@@ -63,8 +65,9 @@ export const ChartCard = ({
                 tooltipData={tooltipData}
                 isLoading={isLoading}
                 alwaysShowChartControls={alwaysShowChartControls}
+                withTrend={withTrend}
             />
-            {noData ? <NoDataPlaceholder /> : children}
+            {noData && withTrend ? <NoDataPlaceholder /> : children}
         </Card>
     )
 }

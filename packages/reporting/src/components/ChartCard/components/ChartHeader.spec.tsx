@@ -460,4 +460,84 @@ describe('ChartHeader', () => {
             expect(screen.getByText('42')).toBeInTheDocument()
         })
     })
+
+    describe('withTrend prop', () => {
+        it('should not render value heading when withTrend is false', () => {
+            const { container } = render(
+                <ChartHeader title="Test Chart" value={42} withTrend={false} />,
+            )
+
+            expect(screen.getByText('Test Chart')).toBeInTheDocument()
+            expect(screen.queryByText('42')).not.toBeInTheDocument()
+            const headings = container.querySelectorAll(
+                'h1, h2, h3, h4, h5, h6',
+            )
+            expect(headings.length).toBe(0)
+        })
+
+        it('should not render the placeholder value when withTrend is false and value is undefined', () => {
+            render(<ChartHeader title="Test Chart" withTrend={false} />)
+
+            expect(screen.getByText('Test Chart')).toBeInTheDocument()
+            expect(screen.queryByText('-')).not.toBeInTheDocument()
+        })
+
+        it('should not render trend badge when withTrend is false', () => {
+            const { container } = render(
+                <ChartHeader
+                    title="Automation Rate"
+                    value={0.42}
+                    prevValue={0.4}
+                    withTrend={false}
+                />,
+            )
+
+            const icons = container.querySelectorAll('svg')
+            const hasTrendIcon = Array.from(icons).some((icon) =>
+                icon.getAttribute('aria-label')?.includes('trending'),
+            )
+            expect(hasTrendIcon).toBe(false)
+        })
+
+        it('should not render loading skeleton when withTrend is false and isLoading is true', () => {
+            render(
+                <ChartHeader
+                    title="Test Chart"
+                    withTrend={false}
+                    isLoading={true}
+                />,
+            )
+
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+        })
+
+        it('should still render title when withTrend is false', () => {
+            render(
+                <ChartHeader title="Test Chart" value={42} withTrend={false} />,
+            )
+
+            expect(screen.getByText('Test Chart')).toBeInTheDocument()
+        })
+
+        it('should still render chart controls when withTrend is false', () => {
+            const controls = <button>Toggle Chart</button>
+
+            render(
+                <ChartHeader
+                    title="Test Chart"
+                    value={42}
+                    chartControls={controls}
+                    withTrend={false}
+                />,
+            )
+
+            expect(screen.getByText('Toggle Chart')).toBeInTheDocument()
+        })
+
+        it('should render value heading when withTrend is true (default)', () => {
+            render(<ChartHeader title="Test Chart" value={42} />)
+
+            expect(screen.getByText('42')).toBeInTheDocument()
+        })
+    })
 })

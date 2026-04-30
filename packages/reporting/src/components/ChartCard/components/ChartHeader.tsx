@@ -30,6 +30,7 @@ type ChartHeaderProps = {
         period: string
     }
     isLoading?: boolean
+    withTrend?: boolean
 }
 
 export const ChartHeader = ({
@@ -45,6 +46,7 @@ export const ChartHeader = ({
     alwaysShowChartControls = false,
     tooltipData,
     isLoading,
+    withTrend = true,
 }: ChartHeaderProps) => {
     const showMetricsDropdown = metrics && metrics.length > 1 && onMetricChange
 
@@ -56,6 +58,34 @@ export const ChartHeader = ({
 
     const hasData =
         !isLoading && value !== null && value !== undefined && value !== 0
+
+    const trend = !withTrend ? (
+        <></>
+    ) : isLoading ? (
+        <Box display="flex" alignItems="center" gap="xxxs">
+            <Skeleton height={36} width={52} />
+            <Box display="flex" alignItems="center">
+                <Skeleton height={14} width={14} style={{ marginTop: '5px' }} />
+            </Box>
+        </Box>
+    ) : (
+        <Box alignItems="center" gap="xxxs">
+            <Heading size="xl" className={css.value}>
+                {formattedValue}
+            </Heading>
+            {hasData && (
+                <TrendBadge
+                    value={value}
+                    prevValue={prevValue}
+                    metricFormat={metricFormat}
+                    currency={currency}
+                    interpretAs={interpretAs}
+                    tooltipData={tooltipData}
+                    size="md"
+                />
+            )}
+        </Box>
+    )
 
     return (
         <Box flexDirection="column" gap="xxxs" className={css.header}>
@@ -84,35 +114,7 @@ export const ChartHeader = ({
                     </Box>
                 )}
             </Box>
-            {isLoading ? (
-                <Box display="flex" alignItems="center" gap="xxxs">
-                    <Skeleton height={36} width={52} />
-                    <Box display="flex" alignItems="center">
-                        <Skeleton
-                            height={14}
-                            width={14}
-                            style={{ marginTop: '5px' }}
-                        />
-                    </Box>
-                </Box>
-            ) : (
-                <Box alignItems="center" gap="xxxs">
-                    <Heading size="xl" className={css.value}>
-                        {formattedValue}
-                    </Heading>
-                    {hasData && (
-                        <TrendBadge
-                            value={value}
-                            prevValue={prevValue}
-                            metricFormat={metricFormat}
-                            currency={currency}
-                            interpretAs={interpretAs}
-                            tooltipData={tooltipData}
-                            size="md"
-                        />
-                    )}
-                </Box>
-            )}
+            {trend}
         </Box>
     )
 }

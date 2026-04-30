@@ -24,7 +24,6 @@ import {
     mapMetricValues,
     useStatsMetricPerDimension,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
-import { getStatsTrendHook } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
     fetchStatsTimeSeries,
     fetchStatsTimeSeriesPerDimension,
@@ -74,7 +73,6 @@ export type LineChartMetricConfig = {
     metricFormat: MetricTrendFormat
     interpretAs: TrendDirection
     dimensions: LineAutomationDimension[]
-    trendQueryFactory(ctx: Context): BuiltQuery
     timeSeriesQueryFactory(ctx: Context): BuiltQuery
 }
 
@@ -493,20 +491,6 @@ export const getBarChartDataHooks = (
     )
 
     return {
-        useTrendData: () => {
-            const trendResult = getStatsTrendHook(query)(filters, timezone)
-            if (!valueTransform || !trendResult.data) return trendResult
-            return {
-                ...trendResult,
-                data: {
-                    value: valueTransform(trendResult.data.value, extra),
-                    prevValue: valueTransform(
-                        trendResult.data.prevValue,
-                        extra,
-                    ),
-                },
-            }
-        },
         dimensions: dimensionConfigs,
     }
 }
@@ -834,7 +818,6 @@ export const useAutomationTimeSeriesPerAiIntentCustomField = (
 }
 
 export const getLineChartDataHooks = (
-    trendQuery: MetricQueryFactory,
     timeSeriesQuery: MetricQueryFactory,
     dimensions: LineAutomationDimension[],
     filters: StatsFilters,
@@ -948,7 +931,6 @@ export const getLineChartDataHooks = (
     )
 
     return {
-        useTrendData: () => getStatsTrendHook(trendQuery)(filters, timezone),
         dimensions: dimensionConfigs,
     }
 }
@@ -969,7 +951,6 @@ export const getLineChartGraphConfig = (
         interpretAs: metric.interpretAs,
         tooltipData: { period: tooltipPeriod },
         ...getLineChartDataHooks(
-            metric.trendQueryFactory,
             metric.timeSeriesQueryFactory,
             metric.dimensions,
             statsFilters,

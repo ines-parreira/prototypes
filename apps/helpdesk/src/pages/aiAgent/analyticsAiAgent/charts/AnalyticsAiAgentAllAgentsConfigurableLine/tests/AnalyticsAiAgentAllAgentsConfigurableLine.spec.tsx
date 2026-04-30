@@ -62,11 +62,6 @@ describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
         name: 'AI Agent automation rate',
         metricFormat: 'decimal-to-percent',
         interpretAs: 'more-is-better',
-        useTrendData: jest.fn().mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: 0.32, prevValue: 0.3 },
-        }),
         dimensions: [defaultDimension],
     }
 
@@ -127,22 +122,7 @@ describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
         expect(screen.getByText('AI Agent automation rate')).toBeInTheDocument()
     })
 
-    it('should render the metric value from trend data', () => {
-        render(<AnalyticsAiAgentAllAgentsConfigurableLine />)
-
-        expect(screen.getByText('32%')).toBeInTheDocument()
-    })
-
-    it('should render the trend badge', () => {
-        const { container } = render(
-            <AnalyticsAiAgentAllAgentsConfigurableLine />,
-        )
-
-        const trendBadge = container.querySelector('.trend')
-        expect(trendBadge).toBeInTheDocument()
-    })
-
-    it('should render with positive trend icon', () => {
+    it('should not render a trend badge', () => {
         const { container } = render(
             <AnalyticsAiAgentAllAgentsConfigurableLine />,
         )
@@ -151,29 +131,7 @@ describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
         const hasTrendIcon = Array.from(icons).some((icon) =>
             icon.getAttribute('aria-label')?.includes('trending'),
         )
-        expect(hasTrendIcon).toBe(true)
-    })
-
-    it('should render with negative trend icon when trend is negative', () => {
-        getLineChartGraphConfigMock.mockReturnValue([
-            {
-                ...defaultMetricConfig,
-                useTrendData: jest.fn().mockReturnValue({
-                    isFetching: false,
-                    isError: false,
-                    data: { value: 0.28, prevValue: 0.3 },
-                }),
-            },
-        ])
-
-        const { container } = render(
-            <AnalyticsAiAgentAllAgentsConfigurableLine />,
-        )
-
-        const trendingDownIcon = container.querySelector(
-            '[aria-label="trending-down"]',
-        )
-        expect(trendingDownIcon).toBeInTheDocument()
+        expect(hasTrendIcon).toBe(false)
     })
 
     it('should render responsive container for chart', () => {
@@ -187,32 +145,11 @@ describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
         expect(responsiveContainer).toBeInTheDocument()
     })
 
-    it('should render loading skeleton when trend data is fetching', () => {
-        getLineChartGraphConfigMock.mockReturnValue([
-            {
-                ...defaultMetricConfig,
-                useTrendData: jest.fn().mockReturnValue({
-                    data: undefined,
-                    isFetching: true,
-                }),
-            },
-        ])
-
-        render(<AnalyticsAiAgentAllAgentsConfigurableLine />)
-
-        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
-    })
-
     it('should render metric selector when multiple metrics are present', () => {
         const secondMetricConfig: ConfigurableGraphMetricConfig = {
             ...defaultMetricConfig,
             measure: 'automatedInteractionsCount',
             name: 'Automated interactions',
-            useTrendData: jest.fn().mockReturnValue({
-                isFetching: false,
-                isError: false,
-                data: { value: 1000, prevValue: 800 },
-            }),
         }
         getLineChartGraphConfigMock.mockReturnValue([
             defaultMetricConfig,

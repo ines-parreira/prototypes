@@ -1,13 +1,7 @@
 import { useMemo } from 'react'
 
-import {
-    dynamicSupportAgentAutomatedInteractionsQueryFactoryV2,
-    dynamicSupportAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
-import {
-    dynamicSupportAgentDecreaseInFRTQueryFactoryV2,
-    dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
+import { dynamicSupportAgentAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -34,8 +28,6 @@ export const SUPPORT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Automated interactions',
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory:
-            dynamicSupportAgentAutomatedInteractionsQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicSupportAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
         dimensions: [
@@ -50,7 +42,6 @@ export const SUPPORT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Decrease in first response time',
         metricFormat: 'duration' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicSupportAgentDecreaseInFRTQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2,
         dimensions: [

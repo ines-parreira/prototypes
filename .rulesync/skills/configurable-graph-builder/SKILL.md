@@ -94,13 +94,14 @@ Read `<configurable-graph-component-file>` to understand:
 
 File: `apps/helpdesk/src/domains/reporting/hooks/metricNames.ts`
 
-**For `line`** — add two entries (trend + timeseries):
+**For `line`** — add one entry:
+
 ```ts
-AI_AGENT_DYNAMIC_<METRIC_SLUG>: 'ai-agent-dynamic-<metric-slug>',
 AI_AGENT_DYNAMIC_<METRIC_SLUG>_TIMESERIES: 'ai-agent-dynamic-<metric-slug>-timeseries',
 ```
 
-**For `bar`** — add one entry (trend only):
+**For `bar`** — add one entry:
+
 ```ts
 AI_AGENT_DYNAMIC_<METRIC_SLUG>: 'ai-agent-dynamic-<metric-slug>',
 ```
@@ -113,31 +114,20 @@ Then add the entries to `METRIC_NAMES_BY_SCOPE` under the correct `MetricScope` 
 
 Before making any changes:
 
-1. **Check if the factories already exist** — search for `dynamic<MetricName>QueryFactoryV2` in `<scope-file>`. If both the trend factory and (for `line`) the timeseries factory are already exported, skip this step entirely.
+1. **Check if the factories already exist** — search for the needed factories in `<scope-file>`. For `line`, that's `dynamic<MetricName>TimeseriesQueryFactoryV2`; for `bar`, `dynamic<MetricName>QueryFactoryV2`. If the required factory is already exported, skip this step entirely.
 
 2. **Check if a non-dynamic query for the same measure already exists** — look for any `export const` using the same `measures: ['<measureName>']` with a custom `filters` or extra query fields in its `defineQuery` body (e.g. `aiAgentAutomationRate` hardcodes an `automationFeatureType` filter). If found, carry those same filters into the new dynamic queries via `createScopeFilters`. If not found, omit `filters`.
 
 Append to `<scope-file>`:
 
-**For `line`** — add both trend and timeseries:
+**For `line`** — add only the timeseries query:
 
 ```ts
-export const dynamic<MetricName> = <scope>
-    .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_<METRIC_SLUG>)
-    .defineQuery(({ ctx, config }) => ({
-        measures: ['<measureName>'],
-        // filters: createScopeFilters({ ...ctx.filters, <field>: <value> }, config),
-        dimensions: ctx.dimensions,
-    }))
-
-export const dynamic<MetricName>QueryFactoryV2 = (ctx: Context) =>
-    dynamic<MetricName>.build(ctx)
-
 export const dynamic<MetricName>Timeseries = <scope>
     .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_<METRIC_SLUG>_TIMESERIES)
     .defineQuery(({ ctx, config }) => ({
         measures: ['<measureName>'],
-        // same filters as trend query if present
+        // filters: createScopeFilters({ ...ctx.filters, <field>: <value> }, config),
         time_dimensions: [
             {
                 dimension: 'eventDatetime',
@@ -152,7 +142,7 @@ export const dynamic<MetricName>TimeseriesQueryFactoryV2 = (ctx: Context) =>
     dynamic<MetricName>Timeseries.build(ctx)
 ```
 
-**For `bar`** — add only the trend query:
+**For `bar`** — add only the breakdown query:
 
 ```ts
 export const dynamic<MetricName> = <scope>
@@ -167,7 +157,7 @@ export const dynamic<MetricName>QueryFactoryV2 = (ctx: Context) =>
     dynamic<MetricName>.build(ctx)
 ```
 
-**Important:** Only `line` needs `time_dimensions`. The trend query must never include it. If no custom filters exist, use `({ ctx })` and omit the `filters` field entirely.
+**Important:** Only `line` needs `time_dimensions`. If no custom filters exist, use `({ ctx })` and omit the `filters` field entirely.
 
 ---
 
@@ -182,7 +172,6 @@ Add a new entry to the metrics config constant and import the new factory functi
     name: '<metric-name>',
     metricFormat: '<format>' as const,
     interpretAs: 'more-is-better' as const,
-    trendQueryFactory: dynamic<MetricName>QueryFactoryV2,
     timeSeriesQueryFactory: dynamic<MetricName>TimeseriesQueryFactoryV2,
     dimensions: ['overall', 'channel', 'automationFeatureType'],
 },
@@ -206,9 +195,9 @@ Add a new entry to the metrics config constant and import the new factory functi
 
 In the scope's `tests/` directory, add `describe` blocks following the patterns in `overallAutomationRate.spec.ts` and `overallAutomatedInteractions.spec.ts`.
 
-**For `line`** — add three blocks (trend query, timeseries query, factory).
+**For `line`** — add two blocks (timeseries query, factory).
 
-**For `bar`** — add two blocks (trend query, factory).
+**For `bar`** — add two blocks (breakdown query, factory).
 
 See **Scope Test Patterns** in the reference section at the bottom.
 
@@ -275,11 +264,12 @@ it('should render metric selector when multiple metrics are present', () => {
         ...defaultMetricConfig,
         measure: '<second-measure>',
         name: '<second-metric-name>',
-        useTrendData: jest.fn().mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: 100, prevValue: 80 },
-        }),
+        // bar only — omit for line:
+        // useTrendData: jest.fn().mockReturnValue({
+        //     isFetching: false,
+        //     isError: false,
+        //     data: { value: 100, prevValue: 80 },
+        // }),
     }
     get<Line|Bar>ChartGraphConfigMock.mockReturnValue([defaultMetricConfig, secondMetricConfig])
 
@@ -344,10 +334,7 @@ import { useMemo } from 'react'
 import { ConfigurableGraph } from '@repo/reporting'
 
 import { use<Domain>Filters } from '<filters-hook-path>'
-import {
-    dynamic<MetricName>QueryFactoryV2,
-    dynamic<MetricName>TimeseriesQueryFactoryV2,
-} from '<scope-file-path>'
+import { dynamic<MetricName>TimeseriesQueryFactoryV2 } from '<scope-file-path>'
 import { useSaveConfigurableGraphSelection } from 'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { ChartConfig, DashboardSchema } from 'domains/reporting/pages/dashboards/types'
@@ -367,7 +354,6 @@ const <CHART_NAME>_METRICS: LineChartMetricConfig[] = [
         name: '<metric-name>',
         metricFormat: '<format>' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamic<MetricName>QueryFactoryV2,
         timeSeriesQueryFactory: dynamic<MetricName>TimeseriesQueryFactoryV2,
         dimensions: ['overall', 'channel', 'automationFeatureType'],
     },
@@ -479,11 +465,12 @@ describe('<ComponentName>', () => {
         name: '<metric-name>',
         metricFormat: '<format>',
         interpretAs: 'more-is-better',
-        useTrendData: jest.fn().mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: <mockValue>, prevValue: <lowerValue> },
-        }),
+        // bar only — omit for line (configurable line charts do not render a trend):
+        // useTrendData: jest.fn().mockReturnValue({
+        //     isFetching: false,
+        //     isError: false,
+        //     data: { value: <mockValue>, prevValue: <lowerValue> },
+        // }),
         dimensions: [defaultDimension],
     }
 
@@ -508,12 +495,24 @@ describe('<ComponentName>', () => {
     afterEach(() => { jest.clearAllMocks() })
 
     it('should render the metric title', () => { ... })
+    it('should render responsive container for chart', () => { ... })
+
+    // bar only — configurable line charts no longer show a trend:
     it('should render the metric value from trend data', () => { ... })
     it('should render the trend badge', () => { ... })
     it('should render with positive trend icon', () => { ... })
     it('should render with negative trend icon when trend is negative', () => { ... })
-    it('should render responsive container for chart', () => { ... })
     it('should render loading skeleton when trend data is fetching', () => { ... })
+
+    // line only — assert the absence of the trend area:
+    it('should not render a trend badge', () => {
+        const { container } = render(<ComponentName />)
+        const icons = container.querySelectorAll('svg')
+        const hasTrendIcon = Array.from(icons).some((icon) =>
+            icon.getAttribute('aria-label')?.includes('trending'),
+        )
+        expect(hasTrendIcon).toBe(false)
+    })
 
     describe('ChartsActionMenu', () => {
         it('should render ChartsActionMenu when chartId and chartConfig are provided', () => { ... })
@@ -598,7 +597,7 @@ const <CHART_NAME>_METRICS: <Line|Bar>ChartMetricConfig[] = [
         name: '<metric-name>',
         metricFormat: '<format>' as const,
         interpretAs: 'more-is-better' as const,
-        // bar: queryFactory; line: trendQueryFactory + timeSeriesQueryFactory
+        // bar: queryFactory; line: timeSeriesQueryFactory only (no trend factory)
         queryFactory: dynamic<MetricName>QueryFactoryV2,
         // bar: ['channel']; line: ['overall', 'channel', 'automationFeatureType']
         dimensions: ['channel'],
@@ -698,11 +697,12 @@ describe('<ComponentName>', () => {
         name: '<metric-name>',
         metricFormat: '<format>',
         interpretAs: 'more-is-better',
-        useTrendData: jest.fn().mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: <mockValue>, prevValue: <lowerValue> },
-        }),
+        // bar only — omit for line (configurable line charts do not render a trend):
+        // useTrendData: jest.fn().mockReturnValue({
+        //     isFetching: false,
+        //     isError: false,
+        //     data: { value: <mockValue>, prevValue: <lowerValue> },
+        // }),
         dimensions: [defaultDimension],
     }
 
@@ -733,13 +733,25 @@ describe('<ComponentName>', () => {
     afterEach(() => { jest.clearAllMocks() })
 
     it('should render the metric title', () => { ... })
+    it('should render all channel legend items', () => { ... })
+    it('should render responsive container for chart', () => { ... })
+
+    // bar only — configurable line charts no longer show a trend:
     it('should render the metric value from trend data', () => { ... })
     it('should render the trend badge', () => { ... })
     it('should render with positive trend icon', () => { ... })
     it('should render with negative trend icon when trend is negative', () => { ... })
-    it('should render all channel legend items', () => { ... })
-    it('should render responsive container for chart', () => { ... })
     it('should render loading skeleton when trend data is fetching', () => { ... })
+
+    // line only — assert the absence of the trend area:
+    it('should not render a trend badge', () => {
+        const { container } = render(<ComponentName />)
+        const icons = container.querySelectorAll('svg')
+        const hasTrendIcon = Array.from(icons).some((icon) =>
+            icon.getAttribute('aria-label')?.includes('trending'),
+        )
+        expect(hasTrendIcon).toBe(false)
+    })
 
     it('should render deprecated chart when feature flag is disabled', () => {
         useFlagMocked.mockReturnValue(false)
@@ -769,23 +781,9 @@ Fix any failures before finishing.
 
 ## Reference — Scope Test Patterns
 
-### For `line` — three blocks
+### For `line` — two blocks (timeseries only)
 
 ```ts
-describe('dynamic<MetricName>', () => {
-    it('creates query without dimensions when no dimension provided', () => {
-        expect(dynamic<MetricName>.build({ ...context, dimensions: [] })).toEqual({
-            metricName: 'ai-agent-dynamic-<metric-slug>',
-            scope: '<scope-name>',
-            measures: ['<measureName>'],
-            dimensions: [],
-            timezone: 'utc',
-            filters: periodFilters,
-        })
-    })
-    it('creates query with the provided dimension', () => { ... })
-})
-
 describe('dynamic<MetricName>Timeseries', () => {
     it('creates query with time_dimensions using granularity from context', () => {
         expect(dynamic<MetricName>Timeseries.build({ ...context, granularity: 'day' as AggregationWindow, dimensions: [] })).toEqual({
@@ -828,15 +826,16 @@ describe('dynamic<MetricName>QueryFactoryV2', () => {
 
 ## Key Conventions
 
-| | `line` | `bar` |
-|---|---|---|
-| Config type | `LineChartMetricConfig` | `BarChartMetricConfig` |
-| Config util | `getLineChartGraphConfig` | `getBarChartGraphConfig` |
-| Query factories | `trendQueryFactory` + `timeSeriesQueryFactory` | `queryFactory` only |
-| Metric names | Two (`slug` + `slug-timeseries`) | One (`slug` only) |
-| Dimensions | `['overall', 'channel', 'automationFeatureType']` | `['channel', 'automationFeatureType']` |
-| Chart types in tests | `TimeSeries` / `MultipleTimeSeries` | `Donut` |
-| `granularity` in component | Yes (filters destructure + useMemo deps) | No |
+|                            | `line`                                            | `bar`                                  |
+| -------------------------- | ------------------------------------------------- | -------------------------------------- |
+| Config type                | `LineChartMetricConfig`                           | `BarChartMetricConfig`                 |
+| Config util                | `getLineChartGraphConfig`                         | `getBarChartGraphConfig`               |
+| Query factories            | `timeSeriesQueryFactory` only (no trend)          | `queryFactory` only                    |
+| Metric names               | One (`slug-timeseries` only)                      | One (`slug` only)                      |
+| Dimensions                 | `['overall', 'channel', 'automationFeatureType']` | `['channel', 'automationFeatureType']` |
+| Chart types in tests       | `TimeSeries` / `MultipleTimeSeries`               | `Donut`                                |
+| `granularity` in component | Yes (filters destructure + useMemo deps)          | No                                     |
+| Trend header in chart      | No — `ConfigurableGraph` hides the trend area     | Yes — driven by `useTrendData`         |
 
 - **Metric name slug**: kebab-case, prefixed with `ai-agent-dynamic-`, e.g. `ai-agent-dynamic-deflection-rate`
 - **`as const`**: Use on `metricFormat` and `interpretAs` in the metrics config array

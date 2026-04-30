@@ -57,11 +57,6 @@ describe('AnalyticsShoppingAssistantConfigurableLine', () => {
         name: 'Automated interactions',
         metricFormat: 'decimal',
         interpretAs: 'more-is-better',
-        useTrendData: jest.fn().mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: 1250, prevValue: 1000 },
-        }),
         dimensions: [defaultDimension],
     }
 
@@ -105,22 +100,7 @@ describe('AnalyticsShoppingAssistantConfigurableLine', () => {
         expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
-    it('should render the metric value from trend data', () => {
-        render(<AnalyticsShoppingAssistantConfigurableLine />)
-
-        expect(screen.getByText('1,250')).toBeInTheDocument()
-    })
-
-    it('should render the trend badge', () => {
-        const { container } = render(
-            <AnalyticsShoppingAssistantConfigurableLine />,
-        )
-
-        const trendBadge = container.querySelector('.trend')
-        expect(trendBadge).toBeInTheDocument()
-    })
-
-    it('should render with positive trend icon', () => {
+    it('should not render a trend badge', () => {
         const { container } = render(
             <AnalyticsShoppingAssistantConfigurableLine />,
         )
@@ -129,29 +109,7 @@ describe('AnalyticsShoppingAssistantConfigurableLine', () => {
         const hasTrendIcon = Array.from(icons).some((icon) =>
             icon.getAttribute('aria-label')?.includes('trending'),
         )
-        expect(hasTrendIcon).toBe(true)
-    })
-
-    it('should render with negative trend icon when trend is negative', () => {
-        getLineChartGraphConfigMock.mockReturnValue([
-            {
-                ...defaultMetricConfig,
-                useTrendData: jest.fn().mockReturnValue({
-                    isFetching: false,
-                    isError: false,
-                    data: { value: 800, prevValue: 1000 },
-                }),
-            },
-        ])
-
-        const { container } = render(
-            <AnalyticsShoppingAssistantConfigurableLine />,
-        )
-
-        const trendingDownIcon = container.querySelector(
-            '[aria-label="trending-down"]',
-        )
-        expect(trendingDownIcon).toBeInTheDocument()
+        expect(hasTrendIcon).toBe(false)
     })
 
     it('should render responsive container for chart', () => {
@@ -165,32 +123,11 @@ describe('AnalyticsShoppingAssistantConfigurableLine', () => {
         expect(responsiveContainer).toBeInTheDocument()
     })
 
-    it('should render loading skeleton when trend data is fetching', () => {
-        getLineChartGraphConfigMock.mockReturnValue([
-            {
-                ...defaultMetricConfig,
-                useTrendData: jest.fn().mockReturnValue({
-                    data: undefined,
-                    isFetching: true,
-                }),
-            },
-        ])
-
-        render(<AnalyticsShoppingAssistantConfigurableLine />)
-
-        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
-    })
-
     it('should render metric selector when multiple metrics are present', () => {
         const secondMetricConfig: ConfigurableGraphMetricConfig = {
             ...defaultMetricConfig,
             measure: 'totalSalesAmount',
             name: 'Total sales',
-            useTrendData: jest.fn().mockReturnValue({
-                isFetching: false,
-                isError: false,
-                data: { value: 5000, prevValue: 4000 },
-            }),
         }
         getLineChartGraphConfigMock.mockReturnValue([
             defaultMetricConfig,

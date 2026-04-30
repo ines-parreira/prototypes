@@ -7,7 +7,6 @@ import {
     fetchStatsMetricPerDimension,
     useStatsMetricPerDimension,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
-import { getStatsTrendHook } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
     fetchStatsTimeSeries,
     fetchStatsTimeSeriesPerDimension,
@@ -54,7 +53,6 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useStatsMetricPerDimension: jest.fn(),
     fetchStatsMetricPerDimension: jest.fn(),
 }))
-jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 jest.mock('domains/reporting/hooks/useStatsTimeSeries')
 jest.mock('pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod')
 
@@ -62,7 +60,6 @@ const useStatsMetricPerDimensionMock = assumeMock(useStatsMetricPerDimension)
 const fetchStatsMetricPerDimensionMock = assumeMock(
     fetchStatsMetricPerDimension,
 )
-const getStatsTrendHookMock = assumeMock(getStatsTrendHook)
 const useStatsTimeSeriesMock = assumeMock(useStatsTimeSeries)
 const useStatsTimeSeriesPerDimensionMock = assumeMock(
     useStatsTimeSeriesPerDimension,
@@ -969,12 +966,6 @@ describe('useAutomationMetricPerAiIntentCustomField', () => {
 })
 
 describe('getBarChartDataHooks', () => {
-    const mockTrendHook = jest.fn()
-    const mockTrendResult = {
-        isFetching: false,
-        isError: false,
-        data: undefined,
-    }
     const period = {
         start_datetime: 'Jan 1, 2025',
         end_datetime: 'Jan 31, 2025',
@@ -982,30 +973,10 @@ describe('getBarChartDataHooks', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        getStatsTrendHookMock.mockReturnValue(mockTrendHook)
-        mockTrendHook.mockReturnValue(mockTrendResult)
         useStatsMetricPerDimensionMock.mockReturnValue({
             ...defaultDimensionResult,
             data: null,
         })
-    })
-
-    it('should return useTrendData that calls getStatsTrendHook with the query', () => {
-        const { useTrendData } = getBarChartDataHooks(
-            mockQuery,
-            ['channel'],
-            defaultFilters,
-            defaultTimezone,
-            period,
-        )
-
-        renderHook(() => useTrendData())
-
-        expect(getStatsTrendHookMock).toHaveBeenCalledWith(mockQuery)
-        expect(mockTrendHook).toHaveBeenCalledWith(
-            defaultFilters,
-            defaultTimezone,
-        )
     })
 
     it('should return channel dimension config with correct shape', () => {
@@ -1278,67 +1249,11 @@ describe('getBarChartDataHooks', () => {
 
         expect(result.current.data).toEqual([{ name: 'Email', value: 30 }])
     })
-
-    it('should apply valueTransform to trend data value and prevValue', () => {
-        mockTrendHook.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: 100, prevValue: 80 },
-        })
-
-        const valueTransform = (v: number | null) => (v !== null ? v * 2 : null)
-        const { useTrendData } = getBarChartDataHooks(
-            mockQuery,
-            ['channel'],
-            defaultFilters,
-            defaultTimezone,
-            period,
-            undefined,
-            valueTransform,
-        )
-
-        const { result } = renderHook(() => useTrendData())
-
-        expect(result.current.data).toEqual({ value: 200, prevValue: 160 })
-    })
-
-    it('should not apply valueTransform to trend data when data is undefined', () => {
-        mockTrendHook.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: undefined,
-        })
-
-        const valueTransform = jest.fn((v: number | null) =>
-            v !== null ? v * 2 : null,
-        )
-        const { useTrendData } = getBarChartDataHooks(
-            mockQuery,
-            ['channel'],
-            defaultFilters,
-            defaultTimezone,
-            period,
-            undefined,
-            valueTransform,
-        )
-
-        renderHook(() => useTrendData())
-
-        expect(valueTransform).not.toHaveBeenCalled()
-    })
 })
 
 describe('getBarChartGraphConfig', () => {
-    const mockTrendHook = jest.fn()
-
     beforeEach(() => {
         jest.resetAllMocks()
-        getStatsTrendHookMock.mockReturnValue(mockTrendHook)
-        mockTrendHook.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: undefined,
-        })
         useStatsMetricPerDimensionMock.mockReturnValue({
             ...defaultDimensionResult,
             data: null,
@@ -1443,7 +1358,7 @@ describe('getBarChartGraphConfig', () => {
         expect(result[1].measure).toBe('resolvedInteractions')
     })
 
-    it('should include useTrendData and dimensions from getBarChartDataHooks', () => {
+    it('should include dimensions from getBarChartDataHooks', () => {
         const metrics: BarChartMetricConfig[] = [
             {
                 measure: 'automationRate',
@@ -1457,7 +1372,6 @@ describe('getBarChartGraphConfig', () => {
 
         const result = getBarChartGraphConfig(metrics, statsFilters, 'UTC')
 
-        expect(typeof result[0].useTrendData).toBe('function')
         expect(Array.isArray(result[0].dimensions)).toBe(true)
     })
 })
@@ -2411,19 +2325,11 @@ describe('useAutomationTimeSeriesPerAiIntentCustomField', () => {
 })
 
 describe('getLineChartDataHooks', () => {
-    const mockTrendHook = jest.fn()
-    const mockTrendQuery = jest.fn()
     const mockTimeSeriesQuery = jest.fn()
     const defaultGranularity = ReportingGranularity.Day
 
     beforeEach(() => {
         jest.resetAllMocks()
-        getStatsTrendHookMock.mockReturnValue(mockTrendHook)
-        mockTrendHook.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: undefined,
-        })
         useStatsTimeSeriesMock.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -2434,28 +2340,8 @@ describe('getLineChartDataHooks', () => {
         } as any)
     })
 
-    it('should return useTrendData that calls getStatsTrendHook with the trend query', () => {
-        const { useTrendData } = getLineChartDataHooks(
-            mockTrendQuery,
-            mockTimeSeriesQuery,
-            ['overall'],
-            defaultFilters,
-            defaultTimezone,
-            defaultGranularity,
-        )
-
-        renderHook(() => useTrendData())
-
-        expect(getStatsTrendHookMock).toHaveBeenCalledWith(mockTrendQuery)
-        expect(mockTrendHook).toHaveBeenCalledWith(
-            defaultFilters,
-            defaultTimezone,
-        )
-    })
-
     it('should return overall dimension config with TimeSeries chart type', () => {
         const { dimensions } = getLineChartDataHooks(
-            mockTrendQuery,
             mockTimeSeriesQuery,
             ['overall'],
             defaultFilters,
@@ -2473,7 +2359,6 @@ describe('getLineChartDataHooks', () => {
 
     it('should return channel dimension config with MultipleTimeSeries chart type', () => {
         const { dimensions } = getLineChartDataHooks(
-            mockTrendQuery,
             mockTimeSeriesQuery,
             ['channel'],
             defaultFilters,
@@ -2491,7 +2376,6 @@ describe('getLineChartDataHooks', () => {
 
     it('should return automationFeatureType dimension config with MultipleTimeSeries chart type', () => {
         const { dimensions } = getLineChartDataHooks(
-            mockTrendQuery,
             mockTimeSeriesQuery,
             ['automationFeatureType'],
             defaultFilters,
@@ -2509,7 +2393,6 @@ describe('getLineChartDataHooks', () => {
 
     it('should return storeIntegrationId dimension config with MultipleTimeSeries chart type', () => {
         const { dimensions } = getLineChartDataHooks(
-            mockTrendQuery,
             mockTimeSeriesQuery,
             ['storeIntegrationId'],
             defaultFilters,
@@ -2527,7 +2410,6 @@ describe('getLineChartDataHooks', () => {
 
     it('should return engagementType dimension config with MultipleTimeSeries chart type', () => {
         const { dimensions } = getLineChartDataHooks(
-            mockTrendQuery,
             mockTimeSeriesQuery,
             ['engagementType'],
             defaultFilters,
@@ -2545,7 +2427,6 @@ describe('getLineChartDataHooks', () => {
 
     it('should return aiAgentRole dimension config with MultipleTimeSeries chart type', () => {
         const { dimensions } = getLineChartDataHooks(
-            mockTrendQuery,
             mockTimeSeriesQuery,
             ['aiAgentRole'],
             defaultFilters,
@@ -2563,7 +2444,6 @@ describe('getLineChartDataHooks', () => {
 
     it('should return aiIntentCustomField dimension config with MultipleTimeSeries chart type', () => {
         const { dimensions } = getLineChartDataHooks(
-            mockTrendQuery,
             mockTimeSeriesQuery,
             ['aiIntentCustomField'],
             defaultFilters,
@@ -2581,7 +2461,6 @@ describe('getLineChartDataHooks', () => {
 
     it('should return all requested dimensions', () => {
         const { dimensions } = getLineChartDataHooks(
-            mockTrendQuery,
             mockTimeSeriesQuery,
             ['overall', 'channel', 'automationFeatureType', 'engagementType'],
             defaultFilters,
@@ -2606,7 +2485,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['overall'],
                 defaultFilters,
@@ -2633,7 +2511,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['overall'],
                 defaultFilters,
@@ -2658,7 +2535,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['channel'],
                 defaultFilters,
@@ -2688,7 +2564,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['channel'],
                 defaultFilters,
@@ -2717,7 +2592,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['automationFeatureType'],
                 defaultFilters,
@@ -2753,7 +2627,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['automationFeatureType'],
                 defaultFilters,
@@ -2784,7 +2657,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['storeIntegrationId'],
                 defaultFilters,
@@ -2814,7 +2686,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['storeIntegrationId'],
                 defaultFilters,
@@ -2839,7 +2710,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['engagementType'],
                 defaultFilters,
@@ -2875,7 +2745,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['engagementType'],
                 defaultFilters,
@@ -2904,7 +2773,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['aiAgentRole'],
                 defaultFilters,
@@ -2940,7 +2808,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['aiAgentRole'],
                 defaultFilters,
@@ -2967,7 +2834,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['aiIntentCustomField'],
                 defaultFilters,
@@ -3003,7 +2869,6 @@ describe('getLineChartDataHooks', () => {
             } as any)
 
             const { dimensions } = getLineChartDataHooks(
-                mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['aiIntentCustomField'],
                 defaultFilters,
@@ -3019,8 +2884,6 @@ describe('getLineChartDataHooks', () => {
 })
 
 describe('getLineChartGraphConfig', () => {
-    const mockTrendHook = jest.fn()
-    const mockTrendQuery = jest.fn()
     const mockTimeSeriesQuery = jest.fn()
     const defaultGranularity = ReportingGranularity.Day
 
@@ -3033,12 +2896,6 @@ describe('getLineChartGraphConfig', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        getStatsTrendHookMock.mockReturnValue(mockTrendHook)
-        mockTrendHook.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: undefined,
-        })
         useStatsTimeSeriesMock.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -3058,7 +2915,6 @@ describe('getLineChartGraphConfig', () => {
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
                 dimensions: ['overall'],
-                trendQueryFactory: mockTrendQuery,
                 timeSeriesQueryFactory: mockTimeSeriesQuery,
             },
         ]
@@ -3087,7 +2943,6 @@ describe('getLineChartGraphConfig', () => {
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
                 dimensions: ['overall'],
-                trendQueryFactory: mockTrendQuery,
                 timeSeriesQueryFactory: mockTimeSeriesQuery,
             },
         ]
@@ -3107,7 +2962,7 @@ describe('getLineChartGraphConfig', () => {
         })
     })
 
-    it('should include useTrendData and dimensions from getLineChartDataHooks', () => {
+    it('should include dimensions from getLineChartDataHooks', () => {
         const metrics: LineChartMetricConfig[] = [
             {
                 measure: 'automationRate',
@@ -3115,7 +2970,6 @@ describe('getLineChartGraphConfig', () => {
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
                 dimensions: ['overall', 'channel'],
-                trendQueryFactory: mockTrendQuery,
                 timeSeriesQueryFactory: mockTimeSeriesQuery,
             },
         ]
@@ -3127,7 +2981,6 @@ describe('getLineChartGraphConfig', () => {
             defaultGranularity,
         )
 
-        expect(typeof result[0].useTrendData).toBe('function')
         expect(result[0].dimensions).toHaveLength(2)
     })
 
@@ -3139,7 +2992,6 @@ describe('getLineChartGraphConfig', () => {
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
                 dimensions: ['overall'],
-                trendQueryFactory: mockTrendQuery,
                 timeSeriesQueryFactory: mockTimeSeriesQuery,
             },
             {
@@ -3148,7 +3000,6 @@ describe('getLineChartGraphConfig', () => {
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
                 dimensions: ['channel'],
-                trendQueryFactory: mockTrendQuery,
                 timeSeriesQueryFactory: mockTimeSeriesQuery,
             },
         ]
@@ -3535,7 +3386,6 @@ describe('fetchConfigurableLineChartDownloadData', () => {
         metricFormat: 'decimal-to-percent',
         interpretAs: 'more-is-better',
         dimensions: ['overall', 'channel'],
-        trendQueryFactory: mockQuery,
         timeSeriesQueryFactory: mockQuery,
     }
 

@@ -62,11 +62,6 @@ describe('AnalyticsAiAgentSupportConfigurableLine', () => {
         name: 'Automated interactions',
         metricFormat: 'decimal',
         interpretAs: 'more-is-better',
-        useTrendData: jest.fn().mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: 1000, prevValue: 800 },
-        }),
         dimensions: [defaultDimension],
     }
 
@@ -115,22 +110,7 @@ describe('AnalyticsAiAgentSupportConfigurableLine', () => {
         expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
-    it('should render the metric value from trend data', () => {
-        render(<AnalyticsAiAgentSupportConfigurableLine />)
-
-        expect(screen.getByText('1,000')).toBeInTheDocument()
-    })
-
-    it('should render the trend badge', () => {
-        const { container } = render(
-            <AnalyticsAiAgentSupportConfigurableLine />,
-        )
-
-        const trendBadge = container.querySelector('.trend')
-        expect(trendBadge).toBeInTheDocument()
-    })
-
-    it('should render with positive trend icon', () => {
+    it('should not render a trend badge', () => {
         const { container } = render(
             <AnalyticsAiAgentSupportConfigurableLine />,
         )
@@ -139,29 +119,7 @@ describe('AnalyticsAiAgentSupportConfigurableLine', () => {
         const hasTrendIcon = Array.from(icons).some((icon) =>
             icon.getAttribute('aria-label')?.includes('trending'),
         )
-        expect(hasTrendIcon).toBe(true)
-    })
-
-    it('should render with negative trend icon when trend is negative', () => {
-        getLineChartGraphConfigMock.mockReturnValue([
-            {
-                ...defaultMetricConfig,
-                useTrendData: jest.fn().mockReturnValue({
-                    isFetching: false,
-                    isError: false,
-                    data: { value: 700, prevValue: 800 },
-                }),
-            },
-        ])
-
-        const { container } = render(
-            <AnalyticsAiAgentSupportConfigurableLine />,
-        )
-
-        const trendingDownIcon = container.querySelector(
-            '[aria-label="trending-down"]',
-        )
-        expect(trendingDownIcon).toBeInTheDocument()
+        expect(hasTrendIcon).toBe(false)
     })
 
     it('should render responsive container for chart', () => {
@@ -196,22 +154,6 @@ describe('AnalyticsAiAgentSupportConfigurableLine', () => {
         )
     })
 
-    it('should render loading skeleton when trend data is fetching', () => {
-        getLineChartGraphConfigMock.mockReturnValue([
-            {
-                ...defaultMetricConfig,
-                useTrendData: jest.fn().mockReturnValue({
-                    data: undefined,
-                    isFetching: true,
-                }),
-            },
-        ])
-
-        render(<AnalyticsAiAgentSupportConfigurableLine />)
-
-        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
-    })
-
     it('should render deprecated chart when feature flag is disabled', () => {
         useFlagWithLoadingMocked.mockReturnValue({
             value: false,
@@ -228,11 +170,6 @@ describe('AnalyticsAiAgentSupportConfigurableLine', () => {
             ...defaultMetricConfig,
             measure: 'averageDecreaseInFirstResponseTime',
             name: 'Decrease in FRT',
-            useTrendData: jest.fn().mockReturnValue({
-                isFetching: false,
-                isError: false,
-                data: { value: 3600, prevValue: 4200 },
-            }),
         }
         getLineChartGraphConfigMock.mockReturnValue([
             defaultMetricConfig,

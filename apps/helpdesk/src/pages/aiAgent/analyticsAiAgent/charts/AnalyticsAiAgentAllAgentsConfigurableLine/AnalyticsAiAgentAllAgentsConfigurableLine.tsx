@@ -1,21 +1,9 @@
 import { useMemo } from 'react'
 
-import {
-    dynamicAllAgentsAutomatedInteractionsQueryFactoryV2,
-    dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
-import {
-    dynamicConversionRateQueryFactoryV2,
-    dynamicConversionRateTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
-import {
-    dynamicTotalSalesAmountQueryFactoryV2,
-    dynamicTotalSalesAmountTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
-import {
-    dynamicAllAgentsAutomationRateQueryFactoryV2,
-    dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2,
-} from 'domains/reporting/models/scopes/overallAutomationRate'
+import { dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { dynamicConversionRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
+import { dynamicTotalSalesAmountTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
+import { dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -42,7 +30,6 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'AI Agent automation rate',
         metricFormat: 'decimal-to-percent' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicAllAgentsAutomationRateQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2,
         dimensions: ['overall', 'channel', 'storeIntegrationId'],
@@ -52,7 +39,6 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Automated interactions',
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicAllAgentsAutomatedInteractionsQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2,
         dimensions: [
@@ -68,7 +54,6 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Conversion rate',
         metricFormat: 'decimal-to-percent' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicConversionRateQueryFactoryV2,
         timeSeriesQueryFactory: dynamicConversionRateTimeseriesQueryFactoryV2,
         dimensions: [
             'overall',
@@ -82,7 +67,6 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         name: 'Total sales',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
-        trendQueryFactory: dynamicTotalSalesAmountQueryFactoryV2,
         timeSeriesQueryFactory: dynamicTotalSalesAmountTimeseriesQueryFactoryV2,
         dimensions: ['overall', 'channel', 'storeIntegrationId'],
     },
