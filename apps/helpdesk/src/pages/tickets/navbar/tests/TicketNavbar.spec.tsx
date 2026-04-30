@@ -1,17 +1,12 @@
 import type { ComponentProps, ReactNode } from 'react'
 
 import client from '@repo/api-resources'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-
-import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 import { section } from 'fixtures/section'
@@ -27,9 +22,6 @@ import {
     optimisticUserSettingsReset,
 } from 'state/ui/ticketNavbar/actions'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
-import type { RenderWithRouterParams } from 'utils/testing'
-import { mockStore, renderWithRouter } from 'utils/testing'
-import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import type DeleteSectionModal from '../DeleteSectionModal'
 import type SectionFormModal from '../SectionFormModal'
@@ -199,7 +191,12 @@ let publicOnSubmitMoveItem:
 let privateOnSubmitMoveItem:
     | ComponentProps<typeof TicketNavbarContent>['onSubmitMoveItem']
     | undefined
-let queryClient: QueryClient
+
+type RenderNavbarParams = {
+    path?: string
+    route?: string
+    state?: object
+}
 
 function makeTestView(overrides: Partial<View>): View {
     return {
@@ -273,25 +270,20 @@ describe('<TicketNavbar/>', () => {
         props: ComponentProps<typeof TicketNavbarContainer> = minProps,
         {
             state = store,
-            ...routerParams
-        }: RenderWithRouterParams & { state?: typeof store } = {},
+            path = '/foo/:viewId?',
+            route = '/foo/1',
+        }: RenderNavbarParams = {},
     ) {
-        return renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <DndProvider backend={HTML5Backend}>
-                    <Provider store={mockStore(state as any)}>
-                        <TicketNavbarContainer {...props} />
-                    </Provider>
-                </DndProvider>
-            </QueryClientProvider>,
-            routerParams,
-        )
+        return render(<TicketNavbarContainer {...props} />, {
+            initialEntries: [route],
+            path,
+            storeState: state as any,
+        })
     }
 
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
-        queryClient = new QueryClient()
         publicOnSubmitMoveItem = undefined
         privateOnSubmitMoveItem = undefined
         mockedServer.onGet(/\/api\/views\/.*/).reply(200, {
@@ -314,10 +306,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fetch the views and dispatch the views actions (legacy views + views entity)', (done) => {
-        renderNavbar(minProps, {
-            path: '/foo/:viewId?',
-            route: '/foo/1',
-        })
+        renderNavbar()
 
         setImmediate(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
@@ -331,10 +320,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fetch the sections and dispatch the result', (done) => {
-        renderNavbar(minProps, {
-            path: '/foo/:viewId?',
-            route: '/foo/1',
-        })
+        renderNavbar()
 
         setImmediate(() => {
             expect(minProps.sectionsFetched).toHaveBeenNthCalledWith(1, [
@@ -345,14 +331,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fallback to location view id when view id is missing from the params', (done) => {
-        const history = createBrowserHistory()
-        history.push('/foo/1')
-
-        history.push('/foo?viewId=2')
-        renderNavbar(minProps, {
-            history,
-            path: '/foo/:viewId?',
-        })
+        renderNavbar(minProps, { route: '/foo?viewId=2' })
 
         setImmediate(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
@@ -366,10 +345,7 @@ describe('<TicketNavbar/>', () => {
 
     it('should dispatch a notification when failing to fetch views', (done) => {
         mockedServer.onGet(/\/api\/views\/.*/).reply(503, { message: 'error' })
-        renderNavbar(minProps, {
-            path: '/foo/:viewId?',
-            route: '/foo/1',
-        })
+        renderNavbar()
 
         setImmediate(() => {
             expect(minProps.notify).toHaveBeenNthCalledWith(1, {
@@ -380,10 +356,7 @@ describe('<TicketNavbar/>', () => {
         })
     })
 
-    it('should invalidate public ordering and view queries after moving a shared view', async () => {
-        const invalidateQueries = jest
-            .spyOn(queryClient, 'invalidateQueries')
-            .mockResolvedValue(undefined)
+    it('should save public ordering after moving a shared view', async () => {
         const currentPublicView = makeTestView({
             id: 4,
             section_id: null,
@@ -407,17 +380,11 @@ describe('<TicketNavbar/>', () => {
             },
         })
 
-        renderNavbar(
-            {
-                ...minProps,
-                accountSetting: {} as any,
-                optimisticAccountSettingsReset,
-            },
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        renderNavbar({
+            ...minProps,
+            accountSetting: {} as any,
+            optimisticAccountSettingsReset,
+        })
 
         expect(publicOnSubmitMoveItem).toBeDefined()
 
@@ -439,21 +406,20 @@ describe('<TicketNavbar/>', () => {
             )
         })
 
-        expect(invalidateQueries).toHaveBeenNthCalledWith(1, {
-            queryKey: queryKeys.views.listAllViews(),
-        })
-        expect(invalidateQueries).toHaveBeenNthCalledWith(2, {
-            queryKey: queryKeys.views.getView(4),
-        })
-        expect(invalidateQueries).toHaveBeenNthCalledWith(3, {
-            queryKey: queryKeys.account.listAccountSettings({
-                type: 'views-ordering',
-            }),
+        expect(mockedServer.history.put).toHaveLength(1)
+        expect(mockedServer.history.put[0].url).toBe('/api/views/4/')
+        expect(mockedServer.history.post).toHaveLength(1)
+        expect(mockedServer.history.post[0].url).toBe('/api/account/settings/')
+        expect(JSON.parse(mockedServer.history.post[0].data)).toEqual({
+            type: 'views-ordering',
+            data: {
+                views: { 4: { display_order: 1 } },
+                view_sections: { 1: { display_order: 0 } },
+            },
         })
     })
 
-    it('should patch the private ordering query after reordering a private view', async () => {
-        const setQueryData = jest.spyOn(queryClient, 'setQueryData')
+    it('should save private ordering after reordering a private view', async () => {
         const privateView = makeTestView({
             id: 5,
             section_id: null,
@@ -469,18 +435,12 @@ describe('<TicketNavbar/>', () => {
             },
         })
 
-        renderNavbar(
-            {
-                ...minProps,
-                accountSetting: {} as any,
-                optimisticUserSettingsReset,
-                submitSettingSuccess,
-            },
-            {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            },
-        )
+        renderNavbar({
+            ...minProps,
+            accountSetting: {} as any,
+            optimisticUserSettingsReset,
+            submitSettingSuccess,
+        })
 
         const nextPrivateOrdering = {
             views: { 5: { display_order: 1 } },
@@ -504,20 +464,16 @@ describe('<TicketNavbar/>', () => {
             )
         })
 
-        expect(setQueryData).toHaveBeenCalledWith(
-            ['views', 'ordering', 'private'],
-            {
-                id: 77,
-                data: nextPrivateOrdering,
-            },
-        )
+        expect(mockedServer.history.post).toHaveLength(1)
+        expect(mockedServer.history.post[0].url).toBe('/api/users/0/settings/')
+        expect(JSON.parse(mockedServer.history.post[0].data)).toEqual({
+            type: 'views-ordering',
+            data: nextPrivateOrdering,
+        })
     })
 
     it('should create a new section', (done) => {
-        const { getByTestId } = renderNavbar(minProps, {
-            path: '/foo/:viewId?',
-            route: '/foo/1',
-        })
+        const { getByTestId } = renderNavbar()
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
         fireEvent.click(getByTestId('SectionModal-submit'))
@@ -529,10 +485,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should update a section', (done) => {
-        const { getByTestId } = renderNavbar(minProps, {
-            path: '/foo/:viewId?',
-            route: '/foo/1',
-        })
+        const { getByTestId } = renderNavbar()
 
         fireEvent.click(getByTestId('TicketNavbarContent-rename'))
         fireEvent.click(getByTestId('SectionModal-submit'))
@@ -544,10 +497,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should delete a section', (done) => {
-        const { getByTestId } = renderNavbar(minProps, {
-            path: '/foo/:viewId?',
-            route: '/foo/1',
-        })
+        const { getByTestId } = renderNavbar()
 
         fireEvent.click(getByTestId('TicketNavbarContent-delete'))
         fireEvent.click(getByTestId('DeleteModal-submit'))
@@ -573,8 +523,6 @@ describe('<TicketNavbar/>', () => {
 
         const { queryByTestId } = renderNavbar(minProps, {
             state: storeWithEmptySystemViews,
-            path: '/foo/:viewId?',
-            route: '/foo/1',
         })
 
         // Check that the system views container is not rendered
@@ -588,10 +536,7 @@ describe('<TicketNavbar/>', () => {
 
         it('should create a new section', async () => {
             const user = userEvent.setup()
-            const { getByRole, getByTestId, getByText } = renderNavbar(
-                minProps,
-                { path: '/foo/:viewId?', route: '/foo/1' },
-            )
+            const { getByRole, getByTestId, getByText } = renderNavbar()
 
             await user.click(getByRole('button', { name: 'add-plus-circle' }))
 
@@ -611,10 +556,7 @@ describe('<TicketNavbar/>', () => {
 
         it('should update a section', async () => {
             const user = userEvent.setup()
-            const { getByTestId } = renderNavbar(minProps, {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            })
+            const { getByTestId } = renderNavbar()
 
             await user.click(getByTestId('TicketNavbarContent-rename'))
             await user.click(getByTestId('SectionModal-submit'))
@@ -629,10 +571,7 @@ describe('<TicketNavbar/>', () => {
 
         it('should delete a section', async () => {
             const user = userEvent.setup()
-            const { getByTestId } = renderNavbar(minProps, {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            })
+            const { getByTestId } = renderNavbar()
 
             await user.click(getByTestId('TicketNavbarContent-delete'))
             await user.click(getByTestId('DeleteModal-submit'))
@@ -654,10 +593,7 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { getByText } = renderNavbar(minProps, {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            })
+            const { getByText } = renderNavbar()
 
             expect(getByText('CollapsedDefaultViews')).toBeInTheDocument()
             expect(getByText('RecentChats')).toBeInTheDocument()
@@ -669,10 +605,7 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { queryAllByTestId, getByText } = renderNavbar(minProps, {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            })
+            const { queryAllByTestId, getByText } = renderNavbar()
 
             const navbarContents = queryAllByTestId('TicketNavbarContent')
             expect(navbarContents.length).toBeGreaterThan(0)
@@ -691,10 +624,7 @@ describe('<TicketNavbar/>', () => {
                 toggleCollapse: jest.fn(),
             })
 
-            const { queryAllByTestId } = renderNavbar(minProps, {
-                path: '/foo/:viewId?',
-                route: '/foo/1',
-            })
+            const { queryAllByTestId } = renderNavbar()
 
             const navbarBlocks = queryAllByTestId('NavbarBlock')
             expect(navbarBlocks.length).toBeGreaterThan(0)

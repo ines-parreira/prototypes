@@ -236,15 +236,7 @@ describe('OrderManagementSettings', () => {
                 selected: integrationWithDifferentDisplayName,
             })
 
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter location={`${BASE_PATH}/shopify/gorgiastest`}>
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
+            renderSettings(`${BASE_PATH}/shopify/gorgiastest`)
 
             const configurationLink = screen.getByRole('link', {
                 name: 'Configuration',
