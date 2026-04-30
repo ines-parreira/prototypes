@@ -16,6 +16,9 @@ import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
 import css from './SummaryTotal.less'
 
+const UNBILLED_CHARGES_DISCLAIMER =
+    "Balance due today doesn't include existing unbilled charges. These charges will be billed at the same time."
+
 export type SummaryTotalProps = {
     selectedPlans: SelectedPlans
     totalProductAmount: number
@@ -66,6 +69,7 @@ const SummaryTotal = ({
         totalWithoutDiscounts,
         discountAmount,
         showDiscountedPrice,
+        unbilledCharges,
     } = usePriceSummary(selectedPlans, totalCancelledAmount, cancelledProducts)
 
     const shouldShowBalanceDue =
@@ -76,6 +80,7 @@ const SummaryTotal = ({
         balanceDue == null
             ? null
             : `${formatAmount(balanceDue / 100, currency)} due today`
+    const shouldShowUnbilledChargesDisclaimer = (unbilledCharges ?? 0) > 0
 
     return (
         <div className={css.container}>
@@ -119,6 +124,11 @@ const SummaryTotal = ({
                         isLoading={isEstimateLoading}
                         errorMessage={estimateErrorMessage}
                         onRetry={onRetryEstimate}
+                        tooltip={
+                            shouldShowUnbilledChargesDisclaimer
+                                ? UNBILLED_CHARGES_DISCLAIMER
+                                : undefined
+                        }
                     >
                         {balanceDueText}
                     </BalanceDueRow>
@@ -139,6 +149,11 @@ function usePriceSummary(
     )
 
     const { data: billingState } = useBillingState()
+    // TODO(CRMGROW-3490): Remove when helpdesk-web-app consumes SDK types that include this backend field.
+    const customer = billingState?.customer as
+        | { unbilled_charges?: number | null }
+        | undefined
+    const unbilledCharges = customer?.unbilled_charges
 
     const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
         useMemo(
@@ -164,6 +179,7 @@ function usePriceSummary(
         totalWithoutDiscounts,
         discountAmount,
         showDiscountedPrice,
+        unbilledCharges,
     }
 }
 

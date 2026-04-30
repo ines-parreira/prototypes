@@ -245,6 +245,7 @@ type CustomerSummary = {
     payment_term_days: number | null
     is_vetted: boolean
     billing_address_validation_status: BillingAddressValidationStatus
+    unbilled_charges?: number | null
 }
 
 export type CurrentPlans = {

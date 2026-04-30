@@ -45,6 +45,8 @@ const totalProductAmount =
 const totalProductAmountDifferent = totalProductAmount + 10000
 const cadence = Cadence.Month
 const currency = 'USD'
+const unbilledChargesDisclaimer =
+    "Balance due today doesn't include existing unbilled charges. These charges will be billed at the same time."
 
 describe('SummaryTotal balance due', () => {
     beforeEach(() => {
@@ -108,6 +110,63 @@ describe('SummaryTotal balance due', () => {
 
         expect(screen.getByText('Balance due today')).toBeInTheDocument()
         expect(screen.getByText('$25.50 due today')).toBeInTheDocument()
+    })
+
+    it('renders the unbilled charges disclaimer tooltip when unbilled charges exist', async () => {
+        const user = userEvent.setup()
+        mockUseBillingState.mockReturnValue({
+            data: {
+                customer: {
+                    unbilled_charges: 500,
+                },
+            },
+        })
+
+        render(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                balanceDue={2550}
+            />,
+        )
+
+        const tooltipTrigger = screen.getByRole('button', {
+            name: 'Unbilled charges disclaimer',
+        })
+
+        await act(() => user.tab())
+
+        expect(document.activeElement).toContainElement(tooltipTrigger)
+
+        expect(await screen.findByText(unbilledChargesDisclaimer)).toBeVisible()
+    })
+
+    it('does not render the unbilled charges disclaimer tooltip when unbilled charges are zero', () => {
+        mockUseBillingState.mockReturnValue({
+            data: {
+                customer: {
+                    unbilled_charges: 0,
+                },
+            },
+        })
+
+        render(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                balanceDue={2550}
+            />,
+        )
+
+        expect(
+            screen.queryByRole('button', {
+                name: 'Unbilled charges disclaimer',
+            }),
+        ).not.toBeInTheDocument()
     })
 
     it('does not render the balance due row when the estimate resolves to 0', () => {

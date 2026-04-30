@@ -1,11 +1,19 @@
 import type { ReactNode } from 'react'
 
-import { Box, Button, Skeleton, Text } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Skeleton,
+    Text,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 type BalanceDueRowProps = {
     isLoading?: boolean
     errorMessage?: string
     onRetry?: () => void
+    tooltip?: string
     children: ReactNode
 }
 
@@ -13,11 +21,30 @@ export function BalanceDueRow({
     isLoading = false,
     errorMessage,
     onRetry,
+    tooltip,
     children,
 }: BalanceDueRowProps) {
     return (
         <Box justifyContent="space-between" alignItems="center" gap="sm">
-            <Text variant="bold">Balance due today</Text>
+            <Box alignItems="center">
+                <Text variant="bold">Balance due today</Text>
+                {tooltip && (
+                    <Tooltip
+                        delay={0}
+                        trigger={
+                            <Button
+                                variant="tertiary"
+                                size="sm"
+                                icon="info"
+                                aria-label="Unbilled charges disclaimer"
+                                excludeFromTabOrder
+                            />
+                        }
+                    >
+                        <TooltipContent title={tooltip} />
+                    </Tooltip>
+                )}
+            </Box>
             <BalanceDueValue
                 isLoading={isLoading}
                 errorMessage={errorMessage}

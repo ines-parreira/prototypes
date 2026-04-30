@@ -234,6 +234,7 @@ export const payingWithCreditCard: BillingState = {
         is_vetted: false,
         billing_address_validation_status:
             BillingAddressValidationStatus.NotValidated,
+        unbilled_charges: null,
     },
     current_plans: {
         helpdesk: basicMonthlyHelpdeskPlan,
@@ -337,6 +338,7 @@ export const trial: BillingState = {
         is_vetted: true,
         billing_address_validation_status:
             BillingAddressValidationStatus.NotValidated,
+        unbilled_charges: null,
     },
     current_plans: {
         helpdesk: proMonthlyHelpdeskPlan,
