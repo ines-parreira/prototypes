@@ -15,8 +15,12 @@ export const CancelOrderFlowView = () => {
         shopType: string
     }>()
 
-    const { updateQuickReplies, setConversationMessages, onChatPreviewLoaded } =
-        useChatPreviewPanelContext()
+    const {
+        updateQuickReplies,
+        setConversationMessages,
+        onChatPreviewLoaded,
+        displayPage,
+    } = useChatPreviewPanelContext()
 
     const {
         isLoading,
@@ -37,8 +41,16 @@ export const CancelOrderFlowView = () => {
     useEffect(() => {
         return onChatPreviewLoaded(() => {
             updateQuickReplies({ enabled: false, replies: [] })
+            setConversationMessages(simulationMessages)
+            displayPage('conversation')
         }, true)
-    }, [updateQuickReplies, onChatPreviewLoaded])
+    }, [
+        onChatPreviewLoaded,
+        updateQuickReplies,
+        setConversationMessages,
+        simulationMessages,
+        displayPage,
+    ])
 
     useEffect(() => {
         setConversationMessages(simulationMessages)

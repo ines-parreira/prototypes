@@ -6,6 +6,7 @@ import { useChatPreviewPanelContext } from 'pages/integrations/integration/compo
 
 import { CancelOrderFlowView } from '../CancelOrderFlowView'
 import { useCancelOrderFlow } from '../hooks/useCancelOrderFlow'
+import { buildCancelOrderSimulationMessages } from '../utils/buildCancelOrderSimulationMessages'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -72,6 +73,7 @@ describe('CancelOrderFlowView', () => {
             updateQuickReplies: jest.fn(),
             setConversationMessages: jest.fn(),
             onChatPreviewLoaded: jest.fn(),
+            displayPage: jest.fn(),
         } as any)
     })
 
@@ -128,5 +130,122 @@ describe('CancelOrderFlowView', () => {
         await user.click(screen.getByRole('button', { name: 'Save' }))
 
         expect(mockHandleSave).toHaveBeenCalled()
+    })
+
+    describe('onChatPreviewLoaded effect', () => {
+        let mockUpdateQuickReplies: jest.Mock
+        let mockSetConversationMessages: jest.Mock
+        let mockDisplayPage: jest.Mock
+        let mockOnChatPreviewLoaded: jest.Mock
+        let mockCleanup: jest.Mock
+
+        beforeEach(() => {
+            mockUpdateQuickReplies = jest.fn()
+            mockSetConversationMessages = jest.fn()
+            mockDisplayPage = jest.fn()
+            mockCleanup = jest.fn()
+            mockOnChatPreviewLoaded = jest.fn().mockReturnValue(mockCleanup)
+
+            mockUseChatPreviewPanelContext.mockReturnValue({
+                updateQuickReplies: mockUpdateQuickReplies,
+                setConversationMessages: mockSetConversationMessages,
+                onChatPreviewLoaded: mockOnChatPreviewLoaded,
+                displayPage: mockDisplayPage,
+            } as any)
+        })
+
+        it('should subscribe with fireIfAlreadyLoaded=true on mount', () => {
+            render(<CancelOrderFlowView />)
+
+            expect(mockOnChatPreviewLoaded).toHaveBeenCalledWith(
+                expect.any(Function),
+                true,
+            )
+        })
+
+        it('should unsubscribe the callback on unmount', () => {
+            const { unmount } = render(<CancelOrderFlowView />)
+
+            unmount()
+
+            expect(mockCleanup).toHaveBeenCalled()
+        })
+
+        it('should set conversation messages from the second effect on mount', () => {
+            render(<CancelOrderFlowView />)
+
+            const expectedMessages = buildCancelOrderSimulationMessages(
+                defaultHookReturn.responseMessageContent,
+            )
+            expect(mockSetConversationMessages).toHaveBeenCalledWith(
+                expectedMessages,
+            )
+        })
+
+        it('should update conversation messages when responseMessageContent changes', () => {
+            const updatedContent = {
+                html: '<p>Your order has been cancelled.</p>',
+                text: 'Your order has been cancelled.',
+            }
+
+            const { rerender } = render(<CancelOrderFlowView />)
+
+            mockUseCancelOrderFlow.mockReturnValue({
+                ...defaultHookReturn,
+                responseMessageContent: updatedContent,
+            } as any)
+
+            rerender(<CancelOrderFlowView />)
+
+            const expectedMessages =
+                buildCancelOrderSimulationMessages(updatedContent)
+            expect(mockSetConversationMessages).toHaveBeenLastCalledWith(
+                expectedMessages,
+            )
+        })
+
+        describe('when the chat preview finishes loading', () => {
+            beforeEach(() => {
+                mockOnChatPreviewLoaded = jest
+                    .fn()
+                    .mockImplementation((callback: () => void) => {
+                        callback()
+                        return mockCleanup
+                    })
+
+                mockUseChatPreviewPanelContext.mockReturnValue({
+                    updateQuickReplies: mockUpdateQuickReplies,
+                    setConversationMessages: mockSetConversationMessages,
+                    onChatPreviewLoaded: mockOnChatPreviewLoaded,
+                    displayPage: mockDisplayPage,
+                } as any)
+            })
+
+            it('should disable quick replies', () => {
+                render(<CancelOrderFlowView />)
+
+                expect(mockUpdateQuickReplies).toHaveBeenCalledWith({
+                    enabled: false,
+                    replies: [],
+                })
+            })
+
+            it('should set the simulation conversation messages', () => {
+                render(<CancelOrderFlowView />)
+
+                const expectedMessages = buildCancelOrderSimulationMessages(
+                    defaultHookReturn.responseMessageContent,
+                )
+                expect(mockSetConversationMessages).toHaveBeenCalledWith(
+                    expectedMessages,
+                )
+            })
+
+            it('should navigate to the conversation page', () => {
+                render(<CancelOrderFlowView />)
+
+                expect(mockDisplayPage).toHaveBeenCalledWith('conversation')
+            })
+        })
     })
 })
