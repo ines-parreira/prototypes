@@ -6,6 +6,7 @@ import type {
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import type { Product } from 'constants/integrations/types/shopify'
@@ -146,7 +147,10 @@ export const useGeneratePlaygroundMessage = ({
                 storeType: 'shopify',
                 journeyId: journey.id,
                 journeyMessageInstructions: journeyMessageInstructions,
-                journeyType: journey.type,
+                journeyType:
+                    journey.type === JourneyTypeEnum.Custom
+                        ? JourneyTypeEnum.Welcome
+                        : journey.type,
                 followUpAttempt: 0,
                 testModeSessionId: newTestSessionId,
                 page: {

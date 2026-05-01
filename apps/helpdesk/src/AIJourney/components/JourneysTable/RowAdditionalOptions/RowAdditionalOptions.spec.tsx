@@ -1028,6 +1028,48 @@ describe('<RowAdditionalOptions />', () => {
             })
         })
 
+        it('should disable delete confirm button while deletion is pending', async () => {
+            mockMutateAsync.mockImplementation(
+                () => new Promise(() => {}), // never resolves
+            )
+
+            const user = userEvent.setup()
+            mockUseDeleteJourney.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                isLoading: true,
+            } as unknown as ReturnType<typeof useDeleteJourney>)
+
+            render(
+                <RowAdditionalOptions journeyRowData={mockCustomFlowRowData} />,
+            )
+
+            const trigger = screen.getByLabelText('Open options')
+            await act(() => user.click(trigger))
+
+            const deleteOptions = screen.getAllByText('Delete')
+            const deleteListItem = deleteOptions.find(
+                (el) =>
+                    el.closest('[role="option"]') ||
+                    el.closest('.ui-text-text-d239'),
+            )
+            if (deleteListItem) {
+                await act(() => user.click(deleteListItem))
+            }
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Delete My Webhook Flow?'),
+                ).toBeInTheDocument()
+            })
+
+            const dialog = screen.getByRole('dialog')
+            const confirmButton = dialog.querySelector(
+                'button[data-pending="true"]',
+            )
+            expect(confirmButton).toBeInTheDocument()
+            expect(confirmButton).toBeDisabled()
+        })
+
         it('should dispatch generic error toast when DELETE fails with non-API error', async () => {
             const genericError = new Error('Network error')
             mockMutateAsync.mockRejectedValue(genericError)

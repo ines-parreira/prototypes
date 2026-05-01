@@ -23,18 +23,6 @@ jest.mock('react-hook-form', () => ({
     useWatch: jest.fn(),
 }))
 
-jest.mock(
-    'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList',
-    () => ({ useAIJourneyProductList: jest.fn() }),
-)
-
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
-    },
-    useFlag: jest.fn(),
-}))
-
 jest.mock('AIJourney/hooks', () => ({
     ...jest.requireActual('AIJourney/hooks'),
     useGeneratePlaygroundMessage: jest.fn(),
@@ -82,10 +70,6 @@ const mockUseFormContext = require('react-hook-form')
     .useFormContext as jest.Mock
 const mockUseWatch = require('react-hook-form').useWatch as jest.Mock
 
-const mockUseAIJourneyProductList =
-    require('AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList')
-        .useAIJourneyProductList as jest.Mock
-
 const mockUseGeneratePlaygroundMessage = require('AIJourney/hooks')
     .useGeneratePlaygroundMessage as jest.Mock
 
@@ -115,6 +99,8 @@ const defaultContextValue = {
     journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
     currentIntegration: { id: 1, name: 'test-shop' },
     isLoading: false,
+    isErrorJourneyData: false,
+    shopName: 'test-store',
 }
 
 describe('<Preview />', () => {
@@ -130,11 +116,6 @@ describe('<Preview />', () => {
 
         mockUseFormContext.mockReturnValue({ setValue: mockSetValue })
         mockUseWatch.mockReturnValue('')
-
-        mockUseAIJourneyProductList.mockReturnValue({
-            productList: [],
-            isLoading: false,
-        })
 
         mockUseGeneratePlaygroundMessage.mockReturnValue({
             handleGenerateMessages: mockHandleGenerateMessages,
@@ -166,34 +147,39 @@ describe('<Preview />', () => {
                 screen.queryByText('PlaygroundPreview'),
             ).not.toBeInTheDocument()
         })
-
-        it('should render loading spinner when product list is loading', () => {
-            mockUseAIJourneyProductList.mockReturnValue({
-                productList: [],
-                isLoading: true,
-            })
-
-            render(<Preview />)
-
-            expect(
-                screen.queryByText('MessageGuidanceCard'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByText('PlaygroundPreview'),
-            ).not.toBeInTheDocument()
-        })
     })
 
     describe('not found state', () => {
-        it('should render "Page not found." when journeyData is undefined', () => {
+        it('should render a message when journeyData is undefined', () => {
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: undefined,
+                isErrorJourneyData: false,
             })
 
             render(<Preview />)
 
-            expect(screen.getByText('Page not found.')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'This flow could not be found. It may not have been created yet.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render an error message when journeyData failed to load', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: undefined,
+                isErrorJourneyData: true,
+            })
+
+            render(<Preview />)
+
+            expect(
+                screen.getByText(
+                    'This flow could not be loaded. Please refresh the page or go back and try again.',
+                ),
+            ).toBeInTheDocument()
         })
     })
 
@@ -294,83 +280,6 @@ describe('<Preview />', () => {
             render(<Preview />)
 
             expect(mockSetValue).not.toHaveBeenCalled()
-        })
-    })
-
-    describe('product auto-selection', () => {
-        it('should auto-select the first product when productList loads', async () => {
-            const firstProduct = {
-                id: 'p1',
-                title: 'First Product',
-                image: { src: 'img.jpg', alt: 'First' },
-                handle: 'first-product',
-                status: 'active',
-                variants: [{ id: 'v1', price: '10.00' }],
-            }
-
-            mockUseAIJourneyProductList.mockReturnValue({
-                productList: [firstProduct],
-                isLoading: false,
-            })
-
-            render(<Preview />)
-
-            await waitFor(() => {
-                expect(
-                    mockUseGeneratePlaygroundMessage,
-                ).toHaveBeenLastCalledWith(
-                    expect.objectContaining({ selectedProduct: firstProduct }),
-                )
-            })
-        })
-
-        it('should not override an already-selected product when productList changes', async () => {
-            const firstProduct = {
-                id: 'p1',
-                title: 'First Product',
-                image: { src: 'img1.jpg', alt: 'First' },
-                handle: 'first',
-                status: 'active',
-                variants: [{ id: 'v1', price: '10.00' }],
-            }
-            const secondProduct = {
-                id: 'p2',
-                title: 'Second Product',
-                image: { src: 'img2.jpg', alt: 'Second' },
-                handle: 'second',
-                status: 'active',
-                variants: [{ id: 'v2', price: '20.00' }],
-            }
-
-            mockUseAIJourneyProductList.mockReturnValue({
-                productList: [firstProduct],
-                isLoading: false,
-            })
-
-            const { rerender } = render(<Preview />)
-
-            await waitFor(() => {
-                expect(
-                    mockUseGeneratePlaygroundMessage,
-                ).toHaveBeenLastCalledWith(
-                    expect.objectContaining({ selectedProduct: firstProduct }),
-                )
-            })
-
-            mockUseAIJourneyProductList.mockReturnValue({
-                productList: [firstProduct, secondProduct],
-                isLoading: false,
-            })
-
-            rerender(<Preview />)
-
-            await waitFor(() => {
-                expect(
-                    mockUseGeneratePlaygroundMessage,
-                ).toHaveBeenLastCalledWith(
-                    expect.objectContaining({ selectedProduct: firstProduct }),
-                )
-            })
         })
     })
 

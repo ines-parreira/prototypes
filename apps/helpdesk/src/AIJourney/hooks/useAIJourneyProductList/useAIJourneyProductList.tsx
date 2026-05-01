@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import type { Product } from 'constants/integrations/types/shopify'
 import { ProductStatus } from 'constants/integrations/types/shopify'
@@ -12,6 +12,7 @@ type useAIJourneyProductListParams = {
 
 const MINIMUM_PRODUCT_COUNT = 5
 const PICKER_STATUSES: ProductStatus[] = [ProductStatus.Active]
+const MAX_PAGE_FETCHES = 3
 
 export const useAIJourneyProductList = ({
     integrationId,
@@ -22,6 +23,7 @@ export const useAIJourneyProductList = ({
     const {
         data: paginatedProductItems,
         isLoading,
+        isError,
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
@@ -37,6 +39,8 @@ export const useAIJourneyProductList = ({
             refetchOnWindowFocus: false,
             refetchOnMount: false,
             keepPreviousData: isSearching,
+            retry: 3,
+            retryDelay: 1000,
             queryKey: [
                 'integration',
                 'shopify',
@@ -62,13 +66,25 @@ export const useAIJourneyProductList = ({
         return isSearching ? filtered : filtered.slice(0, MINIMUM_PRODUCT_COUNT)
     }, [productItemsData, isSearching])
 
+    const pageFetchCount = useRef(0)
+
+    useEffect(() => {
+        pageFetchCount.current = 0
+    }, [integrationId])
+
     useEffect(() => {
         if (isSearching) return
 
         const needsMoreProducts = productList.length < MINIMUM_PRODUCT_COUNT
-        const canFetchMore = hasNextPage && !isLoading && !isFetchingNextPage
+        const canFetchMore =
+            hasNextPage &&
+            !isLoading &&
+            !isFetchingNextPage &&
+            !isError &&
+            pageFetchCount.current < MAX_PAGE_FETCHES
 
         if (needsMoreProducts && canFetchMore) {
+            pageFetchCount.current++
             fetchNextPage()
         }
     }, [
@@ -78,10 +94,12 @@ export const useAIJourneyProductList = ({
         hasNextPage,
         fetchNextPage,
         isSearching,
+        isError,
     ])
 
     return {
         productList,
-        isLoading: isLoading || isFetchingNextPage,
+        isLoading,
+        isError,
     }
 }

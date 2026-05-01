@@ -33,14 +33,12 @@ export const journeysColumns: ColumnDef<TableRow>[] = [
             </TableV1SortableColumnHeader>
         ),
         cell: (info) => {
-            const storeName = info.row.original.store_name
             const journeyType = info.row.original.type
             const journeyId = info.row.original.id
             return (
                 <Box gap="xs">
                     <JourneyName
                         name={info.getValue() as string}
-                        storeName={storeName}
                         journeyType={journeyType}
                         journeyId={journeyId}
                     />

@@ -32,6 +32,7 @@ type JourneyContextType = {
     isLoading: boolean
     isLoadingJourneys: boolean
     isLoadingJourneyData: boolean
+    isErrorJourneyData: boolean
     journeyType: JOURNEY_TYPES
     storeConfiguration: StoreConfiguration | undefined
     attributionModelComparison: AttributionModelComparison | null
@@ -135,10 +136,13 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
     const attributionModelComparison =
         convertStoreConfig?.data?.attribution_model_comparison ?? null
 
-    const { data: journeyData, isLoading: isLoadingJourneyData } =
-        useJourneyData(journeyId, {
-            enabled: !!integrationId && !!journeyId,
-        })
+    const {
+        data: journeyData,
+        isLoading: isLoadingJourneyData,
+        isError: isErrorJourneyData,
+    } = useJourneyData(journeyId, {
+        enabled: !!integrationId && !!journeyId,
+    })
 
     const isLoading =
         isLoadingJourneys ||
@@ -157,6 +161,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             isLoading,
             isLoadingJourneys,
             isLoadingJourneyData,
+            isErrorJourneyData,
             journeyType,
             storeConfiguration,
             attributionModelComparison,
@@ -171,6 +176,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             isLoading,
             isLoadingJourneys,
             isLoadingJourneyData,
+            isErrorJourneyData,
             journeyType,
             storeConfiguration,
             attributionModelComparison,

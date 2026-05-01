@@ -17,6 +17,7 @@ jest.mock('AIJourney/providers', () => ({
 }))
 jest.mock('AIJourney/formFields', () => ({
     CampaignName: () => <div>CampaignName</div>,
+    FlowName: () => <div>FlowName</div>,
     SenderPhoneNumber: () => <div>SenderPhoneNumber</div>,
     NumberOfMessages: () => <div>NumberOfMessages</div>,
     IncludeImage: () => <div>IncludeImage</div>,
@@ -112,6 +113,34 @@ describe('<GeneralCard />', () => {
                 expect(
                     screen.queryByText('CampaignName'),
                 ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('FlowName', () => {
+            it('renders when journey type is CUSTOM', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CUSTOM,
+                })
+
+                render(<GeneralCard isFormReady={true} />)
+
+                expect(screen.getByText('FlowName')).toBeInTheDocument()
+            })
+
+            it('does not render when journey type is not CUSTOM', () => {
+                render(<GeneralCard isFormReady={true} />)
+
+                expect(screen.queryByText('FlowName')).not.toBeInTheDocument()
+            })
+
+            it('does not render when journey type is CAMPAIGN', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                render(<GeneralCard isFormReady={true} />)
+
+                expect(screen.queryByText('FlowName')).not.toBeInTheDocument()
             })
         })
 

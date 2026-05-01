@@ -5,6 +5,7 @@ import { Box, Card, CardHeader, Skeleton } from '@gorgias/axiom'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import {
     CampaignName,
+    FlowName,
     ImageUpload,
     IncludeImage,
     NumberOfMessages,
@@ -16,6 +17,7 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
     const { journeyType } = useJourneyContext()
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const isCustom = journeyType === JOURNEY_TYPES.CUSTOM
     const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
     const storeSettingsEnabled = useFlag(
         FeatureFlagKey.AiJourneyStoreSettingsEnabled,
@@ -36,6 +38,7 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
             <CardHeader title="General" />
             <Box flexDirection="column" gap="md">
                 {isCampaign && <CampaignName />}
+                {isCustom && <FlowName />}
                 {(!storeSettingsEnabled || window.USER_IMPERSONATED) && (
                     <SenderPhoneNumber />
                 )}

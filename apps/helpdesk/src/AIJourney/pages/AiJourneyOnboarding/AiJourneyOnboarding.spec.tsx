@@ -142,6 +142,7 @@ const defaultContextValue = {
     isLoading: false,
     isLoadingJourneys: false,
     isLoadingJourneyData: false,
+    isErrorJourneyData: false,
     isLoadingIntegrations: false,
     journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
     storeConfiguration: undefined,

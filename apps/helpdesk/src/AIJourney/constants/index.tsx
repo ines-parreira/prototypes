@@ -17,6 +17,7 @@ export const CUSTOM_JOURNEY_TYPE = 'custom' as const
 
 export const FLOW_TYPES = {
     CART_ABANDONMENT: 'cart-abandoned',
+    CUSTOM: 'custom',
     POST_PURCHASE: 'post-purchase',
     SESSION_ABANDONMENT: 'session-abandoned',
     WELCOME: 'welcome',
@@ -38,6 +39,7 @@ export const JOURNEY_TYPES_MAP_TO_URL: Record<JourneyTypeEnum, JOURNEY_TYPES> =
     {
         [JourneyTypeEnum.Campaign]: JOURNEY_TYPES.CAMPAIGN,
         [JourneyTypeEnum.CartAbandoned]: JOURNEY_TYPES.CART_ABANDONMENT,
+        [JourneyTypeEnum.Custom]: JOURNEY_TYPES.CUSTOM,
         [JourneyTypeEnum.PostPurchase]: JOURNEY_TYPES.POST_PURCHASE,
         [JourneyTypeEnum.SessionAbandoned]: JOURNEY_TYPES.SESSION_ABANDONMENT,
         [JourneyTypeEnum.Welcome]: JOURNEY_TYPES.WELCOME,
@@ -47,6 +49,7 @@ export const JOURNEY_TYPES_MAP_TO_URL: Record<JourneyTypeEnum, JOURNEY_TYPES> =
 export const JOURNEY_TYPE_MAP_TO_STRING: Record<JourneyTypeEnum, string> = {
     [JourneyTypeEnum.Campaign]: 'Campaign',
     [JourneyTypeEnum.CartAbandoned]: 'Cart Abandoned',
+    [JourneyTypeEnum.Custom]: 'Custom Flow',
     [JourneyTypeEnum.PostPurchase]: 'Post-purchase',
     [JourneyTypeEnum.SessionAbandoned]: 'Browse Abandoned',
     [JourneyTypeEnum.Welcome]: 'Welcome',

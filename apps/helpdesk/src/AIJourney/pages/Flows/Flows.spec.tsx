@@ -1,8 +1,12 @@
+import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -22,6 +26,7 @@ import { initialState as drillDownInitialState } from 'domains/reporting/state/u
 import { shopifyIntegration } from 'fixtures/integrations'
 import { useSearchParam } from 'hooks/useSearchParam'
 import type { RootState } from 'state/types'
+import { mockStore } from 'utils/testing'
 
 import { Flows } from './Flows'
 
@@ -83,6 +88,7 @@ const mockJourneyContextDefaults = {
     isLoading: false,
     isLoadingJourneys: false,
     isLoadingJourneyData: false,
+    isErrorJourneyData: false,
     isLoadingIntegrations: false,
     journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
     storeConfiguration: undefined,
@@ -104,10 +110,15 @@ const renderComponent = (initialSearch = '') => {
     }
 
     return render(
-        <ThemeProvider>
-            <Flows />
-        </ThemeProvider>,
-        { initialEntries: [`/${initialSearch}`], storeState: initialState },
+        <MemoryRouter initialEntries={[`/${initialSearch}`]}>
+            <Provider store={mockStore(initialState)}>
+                <QueryClientProvider client={appQueryClient}>
+                    <ThemeProvider>
+                        <Flows />
+                    </ThemeProvider>
+                </QueryClientProvider>
+            </Provider>
+        </MemoryRouter>,
     )
 }
 
@@ -686,6 +697,21 @@ describe('<Flows />', () => {
     })
 
     describe('"Add Custom Flow" button', () => {
+        it('should render exactly one "Add Custom Flow" button (in TableToolbar, not PageHeader)', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
+                    return true
+                return false
+            })
+
+            renderComponent()
+
+            const buttons = screen.getAllByRole('button', {
+                name: /add custom flow/i,
+            })
+            expect(buttons).toHaveLength(1)
+        })
+
         it('should show "Add Custom Flow" button when AiJourneyCustomFlowEnabled flag is on', () => {
             mockUseFlag.mockImplementation((flag) => {
                 if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
@@ -713,6 +739,29 @@ describe('<Flows />', () => {
                 screen.queryByRole('button', { name: /add custom flow/i }),
             ).not.toBeInTheDocument()
         })
+
+        it('should navigate to custom flow setup when "Add Custom Flow" is clicked', async () => {
+            const user = userEvent.setup()
+
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
+                    return true
+                return false
+            })
+
+            renderComponent()
+
+            const button = screen.getByRole('button', {
+                name: /add custom flow/i,
+            })
+            await user.click(button)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('button', { name: /add custom flow/i }),
+                ).toBeInTheDocument()
+            })
+        })
     })
 
     describe('Feature flags', () => {
@@ -728,20 +777,6 @@ describe('<Flows />', () => {
             expect(
                 screen.getByRole('button', { name: /add custom flow/i }),
             ).toBeInTheDocument()
-        })
-
-        it('should hide "Add Custom Flow" button when AiJourneyCustomFlowEnabled flag is off', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
-                    return false
-                return true
-            })
-
-            renderComponent()
-
-            expect(
-                screen.queryByRole('button', { name: /add custom flow/i }),
-            ).not.toBeInTheDocument()
         })
     })
 

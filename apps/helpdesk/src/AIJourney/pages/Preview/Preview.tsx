@@ -2,9 +2,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useFormContext, useWatch } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 
-import { Box, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
-import type { CampaignJourneyConfigurationApiDTO } from '@gorgias/convert-client'
+import {
+    Box,
+    Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+    Text,
+} from '@gorgias/axiom'
+import type {
+    CampaignJourneyConfigurationApiDTO,
+    JourneyConfigurationApiDTO,
+} from '@gorgias/convert-client'
 
 import {
     MessageGuidanceCard,
@@ -17,7 +26,6 @@ import {
     useGeneratePlaygroundMessage,
     useLastSelectedProduct,
 } from 'AIJourney/hooks'
-import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
 import type { Image, Product } from 'constants/integrations/types/shopify'
@@ -30,8 +38,12 @@ export const Preview = () => {
         journeyData,
         journeyType,
         currentIntegration,
+        shopName,
         isLoading: isLoadingJourneyData,
+        isErrorJourneyData,
     } = useJourneyContext()
+
+    const history = useHistory()
 
     const { warpToCollapsibleColumn, setIsCollapsibleColumnOpen } =
         useCollapsibleColumn()
@@ -41,8 +53,7 @@ export const Preview = () => {
         return () => setIsCollapsibleColumnOpen(false)
     }, [setIsCollapsibleColumnOpen])
 
-    const { resolveProduct, setLastSelectedProductId } =
-        useLastSelectedProduct()
+    const { setLastSelectedProductId } = useLastSelectedProduct()
 
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const [currentProductImage, setCurrentProductImage] =
@@ -66,7 +77,9 @@ export const Preview = () => {
         !window.USER_IMPERSONATED &&
         !storeConfiguration?.sms_sender_integration_id
 
-    const { configuration: journeyParams } = journeyData || {}
+    const journeyParams = (journeyData?.configuration ?? undefined) as
+        | JourneyConfigurationApiDTO
+        | undefined
 
     const isCampaign = journeyData?.type === JOURNEY_TYPES.CAMPAIGN
     const isWelcome = journeyData?.type === JOURNEY_TYPES.WELCOME
@@ -82,16 +95,6 @@ export const Preview = () => {
     const totalMessagesToBeGenerated = useMemo(() => {
         return (journeyParams?.max_follow_up_messages ?? 0) + 1
     }, [journeyParams?.max_follow_up_messages])
-
-    const { productList, isLoading: isLoadingProductsList } =
-        useAIJourneyProductList({ integrationId })
-
-    useEffect(() => {
-        if (!selectedProduct && productList.length > 0) {
-            const resolved = resolveProduct(productList)
-            if (resolved) setSelectedProduct(resolved)
-        }
-    }, [productList, selectedProduct, resolveProduct])
 
     const { handleGenerateMessages, playgroundMessages, isGeneratingMessages } =
         useGeneratePlaygroundMessage({
@@ -130,7 +133,7 @@ export const Preview = () => {
 
     const shouldRenderTestingProductCard = !isWelcome && !isCampaign
 
-    const isLoading = isLoadingJourneyData || isLoadingProductsList
+    const isLoading = isLoadingJourneyData
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -139,7 +142,19 @@ export const Preview = () => {
     if (!journeyData) {
         return (
             <div className={css.container}>
-                <p>Page not found.</p>
+                <Text>
+                    {isErrorJourneyData
+                        ? 'This flow could not be loaded. Please refresh the page or go back and try again.'
+                        : 'This flow could not be found. It may not have been created yet.'}
+                </Text>
+                <Button
+                    variant="secondary"
+                    onClick={() =>
+                        history.push(`/app/ai-journey/${shopName}/flows`)
+                    }
+                >
+                    Go to flows
+                </Button>
             </div>
         )
     }

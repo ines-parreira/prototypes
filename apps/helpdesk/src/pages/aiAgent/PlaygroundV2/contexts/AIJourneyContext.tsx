@@ -124,13 +124,16 @@ function parseJourneyConfig(
             : null
 
     return {
-        totalFollowUp: config[journeySettingsMapper.totalFollowUp] ?? undefined,
-        includeProductImage: config[journeySettingsMapper.includeProductImage],
-        includeDiscountCode: config[journeySettingsMapper.includeDiscountCode],
+        totalFollowUp:
+            config?.[journeySettingsMapper.totalFollowUp] ?? undefined,
+        includeProductImage:
+            config?.[journeySettingsMapper.includeProductImage],
+        includeDiscountCode:
+            config?.[journeySettingsMapper.includeDiscountCode],
         discountCodeValue:
-            config[journeySettingsMapper.discountCodeValue] ?? undefined,
+            config?.[journeySettingsMapper.discountCodeValue] ?? undefined,
         discountCodeMessageIdx:
-            config[journeySettingsMapper.discountCodeMessageIdx] ?? undefined,
+            config?.[journeySettingsMapper.discountCodeMessageIdx] ?? undefined,
         includedAudienceListIds:
             journeyData[journeySettingsMapper.includedAudienceListIds] ??
             undefined,
@@ -319,7 +322,7 @@ const WrappedAIJourneyProvider = ({
     }, [journeyData])
 
     const journeyConfiguration = useMemo(() => {
-        return journeyData?.configuration
+        return journeyData?.configuration ?? undefined
     }, [journeyData])
 
     const aiJourneySettings = useMemo<AIJourneySettings>(() => {

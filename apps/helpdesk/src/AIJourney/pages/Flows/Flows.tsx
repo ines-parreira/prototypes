@@ -1,12 +1,13 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import type { MetricConfigItem } from '@repo/reporting'
 import { ConfigureMetricsModal } from '@repo/reporting'
+import { useHistory } from 'react-router-dom'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, Button, Pagination, PanelHeader, Text } from '@gorgias/axiom'
+import { Box, Pagination, PanelHeader, Text } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -17,6 +18,7 @@ import {
     journeysColumns,
     metricColumns,
 } from 'AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns'
+import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import {
     DEFAULT_TABLE_METRICS,
     EMPTY_TABLE_METRICS,
@@ -43,9 +45,12 @@ type UnconfiguredFlow = {
     store_name: string
     id: undefined
     campaign: undefined
+    name?: string
 }
 type UnconfiguredFlowWithMetrics = UnconfiguredFlow & { metrics: FlowMetrics }
-type ConfiguredFlowWithMetrics = JourneyApiDTO & { metrics: FlowMetrics }
+type ConfiguredFlowWithMetrics = JourneyApiDTO & {
+    metrics: FlowMetrics
+}
 type CustomFlowWithMetrics = JourneyApiDTO & {
     name: string
     metrics: FlowMetrics
@@ -79,6 +84,13 @@ export const Flows = () => {
     const { journeys, currentIntegration, isLoadingJourneys, shopName } =
         useJourneyContext()
 
+    const history = useHistory()
+    const handleAddCustomFlow = useCallback(() => {
+        history.push(
+            `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CUSTOM}/${STEPS_NAMES.SETUP}`,
+        )
+    }, [history, shopName])
+
     const hasFlows = journeys && journeys.length > 0
 
     const integrationId = useMemo(() => {
@@ -86,7 +98,7 @@ export const Flows = () => {
     }, [currentIntegration])
 
     const [pageParam, setPageParam] = useSearchParam('page')
-    const currentPage = pageParam ? parseInt(pageParam, 10) : 1
+    const currentPage = Math.max(1, parseInt(pageParam ?? '', 10) || 1)
 
     const { data: flowsListData } = useFlowsList(integrationId || undefined, {
         enabled: !!integrationId,
@@ -144,6 +156,9 @@ export const Flows = () => {
 
     const configuredFlows: ConfiguredFlowWithMetrics[] | undefined =
         useMemo(() => {
+            // Custom flows come exclusively from useFlowsList -> sortedCustomFlows
+            // below. Including them here as well caused each custom flow to
+            // render twice in tableRows.
             const filteredJourneys = journeys?.filter((journey) =>
                 availableFlows.includes(journey.type),
             )
@@ -203,14 +218,7 @@ export const Flows = () => {
 
     return (
         <Box width="100%" flexDirection="column">
-            <PanelHeader
-                title="Flows"
-                trailingSlot={
-                    isAiJourneyCustomFlowEnabled ? (
-                        <Button>Add custom flow</Button>
-                    ) : undefined
-                }
-            />
+            <PanelHeader title="Flows" />
             <Box className={css.filtersPanel}>
                 <FiltersPanelWrapper
                     persistentFilters={[FilterKey.Period]}
@@ -234,6 +242,8 @@ export const Flows = () => {
                     columns={visibleColumns}
                     data={tableRows || []}
                     onEditColumns={() => setIsMetricsEditModalOpen(true)}
+                    onAddCustomFlow={handleAddCustomFlow}
+                    showAddCustomFlow={!!isAiJourneyCustomFlowEnabled}
                     isLoading={isLoadingJourneys}
                     integrationId={integrationId}
                 />

@@ -20,6 +20,7 @@ import {
     AudienceCard,
     DiscountCodeCard,
     GeneralCard,
+    KlaviyoSetupCard,
     RcsEnabledCard,
     TimingCard,
 } from 'AIJourney/components'
@@ -51,6 +52,7 @@ export type SetupFormValues = {
     scheduleType?: 'immediate' | 'later'
     scheduledDate?: ZonedDateTime | null
     scheduledTime?: Time | CalendarDateTime | ZonedDateTime | null
+    flowName?: string
 }
 
 export const Setup = () => {
@@ -71,8 +73,8 @@ export const Setup = () => {
     const isAiJourneyRcsEnabled = useFlag(FeatureFlagKey.AiJourneyRcsEnable)
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
-
-    const shouldRenderTimingCard = !isCampaign
+    const isCustom = journeyType === JOURNEY_TYPES.CUSTOM
+    const shouldRenderTimingCard = !isCampaign && !isCustom
     const shouldRenderAudienceCard = isCampaign
         ? true
         : isAiJourneySegmentsEnabled
@@ -133,11 +135,15 @@ export const Setup = () => {
                     campaignTitle: journeyData?.campaign?.title ?? undefined,
                     rcs_enabled:
                         journeyData?.configuration?.rcs_enabled ?? undefined,
+                    flowName: journeyData?.name ?? undefined,
                 })
             }
             setIsFormReady(true)
         }
     }, [isLoadingJourneyData, isFormReady, journeyData, journeyParams, reset])
+
+    const webhookUrl = journeyData?.webhook_url ?? undefined
+    const hasWebhookUrl = isCustom && !!webhookUrl
 
     return (
         <Box flexDirection="column" gap="lg">
@@ -150,7 +156,7 @@ export const Setup = () => {
             {shouldRenderAudienceCard && (
                 <AudienceCard isFormReady={isFormReady} />
             )}
-
+            {hasWebhookUrl && <KlaviyoSetupCard webhookUrl={webhookUrl} />}
             {isAiJourneyRcsEnabled && window.USER_IMPERSONATED && (
                 <RcsEnabledCard isFormReady={isFormReady} />
             )}

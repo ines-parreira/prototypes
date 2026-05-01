@@ -192,17 +192,17 @@ export default function CampaignsTable<TData, TValue>({
                 },
                 journeyConfigs: {
                     max_follow_up_messages:
-                        journeyData.configuration.max_follow_up_messages,
-                    offer_discount: journeyData.configuration.offer_discount,
+                        journeyData.configuration?.max_follow_up_messages,
+                    offer_discount: journeyData.configuration?.offer_discount,
                     max_discount_percent:
-                        journeyData.configuration.max_discount_percent,
+                        journeyData.configuration?.max_discount_percent,
                     sms_sender_integration_id:
-                        journeyData.configuration.sms_sender_integration_id,
+                        journeyData.configuration?.sms_sender_integration_id,
                     sms_sender_number:
-                        journeyData.configuration.sms_sender_number,
+                        journeyData.configuration?.sms_sender_number,
                     discount_code_message_threshold:
                         journeyData.configuration
-                            .discount_code_message_threshold,
+                            ?.discount_code_message_threshold,
                 },
             })
 

@@ -2,7 +2,7 @@ import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 
 import type { JourneyApiDTO } from '@gorgias/convert-client'
-import { getAllJourneysPublic } from '@gorgias/convert-client'
+import { getAllJourneysPublic, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
@@ -21,9 +21,24 @@ const fetchFlowsList = async (
         { baseURL: getGorgiasRevenueAddonApiBaseUrl() },
     )
 
-    const items = Array.isArray(response.data) ? response.data : []
-    const builtIn = items.filter((j) => (j.type as string) !== 'custom')
-    const custom = items.filter((j) => (j.type as string) === 'custom')
+    // Accept both response shapes: legacy JourneyApiDTO[] and the new
+    // { built_in, custom: { items } } shape introduced in convert-service
+    // aijou-1661. Without this, once the backend stops emitting the legacy
+    // shape custom flows silently disappear from the table.
+    const data = response.data as unknown as
+        | { built_in: JourneyApiDTO[]; custom: { items: JourneyApiDTO[] } }
+        | JourneyApiDTO[]
+        | null
+        | undefined
+    let items: JourneyApiDTO[] = []
+    if (Array.isArray(data)) {
+        items = data
+    } else if (data) {
+        items = [...(data.built_in ?? []), ...(data.custom?.items ?? [])]
+    }
+
+    const builtIn = items.filter((j) => j.type !== JourneyTypeEnum.Custom)
+    const custom = items.filter((j) => j.type === JourneyTypeEnum.Custom)
 
     return { built_in: builtIn, custom }
 }

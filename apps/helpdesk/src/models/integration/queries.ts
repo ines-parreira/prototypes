@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import client from '@repo/api-resources'
 import { reportError } from '@repo/logging'
 import type { UseQueryOptions } from '@tanstack/react-query'
@@ -160,14 +158,10 @@ export const useListProducts = (
             return lastPage.data.meta.next_cursor
         },
         enabled,
+        onError: (error) =>
+            handleError(error, 'Failed to fetch products', dispatch),
         ...queryParams,
     })
-
-    useEffect(() => {
-        if (response.error) {
-            handleError(response.error, 'Failed to fetch products', dispatch)
-        }
-    }, [dispatch, response])
 
     return response
 }

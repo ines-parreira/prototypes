@@ -24,9 +24,20 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'AIJourney/hooks/useLastSelectedProduct/useLastSelectedProduct',
+    () => ({
+        useLastSelectedProduct: jest.fn(),
+    }),
+)
+
 const mockUseAIJourneyProductList =
     require('AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList')
         .useAIJourneyProductList as jest.Mock
+
+const mockUseLastSelectedProduct =
+    require('AIJourney/hooks/useLastSelectedProduct/useLastSelectedProduct')
+        .useLastSelectedProduct as jest.Mock
 
 const makeProduct = (id: string, title: string, imageSrc: string): Product =>
     ({
@@ -62,6 +73,11 @@ describe('<ProductSelect />', () => {
             productList,
             isLoading: false,
         })
+
+        mockUseLastSelectedProduct.mockReturnValue({
+            resolveProduct: (products: typeof productList) => products[0],
+            setLastSelectedProductId: jest.fn(),
+        })
     })
 
     describe('loading state', () => {
@@ -76,6 +92,40 @@ describe('<ProductSelect />', () => {
             )
 
             expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+        })
+    })
+
+    describe('auto-selection', () => {
+        it('should call setSelectedProduct with the resolved product on first load', () => {
+            render(
+                <ProductSelect setSelectedProduct={mockSetSelectedProduct} />,
+            )
+
+            expect(mockSetSelectedProduct).toHaveBeenCalledWith(productList[0])
+        })
+
+        it('should not call setSelectedProduct when a product is already selected', () => {
+            render(
+                <ProductSelect
+                    selectedProduct={productList[1]}
+                    setSelectedProduct={mockSetSelectedProduct}
+                />,
+            )
+
+            expect(mockSetSelectedProduct).not.toHaveBeenCalled()
+        })
+
+        it('should not call setSelectedProduct when product list is empty', () => {
+            mockUseAIJourneyProductList.mockReturnValue({
+                productList: [],
+                isLoading: false,
+            })
+
+            render(
+                <ProductSelect setSelectedProduct={mockSetSelectedProduct} />,
+            )
+
+            expect(mockSetSelectedProduct).not.toHaveBeenCalled()
         })
     })
 

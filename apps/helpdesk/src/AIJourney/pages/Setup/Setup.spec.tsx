@@ -33,6 +33,7 @@ jest.mock('AIJourney/components', () => ({
     AudienceCard: jest.fn(() => <div>AudienceCard</div>),
     GeneralCard: jest.fn(() => <div>GeneralCard</div>),
     DiscountCodeCard: jest.fn(() => <div>DiscountCodeCard</div>),
+    KlaviyoSetupCard: jest.fn(() => <div>KlaviyoSetupCard</div>),
     TimingCard: jest.fn(() => <div>TimingCard</div>),
 }))
 
@@ -48,6 +49,8 @@ const mockDiscountCodeCard = require('AIJourney/components')
 const mockTimingCard = require('AIJourney/components').TimingCard as jest.Mock
 const mockAudienceCard = require('AIJourney/components')
     .AudienceCard as jest.Mock
+const mockKlaviyoSetupCard = require('AIJourney/components')
+    .KlaviyoSetupCard as jest.Mock
 
 describe('<Setup />', () => {
     beforeEach(() => {
@@ -838,6 +841,158 @@ describe('<Setup />', () => {
         })
     })
 
+    describe('Custom flow fields', () => {
+        it('should reset flowName from journeyData.name when present', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CUSTOM,
+                journeyData: {
+                    name: 'My Custom Flow',
+                    store_integration_id: 42,
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                    },
+                },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        flowName: 'My Custom Flow',
+                    }),
+                )
+            })
+        })
+
+        it('should set flowName to undefined when journeyData has no name', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CUSTOM,
+                journeyData: {
+                    store_integration_id: 42,
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                    },
+                },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        flowName: undefined,
+                    }),
+                )
+            })
+        })
+
+        it('should render KlaviyoSetupCard when custom type has webhook_url after first save', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CUSTOM,
+                journeyData: {
+                    id: 'journey-123',
+                    name: 'My Custom Flow',
+                    store_integration_id: 42,
+                    webhook_url:
+                        'https://app.gorgias.com/webhooks/journey/abc123',
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                    },
+                },
+            })
+
+            const { getByText } = render(<Setup />)
+
+            await waitFor(() => {
+                expect(getByText('KlaviyoSetupCard')).toBeInTheDocument()
+            })
+        })
+
+        it('should not render KlaviyoSetupCard when custom journey has no webhook_url yet', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CUSTOM,
+                journeyData: {
+                    store_integration_id: 42,
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                    },
+                },
+            })
+
+            const { queryByText } = render(<Setup />)
+
+            await waitFor(() => {
+                expect(queryByText('KlaviyoSetupCard')).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not render KlaviyoSetupCard for non-custom journey types', () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    id: 'journey-123',
+                    store_integration_id: 42,
+                    webhook_url:
+                        'https://app.gorgias.com/webhooks/journey/abc123',
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                    },
+                },
+            })
+
+            const { queryByText } = render(<Setup />)
+
+            expect(queryByText('KlaviyoSetupCard')).not.toBeInTheDocument()
+        })
+
+        it('should pass correct props to KlaviyoSetupCard', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CUSTOM,
+                journeyData: {
+                    id: 'journey-123',
+                    name: 'My Custom Flow',
+                    store_integration_id: 42,
+                    webhook_url:
+                        'https://app.gorgias.com/webhooks/journey/abc123',
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                    },
+                },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockKlaviyoSetupCard).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        webhookUrl:
+                            'https://app.gorgias.com/webhooks/journey/abc123',
+                    }),
+                    expect.anything(),
+                )
+            })
+        })
+    })
+
     describe('TimingCard rendering', () => {
         it.each([
             JOURNEY_TYPES.POST_PURCHASE,
@@ -857,7 +1012,22 @@ describe('<Setup />', () => {
             expect(getByText('TimingCard')).toBeInTheDocument()
         })
 
-        it('should not render TimingCard for campaign journey type', () => {
+        it.each([JOURNEY_TYPES.CUSTOM, JOURNEY_TYPES.CAMPAIGN])(
+            'should not render TimingCard for %s journey type',
+            (journeyType) => {
+                mockUseJourneyContext.mockReturnValue({
+                    isLoading: false,
+                    journeyType,
+                    journeyData: undefined,
+                })
+
+                const { queryByText } = render(<Setup />)
+
+                expect(queryByText('TimingCard')).not.toBeInTheDocument()
+            },
+        )
+
+        it('should pass journeyType to TimingCard', () => {
             mockUseJourneyContext.mockReturnValue({
                 isLoading: false,
                 journeyType: JOURNEY_TYPES.CAMPAIGN,

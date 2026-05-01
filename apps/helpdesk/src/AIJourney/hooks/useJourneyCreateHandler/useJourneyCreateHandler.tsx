@@ -22,6 +22,7 @@ type HandleCreateParams = {
     discountCodeThresholdValue?: number | null
     discountValue?: number | null
     excludedAudienceListIds?: string[]
+    flowName?: string
     followUpValue?: number | null
     includedAudienceListIds?: string[]
     includeImage?: boolean
@@ -53,6 +54,7 @@ export const useJourneyCreateHandler = ({
             discountCodeThresholdValue,
             discountValue,
             excludedAudienceListIds,
+            flowName,
             followUpValue,
             includedAudienceListIds,
             includeImage,
@@ -126,6 +128,7 @@ export const useJourneyCreateHandler = ({
                             : undefined,
                         included_audience_list_ids: includedAudienceListIds,
                         excluded_audience_list_ids: excludedAudienceListIds,
+                        ...(flowName !== undefined && { name: flowName }),
                     },
                     journeyConfigs: {
                         ...baseJourneyConfigs,

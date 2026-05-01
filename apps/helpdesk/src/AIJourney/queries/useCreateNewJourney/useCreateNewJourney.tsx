@@ -53,8 +53,12 @@ export const useCreateNewJourney = () => {
                 | PostPurchaseJourneyConfigurationApiDTO
                 | CampaignJourneyConfigurationApiDTO
         }) => {
+            // Cast required: Omit on a discriminated union doesn't
+            // distribute, so the spread reconstruction loses variant
+            // identity and TS demands `name` from CreateCustomJourneyApiDTO
+            // even on non-custom variants. Runtime shape is correct.
             return createNewJourney(
-                { ...params, store_type: 'shopify' },
+                { ...params, store_type: 'shopify' } as CreateJourneyBody,
                 journeyConfigs,
             )
         },

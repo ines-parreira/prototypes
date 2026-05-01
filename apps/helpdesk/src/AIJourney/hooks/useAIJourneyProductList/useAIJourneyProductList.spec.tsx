@@ -347,5 +347,54 @@ describe('useAIJourneyProductList', () => {
 
             expect(fetchNextPageMock).not.toHaveBeenCalled()
         })
+
+        it('should not fetch next page when query is in error state', () => {
+            const fetchNextPageMock = jest.fn()
+
+            useListProductsMock.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+                fetchNextPage: fetchNextPageMock,
+                hasNextPage: true,
+                isFetchingNextPage: false,
+            } as any)
+
+            renderHook(() => useAIJourneyProductList({ integrationId: 1 }))
+
+            expect(fetchNextPageMock).not.toHaveBeenCalled()
+        })
+
+        it('should fetch next page at most 3 times when products are below the minimum', () => {
+            const fetchNextPageMock = jest.fn()
+
+            const idleMock = {
+                data: { pages: [{ data: { data: [] } }] },
+                isLoading: false,
+                isError: false,
+                fetchNextPage: fetchNextPageMock,
+                hasNextPage: true,
+                isFetchingNextPage: false,
+            } as any
+
+            const fetchingMock = { ...idleMock, isFetchingNextPage: true }
+
+            useListProductsMock.mockReturnValue(idleMock)
+
+            const { rerender } = renderHook(() =>
+                useAIJourneyProductList({ integrationId: 1 }),
+            )
+
+            // Simulate 5 fetch cycles: each cycle toggles isFetchingNextPage
+            // true → false to retrigger the effect, mimicking real pagination
+            for (let i = 0; i < 5; i++) {
+                useListProductsMock.mockReturnValue(fetchingMock)
+                rerender()
+                useListProductsMock.mockReturnValue(idleMock)
+                rerender()
+            }
+
+            expect(fetchNextPageMock).toHaveBeenCalledTimes(3)
+        })
     })
 })

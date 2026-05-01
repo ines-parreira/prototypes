@@ -6,7 +6,6 @@ import type {
     CampaignJourneyConfigurationApiDTO,
     JourneyConfigurationApiDTO,
     JourneyStatusEnum,
-    PatchJourneyBody,
     PostPurchaseJourneyConfigurationApiDTO,
     WelcomeFlowConfigurationApiDTO,
     WinbackJourneyConfigurationApiDTO,
@@ -33,6 +32,7 @@ type HandleUpdateParams = {
     discountCodeThresholdValue?: number | null | undefined
     discountValue?: number | null | undefined
     excludedAudienceListIds?: string[]
+    flowName?: string
     followUpValue?: number
     id?: string
     includeImage?: boolean
@@ -139,13 +139,16 @@ export const useJourneyUpdateHandler = ({
                             updateParams.campaignTitle ||
                             updateParams.campaignState ||
                             updateParams.scheduledDatetime !== undefined
-                                ? ({
+                                ? {
                                       title: updateParams.campaignTitle,
                                       state: updateParams.campaignState,
                                       scheduled_datetime:
                                           updateParams.scheduledDatetime,
-                                  } as PatchJourneyBody)
+                                  }
                                 : undefined,
+                        ...(updateParams.flowName !== undefined && {
+                            name: updateParams.flowName,
+                        }),
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),
                 }

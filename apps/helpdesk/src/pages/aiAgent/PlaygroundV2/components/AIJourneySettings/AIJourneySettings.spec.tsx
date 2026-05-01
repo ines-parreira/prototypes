@@ -412,6 +412,7 @@ describe('AIJourneySettings', () => {
                 mockUseAIJourneyProductList.mockReturnValue({
                     productList: searchProducts,
                     isLoading: false,
+                    isError: false,
                 })
 
                 renderComponent()
@@ -465,6 +466,7 @@ describe('AIJourneySettings', () => {
                 mockUseAIJourneyProductList.mockReturnValue({
                     productList: searchResults,
                     isLoading: false,
+                    isError: false,
                 })
 
                 renderComponent()

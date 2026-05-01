@@ -67,14 +67,37 @@ describe('<Activation />', () => {
         expect(screen.getByRole('status')).toBeInTheDocument()
     })
 
-    it('should render page not found when journey data is missing', () => {
+    it('should render a message when journey data is missing', () => {
         mockUseJourneyContext.mockReturnValue({
             journeyData: undefined,
             isLoading: false,
+            isErrorJourneyData: false,
+            shopName: 'test-store',
         })
 
         renderComponent()
 
-        expect(screen.getByText('Page not found.')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'This flow could not be found. It may not have been created yet.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should render an error message when journey data failed to load', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            isLoading: false,
+            isErrorJourneyData: true,
+            shopName: 'test-store',
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                'This flow could not be loaded. Please refresh the page or go back and try again.',
+            ),
+        ).toBeInTheDocument()
     })
 })

@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
 import useAppSelector from 'hooks/useAppSelector'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 type RedirectToShopProps = {
@@ -18,7 +19,8 @@ export function RedirectToShop({ basePath }: RedirectToShopProps) {
     useEffect(() => {
         const sortedStoreNames = [...storeIntegrations]
             .sort((a, b) => a.name.localeCompare(b.name))
-            .map((store) => store.name)
+            .map(getShopNameFromStoreIntegration)
+            .filter((name): name is string => name !== undefined)
 
         const resolvedStore = resolveStore(sortedStoreNames)
         if (!resolvedStore) {

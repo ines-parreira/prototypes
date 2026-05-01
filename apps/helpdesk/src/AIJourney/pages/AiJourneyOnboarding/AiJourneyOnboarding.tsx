@@ -130,7 +130,7 @@ export const AiJourneyOnboarding = ({
 
     const { setIsCollapsibleColumnOpen } = useCollapsibleColumn()
 
-    const titleMapping = {
+    const titleMapping: Record<JOURNEY_TYPES, string | undefined> = {
         [JOURNEY_TYPES.WELCOME]: 'Welcome flow',
         [JOURNEY_TYPES.POST_PURCHASE]: 'Post-purchase flow',
         [JOURNEY_TYPES.CART_ABANDONMENT]: 'SMS cart abandoned flow',
@@ -139,6 +139,9 @@ export const AiJourneyOnboarding = ({
         [JOURNEY_TYPES.CAMPAIGN]: journeyData
             ? journeyData.campaign?.title
             : 'Create new campaign',
+        [JOURNEY_TYPES.CUSTOM]: journeyData
+            ? (journeyData.name ?? undefined)
+            : 'Create custom flow',
     }
 
     const currentStepIndex = useMemo(
@@ -260,7 +263,15 @@ export const AiJourneyOnboarding = ({
             } else {
                 await handleUpdate({
                     journeyState: JourneyStatusEnum.Active,
-                }).then(() => history.push(`/app/ai-journey/${shopName}/flows`))
+                }).then(() => {
+                    if (journeyType === JOURNEY_TYPES.CUSTOM && journeyId) {
+                        history.push(
+                            `/app/ai-journey/${shopName}/custom/webhook-setup/${journeyId}`,
+                        )
+                    } else {
+                        history.push(`/app/ai-journey/${shopName}/flows`)
+                    }
+                })
             }
             return
         }
@@ -300,6 +311,7 @@ export const AiJourneyOnboarding = ({
                 excludedAudienceListIds: data.excluded_audience_list_ids,
                 campaignTitle: data.campaignTitle,
                 rcsEnabled: data.rcs_enabled,
+                flowName: data.flowName,
             }).then(() =>
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${journeyData.id}`,
@@ -328,6 +340,7 @@ export const AiJourneyOnboarding = ({
                 excludedAudienceListIds: data.excluded_audience_list_ids,
                 campaignTitle: data.campaignTitle,
                 rcsEnabled: data.rcs_enabled,
+                flowName: data.flowName,
             }).then((res) =>
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${res.id}`,
@@ -402,7 +415,10 @@ export const AiJourneyOnboarding = ({
     return (
         <FormProvider {...methods}>
             <Box flexDirection="column">
-                <PanelHeader title={titleMapping[journeyType]} padding="lg" />
+                <PanelHeader
+                    title={titleMapping[journeyType] ?? ''}
+                    padding="lg"
+                />
                 <Box
                     flexDirection="column"
                     padding="lg"

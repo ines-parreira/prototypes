@@ -1228,7 +1228,12 @@ describe('<Routes/>', () => {
         const mockStore = configureMockStore([thunk])({
             integrations: fromJS({
                 integrations: [
-                    { id: 1, name: 'shopify-store', type: 'shopify' },
+                    {
+                        id: 1,
+                        name: 'shopify-store',
+                        type: 'shopify',
+                        meta: { shop_name: 'shopify-store' },
+                    },
                 ],
             }),
         })
@@ -1285,7 +1290,12 @@ describe('<Routes/>', () => {
             mockUseIntegrations.mockReturnValue({
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 integrations: [
-                    { id: 1, name: 'shopify-store', type: 'shopify' },
+                    {
+                        id: 1,
+                        name: 'shopify-store',
+                        type: 'shopify',
+                        meta: { shop_name: 'shopify-store' },
+                    },
                 ],
                 isLoading: false,
             })

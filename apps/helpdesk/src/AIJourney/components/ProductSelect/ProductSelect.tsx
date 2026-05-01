@@ -1,6 +1,18 @@
-import { Icon, ListItem, Select, SelectTrigger, Skeleton } from '@gorgias/axiom'
+import { useEffect } from 'react'
 
-import { useAIJourneyProductList } from 'AIJourney/hooks'
+import {
+    Icon,
+    ListItem,
+    Select,
+    SelectTrigger,
+    Skeleton,
+    Text,
+} from '@gorgias/axiom'
+
+import {
+    useAIJourneyProductList,
+    useLastSelectedProduct,
+} from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import type { Product } from 'constants/integrations/types/shopify'
 
@@ -37,13 +49,32 @@ export const ProductSelect = ({
 
     const integrationId = currentIntegration?.id
 
-    const { productList, isLoading: isLoadingProducts } =
-        useAIJourneyProductList({
-            integrationId: integrationId,
-        })
+    const {
+        productList,
+        isLoading: isLoadingProducts,
+        isError,
+    } = useAIJourneyProductList({ integrationId })
+
+    const { resolveProduct } = useLastSelectedProduct()
+
+    useEffect(() => {
+        if (!selectedProduct && productList.length > 0) {
+            const resolved = resolveProduct(productList)
+            if (resolved) setSelectedProduct(resolved)
+        }
+    }, [productList, selectedProduct, setSelectedProduct, resolveProduct])
 
     if (isLoadingProducts) {
         return <Skeleton />
+    }
+
+    if (isError) {
+        return (
+            <Text>
+                Products could not be loaded. Please check your Shopify
+                integration.
+            </Text>
+        )
     }
 
     const currentProduct = selectedProduct ?? productList[0]
