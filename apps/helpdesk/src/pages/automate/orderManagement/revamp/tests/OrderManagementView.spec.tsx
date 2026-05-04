@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react'
 
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
+import type { OrderManagementFlow } from '../components/OrderManagementFlowsCard/useOrderManagementFlows'
 import { useOrderManagementFlows } from '../components/OrderManagementFlowsCard/useOrderManagementFlows'
 import { OrderManagementViewRevamp } from '../OrderManagementView'
 
@@ -37,8 +38,38 @@ const mockedUseChatPreviewPanelContext =
         typeof useChatPreviewPanelContext
     >
 
+const buildFlow = (
+    key: OrderManagementFlow['key'],
+    isEnabled: boolean,
+): OrderManagementFlow => ({
+    key,
+    title: key,
+    routePath: key,
+    isEnabled,
+    hasEmptyResponse: false,
+    canNavigate: true,
+})
+
+const buildFlows = ({
+    track = false,
+    cancel = false,
+    returnOrder = false,
+    report = false,
+}: {
+    track?: boolean
+    cancel?: boolean
+    returnOrder?: boolean
+    report?: boolean
+}): OrderManagementFlow[] => [
+    buildFlow('trackOrderPolicy', track),
+    buildFlow('returnOrderPolicy', returnOrder),
+    buildFlow('cancelOrderPolicy', cancel),
+    buildFlow('reportIssuePolicy', report),
+]
+
 describe('OrderManagementViewRevamp', () => {
     const mockDisplayPage = jest.fn()
+    const mockUpdateOrderManagementFlows = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -53,6 +84,7 @@ describe('OrderManagementViewRevamp', () => {
 
         mockedUseChatPreviewPanelContext.mockReturnValue({
             displayPage: mockDisplayPage,
+            updateOrderManagementFlows: mockUpdateOrderManagementFlows,
         } as unknown as ReturnType<typeof useChatPreviewPanelContext>)
     })
 
@@ -72,5 +104,114 @@ describe('OrderManagementViewRevamp', () => {
         render(<OrderManagementViewRevamp />)
 
         expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
+    })
+
+    it('pushes the current flows payload on the first settled render', () => {
+        mockedUseOrderManagementFlows.mockReturnValue({
+            isLoading: false,
+            isUpdatePending: false,
+            flows: buildFlows({ track: true }),
+            handleFlowToggle: jest.fn(),
+            navigateToFlow: jest.fn(),
+        })
+
+        render(<OrderManagementViewRevamp />)
+
+        expect(mockUpdateOrderManagementFlows).toHaveBeenCalledWith({
+            track_order: true,
+            return_order: false,
+            cancel_order: false,
+            report_issue: false,
+        })
+    })
+
+    it('pushes the updated payload when individual flows toggle', () => {
+        mockedUseOrderManagementFlows.mockReturnValue({
+            isLoading: false,
+            isUpdatePending: false,
+            flows: buildFlows({ track: true }),
+            handleFlowToggle: jest.fn(),
+            navigateToFlow: jest.fn(),
+        })
+
+        const { rerender } = render(<OrderManagementViewRevamp />)
+
+        mockedUseOrderManagementFlows.mockReturnValue({
+            isLoading: false,
+            isUpdatePending: false,
+            flows: buildFlows({ track: true, cancel: true }),
+            handleFlowToggle: jest.fn(),
+            navigateToFlow: jest.fn(),
+        })
+        rerender(<OrderManagementViewRevamp />)
+
+        expect(mockUpdateOrderManagementFlows).toHaveBeenLastCalledWith({
+            track_order: true,
+            return_order: false,
+            cancel_order: true,
+            report_issue: false,
+        })
+    })
+
+    it('pushes when transitioning from no flows to any enabled', () => {
+        const { rerender } = render(<OrderManagementViewRevamp />)
+
+        mockedUseOrderManagementFlows.mockReturnValue({
+            isLoading: false,
+            isUpdatePending: false,
+            flows: buildFlows({ track: true }),
+            handleFlowToggle: jest.fn(),
+            navigateToFlow: jest.fn(),
+        })
+        rerender(<OrderManagementViewRevamp />)
+
+        expect(mockUpdateOrderManagementFlows).toHaveBeenLastCalledWith({
+            track_order: true,
+            return_order: false,
+            cancel_order: false,
+            report_issue: false,
+        })
+    })
+
+    it('pushes when transitioning from any enabled to no flows', () => {
+        mockedUseOrderManagementFlows.mockReturnValue({
+            isLoading: false,
+            isUpdatePending: false,
+            flows: buildFlows({ track: true, cancel: true }),
+            handleFlowToggle: jest.fn(),
+            navigateToFlow: jest.fn(),
+        })
+
+        const { rerender } = render(<OrderManagementViewRevamp />)
+
+        mockedUseOrderManagementFlows.mockReturnValue({
+            isLoading: false,
+            isUpdatePending: false,
+            flows: buildFlows({}),
+            handleFlowToggle: jest.fn(),
+            navigateToFlow: jest.fn(),
+        })
+        rerender(<OrderManagementViewRevamp />)
+
+        expect(mockUpdateOrderManagementFlows).toHaveBeenLastCalledWith({
+            track_order: false,
+            return_order: false,
+            cancel_order: false,
+            report_issue: false,
+        })
+    })
+
+    it('skips pushing while the configuration is loading', () => {
+        mockedUseOrderManagementFlows.mockReturnValue({
+            isLoading: true,
+            isUpdatePending: false,
+            flows: [],
+            handleFlowToggle: jest.fn(),
+            navigateToFlow: jest.fn(),
+        })
+
+        render(<OrderManagementViewRevamp />)
+
+        expect(mockUpdateOrderManagementFlows).not.toHaveBeenCalled()
     })
 })

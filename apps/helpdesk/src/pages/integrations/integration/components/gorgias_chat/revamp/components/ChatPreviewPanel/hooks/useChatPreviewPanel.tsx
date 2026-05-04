@@ -17,6 +17,7 @@ import type {
     GorgiasChatAvatarType,
     GorgiasChatLauncherSettings,
     GorgiasChatPreviewOrdersOptions,
+    GorgiasChatPreviewSelfServiceFlows,
     GorgiasChatWorkflowEntrypoint,
 } from 'models/integration/types/gorgiasChat'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
@@ -224,6 +225,13 @@ export const useChatPreviewPanel = ({
         [displayPage],
     )
 
+    const updateOrderManagementFlows = useCallback(
+        (flows: GorgiasChatPreviewSelfServiceFlows) => {
+            chatPreviewPanelRef.current?.updateOrderManagementFlows(flows)
+        },
+        [],
+    )
+
     const reloadPreview = useCallback(() => {
         chatPreviewPanelRef.current?.reloadPreview()
     }, [])
@@ -286,6 +294,7 @@ export const useChatPreviewPanel = ({
         updateLegalDisclaimer,
         updateLegalDisclaimerEnabled,
         updateWorkflowEntryPoints,
+        updateOrderManagementFlows,
         reloadPreview,
         updateAvatarSettings,
         updateQuickReplies,

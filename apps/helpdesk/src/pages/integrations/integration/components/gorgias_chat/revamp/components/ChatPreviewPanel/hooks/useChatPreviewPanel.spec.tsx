@@ -417,6 +417,45 @@ describe('useChatPreviewPanel', () => {
         expect(mockUpdateWorkflowEntrypoints).toHaveBeenCalledWith(entrypoints)
     })
 
+    it('updateOrderManagementFlows does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateOrderManagementFlows({
+                track_order: false,
+                cancel_order: false,
+                return_order: false,
+                report_issue: false,
+            }),
+        ).not.toThrow()
+    })
+
+    it('updateOrderManagementFlows calls updateOrderManagementFlows on the ref without changing the displayed page when attached', () => {
+        const mockDisplayPage = jest.fn()
+        const mockUpdateOrderManagementFlows = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                displayPage: mockDisplayPage,
+                updateOrderManagementFlows: mockUpdateOrderManagementFlows,
+            }
+        }
+
+        const flows = {
+            track_order: true,
+            cancel_order: false,
+            return_order: false,
+            report_issue: false,
+        }
+        result.current.updateOrderManagementFlows(flows)
+
+        expect(mockDisplayPage).not.toHaveBeenCalled()
+        expect(mockUpdateOrderManagementFlows).toHaveBeenCalledWith(flows)
+    })
+
     it('setConversationMessages does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -499,6 +538,7 @@ describe('useChatPreviewPanelContext', () => {
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
             updateWorkflowEntryPoints: jest.fn(),
+            updateOrderManagementFlows: jest.fn(),
             reloadPreview: jest.fn(),
             updateAvatarSettings: jest.fn(),
             updateQuickReplies: jest.fn(),

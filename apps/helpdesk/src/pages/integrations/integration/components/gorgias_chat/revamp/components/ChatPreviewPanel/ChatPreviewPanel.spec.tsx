@@ -277,6 +277,7 @@ describe('ChatPreviewPanel', () => {
             expect(ref.current?.closeChat).toBeDefined()
             expect(ref.current?.openChat).toBeDefined()
             expect(ref.current?.updateWorkflowEntryPoints).toBeDefined()
+            expect(ref.current?.updateOrderManagementFlows).toBeDefined()
             expect(ref.current?.reloadPreview).toBeDefined()
         })
 
@@ -388,6 +389,22 @@ describe('ChatPreviewPanel', () => {
             expect(
                 mockGorgiasChat.updateSelfServiceConfiguration,
             ).toHaveBeenCalledWith({ workflowsEntrypoints: entrypoints })
+        })
+
+        it('updateOrderManagementFlows calls GorgiasChat.updateSelfServiceConfiguration with the provided flows', () => {
+            const { ref } = renderComponent()
+            const flows = {
+                track_order: true,
+                cancel_order: false,
+                return_order: false,
+                report_issue: false,
+            }
+
+            ref.current?.updateOrderManagementFlows(flows)
+
+            expect(
+                mockGorgiasChat.updateSelfServiceConfiguration,
+            ).toHaveBeenCalledWith({ flows })
         })
 
         it('reloadPreview causes ChatPreview to remount', () => {

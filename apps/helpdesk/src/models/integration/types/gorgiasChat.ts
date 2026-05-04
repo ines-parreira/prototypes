@@ -161,8 +161,16 @@ export type GorgiasChatWorkflowEntrypoint = {
     label: string | undefined
 }
 
+export type GorgiasChatPreviewSelfServiceFlows = {
+    track_order: boolean
+    cancel_order: boolean
+    return_order: boolean
+    report_issue: boolean
+}
+
 export type GorgiasChatPreviewSelfServiceConfiguration = {
     workflowsEntrypoints?: GorgiasChatWorkflowEntrypoint[]
+    flows?: GorgiasChatPreviewSelfServiceFlows
 }
 
 export type GorgiasChatPreviewPriceSet = {

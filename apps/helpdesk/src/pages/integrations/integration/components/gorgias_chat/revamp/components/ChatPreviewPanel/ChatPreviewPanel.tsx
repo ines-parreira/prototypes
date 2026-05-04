@@ -29,6 +29,7 @@ import type {
 } from 'models/integration/types'
 import type {
     GorgiasChatPreviewOrdersOptions,
+    GorgiasChatPreviewSelfServiceFlows,
     GorgiasChatWorkflowEntrypoint,
 } from 'models/integration/types/gorgiasChat'
 
@@ -72,6 +73,9 @@ export type ChatPreviewPanelHandle = {
     openChat: () => void
     updateWorkflowEntryPoints: (
         workflowEntrypoints: GorgiasChatWorkflowEntrypoint[],
+    ) => void
+    updateOrderManagementFlows: (
+        flows: GorgiasChatPreviewSelfServiceFlows,
     ) => void
     reloadPreview: () => void
     updatePreviewOrders: (options: GorgiasChatPreviewOrdersOptions) => void
@@ -219,6 +223,14 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             })
         }
 
+        const updateOrderManagementFlows = (
+            flows: GorgiasChatPreviewSelfServiceFlows,
+        ) => {
+            withGorgiasChat((gorgiasChat) => {
+                gorgiasChat.updateSelfServiceConfiguration?.({ flows })
+            })
+        }
+
         const handlePageChange = (page: string) => {
             if (page === 'conversation' || page === 'homepage') {
                 displayPage(page)
@@ -340,6 +352,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             closeChat,
             openChat,
             updateWorkflowEntryPoints,
+            updateOrderManagementFlows,
             reloadPreview,
             updatePreviewOrders,
             simulateConversation,

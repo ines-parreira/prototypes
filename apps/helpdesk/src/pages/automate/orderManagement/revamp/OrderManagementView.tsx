@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
+import type { GorgiasChatPreviewSelfServiceFlows } from 'models/integration/types/gorgiasChat'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import { OrderManagementFlowsCard } from './components/OrderManagementFlowsCard/OrderManagementFlowsCard'
@@ -16,11 +17,36 @@ export const OrderManagementViewRevamp = () => {
         navigateToFlow,
     } = useOrderManagementFlows()
 
-    const { displayPage } = useChatPreviewPanelContext()
+    const { displayPage, updateOrderManagementFlows } =
+        useChatPreviewPanelContext()
+
+    const flowsPayload = useMemo(
+        (): GorgiasChatPreviewSelfServiceFlows => ({
+            track_order:
+                flows.find((f) => f.key === 'trackOrderPolicy')?.isEnabled ??
+                false,
+            cancel_order:
+                flows.find((f) => f.key === 'cancelOrderPolicy')?.isEnabled ??
+                false,
+            return_order:
+                flows.find((f) => f.key === 'returnOrderPolicy')?.isEnabled ??
+                false,
+            report_issue:
+                flows.find((f) => f.key === 'reportIssuePolicy')?.isEnabled ??
+                false,
+        }),
+        [flows],
+    )
 
     useEffect(() => {
         displayPage('homepage')
     }, [displayPage])
+
+    useEffect(() => {
+        if (isLoading) return
+
+        updateOrderManagementFlows(flowsPayload)
+    }, [flowsPayload, isLoading, updateOrderManagementFlows])
 
     return (
         <div className={css.container}>
