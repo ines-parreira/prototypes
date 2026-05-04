@@ -157,7 +157,7 @@ export const ScheduleOrSend = () => {
             <Card width={680}>
                 <CardHeader title="Choose when to send" />
                 <RadioGroup
-                    value={scheduleType ?? SCHEDULE_TYPE_IMMEDIATE}
+                    value={scheduleType ?? SCHEDULE_TYPE_LATER}
                     onChange={handleScheduleTypeChange}
                 >
                     <div

@@ -110,7 +110,7 @@ export const AiJourneyOnboarding = ({
             }),
             ...(isCampaign &&
                 isCampaignSchedulingEnabled && {
-                    scheduleType: 'immediate' as const,
+                    scheduleType: 'later' as const,
                     scheduledDate: null,
                     scheduledTime: null,
                 }),
@@ -202,13 +202,13 @@ export const AiJourneyOnboarding = ({
     const handleMiddleButtonClick = async () => {
         if (!isScheduleStep) return
 
+        const scheduledDatetime = buildScheduledDatetime(getValues)
         if (isScheduledCampaign) {
             await handleUpdate({
                 campaignState: UpdatableJourneyCampaignState.Draft,
-                scheduledDatetime: null,
+                ...(scheduledDatetime && { scheduledDatetime }),
             })
         } else {
-            const scheduledDatetime = buildScheduledDatetime(getValues)
             await handleUpdate({
                 scheduledDatetime: scheduledDatetime ?? null,
             })
@@ -379,17 +379,25 @@ export const AiJourneyOnboarding = ({
     if (isMissingMessageInstructions)
         scheduleStepBlockers.push('Add message guidance')
 
+    const scheduleType = watch('scheduleType')
+    const scheduledDate = watch('scheduledDate')
+    const scheduledTime = watch('scheduledTime')
+
+    const isScheduleMissingDateOrTime =
+        isScheduleStep &&
+        scheduleType === 'later' &&
+        (!scheduledDate || !scheduledTime)
+
     const shouldDisableContinueButton =
         isLoadingHandleCreate ||
         isLoadingHandleUpdate ||
         isReadOnlyCampaign ||
         scheduleStepBlockers.length > 0 ||
+        isScheduleMissingDateOrTime ||
         (!isPreviewStep &&
             !isScheduleStep &&
             storeSettingsEnabled &&
             (isLoadingStoreConfig || isMissingSmsSender))
-
-    const scheduleType = watch('scheduleType')
 
     let primaryButtonLabel = 'Continue'
     let middleButtonLabel: string | null = null

@@ -20,7 +20,7 @@ export const getScheduleDefaults = (scheduledDt?: string) => {
         }
     }
     return {
-        scheduleType: 'immediate' as const,
+        scheduleType: 'later' as const,
         scheduledDate: null,
         scheduledTime: null,
     }

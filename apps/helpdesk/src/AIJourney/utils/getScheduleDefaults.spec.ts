@@ -3,21 +3,21 @@ import { getLocalTimeZone, toTime, toZoned } from '@internationalized/date'
 import { getScheduleDefaults } from './getScheduleDefaults'
 
 describe('getScheduleDefaults', () => {
-    it('returns immediate defaults when no datetime is provided', () => {
+    it('returns "later" defaults with empty date/time when no datetime is provided', () => {
         const result = getScheduleDefaults()
 
         expect(result).toEqual({
-            scheduleType: 'immediate',
+            scheduleType: 'later',
             scheduledDate: null,
             scheduledTime: null,
         })
     })
 
-    it('returns immediate defaults when undefined is passed', () => {
+    it('returns "later" defaults with empty date/time when undefined is passed', () => {
         const result = getScheduleDefaults(undefined)
 
         expect(result).toEqual({
-            scheduleType: 'immediate',
+            scheduleType: 'later',
             scheduledDate: null,
             scheduledTime: null,
         })

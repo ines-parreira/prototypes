@@ -1,4 +1,9 @@
-import { CalendarDate, Time } from '@internationalized/date'
+import {
+    CalendarDate,
+    getLocalTimeZone,
+    Time,
+    toZoned,
+} from '@internationalized/date'
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -131,6 +136,45 @@ const MockStepComponent = ({ journeyType }: StepComponentProps) => {
 const MockStepComponentWithoutPhone = ({ journeyType }: StepComponentProps) => (
     <div>Step content for {journeyType}</div>
 )
+
+const MockImmediateScheduleStep = ({ journeyType }: StepComponentProps) => {
+    const { setValue } = useFormContext<SetupFormValues>()
+    return (
+        <div>
+            <div>Step content for {journeyType}</div>
+            <button
+                type="button"
+                onClick={() => setValue('scheduleType', 'immediate')}
+            >
+                Switch to immediate
+            </button>
+        </div>
+    )
+}
+
+const MockLaterScheduleStep = ({ journeyType }: StepComponentProps) => {
+    const { setValue } = useFormContext<SetupFormValues>()
+    return (
+        <div>
+            <div>Step content for {journeyType}</div>
+            <button
+                type="button"
+                onClick={() => {
+                    setValue(
+                        'scheduledDate',
+                        toZoned(
+                            new CalendarDate(2030, 1, 15),
+                            getLocalTimeZone(),
+                        ),
+                    )
+                    setValue('scheduledTime', new Time(10, 0, 0, 0))
+                }}
+            >
+                Fill date and time
+            </button>
+        </div>
+    )
+}
 
 const defaultContextValue = {
     currentIntegration: { id: 1, name: 'test-shop' },
@@ -1292,21 +1336,21 @@ describe('<AiJourneyOnboarding />', () => {
             } as any)
         })
 
-        it('shows "Send" and "Save as draft" buttons on schedule step for a new campaign', () => {
+        it('shows "Schedule" and "Save as draft" buttons on schedule step for a new campaign', () => {
             renderComponent({
                 step: STEPS_NAMES.SCHEDULE,
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
             })
 
             expect(
-                screen.getByRole('button', { name: 'Send' }),
+                screen.getByRole('button', { name: 'Schedule' }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: 'Save as draft' }),
             ).toBeInTheDocument()
         })
 
-        it('shows "Send" and "Move to draft" buttons on schedule step for a scheduled campaign', () => {
+        it('shows "Save changes" and "Move to draft" buttons on schedule step for a scheduled campaign', () => {
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {
@@ -1326,7 +1370,7 @@ describe('<AiJourneyOnboarding />', () => {
             })
 
             expect(
-                screen.getByRole('button', { name: 'Send' }),
+                screen.getByRole('button', { name: 'Save changes' }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: 'Move to draft' }),
@@ -1337,7 +1381,17 @@ describe('<AiJourneyOnboarding />', () => {
             const { user } = renderComponent({
                 step: STEPS_NAMES.SCHEDULE,
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
+                stepComponent: MockImmediateScheduleStep,
             })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: 'Switch to immediate',
+                        }),
+                    ),
+            )
 
             await act(
                 async () =>
@@ -1357,7 +1411,17 @@ describe('<AiJourneyOnboarding />', () => {
             const { user } = renderComponent({
                 step: STEPS_NAMES.SCHEDULE,
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
+                stepComponent: MockImmediateScheduleStep,
             })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: 'Switch to immediate',
+                        }),
+                    ),
+            )
 
             await act(
                 async () =>
@@ -1395,7 +1459,17 @@ describe('<AiJourneyOnboarding />', () => {
             const { user } = renderComponent({
                 step: STEPS_NAMES.SCHEDULE,
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
+                stepComponent: MockImmediateScheduleStep,
             })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: 'Switch to immediate',
+                        }),
+                    ),
+            )
 
             await act(
                 async () =>
@@ -1481,7 +1555,6 @@ describe('<AiJourneyOnboarding />', () => {
             await waitFor(() => {
                 expect(mockHandleUpdate).toHaveBeenCalledWith({
                     campaignState: UpdatableJourneyCampaignState.Draft,
-                    scheduledDatetime: null,
                 })
             })
 
@@ -1509,7 +1582,9 @@ describe('<AiJourneyOnboarding />', () => {
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
             })
 
-            expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: 'Schedule' }),
+            ).toBeDisabled()
         })
 
         it('disables continue button on schedule step when audience is missing', () => {
@@ -1531,7 +1606,9 @@ describe('<AiJourneyOnboarding />', () => {
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
             })
 
-            expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: 'Schedule' }),
+            ).toBeDisabled()
         })
 
         it('shows "Schedule" button label when scheduleType is later', () => {
@@ -1541,8 +1618,93 @@ describe('<AiJourneyOnboarding />', () => {
             })
 
             expect(
-                screen.getByRole('button', { name: 'Send' }),
+                screen.getByRole('button', { name: 'Schedule' }),
             ).toBeInTheDocument()
+        })
+
+        it('enables Schedule button and submits with datetime when date and time are filled', async () => {
+            const { user } = renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+                stepComponent: MockLaterScheduleStep,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: 'Fill date and time',
+                        }),
+                    ),
+            )
+
+            const scheduleButton = screen.getByRole('button', {
+                name: 'Schedule',
+            })
+            expect(scheduleButton).not.toBeDisabled()
+
+            await act(async () => await user.click(scheduleButton))
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        campaignState: UpdatableJourneyCampaignState.Scheduled,
+                        scheduledDatetime: expect.stringContaining(
+                            '2030-01-15T10:00:00',
+                        ),
+                    }),
+                )
+            })
+        })
+
+        it('preserves scheduled_datetime when moving scheduled campaign to draft after editing time', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: {
+                        title: 'Test Campaign',
+                        state: 'scheduled',
+                    },
+                    included_audience_list_ids: ['list-1'],
+                    message_instructions: 'Some guidance',
+                },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.SCHEDULE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+                stepComponent: MockLaterScheduleStep,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: 'Fill date and time',
+                        }),
+                    ),
+            )
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: 'Move to draft',
+                        }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        campaignState: UpdatableJourneyCampaignState.Draft,
+                        scheduledDatetime: expect.stringContaining(
+                            '2030-01-15T10:00:00',
+                        ),
+                    }),
+                )
+            })
         })
 
         it('disables continue button on schedule step when message instructions are missing', () => {
@@ -1564,7 +1726,9 @@ describe('<AiJourneyOnboarding />', () => {
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
             })
 
-            expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: 'Schedule' }),
+            ).toBeDisabled()
         })
     })
 
