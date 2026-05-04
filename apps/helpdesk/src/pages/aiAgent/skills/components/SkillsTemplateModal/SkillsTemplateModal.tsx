@@ -38,9 +38,7 @@ export const SkillsTemplateModal: React.FC<Props> = ({
                     <SkillsTemplateCard
                         key={template.id}
                         skillTemplate={template}
-                        onCreateSkillsFromTemplate={() =>
-                            onCreateSkillsFromTemplate(template.id)
-                        }
+                        onCTA={() => onCreateSkillsFromTemplate(template.id)}
                     />
                 ))}
             </Box>

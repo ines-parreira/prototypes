@@ -5,8 +5,6 @@ import userEvent from '@testing-library/user-event'
 import { AxiomProvider } from '@gorgias/axiom'
 
 import { ThemeProvider } from 'core/theme'
-import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useIntentsMetrics } from 'pages/aiAgent/skills/hooks/useIntentsMetrics'
 import { useTotalAiAgentTickets } from 'pages/aiAgent/skills/hooks/useTotalAiAgentTickets'
 import { IntentStatus } from 'pages/aiAgent/skills/types'
@@ -14,62 +12,14 @@ import type { Intent, SkillTemplate } from 'pages/aiAgent/skills/types'
 
 import { RecommendedSkillsSection } from './RecommendedSkillsSection'
 
-jest.mock(
-    'pages/aiAgent/skills/components/SharedTableComponents/MetricCells',
-    () => ({
-        MetricCell: jest.fn(
-            ({
-                displayValue,
-                showProgressBar,
-                value,
-            }: {
-                displayValue: string
-                showProgressBar?: boolean
-                value: number
-            }) => (
-                <>
-                    <span>{displayValue}</span>
-                    {showProgressBar && (
-                        <div role="progressbar" aria-valuenow={value} />
-                    )}
-                </>
-            ),
-        ),
-    }),
-)
 jest.mock('pages/aiAgent/skills/hooks/useIntentsMetrics', () => ({
     useIntentsMetrics: jest.fn(),
 }))
 jest.mock('pages/aiAgent/skills/hooks/useTotalAiAgentTickets', () => ({
     useTotalAiAgentTickets: jest.fn(),
 }))
-jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
-}))
-jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
-    useGetTicketChannelsStoreIntegrations: jest.fn(),
-}))
-jest.mock(
-    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
-    () => ({
-        useGetCustomTicketsFieldsDefinitionData: jest.fn(),
-    }),
-)
-jest.mock(
-    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
-    () => ({
-        getLast28DaysDateRange: jest.fn(() => ({
-            start_datetime: '2024-01-01T00:00:00.000Z',
-            end_datetime: '2024-01-28T23:59:59.000Z',
-        })),
-    }),
-)
 const mockUseIntentsMetrics = useIntentsMetrics as jest.Mock
 const mockUseTotalAiAgentTickets = useTotalAiAgentTickets as jest.Mock
-const mockUseAiAgentStoreConfigurationContext =
-    useAiAgentStoreConfigurationContext as jest.Mock
-const mockUseGetCustomTicketsFieldsDefinitionData =
-    useGetCustomTicketsFieldsDefinitionData as jest.Mock
 const makeTemplate = (
     id: string,
     name: string,
@@ -92,10 +42,6 @@ const mockTemplates: SkillTemplate[] = [
     makeTemplate('order-cancel', 'Order Cancellations', 'order::cancel'),
     makeTemplate('returns', 'Returns and Exchanges', 'return::request'),
 ]
-const defaultMetricsDateRange = {
-    start_datetime: '2024-01-01T00:00:00.000Z',
-    end_datetime: '2024-01-28T23:59:59.000Z',
-}
 const renderComponent = (
     skillsTemplates = mockTemplates,
     onCreateSkillsFromTemplate = jest.fn(),
@@ -114,17 +60,9 @@ const renderComponent = (
 describe('RecommendedSkillsSection', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: { storeName: 'test-store' },
-        })
-        mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
-            intentCustomFieldId: 1,
-            outcomeCustomFieldId: 2,
-        })
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map(),
             isLoading: false,
-            metricsDateRange: defaultMetricsDateRange,
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 0 })
     })
@@ -138,7 +76,7 @@ describe('RecommendedSkillsSection', () => {
         renderComponent()
         expect(
             screen.getByText(
-                'Intents that would benefit most from a dedicated skill, based on your ticket volume and handover rate',
+                'Based on your ticket volume, these skills will have the biggest impact.',
             ),
         ).toBeInTheDocument()
     })
@@ -167,33 +105,25 @@ describe('RecommendedSkillsSection', () => {
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map(),
             isLoading: true,
-            metricsDateRange: defaultMetricsDateRange,
         })
         renderComponent()
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
-    it('shows the stats section on the card', () => {
+    it('does not render any coverage label when no metrics are available', () => {
         renderComponent()
-        expect(screen.getAllByText('Ticket volume').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('Handover').length).toBeGreaterThan(0)
+        expect(screen.queryByText(/Would cover/i)).not.toBeInTheDocument()
     })
-    it('calls onCreateSkillsFromTemplate with the template id when the CTA button is clicked', async () => {
+    it('does not render any loading skeleton when no skill has coverage', () => {
+        renderComponent()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+    })
+    it('calls onCreateSkillsFromTemplate with the template id when a card is clicked', async () => {
         const user = userEvent.setup()
         const onCreateSkillsFromTemplate = jest.fn()
         renderComponent(mockTemplates, onCreateSkillsFromTemplate)
-        await user.click(
-            screen.getAllByRole('button', { name: /set up skill/i })[0],
-        )
+        await user.click(screen.getByText('Order Status'))
         expect(onCreateSkillsFromTemplate).toHaveBeenCalledTimes(1)
-        expect(onCreateSkillsFromTemplate).toHaveBeenCalledWith(
-            expect.any(String),
-        )
-    })
-    it('renders a "Set up skill" button for each template', () => {
-        renderComponent()
-        expect(
-            screen.getAllByRole('button', { name: /set up skill/i }),
-        ).toHaveLength(mockTemplates.length)
+        expect(onCreateSkillsFromTemplate).toHaveBeenCalledWith('order-status')
     })
     it('scroll right button is disabled initially', () => {
         renderComponent()
@@ -233,7 +163,6 @@ describe('RecommendedSkillsSection', () => {
                 ],
             ]),
             isLoading: false,
-            metricsDateRange: defaultMetricsDateRange,
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 300 })
         renderComponent()
@@ -249,7 +178,7 @@ describe('RecommendedSkillsSection', () => {
                 Node.DOCUMENT_POSITION_FOLLOWING,
         ).toBeTruthy()
     })
-    it('displays stats computed from metrics data', () => {
+    it('displays the coverage label computed from metrics data', () => {
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map([
                 [
@@ -263,13 +192,14 @@ describe('RecommendedSkillsSection', () => {
                 ],
             ]),
             isLoading: false,
-            metricsDateRange: defaultMetricsDateRange,
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 400 })
         renderComponent()
-        expect(screen.getByText('200 (50%)')).toBeInTheDocument()
+        expect(
+            screen.getByText('Would cover 200 (50%) of your tickets'),
+        ).toBeInTheDocument()
     })
-    it('displays ticket volume percent with 1 decimal place when rounding would produce 0', () => {
+    it('displays ticket volume percent with 1 decimal place when rounding would produce a fractional value', () => {
         mockUseIntentsMetrics.mockReturnValue({
             data: new Map([
                 [
@@ -283,30 +213,11 @@ describe('RecommendedSkillsSection', () => {
                 ],
             ]),
             isLoading: false,
-            metricsDateRange: defaultMetricsDateRange,
         })
         mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 210 })
         renderComponent()
-        expect(screen.getByText('3 (1.4%)')).toBeInTheDocument()
-    })
-    it('displays handover percent with 1 decimal place', () => {
-        mockUseIntentsMetrics.mockReturnValue({
-            data: new Map([
-                [
-                    'order::status',
-                    {
-                        ticketVolume: 100,
-                        handoverCount: 1,
-                        ticketVolumePercent: 25,
-                        handoverPercent: 1,
-                    },
-                ],
-            ]),
-            isLoading: false,
-            metricsDateRange: defaultMetricsDateRange,
-        })
-        mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 400 })
-        renderComponent()
-        expect(screen.getByText('1 (1%)')).toBeInTheDocument()
+        expect(
+            screen.getByText('Would cover 3 (1.4%) of your tickets'),
+        ).toBeInTheDocument()
     })
 })

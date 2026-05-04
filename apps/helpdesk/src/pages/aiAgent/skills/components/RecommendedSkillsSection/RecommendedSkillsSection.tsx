@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Box, Button, Heading, Text } from '@gorgias/axiom'
 
 import { SkillsTemplateCard } from 'pages/aiAgent/skills/components/SkillsTemplateCard/SkillsTemplateCard'
+import type { SkillCoverageData } from 'pages/aiAgent/skills/components/SkillsTemplateCard/SkillsTemplateCard'
 import { useIntentsMetrics } from 'pages/aiAgent/skills/hooks/useIntentsMetrics'
 import { useTotalAiAgentTickets } from 'pages/aiAgent/skills/hooks/useTotalAiAgentTickets'
 import type { SkillTemplate } from 'pages/aiAgent/skills/types'
@@ -22,23 +23,20 @@ export const RecommendedSkillsSection: React.FC<Props> = ({
         useIntentsMetrics()
     const { totalCount: totalAiAgentTickets } = useTotalAiAgentTickets()
 
-    const sortedTemplatesWithStats = useMemo(() => {
-        const templatesWithStats = skillsTemplates.map((template) => {
+    const sortedTemplatesWithCoverage = useMemo(() => {
+        const templatesWithCoverage = skillsTemplates.map((template) => {
             const ticketVolume = template.intents.reduce(
                 (sum, intent) =>
                     sum + (metricsMap.get(intent.name)?.ticketVolume ?? 0),
                 0,
             )
-            const handoverCount = template.intents.reduce(
-                (sum, intent) =>
-                    sum + (metricsMap.get(intent.name)?.handoverCount ?? 0),
-                0,
-            )
             return {
                 template,
-                stats: isLoadingMetrics
+                ticketVolume,
+                data: isLoadingMetrics
                     ? null
-                    : {
+                    : ({
+                          type: 'ticket-volume' as const,
                           ticketVolume,
                           ticketVolumePercent:
                               totalAiAgentTickets > 0
@@ -47,22 +45,22 @@ export const RecommendedSkillsSection: React.FC<Props> = ({
                                             1000,
                                     ) / 10
                                   : 0,
-                          handoverCount,
-                          handoverPercent:
-                              ticketVolume > 0
-                                  ? Math.round(
-                                        (handoverCount / ticketVolume) * 1000,
-                                    ) / 10
-                                  : 0,
-                      },
+                      } satisfies SkillCoverageData),
             }
         })
 
-        return templatesWithStats.sort(
-            (a, b) =>
-                (b.stats?.ticketVolume ?? 0) - (a.stats?.ticketVolume ?? 0),
+        return templatesWithCoverage.sort(
+            (a, b) => b.ticketVolume - a.ticketVolume,
         )
     }, [skillsTemplates, metricsMap, totalAiAgentTickets, isLoadingMetrics])
+
+    const hasAnyCoverage = useMemo(
+        () =>
+            sortedTemplatesWithCoverage.some(
+                ({ ticketVolume }) => ticketVolume > 0,
+            ),
+        [sortedTemplatesWithCoverage],
+    )
 
     const cardsRowRef = useRef<HTMLDivElement>(null)
     const [canScrollLeft, setCanScrollLeft] = useState(false)
@@ -77,14 +75,14 @@ export const RecommendedSkillsSection: React.FC<Props> = ({
 
     useEffect(() => {
         updateScrollState()
-    }, [updateScrollState, sortedTemplatesWithStats])
+    }, [updateScrollState, sortedTemplatesWithCoverage])
 
     const handleScrollLeft = useCallback(() => {
-        cardsRowRef.current?.scrollBy({ left: -416, behavior: 'smooth' })
+        cardsRowRef.current?.scrollBy({ left: -476, behavior: 'smooth' })
     }, [])
 
     const handleScrollRight = useCallback(() => {
-        cardsRowRef.current?.scrollBy({ left: 416, behavior: 'smooth' })
+        cardsRowRef.current?.scrollBy({ left: 476, behavior: 'smooth' })
     }, [])
 
     return (
@@ -112,8 +110,8 @@ export const RecommendedSkillsSection: React.FC<Props> = ({
                     </Box>
                 </Box>
                 <Text size="md" variant="regular" className={css.description}>
-                    Intents that would benefit most from a dedicated skill,
-                    based on your ticket volume and handover rate
+                    Based on your ticket volume, these skills will have the
+                    biggest impact.
                 </Text>
             </Box>
             <Box
@@ -121,19 +119,16 @@ export const RecommendedSkillsSection: React.FC<Props> = ({
                 ref={cardsRowRef}
                 onScroll={updateScrollState}
             >
-                {sortedTemplatesWithStats.map(({ template, stats }, index) => (
+                {sortedTemplatesWithCoverage.map(({ template, data }) => (
                     <SkillsTemplateCard
                         key={template.id}
                         skillTemplate={template}
-                        onCreateSkillsFromTemplate={() =>
-                            onCreateSkillsFromTemplate(template.id)
-                        }
-                        className={css.templateCard}
-                        hasStats
-                        hasCTA
-                        hasActiveCTA={index === 0}
-                        stats={stats}
-                        isLoadingStats={isLoadingMetrics}
+                        onCTA={() => onCreateSkillsFromTemplate(template.id)}
+                        coverage={{
+                            isLoading: isLoadingMetrics,
+                            hasAnyCoverage,
+                            data,
+                        }}
                     />
                 ))}
             </Box>

@@ -5,68 +5,11 @@ import userEvent from '@testing-library/user-event'
 import { AxiomProvider } from '@gorgias/axiom'
 
 import { ThemeProvider } from 'core/theme'
-import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'domains/reporting/hooks/automate/types'
-import { IntentMetric } from 'domains/reporting/state/ui/stats/types'
-import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { MetricCell } from 'pages/aiAgent/skills/components/SharedTableComponents/MetricCells'
 import { IntentStatus } from 'pages/aiAgent/skills/types'
 import type { SkillTemplate } from 'pages/aiAgent/skills/types'
 
 import { SkillsTemplateCard } from './SkillsTemplateCard'
 
-jest.mock(
-    'pages/aiAgent/skills/components/SharedTableComponents/MetricCells',
-    () => ({
-        MetricCell: jest.fn(
-            ({
-                displayValue,
-                showProgressBar,
-                value,
-            }: {
-                displayValue: string
-                showProgressBar?: boolean
-                value: number
-            }) => (
-                <>
-                    <span>{displayValue}</span>
-                    {showProgressBar && (
-                        <div role="progressbar" aria-valuenow={value} />
-                    )}
-                </>
-            ),
-        ),
-    }),
-)
-jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
-}))
-jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
-    useGetTicketChannelsStoreIntegrations: jest.fn(),
-}))
-jest.mock(
-    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
-    () => ({
-        useGetCustomTicketsFieldsDefinitionData: jest.fn(),
-    }),
-)
-jest.mock(
-    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
-    () => ({
-        getLast28DaysDateRange: jest.fn(() => ({
-            start_datetime: '2024-01-01T00:00:00.000Z',
-            end_datetime: '2024-01-28T23:59:59.000Z',
-        })),
-    }),
-)
-const mockMetricCell = MetricCell as jest.Mock
-const mockUseAiAgentStoreConfigurationContext =
-    useAiAgentStoreConfigurationContext as jest.Mock
-const mockUseGetTicketChannelsStoreIntegrations =
-    useGetTicketChannelsStoreIntegrations as jest.Mock
-const mockUseGetCustomTicketsFieldsDefinitionData =
-    useGetCustomTicketsFieldsDefinitionData as jest.Mock
 const mockSkillTemplate: SkillTemplate = {
     id: 'order-status',
     name: 'Order status, tracking or delivery timing',
@@ -92,27 +35,30 @@ const mockSkillTemplate: SkillTemplate = {
         },
     ],
 }
-const renderComponent = (
-    props?: {
-        hasStats?: boolean
-        hasCTA?: boolean
-        hasActiveCTA?: boolean
-        stats?: {
-            ticketVolume: number
-            ticketVolumePercent: number
-            handoverCount: number
-            handoverPercent: number
-        } | null
-        isLoadingStats?: boolean
-    },
-    onCreateSkillsFromTemplate = jest.fn(),
-) =>
+type CoverageData =
+    | {
+          type: 'ticket-volume'
+          ticketVolume: number
+          ticketVolumePercent: number
+      }
+    | {
+          type: 'automation-rate'
+          automationRate: number
+      }
+type RenderProps = {
+    onCTA?: () => void
+    coverage?: {
+        isLoading?: boolean
+        hasAnyCoverage: boolean
+        data: CoverageData | null
+    } | null
+}
+const renderComponent = (props?: RenderProps) =>
     render(
         <AxiomProvider rootNode={document.body}>
             <ThemeProvider>
                 <SkillsTemplateCard
                     skillTemplate={mockSkillTemplate}
-                    onCreateSkillsFromTemplate={onCreateSkillsFromTemplate}
                     {...props}
                 />
             </ThemeProvider>
@@ -120,17 +66,6 @@ const renderComponent = (
         {},
     )
 describe('SkillsTemplateCard', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: { storeName: 'test-store' },
-        })
-        mockUseGetTicketChannelsStoreIntegrations.mockReturnValue(['store-1'])
-        mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
-            intentCustomFieldId: 1,
-            outcomeCustomFieldId: 2,
-        })
-    })
     it('renders the skill template name', () => {
         renderComponent()
         expect(
@@ -171,7 +106,6 @@ describe('SkillsTemplateCard', () => {
                             ...mockSkillTemplate,
                             intents: mockSkillTemplate.intents.slice(0, 2),
                         }}
-                        onCreateSkillsFromTemplate={jest.fn()}
                     />
                 </ThemeProvider>,
                 {},
@@ -179,150 +113,116 @@ describe('SkillsTemplateCard', () => {
             expect(screen.queryByText(/^\+/)).not.toBeInTheDocument()
         })
     })
-    describe('stats section', () => {
-        it('is not rendered by default', () => {
+    describe('coverage tag', () => {
+        it('is not rendered when coverage prop is omitted', () => {
             renderComponent()
-            expect(screen.queryByText('Ticket volume')).not.toBeInTheDocument()
-            expect(screen.queryByText('Handover')).not.toBeInTheDocument()
+            expect(screen.queryByText(/Would cover/i)).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
         })
-        it('is rendered when hasStats is true', () => {
-            renderComponent({ hasStats: true })
-            expect(screen.getByText('Ticket volume')).toBeInTheDocument()
-            expect(screen.getByText('Handover')).toBeInTheDocument()
+        it('is not rendered when coverage prop is null', () => {
+            renderComponent({ coverage: null })
+            expect(screen.queryByText(/Would cover/i)).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
         })
-        it('shows loading skeletons when isLoadingStats is true', () => {
-            renderComponent({ hasStats: true, isLoadingStats: true })
-            expect(screen.getAllByLabelText('Loading')).toHaveLength(2)
-        })
-        it('shows formatted ticket volume and handover stats when stats are provided', () => {
+        it('shows a loading skeleton when coverage.isLoading is true', () => {
             renderComponent({
-                hasStats: true,
-                stats: {
-                    ticketVolume: 1500,
-                    ticketVolumePercent: 25,
-                    handoverCount: 300,
-                    handoverPercent: 20,
+                coverage: {
+                    isLoading: true,
+                    hasAnyCoverage: true,
+                    data: null,
                 },
             })
-            expect(screen.getByText('1,500 (25%)')).toBeInTheDocument()
-            expect(screen.getByText('300 (20%)')).toBeInTheDocument()
+            expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+            expect(screen.queryByText(/Would cover/i)).not.toBeInTheDocument()
         })
-        it('shows placeholder when hasStats is true but stats is null', () => {
-            renderComponent({ hasStats: true, stats: null })
-            expect(screen.getAllByText('--')).toHaveLength(2)
-        })
-        it('shows a progress bar when handoverCount is greater than 0', () => {
+        it('shows the ticket volume coverage label when ticket volume is greater than 0', () => {
             renderComponent({
-                hasStats: true,
-                stats: {
-                    ticketVolume: 100,
-                    ticketVolumePercent: 10,
-                    handoverCount: 30,
-                    handoverPercent: 30,
+                coverage: {
+                    hasAnyCoverage: true,
+                    data: {
+                        type: 'ticket-volume',
+                        ticketVolume: 2345,
+                        ticketVolumePercent: 80,
+                    },
                 },
             })
-            expect(screen.getByRole('progressbar')).toBeInTheDocument()
-        })
-        it('does not show a progress bar when handoverCount is 0', () => {
-            renderComponent({
-                hasStats: true,
-                stats: {
-                    ticketVolume: 100,
-                    ticketVolumePercent: 10,
-                    handoverCount: 0,
-                    handoverPercent: 0,
-                },
-            })
-            expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
-        })
-    })
-    describe('MetricCell integration', () => {
-        const mockStats = {
-            ticketVolume: 150,
-            ticketVolumePercent: 25,
-            handoverCount: 30,
-            handoverPercent: 20,
-        }
-        it('passes correct props to MetricCell for ticket volume', () => {
-            renderComponent({ hasStats: true, stats: mockStats })
-            expect(mockMetricCell).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    type: 'intent',
-                    metricName: IntentMetric.TicketVolume,
-                    intentFieldValues: [
-                        'order::status',
-                        'shipping::delay',
-                        'order::cancel',
-                    ],
-                    displayValue: '150 (25%)',
-                    value: 150,
-                    integrationIds: ['store-1'],
-                    intentCustomFieldId: 1,
-                    outcomeCustomFieldId: 2,
-                }),
-                expect.anything(),
-            )
-        })
-        it('passes correct props to MetricCell for handover with outcomeValue', () => {
-            renderComponent({ hasStats: true, stats: mockStats })
-            expect(mockMetricCell).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    type: 'intent',
-                    metricName: IntentMetric.Handover,
-                    intentFieldValues: [
-                        'order::status',
-                        'shipping::delay',
-                        'order::cancel',
-                    ],
-                    displayValue: '30 (20%)',
-                    value: 20,
-                    outcomeValue: CUSTOM_FIELD_AI_AGENT_HANDOVER,
-                    showProgressBar: true,
-                    isRow: true,
-                }),
-                expect.anything(),
-            )
-        })
-        it('passes placeholder displayValue to MetricCell when stats is null', () => {
-            renderComponent({ hasStats: true, stats: null })
-            expect(mockMetricCell).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    metricName: IntentMetric.TicketVolume,
-                    displayValue: '--',
-                }),
-                expect.anything(),
-            )
-            expect(mockMetricCell).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    metricName: IntentMetric.Handover,
-                    displayValue: '--',
-                    showProgressBar: false,
-                }),
-                expect.anything(),
-            )
-        })
-    })
-    describe('CTA button', () => {
-        it('is not rendered by default', () => {
-            renderComponent()
             expect(
-                screen.queryByRole('button', { name: /set up skill/i }),
-            ).not.toBeInTheDocument()
-        })
-        it('is rendered when hasCTA is true', () => {
-            renderComponent({ hasCTA: true })
-            expect(
-                screen.getByRole('button', { name: /set up skill/i }),
+                screen.getByText('Would cover 2,345 (80%) of your tickets'),
             ).toBeInTheDocument()
         })
-        it('calls onCreateSkillsFromTemplate when clicked', async () => {
-            const user = userEvent.setup()
-            const onCreateSkillsFromTemplate = jest.fn()
-            renderComponent({ hasCTA: true }, onCreateSkillsFromTemplate)
-            await user.click(
-                screen.getByRole('button', { name: /set up skill/i }),
-            )
-            expect(onCreateSkillsFromTemplate).toHaveBeenCalledTimes(1)
+        it('shows the automation rate coverage label when automation rate is greater than 0', () => {
+            renderComponent({
+                coverage: {
+                    hasAnyCoverage: true,
+                    data: {
+                        type: 'automation-rate',
+                        automationRate: 6,
+                    },
+                },
+            })
+            expect(
+                screen.getByText('Estimated impact: +6% automation rate'),
+            ).toBeInTheDocument()
+        })
+        it('does not render any coverage label when data is null', () => {
+            renderComponent({
+                coverage: { hasAnyCoverage: true, data: null },
+            })
+            expect(screen.queryByText(/Would cover/i)).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/Estimated impact/i),
+            ).not.toBeInTheDocument()
+        })
+        it('does not render any coverage label when ticket volume is 0', () => {
+            renderComponent({
+                coverage: {
+                    hasAnyCoverage: true,
+                    data: {
+                        type: 'ticket-volume',
+                        ticketVolume: 0,
+                        ticketVolumePercent: 0,
+                    },
+                },
+            })
+            expect(screen.queryByText(/Would cover/i)).not.toBeInTheDocument()
+        })
+        it('does not render any coverage label when automation rate is 0', () => {
+            renderComponent({
+                coverage: {
+                    hasAnyCoverage: true,
+                    data: {
+                        type: 'automation-rate',
+                        automationRate: 0,
+                    },
+                },
+            })
+            expect(
+                screen.queryByText(/Estimated impact/i),
+            ).not.toBeInTheDocument()
+        })
+        it('does not render the coverage container when hasAnyCoverage is false and not loading', () => {
+            renderComponent({
+                coverage: {
+                    hasAnyCoverage: false,
+                    data: {
+                        type: 'ticket-volume',
+                        ticketVolume: 2345,
+                        ticketVolumePercent: 80,
+                    },
+                },
+            })
+            expect(screen.queryByText(/Would cover/i)).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+        })
+        it('still renders the loading skeleton when hasAnyCoverage is false but loading', () => {
+            renderComponent({
+                coverage: {
+                    isLoading: true,
+                    hasAnyCoverage: false,
+                    data: null,
+                },
+            })
+            expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         })
     })
     describe('intent display with long names', () => {
@@ -347,10 +247,7 @@ describe('SkillsTemplateCard', () => {
             render(
                 <AxiomProvider rootNode={document.body}>
                     <ThemeProvider>
-                        <SkillsTemplateCard
-                            skillTemplate={longNameTemplate}
-                            onCreateSkillsFromTemplate={jest.fn()}
-                        />
+                        <SkillsTemplateCard skillTemplate={longNameTemplate} />
                     </ThemeProvider>
                 </AxiomProvider>,
                 {},
@@ -365,23 +262,21 @@ describe('SkillsTemplateCard', () => {
         })
     })
     describe('card click', () => {
-        it('calls onCreateSkillsFromTemplate when the card is clicked and hasCTA is false', async () => {
+        it('calls onCTA when the card is clicked and onCTA is provided', async () => {
             const user = userEvent.setup()
-            const onCreateSkillsFromTemplate = jest.fn()
-            renderComponent({ hasCTA: false }, onCreateSkillsFromTemplate)
+            const onCTA = jest.fn()
+            renderComponent({ onCTA })
             await user.click(
                 screen.getByText('Order status, tracking or delivery timing'),
             )
-            expect(onCreateSkillsFromTemplate).toHaveBeenCalledTimes(1)
+            expect(onCTA).toHaveBeenCalledTimes(1)
         })
-        it('does not call onCreateSkillsFromTemplate when the card is clicked and hasCTA is true', async () => {
+        it('does not throw when the card is clicked and onCTA is not provided', async () => {
             const user = userEvent.setup()
-            const onCreateSkillsFromTemplate = jest.fn()
-            renderComponent({ hasCTA: true }, onCreateSkillsFromTemplate)
+            renderComponent()
             await user.click(
                 screen.getByText('Order status, tracking or delivery timing'),
             )
-            expect(onCreateSkillsFromTemplate).not.toHaveBeenCalled()
         })
     })
 })

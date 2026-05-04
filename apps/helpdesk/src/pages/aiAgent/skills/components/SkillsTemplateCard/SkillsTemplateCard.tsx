@@ -1,11 +1,9 @@
-import { useMemo } from 'react'
-
-import classNames from 'classnames'
-
 import {
     Box,
-    Button,
     Card,
+    CardContent,
+    CardHeader,
+    Icon,
     Skeleton,
     Tag,
     Text,
@@ -13,15 +11,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'domains/reporting/hooks/automate/types'
-import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import { IntentMetric } from 'domains/reporting/state/ui/stats/types'
-import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
-import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { MetricCell } from 'pages/aiAgent/skills/components/SharedTableComponents/MetricCells'
-import type { IntentMetrics } from 'pages/aiAgent/skills/hooks/useIntentsTable'
 import type { SkillTemplate } from 'pages/aiAgent/skills/types'
 import { formatIntentName } from 'pages/aiAgent/skills/utils'
 
@@ -29,39 +19,44 @@ import css from './SkillsTemplateCard.less'
 
 const MAX_VISIBLE_INTENTS = 2
 
+export type SkillCoverageData =
+    | {
+          type: 'ticket-volume'
+          ticketVolume: number
+          ticketVolumePercent: number
+      }
+    | {
+          type: 'automation-rate'
+          automationRate: number
+      }
+
+export type SkillCoverage = {
+    isLoading?: boolean
+    hasAnyCoverage: boolean
+    data: SkillCoverageData | null
+}
+
 type Props = {
     skillTemplate: SkillTemplate
-    onCreateSkillsFromTemplate: () => void
-    className?: string
-    hasStats?: boolean
-    hasCTA?: boolean
-    hasActiveCTA?: boolean
-    stats?: IntentMetrics | null
-    isLoadingStats?: boolean
+    onCTA?: () => void
+    coverage?: SkillCoverage | null
+}
+
+const getCoverageLabel = (data: SkillCoverageData | null): string | null => {
+    if (!data) return null
+    if (data.type === 'ticket-volume') {
+        if (data.ticketVolume <= 0) return null
+        return `Would cover ${data.ticketVolume.toLocaleString('en-US')} (${data.ticketVolumePercent}%) of your tickets`
+    }
+    if (data.automationRate <= 0) return null
+    return `Estimated impact: +${data.automationRate}% automation rate`
 }
 
 export const SkillsTemplateCard: React.FC<Props> = ({
     skillTemplate,
-    onCreateSkillsFromTemplate,
-    className,
-    hasStats = false,
-    hasCTA = false,
-    hasActiveCTA = false,
-    stats = null,
-    isLoadingStats = false,
+    onCTA,
+    coverage,
 }) => {
-    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
-    const shopName = storeConfiguration?.storeName || ''
-    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
-    const { intentCustomFieldId, outcomeCustomFieldId } =
-        useGetCustomTicketsFieldsDefinitionData()
-    const metricsDateRange = useMemo(() => getLast28DaysDateRange(), [])
-
-    const intentFieldValues = useMemo(
-        () => skillTemplate.intents.map((i) => i.name),
-        [skillTemplate.intents],
-    )
-
     const hasLongIntentName = skillTemplate.intents.slice(0, 2).some(
         (intent) =>
             formatIntentName(intent.name)
@@ -74,127 +69,86 @@ export const SkillsTemplateCard: React.FC<Props> = ({
     const remainingCount = skillTemplate.intents.length - maxVisible
     const hiddenIntents = skillTemplate.intents.slice(maxVisible)
 
-    const ticketVolumeDisplay =
-        stats && stats.ticketVolume > 0
-            ? `${stats.ticketVolume.toLocaleString('en-US')} (${stats.ticketVolumePercent}%)`
-            : '--'
-
-    const handoverDisplay =
-        stats && stats.handoverCount > 0
-            ? `${stats.handoverCount.toLocaleString('en-US')} (${stats.handoverPercent}%)`
-            : '--'
+    const coverageLabel = getCoverageLabel(coverage?.data ?? null)
+    const showCoverageContainer =
+        !!coverage && (!!coverage.isLoading || coverage.hasAnyCoverage)
 
     return (
         <Card
-            className={classNames(css.card, className)}
-            onClick={!hasCTA ? onCreateSkillsFromTemplate : undefined}
-            withHoverEffect={!hasCTA}
-            gap="sm"
+            onClick={onCTA}
+            gap="xl"
             color="content-neutral-default"
+            className={css.card}
         >
-            <Box display="flex" flexDirection="column" gap="xs">
-                <TruncatedTextWithTooltip tooltipContent={skillTemplate.name}>
-                    <Text variant="bold" size="md">
-                        {skillTemplate.name}
-                    </Text>
-                </TruncatedTextWithTooltip>
-                <Box flexDirection="column" gap="xxxs">
-                    <Text size="xs" color="content-neutral-secondary">
-                        Intents
-                    </Text>
-                    <Box className={css.tagsContainer}>
-                        {displayedIntents.map((intent) => (
-                            <Tag key={intent.name} size="sm">
-                                {formatIntentName(intent.name)}
-                            </Tag>
-                        ))}
-                        {remainingCount > 0 && (
-                            <Box className={css.tooltipWrapper}>
-                                <Tooltip
-                                    trigger={
-                                        <div className={css.remainingCount}>
-                                            <Text variant="bold" size="sm">
-                                                +{remainingCount}
-                                            </Text>
-                                        </div>
-                                    }
-                                >
-                                    <TooltipContent>
-                                        {hiddenIntents.map((intent) => (
-                                            <Text key={intent.name} size="sm">
-                                                {formatIntentName(intent.name)}
-                                            </Text>
-                                        ))}
-                                    </TooltipContent>
-                                </Tooltip>
-                            </Box>
-                        )}
+            <CardHeader
+                width="412px"
+                gap="xs"
+                title={
+                    <Box minWidth={0} width="100%" className={css.titleWrapper}>
+                        <TruncatedTextWithTooltip
+                            tooltipContent={skillTemplate.name}
+                        >
+                            <Text variant="bold" size="md">
+                                {skillTemplate.name}
+                            </Text>
+                        </TruncatedTextWithTooltip>
                     </Box>
-                </Box>
-            </Box>
-            {!!hasStats && (
-                <Box gap="xl" className={css.stats}>
+                }
+                description={
                     <Box flexDirection="column" gap="xxxs">
                         <Text size="xs" color="content-neutral-secondary">
-                            Ticket volume
+                            Intents
                         </Text>
-                        {isLoadingStats ? (
-                            <Skeleton width="80px" height="16px" />
-                        ) : (
-                            <MetricCell
-                                type="intent"
-                                metricName={IntentMetric.TicketVolume}
-                                title="Ticket volume"
-                                intentFieldValues={intentFieldValues}
-                                integrationIds={integrationIds}
-                                dateRange={metricsDateRange}
-                                outcomeCustomFieldId={outcomeCustomFieldId}
-                                intentCustomFieldId={intentCustomFieldId}
-                                value={stats?.ticketVolume ?? 0}
-                                displayValue={ticketVolumeDisplay}
-                                isBold
-                            />
-                        )}
+                        <Box className={css.tagsContainer}>
+                            {displayedIntents.map((intent) => (
+                                <Tag key={intent.name} size="sm">
+                                    {formatIntentName(intent.name)}
+                                </Tag>
+                            ))}
+                            {remainingCount > 0 && (
+                                <Box className={css.tooltipWrapper}>
+                                    <Tooltip
+                                        trigger={
+                                            <div className={css.remainingCount}>
+                                                <Text variant="bold" size="sm">
+                                                    +{remainingCount}
+                                                </Text>
+                                            </div>
+                                        }
+                                    >
+                                        <TooltipContent>
+                                            {hiddenIntents.map((intent) => (
+                                                <Text
+                                                    key={intent.name}
+                                                    size="sm"
+                                                >
+                                                    {formatIntentName(
+                                                        intent.name,
+                                                    )}
+                                                </Text>
+                                            ))}
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </Box>
+                            )}
+                        </Box>
                     </Box>
-                    <Box flexDirection="column" gap="xxxs">
-                        <Text size="xs" color="content-neutral-secondary">
-                            Handover
-                        </Text>
-                        {isLoadingStats ? (
-                            <Skeleton width="130px" height="16px" />
-                        ) : (
-                            <MetricCell
-                                type="intent"
-                                metricName={IntentMetric.Handover}
-                                title="Handover tickets"
-                                intentFieldValues={intentFieldValues}
-                                integrationIds={integrationIds}
-                                dateRange={metricsDateRange}
-                                outcomeCustomFieldId={outcomeCustomFieldId}
-                                intentCustomFieldId={intentCustomFieldId}
-                                outcomeValue={CUSTOM_FIELD_AI_AGENT_HANDOVER}
-                                value={stats?.handoverPercent ?? 0}
-                                displayValue={handoverDisplay}
-                                showProgressBar={
-                                    !!stats && stats.handoverCount > 0
-                                }
-                                isRow
-                                isBold
-                            />
-                        )}
-                    </Box>
-                </Box>
-            )}
-            {!!hasCTA && (
-                <Box>
-                    <Button
-                        size="sm"
-                        onClick={onCreateSkillsFromTemplate}
-                        variant={hasActiveCTA ? 'primary' : 'secondary'}
-                    >
-                        Set up skill
-                    </Button>
-                </Box>
+                }
+            />
+            {showCoverageContainer && (
+                <CardContent>
+                    {coverage?.isLoading ? (
+                        <Skeleton width="240px" height="24px" />
+                    ) : coverageLabel ? (
+                        <Tag
+                            size="sm"
+                            color="purple"
+                            leadingSlot={<Icon name="trending-up" />}
+                        >
+                            {coverageLabel}
+                        </Tag>
+                    ) : null}
+                </CardContent>
             )}
         </Card>
     )

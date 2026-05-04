@@ -2,7 +2,8 @@
 
 :local {
     .card {
-        padding: var(--spacing-sm) var(--spacing-md);
+        flex: 0 0 auto;
+        width: fit-content;
     }
 
     .tagsContainer {
@@ -19,14 +20,8 @@
         z-index: 1;
     }
 
-    .stats {
-        // Override DrillDownModalTrigger hover styles
-        :global {
-            span[id^='drill-down']:hover {
-                color: inherit;
-                text-decoration: none;
-                cursor: pointer;
-            }
-        }
+    .titleWrapper {
+        position: relative;
+        z-index: 1;
     }
 }
