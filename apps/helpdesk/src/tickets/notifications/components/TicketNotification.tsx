@@ -38,7 +38,7 @@ export default function TicketNotification({ notification, ...props }: Props) {
                 notification={notification}
                 icon={ticketMessageSourceToIconName(ticket.channel)}
                 title={title}
-                to={`/app/ticket/${ticket.id}`}
+                href={`/app/ticket/${ticket.id}`}
                 onClick={props.onClick}
             >
                 <Box gap="xxs" flexDirection="column">

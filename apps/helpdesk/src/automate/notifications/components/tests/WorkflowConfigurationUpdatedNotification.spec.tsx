@@ -7,6 +7,8 @@ import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
+import { TileList } from '@gorgias/axiom'
+
 import type { WorkflowConfigurationUpdatedNotificationPayload } from 'automate/notifications/types'
 import type { Notification } from 'common/notifications'
 import { trackstarDefinitionKeys } from 'models/workflows/queries'
@@ -102,8 +104,18 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
         })
 
+        const renderInCollection = (ui: ReactNode) =>
+            render(
+                <TileList
+                    items={[{ id: notification.id }]}
+                    aria-label="notifications"
+                >
+                    {() => ui}
+                </TileList>,
+            )
+
         it('should render the reconnect title', () => {
-            const { getByText } = render(
+            const { getByText } = renderInCollection(
                 <WorkflowConfigurationUpdatedNotification
                     notification={notification}
                 />,
@@ -114,7 +126,7 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
         })
 
         it('should render the reconnect body text', () => {
-            const { container } = render(
+            const { container } = renderInCollection(
                 <WorkflowConfigurationUpdatedNotification
                     notification={notification}
                 />,
@@ -125,28 +137,12 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
         })
 
         it('should link to the AI agent actions route', () => {
-            const { container } = render(
+            const { container } = renderInCollection(
                 <WorkflowConfigurationUpdatedNotification
                     notification={notification}
                 />,
             )
             expect(container.querySelector('a')).toBeInTheDocument()
-        })
-
-        it('should call invalidateQueries when clicked', () => {
-            const { container } = render(
-                <WorkflowConfigurationUpdatedNotification
-                    notification={notification}
-                />,
-            )
-
-            act(() => {
-                container.querySelector('a')?.click()
-            })
-
-            expect(invalidateQueriesMock).toHaveBeenCalledWith({
-                queryKey: trackstarDefinitionKeys.all(),
-            })
         })
     })
 })

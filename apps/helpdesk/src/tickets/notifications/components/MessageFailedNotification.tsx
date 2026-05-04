@@ -34,7 +34,7 @@ const MessageFailedNotification = ({
                 notification={notification}
                 icon={<Icon name="octagon-error" color="red" />}
                 title="Message not delivered"
-                to={`/app/ticket/${ticket.id}`}
+                href={`/app/ticket/${ticket.id}`}
                 onClick={handleOnClick}
             >
                 {customer?.name ? (

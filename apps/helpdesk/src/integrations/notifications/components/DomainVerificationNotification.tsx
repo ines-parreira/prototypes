@@ -33,7 +33,7 @@ export default function DomainVerificationNotification({
                     TicketMessageSourceType.SystemMessage,
                 )}
                 title="Domain verification complete"
-                to="/app/settings/channels/email"
+                href="/app/settings/channels/email"
                 onClick={props.onClick}
             >
                 <Text>

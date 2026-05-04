@@ -13,6 +13,7 @@ export type NotificationItem = NotificationTileProps & {
 type UseNotificationItemsResult = {
     items: NotificationItem[]
     markAllAsRead: () => void
+    fetchNextPage: () => void
 }
 
 export function useNotificationItems(
@@ -23,6 +24,11 @@ export function useNotificationItems(
 
     const markAllAsRead = useCallback(
         () => void feedClient.markAllAsRead(),
+        [feedClient],
+    )
+
+    const fetchNextPage = useCallback(
+        () => void feedClient.fetchNextPage(),
         [feedClient],
     )
 
@@ -50,5 +56,5 @@ export function useNotificationItems(
         })
         .filter((n): n is NonNullable<typeof n> => n !== null)
 
-    return { items, markAllAsRead }
+    return { items, markAllAsRead, fetchNextPage }
 }

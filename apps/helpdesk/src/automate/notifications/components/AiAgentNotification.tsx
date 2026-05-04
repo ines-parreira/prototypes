@@ -115,7 +115,7 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
                 notification={notification}
                 icon="ai"
                 title={notificationParams.title}
-                to={notificationParams.redirectTo}
+                href={notificationParams.redirectTo}
                 onClick={handleOnClick}
             >
                 <span

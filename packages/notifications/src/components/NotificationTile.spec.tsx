@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+
+import { TileList } from '@gorgias/axiom'
 
 import { NotificationTile } from './NotificationTile'
 
@@ -14,17 +15,19 @@ const baseProps = {
 
 const renderTile = (
     props: Partial<typeof baseProps> & {
-        to?: string
+        href?: string
         onClick?: () => void
         onMarkAsUnread?: () => void
         children?: React.ReactNode
     } = {},
-) =>
-    render(
-        <MemoryRouter>
-            <NotificationTile {...baseProps} {...props} />
-        </MemoryRouter>,
+) => {
+    const mergedProps = { ...baseProps, ...props }
+    return render(
+        <TileList items={[mergedProps]} aria-label="notifications">
+            {() => <NotificationTile {...mergedProps} />}
+        </TileList>,
     )
+}
 
 describe('NotificationTile', () => {
     beforeEach(() => {
@@ -33,6 +36,7 @@ describe('NotificationTile', () => {
     })
 
     afterEach(() => {
+        vi.runOnlyPendingTimers()
         vi.useRealTimers()
     })
 
@@ -71,18 +75,18 @@ describe('NotificationTile', () => {
     })
 
     describe('navigation', () => {
-        it('renders as a link when `to` is provided', () => {
-            renderTile({ to: '/app/ticket/1' })
+        it('renders as a link when `href` is provided', () => {
+            renderTile({ href: '/app/ticket/1' })
             expect(screen.getByRole('link')).toBeInTheDocument()
         })
 
-        it('renders as a button when `to` is not provided', () => {
+        it('renders as a button when `href` is not provided', () => {
             renderTile()
             expect(screen.getByRole('button')).toBeInTheDocument()
         })
     })
 
-    it('calls onClick when the tile is clicked', async () => {
+    it('calls onClick when the button tile is clicked', async () => {
         const user = userEvent.setup({
             advanceTimers: vi.advanceTimersByTime.bind(vi),
         })

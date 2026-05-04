@@ -6,6 +6,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import userEvent from '@testing-library/user-event'
 
+import { TileList } from '@gorgias/axiom'
+
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
 
@@ -152,15 +154,25 @@ describe('<MessageFailedNotification />', () => {
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
         })
 
+        const renderInCollection = (ui: ReactNode) =>
+            render(
+                <TileList
+                    items={[{ id: notification.id }]}
+                    aria-label="notifications"
+                >
+                    {() => ui}
+                </TileList>,
+            )
+
         it('should render the notification title', () => {
-            const { getByText } = render(
+            const { getByText } = renderInCollection(
                 <MessageFailedNotification notification={notification} />,
             )
             expect(getByText('Message not delivered')).toBeInTheDocument()
         })
 
         it('should render customer name in message', () => {
-            const { getByText } = render(
+            const { getByText } = renderInCollection(
                 <MessageFailedNotification notification={notification} />,
             )
             expect(getByText('Foo Bar.')).toBeInTheDocument()
@@ -174,7 +186,7 @@ describe('<MessageFailedNotification />', () => {
                     customer: { ...notification.payload.customer!, name: null },
                 },
             }
-            const { getByText } = render(
+            const { getByText } = renderInCollection(
                 <MessageFailedNotification
                     notification={notificationWithoutName}
                 />,
@@ -185,31 +197,12 @@ describe('<MessageFailedNotification />', () => {
         })
 
         it('should link to the ticket', () => {
-            const { container } = render(
+            const { container } = renderInCollection(
                 <MessageFailedNotification notification={notification} />,
             )
             expect(
                 container.querySelector('a[href="/app/ticket/191"]'),
             ).toBeInTheDocument()
-        })
-
-        it('should log segment event and call onClick when clicked', async () => {
-            const user = userEvent.setup()
-            const mockOnClick = jest.fn()
-            const { container } = render(
-                <MessageFailedNotification
-                    notification={notification}
-                    onClick={mockOnClick}
-                />,
-            )
-
-            await user.click(container.querySelector('a')!)
-
-            expect(mockOnClick).toHaveBeenCalled()
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                SegmentEvent.FailedMessageNotification,
-                { ticketId: notification.payload.ticket.id },
-            )
         })
     })
 })

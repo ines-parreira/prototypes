@@ -30,7 +30,7 @@ export default function UserMentionedNotification({
                 notification={notification}
                 icon={ticketMessageSourceToIconName(ticket.channel)}
                 title="New mention"
-                to={`/app/ticket/${ticket.id}`}
+                href={`/app/ticket/${ticket.id}`}
                 onClick={props.onClick}
             >
                 {sender ? (

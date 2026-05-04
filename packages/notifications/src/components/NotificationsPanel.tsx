@@ -1,18 +1,25 @@
 import type { ReactNode } from 'react'
 
-import { Box, Button, Icon, Panel, PanelHeader } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Heading,
+    Icon,
+    Panel,
+    PanelHeader,
+    TileList,
+} from '@gorgias/axiom'
 
-import type { NotificationTileProps } from './NotificationTile'
+import type { NotificationItem } from '../hooks/useNotificationItems'
 
 export interface NotificationsPanelProps {
     title: ReactNode
     toolbar: ReactNode
-    items: NotificationTileProps[]
+    items: NotificationItem[]
     onMarkAllAsRead: () => void
     onClose?: () => void
-    children:
-        | ReactNode
-        | ((props: { items: NotificationTileProps[] }) => ReactNode)
+    onLoadMore?: () => void
+    children: (item: NotificationItem) => ReactNode
 }
 
 export function NotificationsPanel({
@@ -21,6 +28,7 @@ export function NotificationsPanel({
     items,
     onMarkAllAsRead,
     onClose,
+    onLoadMore,
     children,
 }: NotificationsPanelProps) {
     return (
@@ -38,18 +46,34 @@ export function NotificationsPanel({
                         />
                     )
                 }
-            />
-            <Box gap="md" alignItems="center" px="md">
-                <Box flex="1">{toolbar}</Box>
-                <Button variant="tertiary" size="sm" onClick={onMarkAllAsRead}>
-                    Mark all as read
-                </Button>
-            </Box>
-            <Box flexDirection="column">
-                {typeof children === 'function'
-                    ? children({ items })
-                    : children}
-            </Box>
+            >
+                <Box gap="md" alignItems="center">
+                    <Box flex="1">{toolbar}</Box>
+                    <Button
+                        variant="tertiary"
+                        size="sm"
+                        onClick={onMarkAllAsRead}
+                    >
+                        Mark all as read
+                    </Button>
+                </Box>
+            </PanelHeader>
+            <TileList
+                items={items}
+                onLoadMore={onLoadMore}
+                aria-label="Notifications"
+                renderEmptyState={() => (
+                    <Box
+                        h="100%"
+                        flexDirection="column"
+                        justifyContent="center"
+                    >
+                        <Heading>No notifications</Heading>
+                    </Box>
+                )}
+            >
+                {children}
+            </TileList>
         </Panel>
     )
 }

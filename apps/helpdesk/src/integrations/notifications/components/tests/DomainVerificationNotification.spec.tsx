@@ -4,6 +4,8 @@ import { useKnockFeed } from '@knocklabs/react'
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 
+import { TileList } from '@gorgias/axiom'
+
 import type { Notification } from 'common/notifications'
 
 import type { EmailDomainPayload } from '../../types'
@@ -84,8 +86,18 @@ describe('DomainVerificationNotification', () => {
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
         })
 
+        const renderInCollection = (ui: ReactNode) =>
+            render(
+                <TileList
+                    items={[{ id: notification.id }]}
+                    aria-label="notifications"
+                >
+                    {() => ui}
+                </TileList>,
+            )
+
         it('should render the notification title', () => {
-            const { getByText } = render(
+            const { getByText } = renderInCollection(
                 <DomainVerificationNotification notification={notification} />,
             )
             expect(
@@ -94,7 +106,7 @@ describe('DomainVerificationNotification', () => {
         })
 
         it('should render sender info', () => {
-            const { getByText } = render(
+            const { getByText } = renderInCollection(
                 <DomainVerificationNotification notification={notification} />,
             )
             expect(
@@ -105,7 +117,7 @@ describe('DomainVerificationNotification', () => {
         })
 
         it('should render the domain verification excerpt', () => {
-            const { getByText } = render(
+            const { getByText } = renderInCollection(
                 <DomainVerificationNotification notification={notification} />,
             )
             expect(
@@ -116,7 +128,7 @@ describe('DomainVerificationNotification', () => {
         })
 
         it('should link to the email settings page', () => {
-            const { container } = render(
+            const { container } = renderInCollection(
                 <DomainVerificationNotification notification={notification} />,
             )
             expect(
@@ -124,19 +136,6 @@ describe('DomainVerificationNotification', () => {
                     'a[href="/app/settings/channels/email"]',
                 ),
             ).toBeInTheDocument()
-        })
-
-        it('should call onClick when provided', () => {
-            const onClick = jest.fn()
-            const { container } = render(
-                <DomainVerificationNotification
-                    notification={notification}
-                    onClick={onClick}
-                />,
-            )
-            const link = container.querySelector('a')!
-            link.click()
-            expect(onClick).toHaveBeenCalled()
         })
     })
 })

@@ -38,7 +38,11 @@ export function NotificationsFeedPanel({
     renderItem,
 }: NotificationsFeedPanelProps) {
     const [filter, setFilter] = useState<FilterItem>(FILTER_ITEMS[0])
-    const { items: allItems, markAllAsRead } = useNotificationItems(onClose)
+    const {
+        items: allItems,
+        markAllAsRead,
+        fetchNextPage,
+    } = useNotificationItems(onClose)
 
     const items =
         filter.id === 'all'
@@ -78,8 +82,9 @@ export function NotificationsFeedPanel({
             items={items}
             onMarkAllAsRead={markAllAsRead}
             onClose={onClose}
+            onLoadMore={fetchNextPage}
         >
-            {() => items.map((item) => renderItem(item.notification, item))}
+            {(item) => renderItem(item.notification, item)}
         </NotificationsPanel>
     )
 }

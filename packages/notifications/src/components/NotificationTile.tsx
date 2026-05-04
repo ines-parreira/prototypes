@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { Link } from 'react-router-dom'
-
 import type { IconName } from '@gorgias/axiom'
 import {
     Box,
@@ -12,9 +10,9 @@ import {
     StatusButton,
     Tag,
     Text,
-    Tile,
     TileContent,
     TileHeader,
+    TileListItem,
 } from '@gorgias/axiom'
 
 import { formatRelativeTime } from '../utils/formatRelativeTime'
@@ -26,28 +24,32 @@ export interface NotificationTileProps {
     children?: ReactNode
     createdDatetime: string
     readDatetime: string | null
-    to?: string
+    href?: string
     onClick?: () => void
     onMarkAsUnread?: () => void
 }
 
 export function NotificationTile({
+    id,
     icon,
     title,
     children,
     createdDatetime,
     readDatetime,
-    to,
+    href,
     onClick,
     onMarkAsUnread,
 }: NotificationTileProps) {
     const isRead = readDatetime !== null
+    const asProps = href
+        ? { as: 'link' as const, href }
+        : { as: 'button' as const, onClick }
     return (
-        <Tile
+        <TileListItem
+            id={id}
+            textValue={title}
             type="bottom-border"
-            as={to ? Link : 'button'}
-            to={to}
-            onClick={onClick}
+            {...asProps}
         >
             <TileHeader title={title} leadingSlot={icon} />
             <TileContent>
@@ -81,6 +83,6 @@ export function NotificationTile({
                     </Box>
                 </Box>
             </TileContent>
-        </Tile>
+        </TileListItem>
     )
 }

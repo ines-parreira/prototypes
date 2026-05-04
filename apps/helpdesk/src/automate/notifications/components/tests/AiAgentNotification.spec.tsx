@@ -6,6 +6,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
+import { TileList } from '@gorgias/axiom'
+
 import type { AiAgentNotificationPayload } from 'automate/notifications/types'
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { getNotificationReceivedDatetimePayload } from 'automate/notifications/utils'
@@ -387,7 +389,12 @@ describe('AiAgentNotification', () => {
             }
 
             const { getByText } = render(
-                <AiAgentNotification notification={notification} />,
+                <TileList
+                    items={[{ id: notification.id }]}
+                    aria-label="notifications"
+                >
+                    {() => <AiAgentNotification notification={notification} />}
+                </TileList>,
             )
 
             expect(
@@ -410,7 +417,12 @@ describe('AiAgentNotification', () => {
             }
 
             const { container } = render(
-                <AiAgentNotification notification={notification} />,
+                <TileList
+                    items={[{ id: notification.id }]}
+                    aria-label="notifications"
+                >
+                    {() => <AiAgentNotification notification={notification} />}
+                </TileList>,
             )
 
             expect(
@@ -434,11 +446,17 @@ describe('AiAgentNotification', () => {
                 } as unknown as AiAgentNotificationPayload,
             }
 
-            const { container } = render(
-                <AiAgentNotification notification={notification} />,
+            const { queryByRole } = render(
+                <TileList
+                    items={[{ id: notification.id }]}
+                    aria-label="notifications"
+                >
+                    {() => <AiAgentNotification notification={notification} />}
+                </TileList>,
             )
 
-            expect(container).toBeEmptyDOMElement()
+            expect(queryByRole('link')).not.toBeInTheDocument()
+            expect(queryByRole('button')).not.toBeInTheDocument()
         })
     })
 })
