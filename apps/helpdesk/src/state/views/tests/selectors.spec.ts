@@ -946,5 +946,35 @@ describe('selectors', () => {
 
             expect(selectors.areFiltersValidAst(state)).toBe(true)
         })
+
+        it('should return true when the active view AST contains a unary system condition', () => {
+            const state = {
+                views: initialState.set(
+                    'active',
+                    fromJS({
+                        filters_ast: {
+                            type: 'Program',
+                            body: [
+                                {
+                                    type: 'ExpressionStatement',
+                                    expression: {
+                                        type: 'CallExpression',
+                                        callee: { name: 'isNotEmpty' },
+                                        arguments: [
+                                            {
+                                                type: 'Identifier',
+                                                name: 'ticket.trashed_datetime',
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    }),
+                ),
+            } as RootState
+
+            expect(selectors.areFiltersValidAst(state)).toBe(true)
+        })
     })
 })

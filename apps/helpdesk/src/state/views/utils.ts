@@ -344,6 +344,9 @@ export function updateQAScoreFilter(
 
 type FilterAstNode = {
     type?: string
+    callee?: {
+        name?: string
+    }
     body?: Array<{ expression?: FilterAstNode }>
     expression?: FilterAstNode
     left?: FilterAstNode
@@ -377,10 +380,14 @@ export function hasIncompleteFilterValues(node: unknown): boolean {
                 hasIncompleteFilterValues(ast.right)
             )
         case 'CallExpression': {
+            const operatorName = ast.callee?.name
             const secondArg = ast.arguments?.[1]
 
             if (!secondArg) {
-                return true
+                return !(
+                    operatorName &&
+                    Object.keys(UNARY_OPERATORS).includes(operatorName)
+                )
             }
 
             if (secondArg.type === 'Literal' && secondArg.value === '') {

@@ -266,7 +266,25 @@ describe('utils', () => {
             ).toBe(false)
         })
 
-        it('should treat call expressions without a second argument as incomplete', () => {
+        it('should treat unary operators without a second argument as complete', () => {
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromAST(getAST('isNotEmpty(ticket.trashed_datetime)')),
+                ),
+            ).toBe(false)
+
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromAST(
+                        getAST(
+                            "isNotEmpty(ticket.trashed_datetime) && eq(ticket.status, 'open')",
+                        ),
+                    ),
+                ),
+            ).toBe(false)
+        })
+
+        it('should treat non-unary call expressions without a second argument as incomplete', () => {
             expect(
                 utils.hasIncompleteFilterValues(
                     fromJS({
@@ -278,6 +296,16 @@ describe('utils', () => {
                                 name: 'ticket.channel',
                             },
                         ],
+                    }),
+                ),
+            ).toBe(true)
+        })
+
+        it('should treat call expressions without operator metadata or arguments as incomplete', () => {
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromJS({
+                        type: 'CallExpression',
                     }),
                 ),
             ).toBe(true)
