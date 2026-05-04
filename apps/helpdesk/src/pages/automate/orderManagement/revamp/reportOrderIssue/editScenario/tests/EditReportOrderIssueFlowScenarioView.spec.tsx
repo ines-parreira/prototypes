@@ -72,11 +72,28 @@ jest.mock(
             onChange,
         }: {
             onChange: (v: any) => void
-        }) => (
-            <button onClick={() => onChange({ and: [{ or: [] }] })}>
-                ScenarioConditionBuilder
-            </button>
-        ),
+        }) => {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const { useContext } = require('react')
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const {
+                ScenarioFormContext,
+            } = require('../../scenarioForm/ScenarioFormContext')
+            const { setError } = useContext(ScenarioFormContext)
+            return (
+                <>
+                    <button onClick={() => onChange({ and: [{ or: [] }] })}>
+                        ScenarioConditionBuilder
+                    </button>
+                    <button onClick={() => setError('conditions', true)}>
+                        Trigger form error
+                    </button>
+                    <button onClick={() => setError('conditions', false)}>
+                        Clear form error
+                    </button>
+                </>
+            )
+        },
     }),
 )
 
@@ -479,7 +496,7 @@ describe('EditReportOrderIssueScenarioView', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should disable Save when form has validation errors from ScenarioFormContext', async () => {
+    it('should disable Save when a child component reports a form error via context', async () => {
         const user = userEvent.setup()
         render(<EditReportOrderIssueScenarioView />)
 
@@ -489,6 +506,34 @@ describe('EditReportOrderIssueScenarioView', () => {
         await user.type(
             screen.getByRole('textbox', { name: /scenario name/i }),
             'Updated',
+        )
+        expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
+
+        await user.click(
+            screen.getByRole('button', { name: 'Trigger form error' }),
+        )
+
+        expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+    })
+
+    it('should re-enable Save once the context error is cleared', async () => {
+        const user = userEvent.setup()
+        render(<EditReportOrderIssueScenarioView />)
+
+        await user.clear(
+            screen.getByRole('textbox', { name: /scenario name/i }),
+        )
+        await user.type(
+            screen.getByRole('textbox', { name: /scenario name/i }),
+            'Updated',
+        )
+        await user.click(
+            screen.getByRole('button', { name: 'Trigger form error' }),
+        )
+        expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+
+        await user.click(
+            screen.getByRole('button', { name: 'Clear form error' }),
         )
 
         expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
@@ -701,5 +746,123 @@ describe('EditReportOrderIssueScenarioView', () => {
         unmount()
 
         expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
+    })
+
+    it('should enable Save after editing the description field', async () => {
+        const user = userEvent.setup()
+        render(<EditReportOrderIssueScenarioView />)
+
+        await user.clear(
+            screen.getByRole('textbox', { name: /scenario description/i }),
+        )
+        await user.type(
+            screen.getByRole('textbox', { name: /scenario description/i }),
+            'New description',
+        )
+
+        expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
+    })
+
+    it('should disable the Delete scenario button while update is pending', () => {
+        mockUseEditReportOrderIssueScenario.mockReturnValue({
+            ...defaultEditReturn,
+            isUpdatePending: true,
+        })
+
+        render(<EditReportOrderIssueScenarioView />)
+
+        expect(
+            screen.getByRole('button', { name: 'Delete scenario' }),
+        ).toBeDisabled()
+    })
+
+    it('should disable modal action buttons while update is pending', async () => {
+        const user = userEvent.setup()
+        const { rerender } = render(<EditReportOrderIssueScenarioView />)
+
+        await user.click(
+            screen.getByRole('button', { name: 'Delete scenario' }),
+        )
+
+        mockUseEditReportOrderIssueScenario.mockReturnValue({
+            ...defaultEditReturn,
+            isUpdatePending: true,
+        })
+        rerender(<EditReportOrderIssueScenarioView />)
+
+        expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled()
+        expect(
+            screen.getByRole('button', { name: 'Close modal' }),
+        ).toBeDisabled()
+    })
+
+    describe('chat preview synchronization via onChatPreviewLoaded', () => {
+        it('should register onChatPreviewLoaded with fireIfAlreadyLoaded set to true', () => {
+            render(<EditReportOrderIssueScenarioView />)
+
+            expect(mockOnChatPreviewLoaded).toHaveBeenCalledWith(
+                expect.any(Function),
+                true,
+            )
+        })
+
+        it('should call updatePreviewOrders and displayPage when the chat preview loads after mount', () => {
+            let storedCallback: (() => void) | undefined
+            mockOnChatPreviewLoaded.mockImplementation((callback) => {
+                storedCallback = callback
+                return jest.fn()
+            })
+
+            render(<EditReportOrderIssueScenarioView />)
+
+            mockUpdatePreviewOrders.mockClear()
+            mockDisplayPage.mockClear()
+
+            act(() => {
+                storedCallback?.()
+            })
+
+            expect(mockUpdatePreviewOrders).toHaveBeenCalledWith(
+                expect.objectContaining({ orders: expect.any(Object) }),
+            )
+            expect(mockDisplayPage).toHaveBeenCalledWith(
+                'report',
+                expect.objectContaining({ orderName: expect.any(String) }),
+            )
+        })
+
+        it('should unsubscribe from onChatPreviewLoaded when the component unmounts', () => {
+            const cleanup = jest.fn()
+            mockOnChatPreviewLoaded.mockImplementation(
+                (callback, fireIfAlreadyLoaded) => {
+                    if (fireIfAlreadyLoaded) callback()
+                    return cleanup
+                },
+            )
+
+            const { unmount } = render(<EditReportOrderIssueScenarioView />)
+            unmount()
+
+            expect(cleanup).toHaveBeenCalled()
+        })
+
+        it('should not re-register onChatPreviewLoaded when form fields change', async () => {
+            const user = userEvent.setup()
+            render(<EditReportOrderIssueScenarioView />)
+
+            const registrationCount = mockOnChatPreviewLoaded.mock.calls.length
+
+            await user.clear(
+                screen.getByRole('textbox', { name: /scenario name/i }),
+            )
+            await user.type(
+                screen.getByRole('textbox', { name: /scenario name/i }),
+                'Updated',
+            )
+
+            expect(mockOnChatPreviewLoaded).toHaveBeenCalledTimes(
+                registrationCount,
+            )
+        })
     })
 })

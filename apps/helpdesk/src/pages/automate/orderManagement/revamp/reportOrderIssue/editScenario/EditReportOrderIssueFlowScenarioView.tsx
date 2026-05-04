@@ -130,10 +130,6 @@ export const EditReportOrderIssueScenarioView = () => {
         [newReasons, expandedReasonKey],
     )
 
-    const chatPreviewPage: 'report' | 'reported-issue' = expandedReason
-        ? 'reported-issue'
-        : 'report'
-
     const chatPreviewPageOptions: ChatPreviewPageOptions = useMemo(
         () =>
             expandedReason
@@ -151,18 +147,23 @@ export const EditReportOrderIssueScenarioView = () => {
     )
 
     useEffect(() => {
+        updatePreviewOrders(computedPreviewOrders)
+    }, [updatePreviewOrders, computedPreviewOrders])
+
+    useEffect(() => {
+        displayPage(
+            expandedReasonKey ? 'reported-issue' : 'report',
+            chatPreviewPageOptions,
+        )
+    }, [displayPage, expandedReasonKey, chatPreviewPageOptions])
+
+    useEffect(() => {
         return onChatPreviewLoaded(() => {
             updatePreviewOrders(computedPreviewOrders)
-            displayPage(chatPreviewPage, chatPreviewPageOptions)
+            displayPage('report', chatPreviewPageOptions)
         }, true)
-    }, [
-        onChatPreviewLoaded,
-        updatePreviewOrders,
-        displayPage,
-        computedPreviewOrders,
-        chatPreviewPage,
-        chatPreviewPageOptions,
-    ])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
         return () => {
