@@ -1,4 +1,5 @@
 import { memo, useCallback, useRef } from 'react'
+import type { FocusEvent } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -113,6 +114,12 @@ export const TicketListItem = memo(function TicketListItem({
             data-selected={isSelected}
             data-active={isActive}
             className={styles.ticketListItem}
+            onFocusCapture={(event: FocusEvent<HTMLElement>) => {
+                event.currentTarget.scrollIntoView?.({
+                    block: 'nearest',
+                    inline: 'nearest',
+                })
+            }}
         >
             <TileHeader
                 flexDirection="row"

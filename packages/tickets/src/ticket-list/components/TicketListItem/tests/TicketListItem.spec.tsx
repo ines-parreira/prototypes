@@ -84,6 +84,32 @@ describe('TicketListItem', () => {
         expect(screen.getByRole('status')).toHaveTextContent('/')
     })
 
+    it('scrolls the ticket into view when it receives focus', () => {
+        const originalScrollIntoView = HTMLElement.prototype.scrollIntoView
+        const scrollIntoView = vi.fn()
+
+        Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+            configurable: true,
+            value: scrollIntoView,
+        })
+
+        try {
+            render(<TicketListItem {...defaultProps} />)
+
+            screen.getByRole('link').focus()
+
+            expect(scrollIntoView).toHaveBeenCalledWith({
+                block: 'nearest',
+                inline: 'nearest',
+            })
+        } finally {
+            Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+                configurable: true,
+                value: originalScrollIntoView,
+            })
+        }
+    })
+
     it('shows the translated tooltip message when translated subject or excerpt is available', async () => {
         const { user } = render(
             <TicketListItem
