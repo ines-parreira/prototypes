@@ -1,14 +1,9 @@
-import {
-    FeatureFlagKey,
-    useFlag,
-    useHelpdeskV2BaselineFlag,
-} from '@repo/feature-flags'
+import { useHelpdeskV2BaselineFlag } from '@repo/feature-flags'
 import { useIsMobileResolution } from '@repo/hooks'
 import { useLocation, useParams } from 'react-router-dom'
 
 export function useHelpdeskV2MS1Flag() {
     const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
-    const hasUIVisionMilestone1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
     const isMobileResolution = useIsMobileResolution()
 
     const { ticketId } = useParams<{ ticketId: string }>()
@@ -19,7 +14,6 @@ export function useHelpdeskV2MS1Flag() {
 
     return (
         hasUIVisionBeta &&
-        hasUIVisionMilestone1 &&
         !isMobileResolution &&
         isNotNewTicketPage &&
         !isPrintTicketPage

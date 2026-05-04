@@ -83,7 +83,7 @@ describe('<KeyboardHelp />', () => {
         )
     })
 
-    it('should render Infobar shortcuts when UIVisionMilestone1 flag is true', () => {
+    it('should render Infobar shortcuts when Helpdesk V2 MS1 flag is true', () => {
         useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
         render(<KeyboardHelp />)
@@ -97,7 +97,7 @@ describe('<KeyboardHelp />', () => {
         expect(screen.getByText('Infobar')).toBeInTheDocument()
     })
 
-    it('should not render Infobar shortcuts when UIVisionMilestone1 flag is false', () => {
+    it('should not render Infobar shortcuts when Helpdesk V2 MS1 flag is false', () => {
         useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
         render(<KeyboardHelp />)

@@ -384,22 +384,13 @@ jest.mock('@repo/feature-flags', () => {
     const useHelpdeskV2MS2Flag = jest.fn(() => {
         const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
 
-        return (
-            hasUIVisionBeta &&
-            getMockedFlagValue(actual.FeatureFlagKey.UIVisionMilestone2, false)
-        )
+        return hasUIVisionBeta
     })
 
     const useHelpdeskV2WayfindingMS1Flag = jest.fn(() => {
         const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
 
-        return (
-            hasUIVisionBeta &&
-            getMockedFlagValue(
-                actual.FeatureFlagKey.UIVisionWayfindingMS1,
-                false,
-            )
-        )
+        return hasUIVisionBeta
     })
 
     return {

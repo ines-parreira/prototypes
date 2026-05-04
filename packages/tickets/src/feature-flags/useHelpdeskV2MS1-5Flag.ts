@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom'
 
 export function useHelpdeskV2MS1Dot5Flag() {
     const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
-    const hasUIVisionMilestone1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+
     const hasUIVisionMilestone1Dot5 = useFlag(
         FeatureFlagKey.UIVisionMilestone1Dot5,
     )
@@ -19,7 +19,6 @@ export function useHelpdeskV2MS1Dot5Flag() {
 
     return (
         hasUIVisionBeta &&
-        hasUIVisionMilestone1 &&
         hasUIVisionMilestone1Dot5 &&
         !isMobileResolution &&
         isNewTicketPage

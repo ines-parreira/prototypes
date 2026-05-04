@@ -247,8 +247,8 @@ describe('AutoQA', () => {
         })
     })
 
-    describe('UIVisionMilestone1 feature flag', () => {
-        it('should render star icon when UIVisionMilestone1 is enabled', () => {
+    describe('Helpdesk V2 MS1 flag', () => {
+        it('should render star icon when Helpdesk V2 MS1 is enabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
             const { container } = render(<AutoQA />)
@@ -261,7 +261,7 @@ describe('AutoQA', () => {
             expect(starIcon).toBeInTheDocument()
         })
 
-        it('should not render star icon when UIVisionMilestone1 is disabled', () => {
+        it('should not render star icon when Helpdesk V2 MS1 is disabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
             const { container } = render(<AutoQA />)
@@ -274,7 +274,7 @@ describe('AutoQA', () => {
             expect(starIcon).not.toBeInTheDocument()
         })
 
-        it('should apply hasUIVisionMS1 class to container when UIVisionMilestone1 is enabled', () => {
+        it('should apply hasUIVisionMS1 class to container when Helpdesk V2 MS1 is enabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
             const { container } = render(<AutoQA />)
@@ -285,7 +285,7 @@ describe('AutoQA', () => {
             expect(containerDiv).toBeInTheDocument()
         })
 
-        it('should not apply hasUIVisionMS1 class to container when UIVisionMilestone1 is disabled', () => {
+        it('should not apply hasUIVisionMS1 class to container when Helpdesk V2 MS1 is disabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
             const { container } = render(<AutoQA />)

@@ -80,7 +80,7 @@ describe('<TicketHeaderWrapper/>', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should hide TicketHeader and TicketFields when UIVisionMilestone1 flag is enabled', () => {
+    it('should hide TicketHeader and TicketFields when Helpdesk V2 MS1 flag is enabled', () => {
         mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
 
         const { queryByText } = renderWithRouter(defaultState)

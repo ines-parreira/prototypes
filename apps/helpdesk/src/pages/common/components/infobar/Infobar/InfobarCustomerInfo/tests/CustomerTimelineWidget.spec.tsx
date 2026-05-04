@@ -329,7 +329,7 @@ describe('CustomerTimelineButton', () => {
         })
     })
 
-    describe('UIVisionMilestone1 feature flag', () => {
+    describe('Helpdesk V2 MS1 flag', () => {
         beforeEach(() => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
         })

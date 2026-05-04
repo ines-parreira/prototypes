@@ -205,8 +205,8 @@ describe('Dimension', () => {
         expect(logEvent).not.toHaveBeenCalled()
     })
 
-    describe('UIVisionMilestone1 feature flag', () => {
-        it('should apply hasUIVisionMS1 class to container and explanation when UIVisionMilestone1 is enabled', () => {
+    describe('Helpdesk V2 MS1 flag', () => {
+        it('should apply hasUIVisionMS1 class to container and explanation when Helpdesk V2 MS1 is enabled', () => {
             const onChange = jest.fn()
 
             const { container } = render(
@@ -229,7 +229,7 @@ describe('Dimension', () => {
             expect(explanationDiv).toBeInTheDocument()
         })
 
-        it('should not apply hasUIVisionMS1 class to container when UIVisionMilestone1 is disabled', () => {
+        it('should not apply hasUIVisionMS1 class to container when Helpdesk V2 MS1 is disabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
             const onChange = jest.fn()
