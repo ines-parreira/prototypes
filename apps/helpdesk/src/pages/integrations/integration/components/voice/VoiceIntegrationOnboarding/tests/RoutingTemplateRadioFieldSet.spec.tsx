@@ -94,10 +94,14 @@ describe('RoutingTemplateRadioFieldSet', () => {
         renderComponent()
 
         expect(mockGetRouteToQueueFlow).toHaveBeenCalledWith(123)
-        expect(mockSetValue).toHaveBeenCalledWith('meta.flow', {
-            first_step_id: 'test-basic-flow',
-            steps: {},
-        })
+        expect(mockSetValue).toHaveBeenCalledWith(
+            'meta.flow',
+            {
+                first_step_id: 'test-basic-flow',
+                steps: {},
+            },
+            { shouldValidate: true },
+        )
         expect(mockSetValue).toHaveBeenCalledWith(
             'meta.send_calls_to_voicemail',
             false,
@@ -115,10 +119,14 @@ describe('RoutingTemplateRadioFieldSet', () => {
 
         await waitFor(() => {
             expect(mockGetSendToVoicemailFlow).toHaveBeenCalled()
-            expect(mockSetValue).toHaveBeenCalledWith('meta.flow', {
-                first_step_id: 'test-voicemail-flow',
-                steps: {},
-            })
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'meta.flow',
+                {
+                    first_step_id: 'test-voicemail-flow',
+                    steps: {},
+                },
+                { shouldValidate: true },
+            )
             expect(mockSetValue).toHaveBeenCalledWith(
                 'meta.send_calls_to_voicemail',
                 true,
@@ -135,10 +143,14 @@ describe('RoutingTemplateRadioFieldSet', () => {
 
         await waitFor(() => {
             expect(mockGetDefaultIvrFlow).toHaveBeenCalled()
-            expect(mockSetValue).toHaveBeenCalledWith('meta.flow', {
-                first_step_id: 'test-ivr-flow',
-                steps: {},
-            })
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'meta.flow',
+                {
+                    first_step_id: 'test-ivr-flow',
+                    steps: {},
+                },
+                { shouldValidate: true },
+            )
             expect(mockSetValue).toHaveBeenCalledWith(
                 'meta.send_calls_to_voicemail',
                 true,

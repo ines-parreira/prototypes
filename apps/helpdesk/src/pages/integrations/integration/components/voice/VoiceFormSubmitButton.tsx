@@ -7,7 +7,6 @@ type Props = {
 
 export default function VoiceFormSubmitButton({ children }: Props) {
     const { isDirty, isValid } = useFormState()
-
     return (
         <FormSubmitButton isDisabled={!isValid || !isDirty}>
             {children}

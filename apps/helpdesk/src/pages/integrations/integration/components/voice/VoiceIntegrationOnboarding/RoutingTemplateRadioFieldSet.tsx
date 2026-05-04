@@ -26,15 +26,21 @@ function RoutingTemplateRadioFieldSet() {
     useEffect(() => {
         switch (template) {
             case BASIC_TEMPLATE:
-                setValue('meta.flow', getRouteToQueueFlow(queue_id!))
+                setValue('meta.flow', getRouteToQueueFlow(queue_id!), {
+                    shouldValidate: true,
+                })
                 setValue('meta.send_calls_to_voicemail', false)
                 break
             case IVR_TEMPLATE:
-                setValue('meta.flow', getDefaultIvrFlow())
+                setValue('meta.flow', getDefaultIvrFlow(), {
+                    shouldValidate: true,
+                })
                 setValue('meta.send_calls_to_voicemail', true) // todo fix backend
                 break
             case VOICEMAIL_TEMPLATE:
-                setValue('meta.flow', getSendToVoicemailFlow())
+                setValue('meta.flow', getSendToVoicemailFlow(), {
+                    shouldValidate: true,
+                })
                 setValue('meta.send_calls_to_voicemail', true)
                 break
         }
