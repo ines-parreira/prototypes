@@ -1,11 +1,14 @@
+import { useEffect } from 'react'
+
 import { Handle } from '@repo/layout'
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import {
-    NewTicketInfobarNavigation,
     PrioritySelect,
     TeamAssigneeSelect,
     TicketHeaderContainer,
     TicketHeaderLeft,
     TicketHeaderRight,
+    TicketInfobarNavigation,
     TicketLayout,
     TicketLayoutContent,
     TicketTitle,
@@ -13,7 +16,12 @@ import {
     UserAssigneeSelect,
 } from '@repo/tickets'
 
+import type { TicketCustomer } from '@gorgias/helpdesk-types'
+
+import useAppSelector from 'hooks/useAppSelector'
+import { IntegrationType } from 'models/integration/constants'
 import useDraftTicketActivityTracking from 'pages/tickets/detail/hooks/useDraftTicketActivityTracking'
+import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { NewTicketPageContent } from 'tickets/pages/NewTicketPage/components/NewTicketPageContent/NewTicketPageContent'
 import { NewTicketPageInfobar } from 'tickets/pages/NewTicketPage/components/NewTicketPageInfobar'
 import {
@@ -25,6 +33,7 @@ import { useNewTicketPageForm } from 'tickets/pages/NewTicketPage/hooks/useNewTi
 import { useNewTicketPageSync } from 'tickets/pages/NewTicketPage/hooks/useNewTicketPageSync'
 
 export function NewTicketPage() {
+    const { onChangeTab } = useTicketInfobarNavigation()
     const {
         ticketState,
         handleSubjectChange,
@@ -33,12 +42,22 @@ export function NewTicketPage() {
         handleTeamChange,
         handleTagsChange,
         handleRecipientsChange,
+        handleCustomerChange,
         submit,
         temporaryId,
     } = useNewTicketPageForm()
 
     useDraftTicketActivityTracking(temporaryId)
     useNewTicketPageSync()
+    useEffect(() => {
+        onChangeTab(TicketInfobarTab.Customer)
+    }, [onChangeTab])
+
+    const hasIntegrationsOfTypes = useAppSelector(makeHasIntegrationOfTypes)
+    const hasShopifyIntegration = hasIntegrationsOfTypes(
+        IntegrationType.Shopify,
+    )
+    const hasCustomer = Boolean(ticketState.customer)
 
     return (
         <TicketLayout>
@@ -80,10 +99,18 @@ export function NewTicketPage() {
                     <NewTicketPageInfobar
                         tags={ticketState.tags}
                         onTagsChange={handleTagsChange}
+                        onCustomerChange={handleCustomerChange}
+                        customer={
+                            ticketState.customer as unknown as TicketCustomer
+                        }
                     />
                 </NewTicketPageInfobarPanel>
                 <NewTicketPageInfobarNavigationPanel>
-                    <NewTicketInfobarNavigation />
+                    <TicketInfobarNavigation
+                        hasAutoQA={false}
+                        hasShopify={hasCustomer && hasShopifyIntegration}
+                        hasTimeline={hasCustomer}
+                    />
                 </NewTicketPageInfobarNavigationPanel>
             </TicketLayoutContent>
         </TicketLayout>

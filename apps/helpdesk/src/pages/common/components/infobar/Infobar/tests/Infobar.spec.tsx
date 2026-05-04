@@ -186,10 +186,10 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/common/components/infobar/Infobar/TicketTimelineWidget/TicketTimelineWidgetContainer',
+    'pages/common/components/infobar/Infobar/TicketTimelineWidget/CurrentTicketTimelineWidgetContainer',
     () => ({
-        TicketTimelineWidgetContainer: () => (
-            <div>TicketTimelineWidgetContainer</div>
+        CurrentTicketTimelineWidgetContainer: () => (
+            <div>CurrentTicketTimelineWidgetContainer</div>
         ),
     }),
 )

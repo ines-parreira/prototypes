@@ -21,7 +21,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
-import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,23 +29,20 @@ import { IntegrationType } from 'models/integration/constants'
 import IconButton from 'pages/common/components/button/IconButton'
 import css from 'pages/common/components/infobar/Infobar.less'
 import InfobarCustomerActions from 'pages/common/components/infobar/Infobar/InfobarCustomerActions'
-import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
 import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
 import InfobarWidgetsEditionTools from 'pages/common/components/infobar/Infobar/InfobarWidgetsEditionTools'
 import { ShopifyOrdersWidgetContainer } from 'pages/common/components/infobar/Infobar/ShopifyOrdersWidget'
-import { TicketTimelineWidgetContainer } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/TicketTimelineWidgetContainer'
+import { CurrentTicketTimelineWidgetContainer } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/CurrentTicketTimelineWidgetContainer'
+import { useCustomerProfileActions } from 'pages/common/components/infobar/Infobar/useCustomerProfileActions'
 import { useCustomerSearch } from 'pages/common/components/infobar/Infobar/useCustomerSearch'
 import { useSelectedCustomer } from 'pages/common/components/infobar/Infobar/useSelectedCustomer'
 import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
 import { areSourcesReady } from 'pages/common/components/infobar/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import MergeCustomersContainer from 'pages/common/components/MergeCustomers/MergeCustomersContainer'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import Search from 'pages/common/components/Search'
-import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import TicketSummaryPopover from 'pages/tickets/detail/components/TicketSummaryPopover'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import * as infobarActions from 'state/infobar/actions'
@@ -103,10 +99,11 @@ export const Infobar = ({
     )
     const prevCustomer = usePrevious(customer)
 
-    const [isCustomerEditFormOpen, setIsCustomerEditFormOpen] = useState(false)
-    const [isCustomerSyncFormOpen, setIsCustomerSyncFormOpen] = useState(false)
-    const [selectedCustomerForModal, setSelectedCustomerForModal] =
-        useState<TicketCustomer | null>(null)
+    const {
+        handleEditCustomer,
+        handleSyncToShopify,
+        customerProfileActionModals,
+    } = useCustomerProfileActions()
 
     const hasIntegrationsOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const hasShopifyIntegration = hasIntegrationsOfTypes(
@@ -188,16 +185,6 @@ export const Infobar = ({
         isFetchingCustomer,
         isSearching,
     ])
-
-    const handleEditCustomer = useCallback((customer: TicketCustomer) => {
-        setSelectedCustomerForModal(customer)
-        setIsCustomerEditFormOpen(true)
-    }, [])
-
-    const handleSyncToShopify = useCallback((customer: TicketCustomer) => {
-        setSelectedCustomerForModal(customer)
-        setIsCustomerSyncFormOpen(true)
-    }, [])
 
     const handleMergeClick = useCallback(() => {
         logEvent(SegmentEvent.CustomerMergeClicked, {
@@ -303,10 +290,6 @@ export const Infobar = ({
         areSourcesReady(sources, currentContext) &&
         !displaySelectedCustomer
 
-    const modalTitle = selectedCustomerForModal?.name
-        ? `Update customer: ${selectedCustomerForModal.name}`
-        : 'Update customer'
-
     return (
         <InfobarLayout
             isOnNewLayout={isOnNewLayout}
@@ -338,7 +321,7 @@ export const Infobar = ({
 
                 {hasUIVisionMS1 &&
                     !isCurrentlyOnCustomerPage(defaultCustomerId) && (
-                        <TicketTimelineWidgetContainer />
+                        <CurrentTicketTimelineWidgetContainer />
                     )}
 
                 {hasUIVisionMilestone2 &&
@@ -589,38 +572,7 @@ export const Infobar = ({
                     />
                 )}
             </div>
-            {selectedCustomerForModal && (
-                <>
-                    <Modal
-                        isOpen={isCustomerEditFormOpen}
-                        onClose={() => {
-                            setIsCustomerEditFormOpen(false)
-                            setSelectedCustomerForModal(null)
-                        }}
-                    >
-                        <ModalHeader title={modalTitle} />
-                        <CustomerForm
-                            customer={fromJS(selectedCustomerForModal)}
-                            closeModal={() => {
-                                setIsCustomerEditFormOpen(false)
-                                setSelectedCustomerForModal(null)
-                            }}
-                        />
-                    </Modal>
-                    {isCustomerSyncFormOpen && (
-                        <CustomerSyncForm
-                            isCustomerSyncFormOpen={isCustomerSyncFormOpen}
-                            activeCustomer={fromJS(selectedCustomerForModal)}
-                            setIsCustomerSyncFormOpen={(isOpen) => {
-                                setIsCustomerSyncFormOpen(isOpen)
-                                if (!isOpen) {
-                                    setSelectedCustomerForModal(null)
-                                }
-                            }}
-                        />
-                    )}
-                </>
-            )}
+            {customerProfileActionModals}
         </InfobarLayout>
     )
 }

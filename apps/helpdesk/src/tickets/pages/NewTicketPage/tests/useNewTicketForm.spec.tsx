@@ -8,8 +8,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { getCustomer } from '@gorgias/helpdesk-client'
+
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { findAndSetCustomer } from 'state/ticket/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { RestoredLocalState } from '../hooks/useNewTicketDraft'
@@ -17,9 +18,8 @@ import { useNewTicketPageForm } from '../hooks/useNewTicketForm'
 
 jest.mock('../hooks/useNewTicketDraft')
 jest.mock('../hooks/useNewTicketSubmit')
-jest.mock('state/ticket/actions', () => ({
-    ...jest.requireActual('state/ticket/actions'),
-    findAndSetCustomer: jest.fn(),
+jest.mock('@gorgias/helpdesk-client', () => ({
+    getCustomer: jest.fn(),
 }))
 
 const mockSubmit = jest.fn()
@@ -66,6 +66,11 @@ const defaultState = {
 const createWrapper = (state: RootState = defaultState) =>
     (({ children }: { children: React.ReactNode }) => (
         <Provider store={mockStore(state)}>{children}</Provider>
+    )) as unknown as ComponentType
+
+const createWrapperWithStore = (store: ReturnType<typeof mockStore>) =>
+    (({ children }: { children: React.ReactNode }) => (
+        <Provider store={store}>{children}</Provider>
     )) as unknown as ComponentType
 
 describe('useNewTicketPageForm', () => {
@@ -214,22 +219,24 @@ describe('useNewTicketPageForm', () => {
     })
 
     describe('handleRecipientsChange', () => {
-        it('calls findAndSetCustomer when a single "to" recipient with id is set', () => {
-            const mockFindAndSetCustomer = jest.mocked(findAndSetCustomer)
-            const mockAction = { type: 'FIND_AND_SET_CUSTOMER' }
-            mockFindAndSetCustomer.mockReturnValue(mockAction as any)
+        it('sets customer when a single "to" recipient with id is set', async () => {
+            const customer = { id: 42, name: 'Jane Doe' }
+            jest.mocked(getCustomer).mockResolvedValue({
+                data: customer,
+            } as any)
 
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapper(),
             })
 
-            act(() => {
-                result.current.handleRecipientsChange('to', [
+            await act(async () => {
+                await result.current.handleRecipientsChange('to', [
                     { id: 42, address: 'customer@example.com' },
                 ] as any)
             })
 
-            expect(mockFindAndSetCustomer).toHaveBeenCalledWith(42)
+            expect(getCustomer).toHaveBeenCalledWith(42)
+            expect(result.current.ticketState.customer).toEqual(customer)
         })
 
         it('clears customer when "to" recipients are emptied', () => {
@@ -244,9 +251,7 @@ describe('useNewTicketPageForm', () => {
             expect(result.current.ticketState.customer).toBeNull()
         })
 
-        it('does not call findAndSetCustomer when prop is not "to"', () => {
-            const mockFindAndSetCustomer = jest.mocked(findAndSetCustomer)
-
+        it('does not fetch customer when prop is not "to"', () => {
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapper(),
             })
@@ -257,12 +262,10 @@ describe('useNewTicketPageForm', () => {
                 ] as any)
             })
 
-            expect(mockFindAndSetCustomer).not.toHaveBeenCalled()
+            expect(getCustomer).not.toHaveBeenCalled()
         })
 
-        it('does not call findAndSetCustomer when multiple "to" recipients are set', () => {
-            const mockFindAndSetCustomer = jest.mocked(findAndSetCustomer)
-
+        it('does not fetch customer when multiple "to" recipients are set', () => {
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapper(),
             })
@@ -274,7 +277,85 @@ describe('useNewTicketPageForm', () => {
                 ] as any)
             })
 
-            expect(mockFindAndSetCustomer).not.toHaveBeenCalled()
+            expect(getCustomer).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('handleCustomerChange', () => {
+        it('sets the selected customer as the "to" recipient', () => {
+            const store = mockStore(defaultState)
+            const customer = {
+                id: 42,
+                name: 'Jane Doe',
+                email: 'jane@example.com',
+                channels: [],
+            }
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapperWithStore(store),
+            })
+
+            act(() => {
+                result.current.handleCustomerChange(customer as any)
+            })
+
+            expect(result.current.ticketState.customer).toEqual(customer)
+            expect(store.getActions()).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        receivers: {
+                            to: [
+                                {
+                                    id: 42,
+                                    name: 'Jane Doe',
+                                    address: 'jane@example.com',
+                                },
+                            ],
+                        },
+                        replaceAll: false,
+                    }),
+                ]),
+            )
+        })
+
+        it('falls back to the preferred customer channel when the customer has no email', () => {
+            const store = mockStore(defaultState)
+            const customer = {
+                id: 43,
+                name: 'Phone Customer',
+                email: null,
+                channels: [
+                    {
+                        id: 1,
+                        type: 'phone',
+                        address: '+15551234567',
+                        preferred: true,
+                    },
+                ],
+            }
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapperWithStore(store),
+            })
+
+            act(() => {
+                result.current.handleCustomerChange(customer as any)
+            })
+
+            expect(store.getActions()).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        receivers: {
+                            to: [
+                                {
+                                    id: 43,
+                                    name: 'Phone Customer',
+                                    address: '+15551234567',
+                                },
+                            ],
+                        },
+                        replaceAll: false,
+                    }),
+                ]),
+            )
         })
     })
 
@@ -287,6 +368,7 @@ describe('useNewTicketPageForm', () => {
                 assigneeTeam: { id: 2, name: 'Support' } as any,
                 tags: [{ id: 1, name: 'tag1' }] as any,
                 customFields: {},
+                customer: null,
             }
 
             mockUseNewTicketDraft.mockReturnValue({
@@ -326,6 +408,7 @@ describe('useNewTicketPageForm', () => {
                 assigneeTeam: null,
                 tags: [],
                 customFields: {},
+                customer: null,
             }
 
             mockUseNewTicketDraft.mockReturnValue({

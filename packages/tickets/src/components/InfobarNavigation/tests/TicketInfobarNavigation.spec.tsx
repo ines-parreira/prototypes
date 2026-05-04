@@ -134,6 +134,14 @@ describe('TicketInfobarNavigation', () => {
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AutoQA)
     })
 
+    it('should not render the "Auto QA" tab when hasAutoQA is false', async () => {
+        render(<TicketInfobarNavigation hasAutoQA={false} />)
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('star')).not.toBeInTheDocument()
+        })
+    })
+
     it('should render the "Shopify" tab when `useHelpdeskV2MS2Flag` returns true', async () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
         render(<TicketInfobarNavigation hasShopify />)

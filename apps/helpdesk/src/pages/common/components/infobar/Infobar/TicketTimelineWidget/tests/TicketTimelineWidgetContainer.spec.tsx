@@ -1,8 +1,9 @@
+import type { ComponentProps } from 'react'
+
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-// Import the mocked modules
 import { useParams } from 'react-router-dom'
 
 import type { CustomField, TicketCompact } from '@gorgias/helpdesk-queries'
@@ -12,6 +13,7 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { useGetCustomer } from 'models/customer/queries'
 import { useTicketList } from 'timeline/hooks/useTicketList'
 
+import { CurrentTicketTimelineWidgetContainer } from '../CurrentTicketTimelineWidgetContainer'
 import { TicketTimelineWidgetContainer } from '../TicketTimelineWidgetContainer'
 import { useTicketTimelineData } from '../useTicketTimelineData'
 
@@ -115,6 +117,18 @@ const createMockTicket = (
     ...overrides,
 })
 
+function renderTicketTimelineWidgetContainer(
+    props: ComponentProps<typeof TicketTimelineWidgetContainer> = {},
+) {
+    return render(
+        <TicketTimelineWidgetContainer
+            shopperId={123}
+            activeTicketId="1"
+            {...props}
+        />,
+    )
+}
+
 describe('TicketTimelineWidgetContainer', () => {
     const mockToggleTimeline = jest.fn()
 
@@ -168,16 +182,25 @@ describe('TicketTimelineWidgetContainer', () => {
         mockUseParams.mockReturnValue(defaultMockValues.useParams)
         mockUseGetTicket.mockReturnValue(defaultMockValues.useGetTicket)
         mockUseTicketList.mockReturnValue(defaultMockValues.useTicketList)
-        mockUseTicketInfobarNavigation.mockReturnValue(
-            defaultMockValues.useTicketInfobarNavigation,
-        )
-        mockUseCustomFieldDefinitions.mockReturnValue(
-            defaultMockValues.useCustomFieldDefinitions,
-        )
-        mockUseTicketTimelineData.mockReturnValue(
-            defaultMockValues.useTicketTimelineData,
-        )
-        mockUseGetCustomer.mockReturnValue(defaultMockValues.useGetCustomer)
+        mockUseTicketInfobarNavigation.mockReturnValue({
+            activeTab: TicketInfobarTab.Customer,
+            onChangeTab: jest.fn(),
+            onToggle: jest.fn(),
+            isExpanded: true,
+            editingWidgetType: null,
+            onSetEditingWidgetType: jest.fn(),
+        })
+        mockUseCustomFieldDefinitions.mockReturnValue({
+            data: { data: [] as CustomField[] },
+        } as any)
+        mockUseTicketTimelineData.mockReturnValue({
+            displayedTickets: [],
+            allEnrichedTickets: [],
+            totalNumber: 0,
+            openTicketsNumber: 0,
+            snoozedTicketsNumber: 0,
+        })
+        mockUseGetCustomer.mockReturnValue({ data: undefined } as any)
     })
 
     it('should render TicketTimelineWidget with loading state', () => {
@@ -187,7 +210,7 @@ describe('TicketTimelineWidgetContainer', () => {
             isError: false,
         })
 
-        render(<TicketTimelineWidgetContainer />)
+        renderTicketTimelineWidgetContainer()
 
         expect(screen.getByText('Tickets')).toBeInTheDocument()
         expect(screen.getByLabelText('Loading')).toBeInTheDocument()
@@ -243,7 +266,7 @@ describe('TicketTimelineWidgetContainer', () => {
             snoozedTicketsNumber: 0,
         })
 
-        render(<TicketTimelineWidgetContainer />)
+        renderTicketTimelineWidgetContainer()
 
         expect(screen.getByText('Tickets')).toBeInTheDocument()
         expect(screen.getByText('2')).toBeInTheDocument()
@@ -271,7 +294,7 @@ describe('TicketTimelineWidgetContainer', () => {
             },
         } as any)
 
-        render(<TicketTimelineWidgetContainer />)
+        renderTicketTimelineWidgetContainer()
 
         expect(mockUseGetCustomer).toHaveBeenCalledWith(123, { enabled: true })
         expect(
@@ -288,7 +311,7 @@ describe('TicketTimelineWidgetContainer', () => {
             snoozedTicketsNumber: 0,
         })
 
-        render(<TicketTimelineWidgetContainer />)
+        renderTicketTimelineWidgetContainer()
 
         expect(mockUseGetCustomer).toHaveBeenCalledWith(123, {
             enabled: false,
@@ -316,7 +339,7 @@ describe('TicketTimelineWidgetContainer', () => {
             },
         } as any)
 
-        render(<TicketTimelineWidgetContainer />)
+        renderTicketTimelineWidgetContainer()
 
         expect(
             screen.getByText("This is Jane's first ticket"),
@@ -339,7 +362,7 @@ describe('TicketTimelineWidgetContainer', () => {
             },
         } as any)
 
-        render(<TicketTimelineWidgetContainer />)
+        renderTicketTimelineWidgetContainer()
 
         expect(mockUseTicketTimelineData).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -348,10 +371,8 @@ describe('TicketTimelineWidgetContainer', () => {
         )
     })
 
-    it('should pass activeTicketId from params to useTicketTimelineData', () => {
-        mockUseParams.mockReturnValue({ ticketId: '456' })
-
-        render(<TicketTimelineWidgetContainer />)
+    it('should pass activeTicketId prop to useTicketTimelineData', () => {
+        renderTicketTimelineWidgetContainer({ activeTicketId: '456' })
 
         expect(mockUseTicketTimelineData).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -365,7 +386,7 @@ describe('TicketTimelineWidgetContainer', () => {
             data: undefined,
         } as any)
 
-        render(<TicketTimelineWidgetContainer />)
+        renderTicketTimelineWidgetContainer()
 
         expect(mockUseTicketTimelineData).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -432,7 +453,7 @@ describe('TicketTimelineWidgetContainer', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            render(<TicketTimelineWidgetContainer />)
+            renderTicketTimelineWidgetContainer()
 
             const showAllButton = screen.getByText('Show all')
             await act(() => user.click(showAllButton))
@@ -500,7 +521,7 @@ describe('TicketTimelineWidgetContainer', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            render(<TicketTimelineWidgetContainer />)
+            renderTicketTimelineWidgetContainer()
 
             const showAllButton = screen.getByText('Show all')
             await act(() => user.click(showAllButton))
@@ -559,7 +580,7 @@ describe('TicketTimelineWidgetContainer', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            render(<TicketTimelineWidgetContainer />)
+            renderTicketTimelineWidgetContainer()
 
             // Click on first ticket
             const firstTicketCard = screen
@@ -621,7 +642,7 @@ describe('TicketTimelineWidgetContainer', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            render(<TicketTimelineWidgetContainer />)
+            renderTicketTimelineWidgetContainer()
 
             // Initially, sidepanel should not be visible
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
@@ -703,7 +724,7 @@ describe('TicketTimelineWidgetContainer', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            render(<TicketTimelineWidgetContainer />)
+            renderTicketTimelineWidgetContainer()
 
             // Click on first ticket to open sidepanel
             const firstTicketCard = screen
@@ -797,7 +818,7 @@ describe('TicketTimelineWidgetContainer', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            render(<TicketTimelineWidgetContainer />)
+            renderTicketTimelineWidgetContainer()
 
             // Click on second ticket to open sidepanel
             const secondTicketCard = screen
@@ -876,7 +897,7 @@ describe('TicketTimelineWidgetContainer', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            render(<TicketTimelineWidgetContainer />)
+            renderTicketTimelineWidgetContainer()
 
             // Click on first ticket to open sidepanel
             const firstTicketCard = screen
@@ -944,7 +965,7 @@ describe('TicketTimelineWidgetContainer', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            render(<TicketTimelineWidgetContainer />)
+            renderTicketTimelineWidgetContainer()
 
             // Click on second (last) ticket to open sidepanel
             const secondTicketCard = screen
@@ -963,5 +984,61 @@ describe('TicketTimelineWidgetContainer', () => {
             const nextButton = screen.getByRole('button', { name: /next/i })
             expect(nextButton).toBeDisabled()
         })
+    })
+})
+
+describe('CurrentTicketTimelineWidgetContainer', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseParams.mockReturnValue({ ticketId: '456' })
+        mockUseGetTicket.mockReturnValue({
+            data: {
+                data: {
+                    id: 456,
+                    customer: { id: 123, email: 'test@example.com' },
+                },
+            },
+        } as any)
+        mockUseTicketList.mockReturnValue({
+            tickets: [],
+            isLoading: false,
+            isError: false,
+        })
+        mockUseTicketInfobarNavigation.mockReturnValue({
+            activeTab: TicketInfobarTab.Customer,
+            onChangeTab: jest.fn(),
+            onToggle: jest.fn(),
+            isExpanded: true,
+            editingWidgetType: null,
+            onSetEditingWidgetType: jest.fn(),
+        })
+        mockUseCustomFieldDefinitions.mockReturnValue({
+            data: { data: [] as CustomField[] },
+        } as any)
+        mockUseTicketTimelineData.mockReturnValue({
+            displayedTickets: [],
+            allEnrichedTickets: [],
+            totalNumber: 0,
+            openTicketsNumber: 0,
+            snoozedTicketsNumber: 0,
+        })
+        mockUseGetCustomer.mockReturnValue({ data: undefined } as any)
+    })
+
+    it('derives the shopper and active ticket from the current ticket route', () => {
+        render(<CurrentTicketTimelineWidgetContainer />)
+
+        expect(mockUseGetTicket).toHaveBeenCalledWith(456, undefined, {
+            query: {
+                enabled: true,
+            },
+        })
+        expect(mockUseTicketList).toHaveBeenCalledWith(123)
+        expect(mockUseTicketTimelineData).toHaveBeenCalledWith(
+            expect.objectContaining({
+                activeTicketId: '456',
+            }),
+        )
     })
 })

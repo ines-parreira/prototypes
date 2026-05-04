@@ -3,6 +3,7 @@ export { InfobarTicketDetailsHeaderContainer } from './components/InfobarTicketD
 export { TicketInfobarTicketDetailsTagsContainer } from './components/InfobarTicketDetails/components/InfobarTicketTags/TicketInfobarTicketDetailsTagsContainer'
 export { InfobarTicketFields } from './components/InfobarTicketDetails/components/InfobarTicketFields/InfobarTicketFields'
 export { InfobarTicketDetailsContainer } from './components/InfobarTicketDetails/components/InfobarTicketDetailsContainer'
+export { InfobarTicketCustomerDetailsContainer } from './components/InfobarTicketCustomerDetails/components/InfobarTicketCustomerDetailsContainer'
 export { useTicketFieldsStore } from './components/InfobarTicketDetails/components/InfobarTicketFields/store/useTicketFieldsStore'
 export { useTicketFields } from './components/InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFields'
 export type { TicketFieldsState } from './components/InfobarTicketDetails/components/InfobarTicketFields/store/useTicketFieldsStore'
@@ -16,6 +17,10 @@ export type { FieldEventHandlerParams } from './components/InfobarTicketDetails/
 export { TagsMultiSelect } from './components/InfobarTicketDetails/components/InfobarTicketTags/TagsMultiSelect'
 export type { TagsMultiSelectProps } from './components/InfobarTicketDetails/components/InfobarTicketTags/TagsMultiSelect'
 export { InfobarTicketCustomerDetails } from './components/InfobarTicketCustomerDetails/InfobarTicketCustomerDetails'
+export { SearchAndPreviewCustomersPanel } from './components/InfobarTicketCustomerDetails/components/SearchAndPreviewCustomersPanel/SearchAndPreviewCustomersPanel'
+export { InfobarCustomerFields } from './components/InfobarCustomerFields/InfobarCustomerFields'
+export { InfobarTicketCustomerHeader } from './components/InfobarTicketCustomerHeader/InfobarTicketCustomerHeader'
+export { NewTicketInfobarTicketCustomerHeader } from './components/InfobarTicketCustomerHeader/NewTicketInfobarTicketCustomerHeader'
 export { MultiLevelSelect } from './components/MultiLevelSelect'
 export { TeamAssignee } from './components/TicketAssignee'
 export { TeamAssigneeSelect } from './components/TicketAssignee'
@@ -23,7 +28,6 @@ export { UserAssigneeSelect } from './components/TicketAssignee'
 export { PrioritySelect } from './components/TicketPriority'
 export { TicketHeader } from './components/TicketHeader/TicketHeader'
 export { TicketInfobarNavigation } from './components/InfobarNavigation/TicketInfobarNavigation'
-export { NewTicketInfobarNavigation } from './components/InfobarNavigation/NewTicketInfobarNavigation'
 
 export type {
     EnrichedTicket,

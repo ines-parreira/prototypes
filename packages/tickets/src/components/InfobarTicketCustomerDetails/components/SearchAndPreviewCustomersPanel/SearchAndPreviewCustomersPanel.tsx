@@ -22,8 +22,9 @@ export type SearchCustomersPanelProps = {
     isOpen: boolean
     onClose: () => void
     onSetCustomer: (customer: Customer) => void
-    onMergeCustomer: (customer: Customer) => void
+    onMergeCustomer?: (customer: Customer) => void
     previewedCustomer?: Customer | null
+    setCustomerLabel?: string
 }
 
 export function SearchAndPreviewCustomersPanel({
@@ -32,6 +33,7 @@ export function SearchAndPreviewCustomersPanel({
     onSetCustomer,
     onMergeCustomer,
     previewedCustomer,
+    setCustomerLabel = 'Switch customer',
 }: SearchCustomersPanelProps) {
     const [mode, setMode] = useState<'search' | 'preview'>('search')
     const [previewCustomer, setPreviewCustomer] = useState<Customer | null>(
@@ -128,6 +130,7 @@ export function SearchAndPreviewCustomersPanel({
                                     onSetCustomer={handleSetCustomer}
                                     onPreviewCustomer={handlePreviewCustomer}
                                     onMergeCustomer={onMergeCustomer}
+                                    setCustomerLabel={setCustomerLabel}
                                 />
                             </>
                         )}
@@ -158,6 +161,7 @@ export function SearchAndPreviewCustomersPanel({
                                                 handlePreviewCustomer
                                             }
                                             onMergeCustomer={onMergeCustomer}
+                                            setCustomerLabel={setCustomerLabel}
                                         />
                                     ))}
                                 </Box>
@@ -174,6 +178,7 @@ export function SearchAndPreviewCustomersPanel({
                 }}
                 onSetCustomer={handleSetCustomer}
                 onMergeCustomer={onMergeCustomer}
+                setCustomerLabel={setCustomerLabel}
             />
         )
     }, [
@@ -190,6 +195,7 @@ export function SearchAndPreviewCustomersPanel({
         searchResults,
         searchError,
         onMergeCustomer,
+        setCustomerLabel,
     ])
 
     return (

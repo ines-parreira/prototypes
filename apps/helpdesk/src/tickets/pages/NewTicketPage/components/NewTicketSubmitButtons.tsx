@@ -1,28 +1,45 @@
+import {
+    getMacroTicketFieldValues,
+    useTicketFieldsValidation,
+} from '@repo/tickets'
 import { shortcutManager, shortcuts } from '@repo/utils'
 
-import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import type { Macro } from '@gorgias/helpdesk-types'
 
+import { TicketStatus } from 'business/types/ticket'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import css from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons.less'
+import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import {
     canSend as getCanSend,
     hasContent as getHasContent,
 } from 'state/newMessage/selectors'
-import { hasContentlessAction as getHasContentlessAction } from 'state/ticket/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import {
+    getAppliedMacro,
+    hasContentlessAction as getHasContentlessAction,
+} from 'state/ticket/selectors'
 
 type Props = {
     subject: string
+    submit: (args: SubmitArgs) => any
 }
 
-export function NewTicketSubmitButtons({ subject }: Props) {
+export function NewTicketSubmitButtons({ subject, submit }: Props) {
+    const dispatch = useAppDispatch()
     const { isTranslationPending } = useOutboundTranslationContext()
+    const appliedMacro = useAppSelector(getAppliedMacro)
 
     const hasContent = useAppSelector(getHasContent)
     const newMessage = useAppSelector((state) => state.newMessage)
     const canSend = useAppSelector(getCanSend)
     const hasContentlessAction = useAppSelector(getHasContentlessAction)
+    const { validateTicketFields } = useTicketFieldsValidation()
 
     const isLoading = newMessage.getIn([
         '_internal',
@@ -33,10 +50,31 @@ export function NewTicketSubmitButtons({ subject }: Props) {
     const showConfirm = !subject
     const isButtonDisabled = !canSend || isTranslationPending
     const text = hasContent || !hasContentlessAction ? 'Send' : 'Apply Macro'
+    const titleConfirmation =
+        'Are you sure you want to create a ticket with no subject?'
+
+    const handleSendAndCloseTicket = () => {
+        const { hasErrors } = validateTicketFields(
+            getMacroTicketFieldValues(appliedMacro?.toJS() as Macro),
+        )
+
+        if (hasErrors) {
+            dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'This ticket cannot be closed. Please fill the required fields.',
+                }),
+            )
+            return
+        }
+
+        submit({ status: TicketStatus.Closed })
+    }
 
     return (
         <div className={`${css.component} d-flex align-items-center`}>
-            <div className={css.buttons} id="submit-button-div">
+            <Box className={css.buttons} id="submit-button-div" gap="xs">
                 {!showConfirm ? (
                     <Button
                         id="submit-button"
@@ -51,7 +89,7 @@ export function NewTicketSubmitButtons({ subject }: Props) {
                     <ConfirmButton
                         id="submit-button"
                         type="submit"
-                        confirmationContent="Are you sure you want to create a ticket with no subject?"
+                        confirmationContent={titleConfirmation}
                         isDisabled={isButtonDisabled}
                         tabIndex={5}
                         isLoading={isLoading}
@@ -72,7 +110,44 @@ export function NewTicketSubmitButtons({ subject }: Props) {
                         />
                     </Tooltip>
                 )}
-            </div>
+                {!showConfirm ? (
+                    <Button
+                        id="submit-and-close-button"
+                        type="button"
+                        variant="secondary"
+                        isDisabled={isButtonDisabled}
+                        onClick={handleSendAndCloseTicket}
+                        isLoading={isLoading}
+                    >
+                        {`${text} & Close`}
+                    </Button>
+                ) : (
+                    <ConfirmButton
+                        id="submit-and-close-button"
+                        type="button"
+                        confirmationContent={titleConfirmation}
+                        intent="secondary"
+                        isDisabled={isButtonDisabled}
+                        onConfirm={handleSendAndCloseTicket}
+                        isLoading={isLoading}
+                    >
+                        {`${text} & Close`}
+                    </ConfirmButton>
+                )}
+                {canSend && (
+                    <Tooltip
+                        placement="top"
+                        trigger={<span id="submit-and-close-button-shortcut" />}
+                    >
+                        <TooltipContent
+                            shortcut={shortcutManager.getActionKeys(
+                                shortcuts.TicketDetailContainer.actions
+                                    .SUBMIT_CLOSE_TICKET,
+                            )}
+                        />
+                    </Tooltip>
+                )}
+            </Box>
         </div>
     )
 }

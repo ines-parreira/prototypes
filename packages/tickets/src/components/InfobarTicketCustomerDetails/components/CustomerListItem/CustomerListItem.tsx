@@ -20,7 +20,8 @@ export type CustomerListItemProps = {
     isDuplicate?: boolean
     onSetCustomer: (customer: Customer) => void
     onPreviewCustomer: (customer: Customer) => void
-    onMergeCustomer: (customer: Customer) => void
+    onMergeCustomer?: (customer: Customer) => void
+    setCustomerLabel?: string
 }
 
 function isCustomerWithHighlights(
@@ -35,6 +36,7 @@ export function CustomerListItem({
     onSetCustomer,
     onPreviewCustomer,
     onMergeCustomer,
+    setCustomerLabel = 'Switch customer',
 }: CustomerListItemProps) {
     const transformedCustomer = isCustomerWithHighlights(customer)
         ? customerHighlightsTransform(customer)
@@ -125,19 +127,21 @@ export function CustomerListItem({
                     )}
                 </Box>
                 <Box gap="xxxs" marginTop="xxxs">
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => onMergeCustomer(originalCustomer)}
-                    >
-                        Merge
-                    </Button>
+                    {onMergeCustomer && (
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => onMergeCustomer(originalCustomer)}
+                        >
+                            Merge
+                        </Button>
+                    )}
                     <Button
                         size="sm"
                         variant="secondary"
                         onClick={() => onSetCustomer(originalCustomer)}
                     >
-                        Switch customer
+                        {setCustomerLabel}
                     </Button>
                     <Button
                         size="sm"

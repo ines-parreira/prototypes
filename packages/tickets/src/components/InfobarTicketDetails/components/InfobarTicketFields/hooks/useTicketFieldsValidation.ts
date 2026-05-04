@@ -11,7 +11,7 @@ import { mergeTicketFieldsValues } from '../utils/mergeTicketFieldsValues'
 import { useCustomFieldDefinitions } from './useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from './useCustomFieldsConditionsEvaluationResults'
 
-export function useTicketFieldsValidation(ticketId: number) {
+export function useTicketFieldsValidation(ticketId?: number) {
     const fields = useTicketFieldsStore((state) => state.fields)
     const updateFieldError = useTicketFieldsStore(
         (state) => state.updateFieldError,

@@ -2,7 +2,7 @@ import { Handle, Panel } from '@repo/layout'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@repo/testing'
 import {
-    NewTicketInfobarNavigation,
+    TicketInfobarNavigation,
     TicketsLegacyBridgeProvider,
 } from '@repo/tickets'
 import { screen, waitFor } from '@testing-library/react'
@@ -22,6 +22,8 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
+import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
+
 import { NewTicketPage } from '../NewTicketPage'
 
 jest.mock('@repo/navigation', () => ({
@@ -37,9 +39,9 @@ jest.mock('@repo/layout', () => ({
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
-    NewTicketInfobarNavigation: jest.fn(() => (
+    TicketInfobarNavigation: jest.fn(() => (
         <div role="navigation" aria-label="Infobar Navigation">
-            NewTicketInfobarNavigation
+            TicketInfobarNavigation
         </div>
     )),
 }))
@@ -65,6 +67,11 @@ jest.mock('pages/tickets/detail/hooks/useDraftTicketActivityTracking', () =>
     jest.fn(),
 )
 
+jest.mock('state/integrations/selectors', () => ({
+    ...jest.requireActual('state/integrations/selectors'),
+    makeHasIntegrationOfTypes: jest.fn(),
+}))
+
 jest.mock('providers/OutboundTranslationProvider', () => ({
     OutboundTranslationProvider: jest.fn(({ children }) => <>{children}</>),
     useOutboundTranslationContext: jest.fn(() => ({
@@ -74,7 +81,9 @@ jest.mock('providers/OutboundTranslationProvider', () => ({
 
 const mockedPanel = jest.mocked(Panel)
 const mockedHandle = jest.mocked(Handle)
-const mockedNewTicketInfobarNavigation = jest.mocked(NewTicketInfobarNavigation)
+const mockedTicketInfobarNavigation = jest.mocked(TicketInfobarNavigation)
+const mockMakeHasIntegrationOfTypes = jest.mocked(makeHasIntegrationOfTypes)
+const onChangeTab = jest.fn()
 
 const team1 = mockTeam({ id: 1, name: 'Support', decoration: { emoji: '🛠️' } })
 const team2 = mockTeam({ id: 2, name: 'Sales', decoration: { emoji: '💰' } })
@@ -116,6 +125,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
+    mockMakeHasIntegrationOfTypes.mockReturnValue(() => false)
     server.use(
         mockListTeams.handler,
         mockListUsers.handler,
@@ -211,6 +221,7 @@ describe('NewTicketPage', () => {
         beforeEach(() => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,
+                onChangeTab,
             } as any)
         })
 
@@ -235,6 +246,17 @@ describe('NewTicketPage', () => {
             expect(
                 screen.getByRole('navigation', { name: 'Infobar Navigation' }),
             ).toBeInTheDocument()
+            await waitForSelectsToLoad()
+        })
+
+        it('selects the customer infobar tab on page load', async () => {
+            renderComponent()
+
+            await waitFor(() => {
+                expect(onChangeTab).toHaveBeenCalledWith(
+                    TicketInfobarTab.Customer,
+                )
+            })
             await waitForSelectsToLoad()
         })
 
@@ -266,6 +288,7 @@ describe('NewTicketPage', () => {
         beforeEach(() => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: false,
+                onChangeTab,
             } as any)
         })
 
@@ -305,6 +328,7 @@ describe('NewTicketPage', () => {
         beforeEach(() => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,
+                onChangeTab,
             } as any)
         })
 
@@ -331,10 +355,17 @@ describe('NewTicketPage', () => {
             await waitForSelectsToLoad()
         })
 
-        it('renders NewTicketInfobarNavigation', async () => {
+        it('renders TicketInfobarNavigation', async () => {
             renderComponent()
 
-            expect(mockedNewTicketInfobarNavigation).toHaveBeenCalled()
+            expect(mockedTicketInfobarNavigation).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    hasAutoQA: false,
+                    hasShopify: false,
+                    hasTimeline: false,
+                }),
+                {},
+            )
             await waitForSelectsToLoad()
         })
 
@@ -342,6 +373,7 @@ describe('NewTicketPage', () => {
             beforeEach(() => {
                 useTicketInfobarNavigationMock.mockReturnValue({
                     isExpanded: true,
+                    onChangeTab,
                 } as any)
             })
 
@@ -475,6 +507,7 @@ describe('NewTicketPage', () => {
         beforeEach(() => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,
+                onChangeTab,
             } as any)
         })
 
@@ -482,6 +515,7 @@ describe('NewTicketPage', () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,
                 activeTab: TicketInfobarTab.Customer,
+                onChangeTab,
             } as any)
 
             renderComponent()
@@ -501,6 +535,7 @@ describe('NewTicketPage', () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,
                 activeTab: TicketInfobarTab.Timeline,
+                onChangeTab,
             } as any)
 
             renderComponent()

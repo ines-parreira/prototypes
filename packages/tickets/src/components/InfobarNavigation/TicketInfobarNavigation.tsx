@@ -27,6 +27,7 @@ import { TicketInfobarNavigationToggle } from './components/TicketInfobarNavigat
 
 type TicketInfobarNavigationProps = {
     hasAIFeedback?: boolean
+    hasAutoQA?: boolean
     hasBigCommerce?: boolean
     hasCustomIntegrations?: boolean
     hasMagento?: boolean
@@ -40,6 +41,7 @@ type TicketInfobarNavigationProps = {
 
 export function TicketInfobarNavigation({
     hasAIFeedback,
+    hasAutoQA = true,
     hasBigCommerce,
     hasCustomIntegrations,
     hasMagento,
@@ -186,13 +188,15 @@ export function TicketInfobarNavigation({
                         }}
                     />
                 )}
-                <InfobarNavigationItem
-                    name={TicketInfobarTab.AutoQA}
-                    icon="star"
-                    tooltip={{
-                        title: 'Auto QA',
-                    }}
-                />
+                {hasAutoQA && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.AutoQA}
+                        icon="star"
+                        tooltip={{
+                            title: 'Auto QA',
+                        }}
+                    />
+                )}
             </ButtonGroup>
             {hasUIVisionMilestone2 && currentUser && isAdmin(currentUser) && (
                 <Menu

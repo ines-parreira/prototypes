@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { Box, SidePanel } from '@gorgias/axiom'
+import { SidePanel } from '@gorgias/axiom'
 import type { Customer, TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { InfobarCustomerFields } from '../InfobarCustomerFields/InfobarCustomerFields'
@@ -8,6 +8,7 @@ import { InfobarTicketCustomerHeader } from '../InfobarTicketCustomerHeader/Info
 import { useGetTicketData } from '../InfobarTicketDetails/components/InfobarTicketTags/hooks/useGetTicketData'
 import { MergeCustomersModal } from '../MergeCustomersModal/MergeCustomersModal'
 import { DuplicateCustomer } from './components/DuplicateCustomer/DuplicateCustomer'
+import { InfobarTicketCustomerDetailsContainer } from './components/InfobarTicketCustomerDetailsContainer'
 import { CustomerPreview } from './components/SearchAndPreviewCustomersPanel/components/CustomerPreview'
 import { SearchAndPreviewCustomersPanel } from './components/SearchAndPreviewCustomersPanel/SearchAndPreviewCustomersPanel'
 import { SwitchCustomerConfirmationModal } from './components/SwitchCustomerConfirmationModal/SwitchCustomerConfirmationModal'
@@ -83,13 +84,7 @@ export function InfobarTicketCustomerDetails({
     }, [])
 
     return (
-        <Box
-            className={css.container}
-            flexDirection="column"
-            gap="xs"
-            paddingTop="md"
-            paddingBottom="sm"
-        >
+        <InfobarTicketCustomerDetailsContainer>
             <InfobarTicketCustomerHeader
                 customer={ticketCustomer}
                 onOpenMergePanel={() => {
@@ -149,6 +144,6 @@ export function InfobarTicketCustomerDetails({
                     onMerge={closeAllPanels}
                 />
             )}
-        </Box>
+        </InfobarTicketCustomerDetailsContainer>
     )
 }

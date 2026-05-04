@@ -67,6 +67,7 @@ export type RestoredLocalState = {
     assigneeTeam: TicketTeam | null
     tags: TicketTag[]
     customFields: TicketFieldsState
+    customer: Ticket['customer'] | null
 }
 
 export function useNewTicketDraft({
@@ -292,11 +293,13 @@ export function useNewTicketDraft({
             priority === restoredLocalState.priority &&
             _isEqual(assigneeUser, restoredLocalState.assigneeUser) &&
             _isEqual(assigneeTeam, restoredLocalState.assigneeTeam) &&
+            _isEqual(customer, restoredLocalState.customer) &&
             _isEqual(tags, restoredLocalState.tags)
         )
     }, [
         assigneeTeam,
         assigneeUser,
+        customer,
         priority,
         restoredLocalState,
         subject,
@@ -388,6 +391,7 @@ export function useNewTicketDraft({
                 assigneeTeam: assignee_team as TicketTeam | null,
                 tags: tags as TicketTag[],
                 customFields: (custom_fields ?? {}) as TicketFieldsState,
+                customer,
             })
         }
     }, [dispatch, storedDraft, syncCustomFieldsStore])

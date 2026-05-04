@@ -3,9 +3,6 @@ import { useCallback, useState } from 'react'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import type { EnrichedTicket } from '@repo/tickets'
 import { TicketTimelineWidget } from '@repo/tickets'
-import { useParams } from 'react-router-dom'
-
-import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -30,18 +27,16 @@ function getCustomerName(
     return customer.name || customer.firstname
 }
 
-export function TicketTimelineWidgetContainer() {
-    const { ticketId: activeTicketId } = useParams<{ ticketId?: string }>()
-    const ticketId = activeTicketId ? Number(activeTicketId) : undefined
-    const { onChangeTab, onToggle, isExpanded } = useTicketInfobarNavigation()
+type TicketTimelineWidgetContainerProps = {
+    shopperId?: number
+    activeTicketId?: string
+}
 
-    // Get customer ID from the current ticket
-    const { data: currentTicketData } = useGetTicket(ticketId!, undefined, {
-        query: {
-            enabled: ticketId !== undefined,
-        },
-    })
-    const shopperId = currentTicketData?.data?.customer?.id
+export function TicketTimelineWidgetContainer({
+    shopperId,
+    activeTicketId,
+}: TicketTimelineWidgetContainerProps) {
+    const { onChangeTab, onToggle, isExpanded } = useTicketInfobarNavigation()
     const { tickets, isLoading: isLoadingTickets } = useTicketList(shopperId)
 
     const { data: customFieldDefinitionsData } = useCustomFieldDefinitions({

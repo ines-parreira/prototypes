@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { fromJS } from 'immutable'
+
+import { getCustomer } from '@gorgias/helpdesk-client'
 import type {
     Team,
+    TicketCustomer,
     TicketPriority,
     TicketTag,
     TicketTeam,
@@ -11,7 +15,10 @@ import type {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { Ticket } from 'models/ticket/types'
-import { findAndSetCustomer } from 'state/ticket/actions'
+import { setReceivers } from 'state/newMessage/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { setCustomer } from 'state/ticket/actions'
 import type { Receiver } from 'state/ticket/utils'
 import { useNewTicketDraft } from 'tickets/pages/NewTicketPage/hooks/useNewTicketDraft'
 import { useNewTicketSubmit } from 'tickets/pages/NewTicketPage/hooks/useNewTicketSubmit'
@@ -23,6 +30,29 @@ type NewTicketState = {
     assigneeTeam: TicketTeam | null
     tags: TicketTag[]
     customer: Ticket['customer'] | null
+}
+
+function getCustomerReceiverAddress(customer: TicketCustomer) {
+    return (
+        customer.email ??
+        customer.channels.find((channel) => channel.preferred)?.address ??
+        customer.channels.find((channel) => channel.address)?.address ??
+        null
+    )
+}
+
+function getCustomerReceiver(customer: TicketCustomer): Receiver | null {
+    const address = getCustomerReceiverAddress(customer)
+
+    if (!address) {
+        return null
+    }
+
+    return {
+        id: customer.id,
+        name: customer.name ?? '',
+        address,
+    }
 }
 
 export function useNewTicketPageForm() {
@@ -54,9 +84,10 @@ export function useNewTicketPageForm() {
                 assigneeUser: restoredLocalState.assigneeUser,
                 assigneeTeam: restoredLocalState.assigneeTeam,
                 tags: restoredLocalState.tags,
+                customer: restoredLocalState.customer,
             }))
         }
-    }, [restoredLocalState])
+    }, [restoredLocalState, setTicketState])
 
     const { submit } = useNewTicketSubmit({
         subject: ticketState.subject,
@@ -95,19 +126,47 @@ export function useNewTicketPageForm() {
     }, [])
 
     const handleRecipientsChange = useCallback(
-        (prop: string, recipients: Receiver[]) => {
-            if (
-                prop === 'to' &&
-                recipients.length === 1 &&
-                recipients[0].id !== undefined
-            ) {
-                dispatch(findAndSetCustomer(recipients[0].id!))
+        async (prop: string, recipients: Receiver[]) => {
+            const hasRecipient =
+                recipients.length === 1 && recipients[0].id !== undefined
+            if (prop === 'to' && hasRecipient) {
+                try {
+                    const { data } = await getCustomer(
+                        recipients[0].id as number,
+                    )
+                    dispatch(setCustomer(fromJS(data)))
+                    setTicketState((prev) => ({
+                        ...prev,
+                        customer: data as unknown as Ticket['customer'],
+                    }))
+                } catch {
+                    dispatch(
+                        notify({
+                            message: 'Failed to fetch customer',
+                            status: NotificationStatus.Error,
+                        }),
+                    )
+                }
             } else if (prop === 'to' && recipients.length === 0) {
+                dispatch(setCustomer(fromJS(null)))
                 setTicketState((prev) => ({ ...prev, customer: null }))
             }
         },
         [dispatch],
     )
+
+    const handleCustomerChange = (customer: TicketCustomer) => {
+        const receiver = getCustomerReceiver(customer)
+
+        dispatch(setCustomer(fromJS(customer)))
+        if (receiver) {
+            dispatch(setReceivers({ to: [receiver] }, false))
+        }
+        setTicketState((prev) => ({
+            ...prev,
+            customer: customer as unknown as Ticket['customer'],
+        }))
+    }
 
     return {
         ticketState,
@@ -117,6 +176,7 @@ export function useNewTicketPageForm() {
         handleTeamChange,
         handleTagsChange,
         handleRecipientsChange,
+        handleCustomerChange,
         submit,
         temporaryId,
     }

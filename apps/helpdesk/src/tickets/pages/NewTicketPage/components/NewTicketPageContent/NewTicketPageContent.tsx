@@ -86,7 +86,10 @@ export function NewTicketPageContent({
                                 onChangeMacrosActive={onChangeActive}
                                 onChangeQuery={onChangeQuery}
                             />
-                            <NewTicketSubmitButtons subject={subject} />
+                            <NewTicketSubmitButtons
+                                subject={subject}
+                                submit={submit}
+                            />
                         </ReplyForm>
                     </EditorForm>
                 </EditorContainer>

@@ -26,8 +26,8 @@ import { TimelineSidePanelPreview } from './TimelineSidePanelPreview'
 import css from './TicketTimeline.less'
 
 type Props = {
-    shopperId: number
-    activeTicketId: string
+    shopperId?: number
+    activeTicketId?: string
     channelToCommunicationIcon: ChannelToIconFn
 }
 
@@ -44,7 +44,7 @@ export function TimelineContent({
         isFetchingNextPage,
     } = useTicketList(shopperId)
 
-    const { data: customerData } = useGetCustomer(shopperId, {
+    const { data: customerData } = useGetCustomer(shopperId ?? 0, {
         enabled: !!shopperId,
     })
 

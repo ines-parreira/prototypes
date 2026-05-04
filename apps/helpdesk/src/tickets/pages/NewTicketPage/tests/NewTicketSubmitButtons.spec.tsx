@@ -1,12 +1,33 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { TicketStatus } from 'business/types/ticket'
 import type { OutboundTranslationContextValue } from 'providers/OutboundTranslationProvider'
 import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import { NewTicketSubmitButtons } from '../components/NewTicketSubmitButtons'
+
+jest.mock('@repo/tickets', () => {
+    const getMockValidateTicketFields = jest.fn(() => ({
+        hasErrors: false,
+        invalidFieldIds: [],
+    }))
+
+    return {
+        ...jest.requireActual('@repo/tickets'),
+        getMacroTicketFieldValues: jest.fn(() => ({
+            1: 'macro value',
+        })),
+        useTicketFieldsValidation: () => ({
+            validateTicketFields: getMockValidateTicketFields,
+            isValidating: false,
+        }),
+        getMockValidateTicketFields,
+    }
+})
 
 jest.mock('providers/OutboundTranslationProvider', () => ({
     useOutboundTranslationContext: jest.fn().mockReturnValue({
@@ -22,8 +43,8 @@ jest.mock('@gorgias/axiom', () => ({
 
 jest.mock('pages/common/components/button/ConfirmButton', () => ({
     __esModule: true,
-    default: jest.fn(({ children, isDisabled, isLoading }) => (
-        <button disabled={isDisabled} aria-busy={isLoading}>
+    default: jest.fn(({ children, isDisabled, isLoading, onConfirm }) => (
+        <button disabled={isDisabled} aria-busy={isLoading} onClick={onConfirm}>
             {children}
         </button>
     )),
@@ -33,6 +54,12 @@ const useOutboundTranslationContext = jest.mocked(
     jest.requireMock<typeof import('providers/OutboundTranslationProvider')>(
         'providers/OutboundTranslationProvider',
     ).useOutboundTranslationContext,
+)
+const mockGetMacroTicketFieldValues = jest.mocked(
+    jest.requireMock('@repo/tickets').getMacroTicketFieldValues,
+)
+const mockValidateTicketFields = jest.mocked(
+    jest.requireMock('@repo/tickets').getMockValidateTicketFields,
 )
 
 const buildNewMessageState = ({
@@ -76,18 +103,22 @@ const buildNewMessageState = ({
 
 const buildTicketState = ({
     hasContentlessAction = false,
+    appliedMacro = null,
 }: {
     hasContentlessAction?: boolean
+    appliedMacro?: unknown
 } = {}) =>
     fromJS({
         subject: '',
         tags: [],
         state: {
-            appliedMacro: hasContentlessAction
-                ? {
-                      actions: [{ name: 'set-tags' }],
-                  }
-                : null,
+            appliedMacro:
+                appliedMacro ??
+                (hasContentlessAction
+                    ? {
+                          actions: [{ name: 'set-tags' }],
+                      }
+                    : null),
         },
     })
 
@@ -99,6 +130,7 @@ const buildState = (
         isLoading?: boolean
         isForward?: boolean
         hasContentlessAction?: boolean
+        appliedMacro?: unknown
     } = {},
 ) =>
     ({
@@ -115,16 +147,27 @@ const buildState = (
 const renderComponent = (
     subject: string,
     stateOptions: Parameters<typeof buildState>[0] = {},
-) =>
-    render(
+    submit = jest.fn(),
+) => {
+    const user = userEvent.setup()
+    const result = render(
         <Provider store={mockStore(buildState(stateOptions))}>
-            <NewTicketSubmitButtons subject={subject} />
+            <NewTicketSubmitButtons subject={subject} submit={submit} />
         </Provider>,
     )
+    return { ...result, submit, user }
+}
 
 describe('NewTicketSubmitButtons', () => {
     afterEach(() => {
         jest.clearAllMocks()
+        mockValidateTicketFields.mockReturnValue({
+            hasErrors: false,
+            invalidFieldIds: [],
+        })
+        mockGetMacroTicketFieldValues.mockReturnValue({
+            1: 'macro value',
+        })
     })
 
     describe('button text', () => {
@@ -133,6 +176,9 @@ describe('NewTicketSubmitButtons', () => {
 
             expect(
                 screen.getByRole('button', { name: 'Send' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Send & Close' }),
             ).toBeInTheDocument()
         })
 
@@ -143,6 +189,9 @@ describe('NewTicketSubmitButtons', () => {
 
             expect(
                 screen.getByRole('button', { name: 'Apply Macro' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Apply Macro & Close' }),
             ).toBeInTheDocument()
         })
 
@@ -155,6 +204,9 @@ describe('NewTicketSubmitButtons', () => {
             expect(
                 screen.getByRole('button', { name: 'Send' }),
             ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Send & Close' }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -166,13 +218,101 @@ describe('NewTicketSubmitButtons', () => {
 
             renderComponent('', { bodyText: 'Hello' })
 
-            expect(ConfirmButton).toHaveBeenCalledWith(
+            expect(ConfirmButton).toHaveBeenCalledTimes(2)
+            expect(ConfirmButton).toHaveBeenNthCalledWith(
+                1,
                 expect.objectContaining({
+                    children: 'Send',
                     confirmationContent:
                         'Are you sure you want to create a ticket with no subject?',
                 }),
-                expect.anything(),
+                {},
             )
+            expect(ConfirmButton).toHaveBeenNthCalledWith(
+                2,
+                expect.objectContaining({
+                    children: 'Send & Close',
+                    confirmationContent:
+                        'Are you sure you want to create a ticket with no subject?',
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('send and close', () => {
+        it('submits the new ticket with a closed status', async () => {
+            const { submit, user } = renderComponent('Subject', {
+                bodyText: 'Hello',
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: 'Send & Close' }),
+            )
+
+            expect(submit).toHaveBeenCalledWith({
+                status: TicketStatus.Closed,
+            })
+        })
+
+        it('validates ticket fields with applied macro values before submitting closed', async () => {
+            const appliedMacro = {
+                actions: [
+                    {
+                        name: 'set-ticket-field',
+                        arguments: {
+                            ticket_field_id: 1,
+                            value: 'macro value',
+                        },
+                    },
+                ],
+            }
+            const { user } = renderComponent('Subject', {
+                bodyText: 'Hello',
+                appliedMacro,
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: 'Send & Close' }),
+            )
+
+            expect(mockGetMacroTicketFieldValues).toHaveBeenCalledWith(
+                appliedMacro,
+            )
+            expect(mockValidateTicketFields).toHaveBeenCalledWith({
+                1: 'macro value',
+            })
+        })
+
+        it('does not submit the new ticket when closed status validation fails', async () => {
+            mockValidateTicketFields.mockReturnValue({
+                hasErrors: true,
+                invalidFieldIds: [1],
+            })
+
+            const { submit, user } = renderComponent('Subject', {
+                bodyText: 'Hello',
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: 'Send & Close' }),
+            )
+
+            expect(submit).not.toHaveBeenCalled()
+        })
+
+        it('submits the new ticket with a closed status after no-subject confirmation', async () => {
+            const { submit, user } = renderComponent('', {
+                bodyText: 'Hello',
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: 'Send & Close' }),
+            )
+
+            expect(submit).toHaveBeenCalledWith({
+                status: TicketStatus.Closed,
+            })
         })
     })
 
@@ -184,10 +324,9 @@ describe('NewTicketSubmitButtons', () => {
                 isPublic: true,
             })
 
-            expect(screen.getByRole('button')).toHaveAttribute(
-                'aria-disabled',
-                'true',
-            )
+            for (const button of screen.getAllByRole('button')) {
+                expect(button).toHaveAttribute('aria-disabled', 'true')
+            }
         })
 
         it('is disabled when translation is pending', () => {
@@ -197,10 +336,9 @@ describe('NewTicketSubmitButtons', () => {
 
             renderComponent('Subject', { bodyText: 'Hello' })
 
-            expect(screen.getByRole('button')).toHaveAttribute(
-                'aria-disabled',
-                'true',
-            )
+            for (const button of screen.getAllByRole('button')) {
+                expect(button).toHaveAttribute('aria-disabled', 'true')
+            }
         })
 
         it('is enabled when canSend is true and no translation pending', () => {
@@ -210,10 +348,9 @@ describe('NewTicketSubmitButtons', () => {
 
             renderComponent('Subject', { bodyText: 'Hello' })
 
-            expect(screen.getByRole('button')).not.toHaveAttribute(
-                'aria-disabled',
-                'true',
-            )
+            for (const button of screen.getAllByRole('button')) {
+                expect(button).not.toHaveAttribute('aria-disabled', 'true')
+            }
         })
     })
 })
