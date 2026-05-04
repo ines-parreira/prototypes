@@ -122,6 +122,7 @@
         "@repo/preferences": "workspace:*",
         "@repo/reporting": "workspace:*",
         "@repo/routing": "workspace:*",
+        "@repo/search": "workspace:*",
         "@repo/ticket-thread": "workspace:*",
         "@repo/tickets": "workspace:*",
         "@repo/users": "workspace:*",

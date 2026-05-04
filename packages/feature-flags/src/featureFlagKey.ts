@@ -217,6 +217,7 @@ export enum FeatureFlagKey {
     UIVisionMilestone3 = 'linear.project_ui-vision.milestone-3',
     UIVisionMilestone4 = 'linear.project_ui-vision.milestone-4',
     UIVisionMilestone4Dot5 = 'linear.project_ui-vision.milestone-4.5',
+    UIVisionMilestone4Dash6 = 'linear-project_ui-vision-milestone-4-6',
     UIVisionWayfindingMS1 = 'linear.project_ui-vision-wayfinding-milestone-1',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     VoiceSLA = 'voice-sla',

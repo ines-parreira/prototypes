@@ -1,0 +1,23 @@
+:local {
+    // To achieve the look of two table rows reading as one result, these
+    // selectors reach into Axiom's generated cell structure and separators.
+    .root
+        [data-name='table-row'][data-selected='true']
+        > [data-name='table-cell'],
+    .root
+        [data-name='table-row'][data-hovered='true']
+        > [data-name='table-cell'] {
+        background-color: var(--surface-neutral-secondary) !important;
+    }
+
+    .root
+        [data-name='table-row'][data-merged-row-primary='true']
+        > [data-name='table-cell'] {
+        box-shadow: none !important;
+        padding-bottom: 0;
+    }
+
+    .root [data-name='table-cell'][data-merged-row-detail-cell] {
+        padding-top: 0;
+    }
+}

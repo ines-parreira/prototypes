@@ -393,6 +393,18 @@ jest.mock('@repo/feature-flags', () => {
         return hasUIVisionBeta
     })
 
+    const useHelpdeskV2MS4Dash6Flag = jest.fn(() => {
+        const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
+
+        return (
+            hasUIVisionBeta &&
+            getMockedFlagValue(
+                actual.FeatureFlagKey.UIVisionMilestone4Dash6,
+                false,
+            )
+        )
+    })
+
     return {
         ...actual,
         FeatureFlagsProvider: ({ children }: { children: unknown }) => children,
@@ -404,6 +416,7 @@ jest.mock('@repo/feature-flags', () => {
         useFlagWithLoading,
         useHelpdeskV2BaselineFlag,
         useHelpdeskV2MS2Flag,
+        useHelpdeskV2MS4Dash6Flag,
         useHelpdeskV2WayfindingMS1Flag,
     }
 })
