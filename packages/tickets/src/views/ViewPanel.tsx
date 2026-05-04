@@ -129,6 +129,7 @@ export function ViewPanel({
                     </Disclosure>
                 )}
                 <TicketTable
+                    key={viewId}
                     viewId={viewId}
                     isSearchMode={isSearchMode}
                     onSearchResultCountChange={onSearchResultCountChange}
