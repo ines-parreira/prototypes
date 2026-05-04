@@ -132,7 +132,6 @@ function AiJourneyBaseRoutes() {
                             {isAiJourneyStoreSettingsEnabled && (
                                 <Route
                                     path={`${path}/:shopName/settings`}
-                                    exact
                                     render={() => <Settings />}
                                 />
                             )}

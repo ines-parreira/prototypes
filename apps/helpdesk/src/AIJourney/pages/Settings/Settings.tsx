@@ -2,7 +2,12 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { useBeforeUnload } from '@repo/hooks'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useLocation } from 'react-router-dom'
+import {
+    Redirect,
+    useHistory,
+    useLocation,
+    useRouteMatch,
+} from 'react-router-dom'
 
 import {
     Box,
@@ -48,17 +53,18 @@ type SettingsFormValues = {
     quiet_hours_end: string | null
 }
 
-const TAB_HASH_LOOKUP: Record<string, SettingsTab> = {
-    [`#${SettingsTab.SenderIdentity}`]: SettingsTab.SenderIdentity,
-    [`#${SettingsTab.Compliance}`]: SettingsTab.Compliance,
-    [`#${SettingsTab.Integrations}`]: SettingsTab.Integrations,
-}
-
 export const Settings = () => {
     const dispatch = useAppDispatch()
     const { currentIntegration } = useJourneyContext()
-    const { hash } = useLocation()
-    const initialTab = TAB_HASH_LOOKUP[hash] ?? SettingsTab.SenderIdentity
+    const { url } = useRouteMatch()
+    const { pathname } = useLocation()
+    const history = useHistory()
+
+    const tabRoutes = {
+        [SettingsTab.SenderIdentity]: `${url}/${SettingsTab.SenderIdentity}`,
+        [SettingsTab.Compliance]: `${url}/${SettingsTab.Compliance}`,
+        [SettingsTab.Integrations]: `${url}/${SettingsTab.Integrations}`,
+    }
 
     const storeIntegrationId = useMemo(() => {
         return currentIntegration?.id || 0
@@ -146,7 +152,7 @@ export const Settings = () => {
                             setError('klaviyo_api_key', {
                                 message: fieldError.klaviyo_api_key,
                             })
-                            return
+                            throw error
                         }
                     }
                 }
@@ -156,7 +162,7 @@ export const Settings = () => {
                         message:
                             'Invalid Klaviyo API key. Please check your key and try again.',
                     })
-                    return
+                    throw error
                 }
 
                 void dispatch(
@@ -165,12 +171,22 @@ export const Settings = () => {
                         status: NotificationStatus.Error,
                     }),
                 )
+                throw error
             }
         },
         [saveConfiguration, reset, dispatch, setError],
     )
 
+    const handleSaveClick = useCallback(
+        () => void handleSubmit(onSubmit)().catch(() => {}),
+        [handleSubmit, onSubmit],
+    )
+
     useBeforeUnload(formState.isDirty)
+
+    if (!Object.values(tabRoutes).includes(pathname)) {
+        return <Redirect to={tabRoutes[SettingsTab.SenderIdentity]} />
+    }
 
     if (error && isFetched) {
         return (
@@ -191,7 +207,7 @@ export const Settings = () => {
                         <Button
                             isDisabled={isSaveDisabled}
                             isLoading={formState.isSubmitting}
-                            onClick={handleSubmit(onSubmit)}
+                            onClick={handleSaveClick}
                         >
                             Save
                         </Button>
@@ -199,31 +215,37 @@ export const Settings = () => {
                 />
                 <FormUnsavedChangesPrompt
                     onSave={onSubmit}
+                    onDiscard={reset}
                     shouldRedirectAfterSave
                 />
                 <div className={css.tabsContainer}>
-                    <Tabs defaultSelectedItem={initialTab}>
+                    <Tabs
+                        selectedItem={pathname}
+                        onSelectionChange={(path) =>
+                            history.push(path as string)
+                        }
+                    >
                         <TabList>
                             <TabItem
-                                id={SettingsTab.SenderIdentity}
+                                id={tabRoutes[SettingsTab.SenderIdentity]}
                                 label="Sender Identity"
                             />
                             <TabItem
-                                id={SettingsTab.Compliance}
+                                id={tabRoutes[SettingsTab.Compliance]}
                                 label="Compliance"
                             />
                             <TabItem
-                                id={SettingsTab.Integrations}
+                                id={tabRoutes[SettingsTab.Integrations]}
                                 label="Integrations"
                             />
                         </TabList>
-                        <TabPanel id={SettingsTab.SenderIdentity}>
+                        <TabPanel id={tabRoutes[SettingsTab.SenderIdentity]}>
                             <SenderIdentityTab isFormReady={!isLoading} />
                         </TabPanel>
-                        <TabPanel id={SettingsTab.Compliance}>
+                        <TabPanel id={tabRoutes[SettingsTab.Compliance]}>
                             <ComplianceTab isFormReady={!isLoading} />
                         </TabPanel>
-                        <TabPanel id={SettingsTab.Integrations}>
+                        <TabPanel id={tabRoutes[SettingsTab.Integrations]}>
                             <IntegrationsTab isFormReady={!isLoading} />
                         </TabPanel>
                     </Tabs>

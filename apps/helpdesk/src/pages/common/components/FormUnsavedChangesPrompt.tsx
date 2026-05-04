@@ -10,6 +10,7 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 type Props<T extends FieldValues> = {
     onSave: ComponentProps<typeof Form<T>>['onValidSubmit']
+    onDiscard?: () => void
     shouldRedirectAfterSave?: boolean
 } & Pick<
     UnsavedChangesModalProps,
@@ -18,6 +19,7 @@ type Props<T extends FieldValues> = {
 
 function FormUnsavedChangesPrompt<T extends FieldValues>({
     onSave,
+    onDiscard,
     shouldRedirectAfterSave,
     ...modalProps
 }: Props<T>) {
@@ -36,6 +38,7 @@ function FormUnsavedChangesPrompt<T extends FieldValues>({
         <UnsavedChangesPrompt
             when={formState.isDirty}
             onSave={handleOnSave}
+            onDiscard={onDiscard}
             shouldRedirectAfterSave={shouldRedirectAfterSave}
             {...modalProps}
         />

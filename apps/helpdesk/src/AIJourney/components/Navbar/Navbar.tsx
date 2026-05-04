@@ -142,7 +142,7 @@ export const AiJourneyNavbar = () => {
                 icon: IconName.SliderFilter,
                 to: `/app/ai-journey/${shopName}/settings`,
                 label: 'Settings',
-                exact: true,
+                exact: false,
             })
         }
 
@@ -238,7 +238,6 @@ export const AiJourneyNavbar = () => {
                     {isAiJourneyStoreSettingsEnabled && (
                         <Navigation.SectionItem
                             as={NavLink}
-                            exact
                             to={`/app/ai-journey/${shopName}/settings`}
                         >
                             Settings

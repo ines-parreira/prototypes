@@ -60,7 +60,11 @@ const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockSaveConfiguration = jest.fn()
 const mockDispatch = jest.fn()
 
-const renderComponent = () => render(<Settings />)
+const renderComponent = (initialTab = 'sender-identity') =>
+    render(<Settings />, {
+        path: '/settings',
+        initialEntries: [`/settings/${initialTab}`],
+    })
 
 describe('<Settings />', () => {
     beforeEach(() => {
@@ -119,6 +123,36 @@ describe('<Settings />', () => {
             expect(
                 screen.getByRole('tab', { name: 'Integrations' }),
             ).toHaveAttribute('aria-selected', 'false')
+        })
+
+        it('should select Compliance tab when URL points to compliance', () => {
+            renderComponent('compliance')
+
+            expect(
+                screen.getByRole('tab', { name: 'Compliance' }),
+            ).toHaveAttribute('aria-selected', 'true')
+            expect(
+                screen.getByRole('tab', { name: 'Sender Identity' }),
+            ).toHaveAttribute('aria-selected', 'false')
+        })
+
+        it('should select Integrations tab when URL points to integrations', () => {
+            renderComponent('integrations')
+
+            expect(
+                screen.getByRole('tab', { name: 'Integrations' }),
+            ).toHaveAttribute('aria-selected', 'true')
+            expect(
+                screen.getByRole('tab', { name: 'Sender Identity' }),
+            ).toHaveAttribute('aria-selected', 'false')
+        })
+
+        it('should redirect to sender-identity when URL contains an unknown tab', () => {
+            renderComponent('unknown-tab')
+
+            expect(
+                screen.getByRole('tab', { name: 'Sender Identity' }),
+            ).toHaveAttribute('aria-selected', 'true')
         })
 
         it('should select Compliance tab when clicked', async () => {
