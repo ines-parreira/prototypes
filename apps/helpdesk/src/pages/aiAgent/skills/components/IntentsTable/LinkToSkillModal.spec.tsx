@@ -23,6 +23,7 @@ const mockArticles: TransformedArticle[] = [
     {
         id: 1,
         title: 'Order status, tracking or delivery timing',
+        content: '',
         intents: [{ name: 'order::status', formattedName: 'Order / Status' }],
         status: 'enabled',
         metrics: {
@@ -35,6 +36,7 @@ const mockArticles: TransformedArticle[] = [
     {
         id: 2,
         title: 'Order cancellations',
+        content: '',
         intents: [
             { name: 'order::cancel', formattedName: 'Order / Cancel' },
             { name: 'order::refund', formattedName: 'Order / Refund' },
@@ -50,6 +52,7 @@ const mockArticles: TransformedArticle[] = [
     {
         id: 3,
         title: 'Shipping address updates',
+        content: '',
         intents: [],
         status: 'enabled',
     },

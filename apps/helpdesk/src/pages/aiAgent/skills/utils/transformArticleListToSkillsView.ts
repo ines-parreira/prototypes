@@ -23,6 +23,7 @@ export function transformArticleListToSkillsView(
         const result: TransformedArticle = {
             id: article.id,
             title: translation.title,
+            content: translation.content,
             intents,
             status:
                 translation.visibility_status === 'PUBLIC'

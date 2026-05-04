@@ -1,10 +1,11 @@
 import { useShallow } from 'zustand/react/shallow'
 
-import { useGuidanceStore } from '../KnowledgeEditorGuidance/context'
+import { useSkillEditorStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/context'
+
 import { useActionsInContentNeedingSetup } from './useActionsInContentNeedingSetup'
 
-export const useHasDisabledActionsInContent = (): boolean => {
-    const { content, shopName, shopType } = useGuidanceStore(
+export const useHasDisabledActionsInSkillContent = (): boolean => {
+    const { content, shopName, shopType } = useSkillEditorStore(
         useShallow((storeState) => ({
             content: storeState.state.content,
             shopName: storeState.config.shopName,

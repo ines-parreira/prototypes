@@ -22,6 +22,7 @@ import { SkillRestoreVersionModal } from './modals/SkillRestoreVersionModal'
 import { KnowledgeEditorSkillReadView } from './read/KnowledgeEditorSkillReadView'
 import { SkillEditorSidePanel } from './sidePanel/SkillEditorSidePanel'
 import { SkillPreviewSidePanel } from './sidePanel/SkillPreviewSidePanel'
+import { SkillDisabledActionsBar } from './SkillDisabledActionsBar'
 import { SkillEditorHeader } from './SkillEditorHeader'
 
 import css from './KnowledgeEditorSkill.less'
@@ -135,6 +136,8 @@ export const KnowledgeEditorSkillContent = ({ isSidePanelLoading }: Props) => {
                         className={css.editorContent}
                     >
                         <KnowledgeEditorSkillVersionBanner />
+
+                        {mode !== 'diff' && <SkillDisabledActionsBar />}
 
                         {mode === 'diff' && (
                             <DiffView

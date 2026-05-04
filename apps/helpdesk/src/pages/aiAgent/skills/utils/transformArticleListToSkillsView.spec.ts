@@ -68,6 +68,7 @@ describe('transformArticleListToSkillsView', () => {
             {
                 id: 1,
                 title: 'Order Status',
+                content: '',
                 intents: [
                     { name: 'order::status', formattedName: 'Order / Status' },
                 ],

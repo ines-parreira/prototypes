@@ -51,6 +51,7 @@ describe('SkillsTable', () => {
         {
             id: 1,
             title: 'How to track order',
+            content: '',
             intents: [
                 { name: 'order::status' as any, formattedName: 'Order Status' },
                 {
@@ -69,6 +70,7 @@ describe('SkillsTable', () => {
         {
             id: 2,
             title: 'How to cancel order',
+            content: '',
             intents: [
                 { name: 'order::cancel' as any, formattedName: 'Cancel Order' },
             ],
@@ -83,6 +85,7 @@ describe('SkillsTable', () => {
         {
             id: 3,
             title: 'Shipping information',
+            content: '',
             intents: [
                 { name: 'shipping::status' as any, formattedName: 'Shipping' },
             ],
@@ -259,6 +262,7 @@ describe('SkillsTable', () => {
                     {
                         id: 4,
                         title: 'No intents article',
+                        content: '',
                         intents: [],
                         status: 'enabled',
                     },
@@ -310,6 +314,7 @@ describe('SkillsTable', () => {
                     {
                         id: 5,
                         title: 'No metrics article',
+                        content: '',
                         intents: [
                             {
                                 name: 'test::intent',
@@ -372,6 +377,7 @@ describe('SkillsTable', () => {
                 (_, i) => ({
                     id: i + 1,
                     title: `Article ${i + 1}`,
+                    content: '',
                     intents: [
                         {
                             name: `intent::${i}` as any,

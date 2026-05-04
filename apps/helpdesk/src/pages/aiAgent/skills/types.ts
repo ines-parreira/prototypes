@@ -51,6 +51,8 @@ export interface TransformedArticle {
     publishedVersion?: ArticleVersion
     /** Draft version configuration (if exists) */
     draftVersion?: ArticleVersion
+    /** Draft content body */
+    content: string
     /** Status (enabled/disabled) */
     status: 'enabled' | 'disabled'
     /** Metrics data (if loaded) */

@@ -17,6 +17,7 @@ import {
     EditIconButton,
     TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
+import { useHasDisabledActionsInSkillContent } from './useHasDisabledActionsInSkillContent'
 
 type SkillToolbarState =
     | { type: 'new-skill' }
@@ -95,9 +96,13 @@ export const SkillToolbarControls = () => {
         })),
     )
 
-    const formValid = useSkillEditorStore((storeState) =>
+    const baseFormValid = useSkillEditorStore((storeState) =>
         isFormValid(storeState.state),
     )
+
+    const hasDisabledActionsInContent = useHasDisabledActionsInSkillContent()
+
+    const formValid = baseFormValid && !hasDisabledActionsInContent
 
     const { hasTitle, hasContent, hasIntents } = useSkillEditorStore(
         useShallow((storeState) => ({
@@ -123,6 +128,9 @@ export const SkillToolbarControls = () => {
     const getValidationTooltip = (
         action: 'publish' | 'enable',
     ): string | undefined => {
+        if (hasDisabledActionsInContent)
+            return 'Actions may require set up before publishing'
+
         if (formValid) return undefined
 
         const missing = [

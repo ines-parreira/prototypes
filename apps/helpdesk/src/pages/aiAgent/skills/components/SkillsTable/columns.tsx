@@ -10,7 +10,10 @@ import {
 } from '@gorgias/axiom'
 
 import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
+import { GuidanceActionsBadge } from 'pages/aiAgent/components/GuidanceList/GuidanceActionsBadge'
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import type { TransformedArticle } from '../../types'
 import { MetricCell } from '../SharedTableComponents/MetricCells'
@@ -37,6 +40,7 @@ interface GetColumnsParams {
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
     totalAiAgentTickets?: number
+    availableActions?: GuidanceAction[]
 }
 
 export const getColumns = ({
@@ -47,6 +51,7 @@ export const getColumns = ({
     outcomeCustomFieldId,
     intentCustomFieldId,
     totalAiAgentTickets = 0,
+    availableActions = [],
 }: GetColumnsParams): ColumnDef<TransformedArticle>[] => [
     {
         id: COLUMN_IDS.NAME,
@@ -70,6 +75,12 @@ export const getColumns = ({
                             <Text size="md">{article.title}</Text>
                         </TruncatedTextWithTooltip>
                     </div>
+                    <GuidanceActionsBadge
+                        article={
+                            { content: article.content } as GuidanceArticle
+                        }
+                        availableActions={availableActions}
+                    />
                     {hasDraft && (
                         <Box
                             flexDirection="row"

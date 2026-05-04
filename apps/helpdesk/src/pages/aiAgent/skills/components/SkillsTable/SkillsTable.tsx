@@ -21,6 +21,7 @@ import {
     useTableV1,
 } from '@gorgias/axiom'
 
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
@@ -52,6 +53,12 @@ export const SkillsTable = () => {
 
     const { totalCount: totalAiAgentTickets } = useTotalAiAgentTickets()
 
+    const shopType = storeConfiguration?.shopType || ''
+    const { guidanceActions } = useGetGuidancesAvailableActions(
+        shopName,
+        shopType,
+    )
+
     const [searchTerm, setSearchTerm] = useState('')
     const [statsDisplayMode, setStatsDisplayMode] =
         useState<StatsDisplayMode>('percentage')
@@ -75,6 +82,7 @@ export const SkillsTable = () => {
                 outcomeCustomFieldId,
                 intentCustomFieldId,
                 totalAiAgentTickets,
+                availableActions: guidanceActions,
             }),
         [
             statsDisplayMode,
@@ -84,6 +92,7 @@ export const SkillsTable = () => {
             outcomeCustomFieldId,
             intentCustomFieldId,
             totalAiAgentTickets,
+            guidanceActions,
         ],
     )
 

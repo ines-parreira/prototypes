@@ -1,11 +1,12 @@
 import { useShallow } from 'zustand/react/shallow'
 
-import { useGuidanceStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
 import { useActionsInContentNeedingSetup } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/useActionsInContentNeedingSetup'
 import { DisabledActionsBar } from 'pages/aiAgent/components/KnowledgeEditor/shared/DisabledActionsBar'
 
-export const GuidanceDisabledActionsBar = () => {
-    const { content, shopName, shopType } = useGuidanceStore(
+import { useSkillEditorStore } from './context'
+
+export const SkillDisabledActionsBar = () => {
+    const { content, shopName, shopType } = useSkillEditorStore(
         useShallow((storeState) => ({
             content: storeState.state.content,
             shopName: storeState.config.shopName,
@@ -23,7 +24,7 @@ export const GuidanceDisabledActionsBar = () => {
         <DisabledActionsBar
             actionsNeedingSetup={actionsNeedingSetup}
             shopName={shopName}
-            type="guidance"
+            type="skill"
         />
     )
 }

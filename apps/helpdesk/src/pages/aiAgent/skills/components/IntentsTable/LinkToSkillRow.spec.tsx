@@ -14,6 +14,7 @@ const makeArticle = (
 ): TransformedArticle => ({
     id: 1,
     title: 'Order cancellations',
+    content: '',
     intents: [
         { name: 'order::cancel', formattedName: 'Order / Cancel' },
         { name: 'order::refund', formattedName: 'Order / Refund' },

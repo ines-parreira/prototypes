@@ -730,6 +730,7 @@ describe('IntentsTable', () => {
         const articleWithLocale: TransformedArticle = {
             id: 42,
             title: 'Order Status Guidance',
+            content: '',
             intents: [
                 { name: 'order::cancel', formattedName: 'Order / Cancel' },
             ],
@@ -1194,6 +1195,7 @@ describe('IntentsTable', () => {
         const articleWithLocale: TransformedArticle = {
             id: 42,
             title: 'Order Status Guidance',
+            content: '',
             intents: [
                 { name: 'order::cancel', formattedName: 'Order / Cancel' },
             ],
@@ -1271,6 +1273,7 @@ describe('IntentsTable', () => {
                     {
                         id: 1,
                         title: 'Some Skill',
+                        content: '',
                         intents: [],
                         status: 'enabled',
                     },
