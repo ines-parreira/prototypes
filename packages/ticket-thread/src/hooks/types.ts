@@ -17,6 +17,7 @@ export const TicketThreadItemTag = {
         AiAgentInternalNote: 'ai-agent-internal-note',
         AiAgentDraftMessage: 'ai-agent-draft-message',
         AiAgentTrialMessage: 'ai-agent-trial-message',
+        AiAgentHandoverMessage: 'ai-agent-handover-message',
         SocialMediaFacebookComment: 'social-media-facebook-comment',
         SocialMediaFacebookPost: 'social-media-facebook-post',
         SocialMediaFacebookMessage: 'social-media-facebook-message',

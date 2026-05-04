@@ -20,6 +20,7 @@ import { TicketMessage } from '../TicketMessage/TicketMessage'
 import { TicketThreadGroupedMessages } from '../TicketThreadGroupedMessages/TicketThreadGroupedMessages'
 import { UnimplementedMessage } from '../UnimplementedMessage/UnimplementedMessage'
 import { WhatsAppMessage } from '../WhatsAppMessage/WhatsAppMessage'
+import { AiAgentHandoverSummaryMessage } from './AiAgentTicketThreadMessages/AiAgentHandoverSummaryMessage'
 import { AiAgentTicketThreadDraftMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadDraftMessage'
 import { AiAgentTicketThreadInternalNote } from './AiAgentTicketThreadMessages/AiAgentTicketThreadInternalNote'
 import { AiAgentTicketThreadMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadMessage'
@@ -67,6 +68,8 @@ export function TicketThreadMessageItem({
                 return <AiAgentTicketThreadDraftMessage item={item} />
             case TicketThreadItemTag.Messages.AiAgentTrialMessage:
                 return <AiAgentTicketThreadTrialMessage item={item} />
+            case TicketThreadItemTag.Messages.AiAgentHandoverMessage:
+                return <AiAgentHandoverSummaryMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookComment:
                 return <FacebookCommentMessageWrapper item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookPost:

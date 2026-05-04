@@ -25,6 +25,9 @@ import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/stand
 import { getTicket, getTicketState } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
 
+import { HandoverSummarizeButton } from './HandoverSummarizeButton'
+import { TicketThreadSummarySection } from './TicketThreadSummarySection'
+import { useTicketThreadSummary } from './useTicketThreadSummary'
 import { toActivityParticipants } from './utils/toActivityParticipants'
 
 import css from './TicketThread.less'
@@ -64,10 +67,26 @@ export function TicketThread({ submit }: TicketThreadProps) {
         [searchParams],
     )
 
-    const { ticketThreadItems } = useTicketThread({
+    const { ticketThreadItems, isMessagesLoading } = useTicketThread({
         ticketId: Number(ticketId),
         showTicketEvents,
         pendingMessages,
+    })
+
+    const {
+        summary,
+        isLoading: isSummaryLoading,
+        errorMessage: summaryErrorMessage,
+        isRetriable: isSummaryRetriable,
+        requestSummary,
+        showButton,
+        showSummaryBubble,
+        summarizeCount,
+    } = useTicketThreadSummary({
+        ticketId: Number(ticketId),
+        initialSummary: ticketState.get('summary')?.toJS(),
+        ticketThreadItems,
+        isMessagesLoading,
     })
 
     const internalNotesOnly =
@@ -128,6 +147,22 @@ export function TicketThread({ submit }: TicketThreadProps) {
                     renderThreadItem={renderThreadItem}
                 />
             </div>
+            {showSummaryBubble && (
+                <TicketThreadSummarySection
+                    summary={summary}
+                    isLoading={isSummaryLoading}
+                    errorMessage={summaryErrorMessage}
+                    isRetriable={isSummaryRetriable}
+                    requestSummary={requestSummary}
+                />
+            )}
+            {showButton && (
+                <HandoverSummarizeButton
+                    messageCount={summarizeCount}
+                    isLoading={isSummaryLoading}
+                    onSummarize={requestSummary}
+                />
+            )}
             <div className={css.threadComposer}>
                 <TypingActivity
                     agents={activityAgentsTyping}

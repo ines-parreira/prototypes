@@ -34,6 +34,7 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.Messages.AiAgentInternalNote:
         case TicketThreadItemTag.Messages.AiAgentDraftMessage:
         case TicketThreadItemTag.Messages.AiAgentTrialMessage:
+        case TicketThreadItemTag.Messages.AiAgentHandoverMessage:
         case TicketThreadItemTag.Messages.SocialMediaFacebookComment:
         case TicketThreadItemTag.Messages.SocialMediaFacebookPost:
         case TicketThreadItemTag.Messages.SocialMediaFacebookMessage:

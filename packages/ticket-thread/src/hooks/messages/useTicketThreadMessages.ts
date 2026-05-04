@@ -24,6 +24,7 @@ type UseTicketThreadMessagesParams = {
 type UseTicketThreadMessagesResult = {
     messages: TicketThreadMessageItem[]
     activePendingMessages: TicketThreadMessageItem[]
+    isLoading: boolean
 }
 
 function sortMessagesByDate<TMessage extends TicketThreadMessageData>(
@@ -83,7 +84,7 @@ export function useTicketThreadMessages({
     ticketId,
     pendingMessages,
 }: UseTicketThreadMessagesParams): UseTicketThreadMessagesResult {
-    const messages = useListTicketMessages({ ticketId })
+    const { messages, isLoading } = useListTicketMessages({ ticketId })
 
     return useMemo(() => {
         const persistedMessages = messages
@@ -132,6 +133,7 @@ export function useTicketThreadMessages({
         return {
             messages: groupedMessages,
             activePendingMessages: groupedActivePendingMessages,
+            isLoading,
         }
-    }, [messages, pendingMessages])
+    }, [messages, pendingMessages, isLoading])
 }

@@ -203,10 +203,24 @@ describe('TicketThread audit-log rendering', () => {
         expect(screen.getByText('Updated subject')).toBeInTheDocument()
     })
 
-    it('renders message summary event and filters system-generated summaries', () => {
-        const { rerender } = render(
+    it('renders ticket summary generated event when first_unseen_id is absent', () => {
+        render(
             <TicketThreadAuditLogEventItem
                 item={buildItem('ticket-message-summary-created', {})}
+            />,
+        )
+
+        expect(
+            screen.getByText('Ticket summary was generated'),
+        ).toBeInTheDocument()
+    })
+
+    it('renders chat summarized event when first_unseen_id is present', () => {
+        render(
+            <TicketThreadAuditLogEventItem
+                item={buildItem('ticket-message-summary-created', {
+                    first_unseen_id: 123,
+                })}
             />,
         )
 
@@ -215,8 +229,10 @@ describe('TicketThread audit-log rendering', () => {
                 'Chat summarized - Unseen chat messages were sent by email',
             ),
         ).toBeInTheDocument()
+    })
 
-        rerender(
+    it('filters system-generated message summary events', () => {
+        render(
             <TicketThreadAuditLogEventItem
                 item={buildItem('ticket-message-summary-created', {
                     type: 'system',
@@ -224,6 +240,9 @@ describe('TicketThread audit-log rendering', () => {
             />,
         )
 
+        expect(
+            screen.queryByText('Ticket summary was generated'),
+        ).not.toBeInTheDocument()
         expect(
             screen.queryByText(
                 'Chat summarized - Unseen chat messages were sent by email',

@@ -14,6 +14,7 @@ import * as TicketActions from 'state/ticket/actions'
 
 import { CommentPrivateReplyModal } from './CommentPrivateReplyModal'
 import { TicketThreadAiAgentDraftMessage } from './TicketThreadAiAgentDraftMessage'
+import { TicketThreadAiAgentHandoverSummary } from './TicketThreadAiAgentHandoverSummary'
 import { TicketThreadAiAgentReasoning } from './TicketThreadAiAgentReasoning'
 import { TicketThreadAiAgentTrialMessage } from './TicketThreadAiAgentTrialMessage'
 import { useFacebookCommentActions } from './useFacebookCommentActions'
@@ -139,6 +140,9 @@ export const TicketThreadLegacyBridge = ({
                     <VoiceCallMonitorButton voiceCall={voiceCall} />
                 ),
             }}
+            renderAiAgentHandoverSummary={(params) => (
+                <TicketThreadAiAgentHandoverSummary {...params} />
+            )}
         >
             {children}
             {instagramPrivateReplyData && (

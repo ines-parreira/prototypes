@@ -11,7 +11,12 @@ import css from './MessageBubble.less'
 type MessageBubbleProps = {
     children?: ReactNode
     className?: string
-    variant?: 'regular' | 'from-agent' | 'ai-agent' | 'internal-note'
+    variant?:
+        | 'regular'
+        | 'from-agent'
+        | 'ai-agent'
+        | 'ai-agent-handover'
+        | 'internal-note'
     pendingState?: TicketThreadPendingState
     isGroupedMessage?: boolean
 }

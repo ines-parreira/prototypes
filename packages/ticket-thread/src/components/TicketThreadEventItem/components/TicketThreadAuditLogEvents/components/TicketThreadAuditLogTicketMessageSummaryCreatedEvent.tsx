@@ -19,6 +19,26 @@ export function TicketThreadAuditLogTicketMessageSummaryCreatedEvent({
         return null
     }
 
+    const isTicketSummary = !event.data?.first_unseen_id
+
+    if (isTicketSummary) {
+        return (
+            <TicketThreadEventContainer>
+                <Icon name="ai-ticket-summary" />
+                <Text size="sm">Ticket summary was generated</Text>
+                <TicketThreadAuditLogEventAttribution
+                    attribution={item.meta.attribution}
+                    authorId={event.user_id}
+                />
+                {event.created_datetime && (
+                    <TicketThreadEventDateTime
+                        datetime={event.created_datetime}
+                    />
+                )}
+            </TicketThreadEventContainer>
+        )
+    }
+
     return (
         <TicketThreadEventContainer>
             <Icon name="comm-mail" />

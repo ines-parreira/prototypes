@@ -68,6 +68,32 @@ export type AIAgentInternalNote = z.infer<typeof aiAgentInternalNoteSchema>
 export type AIAgentInternalNoteSchema = z.infer<
     typeof aiAgentInternalNoteSchema
 >
+export const aiAgentHandoverMessageSchema = aiAgentMessageSchema.extend({
+    actions: z
+        .array(
+            z
+                .object({
+                    name: z.string(),
+                    arguments: z.record(z.unknown()),
+                })
+                .passthrough(),
+        )
+        .nullable()
+        .refine((actions) =>
+            (actions ?? []).some(
+                (action) =>
+                    action.name === 'addTags' &&
+                    typeof action.arguments.tags === 'string' &&
+                    action.arguments.tags
+                        .split(',')
+                        .map((t) => t.trim())
+                        .includes('ai_handover'),
+            ),
+        ),
+})
+export type AiAgentHandoverMessageSchema = z.infer<
+    typeof aiAgentHandoverMessageSchema
+>
 export const aiAgentDraftMessageSchema = aiAgentMessageSchema.extend({
     body_html: z
         .string()

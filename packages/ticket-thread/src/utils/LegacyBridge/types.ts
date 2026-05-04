@@ -4,6 +4,7 @@ import type { VoiceCall } from '@gorgias/helpdesk-queries'
 
 import type {
     TicketThreadAiAgentDraftMessageItem,
+    TicketThreadAiAgentHandoverMessageItem,
     TicketThreadAiAgentMessageItem,
     TicketThreadAiAgentTrialMessageItem,
 } from '../../hooks/messages/types'
@@ -118,6 +119,10 @@ export type TicketThreadAiAgentTrialMessageParams = {
     message: TicketThreadAiAgentTrialMessageItem['data']
 }
 
+export type TicketThreadAiAgentHandoverSummaryParams = {
+    message: TicketThreadAiAgentHandoverMessageItem['data']
+}
+
 export type LegacyBridgeContextType = {
     currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData: CurrentTicketRuleSuggestionData
@@ -144,4 +149,7 @@ export type LegacyBridgeContextType = {
         params: TicketThreadAiAgentReasoningParams,
     ) => ReactNode
     voiceCallCallbacks?: VoiceCallBridgeCallbacks
+    renderAiAgentHandoverSummary?: (
+        params: TicketThreadAiAgentHandoverSummaryParams,
+    ) => ReactNode
 }

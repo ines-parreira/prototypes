@@ -6,6 +6,7 @@ import type { TicketThreadAiAgentPseudoEvent } from '../ai-agent-pseudo-events/t
 import type { TicketThreadItemTag } from '../types'
 import type {
     AiAgentDraftMessageSchema,
+    AiAgentHandoverMessageSchema,
     AIAgentInternalNoteSchema,
     AiAgentMessageSchema,
     AiAgentTrialMessageSchema,
@@ -74,17 +75,22 @@ export type TicketThreadAiAgentInternalNoteItem =
         typeof TicketThreadItemTag.Messages.AiAgentInternalNote,
         TicketThreadAiAgentMessageData<AIAgentInternalNoteSchema>
     >
-
-export type TicketThreadAiAgentDraftMessageItem =
+export type TicketThreadAiAgentHandoverMessageItem =
     TicketThreadSingleMessageItemBase<
-        typeof TicketThreadItemTag.Messages.AiAgentDraftMessage,
-        TicketThreadMessageData<AiAgentDraftMessageSchema>
+        typeof TicketThreadItemTag.Messages.AiAgentHandoverMessage,
+        TicketThreadMessageData<AiAgentHandoverMessageSchema>
     >
 
 export type TicketThreadAiAgentTrialMessageItem =
     TicketThreadSingleMessageItemBase<
         typeof TicketThreadItemTag.Messages.AiAgentTrialMessage,
         TicketThreadMessageData<AiAgentTrialMessageSchema>
+    >
+
+export type TicketThreadAiAgentDraftMessageItem =
+    TicketThreadSingleMessageItemBase<
+        typeof TicketThreadItemTag.Messages.AiAgentDraftMessage,
+        TicketThreadMessageData<AiAgentDraftMessageSchema>
     >
 
 export type TicketThreadSocialMediaFacebookCommentItem =
@@ -159,6 +165,7 @@ export type TicketThreadSingleMessageItem =
     | TicketThreadAiAgentInternalNoteItem
     | TicketThreadAiAgentDraftMessageItem
     | TicketThreadAiAgentTrialMessageItem
+    | TicketThreadAiAgentHandoverMessageItem
     | TicketThreadSocialMediaFacebookCommentItem
     | TicketThreadSocialMediaFacebookPostItem
     | TicketThreadSocialMediaFacebookMessageItem

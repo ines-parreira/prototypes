@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { render, userEvent } from '@repo/testing'
+import { useTicketSummary } from '@repo/ticket-thread'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -89,6 +90,9 @@ jest.mock('@repo/ticket-thread', () => {
             <div>{item._tag}</div>
         )),
         useTicketThread: jest.fn(),
+        useTicketSummary: jest.fn(),
+        TicketThreadItemTag: jest.requireActual('@repo/ticket-thread')
+            .TicketThreadItemTag,
     }
 })
 
@@ -121,6 +125,7 @@ jest.mock(
 
 const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
+const mockUseTicketSummary = useTicketSummary as jest.Mock
 const mockUseCollisionDetection = useCollisionDetection as jest.Mock
 const mockUseInitialMacroFilters = useInitialMacroFilters as jest.Mock
 const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
@@ -173,6 +178,14 @@ describe('<TicketThread />', () => {
             focused,
         }))
         mockUseSearchParams.mockReturnValue([searchParams, jest.fn()])
+        mockUseTicketSummary.mockReturnValue({
+            summary: null,
+            isLoading: false,
+            errorMessage: '',
+            isRetriable: true,
+            requestSummary: jest.fn(),
+            hasRequested: false,
+        })
         mockUseTicketThread.mockReturnValue({
             ticketThreadItems: [
                 { _tag: 'Thread feed item 1' },

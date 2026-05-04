@@ -7,10 +7,15 @@ type UseListTicketMessagesParams = {
 
 export const TICKET_THREAD_MESSAGES_PAGE_LIMIT = 100
 
+type UseListTicketMessagesResult = {
+    messages: TicketMessage[]
+    isLoading: boolean
+}
+
 export function useListTicketMessages({
     ticketId,
-}: UseListTicketMessagesParams): TicketMessage[] {
-    const { items: messages } = useListAllMessages(
+}: UseListTicketMessagesParams): UseListTicketMessagesResult {
+    const { items: messages, isLoading } = useListAllMessages(
         {
             ticket_id: ticketId,
             limit: TICKET_THREAD_MESSAGES_PAGE_LIMIT,
@@ -23,5 +28,5 @@ export function useListTicketMessages({
         },
     )
 
-    return messages ?? []
+    return { messages: messages ?? [], isLoading }
 }

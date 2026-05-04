@@ -35,7 +35,11 @@ export function useTicketThread({
         },
     })
 
-    const { messages, activePendingMessages } = useTicketThreadMessages({
+    const {
+        messages,
+        activePendingMessages,
+        isLoading: isMessagesLoading,
+    } = useTicketThreadMessages({
         ticketId,
         pendingMessages,
     })
@@ -135,5 +139,5 @@ export function useTicketThread({
         insertContactReasonPrediction,
     ])
 
-    return { ticketThreadItems }
+    return { ticketThreadItems, isMessagesLoading }
 }

@@ -39,7 +39,14 @@
 
         &[data-variant='ai-agent'] {
             background-color: var(--surface-container-blue);
+        }
 
+        &[data-variant='ai-agent-handover'] {
+            background-color: var(--surface-additional-yellow);
+        }
+
+        &[data-variant='ai-agent'],
+        &[data-variant='ai-agent-handover'] {
             &::before {
                 content: '';
                 position: absolute;

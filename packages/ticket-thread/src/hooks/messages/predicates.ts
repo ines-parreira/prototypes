@@ -1,6 +1,7 @@
 import type {
     ActivePendingMessageSchema,
     AiAgentDraftMessageSchema,
+    AiAgentHandoverMessageSchema,
     AIAgentInternalNoteSchema,
     AiAgentMessageSchema,
     AiAgentTrialMessageSchema,
@@ -21,6 +22,7 @@ import type {
 import {
     activePendingMessageSchema,
     aiAgentDraftMessageSchema,
+    aiAgentHandoverMessageSchema,
     aiAgentInternalNoteSchema,
     aiAgentMessageSchema,
     aiAgentTrialMessageSchema,
@@ -101,6 +103,15 @@ export function isAiAgentMessage(
 ): input is TicketThreadMessageData<AiAgentMessageSchema> {
     return (
         isTicketMessage(input) && aiAgentMessageSchema.safeParse(input).success
+    )
+}
+
+export function isAiAgentHandoverMessage(
+    input: unknown,
+): input is TicketThreadMessageData<AiAgentHandoverMessageSchema> {
+    return (
+        isTicketMessage(input) &&
+        aiAgentHandoverMessageSchema.safeParse(input).success
     )
 }
 

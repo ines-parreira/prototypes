@@ -135,6 +135,7 @@ describe('useTicketThread', () => {
         mockUseTicketThreadMessages.mockReturnValue({
             messages: [],
             activePendingMessages: [],
+            isLoading: false,
         })
         mockUseTicketThreadEvents.mockReturnValue({
             events: [],
@@ -188,6 +189,7 @@ describe('useTicketThread', () => {
         mockUseTicketThreadMessages.mockReturnValue({
             messages: [messageLate, messageEarly] as any,
             activePendingMessages: [activePendingOld] as any,
+            isLoading: false,
         })
         mockUseTicketThreadEvents.mockReturnValue({
             events: [eventMid] as any,
@@ -257,6 +259,7 @@ describe('useTicketThread', () => {
         mockUseTicketThreadMessages.mockReturnValue({
             messages: [message] as any,
             activePendingMessages: [],
+            isLoading: false,
         })
         mockUseTicketThreadEvents.mockReturnValue({
             events: [event] as any,
@@ -287,6 +290,7 @@ describe('useTicketThread', () => {
         mockUseTicketThreadMessages.mockReturnValue({
             messages: [message] as any,
             activePendingMessages: [],
+            isLoading: false,
         })
         mockUseTicketThreadEvents.mockReturnValue({
             events: [event] as any,
@@ -321,6 +325,7 @@ describe('useTicketThread', () => {
         mockUseTicketThreadMessages.mockReturnValue({
             messages: [message],
             activePendingMessages: [],
+            isLoading: false,
         })
         server.use(
             mockListTicketTagsHandler(async ({ request }) => {
@@ -408,6 +413,7 @@ describe('useTicketThread', () => {
                 }),
             ],
             activePendingMessages: [],
+            isLoading: false,
         })
 
         const matchingApiEvent: TicketThreadActionExecutedEventItem = {
@@ -446,6 +452,7 @@ describe('useTicketThread', () => {
         mockUseTicketThreadMessages.mockReturnValue({
             messages: [createMessageWithHttpAction(datetime)],
             activePendingMessages: [],
+            isLoading: false,
         })
 
         const automationEvent: TicketThreadActionExecutedEventItem = {
@@ -482,6 +489,7 @@ describe('useTicketThread', () => {
         mockUseTicketThreadMessages.mockReturnValue({
             messages: [createMessageWithHttpAction(datetime)],
             activePendingMessages: [],
+            isLoading: false,
         })
 
         const shopifyEvent: TicketThreadActionExecutedEventItem = {

@@ -3,6 +3,7 @@ import { DurationInMs, slidingWindow } from '@repo/utils'
 import { TicketThreadItemTag } from '../types'
 import {
     isAiAgentDraftMessage,
+    isAiAgentHandoverMessage,
     isAiAgentInternalNote,
     isAiAgentMessage,
     isAiAgentTrialMessage,
@@ -67,6 +68,14 @@ export function toTaggedMessage(
             data: message,
             datetime,
             ...metadata,
+        }
+    }
+
+    if (isAiAgentHandoverMessage(message)) {
+        return {
+            _tag: TicketThreadItemTag.Messages.AiAgentHandoverMessage,
+            data: message,
+            datetime,
         }
     }
 
@@ -210,6 +219,7 @@ function isAiAgentThreadMessage(item: TicketThreadSingleMessageItem): boolean {
         case TicketThreadItemTag.Messages.AiAgentInternalNote:
         case TicketThreadItemTag.Messages.AiAgentDraftMessage:
         case TicketThreadItemTag.Messages.AiAgentTrialMessage:
+        case TicketThreadItemTag.Messages.AiAgentHandoverMessage:
             return true
         default:
             return false

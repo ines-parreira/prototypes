@@ -79,7 +79,7 @@ export function useRuleSuggestion({ ticketId }: UseRuleSuggestionParams) {
     const {
         currentTicketRuleSuggestionData: { shouldDisplayDemoSuggestion },
     } = useTicketThreadLegacyBridge()
-    const messages = useListTicketMessages({ ticketId })
+    const { messages } = useListTicketMessages({ ticketId })
     const { data: ticket } = useGetTicket(ticketId, undefined, {
         query: {
             ...getQueryOptions(ticketId),
