@@ -258,13 +258,13 @@ catalogs:
       version: 2.3.0
   rest-api-sdk:
     '@gorgias/convert-client':
-      specifier: ^0.3.52
+      specifier: ^0.3.54
       version: 0.3.54
     '@gorgias/convert-mocks':
-      specifier: ^0.2.69
+      specifier: ^0.2.71
       version: 0.2.71
     '@gorgias/convert-queries':
-      specifier: ^0.2.70
+      specifier: ^0.2.72
       version: 0.2.72
     '@gorgias/customer-segmentation-client':
       specifier: ^0.2.9

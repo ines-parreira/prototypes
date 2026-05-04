@@ -1,12 +1,12 @@
 {
-  "date": "2026-04-30T20:14:02.956Z",
-  "total": 5808,
+  "date": "2026-05-04T07:37:19.841Z",
+  "total": 5812,
   "deprecated": [
     {
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "NotificationStatus",
       "comment": "*\n * @deprecated Use the axiom `toast` API from `@gorgias/axiom` instead.\n ",
-      "count": 405,
+      "count": 407,
       "filePath": "apps/helpdesk/src/state/notifications/types.ts",
       "usages": [
         {
@@ -416,6 +416,8 @@
             "apps/helpdesk/src/teams/queries/useUpdateTeam.ts",
             "apps/helpdesk/src/tests/init.spec.ts",
             "apps/helpdesk/src/tickets/common/utils/replaceIntegrationVariables.ts",
+            "apps/helpdesk/src/tickets/pages/NewTicketPage/components/NewTicketSubmitButtons.tsx",
+            "apps/helpdesk/src/tickets/pages/NewTicketPage/hooks/useNewTicketForm.ts",
             "apps/helpdesk/src/utils.ts"
           ]
         }
@@ -425,7 +427,7 @@
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "notify",
       "comment": "*\n * Notification system using:\n * - https://github.com/LouisBarranqueiro/reapop\n *\n * set dismissAfter = 0 to make the notification not leave until the user clicks on it\n * set closeOnNext = true to make the notification close on next notification addition\n *\n * @deprecated Use the axiom `toast` API from `@gorgias/axiom` instead.\n ",
-      "count": 390,
+      "count": 392,
       "filePath": "apps/helpdesk/src/state/notifications/actions.ts",
       "usages": [
         {
@@ -820,7 +822,9 @@
             "apps/helpdesk/src/teams/queries/useDeleteTeam.ts",
             "apps/helpdesk/src/teams/queries/useFetchTeam.ts",
             "apps/helpdesk/src/teams/queries/useUpdateTeam.ts",
-            "apps/helpdesk/src/tests/init.spec.ts"
+            "apps/helpdesk/src/tests/init.spec.ts",
+            "apps/helpdesk/src/tickets/pages/NewTicketPage/components/NewTicketSubmitButtons.tsx",
+            "apps/helpdesk/src/tickets/pages/NewTicketPage/hooks/useNewTicketForm.ts"
           ]
         }
       ]
@@ -1008,7 +1012,6 @@
             "apps/helpdesk/src/pages/common/components/button/ConfirmButtonWithModal.tsx",
             "apps/helpdesk/src/pages/common/components/ConfirmModalAction/ConfirmModalAction.tsx",
             "apps/helpdesk/src/pages/common/components/ConfirmNavigationPrompt.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/Infobar.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/CustomAddressModal.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal.tsx",
@@ -1017,6 +1020,7 @@
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/Button.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Editor.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/useCustomerProfileActions.tsx",
             "apps/helpdesk/src/pages/common/components/KeyboardHelp/KeyboardHelp.tsx",
             "apps/helpdesk/src/pages/common/components/MergeCustomers/MergeCustomersModal.tsx",
             "apps/helpdesk/src/pages/common/components/MergeTickets/MergeTicketsContainer.tsx",
@@ -1270,7 +1274,6 @@
             "apps/helpdesk/src/pages/common/components/button/ConfirmButtonWithModal.tsx",
             "apps/helpdesk/src/pages/common/components/ConfirmModalAction/ConfirmModalAction.tsx",
             "apps/helpdesk/src/pages/common/components/ConfirmNavigationPrompt.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/Infobar.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal.tsx",
@@ -1278,6 +1281,7 @@
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Form.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/useCustomerProfileActions.tsx",
             "apps/helpdesk/src/pages/common/components/KeyboardHelp/KeyboardHelp.tsx",
             "apps/helpdesk/src/pages/common/components/MergeCustomers/MergeCustomersModal.tsx",
             "apps/helpdesk/src/pages/common/components/MergeTickets/MergeTicketsContainer.tsx",
