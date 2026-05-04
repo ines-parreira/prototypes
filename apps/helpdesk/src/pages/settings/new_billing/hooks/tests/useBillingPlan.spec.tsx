@@ -9,6 +9,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import type { BillingState, HttpResponse } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { convertStatusOk } from 'fixtures/convert'
@@ -915,6 +918,137 @@ describe('useBillingPlans', () => {
 
             expect(mockClientGet).toHaveBeenCalledTimes(1)
             expect(dispatchBillingError).toHaveBeenCalledWith(mockError)
+        })
+
+        describe('seeds cached billing state versions after subscription update', () => {
+            const seedBillingStateCache = (
+                queryClient: ReturnType<typeof mockQueryClient>,
+                subscriptionOverride: Partial<{
+                    resource_version: number
+                    schedule_resource_version: number
+                }> = {},
+            ) => {
+                queryClient.setQueryData(queryKeys.billing.getBillingState(), {
+                    data: {
+                        subscription: {
+                            resource_version: 1,
+                            schedule_resource_version: 10,
+                            ...subscriptionOverride,
+                        },
+                    },
+                })
+            }
+
+            const triggerSmsPlanChange = async (
+                queryClient: ReturnType<typeof mockQueryClient>,
+            ) => {
+                const alteredStore = mockedStore({
+                    ...store,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]:
+                                    basicMonthlyHelpdeskPlan.plan_id,
+                                [SMS_PRODUCT_ID]: smsPlan0.plan_id,
+                                [VOICE_PRODUCT_ID]: voicePlan0.plan_id,
+                            },
+                        },
+                    }),
+                })
+
+                const { result } = renderHook(
+                    () =>
+                        useBillingPlans({
+                            dispatchBillingError: jest.fn(),
+                        }),
+                    {
+                        wrapper: ({ children }) => (
+                            <QueryClientProvider client={queryClient}>
+                                <Provider store={alteredStore}>
+                                    {children}
+                                </Provider>
+                            </QueryClientProvider>
+                        ),
+                    },
+                )
+
+                await act(async () =>
+                    result.current.setSelectedPlans((prev) => ({
+                        ...prev,
+                        [ProductType.SMS]: {
+                            plan: smsPlan1,
+                            isSelected: true,
+                        },
+                    })),
+                )
+                await act(async () => result.current.updateSubscription())
+            }
+
+            it('writes new resource_version and schedule_resource_version into cached BillingState', async () => {
+                const queryClient = mockQueryClient()
+                seedBillingStateCache(queryClient)
+                mockClientPut.mockResolvedValueOnce({
+                    data: {
+                        products: { [SMS_PRODUCT_ID]: smsPlan1.plan_id },
+                        subscription_resource_version: 99,
+                        subscription_renewal_ramp_version: 7,
+                    },
+                })
+
+                await triggerSmsPlanChange(queryClient)
+
+                const cached = queryClient.getQueryData<
+                    HttpResponse<BillingState>
+                >(queryKeys.billing.getBillingState())
+                expect(cached?.data.subscription.resource_version).toBe(99)
+                expect(
+                    cached?.data.subscription.schedule_resource_version,
+                ).toBe(7)
+            })
+
+            it('clears schedule_resource_version when BE returns null (renewal ramp removed)', async () => {
+                const queryClient = mockQueryClient()
+                seedBillingStateCache(queryClient)
+                mockClientPut.mockResolvedValueOnce({
+                    data: {
+                        products: { [SMS_PRODUCT_ID]: smsPlan1.plan_id },
+                        subscription_resource_version: 99,
+                        subscription_renewal_ramp_version: null,
+                    },
+                })
+
+                await triggerSmsPlanChange(queryClient)
+
+                const cached = queryClient.getQueryData<
+                    HttpResponse<BillingState>
+                >(queryKeys.billing.getBillingState())
+                expect(cached?.data.subscription.resource_version).toBe(99)
+                expect(
+                    cached?.data.subscription.schedule_resource_version,
+                ).toBeUndefined()
+            })
+
+            it('keeps cached versions intact when BE omits the new fields', async () => {
+                const queryClient = mockQueryClient()
+                seedBillingStateCache(queryClient)
+                mockClientPut.mockResolvedValueOnce({
+                    data: {
+                        products: { [SMS_PRODUCT_ID]: smsPlan1.plan_id },
+                    },
+                })
+
+                await triggerSmsPlanChange(queryClient)
+
+                const cached = queryClient.getQueryData<
+                    HttpResponse<BillingState>
+                >(queryKeys.billing.getBillingState())
+                expect(cached?.data.subscription.resource_version).toBe(1)
+                expect(
+                    cached?.data.subscription.schedule_resource_version,
+                ).toBe(10)
+            })
         })
     })
 

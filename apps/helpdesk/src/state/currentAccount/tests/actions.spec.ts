@@ -243,6 +243,28 @@ describe('current account actions', () => {
                 prices: [basicMonthlyHelpdeskPlan.plan_id],
             })
         })
+
+        it('resolves with response payload including refreshed version fields', async () => {
+            const responseBody = {
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                },
+                subscription_resource_version: 99,
+                subscription_renewal_ramp_version: 7,
+            }
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(202, responseBody)
+
+            const result = await store.dispatch(
+                actions.updateSubscriptionsForPlans({
+                    products: { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
+                    notifications: [],
+                }),
+            )
+
+            expect(result).toEqual(responseBody)
+        })
     })
 
     describe('setCurrentSubscription()', () => {

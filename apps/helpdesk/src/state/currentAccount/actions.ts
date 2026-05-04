@@ -280,6 +280,8 @@ export function submitProductInsightsTableConfigView(
 
 type SubscriptionUpdateResponse = {
     products: ProductToPlanId
+    subscription_resource_version?: number | null
+    subscription_renewal_ramp_version?: number | null
 }
 
 export function updateSubscription(subscription: Subscription) {
@@ -326,7 +328,9 @@ export function updateSubscriptionsForPlans({
     subscriptionResourceVersion?: number
     subscriptionRenewalRampResourceVersion?: number
 }) {
-    return async (dispatch: StoreDispatch): Promise<void> => {
+    return async (
+        dispatch: StoreDispatch,
+    ): Promise<SubscriptionUpdateResponse> => {
         const response = await client.put<SubscriptionUpdateResponse>(
             '/api/billing/subscription/',
             {
@@ -345,6 +349,8 @@ export function updateSubscriptionsForPlans({
         notifications.forEach((notification) => {
             void dispatch(notify(notification))
         })
+
+        return response.data
     }
 }
 

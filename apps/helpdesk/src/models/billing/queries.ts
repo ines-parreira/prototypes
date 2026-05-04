@@ -19,6 +19,8 @@ import {
     updateInternalSubscription,
     upgradeAiAgentSubscriptionGeneration6Plan,
 } from './resources'
+import type { BillingState } from './types'
+import { applySubscriptionVersionUpdate } from './utils'
 
 export const billingKeys = {
     all: ['billing'] as const,
@@ -222,7 +224,18 @@ export const useUpdateInternalSubscription = () => {
 
     return useMutation({
         mutationFn: updateInternalSubscription,
-        onSuccess: () => {
+        onSuccess: (data) => {
+            queryClient.setQueryData<BillingState | undefined>(
+                getBillingStateQuery.queryKey,
+                (prev) =>
+                    prev && {
+                        ...prev,
+                        subscription: applySubscriptionVersionUpdate(
+                            prev.subscription,
+                            data,
+                        ),
+                    },
+            )
             queryClient.invalidateQueries({
                 queryKey: billingKeys.all,
             })

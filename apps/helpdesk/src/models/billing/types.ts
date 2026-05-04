@@ -220,6 +220,9 @@ export type InternalProductCatalogResponse = {
     plans: InternalProductCatalogPlans
 }
 
+// TODO(CRMGROW-3557): drop these local types once @gorgias/helpdesk-types
+// exposes the /api/billing/internal/subscription endpoint and import its
+// generated payload/response types instead.
 export type InternalSubscriptionUpdatePayload = {
     current_resource_version: number
     subscription_renewal_ramp_resource_version?: number
@@ -230,6 +233,8 @@ export type InternalSubscriptionUpdatePayload = {
 
 export type InternalSubscriptionUpdateResponse = {
     products: Partial<Record<ProductType, PlanId>>
+    subscription_resource_version?: number | null
+    subscription_renewal_ramp_version?: number | null
 }
 
 export type CreditCard = {

@@ -8,12 +8,14 @@ import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import type { SubscriptionSummary as SdkSubscriptionSummary } from '@gorgias/helpdesk-types'
 import { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type {
     AutomatePlan,
     ConvertPlan,
     HelpdeskPlan,
+    InternalSubscriptionUpdateResponse,
     Plan,
     PlanForProductType,
     ProductInfo,
@@ -397,4 +399,32 @@ export function generatePaymentPlanLabel(
  */
 export function isYearlyContractPlan(plan: Plan | undefined) {
     return (plan?.cadence as string) !== (plan?.invoice_cadence as string)
+}
+
+export function applySubscriptionVersionUpdate<
+    T extends Pick<
+        SdkSubscriptionSummary,
+        'resource_version' | 'schedule_resource_version'
+    >,
+>(
+    subscription: T,
+    response: Pick<
+        InternalSubscriptionUpdateResponse,
+        'subscription_resource_version' | 'subscription_renewal_ramp_version'
+    >,
+): T {
+    const nextResourceVersion = response.subscription_resource_version
+    const nextRampVersion = response.subscription_renewal_ramp_version
+    return {
+        ...subscription,
+        // null on resource_version means "no change", so preserve the cached value.
+        ...(nextResourceVersion != null && {
+            resource_version: nextResourceVersion,
+        }),
+        // null on renewal_ramp_version means the renewal ramp was removed,
+        // so clear the cached value; only `undefined` (omitted) preserves it.
+        ...(nextRampVersion !== undefined && {
+            schedule_resource_version: nextRampVersion ?? undefined,
+        }),
+    }
 }

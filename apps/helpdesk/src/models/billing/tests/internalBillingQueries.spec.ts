@@ -6,12 +6,14 @@ import { waitFor } from '@testing-library/react'
 
 import {
     billingKeys,
+    getBillingStateQuery,
     getSubscriptionQuery,
     useInternalProductCatalogPlans,
     useUpdateInternalSubscription,
 } from 'models/billing/queries'
 import * as billingResources from 'models/billing/resources'
 import type {
+    BillingState,
     InternalProductCatalogResponse,
     InternalSubscriptionUpdateResponse,
 } from 'models/billing/types'
@@ -206,6 +208,89 @@ describe('internal billing queries', () => {
             ).rejects.toThrow()
 
             expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+        })
+
+        describe('refreshes cached subscription versions on success', () => {
+            const baseBillingState = {
+                subscription: {
+                    resource_version: 1,
+                    schedule_resource_version: 10,
+                    is_paused: false,
+                },
+            } as unknown as BillingState
+
+            it('writes the new resource and renewal-ramp versions into cached BillingState', async () => {
+                mockUpdateInternalSubscription.mockResolvedValue({
+                    products: {},
+                    subscription_resource_version: 99,
+                    subscription_renewal_ramp_version: 42,
+                })
+
+                const { result, queryClient } = renderHookWithQueryClient(() =>
+                    useUpdateInternalSubscription(),
+                )
+                queryClient.setQueryData(
+                    getBillingStateQuery.queryKey,
+                    baseBillingState,
+                )
+
+                await result.current.mutateAsync(mockPayload)
+
+                const cached = queryClient.getQueryData<BillingState>(
+                    getBillingStateQuery.queryKey,
+                )
+                expect(cached?.subscription.resource_version).toBe(99)
+                expect(cached?.subscription.schedule_resource_version).toBe(42)
+                expect(cached?.subscription.is_paused).toBe(false)
+            })
+
+            it('clears schedule_resource_version when BE returns null (renewal ramp removed)', async () => {
+                mockUpdateInternalSubscription.mockResolvedValue({
+                    products: {},
+                    subscription_resource_version: 99,
+                    subscription_renewal_ramp_version: null,
+                })
+
+                const { result, queryClient } = renderHookWithQueryClient(() =>
+                    useUpdateInternalSubscription(),
+                )
+                queryClient.setQueryData(
+                    getBillingStateQuery.queryKey,
+                    baseBillingState,
+                )
+
+                await result.current.mutateAsync(mockPayload)
+
+                const cached = queryClient.getQueryData<BillingState>(
+                    getBillingStateQuery.queryKey,
+                )
+                expect(cached?.subscription.resource_version).toBe(99)
+                expect(
+                    cached?.subscription.schedule_resource_version,
+                ).toBeUndefined()
+            })
+
+            it('keeps cached versions intact when BE omits the new fields', async () => {
+                mockUpdateInternalSubscription.mockResolvedValue({
+                    products: {},
+                })
+
+                const { result, queryClient } = renderHookWithQueryClient(() =>
+                    useUpdateInternalSubscription(),
+                )
+                queryClient.setQueryData(
+                    getBillingStateQuery.queryKey,
+                    baseBillingState,
+                )
+
+                await result.current.mutateAsync(mockPayload)
+
+                const cached = queryClient.getQueryData<BillingState>(
+                    getBillingStateQuery.queryKey,
+                )
+                expect(cached?.subscription.resource_version).toBe(1)
+                expect(cached?.subscription.schedule_resource_version).toBe(10)
+            })
         })
     })
 })

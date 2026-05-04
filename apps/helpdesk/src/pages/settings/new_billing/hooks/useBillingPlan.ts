@@ -12,6 +12,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
 
+import type { BillingState, HttpResponse } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
@@ -22,6 +23,7 @@ import { getSubscriptionQuery } from 'models/billing/queries'
 import type { ProductInfo } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import {
+    applySubscriptionVersionUpdate,
     getCadenceName,
     getProductInfo,
     isEnterprise,
@@ -634,13 +636,32 @@ export const useBillingPlans = ({
             try {
                 if (anyProductChanged) {
                     setIsSubscriptionUpdating(true)
-                    await dispatch(
+                    const updateResponse = await dispatch(
                         updateSubscriptionsForPlans({
                             products: plansToBeUpdated,
                             notifications,
                             subscriptionResourceVersion,
                             subscriptionRenewalRampResourceVersion,
                         }),
+                    )
+                    // Seed cached versions so the next estimates GET / PUT
+                    // uses fresh resource versions before refetch lands.
+                    queryClient.setQueryData<
+                        HttpResponse<BillingState> | undefined
+                    >(queryKeys.billing.getBillingState(), (prev) =>
+                        prev?.data && updateResponse
+                            ? {
+                                  ...prev,
+                                  data: {
+                                      ...prev.data,
+                                      subscription:
+                                          applySubscriptionVersionUpdate(
+                                              prev.data.subscription,
+                                              updateResponse,
+                                          ),
+                                  },
+                              }
+                            : prev,
                     )
                     // Invalidate subscription to refresh "Active until" badges and derived data
                     void queryClient.invalidateQueries({
