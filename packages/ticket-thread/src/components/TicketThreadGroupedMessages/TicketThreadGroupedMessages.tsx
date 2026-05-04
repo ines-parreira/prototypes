@@ -9,9 +9,13 @@ import type {
     TicketThreadGroupedMessagesItem,
     TicketThreadRegularMessageItem,
     TicketThreadSingleMessageItem,
+    TicketThreadSocialMediaFacebookMessageItem,
+    TicketThreadSocialMediaInstagramDirectMessageItem,
+    TicketThreadSocialMediaWhatsAppMessageItem,
 } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { MessageAppliedActions } from '../MessageBubble/components/MessageAppliedActions'
+import { MessageAttachments } from '../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
@@ -39,6 +43,11 @@ type GroupedMessageProps = {
     className?: string
     children?: ReactNode
 }
+
+type SocialGroupedMessageItem =
+    | TicketThreadSocialMediaFacebookMessageItem
+    | TicketThreadSocialMediaInstagramDirectMessageItem
+    | TicketThreadSocialMediaWhatsAppMessageItem
 
 function RegularGroupedMessage({
     item,
@@ -80,7 +89,11 @@ function SocialGroupedMessage({
     item,
     className,
     children,
-}: GroupedMessageProps) {
+}: {
+    item: SocialGroupedMessageItem
+    className?: string
+    children?: ReactNode
+}) {
     const isPendingMessage = isActivePendingMessageItem(item)
 
     return (
@@ -91,6 +104,7 @@ function SocialGroupedMessage({
             data-grouped-message
         >
             <MessageBody item={item} />
+            <MessageAttachments item={item} />
             {children}
             {isPendingMessage ? (
                 <PendingMessageBanner message={item.data} />

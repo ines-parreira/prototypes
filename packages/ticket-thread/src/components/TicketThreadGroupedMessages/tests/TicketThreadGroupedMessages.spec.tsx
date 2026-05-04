@@ -18,6 +18,7 @@ import type {
     TicketThreadSingleMessageItem,
     TicketThreadSocialMediaFacebookMessageItem,
     TicketThreadSocialMediaInstagramDirectMessageItem,
+    TicketThreadSocialMediaWhatsAppMessageItem,
 } from '../../../hooks/messages/types'
 import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
 import { TicketThreadItemTag } from '../../../hooks/types'
@@ -165,6 +166,11 @@ const instagramDirectMessageSource = {
     ],
 }
 
+const whatsAppMessageSource = {
+    ...mockTicketMessageSource({ type: 'whatsapp-message' }),
+    type: 'whatsapp-message' as const,
+}
+
 function makeFacebookMessageItem(
     overrides: Partial<
         ItemForTag<
@@ -221,6 +227,36 @@ function makeInstagramDmItem(
             ...overrides,
             source: instagramDirectMessageSource,
         } as TicketThreadSocialMediaInstagramDirectMessageItem['data'],
+        datetime: '2024-03-21T11:00:00Z',
+    }
+}
+
+function makeWhatsAppMessageItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage
+        >['data']
+    > = {},
+): TicketThreadSocialMediaWhatsAppMessageItem {
+    const bodyText = overrides.body_text ?? 'hello'
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
+        data: {
+            ...mockTicketMessage({
+                id: overrides.id ?? 1,
+                ticket_id: 123,
+                channel: 'whatsapp-message' as const,
+                via: 'whatsapp' as const,
+                body_html: null,
+                stripped_html: null,
+                body_text: bodyText,
+                stripped_text: overrides.stripped_text ?? bodyText,
+                attachments: [],
+                from_agent: overrides.from_agent ?? false,
+            }),
+            ...overrides,
+            source: whatsAppMessageSource,
+        } as TicketThreadSocialMediaWhatsAppMessageItem['data'],
         datetime: '2024-03-21T11:00:00Z',
     }
 }
@@ -382,6 +418,44 @@ describe('TicketThreadGroupedMessages – social message action placement', () =
         ).not.toBeInTheDocument()
         expect(
             messages[1].querySelector('[data-placement]'),
+        ).toBeInTheDocument()
+    })
+
+    it('renders attachments for grouped WhatsApp messages', () => {
+        const item = makeSocialGroupedItem([
+            makeWhatsAppMessageItem({
+                id: 1,
+                body_text: 'first whatsapp',
+                attachments: [
+                    {
+                        name: 'first-receipt.pdf',
+                        url: 'https://cdn.example.com/first-receipt.pdf',
+                        content_type: 'application/pdf',
+                        size: 1234,
+                    },
+                ],
+            }),
+            makeWhatsAppMessageItem({
+                id: 2,
+                body_text: 'second whatsapp',
+                attachments: [
+                    {
+                        name: 'second-receipt.pdf',
+                        url: 'https://cdn.example.com/second-receipt.pdf',
+                        content_type: 'application/pdf',
+                        size: 1234,
+                    },
+                ],
+            }),
+        ])
+
+        render(<TicketThreadGroupedMessages item={item} />)
+
+        expect(
+            screen.getByRole('link', { name: 'first-receipt.pdf' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: 'second-receipt.pdf' }),
         ).toBeInTheDocument()
     })
 })

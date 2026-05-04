@@ -25,6 +25,11 @@ const mockUseGetTicketMessage = vi.mocked(useGetTicketMessage)
 
 beforeEach(() => {
     vi.clearAllMocks()
+    window.GORGIAS_STATE = {
+        currentAccount: {
+            domain: 'acme',
+        },
+    }
     server.use(
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
@@ -77,6 +82,27 @@ describe('InstagramDirectMessage', () => {
             render(<InstagramDirectMessage item={makeItem()} />)
 
             expect(screen.getByText('DM message body')).toBeInTheDocument()
+        })
+
+        it('renders message attachments', () => {
+            render(
+                <InstagramDirectMessage
+                    item={makeItem({
+                        attachments: [
+                            {
+                                name: 'instagram-receipt.pdf',
+                                url: 'https://cdn.example.com/instagram-receipt.pdf',
+                                content_type: 'application/pdf',
+                                size: 1234,
+                            },
+                        ],
+                    })}
+                />,
+            )
+
+            expect(
+                screen.getByRole('link', { name: 'instagram-receipt.pdf' }),
+            ).toBeInTheDocument()
         })
 
         it('does not show the original comment context', () => {

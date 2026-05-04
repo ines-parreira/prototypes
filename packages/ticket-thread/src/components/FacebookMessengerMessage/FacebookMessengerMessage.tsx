@@ -1,6 +1,7 @@
 import { Box } from '@gorgias/axiom'
 
 import type { TicketThreadSocialMediaFacebookMessageItem } from '../../hooks/messages/types'
+import { MessageAttachments } from '../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { OriginalCommentContext } from '../SocialMessageBubble/OriginalCommentContext'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
@@ -50,6 +51,7 @@ export function FacebookMessengerMessage({
                     failedMessageError="We couldn't deliver your direct message"
                 >
                     <MessageBody item={item} />
+                    <MessageAttachments item={item} />
                     <TicketMessageActions message={item.data} />
                 </SocialMessageBubble>
             </Box>

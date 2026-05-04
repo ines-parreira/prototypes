@@ -25,6 +25,11 @@ const mockUseGetTicketMessage = vi.mocked(useGetTicketMessage)
 
 beforeEach(() => {
     vi.clearAllMocks()
+    window.GORGIAS_STATE = {
+        currentAccount: {
+            domain: 'acme',
+        },
+    }
     server.use(
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
@@ -78,6 +83,27 @@ describe('FacebookMessengerMessage', () => {
 
             expect(
                 screen.getByText('Messenger message body'),
+            ).toBeInTheDocument()
+        })
+
+        it('renders message attachments', () => {
+            render(
+                <FacebookMessengerMessage
+                    item={makeItem({
+                        attachments: [
+                            {
+                                name: 'messenger-receipt.pdf',
+                                url: 'https://cdn.example.com/messenger-receipt.pdf',
+                                content_type: 'application/pdf',
+                                size: 1234,
+                            },
+                        ],
+                    })}
+                />,
+            )
+
+            expect(
+                screen.getByRole('link', { name: 'messenger-receipt.pdf' }),
             ).toBeInTheDocument()
         })
 

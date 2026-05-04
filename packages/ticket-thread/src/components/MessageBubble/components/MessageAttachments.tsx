@@ -14,6 +14,9 @@ import type {
     TicketThreadAiAgentMessageItem,
     TicketThreadInternalNoteItem,
     TicketThreadRegularMessageItem,
+    TicketThreadSocialMediaFacebookMessageItem,
+    TicketThreadSocialMediaInstagramDirectMessageItem,
+    TicketThreadSocialMediaWhatsAppMessageItem,
 } from '../../../hooks/messages/types'
 import { Attachment } from './Attachment'
 import { DiscountOfferAttachment } from './DiscountOfferAttachment'
@@ -26,6 +29,9 @@ type MessageAttachmentsProps = {
         | TicketThreadRegularMessageItem
         | TicketThreadInternalNoteItem
         | TicketThreadAiAgentMessageItem
+        | TicketThreadSocialMediaFacebookMessageItem
+        | TicketThreadSocialMediaInstagramDirectMessageItem
+        | TicketThreadSocialMediaWhatsAppMessageItem
     attachmentsLabel?: string
 }
 

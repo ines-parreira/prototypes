@@ -2,6 +2,7 @@ import { Box } from '@gorgias/axiom'
 
 import type { TicketThreadSocialMediaInstagramDirectMessageItem } from '../../hooks/messages/types'
 import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
+import { MessageAttachments } from '../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { OriginalCommentContext } from '../SocialMessageBubble/OriginalCommentContext'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
@@ -52,6 +53,7 @@ export function InstagramDirectMessage({ item }: InstagramDirectMessageProps) {
                     failedMessageError="We couldn't deliver your direct message"
                 >
                     <MessageBody item={item} />
+                    <MessageAttachments item={item} />
                     <TicketMessageActions message={item.data} />
                 </SocialMessageBubble>
             </Box>

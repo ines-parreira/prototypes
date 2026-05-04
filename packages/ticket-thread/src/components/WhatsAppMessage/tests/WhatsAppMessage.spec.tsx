@@ -22,6 +22,11 @@ const mockUseTicketThreadDateTimeFormat = vi.mocked(
 )
 
 beforeEach(() => {
+    window.GORGIAS_STATE = {
+        currentAccount: {
+            domain: 'acme',
+        },
+    }
     server.use(mockGetUserAvailabilityHandler().handler)
     mockUseTicketThreadDateTimeFormat.mockReturnValue({
         format: {
@@ -99,6 +104,25 @@ describe('WhatsAppMessage', () => {
         expect(screen.getByText('Hello from WhatsApp')).toBeInTheDocument()
     })
 
+    it('renders message attachments', () => {
+        const item = makeItem({
+            attachments: [
+                {
+                    name: 'receipt.pdf',
+                    url: 'https://cdn.example.com/receipt.pdf',
+                    content_type: 'application/pdf',
+                    size: 1234,
+                },
+            ],
+        })
+
+        render(<WhatsAppMessage item={item} />)
+
+        expect(
+            screen.getByRole('link', { name: 'receipt.pdf' }),
+        ).toBeInTheDocument()
+    })
+
     it('renders the pending banner for active pending WhatsApp messages', () => {
         const item = {
             ...makeItem({
@@ -121,5 +145,24 @@ describe('WhatsAppMessage', () => {
 
         expect(screen.queryByText('Alice')).not.toBeInTheDocument()
         expect(screen.getByText('Hello from WhatsApp')).toBeInTheDocument()
+    })
+
+    it('renders attachments when grouped', () => {
+        const item = makeItem({
+            attachments: [
+                {
+                    name: 'grouped-receipt.pdf',
+                    url: 'https://cdn.example.com/grouped-receipt.pdf',
+                    content_type: 'application/pdf',
+                    size: 1234,
+                },
+            ],
+        })
+
+        render(<WhatsAppMessage item={item} isGrouped />)
+
+        expect(
+            screen.getByRole('link', { name: 'grouped-receipt.pdf' }),
+        ).toBeInTheDocument()
     })
 })
