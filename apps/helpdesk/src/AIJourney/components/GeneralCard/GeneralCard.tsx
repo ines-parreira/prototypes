@@ -6,6 +6,7 @@ import { JOURNEY_TYPES } from 'AIJourney/constants'
 import {
     CampaignName,
     FlowName,
+    FollowUpWaitHours,
     ImageUpload,
     IncludeImage,
     NumberOfMessages,
@@ -43,6 +44,7 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
                     <SenderPhoneNumber />
                 )}
                 <NumberOfMessages />
+                <FollowUpWaitHours />
                 {shouldRenderIncludeImage && (
                     <IncludeImage journeyType={journeyType} />
                 )}

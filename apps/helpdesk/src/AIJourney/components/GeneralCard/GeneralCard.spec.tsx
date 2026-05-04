@@ -20,6 +20,7 @@ jest.mock('AIJourney/formFields', () => ({
     FlowName: () => <div>FlowName</div>,
     SenderPhoneNumber: () => <div>SenderPhoneNumber</div>,
     NumberOfMessages: () => <div>NumberOfMessages</div>,
+    FollowUpWaitHours: () => <div>FollowUpWaitHours</div>,
     IncludeImage: () => <div>IncludeImage</div>,
     ImageUpload: () => <div>ImageUpload</div>,
 }))

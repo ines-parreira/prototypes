@@ -531,6 +531,44 @@ describe('useJourneyUpdateHandler', () => {
             )
         })
 
+        it('should include follow_up_wait_minutes when followUpWaitMinutes is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    followUpWaitMinutes: 1440,
+                    followUpValue: 1,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        follow_up_wait_minutes: 1440,
+                    }),
+                }),
+            )
+        })
+
+        it('should not include follow_up_wait_minutes when followUpWaitMinutes is not provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.journeyConfigs).not.toHaveProperty(
+                'follow_up_wait_minutes',
+            )
+        })
+
         it('should include post_purchase_wait_minutes when postPurchaseWaitMinutes is provided', async () => {
             const { result } = renderHook(
                 () => useJourneyUpdateHandler(defaultHookParams),

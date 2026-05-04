@@ -34,6 +34,7 @@ export type SetupFormValues = {
         label: string | null | undefined
     }
     max_follow_up_messages: number
+    follow_up_wait_minutes?: number
     include_image?: boolean
     uploaded_image_attachment?: UploadedImageAttachment[]
     offer_discount?: boolean
@@ -94,6 +95,8 @@ export const Setup = () => {
                     },
                     max_follow_up_messages:
                         (journeyParams.max_follow_up_messages ?? 0) + 1,
+                    follow_up_wait_minutes:
+                        journeyParams.follow_up_wait_minutes ?? 24 * 60,
                     include_image: journeyParams.include_image ?? false,
                     uploaded_image_attachment: hasCustomImage
                         ? [

@@ -491,6 +491,47 @@ describe('useJourneyCreateHandler', () => {
             expect(call.journeyConfigs).not.toHaveProperty('wait_time_minutes')
         })
 
+        it('includes follow_up_wait_minutes when followUpWaitMinutes is defined (including 0)', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            for (const value of [1440, 0]) {
+                mockMutateAsync.mockClear()
+                await act(async () => {
+                    await result.current.handleCreate({
+                        followUpWaitMinutes: value,
+                    })
+                })
+                expect(mockMutateAsync).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        journeyConfigs: expect.objectContaining({
+                            follow_up_wait_minutes: value,
+                        }),
+                    }),
+                )
+            }
+        })
+
+        it('omits follow_up_wait_minutes when followUpWaitMinutes is undefined', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({})
+            })
+
+            const call = mockMutateAsync.mock.calls[0][0]
+            expect(call.journeyConfigs).not.toHaveProperty(
+                'follow_up_wait_minutes',
+            )
+        })
+
         it('includes post_purchase_wait_minutes when postPurchaseWaitMinutes is defined (including 0)', async () => {
             mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
             const { result } = renderHook(

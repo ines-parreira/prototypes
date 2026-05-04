@@ -425,6 +425,57 @@ describe('<Setup />', () => {
         })
     })
 
+    describe('Follow-up wait field', () => {
+        it('should default follow_up_wait_minutes to 1440 (24 hours) when not present in configuration', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                    },
+                },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        follow_up_wait_minutes: 1440,
+                    }),
+                )
+            })
+        })
+
+        it('should pre-populate follow_up_wait_minutes from configuration when present', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                        follow_up_wait_minutes: 720,
+                    },
+                },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        follow_up_wait_minutes: 720,
+                    }),
+                )
+            })
+        })
+    })
+
     describe('Winback flow fields', () => {
         it('should set cooldown_days from Winback configuration when present', async () => {
             mockUseJourneyContext.mockReturnValue({

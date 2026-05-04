@@ -45,6 +45,7 @@ type HandleUpdateParams = {
     inactiveDays?: number | null
     cooldownDays?: number | null
     waitTimeMinutes?: number
+    followUpWaitMinutes?: number
     targetOrderStatus?: 'order_placed' | 'order_fulfilled'
     postPurchaseWaitMinutes?: number
     uploadedImageAttachment?: UploadedImageAttachment[]
@@ -97,6 +98,10 @@ export const useJourneyUpdateHandler = ({
                     }),
                     ...(updateParams.waitTimeMinutes !== undefined && {
                         wait_time_minutes: updateParams.waitTimeMinutes,
+                    }),
+                    ...(updateParams.followUpWaitMinutes !== undefined && {
+                        follow_up_wait_minutes:
+                            updateParams.followUpWaitMinutes,
                     }),
                     ...(updateParams.postPurchaseWaitMinutes !== undefined && {
                         post_purchase_wait_minutes:

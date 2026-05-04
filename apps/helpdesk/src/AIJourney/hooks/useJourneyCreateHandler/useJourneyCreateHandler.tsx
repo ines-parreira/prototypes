@@ -32,6 +32,7 @@ type HandleCreateParams = {
     inactiveDays?: number | null
     cooldownDays?: number | null
     waitTimeMinutes?: number
+    followUpWaitMinutes?: number
     targetOrderStatus?: 'order_placed' | 'order_fulfilled'
     postPurchaseWaitMinutes?: number
     uploadedImageAttachment?: UploadedImageAttachment[]
@@ -64,6 +65,7 @@ export const useJourneyCreateHandler = ({
             inactiveDays,
             cooldownDays,
             waitTimeMinutes,
+            followUpWaitMinutes,
             targetOrderStatus,
             postPurchaseWaitMinutes,
             uploadedImageAttachment,
@@ -100,6 +102,9 @@ export const useJourneyCreateHandler = ({
                     }),
                     ...(waitTimeMinutes !== undefined && {
                         wait_time_minutes: waitTimeMinutes,
+                    }),
+                    ...(followUpWaitMinutes !== undefined && {
+                        follow_up_wait_minutes: followUpWaitMinutes,
                     }),
                     ...(postPurchaseWaitMinutes !== undefined && {
                         post_purchase_wait_minutes: postPurchaseWaitMinutes,
