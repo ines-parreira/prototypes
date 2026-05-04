@@ -3,6 +3,12 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
+    DiscountApplicability,
+    DiscountObjectType,
+} from '@gorgias/helpdesk-types'
+import type { DiscountType, DiscountVO } from '@gorgias/helpdesk-types'
+
+import {
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
     voicePlan0,
@@ -12,6 +18,7 @@ import {
 import { ProductType } from 'models/billing/types'
 
 import { InternalSummary } from './InternalSummary'
+import { derivePriceSummary } from './useInternalPlanEditor'
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
 function makeResolved(
@@ -29,12 +36,13 @@ function makeResolved(
 function renderComponent(
     resolvedPlans: ResolvedPlan[],
     hasChanges = false,
-    billingState = payingWithCreditCard,
+    discounts?: DiscountVO[],
 ) {
     return render(
         <InternalSummary
-            billingState={billingState}
+            billingState={payingWithCreditCard}
             resolvedPlans={resolvedPlans}
+            priceSummary={derivePriceSummary(resolvedPlans, discounts)}
             hasChanges={hasChanges}
             onPreviewChanges={jest.fn()}
         />,
@@ -167,6 +175,38 @@ describe('InternalSummary', () => {
         const totalRow = screen.getByText('Total').closest('div')!
         expect(totalRow.querySelector('s')).toHaveTextContent('$60')
         expect(totalRow).toHaveTextContent('$360/month')
+    })
+
+    it('renders discount row and discounted total when subscription discounts are present', () => {
+        const plans: ResolvedPlan[] = [
+            makeResolved({
+                productType: ProductType.Helpdesk,
+                plan: proMonthlyHelpdeskPlan,
+                currentPlan: basicMonthlyHelpdeskPlan,
+                status: 'upgraded',
+            }),
+        ]
+        const discounts: DiscountVO[] = [
+            {
+                coupon_name: 'Test 50% off',
+                discount_applicability: DiscountApplicability[1],
+                discount_object_type: DiscountObjectType[1],
+                discount_type: 2 as unknown as DiscountType,
+                percent_off: 50,
+                products: [],
+            } as DiscountVO,
+        ]
+
+        renderComponent(plans, true, discounts)
+
+        expect(screen.getByText('Discount')).toBeInTheDocument()
+        const discountAmount = screen.getByText('-$180/month')
+        expect(discountAmount).toBeInTheDocument()
+        expect(discountAmount.closest('s')).toBeNull()
+
+        const totalRow = screen.getByText('Total').closest('div')!
+        expect(totalRow.querySelector('s')).toHaveTextContent('$360')
+        expect(totalRow).toHaveTextContent('$180/month')
     })
 
     it('renders credit card info and Change Payment Method link', () => {

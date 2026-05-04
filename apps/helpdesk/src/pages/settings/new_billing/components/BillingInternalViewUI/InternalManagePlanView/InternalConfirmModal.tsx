@@ -18,7 +18,7 @@ import type { BillingState } from 'models/billing/types'
 
 import { ConfirmSummaryTable } from './ConfirmSummaryTable'
 import { useInternalConfirmChangesEstimate } from './useInternalConfirmChangesEstimate'
-import type { ResolvedPlan } from './useInternalPlanEditor'
+import type { PriceSummary, ResolvedPlan } from './useInternalPlanEditor'
 
 const INVOICE_ACTIONS = ['with', 'without'] as const
 type InvoiceAction = (typeof INVOICE_ACTIONS)[number]
@@ -27,6 +27,7 @@ type InternalConfirmModalProps = {
     isOpen: boolean
     onClose: () => void
     resolvedPlans: ResolvedPlan[]
+    priceSummary: PriceSummary
     billingState: BillingState
     onApply: (generateInvoice: boolean) => void
     isSubmitting: boolean
@@ -36,6 +37,7 @@ export function InternalConfirmModal({
     isOpen,
     onClose,
     resolvedPlans,
+    priceSummary,
     billingState,
     onApply,
     isSubmitting,
@@ -91,6 +93,7 @@ export function InternalConfirmModal({
                 <ConfirmSummaryTable
                     billingState={billingState}
                     resolvedPlans={resolvedPlans}
+                    priceSummary={priceSummary}
                     balanceDue={estimate?.balance_due}
                     isEstimateLoading={isEstimateLoading || isEstimateFetching}
                     estimateErrorMessage={estimateErrorMessage}

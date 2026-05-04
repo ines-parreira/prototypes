@@ -29,8 +29,17 @@ export function InternalManagePlanView() {
         isLoading: isCatalogLoading,
         isError: isCatalogError,
     } = useInternalProductCatalogPlans()
-    const { targetPlans, resolvedPlans, hasChanges, handlePlanSelect } =
-        useInternalPlanEditor(billingState?.current_plans, catalogData?.plans)
+    const {
+        targetPlans,
+        resolvedPlans,
+        hasChanges,
+        priceSummary,
+        handlePlanSelect,
+    } = useInternalPlanEditor(
+        billingState?.current_plans,
+        catalogData?.plans,
+        billingState?.subscription.discounts,
+    )
 
     const { apply, isSubmitting } = useApplyInternalPlanChanges(
         billingState,
@@ -68,6 +77,7 @@ export function InternalManagePlanView() {
                 <InternalSummary
                     billingState={billingState}
                     resolvedPlans={resolvedPlans}
+                    priceSummary={priceSummary}
                     hasChanges={hasChanges}
                     onPreviewChanges={() => setIsConfirmOpen(true)}
                 />
@@ -77,6 +87,7 @@ export function InternalManagePlanView() {
                 isOpen={isConfirmOpen}
                 onClose={() => setIsConfirmOpen(false)}
                 resolvedPlans={resolvedPlans}
+                priceSummary={priceSummary}
                 billingState={billingState}
                 onApply={apply}
                 isSubmitting={isSubmitting}

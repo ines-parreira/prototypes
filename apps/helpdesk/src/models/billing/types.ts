@@ -1,4 +1,4 @@
-import type { InvoiceCadence } from '@gorgias/helpdesk-types'
+import type { DiscountVO, InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type {
     AccountFeature,
@@ -203,7 +203,10 @@ export type SubscriptionSummary = {
     scheduled_to_cancel_at: string | null
     current_billing_cycle_start_datetime: string
     current_billing_cycle_end_datetime: string
+    // TODO(CRMGROW-3557): `coupon` is legacy — equals `coupons[0]`, omits
+    // stacked and non-coupon discounts. Read from `discounts` instead.
     coupon: CouponSummary | null
+    discounts: DiscountVO[]
     trial_extended_until: string | null // isoformatted datetime
     resource_version: number
     schedule_resource_version?: number

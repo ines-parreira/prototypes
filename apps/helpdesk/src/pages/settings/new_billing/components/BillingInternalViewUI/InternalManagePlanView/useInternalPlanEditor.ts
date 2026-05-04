@@ -1,5 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { getTotalWithDiscounts } from '@repo/billing'
+import type { SelectedPlans } from '@repo/billing'
+
+import type { DiscountVO } from '@gorgias/helpdesk-types'
+
 import type {
     CurrentPlans,
     InternalProductCatalogPlans,
@@ -7,7 +12,7 @@ import type {
     PlanId,
 } from 'models/billing/types'
 import { PRODUCT_TO_PLAN_KEY, ProductType } from 'models/billing/types'
-import { getPlanPrice } from 'models/billing/utils'
+import { getPlanPrice, isTrial } from 'models/billing/utils'
 
 export type ResolvedPlanStatus =
     | 'unchanged'
@@ -31,6 +36,17 @@ export type ResolvedPlan = {
     currentPlan: Plan | null
     status: ResolvedPlanStatus
     action: ProductAction | null
+}
+
+export type PriceSummary = {
+    totalPriceInCents: number
+    currentTotalPriceInCents: number
+    totalWithDiscountsInCents: number
+    discountAmountInCents: number
+    hasDiscount: boolean
+    totalChanged: boolean
+    showStrikethrough: boolean
+    strikethroughAmountInCents: number
 }
 
 function resolveStatus(
@@ -70,6 +86,7 @@ function resolveDisplayPlan(
 export function useInternalPlanEditor(
     currentPlans: CurrentPlans | undefined,
     catalogPlans: InternalProductCatalogPlans | undefined,
+    discounts: DiscountVO[] | undefined,
 ) {
     const [targetPlans, setTargetPlans] = useState<
         Partial<Record<ProductType, PlanId>>
@@ -179,11 +196,59 @@ export function useInternalPlanEditor(
         ({ status }) => status !== 'unchanged',
     )
 
+    const priceSummary = useMemo<PriceSummary>(
+        () => derivePriceSummary(resolvedPlans, discounts),
+        [resolvedPlans, discounts],
+    )
+
     return {
         targetPlans,
         resolvedPlans,
         hasChanges,
+        priceSummary,
         handlePlanSelect,
+    }
+}
+
+export function derivePriceSummary(
+    resolvedPlans: ResolvedPlan[],
+    discounts: DiscountVO[] | undefined,
+): PriceSummary {
+    const currentTotalPriceInCents = resolvedPlans.reduce(
+        (sum, { currentPlan }) => {
+            if (!currentPlan || isTrial(currentPlan)) return sum
+            return sum + currentPlan.amount
+        },
+        0,
+    )
+
+    const selectedPlans = Object.fromEntries(
+        resolvedPlans.map(({ productType, plan }) => [
+            productType,
+            {
+                plan: plan ?? undefined,
+                isSelected: Boolean(plan && !isTrial(plan)),
+            },
+        ]),
+    ) as SelectedPlans
+
+    const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
+        getTotalWithDiscounts(selectedPlans, discounts ?? [])
+
+    const hasDiscount = discountAmount > 0
+    const totalChanged = totalWithoutDiscounts !== currentTotalPriceInCents
+
+    return {
+        totalPriceInCents: totalWithoutDiscounts,
+        currentTotalPriceInCents,
+        totalWithDiscountsInCents: totalWithDiscounts,
+        discountAmountInCents: discountAmount,
+        hasDiscount,
+        totalChanged,
+        showStrikethrough: hasDiscount || totalChanged,
+        strikethroughAmountInCents: hasDiscount
+            ? totalWithoutDiscounts
+            : currentTotalPriceInCents,
     }
 }
 

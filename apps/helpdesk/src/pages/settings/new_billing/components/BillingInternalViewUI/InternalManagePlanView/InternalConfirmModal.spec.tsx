@@ -13,6 +13,7 @@ import {
 import { ProductType } from 'models/billing/types'
 
 import { InternalConfirmModal } from './InternalConfirmModal'
+import { derivePriceSummary } from './useInternalPlanEditor'
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
 const ESTIMATE_URL = '*/api/billing/internal/estimates/subscription'
@@ -81,10 +82,12 @@ const downgradeOnlyPlans: ResolvedPlan[] = [
 function renderComponent(
     overrides: Partial<Parameters<typeof InternalConfirmModal>[0]> = {},
 ) {
+    const resolvedPlans = overrides.resolvedPlans ?? defaultPlans
     const props = {
         isOpen: true,
         onClose: jest.fn(),
-        resolvedPlans: defaultPlans,
+        resolvedPlans,
+        priceSummary: derivePriceSummary(resolvedPlans, undefined),
         billingState: payingWithCreditCard,
         onApply: jest.fn(),
         isSubmitting: false,

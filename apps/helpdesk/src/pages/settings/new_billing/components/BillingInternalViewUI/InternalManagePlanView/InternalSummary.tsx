@@ -14,14 +14,18 @@ import {
 } from '@gorgias/axiom'
 
 import type { BillingState } from 'models/billing/types'
-import { getPlanPrice, isTrial } from 'models/billing/utils'
-import type { ResolvedPlan } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useInternalPlanEditor'
+import type {
+    PriceSummary,
+    ResolvedPlan,
+} from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useInternalPlanEditor'
 
+import { DiscountSummaryRow } from './DiscountSummaryRow'
 import { SummaryProductRow } from './SummaryProductRow'
 
 type InternalSummaryProps = {
     billingState: BillingState
     resolvedPlans: ResolvedPlan[]
+    priceSummary: PriceSummary
     hasChanges: boolean
     onPreviewChanges: () => void
 }
@@ -29,6 +33,7 @@ type InternalSummaryProps = {
 export function InternalSummary({
     billingState,
     resolvedPlans,
+    priceSummary,
     hasChanges,
     onPreviewChanges,
 }: InternalSummaryProps) {
@@ -36,17 +41,13 @@ export function InternalSummary({
     const cadence = billingState.current_plans.helpdesk.cadence
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
 
-    const totalPrice = resolvedPlans.reduce((sum, { plan }) => {
-        if (!plan || isTrial(plan)) return sum
-        return sum + getPlanPrice(plan)
-    }, 0)
-
-    const currentTotalPrice = resolvedPlans.reduce((sum, { currentPlan }) => {
-        if (!currentPlan || isTrial(currentPlan)) return sum
-        return sum + getPlanPrice(currentPlan)
-    }, 0)
-
-    const totalChanged = hasChanges && totalPrice !== currentTotalPrice
+    const {
+        totalWithDiscountsInCents,
+        discountAmountInCents,
+        hasDiscount,
+        showStrikethrough,
+        strikethroughAmountInCents,
+    } = priceSummary
 
     const visiblePlans = resolvedPlans.filter(
         ({ plan, currentPlan, status }) =>
@@ -104,21 +105,32 @@ export function InternalSummary({
                     ),
                 )}
                 <Separator />
+                {hasDiscount && (
+                    <DiscountSummaryRow
+                        discountAmountInCents={discountAmountInCents}
+                        cadence={cadence}
+                        currency={currency}
+                    />
+                )}
                 <Box justifyContent="space-between">
                     <Text variant="bold">Total</Text>
                     <Box alignItems="center" gap="xs">
-                        {totalChanged && (
+                        {showStrikethrough && (
                             <Text
                                 variant="bold"
                                 color="content-neutral-tertiary"
                             >
                                 <s>
-                                    {formatAmount(currentTotalPrice, currency)}
+                                    {formatAmount(
+                                        Math.round(strikethroughAmountInCents) /
+                                            100,
+                                        currency,
+                                    )}
                                 </s>
                             </Text>
                         )}
                         <Text variant="bold">
-                            {formatAmount(totalPrice, currency)}/{cadence}
+                            {`${formatAmount(Math.round(totalWithDiscountsInCents) / 100, currency)}/${cadence}`}
                         </Text>
                     </Box>
                 </Box>

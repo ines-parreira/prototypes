@@ -40,7 +40,7 @@ function renderUseInternalPlanEditor(
     plans: CurrentPlans | undefined = currentPlans,
     catalog: InternalProductCatalogPlans | undefined = catalogPlans,
 ) {
-    return renderHook(() => useInternalPlanEditor(plans, catalog))
+    return renderHook(() => useInternalPlanEditor(plans, catalog, undefined))
 }
 
 function findPlan(result: any, productType: ProductType) {

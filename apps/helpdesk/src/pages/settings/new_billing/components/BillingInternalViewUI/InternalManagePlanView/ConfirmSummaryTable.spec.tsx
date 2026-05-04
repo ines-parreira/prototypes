@@ -4,12 +4,19 @@ import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {
+    DiscountApplicability,
+    DiscountObjectType,
+} from '@gorgias/helpdesk-types'
+import type { DiscountType, DiscountVO } from '@gorgias/helpdesk-types'
+
+import {
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
 
 import { ConfirmSummaryTable } from './ConfirmSummaryTable'
+import { derivePriceSummary } from './useInternalPlanEditor'
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
 function makeResolved(
@@ -35,10 +42,12 @@ const resolvedPlans: ResolvedPlan[] = [
 
 function renderComponent(
     overrides: Partial<Parameters<typeof ConfirmSummaryTable>[0]> = {},
+    discounts?: DiscountVO[],
 ) {
     const props = {
         billingState: payingWithCreditCard,
         resolvedPlans,
+        priceSummary: derivePriceSummary(resolvedPlans, discounts),
         ...overrides,
     }
 
@@ -84,10 +93,37 @@ describe('ConfirmSummaryTable balance due', () => {
             <ConfirmSummaryTable
                 billingState={payingWithCreditCard}
                 resolvedPlans={resolvedPlans}
+                priceSummary={derivePriceSummary(resolvedPlans, undefined)}
                 balanceDue={25.5}
             />,
         )
 
         expect(screen.getByText('$25.50 due today')).toBeInTheDocument()
+    })
+})
+
+describe('ConfirmSummaryTable discounts', () => {
+    it('renders discount row and discounted total when subscription discounts are present', () => {
+        const discounts: DiscountVO[] = [
+            {
+                coupon_name: 'Test 50% off',
+                discount_applicability: DiscountApplicability[1],
+                discount_object_type: DiscountObjectType[1],
+                discount_type: 2 as unknown as DiscountType,
+                percent_off: 50,
+                products: [],
+            } as DiscountVO,
+        ]
+
+        renderComponent({}, discounts)
+
+        expect(screen.getByText('Discount')).toBeInTheDocument()
+        const discountAmount = screen.getByText('-$180/month')
+        expect(discountAmount).toBeInTheDocument()
+        expect(discountAmount.closest('s')).toBeNull()
+
+        const totalRow = screen.getByText('Total').closest('div')!
+        expect(totalRow.querySelector('s')).toHaveTextContent('$360')
+        expect(totalRow).toHaveTextContent('$180/month')
     })
 })
