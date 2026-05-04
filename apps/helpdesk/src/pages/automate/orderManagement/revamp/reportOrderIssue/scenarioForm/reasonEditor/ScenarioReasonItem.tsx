@@ -1,4 +1,11 @@
-import { Box, Button, Icon, Text } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Icon,
+    Text,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import type {
@@ -40,12 +47,19 @@ export const ScenarioReasonItem = ({ value, onChange, onDelete }: Props) => {
                 <Box alignItems="center" gap="xs">
                     <Text size="md">{reasonLabel}</Text>
                     {isEmpty && (
-                        <Icon
-                            name="triangle-warning"
-                            size="sm"
-                            color="content-warning-default"
-                            aria-label="Response not configured"
-                        />
+                        <Tooltip
+                            trigger={
+                                <div>
+                                    <Icon
+                                        name="triangle-warning"
+                                        size="sm"
+                                        color="content-warning-default"
+                                    />
+                                </div>
+                            }
+                        >
+                            <TooltipContent title="Response is not configured for this issue option." />
+                        </Tooltip>
                     )}
                 </Box>
             </SortableAccordionHeader>

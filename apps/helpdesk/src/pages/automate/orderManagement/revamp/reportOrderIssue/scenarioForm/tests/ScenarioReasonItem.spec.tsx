@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type {
@@ -94,6 +94,31 @@ describe('ScenarioReasonItem', () => {
         expect(
             screen.getByRole('img', { name: 'triangle-warning' }),
         ).toBeInTheDocument()
+    })
+
+    it('should show warning tooltip when focusing the empty response warning icon', async () => {
+        const user = userEvent.setup()
+
+        renderComponent(makeReason())
+
+        const warningIcon = screen.getByRole('img', {
+            name: 'triangle-warning',
+        })
+        const trigger = warningIcon.closest('[data-name="tooltip-trigger"]')
+
+        if (!(trigger instanceof HTMLElement)) {
+            throw new Error('Tooltip trigger not found')
+        }
+
+        await act(async () => {
+            await user.tab()
+        })
+
+        expect(trigger).toHaveFocus()
+
+        expect(await screen.findByRole('tooltip')).toHaveTextContent(
+            'Response is not configured for this issue option.',
+        )
     })
 
     it('should not show warning icon when action has content', () => {
