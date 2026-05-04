@@ -39,6 +39,13 @@ export function AutomateStatsNavbar() {
         FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
     )
 
+    const isDisableLegacyReportsEnabled = useFlag(
+        FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
+    )
+
+    const isLegacyReportsDisabled =
+        isAnalyticsDashboardsNewScreensEnabled && isDisableLegacyReportsEnabled
+
     return (
         <Navigation.Section value={StatsNavbarViewSections.Automate}>
             <Navigation.SectionTrigger data-candu-id="navbar-block-ai-agent">
@@ -79,7 +86,9 @@ export function AutomateStatsNavbar() {
                                             color="purple"
                                             className={css.newBadge}
                                         >
-                                            Beta
+                                            {isLegacyReportsDisabled
+                                                ? 'New'
+                                                : 'Beta'}
                                         </Tag>
                                     </div>
                                 </Navigation.SectionItem>
@@ -101,54 +110,61 @@ export function AutomateStatsNavbar() {
                                             color="purple"
                                             className={css.newBadge}
                                         >
-                                            Beta
+                                            {isLegacyReportsDisabled
+                                                ? 'New'
+                                                : 'Beta'}
                                         </Tag>
                                     </div>
                                 </Navigation.SectionItem>
                             </ProtectedRoute>
                         )}
 
-                        <ProtectedRoute path={OVERVIEW_PATH}>
-                            <Navigation.SectionItem
-                                as={NavLink}
-                                to={OVERVIEW_PATH}
-                                exact
-                                displayType="indent"
-                                data-candu-id="statistics-automate-link-overview"
-                            >
-                                {PAGE_TITLE_OVERVIEW}
-                            </Navigation.SectionItem>
-                        </ProtectedRoute>
-
-                        {isAiAgentStatsPageEnabled && (
-                            <ProtectedRoute path={AUTOMATE_AI_AGENT_PATH}>
+                        {!isLegacyReportsDisabled && (
+                            <ProtectedRoute path={OVERVIEW_PATH}>
                                 <Navigation.SectionItem
                                     as={NavLink}
-                                    to={AUTOMATE_AI_AGENT_PATH}
+                                    to={OVERVIEW_PATH}
                                     exact
                                     displayType="indent"
-                                    data-candu-id="statistics-automate-ai-agent"
+                                    data-candu-id="statistics-automate-link-overview"
                                 >
-                                    {PAGE_TITLE_AI_AGENT}
+                                    {PAGE_TITLE_OVERVIEW}
                                 </Navigation.SectionItem>
                             </ProtectedRoute>
                         )}
 
-                        <ProtectedRoute path={AI_SALES_AGENT_PATH}>
-                            <Navigation.SectionItem
-                                as={NavLink}
-                                to={AI_SALES_AGENT_PATH}
-                                exact
-                                displayType="indent"
-                                data-candu-id="statistics-ai-sales-agent"
-                                className={css.item}
-                            >
-                                {LINK_AI_SALES_AGENT_TEXT}
-                                {!canUseAiSalesAgent && <UpgradeIcon />}
-                            </Navigation.SectionItem>
-                        </ProtectedRoute>
+                        {!isLegacyReportsDisabled &&
+                            isAiAgentStatsPageEnabled && (
+                                <ProtectedRoute path={AUTOMATE_AI_AGENT_PATH}>
+                                    <Navigation.SectionItem
+                                        as={NavLink}
+                                        to={AUTOMATE_AI_AGENT_PATH}
+                                        exact
+                                        displayType="indent"
+                                        data-candu-id="statistics-automate-ai-agent"
+                                    >
+                                        {PAGE_TITLE_AI_AGENT}
+                                    </Navigation.SectionItem>
+                                </ProtectedRoute>
+                            )}
 
-                        {!isStandaloneAiAgent && (
+                        {!isLegacyReportsDisabled && (
+                            <ProtectedRoute path={AI_SALES_AGENT_PATH}>
+                                <Navigation.SectionItem
+                                    as={NavLink}
+                                    to={AI_SALES_AGENT_PATH}
+                                    exact
+                                    displayType="indent"
+                                    data-candu-id="statistics-ai-sales-agent"
+                                    className={css.item}
+                                >
+                                    {LINK_AI_SALES_AGENT_TEXT}
+                                    {!canUseAiSalesAgent && <UpgradeIcon />}
+                                </Navigation.SectionItem>
+                            </ProtectedRoute>
+                        )}
+
+                        {!isLegacyReportsDisabled && !isStandaloneAiAgent && (
                             <ProtectedRoute path={PERFORMANCE_BY_FEATURE_PATH}>
                                 <Navigation.SectionItem
                                     as={NavLink}

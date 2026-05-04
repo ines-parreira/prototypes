@@ -283,6 +283,67 @@ describe('<AutomateStatsNavbar />', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('should hide legacy items and show New tag when both flags are enabled', () => {
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+                return true
+            if (flag === FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports)
+                return true
+            return false
+        })
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+
+        const { getAllByRole, getAllByText, getByRole } = render(
+            <Navigation.Root>
+                <AutomateStatsNavbar />
+            </Navigation.Root>,
+        )
+
+        userEvent.click(getByRole('button', { name: /AI & Automation/i }))
+
+        const hrefs = getAllByRole('link').map((l) => l.getAttribute('href'))
+        expect(hrefs).not.toContain('/app/stats/ai-agent-overview')
+        expect(hrefs).not.toContain('/app/stats/automate-ai-agent')
+        expect(hrefs).not.toContain('/app/stats/ai-sales-agent/overview')
+        expect(hrefs).not.toContain('/app/stats/performance-by-features')
+        expect(hrefs).toContain('/app/stats/analytics-overview')
+        expect(hrefs).toContain('/app/stats/analytics-ai-agent')
+
+        expect(getAllByText('New')).toHaveLength(2)
+    })
+
+    it('should show Beta tag and keep legacy items when only AiAgentAnalyticsDashboardsNewScreens is enabled', () => {
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+                return true
+            return false
+        })
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+
+        const { getAllByRole, getAllByText, getByRole } = render(
+            <Navigation.Root>
+                <AutomateStatsNavbar />
+            </Navigation.Root>,
+        )
+
+        userEvent.click(getByRole('button', { name: /AI & Automation/i }))
+
+        const hrefs = getAllByRole('link').map((l) => l.getAttribute('href'))
+        expect(hrefs).toContain('/app/stats/analytics-overview')
+        expect(hrefs).toContain('/app/stats/analytics-ai-agent')
+        expect(hrefs).toContain('/app/stats/ai-agent-overview')
+        expect(hrefs).toContain('/app/stats/ai-sales-agent/overview')
+        expect(hrefs).toContain('/app/stats/performance-by-features')
+
+        expect(getAllByText('Beta')).toHaveLength(2)
+    })
+
     it('should display the AI Sales Agent link as a paywall link when plan generation < 6 and no bypasses are active', () => {
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getHasAutomate) return true

@@ -598,6 +598,73 @@ describe('useStatsNavbarConfig', () => {
 
             expect(analyticsOverviewItem?.trailingSlot).toBeDefined()
             expect(analyticsAiAgentItem?.trailingSlot).toBeDefined()
+
+            const legacyOverviewItem = automateSection?.items?.find(
+                (item) => item.id === 'automate-overview',
+            )
+            expect(legacyOverviewItem).toBeDefined()
+        })
+
+        it('should hide legacy items and show New tag when both AiAgentAnalyticsDashboardsNewScreens and AiAgentAnalyticsDisableLegacyReports flags are enabled', () => {
+            useFlagMock.mockImplementation((flag) => ({
+                value:
+                    flag ===
+                        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens ||
+                    flag ===
+                        FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
+                isLoading: false,
+            }))
+
+            const stateWithAutomation: Partial<RootState> = {
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
+            const automateSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.Automate,
+            )
+
+            expect(
+                automateSection?.items?.find(
+                    (item) => item.id === 'analytics-overview',
+                )?.trailingSlot,
+            ).toBeDefined()
+            expect(
+                automateSection?.items?.find(
+                    (item) => item.id === 'analytics-ai-agent',
+                )?.trailingSlot,
+            ).toBeDefined()
+
+            expect(
+                automateSection?.items?.find(
+                    (item) => item.id === 'automate-overview',
+                ),
+            ).toBeUndefined()
+            expect(
+                automateSection?.items?.find(
+                    (item) => item.id === 'automate-ai-agent',
+                ),
+            ).toBeUndefined()
+            expect(
+                automateSection?.items?.find(
+                    (item) => item.id === 'ai-sales-agent',
+                ),
+            ).toBeUndefined()
+            expect(
+                automateSection?.items?.find(
+                    (item) => item.id === 'performance-by-features',
+                ),
+            ).toBeUndefined()
         })
     })
 

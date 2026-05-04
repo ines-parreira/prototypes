@@ -117,6 +117,9 @@ export function useStatsNavbarConfig() {
     )
     const { value: isAnalyticsDashboardsNewScreensEnabled } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+    const { value: isDisableLegacyReportsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
+    )
     const { value: isHelpCenterAnalyticsEnabled } = useFlagWithLoading(
         FeatureFlagKey.HelpCenterAnalytics,
     )
@@ -125,6 +128,9 @@ export function useStatsNavbarConfig() {
         () => isTeamLeadOrAdmin && hasAccess,
         [hasAccess, isTeamLeadOrAdmin],
     )
+
+    const isLegacyReportsDisabled =
+        isAnalyticsDashboardsNewScreensEnabled && isDisableLegacyReportsEnabled
 
     const sections = useMemo<StatsNavbarSection[]>(() => {
         return [
@@ -185,7 +191,11 @@ export function useStatsNavbarConfig() {
                                         route: STATS_ROUTES.ANALYTICS_OVERVIEW,
                                         label: PAGE_TITLE_OVERVIEW,
                                         trailingSlot: (
-                                            <Tag color="grey">Beta</Tag>
+                                            <Tag color="grey">
+                                                {isLegacyReportsDisabled
+                                                    ? 'New'
+                                                    : 'Beta'}
+                                            </Tag>
                                         ),
                                     },
                                     {
@@ -193,36 +203,44 @@ export function useStatsNavbarConfig() {
                                         route: STATS_ROUTES.ANALYTICS_AI_AGENT,
                                         label: PAGE_TITLE_AI_AGENT,
                                         trailingSlot: (
-                                            <Tag color="grey">Beta</Tag>
+                                            <Tag color="grey">
+                                                {isLegacyReportsDisabled
+                                                    ? 'New'
+                                                    : 'Beta'}
+                                            </Tag>
                                         ),
                                     },
                                 ]
                               : []),
-                          {
-                              id: 'automate-overview',
-                              route: STATS_ROUTES.AI_AGENT_OVERVIEW,
-                              label: PAGE_TITLE_OVERVIEW,
-                          },
-                          ...(isAiAgentStatsPageEnabled
+                          ...(!isLegacyReportsDisabled
                               ? [
                                     {
-                                        id: 'automate-ai-agent',
-                                        route: STATS_ROUTES.AUTOMATE_AI_AGENTS,
-                                        label: PAGE_TITLE_AI_AGENT,
+                                        id: 'automate-overview',
+                                        route: STATS_ROUTES.AI_AGENT_OVERVIEW,
+                                        label: PAGE_TITLE_OVERVIEW,
+                                    },
+                                    ...(isAiAgentStatsPageEnabled
+                                        ? [
+                                              {
+                                                  id: 'automate-ai-agent',
+                                                  route: STATS_ROUTES.AUTOMATE_AI_AGENTS,
+                                                  label: PAGE_TITLE_AI_AGENT,
+                                              },
+                                          ]
+                                        : []),
+                                    {
+                                        id: 'ai-sales-agent',
+                                        route: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
+                                        label: LINK_AI_SALES_AGENT_TEXT,
+                                        requiresUpgrade: !canUseAiSalesAgent,
+                                    },
+                                    {
+                                        id: 'performance-by-features',
+                                        route: ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
+                                        label: PAGE_TITLE_PERFORMANCE_BY_FEATURES,
                                     },
                                 ]
                               : []),
-                          {
-                              id: 'ai-sales-agent',
-                              route: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
-                              label: LINK_AI_SALES_AGENT_TEXT,
-                              requiresUpgrade: !canUseAiSalesAgent,
-                          },
-                          {
-                              id: 'performance-by-features',
-                              route: ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
-                              label: PAGE_TITLE_PERFORMANCE_BY_FEATURES,
-                          },
                       ]
                     : [
                           {
@@ -408,6 +426,7 @@ export function useStatsNavbarConfig() {
         hasAccess,
         isAiAgentStatsPageEnabled,
         isAnalyticsDashboardsNewScreensEnabled,
+        isLegacyReportsDisabled,
         canUseAiSalesAgent,
         getDashboardsHandler,
         isConvertSubscriber,
