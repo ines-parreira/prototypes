@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useSidebar } from '@repo/navigation'
+import { useSidebar, useSidebarButtonSize } from '@repo/navigation'
 import { history } from '@repo/routing'
 import { isMacOs, useShortcuts } from '@repo/utils'
 import { useLocation } from 'react-router-dom'
@@ -42,6 +42,7 @@ export function TicketNavbarCreateMenu() {
     useShortcuts('CreateTicketButton', createTicketActions)
 
     const { isCollapsed } = useSidebar()
+    const buttonSize = useSidebarButtonSize()
 
     const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -69,6 +70,7 @@ export function TicketNavbarCreateMenu() {
                             <Button
                                 icon="add-plus-circle"
                                 variant="tertiary"
+                                size={buttonSize}
                                 isDisabled={isCreateTicketDisabled}
                                 onClick={handleCreateTicket}
                             />
@@ -107,6 +109,7 @@ export function TicketNavbarCreateMenu() {
                                 <Button
                                     icon="add-plus-circle"
                                     variant="tertiary"
+                                    size={buttonSize}
                                 />
                             }
                         >

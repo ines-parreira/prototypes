@@ -15,7 +15,7 @@ export function SidebarCollapsedGroup({
 }: SidebarCollapsedGroupProps) {
     return (
         <ButtonGroup
-            size="lg"
+            size="md"
             orientation="vertical"
             withoutBorder
             selectedKey={selectedKey}

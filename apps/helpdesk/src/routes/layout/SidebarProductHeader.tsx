@@ -56,7 +56,9 @@ export function SidebarProductHeader({
                 isCollapsed && selectedItem.icon ? (
                     <Tooltip
                         placement="right"
-                        trigger={<Button icon={icon} variant="tertiary" />}
+                        trigger={
+                            <Button icon={icon} variant="tertiary" size="sm" />
+                        }
                     >
                         <TooltipContent title={selectedItem.name} />
                     </Tooltip>

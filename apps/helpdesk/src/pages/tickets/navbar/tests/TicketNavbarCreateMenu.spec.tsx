@@ -14,6 +14,7 @@ jest.mock('../usePlaceCallButton')
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),
     useSidebar: jest.fn().mockReturnValue({ isCollapsed: false }),
+    useSidebarButtonSize: jest.fn().mockReturnValue('sm'),
 }))
 
 let mockIsMacOs = false

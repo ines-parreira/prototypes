@@ -85,10 +85,7 @@ export function NavigationSidebar() {
                     <SidebarProductHeader selectedItem={currentProduct} />
                 )}
 
-                <Box
-                    gap="xxxs"
-                    flexDirection={isCollapsed ? 'column-reverse' : 'row'}
-                >
+                <Box gap="xxxs" flexDirection={isCollapsed ? 'column' : 'row'}>
                     <NavigationSidebarNotificationsPopover />
                     <NavigationSidebarSpotlightButton />
 
