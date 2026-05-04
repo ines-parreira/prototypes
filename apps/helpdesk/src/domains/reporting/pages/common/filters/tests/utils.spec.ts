@@ -16,7 +16,9 @@ import {
     getScoreLabelsAndValues,
     getValidMemberName,
     isFilterApplicable,
+    isPeriodBeforeDate,
     NON_EXISTENT_VALUES_WARNING_MESSAGE,
+    STORES_FILTER_AVAILABILITY_DATE,
 } from 'domains/reporting/pages/common/filters/utils'
 
 describe('utils', () => {
@@ -459,6 +461,104 @@ describe('createFilterOptions', () => {
         const expected = [{ value: String(missingTagId), label: undefined }]
 
         expect(actual).toEqual(expected)
+    })
+})
+
+describe('isPeriodBeforeDate', () => {
+    it('should return true when period start is before the availability date (no timezone)', () => {
+        expect(
+            isPeriodBeforeDate({
+                period: {
+                    start_datetime: '2025-01-01T00:00:00',
+                    end_datetime: '2025-01-31T00:00:00',
+                },
+                date: STORES_FILTER_AVAILABILITY_DATE,
+            }),
+        ).toBe(true)
+    })
+
+    it('should return true when period start is before the availability date (UTC suffix)', () => {
+        expect(
+            isPeriodBeforeDate({
+                period: {
+                    start_datetime: '2025-01-01T00:00:00Z',
+                    end_datetime: '2025-01-31T00:00:00Z',
+                },
+                date: STORES_FILTER_AVAILABILITY_DATE,
+            }),
+        ).toBe(true)
+    })
+
+    it('should return true when period start is before the availability date (UTC offset)', () => {
+        expect(
+            isPeriodBeforeDate({
+                period: {
+                    start_datetime: '2025-01-01T00:00:00+00:00',
+                    end_datetime: '2025-01-31T00:00:00+00:00',
+                },
+                date: STORES_FILTER_AVAILABILITY_DATE,
+            }),
+        ).toBe(true)
+    })
+
+    it('should return false when period start is after the availability date (no timezone)', () => {
+        expect(
+            isPeriodBeforeDate({
+                period: {
+                    start_datetime: '2025-09-01T00:00:00',
+                    end_datetime: '2025-09-30T00:00:00',
+                },
+                date: STORES_FILTER_AVAILABILITY_DATE,
+            }),
+        ).toBe(false)
+    })
+
+    it('should return false when period start is after the availability date (positive UTC offset)', () => {
+        expect(
+            isPeriodBeforeDate({
+                period: {
+                    start_datetime: '2025-09-01T00:00:00+02:00',
+                    end_datetime: '2025-09-30T00:00:00+02:00',
+                },
+                date: STORES_FILTER_AVAILABILITY_DATE,
+            }),
+        ).toBe(false)
+    })
+
+    it('should return false when period start is exactly on the availability date (no timezone)', () => {
+        expect(
+            isPeriodBeforeDate({
+                period: {
+                    start_datetime: '2025-08-01T00:00:00',
+                    end_datetime: '2025-08-31T00:00:00',
+                },
+                date: STORES_FILTER_AVAILABILITY_DATE,
+            }),
+        ).toBe(false)
+    })
+
+    it('should return false when period start is exactly on the availability date (UTC suffix)', () => {
+        expect(
+            isPeriodBeforeDate({
+                period: {
+                    start_datetime: '2025-08-01T00:00:00Z',
+                    end_datetime: '2025-08-31T00:00:00Z',
+                },
+                date: STORES_FILTER_AVAILABILITY_DATE,
+            }),
+        ).toBe(false)
+    })
+
+    it('should return false when period start is exactly on the availability date (positive UTC offset)', () => {
+        expect(
+            isPeriodBeforeDate({
+                period: {
+                    start_datetime: '2025-08-01T00:00:00+02:00',
+                    end_datetime: '2025-08-31T00:00:00+02:00',
+                },
+                date: STORES_FILTER_AVAILABILITY_DATE,
+            }),
+        ).toBe(false)
     })
 })
 

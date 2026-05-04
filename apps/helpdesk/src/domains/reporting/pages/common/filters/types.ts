@@ -5,5 +5,6 @@ export type RemovableFilter = {
 
 export type OptionalFilterProps = {
     warningType?: 'not-applicable' | 'non-existent' | undefined
+    warningMessage?: string
     isDisabled?: boolean
 }

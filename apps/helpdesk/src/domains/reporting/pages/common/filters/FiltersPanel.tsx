@@ -49,6 +49,7 @@ type FilterSettingOverrides = {
         ComponentProps<typeof ChannelsFilterWithState>,
         'value'
     >
+    [FilterKey.Stores]?: { isDisabled?: boolean; warningMessage?: string }
 }
 
 export type FiltersPanelProps = {

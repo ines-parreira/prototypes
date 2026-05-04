@@ -57,6 +57,7 @@ type Props = {
 export default function MultiStoreFilter({
     value = emptyFilter,
     warningType,
+    warningMessage,
     dispatchUpdate,
     dispatchRemove,
     onRemove,
@@ -144,7 +145,7 @@ export default function MultiStoreFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Stores]}
-            filterErrors={{ warningType }}
+            filterErrors={{ warningType, warningMessage }}
             selectedOptions={multiStores}
             selectedLogicalOperator={value.operator}
             logicalOperators={integrationsFilterLogicalOperators}

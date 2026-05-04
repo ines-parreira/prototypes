@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useListStores } from '@gorgias/helpdesk-queries'
@@ -226,6 +226,33 @@ describe('MultiStoreFilter', () => {
                 ].toLocaleLowerCase(),
         })
         expect(dispatchStatFiltersClean).toHaveBeenCalledWith()
+    })
+
+    it('should be disabled when isDisabled is true', async () => {
+        renderComponent({ isDisabled: true })
+
+        await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        expect(
+            screen.queryByText(tempMultiStoreMock[0].name),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(tempMultiStoreMock[1].name),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should show warningMessage as tooltip when the select is disabled', async () => {
+        const message = 'The store filter will be available soon.'
+        renderComponent({ isDisabled: true, warningMessage: message })
+
+        const filterValue = screen.getByText(FILTER_VALUE_PLACEHOLDER)
+        act(() => {
+            userEvent.hover(filterValue)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(message)).toBeInTheDocument()
+        })
     })
 
     it('should render an empty list of stores when useListStores returns undefined', async () => {

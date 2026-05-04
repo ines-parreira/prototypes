@@ -1,9 +1,11 @@
 import type { PropsWithChildren } from 'react'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import flatMap from 'lodash/flatMap'
+
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import FilterDropdownItemLabel from 'domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
 import { FilterWarningIcon } from 'domains/reporting/pages/common/components/Filter/components/FilterWarning/FilterWarningIcon'
@@ -172,6 +174,30 @@ const Filter = ({
             selectedOptions,
         })
 
+    const filterValue = (
+        <FilterValue
+            ref={ref}
+            optionsLabels={displayLabel ? [displayLabel] : selectedLabels}
+            trailIcon={!isPersistent ? FILTER_CLEAR_ICON : undefined}
+            trailIconTooltipText={REMOVE_FILTER_LABEL}
+            onTrailIconClick={onRemove}
+            prefix={
+                selectedLogicalOperator && (
+                    <div
+                        className={cssLogicalOperator.logicalOperator}
+                        data-testid="logical-operator"
+                    >
+                        {LogicalOperatorLabel[selectedLogicalOperator]}
+                    </div>
+                )
+            }
+            onClick={onToggle}
+            pressedState={isDropdownOpen}
+            isDisabled={isDisabled}
+            maxWidth={FILTER_VALUE_MAX_WIDTH}
+        />
+    )
+
     return (
         <div className={classNames(css.container, className)}>
             <FilterName
@@ -190,27 +216,13 @@ const Filter = ({
                 isDisabled={isDisabled}
                 maxWidth={FILTER_NAME_MAX_WIDTH}
             />
-            <FilterValue
-                ref={ref}
-                optionsLabels={displayLabel ? [displayLabel] : selectedLabels}
-                trailIcon={!isPersistent ? FILTER_CLEAR_ICON : undefined}
-                trailIconTooltipText={REMOVE_FILTER_LABEL}
-                onTrailIconClick={onRemove}
-                prefix={
-                    selectedLogicalOperator && (
-                        <div
-                            className={cssLogicalOperator.logicalOperator}
-                            data-testid="logical-operator"
-                        >
-                            {LogicalOperatorLabel[selectedLogicalOperator]}
-                        </div>
-                    )
-                }
-                onClick={onToggle}
-                pressedState={isDropdownOpen}
-                isDisabled={isDisabled}
-                maxWidth={FILTER_VALUE_MAX_WIDTH}
-            />
+            {isDisabled && warningMessage ? (
+                <Tooltip trigger={filterValue}>
+                    <TooltipContent title={warningMessage} />
+                </Tooltip>
+            ) : (
+                filterValue
+            )}
             <Dropdown
                 isMultiple={isMultiple}
                 isOpen={isDropdownOpen}

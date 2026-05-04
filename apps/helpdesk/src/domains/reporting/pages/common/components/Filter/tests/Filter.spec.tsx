@@ -467,4 +467,73 @@ describe('Filter', () => {
         expect(screen.getByText('Option 2')).toBeInTheDocument()
         expect(screen.getByText('Option 3')).toBeInTheDocument()
     })
+
+    it('shows warningMessage as tooltip on the value when isDisabled is true', async () => {
+        const user = userEvent.setup()
+        const message = 'Available starting March 15, 2026.'
+
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+                isDisabled={true}
+                filterErrors={{ warningMessage: message }}
+            />,
+        )
+
+        await user.hover(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        await waitFor(() => {
+            expect(screen.getByText(message)).toBeInTheDocument()
+        })
+    })
+
+    it('does not open the dropdown when isDisabled is true', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+                isDisabled={true}
+            />,
+        )
+
+        await user.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        expect(
+            screen.queryByRole('option', { name: 'Option 1' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('does not render a warning icon when only isDisabled is set', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+                isDisabled={true}
+                filterErrors={{ warningMessage: 'Some message' }}
+            />,
+        )
+
+        expect(screen.queryByText(FILTER_WARNING_ICON)).not.toBeInTheDocument()
+    })
 })

@@ -6,8 +6,10 @@ import { screen } from '@testing-library/react'
 
 import { ThemeProvider } from 'core/theme'
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { STORES_FILTER_AVAILABILITY_DATE } from 'domains/reporting/pages/common/filters/utils'
 import { AnalyticsOverviewLayout } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewLayout/AnalyticsOverviewLayout'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -59,6 +61,7 @@ jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 
 const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockFiltersPanelWrapper = jest.requireMock(
@@ -66,6 +69,7 @@ const mockFiltersPanelWrapper = jest.requireMock(
 ).FiltersPanelWrapper as jest.Mock
 
 const mockedGetPreviousUrl = jest.mocked(getPreviousUrl)
+const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockedUseExportAnalyticsOverviewToCSV = jest.mocked(
     useExportAnalyticsOverviewToCSV,
 )
@@ -100,6 +104,20 @@ describe('AnalyticsOverviewLayout', () => {
             triggerDownload: jest.fn(),
             isLoading: false,
         })
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                period: {
+                    start_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() + 86400000,
+                    ).toISOString(),
+                    end_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() + 86400000,
+                    ).toISOString(),
+                },
+            },
+            userTimezone: 'UTC',
+            granularity: 'day',
+        } as any)
     })
     it('should render the layout with heading', () => {
         renderComponent()
@@ -168,6 +186,51 @@ describe('AnalyticsOverviewLayout', () => {
 
         expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
             expect.objectContaining({ optionalFilters: [] }),
+            expect.anything(),
+        )
+    })
+
+    it('passes stores filterSettingsOverrides when period is before availability date', () => {
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                period: {
+                    start_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() - 86400000,
+                    ).toISOString(),
+                    end_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() - 86400000,
+                    ).toISOString(),
+                },
+            },
+            userTimezone: 'UTC',
+            granularity: 'day',
+        } as any)
+
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filterSettingsOverrides: expect.objectContaining({
+                    [FilterKey.Stores]: {
+                        isDisabled: true,
+                        warningMessage:
+                            'The store filter will be available in AI Agent Overview starting August 1, 2025.',
+                    },
+                }),
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('does not pass stores filterSettingsOverrides when period is after availability date', () => {
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filterSettingsOverrides: expect.not.objectContaining({
+                    [FilterKey.Stores]: expect.anything(),
+                }),
+            }),
             expect.anything(),
         )
     })

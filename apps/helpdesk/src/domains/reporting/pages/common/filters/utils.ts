@@ -1,9 +1,11 @@
 import _isEqual from 'lodash/isEqual'
 import times from 'lodash/times'
+import moment from 'moment'
 
 import type { AnalyticsFilter } from '@gorgias/helpdesk-queries'
 
 import type {
+    Period,
     SavedFilter,
     SavedFilterDraft,
 } from 'domains/reporting/models/stat/types'
@@ -116,6 +118,17 @@ export const isFilterApplicable = ({
     }
     return undefined
 }
+
+export const isPeriodBeforeDate = ({
+    period,
+    date,
+}: {
+    period: Period
+    date: Date
+}): boolean =>
+    moment.parseZone(period.start_datetime).isBefore(moment(date), 'day')
+
+export const STORES_FILTER_AVAILABILITY_DATE = new Date('2025-08-01')
 
 export const areFiltersApplicable = ({
     savedFilterDraft,

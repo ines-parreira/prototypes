@@ -10,6 +10,10 @@ import { Box } from '@gorgias/axiom'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import {
+    isPeriodBeforeDate,
+    STORES_FILTER_AVAILABILITY_DATE,
+} from 'domains/reporting/pages/common/filters/utils'
 import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { DashboardExportButton } from 'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton'
@@ -19,6 +23,7 @@ import {
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { STATS_ROUTES } from 'routes/constants'
 
 import { AnalyticsAiAgentAllAgentsReportConfig } from '../AnalyticsAiAgentAllAgentsReportConfig'
@@ -118,6 +123,12 @@ export const AnalyticsAiAgentLayout = () => {
         [activeTabConfig, isFiltersEnabled, isFiltersFFLoading],
     )
 
+    const { statsFilters } = useAiAgentStatsFilters()
+    const isStoresComingSoon = isPeriodBeforeDate({
+        period: statsFilters.period,
+        date: STORES_FILTER_AVAILABILITY_DATE,
+    })
+
     const renderDashboard = useMemo(() => {
         switch (activeTab) {
             case AiAgentAnalyticsQueryParams.AllAgents:
@@ -215,6 +226,12 @@ export const AnalyticsAiAgentLayout = () => {
                                     ).toDate(),
                                 },
                             },
+                            ...(isStoresComingSoon && {
+                                [FilterKey.Stores]: {
+                                    isDisabled: true,
+                                    warningMessage: `The store filter will be available in AI Agent ${activeTabConfig.title} starting August 1, 2025.`,
+                                },
+                            }),
                         }}
                         compact
                     />

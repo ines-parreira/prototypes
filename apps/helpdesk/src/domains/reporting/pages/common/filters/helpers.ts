@@ -99,6 +99,7 @@ export const getFilterSettings = (
     settings?: {
         [FilterKey.Period]?: ComponentProps<typeof PeriodFilterWithState>
         [FilterKey.Channels]?: ComponentProps<typeof ChannelsFilterWithState>
+        [FilterKey.Stores]?: { isDisabled?: boolean; warningMessage?: string }
     },
 ) => {
     switch (filterKey) {
@@ -106,6 +107,8 @@ export const getFilterSettings = (
             return settings?.[FilterKey.Period]
         case FilterKey.Channels:
             return settings?.[FilterKey.Channels]
+        case FilterKey.Stores:
+            return settings?.[FilterKey.Stores]
         default:
             return undefined
     }

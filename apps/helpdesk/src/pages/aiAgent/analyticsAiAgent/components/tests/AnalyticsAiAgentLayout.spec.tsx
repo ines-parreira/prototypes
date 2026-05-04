@@ -7,7 +7,10 @@ import userEvent from '@testing-library/user-event'
 
 import { ThemeProvider } from 'core/theme'
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { STORES_FILTER_AVAILABILITY_DATE } from 'domains/reporting/pages/common/filters/utils'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
+import { AiAgentAnalyticsContent } from '../../constants'
 import { useExportAiAgentAllAgentsToCSV } from '../../hooks/useExportAiAgentAllAgentsToCSV'
 import { useExportAiAgentShoppingAssistantToCSV } from '../../hooks/useExportAiAgentShoppingAssistantToCSV'
 import { useExportAiAgentSupportAgentToCSV } from '../../hooks/useExportAiAgentSupportAgentToCSV'
@@ -72,6 +75,7 @@ jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 
 const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockFiltersPanelWrapper = jest.requireMock(
@@ -79,6 +83,7 @@ const mockFiltersPanelWrapper = jest.requireMock(
 ).default as jest.Mock
 
 const mockedGetPreviousUrl = jest.mocked(getPreviousUrl)
+const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockedUseExportAiAgentAllAgentsToCSV = jest.mocked(
     useExportAiAgentAllAgentsToCSV,
 )
@@ -127,6 +132,20 @@ describe('AnalyticsAiAgentLayout', () => {
             triggerDownload: jest.fn(),
             isLoading: false,
         })
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                period: {
+                    start_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() + 86400000,
+                    ).toISOString(),
+                    end_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() + 86400000,
+                    ).toISOString(),
+                },
+            },
+            userTimezone: 'UTC',
+            granularity: 'day',
+        } as any)
     })
     it('should render the layout with heading', () => {
         renderComponent()
@@ -230,6 +249,81 @@ describe('AnalyticsAiAgentLayout', () => {
 
         expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
             expect.objectContaining({ optionalFilters: [] }),
+            expect.anything(),
+        )
+    })
+
+    it('passes stores filterSettingsOverrides for All Agents tab when period is before availability date', () => {
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                period: {
+                    start_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() - 86400000,
+                    ).toISOString(),
+                    end_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() - 86400000,
+                    ).toISOString(),
+                },
+            },
+            userTimezone: 'UTC',
+            granularity: 'day',
+        } as any)
+
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=all-agents')
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filterSettingsOverrides: expect.objectContaining({
+                    [FilterKey.Stores]: {
+                        isDisabled: true,
+                        warningMessage: `The store filter will be available in AI Agent ${AiAgentAnalyticsContent.AllAgents} starting August 1, 2025.`,
+                    },
+                }),
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('passes tab-specific warningMessage for Support Agent tab when period is before availability date', () => {
+        mockedUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                period: {
+                    start_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() - 86400000,
+                    ).toISOString(),
+                    end_datetime: new Date(
+                        STORES_FILTER_AVAILABILITY_DATE.getTime() - 86400000,
+                    ).toISOString(),
+                },
+            },
+            userTimezone: 'UTC',
+            granularity: 'day',
+        } as any)
+
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=support-agent')
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filterSettingsOverrides: expect.objectContaining({
+                    [FilterKey.Stores]: {
+                        isDisabled: true,
+                        warningMessage: `The store filter will be available in AI Agent ${AiAgentAnalyticsContent.SupportAgent} starting August 1, 2025.`,
+                    },
+                }),
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('does not pass stores filterSettingsOverrides when period is after availability date', () => {
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filterSettingsOverrides: expect.not.objectContaining({
+                    [FilterKey.Stores]: expect.anything(),
+                }),
+            }),
             expect.anything(),
         )
     })
