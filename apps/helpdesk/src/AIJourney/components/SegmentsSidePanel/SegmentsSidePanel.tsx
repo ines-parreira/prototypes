@@ -7,6 +7,7 @@ import {
     Box,
     Button,
     Heading,
+    Icon,
     PanelHeader,
     SidePanel,
     SidePanelSize,
@@ -229,7 +230,20 @@ export const SegmentsSidePanel = ({
             <FormProvider {...form}>
                 <PanelHeader
                     title={isEditing ? 'Edit segment' : 'Create new segment'}
-                />
+                    flexDirection="row"
+                >
+                    <button
+                        style={{
+                            border: 'none',
+                            background: 'none',
+                            cursor: 'pointer',
+                        }}
+                        aria-label="close-segment-panel"
+                        onClick={handleCancel}
+                    >
+                        <Icon name="close" />
+                    </button>
+                </PanelHeader>
                 <Box flexDirection="column" height="100%" overflow="hidden">
                     <Box
                         flexDirection="column"

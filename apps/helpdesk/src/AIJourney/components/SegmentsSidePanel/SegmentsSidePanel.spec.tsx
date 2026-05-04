@@ -977,6 +977,56 @@ describe('<SegmentsSidePanel />', () => {
         })
     })
 
+    describe('header close button', () => {
+        it('should render the close button in the panel header', () => {
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /close-segment-panel/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should call onClose when the header close button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', {
+                        name: /close-segment-panel/i,
+                    }),
+                )
+            })
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('should reset the form when the header close button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(async () => {
+                await user.type(
+                    screen.getByLabelText(/segment name/i),
+                    'My segment',
+                )
+            })
+            expect(screen.getByLabelText(/segment name/i)).toHaveValue(
+                'My segment',
+            )
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', {
+                        name: /close-segment-panel/i,
+                    }),
+                )
+            })
+
+            expect(screen.getByLabelText(/segment name/i)).toHaveValue('')
+        })
+    })
+
     describe('conditions section', () => {
         it('should render AudienceConditionField', () => {
             assumeMock(useConditionsMetadata).mockReturnValue({

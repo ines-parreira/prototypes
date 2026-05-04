@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { useShopifyShopTags } from '@repo/customer'
 
 import {
+    Box,
     Icon,
     ListItem,
     ListSection,
@@ -218,22 +219,26 @@ const TagsMultiSelect = ({
     }, [tagItems, value])
 
     return (
-        <MultiSelectField
-            aria-label="Value"
-            placement="bottom left"
-            placeholder="Select tags"
-            items={tagItems}
-            value={selectedItems}
-            isSearchable
-            onChange={(items) => {
-                onChange(items.length > 0 ? items.map((item) => item.id) : null)
-            }}
-            maxHeight={300}
-        >
-            {(item: TagItem) => (
-                <MultiSelectItem id={item.id} label={item.label} />
-            )}
-        </MultiSelectField>
+        <Box width={320}>
+            <MultiSelectField
+                aria-label="Value"
+                placement="bottom left"
+                placeholder="Select tags"
+                items={tagItems}
+                value={selectedItems}
+                isSearchable
+                onChange={(items) => {
+                    onChange(
+                        items.length > 0 ? items.map((item) => item.id) : null,
+                    )
+                }}
+                maxHeight={300}
+            >
+                {(item: TagItem) => (
+                    <MultiSelectItem id={item.id} label={item.label} />
+                )}
+            </MultiSelectField>
+        </Box>
     )
 }
 
@@ -278,7 +283,7 @@ const ProductVariantIdsMultiSelect = ({
     }, [productItems, value])
 
     return (
-        <div style={{ width: '250px' }}>
+        <Box width={320}>
             <MultiSelectField
                 aria-label="Value"
                 placement="bottom left"
@@ -297,7 +302,7 @@ const ProductVariantIdsMultiSelect = ({
                     <MultiSelectItem id={item.id} label={item.label} />
                 )}
             </MultiSelectField>
-        </div>
+        </Box>
     )
 }
 
@@ -334,7 +339,7 @@ const ProductCollectionsMultiSelect = ({
     }, [collectionItems, value])
 
     return (
-        <div style={{ width: '250px' }}>
+        <Box width={320}>
             <MultiSelectField
                 aria-label="Value"
                 placement="bottom left"
@@ -353,7 +358,7 @@ const ProductCollectionsMultiSelect = ({
                     <MultiSelectItem id={item.id} label={item.label} />
                 )}
             </MultiSelectField>
-        </div>
+        </Box>
     )
 }
 
@@ -391,7 +396,7 @@ const ProductTagsMultiSelect = ({
     }, [tagItems, value])
 
     return (
-        <div style={{ width: '250px' }}>
+        <Box width={320}>
             <MultiSelectField
                 aria-label="Value"
                 placement="bottom left"
@@ -410,7 +415,7 @@ const ProductTagsMultiSelect = ({
                     <MultiSelectItem id={item.id} label={item.label} />
                 )}
             </MultiSelectField>
-        </div>
+        </Box>
     )
 }
 
