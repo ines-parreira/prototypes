@@ -197,7 +197,177 @@ describe('CustomFieldsFormComponent', () => {
                 ).toBeDisabled()
             })
         })
+        describe('On close with shared conditional dependencies', () => {
+            test('Adding a field whose conditional is already in customFieldIds should not duplicate that conditional', () => {
+                useCustomFieldDefinitionsMock.mockReturnValue({
+                    // @ts-expect-error We do not care about other properties for those tests
+                    data: {
+                        data: [
+                            {
+                                id: 1,
+                                label: 'Returns',
+                                required: false,
+                                managed_type: null,
+                                requirement_type: RequirementType.Visible,
+                                object_type: OBJECT_TYPES.TICKET,
+                            },
+                            {
+                                id: 2,
+                                label: 'WISMO',
+                                required: false,
+                                managed_type: null,
+                                requirement_type: RequirementType.Visible,
+                                object_type: OBJECT_TYPES.TICKET,
+                            },
+                            {
+                                id: 4,
+                                label: 'Order ID',
+                                required: false,
+                                managed_type: null,
+                                requirement_type: RequirementType.Conditional,
+                                object_type: OBJECT_TYPES.TICKET,
+                            },
+                        ] as CustomField[],
+                    },
+                })
+                useCustomFieldConditionsMock.mockReturnValue({
+                    customFieldConditions: [
+                        {
+                            id: 1,
+                            expression: [
+                                {
+                                    field: 1,
+                                    field_source: 'Ticket',
+                                    operator: 'is',
+                                    values: ['test'],
+                                },
+                            ],
+                            requirements: [{ field_id: 4, type: 'visible' }],
+                        },
+                        {
+                            id: 2,
+                            expression: [
+                                {
+                                    field: 2,
+                                    field_source: 'Ticket',
+                                    operator: 'is',
+                                    values: ['test'],
+                                },
+                            ],
+                            requirements: [{ field_id: 4, type: 'visible' }],
+                        },
+                    ] as CustomFieldCondition[],
+                    isLoading: false,
+                    isError: false,
+                })
+                const { container } = render(
+                    <CustomFieldsFormComponent
+                        {...mockProps}
+                        customFieldIds={[1, 4]}
+                    />,
+                    {},
+                )
+
+                const toggleButton =
+                    within(container).getByText('Add Ticket Field')
+                fireEvent.click(toggleButton)
+
+                const wismoCheckBox = within(container).getByLabelText('WISMO')
+                fireEvent.click(wismoCheckBox)
+
+                fireEvent.mouseDown(document.body)
+                fireEvent.click(document.body)
+
+                expect(updateValueMock).toHaveBeenNthCalledWith(
+                    1,
+                    'customFieldIds',
+                    [1, 4, 2],
+                )
+            })
+        })
         describe('Custom field removal with conditions', () => {
+            test('A conditional shared with another remaining field should be retained on removal', () => {
+                useCustomFieldDefinitionsMock.mockReturnValue({
+                    // @ts-expect-error We do not care about other properties for those tests
+                    data: {
+                        data: [
+                            {
+                                id: 1,
+                                label: 'Returns',
+                                required: false,
+                                managed_type: null,
+                                requirement_type: RequirementType.Visible,
+                                object_type: OBJECT_TYPES.TICKET,
+                            },
+                            {
+                                id: 2,
+                                label: 'WISMO',
+                                required: false,
+                                managed_type: null,
+                                requirement_type: RequirementType.Visible,
+                                object_type: OBJECT_TYPES.TICKET,
+                            },
+                            {
+                                id: 4,
+                                label: 'Order ID',
+                                required: false,
+                                managed_type: null,
+                                requirement_type: RequirementType.Conditional,
+                                object_type: OBJECT_TYPES.TICKET,
+                            },
+                        ] as CustomField[],
+                    },
+                })
+                useCustomFieldConditionsMock.mockReturnValue({
+                    customFieldConditions: [
+                        {
+                            id: 1,
+                            expression: [
+                                {
+                                    field: 1,
+                                    field_source: 'Ticket',
+                                    operator: 'is',
+                                    values: ['test'],
+                                },
+                            ],
+                            requirements: [{ field_id: 4, type: 'visible' }],
+                        },
+                        {
+                            id: 2,
+                            expression: [
+                                {
+                                    field: 2,
+                                    field_source: 'Ticket',
+                                    operator: 'is',
+                                    values: ['test'],
+                                },
+                            ],
+                            requirements: [{ field_id: 4, type: 'visible' }],
+                        },
+                    ] as CustomFieldCondition[],
+                    isLoading: false,
+                    isError: false,
+                })
+                const { getAllByTestId } = render(
+                    <CustomFieldsFormComponent
+                        {...mockProps}
+                        customFieldIds={[1, 2, 4]}
+                    />,
+                    {},
+                )
+
+                const button = getAllByTestId(
+                    'custom-field-disabled-input-delete-button',
+                )[0]
+
+                fireEvent.click(button)
+
+                expect(updateValueMock).toHaveBeenNthCalledWith(
+                    1,
+                    'customFieldIds',
+                    [2, 4],
+                )
+            })
             test('If a conditional custom field depends on another one that is removed, all should be removed', () => {
                 useCustomFieldDefinitionsMock.mockReturnValue({
                     // @ts-expect-error We do not care about other properties for those tests

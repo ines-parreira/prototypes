@@ -69,7 +69,7 @@ describe('populateConditionalFieldIds', () => {
         expect(result).toEqual([10, 40])
     })
 
-    it('handles duplicate field_ids across conditions', () => {
+    it('deduplicates field_ids across conditions', () => {
         const conditions: CustomFieldCondition[] = [
             {
                 expression: [{ field: '7' }] as any as Expression[],
@@ -88,7 +88,6 @@ describe('populateConditionalFieldIds', () => {
         ] as CustomFieldCondition[]
         const formValueIds: CustomField['id'][] = [7]
         const result = populateConditionalFieldIds(conditions, formValueIds)
-        // duplicates are preserved
-        expect(result).toEqual([50, 60, 60, 70])
+        expect(result).toEqual([50, 60, 70])
     })
 })

@@ -48,9 +48,13 @@ export const StoreCustomFieldsList = ({
     accountCustomFieldMap,
     onDelete,
 }: StoreCustomFieldsListProps) => {
+    // Dedupe defensively: configurations saved by earlier buggy code may
+    // contain duplicate ids, which would cause React key collisions.
+    const uniqueCustomFieldIds = Array.from(new Set(customFieldIds))
+
     return (
         <>
-            {customFieldIds.map((id) => {
+            {uniqueCustomFieldIds.map((id) => {
                 const customField = accountCustomFieldMap.get(id)
                 return (
                     customField && (

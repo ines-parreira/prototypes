@@ -6,7 +6,7 @@ export function populateConditionalFieldIds(
     accountCustomFieldConditions: CustomFieldCondition[],
     formValueCustomFieldIds: CustomField['id'][],
 ): CustomField['id'][] {
-    const conditionalCustomFieldIds: CustomField['id'][] = []
+    const conditionalCustomFieldIds = new Set<CustomField['id']>()
     accountCustomFieldConditions.forEach((condition) => {
         const conditionHasStoreConfigurationCustomField =
             condition.expression.find((expression) =>
@@ -14,11 +14,11 @@ export function populateConditionalFieldIds(
             )
 
         if (conditionHasStoreConfigurationCustomField) {
-            conditionalCustomFieldIds.push(
-                ...condition.requirements.map((field) => field.field_id),
+            condition.requirements.forEach((field) =>
+                conditionalCustomFieldIds.add(field.field_id),
             )
         }
     })
 
-    return conditionalCustomFieldIds
+    return Array.from(conditionalCustomFieldIds)
 }

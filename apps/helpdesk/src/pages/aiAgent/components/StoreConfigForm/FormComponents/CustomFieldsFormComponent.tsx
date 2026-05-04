@@ -94,12 +94,16 @@ export const CustomFieldsFormComponent = ({
         [setSelectedFields, customFieldConditions],
     )
 
-    // When closing the SelectFilter, update the parent state and clear the local selection
+    // When closing the SelectFilter, update the parent state and clear the local selection.
+    // Dedupe the merged ids — newly-selected fields may include conditional dependencies
+    // already present in `customFieldIds` (e.g. a conditional shared between two non-conditional
+    // fields). Without dedupe, those would appear twice in the list and break React keys.
     const handleCustomFieldSelectFilterClose = useCallback(() => {
-        updateValue('customFieldIds', [
+        const mergedIds = [
             ...(customFieldIds ?? []),
             ...state.selectedCustomFields.map((id) => Number(id)),
-        ])
+        ]
+        updateValue('customFieldIds', Array.from(new Set(mergedIds)))
         clearSelectedFields()
     }, [
         customFieldIds,
@@ -108,11 +112,28 @@ export const CustomFieldsFormComponent = ({
         clearSelectedFields,
     ])
 
-    // Remove a custom field from store configuration
+    // Remove a custom field from store configuration. A conditional field should only be
+    // removed when no other still-selected non-conditional field requires it.
     const handleCustomFieldRemovalFromStoreConfiguration = useCallback(
         (id: number) => {
-            const dependantConditionalCustomFields: CustomField['id'][] = []
+            const remainingFieldIds = (customFieldIds ?? []).filter(
+                (fieldId) => fieldId !== id,
+            )
 
+            const stillRequiredConditionalIds = new Set<CustomField['id']>()
+            customFieldConditions.forEach((condition) => {
+                const triggersStillPresent = condition.expression.some(
+                    (expression) =>
+                        remainingFieldIds.includes(Number(expression.field)),
+                )
+                if (triggersStillPresent) {
+                    condition.requirements.forEach((requirement) =>
+                        stillRequiredConditionalIds.add(requirement.field_id),
+                    )
+                }
+            })
+
+            const conditionalsToRemove = new Set<CustomField['id']>()
             customFieldConditions
                 .filter((condition) =>
                     condition.expression.some(
@@ -120,19 +141,20 @@ export const CustomFieldsFormComponent = ({
                     ),
                 )
                 .forEach((condition) =>
-                    condition.requirements.forEach((requirement) =>
-                        dependantConditionalCustomFields.push(
-                            requirement.field_id,
-                        ),
-                    ),
+                    condition.requirements.forEach((requirement) => {
+                        if (
+                            !stillRequiredConditionalIds.has(
+                                requirement.field_id,
+                            )
+                        ) {
+                            conditionalsToRemove.add(requirement.field_id)
+                        }
+                    }),
                 )
 
-            const newCustomFieldIds =
-                customFieldIds?.filter(
-                    (fieldId) =>
-                        fieldId !== id &&
-                        !dependantConditionalCustomFields.includes(fieldId),
-                ) ?? []
+            const newCustomFieldIds = remainingFieldIds.filter(
+                (fieldId) => !conditionalsToRemove.has(fieldId),
+            )
 
             updateValue('customFieldIds', newCustomFieldIds)
             removeField(id)

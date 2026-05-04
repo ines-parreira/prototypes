@@ -88,6 +88,19 @@ describe('StoreCustomFieldsList', () => {
         expect(screen.queryByDisplayValue('Field Two')).toBeInTheDocument()
     })
 
+    test('renders only one row per id when customFieldIds contains duplicates', () => {
+        render(
+            <StoreCustomFieldsList
+                customFieldIds={[1, 2, 2, 1]}
+                accountCustomFieldMap={accountCustomFieldMap}
+                onDelete={mockOnDelete}
+            />,
+        )
+
+        expect(screen.getAllByDisplayValue('Field One')).toHaveLength(1)
+        expect(screen.getAllByDisplayValue('Field Two')).toHaveLength(1)
+    })
+
     test('calls onDelete with correct id when delete button is clicked', () => {
         render(
             <StoreCustomFieldsList
