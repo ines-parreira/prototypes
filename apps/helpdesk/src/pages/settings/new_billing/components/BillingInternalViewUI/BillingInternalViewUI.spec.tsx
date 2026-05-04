@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import { BILLING_INTERNAL_MANAGE_PLAN_PATH } from '@repo/billing'
 import { payingWithCreditCard, trial, usages } from '@repo/billing/fixtures'
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -23,6 +24,12 @@ const mockedServer = new MockAdapter(client)
 
 // Mock notify
 jest.mock('state/notifications/actions')
+
+const mockHistoryPush = jest.fn()
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({ push: mockHistoryPush }),
+}))
 
 const availableHdAoCoupons = [
     'sales-hd+ao-year-05%-once',
@@ -306,6 +313,62 @@ describe('BillingInternalViewUI', () => {
                 style: 'alert',
             }),
         )
+    })
+
+    describe('Manage plans button', () => {
+        it('is present and enabled for an active account', () => {
+            render(
+                <BillingInternalViewUI
+                    {...BillingInternalViewUIDefaultProps}
+                    billingState={payingWithCreditCard}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /Manage plans/i }),
+            ).toBeEnabled()
+        })
+
+        it('is disabled for a deactivated account', () => {
+            render(
+                <BillingInternalViewUI
+                    {...BillingInternalViewUIDefaultProps}
+                    billingState={payingWithCreditCard}
+                />,
+                {
+                    storeState: {
+                        currentAccount: fromJS({
+                            ...account,
+                            deactivated_datetime: '2025-01-01T00:00:00Z',
+                        }),
+                    } as Partial<RootState>,
+                },
+            )
+
+            expect(
+                screen.getByRole('button', { name: /Manage plans/i }),
+            ).toBeDisabled()
+        })
+
+        it('navigates to the manage plan path when clicked', async () => {
+            const user = userEvent.setup()
+            render(
+                <BillingInternalViewUI
+                    {...BillingInternalViewUIDefaultProps}
+                    billingState={payingWithCreditCard}
+                />,
+            )
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: /Manage plans/i }),
+                ),
+            )
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                BILLING_INTERNAL_MANAGE_PLAN_PATH,
+            )
+        })
     })
 
     it('should be always possible to unvet an account', async () => {

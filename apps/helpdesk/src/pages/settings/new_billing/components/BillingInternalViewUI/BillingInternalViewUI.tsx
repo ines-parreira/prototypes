@@ -1,3 +1,6 @@
+import { BILLING_INTERNAL_MANAGE_PLAN_PATH } from '@repo/billing'
+import { useHistory } from 'react-router-dom'
+
 import { Button } from '@gorgias/axiom'
 
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
@@ -24,6 +27,7 @@ export function BillingInternalViewUI({
     helpdeskOnlyCoupons,
     automateOnlyCoupons,
 }: BillingInternalViewUIProps) {
+    const history = useHistory()
     const deactivateAccount = useDeactivateAccountWithSideEffects()
     const reactivateAccount = useReactivateAccountWithSideEffects()
     const setIsVettedAccount = useSetIsVettedWithSideEffects()
@@ -75,15 +79,14 @@ export function BillingInternalViewUI({
                         ? 'Unvet account'
                         : 'Vet account'}
                 </Button>
-                {/* TODO: Re-enable when apply flow is complete https://linear.app/gorgias/project/internal-billing-ui-subscription-management-ac3ed860d0ee/overview */}
-                {/* <Button
+                <Button
                     onClick={() => {
                         history.push(BILLING_INTERNAL_MANAGE_PLAN_PATH)
                     }}
                     isDisabled={isDeactivated}
                 >
                     Manage plans
-                </Button> */}
+                </Button>
             </div>
             <UpcomingInvoiceCard
                 subscriptionStatus={billingState.subscription.status}
