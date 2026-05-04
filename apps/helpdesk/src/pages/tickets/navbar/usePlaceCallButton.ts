@@ -42,5 +42,6 @@ export function usePlaceCallButton() {
         shouldDisplayButton,
         isDeviceActive,
         isButtonDisabled,
+        hasPhone,
     }
 }

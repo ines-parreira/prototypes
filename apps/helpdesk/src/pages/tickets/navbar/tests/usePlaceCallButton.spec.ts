@@ -85,6 +85,20 @@ describe('usePlaceCallButton', () => {
         expect(result.current.isButtonDisabled).toBe(false)
     })
 
+    it('returns hasPhone=true when user has a phone integration', () => {
+        const { result } = renderHook(() => usePlaceCallButton())
+
+        expect(result.current.hasPhone).toBe(true)
+    })
+
+    it('returns hasPhone=false when user has no phone integration', () => {
+        useHasPhoneMock.mockReturnValue(false)
+
+        const { result } = renderHook(() => usePlaceCallButton())
+
+        expect(result.current.hasPhone).toBe(false)
+    })
+
     it('sets isDeviceVisible to false when device becomes null', () => {
         const { result, rerender } = renderHook(() => usePlaceCallButton())
 

@@ -65,6 +65,7 @@ const defaultPlaceCallButton = {
     shouldDisplayButton: false,
     isDeviceActive: true,
     isButtonDisabled: false,
+    hasPhone: false,
 }
 
 const renderComponent = (initialEntries = ['/']) => {
@@ -91,7 +92,18 @@ describe('TicketNavbarCreateMenu', () => {
         })
     })
 
-    it('renders "Create" button text when sidebar is not collapsed', () => {
+    it('renders "Create ticket" button when sidebar is not collapsed and user has no phone', () => {
+        renderComponent()
+
+        expect(screen.getByText('Create ticket')).toBeInTheDocument()
+    })
+
+    it('renders "Create" button text when sidebar is not collapsed and user has a phone', () => {
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            hasPhone: true,
+        })
+
         renderComponent()
 
         expect(screen.getByText('Create')).toBeInTheDocument()
@@ -126,7 +138,12 @@ describe('TicketNavbarCreateMenu', () => {
         })
     })
 
-    it('renders "Create ticket" menu item when there is no draft', async () => {
+    it('renders "Create ticket" menu item when there is no draft but user has a phone', async () => {
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            hasPhone: true,
+        })
+
         const { user } = renderComponent()
 
         await user.click(screen.getByText('Create'))
@@ -139,6 +156,7 @@ describe('TicketNavbarCreateMenu', () => {
     it('renders "Place call" menu item when shouldDisplayButton is true', async () => {
         usePlaceCallButtonMock.mockReturnValue({
             ...defaultPlaceCallButton,
+            hasPhone: true,
             shouldDisplayButton: true,
         })
 
@@ -151,7 +169,13 @@ describe('TicketNavbarCreateMenu', () => {
         })
     })
 
-    it('does not render "Place call" when shouldDisplayButton is false', async () => {
+    it('does not render "Place call" when shouldDisplayButton is false but user has a phone', async () => {
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            hasPhone: true,
+            shouldDisplayButton: false,
+        })
+
         const { user } = renderComponent()
 
         await user.click(screen.getByText('Create'))
@@ -167,6 +191,7 @@ describe('TicketNavbarCreateMenu', () => {
         const setIsDeviceVisible = jest.fn()
         usePlaceCallButtonMock.mockReturnValue({
             ...defaultPlaceCallButton,
+            hasPhone: true,
             shouldDisplayButton: true,
             setIsDeviceVisible,
         })
@@ -187,6 +212,11 @@ describe('TicketNavbarCreateMenu', () => {
     it('calls history.push and logEvent when "Create ticket" menu item is clicked', async () => {
         const { history } = jest.requireMock('@repo/routing')
         const { logEvent, SegmentEvent } = jest.requireMock('@repo/logging')
+
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            hasPhone: true,
+        })
 
         const { user } = renderComponent()
 
@@ -275,6 +305,7 @@ describe('TicketNavbarCreateMenu', () => {
     it('disables Place call and shows no shortcut keys when device is not active', async () => {
         usePlaceCallButtonMock.mockReturnValue({
             ...defaultPlaceCallButton,
+            hasPhone: true,
             shouldDisplayButton: true,
             isButtonDisabled: true,
             isDeviceActive: false,
@@ -297,6 +328,7 @@ describe('TicketNavbarCreateMenu', () => {
     it('disables Place call and shows no shortcut keys when microphone permission is denied', async () => {
         usePlaceCallButtonMock.mockReturnValue({
             ...defaultPlaceCallButton,
+            hasPhone: true,
             shouldDisplayButton: true,
             isButtonDisabled: true,
             isDeviceActive: true,
@@ -320,6 +352,7 @@ describe('TicketNavbarCreateMenu', () => {
         mockIsMacOs = true
         usePlaceCallButtonMock.mockReturnValue({
             ...defaultPlaceCallButton,
+            hasPhone: true,
             shouldDisplayButton: true,
             isButtonDisabled: false,
         })
@@ -340,6 +373,7 @@ describe('TicketNavbarCreateMenu', () => {
         mockIsMacOs = false
         usePlaceCallButtonMock.mockReturnValue({
             ...defaultPlaceCallButton,
+            hasPhone: true,
             shouldDisplayButton: true,
             isButtonDisabled: false,
         })
@@ -354,5 +388,27 @@ describe('TicketNavbarCreateMenu', () => {
 
         expect(screen.getByText('ctrl')).toBeInTheDocument()
         expect(screen.getByText('E')).toBeInTheDocument()
+    })
+
+    it('calls history.push and logEvent when "Create ticket" button is clicked directly (no phone, no draft)', async () => {
+        const { history } = jest.requireMock('@repo/routing')
+        const { logEvent, SegmentEvent } = jest.requireMock('@repo/logging')
+
+        const { user } = renderComponent()
+
+        await user.click(screen.getByText('Create ticket'))
+
+        expect(history.push).toHaveBeenCalledWith('/ticket/new')
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.CreateTicketButtonClicked,
+        )
+    })
+
+    it('disables "Create ticket" button when pathname includes /ticket/new (no phone, no draft)', () => {
+        renderComponent(['/ticket/new'])
+
+        expect(
+            screen.getByText('Create ticket').closest('[aria-disabled]'),
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 })

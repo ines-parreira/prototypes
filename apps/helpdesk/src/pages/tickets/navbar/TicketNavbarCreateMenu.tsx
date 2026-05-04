@@ -27,6 +27,8 @@ import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDe
 
 import { usePlaceCallButton } from './usePlaceCallButton'
 
+const BUTTON_CONTENT_WIDTH = 184
+
 export function TicketNavbarCreateMenu() {
     const { pathname } = useLocation()
     const isCreateTicketDisabled = pathname.includes('/ticket/new')
@@ -49,7 +51,50 @@ export function TicketNavbarCreateMenu() {
         shouldDisplayButton: shouldDisplayPlaceCall,
         isDeviceActive,
         isButtonDisabled: isPlaceCallButtonDisabled,
+        hasPhone,
     } = usePlaceCallButton()
+
+    const handleCreateTicket = () => {
+        history.push(createTicketPath)
+        logEvent(SegmentEvent.CreateTicketButtonClicked)
+    }
+
+    if (!hasPhone && !hasDraft) {
+        return (
+            <Box>
+                {isCollapsed ? (
+                    <Tooltip
+                        placement="right"
+                        trigger={
+                            <Button
+                                icon="add-plus-circle"
+                                variant="tertiary"
+                                isDisabled={isCreateTicketDisabled}
+                                onClick={handleCreateTicket}
+                            />
+                        }
+                    >
+                        <TooltipContent title="Create ticket" />
+                    </Tooltip>
+                ) : (
+                    <Button
+                        ref={buttonRef}
+                        variant="secondary"
+                        size="sm"
+                        isDisabled={isCreateTicketDisabled}
+                        onClick={handleCreateTicket}
+                    >
+                        <Box width={BUTTON_CONTENT_WIDTH}>
+                            <Box alignItems="center" gap="xxxs">
+                                <div>Create ticket</div>
+                                <ShortcutKey>N</ShortcutKey>
+                            </Box>
+                        </Box>
+                    </Button>
+                )}
+            </Box>
+        )
+    }
 
     return (
         <Box>
@@ -76,7 +121,7 @@ export function TicketNavbarCreateMenu() {
                                 <DropdownIcon isOpen={isOpen} size="xs" />
                             }
                         >
-                            <Box width={184}>Create</Box>
+                            <Box width={BUTTON_CONTENT_WIDTH}>Create</Box>
                         </Button>
                     )
                 }
@@ -99,10 +144,7 @@ export function TicketNavbarCreateMenu() {
                     <MenuItem
                         label="Create ticket"
                         trailingSlot={<ShortcutKey>N</ShortcutKey>}
-                        onAction={() => {
-                            history.push(createTicketPath)
-                            logEvent(SegmentEvent.CreateTicketButtonClicked)
-                        }}
+                        onAction={handleCreateTicket}
                     />
                 )}
                 {shouldDisplayPlaceCall && (
