@@ -2,6 +2,8 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
+
 import { EMPTY_HELP_CENTER_ID } from '../../../automate/common/components/HelpCenterSelect'
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
@@ -31,6 +33,11 @@ jest.mock('./utils', () => ({
 jest.mock('./SyncUrlModal', () => ({
     openSyncUrlModal: jest.fn(),
 }))
+jest.mock('pages/aiAgent/hooks/useSkillsAccess', () => ({
+    useSkillsAccess: jest.fn(),
+}))
+
+const mockUseSkillsAccess = jest.mocked(useSkillsAccess)
 
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
     typeof useFaqHelpCenter
@@ -62,6 +69,7 @@ const defaultMockValues = {
 beforeEach(() => {
     jest.clearAllMocks()
     mockUseFaqHelpCenter.mockReturnValue(defaultMockValues)
+    mockUseSkillsAccess.mockReturnValue(false)
 })
 
 describe('EmptyStates', () => {
@@ -91,6 +99,17 @@ describe('EmptyStates', () => {
             expect(
                 screen.getByText(
                     'Instruct AI Agent to handle customer requests and follow internal processes.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('shows skills-flavored Guidance description when useSkillsAccess returns true', () => {
+            mockUseSkillsAccess.mockReturnValue(true)
+            render(<EmptyStates helpCenterId={null} />)
+
+            expect(
+                screen.getByText(
+                    'Add reference knowledge AI Agent can draw on to answer general questions.',
                 ),
             ).toBeInTheDocument()
         })
@@ -177,11 +196,36 @@ describe('EmptyStates', () => {
             ).toBeInTheDocument()
         })
 
+        it('shows skills-flavored description when useSkillsAccess returns true', () => {
+            mockUseSkillsAccess.mockReturnValue(true)
+            render(<EmptyStateGuidance />)
+
+            expect(
+                screen.getByText(
+                    "Add reference content AI Agent can draw on when answering general questions such as store policies or FAQs that don't belong in a specific skill.",
+                ),
+            ).toBeInTheDocument()
+        })
+
         it('displays create guidance button', () => {
             render(<EmptyStateGuidance />)
 
             expect(
                 screen.getByRole('button', { name: 'Create Guidance' }),
+            ).toBeInTheDocument()
+        })
+
+        it('uses lowercase heading and button when useSkillsAccess returns true', () => {
+            mockUseSkillsAccess.mockReturnValue(true)
+            render(<EmptyStateGuidance />)
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Get started with guidance',
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Create guidance' }),
             ).toBeInTheDocument()
         })
     })

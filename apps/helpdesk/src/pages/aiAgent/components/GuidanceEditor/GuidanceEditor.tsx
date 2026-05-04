@@ -5,6 +5,7 @@ import type { EditorState } from 'draft-js'
 import { Label, Text } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
@@ -57,6 +58,11 @@ export function GuidanceEditor({
     editorContextName = 'Guidance',
     description,
 }: GuidanceEditorProps) {
+    const hasSkillsAccess = useSkillsAccess()
+    const defaultDescription = hasSkillsAccess
+        ? 'Describe the information AI Agent should reference when answering this type of question. Use clear, factual language.'
+        : 'Describe the steps AI Agent should follow in clear, specific phrases.'
+
     const toolbarActions = useMemo(() => {
         let actions = showDefaultToolbarActions
             ? defaultToolbarActions
@@ -123,8 +129,7 @@ export function GuidanceEditor({
 
             <div className={css.textWrapper}>
                 <Text as="p" className={css.helperText} size="sm">
-                    {description ??
-                        'Describe the steps AI Agent should follow in clear, specific phrases.'}
+                    {description ?? defaultDescription}
                 </Text>
                 <Text as="p" className={css.helperText} size="sm">
                     Type &apos;/&apos; or &apos;@&apos; to insert variables and

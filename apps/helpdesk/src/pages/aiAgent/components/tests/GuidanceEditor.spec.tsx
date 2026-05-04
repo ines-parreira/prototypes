@@ -263,6 +263,11 @@ describe('GuidanceEditor', () => {
     })
 
     it('renders default description when description prop is not provided', () => {
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.KnowledgeIntentManagementSystem
+                ? false
+                : true,
+        )
         const { getByText } = renderWithProvider(
             <GuidanceEditor {...defaultProps} />,
         )
@@ -270,6 +275,19 @@ describe('GuidanceEditor', () => {
         expect(
             getByText(
                 /Describe the steps AI Agent should follow in clear, specific phrases/,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders skills-flavored default description when useSkillsAccess returns true', () => {
+        mockUseFlag.mockReturnValue(true)
+        const { getByText } = renderWithProvider(
+            <GuidanceEditor {...defaultProps} />,
+        )
+
+        expect(
+            getByText(
+                /Describe the information AI Agent should reference when answering this type of question\. Use clear, factual language\./,
             ),
         ).toBeInTheDocument()
     })

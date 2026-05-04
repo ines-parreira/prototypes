@@ -67,6 +67,10 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
     })),
 }))
 
+jest.mock('pages/aiAgent/hooks/useSkillsAccess', () => ({
+    useSkillsAccess: jest.fn(() => false),
+}))
+
 jest.mock(
     '@gorgias/axiom',
     () =>

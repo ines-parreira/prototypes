@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 import type { SizeValue } from '@gorgias/axiom'
 
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
     OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
@@ -36,6 +37,11 @@ export const EmptyStates = ({
     sectionsGap?: SizeValue
     isSyncDisabled?: boolean
 }) => {
+    const hasSkillsAccess = useSkillsAccess()
+    const guidanceDescription = hasSkillsAccess
+        ? 'Add reference knowledge AI Agent can draw on to answer general questions.'
+        : 'Instruct AI Agent to handle customer requests and follow internal processes.'
+
     return (
         <Box flexDirection="column" gap={sectionsGap} width="100%">
             {/* Top row*/}
@@ -75,8 +81,7 @@ export const EmptyStates = ({
                             as="p"
                             className={css.cardDescription}
                         >
-                            Instruct AI Agent to handle customer requests and
-                            follow internal processes.
+                            {guidanceDescription}
                         </Text>
                     </Card>
                     <Card
@@ -225,6 +230,15 @@ export const EmptyStates = ({
 }
 
 export const EmptyStateGuidance = () => {
+    const hasSkillsAccess = useSkillsAccess()
+    const description = hasSkillsAccess
+        ? "Add reference content AI Agent can draw on when answering general questions such as store policies or FAQs that don't belong in a specific skill."
+        : 'Instruct AI Agent to handle customer requests and follow end-to-end processes with internal-facing Guidance.'
+    const heading = hasSkillsAccess
+        ? 'Get started with guidance'
+        : 'Get started with Guidance'
+    const buttonLabel = hasSkillsAccess ? 'Create guidance' : 'Create Guidance'
+
     const toggleModal = () => {
         dispatchDocumentEvent(OPEN_CREATE_GUIDANCE_ARTICLE_MODAL)
     }
@@ -238,14 +252,13 @@ export const EmptyStateGuidance = () => {
             padding="xxxl"
             w={600}
         >
-            <Heading size={'md'}>Get started with Guidance</Heading>
+            <Heading size={'md'}>{heading}</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">
                 <Text size={'md'} align={'center'}>
-                    Instruct AI Agent to handle customer requests and follow
-                    end-to-end processes with internal-facing Guidance.
+                    {description}
                 </Text>
                 <Button variant="primary" onClick={toggleModal}>
-                    Create Guidance
+                    {buttonLabel}
                 </Button>
             </Box>
         </Box>

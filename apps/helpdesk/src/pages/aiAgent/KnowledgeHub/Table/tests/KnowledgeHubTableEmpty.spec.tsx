@@ -66,6 +66,10 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
     })),
 }))
 
+jest.mock('pages/aiAgent/hooks/useSkillsAccess', () => ({
+    useSkillsAccess: jest.fn(() => false),
+}))
+
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
     typeof useFaqHelpCenter
 >
