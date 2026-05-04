@@ -184,6 +184,87 @@ describe('SummaryTotal balance due', () => {
     })
 })
 
+describe('SummaryTotal existing credits', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+        mockUseBillingState.mockReturnValue({ data: undefined })
+    })
+
+    it('renders the existing-credits row when the customer has a positive credit balance', () => {
+        mockUseBillingState.mockReturnValue({
+            data: { customer: { existing_credits: 5000 } },
+        })
+
+        render(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                balanceDue={2550}
+            />,
+        )
+
+        expect(screen.getByText('Existing credits')).toBeInTheDocument()
+        expect(screen.getByText('$50')).toBeInTheDocument()
+    })
+
+    it('hides the existing-credits row when existing_credits is null', () => {
+        mockUseBillingState.mockReturnValue({
+            data: { customer: { existing_credits: null } },
+        })
+
+        render(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                balanceDue={2550}
+            />,
+        )
+
+        expect(screen.queryByText('Existing credits')).not.toBeInTheDocument()
+    })
+
+    it('hides the existing-credits row when existing_credits is 0', () => {
+        mockUseBillingState.mockReturnValue({
+            data: { customer: { existing_credits: 0 } },
+        })
+
+        render(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                balanceDue={2550}
+            />,
+        )
+
+        expect(screen.queryByText('Existing credits')).not.toBeInTheDocument()
+    })
+
+    it('shows the existing-credits row even when there is no balance due to display', () => {
+        mockUseBillingState.mockReturnValue({
+            data: { customer: { existing_credits: 1234 } },
+        })
+
+        render(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                balanceDue={0}
+            />,
+        )
+
+        expect(screen.getByText('Existing credits')).toBeInTheDocument()
+        expect(screen.queryByText('Balance due today')).not.toBeInTheDocument()
+    })
+})
+
 describe('SummaryTotal without coupons', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)

@@ -12,6 +12,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Box } from '@gorgias/axiom'
 
 import { BalanceDueRow } from '../BalanceDueRow'
+import { ExistingCreditsRow } from '../ExistingCreditsRow'
 import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
 import css from './SummaryTotal.less'
@@ -70,7 +71,11 @@ const SummaryTotal = ({
         discountAmount,
         showDiscountedPrice,
         unbilledCharges,
+        existingCredits,
     } = usePriceSummary(selectedPlans, totalCancelledAmount, cancelledProducts)
+
+    const shouldShowExistingCredits =
+        existingCredits != null && existingCredits > 0
 
     const shouldShowBalanceDue =
         isEstimateLoading ||
@@ -118,20 +123,28 @@ const SummaryTotal = ({
                     </div>
                 </div>
             )}
-            {shouldShowBalanceDue && (
-                <Box pt="sm" px="xs" flexDirection="column">
-                    <BalanceDueRow
-                        isLoading={isEstimateLoading}
-                        errorMessage={estimateErrorMessage}
-                        onRetry={onRetryEstimate}
-                        tooltip={
-                            shouldShowUnbilledChargesDisclaimer
-                                ? UNBILLED_CHARGES_DISCLAIMER
-                                : undefined
-                        }
-                    >
-                        {balanceDueText}
-                    </BalanceDueRow>
+            {(shouldShowBalanceDue || shouldShowExistingCredits) && (
+                <Box pt="sm" px="xs" flexDirection="column" gap="xxs">
+                    {shouldShowExistingCredits && (
+                        <ExistingCreditsRow
+                            existingCredits={existingCredits}
+                            currency={currency}
+                        />
+                    )}
+                    {shouldShowBalanceDue && (
+                        <BalanceDueRow
+                            isLoading={isEstimateLoading}
+                            errorMessage={estimateErrorMessage}
+                            onRetry={onRetryEstimate}
+                            tooltip={
+                                shouldShowUnbilledChargesDisclaimer
+                                    ? UNBILLED_CHARGES_DISCLAIMER
+                                    : undefined
+                            }
+                        >
+                            {balanceDueText}
+                        </BalanceDueRow>
+                    )}
                 </Box>
             )}
             <div className={css.disclaimer}>Prices exclusive of sales tax</div>
@@ -149,11 +162,16 @@ function usePriceSummary(
     )
 
     const { data: billingState } = useBillingState()
-    // TODO(CRMGROW-3490): Remove when helpdesk-web-app consumes SDK types that include this backend field.
+    // TODO(CRMGROW-3557): Drop these casts once SDK CustomerSummary exposes
+    // unbilled_charges and existing_credits.
     const customer = billingState?.customer as
-        | { unbilled_charges?: number | null }
+        | {
+              unbilled_charges?: number | null
+              existing_credits?: number | null
+          }
         | undefined
     const unbilledCharges = customer?.unbilled_charges
+    const existingCredits = customer?.existing_credits ?? null
 
     const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
         useMemo(
@@ -180,6 +198,7 @@ function usePriceSummary(
         discountAmount,
         showDiscountedPrice,
         unbilledCharges,
+        existingCredits,
     }
 }
 
