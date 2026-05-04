@@ -17,6 +17,7 @@ jest.mock('@repo/feature-flags', () => ({
         hasUIVisionBeta: false,
         onToggle: jest.fn(),
     }),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
 }))
 const useFlagMock = assumeMock(useFlag)
 

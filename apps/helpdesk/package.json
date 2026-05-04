@@ -117,6 +117,7 @@
         "@repo/layout": "workspace:*",
         "@repo/logging": "workspace:*",
         "@repo/navigation": "workspace:*",
+        "@repo/notifications": "workspace:*",
         "@repo/permissions": "workspace:*",
         "@repo/preferences": "workspace:*",
         "@repo/reporting": "workspace:*",

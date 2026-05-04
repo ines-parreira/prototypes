@@ -2,13 +2,11 @@ import { useSidebarButtonSize } from '@repo/navigation'
 
 import { Button, Quantity, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import { useNotificationsOverlay } from 'common/notifications'
 import useCount from 'common/notifications/hooks/useCount'
 
 import css from './NavigationSidebarNotificationsButton.less'
 
 export function NavigationSidebarNotificationsButton() {
-    const [, onToggle] = useNotificationsOverlay()
     const count = useCount()
     const buttonSize = useSidebarButtonSize()
 
@@ -22,7 +20,6 @@ export function NavigationSidebarNotificationsButton() {
                     <Button
                         icon="comm-bell"
                         variant="tertiary"
-                        onClick={onToggle}
                         aria-label="Notifications"
                         size={buttonSize}
                     />

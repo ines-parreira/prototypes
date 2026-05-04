@@ -1,4 +1,8 @@
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { NotificationFeedItem, Subject } from '@repo/notifications'
+
+import { Icon, Text } from '@gorgias/axiom'
 
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
@@ -18,14 +22,46 @@ const ImportEmailFailedNotification = ({
     onClick,
     ...props
 }: Props) => {
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const { import: importNotification } = notification.payload
 
-    if (!importNotification) return
+    if (!importNotification) return null
 
     const { startDate, endDate } = getStartEndDate(
         importNotification.import_window_start,
         importNotification.import_window_end,
     )
+
+    const handleOnClick = () => {
+        onClick?.()
+        logEvent(SegmentEvent.FailedEmailImportNotification, {
+            importId: importNotification.id,
+        })
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <NotificationFeedItem
+                notification={notification}
+                icon={<Icon name="octagon-error" color="red" />}
+                title="Email import failed"
+                to="#"
+                onClick={handleOnClick}
+            >
+                <Text>
+                    We couldn&apos;t complete the import of historical emails
+                    for{' '}
+                    <Subject>{importNotification.provider_identifier}</Subject>{' '}
+                    between{' '}
+                    <Subject>
+                        {startDate.toLocaleString()} and{' '}
+                        {endDate.toLocaleString()}.
+                    </Subject>{' '}
+                    Please try again later.
+                </Text>
+            </NotificationFeedItem>
+        )
+    }
 
     return (
         <Content
@@ -33,12 +69,7 @@ const ImportEmailFailedNotification = ({
             icon={{ type: ERROR_ICON }}
             title="Email import failed"
             url="#"
-            onClick={() => {
-                onClick?.()
-                logEvent(SegmentEvent.FailedEmailImportNotification, {
-                    importId: importNotification.id,
-                })
-            }}
+            onClick={handleOnClick}
         >
             <Subtitle>
                 We couldn’t complete the import of historical emails for{' '}

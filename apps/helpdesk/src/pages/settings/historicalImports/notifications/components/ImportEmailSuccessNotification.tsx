@@ -1,4 +1,8 @@
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { NotificationFeedItem, Subject } from '@repo/notifications'
+
+import { Text } from '@gorgias/axiom'
 
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
@@ -17,14 +21,44 @@ const ImportEmailSuccessNotification = ({
     onClick,
     ...props
 }: Props) => {
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const { import: importNotification } = notification.payload
 
-    if (!importNotification) return
+    if (!importNotification) return null
 
     const { startDate, endDate } = getStartEndDate(
         importNotification.import_window_start,
         importNotification.import_window_end,
     )
+
+    const handleOnClick = () => {
+        onClick?.()
+        logEvent(SegmentEvent.SuccessfulEmailImportNotification, {
+            importId: importNotification.id,
+        })
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <NotificationFeedItem
+                notification={notification}
+                icon="comm-mail"
+                title="Email history imported"
+                to="#"
+                onClick={handleOnClick}
+            >
+                <Text>
+                    We&apos;ve successfully imported emails from{' '}
+                    <Subject>{importNotification.provider_identifier}</Subject>{' '}
+                    between{' '}
+                    <Subject>
+                        {startDate} and {endDate}
+                    </Subject>{' '}
+                    to your tickets.
+                </Text>
+            </NotificationFeedItem>
+        )
+    }
 
     return (
         <Content
@@ -32,12 +66,7 @@ const ImportEmailSuccessNotification = ({
             icon={{ type: 'email' }}
             title="Email history imported"
             url="#"
-            onClick={() => {
-                onClick?.()
-                logEvent(SegmentEvent.SuccessfulEmailImportNotification, {
-                    importId: importNotification.id,
-                })
-            }}
+            onClick={handleOnClick}
         >
             <Subtitle>
                 We’ve successfully imported emails from{' '}

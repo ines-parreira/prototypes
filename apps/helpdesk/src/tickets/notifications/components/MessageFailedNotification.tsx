@@ -1,4 +1,8 @@
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { NotificationFeedItem, Subject } from '@repo/notifications'
+
+import { Icon, Text } from '@gorgias/axiom'
 
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
@@ -14,7 +18,36 @@ const MessageFailedNotification = ({
     onClick,
     ...props
 }: Props) => {
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const { customer, ticket } = notification.payload
+
+    const handleOnClick = () => {
+        onClick?.()
+        logEvent(SegmentEvent.FailedMessageNotification, {
+            ticketId: ticket.id,
+        })
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <NotificationFeedItem
+                notification={notification}
+                icon={<Icon name="octagon-error" color="red" />}
+                title="Message not delivered"
+                to={`/app/ticket/${ticket.id}`}
+                onClick={handleOnClick}
+            >
+                {customer?.name ? (
+                    <Text>
+                        Message to <Subject>{customer.name}</Subject>{' '}
+                        didn&apos;t deliver. Please try again.
+                    </Text>
+                ) : (
+                    <Text>Message didn&apos;t deliver. Please try again.</Text>
+                )}
+            </NotificationFeedItem>
+        )
+    }
 
     return (
         <Content
@@ -22,12 +55,7 @@ const MessageFailedNotification = ({
             icon={{ type: ERROR_ICON }}
             title="Message not delivered"
             url={`/app/ticket/${ticket.id}`}
-            onClick={() => {
-                onClick?.()
-                logEvent(SegmentEvent.FailedMessageNotification, {
-                    ticketId: ticket.id,
-                })
-            }}
+            onClick={handleOnClick}
         >
             {customer?.name ? (
                 <Subtitle>

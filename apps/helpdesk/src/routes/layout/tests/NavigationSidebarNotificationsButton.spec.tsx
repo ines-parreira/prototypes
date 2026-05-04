@@ -1,31 +1,20 @@
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
-import { useNotificationsOverlay } from 'common/notifications'
 import useCount from 'common/notifications/hooks/useCount'
 
 import { NavigationSidebarNotificationsButton } from '../NavigationSidebarNotificationsButton'
-
-jest.mock('common/notifications', () => ({
-    useNotificationsOverlay: jest.fn(),
-}))
 
 jest.mock('common/notifications/hooks/useCount', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
 
-const useNotificationsOverlayMock = assumeMock(useNotificationsOverlay)
 const useCountMock = assumeMock(useCount)
 
 describe('NavigationSidebarNotificationsButton', () => {
-    let onToggle: jest.Mock
-
     beforeEach(() => {
-        onToggle = jest.fn()
-        useNotificationsOverlayMock.mockReturnValue([false, onToggle])
         useCountMock.mockReturnValue(0)
     })
 
@@ -71,19 +60,5 @@ describe('NavigationSidebarNotificationsButton', () => {
         )
 
         expect(screen.getByText('99+')).toBeInTheDocument()
-    })
-
-    it('should toggle notifications overlay when clicked', async () => {
-        const user = userEvent.setup()
-        useCountMock.mockReturnValue(5)
-        render(
-            <MockSidebarProvider>
-                <NavigationSidebarNotificationsButton />
-            </MockSidebarProvider>,
-        )
-
-        await user.click(screen.getByRole('button', { name: /notifications/i }))
-
-        expect(onToggle).toHaveBeenCalledTimes(1)
     })
 })

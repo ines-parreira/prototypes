@@ -1,3 +1,7 @@
+import type { ReactNode } from 'react'
+
+import { useKnockFeed } from '@knocklabs/react'
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
@@ -43,6 +47,30 @@ jest.mock('pages/aiAgent/opportunities/hooks/useOpportunitiesTracking', () => ({
     })),
 }))
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn(),
+}))
+
+jest.mock('@knocklabs/react', () => ({
+    useKnockFeed: jest.fn(),
+    useKnockClient: jest.fn(),
+    FilterStatus: {
+        All: 'all',
+        Read: 'read',
+        Unseen: 'unseen',
+        Unread: 'unread',
+    },
+    NotificationFeed: () => null,
+    KnockFeedProvider: ({ children }: { children: ReactNode }) => children,
+    KnockProvider: ({ children }: { children: ReactNode }) => children,
+}))
+
+const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
+const useKnockFeedMock = assumeMock(useKnockFeed)
+
 const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification,
 )
@@ -59,6 +87,12 @@ describe('AiAgentNotification', () => {
             defaultUseAiAgentOnboardingNotification,
         )
         jest.useFakeTimers().setSystemTime(new Date(mockDatetime))
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
+        useKnockFeedMock.mockReturnValue({
+            feedClient: { markAsRead: jest.fn(), markAsUnread: jest.fn() },
+            useFeedStore: (selector: (state: { items: [] }) => unknown) =>
+                selector({ items: [] }),
+        } as unknown as ReturnType<typeof useKnockFeed>)
     })
 
     const basePayload = {
@@ -330,6 +364,81 @@ describe('AiAgentNotification', () => {
 
         expect(mockOnRedirectToOpportunityPage).toHaveBeenCalledWith({
             referrer: 'in-app-notification',
+        })
+    })
+
+    describe('wayfinding path (flag on)', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        it('should render the notification title via NotificationFeedItem', () => {
+            const notification: Notification<AiAgentNotificationPayload> = {
+                id: '1',
+                inserted_datetime: '2024-11-04T13:07:00',
+                read_datetime: null,
+                seen_datetime: null,
+                type: 'automate-setup-and-optimization',
+                payload: {
+                    ...basePayload,
+                    ai_agent_notification_type:
+                        AiAgentNotificationType.MeetAiAgent,
+                },
+            }
+
+            const { getByText } = render(
+                <AiAgentNotification notification={notification} />,
+            )
+
+            expect(
+                getByText('Meet your new team member: AI Agent'),
+            ).toBeInTheDocument()
+        })
+
+        it('should link to the correct redirect URL', () => {
+            const notification: Notification<AiAgentNotificationPayload> = {
+                id: '2',
+                inserted_datetime: '2024-11-04T13:07:00',
+                read_datetime: null,
+                seen_datetime: null,
+                type: 'automate-setup-and-optimization',
+                payload: {
+                    ...basePayload,
+                    ai_agent_notification_type:
+                        AiAgentNotificationType.ActivateAiAgent,
+                },
+            }
+
+            const { container } = render(
+                <AiAgentNotification notification={notification} />,
+            )
+
+            expect(
+                container.querySelector(
+                    'a[href="/app/ai-agent/shopify/store_1/settings"]',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render if the notification type is not supported', () => {
+            const notification: Notification<AiAgentNotificationPayload> = {
+                id: '3',
+                inserted_datetime: '2024-11-04T13:07:00',
+                read_datetime: null,
+                seen_datetime: null,
+                type: 'automate-setup-and-optimization',
+                payload: {
+                    ...basePayload,
+                    ai_agent_notification_type:
+                        'unsupported-type' as unknown as AiAgentNotificationType,
+                } as unknown as AiAgentNotificationPayload,
+            }
+
+            const { container } = render(
+                <AiAgentNotification notification={notification} />,
+            )
+
+            expect(container).toBeEmptyDOMElement()
         })
     })
 })

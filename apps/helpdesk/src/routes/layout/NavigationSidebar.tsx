@@ -16,7 +16,7 @@ import { Box, Button, Separator, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
 import { usePreviousProductNavigation } from 'routes/hooks/usePreviousProductNavigation'
-import { NavigationSidebarNotificationsButton } from 'routes/layout/NavigationSidebarNotificationsButton'
+import { NavigationSidebarNotificationsPopover } from 'routes/layout/NavigationSidebarNotificationsPopover'
 import { NavigationSidebarSpotlightButton } from 'routes/layout/NavigationSidebarSpotlightButton'
 import {
     Product,
@@ -89,7 +89,7 @@ export function NavigationSidebar() {
                     gap="xxxs"
                     flexDirection={isCollapsed ? 'column-reverse' : 'row'}
                 >
-                    <NavigationSidebarNotificationsButton />
+                    <NavigationSidebarNotificationsPopover />
                     <NavigationSidebarSpotlightButton />
 
                     {!isMobileResolution && (

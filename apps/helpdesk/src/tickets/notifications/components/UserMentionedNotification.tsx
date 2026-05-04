@@ -1,4 +1,14 @@
-import { Content, Excerpt, Subject, Subtitle } from 'common/notifications'
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { Excerpt, NotificationFeedItem, Subject } from '@repo/notifications'
+import { ticketMessageSourceToIconName } from '@repo/tickets'
+
+import { Text } from '@gorgias/axiom'
+
+import {
+    Content,
+    Subject as LegacySubject,
+    Subtitle,
+} from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
 
 import type { TicketPayload } from '../types'
@@ -11,7 +21,33 @@ export default function UserMentionedNotification({
     notification,
     ...props
 }: Props) {
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const { sender, ticket } = notification.payload
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <NotificationFeedItem
+                notification={notification}
+                icon={ticketMessageSourceToIconName(ticket.channel)}
+                title="New mention"
+                to={`/app/ticket/${ticket.id}`}
+                onClick={props.onClick}
+            >
+                {sender ? (
+                    <Text>
+                        <Subject>{sender.name}</Subject> mentioned you in{' '}
+                        <Subject>{ticket.subject}</Subject>
+                    </Text>
+                ) : (
+                    <Text>
+                        You were mentioned in{' '}
+                        <Subject>{ticket.subject}</Subject>
+                    </Text>
+                )}
+                {!!ticket.excerpt && <Excerpt>{ticket.excerpt}</Excerpt>}
+            </NotificationFeedItem>
+        )
+    }
 
     return (
         <Content
@@ -29,7 +65,7 @@ export default function UserMentionedNotification({
                 ) : (
                     <>You were mentioned in </>
                 )}
-                <Subject>{ticket.subject}</Subject>
+                <LegacySubject>{ticket.subject}</LegacySubject>
             </Subtitle>
             {!!ticket.excerpt && <Excerpt>{ticket.excerpt}</Excerpt>}
         </Content>

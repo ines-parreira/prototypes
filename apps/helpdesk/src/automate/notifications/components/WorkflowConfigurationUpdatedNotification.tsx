@@ -1,4 +1,8 @@
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { NotificationFeedItem } from '@repo/notifications'
 import { useQueryClient } from '@tanstack/react-query'
+
+import { Icon } from '@gorgias/axiom'
 
 import { Content, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
@@ -16,20 +20,40 @@ export default function WorkflowConfigurationUpdatedNotification({
     notification,
     ...props
 }: Props) {
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const payload = notification.payload
     const routes = getAiAgentNavigationRoutes(payload.store_name)
     const queryClient = useQueryClient()
+
+    const handleOnClick = () => {
+        queryClient.invalidateQueries({
+            queryKey: trackstarDefinitionKeys.all(),
+        })
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <NotificationFeedItem
+                notification={notification}
+                icon={<Icon name="triangle-warning" color="orange" />}
+                title={`Reconnect ${payload.integration_name}`}
+                to={routes.actions}
+                onClick={handleOnClick}
+            >
+                Your connection with {payload.integration_name} has been
+                interrupted. Reconnect to avoid disruptions with Action
+                performance.
+            </NotificationFeedItem>
+        )
+    }
+
     return (
         <Content
             {...props}
             url={routes.actions}
             icon={{ type: WARNING_ICON }}
             title={`Reconnect ${payload.integration_name}`}
-            onClick={() => {
-                queryClient.invalidateQueries({
-                    queryKey: trackstarDefinitionKeys.all(),
-                })
-            }}
+            onClick={handleOnClick}
         >
             <Subtitle>
                 Your connection with {payload.integration_name} has been

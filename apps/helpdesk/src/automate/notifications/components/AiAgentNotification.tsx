@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { Excerpt, NotificationFeedItem } from '@repo/notifications'
 
-import { Content, Excerpt, Subtitle } from 'common/notifications'
+import { Content, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
@@ -27,6 +29,7 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
     const { aiAgentTicketViewId } = useAccountStoreConfiguration({
         storeNames: [payload.shop_name],
     })
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const { isLoading, onboardingNotificationState, handleOnSave } =
         useAiAgentOnboardingNotification({
@@ -104,6 +107,27 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
                 type: payload.ai_agent_notification_type,
             })
         }
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <NotificationFeedItem
+                notification={notification}
+                icon="ai"
+                title={notificationParams.title}
+                to={notificationParams.redirectTo}
+                onClick={handleOnClick}
+            >
+                <span
+                    dangerouslySetInnerHTML={{
+                        __html: notificationParams.subtitle,
+                    }}
+                />
+                {notificationParams.excerpt && (
+                    <Excerpt>{notificationParams.excerpt}</Excerpt>
+                )}
+            </NotificationFeedItem>
+        )
     }
 
     return (

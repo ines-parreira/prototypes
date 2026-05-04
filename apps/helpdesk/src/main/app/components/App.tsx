@@ -1,7 +1,11 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useHelpdeskV2WayfindingMS1Flag,
+} from '@repo/feature-flags'
 
 import { Toaster } from '@gorgias/axiom'
 
@@ -59,6 +63,7 @@ export default function App({ children }: Props) {
     const theme = useTheme()
     const history = useHistory()
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const hasPhone = useHasPhone()
     const bannerList: Record<string, boolean> = useFlag(
         FeatureFlagKey.GlobalBannerRefactor,
@@ -142,7 +147,7 @@ export default function App({ children }: Props) {
                 <ScriptTagMigrationModal />
                 <Spotlight />
                 <div className={css.content}>
-                    <NotificationsOverlay />
+                    {!hasWayfindingMS1Flag && <NotificationsOverlay />}
                     {children}
                 </div>
                 <KeyboardHelp />
