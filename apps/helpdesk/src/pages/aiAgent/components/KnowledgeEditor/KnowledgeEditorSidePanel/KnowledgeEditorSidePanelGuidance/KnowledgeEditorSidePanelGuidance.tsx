@@ -8,6 +8,7 @@ import {
     useGuidanceImpactFromContext,
     useGuidanceRecentTicketsFromContext,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import { AddMissingKnowledgeCheckbox } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AddMissingKnowledgeCheckbox'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
@@ -23,9 +24,7 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
     const isLinkedIntentsEnabled = useFlag(
         FeatureFlagKey.AddLinkedIntentsFromSidepanel,
     )
-    const isKnowledgeIntentManagementSystemEnabled = useFlag(
-        FeatureFlagKey.KnowledgeIntentManagementSystem,
-    )
+    const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
     const impact = useGuidanceImpactFromContext()
     const recentTickets = useGuidanceRecentTicketsFromContext()
     const {

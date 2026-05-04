@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router-dom'
 import { useShallow } from 'zustand/react/shallow'
@@ -17,6 +16,7 @@ import { KnowledgeEditorSidePanelSectionConvertToSkillModal } from 'pages/aiAgen
 import { useSkillNotify } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillNotify'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
@@ -70,9 +70,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         useState(false)
     const [isConvertingToSkill, setIsConvertingToSkill] = useState(false)
 
-    const isKnowledgeIntentManagementSystemEnabled = useFlag(
-        FeatureFlagKey.KnowledgeIntentManagementSystem,
-    )
+    const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
 
     const { mutateAsync: updateArticle } = useUpdateArticle(
         guidanceHelpCenterId ?? 0,

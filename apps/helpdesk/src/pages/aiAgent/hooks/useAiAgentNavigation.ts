@@ -28,6 +28,7 @@ import {
     TONE_OF_VOICE,
     TRAIN,
 } from 'pages/aiAgent/constants'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 
 export enum AIAgentNavigationSection {
     ActionsPlatform = 'actions-platform',
@@ -179,9 +180,7 @@ const useNavigationItems = (
         FeatureFlagKey.OpportunitiesMilestone2,
     )
 
-    const isKnowledgeIntentManagementSystemEnabled = useFlag(
-        FeatureFlagKey.KnowledgeIntentManagementSystem,
-    )
+    const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
 
     const shouldRenderShoppingAssistantPages =
         !isShoppingAssistantDeactivationEnforced ||

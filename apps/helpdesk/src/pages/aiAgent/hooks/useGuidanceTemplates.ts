@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 
 import type { GuidanceTemplate } from '../types'
 
@@ -167,8 +167,7 @@ export const IntentGuidanceTemplatesData: GuidanceTemplate[] = [
 ]
 
 export const useGuidanceTemplates = () => {
-    const { value: isKnowledgeIntentManagementSystemEnabled } =
-        useFlagWithLoading(FeatureFlagKey.KnowledgeIntentManagementSystem)
+    const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
 
     const guidanceTemplates = useMemo(
         () =>

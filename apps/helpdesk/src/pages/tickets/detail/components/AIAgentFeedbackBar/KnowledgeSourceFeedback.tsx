@@ -1,6 +1,5 @@
 import type { MouseEvent } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 
 import {
@@ -9,6 +8,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
@@ -63,9 +63,7 @@ const KnowledgeSourceFeedback = ({
     isMetadataLoading,
 }: KnowledgeSourceProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
-    const isKnowledgeIntentManagementSystemEnabled = useFlag(
-        FeatureFlagKey.KnowledgeIntentManagementSystem,
-    )
+    const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
 
     const isDeleted = resource.metadata?.isDeleted || false
     const isLink = knowledgeResourceShouldBeLink(

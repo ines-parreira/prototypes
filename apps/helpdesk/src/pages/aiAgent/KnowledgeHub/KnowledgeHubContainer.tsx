@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -18,6 +17,7 @@ import {
     isSyncLessThan24Hours,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
     OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
@@ -89,9 +89,7 @@ export const KnowledgeHubContainer = () => {
     const [isAddKnowledgeModalOpen, setIsAddKnowledgeModalOpen] =
         useState(false)
 
-    const isKnowledgeIntentManagementSystemEnabled = useFlag(
-        FeatureFlagKey.KnowledgeIntentManagementSystem,
-    )
+    const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
 
     const {
         shopName,

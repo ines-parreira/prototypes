@@ -55,6 +55,7 @@ import {
     aiAgentRoutes,
     useAiAgentNavigation,
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding_V2/components/AiAgentOnboarding/AiAgentOnboarding'
@@ -352,9 +353,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         false,
     )
 
-    const isKnowledgeIntentManagementSystemEnabled = useFlag(
-        FeatureFlagKey.KnowledgeIntentManagementSystem,
-    )
+    const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
 
     const { routes } = useAiAgentNavigation({ shopName })
 
