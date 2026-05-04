@@ -202,6 +202,11 @@ export const TicketListItem = memo(function TicketListItem({
                         variant="bold"
                         size="md"
                         overflow="ellipsis"
+                        color={
+                            ticket.is_unread
+                                ? 'content-neutral-default'
+                                : 'content-neutral-secondary'
+                        }
                         className={styles.headerCustomerName}
                     >
                         {customerName}
