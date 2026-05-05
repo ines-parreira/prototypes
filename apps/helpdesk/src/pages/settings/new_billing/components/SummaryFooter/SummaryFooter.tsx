@@ -36,6 +36,7 @@ export type SummaryFooterProps = {
     ctaText: string
     selectedPlans?: SelectedPlans
     hasCreditCard?: boolean
+    hasAchPaymentMethod?: boolean
     shouldPayWithShopify?: boolean
     shopifyBillingStatus?: ShopifyBillingStatus
     isSubscriptionUpdating?: boolean
@@ -63,6 +64,7 @@ const SummaryFooter = ({
     ctaText,
     selectedPlans,
     hasCreditCard = true,
+    hasAchPaymentMethod = false,
     shouldPayWithShopify = false,
     shopifyBillingStatus,
     isSubscriptionUpdating = false,
@@ -73,6 +75,8 @@ const SummaryFooter = ({
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const history = useHistory()
+
+    const hasStripePaymentMethod = hasCreditCard || hasAchPaymentMethod
 
     const handleSubmit = async () => {
         if (onOpenConfirmationModal) {
@@ -87,7 +91,7 @@ const SummaryFooter = ({
             // Start the subscription if it was previously canceled and the customer has the payment method set
             if (
                 isCurrentSubscriptionCanceled &&
-                (hasCreditCard ||
+                (hasStripePaymentMethod ||
                     (shouldPayWithShopify &&
                         shopifyBillingStatus === ShopifyBillingStatus.Active))
             ) {
@@ -104,16 +108,18 @@ const SummaryFooter = ({
             if (noRedirect) {
                 // Do nothing
             } else if (
-                (isTrialing ||
-                    (isCurrentSubscriptionCanceled && !hasCreditCard)) &&
-                !isPaymentMethodFooter
-            ) {
-                history.push(BILLING_PAYMENT_CARD_PATH)
-            } else if (
                 shouldPayWithShopify &&
                 shopifyBillingStatus !== ShopifyBillingStatus.Active
             ) {
                 history.push(ACTIVATE_PAYMENT_WITH_SHOPIFY_URL)
+            } else if (
+                (isTrialing ||
+                    (isCurrentSubscriptionCanceled &&
+                        !shouldPayWithShopify &&
+                        !hasStripePaymentMethod)) &&
+                !isPaymentMethodFooter
+            ) {
+                history.push(BILLING_PAYMENT_CARD_PATH)
             } else {
                 history.push(BILLING_BASE_PATH)
             }

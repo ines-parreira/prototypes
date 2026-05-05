@@ -209,7 +209,7 @@ export function BillingSummaryCard({
                 anyNewProductSelected={anyNewProductSelected}
                 anyDowngradedPlanSelected={!!anyDowngradedPlanSelected}
                 onOpenConfirmationModal={
-                    isMidCycleUpgradeEnabled
+                    isMidCycleUpgradeEnabled && !isCurrentSubscriptionCanceled
                         ? () => {
                               logEvent(
                                   SegmentEvent.BillingUsageAndPlansUpdateSubscriptionClicked,
@@ -230,7 +230,9 @@ export function BillingSummaryCard({
                 selectedPlans={selectedPlans}
                 ctaText={ctaText}
                 hasCreditCard={hasCreditCard}
+                hasAchPaymentMethod={hasAchPaymentMethod}
                 shouldPayWithShopify={shouldPayWithShopify}
+                shopifyBillingStatus={shopifyBillingStatus}
                 isSubscriptionUpdating={isSubscriptionUpdating}
                 setUpdateProcessStarted={setUpdateProcessStarted}
                 autoUpgradeChanged={autoUpgradeChanged}

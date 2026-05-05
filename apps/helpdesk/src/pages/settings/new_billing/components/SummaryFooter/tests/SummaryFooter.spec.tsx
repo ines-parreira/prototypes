@@ -1,5 +1,9 @@
 import type { SelectedPlans } from '@repo/billing'
-import { BILLING_BASE_PATH } from '@repo/billing'
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_CARD_PATH,
+} from '@repo/billing'
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -14,6 +18,7 @@ import {
     products,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
+import { ShopifyBillingStatus } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { SummaryFooterProps } from '../SummaryFooter'
@@ -240,6 +245,138 @@ describe('SummaryFooter', () => {
         await waitFor(() => {
             expect(mockSetSessionSelectedPlans).toHaveBeenCalledWith(
                 selectedPlans,
+            )
+        })
+    })
+
+    describe('canceled subscription restart flow', () => {
+        const mockStartSubscription = jest.fn(async () => undefined)
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
+        const canceledProps: SummaryFooterProps = {
+            ...props,
+            anyNewProductSelected: false,
+            isCurrentSubscriptionCanceled: true,
+            startSubscription: mockStartSubscription,
+            ctaText: 'Subscribe now',
+        }
+
+        it('calls startSubscription and redirects to billing for canceled sub with credit card', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={store}>
+                    <SummaryFooter {...canceledProps} hasCreditCard={true} />
+                </Provider>,
+            )
+
+            await user.click(screen.getByText('Subscribe now'))
+
+            expect(mockUpdateSubscription).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(mockStartSubscription).toHaveBeenCalled()
+            })
+            expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+        })
+
+        it('calls startSubscription and redirects to billing for canceled sub with ACH mandate (no card)', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={store}>
+                    <SummaryFooter
+                        {...canceledProps}
+                        hasCreditCard={false}
+                        hasAchPaymentMethod={true}
+                    />
+                </Provider>,
+            )
+
+            await user.click(screen.getByText('Subscribe now'))
+
+            expect(mockUpdateSubscription).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(mockStartSubscription).toHaveBeenCalled()
+            })
+            expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+            expect(mockHistoryPush).not.toHaveBeenCalledWith(
+                BILLING_PAYMENT_CARD_PATH,
+            )
+        })
+
+        it('skips startSubscription and redirects to payment card setup when canceled sub has neither card nor ACH', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={store}>
+                    <SummaryFooter
+                        {...canceledProps}
+                        hasCreditCard={false}
+                        hasAchPaymentMethod={false}
+                    />
+                </Provider>,
+            )
+
+            await user.click(screen.getByText('Subscribe now'))
+
+            expect(mockUpdateSubscription).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    BILLING_PAYMENT_CARD_PATH,
+                )
+            })
+            expect(mockStartSubscription).not.toHaveBeenCalled()
+        })
+
+        it('calls startSubscription and redirects to billing for canceled sub paying with active Shopify (no Stripe payment method)', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={store}>
+                    <SummaryFooter
+                        {...canceledProps}
+                        hasCreditCard={false}
+                        shouldPayWithShopify={true}
+                        shopifyBillingStatus={ShopifyBillingStatus.Active}
+                    />
+                </Provider>,
+            )
+
+            await user.click(screen.getByText('Subscribe now'))
+
+            expect(mockUpdateSubscription).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(mockStartSubscription).toHaveBeenCalled()
+            })
+            expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+            expect(mockHistoryPush).not.toHaveBeenCalledWith(
+                BILLING_PAYMENT_CARD_PATH,
+            )
+        })
+
+        it('redirects to Shopify activate URL when paying with Shopify and billing is inactive (no Stripe fallback)', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={store}>
+                    <SummaryFooter
+                        {...canceledProps}
+                        hasCreditCard={false}
+                        shouldPayWithShopify={true}
+                        shopifyBillingStatus={ShopifyBillingStatus.Inactive}
+                    />
+                </Provider>,
+            )
+
+            await user.click(screen.getByText('Subscribe now'))
+
+            expect(mockUpdateSubscription).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+                )
+            })
+            expect(mockStartSubscription).not.toHaveBeenCalled()
+            expect(mockHistoryPush).not.toHaveBeenCalledWith(
+                BILLING_PAYMENT_CARD_PATH,
             )
         })
     })

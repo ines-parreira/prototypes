@@ -1,7 +1,6 @@
 import type { PlansByProduct } from '@repo/billing'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-    BILLING_BASE_PATH,
     BILLING_PAYMENT_CARD_PATH,
 } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
@@ -320,9 +319,8 @@ describe('BillingSummaryCard', () => {
         expect(mockSetUpdateProcessStarted).toHaveBeenCalledWith(false)
     })
 
-    it('calls startSubscription when subscription is canceled and has payment method', async () => {
+    it('skips ConfirmChangesModal when subscription is canceled (FF on)', async () => {
         const user = userEvent.setup()
-        const startSubscription = jest.fn().mockResolvedValue(undefined)
 
         render(
             <BillingSummaryCard
@@ -343,7 +341,7 @@ describe('BillingSummaryCard', () => {
                 anyNewProductSelected={false}
                 anyDowngradedPlanSelected={false}
                 updateSubscription={updateSubscription}
-                startSubscription={startSubscription}
+                startSubscription={jest.fn()}
                 isSubscriptionUpdating={false}
                 autoUpgradeChanged={false}
                 cancellationDates={{}}
@@ -361,26 +359,22 @@ describe('BillingSummaryCard', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: /open modal/i }))
+        expect(
+            screen.queryByRole('button', { name: /open modal/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /legacy submit/i }),
+        ).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /legacy submit/i }))
 
         await waitFor(() => {
-            expect(screen.getByText('open')).toBeInTheDocument()
-        })
-
-        await user.click(screen.getByRole('button', { name: /confirm modal/i }))
-
-        await waitFor(() => {
-            expect(startSubscription).toHaveBeenCalledTimes(1)
-        })
-
-        await waitFor(() => {
-            expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+            expect(updateSubscription).toHaveBeenCalledTimes(1)
         })
     })
 
-    it('calls startSubscription for canceled sub with ACH mandate instead of redirecting to card setup', async () => {
+    it('skips ConfirmChangesModal when canceled with no payment method (Stripe path)', async () => {
         const user = userEvent.setup()
-        const startSubscription = jest.fn().mockResolvedValue(undefined)
 
         render(
             <BillingSummaryCard
@@ -401,7 +395,7 @@ describe('BillingSummaryCard', () => {
                 anyNewProductSelected={false}
                 anyDowngradedPlanSelected={false}
                 updateSubscription={updateSubscription}
-                startSubscription={startSubscription}
+                startSubscription={jest.fn()}
                 isSubscriptionUpdating={false}
                 autoUpgradeChanged={false}
                 cancellationDates={{}}
@@ -412,7 +406,7 @@ describe('BillingSummaryCard', () => {
                 periodEnd="2026-12-31"
                 ctaText="Subscribe now"
                 hasCreditCard={false}
-                hasAchPaymentMethod={true}
+                hasAchPaymentMethod={false}
                 isPaymentEnabled={true}
                 setUpdateProcessStarted={mockSetUpdateProcessStarted}
                 setSessionSelectedPlans={jest.fn()}
@@ -420,17 +414,14 @@ describe('BillingSummaryCard', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: /open modal/i }))
-        await user.click(screen.getByRole('button', { name: /confirm modal/i }))
+        expect(
+            screen.queryByRole('button', { name: /open modal/i }),
+        ).not.toBeInTheDocument()
+        await user.click(screen.getByRole('button', { name: /legacy submit/i }))
 
         await waitFor(() => {
-            expect(startSubscription).toHaveBeenCalledTimes(1)
+            expect(updateSubscription).toHaveBeenCalledTimes(1)
         })
-
-        expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
-        expect(mockHistoryPush).not.toHaveBeenCalledWith(
-            BILLING_PAYMENT_CARD_PATH,
-        )
     })
 
     it('redirects to payment card page when trialing', async () => {
@@ -838,22 +829,6 @@ describe('BillingSummaryCard', () => {
         it('does not flag payment method missing while trialing (post-success redirect handles it)', async () => {
             const user = userEvent.setup()
             renderWithProps({ isTrialing: true, hasCreditCard: false })
-
-            await user.click(
-                screen.getByRole('button', { name: /open modal/i }),
-            )
-
-            expect(
-                screen.queryByText('payment method missing'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('does not flag payment method missing when subscription is canceled (post-success redirect handles it)', async () => {
-            const user = userEvent.setup()
-            renderWithProps({
-                isCurrentSubscriptionCanceled: true,
-                hasCreditCard: false,
-            })
 
             await user.click(
                 screen.getByRole('button', { name: /open modal/i }),
