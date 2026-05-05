@@ -49,6 +49,7 @@ const logPageMock = assumeMock(logPageChange)
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(() => ({ value: 'off', isLoading: false })),
 }))
 
 jest.mock('hooks/useIsAccountDeactivated', () => ({

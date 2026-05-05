@@ -1,4 +1,5 @@
 export { FeatureFlagKey } from './featureFlagKey'
+export type { ActionCentralizedLibraryMilestone } from './featureFlagValues'
 export { FeatureFlagsProvider } from './FeatureFlagsProvider'
 export type { FeatureFlagsMap } from './types'
 export { initFeatureFlagsClient } from './initFeatureFlagsClient'

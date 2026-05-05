@@ -1,6 +1,11 @@
 import { useEffect } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import type { ActionCentralizedLibraryMilestone } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import type { History } from 'history'
@@ -354,6 +359,12 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     )
 
     const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
+
+    const { value: __actionCentralizedLibraryMilestone } =
+        useFlagWithLoading<ActionCentralizedLibraryMilestone>(
+            FeatureFlagKey.ActionCentralizedLibrary,
+            'off',
+        )
 
     const { routes } = useAiAgentNavigation({ shopName })
 
