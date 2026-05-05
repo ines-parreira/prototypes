@@ -11,6 +11,7 @@ import type { DiscountType, DiscountVO } from '@gorgias/helpdesk-types'
 
 import {
     basicMonthlyHelpdeskPlan,
+    basicYearlyInvoicedMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
@@ -125,5 +126,55 @@ describe('ConfirmSummaryTable discounts', () => {
         const totalRow = screen.getByText('Total').closest('div')!
         expect(totalRow.querySelector('s')).toHaveTextContent('$360')
         expect(totalRow).toHaveTextContent('$180/month')
+    })
+})
+
+describe('ConfirmSummaryTable with yearly-invoiced-monthly plan (cadence != invoice_cadence)', () => {
+    const yearlyInvoicedBillingState = {
+        ...payingWithCreditCard,
+        current_plans: {
+            ...payingWithCreditCard.current_plans,
+            helpdesk: basicYearlyInvoicedMonthlyHelpdeskPlan,
+        },
+    }
+
+    const yearlyInvoicedResolvedPlans: ResolvedPlan[] = [
+        makeResolved({
+            productType: ProductType.Helpdesk,
+            plan: basicYearlyInvoicedMonthlyHelpdeskPlan,
+            currentPlan: basicYearlyInvoicedMonthlyHelpdeskPlan,
+        }),
+    ]
+
+    it('renders total with invoice cadence (month), not contract cadence (year)', () => {
+        render(
+            <ConfirmSummaryTable
+                billingState={yearlyInvoicedBillingState}
+                resolvedPlans={yearlyInvoicedResolvedPlans}
+                priceSummary={derivePriceSummary(
+                    yearlyInvoicedResolvedPlans,
+                    undefined,
+                )}
+            />,
+        )
+
+        const totalRow = screen.getByText('Total').closest('div')!
+        expect(totalRow).toHaveTextContent('$50/month')
+        expect(totalRow).not.toHaveTextContent('/year')
+    })
+
+    it('renders product row price with invoice cadence (month)', () => {
+        render(
+            <ConfirmSummaryTable
+                billingState={yearlyInvoicedBillingState}
+                resolvedPlans={yearlyInvoicedResolvedPlans}
+                priceSummary={derivePriceSummary(
+                    yearlyInvoicedResolvedPlans,
+                    undefined,
+                )}
+            />,
+        )
+
+        expect(screen.getAllByText('$50/month')).toHaveLength(2)
     })
 })

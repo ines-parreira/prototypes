@@ -35,7 +35,7 @@ function getProductPrice(plan: Plan, productType: ProductType): string {
         const info = PRODUCT_INFO[productType]
         return `${getOverageUnitPriceFormatted(plan)} ${info.perTicket}`
     }
-    return `${getPlanPriceFormatted(plan)}/${plan.cadence}`
+    return `${getPlanPriceFormatted(plan)}/${plan.invoice_cadence}`
 }
 
 type SummaryProductRowProps = {

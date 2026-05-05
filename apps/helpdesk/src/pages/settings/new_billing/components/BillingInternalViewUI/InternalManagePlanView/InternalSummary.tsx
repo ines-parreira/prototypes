@@ -38,7 +38,7 @@ export function InternalSummary({
     onPreviewChanges,
 }: InternalSummaryProps) {
     const { credit_card } = billingState.customer
-    const cadence = billingState.current_plans.helpdesk.cadence
+    const invoiceCadence = billingState.current_plans.helpdesk.invoice_cadence
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
 
     const {
@@ -108,7 +108,7 @@ export function InternalSummary({
                 {hasDiscount && (
                     <DiscountSummaryRow
                         discountAmountInCents={discountAmountInCents}
-                        cadence={cadence}
+                        invoiceCadence={invoiceCadence}
                         currency={currency}
                     />
                 )}
@@ -130,7 +130,7 @@ export function InternalSummary({
                             </Text>
                         )}
                         <Text variant="bold">
-                            {`${formatAmount(Math.round(totalWithDiscountsInCents) / 100, currency)}/${cadence}`}
+                            {`${formatAmount(Math.round(totalWithDiscountsInCents) / 100, currency)}/${invoiceCadence}`}
                         </Text>
                     </Box>
                 </Box>

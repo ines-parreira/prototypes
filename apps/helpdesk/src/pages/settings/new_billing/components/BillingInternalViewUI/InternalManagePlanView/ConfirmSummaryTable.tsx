@@ -35,7 +35,7 @@ export function ConfirmSummaryTable({
     estimateErrorMessage,
     onRetryEstimate,
 }: ConfirmSummaryTableProps) {
-    const cadence = billingState.current_plans.helpdesk.cadence
+    const invoiceCadence = billingState.current_plans.helpdesk.invoice_cadence
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
 
     const {
@@ -84,7 +84,7 @@ export function ConfirmSummaryTable({
                 {hasDiscount && (
                     <DiscountSummaryRow
                         discountAmountInCents={discountAmountInCents}
-                        cadence={cadence}
+                        invoiceCadence={invoiceCadence}
                         currency={currency}
                     />
                 )}
@@ -103,7 +103,7 @@ export function ConfirmSummaryTable({
                             </Text>
                         )}
                         <Text variant="bold" className={css.highlighted}>
-                            {`${formatAmount(Math.round(totalWithDiscountsInCents) / 100, currency)}/${cadence}`}
+                            {`${formatAmount(Math.round(totalWithDiscountsInCents) / 100, currency)}/${invoiceCadence}`}
                         </Text>
                     </Box>
                 </Box>

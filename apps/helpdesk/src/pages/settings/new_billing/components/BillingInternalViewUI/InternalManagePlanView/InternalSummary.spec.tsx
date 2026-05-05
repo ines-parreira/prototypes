@@ -1,3 +1,4 @@
+import type { BillingState } from '@repo/billing'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -10,6 +11,7 @@ import type { DiscountType, DiscountVO } from '@gorgias/helpdesk-types'
 
 import {
     basicMonthlyHelpdeskPlan,
+    basicYearlyInvoicedMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
     voicePlan0,
     voicePlan3,
@@ -36,11 +38,12 @@ function makeResolved(
 function renderComponent(
     resolvedPlans: ResolvedPlan[],
     hasChanges = false,
+    billingState: BillingState = payingWithCreditCard,
     discounts?: DiscountVO[],
 ) {
     return render(
         <InternalSummary
-            billingState={payingWithCreditCard}
+            billingState={billingState}
             resolvedPlans={resolvedPlans}
             priceSummary={derivePriceSummary(resolvedPlans, discounts)}
             hasChanges={hasChanges}
@@ -197,7 +200,7 @@ describe('InternalSummary', () => {
             } as DiscountVO,
         ]
 
-        renderComponent(plans, true, discounts)
+        renderComponent(plans, true, payingWithCreditCard, discounts)
 
         expect(screen.getByText('Discount')).toBeInTheDocument()
         const discountAmount = screen.getByText('-$180/month')
@@ -222,5 +225,43 @@ describe('InternalSummary', () => {
         expect(screen.getByText(/Visa/)).toBeInTheDocument()
         expect(screen.getByText('4321')).toBeInTheDocument()
         expect(screen.getByText('Change Payment Method')).toBeInTheDocument()
+    })
+
+    describe('with a yearly-invoiced-monthly plan (cadence != invoice_cadence)', () => {
+        const yearlyInvoicedBillingState = {
+            ...payingWithCreditCard,
+            current_plans: {
+                ...payingWithCreditCard.current_plans,
+                helpdesk: basicYearlyInvoicedMonthlyHelpdeskPlan,
+            },
+        }
+
+        it('renders invoice cadence (month) in the total row, not contract cadence (year)', () => {
+            const plans: ResolvedPlan[] = [
+                makeResolved({
+                    productType: ProductType.Helpdesk,
+                    plan: basicYearlyInvoicedMonthlyHelpdeskPlan,
+                    currentPlan: basicYearlyInvoicedMonthlyHelpdeskPlan,
+                }),
+            ]
+            renderComponent(plans, false, yearlyInvoicedBillingState)
+
+            const totalRow = screen.getByText('Total').closest('div')!
+            expect(totalRow).toHaveTextContent('$50/month')
+            expect(totalRow).not.toHaveTextContent('/year')
+        })
+
+        it('renders invoice cadence (month) in the product row price', () => {
+            const plans: ResolvedPlan[] = [
+                makeResolved({
+                    productType: ProductType.Helpdesk,
+                    plan: basicYearlyInvoicedMonthlyHelpdeskPlan,
+                    currentPlan: basicYearlyInvoicedMonthlyHelpdeskPlan,
+                }),
+            ]
+            renderComponent(plans, false, yearlyInvoicedBillingState)
+
+            expect(screen.getAllByText('$50/month')).toHaveLength(2)
+        })
     })
 })
