@@ -5,6 +5,12 @@ import { afterEach, expect, vi } from 'vitest'
 
 expect.extend(matchers)
 
+type HappyDOMWindow = Window & {
+    happyDOM?: {
+        abort: () => Promise<void>
+    }
+}
+
 class TestStorage implements Storage {
     #store = new Map<string, string>()
 
@@ -123,6 +129,6 @@ document.elementsFromPoint = () => {
 
 afterEach(async () => {
     lastPointerTarget = null
-    await window.happyDOM?.abort()
+    await (window as HappyDOMWindow).happyDOM?.abort()
     vi.clearAllMocks()
 })

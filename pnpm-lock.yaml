@@ -3305,7 +3305,7 @@ importers:
         version: 5.3.3
       '@vitest/coverage-v8':
         specifier: catalog:test
-        version: 4.0.18(vitest@4.0.18(@types/node@24.12.2)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@24.12.2)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
+        version: 4.1.5(vitest@4.1.5)
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -3332,7 +3332,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: catalog:test
-        version: 4.0.18(@types/node@24.12.2)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@24.12.2)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0)
+        version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(happy-dom@20.9.0)(jsdom@21.0.0)(msw@2.9.0(@types/node@24.12.2)(typescript@5.9.3))(vite@7.1.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.1.3)(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
 
   packages/teams:
     devDependencies:
@@ -17203,7 +17203,7 @@ snapshots:
       '@babel/helper-compilation-targets': 7.27.2
       '@babel/helper-module-transforms': 7.27.3(@babel/core@7.27.4)
       '@babel/helpers': 7.27.6
-      '@babel/parser': 7.29.0
+      '@babel/parser': 7.29.2
       '@babel/template': 7.27.2
       '@babel/traverse': 7.29.0
       '@babel/types': 7.29.0
@@ -17222,7 +17222,7 @@ snapshots:
       '@babel/helper-compilation-targets': 7.28.6
       '@babel/helper-module-transforms': 7.28.6(@babel/core@7.29.0)
       '@babel/helpers': 7.28.6
-      '@babel/parser': 7.29.0
+      '@babel/parser': 7.29.2
       '@babel/template': 7.28.6
       '@babel/traverse': 7.29.0
       '@babel/types': 7.29.0
@@ -17245,7 +17245,7 @@ snapshots:
 
   '@babel/generator@7.28.0':
     dependencies:
-      '@babel/parser': 7.29.0
+      '@babel/parser': 7.29.2
       '@babel/types': 7.29.0
       '@jridgewell/gen-mapping': 0.3.12
       '@jridgewell/trace-mapping': 0.3.31
@@ -18139,13 +18139,13 @@ snapshots:
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.29.0
-      '@babel/parser': 7.29.0
+      '@babel/parser': 7.29.2
       '@babel/types': 7.29.0
 
   '@babel/template@7.28.6':
     dependencies:
       '@babel/code-frame': 7.29.0
-      '@babel/parser': 7.29.0
+      '@babel/parser': 7.29.2
       '@babel/types': 7.29.0
 
   '@babel/traverse@7.28.0':
@@ -22924,7 +22924,7 @@ snapshots:
 
   '@types/babel__core@7.20.5':
     dependencies:
-      '@babel/parser': 7.29.0
+      '@babel/parser': 7.29.2
       '@babel/types': 7.29.0
       '@types/babel__generator': 7.6.3
       '@types/babel__template': 7.4.1
@@ -25755,7 +25755,7 @@ snapshots:
   eslint-plugin-react-hooks@7.0.1(eslint@8.1.0):
     dependencies:
       '@babel/core': 7.29.0
-      '@babel/parser': 7.29.0
+      '@babel/parser': 7.29.2
       eslint: 8.1.0
       hermes-parser: 0.25.1
       zod: 4.3.6
@@ -27381,7 +27381,7 @@ snapshots:
       '@babel/parser': 7.29.2
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
-      semver: 7.7.3
+      semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
 
