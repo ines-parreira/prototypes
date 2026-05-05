@@ -220,9 +220,38 @@ describe('TrendCard', () => {
 
             expect(screen.getByText('Test Metric')).toBeInTheDocument()
             expect(screen.getByText('0')).toBeInTheDocument()
-            expect(
-                screen.getByText('0').closest('button'),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByRole('button')).not.toBeInTheDocument()
+        })
+
+        it('should not call openDrillDownModal when data value is zero', async () => {
+            const user = userEvent.setup()
+            const openDrillDownModal = vi.fn()
+            const drillDown = {
+                tooltipText: 'Click to view details',
+                openDrillDownModal,
+            }
+
+            const trendWithZeroValue: MetricTrend = {
+                isFetching: false,
+                isError: false,
+                data: {
+                    label: 'Test Metric',
+                    value: 0,
+                    prevValue: 80,
+                },
+            }
+
+            render(
+                <TrendCard
+                    {...defaultProps}
+                    trend={trendWithZeroValue}
+                    drillDown={drillDown}
+                />,
+            )
+
+            await user.click(screen.getByText('0'))
+
+            expect(openDrillDownModal).not.toHaveBeenCalled()
         })
 
         it('should not render DrillDownModalTrigger when data value is null', () => {

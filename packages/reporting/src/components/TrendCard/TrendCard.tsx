@@ -54,8 +54,8 @@ export const TrendCard = memo<TrendCardProps>(
         const { data } = trend
         const [isHovered, setIsHovered] = useState(false)
 
-        const hasData =
-            !isLoading && data?.value !== null && data?.value !== undefined
+        const hasData = !isLoading && data?.value != null
+        const dataNotEqualToZero = data?.value !== 0
 
         const formattedMetricValue = hasData
             ? formatMetricValue(data?.value, metricFormat, currency)
@@ -88,7 +88,9 @@ export const TrendCard = memo<TrendCardProps>(
                                                 : 52
                                         }
                                     />
-                                ) : drillDown && hasData ? (
+                                ) : drillDown &&
+                                  hasData &&
+                                  dataNotEqualToZero ? (
                                     <DrillDownModalTrigger
                                         enabled={hasData}
                                         tooltipText={drillDown.tooltipText}
