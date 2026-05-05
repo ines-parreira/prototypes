@@ -58,6 +58,13 @@ jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useCostSavedPerIntent', () => ({
     useCostSavedPerIntent: jest.fn(),
     fetchCostSavedPerIntent: jest.fn(),
 }))
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useConversionRatePerIntent',
+    () => ({
+        useConversionRatePerIntent: jest.fn(),
+        fetchConversionRatePerIntent: jest.fn(),
+    }),
+)
 
 const mockUseAiAgentStatsFilters = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentStatsFilters',
@@ -101,6 +108,7 @@ const defaultEntityData = {
     costSaved: { 'Billing :: Refund': 800, 'Shipping :: Status': 450 },
     coverageRate: { 'Billing :: Refund': 0.87, 'Shipping :: Status': 0.93 },
     successRate: { 'Billing :: Refund': 0.81, 'Shipping :: Status': 0.88 },
+    conversionRate: { 'Billing :: Refund': 0.42, 'Shipping :: Status': 0.18 },
 }
 
 const defaultRows = [
@@ -113,6 +121,7 @@ const defaultRows = [
         costSaved: 800,
         coverageRate: 0.87,
         successRate: 0.81,
+        conversionRate: 0.42,
     },
     {
         entity: 'Shipping :: Status',
@@ -123,6 +132,7 @@ const defaultRows = [
         costSaved: 450,
         coverageRate: 0.93,
         successRate: 0.88,
+        conversionRate: 0.18,
     },
 ]
 
@@ -144,6 +154,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
                 costSaved: false,
                 coverageRate: false,
                 successRate: false,
+                conversionRate: false,
             },
         })
         mockAssembleEntityRows.mockReturnValue(defaultRows)
@@ -170,6 +181,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
                 costSaved: false,
                 coverageRate: false,
                 successRate: false,
+                conversionRate: false,
             },
         })
 
@@ -191,6 +203,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
                 costSaved: false,
                 coverageRate: false,
                 successRate: false,
+                conversionRate: false,
             },
         })
 
@@ -212,6 +225,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
                 costSaved: false,
                 coverageRate: false,
                 successRate: false,
+                conversionRate: false,
             },
         })
 
@@ -224,6 +238,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
         expect(result.current.loadingStates.costSaved).toBe(false)
         expect(result.current.loadingStates.coverageRate).toBe(false)
         expect(result.current.loadingStates.successRate).toBe(false)
+        expect(result.current.loadingStates.conversionRate).toBe(false)
     })
 
     it('returns empty data when still loading', () => {
@@ -237,6 +252,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
                 costSaved: true,
                 coverageRate: true,
                 successRate: true,
+                conversionRate: true,
             },
         })
         mockAssembleEntityRows.mockReturnValue([])
@@ -291,6 +307,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
                     costSaved: {},
                     coverageRate: {},
                     successRate: {},
+                    conversionRate: {},
                 },
                 isLoading: false,
                 isError: false,
@@ -300,6 +317,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
                     costSaved: false,
                     coverageRate: false,
                     successRate: false,
+                    conversionRate: false,
                 },
             })
 
@@ -313,6 +331,7 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
             expect(row.costSaved).toBeNull()
             expect(row.coverageRate).toBeNull()
             expect(row.successRate).toBeNull()
+            expect(row.conversionRate).toBeNull()
         })
     })
 })
@@ -324,6 +343,7 @@ describe('fetchAllAgentsPerformanceByIntentMetrics', () => {
         costSaved: { 'Billing :: Refund': 800 },
         coverageRate: { 'Billing :: Refund': 0.87 },
         successRate: { 'Billing :: Refund': 0.81 },
+        conversionRate: { 'Billing :: Refund': 0.42 },
     }
 
     const mockRow = {
@@ -335,6 +355,7 @@ describe('fetchAllAgentsPerformanceByIntentMetrics', () => {
         costSaved: 800,
         coverageRate: 0.87,
         successRate: 0.81,
+        conversionRate: 0.42,
     }
 
     beforeEach(() => {

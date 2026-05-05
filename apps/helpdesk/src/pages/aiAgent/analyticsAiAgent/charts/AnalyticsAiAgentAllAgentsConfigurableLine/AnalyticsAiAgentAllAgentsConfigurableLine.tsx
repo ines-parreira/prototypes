@@ -60,6 +60,7 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
             'channel',
             'storeIntegrationId',
             'engagementType',
+            'aiIntentCustomField',
         ],
     },
     {

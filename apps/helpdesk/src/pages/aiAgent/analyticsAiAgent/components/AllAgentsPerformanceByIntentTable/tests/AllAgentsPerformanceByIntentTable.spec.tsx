@@ -38,6 +38,7 @@ const defaultLoadingStates = {
     costSaved: false,
     coverageRate: false,
     successRate: false,
+    conversionRate: false,
 }
 
 const defaultData: AllAgentsPerformanceByIntentEntityMetrics[] = [
@@ -49,6 +50,7 @@ const defaultData: AllAgentsPerformanceByIntentEntityMetrics[] = [
         handoverInteractions: 120,
         coverageRate: 0.87,
         successRate: 0.81,
+        conversionRate: 0.42,
         costSaved: 800,
     },
     {
@@ -59,6 +61,7 @@ const defaultData: AllAgentsPerformanceByIntentEntityMetrics[] = [
         handoverInteractions: null,
         coverageRate: 0.93,
         successRate: 0.88,
+        conversionRate: null,
         costSaved: 450,
     },
 ]

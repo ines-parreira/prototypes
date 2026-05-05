@@ -355,6 +355,8 @@ export const METRIC_NAMES = {
         'ai-agent-sales-performance-conversion-rate-per-channel',
     AI_AGENT_SALES_PERFORMANCE_CONVERSION_RATE_PER_ENGAGEMENT_TYPE:
         'ai-agent-sales-performance-conversion-rate-per-engagement-type',
+    AI_AGENT_SALES_PERFORMANCE_CONVERSION_RATE_PER_INTENT:
+        'ai-agent-sales-performance-conversion-rate-per-intent',
     AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION:
         'ai-agent-shopping-assistant-revenue-per-interaction',
     AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS:
@@ -1170,6 +1172,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_CONVERSION_RATE_TIMESERIES,
         METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_CONVERSION_RATE_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_CONVERSION_RATE_PER_ENGAGEMENT_TYPE,
+        METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_CONVERSION_RATE_PER_INTENT,
     ],
     [MetricScope.AiSalesAgentBuyThroughRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE,

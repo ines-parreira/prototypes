@@ -53,7 +53,12 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         metricFormat: 'decimal-to-percent' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicConversionRateQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId', 'engagementType'],
+        dimensions: [
+            'channel',
+            'storeIntegrationId',
+            'engagementType',
+            'aiIntentCustomField',
+        ],
     },
     {
         measure: 'totalSalesAmount',

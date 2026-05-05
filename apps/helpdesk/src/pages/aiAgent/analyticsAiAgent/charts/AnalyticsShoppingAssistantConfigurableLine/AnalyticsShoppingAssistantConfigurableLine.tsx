@@ -36,6 +36,7 @@ export const SHOPPING_ASSISTANT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
             'channel',
             'storeIntegrationId',
             'engagementType',
+            'aiIntentCustomField',
         ],
     },
     {

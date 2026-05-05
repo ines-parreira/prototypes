@@ -5,7 +5,13 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 export const aiSalesAgentConversionRateScope = defineScope({
     scope: MetricScope.AiSalesAgentConversionRate,
     measures: ['conversionRate'],
-    dimensions: ['channel', 'engagementType', 'storeIntegrationId', 'ticketId'],
+    dimensions: [
+        'channel',
+        'engagementType',
+        'storeIntegrationId',
+        'ticketId',
+        'aiIntentCustomField',
+    ],
     timeDimensions: ['eventDatetime'],
     filters: [
         'channel',
@@ -89,3 +95,17 @@ export const aiAgentSalesConversionRatePerEngagementType =
 export const aiAgentSalesConversionRatePerEngagementTypeQueryV2Factory = (
     ctx: AiSalesAgentConversionRateContext,
 ) => aiAgentSalesConversionRatePerEngagementType.build(ctx)
+
+export const aiAgentSalesConversionRatePerIntent =
+    aiSalesAgentConversionRateScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_CONVERSION_RATE_PER_INTENT,
+        )
+        .defineQuery(() => ({
+            measures: ['conversionRate'] as const,
+            dimensions: ['aiIntentCustomField'] as const,
+        }))
+
+export const aiAgentSalesConversionRatePerIntentQueryV2Factory = (
+    ctx: AiSalesAgentConversionRateContext,
+) => aiAgentSalesConversionRatePerIntent.build(ctx)

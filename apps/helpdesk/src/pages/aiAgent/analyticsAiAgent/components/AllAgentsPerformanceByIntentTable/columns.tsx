@@ -9,7 +9,7 @@ export const ALL_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS: NameColumnConfig[] =
 export const ALL_AGENTS_PERFORMANCE_BY_INTENT_TABLE = {
     title: 'All Agents Performance By Intent',
     description:
-        'Automation performance metrics per intent, including automated interactions, handovers, cost saved, coverage rate, and success rate.',
+        'Automation performance metrics per intent, including automated interactions, handovers, cost saved, coverage rate, success rate, and conversion rate.',
 }
 
 export const ALL_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS: MetricColumnConfig[] = [
@@ -48,6 +48,15 @@ export const ALL_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS: MetricColumnConfig[] = [
             'The percentage of AI Agent interactions that were fully resolved without human intervention.',
         metricFormat: 'decimal-to-percent',
         loadingStateKeys: ['successRate'],
+    },
+    {
+        accessorKey: 'conversionRate',
+        label: 'Conversion rate',
+        tooltipTitle: 'Conversion rate',
+        tooltipCaption:
+            'The percentage of AI Agent interactions that resulted in a purchase.',
+        metricFormat: 'decimal-to-percent',
+        loadingStateKeys: ['conversionRate'],
     },
     {
         accessorKey: 'costSaved',

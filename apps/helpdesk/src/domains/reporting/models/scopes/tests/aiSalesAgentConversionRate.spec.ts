@@ -3,6 +3,8 @@ import {
     aiAgentSalesConversionRatePerChannelQueryV2Factory,
     aiAgentSalesConversionRatePerEngagementType,
     aiAgentSalesConversionRatePerEngagementTypeQueryV2Factory,
+    aiAgentSalesConversionRatePerIntent,
+    aiAgentSalesConversionRatePerIntentQueryV2Factory,
     aiSalesAgentConversionRateScope,
     conversionRate,
     conversionRateQueryV2Factory,
@@ -477,6 +479,49 @@ describe('aiAgentSalesConversionRatePerEngagementType', () => {
             ).toEqual(
                 aiAgentSalesConversionRatePerEngagementType.build(context),
             )
+        })
+    })
+})
+
+describe('aiAgentSalesConversionRatePerIntent', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with aiIntentCustomField dimension and conversionRate measure', () => {
+        expect(aiAgentSalesConversionRatePerIntent.build(context)).toEqual({
+            metricName: 'ai-agent-sales-performance-conversion-rate-per-intent',
+            scope: 'ai-sales-agent-conversion-rate',
+            measures: ['conversionRate'],
+            dimensions: ['aiIntentCustomField'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    describe('aiAgentSalesConversionRatePerIntentQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSalesConversionRatePerIntentQueryV2Factory(context),
+            ).toEqual(aiAgentSalesConversionRatePerIntent.build(context))
         })
     })
 })

@@ -31,6 +31,10 @@ import {
     useAutomatedInteractionsPerIntent,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAutomatedInteractionsPerIntent'
 import {
+    fetchConversionRatePerIntent,
+    useConversionRatePerIntent,
+} from 'pages/aiAgent/analyticsAiAgent/hooks/useConversionRatePerIntent'
+import {
     fetchCostSavedPerIntent,
     useCostSavedPerIntent,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useCostSavedPerIntent'
@@ -60,6 +64,7 @@ export type AllAgentsPerformanceByIntentEntityMetrics = {
     handoverInteractions: number | null
     coverageRate: number | null
     successRate: number | null
+    conversionRate: number | null
     costSaved: number | null
 }
 
@@ -68,6 +73,7 @@ type AllAgentsPerformanceByIntentMetricKeys =
     | 'handoverInteractions'
     | 'coverageRate'
     | 'successRate'
+    | 'conversionRate'
     | 'costSaved'
 
 const buildAllAgentsPerformanceByIntentRow =
@@ -89,6 +95,7 @@ const buildAllAgentsPerformanceByIntentRow =
                 entityData.handoverInteractions[entity] ?? null,
             coverageRate: entityData.coverageRate[entity] ?? null,
             successRate: entityData.successRate[entity] ?? null,
+            conversionRate: entityData.conversionRate[entity] ?? null,
             costSaved: entityData.costSaved[entity] ?? null,
         }
     }
@@ -121,6 +128,7 @@ export const useAllAgentsPerformanceByIntentMetrics = () => {
         },
         coverageRate: { use: useAiAgentCoverageRatePerIntent },
         successRate: { use: useAiAgentSuccessRatePerIntent },
+        conversionRate: { use: useConversionRatePerIntent },
         costSaved: { use: useCostSavedPerIntent },
     }
 
@@ -151,6 +159,7 @@ export const useAllAgentsPerformanceByIntentMetrics = () => {
             handoverInteractions: entityLoadingStates.handoverInteractions,
             coverageRate: entityLoadingStates.coverageRate,
             successRate: entityLoadingStates.successRate,
+            conversionRate: entityLoadingStates.conversionRate,
             costSaved: entityLoadingStates.costSaved,
         }),
         [entityLoadingStates],
@@ -181,6 +190,7 @@ export const fetchAllAgentsPerformanceByIntentMetrics = async (
         },
         coverageRate: { fetch: fetchAiAgentCoverageRatePerIntent },
         successRate: { fetch: fetchAiAgentSuccessRatePerIntent },
+        conversionRate: { fetch: fetchConversionRatePerIntent },
         costSaved: {
             fetch: (filters, timezone) =>
                 fetchCostSavedPerIntent(
