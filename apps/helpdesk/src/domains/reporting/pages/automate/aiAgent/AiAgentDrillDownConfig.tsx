@@ -1,5 +1,6 @@
 import {
     defaultEnrichmentFields,
+    extraEnrichmentFieldsPerMetric,
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
@@ -14,30 +15,12 @@ import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDown
 
 export type AiAgentDrillDownMetrics = AiAgentDrillDownMetricName
 
-const aiAgentDrillDownEnrichmentFields: EnrichmentFields[] = [
-    EnrichmentFields.TicketName,
-    EnrichmentFields.Status,
-    EnrichmentFields.Channel,
-    EnrichmentFields.AssigneeId,
-    EnrichmentFields.CreatedDatetime,
-    EnrichmentFields.CustomFields,
-]
-
-const aiAgentTimesRecommendedDrillDownEnrichmentFields: EnrichmentFields[] = [
-    ...defaultEnrichmentFields,
-    EnrichmentFields.ProductsTitles,
-    EnrichmentFields.ProductsHandles,
-    EnrichmentFields.ProductsVariants,
-]
-
 const useAiAgentTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
         metricData,
-        metricData.metricName ===
-            AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn
-            ? aiAgentTimesRecommendedDrillDownEnrichmentFields
-            : aiAgentDrillDownEnrichmentFields,
+        extraEnrichmentFieldsPerMetric[metricData.metricName] ??
+            defaultEnrichmentFields,
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
     )

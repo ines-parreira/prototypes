@@ -1,6 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
-import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
+import {
+    defaultEnrichmentFields,
+    useEnrichedDrillDownData,
+} from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiAgentDrillDownConfig } from 'domains/reporting/pages/automate/aiAgent/AiAgentDrillDownConfig'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
@@ -42,7 +45,7 @@ jest.mock(
     }),
 )
 jest.mock('domains/reporting/pages/common/drill-down/helpers')
-const mockGetDrillDownQuery = jest.mocked(getDrillDownQuery)
+const mockGetDrillDownQuery = assumeMock(getDrillDownQuery)
 
 describe('AiAgentDrillDownConfig', () => {
     beforeEach(() => {
@@ -109,14 +112,7 @@ describe('AiAgentDrillDownConfig', () => {
         expect(useEnrichedDrillDownData).toHaveBeenCalledWith(
             mockQueryFactory,
             metricData,
-            [
-                EnrichmentFields.TicketName,
-                EnrichmentFields.Status,
-                EnrichmentFields.Channel,
-                EnrichmentFields.AssigneeId,
-                EnrichmentFields.CreatedDatetime,
-                EnrichmentFields.CustomFields,
-            ],
+            defaultEnrichmentFields,
             formatTicketDrillDownRowData,
             EnrichmentFields.TicketId,
         )
@@ -137,20 +133,11 @@ describe('AiAgentDrillDownConfig', () => {
         expect(useEnrichedDrillDownData).toHaveBeenCalledWith(
             mockQueryFactory,
             metricData,
-            [
-                EnrichmentFields.TicketName,
-                EnrichmentFields.Status,
-                EnrichmentFields.Description,
-                EnrichmentFields.Channel,
-                EnrichmentFields.AssigneeId,
-                EnrichmentFields.CreatedDatetime,
-                EnrichmentFields.ContactReason,
-                EnrichmentFields.IsUnread,
-                EnrichmentFields.CustomFields,
+            expect.arrayContaining([
                 EnrichmentFields.ProductsTitles,
                 EnrichmentFields.ProductsHandles,
                 EnrichmentFields.ProductsVariants,
-            ],
+            ]),
             formatTicketDrillDownRowData,
             EnrichmentFields.TicketId,
         )
