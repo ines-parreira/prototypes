@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import type { Map } from 'immutable'
 
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
@@ -31,7 +33,18 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         onSubmit,
     } = useAppearanceForm({ integration, loading })
 
-    const { reloadPreview } = useChatPreviewPanelContext()
+    const { reloadPreview, onChatPreviewLoaded, updateLegalDisclaimerEnabled } =
+        useChatPreviewPanelContext()
+
+    useEffect(() => {
+        return onChatPreviewLoaded(() => {
+            updateLegalDisclaimerEnabled(values.legalDisclaimerEnabled)
+        }, true)
+    }, [
+        onChatPreviewLoaded,
+        updateLegalDisclaimerEnabled,
+        values.legalDisclaimerEnabled,
+    ])
 
     const onSave = handleSubmit(onSubmit)
 

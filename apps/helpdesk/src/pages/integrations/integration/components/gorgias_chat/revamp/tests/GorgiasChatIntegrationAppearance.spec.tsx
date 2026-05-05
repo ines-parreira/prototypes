@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import React from 'react'
 
 import { render } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
@@ -111,11 +110,20 @@ jest.mock(
     }),
 )
 
+const mockOnChatPreviewLoaded = jest.fn()
+const mockUpdateLegalDisclaimerEnabled = jest.fn()
+
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
         useChatPreviewPanelContext: () => ({
             reloadPreview: jest.fn(),
+            onChatPreviewLoaded: (
+                callback: () => void,
+                fireIfAlreadyLoaded?: boolean,
+            ) => mockOnChatPreviewLoaded(callback, fireIfAlreadyLoaded),
+            updateLegalDisclaimerEnabled: (enabled: boolean) =>
+                mockUpdateLegalDisclaimerEnabled(enabled),
         }),
     }),
 )
@@ -220,6 +228,14 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
         mockDispatch.mockClear()
         mockGetApplicationTexts.mockResolvedValue(mockApplicationTextsResponse)
         mockUpdateApplicationTexts.mockResolvedValue(undefined)
+        mockOnChatPreviewLoaded.mockImplementation(
+            (callback: () => void, fireIfAlreadyLoaded?: boolean) => {
+                if (fireIfAlreadyLoaded) {
+                    callback()
+                }
+                return jest.fn()
+            },
+        )
         global.CSS = {
             supports: jest.fn().mockReturnValue(true),
         } as unknown as typeof CSS
@@ -428,6 +444,85 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent(integrationWithoutAppId)
 
             expect(mockGetApplicationTexts).not.toHaveBeenCalled()
+        })
+
+        const makeIntegrationWithDisclaimerEnabled = (enabled: boolean) =>
+            fromJS({
+                ...mockIntegration.toJS(),
+                meta: {
+                    ...mockIntegration.get('meta').toJS(),
+                    preferences: {
+                        ...mockIntegration
+                            .getIn(['meta', 'preferences'])
+                            .toJS(),
+                        privacy_policy_disclaimer_enabled: enabled,
+                    },
+                },
+            })
+
+        it('should sync legalDisclaimerEnabled=false to the chat preview when it loads', () => {
+            renderComponent(makeIntegrationWithDisclaimerEnabled(false))
+
+            expect(mockUpdateLegalDisclaimerEnabled).toHaveBeenCalledWith(false)
+        })
+
+        it('should sync legalDisclaimerEnabled=true to the chat preview when it loads', () => {
+            renderComponent(makeIntegrationWithDisclaimerEnabled(true))
+
+            expect(mockUpdateLegalDisclaimerEnabled).toHaveBeenCalledWith(true)
+        })
+
+        it('should default legalDisclaimerEnabled to false when missing from integration', () => {
+            const integrationWithoutPreference = fromJS({
+                ...mockIntegration.toJS(),
+                meta: {
+                    ...mockIntegration.get('meta').toJS(),
+                    preferences: {},
+                },
+            })
+
+            renderComponent(integrationWithoutPreference)
+
+            expect(mockUpdateLegalDisclaimerEnabled).toHaveBeenCalledWith(false)
+        })
+
+        it('should subscribe with fireIfAlreadyLoaded=true so the value is pushed even if the iframe is already loaded', () => {
+            renderComponent()
+
+            expect(mockOnChatPreviewLoaded).toHaveBeenCalledWith(
+                expect.any(Function),
+                true,
+            )
+        })
+
+        it('should re-sync legalDisclaimerEnabled to the chat preview when the toggle changes', () => {
+            renderComponent(makeIntegrationWithDisclaimerEnabled(true))
+
+            expect(mockUpdateLegalDisclaimerEnabled).toHaveBeenLastCalledWith(
+                true,
+            )
+
+            act(() => {
+                const { onLegalDisclaimerEnabledChange } = mockLegalCard.mock
+                    .calls[
+                    mockLegalCard.mock.calls.length - 1
+                ][0] as LegalCardProps
+                onLegalDisclaimerEnabledChange(false)
+            })
+
+            expect(mockUpdateLegalDisclaimerEnabled).toHaveBeenLastCalledWith(
+                false,
+            )
+        })
+
+        it('should clean up the chat preview subscription on unmount', () => {
+            const unsubscribe = jest.fn()
+            mockOnChatPreviewLoaded.mockReturnValue(unsubscribe)
+
+            const { unmount } = renderComponent()
+            unmount()
+
+            expect(unsubscribe).toHaveBeenCalled()
         })
     })
 
