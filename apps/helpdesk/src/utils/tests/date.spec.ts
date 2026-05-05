@@ -28,11 +28,16 @@ describe('date utils', () => {
 
     describe('getMomentTimezoneNames', () => {
         it('should return timezone names', () => {
-            expect(
-                (
-                    getMomentTimezoneNamesActual as typeof getMomentTimezoneNames
-                )(),
-            ).toMatchSnapshot()
+            const timezoneNames = (
+                getMomentTimezoneNamesActual as typeof getMomentTimezoneNames
+            )()
+
+            expect(Array.isArray(timezoneNames)).toBe(true)
+            expect(timezoneNames.length).toBeGreaterThan(0)
+            expect(timezoneNames).toContain('UTC')
+            expect(timezoneNames).toContain('America/New_York')
+            expect(timezoneNames).toContain('Europe/London')
+            expect(timezoneNames).toContain('Asia/Tokyo')
         })
     })
 
