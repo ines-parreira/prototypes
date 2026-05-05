@@ -431,7 +431,12 @@ describe('ChatPreviewPanel', () => {
         it('setConversationMessages calls gorgiasChat.setConversationMessages', () => {
             const { ref } = renderComponent()
             const messages = [
-                { text: 'Hello', isHtml: false, fromAgent: false },
+                {
+                    text: 'Hello',
+                    isHtml: false,
+                    fromAgent: false,
+                    isBot: false,
+                },
             ]
 
             ref.current?.setConversationMessages(messages)
@@ -447,7 +452,12 @@ describe('ChatPreviewPanel', () => {
 
             const { ref } = renderComponent()
             const messages = [
-                { text: 'Hello', isHtml: false, fromAgent: false },
+                {
+                    text: 'Hello',
+                    isHtml: false,
+                    fromAgent: false,
+                    isBot: false,
+                },
             ]
 
             ref.current?.setConversationMessages(messages)

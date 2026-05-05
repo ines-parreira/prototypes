@@ -32,7 +32,12 @@ export const buildCancelOrderSimulationMessages = (
     responseMessageContent: ResponseMessageContent,
 ): SimulateConversationMessage[] => {
     const messages: SimulateConversationMessage[] = [
-        { text: CANCEL_ORDER_MESSAGE_HTML, isHtml: true, fromAgent: false },
+        {
+            text: CANCEL_ORDER_MESSAGE_HTML,
+            isHtml: true,
+            fromAgent: false,
+            isBot: false,
+        },
     ]
 
     if (responseMessageContent.text.length > 0) {
@@ -40,6 +45,7 @@ export const buildCancelOrderSimulationMessages = (
             text: responseMessageContent.html,
             isHtml: true,
             fromAgent: true,
+            isBot: true,
         })
     }
 

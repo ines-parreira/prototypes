@@ -26,7 +26,12 @@ export const buildReturnOrderSimulationMessages = (
     responseMessageContent: ResponseMessageContent | undefined,
 ): SimulateConversationMessage[] => {
     const messages: SimulateConversationMessage[] = [
-        { text: RETURN_ORDER_MESSAGE_HTML, isHtml: true, fromAgent: false },
+        {
+            text: RETURN_ORDER_MESSAGE_HTML,
+            isHtml: true,
+            fromAgent: false,
+            isBot: false,
+        },
     ]
 
     if (responseMessageContent && responseMessageContent.text.length > 0) {
@@ -34,6 +39,7 @@ export const buildReturnOrderSimulationMessages = (
             text: responseMessageContent.html,
             isHtml: true,
             fromAgent: true,
+            isBot: true,
         })
     }
 

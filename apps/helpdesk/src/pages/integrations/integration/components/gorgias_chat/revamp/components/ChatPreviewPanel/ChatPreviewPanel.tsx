@@ -58,6 +58,7 @@ export type SimulateConversationMessage = {
     text: string
     isHtml?: boolean
     fromAgent: boolean
+    isBot: boolean
 }
 
 export type ChatPreviewPanelHandle = {

@@ -10,6 +10,7 @@ describe('buildCancelOrderSimulationMessages', () => {
         expect(result[0]).toEqual({
             text: expect.stringContaining("I'd like to cancel"),
             isHtml: true,
+            isBot: false,
             fromAgent: false,
         })
     })
@@ -33,6 +34,7 @@ describe('buildCancelOrderSimulationMessages', () => {
         expect(result[1]).toEqual({
             text: '<p>Your order has been cancelled.</p>',
             isHtml: true,
+            isBot: true,
             fromAgent: true,
         })
     })

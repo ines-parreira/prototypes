@@ -462,7 +462,12 @@ describe('useChatPreviewPanel', () => {
 
         expect(() =>
             result.current.setConversationMessages([
-                { text: 'Hello', isHtml: false, fromAgent: false },
+                {
+                    text: 'Hello',
+                    isHtml: false,
+                    fromAgent: false,
+                    isBot: false,
+                },
             ]),
         ).not.toThrow()
     })
@@ -479,7 +484,9 @@ describe('useChatPreviewPanel', () => {
             }
         }
 
-        const messages = [{ text: 'Hello', isHtml: false, fromAgent: false }]
+        const messages = [
+            { text: 'Hello', isHtml: false, fromAgent: false, isBot: false },
+        ]
         result.current.setConversationMessages(messages)
 
         expect(mockSetConversationMessages).toHaveBeenCalledWith(messages)

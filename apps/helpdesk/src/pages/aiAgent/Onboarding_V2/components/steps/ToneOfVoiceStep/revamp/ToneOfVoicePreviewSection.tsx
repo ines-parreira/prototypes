@@ -34,11 +34,13 @@ export const ToneOfVoicePreviewSection = ({
                     text: "What's your return policy?",
                     isHtml: false,
                     fromAgent: false,
+                    isBot: false,
                 },
                 {
                     text: latestCustomToneOfVoicePreview,
                     isHtml: true,
                     fromAgent: true,
+                    isBot: true,
                 },
             ]
         }
@@ -48,6 +50,7 @@ export const ToneOfVoicePreviewSection = ({
                 text: content,
                 isHtml,
                 fromAgent,
+                isBot: fromAgent,
             }),
         )
     }, [toneOfVoice, latestCustomToneOfVoicePreview])

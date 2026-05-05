@@ -136,11 +136,12 @@ describe('ToneOfVoicePreviewSection', () => {
         })
 
         expect(mockSimulateConversation).toHaveBeenCalledWith([
-            { text: 'Hello!', isHtml: false, fromAgent: false },
+            { text: 'Hello!', isHtml: false, fromAgent: false, isBot: false },
             {
                 text: 'Hi there! How can I help?',
                 isHtml: false,
                 fromAgent: true,
+                isBot: true,
             },
         ])
     })
@@ -179,11 +180,13 @@ describe('ToneOfVoicePreviewSection', () => {
                 text: "What's your return policy?",
                 isHtml: false,
                 fromAgent: false,
+                isBot: false,
             },
             {
                 text: '<p>Custom response</p>',
                 isHtml: true,
                 fromAgent: true,
+                isBot: true,
             },
         ])
     })
@@ -206,11 +209,12 @@ describe('ToneOfVoicePreviewSection', () => {
         )
 
         expect(mockSimulateConversation).toHaveBeenCalledWith([
-            { text: 'Hello', isHtml: false, fromAgent: false },
+            { text: 'Hello', isHtml: false, fromAgent: false, isBot: false },
             {
                 text: 'Good day. How may I assist you?',
                 isHtml: false,
                 fromAgent: true,
+                isBot: true,
             },
         ])
     })

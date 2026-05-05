@@ -7,6 +7,7 @@ describe('buildReturnOrderSimulationMessages', () => {
         expect(result[0]).toEqual({
             text: expect.stringContaining("I'd like to return"),
             isHtml: true,
+            isBot: false,
             fromAgent: false,
         })
     })
@@ -36,6 +37,7 @@ describe('buildReturnOrderSimulationMessages', () => {
         expect(result[1]).toEqual({
             text: '<p>Your return has been processed.</p>',
             isHtml: true,
+            isBot: true,
             fromAgent: true,
         })
     })
