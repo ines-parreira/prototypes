@@ -1,5 +1,6 @@
 import type { MetricColumnConfig, NameColumnConfig } from '@repo/reporting'
 
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { formatChannelName } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 export const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS: NameColumnConfig[] =
@@ -15,54 +16,42 @@ export const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[] = [
     {
         accessorKey: 'automatedInteractions',
         label: 'Automated interactions',
-        tooltipTitle: 'Automated interactions',
-        tooltipCaption:
-            'The number of fully automated interactions solved without any human agent intervention.',
+        tooltipConfig: METRIC_TOOLTIPS.automatedInteractionsInAiAgent,
         metricFormat: 'decimal',
         loadingStateKeys: ['automatedInteractions'],
     },
     {
         accessorKey: 'handoverInteractions',
         label: 'Handover interactions',
-        tooltipTitle: 'Handover interactions',
-        tooltipCaption:
-            "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+        tooltipConfig: METRIC_TOOLTIPS.handoverInteractionsInAiAgent,
         metricFormat: 'decimal',
         loadingStateKeys: ['handoverInteractions'],
     },
     {
         accessorKey: 'conversionRate',
         label: 'Conversion rate',
-        tooltipTitle: 'Conversion rate',
-        tooltipCaption:
-            'The percentage of AI Agent interactions that resulted in a purchase.',
+        tooltipConfig: METRIC_TOOLTIPS.conversionRate,
         metricFormat: 'decimal-to-percent',
         loadingStateKeys: ['conversionRate'],
     },
     {
         accessorKey: 'coverageRate',
         label: 'Coverage rate',
-        tooltipTitle: 'Coverage rate',
-        tooltipCaption:
-            'The percentage of customer interactions where AI Agent engaged and attempted to resolve the request.',
+        tooltipConfig: METRIC_TOOLTIPS.coverageRate,
         metricFormat: 'decimal-to-percent',
         loadingStateKeys: ['coverageRate'],
     },
     {
         accessorKey: 'successRate',
         label: 'Success rate',
-        tooltipTitle: 'Success rate',
-        tooltipCaption:
-            'The percentage of AI Agent interactions that were fully resolved without human intervention.',
+        tooltipConfig: METRIC_TOOLTIPS.successRate,
         metricFormat: 'decimal-to-percent',
         loadingStateKeys: ['successRate'],
     },
     {
         accessorKey: 'costSaved',
         label: 'Cost saved',
-        tooltipTitle: 'Cost saved',
-        tooltipCaption:
-            'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+        tooltipConfig: METRIC_TOOLTIPS.costSaved,
         metricFormat: 'currency-precision-1',
         loadingStateKeys: ['costSaved'],
         showNotAvailable: true,

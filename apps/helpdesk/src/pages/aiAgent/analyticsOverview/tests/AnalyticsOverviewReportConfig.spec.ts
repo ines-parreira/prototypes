@@ -39,8 +39,8 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Overall automation rate')
         expect(config.chartType).toBe(ChartType.Card)
-        expect(config.description).toBe(
-            'The number of interactions automated and billed by an automation features as a % of total billed customer interactions (automated or not).',
+        expect(config.tooltipConfig?.caption).toBe(
+            'Percentage of all shopper interactions fully handled by automation, with no human agent involved.',
         )
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)

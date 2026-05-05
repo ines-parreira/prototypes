@@ -1,3 +1,4 @@
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { fetchAiAgentAllAgentsDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useAiAgentAllAgentsDecreaseInResolutionTimeTrend'
 import { fetchCoverageRateTrend } from 'domains/reporting/hooks/automate/useCoverageRateTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -89,8 +90,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal-to-percent',
                     },
                 ],
-                description:
-                    'The percentage of customer interactions fully handled by AI Agent.',
+                tooltipConfig: METRIC_TOOLTIPS.aiAgentAutomationRate,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
@@ -106,8 +106,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    'The number of fully automated interactions solved without any human agent intervention.',
+                tooltipConfig: METRIC_TOOLTIPS.automatedInteractionsInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
@@ -122,8 +121,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal-to-percent',
                     },
                 ],
-                description:
-                    'The percentage of Shopping Assistant interactions after which an order was placed within 3 days.',
+                tooltipConfig: METRIC_TOOLTIPS.conversionRate,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
@@ -138,8 +136,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'currency-precision-1',
                     },
                 ],
-                description:
-                    'The revenue influenced by a Shopping Assistant interaction, measured from orders placed within 3 days of the interaction',
+                tooltipConfig: METRIC_TOOLTIPS.totalSales,
                 chartType: ChartType.Card,
                 metricFormat: 'currency-precision-1',
                 interpretAs: 'more-is-better',
@@ -154,8 +151,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The time agent would have spent resolving customer inquiries without AI Agent.',
+                tooltipConfig: METRIC_TOOLTIPS.timeSavedByAgentsInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
@@ -170,8 +166,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    'Number of tickets closed without any agent reply.',
+                tooltipConfig: METRIC_TOOLTIPS.zeroTouchTickets,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
@@ -186,8 +181,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
+                tooltipConfig: METRIC_TOOLTIPS.averageCsat,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
@@ -202,8 +196,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal-to-percent',
                     },
                 ],
-                description:
-                    'Percentage of tickets that AI Agent attempted to respond to.',
+                tooltipConfig: METRIC_TOOLTIPS.coverageRate,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
@@ -218,8 +211,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    'Number of unique closed tickets within the selected timeframe (that did not reopen).',
+                tooltipConfig: METRIC_TOOLTIPS.closedTickets,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
@@ -235,8 +227,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+                tooltipConfig: METRIC_TOOLTIPS.handoverInteractionsInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'less-is-better',
@@ -251,8 +242,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'currency-precision-1',
                     },
                 ],
-                description:
-                    'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+                tooltipConfig: METRIC_TOOLTIPS.costSaved,
                 chartType: ChartType.Card,
                 metricFormat: 'currency-precision-1',
                 interpretAs: 'more-is-better',
@@ -267,8 +257,8 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The reduction in the average time to resolve a ticket when AI Agent is used, compared with tickets resolved manually by support agents.',
+                tooltipConfig:
+                    METRIC_TOOLTIPS.decreaseInResolutionTimeInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
@@ -283,8 +273,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
+                tooltipConfig: METRIC_TOOLTIPS.decreaseInFRTInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
@@ -299,8 +288,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal-to-percent',
                     },
                 ],
-                description:
-                    'The percentage of AI Agent interactions that were fully resolved without escalation to a human agent.',
+                tooltipConfig: METRIC_TOOLTIPS.successRate,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',

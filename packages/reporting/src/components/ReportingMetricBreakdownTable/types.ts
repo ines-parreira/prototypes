@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import type { MetricTooltipConfig } from '../../types'
 import type { formatMetricValue } from '../../utils/helpers'
 
 export type MetricLoadingStates = Record<string, boolean>
@@ -9,8 +10,13 @@ type MetricFormat = Parameters<typeof formatMetricValue>[1]
 export type MetricColumnConfig = {
     accessorKey: string
     label: string
-    tooltipTitle: string
-    tooltipCaption: string
+    tooltipConfig?: MetricTooltipConfig
+    /** @deprecated Use tooltipConfig instead */
+    tooltipTitle?: string
+    /** @deprecated Use tooltipConfig instead */
+    tooltipCaption?: string
+    /** @deprecated Use tooltipConfig instead */
+    tooltipLink?: string
     metricFormat: MetricFormat
     loadingStateKeys: (keyof MetricLoadingStates)[]
     skeletonWidth?: string

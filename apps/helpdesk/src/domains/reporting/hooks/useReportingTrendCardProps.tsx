@@ -121,10 +121,9 @@ export const useReportingTrendCardProps = ({
         trendBadgeTooltipData: { period: formatPreviousPeriod(filters.period) },
         withBorder: true,
         withFixedWidth: false,
-        hint: {
-            title: chartConfig.label,
-            caption: chartConfig.description,
-        },
+        hint: chartConfig.tooltipConfig
+            ? { ...chartConfig.tooltipConfig, title: chartConfig.label }
+            : { title: chartConfig.label, caption: chartConfig.description },
         actionMenu: chartId ? (
             <ChartsActionMenu
                 chartId={chartId}

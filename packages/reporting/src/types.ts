@@ -34,6 +34,8 @@ export type TooltipData = {
     linkText?: string
 }
 
+export type MetricTooltipConfig = TooltipData
+
 export type TwoDimensionalDataItem = {
     label: string
     tooltip?: string

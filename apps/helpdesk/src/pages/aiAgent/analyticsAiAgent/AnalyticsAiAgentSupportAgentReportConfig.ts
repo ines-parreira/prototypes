@@ -1,3 +1,4 @@
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { fetchAiAgentSupportAgentDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportAgentDecreaseInResolutionTimeTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentSupportHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentSupportHandoverInteractionsTrend'
@@ -70,8 +71,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The time agent would have spent resolving customer inquiries without AI Agent.',
+                tooltipConfig: METRIC_TOOLTIPS.timeSavedByAgentsInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
@@ -86,8 +86,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'currency-precision-1',
                     },
                 ],
-                description:
-                    'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+                tooltipConfig: METRIC_TOOLTIPS.costSaved,
                 chartType: ChartType.Card,
                 metricFormat: 'currency-precision-1',
                 interpretAs: 'more-is-better',
@@ -103,8 +102,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    'The number of fully automated interactions by AI Agent Support skills without human agent intervention.',
+                tooltipConfig: METRIC_TOOLTIPS.automatedInteractionsInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
@@ -119,8 +117,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
+                tooltipConfig: METRIC_TOOLTIPS.decreaseInFRTInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
@@ -136,8 +133,8 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The reduction in the average time to resolve a ticket when AI Agent is used, compared with tickets resolved manually by support agents.',
+                tooltipConfig:
+                    METRIC_TOOLTIPS.decreaseInResolutionTimeInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
@@ -152,8 +149,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
+                tooltipConfig: METRIC_TOOLTIPS.averageCsat,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
@@ -168,8 +164,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    'The number of interactions handed over from AI Agent to a human support agent.',
+                tooltipConfig: METRIC_TOOLTIPS.handoverInteractionsInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'less-is-better',
@@ -184,8 +179,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'decimal-to-percent',
                     },
                 ],
-                description:
-                    'The percentage of AI Agent interactions that were fully resolved without escalation to a human agent.',
+                tooltipConfig: METRIC_TOOLTIPS.successRate,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',

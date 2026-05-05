@@ -47,7 +47,22 @@ export function MetricCardHeader({
                 {hint && (
                     <span className={css.infoIcon}>
                         <Tooltip delay={0} trigger={<Icon name="info" />}>
-                            <TooltipContent {...hint} />
+                            <TooltipContent
+                                title={hint.title}
+                                caption={hint.caption}
+                                link={
+                                    hint.link ? (
+                                        <a
+                                            href={hint.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={css.tooltipLink}
+                                        >
+                                            {hint.linkText}
+                                        </a>
+                                    ) : undefined
+                                }
+                            />
                         </Tooltip>
                     </span>
                 )}

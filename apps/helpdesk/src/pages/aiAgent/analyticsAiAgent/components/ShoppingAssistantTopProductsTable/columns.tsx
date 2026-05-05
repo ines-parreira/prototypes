@@ -1,6 +1,7 @@
 import { DrillDownModalTrigger } from '@repo/reporting'
 import type { MetricColumnConfig } from '@repo/reporting'
 
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
@@ -36,10 +37,8 @@ const TimesRecommendedDrillDownCell = ({
 export const SHOPPING_ASSISTANT_TOP_PRODUCTS_COLUMNS: MetricColumnConfig[] = [
     {
         accessorKey: ProductTableKeys.NumberOfRecommendations,
-        label: 'Times recommended',
-        tooltipTitle: 'Times recommended',
-        tooltipCaption:
-            'The number of times a product was recommended by the AI agent.',
+        label: 'Product recommendations',
+        tooltipConfig: METRIC_TOOLTIPS.productRecommendations,
         metricFormat: 'integer',
         loadingStateKeys: [ProductTableKeys.NumberOfRecommendations],
         renderCell: (value, row) => {
@@ -55,18 +54,14 @@ export const SHOPPING_ASSISTANT_TOP_PRODUCTS_COLUMNS: MetricColumnConfig[] = [
     {
         accessorKey: ProductTableKeys.CTR,
         label: 'Click-through rate',
-        tooltipTitle: 'Click-through rate',
-        tooltipCaption:
-            'The percentage of a product recommendation that customers click.',
+        tooltipConfig: METRIC_TOOLTIPS.clickThroughRate,
         metricFormat: 'decimal-to-percent',
         loadingStateKeys: [ProductTableKeys.CTR],
     },
     {
         accessorKey: ProductTableKeys.BTR,
         label: 'Buy through rate',
-        tooltipTitle: 'Buy through rate',
-        tooltipCaption:
-            'The percentage of a product recommendation that result in a purchase.',
+        tooltipConfig: METRIC_TOOLTIPS.buyThroughRate,
         metricFormat: 'decimal-to-percent',
         loadingStateKeys: [ProductTableKeys.BTR],
     },

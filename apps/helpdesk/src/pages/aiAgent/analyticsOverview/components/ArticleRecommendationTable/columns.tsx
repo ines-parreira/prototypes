@@ -1,5 +1,7 @@
 import type { MetricColumnConfig } from '@repo/reporting'
 
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
+
 export const ARTICLE_RECOMMENDATION_TABLE = {
     title: 'Article Recommendation',
     description:
@@ -10,27 +12,21 @@ export const ARTICLE_RECOMMENDATION_COLUMNS: MetricColumnConfig[] = [
     {
         accessorKey: 'automationRate',
         label: 'Automation rate',
-        tooltipTitle: 'Automation rate',
-        tooltipCaption:
-            'The percentage of interactions that were automated by article recommendations.',
+        tooltipConfig: METRIC_TOOLTIPS.overallAutomationRate,
         metricFormat: 'percent-precision-1',
         loadingStateKeys: ['automationRate'],
     },
     {
         accessorKey: 'automatedInteractions',
         label: 'Automated interactions',
-        tooltipTitle: 'Automated interactions per article',
-        tooltipCaption:
-            'The number of fully automated interactions where an article recommendation resolved the customer request.',
+        tooltipConfig: METRIC_TOOLTIPS.automatedInteractionsInOverview,
         metricFormat: 'decimal',
         loadingStateKeys: ['automatedInteractions'],
     },
     {
         accessorKey: 'handoverInteractions',
         label: 'Handover interactions',
-        tooltipTitle: 'Handover interactions per article',
-        tooltipCaption:
-            'The number of interactions where the customer was served by an agent after receiving an article recommendation.',
+        tooltipConfig: METRIC_TOOLTIPS.handoverInteractionsInOverview,
         metricFormat: 'decimal',
         loadingStateKeys: ['handoverInteractions'],
     },

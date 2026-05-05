@@ -21,6 +21,8 @@ import type {
     NameColumnConfig,
 } from './types'
 
+import css from './columnBuilders.less'
+
 const anyColumnHelper = createColumnHelper<Record<string, number | null>>()
 
 function resolveDisplayName(value: string, config: NameColumnConfig): string {
@@ -104,14 +106,40 @@ export function buildMetricColumnDefs<TData>(
                         <Text variant="bold" size="sm">
                             {config.label}
                         </Text>
-                        {config.tooltipTitle && (
+                        {(config.tooltipConfig || config.tooltipTitle) && (
                             <Tooltip
                                 delay={0}
                                 trigger={<Icon name="info" size="xs" />}
                             >
                                 <TooltipContent
-                                    title={config.tooltipTitle}
-                                    caption={config.tooltipCaption}
+                                    title={
+                                        config.tooltipConfig?.title ??
+                                        config.tooltipTitle ??
+                                        config.label
+                                    }
+                                    caption={
+                                        config.tooltipConfig?.caption ??
+                                        config.tooltipCaption
+                                    }
+                                    link={
+                                        (config.tooltipConfig?.link ??
+                                        config.tooltipLink) ? (
+                                            <a
+                                                href={
+                                                    config.tooltipConfig
+                                                        ?.link ??
+                                                    config.tooltipLink!
+                                                }
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={css.tooltipLink}
+                                            >
+                                                {config.tooltipConfig
+                                                    ?.linkText ??
+                                                    'How is it calculated?'}
+                                            </a>
+                                        ) : undefined
+                                    }
                                 />
                             </Tooltip>
                         )}

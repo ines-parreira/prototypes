@@ -1,4 +1,8 @@
-import type { MetricTrendFormat, TrendDirection } from '@repo/reporting'
+import type {
+    MetricTooltipConfig,
+    MetricTrendFormat,
+    TrendDirection,
+} from '@repo/reporting'
 
 import type { Tag } from '@gorgias/helpdesk-queries'
 
@@ -207,7 +211,9 @@ export type ChartConfig = {
     chartComponent: (props: DashboardChartProps) => React.JSX.Element
     label: string
     csvProducer: DataExportFetch[] | null
-    description: string
+    /** @deprecated Use tooltipConfig instead */
+    description?: string
+    tooltipConfig?: MetricTooltipConfig
     chartType: ChartType
     metricFormat?: MetricTrendFormat
     interpretAs?: TrendDirection

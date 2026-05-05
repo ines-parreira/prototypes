@@ -1,3 +1,4 @@
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { fetchAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend'
@@ -77,8 +78,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'decimal-to-percent',
                     },
                 ],
-                description:
-                    'The number of interactions automated and billed by an automation features as a % of total billed customer interactions (automated or not).',
+                tooltipConfig: METRIC_TOOLTIPS.overallAutomationRate,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
@@ -93,8 +93,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    'The number of fully automated interactions solved without any human agent intervention.',
+                tooltipConfig: METRIC_TOOLTIPS.automatedInteractionsInOverview,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
@@ -109,8 +108,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The time agent would have spent resolving customer inquiries without all automation features.',
+                tooltipConfig: METRIC_TOOLTIPS.timeSavedByAgentsInOverview,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
@@ -125,8 +123,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'currency-precision-1',
                     },
                 ],
-                description:
-                    'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+                tooltipConfig: METRIC_TOOLTIPS.costSaved,
                 chartType: ChartType.Card,
                 metricFormat: 'currency-precision-1',
                 interpretAs: 'more-is-better',
@@ -141,8 +138,8 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The reduction in the average time to resolve a ticket when AI Agent is used, compared with tickets resolved manually by support agents.',
+                tooltipConfig:
+                    METRIC_TOOLTIPS.decreaseInResolutionTimeInOverview,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
@@ -157,8 +154,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'decimal',
                     },
                 ],
-                description:
-                    "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+                tooltipConfig: METRIC_TOOLTIPS.handoverInteractionsInOverview,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'less-is-better',
@@ -173,8 +169,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'duration',
                     },
                 ],
-                description:
-                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
+                tooltipConfig: METRIC_TOOLTIPS.decreaseInFRTInOverview,
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',

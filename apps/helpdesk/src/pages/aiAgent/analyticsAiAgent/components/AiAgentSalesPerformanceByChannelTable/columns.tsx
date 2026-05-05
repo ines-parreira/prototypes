@@ -1,5 +1,6 @@
 import type { MetricColumnConfig, NameColumnConfig } from '@repo/reporting'
 
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { formatChannelName } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS: NameColumnConfig[] =
@@ -16,54 +17,42 @@ export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[]
         {
             accessorKey: 'automatedInteractions',
             label: 'Automated interactions',
-            tooltipTitle: 'Automated interactions',
-            tooltipCaption:
-                'The number of fully automated interactions solved without any human agent intervention.',
+            tooltipConfig: METRIC_TOOLTIPS.automatedInteractionsInAiAgent,
             metricFormat: 'decimal',
             loadingStateKeys: ['automatedInteractions'],
         },
         {
             accessorKey: 'handoverInteractions',
             label: 'Handover interactions',
-            tooltipTitle: 'Handover interactions',
-            tooltipCaption:
-                "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+            tooltipConfig: METRIC_TOOLTIPS.handoverInteractionsInAiAgent,
             metricFormat: 'decimal',
             loadingStateKeys: ['handoverInteractions'],
         },
         {
             accessorKey: 'conversionRate',
             label: 'Conversion rate',
-            tooltipTitle: 'Conversion rate',
-            tooltipCaption:
-                'The percentage of AI Agent interactions that resulted in a purchase.',
+            tooltipConfig: METRIC_TOOLTIPS.conversionRate,
             metricFormat: 'decimal-to-percent',
             loadingStateKeys: ['conversionRate'],
         },
         {
             accessorKey: 'totalSales',
             label: 'Total sales',
-            tooltipTitle: 'Total sales',
-            tooltipCaption:
-                'The total revenue generated from orders influenced by AI Agent.',
+            tooltipConfig: METRIC_TOOLTIPS.totalSales,
             metricFormat: 'currency-precision-1',
             loadingStateKeys: ['totalSales'],
         },
         {
             accessorKey: 'ordersInfluenced',
             label: 'Orders influenced',
-            tooltipTitle: 'Orders influenced',
-            tooltipCaption:
-                'The number of orders influenced by AI Agent recommendations or interactions.',
+            tooltipConfig: METRIC_TOOLTIPS.ordersInfluenced,
             metricFormat: 'decimal',
             loadingStateKeys: ['ordersInfluenced'],
         },
         {
             accessorKey: 'revenuePerInteraction',
             label: 'Revenue per interaction',
-            tooltipTitle: 'Revenue per interaction',
-            tooltipCaption:
-                'The average revenue generated per AI Agent interaction, calculated as total sales divided by total interactions.',
+            tooltipConfig: METRIC_TOOLTIPS.revenuePerInteraction,
             metricFormat: 'currency-precision-1',
             loadingStateKeys: ['revenuePerInteraction'],
         },

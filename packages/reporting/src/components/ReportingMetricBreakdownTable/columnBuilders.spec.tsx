@@ -321,6 +321,100 @@ describe('buildMetricColumnDefs', () => {
         )
     })
 
+    describe('header', () => {
+        const renderHeader = (config: MetricColumnConfig) => {
+            const [col] = buildMetricColumnDefs([config], defaultLoadingStates)
+            const headerFn = (col as any).header
+            render(<>{headerFn()}</>)
+        }
+
+        it('renders the column label with no tooltip when no tooltip config is provided', () => {
+            renderHeader({
+                ...baseConfig,
+                tooltipTitle: undefined,
+                tooltipCaption: undefined,
+            })
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+
+        it('renders label with tooltip when tooltipConfig has title, caption, link, and linkText', () => {
+            renderHeader({
+                ...baseConfig,
+                tooltipTitle: undefined,
+                tooltipCaption: undefined,
+                tooltipConfig: {
+                    title: 'Cost saved',
+                    caption: 'Some caption',
+                    link: 'https://example.com',
+                    linkText: 'Learn more',
+                },
+            })
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+
+        it('renders tooltip with no link when tooltipConfig has no link', () => {
+            renderHeader({
+                ...baseConfig,
+                tooltipTitle: undefined,
+                tooltipCaption: undefined,
+                tooltipConfig: { title: 'Cost saved', caption: 'Some caption' },
+            })
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+
+        it('falls back to "How is it calculated?" when tooltipConfig has a link but no linkText', () => {
+            renderHeader({
+                ...baseConfig,
+                tooltipTitle: undefined,
+                tooltipCaption: undefined,
+                tooltipConfig: {
+                    title: 'Cost saved',
+                    caption: 'Some caption',
+                    link: 'https://example.com',
+                },
+            })
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+
+        it('falls back to tooltipCaption when tooltipConfig has no caption', () => {
+            renderHeader({
+                ...baseConfig,
+                tooltipCaption: 'Legacy caption',
+                tooltipConfig: { title: 'Cost saved' },
+            })
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+
+        it('falls back to tooltipLink for href when tooltipConfig has no link', () => {
+            renderHeader({
+                ...baseConfig,
+                tooltipLink: 'https://example.com/legacy',
+                tooltipConfig: { title: 'Cost saved', caption: 'Some caption' },
+            })
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+
+        it('falls back to label when tooltipConfig has no title and tooltipTitle is not set', () => {
+            renderHeader({
+                ...baseConfig,
+                tooltipTitle: undefined,
+                tooltipCaption: undefined,
+                tooltipConfig: { caption: 'Some caption' } as any,
+            })
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+
+        it('renders tooltip using deprecated tooltipTitle, tooltipCaption, and tooltipLink', () => {
+            renderHeader({ ...baseConfig, tooltipLink: 'https://example.com' })
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+
+        it('renders tooltip using deprecated tooltipTitle and tooltipCaption without link', () => {
+            renderHeader(baseConfig)
+            expect(screen.getByText('Cost saved')).toBeInTheDocument()
+        })
+    })
+
     describe('renderCell', () => {
         it('renders the custom cell when renderCell returns a non-null value', () => {
             const [col] = buildMetricColumnDefs(

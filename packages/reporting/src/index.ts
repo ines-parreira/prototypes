@@ -11,6 +11,7 @@ export {
     type MetricTrendFormat,
     type TwoDimensionalDataItem,
     type MetricTrend,
+    type MetricTooltipConfig,
     type TooltipData,
     type TrendDirection,
 } from './types'

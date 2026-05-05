@@ -1,5 +1,6 @@
 import type { MetricColumnConfig, NameColumnConfig } from '@repo/reporting'
 
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import type { OrderManagementEntityName } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 
@@ -40,36 +41,28 @@ export const ORDER_MANAGEMENT_COLUMNS: MetricColumnConfig[] = [
     {
         accessorKey: 'automationRate',
         label: 'Overall automation rate',
-        tooltipTitle: 'Overall automation rate',
-        tooltipCaption:
-            'The number of interactions automated by all automation features as a % of total customer interactions.',
+        tooltipConfig: METRIC_TOOLTIPS.overallAutomationRate,
         metricFormat: 'decimal-to-percent',
         loadingStateKeys: ['automationRate'],
     },
     {
         accessorKey: 'automatedInteractions',
         label: 'Automated interactions',
-        tooltipTitle: 'Automated interactions',
-        tooltipCaption:
-            'The number of fully automated interactions solved without any human agent intervention.',
+        tooltipConfig: METRIC_TOOLTIPS.automatedInteractionsInOverview,
         metricFormat: 'decimal',
         loadingStateKeys: ['automatedInteractions'],
     },
     {
         accessorKey: 'handoverInteractions',
         label: 'Handover interactions',
-        tooltipTitle: 'Handover interactions',
-        tooltipCaption:
-            "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+        tooltipConfig: METRIC_TOOLTIPS.handoverInteractionsInOverview,
         metricFormat: 'decimal',
         loadingStateKeys: ['handoverInteractions'],
     },
     {
         accessorKey: 'costSaved',
         label: 'Cost saved',
-        tooltipTitle: 'Cost saved',
-        tooltipCaption:
-            'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+        tooltipConfig: METRIC_TOOLTIPS.costSaved,
         metricFormat: 'currency-precision-1',
         loadingStateKeys: ['costSaved'],
         showNotAvailable: true,
@@ -77,9 +70,7 @@ export const ORDER_MANAGEMENT_COLUMNS: MetricColumnConfig[] = [
     {
         accessorKey: 'timeSaved',
         label: 'Time saved by agents',
-        tooltipTitle: 'Time saved by agents',
-        tooltipCaption:
-            'The time agent would have spent resolving customer inquiries without all automation features.',
+        tooltipConfig: METRIC_TOOLTIPS.timeSavedByAgentsInOverview,
         metricFormat: 'duration',
         loadingStateKeys: ['timeSaved'],
         skeletonWidth: '80px',

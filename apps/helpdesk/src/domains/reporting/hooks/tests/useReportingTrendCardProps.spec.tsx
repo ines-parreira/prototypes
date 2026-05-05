@@ -579,6 +579,22 @@ describe('useReportingTrendCardProps', () => {
             expect(result.current.timeSeriesView).toBeDefined()
         })
 
+        it('returns comingSoon true when enabled but timeSeriesView is not provided', () => {
+            const { result } = renderHook(
+                () =>
+                    useReportingTrendCardProps({
+                        isAiAgentTrendCard: true,
+                        chartConfig: mockChartConfig,
+                        useTrend: mockUseTrend,
+                    }),
+                {
+                    storeState: defaultState,
+                },
+            )
+
+            expect(result.current.timeSeriesView).toEqual({ comingSoon: true })
+        })
+
         it('is disabled when feature flag is still loading', () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: true,
@@ -672,6 +688,38 @@ describe('useReportingTrendCardProps', () => {
 
             expect(customFormatter).toHaveBeenCalledWith(42)
             expect(mockFormatMetricValue).not.toHaveBeenCalled()
+        })
+    })
+
+    it('should build hint from tooltipConfig when provided, using label as title', () => {
+        const configWithTooltipConfig: ChartConfig = {
+            ...mockChartConfig,
+            tooltipConfig: {
+                title: 'Ignored title',
+                caption: 'Tooltip caption',
+                link: 'https://example.com',
+                linkText: 'Learn more',
+            },
+        }
+        mockUseTrend.mockReturnValue(mockTrendData)
+
+        const { result } = renderHook(
+            () =>
+                useReportingTrendCardProps({
+                    isAiAgentTrendCard: true,
+                    chartConfig: configWithTooltipConfig,
+                    useTrend: mockUseTrend,
+                }),
+            {
+                storeState: defaultState,
+            },
+        )
+
+        expect(result.current.hint).toEqual({
+            title: 'Test Metric',
+            caption: 'Tooltip caption',
+            link: 'https://example.com',
+            linkText: 'Learn more',
         })
     })
 
