@@ -278,7 +278,7 @@ export function submitProductInsightsTableConfigView(
     }
 }
 
-type SubscriptionUpdateResponse = {
+export type SubscriptionUpdateResponse = {
     products: ProductToPlanId
     subscription_resource_version?: number | null
     subscription_renewal_ramp_version?: number | null

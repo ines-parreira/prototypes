@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { AutomatePlan, Cadence, Plan } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
@@ -29,8 +29,11 @@ type Props = {
     setShowROICalculatorStep?: (value: boolean) => void
     onConfirm: () => void
     confirmLabel: string
-    isSubscriptionEnabled: boolean
     isYearlyPlan: boolean
+    isSubscribeDisabled?: boolean
+    isUpdateDisabled?: boolean
+    isSelectionBlocked?: boolean
+    disabledTooltip?: React.ReactNode
 }
 
 const AutomateModalStep = ({
@@ -53,8 +56,11 @@ const AutomateModalStep = ({
     setShowROICalculatorStep,
     onConfirm,
     confirmLabel,
-    isSubscriptionEnabled,
     isYearlyPlan,
+    isSubscribeDisabled = false,
+    isUpdateDisabled = false,
+    isSelectionBlocked = false,
+    disabledTooltip,
 }: Props) => (
     <>
         <ModalHeader toggle={handleOnClose}>{header}</ModalHeader>
@@ -77,6 +83,8 @@ const AutomateModalStep = ({
                 setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                 trackingSource="subscription_modal_ai_agent"
                 isYearlyPlan={isYearlyPlan}
+                isSelectionBlocked={isSelectionBlocked}
+                blockedTooltip={disabledTooltip}
             />
             {!!image && (
                 <img
@@ -90,13 +98,24 @@ const AutomateModalStep = ({
             <ModalFooter
                 className={classNames(css.footer, css.footerUnsubscribe)}
             >
-                <Button
-                    intent="destructive"
-                    onClick={handleUnsubscribeClick}
-                    isLoading={isSubscriptionUpdating}
+                <Tooltip
+                    placement="top"
+                    isDisabled={!disabledTooltip}
+                    trigger={
+                        <div>
+                            <Button
+                                intent="destructive"
+                                onClick={handleUnsubscribeClick}
+                                isLoading={isSubscriptionUpdating}
+                                isDisabled={isUpdateDisabled}
+                            >
+                                Cancel subscription
+                            </Button>
+                        </div>
+                    }
                 >
-                    Cancel subscription
-                </Button>
+                    <TooltipContent>{disabledTooltip}</TooltipContent>
+                </Tooltip>
                 <Button intent="secondary" onClick={handleOnClose}>
                     OK
                 </Button>
@@ -120,16 +139,31 @@ const AutomateModalStep = ({
                     >
                         Back
                     </Button>
-                    <Button intent="primary" onClick={onConfirm}>
-                        {confirmLabel}
-                    </Button>
+                    <Tooltip
+                        placement="top"
+                        isDisabled={!disabledTooltip}
+                        trigger={
+                            <div>
+                                <Button
+                                    intent="primary"
+                                    onClick={onConfirm}
+                                    isDisabled={isUpdateDisabled}
+                                >
+                                    {confirmLabel}
+                                </Button>
+                            </div>
+                        }
+                    >
+                        <TooltipContent>{disabledTooltip}</TooltipContent>
+                    </Tooltip>
                 </div>
             </ModalFooter>
         ) : (
             <Footer
                 confirmLabel={confirmLabel}
                 isUpdating={isSubscriptionUpdating}
-                isDisabled={!isSubscriptionEnabled}
+                isDisabled={isSubscribeDisabled}
+                disabledTooltip={disabledTooltip}
                 onClose={handleOnClose}
                 onConfirm={onConfirm}
             />

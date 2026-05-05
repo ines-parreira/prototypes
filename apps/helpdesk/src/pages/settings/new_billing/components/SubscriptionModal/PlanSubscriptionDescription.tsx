@@ -9,7 +9,7 @@ import {
 } from '@repo/billing'
 import classNames from 'classnames'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { Plan, ProductType } from 'models/billing/types'
 import { Cadence } from 'models/billing/types'
@@ -38,6 +38,8 @@ export type PlanSubscriptionDescriptionProps = {
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
     trackingSource: string
     isYearlyPlan: boolean
+    isSelectionBlocked?: boolean
+    blockedTooltip?: React.ReactNode
 }
 
 const PlanSubscriptionDescription = ({
@@ -52,6 +54,8 @@ const PlanSubscriptionDescription = ({
     setIsSubscriptionEnabled,
     trackingSource,
     isYearlyPlan,
+    isSelectionBlocked = false,
+    blockedTooltip,
 }: PlanSubscriptionDescriptionProps) => {
     const ref = useRef(null)
     const isPaymentEnabled = !!useIsPaymentEnabled()
@@ -169,16 +173,31 @@ const PlanSubscriptionDescription = ({
                 ) : (
                     <div className={css.selectedPlan}>
                         <div className={css.selector}>
-                            <SelectField
-                                options={options}
-                                id={`priceSelect_${productType}`}
-                                aria-label="Plan"
-                                placeholder="Select a plan"
-                                value={selectedPlan?.plan_id}
-                                fullWidth
-                                onChange={handleSelectProductPlan}
-                                showSelectedOption
-                            />
+                            <Tooltip
+                                placement="top left"
+                                isDisabled={
+                                    !isSelectionBlocked || !blockedTooltip
+                                }
+                                trigger={
+                                    <div>
+                                        <SelectField
+                                            options={options}
+                                            id={`priceSelect_${productType}`}
+                                            aria-label="Plan"
+                                            placeholder="Select a plan"
+                                            value={selectedPlan?.plan_id}
+                                            fullWidth
+                                            onChange={handleSelectProductPlan}
+                                            showSelectedOption
+                                            disabled={isSelectionBlocked}
+                                        />
+                                    </div>
+                                }
+                            >
+                                <TooltipContent>
+                                    {blockedTooltip}
+                                </TooltipContent>
+                            </Tooltip>
                             <div className={css.counter} ref={ref}>
                                 <div>
                                     <CounterText
@@ -193,14 +212,14 @@ const PlanSubscriptionDescription = ({
                                 >
                                     info_outlined
                                 </i>
-                                <Tooltip
+                                <LegacyTooltip
                                     placement="top-start"
                                     target="priceSelectInfo"
                                     className={css.tooltip}
                                     container={ref}
                                 >
                                     {productInfo.tooltip}
-                                </Tooltip>
+                                </LegacyTooltip>
                             </div>
                         </div>
                         <div className={css.planPrice}>
