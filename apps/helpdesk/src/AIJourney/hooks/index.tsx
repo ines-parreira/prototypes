@@ -23,3 +23,4 @@ export { useAIJourneyTotalReplies } from './useAIJourneyTotalReplies/useAIJourne
 export { useStoredProductResolution } from './useStoredProductResolution/useStoredProductResolution'
 export { useAIJourneyProviderTotalOrders } from './useAIJourneyProviderTotalOrders/useAIJourneyProviderTotalOrders'
 export { useAIJourneyProviderTotalSales } from './useAIJourneyProviderTotalSales/useAIJourneyProviderTotalSales'
+export { useAIJourneyProviderMetricData } from './useAIJourneyProviderMetricData/useAIJourneyProviderMetricData'

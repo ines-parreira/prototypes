@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useDeepEffect } from '@repo/hooks'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
@@ -152,7 +152,17 @@ export const ConfigureMetricsModal = ({
         setHasChanges(false)
     }, [metrics])
 
-    const currentVisibleCount = localMetrics.filter((m) => m.visibility).length
+    const currentVisibleCount = localMetrics.reduce((count, m) => {
+        if (!m.visibility) return count
+        if (m.group) {
+            const isFirstVisibleInGroup =
+                localMetrics.find(
+                    (other) => other.group === m.group && other.visibility,
+                )?.id === m.id
+            return isFirstVisibleInGroup ? count + 1 : count
+        }
+        return count + 1
+    }, 0)
 
     const handleToggleVisibility = useCallback((id: string) => {
         setLocalMetrics((prev) =>
@@ -189,6 +199,19 @@ export const ConfigureMetricsModal = ({
         setHasChanges(false)
         onClose()
     }, [metrics, onClose])
+
+    const groupsEnablementCheck = useCallback(
+        (metric: MetricConfigItem): boolean =>
+            (!!metric.group &&
+                localMetrics.some(
+                    (m) =>
+                        m.group === metric.group &&
+                        m.visibility &&
+                        m.id !== metric.id,
+                )) ||
+            (!metric.visibility && currentVisibleCount >= maxVisibleMetric),
+        [localMetrics, currentVisibleCount, maxVisibleMetric],
+    )
 
     return (
         <SidePanel isOpen={isOpen} onOpenChange={handleCancel} size={size}>
@@ -230,11 +253,9 @@ export const ConfigureMetricsModal = ({
                                             handleToggleVisibility
                                         }
                                         onDrop={handleDrop}
-                                        isDisabled={
-                                            !metric.visibility &&
-                                            currentVisibleCount >=
-                                                maxVisibleMetric
-                                        }
+                                        isDisabled={groupsEnablementCheck(
+                                            metric,
+                                        )}
                                     />
                                 ))}
                             </TableBody>

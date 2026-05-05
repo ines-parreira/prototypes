@@ -681,7 +681,7 @@ describe('<Analytics />', () => {
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')
-            expect(infoIcons).toHaveLength(8)
+            expect(infoIcons).toHaveLength(16)
         })
     })
 
@@ -1004,7 +1004,66 @@ describe('<Analytics />', () => {
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')
-            expect(infoIcons).toHaveLength(1)
+            expect(infoIcons).toHaveLength(9)
+        })
+    })
+
+    it('should merge attribution metrics into existing localStorage preferences for returning users', async () => {
+        const user = userEvent.setup()
+
+        localStorage.setItem(
+            'ai-journey-analytics-key-metrics-preferences',
+            JSON.stringify([
+                { id: 'Total sales', label: 'Total sales', visibility: true },
+                { id: 'Orders', label: 'Orders', visibility: true },
+                {
+                    id: 'Conversion rate',
+                    label: 'Conversion rate',
+                    visibility: true,
+                },
+                { id: 'Reply rate', label: 'Reply rate', visibility: false },
+                {
+                    id: 'Click-through rate (CTR)',
+                    label: 'Click-through rate (CTR)',
+                    visibility: false,
+                },
+                {
+                    id: 'Revenue per recipient',
+                    label: 'Revenue per recipient',
+                    visibility: false,
+                },
+                {
+                    id: 'Average Order Value (AOV)',
+                    label: 'Average Order Value (AOV)',
+                    visibility: false,
+                },
+                {
+                    id: 'Messages sent',
+                    label: 'Messages sent',
+                    visibility: false,
+                },
+            ]),
+        )
+
+        render(
+            <Provider store={mockStore}>
+                <JourneyProvider>
+                    <Analytics />
+                </JourneyProvider>
+            </Provider>,
+        )
+
+        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
+        await waitFor(() => {
+            const modal = screen.getByRole('dialog')
+            expect(
+                within(modal).getByText(
+                    'Total sales (click 5d > delivery 12h)',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                within(modal).getByText('Orders (discount 10d > delivery 20d)'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -1053,24 +1112,12 @@ describe('<Analytics />', () => {
     })
 
     describe('Attribution model comparison', () => {
-        it('should hide provider metrics when feature flag is OFF even if attributionModelComparison is set', () => {
+        it('should call all provider hooks with forceEmpty when feature flag is OFF', () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: false,
                 isLoading: false,
             })
 
-            mockUseJourneyContext.mockReturnValue({
-                journeyData: undefined,
-                currentIntegration: { id: 286584 },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                attributionModelComparison: 'klaviyo',
-            })
-
             render(
                 <Provider store={mockStore}>
                     <JourneyProvider>
@@ -1088,31 +1135,19 @@ describe('<Analytics />', () => {
 
             expect(mockUseAIJourneyProviderTotalOrders).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    provider: null,
+                    provider: 'klaviyo',
                     forceEmpty: true,
                 }),
             )
             expect(mockUseAIJourneyProviderTotalSales).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    provider: null,
+                    provider: 'klaviyo',
                     forceEmpty: true,
                 }),
             )
         })
 
-        it('should not show provider metrics when attributionModelComparison is null', () => {
-            mockUseJourneyContext.mockReturnValue({
-                journeyData: undefined,
-                currentIntegration: { id: 286584 },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                attributionModelComparison: null,
-            })
-
+        it('should not show provider metrics in TrendCards when none are toggled visible', () => {
             render(
                 <Provider store={mockStore}>
                     <JourneyProvider>
@@ -1129,19 +1164,7 @@ describe('<Analytics />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should call provider hooks with forceEmpty when no attribution model', () => {
-            mockUseJourneyContext.mockReturnValue({
-                journeyData: undefined,
-                currentIntegration: { id: 286584 },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                attributionModelComparison: null,
-            })
-
+        it('should call all provider hooks with forceEmpty when none are visible in preferences', () => {
             render(
                 <Provider store={mockStore}>
                     <JourneyProvider>
@@ -1152,30 +1175,29 @@ describe('<Analytics />', () => {
 
             expect(mockUseAIJourneyProviderTotalOrders).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    provider: null,
+                    provider: 'klaviyo',
                     forceEmpty: true,
                 }),
             )
             expect(mockUseAIJourneyProviderTotalSales).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    provider: null,
+                    provider: 'klaviyo',
                     forceEmpty: true,
                 }),
             )
         })
 
-        it('should call provider hooks with correct cube name for Klaviyo', () => {
-            mockUseJourneyContext.mockReturnValue({
-                journeyData: undefined,
-                currentIntegration: { id: 286584 },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                attributionModelComparison: 'klaviyo',
-            })
+        it('should call klaviyo provider hooks with forceEmpty false when klaviyo metric is visible', () => {
+            localStorage.setItem(
+                'ai-journey-analytics-key-metrics-preferences',
+                JSON.stringify([
+                    {
+                        id: 'Orders (click 5d > delivery 12h)',
+                        label: 'Orders (click 5d > delivery 12h)',
+                        visibility: true,
+                    },
+                ]),
+            )
 
             render(
                 <Provider store={mockStore}>
@@ -1199,20 +1221,8 @@ describe('<Analytics />', () => {
             )
         })
 
-        it('should show provider metrics in edit metrics modal for Attentive', async () => {
+        it('should show all attribution model metrics in edit metrics modal when flag is ON', async () => {
             const user = userEvent.setup()
-
-            mockUseJourneyContext.mockReturnValue({
-                journeyData: undefined,
-                currentIntegration: { id: 286584 },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                attributionModelComparison: 'attentive',
-            })
 
             render(
                 <Provider store={mockStore}>
@@ -1236,23 +1246,19 @@ describe('<Analytics />', () => {
                 expect(
                     within(modal).getByText('Orders (click 5d > delivery 24h)'),
                 ).toBeInTheDocument()
+                expect(
+                    within(modal).getByText(
+                        'Total sales (click 5d > delivery 12h)',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    within(modal).getByText('Orders (click 5d > delivery 12h)'),
+                ).toBeInTheDocument()
             })
         })
 
         it('should not show provider metrics in line chart dropdown', async () => {
             const user = userEvent.setup()
-
-            mockUseJourneyContext.mockReturnValue({
-                journeyData: undefined,
-                currentIntegration: { id: 286584 },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                attributionModelComparison: 'klaviyo',
-            })
 
             render(
                 <Provider store={mockStore}>
@@ -1280,18 +1286,6 @@ describe('<Analytics />', () => {
         })
 
         it('should show provider TrendCard when toggled visible in preferences', () => {
-            mockUseJourneyContext.mockReturnValue({
-                journeyData: undefined,
-                currentIntegration: { id: 286584 },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                attributionModelComparison: 'klaviyo',
-            })
-
             mockUseAIJourneyProviderTotalOrders.mockReturnValue({
                 label: 'Provider Orders',
                 value: 42,
@@ -1329,158 +1323,28 @@ describe('<Analytics />', () => {
             expect(screen.getByText('42')).toBeInTheDocument()
         })
 
-        it('should use correct provider for each attribution model', () => {
-            const providers = [
+        it('should call all four provider hooks unconditionally with their correct provider strings', () => {
+            render(
+                <Provider store={mockStore}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </Provider>,
+            )
+
+            const expectedProviders = [
                 'klaviyo',
                 'attentive',
-                'liverecover',
                 'postscript',
-            ] as const
+                'liverecover',
+            ]
 
-            for (const model of providers) {
-                jest.clearAllMocks()
-
-                mockUseStatsFilters.mockReturnValue({
-                    cleanStatsFilters: {
-                        period: {
-                            end_datetime: moment().toISOString(),
-                            start_datetime: moment().toISOString(),
-                        },
-                    },
-                    userTimezone: 'America/New_York',
-                    granularity: ReportingGranularity.Day,
-                })
-
-                mockUseJourneyContext.mockReturnValue({
-                    journeyData: undefined,
-                    currentIntegration: { id: 286584 },
-                    shopName: 'shopify-store',
-                    isLoading: false,
-                    journeyType: 'cart_abandoned',
-                    storeConfiguration: {
-                        monitoredSmsIntegrations: [1, 2],
-                    },
-                    attributionModelComparison: model,
-                })
-
-                mockUseAIJourneyRevenue.mockReturnValue({
-                    label: 'GMV',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'currency',
-                    currency: 'USD',
-                    isLoading: false,
-                })
-                mockUseAIJourneyTotalOrders.mockReturnValue({
-                    label: 'Orders',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'decimal-precision-1',
-                    isLoading: false,
-                })
-                mockUseAIJourneyConversionRate.mockReturnValue({
-                    label: 'Conversion Rate',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'percent',
-                    isLoading: false,
-                })
-                mockUseAIJourneyMessagesSent.mockReturnValue({
-                    label: 'Messages sent',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'decimal',
-                    isLoading: false,
-                })
-                mockUseAIJourneyResponseRate.mockReturnValue({
-                    label: 'Response Rate',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'percent',
-                    isLoading: false,
-                })
-                mockUseClickThroughRate.mockReturnValue({
-                    label: 'CTR',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'percent',
-                    isLoading: false,
-                })
-                mockUseAverageOrderValue.mockReturnValue({
-                    label: 'AOV',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'currency',
-                    currency: 'USD',
-                    isLoading: false,
-                })
-                mockUseRevenuePerRecipient.mockReturnValue({
-                    label: 'RPR',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'currency',
-                    currency: 'USD',
-                    isLoading: false,
-                })
-                mockUseAIJourneyProviderTotalOrders.mockReturnValue({
-                    label: 'Provider Orders',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'decimal-precision-1',
-                    isLoading: false,
-                })
-                mockUseAIJourneyProviderTotalSales.mockReturnValue({
-                    label: 'Provider Total Sales',
-                    value: 0,
-                    prevValue: null,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'currency',
-                    currency: 'USD',
-                    isLoading: false,
-                })
-                mockUseGetNamespacedShopNameForStore.mockReturnValue(
-                    'shopify-store',
-                )
-                mockUseDrillDownModalTrigger.mockReturnValue({
-                    openDrillDownModal: jest.fn(),
-                    tooltipText: 'Click to view',
-                })
-                FiltersPanelComponentMock.mockImplementation(() => <div />)
-
-                render(
-                    <Provider store={mockStore}>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </Provider>,
-                )
-
+            for (const provider of expectedProviders) {
                 expect(
                     mockUseAIJourneyProviderTotalOrders,
-                ).toHaveBeenCalledWith(
-                    expect.objectContaining({ provider: model }),
-                )
+                ).toHaveBeenCalledWith(expect.objectContaining({ provider }))
                 expect(mockUseAIJourneyProviderTotalSales).toHaveBeenCalledWith(
-                    expect.objectContaining({ provider: model }),
+                    expect.objectContaining({ provider }),
                 )
             }
         })

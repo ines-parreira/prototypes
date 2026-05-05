@@ -3,4 +3,5 @@ export type MetricConfigItem = {
     label: string
     visibility: boolean
     hint?: string
+    group?: string
 }

@@ -24,8 +24,7 @@ import {
 import {
     useAIJourneyConversionRate,
     useAIJourneyMessagesSent,
-    useAIJourneyProviderTotalOrders,
-    useAIJourneyProviderTotalSales,
+    useAIJourneyProviderMetricData,
     useAIJourneyResponseRate,
     useAIJourneyTotalOrders,
     useAIJourneyTotalSales,
@@ -36,8 +35,9 @@ import {
 import { useJourneyContext } from 'AIJourney/providers'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import {
-    ATTRIBUTION_MODEL_HINTS,
-    ATTRIBUTION_MODEL_LABELS,
+    ATTRIBUTION_MODELS,
+    buildProviderMetricPair,
+    providerMetricIds,
 } from 'AIJourney/utils/attributionModelComparison'
 import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
@@ -51,34 +51,29 @@ import { useGetNamespacedShopNameForStore } from '../../../domains/reporting/pag
 
 import css from './Analytics.less'
 
+const DEFAULT_VISIBLE_METRICS = new Set([
+    'Total sales',
+    'Orders',
+    'Conversion rate',
+    'Reply rate',
+])
+
 export const Analytics = () => {
     const {
         cleanStatsFilters: statsFilters,
         userTimezone,
         granularity,
     } = useStatsFilters()
-    const {
-        journeys,
-        campaigns,
-        currency,
-        isLoading,
-        currentIntegration,
-        attributionModelComparison,
-    } = useJourneyContext()
+    const { journeys, campaigns, currency, isLoading, currentIntegration } =
+        useJourneyContext()
 
     const { value: isAttributionModelComparisonEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiJourneyAttributionModelComparison,
     )
-    const gatedAttributionModelComparison = isAttributionModelComparisonEnabled
-        ? attributionModelComparison
-        : null
 
-    const attributionLabel = gatedAttributionModelComparison
-        ? ATTRIBUTION_MODEL_LABELS[gatedAttributionModelComparison]
-        : null
-    const attributionHint = gatedAttributionModelComparison
-        ? ATTRIBUTION_MODEL_HINTS[gatedAttributionModelComparison]
-        : null
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [title, setTitle] = useState('Total sales')
+
     const integrationId = useMemo(() => {
         return (currentIntegration?.id || 0).toString()
     }, [currentIntegration])
@@ -224,44 +219,6 @@ export const Analytics = () => {
         forceEmpty,
     })
 
-    const providerOrders = useAIJourneyProviderTotalOrders({
-        provider: gatedAttributionModelComparison ?? null,
-        integrationId,
-        userTimezone,
-        filters,
-        granularity,
-        journeyIds: journeysIdsToFilter,
-        forceEmpty: forceEmpty || !gatedAttributionModelComparison,
-    })
-
-    const providerTotalSales = useAIJourneyProviderTotalSales({
-        provider: gatedAttributionModelComparison ?? null,
-        integrationId,
-        userTimezone,
-        filters,
-        currency,
-        granularity,
-        journeyIds: journeysIdsToFilter,
-        forceEmpty: forceEmpty || !gatedAttributionModelComparison,
-    })
-
-    const ordersDrillDown = useDrillDownModalTrigger({
-        metricName: AIJourneyMetric.TotalOrders,
-        title: 'Total Orders',
-        integrationId,
-        journeyIds: journeysIdsToFilter,
-    })
-
-    const providerOrdersDrillDown = useDrillDownModalTrigger({
-        metricName: AIJourneyMetric.ProviderTotalOrders,
-        title: attributionLabel
-            ? `Total Orders (${attributionLabel})`
-            : 'Total Orders',
-        integrationId,
-        journeyIds: journeysIdsToFilter,
-        provider: gatedAttributionModelComparison ?? undefined,
-    })
-
     const seriesBaseOptions = {
         dateFormatter: (date: string) => moment(date).format('MMM D'),
         withEndPeriod: {
@@ -269,6 +226,13 @@ export const Analytics = () => {
             endDate: filters.period.end_datetime,
         },
     }
+
+    const ordersDrillDown = useDrillDownModalTrigger({
+        metricName: AIJourneyMetric.TotalOrders,
+        title: 'Total Orders',
+        integrationId,
+        journeyIds: journeysIdsToFilter,
+    })
 
     const metrics = [
         {
@@ -409,80 +373,60 @@ export const Analytics = () => {
         },
     ]
 
-    const providerMetrics = attributionLabel
-        ? [
-              {
-                  id: `Total sales (${attributionLabel})`,
-                  label: `Total sales (${attributionLabel})`,
-                  currency: providerTotalSales.currency,
-                  hint: `Total value of orders attributed. ${attributionHint}`,
-                  withFixedWidth: true,
-                  interpretAs: providerTotalSales.interpretAs,
-                  isLoading: providerTotalSales.isLoading,
-                  metricFormat: 'currency' as MetricTrendFormat,
-                  series: seriesToTwoDimensionalDataItem(
-                      providerTotalSales.series,
-                      {
-                          label: `Total sales (${attributionLabel})`,
-                          ...seriesBaseOptions,
-                      },
-                  ),
-                  trend: {
-                      prevValue: providerTotalSales.prevValue ?? null,
-                      value: providerTotalSales.value,
-                  },
-              },
-              {
-                  id: `Orders (${attributionLabel})`,
-                  label: `Orders (${attributionLabel})`,
-                  hint: `Total number of orders attributed. ${attributionHint}`,
-                  withFixedWidth: true,
-                  interpretAs: providerOrders.interpretAs,
-                  isLoading: providerOrders.isLoading,
-                  metricFormat: 'decimal-precision-1' as MetricTrendFormat,
-                  series: seriesToTwoDimensionalDataItem(
-                      providerOrders.series,
-                      {
-                          label: `Orders (${attributionLabel})`,
-                          ...seriesBaseOptions,
-                      },
-                  ),
-                  trend: {
-                      prevValue: providerOrders.prevValue ?? null,
-                      value: providerOrders.value,
-                  },
-                  drillDown: providerOrdersDrillDown,
-              },
-          ]
-        : []
-
-    const allMetrics = [...metrics, ...providerMetrics]
-
-    const [title, setTitle] = useState(metrics[0].id)
-    const metricsLabels = metrics.map(({ id, label }) => ({
-        id,
-        label,
-    }))
-    const selectedData = metrics.find((m) => m.id === title)
-
-    const defaultVisibleMetrics = new Set([
-        'Total sales',
-        'Orders',
-        'Conversion rate',
-        'Reply rate',
-    ])
-    const defaultMetricsConfig: MetricConfigItem[] = allMetrics.map(
-        ({ id, label }) => ({
-            id,
-            label,
-            visibility: defaultVisibleMetrics.has(id),
-        }),
+    const attributionMetricDefs = useMemo(
+        () =>
+            isAttributionModelComparisonEnabled
+                ? ATTRIBUTION_MODELS.flatMap((model) => {
+                      const { totalSales, orders } = providerMetricIds(model)
+                      return [
+                          { id: totalSales, label: totalSales },
+                          { id: orders, label: orders },
+                      ]
+                  })
+                : [],
+        [isAttributionModelComparisonEnabled],
     )
 
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const defaultMetricsConfig: MetricConfigItem[] = [
+        ...metrics.map(({ id, label }) => ({ id, label })),
+        ...attributionMetricDefs,
+    ].map(({ id, label }) => ({
+        id,
+        label,
+        visibility: DEFAULT_VISIBLE_METRICS.has(id),
+    }))
+
     const [keyKpisConfig, setKeyKpisConfig] = useLocalStorage<
         MetricConfigItem[]
     >('ai-journey-analytics-key-metrics-preferences', defaultMetricsConfig)
+
+    const providerHookParams = {
+        integrationId,
+        userTimezone,
+        filters,
+        currency,
+        granularity,
+        journeyIds: journeysIdsToFilter,
+        baseForceEmpty: forceEmpty,
+        isAttributionModelComparisonEnabled,
+        keyKpisConfig,
+    }
+    const klaviyoData = useAIJourneyProviderMetricData(
+        'klaviyo',
+        providerHookParams,
+    )
+    const attentiveData = useAIJourneyProviderMetricData(
+        'attentive',
+        providerHookParams,
+    )
+    const postscriptData = useAIJourneyProviderMetricData(
+        'postscript',
+        providerHookParams,
+    )
+    const liverecoverData = useAIJourneyProviderMetricData(
+        'liverecover',
+        providerHookParams,
+    )
 
     useEffectOnce(() => {
         const legacyItemKey = 'ai-journey-analytics-metrics-preferences'
@@ -490,39 +434,64 @@ export const Analytics = () => {
             localStorage.removeItem(legacyItemKey)
     })
 
-    const providerMetricEntries = useMemo(() => {
-        if (!attributionLabel) return []
-        return [
-            {
-                id: `Total sales (${attributionLabel})`,
-                label: `Total sales (${attributionLabel})`,
-            },
-            {
-                id: `Orders (${attributionLabel})`,
-                label: `Orders (${attributionLabel})`,
-            },
-        ]
-    }, [attributionLabel])
-
     useEffect(() => {
-        if (providerMetricEntries.length === 0) return
+        if (attributionMetricDefs.length === 0) return
 
-        const existingIds = new Set(keyKpisConfig.map((c) => c.id))
-        const missingMetrics = providerMetricEntries.filter(
-            (m) => !existingIds.has(m.id),
+        const existingIds = new Set(keyKpisConfig.map(({ id }) => id))
+        const missingMetrics = attributionMetricDefs.filter(
+            ({ id }) => !existingIds.has(id),
         )
-
         if (missingMetrics.length > 0) {
-            const newEntries: MetricConfigItem[] = missingMetrics.map(
-                ({ id, label }) => ({
+            setKeyKpisConfig([
+                ...keyKpisConfig,
+                ...missingMetrics.map(({ id, label }) => ({
                     id,
                     label,
                     visibility: false,
-                }),
-            )
-            setKeyKpisConfig([...keyKpisConfig, ...newEntries])
+                })),
+            ])
         }
-    }, [providerMetricEntries, keyKpisConfig, setKeyKpisConfig])
+    }, [attributionMetricDefs, keyKpisConfig, setKeyKpisConfig])
+
+    const providerDataMap = {
+        klaviyo: klaviyoData,
+        attentive: attentiveData,
+        postscript: postscriptData,
+        liverecover: liverecoverData,
+    }
+
+    const providerMetrics = isAttributionModelComparisonEnabled
+        ? ATTRIBUTION_MODELS.flatMap((model) =>
+              buildProviderMetricPair(
+                  model,
+                  providerDataMap[model],
+                  seriesBaseOptions,
+              ),
+          )
+        : []
+
+    const allMetrics = [...metrics, ...providerMetrics]
+
+    const metricsLabels = metrics.map(({ id, label }) => ({ id, label }))
+    const selectedData = metrics.find((m) => m.id === title)
+
+    const totalSalesProviderGroup = ATTRIBUTION_MODELS.map(
+        (model) => providerMetricIds(model).totalSales,
+    )
+
+    const ordersProviderGroup = ATTRIBUTION_MODELS.map(
+        (model) => providerMetricIds(model).orders,
+    )
+
+    const metricsForModal = keyKpisConfig.map((config) => ({
+        ...config,
+        hint: allMetrics.find((metric) => metric.id === config.id)?.hint,
+        group: totalSalesProviderGroup.includes(config.id)
+            ? 'total-sales'
+            : ordersProviderGroup.includes(config.id)
+              ? 'orders'
+              : undefined,
+    }))
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -571,11 +540,7 @@ export const Analytics = () => {
                     <ConfigureMetricsModal
                         isOpen={isEditModalOpen}
                         onClose={() => setIsEditModalOpen(false)}
-                        metrics={keyKpisConfig.map((config) => ({
-                            ...config,
-                            hint: allMetrics.find((m) => m.id === config.id)
-                                ?.hint,
-                        }))}
+                        metrics={metricsForModal}
                         onSave={setKeyKpisConfig}
                         size={SidePanelSize.Md}
                     />
