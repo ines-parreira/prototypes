@@ -4,6 +4,7 @@ import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
+import { useHelpdeskV2MS3Flag } from '@repo/tickets/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -74,6 +75,11 @@ jest.mock('@repo/utils', () => {
 })
 
 jest.mock('../TicketDetails/TicketTags', () => () => 'TicketTagsMock')
+
+jest.mock('../TicketSummaryPopover', () => ({
+    __esModule: true,
+    default: () => <button>Summarize ticket</button>,
+}))
 
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(() => () => Promise.resolve()),
@@ -184,6 +190,13 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = useFlag as jest.Mock
 
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
+    useHelpdeskV2MS1Flag: jest.fn().mockReturnValue(false),
+    useHelpdeskV2MS3Flag: jest.fn().mockReturnValue(false),
+}))
+const mockUseHelpdeskV2MS3Flag = useHelpdeskV2MS3Flag as jest.Mock
+
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
     useTicketMessageTranslationDisplay: jest.fn(),
@@ -285,6 +298,7 @@ describe('<TicketHeader />', () => {
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
+        mockUseHelpdeskV2MS3Flag.mockReturnValue(false)
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
         mockUseStandaloneAiAccess.mockReturnValue(
@@ -298,7 +312,6 @@ describe('<TicketHeader />', () => {
             state: undefined,
         })
         useParamsMock.mockReturnValue({})
-        mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, false)
 
         // Default mock for useTicketsTranslatedProperties
         mockUseTicketsTranslatedProperties.mockReturnValue({
@@ -593,32 +606,6 @@ describe('<TicketHeader />', () => {
         await waitFor(() => {
             expect(ticketActions.snoozeTicket).toHaveBeenCalled()
         })
-    })
-
-    it('should render AI ticket summary popover when enableAITicketSummary feature flag is enabled', () => {
-        mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, true)
-
-        render(
-            <QueryClientProvider client={appQueryClient}>
-                <Provider store={mockStore(defaultStore)}>
-                    <TicketHeader {...minProps} />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        expect(screen.queryByLabelText('Summarize')).toBeInTheDocument()
-    })
-
-    it('should not render AI ticket summary popover when enableAITicketSummary feature flag is disabled', () => {
-        render(
-            <QueryClientProvider client={appQueryClient}>
-                <Provider store={mockStore(defaultStore)}>
-                    <TicketHeader {...minProps} />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        expect(screen.queryByLabelText('Summarize')).not.toBeInTheDocument()
     })
 
     it('should render priority dropdown', () => {
@@ -2227,6 +2214,70 @@ describe('<TicketHeader />', () => {
 
             // Should not show "Mark as unread" for already unread tickets
             expect(queryByText(/Mark as unread/)).not.toBeInTheDocument()
+        })
+    })
+
+    describe('AI ticket summary popover', () => {
+        it('should render the ticket summary popover when AITicketSummary flag is enabled and MS3 flag is disabled', () => {
+            mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, true)
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: fromJS(ticket),
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /summarize ticket/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render the ticket summary popover when MS3 flag is enabled', () => {
+            mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, true)
+            mockUseHelpdeskV2MS3Flag.mockReturnValue(true)
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: fromJS(ticket),
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: /summarize ticket/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render the ticket summary popover when AITicketSummary flag is disabled', () => {
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: fromJS(ticket),
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: /summarize ticket/i }),
+            ).not.toBeInTheDocument()
         })
     })
 })

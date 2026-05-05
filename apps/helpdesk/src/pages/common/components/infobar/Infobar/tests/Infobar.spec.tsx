@@ -4,7 +4,10 @@ import { useState as mockUseState } from 'react'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
+import {
+    useHelpdeskV2MS1Flag,
+    useHelpdeskV2MS3Flag,
+} from '@repo/tickets/feature-flags'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -208,8 +211,10 @@ const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 jest.mock('@repo/tickets/feature-flags', () => ({
     ...jest.requireActual('@repo/tickets/feature-flags'),
     useHelpdeskV2MS1Flag: jest.fn(),
+    useHelpdeskV2MS3Flag: jest.fn(),
 }))
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
+const useHelpdeskV2MS3FlagMock = assumeMock(useHelpdeskV2MS3Flag)
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -275,6 +280,7 @@ const customerId = 7
 describe('<Infobar/>', () => {
     beforeEach(() => {
         useHelpdeskV2MS1FlagMock.mockReturnValue(false)
+        useHelpdeskV2MS3FlagMock.mockReturnValue(false)
         useHelpdeskV2MS2FlagMock.mockReturnValue(false)
         makeHasIntegrationOfTypesMock.mockReturnValue(() => false)
         useSearchRankScenarioMock.mockImplementation(() => mockSearchRank)

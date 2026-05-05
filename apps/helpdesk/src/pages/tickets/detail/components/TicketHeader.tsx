@@ -9,7 +9,10 @@ import {
     useTicketMessageTranslationDisplay,
     useTicketsTranslatedProperties,
 } from '@repo/tickets'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
+import {
+    useHelpdeskV2MS1Flag,
+    useHelpdeskV2MS3Flag,
+} from '@repo/tickets/feature-flags'
 import { useShortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
@@ -103,6 +106,7 @@ const TicketHeader = ({
     )
     const enableAITicketSummary = useFlag(FeatureFlagKey.AITicketSummary)
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
+    const hasUIVisionMS3 = useHelpdeskV2MS3Flag()
     const smartFollowUpsEnabled = useFlag(FeatureFlagKey.SmartFollowUps)
     const {
         setAllTicketMessagesToOriginal,
@@ -486,9 +490,11 @@ const TicketHeader = ({
                                 disabled={isStandaloneAiAgent}
                             />
                         )}
-                        {!hasUIVisionMS1 && enableAITicketSummary && (
-                            <TicketSummaryPopover displayLabel={false} />
-                        )}
+                        {!hasUIVisionMS1 &&
+                            !hasUIVisionMS3 &&
+                            enableAITicketSummary && (
+                                <TicketSummaryPopover displayLabel={false} />
+                            )}
                         {isUpdate && (
                             <ConfirmationPopover
                                 buttonProps={{

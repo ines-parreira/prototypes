@@ -9,7 +9,10 @@ import {
     InfobarTicketCustomerInstagramSection,
     InfobarTicketDetails,
 } from '@repo/tickets'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
+import {
+    useHelpdeskV2MS1Flag,
+    useHelpdeskV2MS3Flag,
+} from '@repo/tickets/feature-flags'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -74,6 +77,7 @@ export const Infobar = ({
     isOnNewLayout,
 }: Props) => {
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
+    const hasUIVisionMS3 = useHelpdeskV2MS3Flag()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
     const location = useLocation()
     const isNewTicketPage = location.pathname === '/app/ticket/new'
@@ -296,7 +300,9 @@ export const Infobar = ({
                 {hasUIVisionMS1 && (
                     <InfobarTicketDetails
                         ticketSummaryIcon={
-                            <TicketSummaryPopover displayLabel={false} />
+                            hasUIVisionMS3 ? null : (
+                                <TicketSummaryPopover displayLabel={false} />
+                            )
                         }
                         onEditCustomer={handleEditCustomer}
                         onSyncToShopify={handleSyncToShopify}
