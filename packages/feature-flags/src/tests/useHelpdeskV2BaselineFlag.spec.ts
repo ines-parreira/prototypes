@@ -1,4 +1,5 @@
 import { useLocalStorage } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@testing-library/react'
 
 import { FeatureFlagKey } from '../featureFlagKey'
@@ -13,6 +14,13 @@ vi.mock('../useFlag', () => ({
 
 vi.mock('@repo/hooks', () => ({
     useLocalStorage: vi.fn(),
+}))
+
+vi.mock('@repo/logging', () => ({
+    logEvent: vi.fn(),
+    SegmentEvent: {
+        HelpdeskV2ToggleChanged: 'helpdesk-v2-toggle-changed',
+    },
 }))
 
 function mockLocalStorageValues({
@@ -89,6 +97,13 @@ describe('useHelpdeskV2BaselineFlag', () => {
         })
 
         expect(mockSetIsEnabled).toHaveBeenCalledWith(false)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.HelpdeskV2ToggleChanged,
+            {
+                current_toggle_enabled: true,
+                next_toggle_enabled: false,
+            },
+        )
     })
 
     it('should enable only the Helpdesk V2 toggle when onToggle is called while disabled', () => {
@@ -102,5 +117,12 @@ describe('useHelpdeskV2BaselineFlag', () => {
         })
 
         expect(mockSetIsEnabled).toHaveBeenCalledWith(true)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.HelpdeskV2ToggleChanged,
+            {
+                current_toggle_enabled: false,
+                next_toggle_enabled: true,
+            },
+        )
     })
 })

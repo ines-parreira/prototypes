@@ -2471,6 +2471,9 @@ importers:
       '@repo/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@repo/logging':
+        specifier: workspace:*
+        version: link:../logging
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils

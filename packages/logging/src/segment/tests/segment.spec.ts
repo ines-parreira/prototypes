@@ -1,5 +1,10 @@
 import { deprecatedEvents } from '../deprecated-events'
-import { identifyUser, logEvent, logEventWithSampling } from '../segment'
+import {
+    identifyUser,
+    logEvent,
+    logEventWithSampling,
+    logPageChange,
+} from '../segment'
 import { SegmentEvent } from '../types'
 
 const mockUser = {
@@ -20,6 +25,7 @@ describe('segmentTracker', () => {
         window.STAGING = false
         window.DEVELOPMENT = false
         vi.clearAllMocks()
+        window.localStorage.clear()
     })
 
     afterEach(() => {
@@ -75,8 +81,83 @@ describe('segmentTracker', () => {
                     country: mockUser.country,
                     role: mockUser.role.name,
                     created_at: mockUser.created_datetime,
+                    helpdesk_enabled: true,
                     notification_permission: 'granted',
                 },
+            )
+        })
+
+        it('should identify the user with Helpdesk disabled when the local toggle is off', () => {
+            window.localStorage.setItem('helpdesk-v2-beta', 'false')
+
+            identifyUser(mockUser)
+
+            expect(window.analytics.identify).toHaveBeenNthCalledWith(
+                1,
+                window.SEGMENT_ANALYTICS_USER_ID,
+                expect.objectContaining({
+                    helpdesk_enabled: false,
+                }),
+            )
+        })
+
+        it('should identify the user with Helpdesk enabled when the local toggle is on', () => {
+            window.localStorage.setItem('helpdesk-v2-beta', 'true')
+
+            identifyUser(mockUser)
+
+            expect(window.analytics.identify).toHaveBeenNthCalledWith(
+                1,
+                window.SEGMENT_ANALYTICS_USER_ID,
+                expect.objectContaining({
+                    helpdesk_enabled: true,
+                }),
+            )
+        })
+
+        it('should identify the user with Helpdesk enabled when the local toggle value is invalid', () => {
+            window.localStorage.setItem('helpdesk-v2-beta', 'invalid')
+
+            identifyUser(mockUser)
+
+            expect(window.analytics.identify).toHaveBeenNthCalledWith(
+                1,
+                window.SEGMENT_ANALYTICS_USER_ID,
+                expect.objectContaining({
+                    helpdesk_enabled: true,
+                }),
+            )
+        })
+
+        it('should identify the user with Helpdesk enabled when the local toggle value is not boolean', () => {
+            window.localStorage.setItem('helpdesk-v2-beta', '"false"')
+
+            identifyUser(mockUser)
+
+            expect(window.analytics.identify).toHaveBeenNthCalledWith(
+                1,
+                window.SEGMENT_ANALYTICS_USER_ID,
+                expect.objectContaining({
+                    helpdesk_enabled: true,
+                }),
+            )
+        })
+
+        it('should identify the user with Helpdesk enabled when reading the local toggle fails', () => {
+            vi.spyOn(Storage.prototype, 'getItem').mockImplementationOnce(
+                () => {
+                    throw new Error('Storage is unavailable')
+                },
+            )
+
+            identifyUser(mockUser)
+
+            expect(window.analytics.identify).toHaveBeenNthCalledWith(
+                1,
+                window.SEGMENT_ANALYTICS_USER_ID,
+                expect.objectContaining({
+                    helpdesk_enabled: true,
+                }),
             )
         })
 
@@ -139,6 +220,22 @@ describe('segmentTracker', () => {
             logEventWithSampling(deprecatedEvent, {}, 1)
 
             expect(window.analytics.track).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('logPageChange', () => {
+        it('should track a page change', () => {
+            logPageChange()
+
+            expect(window.analytics.page).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not track a page change when the user is impersonated', () => {
+            window.USER_IMPERSONATED = true
+
+            logPageChange()
+
+            expect(window.analytics.page).not.toHaveBeenCalled()
         })
     })
 })

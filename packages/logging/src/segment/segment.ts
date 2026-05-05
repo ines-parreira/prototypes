@@ -51,6 +51,24 @@ type GorgiasUser = {
     notification_permission: string
 }
 
+const HELPDESK_V2_LOCAL_STORAGE_KEY = 'helpdesk-v2-beta'
+
+function getHelpdeskEnabled() {
+    try {
+        const value = window.localStorage.getItem(HELPDESK_V2_LOCAL_STORAGE_KEY)
+
+        if (value === null) {
+            return true
+        }
+
+        const parsedValue = JSON.parse(value) as unknown
+
+        return typeof parsedValue === 'boolean' ? parsedValue : true
+    } catch {
+        return true
+    }
+}
+
 export const identifyUser = <U extends GorgiasUser>(user: U) => {
     if (!shouldSendEvent()) {
         return
@@ -64,6 +82,7 @@ export const identifyUser = <U extends GorgiasUser>(user: U) => {
         country: user.country,
         role: user.role.name,
         created_at: user.created_datetime,
+        helpdesk_enabled: getHelpdeskEnabled(),
         notification_permission: notification.Permission.get(),
     })
 }

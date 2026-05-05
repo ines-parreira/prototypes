@@ -288,6 +288,7 @@ export enum SegmentEvent {
     HelpCenterTemplatesModalViewed = 'help-center/templates/modal-viewed',
     HelpCenterTemplatesUseTemplateButtonClicked = 'help-center/templates/use-template-button-clicked',
     HelpCenterTemplatesUseTemplateButtonInModalClicked = 'help-center/templates/use-template-button-in-modal-clicked',
+    HelpdeskV2ToggleChanged = 'helpdesk-v2-toggle-changed',
     InfobarIntegrationAddClicked = 'infobar-integration-add-clicked',
     InfobarSearchUsed = 'infobar-search-used',
     InsertDiscountCodeAdded = 'insert-discount-code/added',

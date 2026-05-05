@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { FeatureFlagKey } from '../featureFlagKey'
 import { useFlag } from '../useFlag'
@@ -14,11 +15,14 @@ export function useHelpdeskV2BaselineFlag() {
     )
 
     const onToggle = useCallback(() => {
-        if (isEnabled) {
-            setIsEnabled(false)
-        } else {
-            setIsEnabled(true)
-        }
+        const nextIsEnabled = !isEnabled
+
+        logEvent(SegmentEvent.HelpdeskV2ToggleChanged, {
+            current_toggle_enabled: isEnabled,
+            next_toggle_enabled: nextIsEnabled,
+        })
+
+        setIsEnabled(nextIsEnabled)
     }, [isEnabled, setIsEnabled])
 
     return useMemo(
