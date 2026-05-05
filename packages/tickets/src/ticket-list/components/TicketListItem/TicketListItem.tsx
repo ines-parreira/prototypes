@@ -193,6 +193,7 @@ export const TicketListItem = memo(function TicketListItem({
                             <TicketMessageSourceIcon
                                 source={ticket.channel as TicketMessageSource}
                                 size="sm"
+                                color="content-neutral-secondary"
                             />
                         </Box>
                     </Box>

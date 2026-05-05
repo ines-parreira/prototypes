@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { screen, waitFor } from '@testing-library/react'
 
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
@@ -7,23 +5,6 @@ import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 import { render } from '../../../../tests/render.utils'
 import { useSortOrder } from '../../../hooks/useSortOrder'
 import { SortOrderDropdown } from '../SortOrderDropdown'
-
-vi.mock('@gorgias/axiom', async (importOriginal) => ({
-    ...(await importOriginal()),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: React.ReactNode
-        children: React.ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ title }: { title?: string }) => <div>{title}</div>,
-}))
 
 vi.mock('../../../hooks/useSortOrder')
 const useSortOrderMock = vi.mocked(useSortOrder)
@@ -77,6 +58,39 @@ describe('SortOrderDropdown', () => {
             expect(
                 screen.getByRole('menuitemradio', { name: /priority/i }),
             ).toBeInTheDocument()
+        })
+
+        it('marks the current sort field as selected', async () => {
+            useSortOrderMock.mockReturnValue([
+                ListViewItemsUpdatesOrderBy.LastReceivedMessageDatetimeAsc,
+                vi.fn(),
+            ])
+            const { user } = render(<SortOrderDropdown viewId={VIEW_ID} />)
+            await openMenu(user)
+
+            expect(
+                screen.getByRole('menuitemradio', {
+                    name: /last received message/i,
+                }),
+            ).toHaveAttribute('aria-checked', 'true')
+            expect(
+                screen.getByRole('menuitemradio', { name: /last message/i }),
+            ).toHaveAttribute('aria-checked', 'false')
+        })
+
+        it('renders with no selected field when the sort order is unsupported', async () => {
+            useSortOrderMock.mockReturnValue([
+                'unsupported:desc' as ListViewItemsUpdatesOrderBy,
+                vi.fn(),
+            ])
+            const { user } = render(<SortOrderDropdown viewId={VIEW_ID} />)
+            await openMenu(user)
+
+            const checkedItems = screen
+                .getAllByRole('menuitemradio')
+                .filter((item) => item.getAttribute('aria-checked') === 'true')
+
+            expect(checkedItems).toHaveLength(0)
         })
     })
 

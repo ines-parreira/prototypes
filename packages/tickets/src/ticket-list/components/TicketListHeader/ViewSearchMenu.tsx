@@ -54,7 +54,7 @@ export function ViewSearchMenu({ viewId }: ViewSearchMenuProps) {
     }
 
     return (
-        <Box width="100%" minWidth={0}>
+        <Box className={css.triggerContainer} width="100%" minWidth={0}>
             <Menu
                 aria-label="Select ticket view"
                 placement={MenuPlacement.BottomLeft}
@@ -68,41 +68,36 @@ export function ViewSearchMenu({ viewId }: ViewSearchMenuProps) {
                 isSearchable
                 searchValue={searchValue}
                 onSearchChange={setSearchValue}
-                trigger={({ isOpen: isMenuOpen }) => (
-                    <Box
-                        className={css.triggerWrapper}
-                        width="100%"
-                        minWidth={0}
-                    >
-                        <SelectTrigger>
+                trigger={({ isOpen: isMenuOpen, isDisabled }) => (
+                    <SelectTrigger isDisabled={isDisabled}>
+                        <Box
+                            flexDirection="row"
+                            alignItems="center"
+                            gap="xs"
+                            width="100%"
+                            minWidth={0}
+                            maxWidth="100%"
+                            pr="xs"
+                        >
+                            <Text
+                                overflow="ellipsis"
+                                wrap="nowrap"
+                                variant="medium"
+                                className={css.viewName}
+                                color="content-neutral-default"
+                            >
+                                {viewName}
+                            </Text>
                             <Box
+                                className={css.chevron}
                                 flexDirection="row"
                                 alignItems="center"
-                                gap="xs"
-                                minWidth={0}
-                                maxWidth="100%"
-                                pr="xs"
+                                flexShrink={0}
                             >
-                                <Text
-                                    overflow="ellipsis"
-                                    wrap="nowrap"
-                                    variant="medium"
-                                    className={css.viewName}
-                                    color="content-neutral-default"
-                                >
-                                    {viewName}
-                                </Text>
-                                <Box
-                                    className={css.chevron}
-                                    flexDirection="row"
-                                    alignItems="center"
-                                    flexShrink={0}
-                                >
-                                    <DropdownIcon isOpen={isMenuOpen} />
-                                </Box>
+                                <DropdownIcon isOpen={isMenuOpen} />
                             </Box>
-                        </SelectTrigger>
-                    </Box>
+                        </Box>
+                    </SelectTrigger>
                 )}
             >
                 <ViewSearchMenuContent

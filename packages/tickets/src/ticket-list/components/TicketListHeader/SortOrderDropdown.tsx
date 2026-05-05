@@ -46,7 +46,14 @@ export const SORT_FIELDS = [
         asc: ListViewItemsUpdatesOrderBy.PriorityAsc,
         desc: ListViewItemsUpdatesOrderBy.PriorityDesc,
     },
-]
+] as const
+
+type SortField = (typeof SORT_FIELDS)[number]
+type SortFieldId = SortField['id']
+
+const SORT_FIELDS_BY_ID = Object.fromEntries(
+    SORT_FIELDS.map((field) => [field.id, field]),
+) as Record<SortFieldId, SortField>
 
 export function parseSortOrder(sortOrder: ListViewItemsUpdatesOrderBy) {
     const direction = sortOrder.endsWith(':asc') ? 'asc' : 'desc'
@@ -66,9 +73,8 @@ export function SortOrderDropdown({ viewId }: Props) {
     const currentSort = useMemo(() => parseSortOrder(sortOrder), [sortOrder])
 
     const handleSortClick = useCallback(
-        (fieldId: string) => {
-            const field = SORT_FIELDS.find((f) => f.id === fieldId)
-            if (!field) return
+        (fieldId: SortFieldId) => {
+            const field = SORT_FIELDS_BY_ID[fieldId]
             if (currentSort.field?.id === fieldId) {
                 const newDirection =
                     currentSort.direction === 'desc' ? 'asc' : 'desc'
@@ -81,14 +87,14 @@ export function SortOrderDropdown({ viewId }: Props) {
     )
 
     return (
-        <Tooltip
+        <Menu
+            placement={MenuPlacement.BottomRight}
+            size={MenuSize.Sm}
+            aria-label="Sort view by"
+            selectionMode="single"
+            selectedKeys={new Set([currentSort.field?.id ?? ''])}
             trigger={
-                <Menu
-                    placement={MenuPlacement.BottomRight}
-                    size={MenuSize.Sm}
-                    aria-label="Sort view by"
-                    selectionMode="single"
-                    selectedKeys={new Set([currentSort.field?.id ?? ''])}
+                <Tooltip
                     trigger={
                         <Button
                             variant="tertiary"
@@ -98,32 +104,32 @@ export function SortOrderDropdown({ viewId }: Props) {
                         />
                     }
                 >
-                    <MenuSection id="sort-options" name="Sort tickets">
-                        {SORT_FIELDS.map((field) => (
-                            <SortOrderMenuItem
-                                key={field.id}
-                                fieldId={field.id}
-                                fieldLabel={field.label}
-                                isSelected={field.id === currentSort.field?.id}
-                                isDescending={currentSort.direction === 'desc'}
-                                onAction={handleSortClick}
-                            />
-                        ))}
-                    </MenuSection>
-                </Menu>
+                    <TooltipContent title="Sort view by" />
+                </Tooltip>
             }
         >
-            <TooltipContent title="Sort view by" />
-        </Tooltip>
+            <MenuSection id="sort-options" name="Sort tickets">
+                {SORT_FIELDS.map((field) => (
+                    <SortOrderMenuItem
+                        key={field.id}
+                        fieldId={field.id}
+                        fieldLabel={field.label}
+                        isSelected={field.id === currentSort.field?.id}
+                        isDescending={currentSort.direction === 'desc'}
+                        onAction={handleSortClick}
+                    />
+                ))}
+            </MenuSection>
+        </Menu>
     )
 }
 
 type SortOrderMenuItemProps = {
-    fieldId: string
+    fieldId: SortFieldId
     fieldLabel: string
     isSelected: boolean
     isDescending: boolean
-    onAction: (fieldId: string) => void
+    onAction: (fieldId: SortFieldId) => void
 }
 
 function SortOrderMenuItem({
