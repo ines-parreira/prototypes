@@ -128,9 +128,14 @@
             {
                 "paths": [
                     {
-                        "importNames": ["act"],
-                        "message": "Do not import directly from @testing-library/react-hooks. Use renderHook from utils/testing/renderHook instead.",
+                        "importNames": ["renderHook"],
+                        "message": "Import renderHook from @repo/testing instead.",
                         "name": "@testing-library/react-hooks"
+                    },
+                    {
+                        "importNames": ["render", "renderHook"],
+                        "message": "Import render and renderHook from @repo/testing instead.",
+                        "name": "@testing-library/react"
                     },
                     {
                         "importNames": [
@@ -156,11 +161,6 @@
                         "importNames": ["DndProvider"],
                         "message": "Please use the wrapper component from 'utils/wrappers/DndProvider' instead.",
                         "name": "react-dnd"
-                    },
-                    {
-                        "importNames": ["renderHook"],
-                        "message": "Import 'renderHook' from '@repo/testing' using alias: import { renderHook } from '@repo/testing'",
-                        "name": "@testing-library/react-hooks"
                     },
                     {
                         "importNames": ["useDispatch"],

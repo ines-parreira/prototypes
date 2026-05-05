@@ -7,9 +7,9 @@ import {
     unregisterAppActivityTrackerHooks,
 } from '@repo/activity-tracker'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { assumeMock, flushPromises } from '@repo/testing'
+import { assumeMock, flushPromises, render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

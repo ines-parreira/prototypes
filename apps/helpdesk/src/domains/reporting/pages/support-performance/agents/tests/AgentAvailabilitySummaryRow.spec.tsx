@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { AgentAvailabilitySummaryRow } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilitySummaryRow'
 import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
@@ -93,10 +94,6 @@ const renderRow = (
 }
 
 describe('AgentAvailabilitySummaryRow', () => {
-    afterEach(() => {
-        document.body.innerHTML = ''
-    })
-
     it.each([
         {
             row: 'total' as const,

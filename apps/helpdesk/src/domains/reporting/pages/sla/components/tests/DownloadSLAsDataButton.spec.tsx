@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import {

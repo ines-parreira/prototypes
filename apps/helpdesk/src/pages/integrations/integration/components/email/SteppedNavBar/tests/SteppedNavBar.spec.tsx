@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { cleanup, render, screen, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, screen, within } from '@testing-library/react'
 
 import SteppedNavBar from '../SteppedNavBar'
 

@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'

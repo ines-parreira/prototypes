@@ -1,6 +1,5 @@
 import { useListUserAvailabilities } from '@repo/agent-status'
-import { assumeMock } from '@repo/testing'
-import { renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { usePerformancePageAgentAvailabilities } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities'
 import * as selectors from 'state/entities/stats/selectors'

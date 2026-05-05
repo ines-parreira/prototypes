@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { systemViewIcons } from '@repo/tickets/utils/views'
-import { render } from '@testing-library/react'
 
 import type { View } from 'models/view/types'
 import { ViewCategory } from 'models/view/types'

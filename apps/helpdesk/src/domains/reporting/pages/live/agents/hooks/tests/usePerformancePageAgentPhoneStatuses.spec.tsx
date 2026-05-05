@@ -2,8 +2,7 @@ import {
     useListUserPhoneStatuses,
     usePhoneStatusBatchPollingInterval,
 } from '@repo/agent-status'
-import { assumeMock } from '@repo/testing'
-import { renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { usePerformancePageAgentPhoneStatuses } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentPhoneStatuses'
 import useAppSelector from 'hooks/useAppSelector'

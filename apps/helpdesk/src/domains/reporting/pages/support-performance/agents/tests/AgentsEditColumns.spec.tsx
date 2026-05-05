@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { createDragDropManager } from 'dnd-core'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'

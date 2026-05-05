@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import HelpCenterStatsLoading from 'domains/reporting/pages/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading'
 

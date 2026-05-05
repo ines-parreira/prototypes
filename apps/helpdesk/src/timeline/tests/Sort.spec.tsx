@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEventDefault from '@testing-library/user-event'
 
 import { Sort } from '../Sort'

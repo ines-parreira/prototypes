@@ -1,5 +1,5 @@
-import { userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen, within } from '@testing-library/react'
 
 import { AccordionItem } from '../components/AccordionItem'
 import { AccordionItemContent } from '../components/AccordionItemContent'
@@ -9,7 +9,7 @@ import { AccordionIds } from '../utils/accessibility-ids'
 
 describe('AccordionItemContent', () => {
     it('renders with default props', () => {
-        render(
+        const { container } = render(
             <AccordionRoot value={['item1']} id="test-accordion">
                 <AccordionItem value="item1">
                     <AccordionItemContent>Content</AccordionItemContent>
@@ -17,7 +17,7 @@ describe('AccordionItemContent', () => {
             </AccordionRoot>,
         )
 
-        const content = screen.getByRole('region')
+        const content = within(container).getByRole('region')
         expect(content).toBeInTheDocument()
         expect(content).toHaveTextContent('Content')
         expect(content).toHaveAttribute('aria-hidden', 'false')
@@ -32,7 +32,7 @@ describe('AccordionItemContent', () => {
     })
 
     it('applies open state', async () => {
-        render(
+        const { container } = render(
             <AccordionRoot id="test-accordion">
                 <AccordionItem value="item1">
                     <AccordionItemTrigger>Trigger</AccordionItemTrigger>
@@ -45,12 +45,12 @@ describe('AccordionItemContent', () => {
 
         await userEvent.click(trigger)
 
-        const content = screen.getByRole('region')
+        const content = within(container).getByRole('region')
         expect(content).toHaveAttribute('aria-hidden', 'false')
     })
 
     it('applies custom className', () => {
-        render(
+        const { container } = render(
             <AccordionRoot value={['item1']}>
                 <AccordionItem value="item1">
                     <AccordionItemContent className="custom-class">
@@ -60,7 +60,7 @@ describe('AccordionItemContent', () => {
             </AccordionRoot>,
         )
 
-        const content = screen.getByRole('region')
+        const content = within(container).getByRole('region')
         expect(content).toHaveClass('custom-class')
     })
 })

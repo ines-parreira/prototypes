@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, getLastMockCall, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import StealthInput from 'custom-fields/components/StealthInput'

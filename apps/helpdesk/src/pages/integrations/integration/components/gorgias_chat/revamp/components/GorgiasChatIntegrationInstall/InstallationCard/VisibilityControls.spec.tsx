@@ -1,7 +1,8 @@
 import { createRef } from 'react'
 import type { ReactNode } from 'react'
 
-import { act, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import type { BannerProps, IconProps, SelectFieldProps } from '@gorgias/axiom'

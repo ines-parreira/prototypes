@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { REPORTS_CONFIG } from 'domains/reporting/pages/dashboards/config'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'

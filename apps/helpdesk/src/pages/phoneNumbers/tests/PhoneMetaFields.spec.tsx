@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { PhoneCountry, PhoneType, PhoneUseCase } from 'business/twilio'
 import type { PhoneNumberMeta } from 'models/phoneNumber/types'

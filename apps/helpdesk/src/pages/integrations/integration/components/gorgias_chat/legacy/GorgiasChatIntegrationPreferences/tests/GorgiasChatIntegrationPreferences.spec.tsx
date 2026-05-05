@@ -1,5 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

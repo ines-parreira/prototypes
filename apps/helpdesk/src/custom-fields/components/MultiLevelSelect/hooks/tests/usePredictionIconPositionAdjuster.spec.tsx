@@ -1,5 +1,5 @@
-import { renderHook } from '@repo/testing'
-import { act, render, waitFor } from '@testing-library/react'
+import { render, renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
 import { usePredictionIconPositionAdjuster } from '../usePredictionIconPositionAdjuster'
 

@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { TableWithNestedRows } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
 import { OrderDirection } from 'models/api/types'

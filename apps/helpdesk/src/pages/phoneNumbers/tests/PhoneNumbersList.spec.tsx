@@ -1,6 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
+import { render } from '@repo/testing'
 import { within } from '@testing-library/dom'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'

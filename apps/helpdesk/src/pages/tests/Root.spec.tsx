@@ -2,7 +2,8 @@ import type { ReactNode } from 'react'
 
 import activityTracker from '@repo/activity-tracker'
 import { history } from '@repo/routing'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import type { Location } from 'history'
 import type { Store } from 'redux'
 
@@ -93,8 +94,8 @@ describe('Root', () => {
     it('should render various providers', () => {
         render(<Root store={store} />)
         screen.getByText('QueryClientProvider')
-        screen.getByText('ReduxProvider')
-        screen.getByText('DndProvider')
+        expect(screen.getAllByText('ReduxProvider').length).toBeGreaterThan(0)
+        expect(screen.getAllByText('DndProvider').length).toBeGreaterThan(0)
         screen.getByText('FeatureFlagsProvider')
         screen.getByText('Router')
         screen.getByText('CompatRouter')

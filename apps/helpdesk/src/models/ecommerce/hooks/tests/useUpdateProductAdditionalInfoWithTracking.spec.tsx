@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import type { AxiosError } from 'axios'
 
 import * as queries from '../../queries'

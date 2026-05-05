@@ -1,8 +1,8 @@
 import React from 'react'
 
 import client from '@repo/api-resources'
-import { flushPromises } from '@repo/testing'
-import { act, render } from '@testing-library/react'
+import { flushPromises, render } from '@repo/testing'
+import { act } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

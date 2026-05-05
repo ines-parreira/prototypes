@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen } from '@testing-library/react'
 
 import SingleSenderVerificationFormModal from '../EmailMigration/SingleSenderVerificationFormModal'
 import type VerificationForm from '../EmailOutboundVerification/VerificationForm/VerificationForm'

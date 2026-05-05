@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { useAreFlagsLoading } from '@repo/feature-flags'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { useAutomateNotificationSettingsVisibility } from 'automate/notifications/hooks/useAutomateNotificationSettingsVisibility'
 

@@ -1,5 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import type { CoreScaleOptions, Scale } from 'chart.js'
 import moment from 'moment'
 

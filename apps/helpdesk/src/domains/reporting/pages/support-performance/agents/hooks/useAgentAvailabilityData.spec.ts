@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useListCustomUserAvailabilityStatuses } from '@gorgias/helpdesk-queries'
 

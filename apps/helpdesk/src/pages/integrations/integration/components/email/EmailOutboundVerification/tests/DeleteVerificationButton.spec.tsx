@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import {
     cleanup,
     fireEvent,
-    render,
     screen,
     waitFor,
     within,

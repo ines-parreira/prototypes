@@ -1,6 +1,7 @@
 import { createElement } from 'react'
 
-import { act, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import {
     ObjectType,

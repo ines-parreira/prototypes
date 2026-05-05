@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

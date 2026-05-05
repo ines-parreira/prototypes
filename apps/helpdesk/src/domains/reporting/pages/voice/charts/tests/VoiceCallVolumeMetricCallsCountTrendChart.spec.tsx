@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'

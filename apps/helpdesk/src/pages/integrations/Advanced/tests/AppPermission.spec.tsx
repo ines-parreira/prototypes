@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { oauthPermissions } from 'config/oauthPermissions'
 import AppPermission from 'pages/integrations/Advanced/AppPermission'

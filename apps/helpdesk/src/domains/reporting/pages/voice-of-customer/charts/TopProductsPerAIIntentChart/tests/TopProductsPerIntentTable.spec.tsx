@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { logEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useIntentTicketCountsAndDelta } from 'domains/reporting/hooks/voice-of-customer/useIntentTicketCountsAndDelta'

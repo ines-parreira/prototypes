@@ -2,7 +2,8 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { reportError } from '@repo/logging'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import type { Collapse } from 'reactstrap'
 
 import {

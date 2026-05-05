@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import {

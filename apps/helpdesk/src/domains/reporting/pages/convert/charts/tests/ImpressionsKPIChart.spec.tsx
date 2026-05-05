@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { ImpressionsKPIChart } from 'domains/reporting/pages/convert/charts/ImpressionsKPIChart'

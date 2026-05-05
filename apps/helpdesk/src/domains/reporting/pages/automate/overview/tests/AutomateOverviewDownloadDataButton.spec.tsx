@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import { AutomateOverviewDownloadDataButton } from 'domains/reporting/pages/automate/overview/AutomateOverviewDownloadDataButton'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'

@@ -1,13 +1,15 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { tags } from 'fixtures/tag'
 
 import TagDropdownItem from '../TagDropdownItem'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyTooltip: ({ children }: { children?: ReactNode }) => (
         <div>Tooltip{children}</div>
     ),

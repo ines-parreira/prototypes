@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { BannersContext, BannersDispatchContext } from '../context'
 

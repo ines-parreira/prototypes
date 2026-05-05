@@ -1,8 +1,8 @@
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
-import { render, screen, within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import type { UserEvent } from '@testing-library/user-event'
 import { StaticRouter } from 'react-router-dom'
 

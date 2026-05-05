@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'

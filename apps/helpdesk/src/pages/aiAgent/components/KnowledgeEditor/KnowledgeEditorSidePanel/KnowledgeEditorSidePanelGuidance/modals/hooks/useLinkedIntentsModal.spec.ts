@@ -1,4 +1,5 @@
-import { act, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 

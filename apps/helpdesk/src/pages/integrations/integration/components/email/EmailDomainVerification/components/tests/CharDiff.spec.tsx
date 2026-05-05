@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { diffChars } from '@repo/utils'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import CharDiff from '../CharDiff'
 

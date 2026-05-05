@@ -1,8 +1,8 @@
 import type React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { convertBundle } from 'fixtures/convertBundle'

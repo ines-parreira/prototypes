@@ -1,4 +1,5 @@
-import { act, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { ButtonIntent, ButtonVariant } from '@gorgias/axiom'

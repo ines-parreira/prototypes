@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react'
 
 import * as helpCenterQueries from 'models/helpCenter/queries'
 import type {

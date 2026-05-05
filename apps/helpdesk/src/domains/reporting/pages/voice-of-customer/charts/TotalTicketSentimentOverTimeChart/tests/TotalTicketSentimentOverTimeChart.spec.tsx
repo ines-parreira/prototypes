@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { useSentimentsCustomFieldsTimeSeries } from 'domains/reporting/hooks/useCustomFieldsTimeSeries'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import { DragAndResizeDashboardGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'

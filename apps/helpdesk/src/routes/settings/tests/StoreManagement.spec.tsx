@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'

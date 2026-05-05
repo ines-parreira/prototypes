@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 

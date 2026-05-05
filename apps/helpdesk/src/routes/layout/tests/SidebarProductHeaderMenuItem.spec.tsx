@@ -1,5 +1,6 @@
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 

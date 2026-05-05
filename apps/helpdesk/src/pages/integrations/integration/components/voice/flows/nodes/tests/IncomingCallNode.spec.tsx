@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { FlowProvider } from 'core/ui/flows'
 

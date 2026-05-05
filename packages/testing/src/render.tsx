@@ -2,9 +2,10 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { DefaultOptions } from '@tanstack/react-query'
-import type { RenderOptions } from '@testing-library/react'
+import type { RenderOptions, RenderResult } from '@testing-library/react'
 import { render as renderPrimitive } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import type { UserEvent } from '@testing-library/user-event'
 import type { BackendFactory } from 'dnd-core'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -12,6 +13,7 @@ import { createPortal } from 'react-dom'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route } from 'react-router-dom'
 import type { Middleware } from 'redux'
+import type { MockGetState, MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -26,20 +28,25 @@ type SharedRenderOptions<TStoreState extends object> = Omit<
     path?: string
     queryClientOptions?: DefaultOptions
     reduxMiddlewares?: Middleware[]
-    storeState?: TStoreState
-    wrapper?: React.ComponentType<React.PropsWithChildren<unknown>>
+    storeState?: TStoreState | MockGetState<TStoreState>
+    wrapper?: React.JSXElementConstructor<{ children: React.ReactNode }>
 }
 
 const defaultReduxMiddlewares: Middleware[] = [thunk as Middleware]
 
+type SharedRenderResult<TStoreState extends object> = RenderResult & {
+    store: MockStoreEnhanced<TStoreState>
+    user: UserEvent
+}
+
 export const render = <TStoreState extends object = object>(
     ui: React.ReactElement,
     options?: SharedRenderOptions<TStoreState>,
-) => {
+): SharedRenderResult<TStoreState> => {
     const {
         initialEntries = ['/'],
         dndBackend = HTML5Backend,
-        path = '/',
+        path,
         queryClientOptions,
         reduxMiddlewares = defaultReduxMiddlewares,
         storeState = {} as TStoreState,
@@ -70,13 +77,21 @@ export const render = <TStoreState extends object = object>(
                     <QueryClientProvider client={queryClient}>
                         <DndProvider backend={dndBackend}>
                             <MemoryRouter initialEntries={initialEntries}>
-                                <Route path={path}>
-                                    {ExtraWrapper ? (
-                                        <ExtraWrapper>{children}</ExtraWrapper>
-                                    ) : (
-                                        children
-                                    )}
-                                </Route>
+                                {path ? (
+                                    <Route path={path}>
+                                        {ExtraWrapper ? (
+                                            <ExtraWrapper>
+                                                {children}
+                                            </ExtraWrapper>
+                                        ) : (
+                                            children
+                                        )}
+                                    </Route>
+                                ) : ExtraWrapper ? (
+                                    <ExtraWrapper>{children}</ExtraWrapper>
+                                ) : (
+                                    children
+                                )}
                             </MemoryRouter>
                         </DndProvider>
                     </QueryClientProvider>
@@ -86,9 +101,16 @@ export const render = <TStoreState extends object = object>(
         ),
     })
 
-    return {
-        user,
-        store,
-        ...result,
-    }
+    Object.defineProperties(result, {
+        store: {
+            enumerable: true,
+            value: store,
+        },
+        user: {
+            enumerable: true,
+            value: user,
+        },
+    })
+
+    return result as SharedRenderResult<TStoreState>
 }

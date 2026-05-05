@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 

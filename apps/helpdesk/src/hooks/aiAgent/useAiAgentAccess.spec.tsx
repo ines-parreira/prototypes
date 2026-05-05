@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'

@@ -1,7 +1,8 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'

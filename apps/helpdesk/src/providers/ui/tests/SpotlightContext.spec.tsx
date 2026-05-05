@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { SpotlightContext, useSpotlightContext } from '../SpotlightContext'
 

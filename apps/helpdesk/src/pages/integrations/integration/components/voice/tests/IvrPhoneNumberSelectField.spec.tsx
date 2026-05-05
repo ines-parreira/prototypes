@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
-import { act, render } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'

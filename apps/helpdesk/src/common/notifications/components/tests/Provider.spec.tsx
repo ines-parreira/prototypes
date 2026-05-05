@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'

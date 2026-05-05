@@ -1,6 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import * as platform from '@repo/utils'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import { GlobalNavigationSpotlight } from 'common/navigation/components/GlobalNavigationSpotlight'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'

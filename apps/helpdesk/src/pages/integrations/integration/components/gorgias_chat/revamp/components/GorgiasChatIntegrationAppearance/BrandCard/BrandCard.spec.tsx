@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 

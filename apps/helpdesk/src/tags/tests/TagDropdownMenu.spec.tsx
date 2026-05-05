@@ -1,9 +1,10 @@
 import type { ComponentProps, ContextType } from 'react'
 import React from 'react'
 
+import { render } from '@repo/testing'
 import type { QueryKey } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
@@ -24,6 +25,7 @@ jest.mock('tags/useListTags')
 const mockUseListTags = useListTags as jest.Mock
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyLoadingSpinner: () => 'SpinnerMock',
 }))
 

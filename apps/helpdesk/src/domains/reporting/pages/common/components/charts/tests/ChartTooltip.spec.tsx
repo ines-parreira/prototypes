@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { ChartTooltip } from 'domains/reporting/pages/common/components/charts/ChartTooltip'
 

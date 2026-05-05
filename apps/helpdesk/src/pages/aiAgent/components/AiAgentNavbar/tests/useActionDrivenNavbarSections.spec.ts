@@ -1,5 +1,6 @@
 import { useLocalStorage } from '@repo/hooks'
-import { act, assumeMock, renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'

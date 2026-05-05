@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import AssigneeBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/AssigneeBodyCell'

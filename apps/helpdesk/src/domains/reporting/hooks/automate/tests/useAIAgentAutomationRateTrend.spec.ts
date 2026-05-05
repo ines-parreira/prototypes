@@ -1,4 +1,5 @@
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import { getAIAgentAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {

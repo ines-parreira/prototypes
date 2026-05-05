@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

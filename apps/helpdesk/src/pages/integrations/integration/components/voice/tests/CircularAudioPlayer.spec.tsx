@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { createEvent, fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { createEvent, fireEvent, waitFor } from '@testing-library/react'
 
 import CircularAudioPlayer from '../CircularAudioPlayer'
 

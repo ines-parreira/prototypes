@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { List } from 'domains/reporting/pages/common/components/List'
 

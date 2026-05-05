@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 

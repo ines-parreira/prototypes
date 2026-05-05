@@ -1,7 +1,7 @@
 import { Form } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 

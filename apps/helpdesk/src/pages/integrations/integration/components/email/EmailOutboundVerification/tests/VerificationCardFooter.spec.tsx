@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen } from '@testing-library/react'
 
 import VerificationCardFooter from '../VerificationCard/VerificationCardFooter'
 

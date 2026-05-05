@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen, within } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen, within } from '@testing-library/react'
 
 import { Button, Menu } from '@gorgias/axiom'
 

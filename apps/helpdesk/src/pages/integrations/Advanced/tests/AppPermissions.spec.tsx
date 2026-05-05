@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import type { AppOAuthPermission } from 'config/oauthPermissions'
 import { oauthPermissions } from 'config/oauthPermissions'

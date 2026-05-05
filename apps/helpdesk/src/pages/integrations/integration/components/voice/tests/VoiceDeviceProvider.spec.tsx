@@ -1,9 +1,9 @@
 import type React from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
-import { assumeMock, renderHook } from '@repo/testing'
+import { assumeMock, render, renderHook } from '@repo/testing'
 import { isDesktopDevice } from '@repo/utils'
-import { act, render, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { Device } from '@twilio/voice-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

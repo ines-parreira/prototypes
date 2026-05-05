@@ -1,10 +1,12 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import RecordsTableSkeleton from '../RecordsTableSkeleton'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Skeleton: () => <div> Skeleton</div>,
 }))
 

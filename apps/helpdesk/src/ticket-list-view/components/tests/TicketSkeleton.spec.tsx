@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import TicketSkeleton from '../TicketSkeleton'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Skeleton: () => <div>skeleton</div>,
 }))
 

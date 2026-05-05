@@ -1,9 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { TranslateInputRow } from './TranslateInputRow'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     TextAreaField: ({
         value,
         isDisabled,

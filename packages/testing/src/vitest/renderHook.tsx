@@ -21,7 +21,7 @@ export const renderHook = <TProps, TResult>(
 ) => {
     const {
         initialEntries = ['/'],
-        path = '/',
+        path,
         queryClientOptions,
         wrapper: ExtraWrapper,
         ...renderHookOptions
@@ -45,13 +45,19 @@ export const renderHook = <TProps, TResult>(
         wrapper: ({ children }) => (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={initialEntries}>
-                    <Route path={path}>
-                        {ExtraWrapper ? (
-                            <ExtraWrapper>{children}</ExtraWrapper>
-                        ) : (
-                            children
-                        )}
-                    </Route>
+                    {path ? (
+                        <Route path={path}>
+                            {ExtraWrapper ? (
+                                <ExtraWrapper>{children}</ExtraWrapper>
+                            ) : (
+                                children
+                            )}
+                        </Route>
+                    ) : ExtraWrapper ? (
+                        <ExtraWrapper>{children}</ExtraWrapper>
+                    ) : (
+                        children
+                    )}
                 </MemoryRouter>
                 {createPortal(<Toaster />, document.body)}
             </QueryClientProvider>

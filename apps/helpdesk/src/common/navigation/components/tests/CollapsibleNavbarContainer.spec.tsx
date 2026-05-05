@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { Panels } from '@repo/layout'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import type { NavBarContextType } from 'common/navigation/hooks/useNavBar/context'
 import {

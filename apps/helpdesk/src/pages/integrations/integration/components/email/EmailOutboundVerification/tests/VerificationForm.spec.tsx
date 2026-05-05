@@ -1,7 +1,8 @@
 import React from 'react'
 
+import { render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { cleanup, fireEvent, render } from '@testing-library/react'
+import { cleanup, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 

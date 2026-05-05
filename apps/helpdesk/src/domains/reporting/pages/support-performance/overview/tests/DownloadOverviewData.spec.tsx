@@ -1,7 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import { useDownloadOverViewData } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'

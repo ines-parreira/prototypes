@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { DisplayEventType } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
 import { useFilteredAutomatedInteractionTimeSeries } from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionTimeSeries'

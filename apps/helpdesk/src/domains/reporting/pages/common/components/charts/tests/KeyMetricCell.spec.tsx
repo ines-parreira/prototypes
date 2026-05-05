@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { Map } from 'immutable'
 
 import { LIVE_OVERVIEW_METRICS, stats } from 'domains/reporting/config/stats'

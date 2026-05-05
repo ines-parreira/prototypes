@@ -2,7 +2,8 @@ import type { ComponentProps } from 'react'
 import { useRef } from 'react'
 
 import { shift } from '@floating-ui/react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import * as themeModule from 'core/theme'
 

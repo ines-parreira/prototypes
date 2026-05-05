@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useDownloadAgentsPerformanceData } from 'domains/reporting/hooks/support-performance/agents/useDownloadAgentsPerformanceData'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'

@@ -1,7 +1,7 @@
 import { formatMetricValue, NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
 import type { MetricValueFormat } from '@repo/reporting'
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'

@@ -1,15 +1,13 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter, useHistory, useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import { Toaster } from '@gorgias/axiom'
 
 import { LANGUAGE } from 'constants/languages'
 import { account } from 'fixtures/account'
@@ -236,7 +234,6 @@ const renderComponent = (integration = baseIntegration) => {
         <MemoryRouter>
             <Provider store={store}>
                 <GorgiasTranslateText integration={integration} />
-                <Toaster />
             </Provider>
         </MemoryRouter>,
     )

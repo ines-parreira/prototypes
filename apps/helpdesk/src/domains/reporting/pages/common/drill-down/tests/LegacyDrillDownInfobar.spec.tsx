@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { DRILL_DOWN_PER_PAGE } from 'domains/reporting/hooks/useDrillDownData'
 import { DrillDownDownloadButton } from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton'

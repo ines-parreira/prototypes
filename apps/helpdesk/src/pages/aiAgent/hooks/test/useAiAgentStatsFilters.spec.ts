@@ -1,5 +1,5 @@
 import { useFlagWithLoading } from '@repo/feature-flags'
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { STORES_FILTER_AVAILABILITY_DATE } from 'domains/reporting/pages/common/filters/utils'

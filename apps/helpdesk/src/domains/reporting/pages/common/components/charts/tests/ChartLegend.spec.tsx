@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 import { Chart } from 'chart.js'
 
 import { ChartLegend } from 'domains/reporting/pages/common/components/charts/ChartLegend'

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
@@ -88,6 +89,7 @@ jest.mock(
 const mockButton = jest.fn()
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     SelectField: (props: any) => {
         mockSelectField(props)
         return <div data-testid="language-select-field" />

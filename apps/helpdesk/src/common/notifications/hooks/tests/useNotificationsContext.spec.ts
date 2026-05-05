@@ -1,5 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
-import { act, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { requestNotificationPermission } from '../../requestNotificationPermission'
 import useNotificationsContext from '../useNotificationsContext'

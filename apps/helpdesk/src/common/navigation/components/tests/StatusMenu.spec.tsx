@@ -6,8 +6,8 @@ import {
     useUserAvailability,
 } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { act, render, within } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import useAppDispatch from 'hooks/useAppDispatch'

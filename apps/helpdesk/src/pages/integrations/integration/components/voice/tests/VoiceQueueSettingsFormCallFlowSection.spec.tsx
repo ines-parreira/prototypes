@@ -1,8 +1,8 @@
 import { FormField, useFormContext } from '@repo/forms'
 import * as forms from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { VoiceQueueTargetScope } from '@gorgias/helpdesk-types'
 

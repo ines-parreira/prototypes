@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import { PerformanceByArticle } from 'domains/reporting/pages/help-center/components/PerformanceByArticle/PerformanceByArticle'

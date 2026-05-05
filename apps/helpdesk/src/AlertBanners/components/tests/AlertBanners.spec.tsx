@@ -2,8 +2,8 @@ import React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 import type { BannerNotification } from 'state/notifications/types'

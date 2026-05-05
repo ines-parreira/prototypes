@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import { useListVoiceQueues } from '@gorgias/helpdesk-queries'
 

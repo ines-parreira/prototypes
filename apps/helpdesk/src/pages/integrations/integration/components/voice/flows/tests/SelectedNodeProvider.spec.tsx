@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { useVoiceFlowContext } from '../VoiceFlowContext'
 import VoiceFlowProvider from '../VoiceFlowProvider'

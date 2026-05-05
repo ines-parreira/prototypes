@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import { act, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 

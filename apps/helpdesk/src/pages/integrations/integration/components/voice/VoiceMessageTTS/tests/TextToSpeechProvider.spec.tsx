@@ -1,7 +1,8 @@
 import type React from 'react'
 
 import { Form } from '@repo/forms'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
 import type { DomainEvent } from '@gorgias/events'

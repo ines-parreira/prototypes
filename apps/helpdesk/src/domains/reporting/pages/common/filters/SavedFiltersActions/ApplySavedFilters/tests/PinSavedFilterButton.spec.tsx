@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import {

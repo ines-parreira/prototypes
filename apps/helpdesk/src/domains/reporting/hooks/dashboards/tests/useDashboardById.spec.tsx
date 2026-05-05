@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
 import { mockGetAnalyticsCustomReportHandler } from '@gorgias/helpdesk-mocks'

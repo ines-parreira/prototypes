@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import { SelectableReports } from 'domains/reporting/pages/dashboards/DashboardsModal/SelectableReports'

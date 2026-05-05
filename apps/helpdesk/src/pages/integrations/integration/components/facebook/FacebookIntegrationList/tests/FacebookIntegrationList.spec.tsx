@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import type { History } from 'history'
 import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'

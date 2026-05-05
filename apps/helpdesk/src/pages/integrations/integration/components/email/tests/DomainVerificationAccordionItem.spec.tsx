@@ -1,13 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import {
-    cleanup,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import {
     migrationOutboundVerificationUnverifiedDomain,

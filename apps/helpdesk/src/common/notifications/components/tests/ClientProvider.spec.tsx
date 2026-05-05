@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 
 import { useKnockFeed } from '@knocklabs/react'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import Client from '../../Client'
 import Context from '../../Context'

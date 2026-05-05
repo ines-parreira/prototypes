@@ -1,6 +1,7 @@
+import { render } from '@repo/testing'
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import UpdatePaymentTermsPage from '../UpdatePaymentTerms'

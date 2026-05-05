@@ -1,8 +1,8 @@
 import { useFlag } from '@repo/feature-flags'
 import { Form } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { integrationsState } from 'fixtures/integrations'

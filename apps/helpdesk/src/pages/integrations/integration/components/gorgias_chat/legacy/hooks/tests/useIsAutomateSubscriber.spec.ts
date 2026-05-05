@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'

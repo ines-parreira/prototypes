@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import {
     DateTimeFormatMapper,
     DateTimeFormatType,
     formatDatetime,
 } from '@repo/utils'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -24,6 +25,7 @@ const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
 
 const mockStore = configureMockStore([thunk])
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
+let timezoneGuessSpy: jest.SpiedFunction<typeof moment.tz.guess>
 jest.mock('@repo/logging')
 
 describe('PeriodStatsFilter', () => {
@@ -36,10 +38,12 @@ describe('PeriodStatsFilter', () => {
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
+        timezoneGuessSpy = jest.spyOn(moment.tz, 'guess').mockReturnValue('UTC')
     })
 
     afterEach(() => {
         dateNowSpy.mockRestore()
+        timezoneGuessSpy.mockRestore()
     })
 
     it('should render period filter', () => {

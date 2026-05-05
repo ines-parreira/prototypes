@@ -1,7 +1,8 @@
 import React from 'react'
 
 import client from '@repo/api-resources'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

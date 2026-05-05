@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import type KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'

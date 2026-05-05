@@ -1,74 +1,11 @@
-import type React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Route } from 'react-router-dom'
 
 import { LANGUAGE } from 'constants/languages'
 
 import { LanguageRow } from './LanguageRow'
-
-const mockPush = jest.fn()
-
-jest.mock('@gorgias/axiom', () => ({
-    Box: ({ children, ...rest }: { children: React.ReactNode }) => (
-        <div {...rest}>{children}</div>
-    ),
-    Button: ({
-        children,
-        onClick,
-        'aria-label': ariaLabel,
-        isDisabled,
-    }: {
-        children?: React.ReactNode
-        onClick?: () => void
-        'aria-label'?: string
-        isDisabled?: boolean
-    }) => (
-        <button onClick={onClick} aria-label={ariaLabel} disabled={isDisabled}>
-            {children}
-        </button>
-    ),
-    ButtonAs: { Button: 'button' },
-    ButtonIntent: { Regular: 'regular' },
-    ButtonSize: { Sm: 'sm' },
-    ButtonVariant: { Secondary: 'secondary', Tertiary: 'tertiary' },
-    IconName: { DotsMeatballsHorizontal: 'dots-meatballs-horizontal' },
-    Menu: ({
-        trigger,
-        children,
-    }: {
-        trigger: React.ReactNode
-        children: React.ReactNode
-    }) => (
-        <div>
-            {trigger}
-            {children}
-        </div>
-    ),
-    MenuItem: ({
-        label,
-        onAction,
-    }: {
-        label: string
-        onAction: () => void
-    }) => <button onClick={onAction}>{label}</button>,
-    MenuSection: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Tag: ({ children }: { children?: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-    TagColor: { Purple: 'purple' },
-    TagSize: { Sm: 'sm' },
-    Text: ({ children }: { children?: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-    TextSize: { Md: 'md' },
-}))
-
-jest.mock('react-router-dom', () => ({
-    useHistory: () => ({ push: mockPush }),
-}))
 
 const defaultLanguage = {
     language: LANGUAGE.EN_US,
@@ -78,9 +15,13 @@ const defaultLanguage = {
     showActions: true,
 }
 
-beforeEach(() => {
-    mockPush.mockClear()
-})
+const openActionsMenu = async () => {
+    const user = userEvent.setup()
+
+    await user.click(screen.getByRole('button', { name: /more actions/i }))
+
+    return user
+}
 
 describe('LanguageRow', () => {
     describe('language name', () => {
@@ -131,17 +72,20 @@ describe('LanguageRow', () => {
             const user = userEvent.setup()
 
             render(
-                <LanguageRow
-                    language={defaultLanguage}
-                    isUpdatePending={false}
-                    onClickSetDefault={jest.fn()}
-                    onOpenDeleteModal={jest.fn()}
-                />,
+                <>
+                    <LanguageRow
+                        language={defaultLanguage}
+                        isUpdatePending={false}
+                        onClickSetDefault={jest.fn()}
+                        onOpenDeleteModal={jest.fn()}
+                    />
+                    <Route path={defaultLanguage.link}>Language settings</Route>
+                </>,
             )
 
             await user.click(screen.getByRole('button', { name: /customize/i }))
 
-            expect(mockPush).toHaveBeenCalledWith(defaultLanguage.link)
+            expect(await screen.findByText('Language settings')).toBeVisible()
         })
 
         it('should disable the Customize button when update is pending', () => {
@@ -230,7 +174,6 @@ describe('LanguageRow', () => {
         })
 
         it('should call onClickSetDefault when Make default language is clicked', async () => {
-            const user = userEvent.setup()
             const onClickSetDefault = jest.fn()
 
             render(
@@ -242,15 +185,17 @@ describe('LanguageRow', () => {
                 />,
             )
 
+            const user = await openActionsMenu()
             await user.click(
-                screen.getByRole('button', { name: /make default language/i }),
+                await screen.findByRole('menuitem', {
+                    name: /make default language/i,
+                }),
             )
 
             expect(onClickSetDefault).toHaveBeenCalledWith(defaultLanguage)
         })
 
         it('should call onOpenDeleteModal when Delete is clicked', async () => {
-            const user = userEvent.setup()
             const onOpenDeleteModal = jest.fn()
 
             render(
@@ -262,7 +207,10 @@ describe('LanguageRow', () => {
                 />,
             )
 
-            await user.click(screen.getByRole('button', { name: /^delete$/i }))
+            const user = await openActionsMenu()
+            await user.click(
+                await screen.findByRole('menuitem', { name: /^delete$/i }),
+            )
 
             expect(onOpenDeleteModal).toHaveBeenCalledWith(defaultLanguage)
         })

@@ -1,5 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { cleanup, fireEvent, screen } from '@testing-library/react'
 
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 

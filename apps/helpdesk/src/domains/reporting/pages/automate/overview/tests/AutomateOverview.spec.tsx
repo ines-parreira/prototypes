@@ -5,9 +5,9 @@ import {
     useFlag,
     useFlagWithLoading,
 } from '@repo/feature-flags'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

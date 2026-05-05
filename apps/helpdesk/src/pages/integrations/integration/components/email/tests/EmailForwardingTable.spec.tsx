@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { cleanup, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, screen } from '@testing-library/react'
 
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'

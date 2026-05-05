@@ -1,5 +1,6 @@
 import { Form } from '@repo/forms'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 

@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import type { Action } from 'redux'

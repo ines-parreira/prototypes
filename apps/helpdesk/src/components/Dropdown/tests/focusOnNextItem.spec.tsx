@@ -4,7 +4,8 @@ import type {
 } from 'react'
 import React, { useRef } from 'react'
 
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
 import focusOnNextItem from '../focusOnNextItem'
 

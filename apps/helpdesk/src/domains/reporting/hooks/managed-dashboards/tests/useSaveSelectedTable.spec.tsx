@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 
 import { useSaveSelectedTable } from 'domains/reporting/hooks/managed-dashboards/useSaveSelectedTable'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'

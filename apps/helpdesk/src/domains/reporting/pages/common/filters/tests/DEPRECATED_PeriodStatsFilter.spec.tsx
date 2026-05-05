@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { render } from '@repo/testing'
 import {
     DateTimeFormatMapper,
     DateTimeFormatType,
     formatDatetime,
 } from '@repo/utils'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

@@ -1,8 +1,9 @@
 // must be kept as first import in the file
-import 'pages/aiAgent/test/mock-activation-hooks.utils'
-
 import { assumeMock, render as renderWithProviders } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
+
+import 'pages/aiAgent/test/mock-activation-hooks.utils'
+
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import _range from 'lodash/range'
 import { useLocation } from 'react-router-dom'

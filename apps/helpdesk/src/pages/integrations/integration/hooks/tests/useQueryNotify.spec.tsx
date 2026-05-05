@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { createPortal } from 'react-dom'
 
 import { Toaster } from '@gorgias/axiom'

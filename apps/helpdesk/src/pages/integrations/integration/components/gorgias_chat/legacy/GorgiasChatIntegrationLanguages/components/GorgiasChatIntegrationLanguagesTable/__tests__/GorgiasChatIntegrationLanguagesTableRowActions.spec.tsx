@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import type Modal from 'pages/common/components/modal/Modal'

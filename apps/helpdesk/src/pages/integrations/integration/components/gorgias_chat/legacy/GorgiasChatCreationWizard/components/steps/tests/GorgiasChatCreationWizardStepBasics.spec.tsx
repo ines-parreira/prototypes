@@ -1,7 +1,8 @@
 import type React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'

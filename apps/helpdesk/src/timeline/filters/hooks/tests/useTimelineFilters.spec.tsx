@@ -1,5 +1,6 @@
 import { useLocalStorage } from '@repo/hooks'
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import type { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
 

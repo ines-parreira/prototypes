@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ContentType, HttpMethod } from 'models/api/types'

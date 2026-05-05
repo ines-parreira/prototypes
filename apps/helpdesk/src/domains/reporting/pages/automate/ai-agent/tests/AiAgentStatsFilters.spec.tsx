@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'

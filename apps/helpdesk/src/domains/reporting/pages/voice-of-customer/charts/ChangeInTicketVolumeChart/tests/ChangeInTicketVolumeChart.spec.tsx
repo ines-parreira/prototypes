@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { ChangeInTicketVolumeChart } from 'domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/ChangeInTicketVolumeChart'
 import { TicketVolumeTable } from 'domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/TicketVolumeTable'

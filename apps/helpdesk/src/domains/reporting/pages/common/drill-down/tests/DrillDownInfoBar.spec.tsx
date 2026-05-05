@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

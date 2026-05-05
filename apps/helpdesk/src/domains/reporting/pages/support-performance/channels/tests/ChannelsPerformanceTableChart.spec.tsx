@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { ChannelsCardExtra } from 'domains/reporting/pages/support-performance/channels/ChannelsCardExtra'
 import { ChannelsPerformanceTableChart } from 'domains/reporting/pages/support-performance/channels/ChannelsPerformanceTableChart'

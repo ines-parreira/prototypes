@@ -1,6 +1,7 @@
 import { Form } from '@repo/forms'
 import * as forms from '@repo/forms'
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import VoiceQueueSettingsFormGeneralSection from '../VoiceQueueSettingsFormGeneralSection'
 

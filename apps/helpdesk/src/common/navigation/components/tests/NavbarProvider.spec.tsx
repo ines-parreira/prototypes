@@ -1,5 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { act, fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent } from '@testing-library/react'
 
 import type { NavBarContextType } from '../../hooks/useNavBar/context'
 import { NavBarDisplayMode } from '../../hooks/useNavBar/context'

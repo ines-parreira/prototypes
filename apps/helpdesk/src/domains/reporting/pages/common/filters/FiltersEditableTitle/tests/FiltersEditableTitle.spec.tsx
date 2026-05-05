@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
-import { act, fireEvent, render } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { act, fireEvent } from '@testing-library/react'
 
 import { FILTER_WARNING_ICON } from 'domains/reporting/pages/common/components/Filter/constants'
 import {

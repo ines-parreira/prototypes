@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react'
 
+import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -268,18 +268,20 @@ export const renderWithProviders = (
     const queryClient = mockQueryClient()
     const store = mockStore(createDefaultReduxState(stateOverrides))
 
+    const renderResult = render(
+        <Provider store={store}>
+            <MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <ThemeProvider>{ui}</ThemeProvider>
+                </QueryClientProvider>
+            </MemoryRouter>
+        </Provider>,
+    )
+
     return {
+        ...renderResult,
         store,
         queryClient,
-        ...render(
-            <Provider store={store}>
-                <MemoryRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <ThemeProvider>{ui}</ThemeProvider>
-                    </QueryClientProvider>
-                </MemoryRouter>
-            </Provider>,
-        ),
     }
 }
 

@@ -3,8 +3,8 @@ import React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 import { useHistory } from 'react-router-dom'
 
 import { TicketDetail } from 'tickets/ticket-detail'

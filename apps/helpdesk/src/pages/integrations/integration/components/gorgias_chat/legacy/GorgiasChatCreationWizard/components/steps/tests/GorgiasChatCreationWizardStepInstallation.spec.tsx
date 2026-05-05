@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

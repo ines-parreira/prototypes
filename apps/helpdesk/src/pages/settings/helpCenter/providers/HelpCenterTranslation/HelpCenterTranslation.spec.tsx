@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { act, flushPromises, renderHook } from '@repo/testing'
+import { flushPromises, renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

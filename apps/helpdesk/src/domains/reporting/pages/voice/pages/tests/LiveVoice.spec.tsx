@@ -1,8 +1,7 @@
 import type React from 'react'
 import type { ComponentType } from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import * as apiQueries from '@gorgias/helpdesk-queries'
 import { useChannel } from '@gorgias/realtime'

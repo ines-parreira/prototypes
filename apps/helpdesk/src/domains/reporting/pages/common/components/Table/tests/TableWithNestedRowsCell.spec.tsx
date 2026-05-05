@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react'
 
-import { triggerWidthResize } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { render, triggerWidthResize } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import {
     DEFAULT_MARGIN,

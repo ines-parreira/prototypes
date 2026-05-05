@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { useProductInsightsTableSetting } from 'domains/reporting/hooks/useProductInsightsTableConfigSetting'
 import { EditTableColumns } from 'domains/reporting/pages/common/components/Table/EditTableColumns'

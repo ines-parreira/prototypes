@@ -1,6 +1,6 @@
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/types'

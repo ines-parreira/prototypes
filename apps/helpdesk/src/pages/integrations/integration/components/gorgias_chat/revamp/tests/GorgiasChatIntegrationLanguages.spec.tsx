@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { LANGUAGE } from 'constants/languages'
@@ -55,6 +55,7 @@ jest.mock(
 )
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Button: ({ children, ...rest }: { children?: React.ReactNode }) => (
         <button {...rest}>{children}</button>
     ),

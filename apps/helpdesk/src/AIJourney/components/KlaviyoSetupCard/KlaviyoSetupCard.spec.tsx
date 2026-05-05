@@ -1,22 +1,11 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { KlaviyoSetupCard } from './KlaviyoSetupCard'
-
-const mockWriteText = jest.fn().mockResolvedValue(undefined)
-
-beforeAll(() => {
-    Object.defineProperty(navigator, 'clipboard', {
-        value: { writeText: mockWriteText },
-        writable: true,
-        configurable: true,
-    })
-})
 
 describe('<KlaviyoSetupCard />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockWriteText.mockResolvedValue(undefined)
     })
 
     it('renders the webhook URL', () => {
@@ -40,17 +29,22 @@ describe('<KlaviyoSetupCard />', () => {
         expect(copyButtons.length).toBeGreaterThanOrEqual(1)
     })
 
-    it('copies webhook URL to clipboard when copy button is clicked', () => {
-        render(
+    it('copies webhook URL to clipboard when copy button is clicked', async () => {
+        const { user } = render(
             <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
         )
+        const writeTextSpy = jest
+            .spyOn(navigator.clipboard, 'writeText')
+            .mockResolvedValue(undefined)
 
         const copyButtons = screen.getAllByRole('button', { name: /copy/i })
-        fireEvent.click(copyButtons[0])
+        await user.click(copyButtons[0])
 
-        expect(mockWriteText).toHaveBeenCalledWith(
-            'https://app.gorgias.com/webhooks/journey/abc123',
-        )
+        await waitFor(() => {
+            expect(writeTextSpy).toHaveBeenCalledWith(
+                'https://app.gorgias.com/webhooks/journey/abc123',
+            )
+        })
     })
 
     it('renders the payload template without integration_id', () => {
@@ -61,15 +55,22 @@ describe('<KlaviyoSetupCard />', () => {
         expect(screen.queryByText(/integration_id/)).not.toBeInTheDocument()
     })
 
-    it('copies payload template to clipboard when payload copy button is clicked', () => {
-        render(
+    it('copies payload template to clipboard when payload copy button is clicked', async () => {
+        const { user } = render(
             <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
         )
+        const writeTextSpy = jest
+            .spyOn(navigator.clipboard, 'writeText')
+            .mockResolvedValue(undefined)
 
         const copyButtons = screen.getAllByRole('button', { name: /copy/i })
-        fireEvent.click(copyButtons[1])
+        await user.click(copyButtons[1])
 
-        const copiedText = mockWriteText.mock.calls[0][0] as string
+        await waitFor(() => {
+            expect(writeTextSpy).toHaveBeenCalled()
+        })
+
+        const copiedText = writeTextSpy.mock.calls[0][0] as string
         expect(copiedText).toContain('"phone_number"')
         expect(copiedText).not.toContain('integration_id')
     })
@@ -85,7 +86,14 @@ describe('<KlaviyoSetupCard />', () => {
     })
 
     it('uses document.execCommand fallback when navigator.clipboard is unavailable', async () => {
-        const user = userEvent.setup()
+        document.execCommand = jest.fn().mockReturnValue(true)
+        const mockExecCommand = document.execCommand as jest.Mock
+        const appendSpy = jest.spyOn(document.body, 'appendChild')
+        const removeSpy = jest.spyOn(document.body, 'removeChild')
+
+        const { user } = render(
+            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
+        )
         const originalClipboard = navigator.clipboard
 
         Object.defineProperty(navigator, 'clipboard', {
@@ -94,19 +102,12 @@ describe('<KlaviyoSetupCard />', () => {
             configurable: true,
         })
 
-        document.execCommand = jest.fn().mockReturnValue(true)
-        const mockExecCommand = document.execCommand as jest.Mock
-        const appendSpy = jest.spyOn(document.body, 'appendChild')
-        const removeSpy = jest.spyOn(document.body, 'removeChild')
-
-        render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
-
         const copyButtons = screen.getAllByRole('button', { name: /copy/i })
         await user.click(copyButtons[0])
 
-        expect(mockExecCommand).toHaveBeenCalledWith('copy')
+        await waitFor(() => {
+            expect(mockExecCommand).toHaveBeenCalledWith('copy')
+        })
         expect(appendSpy).toHaveBeenCalled()
         expect(removeSpy).toHaveBeenCalled()
 
@@ -129,9 +130,7 @@ describe('<KlaviyoSetupCard />', () => {
     })
 
     it('shows "Copied!" feedback after clicking copy and reverts after timeout', async () => {
-        const user = userEvent.setup()
-
-        render(
+        const { user } = render(
             <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
         )
 

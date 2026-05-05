@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import AblyRealtimeProviders from '../AblyRealtimeProviders'
 

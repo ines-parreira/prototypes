@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { logEvent } from '@repo/logging'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import type { LinkProps } from 'react-router-dom'

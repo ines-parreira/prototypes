@@ -1,5 +1,6 @@
+import { render } from '@repo/testing'
 import { setViewsCount } from '@repo/views'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'

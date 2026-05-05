@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock, render, userEvent } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import * as constants from 'domains/reporting/pages/dashboards/config'

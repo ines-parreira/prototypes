@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { useChannelsReportMetrics } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
 import { ChannelsDownloadDataButton } from 'domains/reporting/pages/support-performance/channels/ChannelsDownloadDataButton'

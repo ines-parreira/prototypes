@@ -1,6 +1,6 @@
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import {

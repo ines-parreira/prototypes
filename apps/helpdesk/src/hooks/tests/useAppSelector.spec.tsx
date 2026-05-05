@@ -1,4 +1,5 @@
-import { act, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'

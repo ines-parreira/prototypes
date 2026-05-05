@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { SatisfactionDownloadDataButton } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionDownloadDataButton'

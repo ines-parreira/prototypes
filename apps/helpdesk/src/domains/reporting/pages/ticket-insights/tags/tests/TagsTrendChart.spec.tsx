@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { useTagsTimeSeries } from 'domains/reporting/hooks/ticket-insights/useTagsTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'

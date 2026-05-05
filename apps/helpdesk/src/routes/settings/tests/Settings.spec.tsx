@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'

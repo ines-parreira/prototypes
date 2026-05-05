@@ -2,8 +2,8 @@ import React from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, within } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { within } from '@testing-library/react'
 
 import {
     THEME_CONFIGS,

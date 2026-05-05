@@ -1,5 +1,5 @@
-import { act, renderHook } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'

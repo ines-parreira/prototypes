@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { history } from '@repo/routing'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import { TicketsCreatedCell } from 'domains/reporting/pages/convert/components/CampaignTableStats/components/TicketsCreatedCell/TicketsCreatedCell'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'

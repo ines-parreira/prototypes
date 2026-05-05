@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { LANGUAGE } from 'constants/languages'
@@ -8,6 +9,7 @@ import { LANGUAGE } from 'constants/languages'
 import { DeleteLanguageModal } from './DeleteLanguageModal'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Box: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),

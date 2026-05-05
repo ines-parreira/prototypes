@@ -1,7 +1,7 @@
 import type React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'

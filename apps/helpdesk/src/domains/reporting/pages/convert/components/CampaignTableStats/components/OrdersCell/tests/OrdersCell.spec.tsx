@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { OrdersCell } from 'domains/reporting/pages/convert/components/CampaignTableStats/components/OrdersCell/OrdersCell'

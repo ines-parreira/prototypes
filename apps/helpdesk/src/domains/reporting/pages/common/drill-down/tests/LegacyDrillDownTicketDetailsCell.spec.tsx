@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import { LegacyDrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/LegacyDrillDownTicketDetailsCell'

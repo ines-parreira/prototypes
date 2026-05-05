@@ -1,6 +1,6 @@
 import { useInterval } from '@repo/hooks'
-import { assumeMock } from '@repo/testing'
-import { act, render, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 

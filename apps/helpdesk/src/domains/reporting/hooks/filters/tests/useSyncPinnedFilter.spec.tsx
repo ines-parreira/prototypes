@@ -1,4 +1,5 @@
-import { act, assumeMock, renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { useSyncPinnedFilter } from 'domains/reporting/hooks/filters/useSyncPinnedFilter'
 import type { SavedFilter } from 'domains/reporting/models/stat/types'

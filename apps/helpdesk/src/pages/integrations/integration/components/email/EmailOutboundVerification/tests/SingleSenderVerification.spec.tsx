@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup, screen, waitFor } from '@testing-library/react'
 import { merge } from 'lodash'
 import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'

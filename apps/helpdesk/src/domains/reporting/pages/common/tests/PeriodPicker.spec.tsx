@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 import moment from 'moment-timezone'
 
 import { useTheme } from 'core/theme'

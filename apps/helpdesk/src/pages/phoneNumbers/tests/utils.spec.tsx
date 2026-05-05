@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import { phoneNumbers } from 'fixtures/phoneNumber'
 import { IntegrationType } from 'models/integration/types'

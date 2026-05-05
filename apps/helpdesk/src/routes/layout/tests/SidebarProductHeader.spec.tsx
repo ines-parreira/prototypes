@@ -2,10 +2,10 @@ import type { ReactNode } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { useCurrentUserRole } from '@repo/users'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, within } from '@testing-library/react'
+import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 

@@ -1,5 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, waitFor } from '@testing-library/react'
 import * as chartjs from 'chart.js'
 
 import colors from '@gorgias/design-tokens/tokens/colors'

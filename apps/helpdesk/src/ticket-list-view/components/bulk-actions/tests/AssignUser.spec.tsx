@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import AssignUser from '../AssignUser'

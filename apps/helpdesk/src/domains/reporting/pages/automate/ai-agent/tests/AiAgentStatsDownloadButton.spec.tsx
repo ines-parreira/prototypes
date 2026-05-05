@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { useAIAgentReportMetrics } from 'domains/reporting/hooks/automate/useAIAgentReportMetrics'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'

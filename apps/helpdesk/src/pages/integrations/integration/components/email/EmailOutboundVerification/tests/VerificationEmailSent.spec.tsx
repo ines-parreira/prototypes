@@ -1,13 +1,7 @@
 import React from 'react'
 
-import {
-    act,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-    within,
-} from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
 

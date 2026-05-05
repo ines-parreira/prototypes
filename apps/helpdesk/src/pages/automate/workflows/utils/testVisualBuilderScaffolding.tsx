@@ -1,6 +1,6 @@
+import { render } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { RenderResult } from '@testing-library/react'
-import { render } from '@testing-library/react'
 import type { MemoryHistory } from 'history'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'

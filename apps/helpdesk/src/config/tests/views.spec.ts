@@ -1,6 +1,7 @@
 import type { ReactComponentElement } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _isObject from 'lodash/isObject'

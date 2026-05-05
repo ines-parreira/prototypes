@@ -3,11 +3,7 @@ import type React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
-import {
-    assumeMock,
-    render,
-    render as renderWithProviders,
-} from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { createBrowserHistory, createMemoryHistory } from 'history'
@@ -332,7 +328,7 @@ const renderRoutes = (
         return <>{children}</>
     }
 
-    const result = renderWithProviders(
+    const result = render(
         <SplitTicketViewProvider>
             <Routes />
         </SplitTicketViewProvider>,

@@ -1,6 +1,6 @@
 import { FormField } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
-import { render, waitFor } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import VoiceIntegrationSettingCallTranscription from '../VoiceIntegrationSettingCallTranscription'

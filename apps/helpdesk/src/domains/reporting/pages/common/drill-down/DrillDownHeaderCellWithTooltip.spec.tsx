@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { DrillDownHeaderCellWithTooltip } from 'domains/reporting/pages/common/drill-down/DrillDownHeaderCellWithTooltip'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'

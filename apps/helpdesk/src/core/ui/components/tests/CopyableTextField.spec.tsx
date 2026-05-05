@@ -1,5 +1,6 @@
 import { useCopyToClipboard } from '@repo/hooks'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { CopyableTextField } from '../CopyableTextField'
 

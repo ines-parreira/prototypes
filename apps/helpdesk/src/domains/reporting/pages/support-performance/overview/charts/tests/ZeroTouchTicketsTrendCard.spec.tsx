@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
 import { ZeroTouchTicketsTrendCard } from 'domains/reporting/pages/support-performance/overview/charts/ZeroTouchTicketsTrendCard'

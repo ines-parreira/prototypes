@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 import type { Moment } from 'moment'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'

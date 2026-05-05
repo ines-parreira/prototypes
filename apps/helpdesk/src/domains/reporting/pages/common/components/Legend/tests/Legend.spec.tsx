@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import colorTokens from '@gorgias/design-tokens/tokens/colors'
 

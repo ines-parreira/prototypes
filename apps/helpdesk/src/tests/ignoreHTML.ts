@@ -13,7 +13,8 @@
  * **Example Usage:**
  *
  * ```typescript
- * import { render, screen } from '@testing-library/react';
+ * import { render } from '@repo/testing';
+ * import { screen } from '@testing-library/react';
  * import { ignoreHTML } from 'tests/ignoreHTML';
  *
  * test('matches text ignoring HTML structure and supports regex', () => {

@@ -1,7 +1,7 @@
 import type React from 'react'
 
 import * as featureFlagsModule from '@repo/feature-flags'
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

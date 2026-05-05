@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import type { LegacyLegacyTheme } from '@gorgias/axiom'
 import { LegacyThemeContext as UIKitThemeContext } from '@gorgias/axiom'

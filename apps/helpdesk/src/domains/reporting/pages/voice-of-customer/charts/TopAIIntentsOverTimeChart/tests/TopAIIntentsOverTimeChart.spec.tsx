@@ -1,5 +1,4 @@
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { assumeMock, render } from '@repo/testing'
 
 import { useAIIntentsTimeSeries } from 'domains/reporting/hooks/voice-of-customer/useAIIntentsTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'

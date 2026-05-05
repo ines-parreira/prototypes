@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { render } from '@testing-library/react'
+import { render } from '@repo/testing'
 
 import {
     GorgiasChatAvatarImageType,

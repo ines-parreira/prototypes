@@ -1,7 +1,7 @@
 import { FormField, FormSubmitButton } from '@repo/forms'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 import { BrowserRouter } from 'react-router-dom'
 

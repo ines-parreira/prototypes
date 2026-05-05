@@ -1,4 +1,5 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { StepCardActionMenu } from '../StepCardActionMenu'

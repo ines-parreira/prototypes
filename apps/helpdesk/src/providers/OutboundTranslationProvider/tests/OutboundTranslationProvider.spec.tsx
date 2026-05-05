@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 
 import type { DomainEvent } from '@gorgias/events'

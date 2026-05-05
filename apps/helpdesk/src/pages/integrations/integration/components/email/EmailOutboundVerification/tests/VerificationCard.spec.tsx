@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { cleanup, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { cleanup } from '@testing-library/react'
 
 import VerificationCard from '../VerificationCard/VerificationCard'
 

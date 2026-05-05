@@ -1,8 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen, waitFor, within } from '@testing-library/react'
 
-import { Button, Menu, Toaster } from '@gorgias/axiom'
+import { Button, Menu } from '@gorgias/axiom'
 
 import { UserMenuStatusSubMenu } from '../UserMenuStatusSubMenu'
 
@@ -76,7 +76,6 @@ const renderInMenu = (userId = 1) =>
             <Menu defaultOpen trigger={<Button>Open menu</Button>}>
                 <UserMenuStatusSubMenu userId={userId} />
             </Menu>
-            <Toaster />
         </>,
     )
 

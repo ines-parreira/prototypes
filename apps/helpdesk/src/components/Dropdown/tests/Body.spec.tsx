@@ -1,7 +1,8 @@
 import type { ComponentProps, ContextType } from 'react'
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent } from '@testing-library/react'
 
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 
@@ -10,6 +11,7 @@ import Context from '../Context'
 import focusOnNextItem from '../focusOnNextItem'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyLoadingSpinner: () => 'SpinnerMock',
 }))
 

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -10,6 +11,7 @@ jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyTooltip: ({ children }: { children?: ReactNode }) => (
         <div>Tooltip{children}</div>
     ),

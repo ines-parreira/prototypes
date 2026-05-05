@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 
 import { Form } from '@repo/forms'
-import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, cleanup, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { mockBranchOptions } from '@gorgias/helpdesk-mocks'

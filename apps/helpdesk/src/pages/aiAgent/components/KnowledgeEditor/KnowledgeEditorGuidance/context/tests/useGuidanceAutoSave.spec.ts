@@ -1,5 +1,6 @@
 import { useDebouncedCallback } from '@repo/hooks'
-import { act, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'

@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -149,13 +149,12 @@ const renderComponent = (
     stateOptions: Parameters<typeof buildState>[0] = {},
     submit = jest.fn(),
 ) => {
-    const user = userEvent.setup()
     const result = render(
         <Provider store={mockStore(buildState(stateOptions))}>
             <NewTicketSubmitButtons subject={subject} submit={submit} />
         </Provider>,
     )
-    return { ...result, submit, user }
+    return { ...result, submit }
 }
 
 describe('NewTicketSubmitButtons', () => {

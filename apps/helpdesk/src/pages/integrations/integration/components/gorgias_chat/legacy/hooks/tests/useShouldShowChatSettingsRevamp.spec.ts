@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'

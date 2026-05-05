@@ -1,10 +1,12 @@
 import type React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { TranslateSection } from './TranslateSection'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Card: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
