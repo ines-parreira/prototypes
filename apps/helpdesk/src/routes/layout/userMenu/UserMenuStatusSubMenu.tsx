@@ -21,7 +21,10 @@ interface UserMenuStatusSubMenuProps {
 
 export function UserMenuStatusSubMenu({ userId }: UserMenuStatusSubMenuProps) {
     const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
-    const { isOnActiveCall } = useAgentPhoneStatus({ userId })
+    const { isOnActiveCall } = useAgentPhoneStatus({
+        userId,
+        refetchOnMount: 'always',
+    })
     const { activeStatusId, isLoading: isLoadingAvailability } =
         useUserAvailability({ userId })
     const { allStatuses, isLoading: isLoadingStatuses } =

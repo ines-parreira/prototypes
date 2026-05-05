@@ -16,6 +16,7 @@ type UseAgentPhoneStatusParams = {
      * Useful when cache is pre-populated by batch queries.
      */
     cacheOnly?: boolean
+    refetchOnMount?: boolean | 'always'
 }
 /**
  * Hook that fetches the phone status for a given user.
@@ -34,6 +35,7 @@ export function useAgentPhoneStatus({
     cacheTime = DurationInMs.OneHour,
     enabled = true,
     cacheOnly = false,
+    refetchOnMount = false,
 }: UseAgentPhoneStatusParams) {
     const { data, isLoading, isError, error } = useGetUserPhoneStatus(userId, {
         query: {
@@ -41,6 +43,7 @@ export function useAgentPhoneStatus({
             select: (data) => data.data,
             staleTime: cacheOnly ? Infinity : staleTime,
             cacheTime,
+            refetchOnMount,
         },
     })
 

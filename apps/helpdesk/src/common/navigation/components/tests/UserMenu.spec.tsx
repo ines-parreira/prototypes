@@ -160,6 +160,14 @@ describe('UserMenu', () => {
         expect(screen.getByText('Log out')).toBeInTheDocument()
     })
 
+    it('refetches phone status on every menu mount', () => {
+        render(<UserMenu onClose={onClose} />, { wrapper })
+
+        expect(useAgentPhoneStatusMock).toHaveBeenCalledWith(
+            expect.objectContaining({ refetchOnMount: 'always' }),
+        )
+    })
+
     it('should not render the AxiomMigrationToggle when the baseline flag is enabled', () => {
         useHelpdeskV2BaselineFlagMock.mockReturnValue({
             hasUIVisionBetaBaselineFlag: true,

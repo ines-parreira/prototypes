@@ -71,6 +71,7 @@ export default function UserMenu({ onClose }: Props) {
     const { agentPhoneUnavailabilityStatus, isOnActiveCall } =
         useAgentPhoneStatus({
             userId: currentUserId,
+            refetchOnMount: 'always',
         })
 
     const statusText = useMemo(() => {

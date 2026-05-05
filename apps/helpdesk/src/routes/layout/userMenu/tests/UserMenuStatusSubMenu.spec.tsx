@@ -106,6 +106,14 @@ describe('UserMenuStatusSubMenu', () => {
         })
     })
 
+    it('refetches phone status on every menu mount', () => {
+        renderInMenu()
+
+        expect(useAgentPhoneStatusMock).toHaveBeenCalledWith(
+            expect.objectContaining({ refetchOnMount: 'always' }),
+        )
+    })
+
     it('renders the legacy AvailabilityToggle when the custom statuses flag is disabled', () => {
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
 
