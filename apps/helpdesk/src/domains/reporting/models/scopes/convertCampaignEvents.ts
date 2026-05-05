@@ -25,6 +25,8 @@ const convertCampaignEvents = defineScope({
         'periodStart',
         'source',
         'eventType',
+        'channel',
+        'storeIntegrationId',
     ],
 })
 
@@ -62,7 +64,7 @@ export const aiSalesAgentProductClicks = convertCampaignEvents
         dimensions: ['productId'],
         filters: createScopeFilters(
             {
-                period: ctx.filters.period,
+                ...ctx.filters,
                 source: withLogicalOperator(['ai-agent']),
             },
             config,
@@ -78,7 +80,7 @@ const aiSalesAgentUniqueClicks = convertCampaignEvents
         measures: ['uniqClicks'],
         filters: createScopeFilters(
             {
-                period: ctx.filters.period,
+                ...ctx.filters,
                 source: withLogicalOperator(['ai-agent']),
             },
             config,

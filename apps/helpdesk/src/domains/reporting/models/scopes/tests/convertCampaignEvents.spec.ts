@@ -105,7 +105,21 @@ describe('convertCampaignEvents scope', () => {
 
     describe('aiSalesAgentProductClicks', () => {
         it('creates query with uniqClicks measure, productId dimension, and ai-agent source filter', () => {
-            const result = aiSalesAgentProductClicks.build(context)
+            const contextWithFilters = {
+                timezone,
+                filters: {
+                    ...filters,
+                    channels: {
+                        values: ['email'],
+                        operator: LogicalOperatorEnum.ONE_OF,
+                    },
+                    stores: {
+                        values: [1],
+                        operator: LogicalOperatorEnum.ONE_OF,
+                    },
+                },
+            }
+            const result = aiSalesAgentProductClicks.build(contextWithFilters)
 
             expect(result).toEqual({
                 measures: ['uniqClicks'],
@@ -116,6 +130,16 @@ describe('convertCampaignEvents scope', () => {
                         member: 'source',
                         operator: LogicalOperatorEnum.ONE_OF,
                         values: ['ai-agent'],
+                    },
+                    {
+                        member: 'channel',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['email'],
+                    },
+                    {
+                        member: 'storeIntegrationId',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [1],
                     },
                 ],
                 timezone,
