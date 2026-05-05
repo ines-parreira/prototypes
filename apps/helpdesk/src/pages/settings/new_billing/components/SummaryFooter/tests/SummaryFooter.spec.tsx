@@ -179,9 +179,7 @@ describe('SummaryFooter', () => {
             )
 
             expect(
-                screen.queryByText(
-                    'This is a customer-facing page. Make changes from the internal billing page.',
-                ),
+                screen.queryByText(/This is a customer-facing page/i),
             ).not.toBeInTheDocument()
         })
 
@@ -195,9 +193,10 @@ describe('SummaryFooter', () => {
             )
 
             expect(
-                screen.getByText(
-                    'This is a customer-facing page. Make changes from the internal billing page.',
-                ),
+                screen.getByText(/This is a customer-facing page/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('link', { name: /internal billing page/i }),
             ).toBeInTheDocument()
         })
     })

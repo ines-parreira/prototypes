@@ -226,7 +226,10 @@ const SummaryFooter = ({
                     {isSessionImpersonated() && (
                         <Tag color={Color.Orange}>
                             This is a customer-facing page. Make changes from
-                            the internal billing page.
+                            the{' '}
+                            <Link to="/app/settings/billing/internal/manage-plan">
+                                internal billing page
+                            </Link>
                         </Tag>
                     )}
                     <Button
