@@ -50,7 +50,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import AnalyticsAiAgentStatsPaywall from 'pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentStatsPaywall'
 import { AnalyticsOverviewStatsPaywall } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewStatsPaywall/AnalyticsOverviewStatsPaywall'
-import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
+import { SalesPaywallMiddlewareRouter } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddlewareRouter'
 import App from 'pages/App'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
@@ -557,7 +557,7 @@ export const StatsRoutes = () => {
                         path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/:shopName?`}
                         render={() => (
                             <App
-                                content={SalesPaywallMiddleware(
+                                content={SalesPaywallMiddlewareRouter(
                                     AiSalesAgentSalesOverview,
                                 )}
                                 navbar={StatsNavbarContainer}

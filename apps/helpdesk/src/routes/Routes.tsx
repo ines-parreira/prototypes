@@ -63,11 +63,11 @@ import {
 import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
-import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding_V2/components/AiAgentOnboarding/AiAgentOnboarding'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
+import { AiAgentOnboardingRouter } from 'pages/aiAgent/OnboardingRouter/AiAgentOnboardingRouter'
 import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportunities'
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
-import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
+import { SalesPaywallMiddlewareRouter } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddlewareRouter'
 import { AiAgentPlaygroundPage } from 'pages/aiAgent/PlaygroundV2/AiAgentPlaygroundPage'
 import { AiAgentAccountConfigurationProvider } from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBoundary'
@@ -135,21 +135,19 @@ import { WorkflowsRoutes } from 'routes/settings/Workflows'
 import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'
 
 // Create wrapped components outside of render to prevent re-creation on every render
-const AiAgentSalesWithPaywall = SalesPaywallMiddleware(AiAgentSales)
-const AiAgentCustomerEngagementWithPaywall = SalesPaywallMiddleware(
+const AiAgentSalesWithPaywall = SalesPaywallMiddlewareRouter(AiAgentSales)
+const AiAgentCustomerEngagementWithPaywall = SalesPaywallMiddlewareRouter(
     AiAgentCustomerEngagement,
 )
-const AiAgentProductRecommendationsWithPaywall = SalesPaywallMiddleware(
+const AiAgentProductRecommendationsWithPaywall = SalesPaywallMiddlewareRouter(
     AiAgentProductRecommendations,
 )
-const AiAgentProductRecommendationsPromoteWithPaywall = SalesPaywallMiddleware(
-    AiAgentProductRecommendationsPromote,
-)
-const AiAgentProductRecommendationsExcludeWithPaywall = SalesPaywallMiddleware(
-    AiAgentProductRecommendationsExclude,
-)
+const AiAgentProductRecommendationsPromoteWithPaywall =
+    SalesPaywallMiddlewareRouter(AiAgentProductRecommendationsPromote)
+const AiAgentProductRecommendationsExcludeWithPaywall =
+    SalesPaywallMiddlewareRouter(AiAgentProductRecommendationsExclude)
 const AiAgentSalesStrategyWithPaywall =
-    SalesPaywallMiddleware(AiAgentSalesStrategy)
+    SalesPaywallMiddlewareRouter(AiAgentSalesStrategy)
 
 export default function Routes() {
     const ticketLegacyBridgeFunctions = useTicketLegacyBridgeFunctions()
@@ -846,7 +844,7 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
                         ]}
                         exact
                         component={withUserRoleRequired(
-                            AiAgentOnboarding,
+                            AiAgentOnboardingRouter,
                             AGENT_ROLE,
                         )}
                     />

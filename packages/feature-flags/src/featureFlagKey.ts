@@ -26,6 +26,7 @@ export enum FeatureFlagKey {
     AiAgentNewActivationXp = 'ai-agent-new-activation-xp',
     AiAgentOnboardingMLPreview = 'linear.task_MARCVT-3628.ml-preview',
     AiAgentOnboardingNotification = 'ai-agent-onboarding-notification',
+    AiAgentOnboardingV3 = 'ai-agent-onboarding-v3',
     /** @deprecated Almost fully evaluated to `true` + not used anymore */
     AiAgentOnboardingWizard = 'ai-agent-onboarding-wizard',
     /** @deprecated Almost fully evaluated to `true` + not used anymore */

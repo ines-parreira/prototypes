@@ -1,7 +1,11 @@
 import type { ComponentType, PropsWithChildren, ReactNode } from 'react'
 import type React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -311,6 +315,7 @@ const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 const mockHistory = createBrowserHistory()
 const mockUseFlag = useFlag as jest.Mock
+const mockUseFlagWithLoading = useFlagWithLoading as jest.Mock
 const mockUseIsAccountDeactivated = useIsAccountDeactivated as jest.Mock
 jest.mock('domains/reporting/pages/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
@@ -400,6 +405,10 @@ describe('<Routes/>', () => {
     }
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         mockUseIsAccountDeactivated.mockReturnValue(false)
         useVoiceDeviceMock.mockReturnValue({
             call: null,
