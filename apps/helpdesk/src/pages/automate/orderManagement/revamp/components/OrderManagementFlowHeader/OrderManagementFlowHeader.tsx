@@ -6,6 +6,7 @@ import {
     Breadcrumb,
     Breadcrumbs,
     Button,
+    Heading,
     Icon,
     PanelHeader,
     Text,
@@ -100,10 +101,14 @@ export const OrderManagementFlowHeader = ({
                             onClick={() => history.push(backPath ?? storePath)}
                         />
                     }
-                    title={title}
+                    title={
+                        <Heading size="xl" className={css.titleWrapper}>
+                            {title}
+                        </Heading>
+                    }
                     p={0}
                     trailingSlot={
-                        <>
+                        <div className={css.controlsWrapper}>
                             <Text>
                                 <a
                                     href={HELP_URL}
@@ -115,21 +120,23 @@ export const OrderManagementFlowHeader = ({
                                     <Icon name="external-link" />
                                 </a>
                             </Text>
-                            <StoreSelector
-                                integrations={integrations}
-                                selected={selected}
-                                onChange={onChange}
-                            />
-                            {onSave && (
-                                <Button
-                                    onClick={onSave}
-                                    isDisabled={isSaveDisabled}
-                                    isLoading={isSaveLoading}
-                                >
-                                    Save
-                                </Button>
-                            )}
-                        </>
+                            <div className={css.controls}>
+                                <StoreSelector
+                                    integrations={integrations}
+                                    selected={selected}
+                                    onChange={onChange}
+                                />
+                                {onSave && (
+                                    <Button
+                                        onClick={onSave}
+                                        isDisabled={isSaveDisabled}
+                                        isLoading={isSaveLoading}
+                                    >
+                                        Save
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
                     }
                 />
             </div>
