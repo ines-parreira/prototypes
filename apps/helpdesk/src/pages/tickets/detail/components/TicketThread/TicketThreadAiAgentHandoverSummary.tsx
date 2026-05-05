@@ -88,8 +88,12 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
     const hasSummaryContent =
         hasSummaryContentIgnoringStale && !isSummaryUpdatedAfterHandover
 
+    const isSummaryStale =
+        isSummaryUpdatedAfterHandover && hasSummaryContentIgnoringStale
+
     if (
         !hasSummaryContent &&
+        !isSummaryStale &&
         !isOutcomeLoading &&
         !outcome &&
         !isFeedbackLoading &&
@@ -137,6 +141,7 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
             {isExpanded && (
                 <Box flexDirection="column" gap="sm">
                     {(hasSummaryContent ||
+                        isSummaryStale ||
                         (!hasSummaryContentIgnoringStale && !!outcome)) && (
                         <Box flexDirection="column" gap="xxs">
                             {hasSummaryContent ? (
@@ -147,6 +152,15 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
                                     summary={summary}
                                     requestSummary={requestSummary}
                                 />
+                            ) : isSummaryStale ? (
+                                <Text
+                                    size="sm"
+                                    color="content-neutral-secondary"
+                                >
+                                    New messages have been added since this
+                                    summary was generated. You can refresh it
+                                    below.
+                                </Text>
                             ) : (
                                 <Text
                                     size="sm"
