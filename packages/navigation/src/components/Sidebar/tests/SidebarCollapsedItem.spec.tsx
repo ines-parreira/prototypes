@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { ButtonGroup } from '@gorgias/axiom'
 
+import { MockSidebarProvider } from '../../../fixtures/MockSidebarProvider'
 import { SidebarCollapsedItem } from '../SidebarCollapsedItem'
 
 describe('SidebarCollapsedItem', () => {
@@ -11,6 +12,13 @@ describe('SidebarCollapsedItem', () => {
             <ButtonGroup>
                 <SidebarCollapsedItem id="inbox" icon="inbox" label="Inbox" />
             </ButtonGroup>,
+            {
+                wrapper: ({ children }) => (
+                    <MockSidebarProvider isCollapsed>
+                        {children}
+                    </MockSidebarProvider>
+                ),
+            },
         )
 
         expect(screen.getByRole('img', { name: 'inbox' })).toBeInTheDocument()
@@ -23,6 +31,13 @@ describe('SidebarCollapsedItem', () => {
             <ButtonGroup>
                 <SidebarCollapsedItem id="inbox" icon="inbox" label="Inbox" />
             </ButtonGroup>,
+            {
+                wrapper: ({ children }) => (
+                    <MockSidebarProvider isCollapsed>
+                        {children}
+                    </MockSidebarProvider>
+                ),
+            },
         )
 
         await user.tab()

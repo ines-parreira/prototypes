@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { MockSidebarProvider } from '../../../fixtures/MockSidebarProvider'
 import { SidebarCollapsedGroup } from '../SidebarCollapsedGroup'
 import { SidebarCollapsedItem } from '../SidebarCollapsedItem'
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <MockSidebarProvider isCollapsed>{children}</MockSidebarProvider>
+)
 
 describe('SidebarCollapsedGroup', () => {
     it('renders children', () => {
@@ -10,6 +15,7 @@ describe('SidebarCollapsedGroup', () => {
             <SidebarCollapsedGroup>
                 <SidebarCollapsedItem id="inbox" icon="inbox" label="Inbox" />
             </SidebarCollapsedGroup>,
+            { wrapper },
         )
 
         expect(
@@ -27,6 +33,7 @@ describe('SidebarCollapsedGroup', () => {
                     label="All customers"
                 />
             </SidebarCollapsedGroup>,
+            { wrapper },
         )
 
         expect(screen.getAllByRole('radio')).toHaveLength(2)
@@ -45,6 +52,7 @@ describe('SidebarCollapsedGroup', () => {
                     label="All customers"
                 />
             </SidebarCollapsedGroup>,
+            { wrapper },
         )
 
         await user.click(screen.getByRole('radio', { name: /inbox/i }))
@@ -62,6 +70,7 @@ describe('SidebarCollapsedGroup', () => {
                     label="All customers"
                 />
             </SidebarCollapsedGroup>,
+            { wrapper },
         )
 
         const [inboxButton, customersButton] = screen.getAllByRole('radio')

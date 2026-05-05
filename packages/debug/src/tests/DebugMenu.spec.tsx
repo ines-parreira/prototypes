@@ -1,4 +1,5 @@
 import { useFlag } from '@repo/feature-flags'
+import { SidebarProvider } from '@repo/navigation'
 import { render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -41,6 +42,7 @@ describe('DebugMenu', () => {
                     <div>panel</div>
                 </DebugMenuItem>
             </DebugMenu>,
+            { wrapper: SidebarProvider },
         )
 
         expect(

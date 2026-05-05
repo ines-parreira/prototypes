@@ -1,3 +1,4 @@
+import { SidebarProvider } from '@repo/navigation'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -57,6 +58,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         expect(
@@ -78,6 +80,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'settings' }))
@@ -96,6 +99,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'flows' }))
@@ -125,6 +129,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'folder' }))
@@ -149,6 +154,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'settings' }))
@@ -159,6 +165,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
     it('handles empty navigation items array', () => {
         const { container } = render(
             <CollapsedActionDrivenNavigationItems navigationItems={[]} />,
+            { wrapper: SidebarProvider },
         )
 
         const buttonGroup = container.querySelector('[role="radiogroup"]')
@@ -191,6 +198,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'settings' }))
@@ -218,6 +226,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'flows' }))
@@ -234,6 +243,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'flows' }))
@@ -255,6 +265,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'flows' }))
@@ -286,6 +297,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 />
                 <LocationPath />
             </>,
+            { wrapper: SidebarProvider },
         )
 
         expect(screen.getAllByRole('radio')).toHaveLength(1)
@@ -297,7 +309,10 @@ describe('CollapsedActionDrivenNavigationItems', () => {
             <CollapsedActionDrivenNavigationItems
                 navigationItems={mockNavigationItems}
             />,
-            { initialEntries: ['/app/ai-agent/shopify/test-store/overview'] },
+            {
+                wrapper: SidebarProvider,
+                initialEntries: ['/app/ai-agent/shopify/test-store/overview'],
+            },
         )
 
         const buttons = screen.getAllByRole('radio')
@@ -310,6 +325,7 @@ describe('CollapsedActionDrivenNavigationItems', () => {
                 navigationItems={mockNavigationItems}
             />,
             {
+                wrapper: SidebarProvider,
                 initialEntries: [
                     '/app/ai-agent/shopify/test-store/analyze/analytics',
                 ],

@@ -3,8 +3,9 @@ import type { Key, ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlag } from '@repo/feature-flags'
+import { NavigationSidebarTooltip } from '@repo/navigation'
 
-import { Button, Menu, MenuItem } from '@gorgias/axiom'
+import { Button, Menu, MenuItem, TooltipContent } from '@gorgias/axiom'
 
 import type { DebugMenuItemProps } from './DebugMenuItem'
 
@@ -43,11 +44,18 @@ export function DebugMenu({ children }: DebugMenuProps) {
         <>
             <Menu
                 trigger={
-                    <Button
-                        variant="tertiary"
-                        size="sm"
-                        icon="system-window-terminal"
-                    />
+                    <NavigationSidebarTooltip
+                        placement="top"
+                        trigger={
+                            <Button
+                                variant="tertiary"
+                                size="sm"
+                                icon="system-window-terminal"
+                            />
+                        }
+                    >
+                        <TooltipContent title="Dev tools" />
+                    </NavigationSidebarTooltip>
                 }
                 aria-label="Debug menu"
                 onAction={(key: Key) => setOpenPanel(String(key))}

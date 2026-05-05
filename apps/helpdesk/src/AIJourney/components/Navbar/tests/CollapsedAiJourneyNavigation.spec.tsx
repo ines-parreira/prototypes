@@ -1,3 +1,4 @@
+import { SidebarProvider } from '@repo/navigation'
 import { history } from '@repo/routing'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -41,6 +42,7 @@ describe('CollapsedAiJourneyNavigation', () => {
             <CollapsedAiJourneyNavigation
                 navigationItems={mockNavigationItems}
             />,
+            { wrapper: SidebarProvider },
         )
 
         const buttons = screen.getAllByRole('radio')
@@ -53,6 +55,7 @@ describe('CollapsedAiJourneyNavigation', () => {
             <CollapsedAiJourneyNavigation
                 navigationItems={mockNavigationItems}
             />,
+            { wrapper: SidebarProvider },
         )
 
         await user.click(screen.getByRole('img', { name: 'chart-line' }))

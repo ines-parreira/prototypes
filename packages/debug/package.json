@@ -19,6 +19,7 @@
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@repo/feature-flags": "workspace:*",
+        "@repo/navigation": "workspace:*",
         "react": "catalog:react",
         "react-dom": "catalog:react"
     },
@@ -26,6 +27,7 @@
         "@gorgias/axiom": "catalog:axiom",
         "@repo/config": "workspace:*",
         "@repo/feature-flags": "workspace:*",
+        "@repo/navigation": "workspace:*",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",

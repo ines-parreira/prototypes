@@ -1,8 +1,11 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useSidebarButtonSize } from '@repo/navigation'
+import {
+    NavigationSidebarTooltip,
+    useSidebarButtonSize,
+} from '@repo/navigation'
 import { isMacOs } from '@repo/utils'
 
-import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Button, TooltipContent } from '@gorgias/axiom'
 
 import { useSpotlightContext } from 'providers/ui/SpotlightContext'
 
@@ -16,7 +19,7 @@ export function NavigationSidebarSpotlightButton() {
     }
 
     return (
-        <Tooltip
+        <NavigationSidebarTooltip
             placement="bottom"
             trigger={
                 <Button
@@ -27,7 +30,10 @@ export function NavigationSidebarSpotlightButton() {
                 />
             }
         >
-            <TooltipContent shortcut={(isMacOs ? '⌘' : 'CTRL') + 'K'} />
-        </Tooltip>
+            <TooltipContent
+                shortcut={(isMacOs ? '⌘' : 'CTRL') + 'K'}
+                title="Search"
+            />
+        </NavigationSidebarTooltip>
     )
 }

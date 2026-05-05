@@ -1,3 +1,4 @@
+import { SidebarProvider } from '@repo/navigation'
 import { history } from '@repo/routing'
 import { screen, waitFor } from '@testing-library/react'
 
@@ -41,13 +42,13 @@ describe('CollapsedDefaultViews', () => {
     })
 
     it('should render one button per displayed view', () => {
-        render(<CollapsedDefaultViews />)
+        render(<CollapsedDefaultViews />, { wrapper: SidebarProvider })
 
         expect(screen.getAllByRole('radio')).toHaveLength(3)
     })
 
     it('should not render the expand toggle button when showToggle is false', () => {
-        render(<CollapsedDefaultViews />)
+        render(<CollapsedDefaultViews />, { wrapper: SidebarProvider })
 
         expect(screen.queryByRole('button')).not.toBeInTheDocument()
     })
@@ -60,7 +61,7 @@ describe('CollapsedDefaultViews', () => {
             toggleExpanded: vi.fn(),
         })
 
-        render(<CollapsedDefaultViews />)
+        render(<CollapsedDefaultViews />, { wrapper: SidebarProvider })
 
         expect(screen.getByRole('button')).toBeInTheDocument()
     })
@@ -74,7 +75,9 @@ describe('CollapsedDefaultViews', () => {
             toggleExpanded: mockToggleExpanded,
         })
 
-        const { user } = render(<CollapsedDefaultViews />)
+        const { user } = render(<CollapsedDefaultViews />, {
+            wrapper: SidebarProvider,
+        })
 
         await user.click(screen.getByRole('button'))
 
@@ -84,7 +87,9 @@ describe('CollapsedDefaultViews', () => {
     })
 
     it('should navigate to the tickets URL with encoded slug when a view is selected', async () => {
-        const { user } = render(<CollapsedDefaultViews />)
+        const { user } = render(<CollapsedDefaultViews />, {
+            wrapper: SidebarProvider,
+        })
 
         await user.click(screen.getAllByRole('radio')[0])
 
@@ -111,7 +116,9 @@ describe('CollapsedDefaultViews', () => {
             toggleExpanded: vi.fn(),
         })
 
-        const { user } = render(<CollapsedDefaultViews />)
+        const { user } = render(<CollapsedDefaultViews />, {
+            wrapper: SidebarProvider,
+        })
 
         await user.click(screen.getAllByRole('radio')[0])
 
@@ -123,6 +130,7 @@ describe('CollapsedDefaultViews', () => {
 
     it('should navigate to the views URL when dtpToggle is enabled', async () => {
         const { user } = render(<CollapsedDefaultViews />, {
+            wrapper: SidebarProvider,
             dtpToggle: {
                 isEnabled: true,
                 setIsEnabled: vi.fn(),
@@ -158,7 +166,9 @@ describe('CollapsedDefaultViews', () => {
             toggleExpanded: vi.fn(),
         })
 
-        const { user } = render(<CollapsedDefaultViews />)
+        const { user } = render(<CollapsedDefaultViews />, {
+            wrapper: SidebarProvider,
+        })
 
         await user.click(screen.getAllByRole('radio')[0])
 
@@ -177,7 +187,7 @@ describe('CollapsedDefaultViews', () => {
             toggleExpanded: vi.fn(),
         })
 
-        render(<CollapsedDefaultViews />)
+        render(<CollapsedDefaultViews />, { wrapper: SidebarProvider })
 
         expect(screen.getAllByRole('radio')).toHaveLength(5)
     })

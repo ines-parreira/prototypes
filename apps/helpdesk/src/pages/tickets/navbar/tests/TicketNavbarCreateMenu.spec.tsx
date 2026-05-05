@@ -1,3 +1,4 @@
+import { SidebarProvider } from '@repo/navigation'
 import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -75,6 +76,7 @@ const renderComponent = (initialEntries = ['/']) => {
         <MemoryRouter initialEntries={initialEntries}>
             <TicketNavbarCreateMenu />
         </MemoryRouter>,
+        { wrapper: SidebarProvider },
     )
     return { ...result, user }
 }
@@ -114,6 +116,36 @@ describe('TicketNavbarCreateMenu', () => {
         jest.requireMock('@repo/navigation').useSidebar.mockReturnValue({
             isCollapsed: true,
         })
+
+        renderComponent()
+
+        expect(screen.queryByText('Create')).not.toBeInTheDocument()
+        expect(screen.getByRole('button')).toBeInTheDocument()
+    })
+
+    it('renders icon-only button without "Create" text when sidebar is collapsed and user has a phone', () => {
+        jest.requireMock('@repo/navigation').useSidebar.mockReturnValue({
+            isCollapsed: true,
+        })
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            hasPhone: true,
+        })
+
+        renderComponent()
+
+        expect(screen.queryByText('Create')).not.toBeInTheDocument()
+        expect(screen.getByRole('button')).toBeInTheDocument()
+    })
+
+    it('renders icon-only button without "Create" text when sidebar is collapsed and user has a draft', () => {
+        jest.requireMock('@repo/navigation').useSidebar.mockReturnValue({
+            isCollapsed: true,
+        })
+        useCreateTicketButtonMock.mockReturnValue({
+            ...defaultCreateTicketButton,
+            hasDraft: true,
+        } as unknown as ReturnType<typeof useCreateTicketButton>)
 
         renderComponent()
 

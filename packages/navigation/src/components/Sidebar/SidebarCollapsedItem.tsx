@@ -1,5 +1,7 @@
-import { ButtonGroupItem, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { ButtonGroupItem, TooltipContent } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
+
+import { NavigationSidebarTooltip } from '../NavigationSidebarTooltip'
 
 export type SidebarCollapsedItemProps = {
     id: string
@@ -13,7 +15,7 @@ export function SidebarCollapsedItem({
     label,
 }: SidebarCollapsedItemProps) {
     return (
-        <Tooltip
+        <NavigationSidebarTooltip
             placement="right"
             trigger={
                 <ButtonGroupItem id={id} icon={icon}>
@@ -23,6 +25,6 @@ export function SidebarCollapsedItem({
             }
         >
             <TooltipContent title={label} />
-        </Tooltip>
+        </NavigationSidebarTooltip>
     )
 }

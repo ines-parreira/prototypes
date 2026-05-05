@@ -7,11 +7,21 @@ import { SpotlightContext } from 'providers/ui/SpotlightContext'
 
 import { NavigationSidebarSpotlightButton } from '../NavigationSidebarSpotlightButton'
 
+let mockIsMacOs = false
+
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    get isMacOs() {
+        return mockIsMacOs
+    },
+}))
+
 describe('NavigationSidebarSpotlightButton', () => {
     const mockSetIsOpen = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockIsMacOs = false
     })
 
     it('should render search button', () => {
@@ -70,5 +80,47 @@ describe('NavigationSidebarSpotlightButton', () => {
         await user.click(button)
 
         expect(mockSetIsOpen).toHaveBeenCalledWith(false)
+    })
+
+    it('should show ⌘K shortcut in the tooltip on macOS', async () => {
+        mockIsMacOs = true
+        const user = userEvent.setup()
+
+        render(<NavigationSidebarSpotlightButton />, {
+            wrapper: ({ children }) => (
+                <MockSidebarProvider isCollapsed>
+                    <SpotlightContext.Provider
+                        value={{ isOpen: false, setIsOpen: mockSetIsOpen }}
+                    >
+                        {children}
+                    </SpotlightContext.Provider>
+                </MockSidebarProvider>
+            ),
+        })
+
+        await user.tab()
+
+        expect(screen.getByText('⌘K')).toBeInTheDocument()
+    })
+
+    it('should show CTRLK shortcut in the tooltip on non-macOS', async () => {
+        mockIsMacOs = false
+        const user = userEvent.setup()
+
+        render(<NavigationSidebarSpotlightButton />, {
+            wrapper: ({ children }) => (
+                <MockSidebarProvider isCollapsed>
+                    <SpotlightContext.Provider
+                        value={{ isOpen: false, setIsOpen: mockSetIsOpen }}
+                    >
+                        {children}
+                    </SpotlightContext.Provider>
+                </MockSidebarProvider>
+            ),
+        })
+
+        await user.tab()
+
+        expect(screen.getByText('CTRLK')).toBeInTheDocument()
     })
 })

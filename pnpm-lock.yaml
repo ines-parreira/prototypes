@@ -2308,6 +2308,9 @@ importers:
       '@repo/feature-flags':
         specifier: workspace:*
         version: link:../feature-flags
+      '@repo/navigation':
+        specifier: workspace:*
+        version: link:../navigation
       '@testing-library/dom':
         specifier: catalog:test
         version: 10.4.0

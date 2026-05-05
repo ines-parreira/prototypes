@@ -1,6 +1,7 @@
 import { DebugMenu, DebugMenuItem } from '@repo/debug'
 import { useIsMobileResolution } from '@repo/hooks'
 import {
+    NavigationSidebarTooltip,
     SidebarContent,
     SidebarFooter,
     SidebarRoot,
@@ -11,7 +12,7 @@ import {
 import { history } from '@repo/routing'
 import { ViewCountDebugPanel } from '@repo/views'
 
-import { Box, Button, Separator, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Box, Button, Separator, TooltipContent } from '@gorgias/axiom'
 
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
@@ -90,7 +91,7 @@ export function NavigationSidebar() {
                     <NavigationSidebarSpotlightButton />
 
                     {!isMobileResolution && (
-                        <Tooltip
+                        <NavigationSidebarTooltip
                             placement="bottom"
                             trigger={
                                 <Button
@@ -110,8 +111,11 @@ export function NavigationSidebar() {
                                 />
                             }
                         >
-                            <TooltipContent shortcut={'['} />
-                        </Tooltip>
+                            <TooltipContent
+                                shortcut={'['}
+                                title={isCollapsed ? 'Expand' : 'Collapse'}
+                            />
+                        </NavigationSidebarTooltip>
                     )}
                 </Box>
             </Box>
@@ -137,7 +141,7 @@ export function NavigationSidebar() {
                             <ViewCountDebugPanel />
                         </DebugMenuItem>
                     </DebugMenu>
-                    <Tooltip
+                    <NavigationSidebarTooltip
                         placement="right"
                         trigger={
                             <Button
@@ -158,9 +162,9 @@ export function NavigationSidebar() {
                         }
                     >
                         <TooltipContent title="Settings" />
-                    </Tooltip>
+                    </NavigationSidebarTooltip>
                     {isChatReady && (
-                        <Tooltip
+                        <NavigationSidebarTooltip
                             placement="right"
                             trigger={
                                 <Button
@@ -173,7 +177,7 @@ export function NavigationSidebar() {
                             }
                         >
                             <TooltipContent title="Open chat" />
-                        </Tooltip>
+                        </NavigationSidebarTooltip>
                     )}
                 </Box>
             </SidebarFooter>

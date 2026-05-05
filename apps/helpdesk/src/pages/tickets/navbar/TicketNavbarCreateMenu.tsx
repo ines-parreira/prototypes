@@ -1,7 +1,11 @@
 import { useRef } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useSidebar, useSidebarButtonSize } from '@repo/navigation'
+import {
+    NavigationSidebarTooltip,
+    useSidebar,
+    useSidebarButtonSize,
+} from '@repo/navigation'
 import { history } from '@repo/routing'
 import { isMacOs, useShortcuts } from '@repo/utils'
 import { useLocation } from 'react-router-dom'
@@ -64,7 +68,7 @@ export function TicketNavbarCreateMenu() {
         return (
             <Box>
                 {isCollapsed ? (
-                    <Tooltip
+                    <NavigationSidebarTooltip
                         placement="right"
                         trigger={
                             <Button
@@ -77,7 +81,7 @@ export function TicketNavbarCreateMenu() {
                         }
                     >
                         <TooltipContent title="Create ticket" />
-                    </Tooltip>
+                    </NavigationSidebarTooltip>
                 ) : (
                     <Button
                         ref={buttonRef}
@@ -103,7 +107,7 @@ export function TicketNavbarCreateMenu() {
             <Menu
                 trigger={({ isOpen }) =>
                     isCollapsed ? (
-                        <Tooltip
+                        <NavigationSidebarTooltip
                             placement="right"
                             trigger={
                                 <Button
@@ -114,7 +118,7 @@ export function TicketNavbarCreateMenu() {
                             }
                         >
                             <TooltipContent title="Create ticket" />
-                        </Tooltip>
+                        </NavigationSidebarTooltip>
                     ) : (
                         <Button
                             ref={buttonRef}

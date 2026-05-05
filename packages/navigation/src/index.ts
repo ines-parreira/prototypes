@@ -31,6 +31,9 @@ export type {
     SidebarFooterProps,
 } from './components/Sidebar'
 
+export { NavigationSidebarTooltip } from './components/NavigationSidebarTooltip'
+export type { NavigationSidebarTooltipProps } from './components/NavigationSidebarTooltip'
+
 export {
     NavigationSection,
     NavigationSectionItem,

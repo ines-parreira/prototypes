@@ -1,6 +1,9 @@
-import { useSidebarButtonSize } from '@repo/navigation'
+import {
+    NavigationSidebarTooltip,
+    useSidebarButtonSize,
+} from '@repo/navigation'
 
-import { Button, Quantity, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Button, Quantity, TooltipContent } from '@gorgias/axiom'
 
 import useCount from 'common/notifications/hooks/useCount'
 
@@ -13,8 +16,8 @@ export function NavigationSidebarNotificationsButton() {
     const rightOffset = count > 99 ? 'l' : count > 9 ? 'm' : 's'
 
     return (
-        <Tooltip
-            placement="right"
+        <NavigationSidebarTooltip
+            placement="bottom"
             trigger={
                 <div className={css.container}>
                     <Button
@@ -40,6 +43,6 @@ export function NavigationSidebarNotificationsButton() {
             }
         >
             <TooltipContent title="Notifications" />
-        </Tooltip>
+        </NavigationSidebarTooltip>
     )
 }
