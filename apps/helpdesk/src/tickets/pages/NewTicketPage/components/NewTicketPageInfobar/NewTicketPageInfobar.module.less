@@ -1,0 +1,16 @@
+:local {
+    .scrollableSections {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .section {
+        flex: 0 0 auto;
+        scroll-margin-top: var(--spacing-xs);
+
+        &:nth-child(2) {
+            border-top: 4px solid var(--border-neutral-default);
+        }
+    }
+}

@@ -1,4 +1,4 @@
-import { Box, Button, Text } from '@gorgias/axiom'
+import { Box, Button, Icon, Text } from '@gorgias/axiom'
 
 type Props = {
     onSyncProfile: () => void
@@ -7,6 +7,12 @@ type Props = {
 export function NoShopifyProfile({ onSyncProfile }: Props) {
     return (
         <Box flexDirection="column" gap="sm">
+            <Box flexDirection="row" gap="xs">
+                <Icon name="app-shopify" size="md" />
+                <Text size="md" variant="bold">
+                    Shopify
+                </Text>
+            </Box>
             <Text>
                 No matching profile found. Do you want to sync this customer to
                 Shopify?

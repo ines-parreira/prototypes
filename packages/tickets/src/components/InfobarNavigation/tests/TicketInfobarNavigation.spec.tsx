@@ -77,6 +77,7 @@ describe('TicketInfobarNavigation', () => {
         useTicketInfobarNavigationMock.mockReturnValue({
             activeTab: TicketInfobarTab.Customer,
             isExpanded: true,
+            editingWidgetType: null,
             onChangeTab,
             onToggle,
             onSetEditingWidgetType: vi.fn(),
@@ -125,7 +126,7 @@ describe('TicketInfobarNavigation', () => {
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
     })
 
-    it('should change to the "Customer" tab when that icon is clicked', async () => {
+    it('should change to the "Auto QA" tab when that icon is clicked', async () => {
         const { user } = render(<TicketInfobarNavigation />)
 
         const button = screen.getByLabelText('star').closest('button')
@@ -162,7 +163,7 @@ describe('TicketInfobarNavigation', () => {
         })
     })
 
-    it('should change to the "Shopify" tab when that icon is clicked', async () => {
+    it('should change to the Shopify tab when that icon is clicked', async () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
         const { user } = render(<TicketInfobarNavigation hasShopify />)
 
@@ -173,73 +174,12 @@ describe('TicketInfobarNavigation', () => {
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Shopify)
     })
 
-    it('should render the "Timeline" tab when the `hasTimeline` prop is true', async () => {
-        render(<TicketInfobarNavigation hasTimeline />)
-
-        await waitFor(() => {
-            expect(screen.getByLabelText('history')).toBeInTheDocument()
-        })
-    })
-
-    it('should not render the "Timeline" tab when `hasTimeline` is false', async () => {
+    it('should not render the "Timeline" tab', async () => {
         render(<TicketInfobarNavigation />)
 
         await waitFor(() => {
             expect(screen.queryByLabelText('history')).not.toBeInTheDocument()
         })
-    })
-
-    it('should change to the "Timeline" tab when that icon is clicked', async () => {
-        const { user } = render(<TicketInfobarNavigation hasTimeline />)
-
-        const button = screen.getByLabelText('history').closest('button')
-
-        await user.click(button!)
-
-        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Timeline)
-    })
-
-    it('should render the "Timeline" tab above integration tabs', async () => {
-        mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
-        render(
-            <TicketInfobarNavigation
-                hasTimeline
-                hasShopify
-                hasSmile
-                hasYotpo
-            />,
-        )
-
-        const customerButton = screen
-            .getByLabelText('customer-info')
-            .closest('button')
-        const timelineButton = screen
-            .getByLabelText('history')
-            .closest('button')
-        const shopifyButton = screen
-            .getByLabelText('app-shopify')
-            .closest('button')
-        const smileButton = screen.getByLabelText('app-smile').closest('button')
-        const yotpoButton = screen.getByLabelText('app-yotpo').closest('button')
-
-        expect(customerButton).toBeInTheDocument()
-        expect(timelineButton).toBeInTheDocument()
-        expect(shopifyButton).toBeInTheDocument()
-        expect(smileButton).toBeInTheDocument()
-        expect(yotpoButton).toBeInTheDocument()
-
-        expect(customerButton?.compareDocumentPosition(timelineButton!)).toBe(
-            Node.DOCUMENT_POSITION_FOLLOWING,
-        )
-        expect(timelineButton?.compareDocumentPosition(shopifyButton!)).toBe(
-            Node.DOCUMENT_POSITION_FOLLOWING,
-        )
-        expect(timelineButton?.compareDocumentPosition(smileButton!)).toBe(
-            Node.DOCUMENT_POSITION_FOLLOWING,
-        )
-        expect(timelineButton?.compareDocumentPosition(yotpoButton!)).toBe(
-            Node.DOCUMENT_POSITION_FOLLOWING,
-        )
     })
 
     describe('Recharge tab', () => {
@@ -276,7 +216,7 @@ describe('TicketInfobarNavigation', () => {
             })
         })
 
-        it('should change to the "Recharge" tab when the icon is clicked', async () => {
+        it('should change to the Recharge tab when the icon is clicked', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(<TicketInfobarNavigation hasRecharge />)
 
@@ -313,7 +253,7 @@ describe('TicketInfobarNavigation', () => {
             })
         })
 
-        it('should change to the "BigCommerce" tab when the icon is clicked', async () => {
+        it('should change to the BigCommerce tab when the icon is clicked', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(<TicketInfobarNavigation hasBigCommerce />)
 
@@ -350,7 +290,7 @@ describe('TicketInfobarNavigation', () => {
             })
         })
 
-        it('should change to the "Magento" tab when the icon is clicked', async () => {
+        it('should change to the Magento tab when the icon is clicked', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(<TicketInfobarNavigation hasMagento />)
 
@@ -385,7 +325,7 @@ describe('TicketInfobarNavigation', () => {
             })
         })
 
-        it('should change to the "WooCommerce" tab when the icon is clicked', async () => {
+        it('should change to the WooCommerce tab when the icon is clicked', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(<TicketInfobarNavigation hasWooCommerce />)
 
@@ -420,7 +360,7 @@ describe('TicketInfobarNavigation', () => {
             })
         })
 
-        it('should change to the "Smile" tab when the icon is clicked', async () => {
+        it('should change to the Smile tab when the icon is clicked', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(<TicketInfobarNavigation hasSmile />)
 
@@ -464,7 +404,7 @@ describe('TicketInfobarNavigation', () => {
             })
         })
 
-        it('should change to the "Custom Integrations" tab when the icon is clicked', async () => {
+        it('should change to the Custom Integrations tab when the icon is clicked', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(
                 <TicketInfobarNavigation hasCustomIntegrations />,
@@ -501,7 +441,7 @@ describe('TicketInfobarNavigation', () => {
             })
         })
 
-        it('should change to the "Yotpo" tab when the icon is clicked', async () => {
+        it('should change to the Yotpo tab when the icon is clicked', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(<TicketInfobarNavigation hasYotpo />)
 
@@ -521,6 +461,7 @@ describe('TicketInfobarNavigation', () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 activeTab: TicketInfobarTab.Customer,
                 isExpanded: true,
+                editingWidgetType: null,
                 onChangeTab,
                 onToggle,
                 onSetEditingWidgetType,
@@ -599,13 +540,84 @@ describe('TicketInfobarNavigation', () => {
         )
     })
 
+    describe('Edit mode chrome', () => {
+        const onSetEditingWidgetType = vi.fn()
+
+        beforeEach(() => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Shopify,
+                isExpanded: true,
+                editingWidgetType: EditFieldsType.Shopify,
+                onChangeTab,
+                onToggle,
+                onSetEditingWidgetType,
+            })
+        })
+
+        it('hides the toggle, Customer, AI Feedback, Auto QA buttons and edit-data menu when editing', async () => {
+            render(
+                <TicketInfobarNavigation
+                    hasShopify
+                    hasRecharge
+                    hasAIFeedback
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('app-shopify')).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByLabelText('system-bar-collapse'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('customer-info'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('ai-agent-feedback'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('star')).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Edit Widget data'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('keeps integration buttons visible when editing', async () => {
+            render(<TicketInfobarNavigation hasShopify hasRecharge />)
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('app-shopify')).toBeInTheDocument()
+            })
+            expect(screen.getByLabelText('app-recharge')).toBeInTheDocument()
+        })
+
+        it('switches the editing widget type when a different integration is clicked while editing', async () => {
+            const { user } = render(
+                <TicketInfobarNavigation hasShopify hasRecharge />,
+            )
+
+            const button = screen
+                .getByLabelText('app-recharge')
+                .closest('button')
+            await user.click(button!)
+
+            expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Recharge)
+            expect(onSetEditingWidgetType).toHaveBeenCalledWith(
+                EditFieldsType.Recharge,
+            )
+        })
+    })
+
     describe('Tab click when collapsed', () => {
         it('should expand the infobar when a tab icon is clicked while collapsed', async () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 activeTab: TicketInfobarTab.Customer,
                 isExpanded: false,
+                editingWidgetType: null,
                 onChangeTab,
                 onToggle,
+                onSetEditingWidgetType: vi.fn(),
             })
             const { user } = render(<TicketInfobarNavigation />)
 
@@ -653,8 +665,10 @@ describe('TicketInfobarNavigation', () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 activeTab: TicketInfobarTab.Customer,
                 isExpanded: false,
+                editingWidgetType: null,
                 onChangeTab,
                 onToggle,
+                onSetEditingWidgetType: vi.fn(),
             })
             render(<TicketInfobarNavigation />)
 

@@ -21,6 +21,7 @@ import type { TicketCustomer } from '@gorgias/helpdesk-types'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import useDraftTicketActivityTracking from 'pages/tickets/detail/hooks/useDraftTicketActivityTracking'
+import { useTicketInfobarSectionFlags } from 'pages/tickets/detail/TicketCustomerSections/useTicketInfobarSectionFlags'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { NewTicketPageContent } from 'tickets/pages/NewTicketPage/components/NewTicketPageContent/NewTicketPageContent'
 import { NewTicketPageInfobar } from 'tickets/pages/NewTicketPage/components/NewTicketPageInfobar'
@@ -58,6 +59,7 @@ export function NewTicketPage() {
         IntegrationType.Shopify,
     )
     const hasCustomer = Boolean(ticketState.customer)
+    const sectionFlags = useTicketInfobarSectionFlags()
 
     return (
         <TicketLayout>
@@ -109,7 +111,20 @@ export function NewTicketPage() {
                     <TicketInfobarNavigation
                         hasAutoQA={false}
                         hasShopify={hasCustomer && hasShopifyIntegration}
-                        hasTimeline={hasCustomer}
+                        hasRecharge={hasCustomer && sectionFlags.hasRecharge}
+                        hasBigCommerce={
+                            hasCustomer && sectionFlags.hasBigCommerce
+                        }
+                        hasMagento={hasCustomer && sectionFlags.hasMagento}
+                        hasWooCommerce={
+                            hasCustomer && sectionFlags.hasWooCommerce
+                        }
+                        hasSmile={hasCustomer && sectionFlags.hasSmile}
+                        hasYotpo={hasCustomer && sectionFlags.hasYotpo}
+                        hasCustomIntegrations={
+                            hasCustomer && sectionFlags.hasCustomIntegrations
+                        }
+                        hideWidgetEditing
                     />
                 </NewTicketPageInfobarNavigationPanel>
             </TicketLayoutContent>

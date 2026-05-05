@@ -1,9 +1,7 @@
 import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { Panel } from '@repo/layout'
 import { TicketInfobarNavigation } from '@repo/tickets'
-import { useParams } from 'react-router-dom'
 
-import { useGetTicket } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -22,16 +20,6 @@ const panelConfig = {
 export function InfobarNavigationPanel() {
     const hasAIAgent = useHasAIAgent()
     const canAccessAIFeedback = useCanAccessAIFeedback()
-    const { ticketId: activeTicketId } = useParams<{ ticketId?: string }>()
-    const ticketId = activeTicketId ? Number(activeTicketId) : undefined
-
-    const { data: currentTicketData } = useGetTicket(ticketId!, undefined, {
-        query: {
-            enabled: ticketId !== undefined,
-        },
-    })
-
-    const shopperId = currentTicketData?.data?.customer?.id
 
     const hasCustomIntegrations = useHasCustomIntegrations()
     const shopifyIntegrations = useAppSelector(
@@ -57,7 +45,6 @@ export function InfobarNavigationPanel() {
                 hasRecharge={hasRecharge}
                 hasShopify={hasShopify}
                 hasSmile={hasSmile}
-                hasTimeline={!!shopperId}
                 hasWooCommerce={hasWooCommerce}
                 hasYotpo={hasYotpo}
             />

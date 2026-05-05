@@ -72,6 +72,56 @@ jest.mock('state/integrations/selectors', () => ({
     makeHasIntegrationOfTypes: jest.fn(),
 }))
 
+jest.mock(
+    'pages/tickets/detail/TicketCustomerSections/useTicketInfobarSectionFlags',
+    () => ({
+        useTicketInfobarSectionFlags: jest.fn(() => ({
+            hasShopify: false,
+            hasRecharge: false,
+            hasBigCommerce: false,
+            hasMagento: false,
+            hasWooCommerce: false,
+            hasSmile: false,
+            hasYotpo: false,
+            hasCustomIntegrations: false,
+        })),
+    }),
+)
+
+jest.mock(
+    'pages/tickets/detail/TicketCustomerSections/useCustomerFilteredIntegrations',
+    () => ({
+        useCustomerFilteredIntegrations: jest.fn(() => new Map()),
+    }),
+)
+
+jest.mock('pages/tickets/detail/IntegrationTabContent', () => ({
+    __esModule: true,
+    default: jest.fn(() => null),
+}))
+
+jest.mock('pages/tickets/detail/WooCommerceTabContent', () => ({
+    __esModule: true,
+    default: jest.fn(() => null),
+}))
+
+jest.mock('pages/tickets/detail/CustomIntegrationsTabContent', () => ({
+    __esModule: true,
+    default: jest.fn(() => null),
+}))
+
+jest.mock('state/widgets/selectors', () => ({
+    ...jest.requireActual('state/widgets/selectors'),
+    getSourcesWithCustomer: jest.fn(() => undefined),
+    getWidgetsState: jest.fn(() => undefined),
+}))
+
+jest.mock('state/widgets/actions', () => ({
+    ...jest.requireActual('state/widgets/actions'),
+    selectContext: jest.fn(() => () => undefined),
+    fetchWidgets: jest.fn(() => () => Promise.resolve()),
+}))
+
 jest.mock('providers/OutboundTranslationProvider', () => ({
     OutboundTranslationProvider: jest.fn(({ children }) => <>{children}</>),
     useOutboundTranslationContext: jest.fn(() => ({
@@ -362,7 +412,6 @@ describe('NewTicketPage', () => {
                 expect.objectContaining({
                     hasAutoQA: false,
                     hasShopify: false,
-                    hasTimeline: false,
                 }),
                 {},
             )
@@ -503,21 +552,16 @@ describe('NewTicketPage', () => {
         })
     })
 
-    describe('infobar content based on activeTab', () => {
+    describe('infobar sections', () => {
         beforeEach(() => {
-            useTicketInfobarNavigationMock.mockReturnValue({
-                isExpanded: true,
-                onChangeTab,
-            } as any)
-        })
-
-        it('renders Customer content when activeTab is Customer', async () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,
                 activeTab: TicketInfobarTab.Customer,
                 onChangeTab,
             } as any)
+        })
 
+        it('always renders the Customer section in the scroll column', async () => {
             renderComponent()
 
             await waitFor(() => {
@@ -531,7 +575,7 @@ describe('NewTicketPage', () => {
             await waitForSelectsToLoad()
         })
 
-        it('renders no infobar content when activeTab is Timeline', async () => {
+        it('keeps the Customer section mounted while the timeline side panel is open', async () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,
                 activeTab: TicketInfobarTab.Timeline,
@@ -540,11 +584,13 @@ describe('NewTicketPage', () => {
 
             renderComponent()
 
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Ticket details' }),
+                ).toBeInTheDocument()
+            })
             expect(
                 screen.queryByText('ShopifyCustomer'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('heading', { name: 'Ticket details' }),
             ).not.toBeInTheDocument()
             await waitForSelectsToLoad()
         })

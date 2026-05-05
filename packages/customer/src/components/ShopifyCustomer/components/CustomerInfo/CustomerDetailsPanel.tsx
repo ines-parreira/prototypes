@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
 
-import { Box } from '@gorgias/axiom'
+import { Box, Icon, Text } from '@gorgias/axiom'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import type { ShopperEcommerceData } from '../../types'
@@ -13,6 +13,7 @@ import { CustomerInfoFieldList } from './CustomerInfoFieldList'
 import { CollapsibleFieldSection } from './editPanels/CollapsibleFieldSection'
 import { resolveSectionFields } from './fieldDefinitions/resolveSectionFields'
 import { MetafieldsSection } from './MetafieldsSection'
+import { CustomerDetailsBodySkeleton } from './skeletons/CustomerDetailsBodySkeleton'
 import type { FieldConfig, FieldRenderContext } from './types'
 import type { SectionFieldData } from './widget/useCustomerFieldPreferences'
 
@@ -34,6 +35,8 @@ type Props = {
         email?: string
     }
     hasData: boolean
+    isLoadingShopper: boolean
+    isLoadingPurchaseSummary: boolean
     customerFields: FieldConfig[]
     context: FieldRenderContext
     sections: SectionFieldData[]
@@ -55,6 +58,8 @@ export function CustomerDetailsPanel({
     enrichedCustomer,
     currentUser,
     hasData,
+    isLoadingShopper,
+    isLoadingPurchaseSummary,
     customerFields,
     context,
     sections,
@@ -64,6 +69,13 @@ export function CustomerDetailsPanel({
     shopper,
     children,
 }: Props) {
+    const isLoadingDetails =
+        !hasData &&
+        (isLoadingShopper ||
+            isLoadingPurchaseSummary ||
+            isLoadingIntegrations ||
+            !!isLoadingTicket)
+
     return (
         <Box
             flex={1}
@@ -72,13 +84,28 @@ export function CustomerDetailsPanel({
             className={css.customerDetailsPanel}
         >
             <Box flexDirection="column" gap="sm" padding="md">
-                <StorePicker
-                    integrations={filteredIntegrations}
-                    selectedIntegrationId={selectedIntegration?.id}
-                    onChange={onStoreChange}
-                    isLoading={isLoadingIntegrations || isLoadingTicket}
-                    onSyncProfile={onSyncProfile}
-                />
+                <Box
+                    marginTop="-8px"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap="xs"
+                >
+                    <Box flexDirection="row" gap="xs">
+                        <Icon name="app-shopify" size="md" />
+                        <Text size="md" variant="bold">
+                            Shopify
+                        </Text>
+                    </Box>
+
+                    <StorePicker
+                        integrations={filteredIntegrations}
+                        selectedIntegrationId={selectedIntegration?.id}
+                        onChange={onStoreChange}
+                        isLoading={isLoadingIntegrations || isLoadingTicket}
+                        onSyncProfile={onSyncProfile}
+                    />
+                </Box>
 
                 <CustomerLink
                     selectedIntegration={selectedIntegration}
@@ -104,7 +131,9 @@ export function CustomerDetailsPanel({
                         ticketId={ticketId}
                     />
                 </TemplateResolverProvider>
-                {hasData && (
+                {isLoadingDetails ? (
+                    <CustomerDetailsBodySkeleton />
+                ) : hasData ? (
                     <>
                         <Box flexDirection="column" gap="xxs">
                             <CustomerInfoFieldList
@@ -135,7 +164,7 @@ export function CustomerDetailsPanel({
                             )
                         })}
                     </>
-                )}
+                ) : null}
             </Box>
 
             {children}

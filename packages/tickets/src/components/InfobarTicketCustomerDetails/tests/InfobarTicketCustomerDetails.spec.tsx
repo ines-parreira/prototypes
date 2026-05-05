@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react'
-import { http, HttpResponse } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 
 import {
     mockCustomer,
@@ -116,6 +116,44 @@ const waitUntilLoaded = async () => {
 }
 
 describe('InfobarTicketCustomerDetails', () => {
+    it('renders header and fields skeletons while the ticket is loading', async () => {
+        server.use(
+            mockGetTicketHandler(async () => {
+                await delay('infinite')
+                return HttpResponse.json(ticket)
+            }).handler,
+        )
+
+        render(<InfobarTicketCustomerDetails {...defaultProps} />, {
+            path: '/ticket/:ticketId',
+            initialEntries: [`/ticket/${ticketId}`],
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getAllByLabelText('Loading').length,
+            ).toBeGreaterThanOrEqual(2 + 5 * 2)
+        })
+        expect(
+            screen.queryByRole('link', { name: 'John Doe' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('hides skeletons once the ticket data resolves', async () => {
+        render(<InfobarTicketCustomerDetails {...defaultProps} />, {
+            path: '/ticket/:ticketId',
+            initialEntries: [`/ticket/${ticketId}`],
+        })
+
+        expect(
+            await screen.findByRole('link', { name: 'John Doe' }),
+        ).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Loading')).toHaveLength(0)
+        })
+    })
+
     it('should render InfobarTicketCustomerHeader with customer data', async () => {
         render(<InfobarTicketCustomerDetails {...defaultProps} />, {
             path: '/ticket/:ticketId',

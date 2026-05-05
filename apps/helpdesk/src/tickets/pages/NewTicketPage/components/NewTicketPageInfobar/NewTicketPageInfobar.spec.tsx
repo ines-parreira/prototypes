@@ -11,6 +11,7 @@ import type { TicketCustomer } from '@gorgias/helpdesk-queries'
 import { useGetCurrentUser, useGetCustomer } from '@gorgias/helpdesk-queries'
 
 import { useCustomerProfileActions } from 'pages/common/components/infobar/Infobar/useCustomerProfileActions'
+import { TimelineSidePanel } from 'pages/tickets/detail/TimelineSidePanel'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 
 import { NewTicketPageInfobar } from './NewTicketPageInfobar'
@@ -61,6 +62,10 @@ jest.mock('@repo/tickets', () => ({
     )),
 }))
 
+jest.mock('@repo/tickets/infobar-sections', () => ({
+    ...jest.requireActual('@repo/tickets/infobar-sections'),
+}))
+
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
     useGetCurrentUser: jest.fn(),
@@ -83,9 +88,63 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/tickets/detail/TimelineSidePanel', () => ({
+    TimelineSidePanel: jest.fn(() => <div>TimelineSidePanel</div>),
+}))
+
+jest.mock(
+    'pages/tickets/detail/TicketCustomerSections/useTicketInfobarSectionFlags',
+    () => ({
+        useTicketInfobarSectionFlags: jest.fn(() => ({
+            hasShopify: false,
+            hasRecharge: false,
+            hasBigCommerce: false,
+            hasMagento: false,
+            hasWooCommerce: false,
+            hasSmile: false,
+            hasYotpo: false,
+            hasCustomIntegrations: false,
+        })),
+    }),
+)
+
+jest.mock(
+    'pages/tickets/detail/TicketCustomerSections/useCustomerFilteredIntegrations',
+    () => ({
+        useCustomerFilteredIntegrations: jest.fn(() => new Map()),
+    }),
+)
+
+jest.mock('pages/tickets/detail/IntegrationTabContent', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>IntegrationTabContent</div>),
+}))
+
+jest.mock('pages/tickets/detail/WooCommerceTabContent', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>WooCommerceTabContent</div>),
+}))
+
+jest.mock('pages/tickets/detail/CustomIntegrationsTabContent', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>CustomIntegrationsTabContent</div>),
+}))
+
 jest.mock('state/integrations/selectors', () => ({
     ...jest.requireActual('state/integrations/selectors'),
     makeHasIntegrationOfTypes: jest.fn(),
+}))
+
+jest.mock('state/widgets/selectors', () => ({
+    ...jest.requireActual('state/widgets/selectors'),
+    getSourcesWithCustomer: jest.fn(() => undefined),
+    getWidgetsState: jest.fn(() => undefined),
+}))
+
+jest.mock('state/widgets/actions', () => ({
+    ...jest.requireActual('state/widgets/actions'),
+    selectContext: jest.fn(() => () => undefined),
+    fetchWidgets: jest.fn(() => () => Promise.resolve()),
 }))
 
 jest.mock(
@@ -96,10 +155,6 @@ jest.mock(
         )),
     }),
 )
-
-jest.mock('tickets/ticket-timeline', () => ({
-    TimelineContent: jest.fn(() => <div>TimelineContent</div>),
-}))
 
 jest.mock(
     'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions',
@@ -116,6 +171,7 @@ const mockMakeHasIntegrationOfTypes = jest.mocked(makeHasIntegrationOfTypes)
 const mockUseGetCurrentUser = jest.mocked(useGetCurrentUser)
 const mockUseGetCustomer = jest.mocked(useGetCustomer)
 const mockCustomerInfo = jest.mocked(CustomerInfo)
+const mockTimelineSidePanel = jest.mocked(TimelineSidePanel)
 const mockNewTicketInfobarTicketCustomerHeader = jest.mocked(
     NewTicketInfobarTicketCustomerHeader,
 )
@@ -132,12 +188,14 @@ const customer = {
 describe('NewTicketPageInfobar', () => {
     const handleEditCustomer = jest.fn()
     const handleSyncToShopify = jest.fn()
+    const onChangeTab = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
 
         mockUseTicketInfobarNavigation.mockReturnValue({
             activeTab: TicketInfobarTab.Customer,
+            onChangeTab,
         } as any)
         mockUseGetCurrentUser.mockReturnValue({
             data: {
@@ -177,10 +235,7 @@ describe('NewTicketPageInfobar', () => {
         )
     })
 
-    it('renders the Shopify customer panel when the Shopify tab is active', () => {
-        mockUseTicketInfobarNavigation.mockReturnValue({
-            activeTab: TicketInfobarTab.Shopify,
-        } as any)
+    it('renders both customer and shopify sections when a customer is set and shopify is integrated', () => {
         const shopifyCustomer = {
             ...customer,
             integrations: {
@@ -202,6 +257,9 @@ describe('NewTicketPageInfobar', () => {
             />,
         )
 
+        expect(
+            screen.getByText('NewTicketInfobarTicketCustomerHeader'),
+        ).toBeInTheDocument()
         expect(screen.getByText('CustomerInfo')).toBeInTheDocument()
         expect(mockCustomerInfo).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -222,10 +280,22 @@ describe('NewTicketPageInfobar', () => {
         expect(handleSyncToShopify).toHaveBeenCalledWith(shopifyCustomer)
     })
 
+    it('omits the shopify section when shopify is not integrated', () => {
+        mockMakeHasIntegrationOfTypes.mockReturnValue(() => false)
+
+        render(
+            <NewTicketPageInfobar
+                tags={[]}
+                onTagsChange={jest.fn()}
+                onCustomerChange={jest.fn()}
+                customer={customer}
+            />,
+        )
+
+        expect(screen.queryByText('CustomerInfo')).not.toBeInTheDocument()
+    })
+
     it('uses the full customer response to resolve Shopify profile data', () => {
-        mockUseTicketInfobarNavigation.mockReturnValue({
-            activeTab: TicketInfobarTab.Shopify,
-        } as any)
         mockUseGetCustomer.mockReturnValue({
             data: {
                 data: {
@@ -263,6 +333,62 @@ describe('NewTicketPageInfobar', () => {
             }),
             {},
         )
+    })
+
+    it('mounts the timeline side panel closed when a customer is set', () => {
+        render(
+            <NewTicketPageInfobar
+                tags={[]}
+                onTagsChange={jest.fn()}
+                onCustomerChange={jest.fn()}
+                customer={customer}
+            />,
+        )
+
+        expect(mockTimelineSidePanel).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isOpen: false,
+                shopperId: customer.id,
+            }),
+            {},
+        )
+    })
+
+    it('opens the timeline side panel when the active tab is Timeline', () => {
+        mockUseTicketInfobarNavigation.mockReturnValue({
+            activeTab: TicketInfobarTab.Timeline,
+            onChangeTab,
+        } as any)
+
+        render(
+            <NewTicketPageInfobar
+                tags={[]}
+                onTagsChange={jest.fn()}
+                onCustomerChange={jest.fn()}
+                customer={customer}
+            />,
+        )
+
+        expect(mockTimelineSidePanel).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isOpen: true,
+                shopperId: customer.id,
+            }),
+            {},
+        )
+    })
+
+    it('does not mount the timeline side panel when no customer is selected', () => {
+        render(
+            <NewTicketPageInfobar
+                tags={[]}
+                onTagsChange={jest.fn()}
+                onCustomerChange={jest.fn()}
+                customer={null}
+            />,
+        )
+
+        expect(mockTimelineSidePanel).not.toHaveBeenCalled()
     })
 
     it('opens the customer search panel from the empty customer state', async () => {

@@ -76,11 +76,13 @@ export function CustomerInfo({
         isLoadingIntegrations,
         onCreateOrder,
         shopper,
+        isLoadingShopper,
         orders,
         isLoadingOrders,
         draftOrders,
         isLoadingDraftOrders,
         productsMap,
+        isLoadingPurchaseSummary,
         enrichedCustomer,
         context,
         hasData,
@@ -175,6 +177,8 @@ export function CustomerInfo({
                 enrichedCustomer={enrichedCustomer}
                 currentUser={currentUser}
                 hasData={hasData}
+                isLoadingShopper={isLoadingShopper}
+                isLoadingPurchaseSummary={isLoadingPurchaseSummary}
                 customerFields={customerFields}
                 context={context}
                 sections={sections}

@@ -25,7 +25,6 @@ const mockRenderOrderSidePanel = (props: OrderSidePanelRenderProps) => (
 vi.mock('@repo/navigation', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useTicketInfobarNavigation: () => ({
-        shopifyIntegrationId: undefined,
         activeTab: undefined,
         isExpanded: true,
         onChangeTab: vi.fn(),

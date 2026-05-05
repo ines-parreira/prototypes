@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import {
     ObjectType,
+    queryKeys,
     SourceType,
     useListEcommerceData,
 } from '@gorgias/ecommerce-storage-queries'
@@ -15,19 +16,27 @@ type Params = {
     productExternalIds: string[]
 }
 
+const QUERY_PARAMS = { params: { limit: 100 } }
+
 export function useProductsMap({ integrationId, productExternalIds }: Params) {
     const isEnabled = !!integrationId && productExternalIds.length > 0
 
     const { data: productsResponse, isLoading } = useListEcommerceData(
         ObjectType.Product,
         SourceType.Shopify,
+        QUERY_PARAMS,
         {
-            params: {
-                limit: 100,
+            query: {
+                enabled: isEnabled,
+                queryKey: [
+                    ...queryKeys.ecommerceData.listEcommerceData(
+                        ObjectType.Product,
+                        SourceType.Shopify,
+                        QUERY_PARAMS,
+                    ),
+                    { integrationId, productExternalIds },
+                ],
             },
-        },
-        {
-            query: { enabled: isEnabled },
             http: {
                 params: {
                     integration_id: integrationId,

@@ -2,10 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useCanAccessAIFeedback, useFeedbackTracking } from '@repo/ai-agent'
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
-import { ShopifyCustomer, ShopifyCustomerProvider } from '@repo/customer'
+import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
+import { InfobarEditModeHeader } from '@repo/tickets/infobar-edit-mode-header'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
@@ -14,38 +15,23 @@ import { useLocation, useParams } from 'react-router-dom'
 import { Navbar } from 'reactstrap'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
-import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { AutoQA } from 'auto_qa'
 import { TicketStatus } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
 import useSyncWidgetEditSession from 'hooks/useSyncWidgetEditSession'
-import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
-import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
-import { channelToCommunicationIcon } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/channelToCommunicationIcon'
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
-import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
-import CustomIntegrationsTabContent from 'pages/tickets/detail/CustomIntegrationsTabContent'
-import IntegrationTabContent from 'pages/tickets/detail/IntegrationTabContent'
-import WooCommerceTabContent from 'pages/tickets/detail/WooCommerceTabContent'
-import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { executeAction } from 'state/infobar/actions'
-import { getIntegrationsByType } from 'state/integrations/selectors'
 import * as layoutSelectors from 'state/layout/selectors'
-import {
-    getAIAgentMessages,
-    getIntegrationsData,
-    getTicket,
-} from 'state/ticket/selectors'
+import { getAIAgentMessages, getTicket } from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import * as actions from 'state/widgets/actions'
@@ -54,48 +40,15 @@ import {
     getWidgetsState,
 } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
-import { TimelineContent } from 'tickets/ticket-timeline'
-import BigCommerceWidget from 'Widgets/modules/BigCommerce'
-import Magento2Widget from 'Widgets/modules/Magento2'
-import RechargeWidget from 'Widgets/modules/Recharge'
-import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import ConnectedEditOrderShippingAddressModal from 'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal'
-import { OrderSidePanelWithActions } from 'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
-import SmileWidget from 'Widgets/modules/Smile'
-import YotpoWidget from 'Widgets/modules/Yotpo'
 
 import { useCreateOrder } from './hooks/useCreateOrder'
+import { useCurrentUserBasicInfo } from './hooks/useCurrentUserBasicInfo'
+import { TicketInfobarTabContent } from './TicketInfobarTabContent'
+import { TimelineSidePanel } from './TimelineSidePanel'
 
 import css from './TicketInfobarContainer.less'
-
-const INTEGRATION_TAB_CONFIGS = [
-    {
-        tab: TicketInfobarTab.Recharge,
-        integrationType: IntegrationType.Recharge,
-        WidgetComponent: RechargeWidget,
-    },
-    {
-        tab: TicketInfobarTab.BigCommerce,
-        integrationType: IntegrationType.Bigcommerce,
-        WidgetComponent: BigCommerceWidget,
-    },
-    {
-        tab: TicketInfobarTab.Magento,
-        integrationType: IntegrationType.Magento2,
-        WidgetComponent: Magento2Widget,
-    },
-    {
-        tab: TicketInfobarTab.Smile,
-        integrationType: IntegrationType.Smile,
-        WidgetComponent: SmileWidget,
-    },
-    {
-        tab: TicketInfobarTab.Yotpo,
-        integrationType: IntegrationType.Yotpo,
-        WidgetComponent: YotpoWidget,
-    },
-]
 
 type OwnProps = {
     isEditingWidgets?: boolean
@@ -122,6 +75,7 @@ export const TicketInfobarContainer = ({
     widgets,
 }: Props) => {
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
+    const hasUIVisionMS2 = useHelpdeskV2MS2Flag()
     const params = useParams<{ ticketId: string }>()
     const [preferredTab, setPreferredTab] = useSearchParam('activeTab')
     const dispatch = useAppDispatch()
@@ -134,7 +88,13 @@ export const TicketInfobarContainer = ({
     const { hasAccess } = useAiAgentAccess()
     const location = useLocation()
     const hasAIAgent = useHasAIAgent()
-    const { activeTab, onChangeTab } = useTicketInfobarNavigation()
+    const {
+        activeTab,
+        editingWidgetType,
+        onChangeTab,
+        onSetEditingWidgetType,
+    } = useTicketInfobarNavigation()
+    const isEditMode = editingWidgetType != null
     const ticketId = parseInt(params.ticketId, 10)
     const { data: currentTicketData } = useGetTicket(ticketId!, undefined, {
         query: {
@@ -143,64 +103,6 @@ export const TicketInfobarContainer = ({
     })
     const shopperId = currentTicketData?.data?.customer?.id
 
-    const customerIntegrations = useAppSelector(getIntegrationsData)
-    const rechargeIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Recharge),
-    )
-    const bigcommerceIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Bigcommerce),
-    )
-    const magento2Integrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Magento2),
-    )
-    const smileIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Smile),
-    )
-    const yotpoIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Yotpo),
-    )
-    const customerFilteredIntegrations = useMemo(() => {
-        const integrationsByTab = [
-            [TicketInfobarTab.Recharge, rechargeIntegrations],
-            [TicketInfobarTab.BigCommerce, bigcommerceIntegrations],
-            [TicketInfobarTab.Magento, magento2Integrations],
-            [TicketInfobarTab.Smile, smileIntegrations],
-            [TicketInfobarTab.Yotpo, yotpoIntegrations],
-        ] as const
-
-        const result = new Map<
-            TicketInfobarTab,
-            (typeof integrationsByTab)[number][1]
-        >()
-        for (const [tab, integrations] of integrationsByTab) {
-            const matched: typeof integrations = []
-            customerIntegrations.forEach(
-                (_: unknown, integrationId: string) => {
-                    const match = integrations.find(
-                        (integration) =>
-                            String(integration.id) === integrationId,
-                    )
-                    if (match) matched.push(match)
-                },
-            )
-            result.set(tab, matched)
-        }
-        return result
-    }, [
-        customerIntegrations,
-        rechargeIntegrations,
-        bigcommerceIntegrations,
-        magento2Integrations,
-        smileIntegrations,
-        yotpoIntegrations,
-    ])
-
-    const activeIntegrationConfig = INTEGRATION_TAB_CONFIGS.find(
-        (c) => c.tab === activeTab,
-    )
-    const activeIntegrationMatches = activeIntegrationConfig
-        ? (customerFilteredIntegrations.get(activeIntegrationConfig.tab) ?? [])
-        : []
     const { onFeedbackTabOpened } = useFeedbackTracking({
         ticketId,
         accountId,
@@ -260,6 +162,12 @@ export const TicketInfobarContainer = ({
         () => sources.getIn(['ticket', 'customer']) || fromJS({}),
         [sources],
     )
+
+    const identifier = String(
+        sources.getIn(['ticket', 'id'], params.ticketId || ''),
+    )
+
+    const currentUserBasicInfo = useCurrentUserBasicInfo()
 
     const [isCustomerSyncFormOpen, setIsCustomerSyncFormOpen] = useState(false)
 
@@ -331,6 +239,11 @@ export const TicketInfobarContainer = ({
         (message) =>
             new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE,
     )
+
+    const handleCloseEditMode = useCallback(() => {
+        dispatch(actions.startEditionMode(WidgetEnvironment.Ticket))
+        onSetEditingWidgetType(null)
+    }, [dispatch, onSetEditingWidgetType])
 
     const handleAIAgentTabClick = useCallback(() => {
         onFeedbackTabOpened('tab-clicked')
@@ -487,126 +400,42 @@ export const TicketInfobarContainer = ({
                 </Navbar>
             )}
 
-            {activeTab === TicketInfobarTab.Timeline && shopperId ? (
-                <TimelineContent
+            {hasUIVisionMS2 && isEditMode && editingWidgetType && (
+                <InfobarEditModeHeader
+                    editingWidgetType={editingWidgetType}
+                    onClose={handleCloseEditMode}
+                />
+            )}
+
+            <TicketInfobarTabContent
+                activeTab={activeTab}
+                hasAIAgent={hasAIAgent}
+                canAccessAIFeedback={canAccessAIFeedback}
+                feedbackKey={ticket.id}
+                customerSectionsProps={{
+                    sources,
+                    widgets,
+                    customer,
+                    identifier,
+                    isEditingWidgets: !!isEditingWidgets,
+                    isOnNewLayout,
+                    customerId: ticket.customer?.id ?? null,
+                    currentUser: currentUserBasicInfo,
+                    createOrder,
+                    handleSyncProfile,
+                    renderEditShippingAddressModal,
+                    isCustomerSyncFormOpen,
+                    setIsCustomerSyncFormOpen,
+                }}
+            />
+
+            {shopperId !== undefined && (
+                <TimelineSidePanel
+                    isOpen={activeTab === TicketInfobarTab.Timeline}
+                    onClose={() => onChangeTab(TicketInfobarTab.Customer)}
                     shopperId={shopperId}
                     activeTicketId={params.ticketId}
-                    channelToCommunicationIcon={channelToCommunicationIcon}
                 />
-            ) : activeTab === TicketInfobarTab.AIFeedback &&
-              hasAIAgent &&
-              canAccessAIFeedback ? (
-                <TicketFeedback key={ticket.id} />
-            ) : activeTab === TicketInfobarTab.AutoQA ? (
-                <div className={css.autoQaContainer}>
-                    <AutoQA />
-                </div>
-            ) : activeTab === TicketInfobarTab.Shopify ? (
-                <div className={css.shopifyContainer}>
-                    <ShopifyCustomerProvider onCreateOrder={createOrder.open}>
-                        <ShopifyCustomer
-                            onSyncProfile={handleSyncProfile}
-                            renderEditShippingAddressModal={
-                                renderEditShippingAddressModal
-                            }
-                            renderOrderSidePanel={(props) => (
-                                <OrderSidePanelWithActions {...props} />
-                            )}
-                            currentUser={{
-                                name: currentUser.get('name') as string,
-                                firstname: currentUser.get(
-                                    'firstname',
-                                ) as string,
-                                lastname: currentUser.get('lastname') as string,
-                                email: currentUser.get('email') as string,
-                            }}
-                        />
-                    </ShopifyCustomerProvider>
-                    <CustomerSyncForm
-                        isCustomerSyncFormOpen={isCustomerSyncFormOpen}
-                        activeCustomer={customer}
-                        setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
-                    />
-                    <CustomerContext.Provider
-                        value={{
-                            customerId: ticket.customer?.id ?? null,
-                        }}
-                    >
-                        <IntegrationContext.Provider
-                            value={{
-                                integration: fromJS({}),
-                                integrationId:
-                                    createOrder.data?.integrationId ?? null,
-                            }}
-                        >
-                            <DraftOrderModal
-                                isOpen={createOrder.isOpen}
-                                title="Create order"
-                                onChange={createOrder.onChange}
-                                onBulkChange={createOrder.onBulkChange}
-                                onSubmit={createOrder.onSubmit}
-                                onClose={createOrder.onClose}
-                                data={{
-                                    actionName: ShopifyActionType.CreateOrder,
-                                    customer:
-                                        createOrder.data?.customerImmutable,
-                                }}
-                            />
-                        </IntegrationContext.Provider>
-                    </CustomerContext.Provider>
-                </div>
-            ) : activeIntegrationConfig ? (
-                activeIntegrationMatches.length > 0 ? (
-                    <IntegrationTabContent
-                        sources={sources}
-                        widgets={widgets}
-                        widgetType={activeIntegrationConfig.integrationType}
-                        sourcePaths={activeIntegrationMatches.map(
-                            (integration) => [
-                                'ticket',
-                                'customer',
-                                'integrations',
-                                String(integration.id),
-                            ],
-                        )}
-                        WidgetComponent={
-                            activeIntegrationConfig.WidgetComponent
-                        }
-                    />
-                ) : null
-            ) : activeTab === TicketInfobarTab.WooCommerce ? (
-                <WooCommerceTabContent sources={sources} widgets={widgets} />
-            ) : activeTab === TicketInfobarTab.CustomIntegrations ? (
-                <CustomIntegrationsTabContent
-                    sources={sources}
-                    widgets={widgets}
-                />
-            ) : (
-                <div
-                    className={classNames(css.infoBarContainer, {
-                        [css.infoBarContainerWithNavbar]:
-                            !hasUIVisionMS1 && hasAccess,
-                        [css.infobarHelpdeskV2MS1]: hasUIVisionMS1,
-                    })}
-                >
-                    <Infobar
-                        sources={sources}
-                        isRouteEditingWidgets={!!isEditingWidgets}
-                        identifier={(
-                            sources.getIn(
-                                ['ticket', 'id'],
-                                params.ticketId || '',
-                            ) as number
-                        ).toString()}
-                        customer={customer}
-                        widgets={widgets}
-                        context={WidgetEnvironment.Ticket}
-                        isOnNewLayout={isOnNewLayout}
-                        renderEditShippingAddressModal={
-                            renderEditShippingAddressModal
-                        }
-                    />
-                </div>
             )}
         </div>
     )

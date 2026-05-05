@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useTicketInfobarNavigation } from '@repo/navigation'
-
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import { useShopifyIntegrations } from './useShopifyIntegrations'
@@ -17,7 +15,6 @@ export function useIntegrationSelection({
     externalIdMap,
     onStoreChange,
 }: Params) {
-    const { shopifyIntegrationId } = useTicketInfobarNavigation()
     const { integrations, isLoading } = useShopifyIntegrations()
     const [selectedIntegration, setSelectedIntegration] = useState<
         Integration | undefined
@@ -36,18 +33,12 @@ export function useIntegrationSelection({
 
     useEffect(() => {
         if (filteredIntegrations.length > 0 && !hasInitialized.current) {
-            const preferred =
-                shopifyIntegrationId != null
-                    ? filteredIntegrations.find(
-                          (i) => i.id === shopifyIntegrationId,
-                      )
-                    : undefined
-            const integration = preferred ?? filteredIntegrations[0]
+            const integration = filteredIntegrations[0]
             setSelectedIntegration(integration)
             onStoreChange?.(integration.id)
             hasInitialized.current = true
         }
-    }, [filteredIntegrations, onStoreChange, shopifyIntegrationId])
+    }, [filteredIntegrations, onStoreChange])
 
     const handleStoreChange = useCallback(
         (integration: Integration) => {

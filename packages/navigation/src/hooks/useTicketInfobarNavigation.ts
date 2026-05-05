@@ -8,19 +8,13 @@ export function useTicketInfobarNavigation(): TicketInfobarNavigationContextValu
     const [state, setState] = useNavigation()
 
     const onChangeTab = useCallback(
-        (
-            activeTab: TicketInfobarTab,
-            options?: { shopifyIntegrationId?: number },
-        ) => {
+        (activeTab: TicketInfobarTab) => {
             setState((s) => ({
                 ...s,
                 ticketInfobar: {
                     ...s.ticketInfobar,
                     activeTab,
                     editingWidgetType: null,
-                    ...(options?.shopifyIntegrationId != null && {
-                        shopifyIntegrationId: options.shopifyIntegrationId,
-                    }),
                 },
             }))
         },

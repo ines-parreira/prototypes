@@ -6,6 +6,7 @@ import { useUserDateTimePreferences } from '@repo/preferences'
 import { Box, Separator } from '@gorgias/axiom'
 
 import type { OrderEcommerceData } from '../../../types'
+import { OrdersListSkeleton } from '../skeletons/OrdersListSkeleton'
 import { OrdersHeader } from './OrdersHeader'
 
 type OrdersListProps = {
@@ -30,7 +31,7 @@ export function OrdersList({
     const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
 
     if (isLoadingOrders || isLoadingDraftOrders) {
-        return null
+        return <OrdersListSkeleton />
     }
 
     const hasOrders = orders && orders.length > 0

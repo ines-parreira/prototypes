@@ -1,5 +1,6 @@
 import type { ObjectType } from '@gorgias/ecommerce-storage-queries'
 import {
+    queryKeys,
     SourceType,
     useListEcommerceData,
 } from '@gorgias/ecommerce-storage-queries'
@@ -30,6 +31,14 @@ export function useListShopifyOrders({
         {
             query: {
                 enabled: isEnabled,
+                queryKey: [
+                    ...queryKeys.ecommerceData.listEcommerceData(
+                        objectType,
+                        SourceType.Shopify,
+                        { params: {} },
+                    ),
+                    { integrationId, shopperIdentityId },
+                ],
             },
             http: {
                 params: {

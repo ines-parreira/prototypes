@@ -6,6 +6,8 @@
     "exports": {
         ".": "./src/index.ts",
         "./feature-flags": "./src/feature-flags/index.ts",
+        "./infobar-edit-mode-header": "./src/components/InfobarEditModeHeader/index.ts",
+        "./infobar-sections": "./src/components/InfobarNavigation/infobarSections.ts",
         "./ticket-thread": "./src/ticket-thread/index.ts",
         "./ticket-list": "./src/ticket-list/index.ts",
         "./views": "./src/views/index.ts",

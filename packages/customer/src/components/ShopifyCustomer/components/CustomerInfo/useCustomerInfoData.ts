@@ -53,7 +53,7 @@ export function useCustomerInfoData({
 
     const { onCreateOrder } = useContext(ShopifyCustomerContext)
 
-    const { shopper } = useGetShopper({
+    const { shopper, isLoadingShopper } = useGetShopper({
         integrationId: selectedIntegration?.id,
         externalId: selectedExternalId,
     })
@@ -86,10 +86,12 @@ export function useCustomerInfoData({
         orders: [...(sortedOrders ?? []), ...(sortedDraftOrders ?? [])],
     })
 
-    const { purchaseSummary } = useGetPurchaseSummary({
-        integrationId: selectedIntegration?.id,
-        externalId: selectedExternalId,
-    })
+    const { purchaseSummary, isLoadingPurchaseSummary } = useGetPurchaseSummary(
+        {
+            integrationId: selectedIntegration?.id,
+            externalId: selectedExternalId,
+        },
+    )
 
     const { data: emailMarketingConsent } = useGetMarketingConsent({
         integrationId: selectedIntegration?.id,
@@ -161,12 +163,14 @@ export function useCustomerInfoData({
         isLoadingIntegrations,
         onCreateOrder,
         shopper,
+        isLoadingShopper,
         orders: sortedOrders,
         isLoadingOrders,
         draftOrders: sortedDraftOrders,
         isLoadingDraftOrders,
         productsMap,
         purchaseSummary,
+        isLoadingPurchaseSummary,
         enrichedCustomer,
         context,
         hasData,

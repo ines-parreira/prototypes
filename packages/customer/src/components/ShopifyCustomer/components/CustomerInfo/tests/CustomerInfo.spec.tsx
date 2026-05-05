@@ -1,7 +1,7 @@
 import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
-import { http, HttpResponse } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 
 import {
     mockEcommerceData,
@@ -34,7 +34,6 @@ vi.mock('../../../hooks/useListShopifyOrders', () => ({
 }))
 
 const mockUseTicketInfobarNavigation = vi.fn().mockReturnValue({
-    shopifyIntegrationId: undefined,
     activeTab: undefined,
     isExpanded: true,
     editingWidgetType: null,
@@ -186,7 +185,6 @@ async function waitForSelectedStore(name = mockShopifyIntegration.name) {
 
 beforeEach(() => {
     mockUseTicketInfobarNavigation.mockReturnValue({
-        shopifyIntegrationId: undefined,
         activeTab: undefined,
         isExpanded: true,
         editingWidgetType: null,
@@ -366,6 +364,60 @@ describe('CustomerInfo', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('renders the body skeleton while shopper data is loading', async () => {
+        server.use(
+            mockGetEcommerceDataByExternalIdHandler(async () => {
+                await delay('infinite')
+                return HttpResponse.json(
+                    mockEcommerceData({
+                        data: mockShopperData,
+                        relationships: {
+                            shopper_identity_id: 'shopper-identity-1',
+                        },
+                    }),
+                )
+            }).handler,
+        )
+
+        render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+                ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
+            />,
+        )
+
+        await waitForSelectedStore()
+
+        expect(screen.getByText('Shopify')).toBeInTheDocument()
+        expect(
+            screen.getAllByLabelText('Loading').length,
+        ).toBeGreaterThanOrEqual(8)
+        expect(
+            screen.queryByRole('link', { name: /john doe/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('hides the skeleton once shopper data resolves', async () => {
+        render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+                ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
+            />,
+        )
+
+        expect(
+            await screen.findByRole('link', { name: /john doe/i }),
+        ).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Loading')).toHaveLength(0)
+        })
+    })
+
     it('renders the customer link with correct Shopify URL', async () => {
         render(
             <CustomerInfo
@@ -452,70 +504,6 @@ describe('CustomerInfo', () => {
                 name: /sync to other stores/i,
             }),
         ).toBeInTheDocument()
-    })
-
-    it('selects the integration matching shopifyIntegrationId from navigation context', async () => {
-        mockUseTicketInfobarNavigation.mockReturnValue({
-            shopifyIntegrationId: 2,
-            activeTab: undefined,
-            isExpanded: true,
-            onChangeTab: vi.fn(),
-            onToggle: vi.fn(),
-        })
-
-        const secondIntegration = {
-            id: 2,
-            name: 'Second Shopify Store',
-            type: 'shopify',
-            created_datetime: '2024-01-02T00:00:00Z',
-            meta: { shop_name: 'second-store' },
-        } as Integration
-
-        const multipleAssociatedShopifyCustomerIds = new Set([1, 2])
-        const multipleExternalIdMap = new Map([
-            [1, '456'],
-            [2, '789'],
-        ])
-
-        const mockListMultipleIntegrations = mockListIntegrationsHandler(
-            async () =>
-                HttpResponse.json({
-                    data: [mockShopifyIntegration, secondIntegration],
-                    meta: {
-                        next_cursor: null,
-                        prev_cursor: null,
-                    },
-                    object: 'list',
-                    uri: '/api/integrations',
-                }),
-        )
-
-        const mockGetSecondEcommerceData =
-            mockGetEcommerceDataByExternalIdHandler(async () =>
-                HttpResponse.json(
-                    mockEcommerceData({
-                        data: mockShopperData,
-                    }),
-                ),
-            )
-
-        server.use(
-            mockListMultipleIntegrations.handler,
-            mockGetSecondEcommerceData.handler,
-        )
-
-        render(
-            <CustomerInfo
-                associatedShopifyCustomerIds={
-                    multipleAssociatedShopifyCustomerIds
-                }
-                externalIdMap={multipleExternalIdMap}
-                ticketId="123"
-                renderOrderSidePanel={mockRenderOrderSidePanel}
-            />,
-        )
-
-        await waitForSelectedStore('Second Shopify Store')
     })
 
     it('calls onSyncProfile when clicking sync action in store picker', async () => {

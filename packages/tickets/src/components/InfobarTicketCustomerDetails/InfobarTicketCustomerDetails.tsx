@@ -14,6 +14,8 @@ import { SearchAndPreviewCustomersPanel } from './components/SearchAndPreviewCus
 import { SwitchCustomerConfirmationModal } from './components/SwitchCustomerConfirmationModal/SwitchCustomerConfirmationModal'
 import { useGetSimilarCustomer } from './hooks/useGetSimilarCustomer'
 import { useUpdateTicketCustomer } from './hooks/useUpdateTicketCustomer'
+import { InfobarCustomerFieldsSkeleton } from './skeletons/InfobarCustomerFieldsSkeleton'
+import { InfobarTicketCustomerHeaderSkeleton } from './skeletons/InfobarTicketCustomerHeaderSkeleton'
 
 import css from './InfobarTicketCustomerDetails.less'
 
@@ -30,8 +32,11 @@ export function InfobarTicketCustomerDetails({
     hasShopifyIntegration = false,
     ticketId,
 }: InfobarTicketCustomerDetailsProps) {
-    const { data: ticket } = useGetTicketData(ticketId!)
+    const { data: ticket, isLoading: isLoadingTicket } = useGetTicketData(
+        ticketId!,
+    )
     const ticketCustomer = ticket?.data?.customer
+    const isLoadingDetails = !ticketCustomer && isLoadingTicket
 
     const { updateTicketCustomer } = useUpdateTicketCustomer(ticketId!)
 
@@ -85,24 +90,35 @@ export function InfobarTicketCustomerDetails({
 
     return (
         <InfobarTicketCustomerDetailsContainer>
-            <InfobarTicketCustomerHeader
-                customer={ticketCustomer}
-                onOpenMergePanel={() => {
-                    setIsSearchAndPreviewPanelOpen(true)
-                }}
-                onEditCustomer={onEditCustomer}
-                onSyncToShopify={onSyncToShopify}
-                hasShopifyIntegration={hasShopifyIntegration}
-            />
-            {!!similarCustomer && !isLoadingSimilarCustomer && (
-                <div className={css.duplicateCustomer}>
-                    <DuplicateCustomer onClick={handleViewSimilarCustomer} />
-                </div>
+            {isLoadingDetails ? (
+                <>
+                    <InfobarTicketCustomerHeaderSkeleton />
+                    <InfobarCustomerFieldsSkeleton />
+                </>
+            ) : (
+                <>
+                    <InfobarTicketCustomerHeader
+                        customer={ticketCustomer}
+                        onOpenMergePanel={() => {
+                            setIsSearchAndPreviewPanelOpen(true)
+                        }}
+                        onEditCustomer={onEditCustomer}
+                        onSyncToShopify={onSyncToShopify}
+                        hasShopifyIntegration={hasShopifyIntegration}
+                    />
+                    {!!similarCustomer && !isLoadingSimilarCustomer && (
+                        <div className={css.duplicateCustomer}>
+                            <DuplicateCustomer
+                                onClick={handleViewSimilarCustomer}
+                            />
+                        </div>
+                    )}
+                    <InfobarCustomerFields
+                        customer={ticketCustomer}
+                        ticketId={ticketId}
+                    />
+                </>
             )}
-            <InfobarCustomerFields
-                customer={ticketCustomer}
-                ticketId={ticketId}
-            />
             <SearchAndPreviewCustomersPanel
                 isOpen={isSearchAndPreviewPanelOpen}
                 onClose={() => {

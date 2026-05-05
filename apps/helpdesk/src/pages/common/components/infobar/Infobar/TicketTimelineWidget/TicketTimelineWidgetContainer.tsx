@@ -82,10 +82,8 @@ export function TicketTimelineWidgetContainer({
         currentIndex >= allEnrichedTickets.length - 1 || currentIndex === -1
 
     const handleToggleTimeline = () => {
-        // Switch to Timeline tab first
         onChangeTab(TicketInfobarTab.Timeline)
 
-        // Then expand infobar if it's collapsed
         if (!isExpanded) {
             onToggle()
         }

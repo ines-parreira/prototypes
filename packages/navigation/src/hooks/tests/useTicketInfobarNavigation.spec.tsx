@@ -40,21 +40,6 @@ describe('useTicketInfobarNavigation', () => {
         expect(result.current.activeTab).toEqual(TicketInfobarTab.AIFeedback)
     })
 
-    it('should set shopifyIntegrationId when passed via onChangeTab options', () => {
-        const { result } = renderHook(() => useTicketInfobarNavigation(), {
-            wrapper,
-        })
-
-        act(() => {
-            result.current.onChangeTab(TicketInfobarTab.Shopify, {
-                shopifyIntegrationId: 42,
-            })
-        })
-
-        expect(result.current.activeTab).toEqual(TicketInfobarTab.Shopify)
-        expect(result.current.shopifyIntegrationId).toEqual(42)
-    })
-
     it('should set editingWidgetType when calling `onSetEditingWidgetType`', () => {
         const { result } = renderHook(() => useTicketInfobarNavigation(), {
             wrapper,

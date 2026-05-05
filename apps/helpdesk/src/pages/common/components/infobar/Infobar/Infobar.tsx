@@ -1,7 +1,6 @@
-import type { KeyboardEvent, ReactNode } from 'react'
+import type { KeyboardEvent } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -33,7 +32,6 @@ import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/Infobar
 import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
 import InfobarWidgetsEditionTools from 'pages/common/components/infobar/Infobar/InfobarWidgetsEditionTools'
-import { ShopifyOrdersWidgetContainer } from 'pages/common/components/infobar/Infobar/ShopifyOrdersWidget'
 import { CurrentTicketTimelineWidgetContainer } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/CurrentTicketTimelineWidgetContainer'
 import { useCustomerProfileActions } from 'pages/common/components/infobar/Infobar/useCustomerProfileActions'
 import { useCustomerSearch } from 'pages/common/components/infobar/Infobar/useCustomerSearch'
@@ -61,9 +59,6 @@ type Props = {
     sources: Map<any, any>
     widgets: Map<any, any>
     isOnNewLayout?: boolean
-    renderEditShippingAddressModal?: (
-        props: EditShippingAddressModalRenderProps,
-    ) => ReactNode
 }
 
 const MERGE_ERROR_MESSAGE = `You can only edit customers and orders of the customer associated with this ticket.
@@ -77,7 +72,6 @@ export const Infobar = ({
     sources,
     widgets,
     isOnNewLayout,
-    renderEditShippingAddressModal,
 }: Props) => {
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
@@ -322,17 +316,6 @@ export const Infobar = ({
                 {hasUIVisionMS1 &&
                     !isCurrentlyOnCustomerPage(defaultCustomerId) && (
                         <CurrentTicketTimelineWidgetContainer />
-                    )}
-
-                {hasUIVisionMilestone2 &&
-                    hasShopifyIntegration &&
-                    !isCurrentlyOnCustomerPage(defaultCustomerId) &&
-                    !isNewTicketPage && (
-                        <ShopifyOrdersWidgetContainer
-                            renderEditShippingAddressModal={
-                                renderEditShippingAddressModal
-                            }
-                        />
                     )}
 
                 {(!hasUIVisionMS1 ||

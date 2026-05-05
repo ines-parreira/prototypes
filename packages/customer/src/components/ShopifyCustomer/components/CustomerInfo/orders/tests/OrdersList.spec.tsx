@@ -128,8 +128,8 @@ const mockProductsMap = new Map<number, OrderCardProduct>([
 ])
 
 describe('OrdersList', () => {
-    it('renders nothing when isLoadingOrders is true', () => {
-        const { container } = render(
+    it('renders the skeleton when isLoadingOrders is true', () => {
+        render(
             <OrdersList
                 orders={[mockOrderData]}
                 isLoadingOrders={true}
@@ -139,11 +139,14 @@ describe('OrdersList', () => {
             />,
         )
 
-        expect(container).toBeEmptyDOMElement()
+        expect(
+            screen.getAllByLabelText('Loading').length,
+        ).toBeGreaterThanOrEqual(2)
+        expect(screen.queryByText('#1001')).not.toBeInTheDocument()
     })
 
-    it('renders nothing when isLoadingDraftOrders is true', () => {
-        const { container } = render(
+    it('renders the skeleton when isLoadingDraftOrders is true', () => {
+        render(
             <OrdersList
                 orders={[mockOrderData]}
                 isLoadingOrders={false}
@@ -153,7 +156,10 @@ describe('OrdersList', () => {
             />,
         )
 
-        expect(container).toBeEmptyDOMElement()
+        expect(
+            screen.getAllByLabelText('Loading').length,
+        ).toBeGreaterThanOrEqual(2)
+        expect(screen.queryByText('#1001')).not.toBeInTheDocument()
     })
 
     it('renders only the orders header when both orders and draft orders arrays are empty', () => {

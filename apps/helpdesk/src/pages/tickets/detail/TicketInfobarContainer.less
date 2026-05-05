@@ -7,18 +7,6 @@
         border-left: 1px solid var(--neutral-grey-2); // legacy
     }
 
-    .infoBarContainer {
-        height: 100%;
-
-        &.infobarHelpdeskV2MS1 {
-            overflow: auto;
-        }
-
-        &.infoBarContainerWithNavbar {
-            height: calc(100% - 52px);
-        }
-    }
-
     .navbar {
         background-color: var(--neutral-grey-1); // legacy
         border-bottom: 1px solid var(--neutral-grey-2); // legacy
@@ -59,30 +47,6 @@
         overflow: auto;
     }
 
-    .shopifyContainer {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: var(--neutral-grey-0); // legacy
-        padding: var(--layout-spacing-s) 0;
-        gap: var(--layout-spacing-m);
-        overflow: hidden;
-    }
-
-    .rechargeContainer {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: var(--neutral-grey-0); // legacy
-        overflow: hidden;
-    }
-
-    .rechargeContent {
-        flex: 1;
-        padding: var(--layout-spacing-s) 0;
-        overflow: auto;
-    }
-
     .integrationContainer {
         display: flex;
         flex: 1;
@@ -93,11 +57,76 @@
 
     .integrationContent {
         flex: 1;
-        padding: var(--layout-spacing-s) 0;
         overflow: auto;
 
         &[data-dragging='true'] {
             min-height: 300px;
+        }
+    }
+
+    .alwaysMountedCustomerSections {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    .scrollableSections {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        background-color: var(--neutral-grey-0); // legacy
+
+        .integrationContainer {
+            flex: 0 0 auto;
+            overflow: visible;
+        }
+
+        .integrationContent {
+            flex: 0 0 auto;
+            overflow: visible;
+        }
+
+        &:not(.editMode) :global([class*='--widgetWrapper--']) {
+            margin-bottom: 0;
+            border-top: 4px solid var(--border-neutral-default);
+        }
+
+        &.editMode {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+
+            > .section {
+                flex: 1;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .integrationContainer {
+                flex: 1;
+                overflow: hidden;
+            }
+
+            .integrationContent {
+                flex: 1;
+                overflow: auto;
+            }
+        }
+    }
+
+    .section {
+        flex: 0 0 auto;
+        display: block;
+        scroll-margin-top: var(--spacing-xs);
+
+        &:nth-child(2) {
+            border-top: 4px solid var(--border-neutral-default);
         }
     }
 
@@ -170,15 +199,11 @@
         background-color: var(--elevation-neutral-default);
     }
 
-    .shopifyContainer {
-        background-color: var(--elevation-neutral-default);
-    }
-
-    .rechargeContainer {
-        background-color: var(--elevation-neutral-default);
-    }
-
     .integrationContainer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .scrollableSections {
         background-color: var(--elevation-neutral-default);
     }
 

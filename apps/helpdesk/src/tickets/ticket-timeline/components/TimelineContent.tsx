@@ -29,12 +29,14 @@ type Props = {
     shopperId?: number
     activeTicketId?: string
     channelToCommunicationIcon: ChannelToIconFn
+    onClose?: () => void
 }
 
 export function TimelineContent({
     shopperId,
     activeTicketId,
     channelToCommunicationIcon,
+    onClose,
 }: Props) {
     const {
         tickets,
@@ -239,6 +241,7 @@ export function TimelineContent({
                 <TimelineHeader
                     firstName={customer?.firstname}
                     lastName={customer?.lastname}
+                    onClose={onClose}
                 />
                 <TimelineFilters
                     setInteractionTypeFilters={setInteractionTypeFilters}

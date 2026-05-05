@@ -194,15 +194,6 @@ jest.mock(
     }),
 )
 
-jest.mock(
-    'pages/common/components/infobar/Infobar/ShopifyOrdersWidget',
-    () => ({
-        ShopifyOrdersWidgetContainer: () => (
-            <div>ShopifyOrdersWidgetContainer</div>
-        ),
-    }),
-)
-
 jest.mock('state/integrations/selectors', () => ({
     ...jest.requireActual('state/integrations/selectors'),
     makeHasIntegrationOfTypes: jest.fn(),
@@ -1103,23 +1094,6 @@ describe('<Infobar/>', () => {
             )
 
             expect(screen.getByText('InfobarCustomerInfo')).toBeInTheDocument()
-        })
-
-        it('should not render Shopify orders widget when MS2 flag is on and on new ticket page', () => {
-            useHelpdeskV2MS2FlagMock.mockReturnValue(true)
-            makeHasIntegrationOfTypesMock.mockReturnValue(() => true)
-            isCurrentlyOnCustomerPageMock.mockReturnValue(false)
-
-            render(
-                <Provider store={store}>
-                    <Infobar {...commonProps} />
-                </Provider>,
-                { initialEntries: ['/app/ticket/new'] },
-            )
-
-            expect(
-                screen.queryByText('ShopifyOrdersWidgetContainer'),
-            ).not.toBeInTheDocument()
         })
     })
 
