@@ -160,6 +160,36 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
+    it('should return /actions/edit/:id?tab=usage path for actionDetailTab usage tab', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        expect(result.current.routes.actionDetailTab('cfg-1', 'usage')).toEqual(
+            '/app/ai-agent/shopify/test/actions/edit/cfg-1?tab=usage',
+        )
+    })
+
+    it('should return /actions/edit/:id?tab=config path for actionDetailTab config tab', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        expect(
+            result.current.routes.actionDetailTab('cfg-2', 'config'),
+        ).toEqual('/app/ai-agent/shopify/test/actions/edit/cfg-2?tab=config')
+    })
+
+    it('should return /app/settings/integrations/app/:appId/actions path for appDetail', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        expect(result.current.routes.appDetail('app-123')).toEqual(
+            '/app/settings/integrations/app/app-123/actions',
+        )
+    })
+
     it('should return correct urlArticles and fileArticles paths', () => {
         const { result } = renderHook(() =>
             useAiAgentNavigation({ shopName: 'test' }),

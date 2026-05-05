@@ -107,6 +107,12 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
             `${basePath}/actions/new${templateId ? `?template_id=${templateId}` : ''}`,
         editAction: (configurationId: string) =>
             `${basePath}/actions/edit/${configurationId}`,
+        actionDetailTab: (
+            configurationId: string,
+            tab: 'usage' | 'config' | 'logs',
+        ) => `${basePath}/actions/edit/${configurationId}?tab=${tab}`,
+        appDetail: (appId: string) =>
+            `/app/settings/integrations/app/${appId}/actions`,
         actionsTemplates: `${basePath}/actions/templates`,
         actionEvents: (configurationId: string) =>
             `${basePath}/actions/events/${configurationId}`,
