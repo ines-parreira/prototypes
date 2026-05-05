@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 
-import type {
-    JourneyConfigurationApiDTO,
-    JourneyTypeEnum,
-} from '@gorgias/convert-client'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
+
+import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks'
 import type { Product } from 'constants/integrations/types/shopify'
 import { useTriggerAIJourney } from 'models/aiAgent/queries'
 import type { CreateAIJourneyPlaygroundOptions } from 'models/aiAgent/resources/ai-journey'
@@ -22,7 +22,9 @@ type CreateAIJourneyPayloadParams = {
     sessionId: string
     followUpMessagesSent: number
     aiJourneySettings: AIJourneySettings
-    journeyConfiguration: JourneyConfigurationApiDTO | undefined
+    smsSenderNumber: string | null
+    smsSenderIntegrationId: number | null
+    brandName: string | null | undefined
     shopDomain: string | undefined
     selectedProduct: Product | null
 }
@@ -38,7 +40,9 @@ const createAIJourneyPayload: (
     sessionId,
     followUpMessagesSent,
     aiJourneySettings,
-    journeyConfiguration,
+    smsSenderNumber,
+    smsSenderIntegrationId,
+    brandName,
     shopDomain,
     selectedProduct,
 }) => {
@@ -56,13 +60,13 @@ const createAIJourneyPayload: (
         returningCustomer: aiJourneySettings.returningCustomer,
         settings: {
             maxFollowUpMessages: aiJourneySettings.totalFollowUp,
-            smsSenderNumber: journeyConfiguration?.sms_sender_number ?? null,
-            smsSenderIntegrationId:
-                journeyConfiguration?.sms_sender_integration_id ?? null,
+            smsSenderNumber,
+            smsSenderIntegrationId,
             offerDiscount: aiJourneySettings.includeDiscountCode,
             maxDiscountPercent: aiJourneySettings.discountCodeValue ?? null,
             discountCodeMessageThreshold:
                 aiJourneySettings.discountCodeMessageIdx,
+            brandName,
         },
     }
 
@@ -143,6 +147,32 @@ export const useAiJourneyMessages = () => {
     const { createTestSession, testSessionId, startPolling } = useCoreContext()
     const { mutateAsync, isLoading } = useTriggerAIJourney()
 
+    const storeSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
+    const { storeConfiguration: aiJourneyStoreConfig } =
+        useAiJourneyStoreConfiguration(shopifyIntegration?.id)
+
+    const smsSenderNumber = storeSettingsEnabled
+        ? !window.USER_IMPERSONATED
+            ? (aiJourneyStoreConfig?.sms_sender_number ?? null)
+            : (journeyConfiguration?.sms_sender_number ??
+              aiJourneyStoreConfig?.sms_sender_number ??
+              null)
+        : (journeyConfiguration?.sms_sender_number ?? null)
+
+    const smsSenderIntegrationId = storeSettingsEnabled
+        ? !window.USER_IMPERSONATED
+            ? (aiJourneyStoreConfig?.sms_sender_integration_id ?? null)
+            : (journeyConfiguration?.sms_sender_integration_id ??
+              aiJourneyStoreConfig?.sms_sender_integration_id ??
+              null)
+        : (journeyConfiguration?.sms_sender_integration_id ?? null)
+
+    const brandName = storeSettingsEnabled
+        ? aiJourneyStoreConfig?.brand_name
+        : undefined
+
     const triggerMessage = useCallback(async () => {
         if (!currentJourney || !shopifyIntegration) {
             throw new Error('Missing journey or integration configuration')
@@ -162,7 +192,9 @@ export const useAiJourneyMessages = () => {
             sessionId,
             followUpMessagesSent,
             aiJourneySettings,
-            journeyConfiguration,
+            smsSenderNumber,
+            smsSenderIntegrationId,
+            brandName,
             shopDomain,
             selectedProduct,
         })
@@ -182,7 +214,9 @@ export const useAiJourneyMessages = () => {
         shopName,
         aiJourneySettings,
         followUpMessagesSent,
-        journeyConfiguration,
+        smsSenderNumber,
+        smsSenderIntegrationId,
+        brandName,
         setFollowUpMessagesSent,
     ])
 

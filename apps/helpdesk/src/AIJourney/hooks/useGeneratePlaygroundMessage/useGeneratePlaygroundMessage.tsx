@@ -140,6 +140,22 @@ export const useGeneratePlaygroundMessage = ({
             const newTestSessionId = testSessionResponse.testModeSession.id
             setTestSessionId(newTestSessionId)
 
+            const resolvedSmsSenderNumber = storeSettingsEnabled
+                ? !window.USER_IMPERSONATED
+                    ? (smsSenderNumber ?? null)
+                    : (journeyParams.sms_sender_number ??
+                      smsSenderNumber ??
+                      null)
+                : (journeyParams.sms_sender_number ?? null)
+
+            const resolvedSmsSenderIntegrationId = storeSettingsEnabled
+                ? !window.USER_IMPERSONATED
+                    ? (smsSenderIntegrationId ?? null)
+                    : (journeyParams.sms_sender_integration_id ??
+                      smsSenderIntegrationId ??
+                      null)
+                : (journeyParams.sms_sender_integration_id ?? null)
+
             const options = {
                 accountId: accountId,
                 storeIntegrationId: currentIntegration.id,
@@ -174,14 +190,8 @@ export const useGeneratePlaygroundMessage = ({
                 settings: {
                     maxFollowUpMessages:
                         journeyParams.max_follow_up_messages ?? null,
-                    smsSenderNumber:
-                        storeSettingsEnabled && !window.USER_IMPERSONATED
-                            ? (smsSenderNumber ?? null)
-                            : (journeyParams.sms_sender_number ?? null),
-                    smsSenderIntegrationId:
-                        storeSettingsEnabled && !window.USER_IMPERSONATED
-                            ? (smsSenderIntegrationId ?? null)
-                            : (journeyParams.sms_sender_integration_id ?? null),
+                    smsSenderNumber: resolvedSmsSenderNumber,
+                    smsSenderIntegrationId: resolvedSmsSenderIntegrationId,
                     offerDiscount: journeyParams.offer_discount ?? false,
                     maxDiscountPercent:
                         journeyParams.max_discount_percent ?? null,

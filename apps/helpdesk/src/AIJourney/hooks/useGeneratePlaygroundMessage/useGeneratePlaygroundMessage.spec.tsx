@@ -585,6 +585,7 @@ describe('useGeneratePlaygroundMessage', () => {
             smsSenderNumber?: string | null
             smsSenderIntegrationId?: number | null
             brandName?: string | null
+            journeyParamsOverride?: Partial<typeof hookParameters.journeyParams>
         }) => {
             jest.useFakeTimers()
             mockUseFlag.mockReturnValue(props.storeSettingsEnabled)
@@ -630,6 +631,12 @@ describe('useGeneratePlaygroundMessage', () => {
                         smsSenderNumber: props.smsSenderNumber,
                         smsSenderIntegrationId: props.smsSenderIntegrationId,
                         brandName: props.brandName,
+                        journeyParams: props.journeyParamsOverride
+                            ? {
+                                  ...hookParameters.journeyParams,
+                                  ...props.journeyParamsOverride,
+                              }
+                            : hookParameters.journeyParams,
                     }),
                 {
                     wrapper: ({ children }) => (
@@ -757,6 +764,145 @@ describe('useGeneratePlaygroundMessage', () => {
                     }),
                 }),
             ])
+        })
+
+        it('uses null when flag is OFF and journeyParams has no sms sender', async () => {
+            await setupAndTrigger({
+                storeSettingsEnabled: false,
+                journeyParamsOverride: {
+                    sms_sender_number: null as unknown as string,
+                    sms_sender_integration_id: null as unknown as number,
+                },
+            })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: null,
+                        smsSenderIntegrationId: null,
+                    }),
+                }),
+            ])
+        })
+
+        it('uses null when flag is ON, impersonated, and both journey and store config have no sms sender', async () => {
+            window.USER_IMPERSONATED = true
+            await setupAndTrigger({
+                storeSettingsEnabled: true,
+                smsSenderNumber: null,
+                smsSenderIntegrationId: null,
+                journeyParamsOverride: {
+                    sms_sender_number: null as unknown as string,
+                    sms_sender_integration_id: null as unknown as number,
+                },
+            })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: null,
+                        smsSenderIntegrationId: null,
+                    }),
+                }),
+            ])
+        })
+
+        it('falls back to store sender values when flag is ON, USER_IMPERSONATED is true, and journeyParams has no sender', async () => {
+            window.USER_IMPERSONATED = true
+            jest.useFakeTimers()
+            mockUseFlag.mockReturnValue(true)
+
+            mockCreateTestSession.mockResolvedValue({
+                testModeSession: { id: 'test-session-id' },
+            })
+            mockTriggerAIJourney.mockResolvedValue(undefined)
+
+            const testSessionLogsWithOneMessage = {
+                id: '123',
+                status: 'finished' as const,
+                logs: [
+                    {
+                        id: '566c50b5',
+                        data: { message: 'message-1' },
+                        type: TestSessionLogType.AI_AGENT_REPLY,
+                    },
+                ],
+            } as GetTestSessionLogsResponse
+
+            let currentTestSessionLogs:
+                | GetTestSessionLogsResponse
+                | { logs: []; status: 'idle'; id: string } = {
+                logs: [],
+                status: 'idle' as const,
+                id: '1',
+            }
+            let currentIsPolling = false
+
+            mockedUsePlaygroundPolling.mockImplementation(() => ({
+                testSessionLogs: currentTestSessionLogs,
+                startPolling: mockStartPolling,
+                stopPolling: mockStopPolling,
+                isPolling: currentIsPolling,
+            }))
+
+            const journeyParamsWithNoSender = {
+                ...hookParameters.journeyParams,
+                sms_sender_number: null as unknown as string,
+                sms_sender_integration_id: null as unknown as number,
+            }
+
+            const { result, rerender } = renderHook(
+                () =>
+                    useGeneratePlaygroundMessage({
+                        ...hookParameters,
+                        totalMessagesToBeGenerated: 1,
+                        journeyParams: journeyParamsWithNoSender,
+                        smsSenderNumber: '+10000000000',
+                        smsSenderIntegrationId: 999,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            const generatePromise = result.current.handleGenerateMessages()
+
+            await act(async () => {
+                await Promise.resolve()
+                await Promise.resolve()
+            })
+
+            currentIsPolling = true
+            rerender()
+
+            await act(async () => {
+                jest.advanceTimersByTime(5000)
+            })
+
+            currentIsPolling = false
+            currentTestSessionLogs = testSessionLogsWithOneMessage
+            rerender()
+
+            await act(async () => {
+                jest.advanceTimersByTime(5000)
+            })
+
+            await act(async () => {
+                await generatePromise
+            })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: '+10000000000',
+                        smsSenderIntegrationId: 999,
+                    }),
+                }),
+            ])
+
+            jest.useRealTimers()
         })
     })
 

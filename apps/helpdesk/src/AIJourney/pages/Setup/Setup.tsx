@@ -26,6 +26,7 @@ import {
 } from 'AIJourney/components'
 import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone/ImageDropzone'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
+import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 
 export type SetupFormValues = {
@@ -61,11 +62,19 @@ export const Setup = () => {
         isLoading: isLoadingJourneyData,
         journeyData,
         journeyType,
+        currentIntegration,
     } = useJourneyContext()
     const { configuration: journeyParams } = journeyData || {}
 
     const { reset } = useFormContext<SetupFormValues>()
     const [isFormReady, setIsFormReady] = useState(false)
+
+    const storeSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
+    const { storeConfiguration, isLoading: isLoadingStoreConfig } =
+        useAiJourneyStoreConfiguration(currentIntegration?.id)
+    const needsStoreConfig = storeSettingsEnabled && window.USER_IMPERSONATED
 
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
@@ -81,7 +90,11 @@ export const Setup = () => {
         : isAiJourneySegmentsEnabled
 
     useEffect(() => {
-        if (!isLoadingJourneyData && !isFormReady) {
+        const isReadyToInit =
+            !isLoadingJourneyData &&
+            (!needsStoreConfig || !isLoadingStoreConfig)
+
+        if (isReadyToInit && !isFormReady) {
             if (journeyParams) {
                 const hasCustomImage =
                     'media_urls' in journeyParams &&
@@ -90,8 +103,16 @@ export const Setup = () => {
 
                 reset({
                     sms_sender_integration_id: {
-                        id: journeyParams.sms_sender_integration_id,
-                        label: journeyParams.sms_sender_number,
+                        id:
+                            journeyParams.sms_sender_integration_id ??
+                            (needsStoreConfig
+                                ? storeConfiguration?.sms_sender_integration_id
+                                : undefined),
+                        label:
+                            journeyParams.sms_sender_number ??
+                            (needsStoreConfig
+                                ? storeConfiguration?.sms_sender_number
+                                : undefined),
                     },
                     max_follow_up_messages:
                         (journeyParams.max_follow_up_messages ?? 0) + 1,
@@ -143,7 +164,16 @@ export const Setup = () => {
             }
             setIsFormReady(true)
         }
-    }, [isLoadingJourneyData, isFormReady, journeyData, journeyParams, reset])
+    }, [
+        isLoadingJourneyData,
+        isLoadingStoreConfig,
+        isFormReady,
+        needsStoreConfig,
+        storeConfiguration,
+        journeyData,
+        journeyParams,
+        reset,
+    ])
 
     const webhookUrl = journeyData?.webhook_url ?? undefined
     const hasWebhookUrl = isCustom && !!webhookUrl

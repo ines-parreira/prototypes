@@ -5,6 +5,7 @@ import { waitFor } from '@testing-library/react'
 import { OrderStatusEnum } from '@gorgias/convert-client'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
+import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks'
 
 import { Setup } from './Setup'
 
@@ -29,12 +30,17 @@ jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     useJourneyContext: jest.fn(),
 }))
 
+jest.mock('AIJourney/hooks', () => ({
+    useAiJourneyStoreConfiguration: jest.fn(),
+}))
+
 jest.mock('AIJourney/components', () => ({
     AudienceCard: jest.fn(() => <div>AudienceCard</div>),
     GeneralCard: jest.fn(() => <div>GeneralCard</div>),
     DiscountCodeCard: jest.fn(() => <div>DiscountCodeCard</div>),
     KlaviyoSetupCard: jest.fn(() => <div>KlaviyoSetupCard</div>),
     TimingCard: jest.fn(() => <div>TimingCard</div>),
+    RcsEnabledCard: jest.fn(() => <div>RcsEnabledCard</div>),
 }))
 
 const mockUseJourneyContext =
@@ -42,6 +48,8 @@ const mockUseJourneyContext =
         .useJourneyContext as jest.Mock
 
 const mockUseFlag = useFlag as jest.Mock
+const mockUseAiJourneyStoreConfiguration =
+    useAiJourneyStoreConfiguration as jest.Mock
 
 const mockGeneralCard = require('AIJourney/components').GeneralCard as jest.Mock
 const mockDiscountCodeCard = require('AIJourney/components')
@@ -58,11 +66,21 @@ describe('<Setup />', () => {
 
         mockUseFlag.mockReturnValue(false)
 
+        mockUseAiJourneyStoreConfiguration.mockReturnValue({
+            storeConfiguration: undefined,
+            isLoading: false,
+        })
+
         mockUseJourneyContext.mockReturnValue({
             isLoading: false,
             journeyData: undefined,
             journeyType: undefined,
+            currentIntegration: undefined,
         })
+    })
+
+    afterEach(() => {
+        window.USER_IMPERSONATED = null
     })
 
     describe('form reset', () => {
@@ -1179,5 +1197,192 @@ describe('<Setup />', () => {
                 expect(getByText('AudienceCard')).toBeInTheDocument()
             },
         )
+    })
+
+    describe('store config pre-fill (storeSettingsEnabled && USER_IMPERSONATED)', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
+                key === FeatureFlagKey.AiJourneyStoreSettingsEnabled
+                    ? true
+                    : false,
+            )
+            window.USER_IMPERSONATED = true
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    sms_sender_integration_id: 999,
+                    sms_sender_number: '+10000000000',
+                },
+                isLoading: false,
+            })
+        })
+
+        it('should not reset form while store config is still loading', () => {
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: undefined,
+                isLoading: true,
+            })
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: null,
+                        sms_sender_number: null,
+                        max_follow_up_messages: 1,
+                    },
+                },
+                currentIntegration: { id: 1 },
+            })
+
+            render(<Setup />)
+
+            expect(mockReset).not.toHaveBeenCalled()
+        })
+
+        it('should pre-fill sms sender from store config when journey has no sender', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: null,
+                        sms_sender_number: null,
+                        max_follow_up_messages: 1,
+                    },
+                },
+                currentIntegration: { id: 1 },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sms_sender_integration_id: {
+                            id: 999,
+                            label: '+10000000000',
+                        },
+                    }),
+                )
+            })
+        })
+
+        it('should use journey sender over store config when journey has a sender', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: 42,
+                        sms_sender_number: '+15551234567',
+                        max_follow_up_messages: 1,
+                    },
+                },
+                currentIntegration: { id: 1 },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sms_sender_integration_id: {
+                            id: 42,
+                            label: '+15551234567',
+                        },
+                    }),
+                )
+            })
+        })
+
+        it('should not use store config when flag is OFF', async () => {
+            mockUseFlag.mockReturnValue(false)
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: null,
+                        sms_sender_number: null,
+                        max_follow_up_messages: 1,
+                    },
+                },
+                currentIntegration: { id: 1 },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sms_sender_integration_id: {
+                            id: undefined,
+                            label: undefined,
+                        },
+                    }),
+                )
+            })
+        })
+
+        it('should not use store config when not USER_IMPERSONATED', async () => {
+            window.USER_IMPERSONATED = null
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: null,
+                        sms_sender_number: null,
+                        max_follow_up_messages: 1,
+                    },
+                },
+                currentIntegration: { id: 1 },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sms_sender_integration_id: {
+                            id: undefined,
+                            label: undefined,
+                        },
+                    }),
+                )
+            })
+        })
+
+        it('should use undefined sms sender when store config has loaded but returned no data', async () => {
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: undefined,
+                isLoading: false,
+            })
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: null,
+                        sms_sender_number: null,
+                        max_follow_up_messages: 1,
+                    },
+                },
+                currentIntegration: { id: 1 },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sms_sender_integration_id: {
+                            id: undefined,
+                            label: undefined,
+                        },
+                    }),
+                )
+            })
+        })
     })
 })

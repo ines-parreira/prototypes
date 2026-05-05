@@ -33,6 +33,13 @@ jest.mock('AIJourney/hooks', () => ({
     useStoredProductResolution: jest.fn(() => ({
         setLastSelectedProductId: jest.fn(),
     })),
+    useAiJourneyStoreConfiguration: jest.fn(() => ({
+        storeConfiguration: {
+            sms_sender_number: '+19999999999',
+            sms_sender_integration_id: 789,
+        },
+        isLoading: false,
+    })),
 }))
 jest.mock('models/aiAgent/queries')
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext')
@@ -538,5 +545,310 @@ describe('useAiJourneyMessages', () => {
                 }),
             }),
         ])
+    })
+
+    describe('SMS sender sourcing with AiJourneyStoreSettingsEnabled flag', () => {
+        const mockUseFlag = jest.requireMock('@repo/feature-flags')
+            .useFlag as jest.Mock
+        const mockUseAiJourneyStoreConfiguration = jest.requireMock(
+            'AIJourney/hooks',
+        ).useAiJourneyStoreConfiguration as jest.Mock
+
+        afterEach(() => {
+            window.USER_IMPERSONATED = null
+        })
+
+        it('uses store config sender when flag is ON and not impersonated', async () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: '+19999999999',
+                        smsSenderIntegrationId: 789,
+                    }),
+                }),
+            ])
+        })
+
+        it('uses journey sender when flag is ON and impersonated', async () => {
+            mockUseFlag.mockReturnValue(true)
+            window.USER_IMPERSONATED = true
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: '+1234567890',
+                        smsSenderIntegrationId: 456,
+                    }),
+                }),
+            ])
+        })
+
+        it('falls back to store config when flag is ON, impersonated, and journey has no sender', async () => {
+            mockUseFlag.mockReturnValue(true)
+            window.USER_IMPERSONATED = true
+            mockUseJourneyData.mockReturnValue({
+                data: {
+                    ...mockJourneyData,
+                    configuration: {
+                        ...mockJourneyData.configuration,
+                        sms_sender_number: null,
+                        sms_sender_integration_id: null,
+                    },
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: '+19999999999',
+                        smsSenderIntegrationId: 789,
+                    }),
+                }),
+            ])
+        })
+
+        it('uses journey sender values when flag is OFF', async () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: '+1234567890',
+                        smsSenderIntegrationId: 456,
+                    }),
+                }),
+            ])
+        })
+
+        it('does not call useAiJourneyStoreConfiguration with undefined when shopifyIntegration is present', async () => {
+            mockUseFlag.mockReturnValue(true)
+
+            renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            expect(mockUseAiJourneyStoreConfiguration).toHaveBeenCalledWith(123)
+        })
+
+        it('uses null when flag is ON, not impersonated, and store config has no sms sender', async () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: null,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: null,
+                        smsSenderIntegrationId: null,
+                    }),
+                }),
+            ])
+        })
+
+        it('uses null when flag is ON, impersonated, and both journey and store config have no sms sender', async () => {
+            mockUseFlag.mockReturnValue(true)
+            window.USER_IMPERSONATED = true
+            mockUseJourneyData.mockReturnValue({
+                data: {
+                    ...mockJourneyData,
+                    configuration: {
+                        ...mockJourneyData.configuration,
+                        sms_sender_number: null,
+                        sms_sender_integration_id: null,
+                    },
+                },
+                isLoading: false,
+            })
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: null,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: null,
+                        smsSenderIntegrationId: null,
+                    }),
+                }),
+            ])
+        })
+
+        it('uses null when flag is OFF and journey has no sms sender', async () => {
+            mockUseFlag.mockReturnValue(false)
+            mockUseJourneyData.mockReturnValue({
+                data: {
+                    ...mockJourneyData,
+                    configuration: {
+                        ...mockJourneyData.configuration,
+                        sms_sender_number: null,
+                        sms_sender_integration_id: null,
+                    },
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: null,
+                        smsSenderIntegrationId: null,
+                    }),
+                }),
+            ])
+        })
+    })
+
+    describe('brandName sourcing with AiJourneyStoreSettingsEnabled flag', () => {
+        const mockUseFlag = jest.requireMock('@repo/feature-flags')
+            .useFlag as jest.Mock
+        const mockUseAiJourneyStoreConfiguration = jest.requireMock(
+            'AIJourney/hooks',
+        ).useAiJourneyStoreConfiguration as jest.Mock
+
+        it('sends undefined brandName when flag is OFF (ISO prod)', async () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            const calledWith = mockMutateAsync.mock.calls[0][0][0]
+            expect(calledWith.settings.brandName).toBeUndefined()
+        })
+
+        it('sends store config brand_name when flag is ON', async () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    sms_sender_number: '+19999999999',
+                    sms_sender_integration_id: 789,
+                    brand_name: 'My Store Brand',
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        brandName: 'My Store Brand',
+                    }),
+                }),
+            ])
+        })
+
+        it('sends undefined brandName when flag is ON but store config has no brand_name', async () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    sms_sender_number: '+19999999999',
+                    sms_sender_integration_id: 789,
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            const calledWith = mockMutateAsync.mock.calls[0][0][0]
+            expect(calledWith.settings.brandName).toBeUndefined()
+        })
+
+        it('sends undefined brandName when flag is ON but storeConfiguration is null', async () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: null,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAiJourneyMessages(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.triggerMessage()
+            })
+
+            const calledWith = mockMutateAsync.mock.calls[0][0][0]
+            expect(calledWith.settings.brandName).toBeUndefined()
+        })
     })
 })
