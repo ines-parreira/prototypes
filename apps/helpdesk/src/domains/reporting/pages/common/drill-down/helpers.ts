@@ -513,9 +513,29 @@ export const getDrillDownQuery = (
         case AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard:
             return allAgentsClosedTicketsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.AllAgentsCsatCard:
-            return allAgentsCsatDrillDownQueryFactory
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                allAgentsCsatDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    (metricData as AiAgentMetrics).outcomeCustomFieldId,
+                )
         case AiAgentDrillDownMetricName.SupportAgentCsatCard:
-            return supportAgentCsatDrillDownQueryFactory
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                supportAgentCsatDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    (metricData as AiAgentMetrics).outcomeCustomFieldId,
+                )
         case VoiceOfCustomerMetricWithDrillDown.IntentPerProduct: {
             const { drillDownQuery } =
                 VoiceOfCustomerMetricWithDrillDownConfig[

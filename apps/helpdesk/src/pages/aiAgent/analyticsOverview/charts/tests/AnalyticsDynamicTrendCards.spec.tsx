@@ -57,6 +57,18 @@ jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
 const mockUseReportingTrendCardProps = assumeMock(useReportingTrendCardProps)
 
 jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+    () => ({
+        useGetCustomTicketsFieldsDefinitionData: jest.fn().mockReturnValue({
+            outcomeCustomFieldId: 42,
+            intentCustomFieldId: 43,
+            sentimentCustomFieldId: null,
+            isLoading: false,
+        }),
+    }),
+)
+
+jest.mock(
     'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate',
     () => ({
         useMoneySavedPerInteractionWithAutomate: jest.fn().mockReturnValue(3.1),
@@ -312,6 +324,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentAllAgentsAverageCsatCard',
             Component: AnalyticsAiAgentAllAgentsAverageCsatCard,
+            drillDownMetricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
+            outcomeCustomFieldId: 42,
             config: {
                 label: 'Average CSAT',
                 description:
@@ -326,6 +340,7 @@ describe('Analytics Dynamic Trend Cards', () => {
             Component: AnalyticsAiAgentSupportAgentCsatCard,
             drillDownMetricName:
                 AiAgentDrillDownMetricName.SupportAgentCsatCard,
+            outcomeCustomFieldId: 42,
             config: {
                 label: 'Average CSAT',
                 description:
@@ -721,7 +736,13 @@ describe('Analytics Dynamic Trend Cards', () => {
 
     describe.each(testCases)(
         '$name',
-        ({ Component, config, drillDownMetricName, timeSeriesView }) => {
+        ({
+            Component,
+            config,
+            drillDownMetricName,
+            outcomeCustomFieldId,
+            timeSeriesView,
+        }) => {
             const chartConfig = createChartConfig({
                 Component,
                 label: config.label,
@@ -757,6 +778,9 @@ describe('Analytics Dynamic Trend Cards', () => {
                     useTrend: expect.any(Function),
                     isAiAgentTrendCard: true,
                     ...(drillDownMetricName ? { drillDownMetricName } : {}),
+                    ...(outcomeCustomFieldId !== undefined
+                        ? { outcomeCustomFieldId }
+                        : {}),
                     ...(timeSeriesView ? { timeSeriesView } : {}),
                 })
             })

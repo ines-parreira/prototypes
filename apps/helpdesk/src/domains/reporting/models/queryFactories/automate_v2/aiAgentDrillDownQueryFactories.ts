@@ -283,6 +283,7 @@ export const allAgentsCsatDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
+    outcomeCustomFieldId?: number,
 ): ReportingQuery<AIAgentCSATCube> => ({
     metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CSAT_DRILL_DOWN,
     measures: [],
@@ -297,6 +298,15 @@ export const allAgentsCsatDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Gte,
             values: ['1'],
         },
+        ...(outcomeCustomFieldId !== undefined
+            ? [
+                  {
+                      member: AIAgentCSATFilterMember.AiAgentOutcomeCustomFieldId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: [String(outcomeCustomFieldId)],
+                  },
+              ]
+            : []),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -307,6 +317,7 @@ export const supportAgentCsatDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
+    outcomeCustomFieldId?: number,
 ): ReportingQuery<AIAgentCSATCube> => ({
     metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_CSAT_DRILL_DOWN,
     measures: [],
@@ -326,6 +337,15 @@ export const supportAgentCsatDrillDownQueryFactory = (
             operator: ReportingFilterOperator.Gte,
             values: ['1'],
         },
+        ...(outcomeCustomFieldId !== undefined
+            ? [
+                  {
+                      member: AIAgentCSATFilterMember.AiAgentOutcomeCustomFieldId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: [String(outcomeCustomFieldId)],
+                  },
+              ]
+            : []),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,

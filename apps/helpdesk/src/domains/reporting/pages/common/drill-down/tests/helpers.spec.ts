@@ -2302,6 +2302,8 @@ describe('getDrillDownQuery', () => {
         expect(allAgentsCsatDrillDownQueryFactoryMock).toHaveBeenCalledWith(
             statsFilters,
             timezone,
+            undefined,
+            undefined,
         )
     })
 
@@ -2324,6 +2326,8 @@ describe('getDrillDownQuery', () => {
         expect(supportAgentCsatDrillDownQueryFactoryMock).toHaveBeenCalledWith(
             statsFilters,
             timezone,
+            undefined,
+            undefined,
         )
     })
 })

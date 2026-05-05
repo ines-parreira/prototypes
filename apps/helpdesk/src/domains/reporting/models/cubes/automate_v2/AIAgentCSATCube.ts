@@ -12,6 +12,7 @@ export enum AIAgentCSATFilterMember {
     SurveyScore = 'AIAgentCSAT.surveyScore',
     Channel = 'AIAgentCSAT.channel',
     StoreIntegrationId = 'AIAgentCSAT.storeIntegrationId',
+    AiAgentOutcomeCustomFieldId = 'AIAgentCSAT.aiAgentOutcomeCustomFieldId',
 }
 
 export type AIAgentCSATCube = Cube<

@@ -491,6 +491,27 @@ describe('allAgentsCsatDrillDownQueryFactory', () => {
             }),
         )
     })
+
+    it('includes outcomeCustomFieldId filter when provided', () => {
+        expect(
+            allAgentsCsatDrillDownQueryFactory(
+                filters,
+                timezone,
+                undefined,
+                123,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: AIAgentCSATFilterMember.AiAgentOutcomeCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['123'],
+                    },
+                ]),
+            }),
+        )
+    })
 })
 
 describe('supportAgentCsatDrillDownQueryFactory', () => {
@@ -554,6 +575,27 @@ describe('supportAgentCsatDrillDownQueryFactory', () => {
                 order: [
                     [AIAgentCSATDimension.SurveyScore, OrderDirection.Desc],
                 ],
+            }),
+        )
+    })
+
+    it('includes outcomeCustomFieldId filter when provided', () => {
+        expect(
+            supportAgentCsatDrillDownQueryFactory(
+                filters,
+                timezone,
+                undefined,
+                123,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: AIAgentCSATFilterMember.AiAgentOutcomeCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['123'],
+                    },
+                ]),
             }),
         )
     })
