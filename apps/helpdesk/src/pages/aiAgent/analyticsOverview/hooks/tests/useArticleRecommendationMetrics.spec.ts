@@ -1,6 +1,11 @@
 import { renderHook } from '@repo/testing'
 
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 import {
     fetchArticleRecommendationAsConfigurableTable,
@@ -103,7 +108,7 @@ describe('useArticleRecommendationMetrics', () => {
             statsFilters: MOCK_STATS_FILTERS,
         })
         mockUseArticleRecommendations.mockReturnValue({
-            data: { data: { data: mockApiItems } },
+            data: mockApiItems,
             isLoading: false,
             isError: false,
         })
@@ -172,7 +177,7 @@ describe('useArticleRecommendationMetrics', () => {
 
     it('returns empty data and displayNames when response is empty', () => {
         mockUseArticleRecommendations.mockReturnValue({
-            data: { data: { data: [] } },
+            data: [],
             isLoading: false,
             isError: false,
         })
@@ -188,48 +193,188 @@ describe('useArticleRecommendationMetrics', () => {
 
         expect(mockUseArticleRecommendations).toHaveBeenCalledWith(
             expect.objectContaining({
-                start_datetime: MOCK_PERIOD.start_datetime,
-                end_datetime: MOCK_PERIOD.end_datetime,
+                filters: expect.arrayContaining([
+                    {
+                        member: 'periodStart',
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [
+                            formatReportingQueryDate(
+                                MOCK_PERIOD.start_datetime,
+                            ),
+                        ],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [
+                            formatReportingQueryDate(MOCK_PERIOD.end_datetime),
+                        ],
+                    },
+                ]),
             }),
         )
     })
 
-    it('passes store_integration_id when stores filter is set', () => {
+    it('passes storeIntegrationId filter when stores filter is set', () => {
         mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: {
                 ...MOCK_STATS_FILTERS,
-                stores: { operator: 'and', values: [42] },
+                stores: { operator: LogicalOperatorEnum.ONE_OF, values: [42] },
             },
         })
 
         renderHook(() => useArticleRecommendationMetrics())
 
         expect(mockUseArticleRecommendations).toHaveBeenCalledWith(
-            expect.objectContaining({ store_integration_id: 42 }),
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: 'storeIntegrationId',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [42],
+                    },
+                ]),
+            }),
         )
     })
 
-    it('passes channel when channels filter is set', () => {
+    it('forwards the operator from the stores filter (not-one-of)', () => {
         mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: {
                 ...MOCK_STATS_FILTERS,
-                channels: { operator: 'and', values: ['email'] },
+                stores: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [42],
+                },
             },
         })
 
         renderHook(() => useArticleRecommendationMetrics())
 
         expect(mockUseArticleRecommendations).toHaveBeenCalledWith(
-            expect.objectContaining({ channel: 'email' }),
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: 'storeIntegrationId',
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: [42],
+                    },
+                ]),
+            }),
         )
     })
 
-    it('omits store_integration_id and channel when filters are not set', () => {
+    it('passes multiple storeIntegrationId values when multiple stores are selected', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                ...MOCK_STATS_FILTERS,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [42, 43],
+                },
+            },
+        })
+
         renderHook(() => useArticleRecommendationMetrics())
 
-        const params = mockUseArticleRecommendations.mock.calls[0][0]
-        expect(params).not.toHaveProperty('store_integration_id')
-        expect(params).not.toHaveProperty('channel')
+        expect(mockUseArticleRecommendations).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: 'storeIntegrationId',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [42, 43],
+                    },
+                ]),
+            }),
+        )
+    })
+
+    it('passes channel filter when channels filter is set', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                ...MOCK_STATS_FILTERS,
+                channels: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['email'],
+                },
+            },
+        })
+
+        renderHook(() => useArticleRecommendationMetrics())
+
+        expect(mockUseArticleRecommendations).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: 'channel',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['email'],
+                    },
+                ]),
+            }),
+        )
+    })
+
+    it('forwards the operator from the channels filter (not-one-of)', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                ...MOCK_STATS_FILTERS,
+                channels: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: ['email'],
+                },
+            },
+        })
+
+        renderHook(() => useArticleRecommendationMetrics())
+
+        expect(mockUseArticleRecommendations).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: 'channel',
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: ['email'],
+                    },
+                ]),
+            }),
+        )
+    })
+
+    it('passes multiple channel values when multiple channels are selected', () => {
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: {
+                ...MOCK_STATS_FILTERS,
+                channels: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['email', 'chat'],
+                },
+            },
+        })
+
+        renderHook(() => useArticleRecommendationMetrics())
+
+        expect(mockUseArticleRecommendations).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: 'channel',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['email', 'chat'],
+                    },
+                ]),
+            }),
+        )
+    })
+
+    it('omits storeIntegrationId and channel filters when not set', () => {
+        renderHook(() => useArticleRecommendationMetrics())
+
+        const { filters } = mockUseArticleRecommendations.mock.calls[0][0]
+        const members = filters.map((f: { member: string }) => f.member)
+        expect(members).not.toContain('storeIntegrationId')
+        expect(members).not.toContain('channel')
     })
 })
 
@@ -237,7 +382,7 @@ describe('fetchArticleRecommendationMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockFetchArticleRecommendations.mockResolvedValue({
-            data: { data: mockApiItems },
+            data: mockApiItems,
         })
         mockGetCsvFileNameWithDates.mockReturnValue(
             '2024-01-01_2024-01-31_article_recommendation_table',
@@ -254,7 +399,7 @@ describe('fetchArticleRecommendationMetrics', () => {
 
     it('returns empty file content when API returns no items', async () => {
         mockFetchArticleRecommendations.mockResolvedValue({
-            data: { data: [] },
+            data: [],
         })
 
         const result =
@@ -284,8 +429,65 @@ describe('fetchArticleRecommendationMetrics', () => {
 
         expect(mockFetchArticleRecommendations).toHaveBeenCalledWith(
             expect.objectContaining({
-                start_datetime: MOCK_PERIOD.start_datetime,
-                end_datetime: MOCK_PERIOD.end_datetime,
+                filters: expect.arrayContaining([
+                    {
+                        member: 'periodStart',
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [
+                            formatReportingQueryDate(
+                                MOCK_PERIOD.start_datetime,
+                            ),
+                        ],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [
+                            formatReportingQueryDate(MOCK_PERIOD.end_datetime),
+                        ],
+                    },
+                ]),
+            }),
+        )
+    })
+
+    it('passes storeIntegrationId filter when stores filter is set', async () => {
+        await fetchArticleRecommendationMetrics({
+            ...MOCK_STATS_FILTERS,
+            stores: { operator: LogicalOperatorEnum.ONE_OF, values: [42, 43] },
+        })
+
+        expect(mockFetchArticleRecommendations).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: 'storeIntegrationId',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [42, 43],
+                    },
+                ]),
+            }),
+        )
+    })
+
+    it('passes channel filter when channels filter is set', async () => {
+        await fetchArticleRecommendationMetrics({
+            ...MOCK_STATS_FILTERS,
+            channels: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['email', 'chat'],
+            },
+        })
+
+        expect(mockFetchArticleRecommendations).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: 'channel',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['email', 'chat'],
+                    },
+                ]),
             }),
         )
     })
@@ -302,8 +504,26 @@ describe('fetchArticleRecommendationMetrics', () => {
 
             expect(mockFetchArticleRecommendations).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    start_datetime: MOCK_PERIOD.start_datetime,
-                    end_datetime: MOCK_PERIOD.end_datetime,
+                    filters: expect.arrayContaining([
+                        {
+                            member: 'periodStart',
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [
+                                formatReportingQueryDate(
+                                    MOCK_PERIOD.start_datetime,
+                                ),
+                            ],
+                        },
+                        {
+                            member: 'periodEnd',
+                            operator: ReportingFilterOperator.BeforeDate,
+                            values: [
+                                formatReportingQueryDate(
+                                    MOCK_PERIOD.end_datetime,
+                                ),
+                            ],
+                        },
+                    ]),
                 }),
             )
         })

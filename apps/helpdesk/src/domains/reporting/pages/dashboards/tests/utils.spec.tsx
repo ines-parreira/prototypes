@@ -228,7 +228,7 @@ describe('dashboardFromApi', () => {
             expect.any(Error),
             expect.objectContaining({
                 tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
-                extra: { validationErrors: expect.any(Array) },
+                extra: { validationErrors: expect.any(String) },
             }),
         )
     })

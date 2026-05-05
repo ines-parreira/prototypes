@@ -28,7 +28,7 @@ import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionH
 const stopOnError = (query: Pick<Query, 'state'>) =>
     query.state.status !== 'error'
 
-const defaultOptions = {
+export const defaultQueryOptions = {
     staleTime: 5 * 60 * 1000, // 5 minutes
     cacheTime: 10 * 60 * 1000, // 10 minutes
     retry: reportingRetryHandler,
@@ -76,7 +76,7 @@ export const fetchPostReporting = <
     return appQueryClient.fetchQuery({
         queryKey: reportingKeys.post(payload),
         queryFn: () => postReportingV1<TData, TCube>(payload),
-        ...defaultOptions,
+        ...defaultQueryOptions,
         ...overrides,
     })
 }
@@ -110,7 +110,7 @@ export const fetchPostReportingV2 = <
                 oldPayload: payload,
                 newPayload: newPayload,
             }),
-        ...defaultOptions,
+        ...defaultQueryOptions,
         ...overrides,
     })
 }
@@ -130,7 +130,7 @@ export const usePostReporting = <
     return useQuery({
         queryKey: reportingKeys.post(payload),
         queryFn: () => postReportingV1<TData, TCube>(payload),
-        ...defaultOptions,
+        ...defaultQueryOptions,
         ...overrides,
     })
 }
@@ -165,7 +165,7 @@ export const usePostReportingV2 = <
                 oldPayload: payload,
                 newPayload: newPayload,
             }),
-        ...defaultOptions,
+        ...defaultQueryOptions,
         ...overrides,
     })
 }
@@ -192,7 +192,7 @@ export const useEnrichedPostReporting = <
                 payload.query,
                 payload.enrichment_fields,
             ),
-        ...defaultOptions,
+        ...defaultQueryOptions,
         ...overrides,
     })
 }
@@ -218,7 +218,7 @@ export const fetchPostStats = <
     return appQueryClient.fetchQuery({
         queryKey: reportingKeys.postV2(undefined, payload),
         queryFn: () => postReportingV2<TData, TMeta>(payload),
-        ...defaultOptions,
+        ...defaultQueryOptions,
         ...overrides,
     })
 }
@@ -238,7 +238,7 @@ export const usePostStats = <
     return useQuery({
         queryKey: reportingKeys.postV2(undefined, payload),
         queryFn: () => postReportingV2<TData, TMeta>(payload),
-        ...defaultOptions,
+        ...defaultQueryOptions,
         ...overrides,
     })
 }

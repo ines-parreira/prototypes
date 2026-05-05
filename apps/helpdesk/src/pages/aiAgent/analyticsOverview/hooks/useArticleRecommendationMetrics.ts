@@ -12,7 +12,11 @@ import type {
     ArticleRecommendationApiItem,
     ArticleRecommendationsParams,
 } from 'domains/reporting/models/articleRecommendations'
+import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
+import type { FilterGroup } from 'domains/reporting/models/scopes/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import {
     ARTICLE_RECOMMENDATION_COLUMNS,
     ARTICLE_RECOMMENDATION_TABLE,
@@ -40,23 +44,47 @@ export type ArticleRecommendationMetricsData = {
 }
 
 function buildParams(statsFilters: StatsFilters): ArticleRecommendationsParams {
-    return {
-        start_datetime: statsFilters.period.start_datetime,
-        end_datetime: statsFilters.period.end_datetime,
-        ...(statsFilters.stores?.values[0] !== undefined && {
-            store_integration_id: statsFilters.stores.values[0],
-        }),
-        ...(statsFilters.channels?.values[0] !== undefined && {
-            channel: statsFilters.channels.values[0],
-        }),
+    const filters: FilterGroup[] = [
+        {
+            member: 'periodStart',
+            operator: ReportingFilterOperator.AfterDate,
+            values: [
+                formatReportingQueryDate(statsFilters.period.start_datetime),
+            ],
+        },
+        {
+            member: 'periodEnd',
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [
+                formatReportingQueryDate(statsFilters.period.end_datetime),
+            ],
+        },
+    ]
+
+    if (statsFilters.stores && hasFilter(statsFilters.stores)) {
+        filters.push({
+            member: 'storeIntegrationId',
+            operator: statsFilters.stores.operator,
+            values: statsFilters.stores.values,
+        })
     }
+
+    if (statsFilters.channels && hasFilter(statsFilters.channels)) {
+        filters.push({
+            member: 'channel',
+            operator: statsFilters.channels.operator,
+            values: statsFilters.channels.values,
+        })
+    }
+
+    return { filters }
 }
 
 function transformResponse(data?: ArticleRecommendationApiItem): {
     rows: ArticleRecommendationRow[]
     displayNames: Record<string, string>
 } {
-    const items = data?.data ?? []
+    const items = data ?? []
 
     const rows = items.map((item) => ({
         entity: item.article_url,
@@ -80,7 +108,7 @@ export const useArticleRecommendationMetrics =
         const { data, isLoading, isError } = useArticleRecommendations(params)
 
         const { rows, displayNames } = useMemo(
-            () => transformResponse(data?.data),
+            () => transformResponse(data),
             [data],
         )
 

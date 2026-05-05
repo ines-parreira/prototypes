@@ -126,7 +126,7 @@ export const dashboardFromApi = (
     if (!validation.isValid) {
         reportError(new Error('Invalid dashboard'), {
             tags: { team: SentryTeam.CPLT_ANALYTICS_FRONTEND },
-            extra: { validationErrors: validation.errors },
+            extra: { validationErrors: JSON.stringify(validation.errors) },
         })
 
         return undefined

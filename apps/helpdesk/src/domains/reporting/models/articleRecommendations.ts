@@ -1,52 +1,39 @@
-import client, {
-    appQueryClient,
-    reportingRetryDelayHandler,
-    reportingRetryHandler,
-} from '@repo/api-resources'
+import client, { appQueryClient } from '@repo/api-resources'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosResponse } from 'axios'
 
+import { defaultQueryOptions } from 'domains/reporting/models/queries'
+import type { FilterGroup } from 'domains/reporting/models/scopes/types'
+
 export const ARTICLE_RECOMMENDATIONS_ENDPOINT =
     '/api/reporting/article-recommendations/'
 
-export type ArticleRecommendationApiItem = {
-    data: [
-        {
-            article_id: string
-            article_title: string
-            article_url: string
-            total_count: number
-            automation_rate: number
-            successful_count: number
-            helpful_count: number
-            drop_off_count: number
-            handover_count: number
-        },
-    ]
-}
-
+export type ArticleRecommendationApiItem = [
+    {
+        article_id: string
+        article_title: string
+        article_url: string
+        total_count: number
+        automation_rate: number
+        successful_count: number
+        helpful_count: number
+        drop_off_count: number
+        handover_count: number
+    },
+]
 export type ArticleRecommendationsParams = {
-    start_datetime: string
-    end_datetime: string
-    store_integration_id?: number
-    channel?: string
+    filters: FilterGroup[]
 }
-
-const defaultOptions = {
-    staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
-    retry: reportingRetryHandler,
-    retryDelay: reportingRetryDelayHandler,
-} as const
 
 const getArticleRecommendations = (params: ArticleRecommendationsParams) =>
-    client.get<ArticleRecommendationApiItem>(ARTICLE_RECOMMENDATIONS_ENDPOINT, {
+    client.post<ArticleRecommendationApiItem>(
+        ARTICLE_RECOMMENDATIONS_ENDPOINT,
         params,
-    })
+    )
 
 export const articleRecommendationsKeys = {
-    get: (params: ArticleRecommendationsParams) => [
+    post: (params: ArticleRecommendationsParams) => [
         'reporting',
         'article-recommendations',
         params,
@@ -57,13 +44,15 @@ export const useArticleRecommendations = (
     params: ArticleRecommendationsParams,
     overrides?: UseQueryOptions<
         AxiosResponse<ArticleRecommendationApiItem>,
-        unknown
+        unknown,
+        ArticleRecommendationApiItem
     >,
 ) =>
     useQuery({
-        queryKey: articleRecommendationsKeys.get(params),
+        queryKey: articleRecommendationsKeys.post(params),
         queryFn: () => getArticleRecommendations(params),
-        ...defaultOptions,
+        select: (response) => response.data,
+        ...defaultQueryOptions,
         ...overrides,
     })
 
@@ -75,8 +64,8 @@ export const fetchArticleRecommendations = (
     >,
 ) =>
     appQueryClient.fetchQuery({
-        queryKey: articleRecommendationsKeys.get(params),
+        queryKey: articleRecommendationsKeys.post(params),
         queryFn: () => getArticleRecommendations(params),
-        ...defaultOptions,
+        ...defaultQueryOptions,
         ...overrides,
     })
