@@ -1,25 +1,18 @@
 import type { ReactNode } from 'react'
 
-import {
-    Box,
-    Button,
-    Heading,
-    Icon,
-    Panel,
-    PanelHeader,
-    TileList,
-} from '@gorgias/axiom'
+import { Box, Button, Icon, Panel, PanelHeader } from '@gorgias/axiom'
 
-import type { NotificationItem } from '../hooks/useNotificationItems'
+import type { NotificationTileProps } from './NotificationTile'
 
 export interface NotificationsPanelProps {
     title: ReactNode
     toolbar: ReactNode
-    items: NotificationItem[]
+    items: NotificationTileProps[]
     onMarkAllAsRead: () => void
     onClose?: () => void
-    onLoadMore?: () => void
-    children: (item: NotificationItem) => ReactNode
+    children:
+        | ReactNode
+        | ((props: { items: NotificationTileProps[] }) => ReactNode)
 }
 
 export function NotificationsPanel({
@@ -28,7 +21,6 @@ export function NotificationsPanel({
     items,
     onMarkAllAsRead,
     onClose,
-    onLoadMore,
     children,
 }: NotificationsPanelProps) {
     return (
@@ -46,34 +38,18 @@ export function NotificationsPanel({
                         />
                     )
                 }
-            >
-                <Box gap="md" alignItems="center">
-                    <Box flex="1">{toolbar}</Box>
-                    <Button
-                        variant="tertiary"
-                        size="sm"
-                        onClick={onMarkAllAsRead}
-                    >
-                        Mark all as read
-                    </Button>
-                </Box>
-            </PanelHeader>
-            <TileList
-                items={items}
-                onLoadMore={onLoadMore}
-                aria-label="Notifications"
-                renderEmptyState={() => (
-                    <Box
-                        h="100%"
-                        flexDirection="column"
-                        justifyContent="center"
-                    >
-                        <Heading>No notifications</Heading>
-                    </Box>
-                )}
-            >
-                {children}
-            </TileList>
+            />
+            <Box gap="md" alignItems="center" px="md">
+                <Box flex="1">{toolbar}</Box>
+                <Button variant="tertiary" size="sm" onClick={onMarkAllAsRead}>
+                    Mark all as read
+                </Button>
+            </Box>
+            <Box flexDirection="column">
+                {typeof children === 'function'
+                    ? children({ items })
+                    : children}
+            </Box>
         </Panel>
     )
 }

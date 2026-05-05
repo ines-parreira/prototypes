@@ -4,8 +4,6 @@ import { useKnockFeed } from '@knocklabs/react'
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 
-import { TileList } from '@gorgias/axiom'
-
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
 
@@ -108,25 +106,15 @@ describe('<TicketNotification />', () => {
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
         })
 
-        const renderInCollection = (ui: ReactNode) =>
-            render(
-                <TileList
-                    items={[{ id: notification.id }]}
-                    aria-label="notifications"
-                >
-                    {() => ui}
-                </TileList>,
-            )
-
         it('should render title "New message" for new message type', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <TicketNotification notification={notification} />,
             )
             expect(getByText('New message')).toBeInTheDocument()
         })
 
         it('should render overridden title for assigned type', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <TicketNotification
                     notification={{ ...notification, type: 'ticket.assigned' }}
                 />,
@@ -137,28 +125,28 @@ describe('<TicketNotification />', () => {
         })
 
         it('should render the ticket subject', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <TicketNotification notification={notification} />,
             )
             expect(getByText('Test ticket')).toBeInTheDocument()
         })
 
         it('should render the sender name', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <TicketNotification notification={notification} />,
             )
             expect(getByText('John Doe')).toBeInTheDocument()
         })
 
         it('should render the excerpt', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <TicketNotification notification={notification} />,
             )
             expect(getByText('Excerpt')).toBeInTheDocument()
         })
 
         it('should link to the ticket', () => {
-            const { container } = renderInCollection(
+            const { container } = render(
                 <TicketNotification notification={notification} />,
             )
             expect(

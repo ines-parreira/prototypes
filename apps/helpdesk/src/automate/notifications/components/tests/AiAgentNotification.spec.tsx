@@ -6,8 +6,6 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import { TileList } from '@gorgias/axiom'
-
 import type { AiAgentNotificationPayload } from 'automate/notifications/types'
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { getNotificationReceivedDatetimePayload } from 'automate/notifications/utils'
@@ -389,12 +387,7 @@ describe('AiAgentNotification', () => {
             }
 
             const { getByText } = render(
-                <TileList
-                    items={[{ id: notification.id }]}
-                    aria-label="notifications"
-                >
-                    {() => <AiAgentNotification notification={notification} />}
-                </TileList>,
+                <AiAgentNotification notification={notification} />,
             )
 
             expect(
@@ -417,12 +410,7 @@ describe('AiAgentNotification', () => {
             }
 
             const { container } = render(
-                <TileList
-                    items={[{ id: notification.id }]}
-                    aria-label="notifications"
-                >
-                    {() => <AiAgentNotification notification={notification} />}
-                </TileList>,
+                <AiAgentNotification notification={notification} />,
             )
 
             expect(
@@ -446,17 +434,11 @@ describe('AiAgentNotification', () => {
                 } as unknown as AiAgentNotificationPayload,
             }
 
-            const { queryByRole } = render(
-                <TileList
-                    items={[{ id: notification.id }]}
-                    aria-label="notifications"
-                >
-                    {() => <AiAgentNotification notification={notification} />}
-                </TileList>,
+            const { container } = render(
+                <AiAgentNotification notification={notification} />,
             )
 
-            expect(queryByRole('link')).not.toBeInTheDocument()
-            expect(queryByRole('button')).not.toBeInTheDocument()
+            expect(container).toBeEmptyDOMElement()
         })
     })
 })

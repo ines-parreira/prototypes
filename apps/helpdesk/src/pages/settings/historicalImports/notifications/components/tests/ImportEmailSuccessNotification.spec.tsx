@@ -6,8 +6,6 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import userEventLib from '@testing-library/user-event'
 
-import { TileList } from '@gorgias/axiom'
-
 import type { Notification } from 'common/notifications'
 
 import type { ImportNotification } from '../../types'
@@ -124,23 +122,9 @@ describe('ImportEmailSuccessNotification', () => {
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
         })
 
-        const renderInCollection = (
-            notification: Notification<ImportNotification>,
-            ui: ReactNode,
-        ) =>
-            render(
-                <TileList
-                    items={[{ id: notification.id }]}
-                    aria-label="notifications"
-                >
-                    {() => ui}
-                </TileList>,
-            )
-
         it('should render the notification title', () => {
             const notification = createMockNotification()
-            const { getByText } = renderInCollection(
-                notification,
+            const { getByText } = render(
                 <ImportEmailSuccessNotification notification={notification} />,
             )
             expect(getByText('Email history imported')).toBeInTheDocument()
@@ -148,8 +132,7 @@ describe('ImportEmailSuccessNotification', () => {
 
         it('should render provider identifier', () => {
             const notification = createMockNotification()
-            const { getByText } = renderInCollection(
-                notification,
+            const { getByText } = render(
                 <ImportEmailSuccessNotification notification={notification} />,
             )
             expect(getByText('test@example.com')).toBeInTheDocument()
@@ -157,8 +140,7 @@ describe('ImportEmailSuccessNotification', () => {
 
         it('should render date range', () => {
             const notification = createMockNotification()
-            const { container } = renderInCollection(
-                notification,
+            const { container } = render(
                 <ImportEmailSuccessNotification notification={notification} />,
             )
             expect(container.textContent).toContain('2023')
@@ -181,13 +163,25 @@ describe('ImportEmailSuccessNotification', () => {
             expect(container).toBeEmptyDOMElement()
         })
 
-        it('should render a link tile', () => {
+        it('should call onClick and log segment event when clicked', async () => {
+            const user = userEventLib.setup()
+            const mockOnClick = jest.fn()
             const notification = createMockNotification({ id: 456 })
-            const { container } = renderInCollection(
-                notification,
-                <ImportEmailSuccessNotification notification={notification} />,
+
+            const { container } = render(
+                <ImportEmailSuccessNotification
+                    notification={notification}
+                    onClick={mockOnClick}
+                />,
             )
-            expect(container.querySelector('a')).toBeInTheDocument()
+
+            await user.click(container.querySelector('a')!)
+
+            expect(mockOnClick).toHaveBeenCalledTimes(1)
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.SuccessfulEmailImportNotification,
+                { importId: 456 },
+            )
         })
     })
 })

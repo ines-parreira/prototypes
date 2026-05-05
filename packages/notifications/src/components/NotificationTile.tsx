@@ -12,9 +12,9 @@ import {
     StatusButton,
     Tag,
     Text,
+    Tile,
     TileContent,
     TileHeader,
-    TileListItem,
 } from '@gorgias/axiom'
 
 import { formatRelativeTime } from '../utils/formatRelativeTime'
@@ -32,7 +32,6 @@ export interface NotificationTileProps {
 }
 
 export function NotificationTile({
-    id,
     icon,
     title,
     children,
@@ -44,14 +43,7 @@ export function NotificationTile({
 }: NotificationTileProps) {
     const isRead = readDatetime !== null
     return (
-        <TileListItem
-            id={id}
-            textValue={title}
-            type="bottom-border"
-            as={Link}
-            onClick={onClick}
-            to={href}
-        >
+        <Tile type="bottom-border" as={Link} onClick={onClick} to={href}>
             <TileHeader title={title} leadingSlot={icon} />
             <TileContent>
                 <Box gap="xxs" flexDirection="column">
@@ -84,6 +76,6 @@ export function NotificationTile({
                     </Box>
                 </Box>
             </TileContent>
-        </TileListItem>
+        </Tile>
     )
 }

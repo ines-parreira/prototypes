@@ -2,8 +2,6 @@ import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { TileList } from '@gorgias/axiom'
-
 import { NotificationTile } from './NotificationTile'
 
 const baseProps = {
@@ -21,14 +19,7 @@ const renderTile = (
         onMarkAsUnread?: () => void
         children?: React.ReactNode
     } = {},
-) => {
-    const mergedProps = { ...baseProps, ...props }
-    return render(
-        <TileList items={[mergedProps]} aria-label="notifications">
-            {() => <NotificationTile {...mergedProps} />}
-        </TileList>,
-    )
-}
+) => render(<NotificationTile {...baseProps} {...props} />)
 
 describe('NotificationTile', () => {
     beforeEach(() => {
@@ -37,7 +28,6 @@ describe('NotificationTile', () => {
     })
 
     afterEach(() => {
-        vi.runOnlyPendingTimers()
         vi.useRealTimers()
     })
 

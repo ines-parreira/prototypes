@@ -4,8 +4,6 @@ import { useKnockFeed } from '@knocklabs/react'
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 
-import { TileList } from '@gorgias/axiom'
-
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
 
@@ -121,25 +119,15 @@ describe('UserMentionedNotification', () => {
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
         })
 
-        const renderInCollection = (ui: ReactNode) =>
-            render(
-                <TileList
-                    items={[{ id: notification.id }]}
-                    aria-label="notifications"
-                >
-                    {() => ui}
-                </TileList>,
-            )
-
         it('should render the title', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <UserMentionedNotification notification={notification} />,
             )
             expect(getByText('New mention')).toBeInTheDocument()
         })
 
         it('should render sender name and ticket subject when sender exists', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <UserMentionedNotification notification={notification} />,
             )
             expect(getByText('John Doe')).toBeInTheDocument()
@@ -147,7 +135,7 @@ describe('UserMentionedNotification', () => {
         })
 
         it('should render fallback text when sender is absent', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <UserMentionedNotification
                     notification={{
                         ...notification,
@@ -165,14 +153,14 @@ describe('UserMentionedNotification', () => {
         })
 
         it('should render the excerpt', () => {
-            const { getByText } = renderInCollection(
+            const { getByText } = render(
                 <UserMentionedNotification notification={notification} />,
             )
             expect(getByText('Magical ticket excerpt')).toBeInTheDocument()
         })
 
         it('should link to the ticket', () => {
-            const { container } = renderInCollection(
+            const { container } = render(
                 <UserMentionedNotification notification={notification} />,
             )
             expect(
