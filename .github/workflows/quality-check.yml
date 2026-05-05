@@ -159,7 +159,7 @@ jobs:
     if: ${{ !cancelled() && inputs.helpdesk-affected == 'false' }}
     steps:
       - name: Set unused helpdesk test shard status checks to success
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             for (let shard = 1; shard <= 12; shard++) {
@@ -327,7 +327,7 @@ jobs:
     if: ${{ !cancelled() && fromJSON(inputs.packages-test-bucket-count) < 6 }}
     steps:
       - name: Set unused package test status checks to success
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const bucketCount = Number('${{ inputs.packages-test-bucket-count }}');
@@ -375,7 +375,7 @@ jobs:
     if: inputs.helpdesk-affected == 'false' && inputs.has-other-affected-packages == 'false'
     steps:
       - name: Set overall status check to success when neither helpdesk nor other packages affected
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Set codecov/patch status check to success

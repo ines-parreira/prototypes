@@ -22,7 +22,7 @@ jobs:
 
       - name: Set Codecov status checks to success if revert branch
         if: env.IsRevert == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Set codecov/patch status check to success
