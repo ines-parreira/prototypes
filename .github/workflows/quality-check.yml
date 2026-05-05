@@ -113,7 +113,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        job-index: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        job-index: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     env:
       CODECOV_CLI_VERSION: "v10.2.1"
     steps:
@@ -130,7 +130,7 @@ jobs:
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Run tests
-        run: pnpm test:helpdesk:ci:cover --shard "${{ matrix.job-index }}/10"
+        run: pnpm test:helpdesk:ci:cover --shard "${{ matrix.job-index }}/12"
 
       - name: Upload coverage to Codecov
         if: ${{ !cancelled() }}
@@ -162,7 +162,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            for (let shard = 1; shard <= 10; shard++) {
+            for (let shard = 1; shard <= 12; shard++) {
               await github.rest.repos.createCommitStatus({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
