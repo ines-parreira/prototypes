@@ -390,10 +390,14 @@ describe('AIJourneySettings', () => {
                 const productField = screen.getByRole('textbox', {
                     name: /product/i,
                 })
-                await user.click(productField)
+                await act(async () => {
+                    await user.click(productField)
+                })
 
                 const searchInput = await screen.findByRole('searchbox')
-                await user.type(searchInput, 'test')
+                await act(async () => {
+                    await user.type(searchInput, 'test')
+                })
 
                 await waitFor(() => {
                     expect(mockUseAIJourneyProductList).toHaveBeenCalledWith(
@@ -420,11 +424,14 @@ describe('AIJourneySettings', () => {
                 const productField = screen.getByRole('textbox', {
                     name: /product/i,
                 })
-                await user.click(productField)
-
+                await act(async () => {
+                    await user.click(productField)
+                })
                 const searchInput = await screen.findByRole('searchbox')
-                await user.type(searchInput, 'q')
 
+                await act(async () => {
+                    await user.type(searchInput, 'q')
+                })
                 // Confirm search was triggered
                 await waitFor(() => {
                     expect(searchInput).toHaveValue('q')
@@ -434,8 +441,9 @@ describe('AIJourneySettings', () => {
                 const option = await screen.findByRole('option', {
                     name: /found item/i,
                 })
-                await user.click(option)
-
+                await act(async () => {
+                    await user.click(option)
+                })
                 // After close, useAIJourneyProductList should be called with filter: undefined
                 await waitFor(() => {
                     const lastCall =
@@ -474,11 +482,14 @@ describe('AIJourneySettings', () => {
                 const productField = screen.getByRole('textbox', {
                     name: /product/i,
                 })
-                await user.click(productField)
 
+                await act(async () => {
+                    await user.click(productField)
+                })
                 const searchInput = await screen.findByRole('searchbox')
-                await user.type(searchInput, 'Product')
-
+                await act(async () => {
+                    await user.type(searchInput, 'Product')
+                })
                 const options = await screen.findAllByRole('option')
                 expect(options.length).toBeGreaterThanOrEqual(2)
             })
@@ -511,6 +522,65 @@ describe('AIJourneySettings', () => {
                 // selectedProduct.image.src is rendered in the trigger
                 const productImage = screen.getByAltText('selected product')
                 expect(productImage).toHaveAttribute('src', 'orphan.jpg')
+            })
+        })
+
+        describe('Product visibility by journey type', () => {
+            it('should not render product field for win-back flow', () => {
+                const winBackFlow = mockFlows.find(
+                    (f) => f.type === JourneyTypeEnum.WinBack,
+                )
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        currentJourney: winBackFlow,
+                        flows: mockFlows,
+                        campaigns: mockCampaigns,
+                    }),
+                )
+
+                renderComponent()
+
+                expect(
+                    screen.queryByRole('textbox', { name: /product/i }),
+                ).not.toBeInTheDocument()
+            })
+
+            it('should not render product field for welcome flow', () => {
+                const welcomeFlow = mockFlows.find(
+                    (f) => f.type === JourneyTypeEnum.Welcome,
+                )
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        currentJourney: welcomeFlow,
+                        flows: mockFlows,
+                        campaigns: mockCampaigns,
+                    }),
+                )
+
+                renderComponent()
+
+                expect(
+                    screen.queryByRole('textbox', { name: /product/i }),
+                ).not.toBeInTheDocument()
+            })
+
+            it('should render product field for cart-abandoned flow', () => {
+                const cartAbandonedFlow = mockFlows.find(
+                    (f) => f.type === JourneyTypeEnum.CartAbandoned,
+                )
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        currentJourney: cartAbandonedFlow,
+                        flows: mockFlows,
+                        campaigns: mockCampaigns,
+                    }),
+                )
+
+                renderComponent()
+
+                expect(
+                    screen.getByRole('textbox', { name: /product/i }),
+                ).toBeInTheDocument()
             })
         })
     })
@@ -1038,6 +1108,67 @@ describe('AIJourneySettings', () => {
             const excludeSelect = screen.getByLabelText('Audience to exclude')
             expect(excludeSelect).toHaveValue('audience-1')
         })
+
+        it('should render audience fields for non-campaign flows', () => {
+            const cartAbandonedFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.CartAbandoned,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: cartAbandonedFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.getByLabelText('Audience to include'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByLabelText('Audience to exclude'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render audience fields for win-back flow', () => {
+            const winBackFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.WinBack,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: winBackFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.getByLabelText('Audience to include'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByLabelText('Audience to exclude'),
+            ).toBeInTheDocument()
+        })
+
+        it('should fall back to empty array when audience list IDs are undefined', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        includedAudienceListIds: undefined as any,
+                        excludedAudienceListIds: undefined as any,
+                    },
+                }),
+            )
+
+            renderComponent()
+
+            expect(screen.getByLabelText('Audience to include')).toHaveValue('')
+            expect(screen.getByLabelText('Audience to exclude')).toHaveValue('')
+        })
     })
 
     describe('Fields rendering', () => {
@@ -1070,10 +1201,10 @@ describe('AIJourneySettings', () => {
             ).toBeInTheDocument()
             expect(
                 screen.queryByText('Audience to include'),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
             expect(
                 screen.queryByText('Audience to exclude'),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
         })
 
         it('should show campaigns fields', () => {
@@ -1119,7 +1250,7 @@ describe('AIJourneySettings', () => {
 
                 renderComponent()
 
-                expect(screen.queryByText('Product')).toBeInTheDocument()
+                expect(screen.queryByText('Product')).not.toBeInTheDocument()
                 expect(
                     screen.queryByText('Total number of messages to send'),
                 ).toBeInTheDocument()
@@ -1141,10 +1272,10 @@ describe('AIJourneySettings', () => {
                 ).toBeInTheDocument()
                 expect(
                     screen.queryByText('Audience to include'),
-                ).not.toBeInTheDocument()
+                ).toBeInTheDocument()
                 expect(
                     screen.queryByText('Audience to exclude'),
-                ).not.toBeInTheDocument()
+                ).toBeInTheDocument()
                 expect(screen.queryByText('Inactive days')).toBeInTheDocument()
                 expect(
                     screen.queryByText('Cooldown period'),
@@ -1186,10 +1317,10 @@ describe('AIJourneySettings', () => {
             ).toBeInTheDocument()
             expect(
                 screen.queryByText('Audience to include'),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
             expect(
                 screen.queryByText('Audience to exclude'),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
             expect(screen.queryByText('Trigger event')).toBeInTheDocument()
             expect(
                 screen.queryByText('Wait time after trigger (in minutes)'),
@@ -1327,7 +1458,7 @@ describe('AIJourneySettings', () => {
 
             renderComponent()
 
-            expect(screen.queryByText('Product')).toBeInTheDocument()
+            expect(screen.queryByText('Product')).not.toBeInTheDocument()
             expect(
                 screen.queryByText('Total number of messages to send'),
             ).toBeInTheDocument()
@@ -1345,10 +1476,10 @@ describe('AIJourneySettings', () => {
             ).toBeInTheDocument()
             expect(
                 screen.queryByText('Audience to include'),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
             expect(
                 screen.queryByText('Audience to exclude'),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
             expect(
                 screen.queryByText('Wait time before trigger (in minutes)'),
             ).toBeInTheDocument()
@@ -1494,9 +1625,11 @@ describe('AIJourneySettings', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                screen.getByRole('switch', { name: /returning customer/i }),
-            )
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('switch', { name: /returning customer/i }),
+                )
+            })
 
             expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
                 returningCustomer: true,

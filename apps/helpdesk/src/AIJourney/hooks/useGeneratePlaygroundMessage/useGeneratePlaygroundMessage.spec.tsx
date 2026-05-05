@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import type { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -211,6 +212,90 @@ describe('useGeneratePlaygroundMessage', () => {
                     status: NotificationStatus.Error,
                 }),
             )
+        })
+
+        it('should not notify about missing product for win-back journey type', async () => {
+            mockCreateTestSession.mockRejectedValue(new Error('stop early'))
+
+            const { result } = renderHook(
+                () =>
+                    useGeneratePlaygroundMessage({
+                        ...hookParameters,
+                        journeyType: JOURNEY_TYPES.WIN_BACK,
+                        selectedProduct: null,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleGenerateMessages()
+            })
+
+            expect(notify).not.toHaveBeenCalledWith({
+                message: 'Please select a product',
+                status: NotificationStatus.Error,
+            })
+            expect(mockCreateTestSession).toHaveBeenCalled()
+        })
+
+        it('should not notify about missing product for welcome journey type', async () => {
+            mockCreateTestSession.mockRejectedValue(new Error('stop early'))
+
+            const { result } = renderHook(
+                () =>
+                    useGeneratePlaygroundMessage({
+                        ...hookParameters,
+                        journeyType: JOURNEY_TYPES.WELCOME,
+                        selectedProduct: null,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleGenerateMessages()
+            })
+
+            expect(notify).not.toHaveBeenCalledWith({
+                message: 'Please select a product',
+                status: NotificationStatus.Error,
+            })
+            expect(mockCreateTestSession).toHaveBeenCalled()
+        })
+
+        it('should not notify about missing product for campaign journey type', async () => {
+            mockCreateTestSession.mockRejectedValue(new Error('stop early'))
+
+            const { result } = renderHook(
+                () =>
+                    useGeneratePlaygroundMessage({
+                        ...hookParameters,
+                        journeyType: JOURNEY_TYPES.CAMPAIGN,
+                        selectedProduct: null,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleGenerateMessages()
+            })
+
+            expect(notify).not.toHaveBeenCalledWith({
+                message: 'Please select a product',
+                status: NotificationStatus.Error,
+            })
+            expect(mockCreateTestSession).toHaveBeenCalled()
         })
 
         it('should notify if current integration is missing', async () => {
@@ -1023,6 +1108,104 @@ describe('useGeneratePlaygroundMessage', () => {
                 }),
             }),
         ])
+
+        jest.useRealTimers()
+    })
+
+    it('should trigger AI Journey without page/cart/order for win-back journey type with no product', async () => {
+        jest.useFakeTimers()
+
+        const mockStopPollingLocal = jest.fn()
+        const mockStartPollingLocal = jest.fn()
+
+        mockCreateTestSession.mockResolvedValue({
+            testModeSession: { id: 'test-session-id' },
+        })
+        mockTriggerAIJourney.mockResolvedValue(undefined)
+
+        const testSessionLogsOneMessage = {
+            id: '123',
+            status: 'finished' as const,
+            logs: [
+                {
+                    id: '566c50b5-f4f3-4467-83f0-a54275681aae',
+                    data: {
+                        message: 'message-1',
+                        isSalesOpportunity: false,
+                        isSalesDiscount: false,
+                        isSalesOpportunityFieldId: 33778,
+                        isSalesDiscountFieldId: 33779,
+                    },
+                    type: TestSessionLogType.AI_AGENT_REPLY,
+                },
+            ],
+        } as GetTestSessionLogsResponse
+
+        let currentTestSessionLogs:
+            | GetTestSessionLogsResponse
+            | { logs: []; status: 'idle'; id: string } = {
+            logs: [],
+            status: 'idle' as const,
+            id: '1',
+        }
+        let currentIsPolling = false
+
+        mockedUsePlaygroundPolling.mockImplementation(() => ({
+            testSessionLogs: currentTestSessionLogs,
+            startPolling: mockStartPollingLocal,
+            stopPolling: mockStopPollingLocal,
+            isPolling: currentIsPolling,
+        }))
+
+        const { result, rerender } = renderHook(
+            () =>
+                useGeneratePlaygroundMessage({
+                    ...hookParameters,
+                    journeyType: JOURNEY_TYPES.WIN_BACK,
+                    selectedProduct: null,
+                    totalMessagesToBeGenerated: 1,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore}>{children}</Provider>
+                ),
+            },
+        )
+
+        const generatePromise = result.current.handleGenerateMessages()
+
+        await act(async () => {
+            await Promise.resolve()
+            await Promise.resolve()
+        })
+
+        currentIsPolling = true
+        rerender()
+
+        await act(async () => {
+            jest.advanceTimersByTime(5000)
+        })
+
+        currentIsPolling = false
+        currentTestSessionLogs = testSessionLogsOneMessage
+        rerender()
+
+        await act(async () => {
+            jest.advanceTimersByTime(5000)
+        })
+
+        await act(async () => {
+            await generatePromise
+        })
+
+        expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+            expect.not.objectContaining({
+                page: expect.anything(),
+                cart: expect.anything(),
+                order: expect.anything(),
+            }),
+        ])
+        expect(mockCreateTestSession).toHaveBeenCalled()
 
         jest.useRealTimers()
     })

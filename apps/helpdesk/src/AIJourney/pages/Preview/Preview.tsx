@@ -83,6 +83,7 @@ export const Preview = () => {
 
     const isCampaign = journeyData?.type === JOURNEY_TYPES.CAMPAIGN
     const isWelcome = journeyData?.type === JOURNEY_TYPES.WELCOME
+    const isWinback = journeyData?.type === JOURNEY_TYPES.WIN_BACK
 
     const campaignParams = isCampaign
         ? (journeyParams as CampaignJourneyConfigurationApiDTO)
@@ -131,7 +132,8 @@ export const Preview = () => {
         await handleGenerateMessages()
     }, [handleGenerateMessages, selectedProduct?.image])
 
-    const shouldRenderTestingProductCard = !isWelcome && !isCampaign
+    const shouldRenderTestingProductCard =
+        !isWelcome && !isCampaign && !isWinback
 
     const isLoading = isLoadingJourneyData
 

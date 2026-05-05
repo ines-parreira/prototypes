@@ -262,6 +262,7 @@ export const AIJourneySettings: React.FC = () => {
     }
 
     const shouldRenderImageToggle = !isCampaign && !isWelcome
+    const shouldRenderTestingProduct = !isWelcome && !isCampaign && !isWinBack
 
     if (isLoadingJourneys) {
         return <LoadingSpinner />
@@ -319,7 +320,7 @@ export const AIJourneySettings: React.FC = () => {
                 )}
             </SelectField>
 
-            {!isCampaign && (
+            {shouldRenderTestingProduct && (
                 <Select
                     data-name="select-field"
                     aria-label="Product"
@@ -607,31 +608,29 @@ export const AIJourneySettings: React.FC = () => {
                 </div>
             )}
 
-            {isCampaign && (
-                <div className={css.audiencesContainer}>
-                    <AudienceSelect
-                        label="Audience to include"
-                        value={includedAudienceListIds ?? []}
-                        exclude={excludedAudienceListIds ?? []}
-                        onChange={(value: string[]) => {
-                            setAIJourneySettings({
-                                includedAudienceListIds: value,
-                            })
-                        }}
-                        required
-                    />
-                    <AudienceSelect
-                        label="Audience to exclude"
-                        value={excludedAudienceListIds ?? []}
-                        exclude={includedAudienceListIds ?? []}
-                        onChange={(value: string[]) => {
-                            setAIJourneySettings({
-                                excludedAudienceListIds: value,
-                            })
-                        }}
-                    />
-                </div>
-            )}
+            <div className={css.audiencesContainer}>
+                <AudienceSelect
+                    label="Audience to include"
+                    value={includedAudienceListIds ?? []}
+                    exclude={excludedAudienceListIds ?? []}
+                    onChange={(value: string[]) => {
+                        setAIJourneySettings({
+                            includedAudienceListIds: value,
+                        })
+                    }}
+                    required
+                />
+                <AudienceSelect
+                    label="Audience to exclude"
+                    value={excludedAudienceListIds ?? []}
+                    exclude={includedAudienceListIds ?? []}
+                    onChange={(value: string[]) => {
+                        setAIJourneySettings({
+                            excludedAudienceListIds: value,
+                        })
+                    }}
+                />
+            </div>
 
             {isWelcome && (
                 <ToggleField

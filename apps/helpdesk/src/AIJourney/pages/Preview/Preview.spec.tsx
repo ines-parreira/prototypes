@@ -211,6 +211,25 @@ describe('<Preview />', () => {
             expect(screen.getByText('PlaygroundPreview')).toBeInTheDocument()
         })
 
+        it('should not render TestingProductCard for win-back journey type', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    ...defaultJourneyData,
+                    type: JOURNEY_TYPES.WIN_BACK,
+                },
+                journeyType: JOURNEY_TYPES.WIN_BACK,
+            })
+
+            render(<Preview />)
+
+            expect(
+                screen.queryByText('TestingProductCard'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('MessageGuidanceCard')).toBeInTheDocument()
+            expect(screen.getByText('PlaygroundPreview')).toBeInTheDocument()
+        })
+
         it('should not render TestingProductCard for campaign journey type', () => {
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,

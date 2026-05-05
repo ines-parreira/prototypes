@@ -9,6 +9,7 @@ import type {
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 import type { Integration } from '@gorgias/helpdesk-types'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import type { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -42,6 +43,7 @@ export const useGeneratePlaygroundMessage = ({
     currentIntegration,
     journeyMessageInstructions,
     journeyParams,
+    journeyType,
     selectedProduct,
     totalMessagesToBeGenerated,
     returningCustomer = false,
@@ -110,7 +112,12 @@ export const useGeneratePlaygroundMessage = ({
 
     const handleGenerateMessages = useCallback(async () => {
         try {
-            if (!selectedProduct) {
+            const requiresProduct =
+                journeyType !== JOURNEY_TYPES.WIN_BACK &&
+                journeyType !== JOURNEY_TYPES.WELCOME &&
+                journeyType !== JOURNEY_TYPES.CAMPAIGN
+
+            if (requiresProduct && !selectedProduct) {
                 void dispatch(
                     notify({
                         message: 'Please select a product',
@@ -131,7 +138,6 @@ export const useGeneratePlaygroundMessage = ({
             }
 
             const { shop_domain: shopDomain } = currentIntegration.meta
-            const { handle } = selectedProduct
 
             setPlaygroundMessages([])
             setIsGeneratingMessages(true)
@@ -169,24 +175,52 @@ export const useGeneratePlaygroundMessage = ({
                         : journey.type,
                 followUpAttempt: 0,
                 testModeSessionId: newTestSessionId,
-                page: {
-                    url: `https://${shopDomain}/products/${handle}`,
-                    productId: String(selectedProduct.id),
-                },
-                cart: {
-                    lineItems: [
-                        {
-                            variantId: String(
-                                selectedProduct.variants[0]?.id || 'variant-1',
-                            ),
-                            productId: String(selectedProduct.id),
-                            quantity: 1,
-                            linePrice: Number(
-                                selectedProduct.variants[0]?.price || 99.99,
-                            ),
-                        },
-                    ],
-                },
+                ...(selectedProduct && {
+                    page: {
+                        url: `https://${shopDomain}/products/${selectedProduct.handle}`,
+                        productId: String(selectedProduct.id),
+                    },
+                    cart: {
+                        lineItems: [
+                            {
+                                variantId: String(
+                                    selectedProduct.variants[0]?.id ||
+                                        'variant-1',
+                                ),
+                                productId: String(selectedProduct.id),
+                                quantity: 1,
+                                linePrice: Number(
+                                    selectedProduct.variants[0]?.price || 99.99,
+                                ),
+                            },
+                        ],
+                    },
+                    order: {
+                        id: `order-${Date.now()}`,
+                        lineItems: [
+                            {
+                                productId: String(selectedProduct.id),
+                                variantId: String(
+                                    selectedProduct.variants[0]?.id ||
+                                        'variant-1',
+                                ),
+                                quantity: 1,
+                                price: String(
+                                    selectedProduct.variants[0]?.price ||
+                                        '99.99',
+                                ),
+                                title: selectedProduct.title,
+                            },
+                        ],
+                        totalPrice: Number(
+                            selectedProduct.variants[0]?.price || 99.99,
+                        ),
+                        currency: 'USD',
+                        financialStatus: 'paid',
+                        fulfillmentStatus: null,
+                        createdAt: new Date().toISOString(),
+                    },
+                }),
                 settings: {
                     maxFollowUpMessages:
                         journeyParams.max_follow_up_messages ?? null,
@@ -200,29 +234,6 @@ export const useGeneratePlaygroundMessage = ({
                         : currentIntegration.name,
                     discountCodeMessageThreshold:
                         journeyParams.discount_code_message_threshold ?? null,
-                },
-                order: {
-                    id: `order-${Date.now()}`,
-                    lineItems: [
-                        {
-                            productId: String(selectedProduct.id),
-                            variantId: String(
-                                selectedProduct.variants[0]?.id || 'variant-1',
-                            ),
-                            quantity: 1,
-                            price: String(
-                                selectedProduct.variants[0]?.price || '99.99',
-                            ),
-                            title: selectedProduct.title,
-                        },
-                    ],
-                    totalPrice: Number(
-                        selectedProduct.variants[0]?.price || 99.99,
-                    ),
-                    currency: 'USD',
-                    financialStatus: 'paid',
-                    fulfillmentStatus: null,
-                    createdAt: new Date().toISOString(),
                 },
                 returningCustomer,
             }
@@ -264,6 +275,7 @@ export const useGeneratePlaygroundMessage = ({
         dispatch,
         journeyMessageInstructions,
         journeyParams,
+        journeyType,
         startPolling,
         selectedProduct,
         totalMessagesToBeGenerated,
