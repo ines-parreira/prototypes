@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing/vitest'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { NotificationsPanel } from './NotificationsPanel'
@@ -37,14 +38,17 @@ const defaultProps: NotificationsPanelProps = {
     ),
 }
 
+const renderPanel = (props: Partial<NotificationsPanelProps> = {}) =>
+    render(<NotificationsPanel {...defaultProps} {...props} />)
+
 describe('NotificationsPanel', () => {
     it('renders the panel title', () => {
-        render(<NotificationsPanel {...defaultProps} />)
+        renderPanel()
         expect(screen.getByText('Notifications')).toBeInTheDocument()
     })
 
     it('renders the Mark all as read button', () => {
-        render(<NotificationsPanel {...defaultProps} />)
+        renderPanel()
         expect(
             screen.getByRole('button', { name: /mark all as read/i }),
         ).toBeInTheDocument()
@@ -53,12 +57,7 @@ describe('NotificationsPanel', () => {
     it('calls onMarkAllAsRead when the button is clicked', async () => {
         const user = userEvent.setup()
         const onMarkAllAsRead = vi.fn()
-        render(
-            <NotificationsPanel
-                {...defaultProps}
-                onMarkAllAsRead={onMarkAllAsRead}
-            />,
-        )
+        renderPanel({ onMarkAllAsRead })
         await user.click(
             screen.getByRole('button', { name: /mark all as read/i }),
         )
@@ -66,7 +65,7 @@ describe('NotificationsPanel', () => {
     })
 
     it('renders the close button when onClose is provided', () => {
-        render(<NotificationsPanel {...defaultProps} onClose={vi.fn()} />)
+        renderPanel({ onClose: vi.fn() })
         expect(
             screen.getByRole('button', { name: /close/i }),
         ).toBeInTheDocument()
@@ -75,28 +74,23 @@ describe('NotificationsPanel', () => {
     it('calls onClose when the close button is clicked', async () => {
         const user = userEvent.setup()
         const onClose = vi.fn()
-        render(<NotificationsPanel {...defaultProps} onClose={onClose} />)
+        renderPanel({ onClose })
         await user.click(screen.getByRole('button', { name: /close/i }))
         expect(onClose).toHaveBeenCalledTimes(1)
     })
 
     it('renders notification items via children render function', () => {
-        render(<NotificationsPanel {...defaultProps} />)
+        renderPanel()
         expect(screen.getByText('Test notification')).toBeInTheDocument()
     })
 
     it('renders the empty state when items is empty', () => {
-        render(<NotificationsPanel {...defaultProps} items={[]} />)
+        renderPanel({ items: [] })
         expect(screen.getByText('No notifications')).toBeInTheDocument()
     })
 
     it('renders the toolbar slot', () => {
-        render(
-            <NotificationsPanel
-                {...defaultProps}
-                toolbar={<span>Filter</span>}
-            />,
-        )
+        renderPanel({ toolbar: <span>Filter</span> })
         expect(screen.getByText('Filter')).toBeInTheDocument()
     })
 })

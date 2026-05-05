@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import type { IconName } from '@gorgias/axiom'
 import {
     Box,
@@ -41,15 +43,14 @@ export function NotificationTile({
     onMarkAsUnread,
 }: NotificationTileProps) {
     const isRead = readDatetime !== null
-    const asProps = href
-        ? { as: 'link' as const, href }
-        : { as: 'button' as const, onClick }
     return (
         <TileListItem
             id={id}
             textValue={title}
             type="bottom-border"
-            {...asProps}
+            as={Link}
+            onClick={onClick}
+            to={href}
         >
             <TileHeader title={title} leadingSlot={icon} />
             <TileContent>

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing/vitest'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { TileList } from '@gorgias/axiom'
@@ -80,19 +81,19 @@ describe('NotificationTile', () => {
             expect(screen.getByRole('link')).toBeInTheDocument()
         })
 
-        it('renders as a button when `href` is not provided', () => {
+        it('renders as a link when `href` is not provided', () => {
             renderTile()
-            expect(screen.getByRole('button')).toBeInTheDocument()
+            expect(screen.getByRole('link')).toBeInTheDocument()
         })
     })
 
-    it('calls onClick when the button tile is clicked', async () => {
+    it('calls onClick when the tile is clicked', async () => {
         const user = userEvent.setup({
             advanceTimers: vi.advanceTimersByTime.bind(vi),
         })
         const onClick = vi.fn()
         renderTile({ onClick })
-        await user.click(screen.getByRole('button'))
+        await user.click(screen.getByRole('link'))
         expect(onClick).toHaveBeenCalledTimes(1)
     })
 })
