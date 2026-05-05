@@ -1,8 +1,12 @@
 name: React Doctor PR Analysis
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_run:
+    workflows: [CICD]
+    types: [completed]
+    branches-ignore:
+      - main
+      - staging
 
 permissions:
   actions: read
@@ -16,13 +20,67 @@ env:
   REACT_DOCTOR_GCS_BUCKET: gs://gorgias-assets-staging/react-doctor-reports/helpdesk-web-app
 
 concurrency:
-  group: react-doctor-pr-${{ github.event.pull_request.number }}
+  group: react-doctor-pr-${{ github.event.workflow_run.head_branch }}
   cancel-in-progress: true
 
 jobs:
+  pr-context:
+    name: PR context
+    runs-on: gh-actions-small-runner-set
+    outputs:
+      base-ref: ${{ steps.pr.outputs.base-ref }}
+      head-repo-fork: ${{ steps.pr.outputs.head-repo-fork }}
+      head-sha: ${{ steps.pr.outputs.head-sha }}
+      pr-number: ${{ steps.pr.outputs.pr-number }}
+      should-run: ${{ steps.pr.outputs.should-run }}
+    steps:
+      - name: Resolve PR
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+
+            if (run.conclusion === 'cancelled' || run.conclusion === 'skipped') {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            let pullRequest = run.pull_requests?.[0];
+
+            if (!pullRequest) {
+              const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                ...context.repo,
+                commit_sha: run.head_sha,
+              });
+              pullRequest = pullRequests.find((pr) => pr.state === 'open');
+            }
+
+            if (!pullRequest) {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: pullRequest.number,
+            });
+
+            if (pr.state !== 'open') {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            core.setOutput('base-ref', pr.base.ref);
+            core.setOutput('head-repo-fork', String(pr.head.repo.fork));
+            core.setOutput('head-sha', pr.head.sha);
+            core.setOutput('pr-number', pr.number);
+            core.setOutput('should-run', 'true');
+
   workspace-setup:
     name: Workspace setup
-    if: github.event.pull_request.head.repo.fork == false
+    needs: pr-context
+    if: needs.pr-context.outputs.should-run == 'true' && needs.pr-context.outputs.head-repo-fork == 'false'
     runs-on: gh-actions-large-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
@@ -34,6 +92,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ needs.pr-context.outputs.head-sha }}
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
@@ -43,26 +102,28 @@ jobs:
 
       - name: Get affected packages
         run: |
-          NX_BASE_REF="origin/${{ github.base_ref }}"
-          git fetch origin "${{ github.base_ref }}" --depth=1
-          echo "NX_BASE_REF=$NX_BASE_REF" >> $GITHUB_ENV
+          NX_BASE_REF="origin/${{ needs.pr-context.outputs.base-ref }}"
+          git fetch origin "${{ needs.pr-context.outputs.base-ref }}" --depth=1
+          echo "NX_BASE_REF=$NX_BASE_REF" >> "$GITHUB_ENV"
 
-          REACT_DOCTOR_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=lint --exclude=@repo/root --json --base=$NX_BASE_REF --head=HEAD)
+          REACT_DOCTOR_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=lint --exclude=@repo/root --json --base="$NX_BASE_REF" --head=HEAD)
 
           if echo "$REACT_DOCTOR_AFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
             REACT_DOCTOR_AFFECTED_PACKAGES_MATRIX=$(echo "$REACT_DOCTOR_AFFECTED_PACKAGES_JSON" | jq -c 'map({project: ., alias: (sub("^@"; "") | gsub("/"; "-"))})')
-            echo "REACT_DOCTOR_AFFECTED_PACKAGES=$REACT_DOCTOR_AFFECTED_PACKAGES_MATRIX" >> $GITHUB_ENV
-            echo "HAS_REACT_DOCTOR_AFFECTED_PACKAGES=true" >> $GITHUB_ENV
+            echo "REACT_DOCTOR_AFFECTED_PACKAGES=$REACT_DOCTOR_AFFECTED_PACKAGES_MATRIX" >> "$GITHUB_ENV"
+            echo "HAS_REACT_DOCTOR_AFFECTED_PACKAGES=true" >> "$GITHUB_ENV"
             echo "Found affected packages for React Doctor: $REACT_DOCTOR_AFFECTED_PACKAGES_JSON"
           else
-            echo "REACT_DOCTOR_AFFECTED_PACKAGES=[]" >> $GITHUB_ENV
-            echo "HAS_REACT_DOCTOR_AFFECTED_PACKAGES=false" >> $GITHUB_ENV
+            echo "REACT_DOCTOR_AFFECTED_PACKAGES=[]" >> "$GITHUB_ENV"
+            echo "HAS_REACT_DOCTOR_AFFECTED_PACKAGES=false" >> "$GITHUB_ENV"
             echo "No affected packages with lint target found for React Doctor"
           fi
 
   react-doctor-scan:
     name: React Doctor scan
-    needs: workspace-setup
+    needs:
+      - pr-context
+      - workspace-setup
     if: needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true'
     runs-on: gh-actions-default-runner-set
     strategy:
@@ -74,6 +135,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ needs.pr-context.outputs.head-sha }}
 
       - name: Setup workspace
         uses: ./.github/actions/setup-workspace
@@ -100,6 +162,7 @@ jobs:
   react-doctor-compare:
     name: React Doctor compare
     needs:
+      - pr-context
       - workspace-setup
       - react-doctor-scan
     if: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true' && !cancelled() }}
@@ -114,6 +177,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.pr-context.outputs.head-sha }}
 
       - name: Download React Doctor report artifact
         uses: actions/download-artifact@v8
@@ -124,19 +189,19 @@ jobs:
       - name: Authenticate with GCS
         shell: sh
         run: |
-          cat <<EOF > $GOOGLE_APPLICATION_CREDENTIALS
+          cat <<EOF > "$GOOGLE_APPLICATION_CREDENTIALS"
           ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
           EOF
           gcloud auth activate-service-account ${{ secrets.GCLOUD_SERVICE_ACCOUNT }} \
-            --key-file=$GOOGLE_APPLICATION_CREDENTIALS \
-            --project=$REACT_DOCTOR_GCLOUD_PROJECT
+            --key-file="$GOOGLE_APPLICATION_CREDENTIALS" \
+            --project="$REACT_DOCTOR_GCLOUD_PROJECT"
 
       - name: Download latest baseline report from GCS
         shell: sh
         run: |
           mkdir -p baseline-reports
           gsutil cp \
-            $REACT_DOCTOR_GCS_BUCKET/latest/react-doctor-report-${{ matrix.alias }}.json \
+            "$REACT_DOCTOR_GCS_BUCKET/latest/react-doctor-report-${{ matrix.alias }}.json" \
             baseline-reports/ || true
 
       - name: Install Node.js
@@ -147,12 +212,12 @@ jobs:
         shell: sh
         run: |
           node scripts/react-doctor/compare-reports.mjs \
-            --project=${{ matrix.project }} \
-            --pr-report=pr-reports/react-doctor-report-${{ matrix.alias }}.json \
-            --baseline-report=baseline-reports/react-doctor-report-${{ matrix.alias }}.json \
+            --project="${{ matrix.project }}" \
+            --pr-report="pr-reports/react-doctor-report-${{ matrix.alias }}.json" \
+            --baseline-report="baseline-reports/react-doctor-report-${{ matrix.alias }}.json" \
             --max-examples=6 \
             --max-top-rules=5 \
-            --output=react-doctor-${{ matrix.alias }}.md
+            --output="react-doctor-${{ matrix.alias }}.md"
 
       - name: Upload React Doctor markdown artifact
         uses: actions/upload-artifact@v7
@@ -163,6 +228,7 @@ jobs:
   react-doctor-comment:
     name: React Doctor comment
     needs:
+      - pr-context
       - workspace-setup
       - react-doctor-compare
     if: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true' && !cancelled() }}
@@ -177,6 +243,8 @@ jobs:
 
       - name: Create or update PR comment
         uses: actions/github-script@v8
+        env:
+          PR_NUMBER: ${{ needs.pr-context.outputs.pr-number }}
         with:
           script: |
             const fs = require('fs');
@@ -292,7 +360,7 @@ jobs:
 
             const { data: comments } = await github.rest.issues.listComments({
               ...context.repo,
-              issue_number: context.issue.number,
+              issue_number: Number(process.env.PR_NUMBER),
             });
 
             const previousComment = comments.find(
@@ -308,7 +376,7 @@ jobs:
             } else {
               await github.rest.issues.createComment({
                 ...context.repo,
-                issue_number: context.issue.number,
+                issue_number: Number(process.env.PR_NUMBER),
                 body,
               });
             }

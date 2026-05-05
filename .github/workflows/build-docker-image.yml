@@ -1,6 +1,9 @@
 name: Build docker image
 
-on: [push]
+on:
+  workflow_run:
+    workflows: [CICD]
+    types: [completed]
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -13,18 +16,21 @@ permissions:
 
 concurrency:
   # Only one side branch run at a time. Every commit runs in parallel on main and staging branch
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ contains(fromJSON('["refs/heads/main", "refs/heads/staging"]'), github.ref) && github.sha || '' }}
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch }}-${{ contains(fromJSON('["main", "staging"]'), github.event.workflow_run.head_branch) && github.event.workflow_run.head_sha || '' }}
   cancel-in-progress: true
 
 jobs:
   workspace-setup:
     name: Workspace setup
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: gh-actions-large-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
@@ -45,6 +51,7 @@ jobs:
       build-dir: apps/helpdesk/build
       artifact: docker-build
       no-content-hash: true
+      force-deploy-commit: ${{ github.event.workflow_run.head_sha }}
 
   build-docker-image:
     name: Build docker image
@@ -53,7 +60,7 @@ jobs:
     with:
       image-names: us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/web-app
       docker-file-path: deployment/docker/Dockerfile
-      build-args: RELEASE=${{ github.sha }}
+      build-args: RELEASE=${{ github.event.workflow_run.head_sha }}
       artifact: docker-build
       artifact-download-path: apps/helpdesk/build
     secrets: inherit

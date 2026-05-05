@@ -65,19 +65,19 @@ jobs:
             NX_BASE_COMMIT="origin/main"
             echo "On feature branch, using base commit: $NX_BASE_COMMIT"
           fi
-          echo "NX_BASE_COMMIT=$NX_BASE_COMMIT" >> $GITHUB_ENV
+          echo "NX_BASE_COMMIT=$NX_BASE_COMMIT" >> "$GITHUB_ENV"
 
           if [[ "$NX_BASE_COMMIT" == "origin/main" ]]; then
             git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
           fi
 
           # Check if @repo/helpdesk is affected
-          HELPDESK_AFFECTED_JSON=$(npx nx show projects --affected --projects=@repo/helpdesk --json --base=$NX_BASE_COMMIT --head=HEAD)
+          HELPDESK_AFFECTED_JSON=$(npx nx show projects --affected --projects=@repo/helpdesk --json --base="$NX_BASE_COMMIT" --head=HEAD)
           if echo "$HELPDESK_AFFECTED_JSON" | jq -e '. | length > 0' > /dev/null; then
-            echo "HELPDESK_AFFECTED=true" >> $GITHUB_ENV
+            echo "HELPDESK_AFFECTED=true" >> "$GITHUB_ENV"
             echo "@repo/helpdesk is affected"
           else
-            echo "HELPDESK_AFFECTED=false" >> $GITHUB_ENV
+            echo "HELPDESK_AFFECTED=false" >> "$GITHUB_ENV"
             echo "@repo/helpdesk is not affected"
           fi
 
@@ -89,14 +89,14 @@ jobs:
           PACKAGES_TEST_BUCKET_COUNT=$(echo "$PACKAGES_TEST_BUCKETS_RESULT" | jq -r '.bucketCount')
           PACKAGES_TEST_BUCKETS=$(echo "$PACKAGES_TEST_BUCKETS_RESULT" | jq -c '.buckets')
 
-          echo "PACKAGES_TEST_BUCKETS=$PACKAGES_TEST_BUCKETS" >> $GITHUB_ENV
-          echo "PACKAGES_TEST_BUCKET_COUNT=$PACKAGES_TEST_BUCKET_COUNT" >> $GITHUB_ENV
+          echo "PACKAGES_TEST_BUCKETS=$PACKAGES_TEST_BUCKETS" >> "$GITHUB_ENV"
+          echo "PACKAGES_TEST_BUCKET_COUNT=$PACKAGES_TEST_BUCKET_COUNT" >> "$GITHUB_ENV"
 
           if [ "$PACKAGES_TEST_BUCKET_COUNT" -gt 0 ]; then
-            echo "HAS_OTHER_AFFECTED_PACKAGES=true" >> $GITHUB_ENV
+            echo "HAS_OTHER_AFFECTED_PACKAGES=true" >> "$GITHUB_ENV"
             echo "Found package test buckets: $PACKAGES_TEST_BUCKETS"
           else
-            echo "HAS_OTHER_AFFECTED_PACKAGES=false" >> $GITHUB_ENV
+            echo "HAS_OTHER_AFFECTED_PACKAGES=false" >> "$GITHUB_ENV"
             echo "No other affected packages with test:ci:cover target found"
           fi
 
@@ -257,6 +257,7 @@ jobs:
 
   security-sast:
     name: "Security: Static Code Analysis"
+    needs: workspace-setup
     uses: gorgias/reusable-actions/.github/workflows/sast-scans.yml@main
     # Skip any PR created by dependabot to avoid permission issues:
     if: (github.actor != 'dependabot[bot]' )
@@ -273,6 +274,7 @@ jobs:
   security-dependencies:
     uses: gorgias/reusable-actions/.github/workflows/security-dependency-scans.yml@main
     name: "Security: Dependencies"
+    needs: workspace-setup
     # Skip running on dependabot PRs, and on main & staging
     if: (github.actor != 'dependabot[bot]') && (github.ref != 'refs/heads/main') && (github.ref != 'refs/heads/staging')
     secrets: inherit
@@ -283,6 +285,7 @@ jobs:
   security-secrets:
     uses: gorgias/reusable-actions/.github/workflows/security-secret-scans.yml@main
     name: "Security: Secrets Scan"
+    needs: workspace-setup
     if: (github.actor != 'dependabot[bot]')
     secrets: inherit
     with:

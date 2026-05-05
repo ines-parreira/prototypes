@@ -2,11 +2,17 @@ name: Preview Deploy
 # Builds and uploads preview assets for every PR
 
 on:
+  workflow_run:
+    workflows: [CICD]
+    types: [completed]
+    branches-ignore:
+      - main
+      - staging
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [closed]
 
 concurrency:
-  group: preview-${{ github.event.pull_request.number }}
+  group: preview-${{ github.event.pull_request.number || github.event.workflow_run.head_branch }}
   cancel-in-progress: true
 
 permissions:
@@ -20,9 +26,64 @@ env:
   BUILD_DIR: apps/helpdesk/build
 
 jobs:
+  pr-context:
+    name: PR context
+    if: github.event_name == 'workflow_run'
+    runs-on: gh-actions-small-runner-set
+    outputs:
+      should-run: ${{ steps.pr.outputs.should-run }}
+      head-ref: ${{ steps.pr.outputs.head-ref }}
+      head-sha: ${{ steps.pr.outputs.head-sha }}
+      pr-author: ${{ steps.pr.outputs.pr-author }}
+      pr-number: ${{ steps.pr.outputs.pr-number }}
+    steps:
+      - name: Resolve PR
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+
+            if (run.conclusion === 'cancelled' || run.conclusion === 'skipped') {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            let pullRequest = run.pull_requests?.[0];
+
+            if (!pullRequest) {
+              const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                ...context.repo,
+                commit_sha: run.head_sha,
+              });
+              pullRequest = pullRequests.find((pr) => pr.state === 'open');
+            }
+
+            if (!pullRequest) {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: pullRequest.number,
+            });
+
+            if (pr.state !== 'open') {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            core.setOutput('should-run', 'true');
+            core.setOutput('head-ref', pr.head.ref);
+            core.setOutput('head-sha', pr.head.sha);
+            core.setOutput('pr-author', pr.user.login);
+            core.setOutput('pr-number', pr.number);
+
   workspace-setup:
     name: Workspace setup
-    if: github.event.action != 'closed'
+    needs: pr-context
+    if: needs.pr-context.outputs.should-run == 'true'
     runs-on: gh-actions-large-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
@@ -30,6 +91,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.pr-context.outputs.head-sha }}
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
@@ -40,8 +103,8 @@ jobs:
       - name: Sanitize branch name
         id: sanitize
         env:
-          OWNER: ${{ github.event.pull_request.user.login }}
-          BRANCH: ${{ github.head_ref }}
+          OWNER: ${{ needs.pr-context.outputs.pr-author }}
+          BRANCH: ${{ needs.pr-context.outputs.head-ref }}
         shell: bash
         run: |
           SANITIZED=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9-]/-/g' | sed 's/--*/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-63)
@@ -49,17 +112,20 @@ jobs:
 
   build-preview:
     name: Build preview
-    needs: workspace-setup
+    needs:
+      - pr-context
+      - workspace-setup
     uses: ./.github/workflows/build.yml
     secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: "24.15.0"
       assets-url: https://gorgias-assets.gorgias.io/web-app
-      release: preview-${{ github.event.pull_request.number }}-${{ github.sha }}
+      release: preview-${{ needs.pr-context.outputs.pr-number }}-${{ needs.pr-context.outputs.head-sha }}
       build-dir: apps/helpdesk/build
       artifact: preview-build
       no-content-hash: true
+      force-deploy-commit: ${{ needs.pr-context.outputs.head-sha }}
 
   upload-preview:
     name: Upload preview
@@ -113,6 +179,7 @@ jobs:
   comment-on-pr:
     name: Comment on PR
     needs:
+      - pr-context
       - workspace-setup
       - upload-preview
     runs-on: gh-actions-small-runner-set
@@ -191,7 +258,9 @@ jobs:
       - name: Create or update PR comment
         uses: actions/github-script@v8
         env:
+          HEAD_SHA: ${{ needs.pr-context.outputs.head-sha }}
           PREVIEW_PATH: ${{ needs.workspace-setup.outputs.preview-path }}
+          PR_NUMBER: ${{ needs.pr-context.outputs.pr-number }}
         with:
           script: |
             const marker = '<!-- pr-preview-deploy -->';
@@ -236,13 +305,13 @@ jobs:
               '2. Hard refresh Helpdesk (`Cmd/Ctrl + Shift + R`).',
               '3. Verify `helpdesk.app` JS/CSS and `helpdesk.shared-worker` / `helpdesk.service-worker` requests redirect to preview URLs.',
               '',
-              `_Last updated: ${new Date().toISOString()} (commit: ${context.payload.pull_request.head.sha.substring(0, 7)})_`,
+              `_Last updated: ${new Date().toISOString()} (commit: ${process.env.HEAD_SHA.substring(0, 7)})_`,
             ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: Number(process.env.PR_NUMBER),
             });
 
             const existing = comments.find(c => c.body.includes(marker));
@@ -258,7 +327,7 @@ jobs:
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.issue.number,
+                issue_number: Number(process.env.PR_NUMBER),
                 body,
               });
             }

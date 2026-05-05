@@ -1,16 +1,86 @@
 name: Check snapshot tests
-run-name: Check if new snapshot tests have been added to the repo
-on: [pull_request]
+run-name: Check if new snapshot tests have been added to the repo after CICD
+
+on:
+  workflow_run:
+    workflows: [CICD]
+    types: [completed]
+    branches-ignore:
+      - main
+      - staging
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: snapshots-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
 jobs:
+  pr-context:
+    name: PR context
+    runs-on: gh-actions-small-runner-set
+    outputs:
+      should-run: ${{ steps.pr.outputs.should-run }}
+      base-sha: ${{ steps.pr.outputs.base-sha }}
+      head-ref: ${{ steps.pr.outputs.head-ref }}
+      head-sha: ${{ steps.pr.outputs.head-sha }}
+    steps:
+      - name: Resolve PR
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+
+            if (run.conclusion === 'cancelled' || run.conclusion === 'skipped') {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            let pullRequest = run.pull_requests?.[0];
+
+            if (!pullRequest) {
+              const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                ...context.repo,
+                commit_sha: run.head_sha,
+              });
+              pullRequest = pullRequests.find((pr) => pr.state === 'open');
+            }
+
+            if (!pullRequest) {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: pullRequest.number,
+            });
+
+            if (pr.state !== 'open') {
+              core.setOutput('should-run', 'false');
+              return;
+            }
+
+            core.setOutput('should-run', 'true');
+            core.setOutput('base-sha', pr.base.sha);
+            core.setOutput('head-ref', pr.head.ref);
+            core.setOutput('head-sha', pr.head.sha);
+
   Check-Snapshot-Tests:
+    needs: pr-context
+    if: needs.pr-context.outputs.should-run == 'true'
     runs-on: gh-actions-small-runner-set
     steps:
       - uses: actions/checkout@v6
         with:
-            fetch-depth: 0
+          fetch-depth: 0
+          ref: ${{ needs.pr-context.outputs.head-sha }}
       - run: ./scripts/check-snapshots.sh
         shell: bash
         env:
-          TARGET_BRANCH: ${{ github.event.pull_request.base.sha }}
-          SOURCE_BRANCH: ${{ github.event.pull_request.head.sha }}
-          SOURCE_BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+          TARGET_BRANCH: ${{ needs.pr-context.outputs.base-sha }}
+          SOURCE_BRANCH: ${{ needs.pr-context.outputs.head-sha }}
+          SOURCE_BRANCH_NAME: ${{ needs.pr-context.outputs.head-ref }}
