@@ -405,7 +405,7 @@ export const AiJourneyOnboarding = ({
 
     if (isScheduleStep) {
         if (isScheduledCampaign) {
-            middleButtonLabel = 'Move to draft'
+            middleButtonLabel = 'Revert to draft'
             primaryButtonLabel =
                 scheduleType === 'later' ? 'Save changes' : 'Send'
         } else {

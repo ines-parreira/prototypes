@@ -1350,7 +1350,7 @@ describe('<AiJourneyOnboarding />', () => {
             ).toBeInTheDocument()
         })
 
-        it('shows "Save changes" and "Move to draft" buttons on schedule step for a scheduled campaign', () => {
+        it('shows "Save changes" and "Revert to draft" buttons on schedule step for a scheduled campaign', () => {
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {
@@ -1373,7 +1373,7 @@ describe('<AiJourneyOnboarding />', () => {
                 screen.getByRole('button', { name: 'Save changes' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Move to draft' }),
+                screen.getByRole('button', { name: 'Revert to draft' }),
             ).toBeInTheDocument()
         })
 
@@ -1524,7 +1524,7 @@ describe('<AiJourneyOnboarding />', () => {
             )
         })
 
-        it('moves scheduled campaign to draft when clicking Move to draft', async () => {
+        it('moves scheduled campaign to draft when clicking Revert to draft', async () => {
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {
@@ -1547,7 +1547,7 @@ describe('<AiJourneyOnboarding />', () => {
                 async () =>
                     await user.click(
                         screen.getByRole('button', {
-                            name: 'Move to draft',
+                            name: 'Revert to draft',
                         }),
                     ),
             )
@@ -1690,7 +1690,7 @@ describe('<AiJourneyOnboarding />', () => {
                 async () =>
                     await user.click(
                         screen.getByRole('button', {
-                            name: 'Move to draft',
+                            name: 'Revert to draft',
                         }),
                     ),
             )

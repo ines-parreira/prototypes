@@ -33,13 +33,16 @@ export const columns: ColumnDef<TableRow>[] = [
         )
     }),
     createTableV1SortableColumn<TableRow>('stateLabel', 'Status', (info) => {
-        const state = info.row.original.campaign?.state
+        const campaign = info.row.original.campaign
+        const state = campaign?.state
         const isDraft = state === JourneyCampaignStateEnum.Draft
-        const hasAudiences =
-            info.row.original.campaign?.has_included_audiences ?? false
+        const hasAudiences = campaign?.has_included_audiences ?? false
         return (
             <Box gap="xs">
-                <CampaignStateBadge state={state as JourneyCampaignStateEnum} />
+                <CampaignStateBadge
+                    state={state as JourneyCampaignStateEnum}
+                    scheduledDatetime={campaign?.scheduled_datetime}
+                />
                 {isDraft && !hasAudiences && (
                     <span className={classNames(badgeCss.badge, badgeCss.grey)}>
                         No audience
