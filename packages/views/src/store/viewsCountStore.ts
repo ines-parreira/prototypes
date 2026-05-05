@@ -86,22 +86,8 @@ export function setScores(scores: Record<number, number>): void {
     viewsCountStore.setState({ scores })
 }
 
-export function addViewportViewId(viewId: number): void {
-    viewsCountStore.setState((state) => {
-        if (state.viewportViewIds.includes(viewId)) return state
-        return { viewportViewIds: [...state.viewportViewIds, viewId] }
-    })
-}
-
-export function removeViewportViewId(viewId: number): void {
-    viewsCountStore.setState((state) => {
-        if (!state.viewportViewIds.includes(viewId)) return state
-        return {
-            viewportViewIds: state.viewportViewIds.filter(
-                (id) => id !== viewId,
-            ),
-        }
-    })
+export function setViewportViewIds(viewIds: number[]): void {
+    viewsCountStore.setState({ viewportViewIds: viewIds })
 }
 
 export function getViewportViewIds(): number[] {

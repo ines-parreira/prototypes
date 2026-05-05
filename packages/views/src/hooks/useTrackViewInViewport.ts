@@ -1,32 +1,60 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-import {
-    addViewportViewId,
-    removeViewportViewId,
-} from '../store/viewsCountStore'
+import { setViewportViewIds } from '../store/viewsCountStore'
 
 const elementToViewId = new Map<Element, number>()
 
-let sharedObserver: IntersectionObserver | null = null
+type ViewportTracker = {
+    observer: IntersectionObserver
+    untrack: (viewId: number) => void
+}
 
-function getObserver(): IntersectionObserver {
-    if (!sharedObserver) {
-        sharedObserver = new IntersectionObserver(
-            (entries) => {
-                for (const entry of entries) {
-                    const viewId = elementToViewId.get(entry.target)
-                    if (viewId === undefined) continue
-                    if (entry.isIntersecting) {
-                        addViewportViewId(viewId)
-                    } else {
-                        removeViewportViewId(viewId)
-                    }
-                }
-            },
-            { threshold: 0 },
-        )
+let tracker: ViewportTracker | null = null
+
+function getTracker(): ViewportTracker {
+    if (tracker) return tracker
+
+    const inViewport = new Set<number>()
+    let scheduled = false
+
+    function flush(): void {
+        scheduled = false
+        setViewportViewIds(Array.from(inViewport))
     }
-    return sharedObserver
+
+    function schedule(): void {
+        if (scheduled) return
+        scheduled = true
+        queueMicrotask(flush)
+    }
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            let changed = false
+            for (const entry of entries) {
+                const viewId = elementToViewId.get(entry.target)
+                if (viewId === undefined) continue
+                if (entry.isIntersecting) {
+                    if (!inViewport.has(viewId)) {
+                        inViewport.add(viewId)
+                        changed = true
+                    }
+                } else if (inViewport.delete(viewId)) {
+                    changed = true
+                }
+            }
+            if (changed) schedule()
+        },
+        { threshold: 0 },
+    )
+
+    tracker = {
+        observer,
+        untrack: (viewId) => {
+            if (inViewport.delete(viewId)) schedule()
+        },
+    }
+    return tracker
 }
 
 export function useTrackViewInViewport(
@@ -36,7 +64,7 @@ export function useTrackViewInViewport(
 
     const ref = useCallback(
         (node: HTMLElement | null) => {
-            const observer = getObserver()
+            const { observer } = getTracker()
 
             if (prevElementRef.current) {
                 observer.unobserve(prevElementRef.current)
@@ -55,12 +83,13 @@ export function useTrackViewInViewport(
 
     useEffect(() => {
         return () => {
+            const { observer, untrack } = getTracker()
             if (prevElementRef.current) {
-                getObserver().unobserve(prevElementRef.current)
+                observer.unobserve(prevElementRef.current)
                 elementToViewId.delete(prevElementRef.current)
                 prevElementRef.current = null
             }
-            removeViewportViewId(viewId)
+            untrack(viewId)
         }
     }, [viewId])
 

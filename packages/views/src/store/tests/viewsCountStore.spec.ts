@@ -1,7 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react'
 
 import {
-    addViewportViewId,
     clearViewsCount,
     collapseSection,
     expandSection,
@@ -11,8 +10,8 @@ import {
     getViewCountEntry,
     getViewportViewIds,
     markViewAsViewed,
-    removeViewportViewId,
     setScores,
+    setViewportViewIds,
     setViewsCount,
     useViewCount,
     viewsCountStore,
@@ -315,44 +314,18 @@ describe('setScores', () => {
     })
 })
 
-describe('addViewportViewId', () => {
-    it('adds a view ID to the viewport list', () => {
-        addViewportViewId(1)
+describe('setViewportViewIds', () => {
+    it('replaces the viewport list', () => {
+        setViewportViewIds([1, 2, 3])
 
-        expect(getViewportViewIds()).toEqual([1])
+        expect(getViewportViewIds()).toEqual([1, 2, 3])
     })
 
-    it('appends to existing viewport view IDs', () => {
-        addViewportViewId(1)
-        addViewportViewId(2)
+    it('overwrites prior values', () => {
+        setViewportViewIds([1, 2])
+        setViewportViewIds([3])
 
-        expect(getViewportViewIds()).toEqual([1, 2])
-    })
-
-    it('does not add duplicates', () => {
-        addViewportViewId(1)
-        addViewportViewId(1)
-
-        expect(getViewportViewIds()).toEqual([1])
-    })
-})
-
-describe('removeViewportViewId', () => {
-    it('removes a view ID from the viewport list', () => {
-        addViewportViewId(1)
-        addViewportViewId(2)
-
-        removeViewportViewId(1)
-
-        expect(getViewportViewIds()).toEqual([2])
-    })
-
-    it('does nothing when the view ID is not in the list', () => {
-        addViewportViewId(1)
-
-        removeViewportViewId(99)
-
-        expect(getViewportViewIds()).toEqual([1])
+        expect(getViewportViewIds()).toEqual([3])
     })
 })
 

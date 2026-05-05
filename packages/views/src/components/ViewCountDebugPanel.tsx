@@ -57,47 +57,33 @@ export function ViewCountDebugPanel({
     const isEnabled = useFlag(FeatureFlagKey.ImprovedViewCountUpdates)
     const counts = useStore(viewsCountStore, (s) => s.counts)
     const scores = useStore(viewsCountStore, (s) => s.scores)
-    const expandedSectionIds = useStore(
-        viewsCountStore,
-        (s) => s.expandedSectionIds,
-    )
     const allViews = useAllViews()
-    const activeViewId = useStore(viewsCountStore, (s) => s.activeViewId)
-    const viewportViewIds = useStore(viewsCountStore, (s) => s.viewportViewIds)
     const events = useStore(viewEventLogStore, (s) => s.events)
 
-    const rows = useMemo<Row[]>(() => {
-        if (!isEnabled) return []
-        return allViews.map((v) => {
-            const entry = counts[v.id]
-            return {
-                viewId: v.id,
-                name: v.name ?? '',
-                count: entry?.count,
-                score: scores[v.id],
-                lastFetchedAt: entry?.lastFetchedAt ?? null,
-                lastViewedAt: entry?.lastViewedAt ?? null,
-                isRealtimeView: isViewRealtime(v),
-                isRecentlyViewed: isViewRecentlyViewed(v),
-                isStale: isViewStale(v),
-                isLarge: isViewLarge(v),
-                isVisible: isViewVisible(v),
-                isInViewport: isViewInViewport(v.id),
-                isSystemView: isViewSystem(v),
-                isActive: isViewActive(v.id),
-                isDeactivated: isViewDeactivated(v),
-            }
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- activeViewId, expandedSectionIds, and viewportViewIds invalidate predicates that read from the store
-    }, [
-        isEnabled,
-        allViews,
-        counts,
-        scores,
-        activeViewId,
-        expandedSectionIds,
-        viewportViewIds,
-    ])
+    useNow()
+
+    const rows: Row[] = !isEnabled
+        ? []
+        : allViews.map((v) => {
+              const entry = counts[v.id]
+              return {
+                  viewId: v.id,
+                  name: v.name ?? '',
+                  count: entry?.count,
+                  score: scores[v.id],
+                  lastFetchedAt: entry?.lastFetchedAt ?? null,
+                  lastViewedAt: entry?.lastViewedAt ?? null,
+                  isRealtimeView: isViewRealtime(v),
+                  isRecentlyViewed: isViewRecentlyViewed(v),
+                  isStale: isViewStale(v),
+                  isLarge: isViewLarge(v),
+                  isVisible: isViewVisible(v),
+                  isInViewport: isViewInViewport(v.id),
+                  isSystemView: isViewSystem(v),
+                  isActive: isViewActive(v.id),
+                  isDeactivated: isViewDeactivated(v),
+              }
+          })
 
     return (
         <SidePanel
