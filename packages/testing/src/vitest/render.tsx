@@ -43,10 +43,30 @@ export const render = (
 
     const user = userEvent.setup()
 
+    const TestQueryClientProvider = ({
+        children,
+    }: {
+        children: React.ReactNode
+    }) => {
+        React.useEffect(
+            () => () => {
+                void queryClient.cancelQueries()
+                queryClient.clear()
+            },
+            [],
+        )
+
+        return (
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        )
+    }
+
     const result = renderPrimitive(ui, {
         ...renderOptions,
         wrapper: ({ children }) => (
-            <QueryClientProvider client={queryClient}>
+            <TestQueryClientProvider>
                 <MemoryRouter initialEntries={initialEntries}>
                     {path ? (
                         <Route path={path}>
@@ -63,7 +83,7 @@ export const render = (
                     )}
                 </MemoryRouter>
                 {createPortal(<Toaster />, document.body)}
-            </QueryClientProvider>
+            </TestQueryClientProvider>
         ),
     })
 

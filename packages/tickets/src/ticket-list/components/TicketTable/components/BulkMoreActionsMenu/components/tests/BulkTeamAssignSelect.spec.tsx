@@ -82,7 +82,8 @@ describe('BulkTeamAssignSelect', () => {
         await user.type(searchInput, 'Sup')
         expect(searchInput).toHaveValue('Sup')
 
-        await user.click(await waitUntilLoaded())
+        const supportOptions = await screen.findAllByText('Support')
+        await user.click(supportOptions[supportOptions.length - 1])
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })

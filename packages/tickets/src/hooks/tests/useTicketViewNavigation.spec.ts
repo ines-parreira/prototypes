@@ -24,6 +24,10 @@ describe('useTicketViewNavigation', () => {
         vi.restoreAllMocks()
         mockPush.mockReset()
         useHistory.mockReturnValue({ push: mockPush })
+        vi.spyOn(
+            useCachedTicketViewNavigationModule,
+            'useCachedTicketViewNavigation',
+        ).mockReturnValue(undefined)
     })
 
     describe('when not in a view context', () => {

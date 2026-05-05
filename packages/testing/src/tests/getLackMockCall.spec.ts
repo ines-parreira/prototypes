@@ -7,7 +7,7 @@ describe('getLastMockCall', () => {
             mock: {
                 calls: [[], myLastParams],
             },
-        } as jest.MockedFunction<any>
+        }
         expect(getLastMockCall(mockedStuff)).toBe(myLastParams)
     })
 })

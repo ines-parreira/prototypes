@@ -10,7 +10,9 @@ export const userEvent = {
     click: (element: Element, options?: Partial<MouseEvent>) => {
         fireEvent.pointerDown(element)
         fireEvent.mouseDown(element)
-        element instanceof HTMLElement && element.focus?.()
+        if (element instanceof HTMLElement) {
+            element.focus()
+        }
         fireEvent.mouseUp(element)
         fireEvent.click(element, options)
     },

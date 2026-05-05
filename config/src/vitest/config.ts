@@ -1,3 +1,4 @@
+import Oxc from 'unplugin-oxc/vite'
 import { mergeConfig, ViteUserConfig } from 'vitest/config'
 
 export type Config = ViteUserConfig
@@ -5,11 +6,12 @@ export type Config = ViteUserConfig
 export function createConfig(overrides?: Config): Config {
     return mergeConfig(
         {
+            plugins: [Oxc()],
             test: {
                 env: { TZ: 'UTC' },
                 globals: true,
                 setupFiles: ['@repo/config/vitest/setup.ts'],
-                environment: 'jsdom',
+                environment: 'happy-dom',
 
                 // Required for the Codecov tests results to be uploaded
                 // These are needed for the Codecov tests analytics like flakiness reports for example
@@ -18,7 +20,9 @@ export function createConfig(overrides?: Config): Config {
                     : ['default'],
                 outputFile: process.env['CI'] ? './junit.xml' : undefined,
                 coverage: {
-                    reporter: ['clover', 'lcov', 'text'],
+                    reporter: process.env['CI']
+                        ? ['lcov']
+                        : ['clover', 'lcov', 'text'],
                     reportOnFailure: true,
                     exclude: [
                         'vitest.config.ts',

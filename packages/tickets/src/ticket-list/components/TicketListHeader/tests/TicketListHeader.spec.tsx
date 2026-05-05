@@ -223,7 +223,18 @@ describe('TicketListHeader', () => {
                 screen.getByRole('searchbox', { name: /search/i }),
                 'vip',
             )
-            await user.click(trigger)
+            await user.click(
+                await screen.findByRole('menuitemradio', {
+                    name: /vip follow-up/i,
+                }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('searchbox', { name: /search/i }),
+                ).not.toBeInTheDocument()
+            })
+
             await user.click(trigger)
 
             expect(

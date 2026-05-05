@@ -276,6 +276,9 @@ describe('InfobarTicketCustomerInstagramSection', () => {
             const igLink = await screen.findByRole('link', {
                 name: /@test_user/,
             })
+            igLink.addEventListener('click', (event) => {
+                event.preventDefault()
+            })
 
             await act(() => user.click(igLink))
 

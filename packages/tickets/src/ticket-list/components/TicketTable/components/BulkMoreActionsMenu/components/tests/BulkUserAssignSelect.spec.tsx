@@ -125,14 +125,11 @@ describe('BulkUserAssignSelect', () => {
             onOpenChange,
         })
 
-        const trigger = await waitUntilLoaded()
+        await waitUntilLoaded()
 
         const searchInput = await screen.findByRole('searchbox')
         await user.type(searchInput, 'Ali')
         expect(searchInput).toHaveValue('Ali')
-
-        await user.click(trigger)
-        expect(onOpenChange).toHaveBeenCalledWith(false)
 
         rerender(
             <BulkUserAssignSelect

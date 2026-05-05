@@ -64,6 +64,10 @@ function makeMessage(actions: Record<string, unknown>[]): {
     return { actions, created_datetime: DATETIME, ticket_id: 123 }
 }
 
+function expectInlineColor(element: HTMLElement, color: string) {
+    expect(element.getAttribute('style')).toContain(`color: ${color}`)
+}
+
 describe('MessageAppliedActions', () => {
     it('renders nothing when actions is null or empty', () => {
         const { container, rerender } = render(
@@ -173,9 +177,10 @@ describe('MessageAppliedActions', () => {
         expect(
             screen.queryByRole('img', { name: 'tag' }),
         ).not.toBeInTheDocument()
-        expect(screen.getByText(/were added via/)).toHaveStyle({
-            color: 'var(--content-neutral-tertiary)',
-        })
+        expectInlineColor(
+            screen.getByText(/were added via/),
+            'var(--content-neutral-tertiary)',
+        )
     })
 
     it('shows circle-check icon for generic non-shopify, non-http actions', () => {
@@ -209,9 +214,10 @@ describe('MessageAppliedActions', () => {
         expect(
             screen.queryByRole('img', { name: 'app-shopify' }),
         ).not.toBeInTheDocument()
-        expect(screen.getByText(/Refund last order/)).toHaveStyle({
-            color: 'var(--content-neutral-tertiary)',
-        })
+        expectInlineColor(
+            screen.getByText(/Refund last order/),
+            'var(--content-neutral-tertiary)',
+        )
 
         rerender(
             <MessageAppliedActions
@@ -228,9 +234,10 @@ describe('MessageAppliedActions', () => {
         expect(
             screen.queryByRole('img', { name: 'app-shopify' }),
         ).not.toBeInTheDocument()
-        expect(screen.getByText(/Refund last order/)).toHaveStyle({
-            color: 'var(--content-neutral-tertiary)',
-        })
+        expectInlineColor(
+            screen.getByText(/Refund last order/),
+            'var(--content-neutral-tertiary)',
+        )
     })
 
     it('renders non-tag actions as "title via macro" with source icon', () => {
@@ -298,9 +305,10 @@ describe('MessageAppliedActions', () => {
                 />,
             )
 
-            expect(screen.getByText(/Refund last order/)).toHaveStyle({
-                color: 'var(--content-error-default)',
-            })
+            expectInlineColor(
+                screen.getByText(/Refund last order/),
+                'var(--content-error-default)',
+            )
         },
     )
 

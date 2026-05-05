@@ -19,7 +19,9 @@ describe('parseHtml', () => {
     })
 
     it('should not run inline event handlers', async () => {
-        parseHtml('<iframe src="/" onload="window._xss=true;"></iframe>')
+        parseHtml(
+            '<iframe src="about:blank" onload="window._xss=true;"></iframe>',
+        )
         await new Promise<void>((resolve) => setTimeout(resolve, 100))
         expect((window as any)._xss).toBeUndefined()
     })

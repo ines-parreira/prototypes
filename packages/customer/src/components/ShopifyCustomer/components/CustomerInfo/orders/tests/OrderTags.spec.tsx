@@ -1,5 +1,5 @@
 import { render } from '@repo/testing/vitest'
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
@@ -32,6 +32,32 @@ async function openTagsDropdown(user: ReturnType<typeof render>['user']) {
     await user.click(screen.getByRole('button', { name: /add-plus/ }))
 
     return await screen.findByRole('searchbox')
+}
+
+async function closeTagsDropdown(user: ReturnType<typeof render>['user']) {
+    try {
+        await user.keyboard('{Escape}')
+
+        await waitFor(() => {
+            expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+        })
+    } catch {
+        const dismissButtons = screen.queryAllByRole('button', {
+            hidden: true,
+            name: 'Dismiss',
+        })
+        const dismissButton = dismissButtons[dismissButtons.length - 1]
+
+        if (!dismissButton) {
+            throw new Error('Unable to find tags dropdown dismiss button')
+        }
+
+        fireEvent.click(dismissButton)
+
+        await waitFor(() => {
+            expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+        })
+    }
 }
 
 describe('OrderTags', () => {
@@ -188,11 +214,7 @@ describe('OrderTags', () => {
             expect(searchbox).toHaveValue('Summer')
         })
 
-        await user.click(document.body)
-
-        await waitFor(() => {
-            expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
-        })
+        await closeTagsDropdown(user)
 
         const reopenedSearchbox = await openTagsDropdown(user)
 

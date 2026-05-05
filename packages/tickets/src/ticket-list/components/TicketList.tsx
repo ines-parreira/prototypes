@@ -23,7 +23,7 @@ import { useMarkTicketAsRead } from '../hooks/useMarkTicketAsRead'
 import { useSortOrder } from '../hooks/useSortOrder'
 import type { OnSelectTicketParams } from '../hooks/useTicketSelection'
 import { useTicketSelection } from '../hooks/useTicketSelection'
-import { useTicketsList } from '../hooks/useTicketsList'
+import { PAGE_SIZE, useTicketsList } from '../hooks/useTicketsList'
 import { useViewVisibleTickets } from '../hooks/useViewVisibleTickets'
 import { getPlaceholderKind } from '../utils/getPlaceholderKind'
 import { TicketListActions } from './TicketListActions/TicketListActions'
@@ -238,8 +238,16 @@ export function TicketList({
         () => tickets.map((ticket) => ticket.id),
         [tickets],
     )
+    const translationTicketIds = useMemo(() => {
+        if (visibleTicketIds.length > 0) {
+            return debouncedVisibleTicketIds
+        }
+
+        return loadedTicketIds.slice(0, PAGE_SIZE)
+    }, [debouncedVisibleTicketIds, loadedTicketIds, visibleTicketIds.length])
+
     const { translationMap } = useTicketsTranslatedProperties({
-        ticket_ids: debouncedVisibleTicketIds,
+        ticket_ids: translationTicketIds,
     })
     const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
 

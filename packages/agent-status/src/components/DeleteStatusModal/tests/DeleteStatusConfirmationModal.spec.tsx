@@ -1,5 +1,5 @@
 import { render } from '@repo/testing/vitest'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -81,7 +81,7 @@ describe('DeleteStatusConfirmationModal', () => {
                 name: /Cancel/i,
             })
 
-            await act(() => user.click(cancelButton))
+            await user.click(cancelButton)
 
             expect(mockOnOpenChange).toHaveBeenCalled()
             expect(mockMutateAsync).not.toHaveBeenCalled()
@@ -97,7 +97,7 @@ describe('DeleteStatusConfirmationModal', () => {
                 name: /Delete status/i,
             })
 
-            await act(() => user.click(deleteButton))
+            await user.click(deleteButton)
 
             expect(mockMutateAsync).toHaveBeenCalledWith({ pk: 'status-123' })
         })
@@ -112,7 +112,7 @@ describe('DeleteStatusConfirmationModal', () => {
                 name: /Delete status/i,
             })
 
-            await act(() => user.click(deleteButton))
+            await user.click(deleteButton)
 
             await waitFor(() => {
                 expect(
@@ -134,7 +134,7 @@ describe('DeleteStatusConfirmationModal', () => {
                 name: /Delete status/i,
             })
 
-            await act(() => user.click(deleteButton))
+            await user.click(deleteButton)
 
             expect(mockMutateAsync).toHaveBeenCalled()
             await waitFor(() => {
@@ -172,7 +172,7 @@ describe('DeleteStatusConfirmationModal', () => {
                 name: /Delete status/i,
             })
 
-            await act(() => user.click(deleteButton))
+            await user.click(deleteButton)
 
             await waitFor(() => {
                 expect(

@@ -26,13 +26,8 @@ function DOMExceptionMock(code?: number, name?: string, message?: string) {
         24: 'INVALID_NODE_TYPE_ERR',
         25: 'DATA_CLONE_ERR',
     }
-    let newException: unknown
-    try {
-        document.querySelectorAll('div:foo')
-    } catch (e) {
-        newException = Object.create(Object.getPrototypeOf(e))
-    }
     const nameFromCode = codeToNames[code!]
+    const newException = Object.create(DOMException.prototype)
 
     Object.defineProperty(newException, 'name', {
         value: name || nameFromCode,
@@ -49,7 +44,7 @@ describe('isLocalStorageAvailable', () => {
     })
 
     it.each([
-        [DOMException.QUOTA_EXCEEDED_ERR, undefined],
+        [DOMException.QUOTA_EXCEEDED_ERR ?? 22, undefined],
         [1014, undefined],
         [undefined, 'QuotaExceededError'],
         [undefined, 'NS_ERROR_DOM_QUOTA_REACHED'],

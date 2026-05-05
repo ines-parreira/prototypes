@@ -40,10 +40,30 @@ export const renderHook = <TProps, TResult>(
         },
     })
 
+    const TestQueryClientProvider = ({
+        children,
+    }: {
+        children: React.ReactNode
+    }) => {
+        React.useEffect(
+            () => () => {
+                void queryClient.cancelQueries()
+                queryClient.clear()
+            },
+            [],
+        )
+
+        return (
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        )
+    }
+
     const result = renderHookPrimitive(hook, {
         ...renderHookOptions,
         wrapper: ({ children }) => (
-            <QueryClientProvider client={queryClient}>
+            <TestQueryClientProvider>
                 <MemoryRouter initialEntries={initialEntries}>
                     {path ? (
                         <Route path={path}>
@@ -60,7 +80,7 @@ export const renderHook = <TProps, TResult>(
                     )}
                 </MemoryRouter>
                 {createPortal(<Toaster />, document.body)}
-            </QueryClientProvider>
+            </TestQueryClientProvider>
         ),
     })
 

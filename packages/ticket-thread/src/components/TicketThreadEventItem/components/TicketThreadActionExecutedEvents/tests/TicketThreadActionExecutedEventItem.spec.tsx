@@ -121,8 +121,10 @@ function buildItem({
 }
 
 function getIconUseElement(container: HTMLElement, iconName: string) {
-    return container.querySelector(
-        `use[href="#${iconName}"], use[*|href="#${iconName}"]`,
+    return Array.from(container.querySelectorAll('use')).find(
+        (element) =>
+            element.getAttribute('href') === `#${iconName}` ||
+            element.getAttribute('xlink:href') === `#${iconName}`,
     )
 }
 

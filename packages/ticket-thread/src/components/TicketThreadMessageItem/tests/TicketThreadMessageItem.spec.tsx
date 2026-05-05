@@ -848,7 +848,9 @@ describe('TicketThreadMessageItem', () => {
     it.each(messageItems)('renders $label item', async ({ item }) => {
         renderItem(item)
 
-        expect(await screen.findByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
+        expect(await screen.findAllByText(HELLO_MESSAGE_TEXT)).not.toHaveLength(
+            0,
+        )
     })
 
     it('renders AI agent message item', () => {

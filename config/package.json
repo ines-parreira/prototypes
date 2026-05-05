@@ -25,6 +25,7 @@
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "typescript": "catalog:typescript",
+        "unplugin-oxc": "catalog:test",
         "vitest": "catalog:test"
     }
 }

@@ -1,5 +1,5 @@
 import { shortcutManager } from '@repo/utils'
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 
@@ -181,6 +181,20 @@ const closeTagsMenu = async (user: ReturnType<typeof render>['user']) => {
 
         await waitFor(assertClosed)
     } catch {
+        const dismissButtons = screen.queryAllByRole('button', {
+            hidden: true,
+            name: 'Dismiss',
+        })
+        const dismissButton = dismissButtons[dismissButtons.length - 1]
+
+        if (dismissButton) {
+            fireEvent.click(dismissButton)
+            await flushPendingTimersIfNeeded()
+
+            await waitFor(assertClosed)
+            return
+        }
+
         await user.click(getTagsTriggerButton())
         await flushPendingTimersIfNeeded()
 
@@ -398,20 +412,23 @@ describe('TagsMultiSelect', () => {
 
     it('should clear search field when menu is closed and reopened', async () => {
         server.use(mockListTagsSearchAware.handler)
-        vi.useFakeTimers({ shouldAdvanceTime: true })
 
-        renderTagsMultiSelect({
+        const { user } = renderTagsMultiSelect({
             value: mockTicketTags,
             onChange: vi.fn(),
         })
-        const user = setupFakeTimersUser()
 
         await waitForTriggerReady()
 
         const { searchbox: searchInput } = await openTagsMenu(user)
         await user.type(searchInput, 'NewTag')
-        await flushSearchDebounce()
         expect(searchInput).toHaveValue('NewTag')
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /create tag/i }),
+            ).toBeInTheDocument()
+        })
 
         await closeTagsMenu(user)
         await waitForTriggerReady()

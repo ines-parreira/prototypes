@@ -10,6 +10,15 @@ describe('HorizontalBarChartTooltip', () => {
         color: '#7e55f6',
     }
 
+    const expectLegendDotColor = (container: HTMLElement, color: string) => {
+        const legendDot = container.querySelector('[style*="background-color"]')
+
+        expect(legendDot).toHaveAttribute(
+            'style',
+            expect.stringContaining(`background-color: ${color}`),
+        )
+    }
+
     it('should render with name and value', () => {
         render(<HorizontalBarChartTooltip {...defaultProps} />)
 
@@ -22,10 +31,7 @@ describe('HorizontalBarChartTooltip', () => {
             <HorizontalBarChartTooltip {...defaultProps} color="#ff0000" />,
         )
 
-        const legendDot = container.querySelector(
-            '[style*="background-color: rgb(255, 0, 0)"]',
-        )
-        expect(legendDot).toBeInTheDocument()
+        expectLegendDotColor(container, '#ff0000')
     })
 
     it('should apply valueFormatter when provided', () => {
@@ -130,9 +136,6 @@ describe('HorizontalBarChartTooltip', () => {
             <HorizontalBarChartTooltip {...defaultProps} />,
         )
 
-        const legendDot = container.querySelector(
-            '[style*="background-color: rgb(126, 85, 246)"]',
-        )
-        expect(legendDot).toBeInTheDocument()
+        expectLegendDotColor(container, defaultProps.color)
     })
 })

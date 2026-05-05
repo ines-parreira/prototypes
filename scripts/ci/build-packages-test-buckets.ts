@@ -36,6 +36,8 @@ type Output = {
     buckets: BucketOutput[]
 }
 
+const PACKAGE_TEST_LOCAL_PARALLEL = 1
+
 const IGNORED_DIRECTORIES = new Set([
     '.git',
     '.nx',
@@ -212,7 +214,7 @@ function buildBuckets(
         (_, index) => ({
             bucket: index + 1,
             projects: [],
-            localParallel: 1,
+            localParallel: PACKAGE_TEST_LOCAL_PARALLEL,
             totalWeight: 0,
         }),
     )
@@ -240,7 +242,7 @@ function buildBuckets(
     return buckets.map((bucket) => ({
         bucket: bucket.bucket,
         projects: bucket.projects,
-        localParallel: 1,
+        localParallel: bucket.localParallel,
     }))
 }
 

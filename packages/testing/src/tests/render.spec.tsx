@@ -4,18 +4,19 @@ import { useQueryClient } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
+import { vi } from 'vitest'
 
 import { render } from '../render'
 
-jest.mock('react-dnd', () => ({
+vi.mock('react-dnd', () => ({
     DndProvider: ({ children }: React.PropsWithChildren) => <>{children}</>,
 }))
 
-jest.mock('react-dnd-html5-backend', () => ({
-    HTML5Backend: jest.fn(),
+vi.mock('react-dnd-html5-backend', () => ({
+    HTML5Backend: vi.fn(),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
+vi.mock('@gorgias/axiom', () => ({
     Toaster: () => <div data-testid="toaster" />,
 }))
 

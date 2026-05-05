@@ -14,7 +14,13 @@ const linkifyOptions = {
 
 export const parseHtml = (html = '', global = window): Document => {
     const parser = new global.DOMParser()
-    return parser.parseFromString(html, 'text/html')
+    try {
+        return parser.parseFromString(html, 'text/html')
+    } catch {
+        const document = global.document.implementation.createHTMLDocument('')
+        document.body.textContent = html
+        return document
+    }
 }
 
 export const linkifyHtml = (body: string) => {

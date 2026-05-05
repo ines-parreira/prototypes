@@ -237,7 +237,12 @@ describe('MultiLevelSelect', () => {
             expect(options).toHaveLength(1)
         })
 
-        await act(() => user.click(document.body))
+        const listbox = await screen.findByRole('listbox')
+        await act(() => user.click(within(listbox).getByText('Open')))
+        await waitFor(() => {
+            expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+        })
+
         await act(() => user.click(trigger))
 
         const newSearchInput = await screen.findByRole('searchbox')
@@ -266,7 +271,13 @@ describe('MultiLevelSelect', () => {
 
         await screen.findAllByText('Priority')
 
-        await act(() => user.click(document.body))
+        const rootListbox = await screen.findByRole('listbox')
+        await act(() => user.click(within(rootListbox).getByText('Priority')))
+        const priorityListbox = await screen.findByRole('listbox')
+        await act(() => user.click(within(priorityListbox).getByText('High')))
+        await waitFor(() => {
+            expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+        })
 
         await act(() => user.click(trigger))
 
@@ -330,7 +341,10 @@ describe('MultiLevelSelect', () => {
 
         await screen.findAllByText('Open')
 
-        await act(() => user.click(document.body))
+        await act(() => user.click(within(listbox).getByText('Open')))
+        await waitFor(() => {
+            expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+        })
 
         await act(() => user.click(trigger))
 

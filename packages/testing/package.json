@@ -13,8 +13,8 @@
         "lint": "oxlint --quiet",
         "lint:unused": "knip --directory ../.. --workspace @repo/testing --no-progress",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true",
-        "test": "jest",
-        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=2 --testTimeout=10000 --silent --forceExit"
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" vitest run --configLoader=runner --coverage --silent=true"
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
@@ -39,8 +39,6 @@
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@repo/config": "workspace:*",
-        "@swc/core": "catalog:test",
-        "@swc/jest": "catalog:test",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@testing-library/dom": "catalog:test",
         "@testing-library/react": "catalog:test",
@@ -55,7 +53,6 @@
         "@types/redux-thunk": "catalog:redux",
         "@vitest/coverage-v8": "catalog:test",
         "dnd-core": "catalog:react-dnd",
-        "jest": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",
@@ -67,7 +64,6 @@
         "redux": "catalog:redux",
         "redux-mock-store": "catalog:redux",
         "redux-thunk": "catalog:redux",
-        "swc_mut_cjs_exports": "catalog:test",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
     }
