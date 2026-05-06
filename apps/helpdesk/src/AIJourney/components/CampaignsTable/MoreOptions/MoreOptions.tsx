@@ -190,12 +190,10 @@ export const MoreOptions = ({
             <Select
                 data-name="select-field"
                 placement="bottom right"
+                aria-label={`Actions for ${shopName}`}
                 trigger={({ ref }) => (
                     <SelectTrigger ref={ref}>
-                        <div
-                            className={css.menuButton}
-                            aria-label="Open options"
-                        >
+                        <div className={css.menuButton}>
                             <i className="material-icons-outlined">
                                 more_horiz
                             </i>

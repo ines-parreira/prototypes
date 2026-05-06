@@ -223,7 +223,9 @@ describe('CampaignsTable', () => {
 
         const user = userEvent.setup()
 
-        const moreOptionsButtons = screen.getAllByLabelText('Open options')
+        const moreOptionsButtons = screen.getAllByLabelText(
+            'Actions for test-store',
+        )
         await act(() => user.click(moreOptionsButtons[0]))
 
         const duplicateOption = screen
@@ -353,7 +355,9 @@ describe('CampaignsTable', () => {
 
         const user = userEvent.setup()
 
-        const moreOptionsButton = screen.getByLabelText('Open options')
+        const moreOptionsButton = screen.getByLabelText(
+            'Actions for test-store',
+        )
         await act(() => user.click(moreOptionsButton))
 
         const cancelOption = screen
@@ -424,7 +428,9 @@ describe('CampaignsTable', () => {
 
         const user = userEvent.setup()
 
-        const moreOptionsButton = screen.getAllByLabelText('Open options')[0]
+        const moreOptionsButton = screen.getAllByLabelText(
+            'Actions for test-store',
+        )[0]
         await act(() => user.click(moreOptionsButton))
 
         const sendOption = screen
@@ -469,7 +475,9 @@ describe('CampaignsTable', () => {
 
         const user = userEvent.setup()
 
-        const moreOptionsButton = screen.getAllByLabelText('Open options')[0]
+        const moreOptionsButton = screen.getAllByLabelText(
+            'Actions for test-store',
+        )[0]
         await act(() => user.click(moreOptionsButton))
 
         const sendOption = screen
@@ -544,7 +552,9 @@ describe('CampaignsTable', () => {
 
         const user = userEvent.setup()
 
-        const moreOptionsButton = screen.getAllByLabelText('Open options')[0]
+        const moreOptionsButton = screen.getAllByLabelText(
+            'Actions for test-store',
+        )[0]
         await act(() => user.click(moreOptionsButton))
 
         const sendOption = screen

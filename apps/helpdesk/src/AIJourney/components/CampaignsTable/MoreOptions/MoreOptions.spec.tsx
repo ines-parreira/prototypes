@@ -62,7 +62,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
@@ -80,7 +80,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
@@ -97,7 +97,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
@@ -114,7 +114,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Resume').length).toBeGreaterThan(0)
@@ -130,7 +130,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
@@ -148,7 +148,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
@@ -169,7 +169,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             const sendOptions = screen.getAllByText('Send now')
@@ -189,7 +189,7 @@ describe('<MoreOptions />', () => {
             const user = userEvent.setup()
             render(<MoreOptions {...defaultProps} />)
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             const editOptions = screen.getAllByText('Edit')
@@ -217,7 +217,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             const deleteOptions = screen.getAllByText('Delete')
@@ -243,7 +243,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             const duplicateOptions = screen.getAllByText('Duplicate')
@@ -270,7 +270,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             const cancelOptions = screen.getAllByText('Cancel')
@@ -297,7 +297,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             const pauseOptions = screen.getAllByText('Pause')
@@ -324,7 +324,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             const resumeOptions = screen.getAllByText('Resume')
@@ -353,7 +353,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
@@ -370,7 +370,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.queryByText('Send now')).not.toBeInTheDocument()
@@ -391,7 +391,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
@@ -407,7 +407,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.queryByText('Send now')).not.toBeInTheDocument()
@@ -426,7 +426,7 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Open options')
+            const trigger = screen.getByLabelText('Actions for test-shop')
             await user.click(trigger)
 
             expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
