@@ -1,5 +1,8 @@
 import { SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/columns'
-import { MAP_ENGAGEMENT_TYPE_NAME } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import {
+    MAP_ENGAGEMENT_TYPE_NAME,
+    NO_ENGAGEMENT_FEATURE_LABEL,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 describe('SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS', () => {
     it('has 6 entries', () => {
@@ -25,7 +28,7 @@ describe('SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS', () => {
 })
 
 describe('MAP_ENGAGEMENT_TYPE_NAME', () => {
-    it('maps the null bucket to Unknown', () => {
-        expect(MAP_ENGAGEMENT_TYPE_NAME.null).toBe('Unknown')
+    it(`maps the null bucket to ${NO_ENGAGEMENT_FEATURE_LABEL}`, () => {
+        expect(MAP_ENGAGEMENT_TYPE_NAME.null).toBe(NO_ENGAGEMENT_FEATURE_LABEL)
     })
 })

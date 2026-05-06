@@ -81,11 +81,14 @@ export type ExtraConfigProps = {
     costSavedPerInteraction?: number
 }
 
+export const NO_ENGAGEMENT_FEATURE_LABEL = 'Default (no engagement feature)'
+export const NO_STORE_LABEL = 'No store'
+
 export const MAP_ENGAGEMENT_TYPE_NAME: Record<string, string> = {
     search_bar: 'Search bar',
     ask_anything: 'Ask anything',
     suggested_product_question: 'Suggested product question',
-    null: 'Unknown',
+    null: NO_ENGAGEMENT_FEATURE_LABEL,
 }
 
 const MAP_AUTOMATION_FEATURE_NAME: Record<string, string> = {
@@ -115,7 +118,7 @@ export const formatChannelName = (channel: string): string => {
 
 const formatStoreName = (storeId: string, stores?: StoreIntegration[]) => {
     if (storeId === 'null' || !storeId) {
-        return 'No store'
+        return NO_STORE_LABEL
     }
     const store = stores?.find(
         (store) => store.store_integration_id.toString() === storeId.toString(),
@@ -196,7 +199,9 @@ const formatBarChartData = (
                             ? 'null'
                             : metricValue.dimension.toString()
                         return {
-                            name: MAP_ENGAGEMENT_TYPE_NAME[key] ?? 'Unknown',
+                            name:
+                                MAP_ENGAGEMENT_TYPE_NAME[key] ??
+                                NO_ENGAGEMENT_FEATURE_LABEL,
                             value: metricValue.value,
                         }
                     }) ?? [],

@@ -28,6 +28,8 @@ import {
     getBarChartGraphConfig,
     getLineChartDataHooks,
     getLineChartGraphConfig,
+    NO_ENGAGEMENT_FEATURE_LABEL,
+    NO_STORE_LABEL,
     useAutomationMetricPerAiAgentRole,
     useAutomationMetricPerAiIntentCustomField,
     useAutomationMetricPerAutomationFeatureType,
@@ -479,7 +481,7 @@ describe('useAutomationMetricPerStoreIntegrationId', () => {
         expect(result.current.data).toEqual([{ name: 'Store 999', value: 5 }])
     })
 
-    it('should return "No store" for null dimension value', () => {
+    it(`should return "${NO_STORE_LABEL}" for null dimension value`, () => {
         useStatsMetricPerDimensionMock.mockReturnValue({
             ...defaultDimensionResult,
             data: {
@@ -496,7 +498,9 @@ describe('useAutomationMetricPerStoreIntegrationId', () => {
             ),
         )
 
-        expect(result.current.data).toEqual([{ name: 'No store', value: 7 }])
+        expect(result.current.data).toEqual([
+            { name: NO_STORE_LABEL, value: 7 },
+        ])
     })
 
     it('should fall back to "Store {id}" when no stores are provided', () => {
@@ -634,7 +638,7 @@ describe('useAutomationMetricPerEngagementType', () => {
         ])
     })
 
-    it('should map null/falsy dimension to "Unknown"', () => {
+    it(`should map null/falsy dimension to "${NO_ENGAGEMENT_FEATURE_LABEL}"`, () => {
         useStatsMetricPerDimensionMock.mockReturnValue({
             ...defaultDimensionResult,
             data: {
@@ -654,12 +658,12 @@ describe('useAutomationMetricPerEngagementType', () => {
         )
 
         expect(result.current.data).toEqual([
-            { name: 'Unknown', value: 5 },
-            { name: 'Unknown', value: 15 },
+            { name: NO_ENGAGEMENT_FEATURE_LABEL, value: 5 },
+            { name: NO_ENGAGEMENT_FEATURE_LABEL, value: 15 },
         ])
     })
 
-    it('should return "Unknown" for unrecognized engagement types', () => {
+    it(`should return "${NO_ENGAGEMENT_FEATURE_LABEL}" for unrecognized engagement types`, () => {
         useStatsMetricPerDimensionMock.mockReturnValue({
             ...defaultDimensionResult,
             data: {
@@ -675,7 +679,9 @@ describe('useAutomationMetricPerEngagementType', () => {
             ),
         )
 
-        expect(result.current.data).toEqual([{ name: 'Unknown', value: 7 }])
+        expect(result.current.data).toEqual([
+            { name: NO_ENGAGEMENT_FEATURE_LABEL, value: 7 },
+        ])
     })
 
     it('should return empty array when allValues is undefined', () => {
@@ -1879,7 +1885,7 @@ describe('useAutomationTimeSeriesPerStoreIntegrationId', () => {
         ])
     })
 
-    it('should return "No store" label for null dimension key', () => {
+    it(`should return "${NO_STORE_LABEL}" label for null dimension key`, () => {
         useStatsTimeSeriesPerDimensionMock.mockReturnValue({
             data: {
                 null: [[{ dateTime: '2025-01-01', value: 10 }]],
@@ -1899,7 +1905,7 @@ describe('useAutomationTimeSeriesPerStoreIntegrationId', () => {
 
         expect(result.current.data).toEqual([
             {
-                label: 'No store',
+                label: NO_STORE_LABEL,
                 values: [{ date: 'Jan 1', value: 10 }],
             },
         ])

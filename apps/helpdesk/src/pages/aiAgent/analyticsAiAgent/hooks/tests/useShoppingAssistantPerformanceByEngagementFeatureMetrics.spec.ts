@@ -8,6 +8,7 @@ import {
     SHOPPING_ASSISTANT_ENGAGEMENT_FEATURE_ENTITIES,
     useShoppingAssistantPerformanceByEngagementFeatureMetrics,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
+import { NO_ENGAGEMENT_FEATURE_LABEL } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
@@ -387,7 +388,7 @@ describe('fetchShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
         expect(csvRows[1][0]).toBe('Suggested product question')
         expect(csvRows[2][0]).toBe('Search bar')
         expect(csvRows[3][0]).toBe('Ask anything')
-        expect(csvRows[4][0]).toBe('Unknown')
+        expect(csvRows[4][0]).toBe(NO_ENGAGEMENT_FEATURE_LABEL)
     })
 
     it('gets the filename from getCsvFileNameWithDates', async () => {
