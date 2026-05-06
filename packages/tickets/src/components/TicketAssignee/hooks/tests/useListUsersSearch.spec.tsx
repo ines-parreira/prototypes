@@ -3,6 +3,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockListUsersHandler, mockUser } from '@gorgias/helpdesk-mocks'
+import type { User } from '@gorgias/helpdesk-queries'
 
 import { renderHook } from '../../../../tests/render.utils'
 import { useListUsersSearch } from '../useListUsersSearch'
@@ -10,6 +11,7 @@ import { useListUsersSearch } from '../useListUsersSearch'
 const user1 = mockUser({ id: 1, name: 'Support Agent' })
 const user2 = mockUser({ id: 2, name: 'Sales Agent' })
 const user3 = mockUser({ id: 3, name: 'Engineering Lead' })
+const invalidUser = (user: unknown) => user as User
 
 const mockListUsers = mockListUsersHandler(async ({ data }) =>
     HttpResponse.json({
@@ -49,6 +51,33 @@ describe('useListUsersSearch', () => {
         })
 
         expect(result.current.users).toEqual([user1, user2, user3])
+    })
+
+    it('should ignore invalid user entries', async () => {
+        server.use(
+            mockListUsersHandler(async ({ data }) => {
+                return HttpResponse.json({
+                    ...data,
+                    data: [
+                        user1,
+                        invalidUser(undefined),
+                        invalidUser(null),
+                        invalidUser({ ...user2, id: null }),
+                        invalidUser({ ...user3, name: null }),
+                    ],
+                    meta: {
+                        prev_cursor: null,
+                        next_cursor: null,
+                    },
+                })
+            }).handler,
+        )
+
+        const { result } = renderHook(() => useListUsersSearch())
+
+        await waitFor(() => {
+            expect(result.current.users).toEqual([user1])
+        })
     })
 
     it('should return empty array when no results found', async () => {

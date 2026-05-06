@@ -24,14 +24,14 @@ export function useListUsersSearch() {
     const { data, isFetchingNextPage, hasNextPage, fetchNextPage, isFetching } =
         queryResult
 
-    const users = useMemo(
+    const users = useMemo<Array<User | null | undefined>>(
         () => data?.pages.flatMap((page) => page.data.data) ?? [],
         [data],
     )
 
     const filteredUsers = useMemo(() => {
         return users.filter(
-            (user): user is NonNullableUser => !!user.id && !!user.name,
+            (user): user is NonNullableUser => !!user?.id && !!user.name,
         )
     }, [users])
 
