@@ -8,6 +8,8 @@ import type {
 } from '../../types'
 import { SearchSpotlightSection } from '../SearchSpotlightSection'
 
+import css from '../SearchSpotlightRoot.module.less'
+
 const customerRow: SearchCustomerRow = {
     kind: 'customer',
     id: 101,
@@ -53,6 +55,7 @@ describe('SearchSpotlightSection', () => {
             <SearchSpotlightSection
                 isSearchMode={false}
                 onOpenRow={vi.fn()}
+                onRowLinkClick={vi.fn()}
                 onSelectSection={vi.fn()}
                 selectedSection="all"
                 sections={[
@@ -94,6 +97,13 @@ describe('SearchSpotlightSection', () => {
         expect(screen.getByText('Grace Hopper')).toBeInTheDocument()
         expect(screen.getByText('Callback request')).toBeInTheDocument()
         expect(screen.getByText('Answered')).toBeInTheDocument()
+        expect(screen.getByText('Refund request').closest('a')).toHaveAttribute(
+            'href',
+            '/app/ticket/202',
+        )
+        expect(
+            screen.getByText('Matched message excerpt').closest('a'),
+        ).toHaveAttribute('href', '/app/ticket/202')
     })
 
     it('shows more results in all-search mode and switches sections on click', async () => {
@@ -102,6 +112,7 @@ describe('SearchSpotlightSection', () => {
             <SearchSpotlightSection
                 isSearchMode={true}
                 onOpenRow={vi.fn()}
+                onRowLinkClick={vi.fn()}
                 onSelectSection={onSelectSection}
                 selectedSection="all"
                 sections={[
@@ -126,14 +137,12 @@ describe('SearchSpotlightSection', () => {
         expect(onSelectSection).toHaveBeenCalledWith('customers')
     })
 
-    it('renders empty states and opens a hidden-match row on click', () => {
-        const onOpenRow = vi.fn().mockResolvedValue(undefined)
-        const setSelectedIndex = vi.fn()
-
+    it('renders hidden-match links and keeps them out of the tab order', () => {
         render(
             <SearchSpotlightSection
                 isSearchMode={false}
-                onOpenRow={onOpenRow}
+                onOpenRow={vi.fn()}
+                onRowLinkClick={vi.fn()}
                 onSelectSection={vi.fn()}
                 selectedSection="all"
                 sections={[
@@ -156,30 +165,79 @@ describe('SearchSpotlightSection', () => {
                 ]}
                 selectedIndex={1}
                 setRowRef={vi.fn()}
-                setSelectedIndex={setSelectedIndex}
+                setSelectedIndex={vi.fn()}
             />,
         )
 
-        fireEvent.mouseEnter(screen.getByText('Matched message excerpt'))
-        fireEvent.click(screen.getByText('Matched message excerpt'))
-
         expect(screen.getByText('No calls')).toBeInTheDocument()
+        expect(screen.getByText('Refund request').closest('a')).toHaveClass(
+            css.resultCellMergedPrimaryLink,
+        )
         expect(
-            screen
-                .getByText('Matched message excerpt')
-                .closest('[data-hovered="true"]'),
-        ).toBeInTheDocument()
-        expect(setSelectedIndex).toHaveBeenCalledWith(1)
-        expect(onOpenRow).toHaveBeenCalledWith(ticketRow, false)
+            screen.getByText('Matched message excerpt').closest('a'),
+        ).toHaveAttribute('tabindex', '-1')
+
+        fireEvent.mouseEnter(
+            screen.getByText('Matched message excerpt').closest('tr')!,
+        )
+
+        expect(
+            screen.getByText('Refund request').closest('tr'),
+        ).toHaveAttribute('data-hovered', 'true')
     })
 
-    it('opens rows in a new tab when the modifier key is held', () => {
+    it('uses visible cell content for link names', () => {
+        render(
+            <SearchSpotlightSection
+                isSearchMode={false}
+                onOpenRow={vi.fn()}
+                onRowLinkClick={vi.fn()}
+                onSelectSection={vi.fn()}
+                selectedSection="all"
+                sections={[
+                    {
+                        id: 'customers',
+                        title: 'Customers',
+                        recentTitle: 'Recently accessed customers',
+                        rows: [{ row: customerRow, globalIndex: 0 }],
+                        totalCount: 1,
+                        emptyMessage: 'No customers',
+                    },
+                    {
+                        id: 'calls',
+                        title: 'Calls',
+                        recentTitle: 'Recently accessed calls',
+                        rows: [{ row: callRow, globalIndex: 1 }],
+                        totalCount: 1,
+                        emptyMessage: 'No calls',
+                    },
+                ]}
+                selectedIndex={0}
+                setRowRef={vi.fn()}
+                setSelectedIndex={vi.fn()}
+            />,
+        )
+
+        expect(
+            screen.getByRole('link', { name: 'ada@example.com' }),
+        ).toHaveAttribute('href', '/app/customers/101')
+        expect(
+            screen.queryByRole('link', { name: 'Ada Lovelace email' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.getAllByRole('link', { name: 'Callback request' }),
+        ).toHaveLength(2)
+    })
+
+    it('delegates linked row clicks through onRowLinkClick instead of onOpenRow', () => {
         const onOpenRow = vi.fn().mockResolvedValue(undefined)
+        const onRowLinkClick = vi.fn()
 
         render(
             <SearchSpotlightSection
                 isSearchMode={false}
                 onOpenRow={onOpenRow}
+                onRowLinkClick={onRowLinkClick}
                 onSelectSection={vi.fn()}
                 selectedSection="all"
                 sections={[
@@ -191,6 +249,14 @@ describe('SearchSpotlightSection', () => {
                         totalCount: 1,
                         emptyMessage: 'No tickets',
                     },
+                    {
+                        id: 'calls',
+                        title: 'Calls',
+                        recentTitle: 'Recently accessed calls',
+                        rows: [],
+                        totalCount: 0,
+                        emptyMessage: 'No calls',
+                    },
                 ]}
                 selectedIndex={1}
                 setRowRef={vi.fn()}
@@ -198,11 +264,118 @@ describe('SearchSpotlightSection', () => {
             />,
         )
 
-        fireEvent.click(screen.getByText('Refund request'), {
+        fireEvent.click(screen.getByText('Refund request').closest('a')!, {
             ctrlKey: true,
         })
 
-        expect(onOpenRow).toHaveBeenCalledWith(ticketRow, true)
+        const [event, row, rowIndex] = onRowLinkClick.mock.calls[0]
+
+        expect(event.ctrlKey).toBe(true)
+        expect(row).toBe(ticketRow)
+        expect(rowIndex).toBe(1)
+        expect(onOpenRow).not.toHaveBeenCalled()
+    })
+
+    it('opens non-linked primary and hidden-match rows through onOpenRow', () => {
+        const onOpenRow = vi.fn().mockResolvedValue(undefined)
+        const setSelectedIndex = vi.fn()
+
+        const { container } = render(
+            <SearchSpotlightSection
+                isSearchMode={false}
+                onOpenRow={onOpenRow}
+                onRowLinkClick={vi.fn()}
+                onSelectSection={vi.fn()}
+                selectedSection="all"
+                sections={[
+                    {
+                        id: 'tickets',
+                        title: 'Tickets',
+                        recentTitle: 'Recently accessed tickets',
+                        rows: [
+                            {
+                                row: {
+                                    ...ticketRow,
+                                    url: '',
+                                },
+                                globalIndex: 1,
+                            },
+                        ],
+                        totalCount: 1,
+                        emptyMessage: 'No tickets',
+                    },
+                ]}
+                selectedIndex={1}
+                setRowRef={vi.fn()}
+                setSelectedIndex={setSelectedIndex}
+            />,
+        )
+
+        fireEvent.mouseEnter(screen.getByText('Refund request'))
+        expect(
+            screen.getByText('Refund request').closest('[data-hovered="true"]'),
+        ).toBeInTheDocument()
+
+        const sectionGroup = screen
+            .getByText('Tickets')
+            .closest('[data-name="box"]')?.parentElement
+        expect(sectionGroup).not.toBeNull()
+
+        fireEvent.mouseLeave(sectionGroup!)
+        expect(container.querySelector('[data-hovered="true"]')).toBeNull()
+
+        fireEvent.click(screen.getByText('Refund request'), {
+            ctrlKey: true,
+            metaKey: true,
+        })
+        expect(setSelectedIndex).toHaveBeenCalledWith(1)
+        expect(onOpenRow).toHaveBeenCalledWith(
+            expect.objectContaining({ id: 202 }),
+            true,
+        )
+
+        fireEvent.click(screen.getByText('Matched message excerpt'))
+        expect(onOpenRow).toHaveBeenLastCalledWith(
+            expect.objectContaining({ id: 202 }),
+            false,
+        )
+    })
+
+    it('does not render links for rows without a url', () => {
+        render(
+            <SearchSpotlightSection
+                isSearchMode={false}
+                onOpenRow={vi.fn()}
+                onRowLinkClick={vi.fn()}
+                onSelectSection={vi.fn()}
+                selectedSection="all"
+                sections={[
+                    {
+                        id: 'calls',
+                        title: 'Calls',
+                        recentTitle: 'Recently accessed calls',
+                        rows: [
+                            {
+                                row: {
+                                    ...callRow,
+                                    url: undefined,
+                                },
+                                globalIndex: 0,
+                            },
+                        ],
+                        totalCount: 1,
+                        emptyMessage: 'No calls',
+                    },
+                ]}
+                selectedIndex={0}
+                setRowRef={vi.fn()}
+                setSelectedIndex={vi.fn()}
+            />,
+        )
+
+        expect(
+            screen.queryByRole('link', { name: 'Callback request' }),
+        ).not.toBeInTheDocument()
     })
 
     it('renders loading rows for both customer and entity tables', () => {
@@ -210,6 +383,7 @@ describe('SearchSpotlightSection', () => {
             <SearchSpotlightSection
                 isSearchMode={true}
                 onOpenRow={vi.fn()}
+                onRowLinkClick={vi.fn()}
                 onSelectSection={vi.fn()}
                 selectedSection="customers"
                 sections={[

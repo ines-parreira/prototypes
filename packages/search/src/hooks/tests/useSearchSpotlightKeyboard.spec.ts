@@ -47,7 +47,9 @@ function renderKeyboardHook({ isOpen = true, rows: hookRows = rows } = {}) {
     const openRow = vi.fn().mockResolvedValue(undefined)
 
     const hook = renderHook(() => {
-        const [currentSelectedIndex, setSelectedIndex] = useState(0)
+        const [currentSelectedIndex, setSelectedIndex] = useState<
+            number | null
+        >(null)
 
         useSearchSpotlightKeyboard({
             flatRows: hookRows,
@@ -73,8 +75,16 @@ function renderKeyboardHook({ isOpen = true, rows: hookRows = rows } = {}) {
 }
 
 describe('useSearchSpotlightKeyboard', () => {
-    it('moves the selected row with ArrowDown and ArrowUp', () => {
+    it('selects the first row on ArrowDown and then moves with ArrowUp', () => {
         const { result } = renderKeyboardHook()
+
+        expect(result.current.selectedIndex).toBeNull()
+
+        act(() => {
+            fireEvent.keyDown(document, { key: 'ArrowDown' })
+        })
+
+        expect(result.current.selectedIndex).toBe(0)
 
         act(() => {
             fireEvent.keyDown(document, { key: 'ArrowDown' })
@@ -89,8 +99,29 @@ describe('useSearchSpotlightKeyboard', () => {
         expect(result.current.selectedIndex).toBe(0)
     })
 
-    it('opens the selected row on Enter and advanced search on Shift+Enter', async () => {
+    it('selects the last row on ArrowUp when no row is selected', () => {
+        const { onKeyboardSelectionChange, result } = renderKeyboardHook()
+
+        act(() => {
+            fireEvent.keyDown(document, { key: 'ArrowUp' })
+        })
+
+        expect(result.current.selectedIndex).toBe(rows.length - 1)
+        expect(onKeyboardSelectionChange).toHaveBeenCalledTimes(1)
+    })
+
+    it('opens the selected row on Enter only after keyboard selection starts', async () => {
         const { goToAdvancedSearch, openRow } = renderKeyboardHook()
+
+        await act(async () => {
+            fireEvent.keyDown(document, { key: 'Enter' })
+        })
+
+        expect(openRow).not.toHaveBeenCalled()
+
+        act(() => {
+            fireEvent.keyDown(document, { key: 'ArrowDown' })
+        })
 
         await act(async () => {
             fireEvent.keyDown(document, { key: 'Enter' })
@@ -134,6 +165,23 @@ describe('useSearchSpotlightKeyboard', () => {
             fireEvent.keyDown(document, { key: 'ArrowDown' })
         })
 
-        expect(result.current.selectedIndex).toBe(0)
+        expect(result.current.selectedIndex).toBeNull()
+    })
+
+    it('does nothing on ArrowUp and ArrowDown when there are no rows', () => {
+        const { onKeyboardSelectionChange, result } = renderKeyboardHook({
+            rows: [],
+        })
+
+        act(() => {
+            fireEvent.keyDown(document, { key: 'ArrowDown' })
+        })
+
+        act(() => {
+            fireEvent.keyDown(document, { key: 'ArrowUp' })
+        })
+
+        expect(result.current.selectedIndex).toBeNull()
+        expect(onKeyboardSelectionChange).not.toHaveBeenCalled()
     })
 })

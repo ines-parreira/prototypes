@@ -1,6 +1,7 @@
 import { history } from '@repo/routing'
 import { render } from '@repo/testing/vitest'
-import { fireEvent, screen } from '@testing-library/react'
+import { shortcutManager } from '@repo/utils'
+import { act, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useRecentItems } from '../hooks/useRecentItems'
@@ -41,6 +42,35 @@ function createSearchSpotlightDataMock() {
         },
         pagination: createPaginationState(),
     }
+}
+
+function createCustomerSearchResult(id: number, name: string) {
+    return {
+        kind: 'customer' as const,
+        id,
+        raw: {
+            id,
+            name,
+            email: `${name.toLowerCase().replaceAll(' ', '.')}@example.com`,
+            phone: `+33${id}`,
+        },
+        url: `/app/customer/${id}`,
+        name: { text: name },
+        email: {
+            text: `${name.toLowerCase().replaceAll(' ', '.')}@example.com`,
+        },
+        phone: { text: `+33${id}` },
+    }
+}
+
+const setRecentCustomerItem = vi.fn()
+const setRecentTicketItem = vi.fn()
+const setRecentCallItem = vi.fn()
+
+function resetRecentItemSetters() {
+    setRecentCustomerItem.mockReset()
+    setRecentTicketItem.mockReset()
+    setRecentCallItem.mockReset()
 }
 
 vi.mock('../hooks/useSearchSpotlightData', () => ({
@@ -121,7 +151,12 @@ function createRecentItemsMockImplementation() {
                         },
                     ],
         isGettingItems: false,
-        setRecentItem: vi.fn(),
+        setRecentItem:
+            tableName === 'recent-customers'
+                ? setRecentCustomerItem
+                : tableName === 'recent-tickets'
+                  ? setRecentTicketItem
+                  : setRecentCallItem,
     })
 }
 
@@ -134,6 +169,7 @@ beforeAll(() => {
 describe('SearchSpotlightRoot', () => {
     beforeEach(() => {
         localStorage.clear()
+        resetRecentItemSetters()
         vi.mocked(useSearchSpotlightData).mockReturnValue(
             createSearchSpotlightDataMock(),
         )
@@ -417,7 +453,102 @@ describe('SearchSpotlightRoot', () => {
         expect(events.indexOf('close')).toBeLessThan(events.indexOf('push'))
     })
 
-    it('opens the next row after ArrowDown then Enter from the search field', async () => {
+    it('runs the advanced-search shortcut outside the calls tab', () => {
+        const onClose = vi.fn()
+        const bindSpy = vi.spyOn(shortcutManager, 'bind')
+
+        vi.spyOn(window, 'requestAnimationFrame').mockImplementation(
+            (callback: FrameRequestCallback) => {
+                callback(0)
+                return 1
+            },
+        )
+        vi.spyOn(history, 'push').mockImplementation(vi.fn())
+
+        render(<SearchSpotlightRoot isOpen={true} onClose={onClose} />)
+
+        const bindings = bindSpy.mock.calls.find(
+            ([scope]) => scope === 'SearchSpotlightModal',
+        )?.[1]
+        const shortcutAction = bindings?.GO_ADVANCED_SEARCH.action
+
+        expect(shortcutAction).toBeDefined()
+
+        if (!shortcutAction) {
+            throw new Error('Expected GO_ADVANCED_SEARCH shortcut to be bound')
+        }
+
+        act(() => {
+            shortcutAction(new KeyboardEvent('keydown'))
+        })
+
+        expect(onClose).toHaveBeenCalledTimes(1)
+        expect(history.push).toHaveBeenCalledWith({
+            pathname: '/app/tickets/search',
+            search: '',
+        })
+    })
+
+    it('persists recents and closes on an unmodified result-link click', async () => {
+        const user = userEvent.setup()
+        const onClose = vi.fn()
+
+        vi.spyOn(history, 'push').mockImplementation(vi.fn())
+        vi.spyOn(window, 'open').mockImplementation(vi.fn())
+
+        render(<SearchSpotlightRoot isOpen={true} onClose={onClose} />)
+
+        await user.click(screen.getByText('Refund request').closest('a')!)
+
+        expect(setRecentTicketItem).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: 202,
+            }),
+        )
+        expect(onClose).toHaveBeenCalled()
+        expect(window.open).not.toHaveBeenCalled()
+    })
+
+    it('keeps spotlight open on modifier result-link clicks and does not use programmatic navigation', () => {
+        const onClose = vi.fn()
+
+        vi.spyOn(history, 'push').mockImplementation(vi.fn())
+        vi.spyOn(window, 'open').mockImplementation(vi.fn())
+
+        render(<SearchSpotlightRoot isOpen={true} onClose={onClose} />)
+
+        fireEvent.click(screen.getByText('Refund request').closest('a')!, {
+            ctrlKey: true,
+        })
+
+        expect(setRecentTicketItem).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: 202,
+            }),
+        )
+        expect(onClose).not.toHaveBeenCalled()
+        expect(history.push).not.toHaveBeenCalled()
+        expect(window.open).not.toHaveBeenCalled()
+    })
+
+    it('does not open a row on Enter before keyboard navigation starts', async () => {
+        const user = userEvent.setup()
+
+        vi.spyOn(history, 'push').mockImplementation(vi.fn())
+
+        render(<SearchSpotlightRoot isOpen={true} onClose={vi.fn()} />)
+
+        const input = screen.getByRole('searchbox', {
+            name: /search for anything/i,
+        })
+
+        await user.click(input)
+        await user.keyboard('{Enter}')
+
+        expect(history.push).not.toHaveBeenCalled()
+    })
+
+    it('opens the first row after ArrowDown then Enter from the search field', async () => {
         const user = userEvent.setup()
 
         vi.spyOn(history, 'push').mockImplementation(vi.fn())
@@ -431,7 +562,117 @@ describe('SearchSpotlightRoot', () => {
         await user.click(input)
         await user.keyboard('{ArrowDown}{Enter}')
 
-        expect(history.push).toHaveBeenCalledWith('/app/ticket/202')
+        expect(history.push).toHaveBeenCalledWith('/app/customer/101')
+    })
+
+    it('scrolls the keyboard-selected row into view', async () => {
+        const user = userEvent.setup()
+        const originalScrollIntoView = Element.prototype.scrollIntoView
+        const scrollIntoView = vi.fn()
+
+        Object.defineProperty(Element.prototype, 'scrollIntoView', {
+            configurable: true,
+            value: scrollIntoView,
+        })
+
+        try {
+            render(<SearchSpotlightRoot isOpen={true} onClose={vi.fn()} />)
+
+            const input = screen.getByRole('searchbox', {
+                name: /search for anything/i,
+            })
+
+            await user.click(input)
+            await user.keyboard('{ArrowDown}')
+
+            expect(scrollIntoView).toHaveBeenCalledWith({
+                block: 'nearest',
+            })
+        } finally {
+            if (originalScrollIntoView) {
+                Object.defineProperty(Element.prototype, 'scrollIntoView', {
+                    configurable: true,
+                    value: originalScrollIntoView,
+                })
+            } else {
+                Reflect.deleteProperty(Element.prototype, 'scrollIntoView')
+            }
+        }
+    })
+
+    it('opens the selected row in a new tab on modifier Enter', async () => {
+        const user = userEvent.setup()
+        const onClose = vi.fn()
+
+        vi.spyOn(history, 'push').mockImplementation(vi.fn())
+        vi.spyOn(window, 'open').mockImplementation(vi.fn())
+
+        render(<SearchSpotlightRoot isOpen={true} onClose={onClose} />)
+
+        const input = screen.getByRole('searchbox', {
+            name: /search for anything/i,
+        })
+
+        await user.click(input)
+        await user.keyboard('{ArrowDown}')
+
+        await act(async () => {
+            fireEvent.keyDown(input, {
+                key: 'Enter',
+                ctrlKey: true,
+                metaKey: true,
+            })
+        })
+
+        expect(setRecentCustomerItem).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: 101,
+            }),
+        )
+        expect(window.open).toHaveBeenCalledWith(
+            '/app/customer/101',
+            '_blank',
+            'noopener',
+        )
+        expect(history.push).not.toHaveBeenCalled()
+        expect(onClose).not.toHaveBeenCalled()
+    })
+
+    it('does not open selected rows that do not have a url', async () => {
+        const user = userEvent.setup()
+        const onClose = vi.fn()
+
+        vi.spyOn(history, 'push').mockImplementation(vi.fn())
+        vi.spyOn(window, 'open').mockImplementation(vi.fn())
+        vi.mocked(useSearchSpotlightData).mockReturnValue({
+            ...createSearchSpotlightDataMock(),
+            isSearchMode: true,
+            customers: [
+                {
+                    ...createCustomerSearchResult(101, 'Ada Lovelace'),
+                    url: '',
+                },
+            ],
+            totals: {
+                customers: 1,
+                tickets: 0,
+                calls: 0,
+            },
+        })
+
+        render(<SearchSpotlightRoot isOpen={true} onClose={onClose} />)
+
+        const input = screen.getByRole('searchbox', {
+            name: /search for anything/i,
+        })
+
+        await user.click(input)
+        await user.keyboard('{ArrowDown}{Enter}')
+
+        expect(setRecentCustomerItem).not.toHaveBeenCalled()
+        expect(window.open).not.toHaveBeenCalled()
+        expect(history.push).not.toHaveBeenCalled()
+        expect(onClose).not.toHaveBeenCalled()
     })
 
     it('restores the last search query when the spotlight reopens', async () => {
@@ -453,6 +694,103 @@ describe('SearchSpotlightRoot', () => {
         expect(
             screen.getByRole('searchbox', { name: /search for anything/i }),
         ).toHaveValue('refund')
+    })
+
+    it('clamps the selected row when visible results shrink', async () => {
+        const user = userEvent.setup()
+
+        vi.spyOn(history, 'push').mockImplementation(vi.fn())
+        vi.mocked(useSearchSpotlightData).mockReturnValue({
+            ...createSearchSpotlightDataMock(),
+            isSearchMode: true,
+            customers: [
+                createCustomerSearchResult(101, 'Ada Lovelace'),
+                createCustomerSearchResult(102, 'Grace Hopper'),
+            ],
+            totals: {
+                customers: 2,
+                tickets: 0,
+                calls: 0,
+            },
+        })
+
+        const { rerender } = render(
+            <SearchSpotlightRoot isOpen={true} onClose={vi.fn()} />,
+        )
+
+        const input = screen.getByRole('searchbox', {
+            name: /search for anything/i,
+        })
+
+        await user.click(input)
+        await user.keyboard('{ArrowDown}{ArrowDown}')
+
+        vi.mocked(useSearchSpotlightData).mockReturnValue({
+            ...createSearchSpotlightDataMock(),
+            isSearchMode: true,
+            customers: [createCustomerSearchResult(101, 'Ada Lovelace')],
+            totals: {
+                customers: 1,
+                tickets: 0,
+                calls: 0,
+            },
+        })
+
+        rerender(<SearchSpotlightRoot isOpen={true} onClose={vi.fn()} />)
+
+        await user.click(
+            screen.getByRole('searchbox', { name: /search for anything/i }),
+        )
+        await user.keyboard('{Enter}')
+
+        expect(history.push).toHaveBeenCalledWith('/app/customer/101')
+    })
+
+    it('clears the selection when visible results disappear', async () => {
+        const user = userEvent.setup()
+
+        vi.spyOn(history, 'push').mockImplementation(vi.fn())
+        vi.mocked(useSearchSpotlightData).mockReturnValue({
+            ...createSearchSpotlightDataMock(),
+            isSearchMode: true,
+            customers: [createCustomerSearchResult(101, 'Ada Lovelace')],
+            totals: {
+                customers: 1,
+                tickets: 0,
+                calls: 0,
+            },
+        })
+
+        const { rerender } = render(
+            <SearchSpotlightRoot isOpen={true} onClose={vi.fn()} />,
+        )
+
+        const input = screen.getByRole('searchbox', {
+            name: /search for anything/i,
+        })
+
+        await user.click(input)
+        await user.keyboard('{ArrowDown}')
+
+        vi.mocked(useSearchSpotlightData).mockReturnValue({
+            ...createSearchSpotlightDataMock(),
+            isSearchMode: true,
+            customers: [],
+            totals: {
+                customers: 0,
+                tickets: 0,
+                calls: 0,
+            },
+        })
+
+        rerender(<SearchSpotlightRoot isOpen={true} onClose={vi.fn()} />)
+
+        await user.click(
+            screen.getByRole('searchbox', { name: /search for anything/i }),
+        )
+        await user.keyboard('{Enter}')
+
+        expect(history.push).not.toHaveBeenCalled()
     })
 
     it('fetches the next page when a single-section search view is scrolled to the end', async () => {
@@ -502,6 +840,39 @@ describe('SearchSpotlightRoot', () => {
         fireEvent.scroll(resultsRegion)
 
         expect(fetchNextCustomerPage).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not fetch the next page while all sections are visible', () => {
+        const fetchNextCustomerPage = vi.fn()
+
+        vi.mocked(useSearchSpotlightData).mockReturnValue({
+            ...createSearchSpotlightDataMock(),
+            isSearchMode: true,
+            customers: [createCustomerSearchResult(101, 'Ada Lovelace')],
+            totals: {
+                customers: 1,
+                tickets: 0,
+                calls: 0,
+            },
+            pagination: {
+                ...createPaginationState(),
+                customers: {
+                    hasNextPage: true,
+                    isFetchingNextPage: false,
+                    fetchNextPage: fetchNextCustomerPage,
+                },
+            },
+        })
+
+        render(<SearchSpotlightRoot isOpen={true} onClose={vi.fn()} />)
+
+        fireEvent.scroll(
+            screen.getByRole('region', {
+                name: /search results/i,
+            }),
+        )
+
+        expect(fetchNextCustomerPage).not.toHaveBeenCalled()
     })
 
     it('keeps the current table visible while the next page is loading', () => {
@@ -599,10 +970,24 @@ describe('SearchSpotlightRoot', () => {
 
         await user.click(screen.getByRole('radio', { name: /^Calls/i }))
         await user.click(
-            screen.getByRole('button', { name: /advanced search/i }),
+            screen.getByRole('searchbox', {
+                name: /search for anything/i,
+            }),
         )
+        await user.keyboard('{Shift>}{Enter}{/Shift}')
 
         expect(onClose).not.toHaveBeenCalled()
         expect(history.push).not.toHaveBeenCalled()
+    })
+
+    it('closes when the modal receives Escape', async () => {
+        const user = userEvent.setup()
+        const onClose = vi.fn()
+
+        render(<SearchSpotlightRoot isOpen={true} onClose={onClose} />)
+
+        await user.keyboard('{Escape}')
+
+        expect(onClose).toHaveBeenCalled()
     })
 })

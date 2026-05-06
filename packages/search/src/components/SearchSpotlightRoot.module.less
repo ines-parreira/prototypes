@@ -1,11 +1,49 @@
 :local {
+    .resultCellLink {
+        align-items: center;
+        box-sizing: border-box;
+        color: var(--content-neutral-default);
+        display: flex;
+        min-height: var(--row-height);
+        min-width: 0;
+        max-width: 100%;
+        padding: var(--spacing-xs) var(--spacing-md);
+        text-decoration: none;
+        width: 100%;
+
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &:visited {
+            color: var(--content-neutral-default);
+            text-decoration: none;
+        }
+    }
+
+    .resultCellMergedPrimaryLink {
+        padding-bottom: 0;
+    }
+
+    .resultCellDetailLink {
+        align-items: flex-start;
+        min-height: 0;
+        padding-top: 0;
+    }
+
+    .resultCellLinkSpacer {
+        width: 100%;
+    }
+
     // To achieve the look of two table rows reading as one result, these
     // selectors reach into Axiom's generated cell structure and separators.
     .root
-        [data-name='table-row'][data-selected='true']
-        > [data-name='table-cell'],
-    .root
         [data-name='table-row'][data-hovered='true']
+        > [data-name='table-cell'] {
+        background-color: var(--hover-default) !important;
+    }
+
+    .root
+        [data-name='table-row'][data-selected='true']
         > [data-name='table-cell'] {
         background-color: var(--surface-neutral-secondary) !important;
     }

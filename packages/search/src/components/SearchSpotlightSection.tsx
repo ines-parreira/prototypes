@@ -1,6 +1,13 @@
-import { Fragment, memo, useState } from 'react'
+import {
+    Fragment,
+    memo,
+    type MouseEvent,
+    type ReactNode,
+    useState,
+} from 'react'
 
 import { isMacOs } from '@repo/utils'
+import { Link as RouterLink } from 'react-router-dom'
 
 import {
     Avatar,
@@ -10,12 +17,12 @@ import {
     OverflowTooltip,
     Quantity,
     Skeleton,
-    StatusButton,
     Table,
     TableBody,
     TableCell,
     TableLayout,
     TableRow,
+    Tag,
     Text,
 } from '@gorgias/axiom'
 
@@ -26,6 +33,8 @@ import {
     hasDisplayTextValue,
     hasTextValue,
 } from './utils/searchSpotlightUtils'
+
+import css from './SearchSpotlightRoot.module.less'
 
 const COLUMN_WIDTHS = {
     customer: {
@@ -43,6 +52,7 @@ const COLUMN_WIDTHS = {
 } as const
 
 const ENTITY_TABLE_COLUMN_COUNT = 5
+const EMPTY_LINK_SPACER_HEIGHT = 20
 
 type SectionWithIndexedRows = Omit<SearchSectionSummary, 'rows'> & {
     rows: Array<{
@@ -51,13 +61,20 @@ type SectionWithIndexedRows = Omit<SearchSectionSummary, 'rows'> & {
     }>
 }
 
+type RowLinkClickHandler = (
+    event: MouseEvent<HTMLAnchorElement>,
+    row: SearchRow,
+    rowIndex: number,
+) => void
+
 type SearchSpotlightSectionProps = {
     isSearchMode: boolean
     onOpenRow: (row: SearchRow, openInNewTab: boolean) => Promise<void>
+    onRowLinkClick: RowLinkClickHandler
     onSelectSection: (section: Exclude<SearchSection, 'all'>) => void
     selectedSection: SearchSection
     sections: SectionWithIndexedRows[]
-    selectedIndex: number
+    selectedIndex: number | null
     showLoadingMoreRows?: boolean
     setRowRef: (index: number, element: HTMLTableRowElement | null) => void
     setSelectedIndex: (index: number) => void
@@ -66,6 +83,7 @@ type SearchSpotlightSectionProps = {
 export function SearchSpotlightSection({
     isSearchMode,
     onOpenRow,
+    onRowLinkClick,
     onSelectSection,
     selectedSection,
     sections,
@@ -79,6 +97,7 @@ export function SearchSpotlightSection({
             isSearchMode={isSearchMode}
             key={section.id}
             onOpenRow={onOpenRow}
+            onRowLinkClick={onRowLinkClick}
             onSelectSection={onSelectSection}
             section={section}
             selectedIndex={selectedIndex}
@@ -90,27 +109,20 @@ export function SearchSpotlightSection({
     ))
 }
 
-function SearchSpotlightSectionGroup({
-    isSearchMode,
-    onOpenRow,
-    onSelectSection,
-    section,
-    selectedIndex,
-    selectedSection,
-    setRowRef,
-    setSelectedIndex,
-    showLoadingMoreRows,
-}: {
-    isSearchMode: boolean
-    onOpenRow: (row: SearchRow, openInNewTab: boolean) => Promise<void>
-    onSelectSection: (section: Exclude<SearchSection, 'all'>) => void
-    section: SectionWithIndexedRows
-    selectedIndex: number
-    selectedSection: SearchSection
-    setRowRef: (index: number, element: HTMLTableRowElement | null) => void
-    setSelectedIndex: (index: number) => void
-    showLoadingMoreRows: boolean
-}) {
+function SearchSpotlightSectionGroup(props: SearchSpotlightSectionGroupProps) {
+    const {
+        isSearchMode,
+        onOpenRow,
+        onRowLinkClick,
+        onSelectSection,
+        section,
+        selectedIndex,
+        selectedSection,
+        setRowRef,
+        setSelectedIndex,
+        showLoadingMoreRows,
+    } = props
+
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
     return (
@@ -144,7 +156,7 @@ function SearchSpotlightSectionGroup({
             </Box>
             <Box w="100%">
                 <Table withBorder layout={TableLayout.Fixed}>
-                    <TableBody>
+                    <TableBody data-active-hover="">
                         {section.rows.length === 0 ? (
                             <TableRow>
                                 <TableCell colSpan={6}>
@@ -165,6 +177,7 @@ function SearchSpotlightSectionGroup({
                                         }
                                         key={`${row.kind}-${row.id}`}
                                         onOpenRow={onOpenRow}
+                                        onRowLinkClick={onRowLinkClick}
                                         row={row}
                                         rowIndex={globalIndex}
                                         setRowRef={setRowRef}
@@ -186,10 +199,24 @@ function SearchSpotlightSectionGroup({
     )
 }
 
+type SearchSpotlightSectionGroupProps = {
+    isSearchMode: boolean
+    onOpenRow: (row: SearchRow, openInNewTab: boolean) => Promise<void>
+    onRowLinkClick: RowLinkClickHandler
+    onSelectSection: (section: Exclude<SearchSection, 'all'>) => void
+    section: SectionWithIndexedRows
+    selectedIndex: number | null
+    selectedSection: SearchSection
+    setRowRef: (index: number, element: HTMLTableRowElement | null) => void
+    setSelectedIndex: (index: number) => void
+    showLoadingMoreRows: boolean
+}
+
 function SearchSpotlightSectionRow({
     isHovered,
     isSelected,
     onOpenRow,
+    onRowLinkClick,
     row,
     rowIndex,
     setRowRef,
@@ -199,6 +226,7 @@ function SearchSpotlightSectionRow({
     isHovered: boolean
     isSelected: boolean
     onOpenRow: (row: SearchRow, openInNewTab: boolean) => Promise<void>
+    onRowLinkClick: RowLinkClickHandler
     row: SearchRow
     rowIndex: number
     setRowRef: (index: number, element: HTMLTableRowElement | null) => void
@@ -221,14 +249,21 @@ function SearchSpotlightSectionRow({
                 }}
                 onClick={(event) => {
                     setSelectedIndex(rowIndex)
-                    void onOpenRow(
-                        row,
-                        (isMacOs && event.metaKey) ||
-                            (!isMacOs && event.ctrlKey),
-                    )
+                    if (!row.url) {
+                        void onOpenRow(
+                            row,
+                            (isMacOs && event.metaKey) ||
+                                (!isMacOs && event.ctrlKey),
+                        )
+                    }
                 }}
             >
-                <SearchSpotlightRowCells row={row} />
+                <SearchSpotlightRowCells
+                    isMergedPrimary={Boolean(hiddenMatch)}
+                    onRowLinkClick={onRowLinkClick}
+                    row={row}
+                    rowIndex={rowIndex}
+                />
             </TableRow>
             {hiddenMatch ? (
                 <TableRow
@@ -240,26 +275,37 @@ function SearchSpotlightSectionRow({
                     }}
                     onClick={(event) => {
                         setSelectedIndex(rowIndex)
-                        void onOpenRow(
-                            row,
-                            (isMacOs && event.metaKey) ||
-                                (!isMacOs && event.ctrlKey),
-                        )
+                        if (!row.url) {
+                            void onOpenRow(
+                                row,
+                                (isMacOs && event.metaKey) ||
+                                    (!isMacOs && event.ctrlKey),
+                            )
+                        }
                     }}
                 >
                     <TableCell
                         colSpan={ENTITY_TABLE_COLUMN_COUNT}
                         data-merged-row-detail-cell
+                        h={row.url ? 'auto' : undefined}
+                        p={row.url ? 0 : undefined}
                         paddingTop={0}
                     >
-                        <Box minWidth={0} w="100%">
-                            <DisplayText
-                                value={hiddenMatch}
-                                color="content-neutral-tertiary"
-                                size="sm"
-                                overflow="ellipsis"
-                            />
-                        </Box>
+                        <SearchSpotlightCellLink
+                            isMergedDetail
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            <Box minWidth={0} w="100%">
+                                <DisplayText
+                                    value={hiddenMatch}
+                                    color="content-neutral-tertiary"
+                                    size="sm"
+                                    overflow="ellipsis"
+                                />
+                            </Box>
+                        </SearchSpotlightCellLink>
                     </TableCell>
                 </TableRow>
             ) : null}
@@ -269,203 +315,434 @@ function SearchSpotlightSectionRow({
 
 const MemoizedSearchSpotlightSectionRow = memo(SearchSpotlightSectionRow)
 
-function SearchSpotlightRowCells({ row }: { row: SearchRow }) {
+function SearchSpotlightCellLink({
+    emptyCellLabelledBy,
+    children,
+    isMergedDetail = false,
+    isMergedPrimary = false,
+    onRowLinkClick,
+    row,
+    rowIndex,
+}: {
+    emptyCellLabelledBy?: string
+    children?: ReactNode
+    isMergedDetail?: boolean
+    isMergedPrimary?: boolean
+    onRowLinkClick: RowLinkClickHandler
+    row: SearchRow
+    rowIndex: number
+}) {
+    if (!row.url) {
+        return children ?? null
+    }
+
+    return (
+        <RouterLink
+            aria-labelledby={children == null ? emptyCellLabelledBy : undefined}
+            className={[
+                css.resultCellLink,
+                isMergedPrimary ? css.resultCellMergedPrimaryLink : null,
+                isMergedDetail ? css.resultCellDetailLink : null,
+            ]
+                .filter(Boolean)
+                .join(' ')}
+            onClick={(event) => {
+                onRowLinkClick(event, row, rowIndex)
+            }}
+            tabIndex={-1}
+            to={row.url}
+        >
+            {children ?? (
+                <Box
+                    className={css.resultCellLinkSpacer}
+                    minHeight={EMPTY_LINK_SPACER_HEIGHT}
+                />
+            )}
+        </RouterLink>
+    )
+}
+
+function SearchSpotlightRowCells({
+    isMergedPrimary,
+    onRowLinkClick,
+    row,
+    rowIndex,
+}: {
+    isMergedPrimary: boolean
+    onRowLinkClick: RowLinkClickHandler
+    row: SearchRow
+    rowIndex: number
+}) {
+    const primaryTextId = `search-spotlight-${row.kind}-${row.id}-primary`
+
     switch (row.kind) {
         case 'customer':
             return (
                 <>
-                    <TableCell w={COLUMN_WIDTHS.customer.primary}>
-                        <Box alignItems="center" gap="xs" minWidth={0}>
-                            <Icon name="user" size="sm" />
-                            <Box flexGrow={1} minWidth={0}>
-                                <DisplayText
-                                    value={row.name}
-                                    variant="medium"
-                                    overflow="ellipsis"
-                                />
-                            </Box>
-                        </Box>
-                    </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.customer.email}>
-                        {hasDisplayTextValue(row.email) ? (
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.customer.primary}
+                    >
+                        <SearchSpotlightCellLink
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
                             <Box alignItems="center" gap="xs" minWidth={0}>
                                 <Icon
-                                    name="comm-mail"
+                                    alt=""
+                                    name="user"
                                     size="sm"
-                                    color="content-neutral-tertiary"
+                                    color="content-neutral-default"
                                 />
-                                <Box flexGrow={1} minWidth={0}>
+                                <Box
+                                    flexGrow={1}
+                                    id={primaryTextId}
+                                    minWidth={0}
+                                >
                                     <DisplayText
-                                        value={row.email}
-                                        color="content-neutral-tertiary"
+                                        value={row.name}
+                                        color="content-neutral-default"
+                                        variant="medium"
                                         overflow="ellipsis"
                                     />
                                 </Box>
                             </Box>
-                        ) : null}
+                        </SearchSpotlightCellLink>
                     </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.customer.phone}>
-                        {hasDisplayTextValue(row.phone) ? (
-                            <Box alignItems="center" gap="xs" minWidth={0}>
-                                <Icon
-                                    name="comm-phone-end"
-                                    size="sm"
-                                    color="content-neutral-tertiary"
-                                />
-                                <Box flexGrow={1} minWidth={0}>
-                                    <DisplayText
-                                        value={row.phone}
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.customer.email}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasDisplayTextValue(row.email) ? (
+                                <Box alignItems="center" gap="xs" minWidth={0}>
+                                    <Icon
+                                        alt=""
+                                        name="comm-mail"
+                                        size="sm"
                                         color="content-neutral-tertiary"
-                                        overflow="ellipsis"
                                     />
+                                    <Box flexGrow={1} minWidth={0}>
+                                        <DisplayText
+                                            value={row.email}
+                                            color="content-neutral-tertiary"
+                                            overflow="ellipsis"
+                                        />
+                                    </Box>
                                 </Box>
-                            </Box>
-                        ) : null}
+                            ) : null}
+                        </SearchSpotlightCellLink>
+                    </TableCell>
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.customer.phone}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasDisplayTextValue(row.phone) ? (
+                                <Box alignItems="center" gap="xs" minWidth={0}>
+                                    <Icon
+                                        alt=""
+                                        name="comm-phone-end"
+                                        size="sm"
+                                        color="content-neutral-tertiary"
+                                    />
+                                    <Box flexGrow={1} minWidth={0}>
+                                        <DisplayText
+                                            value={row.phone}
+                                            color="content-neutral-tertiary"
+                                            overflow="ellipsis"
+                                        />
+                                    </Box>
+                                </Box>
+                            ) : null}
+                        </SearchSpotlightCellLink>
                     </TableCell>
                 </>
             )
         case 'ticket':
             return (
                 <>
-                    <TableCell w={COLUMN_WIDTHS.entity.primary}>
-                        <Box alignItems="center" gap="xs" minWidth={0}>
-                            <Icon
-                                name={
-                                    row.isUnread
-                                        ? 'comm-mail'
-                                        : 'comm-mail-open'
-                                }
-                                size="sm"
-                            />
-                            <Box flexGrow={1} minWidth={0}>
-                                <DisplayText
-                                    value={row.subject}
-                                    variant="medium"
-                                    overflow="ellipsis"
-                                />
-                            </Box>
-                        </Box>
-                    </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.entity.status}>
-                        {hasTextValue(row.statusLabel) ? (
-                            <Box minWidth={0}>
-                                <StatusButton color={row.statusColor}>
-                                    {row.statusLabel}
-                                </StatusButton>
-                            </Box>
-                        ) : null}
-                    </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.entity.tertiary}>
-                        {hasDisplayTextValue(row.customerName) ? (
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.primary}
+                    >
+                        <SearchSpotlightCellLink
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
                             <Box alignItems="center" gap="xs" minWidth={0}>
                                 <Icon
-                                    name="user"
+                                    alt=""
+                                    name={
+                                        row.isUnread
+                                            ? 'comm-mail'
+                                            : 'comm-mail-open'
+                                    }
                                     size="sm"
-                                    color="content-neutral-tertiary"
+                                    color="content-neutral-default"
                                 />
-                                <Box flexGrow={1} minWidth={0}>
+                                <Box
+                                    flexGrow={1}
+                                    id={primaryTextId}
+                                    minWidth={0}
+                                >
                                     <DisplayText
-                                        value={row.customerName}
-                                        color="content-neutral-tertiary"
+                                        value={row.subject}
+                                        color="content-neutral-default"
+                                        variant="medium"
                                         overflow="ellipsis"
                                     />
                                 </Box>
                             </Box>
-                        ) : null}
+                        </SearchSpotlightCellLink>
                     </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.entity.activity}>
-                        {hasTextValue(row.activityLabel) ? (
-                            <OverflowTooltip placement="right">
-                                <Text
-                                    overflow="ellipsis"
-                                    size="md"
-                                    color="content-neutral-tertiary"
-                                >
-                                    {row.activityLabel}
-                                </Text>
-                            </OverflowTooltip>
-                        ) : null}
-                    </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.entity.agent}>
-                        {hasTextValue(row.agentName) ? (
-                            <Box alignItems="center" gap="xs" minWidth={0}>
-                                <Avatar
-                                    name={row.agentName}
-                                    size="md"
-                                    url={row.agentAvatarUrl}
-                                />
-                                <Box flexGrow={1} minWidth={0}>
-                                    <OverflowTooltip placement="right">
-                                        <Text
-                                            overflow="ellipsis"
-                                            size="md"
-                                            color="content-neutral-tertiary"
-                                        >
-                                            {row.agentName}
-                                        </Text>
-                                    </OverflowTooltip>
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.status}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasTextValue(row.statusLabel) ? (
+                                <Box minWidth={0}>
+                                    <Tag color={row.statusColor}>
+                                        {row.statusLabel}
+                                    </Tag>
                                 </Box>
-                            </Box>
-                        ) : null}
+                            ) : null}
+                        </SearchSpotlightCellLink>
+                    </TableCell>
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.tertiary}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasDisplayTextValue(row.customerName) ? (
+                                <Box alignItems="center" gap="xs" minWidth={0}>
+                                    <Icon
+                                        alt=""
+                                        name="user"
+                                        size="sm"
+                                        color="content-neutral-tertiary"
+                                    />
+                                    <Box flexGrow={1} minWidth={0}>
+                                        <DisplayText
+                                            value={row.customerName}
+                                            color="content-neutral-tertiary"
+                                            overflow="ellipsis"
+                                        />
+                                    </Box>
+                                </Box>
+                            ) : null}
+                        </SearchSpotlightCellLink>
+                    </TableCell>
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.activity}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasTextValue(row.activityLabel) ? (
+                                <OverflowTooltip placement="right">
+                                    <Text
+                                        overflow="ellipsis"
+                                        size="md"
+                                        color="content-neutral-tertiary"
+                                    >
+                                        {row.activityLabel}
+                                    </Text>
+                                </OverflowTooltip>
+                            ) : null}
+                        </SearchSpotlightCellLink>
+                    </TableCell>
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.agent}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasTextValue(row.agentName) ? (
+                                <Box alignItems="center" gap="xs" minWidth={0}>
+                                    <Avatar
+                                        aria-hidden
+                                        name={row.agentName}
+                                        size="md"
+                                        url={row.agentAvatarUrl}
+                                    />
+                                    <Box flexGrow={1} minWidth={0}>
+                                        <OverflowTooltip placement="right">
+                                            <Text
+                                                overflow="ellipsis"
+                                                size="md"
+                                                color="content-neutral-tertiary"
+                                            >
+                                                {row.agentName}
+                                            </Text>
+                                        </OverflowTooltip>
+                                    </Box>
+                                </Box>
+                            ) : null}
+                        </SearchSpotlightCellLink>
                     </TableCell>
                 </>
             )
         case 'call':
             return (
                 <>
-                    <TableCell w={COLUMN_WIDTHS.entity.primary}>
-                        <Box alignItems="center" gap="xs" minWidth={0}>
-                            <Icon name={row.callIcon} size="sm" />
-                            <Box flexGrow={1} minWidth={0}>
-                                <DisplayText
-                                    value={row.title}
-                                    variant="medium"
-                                    overflow="ellipsis"
-                                />
-                            </Box>
-                        </Box>
-                    </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.entity.status}>
-                        {hasTextValue(row.statusLabel) ? (
-                            <Box minWidth={0}>
-                                <StatusButton color={row.statusColor}>
-                                    {row.statusLabel}
-                                </StatusButton>
-                            </Box>
-                        ) : null}
-                    </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.entity.tertiary}>
-                        {hasDisplayTextValue(row.customerPhone) ? (
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.primary}
+                    >
+                        <SearchSpotlightCellLink
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
                             <Box alignItems="center" gap="xs" minWidth={0}>
                                 <Icon
-                                    name="comm-phone-end"
+                                    alt=""
+                                    name={row.callIcon}
                                     size="sm"
-                                    color="content-neutral-tertiary"
+                                    color="content-neutral-default"
                                 />
-                                <Box flexGrow={1} minWidth={0}>
+                                <Box
+                                    flexGrow={1}
+                                    id={primaryTextId}
+                                    minWidth={0}
+                                >
                                     <DisplayText
-                                        value={row.customerPhone}
-                                        color="content-neutral-tertiary"
+                                        value={row.title}
+                                        color="content-neutral-default"
+                                        variant="medium"
                                         overflow="ellipsis"
                                     />
                                 </Box>
                             </Box>
-                        ) : null}
+                        </SearchSpotlightCellLink>
                     </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.entity.activity}>
-                        {hasTextValue(row.activityLabel) ? (
-                            <OverflowTooltip placement="right">
-                                <Text
-                                    overflow="ellipsis"
-                                    size="md"
-                                    color="content-neutral-tertiary"
-                                >
-                                    {row.activityLabel}
-                                </Text>
-                            </OverflowTooltip>
-                        ) : null}
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.status}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasTextValue(row.statusLabel) ? (
+                                <Box minWidth={0}>
+                                    <Tag color={row.statusColor}>
+                                        {row.statusLabel}
+                                    </Tag>
+                                </Box>
+                            ) : null}
+                        </SearchSpotlightCellLink>
                     </TableCell>
-                    <TableCell w={COLUMN_WIDTHS.entity.agent} />
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.tertiary}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasDisplayTextValue(row.customerPhone) ? (
+                                <Box alignItems="center" gap="xs" minWidth={0}>
+                                    <Icon
+                                        alt=""
+                                        name="comm-phone-end"
+                                        size="sm"
+                                        color="content-neutral-tertiary"
+                                    />
+                                    <Box flexGrow={1} minWidth={0}>
+                                        <DisplayText
+                                            value={row.customerPhone}
+                                            color="content-neutral-tertiary"
+                                            overflow="ellipsis"
+                                        />
+                                    </Box>
+                                </Box>
+                            ) : null}
+                        </SearchSpotlightCellLink>
+                    </TableCell>
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.activity}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        >
+                            {hasTextValue(row.activityLabel) ? (
+                                <OverflowTooltip placement="right">
+                                    <Text
+                                        overflow="ellipsis"
+                                        size="md"
+                                        color="content-neutral-tertiary"
+                                    >
+                                        {row.activityLabel}
+                                    </Text>
+                                </OverflowTooltip>
+                            ) : null}
+                        </SearchSpotlightCellLink>
+                    </TableCell>
+                    <TableCell
+                        p={row.url ? 0 : undefined}
+                        w={COLUMN_WIDTHS.entity.agent}
+                    >
+                        <SearchSpotlightCellLink
+                            emptyCellLabelledBy={primaryTextId}
+                            isMergedPrimary={isMergedPrimary}
+                            onRowLinkClick={onRowLinkClick}
+                            row={row}
+                            rowIndex={rowIndex}
+                        />
+                    </TableCell>
                 </>
             )
     }

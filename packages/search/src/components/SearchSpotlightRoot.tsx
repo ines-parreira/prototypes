@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+    type MouseEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
 import { useLocalStorageWithExpiry } from '@repo/hooks'
 import { history } from '@repo/routing'
@@ -78,7 +85,7 @@ export function SearchSpotlightRoot({
     const [selectedSection, setSelectedSection] = useState<
         'all' | 'customers' | 'tickets' | 'calls'
     >('all')
-    const [selectedIndex, setSelectedIndex] = useState(0)
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
     const {
         items: recentCustomerItems,
@@ -299,6 +306,31 @@ export function SearchSpotlightRoot({
         [setRecentCallItem, setRecentCustomerItem, setRecentTicketItem],
     )
 
+    const handleRowLinkClick = useCallback(
+        (
+            event: MouseEvent<HTMLAnchorElement>,
+            row: SearchRow,
+            rowIndex: number,
+        ) => {
+            setSelectedIndex(rowIndex)
+            persistRecentItem(row)
+
+            if (
+                event.button !== 0 ||
+                event.defaultPrevented ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+            ) {
+                return
+            }
+
+            onClose()
+        },
+        [onClose, persistRecentItem],
+    )
+
     const openRow = useCallback(
         async (row: SearchRow, openInNewTab: boolean) => {
             if (!row.url) {
@@ -343,8 +375,17 @@ export function SearchSpotlightRoot({
     })
 
     useEffect(() => {
+        if (selectedIndex == null) {
+            return
+        }
+
+        if (flatRows.length === 0) {
+            setSelectedIndex(null)
+            return
+        }
+
         if (selectedIndex >= flatRows.length) {
-            setSelectedIndex(0)
+            setSelectedIndex(flatRows.length - 1)
         }
     }, [flatRows.length, selectedIndex])
 
@@ -354,6 +395,11 @@ export function SearchSpotlightRoot({
         }
 
         if (!isOpen) {
+            shouldScrollSelectedRowIntoViewRef.current = false
+            return
+        }
+
+        if (selectedIndex == null) {
             shouldScrollSelectedRowIntoViewRef.current = false
             return
         }
@@ -375,11 +421,11 @@ export function SearchSpotlightRoot({
         }
 
         setSelectedSection('all')
-        setSelectedIndex(0)
+        setSelectedIndex(null)
     }, [isOpen, recentSearchQuery])
 
     useEffect(() => {
-        setSelectedIndex(0)
+        setSelectedIndex(null)
     }, [selectedSection, isSearchMode])
 
     useEffect(() => {
@@ -496,6 +542,7 @@ export function SearchSpotlightRoot({
                         <SearchSpotlightSection
                             isSearchMode={isSearchMode}
                             onOpenRow={openRow}
+                            onRowLinkClick={handleRowLinkClick}
                             onSelectSection={(section) => {
                                 setSelectedSection(section)
                             }}

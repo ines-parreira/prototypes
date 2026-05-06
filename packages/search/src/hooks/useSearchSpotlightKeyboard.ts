@@ -10,8 +10,8 @@ type UseSearchSpotlightKeyboardParams = {
     isOpen: boolean
     openRow: (row: SearchRow, openInNewTab: boolean) => Promise<void>
     onKeyboardSelectionChange: () => void
-    selectedIndex: number
-    setSelectedIndex: React.Dispatch<React.SetStateAction<number>>
+    selectedIndex: number | null
+    setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>
 }
 
 function isInteractiveShortcutTarget(target: EventTarget | null) {
@@ -53,7 +53,9 @@ export function useSearchSpotlightKeyboard({
                     return
                 }
                 onKeyboardSelectionChange()
-                setSelectedIndex((current) => (current + 1) % flatRows.length)
+                setSelectedIndex((current) =>
+                    current == null ? 0 : (current + 1) % flatRows.length,
+                )
                 return
             }
 
@@ -64,7 +66,11 @@ export function useSearchSpotlightKeyboard({
                 }
                 onKeyboardSelectionChange()
                 setSelectedIndex((current) =>
-                    current === 0 ? flatRows.length - 1 : current - 1,
+                    current == null
+                        ? flatRows.length - 1
+                        : current === 0
+                          ? flatRows.length - 1
+                          : current - 1,
                 )
                 return
             }
@@ -86,7 +92,8 @@ export function useSearchSpotlightKeyboard({
 
                 event.preventDefault()
 
-                const selectedRow = flatRows[selectedIndex]
+                const selectedRow =
+                    selectedIndex == null ? undefined : flatRows[selectedIndex]
                 if (!selectedRow) {
                     return
                 }
