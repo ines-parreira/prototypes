@@ -113,19 +113,37 @@ export function createViewCountScheduler(
         }
     }
 
+    async function becomeLeader(): Promise<void> {
+        await waitForHydration()
+        viewsCountStore.setState({ isLeader: true })
+        activeIntervalId = setInterval(tick, config.tickIntervalSeconds * 1000)
+    }
+
+    function hasWebLocks(): boolean {
+        return (
+            typeof navigator !== 'undefined' &&
+            typeof navigator.locks?.request === 'function'
+        )
+    }
+
     function acquireLock(steal: boolean): void {
         cleanup()
+
+        // Web Locks API is unavailable in some environments (Firefox private
+        // browsing, non-secure contexts, certain webviews). Without it we can't
+        // coordinate leadership across tabs, so each tab runs the scheduler
+        // independently — duplicate polling is acceptable; crashing is not.
+        if (!hasWebLocks()) {
+            void becomeLeader()
+            return
+        }
+
         navigator.locks
             .request(
                 'view-count-scheduler',
                 steal ? { steal: true } : {},
                 async () => {
-                    await waitForHydration()
-                    viewsCountStore.setState({ isLeader: true })
-                    activeIntervalId = setInterval(
-                        tick,
-                        config.tickIntervalSeconds * 1000,
-                    )
+                    await becomeLeader()
                     return new Promise<void>(() => {
                         // Never resolves — held until stolen or tab closes
                     })

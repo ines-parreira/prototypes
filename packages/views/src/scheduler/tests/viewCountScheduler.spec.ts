@@ -233,6 +233,44 @@ describe('start / steal / stop', () => {
         expect(viewsCountStore.getState().isLeader).toBe(false)
     })
 
+    it('falls back to running as leader when navigator.locks is unavailable', async () => {
+        const originalLocks = navigator.locks
+        Object.defineProperty(navigator, 'locks', {
+            value: undefined,
+            configurable: true,
+        })
+
+        try {
+            const onRefresh = vi.fn()
+            const scheduler = createViewCountScheduler({
+                onRefresh,
+                config: {
+                    tickIntervalSeconds: 1,
+                    minRefreshIntervalSeconds: 0,
+                },
+            })
+
+            setAllViews([makeView(1)])
+            setViewsCount({ 1: 10 })
+
+            scheduler.start()
+            await Promise.resolve()
+
+            expect(viewsCountStore.getState().isLeader).toBe(true)
+
+            await vi.advanceTimersByTimeAsync(1500)
+            expect(onRefresh).toHaveBeenCalled()
+
+            scheduler.stop()
+            expect(viewsCountStore.getState().isLeader).toBe(false)
+        } finally {
+            Object.defineProperty(navigator, 'locks', {
+                value: originalLocks,
+                configurable: true,
+            })
+        }
+    })
+
     it('waits for hydration before setting isLeader', async () => {
         const hydrationCallbacks: Array<() => void> = []
         vi.spyOn(viewsCountStore.persist, 'hasHydrated').mockReturnValue(false)
