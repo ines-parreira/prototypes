@@ -516,7 +516,9 @@ describe('CampaignsTable', () => {
 
         const user = userEvent.setup()
 
-        const moreOptionsButton = screen.getAllByLabelText('Open options')[0]
+        const moreOptionsButton = screen.getAllByLabelText(
+            'Actions for test-store',
+        )[0]
         await act(() => user.click(moreOptionsButton))
 
         const sendOption = screen
