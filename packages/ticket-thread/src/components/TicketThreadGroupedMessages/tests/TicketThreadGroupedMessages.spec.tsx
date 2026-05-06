@@ -271,6 +271,14 @@ function makeSocialGroupedItem(
     }
 }
 
+function getBubbleActions(container: ParentNode) {
+    return container.querySelector('[data-bubble-actions]')
+}
+
+function getAllBubbleActions(container: ParentNode) {
+    return container.querySelectorAll('[data-bubble-actions]')
+}
+
 describe('TicketThreadGroupedMessages', () => {
     it('renders a shared header and all grouped message bodies', () => {
         render(<TicketThreadGroupedMessages item={makeGroupedItem()} />)
@@ -310,17 +318,13 @@ describe('TicketThreadGroupedMessages – social message action placement', () =
         const messages = container.querySelectorAll('[data-grouped-message]')
 
         // Header has BubbleActions for the first message
-        expect(header.querySelector('[data-placement]')).toBeInTheDocument()
+        expect(getBubbleActions(header)).toBeInTheDocument()
 
         // First grouped message has no own BubbleActions
-        expect(
-            messages[0].querySelector('[data-placement]'),
-        ).not.toBeInTheDocument()
+        expect(getBubbleActions(messages[0])).not.toBeInTheDocument()
 
         // Second grouped message has its own BubbleActions
-        expect(
-            messages[1].querySelector('[data-placement]'),
-        ).toBeInTheDocument()
+        expect(getBubbleActions(messages[1])).toBeInTheDocument()
     })
 
     it('renders BubbleActions in each subsequent message for multiple grouped messages', () => {
@@ -336,15 +340,9 @@ describe('TicketThreadGroupedMessages – social message action placement', () =
 
         const messages = container.querySelectorAll('[data-grouped-message]')
 
-        expect(
-            messages[0].querySelector('[data-placement]'),
-        ).not.toBeInTheDocument()
-        expect(
-            messages[1].querySelector('[data-placement]'),
-        ).toBeInTheDocument()
-        expect(
-            messages[2].querySelector('[data-placement]'),
-        ).toBeInTheDocument()
+        expect(getBubbleActions(messages[0])).not.toBeInTheDocument()
+        expect(getBubbleActions(messages[1])).toBeInTheDocument()
+        expect(getBubbleActions(messages[2])).toBeInTheDocument()
     })
 
     it('sets placement="right" for inbound Facebook Messenger messages (from_agent: false)', () => {
@@ -365,7 +363,7 @@ describe('TicketThreadGroupedMessages – social message action placement', () =
             <TicketThreadGroupedMessages item={item} />,
         )
 
-        const placements = container.querySelectorAll('[data-placement]')
+        const placements = getAllBubbleActions(container)
 
         for (const el of placements) {
             expect(el).toHaveAttribute('data-placement', 'right')
@@ -390,7 +388,7 @@ describe('TicketThreadGroupedMessages – social message action placement', () =
             <TicketThreadGroupedMessages item={item} />,
         )
 
-        const placements = container.querySelectorAll('[data-placement]')
+        const placements = getAllBubbleActions(container)
 
         for (const el of placements) {
             expect(el).toHaveAttribute('data-placement', 'left')
@@ -412,13 +410,9 @@ describe('TicketThreadGroupedMessages – social message action placement', () =
 
         expect(screen.getByText('first dm')).toBeInTheDocument()
         expect(screen.getByText('second dm')).toBeInTheDocument()
-        expect(header.querySelector('[data-placement]')).toBeInTheDocument()
-        expect(
-            messages[0].querySelector('[data-placement]'),
-        ).not.toBeInTheDocument()
-        expect(
-            messages[1].querySelector('[data-placement]'),
-        ).toBeInTheDocument()
+        expect(getBubbleActions(header)).toBeInTheDocument()
+        expect(getBubbleActions(messages[0])).not.toBeInTheDocument()
+        expect(getBubbleActions(messages[1])).toBeInTheDocument()
     })
 
     it('renders attachments for grouped WhatsApp messages', () => {

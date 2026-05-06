@@ -38,29 +38,13 @@
         }
 
         &[data-variant='ai-agent'] {
+            border: 1px solid var(--border-neutral-default);
             background-color: var(--surface-container-blue);
         }
 
         &[data-variant='ai-agent-handover'] {
+            border: 1px solid var(--border-neutral-default);
             background-color: var(--surface-additional-yellow);
-        }
-
-        &[data-variant='ai-agent'],
-        &[data-variant='ai-agent-handover'] {
-            &::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                border-radius: inherit;
-                padding: 1px;
-                background: var(--ai-border);
-                -webkit-mask:
-                    linear-gradient(#fff 0 0) content-box,
-                    linear-gradient(#fff 0 0);
-                -webkit-mask-composite: xor;
-                mask-composite: exclude;
-                pointer-events: none;
-            }
         }
 
         &[data-pending-state='active'],
@@ -79,8 +63,10 @@
 
     .bubbleActions {
         position: absolute;
-        top: 50%;
+        top: var(--spacing-sm);
         visibility: hidden;
+        background-color: var(--elevation-neutral-default);
+        border-radius: var(--spacing-xxs);
     }
 
     .compactAnchor {
@@ -91,12 +77,25 @@
 
     .bubbleActionsRight {
         right: calc(-1 * var(--spacing-xs));
-        transform: translate(100%, -50%);
+        transform: translateX(100%);
     }
 
     .bubbleActionsLeft {
         left: calc(-1 * var(--spacing-xs));
-        transform: translate(-100%, -50%);
+        transform: translateX(-100%);
+    }
+
+    // Grouped header has extra top padding to match its border offset, so
+    // pull the actions up by 4px to keep them aligned with the first message.
+    [data-grouped-header] .bubbleActions {
+        top: var(--spacing-xs);
+    }
+
+    // Non-first grouped sub-messages have tighter padding, so place the
+    // actions 2px from the sub-message top — consistent top-aligned feel
+    // but tuned to the smaller content box.
+    [data-grouped-message]:not(:first-child) .bubbleActions {
+        top: var(--spacing-xxxxs);
     }
 
     .messageRow:hover .bubbleActions,

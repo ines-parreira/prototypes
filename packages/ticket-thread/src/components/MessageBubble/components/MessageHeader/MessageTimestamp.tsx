@@ -26,7 +26,7 @@ export function MessageTimestamp({ createdDatetime }: MessageTimestampProps) {
         <Tooltip
             delay={0}
             trigger={
-                <Text size="sm" color="content-neutral-secondary">
+                <Text size="sm" color="content-neutral-secondary" wrap="nowrap">
                     {relativeDatetime}
                 </Text>
             }

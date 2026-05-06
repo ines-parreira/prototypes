@@ -1,0 +1,38 @@
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        min-width: 0;
+        max-width: 100%;
+        flex: 1 1 auto;
+        overflow: hidden;
+    }
+
+    .nameSlot {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .nameSlotWithEmail {
+        flex: 0 0 auto;
+        min-width: 0;
+    }
+
+    .emailSlot {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: max-content;
+    }
+
+    .truncate {
+        display: block;
+        min-width: 0;
+        max-width: 100%;
+        flex: 1 1 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

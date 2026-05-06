@@ -76,6 +76,7 @@ export function BubbleActions({
                     ? css.bubbleActionsLeft
                     : css.bubbleActionsRight,
             )}
+            data-bubble-actions
             data-placement={placement}
         >
             {isCompact ? (

@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
@@ -49,6 +50,29 @@ type SocialGroupedMessageItem =
     | TicketThreadSocialMediaInstagramDirectMessageItem
     | TicketThreadSocialMediaWhatsAppMessageItem
 
+function useTimestampWidth() {
+    const ref = useRef<HTMLDivElement>(null)
+    const [width, setWidth] = useState(0)
+
+    useEffect(() => {
+        const element = ref.current
+        if (!element) return
+
+        const update = () => setWidth(element.offsetWidth)
+        update()
+
+        const observer = new ResizeObserver(update)
+        observer.observe(element)
+
+        return () => observer.disconnect()
+    }, [])
+
+    return {
+        ref,
+        style: { '--grouped-timestamp-width': `${width}px` } as CSSProperties,
+    }
+}
+
 function RegularGroupedMessage({
     item,
     className,
@@ -60,6 +84,7 @@ function RegularGroupedMessage({
 }) {
     const displayedItem = useDisplayedTicketMessage({ item })
     const isPendingMessage = isActivePendingMessageItem(item)
+    const { ref: timestampRef, style } = useTimestampWidth()
 
     return (
         <Box
@@ -67,7 +92,17 @@ function RegularGroupedMessage({
             gap="xs"
             className={cn(css.groupedMessage, className)}
             data-grouped-message
+            style={style}
         >
+            <div
+                ref={timestampRef}
+                className={css.groupedMessageTimestamp}
+                data-placement="top-right"
+            >
+                <MessageTimestamp
+                    createdDatetime={item.data.created_datetime}
+                />
+            </div>
             <MessageBody item={displayedItem} />
             <MessageFooter item={displayedItem} />
             {children}
@@ -95,6 +130,7 @@ function SocialGroupedMessage({
     children?: ReactNode
 }) {
     const isPendingMessage = isActivePendingMessageItem(item)
+    const { ref: timestampRef, style } = useTimestampWidth()
 
     return (
         <Box
@@ -102,7 +138,17 @@ function SocialGroupedMessage({
             gap="xs"
             className={cn(css.groupedMessage, className)}
             data-grouped-message
+            style={style}
         >
+            <div
+                ref={timestampRef}
+                className={css.groupedMessageTimestamp}
+                data-placement="top-right"
+            >
+                <MessageTimestamp
+                    createdDatetime={item.data.created_datetime}
+                />
+            </div>
             <MessageBody item={item} />
             <MessageAttachments item={item} />
             {children}
@@ -170,6 +216,10 @@ export function TicketThreadGroupedMessages({
         firstMessage.data.source,
     )
     const currentPageUrl = getMessageCurrentPageUrl(firstMessage.data.meta)
+    const senderEmail =
+        firstMessage.data.source?.type === 'email'
+            ? firstMessage.data.source.from?.address
+            : undefined
 
     return (
         <Box
@@ -190,6 +240,7 @@ export function TicketThreadGroupedMessages({
                                 />
                                 <MessageSender
                                     sender={firstMessage.data.sender}
+                                    email={senderEmail}
                                 />
                             </Box>
                             <Box alignItems="center" gap="xs">

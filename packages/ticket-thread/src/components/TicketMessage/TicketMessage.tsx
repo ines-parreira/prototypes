@@ -36,6 +36,10 @@ export function TicketMessage({ item }: TicketMessageProps) {
         item.data.source,
     )
     const currentPageUrl = getMessageCurrentPageUrl(item.data.meta)
+    const senderEmail =
+        item.data.source?.type === 'email'
+            ? item.data.source.from?.address
+            : undefined
 
     return (
         <Box
@@ -59,7 +63,10 @@ export function TicketMessage({ item }: TicketMessageProps) {
                             sender={item.data.sender}
                             fromAgent={item.data.from_agent}
                         />
-                        <MessageSender sender={item.data.sender} />
+                        <MessageSender
+                            sender={item.data.sender}
+                            email={senderEmail}
+                        />
                     </Box>
                     <Box alignItems="center" gap="xs">
                         <MessageChannel

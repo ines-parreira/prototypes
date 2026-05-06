@@ -1,0 +1,15 @@
+:local {
+    .header {
+        min-width: 0;
+
+        // Left group (sender) shrinks, right group (timestamp/channel) doesn't.
+        > :first-child {
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+
+        > :last-child {
+            flex: 0 0 auto;
+        }
+    }
+}
