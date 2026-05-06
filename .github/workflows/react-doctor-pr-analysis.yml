@@ -167,10 +167,6 @@ jobs:
       - react-doctor-scan
     if: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true' && !cancelled() }}
     runs-on: gh-actions-small-runner-set
-    strategy:
-      fail-fast: false
-      matrix:
-        include: ${{ fromJSON(needs.workspace-setup.outputs.react-doctor-affected-packages) }}
     container: google/cloud-sdk:502.0.0-alpine
     env:
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcloud-key.json
@@ -183,8 +179,9 @@ jobs:
       - name: Download React Doctor report artifact
         uses: actions/download-artifact@v8
         with:
-          name: react-doctor-${{ matrix.alias }}
+          pattern: react-doctor-*
           path: pr-reports
+          merge-multiple: true
 
       - name: Authenticate with GCS
         shell: sh
@@ -201,7 +198,7 @@ jobs:
         run: |
           mkdir -p baseline-reports
           gsutil cp \
-            "$REACT_DOCTOR_GCS_BUCKET/latest/react-doctor-report-${{ matrix.alias }}.json" \
+            "$REACT_DOCTOR_GCS_BUCKET/latest/react-doctor-report-*.json" \
             baseline-reports/ || true
 
       - name: Install Node.js
@@ -212,18 +209,17 @@ jobs:
         shell: sh
         run: |
           node scripts/react-doctor/compare-reports.mjs \
-            --project="${{ matrix.project }}" \
-            --pr-report="pr-reports/react-doctor-report-${{ matrix.alias }}.json" \
-            --baseline-report="baseline-reports/react-doctor-report-${{ matrix.alias }}.json" \
-            --max-examples=6 \
-            --max-top-rules=5 \
-            --output="react-doctor-${{ matrix.alias }}.md"
+            --pr-reports-dir="pr-reports" \
+            --baseline-reports-dir="baseline-reports" \
+            --max-examples-per-rule=3 \
+            --max-rule-groups=10 \
+            --output="react-doctor-report.md"
 
       - name: Upload React Doctor markdown artifact
         uses: actions/upload-artifact@v7
         with:
-          name: react-doctor-md-${{ matrix.alias }}
-          path: react-doctor-${{ matrix.alias }}.md
+          name: react-doctor-md
+          path: react-doctor-report.md
 
   react-doctor-comment:
     name: React Doctor comment
@@ -237,9 +233,8 @@ jobs:
       - name: Download React Doctor markdown artifacts
         uses: actions/download-artifact@v8
         with:
-          pattern: react-doctor-md-*
+          name: react-doctor-md
           path: md-reports
-          merge-multiple: true
 
       - name: Create or update PR comment
         uses: actions/github-script@v8
@@ -250,112 +245,17 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             const marker = '<!-- react-doctor -->';
-            const reportsDirectory = 'md-reports';
+            const reportPath = path.join('md-reports', 'react-doctor-report.md');
             const maxBodyLength = 65000;
-            const sectionSeparator = '\n\n---\n\n';
-
-            function parsePackageName(sectionBody) {
-              const match = sectionBody.match(/^### `([^`]+)`/m);
-              return match ? match[1] : 'unknown-package';
-            }
-
-            function formatUnchangedSummary(reports) {
-              if (reports.length === 0) {
-                return '';
-              }
-
-              const maxListedPackages = 12;
-              const listedPackages = reports
-                .slice(0, maxListedPackages)
-                .map((report) => `\`${report.packageName}\``)
-                .join(', ');
-              const extraCount = reports.length - Math.min(reports.length, maxListedPackages);
-              const extraSuffix = extraCount > 0 ? `, and ${extraCount} more` : '';
-
-              return `_✅ No diagnostic changes for ${reports.length} package(s): ${listedPackages}${extraSuffix}._`;
-            }
-
-            function buildCommentBody(header, sections, unchangedSummary, fallbackText) {
-              const parts = [];
-              if (sections.length > 0) {
-                parts.push(sections.join(sectionSeparator));
-              }
-              if (unchangedSummary) {
-                parts.push(unchangedSummary);
-              }
-              if (parts.length === 0) {
-                parts.push(fallbackText);
-              }
-              return `${header}${parts.join('\n\n')}`;
-            }
-
-            const reportFiles = fs.existsSync(reportsDirectory)
-              ? fs.readdirSync(reportsDirectory).filter((file) => file.endsWith('.md')).sort()
-              : [];
-
-            const reports = reportFiles.map((file) => {
-              const body = fs.readFileSync(path.join(reportsDirectory, file), 'utf8').trim();
-              return {
-                body,
-                packageName: parsePackageName(body),
-                hasChanges: !body.includes('_✅ No diagnostic changes._'),
-              };
-            });
-
-            const changedReports = reports.filter((report) => report.hasChanges);
-            const unchangedReports = reports.filter((report) => !report.hasChanges);
-            const unchangedSummary = formatUnchangedSummary(unchangedReports);
-            const header =
-              `${marker}\n## 🩺 React Doctor Report\n\n` +
-              `_Legend: 🟢 good | 🟡 needs work | 🔴 critical_\n\n`;
-            const fallback = '_No React Doctor reports generated._';
-
-            const orderedSections = changedReports.map((report) => report.body);
-            let body = buildCommentBody(
-              header,
-              orderedSections,
-              unchangedSummary,
-              fallback,
-            );
+            const reportBody = fs.existsSync(reportPath)
+              ? fs.readFileSync(reportPath, 'utf8').trim()
+              : '_No React Doctor report generated._';
+            let body = `${marker}\n${reportBody}`;
 
             if (body.length > maxBodyLength) {
-              const includedSections = [...orderedSections];
-              let omittedCount = 0;
-
-              while (includedSections.length > 0) {
-                const attempt = buildCommentBody(
-                  header,
-                  includedSections,
-                  unchangedSummary,
-                  fallback,
-                );
-                if (attempt.length <= maxBodyLength) {
-                  break;
-                }
-                includedSections.pop();
-                omittedCount += 1;
-              }
-
-              const truncationNotice =
-                `> ℹ️ Comment truncated to stay under GitHub's size limit. ` +
-                `Showing ${includedSections.length} package section(s), omitted ${omittedCount}.`;
-
-              body = buildCommentBody(
-                header,
-                includedSections,
-                unchangedSummary ? `${unchangedSummary}\n\n${truncationNotice}` : truncationNotice,
-                fallback,
-              );
-
-              if (body.length > maxBodyLength) {
-                body = buildCommentBody(header, includedSections, truncationNotice, fallback);
-              }
-
-              if (body.length > maxBodyLength) {
-                body =
-                  `${header}${truncationNotice}\n\n` +
-                  '_Too many diagnostics to render in a single comment. Check artifacts for full details._';
-              }
+              body =
+                `${marker}\n## React Doctor\n\n` +
+                "_React Doctor found too much output to fit in one PR comment. Check the workflow artifacts for the full report._";
             }
 
             const { data: comments } = await github.rest.issues.listComments({
