@@ -6,7 +6,6 @@ import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
-import { STEPS_NAMES } from 'AIJourney/constants'
 import { AI_JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants/journeyTypes'
 import {
     AiJourneyOnboarding,
@@ -30,26 +29,14 @@ function AiJourneyBaseRoutes() {
     const isAiJourneyStoreSettingsEnabled = useFlag(
         FeatureFlagKey.AiJourneyStoreSettingsEnabled,
     )
-    const isCampaignSchedulingEnabled = useFlag(
-        FeatureFlagKey.AiJourneyCampaignSchedulingEnabled,
-    )
     const isAiJourneyCustomFlowEnabled = useFlag(
         FeatureFlagKey.AiJourneyCustomFlowEnabled,
     )
-    const filteredByCustomFlow = AI_JOURNEY_ONBOARDING_STEPS.filter(
+    const onboardingSteps = AI_JOURNEY_ONBOARDING_STEPS.filter(
         ({ journeyType }) =>
             isAiJourneyCustomFlowEnabled ||
             journeyType !== JourneyTypeEnum.Custom,
     )
-
-    const onboardingSteps = isCampaignSchedulingEnabled
-        ? filteredByCustomFlow
-        : filteredByCustomFlow.map((entry) => ({
-              ...entry,
-              steps: entry.steps.filter(
-                  (s) => s.stepName !== STEPS_NAMES.SCHEDULE,
-              ),
-          }))
 
     return (
         <Switch>

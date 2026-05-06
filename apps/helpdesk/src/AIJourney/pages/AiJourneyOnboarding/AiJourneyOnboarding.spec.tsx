@@ -36,8 +36,6 @@ import type { StepComponentProps } from './AiJourneyOnboarding'
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
-        AiJourneyCampaignSchedulingEnabled:
-            'ai-journey-campaign-scheduling-enabled',
     },
     useFlag: jest.fn(),
 }))
@@ -392,19 +390,7 @@ describe('<AiJourneyOnboarding />', () => {
             ).toBeInTheDocument()
         })
 
-        it('shows "Activate campaign" on activate step for a campaign journey when scheduling is disabled', () => {
-            renderComponent({
-                step: STEPS_NAMES.ACTIVATE,
-                journeyType: JOURNEY_TYPES.CAMPAIGN,
-            })
-
-            expect(
-                screen.getByRole('button', { name: 'Activate campaign' }),
-            ).toBeInTheDocument()
-        })
-
-        it('shows "Continue" on activate step for a campaign journey when scheduling is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
+        it('shows "Continue" on activate step for a campaign journey', () => {
             renderComponent({
                 step: STEPS_NAMES.ACTIVATE,
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
@@ -843,7 +829,6 @@ describe('<AiJourneyOnboarding />', () => {
         })
 
         it('navigates to schedule step for a campaign', async () => {
-            mockUseFlag.mockReturnValue(true)
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {
@@ -899,7 +884,6 @@ describe('<AiJourneyOnboarding />', () => {
         })
 
         it('navigates to schedule step after activating a campaign', async () => {
-            mockUseFlag.mockReturnValue(true)
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {
@@ -1286,45 +1270,8 @@ describe('<AiJourneyOnboarding />', () => {
         })
     })
 
-    describe('form submission - activate step for campaign with scheduling disabled', () => {
-        it('calls handleUpdate with campaignState Draft and navigates to campaigns', async () => {
-            mockUseJourneyContext.mockReturnValue({
-                ...defaultContextValue,
-                journeyData: {
-                    id: 'journey-123',
-                    campaign: { title: 'Summer Sale' },
-                },
-            } as any)
-
-            const { user } = renderComponent({
-                step: STEPS_NAMES.ACTIVATE,
-                journeyType: JOURNEY_TYPES.CAMPAIGN,
-            })
-
-            await act(
-                async () =>
-                    await user.click(
-                        screen.getByRole('button', {
-                            name: /activate campaign/i,
-                        }),
-                    ),
-            )
-
-            await waitFor(() => {
-                expect(mockHandleUpdate).toHaveBeenCalledWith({
-                    campaignState: UpdatableJourneyCampaignState.Draft,
-                })
-            })
-
-            expect(mockPush).toHaveBeenCalledWith(
-                '/app/ai-journey/test-shop/campaigns',
-            )
-        })
-    })
-
     describe('form submission - schedule step', () => {
         beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {

@@ -88,15 +88,11 @@ export const AiJourneyOnboarding = ({
     const storeSettingsEnabled = useFlag(
         FeatureFlagKey.AiJourneyStoreSettingsEnabled,
     )
-    const isCampaignSchedulingEnabled = useFlag(
-        FeatureFlagKey.AiJourneyCampaignSchedulingEnabled,
-    )
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
-    const onboardingSteps =
-        isCampaign && isCampaignSchedulingEnabled
-            ? CAMPAIGN_ONBOARDING_STEPS
-            : JOURNEY_ONBOARDING_STEPS
+    const onboardingSteps = isCampaign
+        ? CAMPAIGN_ONBOARDING_STEPS
+        : JOURNEY_ONBOARDING_STEPS
 
     const methods = useForm<SetupFormValues>({
         defaultValues: {
@@ -108,12 +104,11 @@ export const AiJourneyOnboarding = ({
                 cooldown_days: 30,
                 inactive_days: 30,
             }),
-            ...(isCampaign &&
-                isCampaignSchedulingEnabled && {
-                    scheduleType: 'later' as const,
-                    scheduledDate: null,
-                    scheduledTime: null,
-                }),
+            ...(isCampaign && {
+                scheduleType: 'later' as const,
+                scheduledDate: null,
+                scheduledTime: null,
+            }),
         },
     })
     const { handleSubmit, getValues, watch } = methods
@@ -188,8 +183,7 @@ export const AiJourneyOnboarding = ({
         campaignState === 'sent' ||
         campaignState === 'active' ||
         campaignState === 'paused'
-    const isScheduleStep =
-        isCampaignSchedulingEnabled && step === STEPS_NAMES.SCHEDULE
+    const isScheduleStep = step === STEPS_NAMES.SCHEDULE
 
     const [isSendNowConfirmOpen, setIsSendNowConfirmOpen] = useState(false)
     const pendingSubmitData = useRef<SetupFormValues | null>(null)
@@ -250,15 +244,9 @@ export const AiJourneyOnboarding = ({
         }
 
         if (step === STEPS_NAMES.ACTIVATE) {
-            if (isCampaign && isCampaignSchedulingEnabled) {
+            if (isCampaign) {
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${journeyData?.id}`,
-                )
-            } else if (isCampaign) {
-                await handleUpdate({
-                    campaignState: UpdatableJourneyCampaignState.Draft,
-                }).then(() =>
-                    history.push(`/app/ai-journey/${shopName}/campaigns`),
                 )
             } else {
                 await handleUpdate({
@@ -413,13 +401,7 @@ export const AiJourneyOnboarding = ({
             primaryButtonLabel = scheduleType === 'later' ? 'Schedule' : 'Send'
         }
     } else if (step === STEPS_NAMES.ACTIVATE) {
-        if (isCampaign && isCampaignSchedulingEnabled) {
-            primaryButtonLabel = 'Continue'
-        } else {
-            primaryButtonLabel = isCampaign
-                ? 'Activate campaign'
-                : 'Activate flow'
-        }
+        primaryButtonLabel = isCampaign ? 'Continue' : 'Activate flow'
     }
 
     return (
