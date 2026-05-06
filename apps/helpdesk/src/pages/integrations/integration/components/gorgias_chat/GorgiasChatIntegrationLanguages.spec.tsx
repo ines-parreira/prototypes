@@ -69,11 +69,9 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
 
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -83,11 +81,9 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
     it('should render the skeleton while the revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
@@ -113,40 +109,19 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
         expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when shouldShowChatSettingsScreensRevamp is false', () => {
+    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
         render(<GorgiasChatIntegrationLanguages {...minProps} />)
 
         expect(screen.getByTestId('legacy-languages')).toBeInTheDocument()
         expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when only the base revamp flag is enabled but not the screens revamp', () => {
+    it('should render the revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: true,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowChatSettingsScreensRevamp: false,
-            shouldShowFlowsScreensRevamp: false,
-            shouldShowOrderManagementScreensRevamp: false,
-            isLoading: false,
-        })
-
-        render(<GorgiasChatIntegrationLanguages {...minProps} />)
-
-        expect(screen.getByTestId('legacy-languages')).toBeInTheDocument()
-        expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
-    })
-
-    it('should render the revamp component when shouldShowChatSettingsScreensRevamp is true', () => {
-        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            isChatSettingsRevampEnabled: true,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
-            isChatSettingsScreensRevampFlowsEnabled: false,
-            isChatSettingsScreensRevampOrderManagementEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowChatSettingsScreensRevamp: true,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,

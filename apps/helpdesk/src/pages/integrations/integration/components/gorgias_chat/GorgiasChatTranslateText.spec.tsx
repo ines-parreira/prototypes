@@ -60,11 +60,9 @@ describe('<GorgiasChatTranslateText />', () => {
 
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -74,11 +72,9 @@ describe('<GorgiasChatTranslateText />', () => {
     it('should render the skeleton while the revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
@@ -123,11 +119,9 @@ describe('<GorgiasChatTranslateText />', () => {
     it('should render the revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: true,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,

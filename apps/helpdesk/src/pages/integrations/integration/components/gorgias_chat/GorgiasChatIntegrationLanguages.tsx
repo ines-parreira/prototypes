@@ -13,14 +13,14 @@ export const GorgiasChatIntegrationLanguages = (props: Props) => {
     const { storeIntegration } = useStoreIntegration(props.integration)
     const chatId = props.integration.get('id') as number | undefined
 
-    const { shouldShowChatSettingsScreensRevamp, isLoading } =
+    const { shouldShowRevampWhenAiAgentEnabled, isLoading } =
         useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
     if (isLoading || !chatId) {
         return <ChatSettingsLanguagesSkeleton />
     }
 
-    if (shouldShowChatSettingsScreensRevamp) {
+    if (shouldShowRevampWhenAiAgentEnabled) {
         return <GorgiasChatIntegrationLanguagesRevamp {...props} />
     }
 

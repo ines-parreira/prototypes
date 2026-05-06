@@ -99,12 +99,10 @@ describe('FlowsSettings', () => {
         })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
         })

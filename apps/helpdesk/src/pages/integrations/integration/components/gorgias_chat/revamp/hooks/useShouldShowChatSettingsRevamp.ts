@@ -14,11 +14,6 @@ export const useShouldShowChatSettingsRevamp = (
     } = useFlagWithLoading(FeatureFlagKey.ChatSettingsRevamp)
 
     const {
-        value: isChatSettingsScreensRevampChatSettingsEnabled,
-        isLoading: isChatSettingsScreensRevampChatSettingsLoading,
-    } = useFlagWithLoading(FeatureFlagKey.ChatSettingsScreensRevampChatSettings)
-
-    const {
         value: isChatSettingsScreensRevampFlowsEnabled,
         isLoading: isChatSettingsScreensRevampFlowsLoading,
     } = useFlagWithLoading(FeatureFlagKey.ChatSettingsScreensRevampFlows)
@@ -37,10 +32,6 @@ export const useShouldShowChatSettingsRevamp = (
         isChatSettingsRevampEnabled && isAiAgentEnabled
 
     // Section-specific flags — each adds an independent rollout gate on top of the base flag
-    const shouldShowChatSettingsScreensRevamp =
-        shouldShowRevampWhenAiAgentEnabled &&
-        isChatSettingsScreensRevampChatSettingsEnabled
-
     const shouldShowFlowsScreensRevamp =
         shouldShowRevampWhenAiAgentEnabled &&
         isChatSettingsScreensRevampFlowsEnabled
@@ -51,16 +42,13 @@ export const useShouldShowChatSettingsRevamp = (
 
     return {
         isChatSettingsRevampEnabled,
-        isChatSettingsScreensRevampChatSettingsEnabled,
         isChatSettingsScreensRevampFlowsEnabled,
         isChatSettingsScreensRevampOrderManagementEnabled,
         shouldShowRevampWhenAiAgentEnabled,
-        shouldShowChatSettingsScreensRevamp,
         shouldShowFlowsScreensRevamp,
         shouldShowOrderManagementScreensRevamp,
         isLoading:
             isRevampFlagLoading ||
-            isChatSettingsScreensRevampChatSettingsLoading ||
             isChatSettingsScreensRevampFlowsLoading ||
             isChatSettingsScreensRevampOrderManagementLoading ||
             isAiAgentLoading,

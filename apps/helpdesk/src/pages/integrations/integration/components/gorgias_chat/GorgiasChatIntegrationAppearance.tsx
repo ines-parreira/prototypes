@@ -1,6 +1,5 @@
 import useAppSelector from 'hooks/useAppSelector'
 import GorgiasChatIntegrationAppearanceLegacy from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
-import GorgiasChatIntegrationAppearanceLegacyRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance'
 import { ChatSettingsAppearanceSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/ChatSettingsAppearanceSkeleton'
 import { GorgiasChatIntegrationAppearanceRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationAppearance'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
@@ -12,11 +11,8 @@ export const GorgiasChatIntegrationAppearance = (props: Props) => {
     const { storeIntegration } = useStoreIntegration(props.integration)
     const chatId = props.integration.get('id') as number | undefined
 
-    const {
-        shouldShowRevampWhenAiAgentEnabled,
-        shouldShowChatSettingsScreensRevamp,
-        isLoading: isRevampLoading,
-    } = useShouldShowChatSettingsRevamp(storeIntegration, chatId)
+    const { shouldShowRevampWhenAiAgentEnabled, isLoading: isRevampLoading } =
+        useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
     const integrationsLoading = useAppSelector((state) =>
         state.integrations.getIn(['state', 'loading']),
@@ -26,16 +22,13 @@ export const GorgiasChatIntegrationAppearance = (props: Props) => {
         return <ChatSettingsAppearanceSkeleton />
     }
 
-    if (shouldShowChatSettingsScreensRevamp) {
+    if (shouldShowRevampWhenAiAgentEnabled) {
         return (
             <GorgiasChatIntegrationAppearanceRevamp
                 {...props}
                 loading={integrationsLoading}
             />
         )
-    }
-    if (shouldShowRevampWhenAiAgentEnabled) {
-        return <GorgiasChatIntegrationAppearanceLegacyRevamp {...props} />
     }
     return <GorgiasChatIntegrationAppearanceLegacy {...props} />
 }

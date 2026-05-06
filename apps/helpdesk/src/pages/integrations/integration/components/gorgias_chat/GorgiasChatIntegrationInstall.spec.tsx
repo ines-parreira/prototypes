@@ -28,11 +28,6 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall',
-    () => () => <div data-testid="old-revamp-install" />,
-)
-
-jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/ChatSettingsInstallationSkeleton',
     () => ({
         ChatSettingsInstallationSkeleton: () => (
@@ -74,12 +69,10 @@ describe('<GorgiasChatIntegrationInstall />', () => {
 
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
@@ -88,12 +81,10 @@ describe('<GorgiasChatIntegrationInstall />', () => {
     it('should render the skeleton while the revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
@@ -102,9 +93,6 @@ describe('<GorgiasChatIntegrationInstall />', () => {
 
         expect(screen.getByTestId('installation-skeleton')).toBeInTheDocument()
         expect(screen.queryByTestId('legacy-install')).not.toBeInTheDocument()
-        expect(
-            screen.queryByTestId('old-revamp-install'),
-        ).not.toBeInTheDocument()
         expect(
             screen.queryByTestId('new-revamp-install'),
         ).not.toBeInTheDocument()
@@ -121,9 +109,6 @@ describe('<GorgiasChatIntegrationInstall />', () => {
         expect(screen.getByTestId('installation-skeleton')).toBeInTheDocument()
         expect(screen.queryByTestId('legacy-install')).not.toBeInTheDocument()
         expect(
-            screen.queryByTestId('old-revamp-install'),
-        ).not.toBeInTheDocument()
-        expect(
             screen.queryByTestId('new-revamp-install'),
         ).not.toBeInTheDocument()
     })
@@ -133,44 +118,17 @@ describe('<GorgiasChatIntegrationInstall />', () => {
 
         expect(screen.getByTestId('legacy-install')).toBeInTheDocument()
         expect(
-            screen.queryByTestId('old-revamp-install'),
-        ).not.toBeInTheDocument()
-        expect(
             screen.queryByTestId('new-revamp-install'),
         ).not.toBeInTheDocument()
     })
 
-    it('should render the old revamp component when shouldShowRevampWhenAiAgentEnabled is true but shouldShowChatSettingsScreensRevamp is false', () => {
+    it('should render the new revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
-            isChatSettingsScreensRevampFlowsEnabled: false,
-            isChatSettingsScreensRevampOrderManagementEnabled: false,
-        })
-
-        render(<GorgiasChatIntegrationInstall {...minProps} />)
-
-        expect(screen.getByTestId('old-revamp-install')).toBeInTheDocument()
-        expect(screen.queryByTestId('legacy-install')).not.toBeInTheDocument()
-        expect(
-            screen.queryByTestId('new-revamp-install'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should render the new revamp component when shouldShowChatSettingsScreensRevamp is true', () => {
-        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowChatSettingsScreensRevamp: true,
-            shouldShowFlowsScreensRevamp: false,
-            shouldShowOrderManagementScreensRevamp: false,
-            isLoading: false,
-            isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
@@ -179,8 +137,5 @@ describe('<GorgiasChatIntegrationInstall />', () => {
 
         expect(screen.getByTestId('new-revamp-install')).toBeInTheDocument()
         expect(screen.queryByTestId('legacy-install')).not.toBeInTheDocument()
-        expect(
-            screen.queryByTestId('old-revamp-install'),
-        ).not.toBeInTheDocument()
     })
 })

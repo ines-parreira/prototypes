@@ -61,11 +61,9 @@ describe('<GorgiasAutomateChatIntegration />', () => {
     it('should render the skeleton while the hook is loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
@@ -85,11 +83,9 @@ describe('<GorgiasAutomateChatIntegration />', () => {
     it('should render the skeleton while the integration id is not yet available', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -111,14 +107,12 @@ describe('<GorgiasAutomateChatIntegration />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when shouldShowChatSettingsScreensRevamp is false', () => {
+    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -132,14 +126,12 @@ describe('<GorgiasAutomateChatIntegration />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render the revamp component when shouldShowChatSettingsScreensRevamp is true', () => {
+    it('should render the revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: true,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowChatSettingsScreensRevamp: true,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,

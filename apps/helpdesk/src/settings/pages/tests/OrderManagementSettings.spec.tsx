@@ -119,12 +119,10 @@ describe('OrderManagementSettings', () => {
         })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
@@ -192,12 +190,10 @@ describe('OrderManagementSettings', () => {
         beforeEach(() => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
                 shouldShowRevampWhenAiAgentEnabled: true,
-                shouldShowChatSettingsScreensRevamp: false,
                 shouldShowFlowsScreensRevamp: false,
                 shouldShowOrderManagementScreensRevamp: true,
                 isLoading: false,
                 isChatSettingsRevampEnabled: false,
-                isChatSettingsScreensRevampChatSettingsEnabled: false,
                 isChatSettingsScreensRevampFlowsEnabled: false,
                 isChatSettingsScreensRevampOrderManagementEnabled: false,
             })

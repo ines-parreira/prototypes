@@ -94,13 +94,6 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance',
-    () => () => {
-        return <div data-testid="legacy-revamp-appearance" />
-    },
-)
-
-jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/ChatSettingsAppearanceSkeleton',
     () => ({
         ChatSettingsAppearanceSkeleton: () => (
@@ -155,11 +148,9 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
 
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -173,11 +164,9 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
     it('should render the skeleton while the integration id is not yet available', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -200,20 +189,15 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         expect(
             screen.queryByTestId('new-revamp-appearance'),
         ).not.toBeInTheDocument()
-        expect(
-            screen.queryByTestId('old-revamp-appearance'),
-        ).not.toBeInTheDocument()
         expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
     })
 
     it('should render the skeleton while the revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
@@ -233,20 +217,15 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         expect(
             screen.queryByTestId('new-revamp-appearance'),
         ).not.toBeInTheDocument()
-        expect(
-            screen.queryByTestId('legacy-revamp-appearance'),
-        ).not.toBeInTheDocument()
         expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
     })
 
     it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowChatSettingsScreensRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -264,53 +243,16 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
 
         expect(
             screen.queryByTestId('new-revamp-appearance'),
-        ).not.toBeInTheDocument()
-        expect(
-            screen.queryByTestId('legacy-revamp-appearance'),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Chat title')).toBeInTheDocument()
     })
 
-    it('should render the legacy revamp component when shouldShowRevampWhenAiAgentEnabled is true but shouldShowChatSettingsScreensRevamp is false', () => {
+    it('should render the new revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: true,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowChatSettingsScreensRevamp: false,
-            shouldShowFlowsScreensRevamp: false,
-            shouldShowOrderManagementScreensRevamp: false,
-            isLoading: false,
-        })
-
-        render(
-            <Router history={history}>
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <GorgiasChatIntegrationAppearance {...minProps} />
-                    </Provider>
-                </QueryClientProvider>
-            </Router>,
-        )
-
-        expect(
-            screen.getByTestId('legacy-revamp-appearance'),
-        ).toBeInTheDocument()
-        expect(
-            screen.queryByTestId('new-revamp-appearance'),
-        ).not.toBeInTheDocument()
-        expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
-    })
-
-    it('should render the new revamp component when shouldShowChatSettingsScreensRevamp is true', () => {
-        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            isChatSettingsRevampEnabled: true,
-            isChatSettingsScreensRevampChatSettingsEnabled: false,
-            isChatSettingsScreensRevampFlowsEnabled: false,
-            isChatSettingsScreensRevampOrderManagementEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowChatSettingsScreensRevamp: true,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -327,9 +269,6 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         )
 
         expect(screen.getByTestId('new-revamp-appearance')).toBeInTheDocument()
-        expect(
-            screen.queryByTestId('legacy-revamp-appearance'),
-        ).not.toBeInTheDocument()
         expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
     })
 })
