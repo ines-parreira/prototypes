@@ -13,7 +13,7 @@ import {
 import type { ColorValue } from '@gorgias/axiom'
 import type { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
-import type { TicketStatus } from '../../../../components/TicketMenuStatus/utils'
+import type { TicketStatus } from '../../../../components/TicketStatusActions/utils'
 
 type Props = {
     status?: TicketStatus

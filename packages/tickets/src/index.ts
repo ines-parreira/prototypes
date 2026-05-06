@@ -73,7 +73,7 @@ export { DisplayedContent, FetchingState } from './translations/store/constants'
 export type { CurrentUser } from './translations/hooks/useCurrentUserLanguagePreferences'
 export type { DisplayType } from './translations/store/constants'
 
-export { useCloseTicket } from './components/TicketMenuStatus/useCloseTicket'
+export { useCloseTicket } from './components/TicketStatusActions/useCloseTicket'
 export { useTicketFieldsValidation } from './components/InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFieldsValidation'
 export { FieldRow } from './components/InfobarCustomerFields/components/FieldRow'
 export type { FieldRowProps } from './components/InfobarCustomerFields/components/FieldRow'

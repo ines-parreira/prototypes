@@ -8,8 +8,8 @@ import { TicketTranslationMenu } from '../../translations/components/TicketTrans
 import { SpamTicket } from '../SpamTicket'
 import { TicketActions } from '../TicketActions/TicketActions'
 import { TeamAssignee, UserAssignee } from '../TicketAssignee'
-import { TicketStatusMenu } from '../TicketMenuStatus/TicketStatusMenu'
 import { TicketPriority } from '../TicketPriority'
+import { TicketStatusActions } from '../TicketStatusActions/TicketStatusActions'
 import { TicketViewNavigator } from '../TicketViewNavigator/TicketViewNavigator'
 import { TrashedTicket } from '../TrashedTicket'
 import {
@@ -59,7 +59,6 @@ export function TicketHeader({ ticketId }: Props) {
                 {hasMessagesTranslations && (
                     <TicketTranslationMenu ticket={ticket} />
                 )}
-                <TicketStatusMenu ticket={ticket} />
                 <TicketPriority
                     ticketId={ticketId}
                     currentPriority={currentPriority}
@@ -69,6 +68,7 @@ export function TicketHeader({ ticketId }: Props) {
                     currentAssignee={currentAssignee}
                 />
                 <TeamAssignee ticketId={ticketId} currentTeam={currentTeam} />
+                <TicketStatusActions ticket={ticket} />
                 <TicketActions {...ticket} />
                 <TicketViewNavigator />
             </TicketHeaderRight>

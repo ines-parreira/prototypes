@@ -276,8 +276,8 @@ export const shortcuts: Shortcuts = {
             },
         },
     },
-    TicketStatusMenu: {
-        description: 'Ticket status menu',
+    TicketStatusActions: {
+        description: 'Ticket status actions',
         actions: {
             OPEN_TICKET: {
                 key: 'o',
@@ -286,6 +286,10 @@ export const shortcuts: Shortcuts = {
             CLOSE_TICKET: {
                 key: 'c',
                 description: 'Close selected tickets.',
+            },
+            OPEN_SNOOZE_TICKET: {
+                key: 'b',
+                description: 'Open the snooze ticket menu.',
             },
         },
     },

@@ -59,7 +59,7 @@ export function PrioritySelect({
             isDisabled={isDisabled || isLoading}
             aria-label="Priority selection"
             size="sm"
-            trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
+            trigger={({ isOpen, ref }) => {
                 const priority = selectedOption?.id || 'normal'
                 const { icon, color } = PRIORITY_ICON_MAP[priority]
 
@@ -69,17 +69,6 @@ export function PrioritySelect({
                         trigger={
                             <StatusButton
                                 ref={ref}
-                                leadingSlot={
-                                    isLoading ? (
-                                        <LoadingSpinner size={16} />
-                                    ) : (
-                                        <Icon
-                                            name={icon}
-                                            size="sm"
-                                            color={color}
-                                        />
-                                    )
-                                }
                                 trailingSlot={
                                     <Icon
                                         name={
@@ -91,7 +80,11 @@ export function PrioritySelect({
                                     />
                                 }
                             >
-                                {isPlaceholder ? 'Normal' : selectedText}
+                                {isLoading ? (
+                                    <LoadingSpinner size={16} />
+                                ) : (
+                                    <Icon name={icon} size="sm" color={color} />
+                                )}
                             </StatusButton>
                         }
                     >

@@ -6,7 +6,12 @@ import { useCloseTicket } from './useCloseTicket'
 import { useOpenTicket } from './useOpenTicket'
 import { getTicketStatus, TicketStatus } from './utils'
 
-export function useTicketStatusShortcuts(ticket: Ticket) {
+type Props = {
+    ticket: Ticket
+    onOpenSnooze: () => void
+}
+
+export function useTicketStatusShortcuts({ ticket, onOpenSnooze }: Props) {
     const { openTicket } = useOpenTicket(ticket.id)
     const { closeTicket } = useCloseTicket(ticket.id)
     const status = getTicketStatus(ticket)
@@ -19,7 +24,10 @@ export function useTicketStatusShortcuts(ticket: Ticket) {
         CLOSE_TICKET: {
             action: async () => await closeTicket(),
         },
+        OPEN_SNOOZE_TICKET: {
+            action: onOpenSnooze,
+        },
     }
 
-    useShortcuts('TicketStatusMenu', actions)
+    useShortcuts('TicketStatusActions', actions)
 }
