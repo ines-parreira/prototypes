@@ -477,6 +477,7 @@ function TicketTableComponent({
                 data={tableItems}
                 columns={columns}
                 isLoading={isLoading}
+                estimatedRowHeight={58}
                 onRowClick={handleRowClick}
                 getRowHref={getRowHref}
                 overflow="scroll"

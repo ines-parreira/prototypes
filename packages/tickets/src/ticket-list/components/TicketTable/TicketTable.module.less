@@ -2,5 +2,12 @@
     .container {
         flex: 1;
         min-height: 0;
+        // Flex column so the DataTable's own `flex: 1 0 auto` can take effect:
+        // it grows to fill the available height (anchoring the sticky
+        // pagination footer at the bottom when rows are sparse) but doesn't
+        // shrink when rows overflow — the parent `Panel` (overflow: auto)
+        // handles scroll instead.
+        display: flex;
+        flex-direction: column;
     }
 }
