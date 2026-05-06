@@ -168,4 +168,86 @@ describe('OrderCard', () => {
         const img = screen.getByAltText('Product 4') as HTMLImageElement
         expect(img.src).toContain('example.com/product4')
     })
+
+    describe('draft order status rendering', () => {
+        const draftOrder: OrderCardOrder = {
+            ...mockOrder,
+            name: '#D1001',
+            status: 'open',
+            invoice_sent_at: null,
+        }
+
+        it.each([
+            ['open', null, 'Open'],
+            ['invoice_sent', null, 'Invoice sent'],
+            ['completed', null, 'Completed'],
+        ] as const)(
+            'renders Draft + "%s" tag for status %s',
+            (status, invoiceSentAt, expectedLabel) => {
+                render(
+                    <OrderCard
+                        order={{
+                            ...draftOrder,
+                            status,
+                            invoice_sent_at: invoiceSentAt,
+                        }}
+                        displayedDate={mockDisplayedDate}
+                        isDraftOrder
+                    />,
+                )
+                expect(screen.getByText('Draft')).toBeInTheDocument()
+                expect(screen.getByText(expectedLabel)).toBeInTheDocument()
+            },
+        )
+
+        it('falls back to "Invoice sent" when status is missing but invoice_sent_at is present', () => {
+            render(
+                <OrderCard
+                    order={{
+                        ...mockOrder,
+                        name: '#D1002',
+                        invoice_sent_at: '2024-01-15T10:00:00Z',
+                    }}
+                    displayedDate={mockDisplayedDate}
+                    isDraftOrder
+                />,
+            )
+            expect(screen.getByText('Draft')).toBeInTheDocument()
+            expect(screen.getByText('Invoice sent')).toBeInTheDocument()
+        })
+
+        it('does not render Cancelled, financial, or fulfillment tags for drafts', () => {
+            render(
+                <OrderCard
+                    order={{
+                        ...draftOrder,
+                        cancelled_at: '2024-01-15T10:00:00Z',
+                        fulfillment_status: null,
+                    }}
+                    displayedDate={mockDisplayedDate}
+                    isDraftOrder
+                />,
+            )
+            expect(screen.queryByText('Cancelled')).not.toBeInTheDocument()
+            expect(screen.queryByText('Unfulfilled')).not.toBeInTheDocument()
+            expect(screen.queryByText('Unknown')).not.toBeInTheDocument()
+            expect(screen.queryByText('Paid')).not.toBeInTheDocument()
+        })
+
+        it('renders financial and fulfillment tags for regular orders even when draft fields are present', () => {
+            render(
+                <OrderCard
+                    order={{
+                        ...mockOrder,
+                        status: 'open',
+                        invoice_sent_at: null,
+                    }}
+                    displayedDate={mockDisplayedDate}
+                />,
+            )
+            expect(screen.getByText('Paid')).toBeInTheDocument()
+            expect(screen.getByText('Unfulfilled')).toBeInTheDocument()
+            expect(screen.queryByText('Open')).not.toBeInTheDocument()
+        })
+    })
 })

@@ -236,6 +236,50 @@ describe('OrderSidePanelPreview', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('renders Draft + Open status tags and hides financial/fulfillment tags for drafts', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={{
+                    ...mockOrder,
+                    status: 'open',
+                    invoice_sent_at: null,
+                }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                isDraftOrder={true}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Open')).toBeInTheDocument()
+        })
+
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+        expect(screen.queryByText('Paid')).not.toBeInTheDocument()
+        expect(screen.queryByText('Fulfilled')).not.toBeInTheDocument()
+        expect(screen.queryByText('Unfulfilled')).not.toBeInTheDocument()
+        expect(screen.queryByText('Unknown')).not.toBeInTheDocument()
+    })
+
+    it('renders draft "Invoice sent" status tag for drafts with invoice_sent status', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={{
+                    ...mockOrder,
+                    status: 'invoice_sent',
+                    invoice_sent_at: '2024-01-15T10:00:00Z',
+                }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                isDraftOrder={true}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Invoice sent')).toBeInTheDocument()
+        })
+    })
+
     it('should call onOpenChange when close button is clicked', async () => {
         const onOpenChange = vi.fn()
 

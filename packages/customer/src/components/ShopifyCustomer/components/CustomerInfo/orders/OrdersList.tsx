@@ -96,6 +96,7 @@ export function OrdersList({
                                             ? () => onSelectOrder(draftOrder)
                                             : undefined
                                     }
+                                    isDraftOrder
                                 />
                             ))}
                         </>

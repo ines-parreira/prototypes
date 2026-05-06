@@ -3,12 +3,14 @@ import type { ReactNode } from 'react'
 
 import type { FullShopifyMetafield } from '@repo/ecommerce/shopify/components'
 import type {
+    DraftStatusValue,
     FinancialStatusValue,
     FulfillmentStatusValue,
     OrderCardProduct,
     OrderLineItem,
 } from '@repo/ecommerce/shopify/types'
 import {
+    getDraftOrderStatusInfo,
     getFinancialStatusInfo,
     getFulfillmentStatusInfo,
 } from '@repo/ecommerce/shopify/utils'
@@ -60,6 +62,8 @@ export type OrderData = {
     cancelled_at?: string | null
     order_status_url?: string
     invoice_url?: string
+    status?: DraftStatusValue
+    invoice_sent_at?: string | null
     fulfillments?: Array<{
         tracking_url?: string | null
         tracking_number?: string | null
@@ -140,6 +144,11 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
             order.fulfillment_status as FulfillmentStatusValue | null,
         )
 
+    const { label: draftLabel, color: draftColor } = getDraftOrderStatusInfo(
+        order.status,
+        order.invoice_sent_at,
+    )
+
     const moneySymbol = order.currency
         ? getMoneySymbol(order.currency, true)
         : ''
@@ -170,6 +179,9 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
                     fulfillmentLabel={fulfillmentLabel}
                     fulfillmentColor={fulfillmentColor}
                     onClose={onClose}
+                    isDraftOrder={isDraftOrder}
+                    draftLabel={draftLabel}
+                    draftColor={draftColor}
                 />
 
                 {!isDraftOrder && (

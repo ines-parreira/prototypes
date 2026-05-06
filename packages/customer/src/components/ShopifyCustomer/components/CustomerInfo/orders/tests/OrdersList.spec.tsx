@@ -382,4 +382,54 @@ describe('OrdersList', () => {
 
         expect(onCreateOrder).toHaveBeenCalledTimes(1)
     })
+
+    it('renders Draft + Open tags and not financial/fulfillment tags for drafts', () => {
+        const draftWithStatus: OrderEcommerceData = {
+            ...mockDraftOrderData,
+            data: {
+                ...mockDraftOrderData.data,
+                status: 'open',
+                invoice_sent_at: null,
+            },
+        }
+
+        render(
+            <OrdersList
+                orders={[]}
+                isLoadingOrders={false}
+                productsMap={mockProductsMap}
+                draftOrders={[draftWithStatus]}
+                isLoadingDraftOrders={false}
+            />,
+        )
+
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+        expect(screen.getByText('Open')).toBeInTheDocument()
+        expect(screen.queryByText('Unknown')).not.toBeInTheDocument()
+        expect(screen.queryByText('Unfulfilled')).not.toBeInTheDocument()
+        expect(screen.queryByText('Pending')).not.toBeInTheDocument()
+    })
+
+    it('renders Invoice sent tag for drafts with status=invoice_sent', () => {
+        const draftInvoiceSent: OrderEcommerceData = {
+            ...mockDraftOrderData,
+            data: {
+                ...mockDraftOrderData.data,
+                status: 'invoice_sent',
+                invoice_sent_at: '2024-01-17T10:00:00Z',
+            },
+        }
+
+        render(
+            <OrdersList
+                orders={[]}
+                isLoadingOrders={false}
+                productsMap={mockProductsMap}
+                draftOrders={[draftInvoiceSent]}
+                isLoadingDraftOrders={false}
+            />,
+        )
+
+        expect(screen.getByText('Invoice sent')).toBeInTheDocument()
+    })
 })

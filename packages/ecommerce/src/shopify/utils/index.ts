@@ -4,6 +4,7 @@ export {
     type OrderWithIntegration,
 } from './extractOrdersWithIntegration'
 export { formatOrderDate } from './formatOrderDate'
+export { getDraftOrderStatusInfo } from './getDraftOrderStatusInfo'
 export { getFinancialStatusInfo } from './getFinancialStatusInfo'
 export { getFulfillmentStatusInfo } from './getFulfillmentStatusInfo'
 export { getShipmentStatusInfo } from './getShipmentStatusInfo'

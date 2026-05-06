@@ -1,5 +1,6 @@
-export { FinancialStatus, FulfillmentStatus } from './status'
+export { DraftStatus, FinancialStatus, FulfillmentStatus } from './status'
 export type {
+    DraftStatusValue,
     FinancialStatusValue,
     FulfillmentStatusValue,
     OrderCardImage,

@@ -14,6 +14,7 @@ type OrderCardProps = {
     displayedDate: string
     productsMap?: Map<number, OrderCardProduct>
     onClick?: () => void
+    isDraftOrder?: boolean
 }
 
 export function OrderCard({
@@ -21,6 +22,7 @@ export function OrderCard({
     displayedDate,
     productsMap,
     onClick,
+    isDraftOrder,
 }: OrderCardProps) {
     const moneySymbol = getMoneySymbol(order.currency, true)
 
@@ -45,6 +47,9 @@ export function OrderCard({
                     financialStatus={order.financial_status}
                     fulfillmentStatus={order.fulfillment_status}
                     cancelledAt={order.cancelled_at}
+                    isDraftOrder={isDraftOrder}
+                    draftStatus={order.status}
+                    invoiceSentAt={order.invoice_sent_at}
                 />
             </Card>
         </div>

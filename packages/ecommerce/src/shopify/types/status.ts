@@ -21,3 +21,9 @@ export enum FulfillmentStatus {
     Scheduled = 'scheduled',
     Unfulfilled = 'unfulfilled',
 }
+
+export enum DraftStatus {
+    Open = 'open',
+    InvoiceSent = 'invoice_sent',
+    Completed = 'completed',
+}

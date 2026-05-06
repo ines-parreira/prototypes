@@ -68,6 +68,8 @@ export type FulfillmentStatusValue =
     | 'scheduled'
     | 'unfulfilled'
 
+export type DraftStatusValue = 'open' | 'invoice_sent' | 'completed'
+
 export type OrderCardLineItem = {
     title: string
     product_id?: number | null
@@ -92,6 +94,8 @@ export type OrderCardOrder = {
     fulfillment_status: FulfillmentStatusValue | null
     line_items: OrderCardLineItem[]
     cancelled_at?: string | null
+    status?: DraftStatusValue
+    invoice_sent_at?: string | null
 }
 
 export type ShopifyProductData = {

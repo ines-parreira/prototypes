@@ -128,6 +128,8 @@ export type FulfillmentStatus =
     | 'scheduled'
     | 'unfulfilled'
 
+export type DraftStatus = 'open' | 'invoice_sent' | 'completed'
+
 export type OrderFulfillment = {
     tracking_url?: string | null
     tracking_number?: string | null
@@ -213,6 +215,8 @@ export type OrderData = {
     current_shipping_price_set?: MoneySet
     financial_status: FinancialStatus
     fulfillment_status: FulfillmentStatus | null
+    status?: DraftStatus
+    invoice_sent_at?: string | null
     line_items: OrderLineItem[]
     customer: ShopperData
     tags?: string

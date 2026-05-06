@@ -14,6 +14,9 @@ type Props = {
     fulfillmentLabel: string
     fulfillmentColor: TagColor
     onClose: () => void
+    isDraftOrder?: boolean
+    draftLabel?: string
+    draftColor?: TagColor
 }
 
 export function OrderSidePanelHeader({
@@ -24,6 +27,9 @@ export function OrderSidePanelHeader({
     fulfillmentLabel,
     fulfillmentColor,
     onClose,
+    isDraftOrder,
+    draftLabel,
+    draftColor,
 }: Props) {
     return (
         <Box
@@ -47,9 +53,22 @@ export function OrderSidePanelHeader({
                     </Heading>
                 </CopyableField>
                 <Box gap="xxxs">
-                    {isCancelled && <Tag color="red">Cancelled</Tag>}
-                    <Tag color={financialColor}>{financialLabel}</Tag>
-                    <Tag color={fulfillmentColor}>{fulfillmentLabel}</Tag>
+                    {isDraftOrder ? (
+                        <>
+                            <Tag color="grey">Draft</Tag>
+                            {draftLabel && (
+                                <Tag color={draftColor}>{draftLabel}</Tag>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {isCancelled && <Tag color="red">Cancelled</Tag>}
+                            <Tag color={financialColor}>{financialLabel}</Tag>
+                            <Tag color={fulfillmentColor}>
+                                {fulfillmentLabel}
+                            </Tag>
+                        </>
+                    )}
                 </Box>
             </Box>
 
