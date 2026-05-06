@@ -73,13 +73,15 @@ describe('<SendTestCard />', () => {
         } as any)
     })
 
-    it('should disable the Send SMS button when no phone number is entered', () => {
+    it('should disable the Send test button when no phone number is entered', () => {
         renderComponent()
 
-        expect(screen.getByRole('button', { name: /send sms/i })).toBeDisabled()
+        expect(
+            screen.getByRole('button', { name: /send test/i }),
+        ).toBeDisabled()
     })
 
-    it('should enable the Send SMS button after typing a phone number', async () => {
+    it('should enable the Send test button after typing a phone number', async () => {
         const user = userEvent.setup()
         renderComponent()
 
@@ -89,7 +91,7 @@ describe('<SendTestCard />', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', { name: /send sms/i }),
+                screen.getByRole('button', { name: /send test/i }),
             ).toBeEnabled()
         })
     })
@@ -109,7 +111,7 @@ describe('<SendTestCard />', () => {
         })
     })
 
-    it('should call handleTestSms when Send SMS button is clicked', async () => {
+    it('should call handleTestSms when Send test button is clicked', async () => {
         const user = userEvent.setup()
         renderComponent()
 
@@ -119,12 +121,12 @@ describe('<SendTestCard />', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', { name: /send sms/i }),
+                screen.getByRole('button', { name: /send test/i }),
             ).toBeEnabled()
         })
 
         await act(() =>
-            user.click(screen.getByRole('button', { name: /send sms/i })),
+            user.click(screen.getByRole('button', { name: /send test/i })),
         )
 
         await waitFor(() => {

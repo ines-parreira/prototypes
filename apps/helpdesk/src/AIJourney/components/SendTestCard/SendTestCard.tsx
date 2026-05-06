@@ -172,7 +172,7 @@ export const SendTestCard = ({
                         isDisabled={!digits || isSending}
                         style={{ marginBottom: '20px' }}
                     >
-                        Send SMS
+                        Send test
                     </Button>
                 </Box>
             </Box>
