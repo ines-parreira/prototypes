@@ -570,6 +570,29 @@ describe('TimelineContent', () => {
             })
         })
 
+        it('should close side panel when activeTicketId changes', async () => {
+            const user = userEvent.setup()
+            setupWithTickets()
+
+            const { rerender } = renderComponent()
+
+            await user.click(screen.getByText('First Ticket'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            rerender(<TimelineContent {...defaultProps} activeTicketId="456" />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: /first ticket/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
         it('should close side panel when close button is clicked', async () => {
             const user = userEvent.setup()
             setupWithTickets()
@@ -1476,6 +1499,29 @@ describe('TimelineContent', () => {
                 expect(
                     screen.getByRole('heading', { name: /order #3519/i }),
                 ).toBeInTheDocument()
+            })
+        })
+
+        it('should close order side panel when activeTicketId changes', async () => {
+            const user = userEvent.setup()
+            setupWithOrders()
+
+            const { rerender } = renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3519/i }),
+                ).toBeInTheDocument()
+            })
+
+            rerender(<TimelineContent {...defaultProps} activeTicketId="456" />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: /order #3519/i }),
+                ).not.toBeInTheDocument()
             })
         })
 

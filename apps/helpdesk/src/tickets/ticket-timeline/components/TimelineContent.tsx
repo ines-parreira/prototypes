@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { ShopifyCustomerProvider } from '@repo/customer'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
@@ -92,6 +92,10 @@ export function TimelineContent({
     )
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
     const [isOpen, setIsOpen] = useState(false)
+
+    useEffect(() => {
+        setIsOpen(false)
+    }, [activeTicketId])
 
     const selectedOrderIntegrationId = useMemo(() => {
         if (!selectedOrder || !customer?.integrations) return undefined

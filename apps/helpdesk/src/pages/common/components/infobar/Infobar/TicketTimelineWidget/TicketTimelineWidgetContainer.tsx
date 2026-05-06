@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import type { EnrichedTicket } from '@repo/tickets'
@@ -71,6 +71,10 @@ export function TicketTimelineWidgetContainer({
         null,
     )
     const [isOpen, setIsOpen] = useState(false)
+
+    useEffect(() => {
+        setIsOpen(false)
+    }, [activeTicketId])
 
     const currentIndex = selectedTicket
         ? allEnrichedTickets.findIndex(

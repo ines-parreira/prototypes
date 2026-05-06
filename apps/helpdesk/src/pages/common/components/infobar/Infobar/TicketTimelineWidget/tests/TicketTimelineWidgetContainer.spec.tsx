@@ -596,6 +596,79 @@ describe('TicketTimelineWidgetContainer', () => {
             })
         })
 
+        it('should close sidepanel when activeTicketId changes', async () => {
+            const user = userEvent.setup()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+            ]
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 2,
+                openTicketsNumber: 2,
+                snoozedTicketsNumber: 0,
+            })
+
+            const { rerender } = renderTicketTimelineWidgetContainer({
+                activeTicketId: '1',
+            })
+
+            const ticketCard = screen.getByText('First Ticket').closest('div')
+            await act(() => user.click(ticketCard!))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('dialog', { hidden: true }),
+                ).toBeInTheDocument()
+            })
+
+            rerender(
+                <TicketTimelineWidgetContainer
+                    shopperId={123}
+                    activeTicketId="2"
+                />,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('dialog', { hidden: true }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
         it('should pass ticket to TicketTimelineSidePanelPreview when clicked', async () => {
             const user = userEvent.setup()
 
