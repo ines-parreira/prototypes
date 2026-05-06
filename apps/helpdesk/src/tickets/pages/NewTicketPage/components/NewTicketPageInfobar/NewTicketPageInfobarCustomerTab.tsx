@@ -24,6 +24,7 @@ type NewTicketPageInfobarCustomerTabProps = {
     onEditCustomer: (customer: TicketCustomer) => void
     onSyncToShopify: (customer: TicketCustomer) => void
     onSearchCustomers: () => void
+    onOpenMergePanel: () => void
 }
 
 export function NewTicketPageInfobarCustomerTab({
@@ -34,6 +35,7 @@ export function NewTicketPageInfobarCustomerTab({
     onEditCustomer,
     onSyncToShopify,
     onSearchCustomers,
+    onOpenMergePanel,
 }: NewTicketPageInfobarCustomerTabProps) {
     return (
         <Box flex={1} flexDirection="column" minWidth="340px">
@@ -57,6 +59,7 @@ export function NewTicketPageInfobarCustomerTab({
                             customer={customer}
                             onEditCustomer={onEditCustomer}
                             onSyncToShopify={onSyncToShopify}
+                            onOpenMergePanel={onOpenMergePanel}
                             hasShopifyIntegration={hasShopifyIntegration}
                         />
                         <InfobarCustomerFields customer={customer} />

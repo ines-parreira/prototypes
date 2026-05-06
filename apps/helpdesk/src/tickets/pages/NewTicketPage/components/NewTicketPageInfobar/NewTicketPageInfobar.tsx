@@ -164,6 +164,7 @@ export function NewTicketPageInfobar({
                             onEditCustomer={handleEditCustomer}
                             onSyncToShopify={handleSyncToShopify}
                             onSearchCustomers={handleOpenSearchAndPreviewPanel}
+                            onOpenMergePanel={handleOpenSearchAndPreviewPanel}
                         />
                     </section>
                     {showShopifySection && (

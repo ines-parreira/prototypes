@@ -114,7 +114,11 @@ export function SearchAndPreviewCustomersPanel({
                             !previewedCustomer && (
                                 <InfoSection
                                     icon="user"
-                                    description="Search to find customers to merge or reassign to this ticket."
+                                    description={
+                                        onMergeCustomer
+                                            ? 'Search to find customers to merge or reassign to this ticket.'
+                                            : 'Search to find customers to reassign to this ticket.'
+                                    }
                                 />
                             )}
                         {!isSearchMode && previewedCustomer && (

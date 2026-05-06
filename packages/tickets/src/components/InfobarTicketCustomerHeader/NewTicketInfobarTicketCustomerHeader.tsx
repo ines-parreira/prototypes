@@ -8,6 +8,7 @@ export interface NewTicketInfobarTicketCustomerHeaderProps {
     customer: TicketCustomer
     onEditCustomer: (customer: TicketCustomer) => void
     onSyncToShopify: (customer: TicketCustomer) => void
+    onOpenMergePanel?: () => void
     hasShopifyIntegration?: boolean
 }
 
@@ -15,6 +16,7 @@ export function NewTicketInfobarTicketCustomerHeader({
     customer,
     onEditCustomer,
     onSyncToShopify,
+    onOpenMergePanel,
     hasShopifyIntegration = false,
 }: NewTicketInfobarTicketCustomerHeaderProps) {
     return (
@@ -24,7 +26,9 @@ export function NewTicketInfobarTicketCustomerHeader({
                 customer={customer}
                 onEditCustomer={onEditCustomer}
                 onSyncToShopify={onSyncToShopify}
+                onOpenMergePanel={onOpenMergePanel}
                 hasShopifyIntegration={hasShopifyIntegration}
+                mergeMenuItemLabel="Switch customer"
             />
         </InfobarTicketCustomerHeaderContainer>
     )

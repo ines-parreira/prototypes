@@ -130,7 +130,7 @@ describe('InfobarTicketCustomerHeader', () => {
         expect(screen.getByText('Sync profile to Shopify')).toBeInTheDocument()
     })
 
-    it('should call onOpenMergePanel from the merge or switch customer button', async () => {
+    it('should show merge or switch customer option in dropdown and call onOpenMergePanel when clicked', async () => {
         const mockOnOpenMergePanel = vi.fn()
         const { user } = render(
             <InfobarTicketCustomerHeader
@@ -145,13 +145,11 @@ describe('InfobarTicketCustomerHeader', () => {
 
         await waitUntilLoaded()
 
-        await act(() =>
-            user.click(
-                screen.getByRole('button', {
-                    name: 'Merge or switch customer profiles',
-                }),
-            ),
-        )
+        const menuButton = screen.getByLabelText('Customer menu')
+        await act(() => user.click(menuButton))
+
+        const mergeOptions = screen.getAllByText('Merge or switch customer')
+        await act(() => user.click(mergeOptions[mergeOptions.length - 1]))
         expect(mockOnOpenMergePanel).toHaveBeenCalledTimes(1)
     })
 

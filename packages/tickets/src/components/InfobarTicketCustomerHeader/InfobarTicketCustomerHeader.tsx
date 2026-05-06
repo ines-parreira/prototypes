@@ -1,9 +1,7 @@
-import { Box } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { InfobarTicketCustomerEditCustomerMenu } from './components/InfobarTicketCustomerEditCustomerMenu'
 import { InfobarTicketCustomerHeaderContainer } from './components/InfobarTicketCustomerHeaderContainer'
-import { InfobarTicketCustomerMergeButton } from './components/InfobarTicketCustomerMergeButton'
 import { InfobarTicketCustomerName } from './components/InfobarTicketCustomerName'
 
 export interface InfobarTicketCustomerHeaderProps {
@@ -28,17 +26,13 @@ export function InfobarTicketCustomerHeader({
     return (
         <InfobarTicketCustomerHeaderContainer>
             <InfobarTicketCustomerName customer={customer} />
-            <Box>
-                <InfobarTicketCustomerMergeButton
-                    onOpenMergePanel={onOpenMergePanel}
-                />
-                <InfobarTicketCustomerEditCustomerMenu
-                    customer={customer}
-                    onEditCustomer={onEditCustomer}
-                    onSyncToShopify={onSyncToShopify}
-                    hasShopifyIntegration={hasShopifyIntegration}
-                />
-            </Box>
+            <InfobarTicketCustomerEditCustomerMenu
+                customer={customer}
+                onEditCustomer={onEditCustomer}
+                onSyncToShopify={onSyncToShopify}
+                onOpenMergePanel={onOpenMergePanel}
+                hasShopifyIntegration={hasShopifyIntegration}
+            />
         </InfobarTicketCustomerHeaderContainer>
     )
 }
