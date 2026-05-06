@@ -8,7 +8,7 @@ import { fetchVisibleViewsCounts } from 'state/views/actions'
 export default function useInitialViewCountsFetch() {
     const dispatch = useAppDispatch()
     const { value: hasNewScheduler, isLoading } = useFlagWithLoading(
-        FeatureFlagKey.ImprovedViewCountUpdates,
+        FeatureFlagKey.UIVisionBetaBaseline,
     )
     const hasFetched = useRef(false)
 

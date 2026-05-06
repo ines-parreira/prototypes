@@ -13,7 +13,7 @@ const scheduler = createViewCountScheduler({
 })
 
 export default function useViewCountScheduler(): void {
-    const isEnabled = useFlag(FeatureFlagKey.ImprovedViewCountUpdates)
+    const isEnabled = useFlag(FeatureFlagKey.UIVisionBetaBaseline)
 
     useEffect(() => {
         if (!isEnabled) return

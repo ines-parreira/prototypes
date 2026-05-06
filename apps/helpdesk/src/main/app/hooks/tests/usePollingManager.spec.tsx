@@ -1,4 +1,4 @@
-import { useFlagWithLoading } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
@@ -60,6 +60,16 @@ describe('usePollingManager', () => {
         renderHook(() => usePollingManager())
 
         expect(pollingManager.start).not.toHaveBeenCalled()
+    })
+
+    it('should use the Helpdesk v2 beta flag to gate the view count scheduler', () => {
+        mockAppSelector({ currentUser: { is_active: true } })
+
+        renderHook(() => usePollingManager())
+
+        expect(useFlagWithLoadingMock).toHaveBeenCalledWith(
+            FeatureFlagKey.UIVisionBetaBaseline,
+        )
     })
 
     it('should start polling when user becomes active', () => {

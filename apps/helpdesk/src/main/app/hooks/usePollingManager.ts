@@ -15,7 +15,7 @@ import { getViewFilters } from 'state/views/utils'
 
 export default function usePollingManager() {
     const { value: hasNewScheduler, isLoading } = useFlagWithLoading(
-        FeatureFlagKey.ImprovedViewCountUpdates,
+        FeatureFlagKey.UIVisionBetaBaseline,
     )
     const currentUser = useAppSelector((state) => state.currentUser)
     const activeView = useAppSelector(getActiveView)

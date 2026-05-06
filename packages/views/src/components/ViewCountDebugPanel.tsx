@@ -54,7 +54,7 @@ export function ViewCountDebugPanel({
     isOpen = false,
     onOpenChange,
 }: ViewCountDebugPanelProps) {
-    const isEnabled = useFlag(FeatureFlagKey.ImprovedViewCountUpdates)
+    const isEnabled = useFlag(FeatureFlagKey.UIVisionBetaBaseline)
     const counts = useStore(viewsCountStore, (s) => s.counts)
     const scores = useStore(viewsCountStore, (s) => s.scores)
     const allViews = useAllViews()
@@ -131,7 +131,7 @@ export function ViewCountDebugPanel({
                             intent="warning"
                             isClosable={false}
                             title="Legacy view count scheduling in use"
-                            description="The ImprovedViewCountUpdates flag is disabled, so view counts are fetched by the legacy scheduler."
+                            description="The Helpdesk v2 beta flag is disabled, so view counts are fetched by the legacy scheduler."
                         />
                     )}
 
