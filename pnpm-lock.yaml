@@ -228,8 +228,8 @@ catalogs:
       version: 4.12.8
   realtime:
     '@gorgias/realtime':
-      specifier: ^1.2.5
-      version: 1.2.5
+      specifier: ^1.2.6
+      version: 1.2.6
   recharts:
     recharts:
       specifier: 3.6.0
@@ -689,7 +689,7 @@ importers:
         version: 0.2.58
       '@gorgias/realtime':
         specifier: catalog:realtime
-        version: 1.2.5(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 1.2.6(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.52.1(react@18.2.0))
@@ -1746,7 +1746,7 @@ importers:
         version: 0.14.4
       '@gorgias/realtime':
         specifier: catalog:realtime
-        version: 1.2.5(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 1.2.6(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@repo/preferences':
         specifier: workspace:*
         version: link:../preferences
@@ -3685,7 +3685,7 @@ importers:
         version: 0.9.117
       '@gorgias/realtime':
         specifier: catalog:realtime
-        version: 1.2.5(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 1.2.6(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -3865,7 +3865,7 @@ importers:
         version: 0.9.117
       '@gorgias/realtime':
         specifier: catalog:realtime
-        version: 1.2.5(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 1.2.6(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -5725,8 +5725,8 @@ packages:
   '@gorgias/knowledge-service-validators@0.2.58':
     resolution: {integrity: sha512-9v60jyFufCDP4MotJS7lwPwuWqp7f1RtRvjyeA5SvW9M54BpYm4Fo4jv7kxKeEqLsnUMPXBXec2MmlzXwKPJSQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.58/5db2d7c3804ab27c71311a177c51f295efcc1a38}
 
-  '@gorgias/realtime@1.2.5':
-    resolution: {integrity: sha512-z2aLUNP/xi85IniPjVQv+ltZnBvgVegqUABLLkQ2dKV8/zZmZEnLZRzAzucJ1nm18/VVN2hrkR7oUekjldF8HA==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/1.2.5/de5cda5dd3f9015317a5c0ef07b397f759852c82}
+  '@gorgias/realtime@1.2.6':
+    resolution: {integrity: sha512-ptjnfhjftFjVoLk8oJLpP8V2ZXlkLndrMFRYr0rUjzrn21+540/nsLYmhDqW9T83FVDnwAFKNfRWJhekC/0cPw==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/1.2.6/050456d906da5489e4fa4a823c322aedd376852c}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       '@tanstack/react-query': 4.36.1
@@ -19017,7 +19017,7 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/realtime@1.2.5(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/realtime@1.2.6(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@gorgias/events': 0.14.4
       '@gorgias/helpdesk-client': 0.10.143
@@ -23647,7 +23647,7 @@ snapshots:
       fastestsmallesttextencoderdecoder: 1.0.22
       got: 11.8.6
       ulid: 2.4.0
-      ws: 8.18.0
+      ws: 8.20.0
     optionalDependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
