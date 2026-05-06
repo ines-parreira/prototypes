@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { ListSection, MultiSelectField, MultiSelectItem } from '@gorgias/axiom'
 
 import { FieldPresentation } from 'AIJourney/components'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
 import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
@@ -40,13 +41,17 @@ export const AudienceSelect = ({
     showError = false,
 }: AudienceSelectFieldProps) => {
     const [hasInteracted, setHasInteracted] = useState(false)
-    const { currentIntegration } = useJourneyContext()
+    const { currentIntegration, journeyType } = useJourneyContext()
+
+    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
 
     const { data: audienceLists, isLoading: isLoadingAudienceLists } =
         useAudienceLists(currentIntegration?.id)
 
     const { data: audienceSegments, isLoading: isLoadingAudienceSegments } =
-        useAudienceSegments(currentIntegration?.id)
+        useAudienceSegments(currentIntegration?.id, undefined, undefined, {
+            enabled: !isCampaign,
+        })
 
     const sections: Section[] = useMemo(() => {
         const currentSections = []
@@ -64,7 +69,11 @@ export const AudienceSelect = ({
             })
         }
 
-        if (audienceSegments && audienceSegments.data.length > 0) {
+        if (
+            !isCampaign &&
+            audienceSegments &&
+            audienceSegments.data.length > 0
+        ) {
             currentSections.push({
                 id: 'segment',
                 name: 'Segments',
@@ -78,7 +87,7 @@ export const AudienceSelect = ({
         }
 
         return currentSections
-    }, [audienceLists, audienceSegments, exclude])
+    }, [audienceLists, audienceSegments, exclude, isCampaign])
 
     const handleChange = useCallback(
         (
@@ -120,13 +129,19 @@ export const AudienceSelect = ({
                         : undefined
                 }
             >
-                {(section) => (
+                {(section: {
+                    id: string
+                    name: string
+                    items: { id: string; name: string }[]
+                }) => (
                     <ListSection
                         id={section.name}
                         name={section.name}
                         items={section.items}
                     >
-                        {(option) => <MultiSelectItem label={option.name} />}
+                        {(option: { id: string; name: string }) => (
+                            <MultiSelectItem label={option.name} />
+                        )}
                     </ListSection>
                 )}
             </MultiSelectField>

@@ -7,6 +7,7 @@ import { ListItem, ListSection, MultiSelectField } from '@gorgias/axiom'
 
 import { CreateNewSegmentButton } from 'AIJourney/components/CreateNewSegmentButton/CreateNewSegmentButton'
 import { SegmentsSidePanel } from 'AIJourney/components/SegmentsSidePanel/SegmentsSidePanel'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useConditionsMetadata } from 'AIJourney/queries'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
@@ -36,7 +37,9 @@ type AudienceSegmentWithIdentifier = {
 
 export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     const { control, getValues, setValue } = useFormContext()
-    const { currentIntegration } = useJourneyContext()
+    const { currentIntegration, journeyType } = useJourneyContext()
+
+    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
 
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
@@ -62,7 +65,12 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     const {
         data: gorgiasAudienceSegments,
         isLoading: isLoadingGorgiasAudienceSegments,
-    } = useAudienceSegments(currentIntegration?.id, AudienceListSource.Gorgias)
+    } = useAudienceSegments(
+        currentIntegration?.id,
+        AudienceListSource.Gorgias,
+        undefined,
+        { enabled: !isCampaign },
+    )
 
     const {
         data: klaviyoAudienceSegments,
@@ -157,7 +165,7 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
             ),
         ].filter((e) => !excluded.includes(e.id))
 
-        if (mergedGorgiasItems.length > 0) {
+        if (!isCampaign && mergedGorgiasItems.length > 0) {
             currentSections.push({
                 id: 'gorgias-segment',
                 name: 'Gorgias segments',
@@ -185,6 +193,7 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     }, [
         audienceLists,
         gorgiasAudienceSegments,
+        isCampaign,
         klaviyoAudienceSegments,
         localSegments,
     ])
@@ -227,13 +236,19 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                             isLoadingKlaviyoAudienceSegments
                         }
                     >
-                        {(section) => (
+                        {(section: {
+                            id: string
+                            name: string
+                            items: { id: string; name: string }[]
+                        }) => (
                             <ListSection
                                 id={section.name}
                                 name={section.name}
                                 items={section.items}
                             >
-                                {(option) => <ListItem label={option.name} />}
+                                {(option: { id: string; name: string }) => (
+                                    <ListItem label={option.name} />
+                                )}
                             </ListSection>
                         )}
                     </MultiSelectField>

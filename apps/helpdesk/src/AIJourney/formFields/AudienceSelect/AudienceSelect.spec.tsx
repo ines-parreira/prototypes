@@ -4,6 +4,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useConditionsMetadata } from 'AIJourney/queries'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
@@ -567,6 +568,7 @@ describe('<AudienceSelect />', () => {
         it('passes integration id to audience queries with correct sources', async () => {
             mockUseJourneyContext.mockReturnValue({
                 currentIntegration: { id: 456 },
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
             })
             await renderComponent('include')
 
@@ -574,6 +576,8 @@ describe('<AudienceSelect />', () => {
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(
                 456,
                 AudienceListSource.Gorgias,
+                undefined,
+                { enabled: true },
             )
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(
                 456,
@@ -584,6 +588,7 @@ describe('<AudienceSelect />', () => {
         it('passes undefined to audience queries when integration is not available', async () => {
             mockUseJourneyContext.mockReturnValue({
                 currentIntegration: null,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
             })
             await renderComponent('include')
 
@@ -591,6 +596,8 @@ describe('<AudienceSelect />', () => {
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(
                 undefined,
                 AudienceListSource.Gorgias,
+                undefined,
+                { enabled: true },
             )
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(
                 undefined,

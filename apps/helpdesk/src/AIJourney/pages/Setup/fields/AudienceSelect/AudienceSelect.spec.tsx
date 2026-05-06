@@ -4,6 +4,7 @@ import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
 import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
@@ -31,6 +32,7 @@ describe('AudienceSelect', () => {
         jest.clearAllMocks()
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 123, name: 'Test Store' },
+            journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
         })
     })
 
@@ -247,6 +249,7 @@ describe('AudienceSelect', () => {
     it('should work without currentIntegration', () => {
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: null,
+            journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
         })
         mockUseAudienceLists.mockReturnValue({
             data: null,
@@ -267,7 +270,12 @@ describe('AudienceSelect', () => {
 
         expect(screen.getByText('Segments to include')).toBeInTheDocument()
         expect(mockUseAudienceLists).toHaveBeenCalledWith(undefined)
-        expect(mockUseAudienceSegments).toHaveBeenCalledWith(undefined)
+        expect(mockUseAudienceSegments).toHaveBeenCalledWith(
+            undefined,
+            undefined,
+            undefined,
+            { enabled: true },
+        )
     })
 
     it('should render without name prop and not display FieldPresentation', () => {
@@ -460,5 +468,60 @@ describe('AudienceSelect', () => {
         expect(
             screen.getByText('At least one audience is required.'),
         ).toBeInTheDocument()
+    })
+
+    it('should hide the segments section when journey type is campaign', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 123, name: 'Test Store' },
+            journeyType: JOURNEY_TYPES.CAMPAIGN,
+        })
+        mockUseAudienceLists.mockReturnValue({
+            data: {
+                data: [{ id: 'list1', name: 'VIP Customers' }],
+            },
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: {
+                data: [{ id: 'seg1', name: 'High Value' }],
+            },
+            isLoading: false,
+        })
+
+        const user = userEvent.setup()
+        render(<AudienceSelect value={[]} onChange={() => {}} />)
+
+        await user.click(
+            screen.getByRole('button', { name: /Select audience/i }),
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Lists')).toBeInTheDocument()
+        })
+        expect(screen.queryByText('Segments')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('option', { name: /High Value/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should disable the segments query when journey type is campaign', () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 123, name: 'Test Store' },
+            journeyType: JOURNEY_TYPES.CAMPAIGN,
+        })
+        mockUseAudienceLists.mockReturnValue({ data: null, isLoading: false })
+        mockUseAudienceSegments.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+
+        render(<AudienceSelect value={[]} onChange={() => {}} />)
+
+        expect(mockUseAudienceSegments).toHaveBeenCalledWith(
+            123,
+            undefined,
+            undefined,
+            { enabled: false },
+        )
     })
 })
