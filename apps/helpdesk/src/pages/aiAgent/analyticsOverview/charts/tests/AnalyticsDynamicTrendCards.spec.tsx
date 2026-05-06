@@ -312,6 +312,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentProductRecommendationsCard',
             Component: AnalyticsAiAgentProductRecommendationsCard,
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantProductRecommendationsCard,
             config: {
                 label: 'Product recommendations',
                 description:

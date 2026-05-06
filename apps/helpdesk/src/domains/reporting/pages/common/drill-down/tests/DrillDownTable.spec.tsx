@@ -1345,6 +1345,57 @@ describe('<DrillDownTable />', () => {
         })
     })
 
+    describe('with AiAgentDrillDownMetricName.ShoppingAssistantProductRecommendationsCard', () => {
+        const metricData: DrillDownMetric = {
+            metricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantProductRecommendationsCard,
+            title: 'Product recommendations',
+        }
+
+        const exampleRow = {
+            ticket: {
+                id: '400001',
+                subject: 'Shopping assistant ticket',
+                description: 'desc',
+                channel: 'email',
+                isRead: true,
+                created: '2025-09-01T10:00:00.000Z',
+                contactReason: null,
+                status: 'closed',
+            },
+            assignee: { id: 42, name: 'Support Agent' },
+            rowData: {},
+            slas: {},
+            outcome: null,
+            intent: 'Returns::Refund',
+            order: {},
+            product: { titles: ['Blue T-Shirt'], variants: [] },
+        }
+
+        it('should show Intent column, Product recommended column, and hide Contact Reason column', () => {
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+
+            renderTable(metricData, TicketDrillDownTableContent)
+
+            expect(
+                screen.getByRole('columnheader', { name: /Intent/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('columnheader', {
+                    name: /Product recommended/i,
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('columnheader', { name: /Contact Reason/i }),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('Blue T-Shirt')).toBeInTheDocument()
+            expect(screen.getByText('Returns')).toBeInTheDocument()
+        })
+    })
+
     describe('with KnowledgeMetric.Tickets', () => {
         const metricData = {
             metricName: KnowledgeMetric.Tickets,

@@ -88,6 +88,12 @@ export const extraEnrichmentFieldsPerMetric: Record<
         EnrichmentFields.ProductsHandles,
         EnrichmentFields.ProductsVariants,
     ],
+    [AiAgentDrillDownMetricName.ShoppingAssistantProductRecommendationsCard]: [
+        ...defaultEnrichmentFields.filter(
+            (f) => f !== EnrichmentFields.ContactReason,
+        ),
+        EnrichmentFields.ProductsTitles,
+    ],
     [AIJourneyMetric.TotalOrders]: [
         ...defaultEnrichmentFields,
         EnrichmentFields.CustomerName,

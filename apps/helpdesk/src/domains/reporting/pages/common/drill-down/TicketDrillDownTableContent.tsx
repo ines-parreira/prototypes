@@ -231,6 +231,10 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName ===
             AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard
 
+    const isShoppingAssistantProductRecommendationsMetric =
+        metricData.metricName ===
+        AiAgentDrillDownMetricName.ShoppingAssistantProductRecommendationsCard
+
     // Fetch data directly (used by legacy table, or when context is not available)
     const fetchedData = useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
@@ -329,6 +333,7 @@ export const TicketDrillDownTableContent = ({
             isAiAgentClosedTicketsMetric ||
             isAiAgentFRTMetric ||
             isAiAgentResolutionTimeMetric ||
+            isShoppingAssistantProductRecommendationsMetric ||
             hasCustomerColumn ||
             isKnowledgeMetric
         )
@@ -338,7 +343,8 @@ export const TicketDrillDownTableContent = ({
             isAiAgentAutomatedInteractionsMetric ||
             isAiAgentClosedTicketsMetric ||
             isAiAgentFRTMetric ||
-            isAiAgentResolutionTimeMetric
+            isAiAgentResolutionTimeMetric ||
+            isShoppingAssistantProductRecommendationsMetric
 
         return [
             columnWidths.ticket,
@@ -346,7 +352,8 @@ export const TicketDrillDownTableContent = ({
                 ? [columnWidths.order, columnWidths.order, columnWidths.order]
                 : []),
             ...(hasCustomerColumn ? [columnWidths.order] : []),
-            ...(isAiSalesAgentTotalProductRecommendationsMetric
+            ...(isAiSalesAgentTotalProductRecommendationsMetric ||
+            isShoppingAssistantProductRecommendationsMetric
                 ? [columnWidths.product]
                 : []),
             ...(hasOutcomeColumn ? [columnWidths.outcome] : []),
@@ -419,6 +426,14 @@ export const TicketDrillDownTableContent = ({
                             titleClassName={css.headerCellTitle}
                         />
                     </>
+                )}
+                {isShoppingAssistantProductRecommendationsMetric && (
+                    <HeaderCellProperty
+                        title="Product recommended"
+                        width={columnWidths.product}
+                        className={css.headerCell}
+                        titleClassName={css.headerCellTitle}
+                    />
                 )}
                 {showSurveyScore && (
                     <HeaderCellProperty
@@ -617,6 +632,7 @@ export const TicketDrillDownTableContent = ({
                     isAiAgentClosedTicketsMetric ||
                     isAiAgentFRTMetric ||
                     isAiAgentResolutionTimeMetric ||
+                    isShoppingAssistantProductRecommendationsMetric ||
                     isKnowledgeMetric
                 ) && (
                     <DrillDownHeaderCellWithTooltip
@@ -633,7 +649,8 @@ export const TicketDrillDownTableContent = ({
                     isAiAgentAutomatedInteractionsMetric ||
                     isAiAgentClosedTicketsMetric ||
                     isAiAgentFRTMetric ||
-                    isAiAgentResolutionTimeMetric) && (
+                    isAiAgentResolutionTimeMetric ||
+                    isShoppingAssistantProductRecommendationsMetric) && (
                     <DrillDownHeaderCellWithTooltip
                         title="Intent"
                         width={columnWidths.intent}
@@ -715,6 +732,15 @@ export const TicketDrillDownTableContent = ({
                                 <BodyCell width={columnWidths.product}>
                                     <TruncateCellContent
                                         content={item.product?.variants.join(
+                                            ', ',
+                                        )}
+                                    />
+                                </BodyCell>
+                            )}
+                            {isShoppingAssistantProductRecommendationsMetric && (
+                                <BodyCell width={columnWidths.product}>
+                                    <TruncateCellContent
+                                        content={item.product?.titles.join(
                                             ', ',
                                         )}
                                     />
@@ -927,6 +953,7 @@ export const TicketDrillDownTableContent = ({
                                 isAiAgentClosedTicketsMetric ||
                                 isAiAgentFRTMetric ||
                                 isAiAgentResolutionTimeMetric ||
+                                isShoppingAssistantProductRecommendationsMetric ||
                                 isKnowledgeMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
@@ -961,7 +988,8 @@ export const TicketDrillDownTableContent = ({
                                 isAiAgentAutomatedInteractionsMetric ||
                                 isAiAgentClosedTicketsMetric ||
                                 isAiAgentFRTMetric ||
-                                isAiAgentResolutionTimeMetric) && (
+                                isAiAgentResolutionTimeMetric ||
+                                isShoppingAssistantProductRecommendationsMetric) && (
                                 <BodyCell width={columnWidths.intent}>
                                     {item.intent ? (
                                         <DrillDownTruncateMultilineCellContent

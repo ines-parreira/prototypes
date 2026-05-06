@@ -4,6 +4,10 @@ import {
     HandoverInteractionsFilterMember,
 } from 'domains/reporting/models/cubes/ai-agent/HandoverInteractionsCube'
 import {
+    AiSalesAgentActivityDimension,
+    AiSalesAgentActivityFilterMember,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
+import {
     AIAgentAutomatedInteractionsV2Dimension,
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
@@ -38,6 +42,7 @@ import {
     allAgentsSuccessRateDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
+    shoppingAssistantProductRecommendationsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
     supportAgentFRTDrillDownQueryFactory,
@@ -62,6 +67,29 @@ const filters: StatsFilters = {
         end_datetime: '2021-01-02T00:00:00.000',
     },
 }
+
+const aiSalesAgentActivityBaseFilters = [
+    {
+        member: AiSalesAgentActivityFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: AiSalesAgentActivityFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+    {
+        member: AiSalesAgentActivityFilterMember.StoreIntegrationId,
+        operator: ReportingFilterOperator.Equals,
+        values: ['122'],
+    },
+    {
+        member: AiSalesAgentActivityFilterMember.Channel,
+        operator: ReportingFilterOperator.Equals,
+        values: ['chat'],
+    },
+]
 
 const automatedInteractionsBaseFilters = [
     {
@@ -951,6 +979,76 @@ describe('supportAgentSuccessRateDrillDownQueryFactory', () => {
         ).toEqual(
             expect.objectContaining({
                 order: [[SuccessRateDimension.TicketId, OrderDirection.Asc]],
+            }),
+        )
+    })
+})
+
+describe('shoppingAssistantProductRecommendationsDrillDownQueryFactory', () => {
+    it('returns correct query', () => {
+        expect(
+            shoppingAssistantProductRecommendationsDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_DRILL_DOWN,
+            measures: [],
+            dimensions: [
+                AiSalesAgentActivityDimension.TicketId,
+                AiSalesAgentActivityDimension.ProductRecommended,
+                AiSalesAgentActivityDimension.StoreIntegrationId,
+                AiSalesAgentActivityDimension.ProductVariantIds,
+            ],
+            filters: [
+                {
+                    member: AiSalesAgentActivityFilterMember.ProductRecommended,
+                    operator: ReportingFilterOperator.Set,
+                    values: [],
+                },
+                ...aiSalesAgentActivityBaseFilters,
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('excludes null productRecommended values', () => {
+        expect(
+            shoppingAssistantProductRecommendationsDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: AiSalesAgentActivityFilterMember.ProductRecommended,
+                        operator: ReportingFilterOperator.Set,
+                        values: [],
+                    },
+                ]),
+            }),
+        )
+    })
+
+    it('includes sorting when provided', () => {
+        expect(
+            shoppingAssistantProductRecommendationsDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Desc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AiSalesAgentActivityDimension.TicketId,
+                        OrderDirection.Desc,
+                    ],
+                ],
             }),
         )
     })

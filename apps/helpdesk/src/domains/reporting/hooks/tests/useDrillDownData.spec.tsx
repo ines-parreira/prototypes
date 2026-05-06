@@ -11,6 +11,7 @@ import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import {
     defaultEnrichmentFields,
     DRILL_DOWN_PER_PAGE,
+    extraEnrichmentFieldsPerMetric,
     filterCSATDataBasedOnIntent,
     getDrillDownMetricOrder,
     useDrillDownData,
@@ -1431,6 +1432,20 @@ describe('DrillDownData hooks', () => {
 
             const result = filterCSATDataBasedOnIntent(metricData, data)
             expect(result).toEqual([])
+        })
+    })
+
+    describe('extraEnrichmentFieldsPerMetric', () => {
+        it('should include ProductsTitles and exclude ContactReason for ShoppingAssistantProductRecommendationsCard', () => {
+            const fields =
+                extraEnrichmentFieldsPerMetric[
+                    AiAgentDrillDownMetricName
+                        .ShoppingAssistantProductRecommendationsCard
+                ]
+
+            expect(fields).toBeDefined()
+            expect(fields).toContain(EnrichmentFields.ProductsTitles)
+            expect(fields).not.toContain(EnrichmentFields.ContactReason)
         })
     })
 

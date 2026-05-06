@@ -4,6 +4,11 @@ import {
     HandoverInteractionsDimension,
     HandoverInteractionsFilterMember,
 } from 'domains/reporting/models/cubes/ai-agent/HandoverInteractionsCube'
+import type { AiSalesAgentActivityCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
+import {
+    AiSalesAgentActivityDimension,
+    AiSalesAgentActivityFilterMember,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
 import type { AIAgentAutomatedInteractionsV2Cube } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import {
     AIAgentAutomatedInteractionsV2Dimension,
@@ -69,6 +74,13 @@ const automatedInteractionsFiltersMembers: StatsFiltersMembers = {
     periodEnd: AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
     channels: AIAgentAutomatedInteractionsV2FilterMember.Channel,
     stores: AIAgentAutomatedInteractionsV2FilterMember.StoreIntegrationId,
+}
+
+const aiSalesAgentActivityDrillDownFiltersMembers: StatsFiltersMembers = {
+    periodStart: AiSalesAgentActivityFilterMember.PeriodStart,
+    periodEnd: AiSalesAgentActivityFilterMember.PeriodEnd,
+    channels: AiSalesAgentActivityFilterMember.Channel,
+    stores: AiSalesAgentActivityFilterMember.StoreIntegrationId,
 }
 
 const handoverInteractionsFiltersMembers: StatsFiltersMembers = {
@@ -235,6 +247,36 @@ export const shoppingAssistantHandoverInteractionsDrillDownQueryFactory = (
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[HandoverInteractionsDimension.TicketId, sorting]] : [],
+})
+
+export const shoppingAssistantProductRecommendationsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AiSalesAgentActivityCube> => ({
+    metricName:
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_DRILL_DOWN,
+    measures: [],
+    dimensions: [
+        AiSalesAgentActivityDimension.TicketId,
+        AiSalesAgentActivityDimension.ProductRecommended,
+        AiSalesAgentActivityDimension.StoreIntegrationId,
+        AiSalesAgentActivityDimension.ProductVariantIds,
+    ],
+    filters: [
+        {
+            member: AiSalesAgentActivityFilterMember.ProductRecommended,
+            operator: ReportingFilterOperator.Set,
+            values: [],
+        },
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentActivityDrillDownFiltersMembers,
+            withAutomateChannels(filters),
+        ),
+    ],
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[AiSalesAgentActivityDimension.TicketId, sorting]] : [],
 })
 
 export const supportAgentHandoverInteractionsDrillDownQueryFactory = (

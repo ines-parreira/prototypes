@@ -82,6 +82,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AiAgentDrillDownMetricName.ShoppingAssistantTimesRecommendedColumn,
     AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard,
     AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard,
+    AiAgentDrillDownMetricName.ShoppingAssistantProductRecommendationsCard,
     AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
     AiAgentDrillDownMetricName.AllAgentsSuccessRateCard,
     AiAgentDrillDownMetricName.SupportAgentSuccessRateCard,
