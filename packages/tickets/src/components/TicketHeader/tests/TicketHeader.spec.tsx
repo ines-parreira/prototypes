@@ -1,5 +1,4 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useActiveView } from '@repo/views'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
@@ -35,16 +34,11 @@ vi.mock('@repo/feature-flags', async () => ({
     }),
 }))
 
-vi.mock('@repo/views', () => ({
-    useActiveView: vi.fn(),
-}))
-
 vi.mock('../../../translations/components/TicketTranslationMenu', () => ({
     TicketTranslationMenu: () => <div>Ticket translation menu</div>,
 }))
 
 const mockUseFlag = vi.mocked(useFlag)
-const mockUseActiveView = vi.mocked(useActiveView)
 
 const mockListTeams = mockListTeamsHandler()
 const mockListUsers = mockListUsersHandler()
@@ -103,10 +97,6 @@ beforeAll(() => {
 
 beforeEach(() => {
     mockUseFlag.mockReturnValue(false)
-    mockUseActiveView.mockReturnValue({
-        id: 99,
-        name: 'Assigned to me',
-    } as any)
     useTicketMessageTranslationDisplay.setState({
         ticketMessagesTranslationDisplayMap: {},
         allMessageDisplayState: DisplayedContent.Original,
@@ -153,9 +143,13 @@ describe('TicketHeader', () => {
 
             it('should render the active view breadcrumb in full-width mode when view context exists', async () => {
                 render(<TicketHeader ticketId={1234} />, {
+                    ticketViewBreadcrumb: {
+                        viewId: 99,
+                        viewName: 'Assigned to me',
+                    },
                     ticketViewNavigation: {
                         isSearchView: false,
-                        shouldDisplay: true,
+                        shouldDisplay: false,
                         shouldUseLegacyFunctions: false,
                         previousTicketId: undefined,
                         nextTicketId: undefined,
@@ -175,6 +169,10 @@ describe('TicketHeader', () => {
 
             it('should hide the active view breadcrumb when split view is enabled', async () => {
                 render(<TicketHeader ticketId={1234} />, {
+                    ticketViewBreadcrumb: {
+                        viewId: 99,
+                        viewName: 'Assigned to me',
+                    },
                     dtpToggle: {
                         isEnabled: true,
                         setIsEnabled: vi.fn(),
@@ -206,88 +204,8 @@ describe('TicketHeader', () => {
                 ).not.toBeInTheDocument()
             })
 
-            it('should hide the active view breadcrumb for search views', async () => {
-                render(<TicketHeader ticketId={1234} />, {
-                    ticketViewNavigation: {
-                        isSearchView: true,
-                        shouldDisplay: true,
-                        shouldUseLegacyFunctions: false,
-                        previousTicketId: undefined,
-                        nextTicketId: undefined,
-                        legacyGoToPrevTicket: vi.fn(),
-                        isPreviousEnabled: false,
-                        legacyGoToNextTicket: vi.fn(),
-                        isNextEnabled: false,
-                    },
-                })
-
-                await waitFor(() => {
-                    expect(screen.getByText('John Doe')).toBeInTheDocument()
-                })
-
-                expect(
-                    screen.queryByRole('link', { name: 'Assigned to me' }),
-                ).not.toBeInTheDocument()
-            })
-
             it('should hide the active view breadcrumb when view context is unavailable', async () => {
                 render(<TicketHeader ticketId={1234} />)
-
-                await waitFor(() => {
-                    expect(screen.getByText('John Doe')).toBeInTheDocument()
-                })
-
-                expect(
-                    screen.queryByRole('link', { name: 'Assigned to me' }),
-                ).not.toBeInTheDocument()
-            })
-
-            it('should hide the active view breadcrumb when the active view name is unavailable', async () => {
-                mockUseActiveView.mockReturnValue({
-                    id: 99,
-                } as any)
-
-                render(<TicketHeader ticketId={1234} />, {
-                    ticketViewNavigation: {
-                        isSearchView: false,
-                        shouldDisplay: true,
-                        shouldUseLegacyFunctions: false,
-                        previousTicketId: undefined,
-                        nextTicketId: undefined,
-                        legacyGoToPrevTicket: vi.fn(),
-                        isPreviousEnabled: false,
-                        legacyGoToNextTicket: vi.fn(),
-                        isNextEnabled: false,
-                    },
-                })
-
-                await waitFor(() => {
-                    expect(screen.getByText('John Doe')).toBeInTheDocument()
-                })
-
-                expect(
-                    screen.queryByRole('link', { name: 'Assigned to me' }),
-                ).not.toBeInTheDocument()
-            })
-
-            it('should hide the active view breadcrumb when the active view id is unavailable', async () => {
-                mockUseActiveView.mockReturnValue({
-                    name: 'Assigned to me',
-                } as any)
-
-                render(<TicketHeader ticketId={1234} />, {
-                    ticketViewNavigation: {
-                        isSearchView: false,
-                        shouldDisplay: true,
-                        shouldUseLegacyFunctions: false,
-                        previousTicketId: undefined,
-                        nextTicketId: undefined,
-                        legacyGoToPrevTicket: vi.fn(),
-                        isPreviousEnabled: false,
-                        legacyGoToNextTicket: vi.fn(),
-                        isNextEnabled: false,
-                    },
-                })
 
                 await waitFor(() => {
                     expect(screen.getByText('John Doe')).toBeInTheDocument()

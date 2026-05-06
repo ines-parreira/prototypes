@@ -1,5 +1,3 @@
-import { useActiveView } from '@repo/views'
-
 import type { Ticket } from '@gorgias/helpdesk-types'
 
 import { getCustomerName } from '../../../helpers/getCustomerName'
@@ -20,21 +18,7 @@ type CurrentTicketTitleProps = {
 export function CurrentTicketTitle({ ticket }: CurrentTicketTitleProps) {
     const { subject, updateTicketTranslatedSubject } = useTicketSubject(ticket)
     const { updateSubject } = useUpdateSubject(ticket.id)
-    const activeView = useActiveView()
-    const activeViewId =
-        typeof activeView?.id === 'number' ? activeView.id : undefined
-    const activeViewName =
-        typeof activeView?.name === 'string' ? activeView.name : undefined
-    const {
-        dtpToggle,
-        ticketViewNavigation: { isSearchView = false, shouldDisplay = false },
-    } = useTicketsLegacyBridge()
-    const shouldShowViewBreadcrumb =
-        !dtpToggle.isEnabled &&
-        shouldDisplay &&
-        !isSearchView &&
-        activeViewId !== undefined &&
-        activeViewName !== undefined
+    const { dtpToggle, ticketViewBreadcrumb } = useTicketsLegacyBridge()
 
     const handleSubjectChange = async (value: string) => {
         updateTicketTranslatedSubject(ticket.id, value)
@@ -43,10 +27,10 @@ export function CurrentTicketTitle({ ticket }: CurrentTicketTitleProps) {
 
     return (
         <TicketTitle>
-            {shouldShowViewBreadcrumb && (
+            {!dtpToggle.isEnabled && ticketViewBreadcrumb && (
                 <TicketTitleView
-                    viewName={activeViewName}
-                    viewUrl={`/app/tickets/${activeViewId}`}
+                    viewName={ticketViewBreadcrumb.viewName}
+                    viewUrl={`/app/tickets/${ticketViewBreadcrumb.viewId}`}
                 />
             )}
             <TicketTitleCustomer

@@ -99,6 +99,7 @@ const legacyBridgeTestProps = {
     dispatchHideAuditLogEvents: jest.fn(),
     toggleQuickReplies: jest.fn(),
     onToggleUnread: jest.fn(),
+    ticketViewBreadcrumb: null,
     ticketViewNavigation: {
         shouldDisplay: false,
         shouldUseLegacyFunctions: false,

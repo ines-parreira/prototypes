@@ -46,6 +46,7 @@ const defaultProviderProps = {
     dispatchAuditLogEvents: vi.fn(),
     dispatchHideAuditLogEvents: vi.fn(),
     toggleQuickReplies: vi.fn(),
+    ticketViewBreadcrumb: null,
     ticketViewNavigation: mockTicketViewNavigation,
     handleTicketDraft: {
         hasDraft: false,

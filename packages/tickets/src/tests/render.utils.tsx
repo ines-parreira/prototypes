@@ -14,6 +14,7 @@ import { TicketsLegacyBridgeProvider } from '../utils/LegacyBridge'
 import type { LegacyBridgeContextType } from '../utils/LegacyBridge/context'
 
 type LegacyBridgeOptions = {
+    ticketViewBreadcrumb?: LegacyBridgeContextType['ticketViewBreadcrumb']
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
     dispatchAuditLogEvents?: LegacyBridgeContextType['dispatchAuditLogEvents']
     dispatchHideAuditLogEvents?: LegacyBridgeContextType['dispatchHideAuditLogEvents']
@@ -47,6 +48,7 @@ const defaultOptions = {
     dispatchHideAuditLogEvents: vi.fn(),
     toggleQuickReplies: vi.fn(),
     onToggleUnread: vi.fn(),
+    ticketViewBreadcrumb: null,
     ticketViewNavigation: {
         isSearchView: false,
         shouldDisplay: false,
@@ -95,6 +97,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
     const {
         initialEntries,
         path,
+        ticketViewBreadcrumb,
         ticketViewNavigation,
         dispatchAuditLogEvents,
         dispatchHideAuditLogEvents,
@@ -113,6 +116,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
     const legacyBridgeOptions = {
         initialEntries,
         path,
+        ticketViewBreadcrumb,
         ticketViewNavigation,
         dispatchAuditLogEvents,
         dispatchHideAuditLogEvents,
@@ -177,6 +181,7 @@ export const renderHook = <TProps, TResult>(
     const {
         initialEntries,
         path,
+        ticketViewBreadcrumb,
         ticketViewNavigation,
         dispatchAuditLogEvents,
         dispatchHideAuditLogEvents,
@@ -195,6 +200,7 @@ export const renderHook = <TProps, TResult>(
     const legacyBridgeOptions = {
         initialEntries,
         path,
+        ticketViewBreadcrumb,
         ticketViewNavigation,
         dispatchAuditLogEvents,
         dispatchHideAuditLogEvents,

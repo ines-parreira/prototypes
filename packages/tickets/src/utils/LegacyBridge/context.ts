@@ -1,6 +1,10 @@
 import { createContext } from 'react'
 
 export type LegacyBridgeContextType = {
+    ticketViewBreadcrumb: {
+        viewId: number
+        viewName: string
+    } | null
     ticketViewNavigation: {
         isSearchView?: boolean
         shouldDisplay: boolean

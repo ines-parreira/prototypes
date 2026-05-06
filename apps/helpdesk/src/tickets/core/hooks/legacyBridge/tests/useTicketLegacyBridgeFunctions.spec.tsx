@@ -178,6 +178,74 @@ describe('useTicketLegacyBridgeFunctions', () => {
         })
     })
 
+    describe('ticketViewBreadcrumb', () => {
+        it('should provide the active view breadcrumb for a non-search ticket view', () => {
+            useAppSelectorMock.mockReturnValue({
+                get: jest.fn((key: string) => {
+                    if (key === 'id') return 99
+                    if (key === 'name') return 'Assigned to me'
+                    return null
+                }),
+            })
+
+            const { result } = renderHook(
+                () => useTicketLegacyBridgeFunctions(),
+                { wrapper },
+            )
+
+            expect(result.current.ticketViewBreadcrumb).toEqual({
+                viewId: 99,
+                viewName: 'Assigned to me',
+            })
+        })
+
+        it('should not provide the active view breadcrumb for search views', () => {
+            useAppSelectorMock.mockReturnValue({
+                get: jest.fn((key: string) => {
+                    if (key === 'id') return 99
+                    if (key === 'name') return 'Assigned to me'
+                    if (key === 'search') return 'test'
+                    return null
+                }),
+            })
+
+            const { result } = renderHook(
+                () => useTicketLegacyBridgeFunctions(),
+                { wrapper },
+            )
+
+            expect(result.current.ticketViewBreadcrumb).toBeNull()
+        })
+
+        it('should not provide the active view breadcrumb when the active view name is missing', () => {
+            useAppSelectorMock.mockReturnValue({
+                get: jest.fn((key: string) => (key === 'id' ? 99 : null)),
+            })
+
+            const { result } = renderHook(
+                () => useTicketLegacyBridgeFunctions(),
+                { wrapper },
+            )
+
+            expect(result.current.ticketViewBreadcrumb).toBeNull()
+        })
+
+        it('should not provide the active view breadcrumb when the active view id is missing', () => {
+            useAppSelectorMock.mockReturnValue({
+                get: jest.fn((key: string) =>
+                    key === 'name' ? 'Assigned to me' : null,
+                ),
+            })
+
+            const { result } = renderHook(
+                () => useTicketLegacyBridgeFunctions(),
+                { wrapper },
+            )
+
+            expect(result.current.ticketViewBreadcrumb).toBeNull()
+        })
+    })
+
     describe('ticketViewNavigation - split ticket view disabled', () => {
         beforeEach(() => {
             useSplitTicketViewMock.mockReturnValue({
