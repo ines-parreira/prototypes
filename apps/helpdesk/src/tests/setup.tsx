@@ -396,13 +396,7 @@ jest.mock('@repo/feature-flags', () => {
     const useHelpdeskV2MS4Dash6Flag = jest.fn(() => {
         const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
 
-        return (
-            hasUIVisionBeta &&
-            getMockedFlagValue(
-                actual.FeatureFlagKey.UIVisionMilestone4Dash6,
-                false,
-            )
-        )
+        return hasUIVisionBeta
     })
 
     return {

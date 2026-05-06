@@ -1,8 +1,4 @@
-import {
-    FeatureFlagKey,
-    useFlag,
-    useHelpdeskV2BaselineFlag,
-} from '@repo/feature-flags'
+import { useHelpdeskV2BaselineFlag } from '@repo/feature-flags'
 import { useIsMobileResolution } from '@repo/hooks'
 import { useLocation } from 'react-router-dom'
 
@@ -10,10 +6,6 @@ import { renderHook } from '../../tests/render.utils'
 import { useHelpdeskV2MS1Dot5Flag } from '../useHelpdeskV2MS1-5Flag'
 
 vi.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        UIVisionMilestone1Dot5: 'UIVisionMilestone1Dot5',
-    },
-    useFlag: vi.fn(),
     useHelpdeskV2BaselineFlag: vi.fn(),
 }))
 
@@ -40,10 +32,6 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             hasUIVisionBeta: true,
             onToggle: vi.fn(),
         })
-        vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionMilestone1Dot5) return true
-            return false
-        })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
         vi.mocked(useLocation).mockReturnValue({
             pathname: '/app/ticket/new',
@@ -59,30 +47,6 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             hasUIVisionBetaBaselineFlag: false,
             hasUIVisionBeta: false,
             onToggle: vi.fn(),
-        })
-        vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionMilestone1Dot5) return true
-            return false
-        })
-        vi.mocked(useIsMobileResolution).mockReturnValue(false)
-        vi.mocked(useLocation).mockReturnValue({
-            pathname: '/app/ticket/new',
-        } as any)
-
-        const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
-
-        expect(result.current).toBe(false)
-    })
-
-    it('should return false when UIVisionMilestone1Dot5 is disabled', () => {
-        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
-            hasUIVisionBetaBaselineFlag: true,
-            hasUIVisionBeta: true,
-            onToggle: vi.fn(),
-        })
-        vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionMilestone1Dot5) return false
-            return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
         vi.mocked(useLocation).mockReturnValue({
@@ -100,10 +64,6 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             hasUIVisionBeta: true,
             onToggle: vi.fn(),
         })
-        vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionMilestone1Dot5) return true
-            return false
-        })
         vi.mocked(useIsMobileResolution).mockReturnValue(true)
         vi.mocked(useLocation).mockReturnValue({
             pathname: '/app/ticket/new',
@@ -119,10 +79,6 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             hasUIVisionBetaBaselineFlag: true,
             hasUIVisionBeta: true,
             onToggle: vi.fn(),
-        })
-        vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionMilestone1Dot5) return true
-            return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
         vi.mocked(useLocation).mockReturnValue({
@@ -140,10 +96,6 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             hasUIVisionBeta: true,
             onToggle: vi.fn(),
         })
-        vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionMilestone1Dot5) return true
-            return false
-        })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
         vi.mocked(useLocation).mockReturnValue({
             pathname: '/app/tickets',
@@ -159,10 +111,6 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             hasUIVisionBetaBaselineFlag: false,
             hasUIVisionBeta: false,
             onToggle: vi.fn(),
-        })
-        vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionMilestone1Dot5) return false
-            return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(true)
         vi.mocked(useLocation).mockReturnValue({
